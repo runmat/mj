@@ -383,7 +383,7 @@
                                         <Columns>
                                             <asp:TemplateField HeaderText="Quittung">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblFileName" runat="server" Text='<%# Eval("Filename") %>'></asp:Label>
+                                                    <asp:Label ID="lblFileName" runat="server" Text='<%# Eval("Filename") %>'/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Aufrufen">

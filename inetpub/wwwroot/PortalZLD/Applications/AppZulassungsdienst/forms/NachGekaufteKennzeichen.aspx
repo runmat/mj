@@ -126,7 +126,7 @@
                                                 <Columns>
                                                     <asp:TemplateField Visible="false">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ArtikelID") %>'></asp:Label>
+                                                            <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("ArtikelID") %>'></asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:BoundField DataField="LTEXT_NR" Visible="false"/>
@@ -134,7 +134,7 @@
                                                      <asp:BoundField HeaderStyle-Width="10%" HeaderText="Datum" DataField="Datum" />
                                                     <asp:TemplateField HeaderStyle-Width="5%">
                                                         <ItemTemplate>
-                                                            <asp:ImageButton CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ArtikelID") %>'
+                                                            <asp:ImageButton CommandArgument='<%# Eval("ArtikelID") %>'
                                                                 CommandName="minusMenge" ID="imgbMinus" ImageUrl="~/Images/Minus.jpg" Width="15px"
                                                                 Height="15px" runat="server" />
                                                         </ItemTemplate>
@@ -142,7 +142,7 @@
                                                     <asp:BoundField HeaderStyle-Width="8%" HeaderText="Menge" DataField="Menge" ItemStyle-HorizontalAlign="Center" />
                                                     <asp:TemplateField  HeaderStyle-Width="5%">
                                                         <ItemTemplate>
-                                                            <asp:ImageButton CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ArtikelID") %>'
+                                                            <asp:ImageButton CommandArgument='<%# Eval("ArtikelID") %>'
                                                                 CommandName="plusMenge" ID="imgbPlus" ImageUrl="~/Images/Plus.jpg" Width="15px"
                                                                 Height="15px" runat="server" />
                                                         </ItemTemplate>
@@ -153,13 +153,13 @@
                                                     <asp:TemplateField Visible="true"  HeaderStyle-Width="5%">
                                                         <ItemTemplate>
                                                             <asp:ImageButton ID="ibEditInfotext" runat="server" Width="27px" Height="30px" ImageUrl="~/Images/edit_01.gif"
-                                                                CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ArtikelID") %>' CommandName="bearbeiten" />
+                                                                CommandArgument='<%# Eval("ArtikelID") %>' CommandName="bearbeiten" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                     <asp:TemplateField  HeaderStyle-Width="5%">
                                                         <ItemTemplate>
                                                             <asp:ImageButton ID="lbDelete" runat="server" Width="32px" Height="32px" ImageUrl="~/Images/RecycleBin.png"
-                                                                TabIndex="-1" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ArtikelID") %>' CommandName="entfernen" />
+                                                                TabIndex="-1" CommandArgument='<%# Eval("ArtikelID") %>' CommandName="entfernen" />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>

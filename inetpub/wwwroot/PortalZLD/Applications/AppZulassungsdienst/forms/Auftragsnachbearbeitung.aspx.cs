@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
+using GeneralTools.Models;
 using Telerik.Web.UI;
 
 namespace AppZulassungsdienst.forms
@@ -15,7 +17,6 @@ namespace AppZulassungsdienst.forms
     public partial class Auftragsnachbearbeitung : Page
     {
         private User m_User;
-        private App m_App;
         private NachbearbeitungAuftrag objNachbearbeitung;
         private ZLDCommon objCommon;
 
@@ -25,8 +26,6 @@ namespace AppZulassungsdienst.forms
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
@@ -34,11 +33,9 @@ namespace AppZulassungsdienst.forms
 
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -49,8 +46,8 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                objNachbearbeitung = new NachbearbeitungAuftrag(ref m_User, m_App);
-                objNachbearbeitung.StornogruendeLaden(Session["AppID"].ToString(), Session.SessionID, this);
+                objNachbearbeitung = new NachbearbeitungAuftrag(m_User.Reference);
+                objNachbearbeitung.StornogruendeLaden();
                 Session["objNachbearbeitung"] = objNachbearbeitung;
 
                 Title = lblHead.Text;
@@ -87,9 +84,9 @@ namespace AppZulassungsdienst.forms
 
         protected void rgPositionenDisplay_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            if (objNachbearbeitung.tblPositionsdaten != null)
+            if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenDisplay.DataSource = objNachbearbeitung.tblPositionsdaten.DefaultView;
+                rgPositionenDisplay.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen;
             }
             else
             {
@@ -157,9 +154,9 @@ namespace AppZulassungsdienst.forms
 
         protected void rgPositionenEdit_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            if (objNachbearbeitung.tblPositionsdaten != null)
+            if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenEdit.DataSource = objNachbearbeitung.tblPositionsdaten.DefaultView;
+                rgPositionenEdit.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen;
             }
             else
             {
@@ -192,7 +189,7 @@ namespace AppZulassungsdienst.forms
             OffeneStornos.Visible = true;
             cmdZurSuche.Visible = true;
 
-            objNachbearbeitung.OffeneStornosLaden(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblKundenStamm);
+            objNachbearbeitung.OffeneStornosLaden(objCommon.KundenStamm);
 
             FillGridOffeneStornos();
         }
@@ -217,12 +214,12 @@ namespace AppZulassungsdienst.forms
 
                 if (e.CommandName == "nachbearbeiten")
                 {
-                    objNachbearbeitung.VorgangId = gridRow["ZULBELN"].Text;
-                    objNachbearbeitung.VorgangLaden(Session["AppID"].ToString(), Session.SessionID, this);
+                    objNachbearbeitung.AktuellerVorgang.Kopfdaten.SapId = gridRow["ZULBELN"].Text;
+                    objNachbearbeitung.VorgangLaden();
 
                     Session["objNachbearbeitung"] = objNachbearbeitung;
 
-                    if (objNachbearbeitung.Status != 0)
+                    if (objNachbearbeitung.ErrorOccured)
                     {
                         lblError.Text = objNachbearbeitung.Message;
                     }
@@ -272,7 +269,7 @@ namespace AppZulassungsdienst.forms
 
         #endregion
 
-        #region Funktionen
+        #region Methods
 
         /// <summary>
         /// Auswahl für Stornogrund und Kunde füllen
@@ -287,14 +284,12 @@ namespace AppZulassungsdienst.forms
             }
             ddlStornogrund.SelectedIndex = 0;
 
-            DataView tmpDView = new DataView(objCommon.tblKundenStamm);
-            tmpDView.RowFilter = "XCPDK <> 'X'";
-            tmpDView.Sort = "NAME1";
-            ddlStornoKunde.DataSource = tmpDView;
-            ddlStornoKunde.DataValueField = "KUNNR";
-            ddlStornoKunde.DataTextField = "NAME1";
+            ddlStornoKunde.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv && !k.Cpd);
+            ddlStornoKunde.DataValueField = "KundenNr";
+            ddlStornoKunde.DataTextField = "Name";
             ddlStornoKunde.DataBind();
             ddlStornoKunde.SelectedIndex = 0;
+
             txtStornoKundennummer.Text = ddlStornoKunde.SelectedValue;
             txtStornoKundennummer.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlStornoKunde.ClientID + ")");
             txtStornoKundennummer.Attributes.Add("onblur", "SetDDLValue(this," + ddlStornoKunde.ClientID + ")");
@@ -314,20 +309,20 @@ namespace AppZulassungsdienst.forms
             objNachbearbeitung.SucheAuftragsnummer = txtSucheAuftragsnummer.Text.Trim();
             objNachbearbeitung.SucheId = txtSucheId.Text.Trim();
 
-            objNachbearbeitung.VorgangPruefen(Session["AppID"].ToString(), Session.SessionID, this);
+            objNachbearbeitung.VorgangPruefen();
 
-            if (objNachbearbeitung.Status != 0)
+            if (objNachbearbeitung.ErrorOccured)
             {
                 lblError.Text = objNachbearbeitung.Message;
             }
             else
             {
-                objNachbearbeitung.VorgangLaden(Session["AppID"].ToString(), Session.SessionID, this);
+                objNachbearbeitung.VorgangLaden();
             }
 
             Session["objNachbearbeitung"] = objNachbearbeitung;
 
-            if (objNachbearbeitung.Status != 0)
+            if (objNachbearbeitung.ErrorOccured)
             {
                 lblError.Text = objNachbearbeitung.Message;
             }
@@ -350,39 +345,18 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void ShowVorgangInfo()
         {
-            var kopfdaten = objNachbearbeitung.tblKopfdaten.Rows[0];
+            var kopfdaten = objNachbearbeitung.AktuellerVorgang.Kopfdaten;
 
-            lblIDDisplay.Text = kopfdaten["ZULBELN"].ToString();
+            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
 
-            lblAuftragsnummerDisplay.Text = kopfdaten["VBELN"].ToString();
-
-            lblKundennummerDisplay.Text = kopfdaten["KUNNR"].ToString().TrimStart('0');
-
-            DataRow[] drow = objCommon.tblKundenStamm.Select("KUNNR = '" + kopfdaten["KUNNR"].ToString().TrimStart('0') + "'");
-            if (drow.Length > 0)
-            {
-                lblKundeDisplay.Text = drow[0]["NAME1"].ToString();
-            }
-            else
-            {
-                lblKundeDisplay.Text = "";
-            }
-
-            lblReferenz1Display.Text = kopfdaten["ZZREFNR1"].ToString();
-
-            DateTime tmpDatum;
-            if (DateTime.TryParse(kopfdaten["ZZZLDAT"].ToString(), out tmpDatum))
-            {
-                lblZulassungsdatumDisplay.Text = tmpDatum.ToShortDateString();
-            }
-            else
-            {
-                lblZulassungsdatumDisplay.Text = "";
-            }
-
-            lblKennzeichenDisplay.Text = kopfdaten["ZZKENN"].ToString();
-
-            lblStatusDisplay.Text = kopfdaten["KSTATUS"].ToString();
+            lblIDDisplay.Text = kopfdaten.SapId;
+            lblAuftragsnummerDisplay.Text = kopfdaten.AuftragsNr;
+            lblKundennummerDisplay.Text = kopfdaten.KundenNr;
+            lblKundeDisplay.Text = (kunde != null ? kunde.Name1 : "");
+            lblReferenz1Display.Text = kopfdaten.Referenz1;
+            lblZulassungsdatumDisplay.Text = kopfdaten.Zulassungsdatum.ToString("dd.MM.yyyy");
+            lblKennzeichenDisplay.Text = kopfdaten.Kennzeichen;
+            lblStatusDisplay.Text = kopfdaten.Kopfstatus;
 
             FillGridPositionenDisplay();
 
@@ -398,7 +372,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void FillGridPositionenDisplay()
         {
-            if ((objNachbearbeitung.tblPositionsdaten != null) && (objNachbearbeitung.tblPositionsdaten.Rows.Count > 0))
+            if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
                 rgPositionenDisplay.Visible = true;
                 rgPositionenDisplay.Rebind();
@@ -464,11 +438,11 @@ namespace AppZulassungsdienst.forms
                     objNachbearbeitung.StornoKennzeichen = txtStornoKennz1.Text.ToUpper() + "-" + txtStornoKennz2.Text.ToUpper();
                 }
 
-                objNachbearbeitung.VorgangStornieren(Session["AppID"].ToString(), Session.SessionID, this);
+                objNachbearbeitung.VorgangStornieren(m_User.UserName);
 
                 Session["objNachbearbeitung"] = objNachbearbeitung;
 
-                if (objNachbearbeitung.Status != 0)
+                if (objNachbearbeitung.ErrorOccured)
                 {
                     lblError.Text = "Fehler beim Stornieren: " + objNachbearbeitung.Message;
                     return;
@@ -486,13 +460,13 @@ namespace AppZulassungsdienst.forms
                 {
                     lblError.Text = "Vorgang erfolgreich angelegt";
 
-                    if (!String.IsNullOrEmpty(objNachbearbeitung.VorgangId))
+                    if (!String.IsNullOrEmpty(objNachbearbeitung.AktuellerVorgang.Kopfdaten.SapId))
                     {
-                        objNachbearbeitung.VorgangLaden(Session["AppID"].ToString(), Session.SessionID, this);
+                        objNachbearbeitung.VorgangLaden();
 
                         Session["objNachbearbeitung"] = objNachbearbeitung;
 
-                        if (objNachbearbeitung.Status != 0)
+                        if (objNachbearbeitung.ErrorOccured)
                         {
                             lblError.Text = objNachbearbeitung.Message;
                         }
@@ -526,14 +500,7 @@ namespace AppZulassungsdienst.forms
                         foreach (DataRow BarRow in objNachbearbeitung.tblBarquittungen.Rows)
                         {
                             BarRow["Filename"] = BarRow["BARQ_NR"].ToString() + ".pdf";
-                            if (m_User.IsTestUser)
-                            {
-                                BarRow["Path"] = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
-                            }
-                            else
-                            {
-                                BarRow["Path"] = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
-                            }
+                            BarRow["Path"] = ZLDCommon.GetDocRootPath(m_User.IsTestUser) + "barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
                         }
                     }
                     GridView2.DataSource = objNachbearbeitung.tblBarquittungen;
@@ -552,7 +519,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void FillGridPreiseEdit()
         {
-            if ((objNachbearbeitung.tblPositionsdaten != null) && (objNachbearbeitung.tblPositionsdaten.Rows.Count > 0))
+            if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
                 rgPositionenEdit.Visible = true;
                 rgPositionenEdit.Rebind();
@@ -575,66 +542,56 @@ namespace AppZulassungsdienst.forms
             {
                 if ((item.ItemType == GridItemType.Item) || (item.ItemType == GridItemType.AlternatingItem))
                 {
-                    var pos = item["ZULPOSNR"].Text;
-
                     var txtPreis = (TextBox)item.FindControl("txtPreis");
                     var txtGebuehr = (TextBox)item.FindControl("txtGebuehr");
                     var txtGebuehrAmt = (TextBox)item.FindControl("txtGebuehrAmt");
                     var txtSteuer = (TextBox)item.FindControl("txtSteuer");
                     var txtPreisKennz = (TextBox)item.FindControl("txtPreisKennz");
 
-                    var posRows = objNachbearbeitung.tblPositionsdaten.Select("ZULPOSNR = '" + pos + "'");
-                    if (posRows.Length > 0)
+                    var pos = objNachbearbeitung.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == item["ZULPOSNR"].Text);
+                    if (pos != null)
                     {
-                        var posRow = posRows[0];
+                        decimal preisNeu;
+                        decimal gebAmtNeu;
 
-                        double preisAlt;
-                        double preisNeu;
-                        double gebAmtAlt;
-                        double gebAmtNeu;
-
-                        Double.TryParse(posRow["PREIS_C"].ToString(), out preisAlt);
-                        Double.TryParse(posRow["GEB_AMT_C"].ToString(), out gebAmtAlt);
-
-                        var mat = posRow["WEBMTART"].ToString();
-                        switch (mat)
+                        switch (pos.WebMaterialart)
                         {
                             case "D":
-                                if (Double.TryParse(txtPreis.Text, out preisNeu))
+                                if (Decimal.TryParse(txtPreis.Text, out preisNeu))
                                 {
-                                    if (preisAlt > preisNeu)
+                                    if (pos.Preis > preisNeu)
                                         blnPreisminderung = true;
                                 }
                                 break;
 
                             case "G":
-                                if (Double.TryParse(txtGebuehr.Text, out preisNeu))
+                                if (Decimal.TryParse(txtGebuehr.Text, out preisNeu))
                                 {
-                                    if (preisAlt > preisNeu)
+                                    if (pos.Preis > preisNeu)
                                         blnPreisminderung = true;
                                 }
                                 break;
 
                             case "S":
-                                if (Double.TryParse(txtSteuer.Text, out preisNeu))
+                                if (Decimal.TryParse(txtSteuer.Text, out preisNeu))
                                 {
-                                    if (preisAlt > preisNeu)
+                                    if (pos.Preis > preisNeu)
                                         blnPreisminderung = true;
                                 }
                                 break;
 
                             case "K":
-                                if (Double.TryParse(txtPreisKennz.Text, out preisNeu))
+                                if (Decimal.TryParse(txtPreisKennz.Text, out preisNeu))
                                 {
-                                    if (preisAlt > preisNeu)
+                                    if (pos.Preis > preisNeu)
                                         blnPreisminderung = true;
                                 }
                                 break;
                         }
 
-                        if (Double.TryParse(txtGebuehrAmt.Text, out gebAmtNeu))
+                        if (Decimal.TryParse(txtGebuehrAmt.Text, out gebAmtNeu))
                         {
-                            if (gebAmtAlt > gebAmtNeu)
+                            if (pos.GebuehrAmt > gebAmtNeu)
                                 blnPreisminderung = true;
                         }
                     }
@@ -662,69 +619,62 @@ namespace AppZulassungsdienst.forms
                 {
                     if ((item.ItemType == GridItemType.Item) || (item.ItemType == GridItemType.AlternatingItem))
                     {
-                        var pos = item["ZULPOSNR"].Text;
-
                         var txtPreis = (TextBox)item.FindControl("txtPreis");
                         var txtGebuehr = (TextBox)item.FindControl("txtGebuehr");
                         var txtGebuehrAmt = (TextBox)item.FindControl("txtGebuehrAmt");
                         var txtSteuer = (TextBox)item.FindControl("txtSteuer");
                         var txtPreisKennz = (TextBox)item.FindControl("txtPreisKennz");
 
-                        var posRows = objNachbearbeitung.tblPositionsdaten.Select("ZULPOSNR = '" + pos + "'");
-                        if (posRows.Length > 0)
+                        var pos = objNachbearbeitung.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == item["ZULPOSNR"].Text);
+                        if (pos != null)
                         {
-                            var posRow = posRows[0];
+                            decimal preisNeu;
+                            decimal gebAmtNeu;
 
-                            double preisNeu;
-                            double gebAmtNeu;
-
-                            var mat = posRow["WEBMTART"].ToString();
-                            switch (mat)
+                            switch (pos.WebMaterialart)
                             {
                                 case "D":
-                                    if (Double.TryParse(txtPreis.Text, out preisNeu))
+                                    if (Decimal.TryParse(txtPreis.Text, out preisNeu))
                                     {
-                                        posRow["PREIS_C"] = preisNeu;
+                                        pos.Preis = preisNeu;
                                     }
                                     break;
 
                                 case "G":
-                                    if (Double.TryParse(txtGebuehr.Text, out preisNeu))
+                                    if (Decimal.TryParse(txtGebuehr.Text, out preisNeu))
                                     {
-                                        posRow["PREIS_C"] = preisNeu;
+                                        pos.Preis = preisNeu;
                                     }
                                     break;
 
                                 case "S":
-                                    if (Double.TryParse(txtSteuer.Text, out preisNeu))
+                                    if (Decimal.TryParse(txtSteuer.Text, out preisNeu))
                                     {
-                                        posRow["PREIS_C"] = preisNeu;
+                                        pos.Preis = preisNeu;
                                     }
                                     break;
 
                                 case "K":
-                                    if (Double.TryParse(txtPreisKennz.Text, out preisNeu))
+                                    if (Decimal.TryParse(txtPreisKennz.Text, out preisNeu))
                                     {
-                                        posRow["PREIS_C"] = preisNeu;
+                                        pos.Preis = preisNeu;
                                     }
                                     break;
                             }
 
-                            if (Double.TryParse(txtGebuehrAmt.Text, out gebAmtNeu))
+                            if (Decimal.TryParse(txtGebuehrAmt.Text, out gebAmtNeu))
                             {
-                                posRow["GEB_AMT_C"] = gebAmtNeu;
+                                pos.GebuehrAmt = gebAmtNeu;
                             }
                         }
                     }
                 }
 
-                objNachbearbeitung.tblPositionsdaten.AcceptChanges();
-
-                objNachbearbeitung.VorgangAbsenden(Session["AppID"].ToString(), Session.SessionID, this);
+                objNachbearbeitung.VorgangAbsenden();
 
                 Session["objNachbearbeitung"] = objNachbearbeitung;
 
-                if (objNachbearbeitung.Status != 0)
+                if (objNachbearbeitung.ErrorOccured)
                 {
                     lblError.Text = objNachbearbeitung.Message;
                 }
@@ -744,14 +694,7 @@ namespace AppZulassungsdienst.forms
                             foreach (DataRow BarRow in objNachbearbeitung.tblBarquittungen.Rows)
                             {
                                 BarRow["Filename"] = BarRow["BARQ_NR"].ToString() + ".pdf";
-                                if (m_User.IsTestUser)
-                                {
-                                    BarRow["Path"] = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
-                                }
-                                else
-                                {
-                                    BarRow["Path"] = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
-                                }
+                                BarRow["Path"] = ZLDCommon.GetDocRootPath(m_User.IsTestUser) + "\barquittung\\" + BarRow["BARQ_NR"].ToString() + ".pdf";
                             }
                         }
                         GridView2.DataSource = objNachbearbeitung.tblBarquittungen;

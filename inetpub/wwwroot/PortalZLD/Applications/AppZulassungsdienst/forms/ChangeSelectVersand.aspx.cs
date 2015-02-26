@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Linq;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
-using System.Data;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {
@@ -12,29 +13,28 @@ namespace AppZulassungsdienst.forms
     public partial class ChangeSelectVersand : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
+
+        #region Events
 
         protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -45,15 +45,13 @@ namespace AppZulassungsdienst.forms
 
             InitLargeDropdowns();
             InitJava();
-            }
+        }
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
-                objNacherf = new NacherfZLD(ref m_User, m_App, "VZ");
-                objNacherf.VKBUR = m_User.Reference.Substring(4, 4);
-                objNacherf.VKORG = m_User.Reference.Substring(0, 4);
+                objNacherf = new NacherfZLD(m_User.Reference);
                 Session["Sort"] = null;
                 Session["Direction"] = null;
                 Session["SucheValue"] = null;
@@ -64,9 +62,9 @@ namespace AppZulassungsdienst.forms
                 objNacherf = (NacherfZLD)Session["objNacherf"];
                 objNacherf.SelID = txtID.Text;
                 objNacherf.SelKunde = txtKunnr.Text;
-                objNacherf.SelKreis = txtStVa.Text;
+                objNacherf.SelKreis = txtStVa.Text.NotNullOrEmpty().ToUpper();
                 objNacherf.SelLief = ddlLief.SelectedValue;
-                objNacherf.SelMatnr= "";
+                objNacherf.SelMatnr = "";
                 objNacherf.SelDatum = ZLDCommon.toShortDateStr(txtZulDate.Text);
             }
             Session["objNacherf"] = objNacherf;
@@ -79,19 +77,16 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void ddlStVa_SelectedIndexChanged(object sender, EventArgs e)
         {
-            objNacherf = (NacherfZLD)Session["objNacherf"];
             txtStVa.Text = ddlStVa.SelectedValue;
-            objNacherf.SelKreis = txtStVa.Text;
+            objNacherf.SelKreis = ddlStVa.SelectedValue;
 
             if (objNacherf.BestLieferanten == null)
-            { objNacherf.getBestLieferant(Session["AppID"].ToString(), Session.SessionID, this); }
+                objNacherf.getBestLieferant();
 
-            
-            if (objNacherf.Status > 0)
+            if (objNacherf.ErrorOccured)
             {
                 ddlLief.Items.Clear();
                 lblError.Text = "Fehler beim Laden der Lieferanten/Zulassungsdienste!";
-                Session["objNacherf"] = objNacherf;
             }
             else
             {
@@ -100,8 +95,9 @@ namespace AppZulassungsdienst.forms
                 ddlLief.DataTextField = "NAME1";
                 ddlLief.DataBind();
                 ddlLief.SelectedValue = "0";
-                Session["objNacherf"] = objNacherf;
             }
+
+            Session["objNacherf"] = objNacherf;
         }
 
         /// <summary>
@@ -114,36 +110,6 @@ namespace AppZulassungsdienst.forms
             txtKunnr.Text = ddlKunnr.SelectedValue;
         }
 
-        /// <summary>
-        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
-        /// </summary>
-        private void InitLargeDropdowns()
-        {
-            //Kunde
-            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
-                tmpDView.Sort = "NAME1";
-                ddlKunnr.DataSource = tmpDView;
-                ddlKunnr.DataValueField = "KUNNR";
-                ddlKunnr.DataTextField = "NAME1";
-                ddlKunnr.DataBind();
-
-            //StVa
-                    tmpDView = objCommon.tblStvaStamm.DefaultView;
-                    tmpDView.Sort = "KREISTEXT";
-                    ddlStVa.DataSource = tmpDView;
-                    ddlStVa.DataValueField = "KREISKZ";
-                    ddlStVa.DataTextField = "KREISTEXT";
-                    ddlStVa.DataBind();
-                }
-
-        private void InitJava()
-                {
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
-            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
-            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
-            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
-                }
         /// <summary>
         /// Sammeln der Selektionsdaten und an Sap übergeben(objNacherf.getSAPDatenNacherf). 
         /// Dann werden die Datensätze für die Anzeige über die ID´s der SAP-Daten aus der SQL–DB selektiert(objNacherf.LadeNacherfassungDB_ZLDNew).
@@ -161,35 +127,25 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            objNacherf = (NacherfZLD)Session["objNacherf"];
+            objNacherf.SelVorgang = "VZ";
             objNacherf.SelStatus = "VE,VZ,AV,AX";
-            objNacherf.DZVKBUR = "";
-            objNacherf.getSAPDatenNacherf(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblKundenStamm, objCommon.tblMaterialStamm);
-            if (objNacherf.Status == 0)
+            objNacherf.SelDZVKBUR = "";
+            objNacherf.LoadVorgaengeFromSap(objCommon.MaterialStamm);
+
+            if (objNacherf.ErrorOccured)
             {
+                lblError.Text = objNacherf.Message;
+                return;
+            }
 
-                objNacherf.LadeNacherfassungDB_ZLDNew("");
-                if (objNacherf.Status == 0)
-                {
-                    if (objNacherf.tblEingabeListe.Rows.Count > 0)
-                    {
-                        Session["objNacherf"] = objNacherf;
-                        Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString());
-                    }
-                    else
-                    {
-                        lblError.Text += "Keine Daten gefunden!" + objNacherf.Message;
-                    }
-
-                }
-                else
-                {
-                    lblError.Text += objNacherf.Message;
-                }
+            if (objNacherf.Vorgangsliste.Any())
+            {
+                Session["objNacherf"] = objNacherf;
+                Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString());
             }
             else
             {
-                lblError.Text = objNacherf.Message;
+                lblError.Text = "Keine Daten gefunden!" + objNacherf.Message;
             }
         }
 
@@ -200,8 +156,8 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void txtStVa_TextChanged(object sender, EventArgs e)
         {
-            txtStVa.Text = txtStVa.Text.ToUpper();
-            objNacherf = (NacherfZLD)Session["objNacherf"];
+            txtStVa.Text = txtStVa.Text.NotNullOrEmpty().ToUpper();
+
             objNacherf.SelKreis = txtStVa.Text;
             try
             {
@@ -210,12 +166,12 @@ namespace AppZulassungsdienst.forms
             catch (IndexOutOfRangeException)
             {
                 // Falls es den in der Textbox eingegebenen Wert nicht gibt
-            }       
+            }
 
-            if (objNacherf.SelKreis.Length > 0)
+            if (!String.IsNullOrEmpty(objNacherf.SelKreis))
             {
-                objNacherf.getBestLieferant(Session["AppID"].ToString(), Session.SessionID, this);
-                if (objNacherf.Status > 0)
+                objNacherf.getBestLieferant();
+                if (objNacherf.ErrorOccured)
                 {
                     ddlLief.Items.Clear();
                     lblError.Text = "Fehler beim Laden der Lieferanten/Zulassungsdienste!";
@@ -229,13 +185,9 @@ namespace AppZulassungsdienst.forms
                     ddlLief.DataBind();
                     ddlLief.SelectedValue = "0";
                     Session["objNacherf"] = objNacherf;
-                } 
+                }
+            }
 
-            } 
-            //else
-            //    {
-            //        ddlLief.Items.Clear();
-            //    }
             ddlStVa.Focus();
         }
 
@@ -248,5 +200,38 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Dropdowns mit großen Datenmengen (ohne ViewState!)
+        /// </summary>
+        private void InitLargeDropdowns()
+        {
+            //Kunde
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataValueField = "KundenNr";
+            ddlKunnr.DataTextField = "Name";
+            ddlKunnr.DataBind();
+
+            //StVa
+            ddlStVa.DataSource = objCommon.StvaStamm;
+            ddlStVa.DataValueField = "Landkreis";
+            ddlStVa.DataTextField = "Bezeichnung";
+            ddlStVa.DataBind();
+        }
+
+        private void InitJava()
+        {
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
+            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtZulDate.ClientID + "'); return false;");
+            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtZulDate.ClientID + "'); return false;");
+        }
+
+        #endregion
     }
 }

@@ -19,6 +19,8 @@ namespace AppZulassungsdienst.forms
         private InfoCenterData icDocs;
         private string fileSourcePath;
 
+        #region Events
+
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
@@ -43,57 +45,6 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        private void FillDocumentTypes()
-        {
-            try
-            {
-                if (icDocs == null)
-                {
-                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
-                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
-                }
-
-                icDocs.GetDocumentTypes();
-                Session["objInfoCenter"] = icDocs;
-            }
-            catch (Exception ex)
-            {
-                data.Visible = false;
-                lblError.Text = "Fehler beim Lesen der Dokumenttypen: " + ex.Message;
-            }
-        }
-
-        private void FillDocuments()
-        {
-            try
-            {
-                if (icDocs == null)
-                {
-                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
-                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
-                }
-
-                icDocs.GetDocuments(m_User.GroupID);
-
-                Session["objInfoCenter"] = icDocs;
-                // Befüllen des Grids läuft über das "NeedDataSource"-Event
-
-                if ((icDocs.Documents != null) && (icDocs.Documents.Rows.Count > 0))
-                {
-                    rgDokumente.Rebind();
-                }
-                else
-                {
-                    lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
-                }
-            }
-            catch (Exception ex)
-            {
-                data.Visible = false;
-                lblError.Text = "Fehler beim Lesen der Dokumente: " + ex.Message;
-            }
-        }
-
         protected void lb_zurueck_Click(object sender, EventArgs e)
         {
             if (Session["objInfoCenter"] != null)
@@ -102,8 +53,6 @@ namespace AppZulassungsdienst.forms
             }
             Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"]);
         }
-
-        #region Grid
 
         protected void rgDokumente_NeedDataSource(object sender, Telerik.Web.UI.GridNeedDataSourceEventArgs e)
         {
@@ -195,5 +144,59 @@ namespace AppZulassungsdienst.forms
 
         #endregion
 
+        #region Methods
+
+        private void FillDocumentTypes()
+        {
+            try
+            {
+                if (icDocs == null)
+                {
+                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
+                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
+                }
+
+                icDocs.GetDocumentTypes();
+                Session["objInfoCenter"] = icDocs;
+            }
+            catch (Exception ex)
+            {
+                data.Visible = false;
+                lblError.Text = "Fehler beim Lesen der Dokumenttypen: " + ex.Message;
+            }
+        }
+
+        private void FillDocuments()
+        {
+            try
+            {
+                if (icDocs == null)
+                {
+                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
+                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
+                }
+
+                icDocs.GetDocuments(m_User.GroupID);
+
+                Session["objInfoCenter"] = icDocs;
+                // Befüllen des Grids läuft über das "NeedDataSource"-Event
+
+                if ((icDocs.Documents != null) && (icDocs.Documents.Rows.Count > 0))
+                {
+                    rgDokumente.Rebind();
+                }
+                else
+                {
+                    lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Visible = false;
+                lblError.Text = "Fehler beim Lesen der Dokumente: " + ex.Message;
+            }
+        }
+
+        #endregion
     }
 }

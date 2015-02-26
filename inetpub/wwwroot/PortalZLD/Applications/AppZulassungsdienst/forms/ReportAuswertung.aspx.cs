@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Linq;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
-using System.Data;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {
@@ -12,20 +13,19 @@ namespace AppZulassungsdienst.forms
     public partial class ReportAuswertung : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private Listen objListe;
         private ZLDCommon objCommon;
+
+        #region Events
 
         protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
@@ -33,28 +33,23 @@ namespace AppZulassungsdienst.forms
 
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
-                objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "K");
-                objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
+                objCommon.GetGruppen_Touren("K");
+                objCommon.GetGruppen_Touren("T");
                 Session["objCommon"] = objCommon;
             }
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
 
-                if (objCommon.tblKdGruppeforSelection == null)
-                {
-                    objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "K");
-                }
-                if (objCommon.tblTourenforSelection == null)
-                {
-                    objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
-                }
+                if (objCommon.Kundengruppen == null)
+                    objCommon.GetGruppen_Touren("K");
+
+                if (objCommon.Touren == null)
+                    objCommon.GetGruppen_Touren("T");
             }
 
             InitLargeDropdowns();
@@ -67,9 +62,8 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                objListe = new Listen(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
-                objListe.VKBUR = m_User.Reference.Substring(4, 4);
-                objListe.VKORG = m_User.Reference.Substring(0, 4);
+                objListe = new Listen(m_User.Reference);
+
                 if ((BackFromList) && (Session["SelDatum"] != null) && (Session["SelDatumBis"] != null))
                 {
                     txtZulDate.Text = Session["SelDatum"].ToString();
@@ -93,9 +87,9 @@ namespace AppZulassungsdienst.forms
                 objListe.SelRef1 = txtRef1.Text;
                 objListe.SelKennz = txtKennz.Text;
                 objListe.SelZahlart = rbListZahlart.SelectedValue;
-                objListe.alleDaten = ZLDCommon.BoolToX(rbAlle.Checked);
+                objListe.alleDaten = rbAlle.Checked.BoolToX();
                 if (rbAlle.Checked)
-                { 
+                {
                     objListe.Abgerechnet = "*";
                     objListe.NochNichtDurchgefuehrt = "";
                 }
@@ -114,10 +108,9 @@ namespace AppZulassungsdienst.forms
                     objListe.Abgerechnet = "*";
                     objListe.NochNichtDurchgefuehrt = "X";
                 }
-
-                Session["objListe"] = objListe;
             }
-            
+
+            Session["objListe"] = objListe;
         }
 
         /// <summary>
@@ -159,6 +152,20 @@ namespace AppZulassungsdienst.forms
         {
             DoSubmit();
         }
+
+        /// <summary>
+        /// Zurück zur Startseite
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Sammeln der Selektionsdaten und an Sap übergeben(Z_ZLD_EXPORT_AUSWERTUNG). 
@@ -226,9 +233,9 @@ namespace AppZulassungsdienst.forms
                 objListe.SelGroupTourID = ddlTour.SelectedValue;
             }
 
-            objListe.FillAuswertungNeu(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblKundenStamm);
+            objListe.FillAuswertungNeu();
 
-            if (objListe.Status != 0)
+            if (objListe.ErrorOccured)
             {
                 lblError.Text = "Fehler: " + objListe.Message;
             }
@@ -248,34 +255,20 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Zurück zur Startseite
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
-        }
-
-        /// <summary>
         /// Dropdowns mit großen Datenmengen (ohne ViewState!)
         /// </summary>
         private void InitLargeDropdowns()
         {
             //Kunde
-            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
-            tmpDView.Sort = "NAME1";
-            ddlKunnr.DataSource = tmpDView;
-            ddlKunnr.DataValueField = "KUNNR";
-            ddlKunnr.DataTextField = "NAME1";
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataValueField = "KundenNr";
+            ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();
 
             //StVa
-            tmpDView = objCommon.tblStvaStamm.DefaultView;
-            tmpDView.Sort = "KREISTEXT";
-            ddlStVa.DataSource = tmpDView;
-            ddlStVa.DataValueField = "KREISKZ";
-            ddlStVa.DataTextField = "KREISTEXT";
+            ddlStVa.DataSource = objCommon.StvaStamm;
+            ddlStVa.DataValueField = "Landkreis";
+            ddlStVa.DataTextField = "Bezeichnung";
             ddlStVa.DataBind();
         }
 
@@ -295,34 +288,31 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void fillForm()
         {
-            Session["objListe"] = objListe;
-            if (objListe.Status > 0)
+            if (objListe.ErrorOccured)
             {
                 lblError.Text = objListe.Message;
                 return;
             }
-            else
-            {
-                DataView tmpDView = objCommon.tblMaterialStamm.DefaultView;
-            tmpDView.Sort = "MAKTX";
-            ddlDienst.DataSource = tmpDView;
-            ddlDienst.DataValueField = "MATNR";
-            ddlDienst.DataTextField = "MAKTX";
+
+            ddlDienst.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv);
+            ddlDienst.DataValueField = "MaterialNr";
+            ddlDienst.DataTextField = "Name";
             ddlDienst.DataBind();
             ddlDienst.SelectedValue = "0";
 
-            ddlGruppe.DataSource = objCommon.tblKdGruppeforSelection;
-            ddlGruppe.DataValueField = "GRUPPE";
-            ddlGruppe.DataTextField = "BEZEI";
+            ddlGruppe.DataSource = objCommon.Kundengruppen;
+            ddlGruppe.DataValueField = "Gruppe";
+            ddlGruppe.DataTextField = "GruppenName";
             ddlGruppe.DataBind();
             ddlGruppe.SelectedValue = "0";
 
-            ddlTour.DataSource = objCommon.tblTourenforSelection;
-            ddlTour.DataValueField = "GRUPPE";
-            ddlTour.DataTextField = "BEZEI";
+            ddlTour.DataSource = objCommon.Touren;
+            ddlTour.DataValueField = "Gruppe";
+            ddlTour.DataTextField = "GruppenName";
             ddlTour.DataBind();
             ddlTour.SelectedValue = "0";
-            }
         }
+
+        #endregion
     }
 }

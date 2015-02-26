@@ -255,16 +255,13 @@
                                                         <Columns>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtSearch" Enabled="false" CssClass="TextBoxNormal" Text='<%#  MyFormat(Eval("MATNR").ToString()) %>'
-                                                                                runat="server" Width="65px"
-                                                                       ></asp:TextBox>
+                                                                    <asp:TextBox ID="txtSearch" Enabled="false" CssClass="TextBoxNormal" Text='<%# Eval("MaterialNr") %>' runat="server" Width="65px"/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="firstLeft active" Width="65px" />
                                                             </asp:TemplateField>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtItem" Enabled="false" CssClass="TextBoxNormal" Text='<%# DataBinder.Eval(Container, "DataItem.MAKTX") %>' runat="server" Width="375px"
-                                                                       ></asp:TextBox>
+                                                                    <asp:TextBox ID="txtItem" Enabled="false" CssClass="TextBoxNormal" Text='<%# Eval("MaterialName") %>' runat="server" Width="375px"/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="firstLeft active" Width="87%" />
                                                             </asp:TemplateField>
@@ -308,7 +305,6 @@
                                                 <td class="firstLeft active" colspan="3" style="width: 100%">
                                                     <asp:LinkButton runat="server" ID="lbtnFeinstaub" CssClass="TablebuttonXSmall" Width="20px" Height="16px" Text="+" Enabled="False"></asp:LinkButton>
                                                     &nbsp;&nbsp;Feinstaubplakette vom Amt
-                                                    <asp:CheckBox ID="cbxSave" runat="server" Enabled="False" Text="saved" Visible="False" />
                                                 </td>
                                             </tr>
                                             <tr class="formquery">
@@ -361,13 +357,6 @@
                                                 <td class="firstLeft active" colspan="3" style="width: 100%;">
                                                     <asp:TextBox ID="txtBemerk" runat="server" CssClass="TextBoxNormal" MaxLength="120"
                                                         Width="465px"></asp:TextBox>
-                                                </td>
-                                            </tr>
-                                            <tr class="formquery">
-                                                <td colspan="4">
-                                                    <asp:HiddenField ID="hfReferenz1" runat="server" />
-                                                    <asp:HiddenField ID="hfReferenz2" runat="server" />
-                                                    
                                                 </td>
                                             </tr>
                                         </tbody>

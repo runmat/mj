@@ -15,8 +15,6 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Logbuch : System.Web.UI.Page
     {
-        #region "Enumeratoren"
-
         private enum ViewStatus
         {
             Unauthenticated,
@@ -25,43 +23,39 @@ namespace AppZulassungsdienst.forms
             FilialeAufgaben
         }
 
-        #endregion
-
         private User m_User;
-        private App m_App;
         private LogbuchClass mObjFilialbuch;
         private LongStringToSap mObjLongStringToSap;
-
         private ViewStatus curView;
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
             lblError.Text = "";
             lblMessage.Text = "";
 
-            if ((this.Session["mObjFilialbuch"] != null))
+            if ((Session["mObjFilialbuch"] != null))
             {
                 mObjFilialbuch = (LogbuchClass)Session["mObjFilialbuch"];
             }
-            if ((this.Session["curView"] != null))
+            if ((Session["curView"] != null))
             {
                 curView = (ViewStatus)Session["curView"];
             }
-            if ((this.Session["mObjLongStringToSap"] != null))
+            if ((Session["mObjLongStringToSap"] != null))
             {
                 mObjLongStringToSap = (LongStringToSap)Session["mObjLongStringToSap"];
             }
 
             if (!IsPostBack)
             {
-                mObjFilialbuch = new LogbuchClass(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
+                mObjFilialbuch = new LogbuchClass(m_User.Reference);
                 Session["mObjFilialbuch"] = mObjFilialbuch;
 
                 curView = ViewStatus.Unauthenticated;
@@ -69,11 +63,11 @@ namespace AppZulassungsdienst.forms
                 AuthenticateFilialbuchUser();
                 Session["curView"] = curView;
 
-                mObjLongStringToSap = new LongStringToSap(m_User, m_App, this);
+                mObjLongStringToSap = new LongStringToSap();
                 Session["mObjLongStringToSap"] = mObjLongStringToSap;
 
                 Title = lblHead.Text;
-                lblKostenstelle.Text = mObjFilialbuch.VkBur;
+                lblKostenstelle.Text = mObjFilialbuch.VKBUR;
             }
 
             ViewControl(curView);
@@ -81,18 +75,550 @@ namespace AppZulassungsdienst.forms
             Session["LastPage"] = this;
         }
 
+        /// <summary>
+        /// Ereignis das beim Entladen der Seite aufgerufen wird
+        /// </summary>
+        /// <param name="sender">Absender des Ereignisses</param>
+        /// <param name="e">EventArgumente</param>
+        /// <remarks></remarks>
+        private void Filialbuch_Unload(object sender, EventArgs e)
+        {
+            // aktuellen Objekt-Status sichern
+            Session["mObjFilialbuch"] = mObjFilialbuch;
+            Session["curView"] = curView;
+        }
+
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            if (curView == ViewStatus.Unauthenticated)
+            {
+                Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+            }
+            else
+            {
+                curView = ViewStatus.Unauthenticated;
+                ViewControl(curView);
+            }
+        }
+
+        protected void lbtAdd_Click(object sender, EventArgs e)
+        {
+            ShowPopUpNewEntry();
+        }
+
+        protected void lbProtokoll_Click(object sender, EventArgs e)
+        {
+            if (curView == ViewStatus.FilialeAufgaben | curView == ViewStatus.FilialeProtokoll)
+            {
+                curView = ViewStatus.FilialeProtokoll;
+            }
+            else
+            {
+                curView = ViewStatus.Gebietsleiter;
+            }
+            ViewControl(curView);
+            FillListProtokoll();
+        }
+
+        protected void lbAufgaben_Click(object sender, EventArgs e)
+        {
+            curView = ViewStatus.FilialeAufgaben;
+            ViewControl(curView);
+            FillListAufgaben();
+        }
+
+        protected void lbtnRefresh_Click(object sender, EventArgs e)
+        {
+            // # CurView bereits auf GL oder Filiale gesetzt, daher keine Änderung nötig
+            FillListProtokoll();
+        }
+
+        protected void gvAufgaben_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            SortDirection NewDir;
+
+            DataRow[] tmpRows = mObjFilialbuch.Protokoll.ProtokollTabelle.Select("Rowindex='" + e.CommandArgument + "'");
+
+            switch (e.CommandName)
+            {
+                case "ReadAufgabeText":
+                    string Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["I_LTXNR"]));
+                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["I_BETREFF"]), Text, e.CommandArgument.ToString());
+                    break;
+
+                case "AnswerAufgabe":
+                    ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
+                    break;
+
+                case "ErlAufgabe":
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Convert.ToInt32(e.CommandArgument), EmpfängerStatus.Erledigt, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListAufgaben();
+                    break;
+
+                case "ReadAufgabe":
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Convert.ToInt32(e.CommandArgument), EmpfängerStatus.Gelesen, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListAufgaben();
+                    break;
+
+                case "DatumEingangSort":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvAufgaben.Sort("I_DATUM", NewDir);
+                    break;
+
+                case "SortVon":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvAufgaben.Sort("I_VON", NewDir);
+                    break;
+
+                case "RückfrageAufgabe":
+                    ShowPopUp(true, true, "RF:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
+                    break;
+            }
+        }
+
+        protected void gvAufgaben_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
+            string[] sortparts = e.SortExpression.Split(',');
+            string sortString = "";
+
+            for (int i = 0; i < sortparts.GetLength(0); i++)
+            {
+                sortString += sortparts[i];
+
+                if (e.SortDirection == SortDirection.Ascending)
+                {
+                    sortString += " ASC";
+                }
+                else
+                {
+                    sortString += " DESC";
+                }
+                if (i < sortparts.GetLength(0) - 1)
+                {
+                    sortString += ",";
+                }
+            }
+            View.Sort = sortString;
+            gvAufgaben.DataSource = View;
+            gvAufgaben.DataBind();
+        }
+
+        protected void gvProtokollFiliale_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            SortDirection NewDir;
+            string Text;
+
+            DataRow[] tmpRows = mObjFilialbuch.Protokoll.ProtokollTabelle.Select("Rowindex='" + e.CommandArgument + "'");
+
+            switch (e.CommandName)
+            {
+                case "ReadAufgabeText":
+                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["I_LTXNR"]));
+                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["I_BETREFF"]), Text, e.CommandArgument.ToString());
+                    break;
+
+                case "ReadAnswerText":
+                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["O_LTXNR"]));
+                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["O_BETREFF"]), Text, e.CommandArgument.ToString());
+                    break;
+
+                case "AnswerAufgabe":
+                    ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
+                    break;
+
+                case "ErlAufgabe":
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Convert.ToInt32(e.CommandArgument), EmpfängerStatus.Erledigt, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "LoeAufgabe":
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Convert.ToInt32(e.CommandArgument), EntryStatus.Gelöscht, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "CloseAufgabe":
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Convert.ToInt32(e.CommandArgument), EntryStatus.Geschlossen, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "ReadAufgabe":
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Convert.ToInt32(e.CommandArgument), EmpfängerStatus.Gelesen, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "DatumEingangSort":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollFiliale.Sort("I_DATUM", NewDir);
+                    break;
+
+                case "DatumAusgangSort":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollFiliale.Sort("O_DATUM", NewDir);
+                    break;
+
+                case "SortVon":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollFiliale.Sort("I_VON", NewDir);
+                    break;
+
+                case "SortAn":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollFiliale.Sort("O_AN", NewDir);
+                    break;
+            }
+        }
+
+        protected void gvProtokollFiliale_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
+            string[] sortparts = e.SortExpression.Split(',');
+            string sortString = "";
+
+            for (int i = 0; i < sortparts.GetLength(0); i++)
+            {
+                sortString += sortparts[i];
+
+                if (e.SortDirection == SortDirection.Ascending)
+                {
+                    sortString += " ASC";
+                }
+                else
+                {
+                    sortString += " DESC";
+                }
+                if (i < sortparts.GetLength(0) - 1)
+                {
+                    sortString += ",";
+                }
+            }
+            View.Sort = sortString;
+            gvProtokollFiliale.DataSource = View;
+            gvProtokollFiliale.DataBind();
+        }
+
+        protected void gvProtokollGL_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            SortDirection NewDir;
+            string Text;
+
+            DataRow[] tmpRows = mObjFilialbuch.Protokoll.ProtokollTabelle.Select("Rowindex='" + e.CommandArgument + "'");
+
+            switch (e.CommandName)
+            {
+                case "ReadAufgabeText":
+                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["I_LTXNR"]));
+                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["I_BETREFF"]), Text, e.CommandArgument.ToString());
+                    break;
+
+                case "ReadAnswerText":
+                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["O_LTXNR"]));
+                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["O_BETREFF"]), Text, e.CommandArgument.ToString());
+                    break;
+
+                case "AnswerAufgabe":
+                    ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
+                    break;
+
+                case "ErlAufgabe":
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Convert.ToInt32(e.CommandArgument), EmpfängerStatus.Erledigt, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "LoeAufgabe":
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Convert.ToInt32(e.CommandArgument), EntryStatus.Gelöscht, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "CloseAufgabe":
+                    mObjFilialbuch.Protokoll.EintragAbschliessen(Convert.ToInt32(e.CommandArgument), EntryStatus.Geschlossen, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "ReadAufgabe":
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Convert.ToInt32(e.CommandArgument), EmpfängerStatus.Gelesen, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                    break;
+
+                case "DatumEingangSort":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollGL.Sort("I_DATUM", NewDir);
+                    break;
+
+                case "DatumAusgangSort":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollGL.Sort("O_DATUM", NewDir);
+                    break;
+
+                case "SortVon":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollGL.Sort("I_VON", NewDir);
+                    break;
+
+                case "SortAn":
+                    if ((Session["SortDirection"] != null) && ((SortDirection)Session["SortDirection"] == SortDirection.Ascending))
+                    {
+                        NewDir = SortDirection.Descending;
+                    }
+                    else
+                    {
+                        NewDir = SortDirection.Ascending;
+                    }
+                    Session["SortDirection"] = NewDir;
+                    gvProtokollGL.Sort("O_AN", NewDir);
+                    break;
+            }
+        }
+
+        protected void gvProtokollGL_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
+            string[] sortparts = e.SortExpression.Split(',');
+            string sortString = "";
+
+            for (int i = 0; i < sortparts.GetLength(0); i++)
+            {
+                sortString += sortparts[i];
+
+                if (e.SortDirection == SortDirection.Ascending)
+                {
+                    sortString += " ASC";
+                }
+                else
+                {
+                    sortString += " DESC";
+                }
+                if (i < sortparts.GetLength(0) - 1)
+                {
+                    sortString += ",";
+                }
+            }
+            View.Sort = sortString;
+            gvProtokollGL.DataSource = View;
+            gvProtokollGL.DataBind();
+        }
+
+        protected void ibtnOkNew_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+            if (string.IsNullOrEmpty(txtNewBetreff.Text.TrimStart(',')))
+            {
+                lblErrorNewText.Text = "Geben Sie einen Betreff ein!";
+                mpeNeuerText.Show();
+                return;
+            }
+
+            string empfaenger = mObjFilialbuch.VKBUR;
+
+            // Wenn Absender Filialmitarbeiter -> Empfänger = Vorgesetzter
+            if (ddlVorgangsarten.SelectedValue == "ZLDZ")
+            {
+                empfaenger = mObjFilialbuch.UserLoggedIn.NamePa;
+            }
+
+            mObjFilialbuch.NeuerEintrag(txtNewBetreff.Text, txtNewText.Text, empfaenger, ddlVorgangsarten.SelectedValue, txtZuerledigenBis.Text, m_User.UserName);
+
+            if (mObjFilialbuch.ErrorOccured)
+            {
+                lblError.Text = "Fehler: " + mObjFilialbuch.Message;
+            }
+
+            FillListProtokoll();
+            ClosePopupNewEntry();
+        }
+
+        protected void ibtnOK_Click(object sender, System.Web.UI.ImageClickEventArgs e)
+        {
+
+            if (chkEdit.Checked)
+            {
+                if (string.IsNullOrEmpty(txtBetreff.Text.TrimStart(',')))
+                {
+                    lblErrorLangtext.Text = "Geben Sie einen Betreff ein!";
+                    mpeLangtext.Show();
+                    return;
+                }
+                if (string.IsNullOrEmpty(txtText.Text.Trim()))
+                {
+                    lblErrorLangtext.Text = "Geben Sie einen Antworttext ein!";
+                    mpeLangtext.Show();
+                    return;
+                }
+
+                if (curView == ViewStatus.FilialeAufgaben)
+                {
+                    if (chkIsRückfrage.Checked)
+                    {
+                        mObjFilialbuch.Protokoll.Rückfrage(Int32.Parse(lblRowIndex.Text), txtBetreff.Text, txtText.Text, m_User.UserName, mObjFilialbuch.VKBUR);
+                    }
+                    else
+                    {
+                        mObjFilialbuch.Protokoll.EintragBeantworten(Int32.Parse(lblRowIndex.Text), txtBetreff.Text, txtText.Text, m_User.UserName);
+                    }
+
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListAufgaben();
+                }
+                else if (curView == ViewStatus.FilialeProtokoll)
+                {
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Int32.Parse(lblRowIndex.Text), txtBetreff.Text, txtText.Text, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                }
+                else if (curView == ViewStatus.Gebietsleiter)
+                {
+                    mObjFilialbuch.Protokoll.EintragBeantworten(Int32.Parse(lblRowIndex.Text), txtBetreff.Text, txtText.Text, m_User.UserName);
+                    if (mObjFilialbuch.Protokoll.ErrorOccured)
+                    {
+                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
+                    }
+                    FillListProtokoll();
+                }
+            }
+
+            ClosePopup();
+        }
+
+        #endregion
+
+        #region Methods
+
+        public Logbuch()
+        {
+            Unload += Filialbuch_Unload;
+            Load += Page_Load;
+        }
+
         private void AuthenticateFilialbuchUser()
         {
             try
             {
-                FilialbuchUser FilBuUser = mObjFilialbuch.LoginUser(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.VkBur, m_User.UserName);
-                if (mObjFilialbuch.Status != 0)
+                mObjFilialbuch.LoginUser(mObjFilialbuch.VKBUR, m_User.UserName);
+
+                if (mObjFilialbuch.ErrorOccured)
                 {
-                    throw new Exception(mObjFilialbuch.Status + ": " + mObjFilialbuch.Message);
+                    throw new Exception("Fehler: " + mObjFilialbuch.Message);
                 }
 
-                lblUser.Text = FilBuUser.Bedienername;
-                switch (FilBuUser.Rolle)
+                lblUser.Text = mObjFilialbuch.UserLoggedIn.Bedienername;
+                switch (mObjFilialbuch.UserLoggedIn.Rolle)
                 {
                     case LogbuchClass.Rolle.Zulassungsdienst:
                     case LogbuchClass.Rolle.Filiale:
@@ -117,10 +643,11 @@ namespace AppZulassungsdienst.forms
 
         private void FillListAufgaben()
         {
-            mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn, LogbuchClass.StatusFilter.Neu);
-            if (mObjFilialbuch.Status != 0)
+            mObjFilialbuch.GetEinträge(mObjFilialbuch.UserLoggedIn, LogbuchClass.StatusFilter.Neu);
+
+            if (mObjFilialbuch.ErrorOccured)
             {
-                lblError.Text = mObjFilialbuch.Status + ": " + mObjFilialbuch.Message;
+                lblError.Text = "Fehler: " + mObjFilialbuch.Message;
             }
             else
             {
@@ -149,18 +676,18 @@ namespace AppZulassungsdienst.forms
             switch (curView)
             {
                 case ViewStatus.Gebietsleiter:
-                    mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn,
-                        LogbuchClass.StatusFilter.Alle, mObjFilialbuch.VkBur, Convert.ToDateTime(txtDatumVon.Text), Convert.ToDateTime(txtDatumBis.Text));
+                    mObjFilialbuch.GetEinträge(mObjFilialbuch.UserLoggedIn,
+                        LogbuchClass.StatusFilter.Alle, mObjFilialbuch.VKBUR, Convert.ToDateTime(txtDatumVon.Text), Convert.ToDateTime(txtDatumBis.Text));
                     break;
                 default:
-                    mObjFilialbuch.GetEinträge(Session["AppID"].ToString(), Session.SessionID, this, mObjFilialbuch.UserLoggedIn,
+                    mObjFilialbuch.GetEinträge(mObjFilialbuch.UserLoggedIn,
                         LogbuchClass.StatusFilter.Alle, null, Convert.ToDateTime(txtDatumVon.Text), Convert.ToDateTime(txtDatumBis.Text));
                     break;
             }
 
-            if (mObjFilialbuch.Status != 0)
+            if (mObjFilialbuch.ErrorOccured)
             {
-                lblError.Text = mObjFilialbuch.Status + ": " + mObjFilialbuch.Message;
+                lblError.Text = "Fehler: " + mObjFilialbuch.Message;
             }
             else
             {
@@ -295,68 +822,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Ereignis das beim Entladen der Seite aufgerufen wird
-        /// </summary>
-        /// <param name="sender">Absender des Ereignisses</param>
-        /// <param name="e">EventArgumente</param>
-        /// <remarks></remarks>
-        private void Filialbuch_Unload(object sender, EventArgs e)
-        {
-            // aktuellen Objekt-Status sichern
-            Session["mObjFilialbuch"] = mObjFilialbuch;
-            Session["curView"] = curView;
-        }
-
-        #region "ButtonEvents"
-
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            if (curView == ViewStatus.Unauthenticated)
-            {
-                Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
-            }
-            else
-            {
-                curView = ViewStatus.Unauthenticated;
-                ViewControl(curView);
-            }
-        }
-
-        protected void lbtAdd_Click(object sender, EventArgs e)
-        {
-            ShowPopUpNewEntry();
-        }
-
-        protected void lbProtokoll_Click(object sender, EventArgs e)
-        {
-            if (curView == ViewStatus.FilialeAufgaben | curView == ViewStatus.FilialeProtokoll)
-            {
-                curView = ViewStatus.FilialeProtokoll;
-            }
-            else
-            {
-                curView = ViewStatus.Gebietsleiter;
-            }
-            ViewControl(curView);
-            FillListProtokoll();
-        }
-
-        protected void lbAufgaben_Click(object sender, EventArgs e)
-        {
-            curView = ViewStatus.FilialeAufgaben;
-            ViewControl(curView);
-            FillListAufgaben();
-        }
-
-        protected void lbtnRefresh_Click(object sender, EventArgs e)
-        {
-            // # CurView bereits auf GL oder Filiale gesetzt, daher keine Änderung nötig
-            FillListProtokoll();
-        }
-
-        #endregion
-
-        /// <summary>
         /// Ansichtssteuerung für alle Elemente der Seite
         /// </summary>
         /// <param name="VS">Das anzuzeigende Seiten-Layout</param>
@@ -439,370 +904,6 @@ namespace AppZulassungsdienst.forms
             }
 
         }
-
-        #region "GridViewEvents"
-
-        protected void gvAufgaben_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            SortDirection NewDir;
-
-            DataRow[] tmpRows = mObjFilialbuch.Protokoll.ProtokollTabelle.Select("Rowindex='" + e.CommandArgument + "'");
-            switch (e.CommandName)
-            {
-                case "ReadAufgabeText":
-                    string Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["I_LTXNR"]));
-                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["I_BETREFF"]), Text, e.CommandArgument.ToString());
-                    break;
-                case "AnswerAufgabe":
-                    ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
-                    break;
-                case "ErlAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EmpfängerStatus.Erledigt);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListAufgaben();
-                    break;
-                case "ReadAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EmpfängerStatus.Gelesen);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListAufgaben();
-                    break;
-                case "DatumEingangSort":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvAufgaben.Sort("I_DATUM", NewDir);
-                    break;
-                case "SortVon":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvAufgaben.Sort("I_VON", NewDir);
-                    break;
-                case "RückfrageAufgabe":
-                    ShowPopUp(true, true, "RF:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
-                    break;
-            }
-        }
-
-        protected void gvAufgaben_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
-            string[] sortparts = e.SortExpression.Split(',');
-            string sortString = "";
-
-            for (int i = 0; i < sortparts.GetLength(0); i++)
-            {
-                sortString += sortparts[i];
-
-                if (e.SortDirection == SortDirection.Ascending)
-                {
-                    sortString += " ASC";
-                }
-                else
-                {
-                    sortString += " DESC";
-                }
-                if (i < sortparts.GetLength(0) - 1)
-                {
-                    sortString += ",";
-                }
-            }
-            View.Sort = sortString;
-            gvAufgaben.DataSource = View;
-            gvAufgaben.DataBind();
-        }
-
-        protected void gvProtokollFiliale_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            SortDirection NewDir;
-            string Text;
-
-            DataRow[] tmpRows = mObjFilialbuch.Protokoll.ProtokollTabelle.Select("Rowindex='" + e.CommandArgument + "'");
-            switch (e.CommandName)
-            {
-                case "ReadAufgabeText":
-                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["I_LTXNR"]));
-                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["I_BETREFF"]), Text, e.CommandArgument.ToString());
-                    break;
-                case "ReadAnswerText":
-                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["O_LTXNR"]));
-                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["O_BETREFF"]), Text, e.CommandArgument.ToString());
-                    break;
-                case "AnswerAufgabe":
-                    ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
-                    break;
-                case "ErlAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EmpfängerStatus.Erledigt);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "LoeAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EntryStatus.Gelöscht);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "CloseAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EntryStatus.Geschlossen);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "ReadAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EmpfängerStatus.Gelesen);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "DatumEingangSort":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollFiliale.Sort("I_DATUM", NewDir);
-                    break;
-                case "DatumAusgangSort":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollFiliale.Sort("O_DATUM", NewDir);
-                    break;
-                case "SortVon":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollFiliale.Sort("I_VON", NewDir);
-                    break;
-                case "SortAn":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollFiliale.Sort("O_AN", NewDir);
-                    break;
-            }
-        }
-
-        protected void gvProtokollFiliale_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
-            string[] sortparts = e.SortExpression.Split(',');
-            string sortString = "";
-
-            for (int i = 0; i < sortparts.GetLength(0); i++)
-            {
-                sortString += sortparts[i];
-
-                if (e.SortDirection == SortDirection.Ascending)
-                {
-                    sortString += " ASC";
-                }
-                else
-                {
-                    sortString += " DESC";
-                }
-                if (i < sortparts.GetLength(0) - 1)
-                {
-                    sortString += ",";
-                }
-            }
-            View.Sort = sortString;
-            gvProtokollFiliale.DataSource = View;
-            gvProtokollFiliale.DataBind();
-        }
-
-        protected void gvProtokollGL_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            SortDirection NewDir;
-            string Text;
-
-            DataRow[] tmpRows = mObjFilialbuch.Protokoll.ProtokollTabelle.Select("Rowindex='" + e.CommandArgument + "'");
-            switch (e.CommandName)
-            {
-                case "ReadAufgabeText":
-                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["I_LTXNR"]));
-                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["I_BETREFF"]), Text, e.CommandArgument.ToString());
-                    break;
-                case "ReadAnswerText":
-                    Text = mObjLongStringToSap.ReadString(Convert.ToString(tmpRows[0]["O_LTXNR"]));
-                    ShowPopUp(false, false, Convert.ToString(tmpRows[0]["O_BETREFF"]), Text, e.CommandArgument.ToString());
-                    break;
-                case "AnswerAufgabe":
-                    ShowPopUp(true, false, "AW:" + Convert.ToString(tmpRows[0]["I_BETREFF"]), "", e.CommandArgument.ToString());
-                    break;
-                case "ErlAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EmpfängerStatus.Erledigt);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "LoeAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EntryStatus.Gelöscht);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "CloseAufgabe":
-                    mObjFilialbuch.Protokoll.EintragAbschliessen(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EntryStatus.Geschlossen);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "ReadAufgabe":
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Convert.ToInt32(e.CommandArgument),
-                        EmpfängerStatus.Gelesen);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                    break;
-                case "DatumEingangSort":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollGL.Sort("I_DATUM", NewDir);
-                    break;
-                case "DatumAusgangSort":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollGL.Sort("O_DATUM", NewDir);
-                    break;
-                case "SortVon":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollGL.Sort("I_VON", NewDir);
-                    break;
-                case "SortAn":
-                    if ((ViewState["SortDirection"] != null) && ((SortDirection)ViewState["SortDirection"] == SortDirection.Ascending))
-                    {
-                        NewDir = SortDirection.Descending;
-                    }
-                    else
-                    {
-                        NewDir = SortDirection.Ascending;
-                    }
-                    ViewState["SortDirection"] = NewDir;
-                    gvProtokollGL.Sort("O_AN", NewDir);
-                    break;
-            }
-        }
-
-        protected void gvProtokollGL_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
-            string[] sortparts = e.SortExpression.Split(',');
-            string sortString = "";
-
-            for (int i = 0; i < sortparts.GetLength(0); i++)
-            {
-                sortString += sortparts[i];
-
-                if (e.SortDirection == SortDirection.Ascending)
-                {
-                    sortString += " ASC";
-                }
-                else
-                {
-                    sortString += " DESC";
-                }
-                if (i < sortparts.GetLength(0) - 1)
-                {
-                    sortString += ",";
-                }
-            }
-            View.Sort = sortString;
-            gvProtokollGL.DataSource = View;
-            gvProtokollGL.DataBind();
-        }
-
-        #endregion
-
-        #region "PopUpActions"
 
         private void ClosePopup()
         {
@@ -899,217 +1000,124 @@ namespace AppZulassungsdienst.forms
             mpeNeuerText.Show();
         }
 
-        protected void ibtnOkNew_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtNewBetreff.Text.TrimStart(',')))
-            {
-                lblErrorNewText.Text = "Geben Sie einen Betreff ein!";
-                mpeNeuerText.Show();
-                return;
-            }
-
-            string empfaenger = mObjFilialbuch.VkBur;
-
-            // Wenn Absender Filialmitarbeiter -> Empfänger = Vorgesetzter
-            if (ddlVorgangsarten.SelectedValue == "ZLDZ")
-            {
-                empfaenger = mObjFilialbuch.UserLoggedIn.NamePa;
-            }
-
-            mObjFilialbuch.NeuerEintrag(Session["AppID"].ToString(), Session.SessionID, this, txtNewBetreff.Text, txtNewText.Text, empfaenger,
-                                        ddlVorgangsarten.SelectedValue, txtZuerledigenBis.Text);
-
-            if (mObjFilialbuch.Status != 0)
-            {
-                lblError.Text = mObjFilialbuch.Status + ": " + mObjFilialbuch.Message;
-            }
-
-            FillListProtokoll();
-            ClosePopupNewEntry();
-        }
-
-        protected void ibtnOK_Click(object sender, System.Web.UI.ImageClickEventArgs e)
-        {
-
-            if (chkEdit.Checked)
-            {
-                if (string.IsNullOrEmpty(txtBetreff.Text.TrimStart(',')))
-                {
-                    lblErrorLangtext.Text = "Geben Sie einen Betreff ein!";
-                    mpeLangtext.Show();
-                    return;
-                }
-                if (string.IsNullOrEmpty(txtText.Text.Trim()))
-                {
-                    lblErrorLangtext.Text = "Geben Sie einen Antworttext ein!";
-                    mpeLangtext.Show();
-                    return;
-                }
-
-                if (curView == ViewStatus.FilialeAufgaben)
-                {
-                    if (chkIsRückfrage.Checked)
-                    {
-                        mObjFilialbuch.Protokoll.Rückfrage(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
-                            txtBetreff.Text, txtText.Text);
-                    }
-                    else
-                    {
-                        mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
-                            txtBetreff.Text, txtText.Text);
-                    }
-
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListAufgaben();
-                }
-                else if (curView == ViewStatus.FilialeProtokoll)
-                {
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
-                        txtBetreff.Text, txtText.Text);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                }
-                else if (curView == ViewStatus.Gebietsleiter)
-                {
-                    mObjFilialbuch.Protokoll.EintragBeantworten(Session["AppID"].ToString(), Session.SessionID, this, Int32.Parse(lblRowIndex.Text),
-                        txtBetreff.Text, txtText.Text);
-                    if (mObjFilialbuch.Protokoll.Status != 0)
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten: " + mObjFilialbuch.Protokoll.Message;
-                    }
-                    FillListProtokoll();
-                }
-            }
-
-            ClosePopup();
-        }
-
-        #endregion
-
-        #region "HelpProcedures"
-
         protected void img_prerender(object sender, EventArgs e)
         {
             HtmlImage img = sender as HtmlImage;
-            switch (img.Attributes["value"])
+            if (img != null)
             {
-                case "Neu":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/new.png";
-                    img.Alt = "Neu";
-                    img.Attributes.Add("Title", "Neu");
-                    break;
-                case "Geantwortet":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/email.png";
-                    img.Alt = "Geantwortet";
-                    img.Attributes.Add("Title", "Geantwortet");
-                    break;
-                case "AutomatischBeantwortet":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/email.png";
-                    img.Alt = "Automatisch beantwortet";
-                    img.Attributes.Add("Title", "Automatisch beantwortet");
-                    break;
-                case "Geschlossen":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/Lock.png";
-                    img.Alt = "Geschlossen";
-                    img.Attributes.Add("Title", "Geschlossen");
-                    break;
-                case "Gelöscht":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/bin_closed.png";
-                    img.Alt = "Gelöscht";
-                    img.Attributes.Add("Title", "Gelöscht");
-                    break;
-                case "Gesendet":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/Email_go.png";
-                    img.Alt = "Gesendet";
-                    img.Attributes.Add("Title", "Gesendet");
-                    break;
-                default:
-                    img.Visible = false;
-                    break;
+                switch (img.Attributes["value"])
+                {
+                    case "Neu":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/new.png";
+                        img.Alt = "Neu";
+                        img.Attributes.Add("Title", "Neu");
+                        break;
+                    case "Geantwortet":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/email.png";
+                        img.Alt = "Geantwortet";
+                        img.Attributes.Add("Title", "Geantwortet");
+                        break;
+                    case "AutomatischBeantwortet":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/email.png";
+                        img.Alt = "Automatisch beantwortet";
+                        img.Attributes.Add("Title", "Automatisch beantwortet");
+                        break;
+                    case "Geschlossen":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/Lock.png";
+                        img.Alt = "Geschlossen";
+                        img.Attributes.Add("Title", "Geschlossen");
+                        break;
+                    case "Gelöscht":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/bin_closed.png";
+                        img.Alt = "Gelöscht";
+                        img.Attributes.Add("Title", "Gelöscht");
+                        break;
+                    case "Gesendet":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/Email_go.png";
+                        img.Alt = "Gesendet";
+                        img.Attributes.Add("Title", "Gesendet");
+                        break;
+                    default:
+                        img.Visible = false;
+                        break;
+                }
             }
         }
 
         protected void img2_prerender(object sender, EventArgs e)
         {
             HtmlImage img = sender as HtmlImage;
-            switch (img.Attributes["value"])
+            if (img != null)
             {
-                case "Neu":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/new.png";
-                    img.Alt = "Neu";
-                    img.Attributes.Add("Title", "Neu");
-                    break;
-                case ("Gelesen"):
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/eye.png";
-                    img.Alt = "Gelesen";
-                    img.Attributes.Add("Title", "Gelesen");
-                    break;
-                case "AutomatischBeantwortet":
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/email.png";
-                    img.Alt = "Automatisch beantwortet";
-                    img.Attributes.Add("Title", "Automatisch beantwortet");
-                    break;
-                case ("Geantwortet"):
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/email.png";
-                    img.Alt = "Geantwortet";
-                    img.Attributes.Add("Title", "Geantwortet");
-                    break;
-                case ("Gelöscht"):
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/bin_closed.png";
-                    img.Alt = "Gelöscht";
-                    img.Attributes.Add("Title", "Gelöscht");
-                    break;
-                case ("Erledigt"):
-                    img.Visible = true;
-                    img.Src = "/PortalZLD/images/haken_gruen.gif";
-                    img.Alt = "Erledigt";
-                    img.Attributes.Add("Title", "Erledigt");
-                    break;
-                default:
-                    img.Visible = false;
-                    break;
+                switch (img.Attributes["value"])
+                {
+                    case "Neu":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/new.png";
+                        img.Alt = "Neu";
+                        img.Attributes.Add("Title", "Neu");
+                        break;
+                    case ("Gelesen"):
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/eye.png";
+                        img.Alt = "Gelesen";
+                        img.Attributes.Add("Title", "Gelesen");
+                        break;
+                    case "AutomatischBeantwortet":
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/email.png";
+                        img.Alt = "Automatisch beantwortet";
+                        img.Attributes.Add("Title", "Automatisch beantwortet");
+                        break;
+                    case ("Geantwortet"):
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/email.png";
+                        img.Alt = "Geantwortet";
+                        img.Attributes.Add("Title", "Geantwortet");
+                        break;
+                    case ("Gelöscht"):
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/bin_closed.png";
+                        img.Alt = "Gelöscht";
+                        img.Attributes.Add("Title", "Gelöscht");
+                        break;
+                    case ("Erledigt"):
+                        img.Visible = true;
+                        img.Src = "/PortalZLD/images/haken_gruen.gif";
+                        img.Alt = "Erledigt";
+                        img.Attributes.Add("Title", "Erledigt");
+                        break;
+                    default:
+                        img.Visible = false;
+                        break;
+                }
             }
         }
 
         protected void DivRender(object sender, EventArgs e)
         {
             HtmlControl div = sender as HtmlControl;
-            switch (div.Attributes["value"])
+            if (div != null)
             {
-                case "True":
-                    div.Attributes["Style"] =
-                        "height:22px; margin-bottom:3px; white-space:nowrap; border-top:solid 1px #595959;";
-                    break;
-                default:
-                    div.Attributes["Style"] = "height:22px; margin-bottom:3px; white-space:nowrap;";
-                    break;
+                switch (div.Attributes["value"])
+                {
+                    case "True":
+                        div.Attributes["Style"] =
+                            "height:22px; margin-bottom:3px; white-space:nowrap; border-top:solid 1px #595959;";
+                        break;
+                    default:
+                        div.Attributes["Style"] = "height:22px; margin-bottom:3px; white-space:nowrap;";
+                        break;
+                }
             }
         }
 
-        public Logbuch()
-        {
-            Unload += Filialbuch_Unload;
-            Load += Page_Load;
-        }
-
         #endregion
-
     }
 }

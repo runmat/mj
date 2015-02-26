@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Linq;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
-using System.Data;
 
 namespace AppZulassungsdienst.forms
 {
@@ -12,28 +12,28 @@ namespace AppZulassungsdienst.forms
     public partial class Nickname : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private ZLDCommon objCommon;
+        private clsNickname objNickname;
+
+        #region Events
 
         protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -42,20 +42,17 @@ namespace AppZulassungsdienst.forms
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
 
-            fillDropdown();
+            if ((Session["objNickname"] != null))
+            {
+                objNickname = (clsNickname)Session["objNickname"];
+            }
+            else
+            {
+                objNickname = new clsNickname(m_User.Reference);
+                Session["objNickname"] = objNickname;
             }
 
-        private void fillDropdown()
-        {
-            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
-            tmpDView.Sort = "NAME1";
-            ddlKunnr.DataSource = tmpDView;
-            ddlKunnr.DataValueField = "KUNNR";
-            ddlKunnr.DataTextField = "NAME1";
-            ddlKunnr.DataBind();
-            txtKundeSearch.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-            txtKundeSearch.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
-            ddlKunnr.Attributes.Add("onchange", "SetTexttValue(" + ddlKunnr.ClientID + "," + txtKundeSearch.ClientID + ")");
+            fillDropdown();
         }
 
         /// <summary>
@@ -66,23 +63,29 @@ namespace AppZulassungsdienst.forms
         protected void lbtnSearch_Click(object sender, EventArgs e)
         {
             lblError.Text = "";
-            if (txtKundeSearch.Text.Length > 0)
+
+            if (!String.IsNullOrEmpty(txtKundeSearch.Text))
             {
-                objCommon.GetKundeNickname(Session["AppID"].ToString(), Session.SessionID, this, txtKundeSearch.Text );
-                if(objCommon.Message.Length>0)
-                {   lblError.Text = objCommon.Message;}
+                objNickname.GetKundeNickname(txtKundeSearch.Text);
+
+                if (objNickname.ErrorOccured)
+                {
+                    lblError.Text = objNickname.Message;
+                }
                 else
                 {
-                    txtKundeNr.Text= txtKundeSearch.Text;
-                    txtKundeName.Text=objCommon.Kundename;
-                    txtNickname.Text = objCommon.Nickname;
+                    txtKundeNr.Text = txtKundeSearch.Text;
+                    txtKundeName.Text = objNickname.KundenName;
+                    txtNickname.Text = objNickname.KundenNickname;
                     lbtnDelete.Visible = true;
                     lbAbsenden.Visible = true;
                 }
+
+                Session["objNickname"] = objNickname;
             }
             else
-            { 
-                lblError.Text ="Bitte geben Sie eine Kunndennummer ein!";
+            {
+                lblError.Text = "Bitte geben Sie eine Kunndennummer ein!";
             }
         }
 
@@ -92,17 +95,20 @@ namespace AppZulassungsdienst.forms
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
         protected void lbAbsenden_Click(object sender, EventArgs e)
-        {  
-
-            if (txtNickname.Text.Length > 0)
+        {
+            if (!String.IsNullOrEmpty(txtNickname.Text))
             {
-                objCommon.Nickname= txtNickname.Text;
-                objCommon.SetKundeNickname(Session["AppID"].ToString(), Session.SessionID, this, txtKundeSearch.Text, "");
-                if (objCommon.Message.Length > 0)
-                { lblError.Text = objCommon.Message; }
+                objNickname.KundenNickname = txtNickname.Text;
+
+                objNickname.SetKundeNickname(txtKundeSearch.Text, false);
+
+                if (objNickname.ErrorOccured)
+                {
+                    lblError.Text = objNickname.Message;
+                }
                 else
                 {
-                    txtKundeSearch.Text="";
+                    txtKundeSearch.Text = "";
                     ddlKunnr.SelectedValue = "0";
                     txtKundeNr.Text = "";
                     txtKundeName.Text = "";
@@ -110,6 +116,8 @@ namespace AppZulassungsdienst.forms
                     lbtnDelete.Visible = false;
                     lbAbsenden.Visible = false;
                 }
+
+                Session["objNickname"] = objNickname;
             }
             else
             {
@@ -124,20 +132,43 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void lbtnDelete_Click(object sender, EventArgs e)
         {
-            objCommon.Nickname ="";
-            objCommon.SetKundeNickname(Session["AppID"].ToString(), Session.SessionID, this, txtKundeSearch.Text, "X");
-                if (objCommon.Message.Length > 0)
-                { lblError.Text = objCommon.Message; }
-                else
-                {
-                    txtKundeSearch.Text="";
-                    txtKundeNr.Text = "";
-                    txtKundeName.Text = "";
-                    txtNickname.Text = "";
-                    lbtnDelete.Visible = false;
-                    lbAbsenden.Visible = false;
-                }
+            objNickname.KundenNickname = "";
+
+            objNickname.SetKundeNickname(txtKundeSearch.Text, true);
+
+            if (objNickname.ErrorOccured)
+            {
+                lblError.Text = objNickname.Message;
+            }
+            else
+            {
+                txtKundeSearch.Text = "";
+                txtKundeNr.Text = "";
+                txtKundeName.Text = "";
+                txtNickname.Text = "";
+                lbtnDelete.Visible = false;
+                lbAbsenden.Visible = false;
             }
 
+            Session["objNickname"] = objNickname;
         }
+
+        #endregion
+
+        #region Methods
+
+        private void fillDropdown()
+        {
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataValueField = "KundenNr";
+            ddlKunnr.DataTextField = "Name";
+            ddlKunnr.DataBind();
+
+            txtKundeSearch.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKundeSearch.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
+            ddlKunnr.Attributes.Add("onchange", "SetTexttValue(" + ddlKunnr.ClientID + "," + txtKundeSearch.ClientID + ")");
+        }
+
+        #endregion
+    }
 }

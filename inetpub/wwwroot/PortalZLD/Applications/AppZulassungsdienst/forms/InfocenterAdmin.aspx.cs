@@ -4,6 +4,7 @@ using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
+using System.Linq;
 using System.Web.UI.WebControls;
 using CKG.Base.Business;
 using CKG.Base.Kernel.Common;
@@ -21,6 +22,8 @@ namespace AppZulassungsdienst.forms
         private App m_App;
         private InfoCenterData icDocs;
         private string fileSourcePath;
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,101 +47,6 @@ namespace AppZulassungsdienst.forms
             else if (Session["objInfoCenter"] != null)
             {
                 icDocs = (InfoCenterData)Session["objInfoCenter"];
-            }
-        }
-
-        private void FillGrouplist()
-        {
-            Groups listGroups;
-
-            lbxDocumentGroups.Items.Clear();
-
-            using (SqlConnection cn = new SqlConnection(m_User.App.Connectionstring))
-            {
-                cn.Open();
-
-                listGroups = new Groups(ref m_User, m_User.Customer.CustomerId, cn);
-
-                cn.Close();
-            }
-
-            foreach (Group gr in listGroups)
-            {
-                lbxDocumentGroups.Items.Add(new ListItem(gr.GroupName, gr.GroupId.ToString()));
-            }
-        }
-
-        private void FillDocumentTypes()
-        {
-            try
-            {
-                if (icDocs == null)
-                {
-                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
-                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
-                }
-
-                icDocs.GetDocumentTypes();
-                Session["objInfoCenter"] = icDocs;
-
-                UpdateDocumentTypeDropDowns();
-            }
-            catch (Exception ex)
-            {
-                data.Visible = false;
-                lblError.Text = "Fehler beim Lesen der Dokumenttypen: " + ex.Message;
-            }
-        }
-
-        private void UpdateDocumentTypeDropDowns()
-        {
-            try
-            {
-                if (icDocs != null)
-                {
-                    ddlDokumentart.Items.Clear();
-                    ddlDocTypeSelection.Items.Clear();
-                    foreach (DataRow dr in icDocs.DocumentTypes.Rows)
-                    {
-                        ddlDokumentart.Items.Add(new ListItem(dr["doctypeName"].ToString(), dr["documentTypeId"].ToString()));
-                        ddlDocTypeSelection.Items.Add(new ListItem(dr["doctypeName"].ToString(), dr["documentTypeId"].ToString()));
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Fehler beim Füllen der Dokumenttyp-Auswahl: " + ex.Message;
-            }
-        }
-
-        private void FillDocuments()
-        {
-            try
-            {
-                if (icDocs == null)
-                {
-                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
-                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
-                }
-
-                icDocs.GetDocuments();
-
-                Session["objInfoCenter"] = icDocs;
-                // Befüllen des Grids läuft über das "NeedDataSource"-Event
-
-                if ((icDocs.Documents != null) && (icDocs.Documents.Rows.Count > 0))
-                {
-                    rgDokumente.Rebind();
-                }
-                else
-                {
-                    lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
-                }
-            }
-            catch (Exception ex)
-            {
-                data.Visible = false;
-                lblError.Text = "Fehler beim Lesen der Dokumente: " + ex.Message;
             }
         }
 
@@ -177,8 +85,6 @@ namespace AppZulassungsdienst.forms
             }
             Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"]);
         }
-
-        #region Grid
 
         protected void rgDokumente_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
@@ -313,7 +219,8 @@ namespace AppZulassungsdienst.forms
 
         protected void ckb_SelectAll_CheckedChanged(object sender, EventArgs e)
         {
-            bool bChecked = (sender as CheckBox).Checked;
+            var checkBox = sender as CheckBox;
+            bool bChecked = (checkBox != null && checkBox.Checked);
 
             foreach (GridDataItem gridRow in rgDokumente.Items)
             {
@@ -324,10 +231,6 @@ namespace AppZulassungsdienst.forms
                 }
             }
         }
-
-        #endregion
-
-        #region Upload
 
         protected void lbtnUpload_Click(object sender, EventArgs e)
         {
@@ -436,55 +339,6 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        private void SaveUploadedFile(bool blnDateiErsetzen = false)
-        {
-            if (!String.IsNullOrEmpty(icDocs.UploadFile))
-            {
-                string tempVerzeichnis = ConfigurationManager.AppSettings["UploadPathInfocenterLocal"];
-                if (String.IsNullOrEmpty(tempVerzeichnis))
-                {
-                    tempVerzeichnis = @"c:\inetpub\wwwroot\portalzld\temp\infocenter\";
-                }
-
-                FileInfo fileInfo = new FileInfo(tempVerzeichnis + m_User.KUNNR + "\\" + icDocs.UploadFile);
-                string fExtension = fileInfo.Extension;
-                string fType = fExtension.ToLower().Trim('.');
-                DateTime fLastEdited = fileInfo.LastWriteTime;
-                long fSize = fileInfo.Length;
-                string fName = fileInfo.Name.Replace(fExtension, "");
-                fName = fName.Substring(0, fName.Length - fName.LastIndexOf("\\") - 1);
-
-                // ggf. Datei umbenennen, um vorhandene Datei nicht zu überschreiben
-                if ((File.Exists(fileSourcePath + fName + fExtension)) && (! blnDateiErsetzen))
-                {
-                    bool blnVorhanden = true;
-                    int intSuffix = 0;
-                    while (blnVorhanden)
-                    {
-                        intSuffix++;
-                        if (!File.Exists(fileSourcePath + fName + "_" + intSuffix.ToString() + fExtension))
-                        {
-                            blnVorhanden = false;
-                        }
-                    }
-                    fName = fName + "_" + intSuffix.ToString();
-                }
-
-                File.Copy(tempVerzeichnis + m_User.KUNNR + "\\" + icDocs.UploadFile, fileSourcePath + fName + fExtension, true);
-                File.Delete(tempVerzeichnis + m_User.KUNNR + "\\" + icDocs.UploadFile);
-
-                icDocs.SaveDocument(-1, 1, fName, fType, fLastEdited, fSize);
-                icDocs.UploadFile = "";
-                Session["objInfoCenter"] = icDocs;
-
-                rgDokumente.Rebind();
-            }
-        }
-
-        #endregion
-
-        #region Edit Document
-
         protected void lbtnSaveDocument_Click(object sender, EventArgs e)
         {
             List<int> listeAdd = new List<int>();
@@ -513,11 +367,11 @@ namespace AppZulassungsdienst.forms
                 }
             }
 
-            if (listeAdd.Count > 0)
+            if (listeAdd.Any())
             {
                 icDocs.SaveDocumentRights(documentId, listeAdd);
             }
-            if (listeDelete.Count > 0)
+            if (listeDelete.Any())
             {
                 icDocs.DeleteDocumentRights(documentId, listeDelete);
             }
@@ -536,10 +390,6 @@ namespace AppZulassungsdienst.forms
             divEditDocTypes.Visible = false;
             Result.Visible = true;
         }
-
-        #endregion
-
-        #region Edit DocType
 
         protected void ddlDocTypeSelection_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -652,5 +502,148 @@ namespace AppZulassungsdienst.forms
 
         #endregion
 
+        #region Methods
+
+        private void FillGrouplist()
+        {
+            Groups listGroups;
+
+            lbxDocumentGroups.Items.Clear();
+
+            using (SqlConnection cn = new SqlConnection(m_User.App.Connectionstring))
+            {
+                cn.Open();
+
+                listGroups = new Groups(ref m_User, m_User.Customer.CustomerId, cn);
+
+                cn.Close();
+            }
+
+            foreach (Group gr in listGroups)
+            {
+                lbxDocumentGroups.Items.Add(new ListItem(gr.GroupName, gr.GroupId.ToString()));
+            }
+        }
+
+        private void FillDocumentTypes()
+        {
+            try
+            {
+                if (icDocs == null)
+                {
+                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
+                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
+                }
+
+                icDocs.GetDocumentTypes();
+                Session["objInfoCenter"] = icDocs;
+
+                UpdateDocumentTypeDropDowns();
+            }
+            catch (Exception ex)
+            {
+                data.Visible = false;
+                lblError.Text = "Fehler beim Lesen der Dokumenttypen: " + ex.Message;
+            }
+        }
+
+        private void UpdateDocumentTypeDropDowns()
+        {
+            try
+            {
+                if (icDocs != null)
+                {
+                    ddlDokumentart.Items.Clear();
+                    ddlDocTypeSelection.Items.Clear();
+                    foreach (DataRow dr in icDocs.DocumentTypes.Rows)
+                    {
+                        ddlDokumentart.Items.Add(new ListItem(dr["doctypeName"].ToString(), dr["documentTypeId"].ToString()));
+                        ddlDocTypeSelection.Items.Add(new ListItem(dr["doctypeName"].ToString(), dr["documentTypeId"].ToString()));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Fehler beim Füllen der Dokumenttyp-Auswahl: " + ex.Message;
+            }
+        }
+
+        private void FillDocuments()
+        {
+            try
+            {
+                if (icDocs == null)
+                {
+                    string strFileName = DateTime.Now.ToString("yyyyMMdd_HHmmss_") + m_User.UserName + ".xls";
+                    icDocs = new InfoCenterData(ref m_User, ref m_App, Session["AppID"].ToString(), Session.SessionID, strFileName);
+                }
+
+                icDocs.GetDocuments();
+
+                Session["objInfoCenter"] = icDocs;
+                // Befüllen des Grids läuft über das "NeedDataSource"-Event
+
+                if ((icDocs.Documents != null) && (icDocs.Documents.Rows.Count > 0))
+                {
+                    rgDokumente.Rebind();
+                }
+                else
+                {
+                    lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
+                }
+            }
+            catch (Exception ex)
+            {
+                data.Visible = false;
+                lblError.Text = "Fehler beim Lesen der Dokumente: " + ex.Message;
+            }
+        }
+
+        private void SaveUploadedFile(bool blnDateiErsetzen = false)
+        {
+            if (!String.IsNullOrEmpty(icDocs.UploadFile))
+            {
+                string tempVerzeichnis = ConfigurationManager.AppSettings["UploadPathInfocenterLocal"];
+                if (String.IsNullOrEmpty(tempVerzeichnis))
+                {
+                    tempVerzeichnis = @"c:\inetpub\wwwroot\portalzld\temp\infocenter\";
+                }
+
+                FileInfo fileInfo = new FileInfo(tempVerzeichnis + m_User.KUNNR + "\\" + icDocs.UploadFile);
+                string fExtension = fileInfo.Extension;
+                string fType = fExtension.ToLower().Trim('.');
+                DateTime fLastEdited = fileInfo.LastWriteTime;
+                long fSize = fileInfo.Length;
+                string fName = fileInfo.Name.Replace(fExtension, "");
+                fName = fName.Substring(0, fName.Length - fName.LastIndexOf("\\") - 1);
+
+                // ggf. Datei umbenennen, um vorhandene Datei nicht zu überschreiben
+                if ((File.Exists(fileSourcePath + fName + fExtension)) && (!blnDateiErsetzen))
+                {
+                    bool blnVorhanden = true;
+                    int intSuffix = 0;
+                    while (blnVorhanden)
+                    {
+                        intSuffix++;
+                        if (!File.Exists(fileSourcePath + fName + "_" + intSuffix.ToString() + fExtension))
+                        {
+                            blnVorhanden = false;
+                        }
+                    }
+                    fName = fName + "_" + intSuffix.ToString();
+                }
+
+                File.Copy(tempVerzeichnis + m_User.KUNNR + "\\" + icDocs.UploadFile, fileSourcePath + fName + fExtension, true);
+                File.Delete(tempVerzeichnis + m_User.KUNNR + "\\" + icDocs.UploadFile);
+
+                icDocs.SaveDocument(-1, 1, fName, fType, fLastEdited, fSize);
+                icDocs.UploadFile = "";
+                Session["objInfoCenter"] = icDocs;
+
+                rgDokumente.Rebind();
+            }
+        }
+
+        #endregion
     }
 }

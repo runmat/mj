@@ -74,8 +74,7 @@
                                                 <asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
                                                     CellPadding="0" CellSpacing="0" GridLines="None" AlternatingRowStyle-BackColor="#DEE1E0"
                                                     AllowSorting="true" AllowPaging="True" CssClass="GridView" PageSize="20" 
-                                                    onsorting="GridView1_Sorting" DataKeyNames="KREISKZ" onrowcommand="GridView1_RowCommand" onrowdatabound="GridView1_RowDataBound"  
-                                                   >
+                                                    onsorting="GridView1_Sorting" DataKeyNames="KREISKZ" onrowdatabound="GridView1_RowDataBound">
                                                     <HeaderStyle CssClass="GridTableHead" Width="100%" ForeColor="White" />
                                                     <AlternatingRowStyle CssClass="GridTableAlternate"></AlternatingRowStyle>
                                                     <PagerSettings Visible="False" />
@@ -96,7 +95,7 @@
                                                             <HeaderTemplate>
                                                                 <asp:LinkButton ID="col_Kreis" runat="server" CommandName="Sort" CommandArgument="KREISKZ">col_Kreis</asp:LinkButton></HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblKreis" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.KREISKZ") %>'></asp:Label>
+                                                                <asp:Label ID="lblKreis" runat="server"  Text='<%# Eval("KREISKZ") %>'></asp:Label>
                                                             </ItemTemplate>
 						                                        <HeaderStyle CssClass="TablePadding" Width="80px" />
 						                                        <ItemStyle CssClass="TablePadding"  Width="80px" />    
@@ -106,14 +105,14 @@
                                                             <HeaderTemplate>
                                                                 <asp:LinkButton ID="col_Zulassungsdatum"  runat="server" CommandName="Sort" CommandArgument="ZZZLDAT">col_Zulassungsdatum</asp:LinkButton></HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblZulassungsdatum" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.ZZZLDAT", "{0:d}") %>'></asp:Label>
+                                                                <asp:Label ID="lblZulassungsdatum" runat="server"  Text='<%# Eval("ZZZLDAT", "{0:d}") %>'></asp:Label>
                                                             </ItemTemplate>
 						                                        <HeaderStyle CssClass="TablePadding"  Width="100px" />
 						                                        <ItemStyle CssClass="TablePadding"   Width="100px" />
                                                         </asp:TemplateField>
                                                         <asp:TemplateField Visible="false">
                                                            <ItemTemplate>
-                                                                <asp:Label ID="lblDRUKZ" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.DRUKZ") %>'></asp:Label>
+                                                                <asp:Label ID="lblDRUKZ" runat="server" Text='<%# Eval("DRUKZ") %>'></asp:Label>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>                                                        
                                                        <asp:TemplateField>
@@ -136,7 +135,7 @@
                                                                                         <HeaderTemplate>
                                                                                             <asp:LinkButton ID="col_Kreis" runat="server" CommandName="Sort" CommandArgument="KREISKZ">col_Kreis</asp:LinkButton></HeaderTemplate>
                                                                                         <ItemTemplate>
-                                                                                            <asp:Label ID="lblKreis" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.KREISKZ") %>'></asp:Label>
+                                                                                            <asp:Label ID="lblKreis" runat="server"  Text='<%# Eval("KREISKZ") %>'></asp:Label>
                                                                                         </ItemTemplate>
 						                                                                    <HeaderStyle CssClass="TablePadding" Width="35px" />
 						                                                                    <ItemStyle CssClass="TablePadding"  Width="35px" />    
@@ -145,7 +144,7 @@
                                                                                         <HeaderTemplate>
                                                                                             <asp:LinkButton ID="col_Zulassungsdatum"  runat="server" CommandName="Sort" CommandArgument="ZZZLDAT">col_Zulassungsdatum</asp:LinkButton></HeaderTemplate>
                                                                                         <ItemTemplate>
-                                                                                            <asp:Label ID="lblZulassungsdatum" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.ZZZLDAT", "{0:d}") %>'></asp:Label>
+                                                                                            <asp:Label ID="lblZulassungsdatum" runat="server"  Text='<%# Eval("ZZZLDAT", "{0:d}") %>'></asp:Label>
                                                                                         </ItemTemplate>
 						                                                                    <HeaderStyle CssClass="TablePadding"  Width="65px" />
 						                                                                    <ItemStyle CssClass="TablePadding"   Width="65px" />
@@ -154,7 +153,7 @@
                                                                                         <HeaderTemplate>
                                                                                             <asp:LinkButton ID="col_Kundenname" runat="server" CommandName="Sort" CommandArgument="NAME1">col_Kundenname</asp:LinkButton></HeaderTemplate>
                                                                                         <ItemTemplate>
-                                                                                            <asp:Label ID="lblKundenname" runat="server"  Text='<%# DataBinder.Eval(Container, "DataItem.NAME1") %>'></asp:Label>
+                                                                                            <asp:Label ID="lblKundenname" runat="server"  Text='<%# Eval("NAME1") %>'></asp:Label>
                                                                                         </ItemTemplate>
 						                                                                    <HeaderStyle CssClass="TablePadding"  Width="200px"/>
 						                                                                    <ItemStyle CssClass="TablePadding"  Width="200px"  />
@@ -163,7 +162,7 @@
                                                                                         <HeaderTemplate>
                                                                                             <asp:LinkButton ID="col_Referenz1" runat="server" CommandName="Sort" CommandArgument="ZZREFNR1">col_Referenz1</asp:LinkButton></HeaderTemplate>
                                                                                         <ItemTemplate>
-                                                                                            <asp:Label ID="lblReferenz1" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ZZREFNR1") %>'></asp:Label>
+                                                                                            <asp:Label ID="lblReferenz1" runat="server" Text='<%# Eval("ZZREFNR1") %>'></asp:Label>
                                                                                         </ItemTemplate>
                                                             	                        <HeaderStyle Width="50px" />
 						                                                                <ItemStyle  Width="50px" />
@@ -172,7 +171,7 @@
                                                                                         <HeaderTemplate>
                                                                                             <asp:LinkButton ID="col_Kennzeichen" runat="server" CommandName="Sort" CommandArgument="ZZKENN">col_Kennzeichen</asp:LinkButton></HeaderTemplate>
                                                                                         <ItemTemplate>
-                                                                                            <asp:Label ID="lblKennzeichen" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ZZKENN") %>'></asp:Label>
+                                                                                            <asp:Label ID="lblKennzeichen" runat="server" Text='<%# Eval("ZZKENN") %>'></asp:Label>
                                                                                         </ItemTemplate>
                                                             	                        <HeaderStyle Width="60px" />
 						                                                                <ItemStyle  Width="60px" />
@@ -182,14 +181,14 @@
                                                                                         <HeaderTemplate>
                                                                                             <asp:LinkButton ID="col_Matbez" runat="server" CommandName="Sort" CommandArgument="MAKTX">col_Matbez</asp:LinkButton></HeaderTemplate>
                                                                                         <ItemTemplate>
-                                                                                            <asp:Label ID="lblMatbez" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.MAKTX") %>'></asp:Label>
+                                                                                            <asp:Label ID="lblMatbez" runat="server" Text='<%# Eval("MAKTX") %>'></asp:Label>
                                                                                         </ItemTemplate>
                                                             	                        <HeaderStyle Width="100px" />
 						                                                                <ItemStyle  Width="100px" />
                                                                                     </asp:TemplateField>
                                                                                     <asp:TemplateField Visible="false">
                                                                                        <ItemTemplate>
-                                                                                            <asp:Label ID="lblPrintKZ" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.FLAG") %>'></asp:Label>
+                                                                                            <asp:Label ID="lblPrintKZ" runat="server" Text='<%# Eval("FLAG") %>'></asp:Label>
                                                                                         </ItemTemplate>
                                                                                     </asp:TemplateField>
                                                                                    </Columns>                                                                                   

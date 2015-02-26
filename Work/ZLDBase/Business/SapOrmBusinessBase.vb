@@ -13,8 +13,8 @@ Namespace Business
 
 #Region " Declarations"
 
-        Protected m_intStatus As Integer
-        Protected m_strMessage As String
+        Protected m_intErrorCode As Integer
+        Protected m_strErrorMessage As String
         Protected m_blnErrorOccured As Boolean
         Protected m_blnGestartet As Boolean
 
@@ -23,30 +23,23 @@ Namespace Business
 #Region " Properties"
 
         Public VKORG As String
-
         Public VKBUR As String
 
-        Public ReadOnly Property Status() As Integer
+        Public ReadOnly Property ErrorOccured() As Boolean Implements ISapError.ErrorOccured
             Get
-                Return m_intStatus
-            End Get
-        End Property
-
-        Public ReadOnly Property Message() As String Implements ISapError.ErrorMessage
-            Get
-                Return m_strMessage
+                Return m_blnErrorOccured
             End Get
         End Property
 
         Public ReadOnly Property ErrorCode() As Integer Implements ISapError.ErrorCode
             Get
-                Return m_intStatus
+                Return m_intErrorCode
             End Get
         End Property
 
-        Public ReadOnly Property ErrorOccured() As Boolean Implements ISapError.ErrorOccured
+        Public ReadOnly Property Message() As String Implements ISapError.ErrorMessage
             Get
-                Return m_blnErrorOccured
+                Return m_strErrorMessage
             End Get
         End Property
 
@@ -66,14 +59,14 @@ Namespace Business
 
         Protected Overridable Sub ClearError() Implements ISapError.ClearError
             m_blnErrorOccured = False
-            m_intStatus = 0
-            m_strMessage = ""
+            m_intErrorCode = 0
+            m_strErrorMessage = ""
         End Sub
 
         Protected Overridable Sub RaiseError(errCode As Integer, msg As String) Implements ISapError.RaiseError
             m_blnErrorOccured = True
-            m_intStatus = errCode
-            m_strMessage = msg
+            m_intErrorCode = errCode
+            m_strErrorMessage = msg
         End Sub
 
         Protected Sub CallBapi()

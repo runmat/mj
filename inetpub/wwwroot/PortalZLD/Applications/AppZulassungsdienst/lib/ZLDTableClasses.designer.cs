@@ -22,7 +22,7 @@ namespace AppZulassungsdienst.lib
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="ZLDPortal")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="ZLDPortal_Test")]
 	public partial class ZLDTableClassesDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -30,25 +30,25 @@ namespace AppZulassungsdienst.lib
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnCreated();
-    partial void InsertZLDBankverbindung(ZLDBankverbindung instance);
-    partial void UpdateZLDBankverbindung(ZLDBankverbindung instance);
-    partial void DeleteZLDBankverbindung(ZLDBankverbindung instance);
-    partial void InsertZLDKundenadresse(ZLDKundenadresse instance);
-    partial void UpdateZLDKundenadresse(ZLDKundenadresse instance);
-    partial void DeleteZLDKundenadresse(ZLDKundenadresse instance);
-    partial void InsertZLDKopfTabelle(ZLDKopfTabelle instance);
-    partial void UpdateZLDKopfTabelle(ZLDKopfTabelle instance);
-    partial void DeleteZLDKopfTabelle(ZLDKopfTabelle instance);
-    partial void InsertZLDPositionsTabelle(ZLDPositionsTabelle instance);
-    partial void UpdateZLDPositionsTabelle(ZLDPositionsTabelle instance);
-    partial void DeleteZLDPositionsTabelle(ZLDPositionsTabelle instance);
+    partial void InsertZLDVorgangBank(ZLDVorgangBank instance);
+    partial void UpdateZLDVorgangBank(ZLDVorgangBank instance);
+    partial void DeleteZLDVorgangBank(ZLDVorgangBank instance);
+    partial void InsertZLDVorgangAdresse(ZLDVorgangAdresse instance);
+    partial void UpdateZLDVorgangAdresse(ZLDVorgangAdresse instance);
+    partial void DeleteZLDVorgangAdresse(ZLDVorgangAdresse instance);
+    partial void InsertZLDVorgangPosition(ZLDVorgangPosition instance);
+    partial void UpdateZLDVorgangPosition(ZLDVorgangPosition instance);
+    partial void DeleteZLDVorgangPosition(ZLDVorgangPosition instance);
+    partial void InsertZLDVorgangKopf(ZLDVorgangKopf instance);
+    partial void UpdateZLDVorgangKopf(ZLDVorgangKopf instance);
+    partial void DeleteZLDVorgangKopf(ZLDVorgangKopf instance);
     #endregion
-
-        public ZLDTableClassesDataContext() :
-            base(global::System.Configuration.ConfigurationManager.AppSettings["Connectionstring"].ToString(), mappingSource)
-        {
-            OnCreated();
-        }
+		
+		public ZLDTableClassesDataContext() : 
+				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["ZLDPortal_TestConnectionString"].ConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
 		
 		public ZLDTableClassesDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -74,199 +74,215 @@ namespace AppZulassungsdienst.lib
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<ZLDBankverbindung> ZLDBankverbindung
+		public System.Data.Linq.Table<ZLDVorgangBank> ZLDVorgangBank
 		{
 			get
 			{
-				return this.GetTable<ZLDBankverbindung>();
+				return this.GetTable<ZLDVorgangBank>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ZLDKundenadresse> ZLDKundenadresse
+		public System.Data.Linq.Table<ZLDVorgangAdresse> ZLDVorgangAdresse
 		{
 			get
 			{
-				return this.GetTable<ZLDKundenadresse>();
+				return this.GetTable<ZLDVorgangAdresse>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ZLDKopfTabelle> ZLDKopfTabelle
+		public System.Data.Linq.Table<ZLDVorgangPosition> ZLDVorgangPosition
 		{
 			get
 			{
-				return this.GetTable<ZLDKopfTabelle>();
+				return this.GetTable<ZLDVorgangPosition>();
 			}
 		}
 		
-		public System.Data.Linq.Table<ZLDPositionsTabelle> ZLDPositionsTabelle
+		public System.Data.Linq.Table<ZLDVorgangKopf> ZLDVorgangKopf
 		{
 			get
 			{
-				return this.GetTable<ZLDPositionsTabelle>();
+				return this.GetTable<ZLDVorgangKopf>();
 			}
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDBankverbindung")]
-	public partial class ZLDBankverbindung : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangBank")]
+	public partial class ZLDVorgangBank : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _id;
+		private string _SapId;
 		
-		private System.Nullable<int> _id_Kopf;
+		private string _Bankleitzahl;
 		
-		private string _BankKey;
+		private string _KontoNr;
 		
-		private string _Kontonr;
+		private string _Bankverbindungsname;
 		
-		private System.Nullable<bool> _EinzugErm;
+		private string _Kontoinhaber;
+		
+		private System.Nullable<bool> _Einzug;
 		
 		private System.Nullable<bool> _Rechnung;
 		
-		private string _Geldinstitut;
-		
-		private string _Inhaber;
+		private string _SWIFT;
 		
 		private string _IBAN;
 		
-		private string _SWIFT;
-		
-		private EntityRef<ZLDKopfTabelle> _ZLDKopfTabelle;
+		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void Onid_KopfChanging(System.Nullable<int> value);
-    partial void Onid_KopfChanged();
-    partial void OnBankKeyChanging(string value);
-    partial void OnBankKeyChanged();
-    partial void OnKontonrChanging(string value);
-    partial void OnKontonrChanged();
-    partial void OnEinzugErmChanging(System.Nullable<bool> value);
-    partial void OnEinzugErmChanged();
+    partial void OnSapIdChanging(string value);
+    partial void OnSapIdChanged();
+    partial void OnBankleitzahlChanging(string value);
+    partial void OnBankleitzahlChanged();
+    partial void OnKontoNrChanging(string value);
+    partial void OnKontoNrChanged();
+    partial void OnBankverbindungsnameChanging(string value);
+    partial void OnBankverbindungsnameChanged();
+    partial void OnKontoinhaberChanging(string value);
+    partial void OnKontoinhaberChanged();
+    partial void OnEinzugChanging(System.Nullable<bool> value);
+    partial void OnEinzugChanged();
     partial void OnRechnungChanging(System.Nullable<bool> value);
     partial void OnRechnungChanged();
-    partial void OnGeldinstitutChanging(string value);
-    partial void OnGeldinstitutChanged();
-    partial void OnInhaberChanging(string value);
-    partial void OnInhaberChanged();
-    partial void OnIBANChanging(string value);
-    partial void OnIBANChanged();
     partial void OnSWIFTChanging(string value);
     partial void OnSWIFTChanged();
+    partial void OnIBANChanging(string value);
+    partial void OnIBANChanged();
     #endregion
 		
-		public ZLDBankverbindung()
+		public ZLDVorgangBank()
 		{
-			this._ZLDKopfTabelle = default(EntityRef<ZLDKopfTabelle>);
+			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SapId
 		{
 			get
 			{
-				return this._id;
+				return this._SapId;
 			}
 			set
 			{
-				if ((this._id != value))
+				if ((this._SapId != value))
 				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_Kopf", DbType="Int")]
-		public System.Nullable<int> id_Kopf
-		{
-			get
-			{
-				return this._id_Kopf;
-			}
-			set
-			{
-				if ((this._id_Kopf != value))
-				{
-					if (this._ZLDKopfTabelle.HasLoadedOrAssignedValue)
+					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.Onid_KopfChanging(value);
+					this.OnSapIdChanging(value);
 					this.SendPropertyChanging();
-					this._id_Kopf = value;
-					this.SendPropertyChanged("id_Kopf");
-					this.Onid_KopfChanged();
+					this._SapId = value;
+					this.SendPropertyChanged("SapId");
+					this.OnSapIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BankKey", DbType="NVarChar(15)")]
-		public string BankKey
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bankleitzahl", DbType="NVarChar(15)")]
+		public string Bankleitzahl
 		{
 			get
 			{
-				return this._BankKey;
+				return this._Bankleitzahl;
 			}
 			set
 			{
-				if ((this._BankKey != value))
+				if ((this._Bankleitzahl != value))
 				{
-					this.OnBankKeyChanging(value);
+					this.OnBankleitzahlChanging(value);
 					this.SendPropertyChanging();
-					this._BankKey = value;
-					this.SendPropertyChanged("BankKey");
-					this.OnBankKeyChanged();
+					this._Bankleitzahl = value;
+					this.SendPropertyChanged("Bankleitzahl");
+					this.OnBankleitzahlChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kontonr", DbType="NVarChar(18)")]
-		public string Kontonr
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KontoNr", DbType="NVarChar(18)")]
+		public string KontoNr
 		{
 			get
 			{
-				return this._Kontonr;
+				return this._KontoNr;
 			}
 			set
 			{
-				if ((this._Kontonr != value))
+				if ((this._KontoNr != value))
 				{
-					this.OnKontonrChanging(value);
+					this.OnKontoNrChanging(value);
 					this.SendPropertyChanging();
-					this._Kontonr = value;
-					this.SendPropertyChanged("Kontonr");
-					this.OnKontonrChanged();
+					this._KontoNr = value;
+					this.SendPropertyChanged("KontoNr");
+					this.OnKontoNrChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EinzugErm", DbType="Bit")]
-		public System.Nullable<bool> EinzugErm
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bankverbindungsname", DbType="NVarChar(40)")]
+		public string Bankverbindungsname
 		{
 			get
 			{
-				return this._EinzugErm;
+				return this._Bankverbindungsname;
 			}
 			set
 			{
-				if ((this._EinzugErm != value))
+				if ((this._Bankverbindungsname != value))
 				{
-					this.OnEinzugErmChanging(value);
+					this.OnBankverbindungsnameChanging(value);
 					this.SendPropertyChanging();
-					this._EinzugErm = value;
-					this.SendPropertyChanged("EinzugErm");
-					this.OnEinzugErmChanged();
+					this._Bankverbindungsname = value;
+					this.SendPropertyChanged("Bankverbindungsname");
+					this.OnBankverbindungsnameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kontoinhaber", DbType="NVarChar(60)")]
+		public string Kontoinhaber
+		{
+			get
+			{
+				return this._Kontoinhaber;
+			}
+			set
+			{
+				if ((this._Kontoinhaber != value))
+				{
+					this.OnKontoinhaberChanging(value);
+					this.SendPropertyChanging();
+					this._Kontoinhaber = value;
+					this.SendPropertyChanged("Kontoinhaber");
+					this.OnKontoinhaberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Einzug", DbType="Bit")]
+		public System.Nullable<bool> Einzug
+		{
+			get
+			{
+				return this._Einzug;
+			}
+			set
+			{
+				if ((this._Einzug != value))
+				{
+					this.OnEinzugChanging(value);
+					this.SendPropertyChanging();
+					this._Einzug = value;
+					this.SendPropertyChanged("Einzug");
+					this.OnEinzugChanged();
 				}
 			}
 		}
@@ -291,42 +307,22 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Geldinstitut", DbType="NVarChar(40)")]
-		public string Geldinstitut
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SWIFT", DbType="NVarChar(11)")]
+		public string SWIFT
 		{
 			get
 			{
-				return this._Geldinstitut;
+				return this._SWIFT;
 			}
 			set
 			{
-				if ((this._Geldinstitut != value))
+				if ((this._SWIFT != value))
 				{
-					this.OnGeldinstitutChanging(value);
+					this.OnSWIFTChanging(value);
 					this.SendPropertyChanging();
-					this._Geldinstitut = value;
-					this.SendPropertyChanged("Geldinstitut");
-					this.OnGeldinstitutChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Inhaber", DbType="NVarChar(40)")]
-		public string Inhaber
-		{
-			get
-			{
-				return this._Inhaber;
-			}
-			set
-			{
-				if ((this._Inhaber != value))
-				{
-					this.OnInhaberChanging(value);
-					this.SendPropertyChanging();
-					this._Inhaber = value;
-					this.SendPropertyChanged("Inhaber");
-					this.OnInhaberChanged();
+					this._SWIFT = value;
+					this.SendPropertyChanged("SWIFT");
+					this.OnSWIFTChanged();
 				}
 			}
 		}
@@ -351,56 +347,36 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SWIFT", DbType="NVarChar(11)")]
-		public string SWIFT
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangBank", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ZLDVorgangKopf ZLDVorgangKopf
 		{
 			get
 			{
-				return this._SWIFT;
+				return this._ZLDVorgangKopf.Entity;
 			}
 			set
 			{
-				if ((this._SWIFT != value))
-				{
-					this.OnSWIFTChanging(value);
-					this.SendPropertyChanging();
-					this._SWIFT = value;
-					this.SendPropertyChanged("SWIFT");
-					this.OnSWIFTChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDKopfTabelle_ZLDBankverbindung", Storage="_ZLDKopfTabelle", ThisKey="id_Kopf", OtherKey="id", IsForeignKey=true, DeleteRule="CASCADE")]
-		public ZLDKopfTabelle ZLDKopfTabelle
-		{
-			get
-			{
-				return this._ZLDKopfTabelle.Entity;
-			}
-			set
-			{
-				ZLDKopfTabelle previousValue = this._ZLDKopfTabelle.Entity;
+				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
 				if (((previousValue != value) 
-							|| (this._ZLDKopfTabelle.HasLoadedOrAssignedValue == false)))
+							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._ZLDKopfTabelle.Entity = null;
-						previousValue.ZLDBankverbindung.Remove(this);
+						this._ZLDVorgangKopf.Entity = null;
+						previousValue.ZLDVorgangBank = null;
 					}
-					this._ZLDKopfTabelle.Entity = value;
+					this._ZLDVorgangKopf.Entity = value;
 					if ((value != null))
 					{
-						value.ZLDBankverbindung.Add(this);
-						this._id_Kopf = value.id;
+						value.ZLDVorgangBank = this;
+						this._SapId = value.SapId;
 					}
 					else
 					{
-						this._id_Kopf = default(Nullable<int>);
+						this._SapId = default(string);
 					}
-					this.SendPropertyChanged("ZLDKopfTabelle");
+					this.SendPropertyChanged("ZLDVorgangKopf");
 				}
 			}
 		}
@@ -426,142 +402,74 @@ namespace AppZulassungsdienst.lib
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDKundenadresse")]
-	public partial class ZLDKundenadresse : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangAdresse")]
+	public partial class ZLDVorgangAdresse : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _id;
-		
-		private int _id_Kopf;
-		
-		private string _Partnerrolle;
-		
-		private string _Kundennr;
+		private string _SapId;
 		
 		private string _Name1;
 		
 		private string _Name2;
 		
-		private string _PLZ;
+		private string _Strasse;
+		
+		private string _Plz;
 		
 		private string _Ort;
 		
-		private string _Strasse;
+		private string _Bemerkung;
 		
-		private EntityRef<ZLDKopfTabelle> _ZLDKopfTabelle;
+		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void Onid_KopfChanging(int value);
-    partial void Onid_KopfChanged();
-    partial void OnPartnerrolleChanging(string value);
-    partial void OnPartnerrolleChanged();
-    partial void OnKundennrChanging(string value);
-    partial void OnKundennrChanged();
+    partial void OnSapIdChanging(string value);
+    partial void OnSapIdChanged();
     partial void OnName1Changing(string value);
     partial void OnName1Changed();
     partial void OnName2Changing(string value);
     partial void OnName2Changed();
-    partial void OnPLZChanging(string value);
-    partial void OnPLZChanged();
-    partial void OnOrtChanging(string value);
-    partial void OnOrtChanged();
     partial void OnStrasseChanging(string value);
     partial void OnStrasseChanged();
+    partial void OnPlzChanging(string value);
+    partial void OnPlzChanged();
+    partial void OnOrtChanging(string value);
+    partial void OnOrtChanged();
+    partial void OnBemerkungChanging(string value);
+    partial void OnBemerkungChanged();
     #endregion
 		
-		public ZLDKundenadresse()
+		public ZLDVorgangAdresse()
 		{
-			this._ZLDKopfTabelle = default(EntityRef<ZLDKopfTabelle>);
+			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SapId
 		{
 			get
 			{
-				return this._id;
+				return this._SapId;
 			}
 			set
 			{
-				if ((this._id != value))
+				if ((this._SapId != value))
 				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_Kopf", DbType="Int NOT NULL")]
-		public int id_Kopf
-		{
-			get
-			{
-				return this._id_Kopf;
-			}
-			set
-			{
-				if ((this._id_Kopf != value))
-				{
-					if (this._ZLDKopfTabelle.HasLoadedOrAssignedValue)
+					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
 					{
 						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
 					}
-					this.Onid_KopfChanging(value);
+					this.OnSapIdChanging(value);
 					this.SendPropertyChanging();
-					this._id_Kopf = value;
-					this.SendPropertyChanged("id_Kopf");
-					this.Onid_KopfChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Partnerrolle", DbType="NVarChar(2)")]
-		public string Partnerrolle
-		{
-			get
-			{
-				return this._Partnerrolle;
-			}
-			set
-			{
-				if ((this._Partnerrolle != value))
-				{
-					this.OnPartnerrolleChanging(value);
-					this.SendPropertyChanging();
-					this._Partnerrolle = value;
-					this.SendPropertyChanged("Partnerrolle");
-					this.OnPartnerrolleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kundennr", DbType="NVarChar(10)")]
-		public string Kundennr
-		{
-			get
-			{
-				return this._Kundennr;
-			}
-			set
-			{
-				if ((this._Kundennr != value))
-				{
-					this.OnKundennrChanging(value);
-					this.SendPropertyChanging();
-					this._Kundennr = value;
-					this.SendPropertyChanged("Kundennr");
-					this.OnKundennrChanged();
+					this._SapId = value;
+					this.SendPropertyChanged("SapId");
+					this.OnSapIdChanged();
 				}
 			}
 		}
@@ -606,22 +514,42 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PLZ", DbType="NVarChar(10)")]
-		public string PLZ
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Strasse", DbType="NVarChar(60)")]
+		public string Strasse
 		{
 			get
 			{
-				return this._PLZ;
+				return this._Strasse;
 			}
 			set
 			{
-				if ((this._PLZ != value))
+				if ((this._Strasse != value))
 				{
-					this.OnPLZChanging(value);
+					this.OnStrasseChanging(value);
 					this.SendPropertyChanging();
-					this._PLZ = value;
-					this.SendPropertyChanged("PLZ");
-					this.OnPLZChanged();
+					this._Strasse = value;
+					this.SendPropertyChanged("Strasse");
+					this.OnStrasseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Plz", DbType="NVarChar(10)")]
+		public string Plz
+		{
+			get
+			{
+				return this._Plz;
+			}
+			set
+			{
+				if ((this._Plz != value))
+				{
+					this.OnPlzChanging(value);
+					this.SendPropertyChanging();
+					this._Plz = value;
+					this.SendPropertyChanged("Plz");
+					this.OnPlzChanged();
 				}
 			}
 		}
@@ -646,56 +574,56 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Strasse", DbType="NVarChar(60)")]
-		public string Strasse
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bemerkung", DbType="NVarChar(120)")]
+		public string Bemerkung
 		{
 			get
 			{
-				return this._Strasse;
+				return this._Bemerkung;
 			}
 			set
 			{
-				if ((this._Strasse != value))
+				if ((this._Bemerkung != value))
 				{
-					this.OnStrasseChanging(value);
+					this.OnBemerkungChanging(value);
 					this.SendPropertyChanging();
-					this._Strasse = value;
-					this.SendPropertyChanged("Strasse");
-					this.OnStrasseChanged();
+					this._Bemerkung = value;
+					this.SendPropertyChanged("Bemerkung");
+					this.OnBemerkungChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDKopfTabelle_ZLDKundenadresse", Storage="_ZLDKopfTabelle", ThisKey="id_Kopf", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ZLDKopfTabelle ZLDKopfTabelle
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangAdresse", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ZLDVorgangKopf ZLDVorgangKopf
 		{
 			get
 			{
-				return this._ZLDKopfTabelle.Entity;
+				return this._ZLDVorgangKopf.Entity;
 			}
 			set
 			{
-				ZLDKopfTabelle previousValue = this._ZLDKopfTabelle.Entity;
+				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
 				if (((previousValue != value) 
-							|| (this._ZLDKopfTabelle.HasLoadedOrAssignedValue == false)))
+							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._ZLDKopfTabelle.Entity = null;
-						previousValue.ZLDKundenadresse.Remove(this);
+						this._ZLDVorgangKopf.Entity = null;
+						previousValue.ZLDVorgangAdresse = null;
 					}
-					this._ZLDKopfTabelle.Entity = value;
+					this._ZLDVorgangKopf.Entity = value;
 					if ((value != null))
 					{
-						value.ZLDKundenadresse.Add(this);
-						this._id_Kopf = value.id;
+						value.ZLDVorgangAdresse = this;
+						this._SapId = value.SapId;
 					}
 					else
 					{
-						this._id_Kopf = default(int);
+						this._SapId = default(string);
 					}
-					this.SendPropertyChanged("ZLDKopfTabelle");
+					this.SendPropertyChanged("ZLDVorgangKopf");
 				}
 			}
 		}
@@ -721,828 +649,1015 @@ namespace AppZulassungsdienst.lib
 		}
 	}
 	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDKopfTabelle")]
-	public partial class ZLDKopfTabelle : INotifyPropertyChanging, INotifyPropertyChanged
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangPosition")]
+	public partial class ZLDVorgangPosition : INotifyPropertyChanging, INotifyPropertyChanged
 	{
 		
 		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
 		
-		private int _id;
+		private string _SapId;
 		
-		private int _id_sap;
+		private string _PositionsNr;
 		
-		private System.Nullable<int> _id_user;
+		private string _UebergeordnetePosition;
 		
-		private string _id_session;
+		private System.Nullable<decimal> _Menge;
 		
-		private System.Nullable<bool> _abgerechnet;
+		private string _MaterialNr;
 		
-		private System.Nullable<System.DateTime> _tstamp;
+		private string _MaterialName;
 		
-		private string _username;
+		private string _WebMaterialart;
 		
-		private string _kundenname;
+		private System.Nullable<decimal> _Preis;
 		
-		private string _kundennr;
+		private System.Nullable<decimal> _GebuehrAmt;
 		
-		private string _referenz1;
+		private System.Nullable<decimal> _GebuehrAmtAdd;
 		
-		private string _referenz2;
+		private System.Nullable<bool> _SdRelevant;
 		
-		private string _KreisKZ;
+		private System.Nullable<bool> _NullpreisErlaubt;
 		
-		private string _KreisBez;
+		private System.Nullable<bool> _Gebuehrenpaket;
 		
-		private string _KennKZ;
+		private System.Nullable<decimal> _UrspruenglicherPreis;
 		
-		private string _KennABC;
+		private System.Nullable<decimal> _Differenz;
 		
-		private System.Nullable<bool> _WunschKenn;
+		private string _Konditionstabelle;
 		
-		private System.Nullable<bool> _Reserviert;
+		private string _Konditionsart;
 		
-		private string _ReserviertKennz;
+		private System.Nullable<System.DateTime> _Kalkulationsdatum;
 		
-		private System.Nullable<bool> _Feinstaub;
-		
-		private System.Nullable<System.DateTime> _Zulassungsdatum;
-		
-		private string _Kennzeichen;
-		
-		private string _Kennztyp;
-		
-		private string _KennzForm;
-		
-		private System.Nullable<int> _KennzAnz;
-		
-		private System.Nullable<bool> _EinKennz;
-		
-		private string _Bemerkung;
-		
-		private System.Nullable<bool> _EC;
-		
-		private System.Nullable<bool> _Bar;
-		
-		private System.Nullable<bool> _saved;
-		
-		private System.Nullable<short> _toSave;
-		
-		private string _toDelete;
-		
-		private System.Nullable<bool> _bearbeitet;
-		
-		private System.Nullable<bool> _testuser;
-		
-		private string _Barcode;
-		
-		private string _Filiale;
-		
-		private string _OhneSteuer;
-		
-		private string _PauschalKunde;
-		
-		private string _KunnrLF;
-		
-		private string _KreisKZ_Direkt;
-		
-		private System.Nullable<decimal> _Steuer;
-		
-		private string _Vorgang;
-		
-		private string _NrFrachtHin;
-		
-		private string _NrFrachtZu;
-		
-		private System.Nullable<bool> _Barkunde;
-		
-		private string _VersandVKBUR;
-		
-		private string _FLAG;
-		
-		private string _VZB_STATUS;
-		
-		private string _STATUS_Versand;
-		
-		private System.Nullable<bool> _RE;
-		
-		private string _Zahlungsart;
-		
-		private System.Nullable<System.DateTime> _VorerfDatum;
-		
-		private string _Vorerfasser;
-		
-		private string _VKKurz;
-		
-		private string _interneRef;
-		
-		private string _KundenNotiz;
-		
-		private System.Nullable<bool> _KennzVH;
-		
-		private string _KennzAlt;
-		
-		private System.Nullable<bool> _ZBII_ALT_NEU;
-		
-		private System.Nullable<bool> _VorhKennzReserv;
-		
-		private System.Nullable<System.DateTime> _Still_Datum;
-		
-		private System.Nullable<bool> _Prali_Print;
-		
-		private System.Nullable<bool> _Flieger;
-		
-		private System.Nullable<bool> _UMBU;
-		
-		private System.Nullable<bool> _ABGESAGT;
-		
-		private System.Nullable<bool> _RUECKBU;
-		
-		private string _EVB;
-		
-		private string _OBJECT_ID;
-		
-		private string _FAHRZ_ART;
-		
-		private System.Nullable<bool> _MNRESW;
-		
-		private System.Nullable<bool> _SERIE;
-		
-		private System.Nullable<bool> _SAISON_KNZ;
-		
-		private string _SAISON_BEG;
-		
-		private string _SAISON_END;
-		
-		private string _TUEV_AU;
-		
-		private string _ZOLLVERS_DAUER;
-		
-		private System.Nullable<bool> _VORFUEHR;
-		
-		private System.Nullable<System.DateTime> _HALTE_DAUER;
-		
-		private string _LTEXT_NR;
-		
-		private string _BEB_STATUS;
-		
-		private string _ZZREFNR3;
-		
-		private string _ZZREFNR4;
-		
-		private string _ZZREFNR5;
-		
-		private string _ZZREFNR6;
-		
-		private string _ZZREFNR7;
-		
-		private string _ZZREFNR8;
-		
-		private string _ZZREFNR9;
-		
-		private string _ZZREFNR10;
-		
-		private string _AH_DOKNAME;
-		
-		private string _ZusatzKZ;
-		
-		private string _WunschKZ2;
-		
-		private string _WunschKZ3;
-		
-		private string _OhneGruenenVersSchein;
-		
-		private string _VorerfUhrzeit;
-		
-		private string _Infotext;
-		
-		private System.Nullable<bool> _Nachbearbeiten;
-		
-		private string _Mobuser;
-		
-		private string _POOLNR;
-		
-		private string _ZOLLVERS;
-		
-		private string _KURZZEITVS;
-		
-		private System.Nullable<bool> _ONLINE_VG;
-		
-		private System.Nullable<bool> _SofortabrechnungErledigt;
-		
-		private string _SofortabrechnungPfad;
-		
-		private string _Briefnr;
-		
-		private string _Orderid;
-		
-		private string _Hppos;
-		
-		private EntitySet<ZLDBankverbindung> _ZLDBankverbindung;
-		
-		private EntitySet<ZLDKundenadresse> _ZLDKundenadresse;
-		
-		private EntitySet<ZLDPositionsTabelle> _ZLDPositionsTabelle;
+		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnLoaded();
     partial void OnValidate(System.Data.Linq.ChangeAction action);
     partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void Onid_sapChanging(int value);
-    partial void Onid_sapChanged();
-    partial void Onid_userChanging(System.Nullable<int> value);
-    partial void Onid_userChanged();
-    partial void Onid_sessionChanging(string value);
-    partial void Onid_sessionChanged();
-    partial void OnabgerechnetChanging(System.Nullable<bool> value);
-    partial void OnabgerechnetChanged();
-    partial void OntstampChanging(System.Nullable<System.DateTime> value);
-    partial void OntstampChanged();
-    partial void OnusernameChanging(string value);
-    partial void OnusernameChanged();
-    partial void OnkundennameChanging(string value);
-    partial void OnkundennameChanged();
-    partial void OnkundennrChanging(string value);
-    partial void OnkundennrChanged();
-    partial void Onreferenz1Changing(string value);
-    partial void Onreferenz1Changed();
-    partial void Onreferenz2Changing(string value);
-    partial void Onreferenz2Changed();
-    partial void OnKreisKZChanging(string value);
-    partial void OnKreisKZChanged();
-    partial void OnKreisBezChanging(string value);
-    partial void OnKreisBezChanged();
-    partial void OnKennKZChanging(string value);
-    partial void OnKennKZChanged();
-    partial void OnKennABCChanging(string value);
-    partial void OnKennABCChanged();
-    partial void OnWunschKennChanging(System.Nullable<bool> value);
-    partial void OnWunschKennChanged();
-    partial void OnReserviertChanging(System.Nullable<bool> value);
-    partial void OnReserviertChanged();
-    partial void OnReserviertKennzChanging(string value);
-    partial void OnReserviertKennzChanged();
-    partial void OnFeinstaubChanging(System.Nullable<bool> value);
-    partial void OnFeinstaubChanged();
+    partial void OnSapIdChanging(string value);
+    partial void OnSapIdChanged();
+    partial void OnPositionsNrChanging(string value);
+    partial void OnPositionsNrChanged();
+    partial void OnUebergeordnetePositionChanging(string value);
+    partial void OnUebergeordnetePositionChanged();
+    partial void OnMengeChanging(System.Nullable<decimal> value);
+    partial void OnMengeChanged();
+    partial void OnMaterialNrChanging(string value);
+    partial void OnMaterialNrChanged();
+    partial void OnMaterialNameChanging(string value);
+    partial void OnMaterialNameChanged();
+    partial void OnWebMaterialartChanging(string value);
+    partial void OnWebMaterialartChanged();
+    partial void OnPreisChanging(System.Nullable<decimal> value);
+    partial void OnPreisChanged();
+    partial void OnGebuehrAmtChanging(System.Nullable<decimal> value);
+    partial void OnGebuehrAmtChanged();
+    partial void OnGebuehrAmtAddChanging(System.Nullable<decimal> value);
+    partial void OnGebuehrAmtAddChanged();
+    partial void OnSdRelevantChanging(System.Nullable<bool> value);
+    partial void OnSdRelevantChanged();
+    partial void OnNullpreisErlaubtChanging(System.Nullable<bool> value);
+    partial void OnNullpreisErlaubtChanged();
+    partial void OnGebuehrenpaketChanging(System.Nullable<bool> value);
+    partial void OnGebuehrenpaketChanged();
+    partial void OnUrspruenglicherPreisChanging(System.Nullable<decimal> value);
+    partial void OnUrspruenglicherPreisChanged();
+    partial void OnDifferenzChanging(System.Nullable<decimal> value);
+    partial void OnDifferenzChanged();
+    partial void OnKonditionstabelleChanging(string value);
+    partial void OnKonditionstabelleChanged();
+    partial void OnKonditionsartChanging(string value);
+    partial void OnKonditionsartChanged();
+    partial void OnKalkulationsdatumChanging(System.Nullable<System.DateTime> value);
+    partial void OnKalkulationsdatumChanged();
+    #endregion
+		
+		public ZLDVorgangPosition()
+		{
+			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SapId
+		{
+			get
+			{
+				return this._SapId;
+			}
+			set
+			{
+				if ((this._SapId != value))
+				{
+					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSapIdChanging(value);
+					this.SendPropertyChanging();
+					this._SapId = value;
+					this.SendPropertyChanged("SapId");
+					this.OnSapIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionsNr", DbType="NVarChar(6) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PositionsNr
+		{
+			get
+			{
+				return this._PositionsNr;
+			}
+			set
+			{
+				if ((this._PositionsNr != value))
+				{
+					this.OnPositionsNrChanging(value);
+					this.SendPropertyChanging();
+					this._PositionsNr = value;
+					this.SendPropertyChanged("PositionsNr");
+					this.OnPositionsNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UebergeordnetePosition", DbType="NVarChar(6)")]
+		public string UebergeordnetePosition
+		{
+			get
+			{
+				return this._UebergeordnetePosition;
+			}
+			set
+			{
+				if ((this._UebergeordnetePosition != value))
+				{
+					this.OnUebergeordnetePositionChanging(value);
+					this.SendPropertyChanging();
+					this._UebergeordnetePosition = value;
+					this.SendPropertyChanged("UebergeordnetePosition");
+					this.OnUebergeordnetePositionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Menge", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> Menge
+		{
+			get
+			{
+				return this._Menge;
+			}
+			set
+			{
+				if ((this._Menge != value))
+				{
+					this.OnMengeChanging(value);
+					this.SendPropertyChanging();
+					this._Menge = value;
+					this.SendPropertyChanged("Menge");
+					this.OnMengeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialNr", DbType="NVarChar(18)")]
+		public string MaterialNr
+		{
+			get
+			{
+				return this._MaterialNr;
+			}
+			set
+			{
+				if ((this._MaterialNr != value))
+				{
+					this.OnMaterialNrChanging(value);
+					this.SendPropertyChanging();
+					this._MaterialNr = value;
+					this.SendPropertyChanged("MaterialNr");
+					this.OnMaterialNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialName", DbType="NVarChar(40)")]
+		public string MaterialName
+		{
+			get
+			{
+				return this._MaterialName;
+			}
+			set
+			{
+				if ((this._MaterialName != value))
+				{
+					this.OnMaterialNameChanging(value);
+					this.SendPropertyChanging();
+					this._MaterialName = value;
+					this.SendPropertyChanged("MaterialName");
+					this.OnMaterialNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WebMaterialart", DbType="NVarChar(1)")]
+		public string WebMaterialart
+		{
+			get
+			{
+				return this._WebMaterialart;
+			}
+			set
+			{
+				if ((this._WebMaterialart != value))
+				{
+					this.OnWebMaterialartChanging(value);
+					this.SendPropertyChanging();
+					this._WebMaterialart = value;
+					this.SendPropertyChanged("WebMaterialart");
+					this.OnWebMaterialartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Preis", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> Preis
+		{
+			get
+			{
+				return this._Preis;
+			}
+			set
+			{
+				if ((this._Preis != value))
+				{
+					this.OnPreisChanging(value);
+					this.SendPropertyChanging();
+					this._Preis = value;
+					this.SendPropertyChanged("Preis");
+					this.OnPreisChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebuehrAmt", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> GebuehrAmt
+		{
+			get
+			{
+				return this._GebuehrAmt;
+			}
+			set
+			{
+				if ((this._GebuehrAmt != value))
+				{
+					this.OnGebuehrAmtChanging(value);
+					this.SendPropertyChanging();
+					this._GebuehrAmt = value;
+					this.SendPropertyChanged("GebuehrAmt");
+					this.OnGebuehrAmtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebuehrAmtAdd", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> GebuehrAmtAdd
+		{
+			get
+			{
+				return this._GebuehrAmtAdd;
+			}
+			set
+			{
+				if ((this._GebuehrAmtAdd != value))
+				{
+					this.OnGebuehrAmtAddChanging(value);
+					this.SendPropertyChanging();
+					this._GebuehrAmtAdd = value;
+					this.SendPropertyChanged("GebuehrAmtAdd");
+					this.OnGebuehrAmtAddChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SdRelevant", DbType="Bit")]
+		public System.Nullable<bool> SdRelevant
+		{
+			get
+			{
+				return this._SdRelevant;
+			}
+			set
+			{
+				if ((this._SdRelevant != value))
+				{
+					this.OnSdRelevantChanging(value);
+					this.SendPropertyChanging();
+					this._SdRelevant = value;
+					this.SendPropertyChanged("SdRelevant");
+					this.OnSdRelevantChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NullpreisErlaubt", DbType="Bit")]
+		public System.Nullable<bool> NullpreisErlaubt
+		{
+			get
+			{
+				return this._NullpreisErlaubt;
+			}
+			set
+			{
+				if ((this._NullpreisErlaubt != value))
+				{
+					this.OnNullpreisErlaubtChanging(value);
+					this.SendPropertyChanging();
+					this._NullpreisErlaubt = value;
+					this.SendPropertyChanged("NullpreisErlaubt");
+					this.OnNullpreisErlaubtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gebuehrenpaket", DbType="Bit")]
+		public System.Nullable<bool> Gebuehrenpaket
+		{
+			get
+			{
+				return this._Gebuehrenpaket;
+			}
+			set
+			{
+				if ((this._Gebuehrenpaket != value))
+				{
+					this.OnGebuehrenpaketChanging(value);
+					this.SendPropertyChanging();
+					this._Gebuehrenpaket = value;
+					this.SendPropertyChanged("Gebuehrenpaket");
+					this.OnGebuehrenpaketChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UrspruenglicherPreis", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> UrspruenglicherPreis
+		{
+			get
+			{
+				return this._UrspruenglicherPreis;
+			}
+			set
+			{
+				if ((this._UrspruenglicherPreis != value))
+				{
+					this.OnUrspruenglicherPreisChanging(value);
+					this.SendPropertyChanging();
+					this._UrspruenglicherPreis = value;
+					this.SendPropertyChanged("UrspruenglicherPreis");
+					this.OnUrspruenglicherPreisChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Differenz", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> Differenz
+		{
+			get
+			{
+				return this._Differenz;
+			}
+			set
+			{
+				if ((this._Differenz != value))
+				{
+					this.OnDifferenzChanging(value);
+					this.SendPropertyChanging();
+					this._Differenz = value;
+					this.SendPropertyChanged("Differenz");
+					this.OnDifferenzChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionstabelle", DbType="NVarChar(4)")]
+		public string Konditionstabelle
+		{
+			get
+			{
+				return this._Konditionstabelle;
+			}
+			set
+			{
+				if ((this._Konditionstabelle != value))
+				{
+					this.OnKonditionstabelleChanging(value);
+					this.SendPropertyChanging();
+					this._Konditionstabelle = value;
+					this.SendPropertyChanged("Konditionstabelle");
+					this.OnKonditionstabelleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionsart", DbType="NVarChar(4)")]
+		public string Konditionsart
+		{
+			get
+			{
+				return this._Konditionsart;
+			}
+			set
+			{
+				if ((this._Konditionsart != value))
+				{
+					this.OnKonditionsartChanging(value);
+					this.SendPropertyChanging();
+					this._Konditionsart = value;
+					this.SendPropertyChanged("Konditionsart");
+					this.OnKonditionsartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kalkulationsdatum", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Kalkulationsdatum
+		{
+			get
+			{
+				return this._Kalkulationsdatum;
+			}
+			set
+			{
+				if ((this._Kalkulationsdatum != value))
+				{
+					this.OnKalkulationsdatumChanging(value);
+					this.SendPropertyChanging();
+					this._Kalkulationsdatum = value;
+					this.SendPropertyChanged("Kalkulationsdatum");
+					this.OnKalkulationsdatumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangPosition", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ZLDVorgangKopf ZLDVorgangKopf
+		{
+			get
+			{
+				return this._ZLDVorgangKopf.Entity;
+			}
+			set
+			{
+				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
+				if (((previousValue != value) 
+							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ZLDVorgangKopf.Entity = null;
+						previousValue.ZLDVorgangPosition.Remove(this);
+					}
+					this._ZLDVorgangKopf.Entity = value;
+					if ((value != null))
+					{
+						value.ZLDVorgangPosition.Add(this);
+						this._SapId = value.SapId;
+					}
+					else
+					{
+						this._SapId = default(string);
+					}
+					this.SendPropertyChanged("ZLDVorgangKopf");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangKopf")]
+	public partial class ZLDVorgangKopf : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _SapId;
+		
+		private string _Vorgang;
+		
+		private string _VkOrg;
+		
+		private string _VkBur;
+		
+		private System.Nullable<System.DateTime> _Vorerfassungsdatum;
+		
+		private string _Vorerfasser;
+		
+		private string _StatusVersandzulassung;
+		
+		private string _Belegart;
+		
+		private string _VersandzulassungDurchfuehrendesVkBur;
+		
+		private string _Barcode;
+		
+		private string _KundenNr;
+		
+		private string _Referenz1;
+		
+		private string _Referenz2;
+		
+		private string _Landkreis;
+		
+		private string _KreisBezeichnung;
+		
+		private System.Nullable<bool> _Wunschkennzeichen;
+		
+		private System.Nullable<bool> _KennzeichenReservieren;
+		
+		private string _ReserviertesKennzeichen;
+		
+		private System.Nullable<System.DateTime> _Zulassungsdatum;
+		
+		private string _Kennzeichen;
+		
+		private string _Kennzeichenform;
+		
+		private string _AnzahlKennzeichen;
+		
+		private System.Nullable<bool> _NurEinKennzeichen;
+		
+		private string _Bemerkung;
+		
+		private System.Nullable<bool> _Zahlart_EC;
+		
+		private System.Nullable<bool> _Zahlart_Bar;
+		
+		private System.Nullable<bool> _Zahlart_Rechnung;
+		
+		private string _LieferantenNr;
+		
+		private string _WebBearbeitungsStatus;
+		
+		private EntityRef<ZLDVorgangBank> _ZLDVorgangBank;
+		
+		private EntityRef<ZLDVorgangAdresse> _ZLDVorgangAdresse;
+		
+		private EntitySet<ZLDVorgangPosition> _ZLDVorgangPosition;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSapIdChanging(string value);
+    partial void OnSapIdChanged();
+    partial void OnVorgangChanging(string value);
+    partial void OnVorgangChanged();
+    partial void OnVkOrgChanging(string value);
+    partial void OnVkOrgChanged();
+    partial void OnVkBurChanging(string value);
+    partial void OnVkBurChanged();
+    partial void OnVorerfassungsdatumChanging(System.Nullable<System.DateTime> value);
+    partial void OnVorerfassungsdatumChanged();
+    partial void OnVorerfasserChanging(string value);
+    partial void OnVorerfasserChanged();
+    partial void OnStatusVersandzulassungChanging(string value);
+    partial void OnStatusVersandzulassungChanged();
+    partial void OnBelegartChanging(string value);
+    partial void OnBelegartChanged();
+    partial void OnVersandzulassungDurchfuehrendesVkBurChanging(string value);
+    partial void OnVersandzulassungDurchfuehrendesVkBurChanged();
+    partial void OnBarcodeChanging(string value);
+    partial void OnBarcodeChanged();
+    partial void OnKundenNrChanging(string value);
+    partial void OnKundenNrChanged();
+    partial void OnReferenz1Changing(string value);
+    partial void OnReferenz1Changed();
+    partial void OnReferenz2Changing(string value);
+    partial void OnReferenz2Changed();
+    partial void OnLandkreisChanging(string value);
+    partial void OnLandkreisChanged();
+    partial void OnKreisBezeichnungChanging(string value);
+    partial void OnKreisBezeichnungChanged();
+    partial void OnWunschkennzeichenChanging(System.Nullable<bool> value);
+    partial void OnWunschkennzeichenChanged();
+    partial void OnKennzeichenReservierenChanging(System.Nullable<bool> value);
+    partial void OnKennzeichenReservierenChanged();
+    partial void OnReserviertesKennzeichenChanging(string value);
+    partial void OnReserviertesKennzeichenChanged();
     partial void OnZulassungsdatumChanging(System.Nullable<System.DateTime> value);
     partial void OnZulassungsdatumChanged();
     partial void OnKennzeichenChanging(string value);
     partial void OnKennzeichenChanged();
-    partial void OnKennztypChanging(string value);
-    partial void OnKennztypChanged();
-    partial void OnKennzFormChanging(string value);
-    partial void OnKennzFormChanged();
-    partial void OnKennzAnzChanging(System.Nullable<int> value);
-    partial void OnKennzAnzChanged();
-    partial void OnEinKennzChanging(System.Nullable<bool> value);
-    partial void OnEinKennzChanged();
+    partial void OnKennzeichenformChanging(string value);
+    partial void OnKennzeichenformChanged();
+    partial void OnAnzahlKennzeichenChanging(string value);
+    partial void OnAnzahlKennzeichenChanged();
+    partial void OnNurEinKennzeichenChanging(System.Nullable<bool> value);
+    partial void OnNurEinKennzeichenChanged();
     partial void OnBemerkungChanging(string value);
     partial void OnBemerkungChanged();
-    partial void OnECChanging(System.Nullable<bool> value);
-    partial void OnECChanged();
-    partial void OnBarChanging(System.Nullable<bool> value);
-    partial void OnBarChanged();
-    partial void OnsavedChanging(System.Nullable<bool> value);
-    partial void OnsavedChanged();
-    partial void OntoSaveChanging(System.Nullable<short> value);
-    partial void OntoSaveChanged();
-    partial void OntoDeleteChanging(string value);
-    partial void OntoDeleteChanged();
-    partial void OnbearbeitetChanging(System.Nullable<bool> value);
-    partial void OnbearbeitetChanged();
-    partial void OntestuserChanging(System.Nullable<bool> value);
-    partial void OntestuserChanged();
-    partial void OnBarcodeChanging(string value);
-    partial void OnBarcodeChanged();
-    partial void OnFilialeChanging(string value);
-    partial void OnFilialeChanged();
-    partial void OnOhneSteuerChanging(string value);
-    partial void OnOhneSteuerChanged();
-    partial void OnPauschalKundeChanging(string value);
-    partial void OnPauschalKundeChanged();
-    partial void OnKunnrLFChanging(string value);
-    partial void OnKunnrLFChanged();
-    partial void OnKreisKZ_DirektChanging(string value);
-    partial void OnKreisKZ_DirektChanged();
-    partial void OnSteuerChanging(System.Nullable<decimal> value);
-    partial void OnSteuerChanged();
-    partial void OnVorgangChanging(string value);
-    partial void OnVorgangChanged();
-    partial void OnNrFrachtHinChanging(string value);
-    partial void OnNrFrachtHinChanged();
-    partial void OnNrFrachtZuChanging(string value);
-    partial void OnNrFrachtZuChanged();
-    partial void OnBarkundeChanging(System.Nullable<bool> value);
-    partial void OnBarkundeChanged();
-    partial void OnVersandVKBURChanging(string value);
-    partial void OnVersandVKBURChanged();
-    partial void OnFLAGChanging(string value);
-    partial void OnFLAGChanged();
-    partial void OnVZB_STATUSChanging(string value);
-    partial void OnVZB_STATUSChanged();
-    partial void OnSTATUS_VersandChanging(string value);
-    partial void OnSTATUS_VersandChanged();
-    partial void OnREChanging(System.Nullable<bool> value);
-    partial void OnREChanged();
-    partial void OnZahlungsartChanging(string value);
-    partial void OnZahlungsartChanged();
-    partial void OnVorerfDatumChanging(System.Nullable<System.DateTime> value);
-    partial void OnVorerfDatumChanged();
-    partial void OnVorerfasserChanging(string value);
-    partial void OnVorerfasserChanged();
-    partial void OnVKKurzChanging(string value);
-    partial void OnVKKurzChanged();
-    partial void OninterneRefChanging(string value);
-    partial void OninterneRefChanged();
-    partial void OnKundenNotizChanging(string value);
-    partial void OnKundenNotizChanged();
-    partial void OnKennzVHChanging(System.Nullable<bool> value);
-    partial void OnKennzVHChanged();
-    partial void OnKennzAltChanging(string value);
-    partial void OnKennzAltChanged();
-    partial void OnZBII_ALT_NEUChanging(System.Nullable<bool> value);
-    partial void OnZBII_ALT_NEUChanged();
-    partial void OnVorhKennzReservChanging(System.Nullable<bool> value);
-    partial void OnVorhKennzReservChanged();
-    partial void OnStill_DatumChanging(System.Nullable<System.DateTime> value);
-    partial void OnStill_DatumChanged();
-    partial void OnPrali_PrintChanging(System.Nullable<bool> value);
-    partial void OnPrali_PrintChanged();
-    partial void OnFliegerChanging(System.Nullable<bool> value);
-    partial void OnFliegerChanged();
-    partial void OnUMBUChanging(System.Nullable<bool> value);
-    partial void OnUMBUChanged();
-    partial void OnABGESAGTChanging(System.Nullable<bool> value);
-    partial void OnABGESAGTChanged();
-    partial void OnRUECKBUChanging(System.Nullable<bool> value);
-    partial void OnRUECKBUChanged();
-    partial void OnEVBChanging(string value);
-    partial void OnEVBChanged();
-    partial void OnOBJECT_IDChanging(string value);
-    partial void OnOBJECT_IDChanged();
-    partial void OnFAHRZ_ARTChanging(string value);
-    partial void OnFAHRZ_ARTChanged();
-    partial void OnMNRESWChanging(System.Nullable<bool> value);
-    partial void OnMNRESWChanged();
-    partial void OnSERIEChanging(System.Nullable<bool> value);
-    partial void OnSERIEChanged();
-    partial void OnSAISON_KNZChanging(System.Nullable<bool> value);
-    partial void OnSAISON_KNZChanged();
-    partial void OnSAISON_BEGChanging(string value);
-    partial void OnSAISON_BEGChanged();
-    partial void OnSAISON_ENDChanging(string value);
-    partial void OnSAISON_ENDChanged();
-    partial void OnTUEV_AUChanging(string value);
-    partial void OnTUEV_AUChanged();
-    partial void OnZOLLVERS_DAUERChanging(string value);
-    partial void OnZOLLVERS_DAUERChanged();
-    partial void OnVORFUEHRChanging(System.Nullable<bool> value);
-    partial void OnVORFUEHRChanged();
-    partial void OnHALTE_DAUERChanging(System.Nullable<System.DateTime> value);
-    partial void OnHALTE_DAUERChanged();
-    partial void OnLTEXT_NRChanging(string value);
-    partial void OnLTEXT_NRChanged();
-    partial void OnBEB_STATUSChanging(string value);
-    partial void OnBEB_STATUSChanged();
-    partial void OnZZREFNR3Changing(string value);
-    partial void OnZZREFNR3Changed();
-    partial void OnZZREFNR4Changing(string value);
-    partial void OnZZREFNR4Changed();
-    partial void OnZZREFNR5Changing(string value);
-    partial void OnZZREFNR5Changed();
-    partial void OnZZREFNR6Changing(string value);
-    partial void OnZZREFNR6Changed();
-    partial void OnZZREFNR7Changing(string value);
-    partial void OnZZREFNR7Changed();
-    partial void OnZZREFNR8Changing(string value);
-    partial void OnZZREFNR8Changed();
-    partial void OnZZREFNR9Changing(string value);
-    partial void OnZZREFNR9Changed();
-    partial void OnZZREFNR10Changing(string value);
-    partial void OnZZREFNR10Changed();
-    partial void OnAH_DOKNAMEChanging(string value);
-    partial void OnAH_DOKNAMEChanged();
-    partial void OnZusatzKZChanging(string value);
-    partial void OnZusatzKZChanged();
-    partial void OnWunschKZ2Changing(string value);
-    partial void OnWunschKZ2Changed();
-    partial void OnWunschKZ3Changing(string value);
-    partial void OnWunschKZ3Changed();
-    partial void OnOhneGruenenVersScheinChanging(string value);
-    partial void OnOhneGruenenVersScheinChanged();
-    partial void OnVorerfUhrzeitChanging(string value);
-    partial void OnVorerfUhrzeitChanged();
-    partial void OnInfotextChanging(string value);
-    partial void OnInfotextChanged();
-    partial void OnNachbearbeitenChanging(System.Nullable<bool> value);
-    partial void OnNachbearbeitenChanged();
-    partial void OnMobuserChanging(string value);
-    partial void OnMobuserChanged();
-    partial void OnPOOLNRChanging(string value);
-    partial void OnPOOLNRChanged();
-    partial void OnZOLLVERSChanging(string value);
-    partial void OnZOLLVERSChanged();
-    partial void OnKURZZEITVSChanging(string value);
-    partial void OnKURZZEITVSChanged();
-    partial void OnONLINE_VGChanging(System.Nullable<bool> value);
-    partial void OnONLINE_VGChanged();
-    partial void OnSofortabrechnungErledigtChanging(System.Nullable<bool> value);
-    partial void OnSofortabrechnungErledigtChanged();
-    partial void OnSofortabrechnungPfadChanging(string value);
-    partial void OnSofortabrechnungPfadChanged();
-    partial void OnBriefnrChanging(string value);
-    partial void OnBriefnrChanged();
-    partial void OnOrderidChanging(string value);
-    partial void OnOrderidChanged();
-    partial void OnHpposChanging(string value);
-    partial void OnHpposChanged();
+    partial void OnZahlart_ECChanging(System.Nullable<bool> value);
+    partial void OnZahlart_ECChanged();
+    partial void OnZahlart_BarChanging(System.Nullable<bool> value);
+    partial void OnZahlart_BarChanged();
+    partial void OnZahlart_RechnungChanging(System.Nullable<bool> value);
+    partial void OnZahlart_RechnungChanged();
+    partial void OnLieferantenNrChanging(string value);
+    partial void OnLieferantenNrChanged();
+    partial void OnWebBearbeitungsStatusChanging(string value);
+    partial void OnWebBearbeitungsStatusChanged();
     #endregion
 		
-		public ZLDKopfTabelle()
+		public ZLDVorgangKopf()
 		{
-			this._ZLDBankverbindung = new EntitySet<ZLDBankverbindung>(new Action<ZLDBankverbindung>(this.attach_ZLDBankverbindung), new Action<ZLDBankverbindung>(this.detach_ZLDBankverbindung));
-			this._ZLDKundenadresse = new EntitySet<ZLDKundenadresse>(new Action<ZLDKundenadresse>(this.attach_ZLDKundenadresse), new Action<ZLDKundenadresse>(this.detach_ZLDKundenadresse));
-			this._ZLDPositionsTabelle = new EntitySet<ZLDPositionsTabelle>(new Action<ZLDPositionsTabelle>(this.attach_ZLDPositionsTabelle), new Action<ZLDPositionsTabelle>(this.detach_ZLDPositionsTabelle));
+			this._ZLDVorgangBank = default(EntityRef<ZLDVorgangBank>);
+			this._ZLDVorgangAdresse = default(EntityRef<ZLDVorgangAdresse>);
+			this._ZLDVorgangPosition = new EntitySet<ZLDVorgangPosition>(new Action<ZLDVorgangPosition>(this.attach_ZLDVorgangPosition), new Action<ZLDVorgangPosition>(this.detach_ZLDVorgangPosition));
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SapId
 		{
 			get
 			{
-				return this._id;
+				return this._SapId;
 			}
 			set
 			{
-				if ((this._id != value))
+				if ((this._SapId != value))
 				{
-					this.OnidChanging(value);
+					this.OnSapIdChanging(value);
 					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
+					this._SapId = value;
+					this.SendPropertyChanged("SapId");
+					this.OnSapIdChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_sap", DbType="Int NOT NULL")]
-		public int id_sap
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Vorgang", DbType="NVarChar(1) NOT NULL", CanBeNull=false)]
+		public string Vorgang
 		{
 			get
 			{
-				return this._id_sap;
+				return this._Vorgang;
 			}
 			set
 			{
-				if ((this._id_sap != value))
+				if ((this._Vorgang != value))
 				{
-					this.Onid_sapChanging(value);
+					this.OnVorgangChanging(value);
 					this.SendPropertyChanging();
-					this._id_sap = value;
-					this.SendPropertyChanged("id_sap");
-					this.Onid_sapChanged();
+					this._Vorgang = value;
+					this.SendPropertyChanged("Vorgang");
+					this.OnVorgangChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_user", DbType="Int")]
-		public System.Nullable<int> id_user
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VkOrg", DbType="NVarChar(4)")]
+		public string VkOrg
 		{
 			get
 			{
-				return this._id_user;
+				return this._VkOrg;
 			}
 			set
 			{
-				if ((this._id_user != value))
+				if ((this._VkOrg != value))
 				{
-					this.Onid_userChanging(value);
+					this.OnVkOrgChanging(value);
 					this.SendPropertyChanging();
-					this._id_user = value;
-					this.SendPropertyChanged("id_user");
-					this.Onid_userChanged();
+					this._VkOrg = value;
+					this.SendPropertyChanged("VkOrg");
+					this.OnVkOrgChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_session", DbType="VarChar(50)")]
-		public string id_session
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VkBur", DbType="NVarChar(4)")]
+		public string VkBur
 		{
 			get
 			{
-				return this._id_session;
+				return this._VkBur;
 			}
 			set
 			{
-				if ((this._id_session != value))
+				if ((this._VkBur != value))
 				{
-					this.Onid_sessionChanging(value);
+					this.OnVkBurChanging(value);
 					this.SendPropertyChanging();
-					this._id_session = value;
-					this.SendPropertyChanged("id_session");
-					this.Onid_sessionChanged();
+					this._VkBur = value;
+					this.SendPropertyChanged("VkBur");
+					this.OnVkBurChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_abgerechnet", DbType="Bit")]
-		public System.Nullable<bool> abgerechnet
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Vorerfassungsdatum", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Vorerfassungsdatum
 		{
 			get
 			{
-				return this._abgerechnet;
+				return this._Vorerfassungsdatum;
 			}
 			set
 			{
-				if ((this._abgerechnet != value))
+				if ((this._Vorerfassungsdatum != value))
 				{
-					this.OnabgerechnetChanging(value);
+					this.OnVorerfassungsdatumChanging(value);
 					this.SendPropertyChanging();
-					this._abgerechnet = value;
-					this.SendPropertyChanged("abgerechnet");
-					this.OnabgerechnetChanged();
+					this._Vorerfassungsdatum = value;
+					this.SendPropertyChanged("Vorerfassungsdatum");
+					this.OnVorerfassungsdatumChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_tstamp", DbType="DateTime")]
-		public System.Nullable<System.DateTime> tstamp
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Vorerfasser", DbType="NVarChar(12)")]
+		public string Vorerfasser
 		{
 			get
 			{
-				return this._tstamp;
+				return this._Vorerfasser;
 			}
 			set
 			{
-				if ((this._tstamp != value))
+				if ((this._Vorerfasser != value))
 				{
-					this.OntstampChanging(value);
+					this.OnVorerfasserChanging(value);
 					this.SendPropertyChanging();
-					this._tstamp = value;
-					this.SendPropertyChanged("tstamp");
-					this.OntstampChanged();
+					this._Vorerfasser = value;
+					this.SendPropertyChanged("Vorerfasser");
+					this.OnVorerfasserChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_username", DbType="NVarChar(50)")]
-		public string username
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_StatusVersandzulassung", DbType="NVarChar(1)")]
+		public string StatusVersandzulassung
 		{
 			get
 			{
-				return this._username;
+				return this._StatusVersandzulassung;
 			}
 			set
 			{
-				if ((this._username != value))
+				if ((this._StatusVersandzulassung != value))
 				{
-					this.OnusernameChanging(value);
+					this.OnStatusVersandzulassungChanging(value);
 					this.SendPropertyChanging();
-					this._username = value;
-					this.SendPropertyChanged("username");
-					this.OnusernameChanged();
+					this._StatusVersandzulassung = value;
+					this.SendPropertyChanged("StatusVersandzulassung");
+					this.OnStatusVersandzulassungChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kundenname", DbType="NVarChar(100)")]
-		public string kundenname
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Belegart", DbType="NVarChar(2)")]
+		public string Belegart
 		{
 			get
 			{
-				return this._kundenname;
+				return this._Belegart;
 			}
 			set
 			{
-				if ((this._kundenname != value))
+				if ((this._Belegart != value))
 				{
-					this.OnkundennameChanging(value);
+					this.OnBelegartChanging(value);
 					this.SendPropertyChanging();
-					this._kundenname = value;
-					this.SendPropertyChanged("kundenname");
-					this.OnkundennameChanged();
+					this._Belegart = value;
+					this.SendPropertyChanged("Belegart");
+					this.OnBelegartChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_kundennr", DbType="NVarChar(20)")]
-		public string kundennr
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VersandzulassungDurchfuehrendesVkBur", DbType="NVarChar(4)")]
+		public string VersandzulassungDurchfuehrendesVkBur
 		{
 			get
 			{
-				return this._kundennr;
+				return this._VersandzulassungDurchfuehrendesVkBur;
 			}
 			set
 			{
-				if ((this._kundennr != value))
+				if ((this._VersandzulassungDurchfuehrendesVkBur != value))
 				{
-					this.OnkundennrChanging(value);
+					this.OnVersandzulassungDurchfuehrendesVkBurChanging(value);
 					this.SendPropertyChanging();
-					this._kundennr = value;
-					this.SendPropertyChanged("kundennr");
-					this.OnkundennrChanged();
+					this._VersandzulassungDurchfuehrendesVkBur = value;
+					this.SendPropertyChanged("VersandzulassungDurchfuehrendesVkBur");
+					this.OnVersandzulassungDurchfuehrendesVkBurChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_referenz1", DbType="NVarChar(20)")]
-		public string referenz1
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Barcode", DbType="NVarChar(64)")]
+		public string Barcode
 		{
 			get
 			{
-				return this._referenz1;
+				return this._Barcode;
 			}
 			set
 			{
-				if ((this._referenz1 != value))
+				if ((this._Barcode != value))
 				{
-					this.Onreferenz1Changing(value);
+					this.OnBarcodeChanging(value);
 					this.SendPropertyChanging();
-					this._referenz1 = value;
-					this.SendPropertyChanged("referenz1");
-					this.Onreferenz1Changed();
+					this._Barcode = value;
+					this.SendPropertyChanged("Barcode");
+					this.OnBarcodeChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_referenz2", DbType="NVarChar(20)")]
-		public string referenz2
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KundenNr", DbType="NVarChar(10)")]
+		public string KundenNr
 		{
 			get
 			{
-				return this._referenz2;
+				return this._KundenNr;
 			}
 			set
 			{
-				if ((this._referenz2 != value))
+				if ((this._KundenNr != value))
 				{
-					this.Onreferenz2Changing(value);
+					this.OnKundenNrChanging(value);
 					this.SendPropertyChanging();
-					this._referenz2 = value;
-					this.SendPropertyChanged("referenz2");
-					this.Onreferenz2Changed();
+					this._KundenNr = value;
+					this.SendPropertyChanged("KundenNr");
+					this.OnKundenNrChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KreisKZ", DbType="NVarChar(3)")]
-		public string KreisKZ
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Referenz1", DbType="NVarChar(20)")]
+		public string Referenz1
 		{
 			get
 			{
-				return this._KreisKZ;
+				return this._Referenz1;
 			}
 			set
 			{
-				if ((this._KreisKZ != value))
+				if ((this._Referenz1 != value))
 				{
-					this.OnKreisKZChanging(value);
+					this.OnReferenz1Changing(value);
 					this.SendPropertyChanging();
-					this._KreisKZ = value;
-					this.SendPropertyChanged("KreisKZ");
-					this.OnKreisKZChanged();
+					this._Referenz1 = value;
+					this.SendPropertyChanged("Referenz1");
+					this.OnReferenz1Changed();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KreisBez", DbType="NVarChar(40)")]
-		public string KreisBez
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Referenz2", DbType="NVarChar(20)")]
+		public string Referenz2
 		{
 			get
 			{
-				return this._KreisBez;
+				return this._Referenz2;
 			}
 			set
 			{
-				if ((this._KreisBez != value))
+				if ((this._Referenz2 != value))
 				{
-					this.OnKreisBezChanging(value);
+					this.OnReferenz2Changing(value);
 					this.SendPropertyChanging();
-					this._KreisBez = value;
-					this.SendPropertyChanged("KreisBez");
-					this.OnKreisBezChanged();
+					this._Referenz2 = value;
+					this.SendPropertyChanged("Referenz2");
+					this.OnReferenz2Changed();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KennKZ", DbType="NVarChar(3)")]
-		public string KennKZ
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Landkreis", DbType="NVarChar(3)")]
+		public string Landkreis
 		{
 			get
 			{
-				return this._KennKZ;
+				return this._Landkreis;
 			}
 			set
 			{
-				if ((this._KennKZ != value))
+				if ((this._Landkreis != value))
 				{
-					this.OnKennKZChanging(value);
+					this.OnLandkreisChanging(value);
 					this.SendPropertyChanging();
-					this._KennKZ = value;
-					this.SendPropertyChanged("KennKZ");
-					this.OnKennKZChanged();
+					this._Landkreis = value;
+					this.SendPropertyChanged("Landkreis");
+					this.OnLandkreisChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KennABC", DbType="NVarChar(10)")]
-		public string KennABC
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KreisBezeichnung", DbType="NVarChar(40)")]
+		public string KreisBezeichnung
 		{
 			get
 			{
-				return this._KennABC;
+				return this._KreisBezeichnung;
 			}
 			set
 			{
-				if ((this._KennABC != value))
+				if ((this._KreisBezeichnung != value))
 				{
-					this.OnKennABCChanging(value);
+					this.OnKreisBezeichnungChanging(value);
 					this.SendPropertyChanging();
-					this._KennABC = value;
-					this.SendPropertyChanged("KennABC");
-					this.OnKennABCChanged();
+					this._KreisBezeichnung = value;
+					this.SendPropertyChanged("KreisBezeichnung");
+					this.OnKreisBezeichnungChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WunschKenn", DbType="Bit")]
-		public System.Nullable<bool> WunschKenn
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Wunschkennzeichen", DbType="Bit")]
+		public System.Nullable<bool> Wunschkennzeichen
 		{
 			get
 			{
-				return this._WunschKenn;
+				return this._Wunschkennzeichen;
 			}
 			set
 			{
-				if ((this._WunschKenn != value))
+				if ((this._Wunschkennzeichen != value))
 				{
-					this.OnWunschKennChanging(value);
+					this.OnWunschkennzeichenChanging(value);
 					this.SendPropertyChanging();
-					this._WunschKenn = value;
-					this.SendPropertyChanged("WunschKenn");
-					this.OnWunschKennChanged();
+					this._Wunschkennzeichen = value;
+					this.SendPropertyChanged("Wunschkennzeichen");
+					this.OnWunschkennzeichenChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Reserviert", DbType="Bit")]
-		public System.Nullable<bool> Reserviert
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KennzeichenReservieren", DbType="Bit")]
+		public System.Nullable<bool> KennzeichenReservieren
 		{
 			get
 			{
-				return this._Reserviert;
+				return this._KennzeichenReservieren;
 			}
 			set
 			{
-				if ((this._Reserviert != value))
+				if ((this._KennzeichenReservieren != value))
 				{
-					this.OnReserviertChanging(value);
+					this.OnKennzeichenReservierenChanging(value);
 					this.SendPropertyChanging();
-					this._Reserviert = value;
-					this.SendPropertyChanged("Reserviert");
-					this.OnReserviertChanged();
+					this._KennzeichenReservieren = value;
+					this.SendPropertyChanged("KennzeichenReservieren");
+					this.OnKennzeichenReservierenChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReserviertKennz", DbType="NVarChar(20)")]
-		public string ReserviertKennz
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ReserviertesKennzeichen", DbType="NVarChar(10)")]
+		public string ReserviertesKennzeichen
 		{
 			get
 			{
-				return this._ReserviertKennz;
+				return this._ReserviertesKennzeichen;
 			}
 			set
 			{
-				if ((this._ReserviertKennz != value))
+				if ((this._ReserviertesKennzeichen != value))
 				{
-					this.OnReserviertKennzChanging(value);
+					this.OnReserviertesKennzeichenChanging(value);
 					this.SendPropertyChanging();
-					this._ReserviertKennz = value;
-					this.SendPropertyChanged("ReserviertKennz");
-					this.OnReserviertKennzChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Feinstaub", DbType="Bit")]
-		public System.Nullable<bool> Feinstaub
-		{
-			get
-			{
-				return this._Feinstaub;
-			}
-			set
-			{
-				if ((this._Feinstaub != value))
-				{
-					this.OnFeinstaubChanging(value);
-					this.SendPropertyChanging();
-					this._Feinstaub = value;
-					this.SendPropertyChanged("Feinstaub");
-					this.OnFeinstaubChanged();
+					this._ReserviertesKennzeichen = value;
+					this.SendPropertyChanged("ReserviertesKennzeichen");
+					this.OnReserviertesKennzeichenChanged();
 				}
 			}
 		}
@@ -1587,82 +1702,62 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kennztyp", DbType="NVarChar(1)")]
-		public string Kennztyp
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kennzeichenform", DbType="NVarChar(20)")]
+		public string Kennzeichenform
 		{
 			get
 			{
-				return this._Kennztyp;
+				return this._Kennzeichenform;
 			}
 			set
 			{
-				if ((this._Kennztyp != value))
+				if ((this._Kennzeichenform != value))
 				{
-					this.OnKennztypChanging(value);
+					this.OnKennzeichenformChanging(value);
 					this.SendPropertyChanging();
-					this._Kennztyp = value;
-					this.SendPropertyChanged("Kennztyp");
-					this.OnKennztypChanged();
+					this._Kennzeichenform = value;
+					this.SendPropertyChanged("Kennzeichenform");
+					this.OnKennzeichenformChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KennzForm", DbType="NVarChar(20)")]
-		public string KennzForm
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnzahlKennzeichen", DbType="NVarChar(3)")]
+		public string AnzahlKennzeichen
 		{
 			get
 			{
-				return this._KennzForm;
+				return this._AnzahlKennzeichen;
 			}
 			set
 			{
-				if ((this._KennzForm != value))
+				if ((this._AnzahlKennzeichen != value))
 				{
-					this.OnKennzFormChanging(value);
+					this.OnAnzahlKennzeichenChanging(value);
 					this.SendPropertyChanging();
-					this._KennzForm = value;
-					this.SendPropertyChanged("KennzForm");
-					this.OnKennzFormChanged();
+					this._AnzahlKennzeichen = value;
+					this.SendPropertyChanged("AnzahlKennzeichen");
+					this.OnAnzahlKennzeichenChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KennzAnz", DbType="Int")]
-		public System.Nullable<int> KennzAnz
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NurEinKennzeichen", DbType="Bit")]
+		public System.Nullable<bool> NurEinKennzeichen
 		{
 			get
 			{
-				return this._KennzAnz;
+				return this._NurEinKennzeichen;
 			}
 			set
 			{
-				if ((this._KennzAnz != value))
+				if ((this._NurEinKennzeichen != value))
 				{
-					this.OnKennzAnzChanging(value);
+					this.OnNurEinKennzeichenChanging(value);
 					this.SendPropertyChanging();
-					this._KennzAnz = value;
-					this.SendPropertyChanged("KennzAnz");
-					this.OnKennzAnzChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EinKennz", DbType="Bit")]
-		public System.Nullable<bool> EinKennz
-		{
-			get
-			{
-				return this._EinKennz;
-			}
-			set
-			{
-				if ((this._EinKennz != value))
-				{
-					this.OnEinKennzChanging(value);
-					this.SendPropertyChanging();
-					this._EinKennz = value;
-					this.SendPropertyChanged("EinKennz");
-					this.OnEinKennzChanged();
+					this._NurEinKennzeichen = value;
+					this.SendPropertyChanged("NurEinKennzeichen");
+					this.OnNurEinKennzeichenChanged();
 				}
 			}
 		}
@@ -1687,2385 +1782,174 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EC", DbType="Bit")]
-		public System.Nullable<bool> EC
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Zahlart_EC", DbType="Bit")]
+		public System.Nullable<bool> Zahlart_EC
 		{
 			get
 			{
-				return this._EC;
+				return this._Zahlart_EC;
 			}
 			set
 			{
-				if ((this._EC != value))
+				if ((this._Zahlart_EC != value))
 				{
-					this.OnECChanging(value);
+					this.OnZahlart_ECChanging(value);
 					this.SendPropertyChanging();
-					this._EC = value;
-					this.SendPropertyChanged("EC");
-					this.OnECChanged();
+					this._Zahlart_EC = value;
+					this.SendPropertyChanged("Zahlart_EC");
+					this.OnZahlart_ECChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bar", DbType="Bit")]
-		public System.Nullable<bool> Bar
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Zahlart_Bar", DbType="Bit")]
+		public System.Nullable<bool> Zahlart_Bar
 		{
 			get
 			{
-				return this._Bar;
+				return this._Zahlart_Bar;
 			}
 			set
 			{
-				if ((this._Bar != value))
+				if ((this._Zahlart_Bar != value))
 				{
-					this.OnBarChanging(value);
+					this.OnZahlart_BarChanging(value);
 					this.SendPropertyChanging();
-					this._Bar = value;
-					this.SendPropertyChanged("Bar");
-					this.OnBarChanged();
+					this._Zahlart_Bar = value;
+					this.SendPropertyChanged("Zahlart_Bar");
+					this.OnZahlart_BarChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_saved", DbType="Bit")]
-		public System.Nullable<bool> saved
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Zahlart_Rechnung", DbType="Bit")]
+		public System.Nullable<bool> Zahlart_Rechnung
 		{
 			get
 			{
-				return this._saved;
+				return this._Zahlart_Rechnung;
 			}
 			set
 			{
-				if ((this._saved != value))
+				if ((this._Zahlart_Rechnung != value))
 				{
-					this.OnsavedChanging(value);
+					this.OnZahlart_RechnungChanging(value);
 					this.SendPropertyChanging();
-					this._saved = value;
-					this.SendPropertyChanged("saved");
-					this.OnsavedChanged();
+					this._Zahlart_Rechnung = value;
+					this.SendPropertyChanged("Zahlart_Rechnung");
+					this.OnZahlart_RechnungChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_toSave", DbType="SmallInt")]
-		public System.Nullable<short> toSave
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LieferantenNr", DbType="NVarChar(10)")]
+		public string LieferantenNr
 		{
 			get
 			{
-				return this._toSave;
+				return this._LieferantenNr;
 			}
 			set
 			{
-				if ((this._toSave != value))
+				if ((this._LieferantenNr != value))
 				{
-					this.OntoSaveChanging(value);
+					this.OnLieferantenNrChanging(value);
 					this.SendPropertyChanging();
-					this._toSave = value;
-					this.SendPropertyChanged("toSave");
-					this.OntoSaveChanged();
+					this._LieferantenNr = value;
+					this.SendPropertyChanged("LieferantenNr");
+					this.OnLieferantenNrChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_toDelete", DbType="NVarChar(2)")]
-		public string toDelete
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WebBearbeitungsStatus", DbType="NVarChar(1)")]
+		public string WebBearbeitungsStatus
 		{
 			get
 			{
-				return this._toDelete;
+				return this._WebBearbeitungsStatus;
 			}
 			set
 			{
-				if ((this._toDelete != value))
+				if ((this._WebBearbeitungsStatus != value))
 				{
-					this.OntoDeleteChanging(value);
+					this.OnWebBearbeitungsStatusChanging(value);
 					this.SendPropertyChanging();
-					this._toDelete = value;
-					this.SendPropertyChanged("toDelete");
-					this.OntoDeleteChanged();
+					this._WebBearbeitungsStatus = value;
+					this.SendPropertyChanged("WebBearbeitungsStatus");
+					this.OnWebBearbeitungsStatusChanged();
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_bearbeitet", DbType="Bit")]
-		public System.Nullable<bool> bearbeitet
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangBank", Storage="_ZLDVorgangBank", ThisKey="SapId", OtherKey="SapId", IsUnique=true, IsForeignKey=false)]
+		public ZLDVorgangBank ZLDVorgangBank
 		{
 			get
 			{
-				return this._bearbeitet;
+				return this._ZLDVorgangBank.Entity;
 			}
 			set
 			{
-				if ((this._bearbeitet != value))
-				{
-					this.OnbearbeitetChanging(value);
-					this.SendPropertyChanging();
-					this._bearbeitet = value;
-					this.SendPropertyChanged("bearbeitet");
-					this.OnbearbeitetChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_testuser", DbType="Bit")]
-		public System.Nullable<bool> testuser
-		{
-			get
-			{
-				return this._testuser;
-			}
-			set
-			{
-				if ((this._testuser != value))
-				{
-					this.OntestuserChanging(value);
-					this.SendPropertyChanging();
-					this._testuser = value;
-					this.SendPropertyChanged("testuser");
-					this.OntestuserChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Barcode", DbType="NVarChar(64)")]
-		public string Barcode
-		{
-			get
-			{
-				return this._Barcode;
-			}
-			set
-			{
-				if ((this._Barcode != value))
-				{
-					this.OnBarcodeChanging(value);
-					this.SendPropertyChanging();
-					this._Barcode = value;
-					this.SendPropertyChanged("Barcode");
-					this.OnBarcodeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Filiale", DbType="NVarChar(8)")]
-		public string Filiale
-		{
-			get
-			{
-				return this._Filiale;
-			}
-			set
-			{
-				if ((this._Filiale != value))
-				{
-					this.OnFilialeChanging(value);
-					this.SendPropertyChanging();
-					this._Filiale = value;
-					this.SendPropertyChanged("Filiale");
-					this.OnFilialeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OhneSteuer", DbType="NVarChar(2)")]
-		public string OhneSteuer
-		{
-			get
-			{
-				return this._OhneSteuer;
-			}
-			set
-			{
-				if ((this._OhneSteuer != value))
-				{
-					this.OnOhneSteuerChanging(value);
-					this.SendPropertyChanging();
-					this._OhneSteuer = value;
-					this.SendPropertyChanged("OhneSteuer");
-					this.OnOhneSteuerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PauschalKunde", DbType="NVarChar(2)")]
-		public string PauschalKunde
-		{
-			get
-			{
-				return this._PauschalKunde;
-			}
-			set
-			{
-				if ((this._PauschalKunde != value))
-				{
-					this.OnPauschalKundeChanging(value);
-					this.SendPropertyChanging();
-					this._PauschalKunde = value;
-					this.SendPropertyChanged("PauschalKunde");
-					this.OnPauschalKundeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KunnrLF", DbType="NVarChar(10)")]
-		public string KunnrLF
-		{
-			get
-			{
-				return this._KunnrLF;
-			}
-			set
-			{
-				if ((this._KunnrLF != value))
-				{
-					this.OnKunnrLFChanging(value);
-					this.SendPropertyChanging();
-					this._KunnrLF = value;
-					this.SendPropertyChanged("KunnrLF");
-					this.OnKunnrLFChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KreisKZ_Direkt", DbType="NVarChar(3)")]
-		public string KreisKZ_Direkt
-		{
-			get
-			{
-				return this._KreisKZ_Direkt;
-			}
-			set
-			{
-				if ((this._KreisKZ_Direkt != value))
-				{
-					this.OnKreisKZ_DirektChanging(value);
-					this.SendPropertyChanging();
-					this._KreisKZ_Direkt = value;
-					this.SendPropertyChanged("KreisKZ_Direkt");
-					this.OnKreisKZ_DirektChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Steuer", DbType="Money")]
-		public System.Nullable<decimal> Steuer
-		{
-			get
-			{
-				return this._Steuer;
-			}
-			set
-			{
-				if ((this._Steuer != value))
-				{
-					this.OnSteuerChanging(value);
-					this.SendPropertyChanging();
-					this._Steuer = value;
-					this.SendPropertyChanged("Steuer");
-					this.OnSteuerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Vorgang", DbType="NVarChar(2)")]
-		public string Vorgang
-		{
-			get
-			{
-				return this._Vorgang;
-			}
-			set
-			{
-				if ((this._Vorgang != value))
-				{
-					this.OnVorgangChanging(value);
-					this.SendPropertyChanging();
-					this._Vorgang = value;
-					this.SendPropertyChanged("Vorgang");
-					this.OnVorgangChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NrFrachtHin", DbType="NVarChar(20)")]
-		public string NrFrachtHin
-		{
-			get
-			{
-				return this._NrFrachtHin;
-			}
-			set
-			{
-				if ((this._NrFrachtHin != value))
-				{
-					this.OnNrFrachtHinChanging(value);
-					this.SendPropertyChanging();
-					this._NrFrachtHin = value;
-					this.SendPropertyChanged("NrFrachtHin");
-					this.OnNrFrachtHinChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NrFrachtZu", DbType="NVarChar(20)")]
-		public string NrFrachtZu
-		{
-			get
-			{
-				return this._NrFrachtZu;
-			}
-			set
-			{
-				if ((this._NrFrachtZu != value))
-				{
-					this.OnNrFrachtZuChanging(value);
-					this.SendPropertyChanging();
-					this._NrFrachtZu = value;
-					this.SendPropertyChanged("NrFrachtZu");
-					this.OnNrFrachtZuChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Barkunde", DbType="Bit")]
-		public System.Nullable<bool> Barkunde
-		{
-			get
-			{
-				return this._Barkunde;
-			}
-			set
-			{
-				if ((this._Barkunde != value))
-				{
-					this.OnBarkundeChanging(value);
-					this.SendPropertyChanging();
-					this._Barkunde = value;
-					this.SendPropertyChanged("Barkunde");
-					this.OnBarkundeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VersandVKBUR", DbType="NVarChar(8)")]
-		public string VersandVKBUR
-		{
-			get
-			{
-				return this._VersandVKBUR;
-			}
-			set
-			{
-				if ((this._VersandVKBUR != value))
-				{
-					this.OnVersandVKBURChanging(value);
-					this.SendPropertyChanging();
-					this._VersandVKBUR = value;
-					this.SendPropertyChanged("VersandVKBUR");
-					this.OnVersandVKBURChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FLAG", DbType="NVarChar(2)")]
-		public string FLAG
-		{
-			get
-			{
-				return this._FLAG;
-			}
-			set
-			{
-				if ((this._FLAG != value))
-				{
-					this.OnFLAGChanging(value);
-					this.SendPropertyChanging();
-					this._FLAG = value;
-					this.SendPropertyChanged("FLAG");
-					this.OnFLAGChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VZB_STATUS", DbType="NVarChar(2)")]
-		public string VZB_STATUS
-		{
-			get
-			{
-				return this._VZB_STATUS;
-			}
-			set
-			{
-				if ((this._VZB_STATUS != value))
-				{
-					this.OnVZB_STATUSChanging(value);
-					this.SendPropertyChanging();
-					this._VZB_STATUS = value;
-					this.SendPropertyChanged("VZB_STATUS");
-					this.OnVZB_STATUSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_STATUS_Versand", DbType="NVarChar(2)")]
-		public string STATUS_Versand
-		{
-			get
-			{
-				return this._STATUS_Versand;
-			}
-			set
-			{
-				if ((this._STATUS_Versand != value))
-				{
-					this.OnSTATUS_VersandChanging(value);
-					this.SendPropertyChanging();
-					this._STATUS_Versand = value;
-					this.SendPropertyChanged("STATUS_Versand");
-					this.OnSTATUS_VersandChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RE", DbType="Bit")]
-		public System.Nullable<bool> RE
-		{
-			get
-			{
-				return this._RE;
-			}
-			set
-			{
-				if ((this._RE != value))
-				{
-					this.OnREChanging(value);
-					this.SendPropertyChanging();
-					this._RE = value;
-					this.SendPropertyChanged("RE");
-					this.OnREChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Zahlungsart", DbType="NVarChar(2)")]
-		public string Zahlungsart
-		{
-			get
-			{
-				return this._Zahlungsart;
-			}
-			set
-			{
-				if ((this._Zahlungsart != value))
-				{
-					this.OnZahlungsartChanging(value);
-					this.SendPropertyChanging();
-					this._Zahlungsart = value;
-					this.SendPropertyChanged("Zahlungsart");
-					this.OnZahlungsartChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VorerfDatum", DbType="DateTime")]
-		public System.Nullable<System.DateTime> VorerfDatum
-		{
-			get
-			{
-				return this._VorerfDatum;
-			}
-			set
-			{
-				if ((this._VorerfDatum != value))
-				{
-					this.OnVorerfDatumChanging(value);
-					this.SendPropertyChanging();
-					this._VorerfDatum = value;
-					this.SendPropertyChanged("VorerfDatum");
-					this.OnVorerfDatumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Vorerfasser", DbType="NVarChar(15)")]
-		public string Vorerfasser
-		{
-			get
-			{
-				return this._Vorerfasser;
-			}
-			set
-			{
-				if ((this._Vorerfasser != value))
-				{
-					this.OnVorerfasserChanging(value);
-					this.SendPropertyChanging();
-					this._Vorerfasser = value;
-					this.SendPropertyChanged("Vorerfasser");
-					this.OnVorerfasserChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VKKurz", DbType="NVarChar(10)")]
-		public string VKKurz
-		{
-			get
-			{
-				return this._VKKurz;
-			}
-			set
-			{
-				if ((this._VKKurz != value))
-				{
-					this.OnVKKurzChanging(value);
-					this.SendPropertyChanging();
-					this._VKKurz = value;
-					this.SendPropertyChanged("VKKurz");
-					this.OnVKKurzChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_interneRef", DbType="NVarChar(50)")]
-		public string interneRef
-		{
-			get
-			{
-				return this._interneRef;
-			}
-			set
-			{
-				if ((this._interneRef != value))
-				{
-					this.OninterneRefChanging(value);
-					this.SendPropertyChanging();
-					this._interneRef = value;
-					this.SendPropertyChanged("interneRef");
-					this.OninterneRefChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KundenNotiz", DbType="NVarChar(100)")]
-		public string KundenNotiz
-		{
-			get
-			{
-				return this._KundenNotiz;
-			}
-			set
-			{
-				if ((this._KundenNotiz != value))
-				{
-					this.OnKundenNotizChanging(value);
-					this.SendPropertyChanging();
-					this._KundenNotiz = value;
-					this.SendPropertyChanged("KundenNotiz");
-					this.OnKundenNotizChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KennzVH", DbType="Bit")]
-		public System.Nullable<bool> KennzVH
-		{
-			get
-			{
-				return this._KennzVH;
-			}
-			set
-			{
-				if ((this._KennzVH != value))
-				{
-					this.OnKennzVHChanging(value);
-					this.SendPropertyChanging();
-					this._KennzVH = value;
-					this.SendPropertyChanged("KennzVH");
-					this.OnKennzVHChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KennzAlt", DbType="NVarChar(10)")]
-		public string KennzAlt
-		{
-			get
-			{
-				return this._KennzAlt;
-			}
-			set
-			{
-				if ((this._KennzAlt != value))
-				{
-					this.OnKennzAltChanging(value);
-					this.SendPropertyChanging();
-					this._KennzAlt = value;
-					this.SendPropertyChanged("KennzAlt");
-					this.OnKennzAltChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZBII_ALT_NEU", DbType="Bit")]
-		public System.Nullable<bool> ZBII_ALT_NEU
-		{
-			get
-			{
-				return this._ZBII_ALT_NEU;
-			}
-			set
-			{
-				if ((this._ZBII_ALT_NEU != value))
-				{
-					this.OnZBII_ALT_NEUChanging(value);
-					this.SendPropertyChanging();
-					this._ZBII_ALT_NEU = value;
-					this.SendPropertyChanged("ZBII_ALT_NEU");
-					this.OnZBII_ALT_NEUChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VorhKennzReserv", DbType="Bit")]
-		public System.Nullable<bool> VorhKennzReserv
-		{
-			get
-			{
-				return this._VorhKennzReserv;
-			}
-			set
-			{
-				if ((this._VorhKennzReserv != value))
-				{
-					this.OnVorhKennzReservChanging(value);
-					this.SendPropertyChanging();
-					this._VorhKennzReserv = value;
-					this.SendPropertyChanged("VorhKennzReserv");
-					this.OnVorhKennzReservChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Still_Datum", DbType="DateTime")]
-		public System.Nullable<System.DateTime> Still_Datum
-		{
-			get
-			{
-				return this._Still_Datum;
-			}
-			set
-			{
-				if ((this._Still_Datum != value))
-				{
-					this.OnStill_DatumChanging(value);
-					this.SendPropertyChanging();
-					this._Still_Datum = value;
-					this.SendPropertyChanged("Still_Datum");
-					this.OnStill_DatumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Prali_Print", DbType="Bit")]
-		public System.Nullable<bool> Prali_Print
-		{
-			get
-			{
-				return this._Prali_Print;
-			}
-			set
-			{
-				if ((this._Prali_Print != value))
-				{
-					this.OnPrali_PrintChanging(value);
-					this.SendPropertyChanging();
-					this._Prali_Print = value;
-					this.SendPropertyChanged("Prali_Print");
-					this.OnPrali_PrintChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Flieger", DbType="Bit")]
-		public System.Nullable<bool> Flieger
-		{
-			get
-			{
-				return this._Flieger;
-			}
-			set
-			{
-				if ((this._Flieger != value))
-				{
-					this.OnFliegerChanging(value);
-					this.SendPropertyChanging();
-					this._Flieger = value;
-					this.SendPropertyChanged("Flieger");
-					this.OnFliegerChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UMBU", DbType="Bit")]
-		public System.Nullable<bool> UMBU
-		{
-			get
-			{
-				return this._UMBU;
-			}
-			set
-			{
-				if ((this._UMBU != value))
-				{
-					this.OnUMBUChanging(value);
-					this.SendPropertyChanging();
-					this._UMBU = value;
-					this.SendPropertyChanged("UMBU");
-					this.OnUMBUChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ABGESAGT", DbType="Bit")]
-		public System.Nullable<bool> ABGESAGT
-		{
-			get
-			{
-				return this._ABGESAGT;
-			}
-			set
-			{
-				if ((this._ABGESAGT != value))
-				{
-					this.OnABGESAGTChanging(value);
-					this.SendPropertyChanging();
-					this._ABGESAGT = value;
-					this.SendPropertyChanged("ABGESAGT");
-					this.OnABGESAGTChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_RUECKBU", DbType="Bit")]
-		public System.Nullable<bool> RUECKBU
-		{
-			get
-			{
-				return this._RUECKBU;
-			}
-			set
-			{
-				if ((this._RUECKBU != value))
-				{
-					this.OnRUECKBUChanging(value);
-					this.SendPropertyChanging();
-					this._RUECKBU = value;
-					this.SendPropertyChanged("RUECKBU");
-					this.OnRUECKBUChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EVB", DbType="NVarChar(7)")]
-		public string EVB
-		{
-			get
-			{
-				return this._EVB;
-			}
-			set
-			{
-				if ((this._EVB != value))
-				{
-					this.OnEVBChanging(value);
-					this.SendPropertyChanging();
-					this._EVB = value;
-					this.SendPropertyChanged("EVB");
-					this.OnEVBChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OBJECT_ID", DbType="NVarChar(50)")]
-		public string OBJECT_ID
-		{
-			get
-			{
-				return this._OBJECT_ID;
-			}
-			set
-			{
-				if ((this._OBJECT_ID != value))
-				{
-					this.OnOBJECT_IDChanging(value);
-					this.SendPropertyChanging();
-					this._OBJECT_ID = value;
-					this.SendPropertyChanged("OBJECT_ID");
-					this.OnOBJECT_IDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FAHRZ_ART", DbType="NVarChar(1)")]
-		public string FAHRZ_ART
-		{
-			get
-			{
-				return this._FAHRZ_ART;
-			}
-			set
-			{
-				if ((this._FAHRZ_ART != value))
-				{
-					this.OnFAHRZ_ARTChanging(value);
-					this.SendPropertyChanging();
-					this._FAHRZ_ART = value;
-					this.SendPropertyChanged("FAHRZ_ART");
-					this.OnFAHRZ_ARTChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MNRESW", DbType="Bit")]
-		public System.Nullable<bool> MNRESW
-		{
-			get
-			{
-				return this._MNRESW;
-			}
-			set
-			{
-				if ((this._MNRESW != value))
-				{
-					this.OnMNRESWChanging(value);
-					this.SendPropertyChanging();
-					this._MNRESW = value;
-					this.SendPropertyChanged("MNRESW");
-					this.OnMNRESWChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SERIE", DbType="Bit")]
-		public System.Nullable<bool> SERIE
-		{
-			get
-			{
-				return this._SERIE;
-			}
-			set
-			{
-				if ((this._SERIE != value))
-				{
-					this.OnSERIEChanging(value);
-					this.SendPropertyChanging();
-					this._SERIE = value;
-					this.SendPropertyChanged("SERIE");
-					this.OnSERIEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SAISON_KNZ", DbType="Bit")]
-		public System.Nullable<bool> SAISON_KNZ
-		{
-			get
-			{
-				return this._SAISON_KNZ;
-			}
-			set
-			{
-				if ((this._SAISON_KNZ != value))
-				{
-					this.OnSAISON_KNZChanging(value);
-					this.SendPropertyChanging();
-					this._SAISON_KNZ = value;
-					this.SendPropertyChanged("SAISON_KNZ");
-					this.OnSAISON_KNZChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SAISON_BEG", DbType="NVarChar(2)")]
-		public string SAISON_BEG
-		{
-			get
-			{
-				return this._SAISON_BEG;
-			}
-			set
-			{
-				if ((this._SAISON_BEG != value))
-				{
-					this.OnSAISON_BEGChanging(value);
-					this.SendPropertyChanging();
-					this._SAISON_BEG = value;
-					this.SendPropertyChanged("SAISON_BEG");
-					this.OnSAISON_BEGChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SAISON_END", DbType="NVarChar(2)")]
-		public string SAISON_END
-		{
-			get
-			{
-				return this._SAISON_END;
-			}
-			set
-			{
-				if ((this._SAISON_END != value))
-				{
-					this.OnSAISON_ENDChanging(value);
-					this.SendPropertyChanging();
-					this._SAISON_END = value;
-					this.SendPropertyChanged("SAISON_END");
-					this.OnSAISON_ENDChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TUEV_AU", DbType="NVarChar(4)")]
-		public string TUEV_AU
-		{
-			get
-			{
-				return this._TUEV_AU;
-			}
-			set
-			{
-				if ((this._TUEV_AU != value))
-				{
-					this.OnTUEV_AUChanging(value);
-					this.SendPropertyChanging();
-					this._TUEV_AU = value;
-					this.SendPropertyChanged("TUEV_AU");
-					this.OnTUEV_AUChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZOLLVERS_DAUER", DbType="NVarChar(2)")]
-		public string ZOLLVERS_DAUER
-		{
-			get
-			{
-				return this._ZOLLVERS_DAUER;
-			}
-			set
-			{
-				if ((this._ZOLLVERS_DAUER != value))
-				{
-					this.OnZOLLVERS_DAUERChanging(value);
-					this.SendPropertyChanging();
-					this._ZOLLVERS_DAUER = value;
-					this.SendPropertyChanged("ZOLLVERS_DAUER");
-					this.OnZOLLVERS_DAUERChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VORFUEHR", DbType="Bit")]
-		public System.Nullable<bool> VORFUEHR
-		{
-			get
-			{
-				return this._VORFUEHR;
-			}
-			set
-			{
-				if ((this._VORFUEHR != value))
-				{
-					this.OnVORFUEHRChanging(value);
-					this.SendPropertyChanging();
-					this._VORFUEHR = value;
-					this.SendPropertyChanged("VORFUEHR");
-					this.OnVORFUEHRChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_HALTE_DAUER", DbType="DateTime")]
-		public System.Nullable<System.DateTime> HALTE_DAUER
-		{
-			get
-			{
-				return this._HALTE_DAUER;
-			}
-			set
-			{
-				if ((this._HALTE_DAUER != value))
-				{
-					this.OnHALTE_DAUERChanging(value);
-					this.SendPropertyChanging();
-					this._HALTE_DAUER = value;
-					this.SendPropertyChanged("HALTE_DAUER");
-					this.OnHALTE_DAUERChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LTEXT_NR", DbType="NVarChar(10)")]
-		public string LTEXT_NR
-		{
-			get
-			{
-				return this._LTEXT_NR;
-			}
-			set
-			{
-				if ((this._LTEXT_NR != value))
-				{
-					this.OnLTEXT_NRChanging(value);
-					this.SendPropertyChanging();
-					this._LTEXT_NR = value;
-					this.SendPropertyChanged("LTEXT_NR");
-					this.OnLTEXT_NRChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BEB_STATUS", DbType="NVarChar(1)")]
-		public string BEB_STATUS
-		{
-			get
-			{
-				return this._BEB_STATUS;
-			}
-			set
-			{
-				if ((this._BEB_STATUS != value))
-				{
-					this.OnBEB_STATUSChanging(value);
-					this.SendPropertyChanging();
-					this._BEB_STATUS = value;
-					this.SendPropertyChanged("BEB_STATUS");
-					this.OnBEB_STATUSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR3", DbType="NVarChar(20)")]
-		public string ZZREFNR3
-		{
-			get
-			{
-				return this._ZZREFNR3;
-			}
-			set
-			{
-				if ((this._ZZREFNR3 != value))
-				{
-					this.OnZZREFNR3Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR3 = value;
-					this.SendPropertyChanged("ZZREFNR3");
-					this.OnZZREFNR3Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR4", DbType="NVarChar(20)")]
-		public string ZZREFNR4
-		{
-			get
-			{
-				return this._ZZREFNR4;
-			}
-			set
-			{
-				if ((this._ZZREFNR4 != value))
-				{
-					this.OnZZREFNR4Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR4 = value;
-					this.SendPropertyChanged("ZZREFNR4");
-					this.OnZZREFNR4Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR5", DbType="NVarChar(20)")]
-		public string ZZREFNR5
-		{
-			get
-			{
-				return this._ZZREFNR5;
-			}
-			set
-			{
-				if ((this._ZZREFNR5 != value))
-				{
-					this.OnZZREFNR5Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR5 = value;
-					this.SendPropertyChanged("ZZREFNR5");
-					this.OnZZREFNR5Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR6", DbType="NVarChar(20)")]
-		public string ZZREFNR6
-		{
-			get
-			{
-				return this._ZZREFNR6;
-			}
-			set
-			{
-				if ((this._ZZREFNR6 != value))
-				{
-					this.OnZZREFNR6Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR6 = value;
-					this.SendPropertyChanged("ZZREFNR6");
-					this.OnZZREFNR6Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR7", DbType="NVarChar(20)")]
-		public string ZZREFNR7
-		{
-			get
-			{
-				return this._ZZREFNR7;
-			}
-			set
-			{
-				if ((this._ZZREFNR7 != value))
-				{
-					this.OnZZREFNR7Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR7 = value;
-					this.SendPropertyChanged("ZZREFNR7");
-					this.OnZZREFNR7Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR8", DbType="NVarChar(20)")]
-		public string ZZREFNR8
-		{
-			get
-			{
-				return this._ZZREFNR8;
-			}
-			set
-			{
-				if ((this._ZZREFNR8 != value))
-				{
-					this.OnZZREFNR8Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR8 = value;
-					this.SendPropertyChanged("ZZREFNR8");
-					this.OnZZREFNR8Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR9", DbType="NVarChar(20)")]
-		public string ZZREFNR9
-		{
-			get
-			{
-				return this._ZZREFNR9;
-			}
-			set
-			{
-				if ((this._ZZREFNR9 != value))
-				{
-					this.OnZZREFNR9Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR9 = value;
-					this.SendPropertyChanged("ZZREFNR9");
-					this.OnZZREFNR9Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZZREFNR10", DbType="NVarChar(20)")]
-		public string ZZREFNR10
-		{
-			get
-			{
-				return this._ZZREFNR10;
-			}
-			set
-			{
-				if ((this._ZZREFNR10 != value))
-				{
-					this.OnZZREFNR10Changing(value);
-					this.SendPropertyChanging();
-					this._ZZREFNR10 = value;
-					this.SendPropertyChanged("ZZREFNR10");
-					this.OnZZREFNR10Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AH_DOKNAME", DbType="NVarChar(60)")]
-		public string AH_DOKNAME
-		{
-			get
-			{
-				return this._AH_DOKNAME;
-			}
-			set
-			{
-				if ((this._AH_DOKNAME != value))
-				{
-					this.OnAH_DOKNAMEChanging(value);
-					this.SendPropertyChanging();
-					this._AH_DOKNAME = value;
-					this.SendPropertyChanged("AH_DOKNAME");
-					this.OnAH_DOKNAMEChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZusatzKZ", DbType="NVarChar(1)")]
-		public string ZusatzKZ
-		{
-			get
-			{
-				return this._ZusatzKZ;
-			}
-			set
-			{
-				if ((this._ZusatzKZ != value))
-				{
-					this.OnZusatzKZChanging(value);
-					this.SendPropertyChanging();
-					this._ZusatzKZ = value;
-					this.SendPropertyChanged("ZusatzKZ");
-					this.OnZusatzKZChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WunschKZ2", DbType="NVarChar(20)")]
-		public string WunschKZ2
-		{
-			get
-			{
-				return this._WunschKZ2;
-			}
-			set
-			{
-				if ((this._WunschKZ2 != value))
-				{
-					this.OnWunschKZ2Changing(value);
-					this.SendPropertyChanging();
-					this._WunschKZ2 = value;
-					this.SendPropertyChanged("WunschKZ2");
-					this.OnWunschKZ2Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WunschKZ3", DbType="NVarChar(20)")]
-		public string WunschKZ3
-		{
-			get
-			{
-				return this._WunschKZ3;
-			}
-			set
-			{
-				if ((this._WunschKZ3 != value))
-				{
-					this.OnWunschKZ3Changing(value);
-					this.SendPropertyChanging();
-					this._WunschKZ3 = value;
-					this.SendPropertyChanged("WunschKZ3");
-					this.OnWunschKZ3Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_OhneGruenenVersSchein", DbType="NVarChar(1)")]
-		public string OhneGruenenVersSchein
-		{
-			get
-			{
-				return this._OhneGruenenVersSchein;
-			}
-			set
-			{
-				if ((this._OhneGruenenVersSchein != value))
-				{
-					this.OnOhneGruenenVersScheinChanging(value);
-					this.SendPropertyChanging();
-					this._OhneGruenenVersSchein = value;
-					this.SendPropertyChanged("OhneGruenenVersSchein");
-					this.OnOhneGruenenVersScheinChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_VorerfUhrzeit", DbType="NVarChar(6)")]
-		public string VorerfUhrzeit
-		{
-			get
-			{
-				return this._VorerfUhrzeit;
-			}
-			set
-			{
-				if ((this._VorerfUhrzeit != value))
-				{
-					this.OnVorerfUhrzeitChanging(value);
-					this.SendPropertyChanging();
-					this._VorerfUhrzeit = value;
-					this.SendPropertyChanged("VorerfUhrzeit");
-					this.OnVorerfUhrzeitChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Infotext", DbType="NVarChar(40)")]
-		public string Infotext
-		{
-			get
-			{
-				return this._Infotext;
-			}
-			set
-			{
-				if ((this._Infotext != value))
-				{
-					this.OnInfotextChanging(value);
-					this.SendPropertyChanging();
-					this._Infotext = value;
-					this.SendPropertyChanged("Infotext");
-					this.OnInfotextChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nachbearbeiten", DbType="Bit")]
-		public System.Nullable<bool> Nachbearbeiten
-		{
-			get
-			{
-				return this._Nachbearbeiten;
-			}
-			set
-			{
-				if ((this._Nachbearbeiten != value))
-				{
-					this.OnNachbearbeitenChanging(value);
-					this.SendPropertyChanging();
-					this._Nachbearbeiten = value;
-					this.SendPropertyChanged("Nachbearbeiten");
-					this.OnNachbearbeitenChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Mobuser", DbType="NVarChar(12)")]
-		public string Mobuser
-		{
-			get
-			{
-				return this._Mobuser;
-			}
-			set
-			{
-				if ((this._Mobuser != value))
-				{
-					this.OnMobuserChanging(value);
-					this.SendPropertyChanging();
-					this._Mobuser = value;
-					this.SendPropertyChanged("Mobuser");
-					this.OnMobuserChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_POOLNR", DbType="NVarChar(20)")]
-		public string POOLNR
-		{
-			get
-			{
-				return this._POOLNR;
-			}
-			set
-			{
-				if ((this._POOLNR != value))
-				{
-					this.OnPOOLNRChanging(value);
-					this.SendPropertyChanging();
-					this._POOLNR = value;
-					this.SendPropertyChanged("POOLNR");
-					this.OnPOOLNRChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ZOLLVERS", DbType="NVarChar(1)")]
-		public string ZOLLVERS
-		{
-			get
-			{
-				return this._ZOLLVERS;
-			}
-			set
-			{
-				if ((this._ZOLLVERS != value))
-				{
-					this.OnZOLLVERSChanging(value);
-					this.SendPropertyChanging();
-					this._ZOLLVERS = value;
-					this.SendPropertyChanged("ZOLLVERS");
-					this.OnZOLLVERSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KURZZEITVS", DbType="NVarChar(1)")]
-		public string KURZZEITVS
-		{
-			get
-			{
-				return this._KURZZEITVS;
-			}
-			set
-			{
-				if ((this._KURZZEITVS != value))
-				{
-					this.OnKURZZEITVSChanging(value);
-					this.SendPropertyChanging();
-					this._KURZZEITVS = value;
-					this.SendPropertyChanged("KURZZEITVS");
-					this.OnKURZZEITVSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ONLINE_VG", DbType="Bit")]
-		public System.Nullable<bool> ONLINE_VG
-		{
-			get
-			{
-				return this._ONLINE_VG;
-			}
-			set
-			{
-				if ((this._ONLINE_VG != value))
-				{
-					this.OnONLINE_VGChanging(value);
-					this.SendPropertyChanging();
-					this._ONLINE_VG = value;
-					this.SendPropertyChanged("ONLINE_VG");
-					this.OnONLINE_VGChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SofortabrechnungErledigt", DbType="Bit")]
-		public System.Nullable<bool> SofortabrechnungErledigt
-		{
-			get
-			{
-				return this._SofortabrechnungErledigt;
-			}
-			set
-			{
-				if ((this._SofortabrechnungErledigt != value))
-				{
-					this.OnSofortabrechnungErledigtChanging(value);
-					this.SendPropertyChanging();
-					this._SofortabrechnungErledigt = value;
-					this.SendPropertyChanged("SofortabrechnungErledigt");
-					this.OnSofortabrechnungErledigtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SofortabrechnungPfad", DbType="NVarChar(30)")]
-		public string SofortabrechnungPfad
-		{
-			get
-			{
-				return this._SofortabrechnungPfad;
-			}
-			set
-			{
-				if ((this._SofortabrechnungPfad != value))
-				{
-					this.OnSofortabrechnungPfadChanging(value);
-					this.SendPropertyChanging();
-					this._SofortabrechnungPfad = value;
-					this.SendPropertyChanged("SofortabrechnungPfad");
-					this.OnSofortabrechnungPfadChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Briefnr", DbType="NVarChar(25)")]
-		public string Briefnr
-		{
-			get
-			{
-				return this._Briefnr;
-			}
-			set
-			{
-				if ((this._Briefnr != value))
-				{
-					this.OnBriefnrChanging(value);
-					this.SendPropertyChanging();
-					this._Briefnr = value;
-					this.SendPropertyChanged("Briefnr");
-					this.OnBriefnrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Orderid", DbType="NVarChar(10)")]
-		public string Orderid
-		{
-			get
-			{
-				return this._Orderid;
-			}
-			set
-			{
-				if ((this._Orderid != value))
-				{
-					this.OnOrderidChanging(value);
-					this.SendPropertyChanging();
-					this._Orderid = value;
-					this.SendPropertyChanged("Orderid");
-					this.OnOrderidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Hppos", DbType="NVarChar(4)")]
-		public string Hppos
-		{
-			get
-			{
-				return this._Hppos;
-			}
-			set
-			{
-				if ((this._Hppos != value))
-				{
-					this.OnHpposChanging(value);
-					this.SendPropertyChanging();
-					this._Hppos = value;
-					this.SendPropertyChanged("Hppos");
-					this.OnHpposChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDKopfTabelle_ZLDBankverbindung", Storage="_ZLDBankverbindung", ThisKey="id", OtherKey="id_Kopf")]
-		public EntitySet<ZLDBankverbindung> ZLDBankverbindung
-		{
-			get
-			{
-				return this._ZLDBankverbindung;
-			}
-			set
-			{
-				this._ZLDBankverbindung.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDKopfTabelle_ZLDKundenadresse", Storage="_ZLDKundenadresse", ThisKey="id", OtherKey="id_Kopf")]
-		public EntitySet<ZLDKundenadresse> ZLDKundenadresse
-		{
-			get
-			{
-				return this._ZLDKundenadresse;
-			}
-			set
-			{
-				this._ZLDKundenadresse.Assign(value);
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDKopfTabelle_ZLDPositionsTabelle", Storage="_ZLDPositionsTabelle", ThisKey="id", OtherKey="id_Kopf")]
-		public EntitySet<ZLDPositionsTabelle> ZLDPositionsTabelle
-		{
-			get
-			{
-				return this._ZLDPositionsTabelle;
-			}
-			set
-			{
-				this._ZLDPositionsTabelle.Assign(value);
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-		
-		private void attach_ZLDBankverbindung(ZLDBankverbindung entity)
-		{
-			this.SendPropertyChanging();
-			entity.ZLDKopfTabelle = this;
-		}
-		
-		private void detach_ZLDBankverbindung(ZLDBankverbindung entity)
-		{
-			this.SendPropertyChanging();
-			entity.ZLDKopfTabelle = null;
-		}
-		
-		private void attach_ZLDKundenadresse(ZLDKundenadresse entity)
-		{
-			this.SendPropertyChanging();
-			entity.ZLDKopfTabelle = this;
-		}
-		
-		private void detach_ZLDKundenadresse(ZLDKundenadresse entity)
-		{
-			this.SendPropertyChanging();
-			entity.ZLDKopfTabelle = null;
-		}
-		
-		private void attach_ZLDPositionsTabelle(ZLDPositionsTabelle entity)
-		{
-			this.SendPropertyChanging();
-			entity.ZLDKopfTabelle = this;
-		}
-		
-		private void detach_ZLDPositionsTabelle(ZLDPositionsTabelle entity)
-		{
-			this.SendPropertyChanging();
-			entity.ZLDKopfTabelle = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDPositionsTabelle")]
-	public partial class ZLDPositionsTabelle : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _id;
-		
-		private int _id_Kopf;
-		
-		private System.Nullable<int> _id_pos;
-		
-		private string _Menge;
-		
-		private string _Matnr;
-		
-		private string _Matbez;
-		
-		private System.Nullable<decimal> _Preis;
-		
-		private System.Nullable<decimal> _Preis_Amt;
-		
-		private string _PosLoesch;
-		
-		private string _GebMatnr;
-		
-		private string _GebMatbez;
-		
-		private string _GebMatnrSt;
-		
-		private string _GebMatBezSt;
-		
-		private System.Nullable<decimal> _GebPreis;
-		
-		private string _Kennzmat;
-		
-		private System.Nullable<decimal> _PreisKZ;
-		
-		private System.Nullable<int> _UEPOS;
-		
-		private string _WebMTArt;
-		
-		private string _SDRelevant;
-		
-		private string _GebMatPflicht;
-		
-		private string _UPreis;
-		
-		private string _Differrenz;
-		
-		private string _Konditionstab;
-		
-		private string _Konditionsart;
-		
-		private System.Nullable<System.DateTime> _CalcDat;
-		
-		private string _GebPak;
-		
-		private System.Nullable<decimal> _Preis_Amt_Add;
-		
-		private EntityRef<ZLDKopfTabelle> _ZLDKopfTabelle;
-		
-    #region Definitionen der Erweiterungsmethoden
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnidChanging(int value);
-    partial void OnidChanged();
-    partial void Onid_KopfChanging(int value);
-    partial void Onid_KopfChanged();
-    partial void Onid_posChanging(System.Nullable<int> value);
-    partial void Onid_posChanged();
-    partial void OnMengeChanging(string value);
-    partial void OnMengeChanged();
-    partial void OnMatnrChanging(string value);
-    partial void OnMatnrChanged();
-    partial void OnMatbezChanging(string value);
-    partial void OnMatbezChanged();
-    partial void OnPreisChanging(System.Nullable<decimal> value);
-    partial void OnPreisChanged();
-    partial void OnPreis_AmtChanging(System.Nullable<decimal> value);
-    partial void OnPreis_AmtChanged();
-    partial void OnPosLoeschChanging(string value);
-    partial void OnPosLoeschChanged();
-    partial void OnGebMatnrChanging(string value);
-    partial void OnGebMatnrChanged();
-    partial void OnGebMatbezChanging(string value);
-    partial void OnGebMatbezChanged();
-    partial void OnGebMatnrStChanging(string value);
-    partial void OnGebMatnrStChanged();
-    partial void OnGebMatBezStChanging(string value);
-    partial void OnGebMatBezStChanged();
-    partial void OnGebPreisChanging(System.Nullable<decimal> value);
-    partial void OnGebPreisChanged();
-    partial void OnKennzmatChanging(string value);
-    partial void OnKennzmatChanged();
-    partial void OnPreisKZChanging(System.Nullable<decimal> value);
-    partial void OnPreisKZChanged();
-    partial void OnUEPOSChanging(System.Nullable<int> value);
-    partial void OnUEPOSChanged();
-    partial void OnWebMTArtChanging(string value);
-    partial void OnWebMTArtChanged();
-    partial void OnSDRelevantChanging(string value);
-    partial void OnSDRelevantChanged();
-    partial void OnGebMatPflichtChanging(string value);
-    partial void OnGebMatPflichtChanged();
-    partial void OnUPreisChanging(string value);
-    partial void OnUPreisChanged();
-    partial void OnDifferrenzChanging(string value);
-    partial void OnDifferrenzChanged();
-    partial void OnKonditionstabChanging(string value);
-    partial void OnKonditionstabChanged();
-    partial void OnKonditionsartChanging(string value);
-    partial void OnKonditionsartChanged();
-    partial void OnCalcDatChanging(System.Nullable<System.DateTime> value);
-    partial void OnCalcDatChanged();
-    partial void OnGebPakChanging(string value);
-    partial void OnGebPakChanged();
-    partial void OnPreis_Amt_AddChanging(System.Nullable<decimal> value);
-    partial void OnPreis_Amt_AddChanged();
-    #endregion
-		
-		public ZLDPositionsTabelle()
-		{
-			this._ZLDKopfTabelle = default(EntityRef<ZLDKopfTabelle>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int id
-		{
-			get
-			{
-				return this._id;
-			}
-			set
-			{
-				if ((this._id != value))
-				{
-					this.OnidChanging(value);
-					this.SendPropertyChanging();
-					this._id = value;
-					this.SendPropertyChanged("id");
-					this.OnidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_Kopf", DbType="Int NOT NULL")]
-		public int id_Kopf
-		{
-			get
-			{
-				return this._id_Kopf;
-			}
-			set
-			{
-				if ((this._id_Kopf != value))
-				{
-					if (this._ZLDKopfTabelle.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.Onid_KopfChanging(value);
-					this.SendPropertyChanging();
-					this._id_Kopf = value;
-					this.SendPropertyChanged("id_Kopf");
-					this.Onid_KopfChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_id_pos", DbType="Int")]
-		public System.Nullable<int> id_pos
-		{
-			get
-			{
-				return this._id_pos;
-			}
-			set
-			{
-				if ((this._id_pos != value))
-				{
-					this.Onid_posChanging(value);
-					this.SendPropertyChanging();
-					this._id_pos = value;
-					this.SendPropertyChanged("id_pos");
-					this.Onid_posChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Menge", DbType="NVarChar(15)")]
-		public string Menge
-		{
-			get
-			{
-				return this._Menge;
-			}
-			set
-			{
-				if ((this._Menge != value))
-				{
-					this.OnMengeChanging(value);
-					this.SendPropertyChanging();
-					this._Menge = value;
-					this.SendPropertyChanged("Menge");
-					this.OnMengeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Matnr", DbType="NVarChar(18)")]
-		public string Matnr
-		{
-			get
-			{
-				return this._Matnr;
-			}
-			set
-			{
-				if ((this._Matnr != value))
-				{
-					this.OnMatnrChanging(value);
-					this.SendPropertyChanging();
-					this._Matnr = value;
-					this.SendPropertyChanged("Matnr");
-					this.OnMatnrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Matbez", DbType="NVarChar(40)")]
-		public string Matbez
-		{
-			get
-			{
-				return this._Matbez;
-			}
-			set
-			{
-				if ((this._Matbez != value))
-				{
-					this.OnMatbezChanging(value);
-					this.SendPropertyChanging();
-					this._Matbez = value;
-					this.SendPropertyChanged("Matbez");
-					this.OnMatbezChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Preis", DbType="Money")]
-		public System.Nullable<decimal> Preis
-		{
-			get
-			{
-				return this._Preis;
-			}
-			set
-			{
-				if ((this._Preis != value))
-				{
-					this.OnPreisChanging(value);
-					this.SendPropertyChanging();
-					this._Preis = value;
-					this.SendPropertyChanged("Preis");
-					this.OnPreisChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Preis_Amt", DbType="Money")]
-		public System.Nullable<decimal> Preis_Amt
-		{
-			get
-			{
-				return this._Preis_Amt;
-			}
-			set
-			{
-				if ((this._Preis_Amt != value))
-				{
-					this.OnPreis_AmtChanging(value);
-					this.SendPropertyChanging();
-					this._Preis_Amt = value;
-					this.SendPropertyChanged("Preis_Amt");
-					this.OnPreis_AmtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PosLoesch", DbType="NVarChar(2)")]
-		public string PosLoesch
-		{
-			get
-			{
-				return this._PosLoesch;
-			}
-			set
-			{
-				if ((this._PosLoesch != value))
-				{
-					this.OnPosLoeschChanging(value);
-					this.SendPropertyChanging();
-					this._PosLoesch = value;
-					this.SendPropertyChanged("PosLoesch");
-					this.OnPosLoeschChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebMatnr", DbType="NVarChar(18)")]
-		public string GebMatnr
-		{
-			get
-			{
-				return this._GebMatnr;
-			}
-			set
-			{
-				if ((this._GebMatnr != value))
-				{
-					this.OnGebMatnrChanging(value);
-					this.SendPropertyChanging();
-					this._GebMatnr = value;
-					this.SendPropertyChanged("GebMatnr");
-					this.OnGebMatnrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebMatbez", DbType="NVarChar(40)")]
-		public string GebMatbez
-		{
-			get
-			{
-				return this._GebMatbez;
-			}
-			set
-			{
-				if ((this._GebMatbez != value))
-				{
-					this.OnGebMatbezChanging(value);
-					this.SendPropertyChanging();
-					this._GebMatbez = value;
-					this.SendPropertyChanged("GebMatbez");
-					this.OnGebMatbezChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebMatnrSt", DbType="NVarChar(18)")]
-		public string GebMatnrSt
-		{
-			get
-			{
-				return this._GebMatnrSt;
-			}
-			set
-			{
-				if ((this._GebMatnrSt != value))
-				{
-					this.OnGebMatnrStChanging(value);
-					this.SendPropertyChanging();
-					this._GebMatnrSt = value;
-					this.SendPropertyChanged("GebMatnrSt");
-					this.OnGebMatnrStChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebMatBezSt", DbType="NVarChar(40)")]
-		public string GebMatBezSt
-		{
-			get
-			{
-				return this._GebMatBezSt;
-			}
-			set
-			{
-				if ((this._GebMatBezSt != value))
-				{
-					this.OnGebMatBezStChanging(value);
-					this.SendPropertyChanging();
-					this._GebMatBezSt = value;
-					this.SendPropertyChanged("GebMatBezSt");
-					this.OnGebMatBezStChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebPreis", DbType="Money")]
-		public System.Nullable<decimal> GebPreis
-		{
-			get
-			{
-				return this._GebPreis;
-			}
-			set
-			{
-				if ((this._GebPreis != value))
-				{
-					this.OnGebPreisChanging(value);
-					this.SendPropertyChanging();
-					this._GebPreis = value;
-					this.SendPropertyChanged("GebPreis");
-					this.OnGebPreisChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kennzmat", DbType="NChar(18)")]
-		public string Kennzmat
-		{
-			get
-			{
-				return this._Kennzmat;
-			}
-			set
-			{
-				if ((this._Kennzmat != value))
-				{
-					this.OnKennzmatChanging(value);
-					this.SendPropertyChanging();
-					this._Kennzmat = value;
-					this.SendPropertyChanged("Kennzmat");
-					this.OnKennzmatChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PreisKZ", DbType="Money")]
-		public System.Nullable<decimal> PreisKZ
-		{
-			get
-			{
-				return this._PreisKZ;
-			}
-			set
-			{
-				if ((this._PreisKZ != value))
-				{
-					this.OnPreisKZChanging(value);
-					this.SendPropertyChanging();
-					this._PreisKZ = value;
-					this.SendPropertyChanged("PreisKZ");
-					this.OnPreisKZChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UEPOS", DbType="Int")]
-		public System.Nullable<int> UEPOS
-		{
-			get
-			{
-				return this._UEPOS;
-			}
-			set
-			{
-				if ((this._UEPOS != value))
-				{
-					this.OnUEPOSChanging(value);
-					this.SendPropertyChanging();
-					this._UEPOS = value;
-					this.SendPropertyChanged("UEPOS");
-					this.OnUEPOSChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WebMTArt", DbType="NVarChar(2)")]
-		public string WebMTArt
-		{
-			get
-			{
-				return this._WebMTArt;
-			}
-			set
-			{
-				if ((this._WebMTArt != value))
-				{
-					this.OnWebMTArtChanging(value);
-					this.SendPropertyChanging();
-					this._WebMTArt = value;
-					this.SendPropertyChanged("WebMTArt");
-					this.OnWebMTArtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SDRelevant", DbType="NVarChar(2)")]
-		public string SDRelevant
-		{
-			get
-			{
-				return this._SDRelevant;
-			}
-			set
-			{
-				if ((this._SDRelevant != value))
-				{
-					this.OnSDRelevantChanging(value);
-					this.SendPropertyChanging();
-					this._SDRelevant = value;
-					this.SendPropertyChanged("SDRelevant");
-					this.OnSDRelevantChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebMatPflicht", DbType="NVarChar(2)")]
-		public string GebMatPflicht
-		{
-			get
-			{
-				return this._GebMatPflicht;
-			}
-			set
-			{
-				if ((this._GebMatPflicht != value))
-				{
-					this.OnGebMatPflichtChanging(value);
-					this.SendPropertyChanging();
-					this._GebMatPflicht = value;
-					this.SendPropertyChanged("GebMatPflicht");
-					this.OnGebMatPflichtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UPreis", DbType="NVarChar(25)")]
-		public string UPreis
-		{
-			get
-			{
-				return this._UPreis;
-			}
-			set
-			{
-				if ((this._UPreis != value))
-				{
-					this.OnUPreisChanging(value);
-					this.SendPropertyChanging();
-					this._UPreis = value;
-					this.SendPropertyChanged("UPreis");
-					this.OnUPreisChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Differrenz", DbType="NVarChar(25)")]
-		public string Differrenz
-		{
-			get
-			{
-				return this._Differrenz;
-			}
-			set
-			{
-				if ((this._Differrenz != value))
-				{
-					this.OnDifferrenzChanging(value);
-					this.SendPropertyChanging();
-					this._Differrenz = value;
-					this.SendPropertyChanged("Differrenz");
-					this.OnDifferrenzChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionstab", DbType="NVarChar(50)")]
-		public string Konditionstab
-		{
-			get
-			{
-				return this._Konditionstab;
-			}
-			set
-			{
-				if ((this._Konditionstab != value))
-				{
-					this.OnKonditionstabChanging(value);
-					this.SendPropertyChanging();
-					this._Konditionstab = value;
-					this.SendPropertyChanged("Konditionstab");
-					this.OnKonditionstabChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionsart", DbType="NVarChar(50)")]
-		public string Konditionsart
-		{
-			get
-			{
-				return this._Konditionsart;
-			}
-			set
-			{
-				if ((this._Konditionsart != value))
-				{
-					this.OnKonditionsartChanging(value);
-					this.SendPropertyChanging();
-					this._Konditionsart = value;
-					this.SendPropertyChanged("Konditionsart");
-					this.OnKonditionsartChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CalcDat", DbType="DateTime")]
-		public System.Nullable<System.DateTime> CalcDat
-		{
-			get
-			{
-				return this._CalcDat;
-			}
-			set
-			{
-				if ((this._CalcDat != value))
-				{
-					this.OnCalcDatChanging(value);
-					this.SendPropertyChanging();
-					this._CalcDat = value;
-					this.SendPropertyChanged("CalcDat");
-					this.OnCalcDatChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebPak", DbType="NVarChar(1)")]
-		public string GebPak
-		{
-			get
-			{
-				return this._GebPak;
-			}
-			set
-			{
-				if ((this._GebPak != value))
-				{
-					this.OnGebPakChanging(value);
-					this.SendPropertyChanging();
-					this._GebPak = value;
-					this.SendPropertyChanged("GebPak");
-					this.OnGebPakChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Preis_Amt_Add", DbType="Money")]
-		public System.Nullable<decimal> Preis_Amt_Add
-		{
-			get
-			{
-				return this._Preis_Amt_Add;
-			}
-			set
-			{
-				if ((this._Preis_Amt_Add != value))
-				{
-					this.OnPreis_Amt_AddChanging(value);
-					this.SendPropertyChanging();
-					this._Preis_Amt_Add = value;
-					this.SendPropertyChanged("Preis_Amt_Add");
-					this.OnPreis_Amt_AddChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDKopfTabelle_ZLDPositionsTabelle", Storage="_ZLDKopfTabelle", ThisKey="id_Kopf", OtherKey="id", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ZLDKopfTabelle ZLDKopfTabelle
-		{
-			get
-			{
-				return this._ZLDKopfTabelle.Entity;
-			}
-			set
-			{
-				ZLDKopfTabelle previousValue = this._ZLDKopfTabelle.Entity;
+				ZLDVorgangBank previousValue = this._ZLDVorgangBank.Entity;
 				if (((previousValue != value) 
-							|| (this._ZLDKopfTabelle.HasLoadedOrAssignedValue == false)))
+							|| (this._ZLDVorgangBank.HasLoadedOrAssignedValue == false)))
 				{
 					this.SendPropertyChanging();
 					if ((previousValue != null))
 					{
-						this._ZLDKopfTabelle.Entity = null;
-						previousValue.ZLDPositionsTabelle.Remove(this);
+						this._ZLDVorgangBank.Entity = null;
+						previousValue.ZLDVorgangKopf = null;
 					}
-					this._ZLDKopfTabelle.Entity = value;
+					this._ZLDVorgangBank.Entity = value;
 					if ((value != null))
 					{
-						value.ZLDPositionsTabelle.Add(this);
-						this._id_Kopf = value.id;
+						value.ZLDVorgangKopf = this;
 					}
-					else
-					{
-						this._id_Kopf = default(int);
-					}
-					this.SendPropertyChanged("ZLDKopfTabelle");
+					this.SendPropertyChanged("ZLDVorgangBank");
 				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangAdresse", Storage="_ZLDVorgangAdresse", ThisKey="SapId", OtherKey="SapId", IsUnique=true, IsForeignKey=false)]
+		public ZLDVorgangAdresse ZLDVorgangAdresse
+		{
+			get
+			{
+				return this._ZLDVorgangAdresse.Entity;
+			}
+			set
+			{
+				ZLDVorgangAdresse previousValue = this._ZLDVorgangAdresse.Entity;
+				if (((previousValue != value) 
+							|| (this._ZLDVorgangAdresse.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ZLDVorgangAdresse.Entity = null;
+						previousValue.ZLDVorgangKopf = null;
+					}
+					this._ZLDVorgangAdresse.Entity = value;
+					if ((value != null))
+					{
+						value.ZLDVorgangKopf = this;
+					}
+					this.SendPropertyChanged("ZLDVorgangAdresse");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangPosition", Storage="_ZLDVorgangPosition", ThisKey="SapId", OtherKey="SapId")]
+		public EntitySet<ZLDVorgangPosition> ZLDVorgangPosition
+		{
+			get
+			{
+				return this._ZLDVorgangPosition;
+			}
+			set
+			{
+				this._ZLDVorgangPosition.Assign(value);
 			}
 		}
 		
@@ -4087,6 +1971,18 @@ namespace AppZulassungsdienst.lib
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+		
+		private void attach_ZLDVorgangPosition(ZLDVorgangPosition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ZLDVorgangKopf = this;
+		}
+		
+		private void detach_ZLDVorgangPosition(ZLDVorgangPosition entity)
+		{
+			this.SendPropertyChanging();
+			entity.ZLDVorgangKopf = null;
 		}
 	}
 }
