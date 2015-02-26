@@ -88,5 +88,7 @@ namespace CkgDomainLogic.General.Contracts
         MaintenanceResult ValidateMaintenance();
 
         void MaintenanceMessageConfirmAndDontShowAgain();
+
+        int GetAppIdCurrent();
     }
 }
