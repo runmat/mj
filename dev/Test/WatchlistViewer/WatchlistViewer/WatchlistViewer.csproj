@@ -20,7 +20,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;xTEST</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -32,6 +32,9 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>stock.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="RazorHosting">
@@ -88,6 +91,7 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Stock.cs" />
     <Compile Include="StockService.cs" />
+    <Compile Include="TaskService.cs" />
     <Compile Include="UserControls\StockItem.xaml.cs">
       <DependentUpon>StockItem.xaml</DependentUpon>
     </Compile>
@@ -153,7 +157,9 @@
       <Name>WpfTools4</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="stock.ico" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -3,12 +3,13 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:userControls="clr-namespace:WatchlistViewer.UserControls"
         WindowStartupLocation="Manual"
-        Top="0" Left="1200" Topmost="True"
-        WindowStyle="ToolWindow" ShowInTaskbar="False"
+        SizeChanged="MainWindow_OnSizeChanged"
+        Top="19" Topmost="True"
+        WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
         Title="Watchlist Viewer" SizeToContent="WidthAndHeight" >
     <StackPanel Orientation="Horizontal">
 
-        <ItemsControl ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="0,0,0,0">
+        <ItemsControl ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="0,0,15,0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <userControls:StockItem />
@@ -16,9 +17,11 @@
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <Button Command="{Binding GetStockDataCommand}" Width="80" Height="25" Margin="50,0,50,0">Stock data</Button>
-        <Button Command="{Binding WatchlistShowCommand}" Width="80" Height="25">Show</Button>
-        <Button Command="{Binding WatchlistHideCommand}" Width="80" Height="25">Hide</Button>
+        <Button Command="{Binding GetStockDataCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/refresh}" ToolTip="Watchlist aktualisieren" />
+        <Button Command="{Binding WatchlistShowCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/OK}" ToolTip="Watchlist anzeigen" />
+        <Button Command="{Binding WatchlistHideCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/deactivate}" ToolTip="Watchlist ausblenden"  />
+
+        <Button Command="{Binding QuitCommand}" Margin="20,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete}" ToolTip="Applikation beenden!"  />
 
     </StackPanel>
 </Window>

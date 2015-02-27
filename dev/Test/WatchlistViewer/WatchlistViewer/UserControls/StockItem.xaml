@@ -4,7 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              mc:Ignorable="d" d:DesignHeight="80" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal" Margin="10,0,0,0">
-            <TextBlock>Walter</TextBlock>
+    <StackPanel Orientation="Horizontal" Margin="0,0,0,0" ToolTip="{Binding ToolTip}">
+        <TextBlock Text="{Binding ShortName}" Foreground="Blue" Margin="0,0,3,0" Width="35" TextAlignment="Right" />
+        <TextBlock Text="{Binding Value, StringFormat={}{0:N2}}" Foreground="{Binding ForeColor}" Margin="0,0,0,0" Width="50" TextAlignment="Left" />
     </StackPanel>
 </UserControl>

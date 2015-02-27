@@ -30,6 +30,7 @@
     <Image x:Shared="False" x:Key="image/16x16/down" Source="pack://application:,,,/WpfTools4;component/Images/16x16/down.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/down_bottom" Source="pack://application:,,,/WpfTools4;component/Images/16x16/down_bottom.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/refresh" Source="pack://application:,,,/WpfTools4;component/Images/16x16/refresh.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/deactivate" Source="pack://application:,,,/WpfTools4;component/Images/16x16/deactivate.png" SnapsToDevicePixels="True" Width="16" Height="16" />
 
     <Image x:Shared="False" x:Key="image/16x16/file_new" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_new.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/file_edit" Source="pack://application:,,,/WpfTools4;component/Images/16x16/file_edit.png" SnapsToDevicePixels="True" Width="16" Height="16" />
