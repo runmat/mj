@@ -1,4 +1,5 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System.Threading;
+// ReSharper disable RedundantUsingDirective
 using System.Drawing;
 using System.Windows.Forms;
 using OpenQA.Selenium;
@@ -86,6 +87,7 @@ namespace WatchlistViewer
 
                 var screenBounds = Screen.PrimaryScreen.Bounds;
                 _driver.FindElement(By.TagName("body")).SendKeys(Keys.F11);
+                Thread.Sleep(1000);
                 window.Position = new Point
                 {
                     X = (screenBounds.Width / 2 - width / 2),
