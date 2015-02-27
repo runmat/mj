@@ -40,3 +40,7 @@ C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\bin\Debug
 C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\bin\Debug\de-DE\GeneralTools.resources.dll
 C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\obj\Debug\Resources\LocalStyles.baml
 C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\obj\Debug\App.baml
+C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\obj\Debug\UserControls\StockItem.baml
+C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\obj\Debug\UserControls\StockItem.g.cs
+C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\JenzenM\Documents\mj\dev\Test\WatchlistViewer\WatchlistViewer\obj\Debug\WatchlistViewer_MarkupCompile.lref

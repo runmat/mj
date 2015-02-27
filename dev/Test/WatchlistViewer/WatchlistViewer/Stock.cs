@@ -8,14 +8,42 @@ using GeneralTools.Models;
 
 namespace WatchlistViewer
 {
-    public class Stock
+    public class Stock : ModelBase 
     {
-        public string Name { get; set; }
+        private string _name;
+        private string _wkn;
+        private DateTime _dateTime;
+        private double _value;
+        private double _change;
 
-        public string Value { get; set; }
+        public string Name
+        {
+            get { return _name; }
+            set { _name = value; SendPropertyChanged("Name"); }
+        }
 
-        public string Timestamp { get; set; }
+        public string Wkn
+        {
+            get { return _wkn; }
+            set { _wkn = value; SendPropertyChanged("Wkn"); }
+        }
 
-        public string ChangePercent { get; set; }
+        public DateTime DateTime
+        {
+            get { return _dateTime; }
+            set { _dateTime = value; SendPropertyChanged("DateTime"); }
+        }
+
+        public double Value
+        {
+            get { return _value; }
+            set { _value = value; SendPropertyChanged("Value"); }
+        }
+
+        public double Change
+        {
+            get { return _change; }
+            set { _change = value; SendPropertyChanged("Change"); }
+        }
     }
 }

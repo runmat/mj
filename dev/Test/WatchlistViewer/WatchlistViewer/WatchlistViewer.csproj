@@ -88,6 +88,9 @@
     <Compile Include="MainViewModel.cs" />
     <Compile Include="Stock.cs" />
     <Compile Include="StockService.cs" />
+    <Compile Include="UserControls\StockItem.xaml.cs">
+      <DependentUpon>StockItem.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WindowHelper.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -103,6 +106,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Resources\LocalStyles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\StockItem.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,14 +1,24 @@
 ﻿<Window x:Class="WatchlistViewer.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:userControls="clr-namespace:WatchlistViewer.UserControls"
         WindowStartupLocation="Manual"
         Top="0" Left="1200" Topmost="True"
         WindowStyle="ToolWindow" ShowInTaskbar="False"
-        Title="Watchlist Viewer" Height="80" Width="525">
+        Title="Watchlist Viewer" SizeToContent="WidthAndHeight" >
     <StackPanel Orientation="Horizontal">
 
+        <ItemsControl ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="0,0,0,0">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <userControls:StockItem />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+        <Button Command="{Binding GetStockDataCommand}" Width="80" Height="25" Margin="50,0,50,0">Stock data</Button>
         <Button Command="{Binding WatchlistShowCommand}" Width="80" Height="25">Show</Button>
         <Button Command="{Binding WatchlistHideCommand}" Width="80" Height="25">Hide</Button>
-        
+
     </StackPanel>
 </Window>
