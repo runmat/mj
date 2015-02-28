@@ -61,7 +61,7 @@ namespace WatchlistViewer
                         @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\8c0l0x02.default-1366789569892");
                 _driver = new FirefoxDriver(ffBinary, firefoxProfile)
                 {
-                    Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Matz"
+                    //Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Matz"
                 };
             }
             catch (Exception)
@@ -72,15 +72,6 @@ namespace WatchlistViewer
             try
             {
                 var window = _driver.Manage().Window;
-
-                var tbMail = _driver.FindElementById("MAIL_ADDRESS");
-                tbMail.SendKeys("runningmatzi@web.de");
-
-                var tbPwd = _driver.FindElementById("PASSWORD");
-                tbPwd.SendKeys("Walter36");
-
-                var submit = _driver.FindElementByName("LOGIN_FORM_SUBMIT");
-                submit.Click();
 
                 var width = 1000;
                 var height = 600;
@@ -94,8 +85,22 @@ namespace WatchlistViewer
                     Y = (screenBounds.Height / 2 - height / 2),
                 };
                 window.Size = new Size { Height = height, Width = width };
+
+                _driver.Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Matz";
+
+                var tbMail = _driver.FindElementById("MAIL_ADDRESS");
+                tbMail.SendKeys("runningmatzi@web.de");
+
+                var tbPwd = _driver.FindElementById("PASSWORD");
+                tbPwd.SendKeys("Walter36");
+
+                var submit = _driver.FindElementByName("LOGIN_FORM_SUBMIT");
+                submit.Click();
+
+                Thread.Sleep(10000);
                 _driver.ExecuteScript("document.getElementById('TABLE').scrollIntoView(true);");
 
+                Thread.Sleep(2000);
                 _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.Hide, FirefoxProcessName);
             }
             catch 

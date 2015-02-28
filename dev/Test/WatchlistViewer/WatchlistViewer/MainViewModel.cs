@@ -43,7 +43,7 @@ namespace WatchlistViewer
 #else
             FirefoxWebDriver.InvokeWatchlist();
 #endif
-            _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 5000 };
+            _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
             _initialDelayTimer.Tick += InitialDelayTimerTick;
         }
 
