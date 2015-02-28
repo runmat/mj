@@ -1,5 +1,5 @@
-﻿using System.Threading;
-// ReSharper disable RedundantUsingDirective
+﻿// ReSharper disable RedundantUsingDirective
+using System.Threading;
 using System.Drawing;
 using System.Windows.Forms;
 using OpenQA.Selenium;
