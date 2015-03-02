@@ -304,6 +304,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                     EventName = schadenfall.EventName,
                                     Kennzeichen = schadenfall.Kennzeichen,
                                     VersicherungName = schadenfall.VersicherungName,
+                                    VersicherungAndere = schadenfall.VersicherungAndere,
                                     Referenznummer = schadenfall.Referenznummer,
                                     CurrentStatusText = currentStatusText,
                                     CurrentStatusFarbe = (currentStatus == null ? "" : currentStatus.StatusFarbe),
@@ -416,6 +417,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                 EventName = schadenfall.EventName,
                                 Kennzeichen = schadenfall.Kennzeichen,
                                 VersicherungName = schadenfall.VersicherungName,
+                                VersicherungAndere = schadenfall.VersicherungAndere,
                                 Referenznummer = schadenfall.Referenznummer,
                             };
 

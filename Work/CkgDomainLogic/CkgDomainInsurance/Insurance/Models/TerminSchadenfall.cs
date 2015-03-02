@@ -79,6 +79,10 @@ namespace CkgDomainLogic.Insurance.Models
         [NotMapped]
         public string VersicherungName { get { return Schadenfall.VersicherungName; } }
 
+        [LocalizedDisplay(LocalizeConstants.AnotherFemale)]
+        [NotMapped]
+        public string VersicherungAndere { get { return Schadenfall.VersicherungAndere; } }
+
         [LocalizedDisplay(LocalizeConstants.BoxType)]
         [NotMapped]
         public string BoxArtAsText { get { return Box.BoxArtAsText; } }

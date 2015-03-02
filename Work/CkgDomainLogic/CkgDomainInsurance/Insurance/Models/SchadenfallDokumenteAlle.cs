@@ -18,6 +18,9 @@ namespace CkgDomainLogic.Insurance.Models
         [LocalizedDisplay(LocalizeConstants.Insurance)]
         public string VersicherungName { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.AnotherFemale)]
+        public string VersicherungAndere { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
         public string Referenznummer { get; set; }
 
