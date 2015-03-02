@@ -14,7 +14,8 @@
         
             @Html.HiddenFor(m => m.HalterId)
             
-            @Html.FormTextBlockFor(m => m.HalterId, new { @class = "m-wrap" })
+            @Html.FormTextBlockFor(m => m.ExterneKundenNr, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBlockFor(m => m.HalterId, new { @class = "m-wrap", col = "right" })
 
             @Html.FormTextBlockFor(m => m.HalterName, new { @class = "m-wrap", col = "left" })
             @Html.FormTextBlockFor(m => m.HalterOrt, new { @class = "m-wrap", col = "right" })

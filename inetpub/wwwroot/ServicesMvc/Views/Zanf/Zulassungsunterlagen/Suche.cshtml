@@ -9,6 +9,8 @@
             
             @Html.ValidationSummary()
             
+            @Html.FormTextBoxFor(m => m.ExterneKundenNr, new { @class = "m-wrap" })
+
             @Html.FormTextBoxFor(m => m.HalterName, new { @class = "m-wrap" })
 
             @Html.FormRadioButtonListFor(m => m.Auswahl, Model.AuswahlOptionen.ToSelectList(), new { @class = "m-wrap" })

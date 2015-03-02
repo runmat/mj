@@ -31,6 +31,9 @@ namespace CkgDomainLogic.Zanf.Services
         {
             Z_DPM_READ_ZULDOK_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
+            if (!String.IsNullOrEmpty(Suchparameter.ExterneKundenNr))
+                SAP.SetImportParameter("I_ZKUNNR_EXT", Suchparameter.ExterneKundenNr);
+
             if (!String.IsNullOrEmpty(Suchparameter.HalterName))
                 SAP.SetImportParameter("I_NAME_HALTER", String.Format("*{0}*", Suchparameter.HalterName));
 

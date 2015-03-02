@@ -6,7 +6,7 @@ namespace CkgDomainLogic.Zanf.Models
 {
     public class ZulassungsUnterlagen
     {
-        [LocalizedDisplay(LocalizeConstants.Customer)]
+        [LocalizedDisplay(LocalizeConstants.CustomerNoDad)]
         public string HalterId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Location)]
@@ -105,7 +105,7 @@ namespace CkgDomainLogic.Zanf.Models
         [LocalizedDisplay(LocalizeConstants.DirectDebitMandateVehicleRelated)]
         public bool EinzugsermaechtigungFahrzeugbezogen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ExternalCostumerNo)]
+        [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string ExterneKundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DeleteDate)]

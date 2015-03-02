@@ -8,6 +8,9 @@ namespace CkgDomainLogic.Zanf.Models
 {
     public class ZulassungsUnterlagenSuchparameter
     {
+        [LocalizedDisplay(LocalizeConstants.CustomerNo)]
+        public string ExterneKundenNr { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.CarOwnerName)]
         public string HalterName { get; set; }
 
