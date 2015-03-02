@@ -34,7 +34,7 @@ namespace DocumentTools.Services
             return selectedSeparator;
         }
 
-        private static DataTable ReadToDataTable(string excelFileName, char separator = '*')
+        private static DataTable ReadToDataTable(string excelFileName, bool skipDataReformatting, char separator = '*')
         {
             try
             {
@@ -59,8 +59,13 @@ namespace DocumentTools.Services
                 //Get the first worksheet in the workbook
                 var worksheet = workbook.Worksheets[0];
 
-                //Export worksheet data to a DataTable object by calling either ExportDataTable or ExportDataTableAsString method of the Cells class		 	
-                return ReFormatDataTableValues(worksheet.Cells.ExportDataTable(0, 0, worksheet.Cells.MaxRow + 1, worksheet.Cells.MaxColumn + 1).DeleteEmptyRows());
+                //Export worksheet data to a DataTable object by calling either ExportDataTable or ExportDataTableAsString method of the Cells class
+                var tbl = worksheet.Cells.ExportDataTable(0, 0, worksheet.Cells.MaxRow + 1, worksheet.Cells.MaxColumn + 1).DeleteEmptyRows();
+
+                if (skipDataReformatting)
+                    return tbl;
+
+                return ReFormatDataTableValues(tbl);
 
             }
             catch { return new DataTable(); }
@@ -83,12 +88,12 @@ namespace DocumentTools.Services
             return dataTable;
         }
 
-        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, Func<DataRow, T> createFromDataRow = null, char separator = '*')
+        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false)
             where T : class, new()
         {
             try
             {
-                var dataTable = ReadToDataTable(excelFileName, separator);
+                var dataTable = ReadToDataTable(excelFileName, skipDataReformatting, separator);
                 if (dataTable.Columns.Count == 0)
                     return new List<T>();
 
@@ -100,12 +105,12 @@ namespace DocumentTools.Services
             catch { return new List<T>(); }
         }
 
-        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, bool headerRowAvailable, Func<DataRow, T> createFromDataRow = null, char separator = '*')
+        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, bool headerRowAvailable, Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false)
             where T : class, new()
         {
             try
             {
-                var dataTable = ReadToDataTable(excelFileName, separator);
+                var dataTable = ReadToDataTable(excelFileName, skipDataReformatting, separator);
                 if (dataTable.Columns.Count == 0)
                     return new List<T>();
 

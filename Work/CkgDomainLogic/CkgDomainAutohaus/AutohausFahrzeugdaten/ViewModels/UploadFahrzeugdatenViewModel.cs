@@ -17,8 +17,8 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 {
     public class UploadFahrzeugdatenViewModel : CkgBaseViewModel
     {
-        public string CsvUploadFileName { get; private set; }
-        public string CsvUploadServerFileName { get; private set; }
+        public string UploadFileName { get; private set; }
+        public string UploadServerFileName { get; private set; }
         public List<UploadFahrzeug> UploadItems { get { return DataService.UploadItems; } }
 
         [LocalizedDisplay(LocalizeConstants.DataWithErrorsOccurred)]
@@ -43,19 +43,20 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
 
         public bool SubmitMode { get; set; }
 
-        public bool CsvUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
+        public bool ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
-            CsvUploadFileName = fileName;
+            UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
-            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + ".csv");
+            var extension = (UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
+            UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
-            var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, ".csv");
+            var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, true, CreateInstanceFromDatarow, ';').ToList();
-            FileService.TryFileDelete(CsvUploadServerFileName);
+            var list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, CreateInstanceFromDatarow, ';', true).ToList();
+            FileService.TryFileDelete(UploadServerFileName);
             if (list.None())
                 return false;
 
