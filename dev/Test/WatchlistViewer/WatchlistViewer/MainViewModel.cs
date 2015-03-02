@@ -97,7 +97,11 @@ namespace WatchlistViewer
 
         public void ShowWknAtComdirect(Stock stock)
         {
-            MessageBox.Show(stock.TargetWkn);
+            var url = "https://www.comdirect.de/inf/indizes/detail/uebersicht.html?SEARCH_REDIRECT=true&REDIRECT_TYPE=WHITELISTED&REFERER=search.general&ID_NOTATION=" + stock.IdNotation;
+            if (stock.Wkn.IsNotNullOrEmpty())
+                url = "https://www.comdirect.de/inf/indizes/detail/uebersicht.html?WKN=" + stock.Wkn;
+
+            Process.Start(url);
         }
 
         private static void Quit()

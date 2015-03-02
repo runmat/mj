@@ -1,5 +1,4 @@
-﻿using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Input;
 using WpfTools4.Commands;
 // ReSharper disable RedundantUsingDirective
 using System.Windows.Media;
@@ -24,12 +23,12 @@ namespace WatchlistViewer
         {
             { "Dow Jones", "Dow" },
             { "National Bank", "NGR" },
-            { "Goldpreis", "Gold" },
+            { "Goldpreis", "Gold~1326189" },
             { "Siemens", "SIE" },
             { "OSRAM", "Osr" },
-            { "Euro / US", "€/US" },
-            { "Euro / Schwei", "€/CHF" },
-            { "Ölpreis Brent", "Öl" },
+            { "Euro / US", "€/US~1390634" },
+            { "Euro / Schwei", "€/CHF~8362186" },
+            { "Ölpreis Brent", "Öl~31117610" },
         };
 
         public string Name
@@ -41,7 +40,7 @@ namespace WatchlistViewer
         public string Wkn
         {
             get { return _wkn; }
-            set { _wkn = value; SendPropertyChanged("Wkn"); SendPropertyChanged("ToolTip"); SendPropertyChanged("TargetWkn"); }
+            set { _wkn = value; SendPropertyChanged("Wkn"); SendPropertyChanged("ToolTip"); SendPropertyChanged("IdNotation"); }
         }
 
         public DateTime DateTime
@@ -77,11 +76,29 @@ namespace WatchlistViewer
                 if (key == null)
                     return Name;
 
-                return _nameTranslateDict[key];
+                var val = _nameTranslateDict[key];
+                if (!val.Contains("~"))
+                    return val;
+
+                return val.Split('~')[0];
             }
         }
 
-        public string TargetWkn { get { return Wkn.IsNotNullOrEmpty() ? Wkn : ShortName; }}
+        public string IdNotation
+        {
+            get
+            {
+                var key = _nameTranslateDict.Keys.FirstOrDefault(k => Name.Contains(k));
+                if (key == null)
+                    return Name;
+
+                var val = _nameTranslateDict[key];
+                if (!val.Contains("~"))
+                    return "";
+
+                return val.Split('~')[1];
+            }
+        }
 
         public MainViewModel Parent { get; set; }
 
