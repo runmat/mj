@@ -68,36 +68,24 @@ namespace WatchlistViewer
 
         public string ToolTip { get { return string.Format("Zeit {0:HH:mm:ss} vom {0:dd.MM.yyyy}", DateTime); } }
 
-        public string ShortName
-        {
-            get
-            {
-                var key = _nameTranslateDict.Keys.FirstOrDefault(k => Name.Contains(k));
-                if (key == null)
-                    return Name;
+        public string ShortName { get { return GetPartOfValue(0, "{self}"); } }
 
-                var val = _nameTranslateDict[key];
-                if (!val.Contains("~"))
+        public string IdNotation { get { return GetPartOfValue(1, ""); } }
+
+        private string GetPartOfValue(int index, string defaultValue)
+        {
+            var key = _nameTranslateDict.Keys.FirstOrDefault(k => Name.Contains(k));
+            if (key == null)
+                return Name;
+
+            var val = _nameTranslateDict[key];
+            if (!val.Contains("~"))
+                if (defaultValue == "{self}")
                     return val;
+                else
+                    return defaultValue;
 
-                return val.Split('~')[0];
-            }
-        }
-
-        public string IdNotation
-        {
-            get
-            {
-                var key = _nameTranslateDict.Keys.FirstOrDefault(k => Name.Contains(k));
-                if (key == null)
-                    return Name;
-
-                var val = _nameTranslateDict[key];
-                if (!val.Contains("~"))
-                    return "";
-
-                return val.Split('~')[1];
-            }
+            return val.Split('~')[index];
         }
 
         public MainViewModel Parent { get; set; }
