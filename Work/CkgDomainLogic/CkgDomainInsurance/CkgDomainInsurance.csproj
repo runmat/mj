@@ -82,6 +82,7 @@
     <Compile Include="Insurance\Models\DataModels\SchadenakteDocumentCategory.cs" />
     <Compile Include="Insurance\Models\DataModels\Schadenakte.cs" />
     <Compile Include="Insurance\Models\DataModels\SchadenakteDocument.cs" />
+    <Compile Include="Insurance\Models\SchadenfallDokumenteAlle.cs" />
     <Compile Include="Insurance\Models\SchadenfallStatusAlle.cs" />
     <Compile Include="Insurance\Models\Schadenfall.cs" />
     <Compile Include="Insurance\Models\SchadenfallStatus.cs" />
