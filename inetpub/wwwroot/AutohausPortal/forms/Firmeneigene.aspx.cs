@@ -298,6 +298,19 @@ namespace AutohausPortal.forms
                 objVorerf.InternRef = RemoveDefault;
 
                 objVorerf.AppID = Session["AppID"].ToString();
+
+                if (controls != null && controls.Rows.Count == 1)
+                {
+                    objVorerf.Kennzeichen = controls.Rows[0]["Kennz1"].ToString() + "-" + controls.Rows[0]["Kennz2"].ToString();
+                    objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
+                    objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
+                }
+                else
+                {
+                    lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!";
+                    return;
+                }
+
                 if (cbxSave.Checked == false)
                 {
                     objVorerf.saved = true;
@@ -308,14 +321,6 @@ namespace AutohausPortal.forms
                 {
                     objVorerf.saved = true;
                     objVorerf.bearbeitet = true;
-                    if (controls != null && controls.Rows.Count == 1)
-                    {
-                        objVorerf.Kennzeichen = controls.Rows[0]["Kennz1"].ToString() + "-" + controls.Rows[0]["Kennz2"].ToString();
-                        objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
-                        objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
-                    }
-                    else { return; lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!"; }
-
                     objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
                     ShowKundenformulare(true);
                     return;
