@@ -19,6 +19,6 @@
             </ContextMenu>
         </StackPanel.ContextMenu>
         <TextBlock Text="{Binding ShortName}" Foreground="Blue" Margin="0,0,3,0" Width="35" TextAlignment="Right" />
-        <TextBlock Text="{Binding Value, StringFormat={}{0:N2}}" Foreground="{Binding ForeColor}" Margin="0,0,0,0" Width="50" TextAlignment="Left" />
+        <TextBlock Text="{Binding ValueFormatted}" Foreground="{Binding ForeColor}" Margin="0,0,0,0" Width="50" TextAlignment="Left" />
     </StackPanel>
 </UserControl>

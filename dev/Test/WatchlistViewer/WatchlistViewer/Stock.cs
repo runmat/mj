@@ -26,8 +26,8 @@ namespace WatchlistViewer
             { "Goldpreis", "Gold~1326189" },
             { "Siemens", "SIE" },
             { "OSRAM", "Osr" },
-            { "Euro / US", "€/US~1390634" },
-            { "Euro / Schwei", "€/CHF~8362186" },
+            { "Euro / US", "€/US~1390634~0.0000" },
+            { "Euro / Schwei", "€/CHF~8362186~0.0000" },
             { "Ölpreis Brent", "Öl~31117610" },
         };
 
@@ -52,7 +52,7 @@ namespace WatchlistViewer
         public double Value
         {
             get { return _value; }
-            set { _value = value; SendPropertyChanged("Value"); SendPropertyChanged("ForeColor"); }
+            set { _value = value; SendPropertyChanged("Value"); SendPropertyChanged("ValueFormatted"); SendPropertyChanged("ForeColor"); }
         }
 
         public double Change
@@ -72,20 +72,31 @@ namespace WatchlistViewer
 
         public string IdNotation { get { return GetPartOfValue(1, ""); } }
 
+        public string ValueFormatted { get { return Value.ToString(GetPartOfValue(2, "#,##0.00")); } }
+
         private string GetPartOfValue(int index, string defaultValue)
         {
             var key = _nameTranslateDict.Keys.FirstOrDefault(k => Name.Contains(k));
             if (key == null)
-                return Name;
+                return GetDefaultValue(Name, defaultValue);
 
             var val = _nameTranslateDict[key];
             if (!val.Contains("~"))
-                if (defaultValue == "{self}")
-                    return val;
-                else
-                    return defaultValue;
+                return GetDefaultValue(val, defaultValue);
 
-            return val.Split('~')[index];
+            var valArray = val.Split('~');
+            if (index >= valArray.Length)
+                return GetDefaultValue(val, defaultValue);
+
+            return valArray[index];
+        }
+
+        static string GetDefaultValue(string val, string defaultValue)
+        {
+            if (defaultValue == "{self}")
+                return val;
+            
+            return defaultValue;
         }
 
         public MainViewModel Parent { get; set; }
