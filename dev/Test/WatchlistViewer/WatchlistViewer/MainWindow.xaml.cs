@@ -1,9 +1,12 @@
 ﻿using System.Windows;
+using System.Windows.Input;
 
 namespace WatchlistViewer
 {
     public partial class MainWindow 
     {
+        public static ICommand ContextMenuItemCommand { get; private set; } 
+         
         public MainWindow()
         {
             InitializeComponent();

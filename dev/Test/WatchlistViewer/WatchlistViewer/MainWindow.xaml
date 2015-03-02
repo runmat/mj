@@ -4,24 +4,35 @@
         xmlns:userControls="clr-namespace:WatchlistViewer.UserControls"
         WindowStartupLocation="Manual"
         SizeChanged="MainWindow_OnSizeChanged"
-        Top="19" Topmost="True"
+        Top="19" Topmost="True" 
         WindowStyle="None"  ShowInTaskbar="False" BorderThickness="0" BorderBrush="Transparent" AllowsTransparency="True"
         Title="Watchlist Viewer" SizeToContent="WidthAndHeight" >
-    <StackPanel Orientation="Horizontal">
+    <Window.Background>
+        <SolidColorBrush Opacity="0.0" Color="White" />
+    </Window.Background>
+    <Border BorderBrush="White" BorderThickness="0" CornerRadius="8" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Border.Background>
+            <SolidColorBrush Opacity="0.4" Color="AliceBlue" />
+        </Border.Background>
+        <Border.BitmapEffect>
+            <DropShadowBitmapEffect Color="White" Opacity="0.4" Direction="270" ShadowDepth="0.7" />
+        </Border.BitmapEffect>
+        <StackPanel Orientation="Horizontal">
 
-        <ItemsControl ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="0,0,15,0">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <userControls:StockItem />
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
+            <ItemsControl ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="0,0,15,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <userControls:StockItem />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
 
-        <Button Command="{Binding GetStockDataCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/refresh}" ToolTip="Watchlist aktualisieren" />
-        <Button Command="{Binding WatchlistShowCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/OK}" ToolTip="Watchlist anzeigen" />
-        <Button Command="{Binding WatchlistHideCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/deactivate}" ToolTip="Watchlist ausblenden"  />
+            <Button Command="{Binding GetStockDataCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/refresh}" ToolTip="Watchlist aktualisieren" />
+            <Button Command="{Binding WatchlistShowCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/OK}" ToolTip="Watchlist anzeigen" />
+            <Button Command="{Binding WatchlistHideCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/deactivate}" ToolTip="Watchlist ausblenden"  />
 
-        <Button Command="{Binding QuitCommand}" Margin="20,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete}" ToolTip="Applikation beenden!"  />
+            <Button Command="{Binding QuitCommand}" Margin="20,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete}" ToolTip="Applikation beenden!"  />
 
-    </StackPanel>
+        </StackPanel>
+    </Border>
 </Window>

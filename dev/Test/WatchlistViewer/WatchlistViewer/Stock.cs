@@ -1,4 +1,7 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System.Windows;
+using System.Windows.Input;
+using WpfTools4.Commands;
+// ReSharper disable RedundantUsingDirective
 using System.Windows.Media;
 using System;
 using System.Collections.Generic;
@@ -38,7 +41,7 @@ namespace WatchlistViewer
         public string Wkn
         {
             get { return _wkn; }
-            set { _wkn = value; SendPropertyChanged("Wkn"); SendPropertyChanged("ToolTip"); }
+            set { _wkn = value; SendPropertyChanged("Wkn"); SendPropertyChanged("ToolTip"); SendPropertyChanged("TargetWkn"); }
         }
 
         public DateTime DateTime
@@ -76,6 +79,17 @@ namespace WatchlistViewer
 
                 return _nameTranslateDict[key];
             }
+        }
+
+        public string TargetWkn { get { return Wkn.IsNotNullOrEmpty() ? Wkn : ShortName; }}
+
+        public MainViewModel Parent { get; set; }
+
+        public ICommand ShowWknAtComdirectCommand { get; private set; }
+
+        public Stock()
+        {
+            ShowWknAtComdirectCommand = new DelegateCommand(e => Parent.ShowWknAtComdirect(this), e => true);
         }
     }
 }

@@ -1,9 +1,8 @@
-﻿using System.Diagnostics;
-using System.Security.AccessControl;
-using System.Threading;
+﻿using System.Windows;
+// ReSharper disable RedundantUsingDirective
+using System.Diagnostics;
 using GeneralTools.Models;
 using WpfTools4.ViewModels;
-// ReSharper disable RedundantUsingDirective
 using System.Windows.Input;
 using WpfTools4.Commands;
 using System;
@@ -27,6 +26,7 @@ namespace WatchlistViewer
         public ICommand WatchlistShowCommand { get; private set; }
         public ICommand WatchlistHideCommand { get; private set; }
         public ICommand GetStockDataCommand { get; private set; }
+
         public ICommand QuitCommand { get; private set; }
 
         private readonly System.Windows.Forms.Timer _initialDelayTimer;
@@ -40,10 +40,11 @@ namespace WatchlistViewer
             QuitCommand = new DelegateCommand(e => Quit(), e => true);
 
 #if TEST
+            _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 20 };
 #else
             FirefoxWebDriver.InvokeWatchlist();
-#endif
             _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
+#endif
             _initialDelayTimer.Tick += InitialDelayTimerTick;
         }
 
@@ -53,7 +54,7 @@ namespace WatchlistViewer
             _initialDelayTimer.Dispose();
 
             WatchlistHide();
-            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
+            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
             _workTimer.Tick += WorkTimerTick;
         }
 
@@ -78,6 +79,7 @@ namespace WatchlistViewer
 
             if (StockItems == null || StockItems.None())
             {
+                items.ForEach(item => item.Parent = this);
                 StockItems = items;
                 return;
             }
@@ -89,7 +91,13 @@ namespace WatchlistViewer
                     return;
                 
                 ModelMapping.Copy(item, stockItem);
+                stockItem.Parent = this;
             });
+        }
+
+        public void ShowWknAtComdirect(Stock stock)
+        {
+            MessageBox.Show(stock.TargetWkn);
         }
 
         private static void Quit()
