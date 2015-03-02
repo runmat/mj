@@ -44,7 +44,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         [XmlIgnore]
         public List<SelectItem> AdressenKennungGruppenLocalized
         {
-            get { return AllAdressenKennungGruppenLocalized.ToList(); } 
+            get { return PropertyCacheGet(() => new List<SelectItem>()); } 
             set { PropertyCacheSet(value); }
         }
 
@@ -98,11 +98,28 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataMarkForRefresh();
         }
 
+        public void AdressenKennungGruppeInit()
+        {
+            AdressenKennungGruppenLocalized = new List<SelectItem>();
+
+            var versandAdressenAvailable = GetApplicationConfigValueForCustomer("AdressenPflegeVersandAdressen").ToBool();
+            if (versandAdressenAvailable)
+                AdressenKennungGruppenLocalized = AdressenKennungGruppenLocalized.Concat(AllAdressenKennungGruppenLocalized.Where(a => a.Key == "VERSAND")).ToList();
+
+            var uebfuehrgAdressenAvailable = GetApplicationConfigValueForCustomer("AdressenPflegeUeberfuehrungsAdressen").ToBool();
+            if (uebfuehrgAdressenAvailable)
+                AdressenKennungGruppenLocalized = AdressenKennungGruppenLocalized.Concat(AllAdressenKennungGruppenLocalized.Where(a => a.Key == "UEBERFUEHRUNG")).ToList();
+
+            if (AdressenKennungGruppenLocalized.Any())
+                AdressenKennungGruppeChange(AdressenKennungGruppenLocalized.First().Key, "");
+        }
+
         public void AdressenKennungGruppeChange(string adressGruppe, string adressKennung)
         {
             if (adressGruppe == AdressenKennungGruppe)
             {
-                AdressenKennungTemp = adressKennung;
+                if (adressKennung.IsNotNullOrEmpty())
+                    AdressenKennungTemp = adressKennung;
             }
             else
             {
@@ -110,7 +127,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
                 AdressenKennungTemp = AdressenKennungenLocalized.First().Key;
             }
 
-            AdressenDataInit(AdressenKennungTemp, LogonContext.KundenNr);
+            AdressenDataInit(AdressenKennungTemp, AdressenDataService.KundennrOverride);
         }
 
         public virtual void DataMarkForRefresh()
