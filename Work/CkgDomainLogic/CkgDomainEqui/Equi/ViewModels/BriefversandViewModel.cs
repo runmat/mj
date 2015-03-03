@@ -408,14 +408,17 @@ namespace CkgDomainLogic.Equi.ViewModels
             allFoundCount = Fahrzeuge.Count(c => !c.IsMissing);
         }
 
-        VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode)
+        VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode, bool briefVersand, bool schluesselVersand, bool schluesselKombiVersand)
         {
             var versandAuftrag = new VersandAuftragsAnlage
             {
                 KundenNr = BriefbestandDataService.ToDataStoreKundenNr(LogonContext.KundenNr),
                 VIN = vin,
-                BriefVersand = (VersandModus == BriefversandModus.Brief || VersandModus == BriefversandModus.BriefMitSchluessel),
-                SchluesselVersand = (VersandModus == BriefversandModus.Schluessel),
+                
+                BriefVersand = briefVersand,
+                SchluesselVersand = schluesselVersand,
+                SchluesselKombiVersand = schluesselKombiVersand,
+
                 StuecklistenKomponente = stuecklistenCode,
                 AbmeldeKennzeichen = (!VersandOptionen.AufAbmeldungWartenAvailable || !VersandOptionen.AufAbmeldungWarten),
                 AbcKennzeichen = VersandartOptionen.Versandart,
@@ -439,7 +442,20 @@ namespace CkgDomainLogic.Equi.ViewModels
             // 1. Versandauftrags-Datensätze anlegen
             var versandAuftraege = new List<VersandAuftragsAnlage>();
 
-            SelectedFahrzeuge.ForEach(fzg => versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "")));
+            SelectedFahrzeuge.ForEach(fzg =>
+                {
+                    if (VersandModus == BriefversandModus.Brief)
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: true, schluesselVersand: false, schluesselKombiVersand: false));
+                    
+                    if (VersandModus == BriefversandModus.Schluessel)
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: false, schluesselVersand: true, schluesselKombiVersand: false));
+
+                    if (VersandModus == BriefversandModus.BriefMitSchluessel)
+                    {
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: true, schluesselVersand: false, schluesselKombiVersand: false));
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: false, schluesselVersand: true, schluesselKombiVersand: true));
+                    }
+                });
 
             SaveErrorMessage = BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege);
         }
