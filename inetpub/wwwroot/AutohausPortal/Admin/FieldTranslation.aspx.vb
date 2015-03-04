@@ -1,9 +1,8 @@
 ﻿Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
-Imports Admin.FieldTranslation
 
 Partial Public Class FieldTranslation
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region "Properties"
 
@@ -24,7 +23,7 @@ Partial Public Class FieldTranslation
     Protected WithEvents GridNavigation1 As Global.Admin.GridNavigation
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         ' Hier Benutzercode zur Seiteninitialisierung einfügen
         m_User = GetUser(Me)
         lblHead.Text = "Spaltenübersetzungen für"
@@ -42,8 +41,8 @@ Partial Public Class FieldTranslation
                 lblError.Text = ""
                 trStandard.Visible = False
 
-                If Not Me.Request.UrlReferrer Is Nothing Then
-                    Refferer = Me.Request.UrlReferrer.ToString
+                If Not Request.UrlReferrer Is Nothing Then
+                    Refferer = Request.UrlReferrer.ToString
                 Else
                     Refferer = "Selection.aspx"
                 End If
@@ -88,7 +87,6 @@ Partial Public Class FieldTranslation
                     Dim dtGroup As Kernel.GroupList
                     Dim dvGroup As DataView
                     Dim iCustomerID As Integer
-                    Dim iGroupID As Integer
 
                     If m_User.FirstLevelAdmin Then
                         iCustomerID = CInt(m_User.Customer.CustomerId)
@@ -274,8 +272,6 @@ Partial Public Class FieldTranslation
                 rbTextBox.Checked = True
                 lbl_TextTooltip.Visible = True
                 txt_Tooltip.Visible = True
-            Case Else
-
 
         End Select
         ddlCustomer.ClearSelection()
@@ -413,25 +409,25 @@ Partial Public Class FieldTranslation
             strBackColor = "LightGray"
         End If
         txtContent.Enabled = Not blnLock
-        txtContent.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtContent.BackColor = Drawing.Color.FromName(strBackColor)
         txtFieldName.Enabled = Not blnLock
-        txtFieldName.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtFieldName.BackColor = Drawing.Color.FromName(strBackColor)
         rbLabel.Enabled = Not blnLock
-        rbLabel.BackColor = System.Drawing.Color.FromName(strBackColor)
+        rbLabel.BackColor = Drawing.Color.FromName(strBackColor)
         rbLinkButton.Enabled = Not blnLock
-        rbLinkButton.BackColor = System.Drawing.Color.FromName(strBackColor)
+        rbLinkButton.BackColor = Drawing.Color.FromName(strBackColor)
         rbRadioButton.Enabled = Not blnLock
-        rbRadioButton.BackColor = System.Drawing.Color.FromName(strBackColor)
+        rbRadioButton.BackColor = Drawing.Color.FromName(strBackColor)
         rbTableRow.Enabled = Not blnLock
-        rbTableRow.BackColor = System.Drawing.Color.FromName(strBackColor)
+        rbTableRow.BackColor = Drawing.Color.FromName(strBackColor)
         cbxVisible.Enabled = Not blnLock
-        cbxVisible.BackColor = System.Drawing.Color.FromName(strBackColor)
+        cbxVisible.BackColor = Drawing.Color.FromName(strBackColor)
         ddlCustomer.Enabled = Not blnLock
-        ddlCustomer.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlCustomer.BackColor = Drawing.Color.FromName(strBackColor)
         ddlLanguage.Enabled = Not blnLock
-        ddlLanguage.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlLanguage.BackColor = Drawing.Color.FromName(strBackColor)
         rbTextBox.Enabled = Not blnLock
-        rbTextBox.BackColor = System.Drawing.Color.FromName(strBackColor)
+        rbTextBox.BackColor = Drawing.Color.FromName(strBackColor)
     End Sub
 
     Private Sub EditCreateMode(ByVal strFieldType As String, ByVal strFieldName As String)
@@ -562,7 +558,7 @@ Partial Public Class FieldTranslation
             m_App.WriteErrorText(1, m_User.UserName, "FieldTranslation", "SetOldLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -613,7 +609,7 @@ Partial Public Class FieldTranslation
             m_App.WriteErrorText(1, m_User.UserName, "FieldTranslation", "SetNewLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -627,16 +623,16 @@ Partial Public Class FieldTranslation
     Private Function CreateLogTableStructure() As DataTable
         Dim tblPar As New DataTable()
         With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("ApplicationFieldID", System.Type.GetType("System.Integer"))
-            .Columns.Add("AppURL", System.Type.GetType("System.String"))
-            .Columns.Add("FieldType", System.Type.GetType("System.String"))
-            .Columns.Add("FieldName", System.Type.GetType("System.String"))
-            .Columns.Add("CustomerID", System.Type.GetType("System.Integer"))
-            .Columns.Add("LanguageID", System.Type.GetType("System.Integer"))
-            .Columns.Add("Visibility", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Content", System.Type.GetType("System.String"))
-            .Columns.Add("ToolTip", System.Type.GetType("System.String"))
+            .Columns.Add("Status", Type.GetType("System.String"))
+            .Columns.Add("ApplicationFieldID", Type.GetType("System.Integer"))
+            .Columns.Add("AppURL", Type.GetType("System.String"))
+            .Columns.Add("FieldType", Type.GetType("System.String"))
+            .Columns.Add("FieldName", Type.GetType("System.String"))
+            .Columns.Add("CustomerID", Type.GetType("System.Integer"))
+            .Columns.Add("LanguageID", Type.GetType("System.Integer"))
+            .Columns.Add("Visibility", Type.GetType("System.Boolean"))
+            .Columns.Add("Content", Type.GetType("System.String"))
+            .Columns.Add("ToolTip", Type.GetType("System.String"))
         End With
         Return tblPar
     End Function
@@ -645,18 +641,18 @@ Partial Public Class FieldTranslation
 #Region " Events "
 
 
-    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
+    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnCancel.Click
         Search(False, , True)
     End Sub
 
-    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnNew.Click
+    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnNew.Click
         SearchMode(False)
         ClearEdit(True)
         'Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         'cn.Open()
     End Sub
 
-    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
+    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnSave.Click
         Dim tblLogParameter As DataTable
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
@@ -719,7 +715,7 @@ Partial Public Class FieldTranslation
         End Try
     End Sub
 
-    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
+    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDelete.Click
         Dim tblLogParameter As DataTable
         Dim cn As SqlClient.SqlConnection
         cn = New SqlClient.SqlConnection(m_User.App.Connectionstring)
@@ -748,11 +744,20 @@ Partial Public Class FieldTranslation
         End Try
     End Sub
 
-    Private Sub lnkBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkBack.Click
-        Response.Redirect(Refferer)
+    Private Sub responseBack()
+        If String.IsNullOrEmpty(Refferer) Then
+            Dim strLinkPrefix As String = "/" & ConfigurationManager.AppSettings("WebAppPath") & "/"
+            Response.Redirect(strLinkPrefix & "Start/Selection.aspx")
+        Else
+            Response.Redirect(Refferer)
+        End If
     End Sub
 
-    Private Sub ddlCustomer_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlCustomer.SelectedIndexChanged
+    Private Sub lnkBack_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkBack.Click
+        responseBack()
+    End Sub
+
+    Private Sub ddlCustomer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlCustomer.SelectedIndexChanged
         Dim intCustomerID As Integer = CInt(ddlCustomer.SelectedItem.Value)
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         cn.Open()
@@ -771,11 +776,11 @@ Partial Public Class FieldTranslation
         FillForm()
     End Sub
 
-    Private Sub ddlLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlLanguage.SelectedIndexChanged
+    Private Sub ddlLanguage_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlLanguage.SelectedIndexChanged
         FillForm()
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         If Tablex1.Visible Then
             lnkBack.Visible = False
             'Wenn Es können nur Übersetzungen in StandardFirma geändert werden, ist Kunde nicht StandardFirma ist keine Änderung der FeldTypen möglich. JJ 2007.11.12
@@ -806,7 +811,7 @@ Partial Public Class FieldTranslation
 #End Region
 
 
-    Private Sub rbTextBox_checkedChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles rbTextBox.CheckedChanged, rbLinkButton.CheckedChanged, rbGridColumn.CheckedChanged, rbRadioButton.CheckedChanged, rbTableRow.CheckedChanged
+    Private Sub rbTextBox_checkedChanged(ByVal sender As System.Object, ByVal e As EventArgs) Handles rbTextBox.CheckedChanged, rbLinkButton.CheckedChanged, rbGridColumn.CheckedChanged, rbRadioButton.CheckedChanged, rbTableRow.CheckedChanged
 
         If sender Is rbTextBox Then
             'wenn bei einer neuanlegung von Feldübersetzungen auf Textbox geklickt wird, Tooltip EingabeFeld einblenden JJ2007.11.13
@@ -829,7 +834,7 @@ Partial Public Class FieldTranslation
         FillDataGrid()
     End Sub
 
-    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
+    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
         Dim CtrlLabel As Label
         Dim CtrlFieldType As Label
         Dim CtrlFieldName As Label
@@ -861,11 +866,11 @@ Partial Public Class FieldTranslation
         End Select
     End Sub
 
-    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles dgSearchResult.RowEditing
+    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As GridViewEditEventArgs) Handles dgSearchResult.RowEditing
 
     End Sub
 
-    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles dgSearchResult.Sorting
+    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles dgSearchResult.Sorting
         Dim strSort As String = e.SortExpression
         If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
             strSort &= " DESC"

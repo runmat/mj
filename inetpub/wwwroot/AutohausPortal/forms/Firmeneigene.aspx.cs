@@ -77,6 +77,21 @@ namespace AutohausPortal.forms
 
 
             }
+            else if (Request.Params.Get("__EVENTTARGET") == "RadWindow1")
+            {
+                if ((Session["RedirectToAuftragsliste"] != null) && ((bool)Session["RedirectToAuftragsliste"]))
+                {
+                    Session["RedirectToAuftragsliste"] = null;
+                    Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                }
+                else
+                {
+                    //Schließen des Druckdialogs: PrintDialogKundenformular.aspx
+                    RadWindow downloaddoc = RadWindowManager1.Windows[0];
+                    downloaddoc.Visible = false;
+                    downloaddoc.VisibleOnPageLoad = false;
+                }
+            }
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "Form1",
             "<script type='text/javascript'>openform1();</script>", false);
         }
@@ -283,6 +298,19 @@ namespace AutohausPortal.forms
                 objVorerf.InternRef = RemoveDefault;
 
                 objVorerf.AppID = Session["AppID"].ToString();
+
+                if (controls != null && controls.Rows.Count == 1)
+                {
+                    objVorerf.Kennzeichen = controls.Rows[0]["Kennz1"].ToString() + "-" + controls.Rows[0]["Kennz2"].ToString();
+                    objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
+                    objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
+                }
+                else
+                {
+                    lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!";
+                    return;
+                }
+
                 if (cbxSave.Checked == false)
                 {
                     objVorerf.saved = true;
@@ -293,16 +321,9 @@ namespace AutohausPortal.forms
                 {
                     objVorerf.saved = true;
                     objVorerf.bearbeitet = true;
-                    if (controls != null && controls.Rows.Count == 1)
-                    {
-                        objVorerf.Kennzeichen = controls.Rows[0]["Kennz1"].ToString() + "-" + controls.Rows[0]["Kennz2"].ToString();
-                        objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
-                        objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
-                    }
-                    else { return; lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!"; }
-
                     objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
-                    Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                    ShowKundenformulare(true);
+                    return;
                 }
 
                 ClearForm();
@@ -310,6 +331,7 @@ namespace AutohausPortal.forms
                 {
                     lblMessage.Visible = true;
                     lblMessage.Text = "Daten erfolgreich gespeichert.";
+                    ShowKundenformulare();
                 }
                 else
                 {
@@ -318,6 +340,25 @@ namespace AutohausPortal.forms
                 Session["objVorerf"] = objVorerf;
             }
             else { proofInserted(); }
+        }
+
+        private void ShowKundenformulare(bool redirect = false)
+        {
+            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true);
+            if (objVorerf.Status == 0)
+            {
+                Session["objVorerf"] = objVorerf;
+                Session["RedirectToAuftragsliste"] = redirect;
+                //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
+                RadWindow downloaddoc = RadWindowManager1.Windows[0];
+                downloaddoc.Visible = true;
+                downloaddoc.VisibleOnPageLoad = true;
+            }
+            else
+            {
+                lblMessage.Text += " (" + objVorerf.Message + ")";
+                if (redirect) { Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe); }
+            }
         }
 
         /// <summary>

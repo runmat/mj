@@ -406,8 +406,8 @@ Wählen Sie das gewünschte Zulassungsdatum aus. Dies darf nicht in der Vergange
     <telerik:RadWindowManager ID="RadWindowManager1" ShowContentDuringLoad="false" VisibleStatusbar="false"
         ReloadOnShow="true" runat="server" VisibleOnPageLoad="false" Modal="true" EnableShadow="true">
         <Windows>
-            <telerik:RadWindow ID="RadWindow1" Title="Kundenformular herunterladen" runat="server" Behaviors="Resize, Move" 
-                NavigateUrl="PrintDialogKundenformular.aspx" Width="275" Height="180" Modal="true" OnClientClose="onClientClose" >
+            <telerik:RadWindow ID="RadWindow1" Title="Kundenformulare herunterladen" runat="server" Behaviors="Resize, Move" 
+                NavigateUrl="PrintDialogKundenformulare.aspx" Width="550" Height="300" Modal="true" OnClientClose="onClientClose" >
             </telerik:RadWindow>
         </Windows>
     </telerik:RadWindowManager>
