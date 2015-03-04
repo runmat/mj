@@ -92,6 +92,18 @@ namespace GeneralTools.Models
             var ienum = type.GetInterface(typeof(IEnumerable<>).Name);
             return ienum != null ? ienum.GetGenericArguments()[0] : null;
         }
+
+        public static T FirstOrDefault<T>(this IEnumerable<T> source, T defaultValue) where T : class
+        {
+            var item = source.FirstOrDefault();
+            return (item ?? defaultValue);
+        }
+
+        public static T FirstOrDefault<T>(this IEnumerable<T> source, Func<T, bool> predicate, T defaultValue) where T : class
+        {
+            var item = source.FirstOrDefault(predicate);
+            return (item ?? defaultValue);
+        }
     }
 
     public static class ListExtensions
@@ -746,6 +758,17 @@ namespace GeneralTools.Models
         public static bool IsTrue(this bool? boolValue)
         {
             return (boolValue == true);
+        }
+    }
+
+    public static class NullableDecimalExtensions
+    {
+        public static string ToString(this decimal? decimalValue, string format)
+        {
+            if (!decimalValue.HasValue)
+                return "";
+
+            return decimalValue.Value.ToString(format);
         }
     }
 }

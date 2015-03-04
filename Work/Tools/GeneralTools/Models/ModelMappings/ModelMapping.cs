@@ -34,6 +34,22 @@ namespace GeneralTools.Models
             return destination;
         }
 
+        public static T2 Copy<T1, T2>(T1 source, Action<T1, T2> onInit = null)
+            where T1 : class
+            where T2 : class, new()
+        {
+            if (source == null)
+                return null;
+
+            var destination = new T2();
+
+            UpdateRecursivelyWithBaseClasses(source, destination);
+            if (onInit != null)
+                onInit(source, destination);
+
+            return destination;
+        }
+
         public static T Copy<T>(T source, Action<T, T> onInit = null)
             where T : class, new()
         {
