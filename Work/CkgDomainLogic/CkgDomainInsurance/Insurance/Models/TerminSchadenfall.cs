@@ -219,9 +219,6 @@ namespace CkgDomainLogic.Insurance.Models
 
                 mailText = mailText.Replace("<br/>", "%0A");
 
-                if (mailText.Length > 400)
-                    mailText = mailText.Substring(0, 400);
-
                 return mailText;
             }      
         }
@@ -230,6 +227,7 @@ namespace CkgDomainLogic.Insurance.Models
         [NotMapped]
         public bool IsBlockerDummyTermin { get { return VersSchadenfallID == 0; } }
 
+        public bool TmpMarkForDelete { get; set; }
 
         bool ValidateTimeDuplicatesAndIntersections(Action<string, string> addModelError, List<TerminSchadenfall> additionalTermine = null)
         {
@@ -319,9 +317,9 @@ namespace CkgDomainLogic.Insurance.Models
             return Ort.GetValidBoxen().ToList();
         }
 
-        public List<TerminSchadenfall> GetTermineForValidBoxen()
+        public List<TerminSchadenfall> GetTermineForValidBoxen(Predicate<TerminSchadenfall> terminSelector)
         {
-            var termineAllerBoxenUeberAllerSchadenFaelle = GetValidBoxen().SelectMany(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID)).ToList();
+            var termineAllerBoxenUeberAllerSchadenFaelle = GetValidBoxen().SelectMany(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID, terminSelector)).ToList();
 
             return termineAllerBoxenUeberAllerSchadenFaelle;
         }

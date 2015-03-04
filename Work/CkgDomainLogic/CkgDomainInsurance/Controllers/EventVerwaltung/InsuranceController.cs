@@ -395,7 +395,7 @@ namespace ServicesMvc.Controllers
             if (firstBox == null)
                 return new EmptyResult();
 
-            var termineForValidBoxen = termin.GetTermineForValidBoxen().Where(t => t.Datum >= dateStart && t.Datum <= dateEnd);
+            var termineForValidBoxen = termin.GetTermineForValidBoxen(t => t.Datum >= dateStart && t.Datum <= dateEnd);
 
             if (boxArt == "RE")
                 return Json(termineForValidBoxen.Select(t => new TerminEntity
@@ -551,6 +551,7 @@ namespace ServicesMvc.Controllers
         {
             EventsViewModel.TerminCurrentPrepareForTerminUebersicht(eventID, ortID);
 
+            ViewData["HideReTerminVorschlaege"] = true;
             return PartialView("Schadenakte/Partial/Termine/TerminKalender", EventsViewModel.TerminCurrent);
         }
 

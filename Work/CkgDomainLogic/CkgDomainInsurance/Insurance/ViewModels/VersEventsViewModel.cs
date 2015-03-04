@@ -663,9 +663,52 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public TerminSchadenfall TerminCurrent { get; private set; }
 
-        public List<TerminSchadenfall> GetTermineEinerBoxAllerSchadenFaelle(int versBoxID)
+        public List<TerminSchadenfall> GetTermineEinerBoxAllerSchadenFaelle(int versBoxID, Predicate<TerminSchadenfall> terminSelector = null)
         {
-            return EventsDataService.TermineGet(null, versBoxID);
+            var boxTermine = EventsDataService.TermineGet(null, versBoxID);
+
+            // Box Blocker Termine auf die Box Zeitscheibe (TaktungMinuten) splitten
+            // d. h. wenn ein Blocker-Termin über die Zeitscheibe hinaus geht, 
+            // => muss er in 2 oder 3 Blocker-Termine gesplittet werden, jeweils mit Terminlänge = TaktungMinuten
+
+            var alleBoxen = VersEventOrtBoxenAlle;
+            var box = alleBoxen.FirstOrDefault(b => b.ID == versBoxID);
+            if (box == null)
+                return boxTermine;
+
+            if (terminSelector == null)
+                terminSelector = t => true;
+
+            var splittedBlockerterminList = new List<TerminSchadenfall>();
+            boxTermine.Where(bt => bt.IsBlockerDummyTermin && terminSelector(bt)).ToListOrEmptyList()
+                .ForEach(bt =>
+                    {
+                        if (box.TaktungMinuten >= bt.DauerMinuten)
+                            return;
+
+                        bt.TmpMarkForDelete = true;
+
+                        var datumZeitVon = bt.DatumZeitVon;
+                        for (var i = 0; i < bt.DauerMinuten / box.TaktungMinuten; i++)
+                        {
+                            var splittedBlockerTermin = ModelMapping.Copy(bt);
+
+                            splittedBlockerTermin.TmpMarkForDelete = false;
+                            splittedBlockerTermin.ZeitVon = datumZeitVon.ToString("HH:mm");
+                            splittedBlockerTermin.ZeitBis = (datumZeitVon.AddMinutes(box.TaktungMinuten)).ToString("HH:mm");
+                            
+                            splittedBlockerterminList.Add(splittedBlockerTermin);
+
+                            datumZeitVon = datumZeitVon.AddMinutes(box.TaktungMinuten);
+                        }
+                    });
+
+            // Entferne alle Box Blocker Termine, die länger als die Zeitscheibe der Box sind:
+            boxTermine.RemoveAll(bt => bt.TmpMarkForDelete);
+            // Füge stattdessen die gesplitteten Blocker-Termine ein:
+            boxTermine.AddRange(splittedBlockerterminList);
+
+            return boxTermine;
         }
 
 
@@ -1164,6 +1207,12 @@ namespace CkgDomainLogic.Insurance.ViewModels
             DataMarkForRefreshBlockerTermine();
 
             return item;
+        }
+
+        [XmlIgnore]
+        public List<VersEventOrtBox> VersEventOrtBoxenAlle
+        {
+            get { return PropertyCacheGet(() => EventsDataService.VersEventOrtBoxenGet(null)); }
         }
 
         public VersEventOrtBox VersEventOrtBoxCreate()

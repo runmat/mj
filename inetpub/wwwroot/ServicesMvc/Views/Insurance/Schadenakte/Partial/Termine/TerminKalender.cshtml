@@ -36,8 +36,11 @@
     
     <div id="calendarReMode">
         
-        <!-- für Reparatur-Termine Terminvorschläge zu Auswahl anbieten: -->
-        @Html.Partial("Schadenakte/Partial/Termine/ReTerminVorschlaege")
+        <!-- Ggfls. für Reparatur-Termine Terminvorschläge zu Auswahl anbieten: -->
+        @if (ViewData["HideReTerminVorschlaege"] == null || (!(bool)ViewData["HideReTerminVorschlaege"]))
+        {
+            @Html.Partial("Schadenakte/Partial/Termine/ReTerminVorschlaege")
+        }
 
         @if (Model.GetCachedBoxArt() == "RE")
         {
