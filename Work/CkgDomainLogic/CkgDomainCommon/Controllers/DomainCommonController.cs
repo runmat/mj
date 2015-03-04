@@ -113,22 +113,5 @@ namespace ServicesMvc.Controllers
         {
             return View();
         }
-
-        [CkgApplication]
-        public ActionResult AdressenPflege(string kennung, string kdnr)
-        {
-            AdressenPflegeViewModel.AdressenDataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
-
-            return View(AdressenPflegeViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult AdressenKennungChange(AdressenPflegeViewModel model)
-        {
-            AdressenPflegeViewModel.AdressenKennungGruppeChange(model.AdressenKennungGruppe, model.AdressenKennungTemp);
-            ModelState.Clear();
-
-            return PartialView("Partial/AdressenGruppeKennungSelect", AdressenPflegeViewModel);
-        }
     }
 }
