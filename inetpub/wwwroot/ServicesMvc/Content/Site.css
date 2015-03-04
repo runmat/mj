@@ -182,6 +182,9 @@ body {
     margin-top: 1px;
 }
 
+.FormSearchResultsGrid.portlet.box.light-grey {
+    border-right: 0 solid transparent!important;
+}
 
 .grid-toolbar {
     height: 30px;
