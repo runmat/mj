@@ -28,7 +28,7 @@ namespace AppZulassungsdienst.forms
                 }
                 if (tblResultTableRaw != null) 
                 {
-                    if ((Request.QueryString["ID"] == null) || (Request.QueryString["ID"].Length == 0))
+                    if (String.IsNullOrEmpty(Request.QueryString["ID"]))
                     {
                         lblError.Text = "Feher: Die Seite wurde ohne Angaben zum Zulassungsdienst aufgerufen.";
                     }

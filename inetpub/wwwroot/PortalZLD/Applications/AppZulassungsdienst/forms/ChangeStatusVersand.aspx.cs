@@ -73,7 +73,7 @@ namespace AppZulassungsdienst.forms
 
         /// <summary>
         /// Auswahl/Eingabe des zu selektierenden Kreises. Laden des 
-        /// zuständigen ZLD/externen Dienstleiters(Z_ZLD_EXPORT_INFOPOOL).
+        /// zuständigen ZLD/externen Dienstleiters.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -118,7 +118,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Selektionsdaten an SAP übergeben(Z_ZLD_EXPORT_VZOZUERL)
+        /// Selektionsdaten an SAP übergeben
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -151,7 +151,7 @@ namespace AppZulassungsdienst.forms
 
         /// <summary>
         /// Auswahl/Eingabe des zu selektierenden Kreises. Laden des 
-        /// zuständigen ZLD/externen Dienstleiters(Z_ZLD_EXPORT_INFOPOOL).
+        /// zuständigen ZLD/externen Dienstleiters.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -199,7 +199,7 @@ namespace AppZulassungsdienst.forms
         private void InitLargeDropdowns()
         {
             //Kunde
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();

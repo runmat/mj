@@ -54,7 +54,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Änderung der empfangenen Kostenstelle. Prüfung ob Umlagerung möglich(Z_FIL_EFA_GET_KOSTL) .
+        /// Änderung der empfangenen Kostenstelle. Prüfung ob Umlagerung möglich.
         /// Anzeige des Filialtextes(Ort).
         /// </summary>
         /// <param name="sender">object</param>
@@ -112,7 +112,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Vom Benutzer geprüfte Daten an SAP üergeben(Z_FIL_EFA_UML_STEP1).
+        /// Vom Benutzer geprüfte Daten an SAP üergeben.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -295,7 +295,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Artikelauswahl bzw. Änderung. Ermitteln der möglichen Kennzeichengrössen zum Umlagerungsartikel(Z_FIL_EFA_UML_MAT_GROESSE).
+        /// Artikelauswahl bzw. Änderung. Ermitteln der möglichen Kennzeichengrössen zum Umlagerungsartikel.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -331,7 +331,7 @@ namespace AppZulassungsdienst.forms
         #region Methods
 
         /// <summary>
-        /// Artikel aus SAP laden(Z_FIL_EFA_UML_MAT) und an die DropDowns binden.
+        /// Artikel aus SAP laden und an die DropDowns binden.
         /// </summary>
         public void fillDropdown()
         {
@@ -358,7 +358,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Prüfung ob Umlagerung möglich(Z_FIL_EFA_GET_KOSTL). Prüfen ob eine Textbemerkung Pflicht ist.
+        /// Prüfung ob Umlagerung möglich. Prüfen ob eine Textbemerkung Pflicht ist.
         /// Vorgang in die Umlagerungstabelle einfügen bzw, aktulisieren. 
         /// </summary>
         private void DoInsert()
@@ -470,7 +470,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void FillGrid(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = objUmlagerung.tblUmlagerung.DefaultView;
+            DataView tmpDataView = new DataView(objUmlagerung.tblUmlagerung);
             String strFilter = "";
 
             tmpDataView.RowFilter = strFilter;
@@ -538,7 +538,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void FillGrid2()
         {
-            DataView tmpDataView = objUmlagerung.tblUmlagerung.DefaultView;
+            DataView tmpDataView = new DataView(objUmlagerung.tblUmlagerung);
             if (tmpDataView.Count == 0)
             {
                 GridView2.Visible = false;

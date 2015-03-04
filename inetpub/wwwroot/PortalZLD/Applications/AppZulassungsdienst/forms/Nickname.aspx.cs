@@ -56,7 +56,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Nach einem bereits angelegten "nickname" des ausgewählten Kunden suchen(Z_ZLD_GET_NICKNAME).
+        /// Nach einem bereits angelegten "nickname" des ausgewählten Kunden suchen.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -90,7 +90,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// "Nickname" in SAP speichern(Z_ZLD_SET_NICKNAME).
+        /// "Nickname" in SAP speichern.
         /// </summary> 
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -126,7 +126,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// "Nickname" in SAP löschen(Z_ZLD_SET_NICKNAME).
+        /// "Nickname" in SAP löschen.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -159,7 +159,7 @@ namespace AppZulassungsdienst.forms
 
         private void fillDropdown()
         {
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();

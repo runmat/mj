@@ -326,7 +326,7 @@
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="Gebühr">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtGebPreis"  Visible='<%# Eval("GebMatPflicht").ToString() == "X" %>'
+                                                                    <asp:TextBox ID="txtGebPreis"  Visible='<%# proofGebMatPflicht(Eval("Value").ToString()) %>'
                                                                                  Enabled='<%# proofGebPak(Eval("ID_POS").ToString()) %>' 
                                                                                  onKeyPress="return numbersonly(event, true)" Width="55px"  Text='<%# Eval("GebPreis", "{0:F}") %>' CssClass="TextBoxNormal" runat="server"/>
                                                                 </ItemTemplate>
@@ -335,7 +335,7 @@
                                                             </asp:TemplateField>   
                                                             <asp:TemplateField HeaderText="Gebühr Amt">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtGebAmt" Visible='<%# Eval("GebMatPflicht").ToString() == "X" %>' 
+                                                                    <asp:TextBox ID="txtGebAmt" Visible='<%# proofGebMatPflicht(Eval("Value").ToString()) %>' 
                                                                                  onKeyPress="return numbersonly(event, true)" Width="55px" Text='<%# Eval("GebAmt", "{0:F}") %>'
                                                                                  CssClass="TextBoxNormal" runat="server"/>
                                                                 </ItemTemplate>

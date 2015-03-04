@@ -167,7 +167,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    lblError.Text = "Der neu Vorgangs-Status wurde erfolgreich gespeichert!";
+                    lblError.Text = "Der neue Vorgangs-Status wurde erfolgreich gespeichert!";
                     objStatusaenderung.IDSuche = "";
                     Panel2.Visible = false;
                     cmdSave.Visible = false;

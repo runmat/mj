@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using AppZulassungsdienst.lib.Models;
 using CKG.Base.Business;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 
@@ -84,9 +85,9 @@ namespace AppZulassungsdienst.lib
 
                     if (!ErrorOccured)
                     {
-                        var sapKopfdaten = Z_ZLD_STO_GET_ORDER2.ES_BAK.GetExportList(SAP).FirstOrDefault();
-                        var sapBankdaten = Z_ZLD_STO_GET_ORDER2.ES_BANK.GetExportList(SAP).FirstOrDefault();
-                        var sapAdresse = Z_ZLD_STO_GET_ORDER2.GT_ADRS.GetExportList(SAP).FirstOrDefault();
+                        var sapKopfdaten = Z_ZLD_STO_GET_ORDER2.ES_BAK.GetExportList(SAP).FirstOrDefault(new Z_ZLD_STO_GET_ORDER2.ES_BAK());
+                        var sapBankdaten = Z_ZLD_STO_GET_ORDER2.ES_BANK.GetExportList(SAP).FirstOrDefault(new Z_ZLD_STO_GET_ORDER2.ES_BANK());
+                        var sapAdresse = Z_ZLD_STO_GET_ORDER2.GT_ADRS.GetExportList(SAP).FirstOrDefault(new Z_ZLD_STO_GET_ORDER2.GT_ADRS());
                         var sapPositionen = Z_ZLD_STO_GET_ORDER2.GT_POS.GetExportList(SAP);
 
                         AktuellerVorgang.Kopfdaten = AppModelMappings.Z_ZLD_STO_GET_ORDER2_ES_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten);
@@ -154,14 +155,13 @@ namespace AppZulassungsdienst.lib
 
                     var fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                    if (fehlerListe.Any())
+                    if (fehlerListe.Any(f => f.FehlerText != "OK"))
                     {
                         RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
 
                         foreach (var fehler in fehlerListe)
                         {
                             var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && p.PositionsNr == fehler.PositionsNr);
-
                             if (pos != null)
                                 pos.FehlerText = fehler.FehlerText;
                         }

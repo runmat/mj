@@ -12,7 +12,16 @@ namespace AppZulassungsdienst.lib.Models
 
         public string MaterialName { get; set; }
 
-        public string Name { get { return String.Format("{0} ~ {1}", MaterialName, MaterialNr); } }
+        public string Name
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(MaterialNr) || MaterialNr == "0")
+                    return MaterialName;
+
+                return String.Format("{0} ~ {1}", MaterialName, MaterialNr);
+            }
+        }
 
         public bool Kennzeichenrelevant { get; set; }
 

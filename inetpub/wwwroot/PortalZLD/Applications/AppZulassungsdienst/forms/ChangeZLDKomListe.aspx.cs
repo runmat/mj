@@ -74,6 +74,7 @@ namespace AppZulassungsdienst.forms
                 {
                     ddlSuche.SelectedValue = objKompletterf.DataFilterProperty;
                     txtSuche.Text = objKompletterf.DataFilterValue;
+                    trSuche.Visible = true;
                     ibtnNoFilter.Visible = true;
                 }
 
@@ -195,9 +196,9 @@ namespace AppZulassungsdienst.forms
                         if (objKompletterf.ErrorOccured)
                         {
                             lblError.Text = objKompletterf.Message;
+                            return;
                         }
 
-                        SetGridRowEdited(GridView1.Rows[Index], true);
                         calculateGebuehr();
                         Session["objKompletterf"] = objKompletterf;
 
@@ -214,24 +215,27 @@ namespace AppZulassungsdienst.forms
 
                         var newLoeschkz = "O";
 
-                        objKompletterf.UpdateWebBearbeitungsStatus(lblID.Text, lblIDPos.Text, newLoeschkz);
+                        objKompletterf.UpdateWebBearbeitungsStatus(lblID.Text, "10", newLoeschkz);
+
+                        if (objKompletterf.ErrorOccured)
+                        {
+                            lblError.Text = objKompletterf.Message;
+                            return;
+                        }
 
                         foreach (GridViewRow row in GridView1.Rows)
                         {
-                            if (GridView1.DataKeys[row.RowIndex] != null)
+                            if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
                             {
-                                if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text && GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString() == lblIDPos.Text)
+                                Label IDPos = (Label)row.FindControl("lblid_pos");
+                                Label lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                lblLoeschKZ.Text = newLoeschkz;
+                                if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
                                 {
-                                    Label IDPos = (Label)row.FindControl("lblid_pos");
-                                    Label lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
-                                    lblLoeschKZ.Text = newLoeschkz;
-                                    if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
-                                    {
-                                        CheckGridRow(row, GridCheckMode.CheckAll, true);
-                                    }
-
-                                    SetGridRowEdited(row, true);
+                                    CheckGridRow(row, GridCheckMode.CheckAll, true);
                                 }
+
+                                SetGridRowEdited(row, true);
                             }
                         }
 
@@ -268,7 +272,7 @@ namespace AppZulassungsdienst.forms
                     }
                 }
             }
-            else if (ddlSuche.SelectedValue == "id_sap")
+            else if (ddlSuche.SelectedValue == "SapId")
             {
                 if (!String.IsNullOrEmpty(txtSuche.Text))
                 {
@@ -337,7 +341,7 @@ namespace AppZulassungsdienst.forms
             lblError.Text = "";
             lblMessage.Text = "";
 
-            if (!CheckGrid(GridCheckMode.CheckOnlyRelevant))
+            if (!CheckGrid(GridCheckMode.CheckNone))
             {
                 objKompletterf.SaveVorgaengeToSql(m_User.UserName);
 
@@ -346,7 +350,10 @@ namespace AppZulassungsdienst.forms
                     lblError.Text = "Fehler beim Speichern der Daten in SQL. " + objKompletterf.Message;
                     return;
                 }
+            }
 
+            if (!CheckGrid(GridCheckMode.CheckOnlyRelevant))
+            {
                 objKompletterf.SendVorgaengeToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
 
                 if (objKompletterf.ErrorOccured)
@@ -357,7 +364,7 @@ namespace AppZulassungsdienst.forms
 
                 tab1.Visible = true;
 
-                if (objKompletterf.Vorgangsliste.Any(vg => vg.FehlerText != "OK"))
+                if (objKompletterf.Vorgangsliste.Any(vg => !String.IsNullOrEmpty(vg.FehlerText) && vg.FehlerText != "OK"))
                 {
                     lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
                     lblMessage.Visible = false;
@@ -862,12 +869,16 @@ namespace AppZulassungsdienst.forms
 
                     if (strDirection == "asc")
                     {
-                        GridView1.DataSource = srcList.OrderBy(v => prop.GetValue(v, null));
+                        GridView1.DataSource = srcList.OrderBy(v => prop.GetValue(v, null)).ToList();
                     }
                     else
                     {
-                        GridView1.DataSource = srcList.OrderByDescending(v => prop.GetValue(v, null));
+                        GridView1.DataSource = srcList.OrderByDescending(v => prop.GetValue(v, null)).ToList();
                     }
+                }
+                else
+                {
+                    GridView1.DataSource = srcList.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
@@ -875,16 +886,16 @@ namespace AppZulassungsdienst.forms
 
                 calculateGebuehr();
 
-                if (GridView1.DataKeys[0] != null)
+                // Zeilen mit gleicher ID gleich färben
+                if (GridView1.DataKeys.Count > 0 && GridView1.DataKeys[0] != null)
                 {
-                    String mySapId = GridView1.DataKeys[0]["SapId"].ToString();
-                    String myPosId = GridView1.DataKeys[0]["PositionsNr"].ToString();
+                    String myId = GridView1.DataKeys[0]["SapId"].ToString();
                     String Css = "ItemStyle";
                     foreach (GridViewRow row in GridView1.Rows)
                     {
                         if (GridView1.DataKeys[row.RowIndex] != null)
                         {
-                            if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == mySapId && GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString() == myPosId)
+                            if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == myId)
                             {
                                 row.CssClass = Css;
                             }
@@ -900,11 +911,10 @@ namespace AppZulassungsdienst.forms
                                 }
                                 row.CssClass = Css;
 
-                                mySapId = GridView1.DataKeys[row.RowIndex]["SapId"].ToString();
-                                myPosId = GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString();
+                                myId = GridView1.DataKeys[row.RowIndex]["SapId"].ToString();
                             }
                             // andere Hintergrundfarbe bei Barkunden
-                            if (objKompletterf.Vorgangsliste.Any(v => v.SapId == mySapId && v.PositionsNr == myPosId && objCommon.KundenStamm.Any(k => k.KundenNr == v.KundenNr && k.Bar)))
+                            if (objKompletterf.Vorgangsliste.Any(v => v.SapId == myId && objCommon.KundenStamm.Any(k => k.KundenNr == v.KundenNr && k.Bar)))
                             {
                                 row.CssClass = "GridTableBarkunde";
                             }
@@ -1021,20 +1031,20 @@ namespace AppZulassungsdienst.forms
 
                 var pos = objKompletterf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == lblID.Text && vg.PositionsNr == posID.Text);
 
-                if (posID.Text == "10" && pruefungsrelevant && String.IsNullOrEmpty(ZulDate.Text))
+                if (posID.Text == "10" && pruefungsrelevant && ZulDate.Visible && String.IsNullOrEmpty(ZulDate.Text))
                 {
                     ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
                     return true;
                 }
 
-                TextBox txtBox = (TextBox)gvRow.FindControl("txtPreis");
+                TextBox txtBoxPreis = (TextBox)gvRow.FindControl("txtPreis");
                 Decimal decPreis = 0;
 
-                if (txtBox.Text.IsDecimal())
+                if (txtBoxPreis.Text.IsDecimal())
                 {
-                    Decimal.TryParse(txtBox.Text, out decPreis);
-                    txtBox.Text = String.Format("{0:0.00}", decPreis);
+                    Decimal.TryParse(txtBoxPreis.Text, out decPreis);
+                    txtBoxPreis.Text = String.Format("{0:0.00}", decPreis);
                 }
 
                 if (pruefungsrelevant && decPreis == 0)
@@ -1042,30 +1052,30 @@ namespace AppZulassungsdienst.forms
                     Label lblMatnr = (Label)gvRow.FindControl("lblMatnr");
 
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == lblMatnr.Text);
-                    if (mat != null && !mat.NullpreisErlaubt)
+                    if (txtBoxPreis.Visible && mat != null && !mat.NullpreisErlaubt)
                     {
-                        txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        txtBoxPreis.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                         lblError.Text = "Bitte geben Sie einen Preis für die markierten Dienstleistungen/Artikel ein!";
                         return true;
                     }
                 }
 
-                txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
+                TextBox txtBoxGebuehren = (TextBox)gvRow.FindControl("txtGebPreis");
                 Decimal decGeb = 0;
 
-                if (txtBox.Text.IsDecimal())
+                if (txtBoxGebuehren.Text.IsDecimal())
                 {
-                    Decimal.TryParse(txtBox.Text, out decGeb);
-                    txtBox.Text = String.Format("{0:0.00}", decGeb);
+                    Decimal.TryParse(txtBoxGebuehren.Text, out decGeb);
+                    txtBoxGebuehren.Text = String.Format("{0:0.00}", decGeb);
                 }
 
-                txtBox = (TextBox)gvRow.FindControl("txtPreis_Amt");
+                TextBox txtBoxGebuehrenAmt = (TextBox)gvRow.FindControl("txtPreis_Amt");
                 Decimal decGebAmt = 0;
 
-                if (txtBox.Text.IsDecimal())
+                if (txtBoxGebuehrenAmt.Text.IsDecimal())
                 {
-                    Decimal.TryParse(txtBox.Text, out decGebAmt);
-                    txtBox.Text = String.Format("{0:0.00}", decGebAmt);
+                    Decimal.TryParse(txtBoxGebuehrenAmt.Text, out decGebAmt);
+                    txtBoxGebuehrenAmt.Text = String.Format("{0:0.00}", decGebAmt);
                 }
 
                 //ist der Kunde ein Pauschalkunde,  Gebühr und Gebühr Amt unterschiedlich und 
@@ -1080,38 +1090,38 @@ namespace AppZulassungsdienst.forms
                         var gebMatNr = (kunde.OhneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
 
                         bool SDRelGeb = objKompletterf.GetSDRelevantsGeb(lblID.Text, posID.Text, gebMatNr);
-                        if (txtBox.Visible && !SDRelGeb)
+                        if (txtBoxGebuehrenAmt.Visible && !SDRelGeb)
                         {
-                            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                            txtBoxGebuehrenAmt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                             lblError.Text = "Bei Pauschalkunden dürfen Gebühr und Gebühr Amt nicht unterschiedlich sein!";
                             return true;
                         }
                     }
                 }
 
-                txtBox = (TextBox)gvRow.FindControl("txtSteuer");
+                TextBox txtBoxSteuer = (TextBox)gvRow.FindControl("txtSteuer");
                 Decimal decSteuer = 0;
 
-                if (txtBox.Text.IsDecimal())
+                if (txtBoxSteuer.Text.IsDecimal())
                 {
-                    Decimal.TryParse(txtBox.Text, out decSteuer);
-                    txtBox.Text = String.Format("{0:0.00}", decSteuer);
+                    Decimal.TryParse(txtBoxSteuer.Text, out decSteuer);
+                    txtBoxSteuer.Text = String.Format("{0:0.00}", decSteuer);
                 }
 
-                txtBox = (TextBox)gvRow.FindControl("txtPreisKZ");
+                TextBox txtBoxPreisKennz = (TextBox)gvRow.FindControl("txtPreisKZ");
                 Decimal decPreisKZ = 0;
 
-                if (txtBox.Text.IsDecimal())
+                if (txtBoxPreisKennz.Text.IsDecimal())
                 {
-                    Decimal.TryParse(txtBox.Text, out decPreisKZ);
-                    txtBox.Text = String.Format("{0:0.00}", decPreisKZ);
+                    Decimal.TryParse(txtBoxPreisKennz.Text, out decPreisKZ);
+                    txtBoxPreisKennz.Text = String.Format("{0:0.00}", decPreisKZ);
                 }
 
-                txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
+                TextBox txtKennzAbc = (TextBox)gvRow.FindControl("txtKennzAbc");
 
-                if (posID.Text == "10" && pruefungsrelevant && String.IsNullOrEmpty(txtBox.Text))
+                if (posID.Text == "10" && pruefungsrelevant && txtKennzAbc.Visible && String.IsNullOrEmpty(txtKennzAbc.Text))
                 {
-                    txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                    txtKennzAbc.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
                     return true;
                 }
@@ -1119,18 +1129,39 @@ namespace AppZulassungsdienst.forms
                 // Daten aktualisieren
                 if (pos != null)
                 {
-                    pos.Preis = decPreis;
-                    pos.Gebuehr = decGeb;
-                    pos.GebuehrAmt = decGebAmt;
-                    pos.Steuer = decSteuer;
-                    pos.PreisKennzeichen = decPreisKZ;
-                    pos.KennzeichenTeil2 = txtBox.Text;
-                    pos.Zahlart_Bar = bBar;
-                    pos.Zahlart_EC = bEC;
-                    pos.Zahlart_Rechnung = bRE;
+                    if (txtBoxPreis.Visible)
+                        pos.Preis = decPreis;
+
+                    if (txtBoxGebuehren.Visible)
+                        pos.Gebuehr = decGeb;
+
+                    if (txtBoxGebuehrenAmt.Visible)
+                        pos.GebuehrAmt = decGebAmt;
+
+                    if (txtBoxSteuer.Visible)
+                        pos.Steuer = decSteuer;
+
+                    if (txtBoxPreisKennz.Visible)
+                        pos.PreisKennzeichen = decPreisKZ;
+
+                    if (txtKennzAbc.Visible)
+                        pos.KennzeichenTeil2 = txtKennzAbc.Text;
+
+                    if (rbEC.Visible)
+                    {
+                        pos.Zahlart_Bar = bBar;
+                        pos.Zahlart_EC = bEC;
+                        pos.Zahlart_Rechnung = bRE;
+                    }
 
                     if (pos.PositionsNr == "10")
-                        objKompletterf.Vorgangsliste.ForEach(vg => vg.KennzeichenTeil2 = txtBox.Text);
+                    {
+                        foreach (var item in objKompletterf.Vorgangsliste.Where(vg => vg.SapId == pos.SapId))
+                        {
+                            if (txtKennzAbc.Visible)
+                                item.KennzeichenTeil2 = txtKennzAbc.Text;
+                        }
+                    }
                 }
             }
             catch (Exception ex)
@@ -1162,7 +1193,6 @@ namespace AppZulassungsdienst.forms
                 Label lblKennKZ1 = (Label)gvRow.FindControl("lblKennKZ1");
                 Label lblReserviert = (Label)gvRow.FindControl("lblReserviert");
                 Label lblWunschKennz = (Label)gvRow.FindControl("lblWunschKennz");
-                Label lblFeinstaub = (Label)gvRow.FindControl("lblFeinstaub");
 
                 lblsapID.Font.Bold = Edited;
                 lblLoeschKZ.Font.Bold = Edited;
@@ -1175,7 +1205,6 @@ namespace AppZulassungsdienst.forms
                 lblKennKZ1.Font.Bold = Edited;
                 lblReserviert.Font.Bold = Edited;
                 lblWunschKennz.Font.Bold = Edited;
-                lblFeinstaub.Font.Bold = Edited;
             }
             catch (Exception ex)
             {
@@ -1517,11 +1546,14 @@ namespace AppZulassungsdienst.forms
             GridView1.Columns[2].Visible = !modusSenden;
 
             // Gebuehr
-            if (GridView1.Columns[9] != null) { GridView1.Columns[9].Visible = !modusSenden; }
+            GridView1.Columns[9].Visible = !modusSenden;
             // GebuehrAmt
-            if (GridView1.Columns[10] != null) { GridView1.Columns[10].Visible = (!modusSenden && m_User.Groups[0].Authorizationright != 1); }
+            GridView1.Columns[10].Visible = (!modusSenden && m_User.Groups[0].Authorizationright != 1);
             // Steuer
-            if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = !modusSenden; }
+            GridView1.Columns[11].Visible = !modusSenden;
+
+            // Aktions-Buttons
+            GridView1.Columns[17].Visible = !modusSenden;
         }
 
         #endregion

@@ -118,13 +118,13 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Setzen des Löschkennzeichens der markierten Vorgänge in SAP. Bapi: Z_ZLD_SET_LOEKZ
+        /// Setzen des Löschkennzeichens der markierten Vorgänge in SAP.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
         protected void cmdSend_Click(object sender, EventArgs e)
         {
-            DataRow[] RowsEdit = objNacherf.AHVersandListe.Select("toDelete = 'L'");
+            DataRow[] RowsEdit = objNacherf.AHVersandListe.Select("IsNull(toDelete,'') = 'L'");
             if (RowsEdit.Length > 0)
             {
                 objNacherf.SetSapLoekzForAHVersandVorgaenge();
@@ -156,7 +156,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="Rowfilter">Filterkriterien</param>
         private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
         {
-            DataView tmpDataView = objNacherf.AHVersandListe.DefaultView;
+            DataView tmpDataView = new DataView(objNacherf.AHVersandListe);
             String strFilter = "";
             if (!String.IsNullOrEmpty(Rowfilter))
             {
@@ -224,7 +224,9 @@ namespace AppZulassungsdienst.forms
                 GridView1.PageIndex = intTempPageIndex;
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
-                if (GridView1.DataKeys[0] != null)
+
+                // Zeilen mit gleicher ID gleich färben
+                if (GridView1.DataKeys.Count > 0 && GridView1.DataKeys[0] != null)
                 {
                     String myId = GridView1.DataKeys[0]["ZULBELN"].ToString();
                     String Css = "ItemStyle";

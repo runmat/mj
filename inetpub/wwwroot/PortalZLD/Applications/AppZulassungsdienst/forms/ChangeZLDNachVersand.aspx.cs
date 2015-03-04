@@ -129,7 +129,7 @@ namespace AppZulassungsdienst.forms
         private void InitLargeDropdowns()
         {
             //Kunde
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();

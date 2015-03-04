@@ -73,7 +73,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objListe.Auswertung != null)
             {
-                rgGrid1.DataSource = objListe.Auswertung.DefaultView;
+                rgGrid1.DataSource = objListe.Auswertung;
             }
             else
             {
@@ -333,7 +333,7 @@ namespace AppZulassungsdienst.forms
             tblTemp.AcceptChanges();
 
             // Sortierung setzen
-            DataView dvExport = tblTemp.DefaultView;
+            DataView dvExport = new DataView(tblTemp);
 
             switch (rbAuswahl.SelectedValue)
             {

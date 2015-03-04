@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using AppZulassungsdienst.lib.Models;
@@ -401,7 +402,7 @@ namespace AppZulassungsdienst.lib
 
                 DateTime tmpDate;
 
-                if (DateTime.TryParse(filterValue, out tmpDate))
+                if (DateTime.TryParseExact(filterValue, "ddMMyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDate))
                 {
                     blnResult = (itemValue.Date == tmpDate.Date);
                 }
@@ -412,7 +413,7 @@ namespace AppZulassungsdienst.lib
 
                 DateTime tmpDate;
 
-                if (itemValue.HasValue && DateTime.TryParse(filterValue, out tmpDate))
+                if (itemValue.HasValue && DateTime.TryParseExact(filterValue, "ddMMyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDate))
                 {
                     blnResult = (itemValue.Value.Date == tmpDate.Date);
                 }
@@ -505,6 +506,23 @@ namespace AppZulassungsdienst.lib
             var mat = MaterialStamm.FirstOrDefault(m => m.MaterialNr == Matnr);
 
             return (mat != null && mat.Gebuehrenpflichtig);
+        }
+
+        public string GetMaterialNameFromDienstleistungRow(DataRow dRow)
+        {
+            String[] sMaterial = dRow["Text"].ToString().Split('~');
+
+            if (dRow["Value"].ToString() == CONST_IDSONSTIGEDL)
+            {
+                return dRow["DLBezeichnung"].ToString().Trim();
+            }
+
+            if (sMaterial.Length == 2)
+            {
+                return sMaterial[0].Trim();
+            }
+
+            return "";
         }
 
         #endregion

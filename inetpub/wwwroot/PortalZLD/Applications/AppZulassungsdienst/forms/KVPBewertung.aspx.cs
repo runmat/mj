@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using CKG.Base.Business;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
@@ -49,7 +50,7 @@ namespace AppZulassungsdienst.forms
         {
             if (mObjKVP.Vorschlagsliste != null)
             {
-                rgGrid1.DataSource = mObjKVP.Vorschlagsliste.DefaultView;
+                rgGrid1.DataSource = mObjKVP.Vorschlagsliste;
             }
             else
             {

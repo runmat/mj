@@ -62,7 +62,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Selektionsdaten sammeln, validieren und an SAP übergeben(Z_ZLD_EXPORT_PRALI).
+        /// Selektionsdaten sammeln, validieren und an SAP übergeben.
         /// </summary>
         private void DoSubmit()
         {

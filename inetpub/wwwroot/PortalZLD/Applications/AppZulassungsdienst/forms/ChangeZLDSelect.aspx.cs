@@ -140,9 +140,8 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Sammeln der Selektionsdaten und an Sap übergeben(objNacherf.getSAPDatenNacherf). 
-        /// Dann werden die Datensätze für die Anzeige über die ID´s der SAP-Daten aus der SQL–DB selektiert(objNacherf.LadeNacherfassungDB_ZLDNew).
-        /// Bapi: Z_ZLD_EXPORT_NACHERF
+        /// Sammeln der Selektionsdaten und an Sap übergeben. 
+        /// Dann werden die Datensätze für die Anzeige selektiert.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -248,9 +247,9 @@ namespace AppZulassungsdienst.forms
         {
             //Kunde
             if (blnSofortabrechnung)
-                ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv && (k.Sofortabrechung || k.KundenNr == "0"));
+                ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv && (k.Sofortabrechung || k.KundenNr == "0")).ToList();
             else
-                ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+                ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
 
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
@@ -283,7 +282,7 @@ namespace AppZulassungsdienst.forms
         {
             try
             {
-                ddlDienst.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv);
+                ddlDienst.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
                 ddlDienst.DataValueField = "MaterialNr";
                 ddlDienst.DataTextField = "Name";
                 ddlDienst.DataBind();

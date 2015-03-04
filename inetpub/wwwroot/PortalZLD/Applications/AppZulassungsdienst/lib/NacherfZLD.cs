@@ -194,17 +194,18 @@ namespace AppZulassungsdienst.lib
                     _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId).ThenBy(p => p.PositionsNr).ToList();
                     _lstKundendaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
                 }
-                
+
+                var delIds = new List<string>();
                 foreach (var item in _lstKopfdaten)
                 {
                     var kopfdaten = item;
 
                     var hauptPos = _lstPositionen.FirstOrDefault(p => p.SapId == kopfdaten.SapId && p.PositionsNr == "10");
 
-                    // Auftrag ohne Hauptpositionen ?
+                    // Auftrag ohne Hauptpositionen?
                     if (hauptPos == null)
                     {
-                        _lstKopfdaten.Remove(kopfdaten);
+                        delIds.Add(kopfdaten.SapId);
                     }
                     else
                     {
@@ -213,16 +214,17 @@ namespace AppZulassungsdienst.lib
                         {
                             MatError = -4444;
                             MatErrorText += String.Format("ID {0}: Material {1} nicht freigeschaltet. \r\n", kopfdaten.SapId, hauptPos.MaterialNr);
-                            _lstKopfdaten.Remove(kopfdaten);
+                            delIds.Add(kopfdaten.SapId);
                         }
                     }
                 }
+                _lstKopfdaten.RemoveAll(k => delIds.Contains(k.SapId));
 
                 foreach (var item in _lstKopfdaten)
                 {
                     var kopfdaten = item;
-                    var bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == kopfdaten.SapId);
-                    var adresse = _lstAdressen.FirstOrDefault(a => a.SapId == kopfdaten.SapId);
+                    var bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == kopfdaten.SapId, new ZLDBankdaten());
+                    var adresse = _lstAdressen.FirstOrDefault(a => a.SapId == kopfdaten.SapId, new ZLDAdressdaten());
                     var positionen = _lstPositionen.Where(p => p.SapId == kopfdaten.SapId).OrderBy(p => p.PositionsNr).ToList();
 
                     AddVorgangToVorgangsliste(kopfdaten, bankdaten, adresse, positionen);
@@ -233,9 +235,8 @@ namespace AppZulassungsdienst.lib
         private void AddVorgangToVorgangsliste(ZLDKopfdaten kopfdaten, ZLDBankdaten bankdaten, ZLDAdressdaten adresse, List<ZLDPosition> positionen)
         {
             var kunde = _lstKundendaten.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
-            var kundenName = (kunde != null ? kunde.Name : "");
 
-            foreach (var pos in positionen)
+            foreach (var pos in positionen.Where(p => p.WebMaterialart == "D"))
             {
                 var gebuehrenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");
                 var steuerPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "S");
@@ -248,10 +249,11 @@ namespace AppZulassungsdienst.lib
                 Vorgangsliste.Add(new ZLDVorgangUINacherfassung
                 {
                     SapId = kopfdaten.SapId,
+                    Belegart = kopfdaten.Belegart,
                     VkOrg = kopfdaten.VkOrg,
                     VkBur = kopfdaten.VkBur,
                     KundenNr = kopfdaten.KundenNr,
-                    KundenName = kundenName,
+                    KundenName = (kunde != null ? kunde.Name1 : ""),
                     PositionsNr = pos.PositionsNr,
                     MaterialName = pos.MaterialName,
                     Zulassungsdatum = kopfdaten.Zulassungsdatum,
@@ -271,7 +273,7 @@ namespace AppZulassungsdienst.lib
                     Zahlart_EC = kopfdaten.Zahlart_EC,
                     Zahlart_Bar = kopfdaten.Zahlart_Bar,
                     Zahlart_Rechnung = kopfdaten.Zahlart_Rechnung,
-                    WebBearbeitungsStatus = kopfdaten.WebBearbeitungsStatus,
+                    WebBearbeitungsStatus = (pos.Loeschkennzeichen == "X" ? "L" : kopfdaten.WebBearbeitungsStatus),
                     Landkreis = kopfdaten.Landkreis,
                     KennzeichenTeil1 = kennzTeil1,
                     KennzeichenTeil2 = kennzTeil2,
@@ -293,76 +295,18 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        public void LoadVorgang(string sapId)
+        public void LoadVorgang(string sapId, List<Materialstammdaten> materialStamm, List<Stva> stvaStamm)
         {
             ClearError();
 
             try
             {
-                AktuellerVorgang.Kopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == sapId);
-                AktuellerVorgang.Bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == sapId);
-                AktuellerVorgang.Adressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == sapId);
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
+
+                AktuellerVorgang.Kopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == sapId, new ZLDKopfdaten());
+                AktuellerVorgang.Bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == sapId, new ZLDBankdaten());
+                AktuellerVorgang.Adressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == sapId, new ZLDAdressdaten());
                 AktuellerVorgang.Positionen = _lstPositionen.Where(p => p.SapId == sapId).OrderBy(p => p.PositionsNr).ToList();
-
-                // Änderungen aus Liste übernehmen
-                var kopfL = Vorgangsliste.FirstOrDefault(vg => vg.SapId == AktuellerVorgang.Kopfdaten.SapId);
-                if (kopfL != null)
-                {
-                    var kopfdaten = AktuellerVorgang.Kopfdaten;
-
-                    if (kopfdaten != null)
-                    {
-                        kopfdaten.Kennzeichen = kopfL.KennzeichenTeil1;
-                        if (!String.IsNullOrEmpty(kopfL.KennzeichenTeil2))
-                            kopfdaten.Kennzeichen += "-" + kopfL.KennzeichenTeil2;
-
-                        kopfdaten.Zahlart_EC = kopfL.Zahlart_EC;
-                        kopfdaten.Zahlart_Bar = kopfL.Zahlart_Bar;
-                        kopfdaten.Zahlart_Rechnung = kopfL.Zahlart_Rechnung;
-
-                        kopfdaten.Zulassungsdatum = kopfL.Zulassungsdatum;
-                    }
-                }
-
-                foreach (var item in AktuellerVorgang.Positionen)
-                {
-                    switch (item.WebMaterialart)
-                    {
-                        case "D":
-                            var posL = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.PositionsNr);
-                            if (posL != null)
-                            {
-                                item.Preis = posL.Preis;
-                                item.MaterialName = posL.MaterialName;
-                            }
-                            break;
-
-                        case "G":
-                            var gebuehrenPos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.UebergeordnetePosition);
-                            if (gebuehrenPos != null)
-                            {
-                                item.Preis = gebuehrenPos.Gebuehr;
-                                item.GebuehrAmt = gebuehrenPos.GebuehrAmt;
-                            }
-                            break;
-
-                        case "S":
-                            var steuerPos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.UebergeordnetePosition);
-                            if (steuerPos != null)
-                            {
-                                item.Preis = steuerPos.Steuer;
-                            }
-                            break;
-
-                        case "K":
-                            var kennzeichenPos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.UebergeordnetePosition);
-                            if (kennzeichenPos != null)
-                            {
-                                item.Preis = kennzeichenPos.PreisKennzeichen;
-                            }
-                            break;
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -399,116 +343,25 @@ namespace AppZulassungsdienst.lib
         {
             ExecuteSapZugriff(() =>
             {
-                var posListeWeb = new List<ZLDPosition>();
-
-                var kopfdaten = AktuellerVorgang.Kopfdaten;
-
-                var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
-
-                var posNr = 0;
-
-                foreach (var item in AktuellerVorgang.Positionen)
+                foreach (var p in AktuellerVorgang.Positionen)
                 {
-                    var p = item;
-
                     var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == p.MaterialNr);
                     if (mat != null)
                     {
-                        posNr += 10;
-
-                        var loeschKz = p.Loeschkennzeichen;
-
-                        if (p.WebMaterialart == "G" && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            loeschKz = "X";
-                        else if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
-                            loeschKz = "X";
-
-                        var impPos = new ZLDPosition
-                            {
-                                SapId = p.SapId,
-                                PositionsNr = p.PositionsNr,
-                                UebergeordnetePosition = p.UebergeordnetePosition,
-                                Loeschkennzeichen = loeschKz,
-                                Menge = (p.Menge.HasValue && p.Menge > 0 ? p.Menge : 1),
-                                MaterialNr = p.MaterialNr,
-                                MaterialName = p.MaterialName,
-                                WebMaterialart = p.WebMaterialart,
-                                Preis = (p.WebMaterialart == "K" ? 0 : p.Preis),
-                                GebuehrAmt = (p.WebMaterialart == "G" && !SelAnnahmeAH ? p.GebuehrAmt : 0),
-                                GebuehrAmtAdd = p.GebuehrAmtAdd,
-                                Gebuehrenpaket = (p.WebMaterialart == "G" && p.Gebuehrenpaket.IsTrue())
-                            };
-
-                        impPos.MaterialName = impPos.CombineBezeichnungMenge();
-                        posListeWeb.Add(impPos);
-
-                        if (p.WebMaterialart == "D")
+                        if ((p.WebMaterialart == "G" && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
+                            || (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10"))
                         {
-                            // Gebühren
-                            if (!String.IsNullOrEmpty(mat.GebuehrenMaterialNr)
-                                && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "G"))
-                            {
-                                posNr += 10;
-
-                                var ohneUst = (kunde != null && kunde.OhneUst);
-
-                                posListeWeb.Add(new ZLDPosition
-                                {
-                                    SapId = kopfdaten.SapId,
-                                    PositionsNr = posNr.ToString(),
-                                    UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
-                                    MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
-                                    Menge = 1,
-                                    WebMaterialart = "G"
-                                });
-                            }
-
-                            // Kennzeichen
-                            if ((kunde == null || !kunde.Pauschal) && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr)
-                                && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "K"))
-                            {
-                                posNr += 10;
-
-                                posListeWeb.Add(new ZLDPosition
-                                {
-                                    SapId = kopfdaten.SapId,
-                                    PositionsNr = posNr.ToString(),
-                                    UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = mat.KennzeichenMaterialNr,
-                                    MaterialName = "",
-                                    Menge = 1,
-                                    WebMaterialart = "K"
-                                });
-                            }
-
-                            // Steuern
-                            if (p.PositionsNr == "10"
-                                && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "S"))
-                            {
-                                posNr += 10;
-
-                                posListeWeb.Add(new ZLDPosition
-                                {
-                                    SapId = kopfdaten.SapId,
-                                    PositionsNr = posNr.ToString(),
-                                    UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = "591",
-                                    MaterialName = "",
-                                    Menge = 1,
-                                    WebMaterialart = "S"
-                                });
-                            }
+                            p.Loeschkennzeichen = "X";
                         }
                     }
                 }
 
                 Z_ZLD_PREISFINDUNG2.Init(SAP);
 
-                var kopfListe = AppModelMappings.Z_ZLD_PREISFINDUNG2_GT_BAK_From_ZLDKopfdaten.CopyBack(new List<ZLDKopfdaten> { kopfdaten });
+                var kopfListe = AppModelMappings.Z_ZLD_PREISFINDUNG2_GT_BAK_From_ZLDKopfdaten.CopyBack(new List<ZLDKopfdaten> { AktuellerVorgang.Kopfdaten });
                 SAP.ApplyImport(kopfListe);
 
-                var posListe = AppModelMappings.Z_ZLD_PREISFINDUNG2_GT_POS_From_ZLDPosition.CopyBack(posListeWeb);
+                var posListe = AppModelMappings.Z_ZLD_PREISFINDUNG2_GT_POS_From_ZLDPosition.CopyBack(AktuellerVorgang.Positionen);
                 SAP.ApplyImport(posListe);
 
                 CallBapi();
@@ -627,26 +480,23 @@ namespace AppZulassungsdienst.lib
         /// <summary>
         /// Führt für alle (ggf. gefilterten) Vorgänge eine Preisfindung durch und aktualisiert deren Preise
         /// </summary>
-        public void DoPreisfindung(List<Kundenstammdaten> kundenStamm, List<Materialstammdaten> materialStamm, string userName)
+        public void DoPreisfindung(List<Kundenstammdaten> kundenStamm, List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, string userName)
         {
-            List<ZLDVorgangUINacherfassung> liste;
+            List<string> idList;
 
             if (DataFilterActive)
             {
-                liste = Vorgangsliste.Where(vg =>
-                    ZLDCommon.FilterData(vg, DataFilterProperty, DataFilterValue, true)).ToList();
+                idList = Vorgangsliste.Where(vg => ZLDCommon.FilterData(vg, DataFilterProperty, DataFilterValue, true)).GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
             }
             else
             {
-                liste = Vorgangsliste;
+                idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
             }
 
-            foreach (var item in liste)
+            foreach (var id in idList)
             {
-                // aktuellen Vorgang laden
-                LoadVorgang(item.SapId);
+                LoadVorgang(id, materialStamm, stvaStamm);
 
-                // Preisfindung durchführen
                 GetPreise(kundenStamm, materialStamm, userName);
 
                 // Liste aktualisieren
@@ -659,13 +509,7 @@ namespace AppZulassungsdienst.lib
         {
             ExecuteSapZugriff(() =>
             {
-                var posListeWeb = new List<ZLDPosition>();
-
                 var kopfdaten = AktuellerVorgang.Kopfdaten;
-
-                var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
-
-                var posNr = 0;
 
                 if (SelAnnahmeAH)
                 {
@@ -674,9 +518,6 @@ namespace AppZulassungsdienst.lib
                     {
                         case "A":
                             kopfdaten.Bearbeitungsstatus = "A";
-                            break;
-                        case "L":
-                            kopfdaten.Bearbeitungsstatus = "L";
                             break;
                         default:
                             kopfdaten.Bearbeitungsstatus = "1";
@@ -693,98 +534,15 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
 
-                foreach (var item in AktuellerVorgang.Positionen)
+                foreach (var p in AktuellerVorgang.Positionen)
                 {
-                    var p = item;
-
                     var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == p.MaterialNr);
                     if (mat != null)
                     {
-                        posNr += 10;
-
-                        var loeschKz = p.Loeschkennzeichen;
-
-                        if (p.WebMaterialart == "G" && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            loeschKz = "X";
-                        else if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
-                            loeschKz = "X";
-
-                        var impPos = new ZLDPosition
+                        if ((p.WebMaterialart == "G" && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
+                            || (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10"))
                         {
-                            SapId = p.SapId,
-                            PositionsNr = p.PositionsNr,
-                            UebergeordnetePosition = p.UebergeordnetePosition,
-                            Loeschkennzeichen = loeschKz,
-                            Menge = (p.Menge.HasValue && p.Menge > 0 ? p.Menge : 1),
-                            MaterialNr = p.MaterialNr,
-                            MaterialName = p.MaterialName,
-                            WebMaterialart = p.WebMaterialart,
-                            Preis = (p.WebMaterialart == "K" ? 0 : p.Preis),
-                            GebuehrAmt = (p.WebMaterialart == "G" && !SelAnnahmeAH ? p.GebuehrAmt : 0),
-                            GebuehrAmtAdd = p.GebuehrAmtAdd,
-                            Gebuehrenpaket = (p.WebMaterialart == "G" && p.Gebuehrenpaket.IsTrue())
-                        };
-
-                        impPos.MaterialName = impPos.CombineBezeichnungMenge();
-                        posListeWeb.Add(impPos);
-
-                        if (p.WebMaterialart == "D")
-                        {
-                            // Gebühren
-                            if (!String.IsNullOrEmpty(mat.GebuehrenMaterialNr)
-                                && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "G"))
-                            {
-                                posNr += 10;
-
-                                var ohneUst = (kunde != null && kunde.OhneUst);
-
-                                posListeWeb.Add(new ZLDPosition
-                                {
-                                    SapId = kopfdaten.SapId,
-                                    PositionsNr = posNr.ToString(),
-                                    UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
-                                    MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
-                                    Menge = 1,
-                                    WebMaterialart = "G"
-                                });
-                            }
-
-                            // Kennzeichen
-                            if ((kunde == null || !kunde.Pauschal) && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr)
-                                && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "K"))
-                            {
-                                posNr += 10;
-
-                                posListeWeb.Add(new ZLDPosition
-                                {
-                                    SapId = kopfdaten.SapId,
-                                    PositionsNr = posNr.ToString(),
-                                    UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = mat.KennzeichenMaterialNr,
-                                    MaterialName = "",
-                                    Menge = 1,
-                                    WebMaterialart = "K"
-                                });
-                            }
-
-                            // Steuern
-                            if (p.PositionsNr == "10"
-                                && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "S"))
-                            {
-                                posNr += 10;
-
-                                posListeWeb.Add(new ZLDPosition
-                                {
-                                    SapId = kopfdaten.SapId,
-                                    PositionsNr = posNr.ToString(),
-                                    UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = "591",
-                                    MaterialName = "",
-                                    Menge = 1,
-                                    WebMaterialart = "S"
-                                });
-                            }
+                            p.Loeschkennzeichen = "X";
                         }
                     }
                 }
@@ -806,25 +564,26 @@ namespace AppZulassungsdienst.lib
                 var adressListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten });
                 SAP.ApplyImport(adressListe);
 
-                var posListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_POS_From_ZLDPosition.CopyBack(posListeWeb);
+                var posListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_POS_From_ZLDPosition.CopyBack(AktuellerVorgang.Positionen);
                 SAP.ApplyImport(posListe);
 
                 CallBapi();
 
                 var fehlerListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_SAVE_DATA2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                if (fehlerListe.Any())
+                if (fehlerListe.Any(f => f.FehlerText != "OK"))
                 {
                     RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
 
                     foreach (var fehler in fehlerListe)
                     {
                         var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && p.PositionsNr == fehler.PositionsNr);
-
                         if (pos != null)
                             pos.FehlerText = fehler.FehlerText;
                     }
                 }
+
+                ApplyAktuellerVorgangChangesToBaseLists();
 
                 // Liste aktualisieren
                 Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
@@ -836,131 +595,51 @@ namespace AppZulassungsdienst.lib
         {
             ClearError();
 
-            if (Vorgangsliste.None())
+            if (Vorgangsliste.None() || (SelAnnahmeAH && annahmeAhSend && Vorgangsliste.None(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")))
                 return;
 
             ExecuteSapZugriff(() =>
             {
-                var kopfListeWeb = new List<ZLDKopfdaten>();
-                var bankListeWeb = new List<ZLDBankdaten>();
-                var adressListeWeb = new List<ZLDAdressdaten>();
-                var posListeWeb = new List<ZLDPosition>();
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
 
-                foreach (var vg in Vorgangsliste)
+                List<string> idList;
+
+                if (SelAnnahmeAH && annahmeAhSend)
                 {
-                    var tmpKopf = _lstKopfdaten.FirstOrDefault(k => k.SapId == vg.SapId);
-                    if (tmpKopf != null)
+                    idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" ||vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                }
+                else
+                {
+                    idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                }
+
+                foreach (var kopf in _lstKopfdaten.Where(k => idList.Contains(k.SapId)))
+                {
+                    if (SelAnnahmeAH && annahmeAhSend)
                     {
-                        var kreisBez = tmpKopf.KreisBezeichnung;
-                        if (tmpKopf.Landkreis != vg.Landkreis)
+                        // für "neue AH-Vorgänge" den beb_status aktualisieren
+                        switch (kopf.WebBearbeitungsStatus)
                         {
-                            var amt = stvaStamm.FirstOrDefault(s => s.Landkreis == vg.Landkreis);
-                            if (amt != null)
-                                kreisBez = amt.KreisBezeichnung;
+                            case "A":
+                                kopf.Bearbeitungsstatus = "A";
+                                break;
+                            case "L":
+                                kopf.Bearbeitungsstatus = "L";
+                                break;
+                            default:
+                                kopf.Bearbeitungsstatus = "1";
+                                break;
                         }
-
-                        tmpKopf.Landkreis = vg.Landkreis;
-                        tmpKopf.KreisBezeichnung = kreisBez;
-
-                        tmpKopf.Kennzeichen = vg.KennzeichenTeil1;
-                        if (!String.IsNullOrEmpty(vg.KennzeichenTeil2))
-                            tmpKopf.Kennzeichen += "-" + vg.KennzeichenTeil2;
-
-                        tmpKopf.Zahlart_EC = vg.Zahlart_EC;
-                        tmpKopf.Zahlart_Bar = vg.Zahlart_Bar;
-                        tmpKopf.Zahlart_Rechnung = vg.Zahlart_Rechnung;
-                        tmpKopf.Zulassungsdatum = vg.Zulassungsdatum;
-
-                        if (SelAnnahmeAH && annahmeAhSend)
-                        {
-                            // für "neue AH-Vorgänge" den beb_status aktualisieren
-                            switch (tmpKopf.WebBearbeitungsStatus)
-                            {
-                                case "A":
-                                    tmpKopf.Bearbeitungsstatus = "A";
-                                    break;
-                                case "L":
-                                    tmpKopf.Bearbeitungsstatus = "L";
-                                    break;
-                                default:
-                                    tmpKopf.Bearbeitungsstatus = "1";
-                                    break;
-                            }
-                        }
-                        else if (tmpKopf.Bearbeitungsstatus == "F" && !tmpKopf.Flieger.IsTrue())
-                        {
-                            // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
-                            tmpKopf.Bearbeitungsstatus = "A";
-                            tmpKopf.MobilUser = "";
-                        }
-
-                        tmpKopf.Erfassungsdatum = DateTime.Now;
-                        tmpKopf.Erfasser = userName;
-
-                        kopfListeWeb.Add(tmpKopf);
+                    }
+                    else if (kopf.Bearbeitungsstatus == "F" && !kopf.Flieger.IsTrue())
+                    {
+                        // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
+                        kopf.Bearbeitungsstatus = "A";
+                        kopf.MobilUser = "";
                     }
 
-                    var tmpBank = _lstBankdaten.FirstOrDefault(b => b.SapId == vg.SapId);
-                    if (tmpBank != null && !String.IsNullOrEmpty(tmpBank.Kontoinhaber))
-                        bankListeWeb.Add(tmpBank);
-
-                    var tmpAdresse = _lstAdressen.FirstOrDefault(a => a.SapId == vg.SapId);
-                    if (tmpAdresse != null && !String.IsNullOrEmpty(tmpAdresse.Name1))
-                        adressListeWeb.Add(tmpAdresse);
-
-                    var tmpPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.PositionsNr == vg.PositionsNr);
-                    if (tmpPos != null)
-                    {
-                        var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == tmpPos.MaterialNr);
-
-                        var loeschKz = tmpPos.Loeschkennzeichen;
-
-                        if (tmpPos.WebMaterialart == "G" && mat != null && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            loeschKz = "X";
-                        else if (tmpPos.WebMaterialart == "S" && tmpPos.UebergeordnetePosition != "10")
-                            loeschKz = "X";
-
-                        var impPos = new ZLDPosition
-                        {
-                            SapId = tmpPos.SapId,
-                            PositionsNr = tmpPos.PositionsNr,
-                            UebergeordnetePosition = tmpPos.UebergeordnetePosition,
-                            Loeschkennzeichen = loeschKz,
-                            Menge = (tmpPos.Menge.HasValue && tmpPos.Menge > 0 ? tmpPos.Menge : 1),
-                            MaterialNr = tmpPos.MaterialNr,
-                            MaterialName = tmpPos.MaterialName,
-                            WebMaterialart = tmpPos.WebMaterialart,
-                            Preis = (tmpPos.WebMaterialart == "K" ? 0 : tmpPos.Preis),
-                            GebuehrAmt = (tmpPos.WebMaterialart == "G" && !SelAnnahmeAH ? tmpPos.GebuehrAmt : 0),
-                            GebuehrAmtAdd = tmpPos.GebuehrAmtAdd,
-                            Gebuehrenpaket = (tmpPos.WebMaterialart == "G" && tmpPos.Gebuehrenpaket.IsTrue())
-                        };
-
-                        impPos.MaterialName = impPos.CombineBezeichnungMenge();
-                        posListeWeb.Add(impPos);
-                    }
-
-                    // bei der Hauptposition eingegebene Preise auf die entspr. Unterpositionen verteilen
-                    if (vg.PositionsNr == "10")
-                    {
-                        var gebuehrenPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.UebergeordnetePosition == vg.PositionsNr && p.WebMaterialart == "G");
-
-                        if (gebuehrenPos != null)
-                        {
-                            gebuehrenPos.Preis = vg.Gebuehr;
-                            gebuehrenPos.GebuehrAmt = vg.GebuehrAmt;
-                        }
-
-                        var steuerPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.UebergeordnetePosition == vg.PositionsNr && p.WebMaterialart == "S");
-
-                        if (steuerPos != null)
-                            steuerPos.Preis = vg.Steuer;
-
-                        var kennzeichenPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.UebergeordnetePosition == vg.PositionsNr && p.WebMaterialart == "K");
-
-                        if (kennzeichenPos != null)
-                            kennzeichenPos.Preis = vg.PreisKennzeichen;
-                    }
+                    kopf.Erfassungsdatum = DateTime.Now;
+                    kopf.Erfasser = userName;
                 }
 
                 Z_ZLD_SAVE_DATA2.Init(SAP);
@@ -971,23 +650,23 @@ namespace AppZulassungsdienst.lib
                 if (SelSofortabrechnung)
                     SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
 
-                var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfListeWeb);
+                var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(_lstKopfdaten.Where(k => idList.Contains(k.SapId)).ToList());
                 SAP.ApplyImport(kopfListe);
 
-                var bankListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(bankListeWeb);
+                var bankListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(_lstBankdaten.Where(b => idList.Contains(b.SapId)).ToList());
                 SAP.ApplyImport(bankListe);
 
-                var adressListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(adressListeWeb);
+                var adressListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(_lstAdressen.Where(a => idList.Contains(a.SapId)).ToList());
                 SAP.ApplyImport(adressListe);
 
-                var posListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_POS_From_ZLDPosition.CopyBack(posListeWeb);
+                var posListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_POS_From_ZLDPosition.CopyBack(_lstPositionen.Where(p => idList.Contains(p.SapId)).ToList());
                 SAP.ApplyImport(posListe);
 
                 CallBapi();
 
                 var fehlerListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_SAVE_DATA2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                foreach (var vg in Vorgangsliste)
+                foreach (var vg in Vorgangsliste.Where(vg => idList.Contains(vg.SapId)))
                 {
                     var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && f.PositionsNr == vg.PositionsNr);
 
@@ -999,7 +678,7 @@ namespace AppZulassungsdienst.lib
             });
         }
 
-        public void SendVorgaengeToSap(List<Materialstammdaten> materialStamm, string userName, string userVorname, string userNachname, bool versandZul = false)
+        public void SendVorgaengeToSap(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, string userName, string userVorname, string userNachname, bool versandZul = false)
         {
             ClearError();
 
@@ -1011,122 +690,42 @@ namespace AppZulassungsdienst.lib
 
             ExecuteSapZugriff(() =>
             {
-                var kopfListeWeb = new List<ZLDKopfdaten>();
-                var bankListeWeb = new List<ZLDBankdaten>();
-                var adressListeWeb = new List<ZLDAdressdaten>();
-                var posListeWeb = new List<ZLDPosition>();
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
 
-                foreach (var vg in Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L"))
+                var kopfdatenRel = _lstKopfdaten.Where(k => k.WebBearbeitungsStatus == "O" || k.WebBearbeitungsStatus == "L");
+                var bankdatenRel = _lstBankdaten.Where(b => kopfdatenRel.Any(k => k.SapId == b.SapId));
+                var adressdatenRel = _lstAdressen.Where(a => kopfdatenRel.Any(k => k.SapId == a.SapId));
+                var positionenRel = _lstPositionen.Where(p => kopfdatenRel.Any(k => k.SapId == p.SapId));
+
+                foreach (var kopf in _lstKopfdaten.Where(k => k.WebBearbeitungsStatus == "O" || k.WebBearbeitungsStatus == "L"))
                 {
-                    var tmpKopf = _lstKopfdaten.FirstOrDefault(k => k.SapId == vg.SapId);
-                    if (tmpKopf != null)
+                    if (!SelSofortabrechnung)
                     {
-                        tmpKopf.Kennzeichen = vg.KennzeichenTeil1;
-                        if (!String.IsNullOrEmpty(vg.KennzeichenTeil2))
-                            tmpKopf.Kennzeichen += "-" + vg.KennzeichenTeil2;
-
-                        tmpKopf.Zahlart_EC = vg.Zahlart_EC;
-                        tmpKopf.Zahlart_Bar = vg.Zahlart_Bar;
-                        tmpKopf.Zahlart_Rechnung = vg.Zahlart_Rechnung;
-                        tmpKopf.Zulassungsdatum = vg.Zulassungsdatum;
-
-                        if (!SelSofortabrechnung)
+                        if (kopf.Belegart == "VZ" || kopf.Belegart == "VE" || kopf.Belegart == "AV" || kopf.Belegart == "AX")
                         {
-                            if (tmpKopf.Belegart == "VZ" || tmpKopf.Belegart == "VE" || tmpKopf.Belegart == "AV" || tmpKopf.Belegart == "AX")
-                            {
-                                tmpKopf.VersandzulassungErledigtDatum = DateTime.Now;
-                                tmpKopf.VersandzulassungBearbeitungsstatus = "VD";
-                            }
+                            kopf.VersandzulassungErledigtDatum = DateTime.Now;
+                            kopf.VersandzulassungBearbeitungsstatus = "VD";
                         }
-
-                        tmpKopf.Loeschkennzeichen = (vg.WebBearbeitungsStatus == "L" ? "X" : "");
-
-                        tmpKopf.Erfassungsdatum = DateTime.Now;
-                        tmpKopf.Erfasser = userName;
-
-                        kopfListeWeb.Add(tmpKopf);
                     }
 
-                    var tmpBank = _lstBankdaten.FirstOrDefault(b => b.SapId == vg.SapId);
-                    if (tmpBank != null && !String.IsNullOrEmpty(tmpBank.Kontoinhaber))
-                        bankListeWeb.Add(tmpBank);
-
-                    var tmpAdresse = _lstAdressen.FirstOrDefault(a => a.SapId == vg.SapId);
-                    if (tmpAdresse != null && !String.IsNullOrEmpty(tmpAdresse.Name1))
-                        adressListeWeb.Add(tmpAdresse);
-
-                    var tmpPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.PositionsNr == vg.PositionsNr);
-                    if (tmpPos != null)
-                    {
-                        var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == tmpPos.MaterialNr);
-
-                        var loeschKz = tmpPos.Loeschkennzeichen;
-
-                        if (tmpPos.WebMaterialart == "G" && mat != null && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            loeschKz = "X";
-                        else if (tmpPos.WebMaterialart == "S" && tmpPos.UebergeordnetePosition != "10")
-                            loeschKz = "X";
-
-                        var impPos = new ZLDPosition
-                        {
-                            SapId = tmpPos.SapId,
-                            PositionsNr = tmpPos.PositionsNr,
-                            UebergeordnetePosition = tmpPos.UebergeordnetePosition,
-                            Loeschkennzeichen = loeschKz,
-                            Menge = (tmpPos.Menge.HasValue && tmpPos.Menge > 0 ? tmpPos.Menge : 1),
-                            MaterialNr = tmpPos.MaterialNr,
-                            MaterialName = tmpPos.MaterialName,
-                            WebMaterialart = tmpPos.WebMaterialart,
-                            Preis = (tmpPos.WebMaterialart == "K" ? 0 : tmpPos.Preis),
-                            GebuehrAmt = (tmpPos.WebMaterialart == "G" && !SelAnnahmeAH ? tmpPos.GebuehrAmt : 0),
-                            GebuehrAmtAdd = tmpPos.GebuehrAmtAdd,
-                            Gebuehrenpaket = (tmpPos.WebMaterialart == "G" && tmpPos.Gebuehrenpaket.IsTrue())
-                        };
-
-                        impPos.MaterialName = impPos.CombineBezeichnungMenge();
-                        posListeWeb.Add(impPos);
-                    }
-
-                    // bei der Hauptposition eingegebene Preise auf die entspr. Unterpositionen verteilen
-                    if (vg.PositionsNr == "10")
-                    {
-                        var gebuehrenPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.UebergeordnetePosition == vg.PositionsNr && p.WebMaterialart == "G");
-
-                        if (gebuehrenPos != null)
-                        {
-                            gebuehrenPos.Preis = vg.Gebuehr;
-                            gebuehrenPos.GebuehrAmt = vg.GebuehrAmt;
-                        }
-
-                        var steuerPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.UebergeordnetePosition == vg.PositionsNr && p.WebMaterialart == "S");
-
-                        if (steuerPos != null)
-                            steuerPos.Preis = vg.Steuer;
-
-                        var kennzeichenPos = _lstPositionen.FirstOrDefault(p => p.SapId == vg.SapId && p.UebergeordnetePosition == vg.PositionsNr && p.WebMaterialart == "K");
-
-                        if (kennzeichenPos != null)
-                            kennzeichenPos.Preis = vg.PreisKennzeichen;
-                    }
+                    kopf.Erfassungsdatum = DateTime.Now;
+                    kopf.Erfasser = userName;
                 }
-
 
                 if (SelSofortabrechnung)
                 {
                     Z_ZLD_IMPORT_SOFORT_ABRECH2.Init(SAP);
 
-                    SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
-
-                    var kopfListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfListeWeb);
+                    var kopfListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfdatenRel);
                     SAP.ApplyImport(kopfListe);
 
-                    var bankListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(bankListeWeb);
+                    var bankListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(bankdatenRel);
                     SAP.ApplyImport(bankListe);
 
-                    var adressListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(adressListeWeb);
+                    var adressListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(adressdatenRel);
                     SAP.ApplyImport(adressListe);
 
-                    var posListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_POS_From_ZLDPosition.CopyBack(posListeWeb);
+                    var posListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_POS_From_ZLDPosition.CopyBack(positionenRel);
                     SAP.ApplyImport(posListe);
 
                     var uDaten = new Userdaten
@@ -1143,29 +742,26 @@ namespace AppZulassungsdienst.lib
                 {
                     Z_ZLD_IMP_NACHERF_DZLD2.Init(SAP);
 
-                    var kopfListe = AppModelMappings.Z_ZLD_IMP_NACHERF_DZLD2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfListeWeb);
+                    var kopfListe = AppModelMappings.Z_ZLD_IMP_NACHERF_DZLD2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfdatenRel);
                     SAP.ApplyImport(kopfListe);
 
-                    var posListe = AppModelMappings.Z_ZLD_IMP_NACHERF_DZLD2_GT_IMP_POS_From_ZLDPosition.CopyBack(posListeWeb);
+                    var posListe = AppModelMappings.Z_ZLD_IMP_NACHERF_DZLD2_GT_IMP_POS_From_ZLDPosition.CopyBack(positionenRel);
                     SAP.ApplyImport(posListe);
                 }
                 else
                 {
                     Z_ZLD_IMP_NACHERF2.Init(SAP);
 
-                    if (SelAnnahmeAH)
-                        SAP.SetImportParameter("I_AH_ANNAHME", "X");
-
-                    var kopfListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfListeWeb);
+                    var kopfListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfdatenRel);
                     SAP.ApplyImport(kopfListe);
 
-                    var bankListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(bankListeWeb);
+                    var bankListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(bankdatenRel);
                     SAP.ApplyImport(bankListe);
 
-                    var adressListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(adressListeWeb);
+                    var adressListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(adressdatenRel);
                     SAP.ApplyImport(adressListe);
 
-                    var posListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_POS_From_ZLDPosition.CopyBack(posListeWeb);
+                    var posListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_POS_From_ZLDPosition.CopyBack(positionenRel);
                     SAP.ApplyImport(posListe);
                 }
 
@@ -1180,7 +776,7 @@ namespace AppZulassungsdienst.lib
                 else
                     fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                foreach (var vg in Vorgangsliste)
+                foreach (var vg in Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L"))
                 {
                     var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && f.PositionsNr == vg.PositionsNr);
 
@@ -1237,9 +833,9 @@ namespace AppZulassungsdienst.lib
 
                 CallBapi();
 
-                var sapKopfdaten = Z_ZLD_GET_ORDER2.GS_EX_BAK.GetExportList(SAP).FirstOrDefault();
-                var sapBankdaten = Z_ZLD_GET_ORDER2.GT_EX_BANK.GetExportList(SAP).FirstOrDefault();
-                var sapAdresse = Z_ZLD_GET_ORDER2.GT_EX_ADRS.GetExportList(SAP).FirstOrDefault();
+                var sapKopfdaten = Z_ZLD_GET_ORDER2.GS_EX_BAK.GetExportList(SAP).FirstOrDefault(new Z_ZLD_GET_ORDER2.GS_EX_BAK());
+                var sapBankdaten = Z_ZLD_GET_ORDER2.GT_EX_BANK.GetExportList(SAP).FirstOrDefault(new Z_ZLD_GET_ORDER2.GT_EX_BANK());
+                var sapAdresse = Z_ZLD_GET_ORDER2.GT_EX_ADRS.GetExportList(SAP).FirstOrDefault(new Z_ZLD_GET_ORDER2.GT_EX_ADRS());
                 var sapPositionen = Z_ZLD_GET_ORDER2.GT_EX_POS.GetExportList(SAP);
 
                 if (sapKopfdaten == null)
@@ -1335,14 +931,13 @@ namespace AppZulassungsdienst.lib
 
                 var fehlerListe = AppModelMappings.Z_ZLD_AH_VZ_SAVE2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_AH_VZ_SAVE2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                if (fehlerListe.Any())
+                if (fehlerListe.Any(f => f.FehlerText != "OK"))
                 {
                     RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
 
                     foreach (var fehler in fehlerListe)
                     {
                         var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && p.PositionsNr == fehler.PositionsNr);
-
                         if (pos != null)
                             pos.FehlerText = fehler.FehlerText;
                     }
@@ -1368,20 +963,26 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        public void DeleteVorgaengeOkFromList()
+        public void DeleteVorgaengeOkFromLists()
         {
             ClearError();
 
             try
             {
-                var idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId);
+                var idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
                 foreach (var item in idList)
                 {
                     var id = item;
 
                     if (Vorgangsliste.None(v => v.SapId == id && v.FehlerText != "OK"))
+                    {
                         Vorgangsliste.RemoveAll(v => v.SapId == id);
+                        _lstKopfdaten.RemoveAll(k => k.SapId == id);
+                        _lstBankdaten.RemoveAll(b => b.SapId == id);
+                        _lstAdressen.RemoveAll(a => a.SapId == id);
+                        _lstPositionen.RemoveAll(p => p.SapId == id);
+                    }
                 }
             }
             catch (Exception ex)
@@ -1418,6 +1019,118 @@ namespace AppZulassungsdienst.lib
             {
                 RaiseError(-9999, ex.Message);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Im aktuellen Vorgang vorgenommene Datenänderungen in Basislisten übernehmen
+        /// </summary>
+        private void ApplyAktuellerVorgangChangesToBaseLists()
+        {
+            var tmpKopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == AktuellerVorgang.Kopfdaten.SapId);
+            var tmpBankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == AktuellerVorgang.Kopfdaten.SapId);
+            var tmpAdressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == AktuellerVorgang.Kopfdaten.SapId);
+            var tmpPositionen = _lstPositionen.Where(p => p.SapId == AktuellerVorgang.Kopfdaten.SapId).OrderBy(p => p.PositionsNr).ToList();
+
+            if (tmpKopfdaten != null)
+                ModelMapping.Copy(AktuellerVorgang.Kopfdaten, tmpKopfdaten);
+
+            if (tmpBankdaten != null)
+                ModelMapping.Copy(AktuellerVorgang.Bankdaten, tmpBankdaten);
+
+            if (tmpAdressdaten != null)
+                ModelMapping.Copy(AktuellerVorgang.Adressdaten, tmpAdressdaten);
+
+            foreach (var item in AktuellerVorgang.Positionen)
+            {
+                var pos = tmpPositionen.FirstOrDefault(p => p.PositionsNr == item.PositionsNr);
+                if (pos != null)
+                {
+                    ModelMapping.Copy(item, pos);
+                }
+                else
+                {
+                    _lstPositionen.Add(ModelMapping.Copy(item));
+                }
+            }
+        }
+
+        /// <summary>
+        /// In Vorgangsliste vorgenommene Datenänderungen in Basislisten übernehmen
+        /// </summary>
+        /// <param name="materialStamm"></param>
+        /// <param name="stvaStamm"></param>
+        private void ApplyVorgangslisteChangesToBaseLists(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm)
+        {
+            foreach (var vg in Vorgangsliste.Where(v => v.PositionsNr == "10"))
+            {
+                var tmpKopf = _lstKopfdaten.FirstOrDefault(k => k.SapId == vg.SapId);
+                if (tmpKopf != null)
+                {
+                    tmpKopf.Landkreis = vg.Landkreis;
+
+                    var amt = stvaStamm.FirstOrDefault(s => s.Landkreis == tmpKopf.Landkreis);
+                    tmpKopf.KreisBezeichnung = (amt != null ? amt.KreisBezeichnung : "");
+
+                    tmpKopf.Kennzeichen = vg.KennzeichenTeil1;
+                    if (!String.IsNullOrEmpty(vg.KennzeichenTeil2))
+                        tmpKopf.Kennzeichen += "-" + vg.KennzeichenTeil2;
+
+                    tmpKopf.Zahlart_EC = vg.Zahlart_EC;
+                    tmpKopf.Zahlart_Bar = vg.Zahlart_Bar;
+                    tmpKopf.Zahlart_Rechnung = vg.Zahlart_Rechnung;
+
+                    tmpKopf.Zulassungsdatum = vg.Zulassungsdatum;
+
+                    tmpKopf.WebBearbeitungsStatus = vg.WebBearbeitungsStatus;
+                    tmpKopf.Loeschkennzeichen = (vg.WebBearbeitungsStatus == "L" ? "X" : "");
+
+                    var positionen = Vorgangsliste.Where(v => v.SapId == tmpKopf.SapId);
+                    foreach (var pos in positionen)
+                    {
+                        var dlPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.PositionsNr == pos.PositionsNr);
+                        if (dlPos != null)
+                        {
+                            var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == dlPos.MaterialNr);
+
+                            var loeschKz = tmpKopf.Loeschkennzeichen;
+
+                            if (dlPos.WebMaterialart == "G" && mat != null && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
+                                loeschKz = "X";
+                            else if (dlPos.WebMaterialart == "S" && dlPos.UebergeordnetePosition != "10")
+                                loeschKz = "X";
+
+                            dlPos.Loeschkennzeichen = loeschKz;
+                            dlPos.Preis = pos.Preis;
+                            dlPos.MaterialName = pos.MaterialName;
+                            dlPos.MaterialName = dlPos.CombineBezeichnungMenge();
+
+                            // eingegebene Preise auf die entspr. Unterpositionen verteilen
+                            var gebuehrenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");
+                            if (gebuehrenPos != null)
+                            {
+                                gebuehrenPos.Loeschkennzeichen = loeschKz;
+                                gebuehrenPos.Preis = pos.Gebuehr;
+                                gebuehrenPos.GebuehrAmt = pos.GebuehrAmt;
+                                gebuehrenPos.Gebuehrenpaket = pos.Gebuehrenpaket;
+                            }
+
+                            var steuerPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "S");
+                            if (steuerPos != null)
+                            {
+                                steuerPos.Loeschkennzeichen = loeschKz;
+                                steuerPos.Preis = pos.Steuer;
+                            }
+
+                            var kennzeichenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "K");
+                            if (kennzeichenPos != null)
+                            {
+                                kennzeichenPos.Loeschkennzeichen = loeschKz;
+                                kennzeichenPos.Preis = pos.PreisKennzeichen;
+                            }
+                        }
+                    }
+                }
             }
         }
 

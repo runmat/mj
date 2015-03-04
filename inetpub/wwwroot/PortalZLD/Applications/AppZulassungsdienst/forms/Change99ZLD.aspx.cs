@@ -43,7 +43,7 @@ namespace AppZulassungsdienst.forms
                 ChangeAnforderungen = new Report99();
                 Session["ChangeAnforderungen"] = ChangeAnforderungen;
             }
-            else if (Session["objNachbearbeitung"] != null)
+            else if (Session["ChangeAnforderungen"] != null)
             {
                 ChangeAnforderungen = (Report99)Session["ChangeAnforderungen"];
             }

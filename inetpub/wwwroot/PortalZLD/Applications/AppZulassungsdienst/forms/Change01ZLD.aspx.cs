@@ -79,6 +79,12 @@ namespace AppZulassungsdienst.forms
                 }
                 objVorerf.ConfirmCPDAdress = false;
             }
+            else
+            {
+                objVorerf = (VorerfZLD)Session["objVorerf"];
+            }
+
+            Session["objVorerf"] = objVorerf;
         }
 
         /// <summary>
@@ -134,7 +140,7 @@ namespace AppZulassungsdienst.forms
             tblRow["DLBezeichnung"] = "";
             tblData.Rows.Add(tblRow);
             Session["tblDienst"] = tblData;
-            GridView1.DataSource = tblData.DefaultView;
+            GridView1.DataSource = tblData;
             GridView1.DataBind();
 
             addButtonAttr(tblData);
@@ -430,9 +436,7 @@ namespace AppZulassungsdienst.forms
                         {
                             gvRow = GridView1.Rows[0];
                             txtBox = (TextBox)gvRow.FindControl("txtSearch");
-                            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
-                            tmpDView.RowFilter = "Matnr = " + txtBox.Text;
-                            tmpDView.Sort = "Matnr";
+                            DataView tmpDView = new DataView(objCommon.tblKennzGroesse, "Matnr = " + txtBox.Text, "Matnr", DataViewRowState.CurrentRows);
 
                             if (tmpDView.Count > 0)
                             {
@@ -476,9 +480,7 @@ namespace AppZulassungsdienst.forms
 
             if (txtHauptPos != null && !String.IsNullOrEmpty(txtHauptPos.Text))
             {
-                DataView tmpDataView = objCommon.tblKennzGroesse.DefaultView;
-                tmpDataView.RowFilter = "Matnr = " + txtHauptPos.Text;
-                tmpDataView.Sort = "Matnr";
+                DataView tmpDataView = new DataView(objCommon.tblKennzGroesse, "Matnr = " + txtHauptPos.Text, "Matnr", DataViewRowState.CurrentRows);
 
                 if (tmpDataView.Count > 0)
                 {
@@ -573,7 +575,7 @@ namespace AppZulassungsdienst.forms
             }
 
             Session["tblDienst"] = tblData;
-            GridView1.DataSource = tblData.DefaultView;
+            GridView1.DataSource = tblData;
             GridView1.DataBind();
 
             addButtonAttr(tblData);
@@ -636,15 +638,14 @@ namespace AppZulassungsdienst.forms
                 tblData.Rows.Add(tblRow);
             }
 
-            GridView1.DataSource = tblData.DefaultView;
+            GridView1.DataSource = tblData;
             GridView1.DataBind();
             addButtonAttr(tblData);
 
             GridViewRow gridRow = GridView1.Rows[0];
             TextBox txtHauptPos = (TextBox)gridRow.FindControl("txtSearch");
-            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
-            tmpDView.RowFilter = "Matnr = " + txtHauptPos.Text;
-            tmpDView.Sort = "Matnr";
+            DataView tmpDView = new DataView(objCommon.tblKennzGroesse, "Matnr = " + txtHauptPos.Text, "Matnr", DataViewRowState.CurrentRows);
+
             if (tmpDView.Count > 0)
             {
                 ddlKennzForm.DataSource = tmpDView;
@@ -697,7 +698,7 @@ namespace AppZulassungsdienst.forms
         private void InitLargeDropdowns()
         {
             //Kunde
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();
@@ -756,7 +757,7 @@ namespace AppZulassungsdienst.forms
                 tblData.Rows.Add(tblRow);
             }
 
-            GridView1.DataSource = tblData.DefaultView;
+            GridView1.DataSource = tblData;
             GridView1.DataBind();
             //javascript-Funktionen anhängen im Grid
             addButtonAttr(tblData);
@@ -1121,7 +1122,7 @@ namespace AppZulassungsdienst.forms
                 return false;
             }
 
-            if (!checkDienst(tblData) == false)
+            if (!checkDienst(tblData))
             {
                 lblError.Text = "Keine Dienstleistung ausgewählt.";
                 return false;
@@ -1326,7 +1327,7 @@ namespace AppZulassungsdienst.forms
                     chkEinKennz.ClientID + ");FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
                 txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
 
-                ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv);
+                ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
                 ddl.DataValueField = "MaterialNr";
                 ddl.DataTextField = "Name";
                 ddl.DataBind();
@@ -1406,7 +1407,10 @@ namespace AppZulassungsdienst.forms
                 kopfdaten.Referenz2 = txtReferenz2.Text.ToUpper();
 
                 kopfdaten.Landkreis = txtStVa.Text;
-                kopfdaten.KreisBezeichnung = ddlStVa.SelectedItem.Text;
+
+                var amt = objCommon.StvaStamm.FirstOrDefault(s => s.Landkreis == kopfdaten.Landkreis);
+                if (amt != null)
+                    kopfdaten.KreisBezeichnung = amt.KreisBezeichnung;
 
                 kopfdaten.Wunschkennzeichen = chkWunschKZ.Checked;
                 kopfdaten.KennzeichenReservieren = chkReserviert.Checked;
@@ -1429,21 +1433,13 @@ namespace AppZulassungsdienst.forms
                 {
                     if (dRow["Value"].ToString() != "0")
                     {
-                        var matbez = "";
-                        String[] sMaterial = dRow["Text"].ToString().Split('~');
-                        if (dRow["Value"].ToString() == ZLDCommon.CONST_IDSONSTIGEDL)
-                        {
-                            matbez = dRow["DLBezeichnung"].ToString();
-                        }
-                        else if (sMaterial.Length == 2)
-                        {
-                            matbez = sMaterial[0].ToString();
-                        }
+                        var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
                         objVorerf.AktuellerVorgang.Positionen.Add(new ZLDPositionVorerfassung
                         {
                             SapId = kopfdaten.SapId,
                             PositionsNr = dRow["ID_POS"].ToString(),
+                            WebMaterialart = "D",
                             Menge = (dRow["Menge"].ToString().IsNumeric() ? Decimal.Parse(dRow["Menge"].ToString()) : 1),
                             MaterialNr = dRow["Value"].ToString(),
                             MaterialName = matbez

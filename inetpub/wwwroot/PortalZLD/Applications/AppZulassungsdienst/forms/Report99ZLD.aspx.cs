@@ -244,7 +244,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// SAP- Aufruf(Z_M_ZGBS_BEN_ZULASSUNGSUNT) mit Importparameter Kennzeichen. Bei positiven Ergebnis Aufruf FillGrid().
+        /// SAP- Aufruf mit Importparameter Kennzeichen. Bei positiven Ergebnis Aufruf FillGrid().
         /// </summary>
         private void DoSubmit()
         {

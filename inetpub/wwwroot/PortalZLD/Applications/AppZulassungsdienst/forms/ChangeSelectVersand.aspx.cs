@@ -67,6 +67,7 @@ namespace AppZulassungsdienst.forms
                 objNacherf.SelMatnr = "";
                 objNacherf.SelDatum = ZLDCommon.toShortDateStr(txtZulDate.Text);
             }
+
             Session["objNacherf"] = objNacherf;
         }
 
@@ -111,9 +112,8 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Sammeln der Selektionsdaten und an Sap übergeben(objNacherf.getSAPDatenNacherf). 
-        /// Dann werden die Datensätze für die Anzeige über die ID´s der SAP-Daten aus der SQL–DB selektiert(objNacherf.LadeNacherfassungDB_ZLDNew).
-        /// Bapi: Z_ZLD_EXPORT_NACHERF
+        /// Sammeln der Selektionsdaten und an Sap übergeben. 
+        /// Dann werden die Datensätze für die Anzeige geladen.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -211,7 +211,7 @@ namespace AppZulassungsdienst.forms
         private void InitLargeDropdowns()
         {
             //Kunde
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();

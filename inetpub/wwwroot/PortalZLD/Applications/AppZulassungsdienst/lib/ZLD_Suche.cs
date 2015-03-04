@@ -11,7 +11,7 @@ namespace AppZulassungsdienst.lib
     {
         #region "Properties"
 
-        public DataTable ResultRaw { get; set; }
+        public DataTable tblResultRaw { get; set; }
         public DataTable Mailings { get; set; }
         public DataTable tblResult { get; private set; }
 
@@ -41,10 +41,10 @@ namespace AppZulassungsdienst.lib
 
                     CallBapi();
 
-                    tblResult = SAP.GetExportTable("ITAB");
+                    tblResultRaw = SAP.GetExportTable("ITAB");
 
+                    tblResult = tblResultRaw.Copy();
                     tblResult.Columns.Add("Details", typeof(String));
-
                     foreach (DataRow tmpRow in tblResult.Rows)
                     {
                         tmpRow["Details"] = "Report30ZLD_2.aspx?ID=" + tmpRow["ID"].ToString();

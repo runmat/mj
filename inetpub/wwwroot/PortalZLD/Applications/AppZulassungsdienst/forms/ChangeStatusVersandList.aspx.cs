@@ -147,7 +147,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Setzen des Status in SAP(Z_ZLD_CHANGE_VZOZUERL).
+        /// Setzen des Status in SAP.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -187,20 +187,18 @@ namespace AppZulassungsdienst.forms
 
                         if (ddStatus.SelectedValue == "S")
                         {
-                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ID='" + lblID.Text + "'");
+                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ZULBELN='" + lblID.Text + "'");
                             objVersandZul.Liste.Rows.Remove(RowsEdit[0]);
-                            RowsEdit = objVersandZul.ExcelListe.Select("ID='" + lblID.Text + "'");
+                            RowsEdit = objVersandZul.ExcelListe.Select("ZULBELN='" + lblID.Text + "'");
                             objVersandZul.ExcelListe.Rows.Remove(RowsEdit[0]);
                         }
                         else
                         {
-                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ID='" + lblID.Text + "'");
+                            DataRow[] RowsEdit = objVersandZul.Liste.Select("ZULBELN='" + lblID.Text + "'");
                             RowsEdit[0]["Status"] = ddStatus.SelectedValue;
-                            RowsEdit = objVersandZul.ExcelListe.Select("ID='" + lblID.Text + "'");
+                            RowsEdit = objVersandZul.ExcelListe.Select("ZULBELN='" + lblID.Text + "'");
                             RowsEdit[0]["Status"] = ddStatus.SelectedValue;
-
                         }
-
                     }
                     Session["objVersandZul"] = objVersandZul;
                 }
@@ -237,7 +235,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = objVersandZul.Liste.DefaultView;
+            DataView tmpDataView = new DataView(objVersandZul.Liste);
             String strFilter = "";
             tmpDataView.RowFilter = strFilter;
 
@@ -297,10 +295,10 @@ namespace AppZulassungsdienst.forms
                 GridView1.DataBind();
                 ColumnsVisibility();
 
-                if (GridView1.DataKeys[0] != null)
+                // Zeilen mit gleicher ID gleich färben
+                if (GridView1.DataKeys.Count > 0 && GridView1.DataKeys[0] != null)
                 {
-                    String mySapId = GridView1.DataKeys[0]["ZULBELN"].ToString();
-                    String myPosId = GridView1.DataKeys[0]["ZULPOSNR"].ToString();
+                    String myId = GridView1.DataKeys[0]["ZULBELN"].ToString();
                     String Css = "ItemStyle";
                     foreach (GridViewRow row in GridView1.Rows)
                     {
@@ -331,7 +329,7 @@ namespace AppZulassungsdienst.forms
 
                         if (GridView1.DataKeys[row.RowIndex] != null)
                         {
-                            if (GridView1.DataKeys[row.RowIndex]["ZULBELN"].ToString() == mySapId && GridView1.DataKeys[row.RowIndex]["ZULPOSNR"].ToString() == myPosId)
+                            if (GridView1.DataKeys[row.RowIndex]["ZULBELN"].ToString() == myId)
                             {
                                 row.CssClass = Css;
                             }
@@ -347,8 +345,7 @@ namespace AppZulassungsdienst.forms
                                 }
                                 row.CssClass = Css;
 
-                                mySapId = GridView1.DataKeys[row.RowIndex]["ZULBELN"].ToString();
-                                myPosId = GridView1.DataKeys[row.RowIndex]["ZULPOSNR"].ToString();
+                                myId = GridView1.DataKeys[row.RowIndex]["ZULBELN"].ToString();
                             }
                         }
                     }

@@ -49,7 +49,7 @@
                                             <td>
                                                 <asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
                                                     CellPadding="0" CellSpacing="0" GridLines="None" AllowSorting="true" AllowPaging="false" CssClass="GridView" OnSorting="GridView1_Sorting"
-                                                    OnRowCommand="GridView1_RowCommand" PageSize="1000" DataKeyNames="ID">
+                                                    OnRowCommand="GridView1_RowCommand" PageSize="1000" DataKeyNames="ZULBELN,ZULPOSNR">
                                                     <HeaderStyle CssClass="GridTableHead" Width="100%" ForeColor="White" />
                                                     <PagerSettings Visible="False" />
                                                     <Columns>
@@ -255,7 +255,7 @@
                                                                 <asp:LinkButton ID="col_PreisLief" runat="server" CommandName="Sort" CommandArgument="KBETR">col_PreisLief</asp:LinkButton>
                                                             </HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblPreisLief" runat="server" Visible='<%# Eval("KBETR").ToString() != "0" %>' Text='<%# Eval("PreisLief") %>'/>
+                                                                <asp:Label ID="lblPreisLief" runat="server" Visible='<%# Eval("KBETR").ToString() != "0" %>' Text='<%# Eval("KBETR") %>'/>
                                                             </ItemTemplate>
                                                             <HeaderStyle CssClass="TablePadding" Width="55px" />
                                                             <ItemStyle CssClass="TablePadding" Width="55px" />

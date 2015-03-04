@@ -261,7 +261,7 @@ namespace AppZulassungsdienst.lib
 
         /// <summary>
         /// Nachdruck der Aufträge. Aufträge werden von SAP in einem Verzeichnis abgelegt. 
-        /// Barcode und EasyID kommen aus den Auswertungstabellen. Bapi: Z_ZLD_GET_BARQ_FROM_EASY
+        /// Barcode und EasyID kommen aus den Auswertungstabellen.
         /// </summary>
         /// <param name="BarqNr">Barcode</param>
         /// <param name="EasyID">EasyID</param>

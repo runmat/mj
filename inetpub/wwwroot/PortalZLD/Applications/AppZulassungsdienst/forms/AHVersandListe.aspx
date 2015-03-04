@@ -65,7 +65,7 @@
 										<tr>
 											<td>
                                                 <asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
-                                                    CellPadding="0" CellSpacing="0" GridLines="None"  DataKeyNames="ZULBELN"
+                                                    CellPadding="0" CellSpacing="0" GridLines="None" DataKeyNames="ZULBELN"
                                                     AllowSorting="true" AllowPaging="false" CssClass="GridView" PageSize="1000" 
                                                     onsorting="GridView1_Sorting" onrowcommand="GridView1_RowCommand">
                                                     <HeaderStyle CssClass="GridTableHead" ForeColor="White" />

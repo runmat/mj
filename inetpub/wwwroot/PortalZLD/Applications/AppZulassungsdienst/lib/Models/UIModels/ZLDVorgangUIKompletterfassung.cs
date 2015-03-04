@@ -23,10 +23,6 @@ namespace AppZulassungsdienst.lib.Models
 
         public string Landkreis { get; set; }
 
-        public string KennzeichenTeil1 { get; set; }
-
-        public string KennzeichenTeil2 { get; set; }
-
         public bool? Wunschkennzeichen { get; set; }
 
         public bool? KennzeichenReservieren { get; set; }

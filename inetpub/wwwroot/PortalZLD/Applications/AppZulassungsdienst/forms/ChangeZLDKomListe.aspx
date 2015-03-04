@@ -98,13 +98,13 @@
 												<td class="firstLeft active">
 													<asp:DropDownList ID="ddlSuche" runat="server" Style="width: auto" >
 													    <asp:ListItem Text="Kennzeichen" Value="Kennzeichen"></asp:ListItem>
-													    <asp:ListItem Text="Kundennummer" Value="kundennr"></asp:ListItem>
-													    <asp:ListItem Text="Dienstleistung" Value="Matbez"></asp:ListItem>
-													    <asp:ListItem Text="Gebühr" Value="GebPreis"></asp:ListItem>
+													    <asp:ListItem Text="Kundennummer" Value="KundenNr"></asp:ListItem>
+													    <asp:ListItem Text="Dienstleistung" Value="MaterialName"></asp:ListItem>
+													    <asp:ListItem Text="Gebühr" Value="Gebuehr"></asp:ListItem>
 													    <asp:ListItem Text="Referenz1" Value="Referenz1"></asp:ListItem> 
-                                                        <asp:ListItem Text="Amt" Value="KreisKZ"></asp:ListItem>
+                                                        <asp:ListItem Text="Amt" Value="Landkreis"></asp:ListItem>
                                                         <asp:ListItem Text="Zulassungsdatum(ttmmjj)" Value="Zulassungsdatum"></asp:ListItem>
-                                                        <asp:ListItem Text="ID" Value="id_sap"></asp:ListItem>
+                                                        <asp:ListItem Text="ID" Value="SapId"></asp:ListItem>
 													</asp:DropDownList>                                                
 												</td>
 												<td class="firstLeft active">
@@ -184,7 +184,7 @@
                                     <asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
                                         CellPadding="0" CellSpacing="0" GridLines="None" AllowSorting="true" AllowPaging="true"
                                         CssClass="GridView" PageSize="20" OnSorting="GridView1_Sorting" OnPageIndexChanging="GridView1_PageIndexChanging"
-                                        OnRowCommand="GridView1_RowCommand" DataKeyNames="ID">
+                                        OnRowCommand="GridView1_RowCommand" DataKeyNames="SapId,PositionsNr">
                                         <HeaderStyle CssClass="GridTableHead" Width="100%" ForeColor="White" />
                                         <PagerSettings Visible="False" />
                                         <Columns>
@@ -210,7 +210,7 @@
                                                     <asp:Label ID="lblPosLoesch" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("WebBearbeitungsStatus") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="30px" />
-                                                <ItemStyle CssClass="TablePadding" Width="30px" />
+                                                <ItemStyle CssClass="TablePadding" Width="30px" HorizontalAlign="Center" />
                                             </asp:TemplateField>
                                             <asp:TemplateField SortExpression="KundenNr" HeaderText="col_Kundennr">
                                                 <HeaderTemplate>
@@ -370,7 +370,7 @@
                                                     <asp:ImageButton ID="ibtnedt" ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
                                                         runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16" Height="16" />
                                                     <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
-                                                        runat="server" CommandName="Del" ToolTip="Löschen" />
+                                                        runat="server" CommandName="Del" ToolTip="Löschen" OnClientClick='if (!confirm("Wollen Sie die Position bzw. den Vorgang wirklich löschen?")) return false;' />
                                                     <asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
                                                         runat="server" CommandName="OK" ToolTip="OK" />
                                                 </ItemTemplate>

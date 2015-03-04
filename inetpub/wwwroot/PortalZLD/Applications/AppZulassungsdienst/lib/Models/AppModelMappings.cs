@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
@@ -65,6 +66,7 @@ namespace AppZulassungsdienst.lib.Models
             d.VkOrg = s.VKORG;
             d.Vorerfasser = s.VE_ERNAM;
             d.Vorerfassungsdatum = s.VE_ERDAT;
+            d.WebBearbeitungsStatus = "";
             d.Wunschkennzeichen = s.WUNSCHKENN_JN.XToBool();
             d.Zahlart_Bar = s.BAR_JN.XToBool();
             d.Zahlart_EC = s.EC_JN.XToBool();
@@ -632,7 +634,7 @@ namespace AppZulassungsdienst.lib.Models
             d.LI_STREET = s.Strasse;
             d.LOEKZ = s.Loeschkennzeichen;
             d.PARVW = s.Partnerrolle;
-            d.ZULBELN = s.SapId.NotNullOrEmpty().PadLeft0(10);
+            d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
         }
 
         static private void Map_ZLDKopfdaten_To_ZZLD_BAK(ZLDKopfdaten s, IZZLD_BAK d)
@@ -666,7 +668,7 @@ namespace AppZulassungsdienst.lib.Models
             d.RESERVKENN_JN = s.KennzeichenReservieren.BoolToX();
             d.RE_JN = s.Zahlart_Rechnung.BoolToX();
             d.STATUS = s.StatusVersandzulassung;
-            d.VBELN = s.AuftragsNr.NotNullOrEmpty().PadLeft0(10);
+            d.VBELN = (String.IsNullOrEmpty(s.AuftragsNr) ? "" : s.AuftragsNr.PadLeft0(10));
             d.VE_ERDAT = s.Vorerfassungsdatum;
             d.VE_ERNAM = s.Vorerfasser;
             d.VKBUR = s.VkBur;
@@ -678,7 +680,7 @@ namespace AppZulassungsdienst.lib.Models
             d.ZL_LIFNR = s.LieferantenNr.NotNullOrEmpty().ToSapKunnr();
             d.ZL_RL_FRBNR_HIN = s.FrachtbriefNrHin;
             d.ZL_RL_FRBNR_ZUR = s.FrachtbriefNrZurueck;
-            d.ZULBELN = s.SapId.NotNullOrEmpty().PadLeft0(10);
+            d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
             d.ZZKENN = s.Kennzeichen;
             d.ZZREFNR1 = s.Referenz1;
             d.ZZREFNR2 = s.Referenz2;
@@ -696,18 +698,18 @@ namespace AppZulassungsdienst.lib.Models
             d.LOEKZ = s.Loeschkennzeichen;
             d.RECH_JN = s.Rechnung.BoolToX();
             d.SWIFT = s.SWIFT;
-            d.ZULBELN = s.SapId.NotNullOrEmpty().PadLeft0(10);
+            d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
         }
 
         static private void Map_ZLDPositionVorerfassung_To_ZZLD_POS(ZLDPositionVorerfassung s, IZZLD_POS d)
         {
             d.MAKTX = s.MaterialName;
-            d.MATNR = s.MaterialNr.NotNullOrEmpty().PadLeft0(18);
+            d.MATNR = (String.IsNullOrEmpty(s.MaterialNr) ? "" : s.MaterialNr.PadLeft0(18));
             d.MENGE = s.Menge;
-            d.UEPOS = s.UebergeordnetePosition.NotNullOrEmpty().PadLeft0(6);
+            d.UEPOS = (String.IsNullOrEmpty(s.UebergeordnetePosition) ? "" : s.UebergeordnetePosition.PadLeft0(6));
             d.WEBMTART = s.WebMaterialart;
             d.ZULBELN = s.SapId.NotNullOrEmpty().ToSapKunnr();
-            d.ZULPOSNR = s.PositionsNr.NotNullOrEmpty().PadLeft0(6);
+            d.ZULPOSNR = (String.IsNullOrEmpty(s.PositionsNr) ? "" : s.PositionsNr.PadLeft0(6));
         }
 
         static private void Map_ZLDPosition_To_ZZLD_POS_2(ZLDPosition s, IZZLD_POS_2 d)
@@ -721,16 +723,16 @@ namespace AppZulassungsdienst.lib.Models
             d.KSCHL = s.Konditionsart;
             d.LOEKZ = s.Loeschkennzeichen;
             d.MAKTX = s.MaterialName;
-            d.MATNR = s.MaterialNr.NotNullOrEmpty().PadLeft0(18);
+            d.MATNR = (String.IsNullOrEmpty(s.MaterialNr) ? "" : s.MaterialNr.PadLeft0(18));
             d.MENGE = s.Menge;
             d.NULLPREIS_OK = s.NullpreisErlaubt.BoolToX();
             d.PREIS = s.Preis;
             d.SD_REL = s.SdRelevant.BoolToX();
-            d.UEPOS = s.UebergeordnetePosition.NotNullOrEmpty().PadLeft0(6);
+            d.UEPOS = (String.IsNullOrEmpty(s.UebergeordnetePosition) ? "" : s.UebergeordnetePosition.PadLeft0(6));
             d.UPREIS = s.UrspruenglicherPreis;
             d.WEBMTART = s.WebMaterialart;
             d.ZULBELN = s.SapId.NotNullOrEmpty().ToSapKunnr();
-            d.ZULPOSNR = s.PositionsNr.NotNullOrEmpty().PadLeft0(6);
+            d.ZULPOSNR = (String.IsNullOrEmpty(s.PositionsNr) ? "" : s.PositionsNr.PadLeft0(6));
         }
 
         //Z_ALL_DEBI_VORERFASSUNG_WEB.GS_IN

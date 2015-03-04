@@ -398,7 +398,7 @@ namespace AppZulassungsdienst.forms
 
         private void FillGrid()
         {
-            DataView tmpDataView = NGK.tblKennzeichen.DefaultView;
+            DataView tmpDataView = new DataView(NGK.tblKennzeichen);
             String strFilter = "";
 
             tmpDataView.RowFilter = strFilter;
@@ -448,7 +448,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    DataView dv = NGK.tblArtikel.DefaultView;
+                    DataView dv = new DataView(NGK.tblArtikel);
                     dv.Sort = "Pos asc";
                     ddlArtikel.DataSource = dv;
                     ddlArtikel.DataValueField = "ARTLIF";
@@ -475,7 +475,7 @@ namespace AppZulassungsdienst.forms
             }
             else 
             {
-                DataView dv = NGK.tblLieferanten.DefaultView;
+                DataView dv = new DataView(NGK.tblLieferanten);
                 dv.Sort = "NAME1 asc";
                 ddlLiefer.DataSource = dv;
                 ddlLiefer.DataTextField = "NAME1";

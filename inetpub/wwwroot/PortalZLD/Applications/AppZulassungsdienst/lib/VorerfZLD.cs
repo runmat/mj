@@ -119,15 +119,15 @@ namespace AppZulassungsdienst.lib
             {
                 var zldDataContext = new ZLDTableClassesDataContext();
 
-                var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == sapId);
-                var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == sapId);
-                var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == sapId);
+                var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == sapId, new ZLDVorgangKopf());
+                var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == sapId, new ZLDVorgangBank());
+                var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == sapId, new ZLDVorgangAdresse());
                 var tmpPositionen = zldDataContext.ZLDVorgangPosition.Where(p => p.SapId == sapId).ToList();
 
-                AktuellerVorgang.Kopfdaten = new ModelMapping<ZLDVorgangKopf, ZLDKopfdaten>(new Dictionary<string, string>()).Copy(tmpKopf);
-                AktuellerVorgang.Bankdaten = new ModelMapping<ZLDVorgangBank, ZLDBankdaten>(new Dictionary<string, string>()).Copy(tmpBank);
-                AktuellerVorgang.Adressdaten = new ModelMapping<ZLDVorgangAdresse, ZLDAdressdaten>(new Dictionary<string, string>()).Copy(tmpAdresse);
-                AktuellerVorgang.Positionen = new ModelMapping<ZLDVorgangPosition, ZLDPositionVorerfassung>(new Dictionary<string, string>()).Copy(tmpPositionen).ToList();
+                AktuellerVorgang.Kopfdaten = ModelMapping.Copy<ZLDVorgangKopf, ZLDKopfdaten>(tmpKopf);
+                AktuellerVorgang.Bankdaten = ModelMapping.Copy<ZLDVorgangBank, ZLDBankdaten>(tmpBank);
+                AktuellerVorgang.Adressdaten = ModelMapping.Copy<ZLDVorgangAdresse, ZLDAdressdaten>(tmpAdresse);
+                AktuellerVorgang.Positionen = ModelMapping.Copy<ZLDVorgangPosition, ZLDPositionVorerfassung>(tmpPositionen).ToList();
             }
             catch (Exception ex)
             {
@@ -164,26 +164,26 @@ namespace AppZulassungsdienst.lib
 
                 if (isNewVorgang)
                 {
-                    zldDataContext.ZLDVorgangKopf.InsertOnSubmit(new ModelMapping<ZLDVorgangKopf, ZLDKopfdaten>(new Dictionary<string, string>()).CopyBack(kopfdaten));
-                    zldDataContext.ZLDVorgangBank.InsertOnSubmit(new ModelMapping<ZLDVorgangBank, ZLDBankdaten>(new Dictionary<string, string>()).CopyBack(AktuellerVorgang.Bankdaten));
-                    zldDataContext.ZLDVorgangAdresse.InsertOnSubmit(new ModelMapping<ZLDVorgangAdresse, ZLDAdressdaten>(new Dictionary<string, string>()).CopyBack(AktuellerVorgang.Adressdaten));
+                    zldDataContext.ZLDVorgangKopf.InsertOnSubmit(ModelMapping.Copy<ZLDKopfdaten, ZLDVorgangKopf>(kopfdaten));
+                    zldDataContext.ZLDVorgangBank.InsertOnSubmit(ModelMapping.Copy<ZLDBankdaten, ZLDVorgangBank>(AktuellerVorgang.Bankdaten));
+                    zldDataContext.ZLDVorgangAdresse.InsertOnSubmit(ModelMapping.Copy<ZLDAdressdaten, ZLDVorgangAdresse>(AktuellerVorgang.Adressdaten));
 
                     foreach (var item in AktuellerVorgang.Positionen)
                     {
                         item.MaterialName = item.CombineBezeichnungMenge();
 
-                        zldDataContext.ZLDVorgangPosition.InsertOnSubmit(new ModelMapping<ZLDVorgangPosition, ZLDPositionVorerfassung>(new Dictionary<string, string>()).CopyBack(item));
+                        zldDataContext.ZLDVorgangPosition.InsertOnSubmit(ModelMapping.Copy<ZLDPositionVorerfassung, ZLDVorgangPosition>(item));
                     }
                 }
                 else
                 {
-                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == kopfdaten.SapId);
-                    var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == kopfdaten.SapId);
-                    var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == kopfdaten.SapId);
+                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == kopfdaten.SapId, new ZLDVorgangKopf());
+                    var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == kopfdaten.SapId, new ZLDVorgangBank());
+                    var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == kopfdaten.SapId, new ZLDVorgangAdresse());
 
-                    new ModelMapping<ZLDVorgangKopf, ZLDKopfdaten>(new Dictionary<string, string>()).CopyBack(kopfdaten, tmpKopf);
-                    new ModelMapping<ZLDVorgangBank, ZLDBankdaten>(new Dictionary<string, string>()).CopyBack(AktuellerVorgang.Bankdaten, tmpBank);
-                    new ModelMapping<ZLDVorgangAdresse, ZLDAdressdaten>(new Dictionary<string, string>()).CopyBack(AktuellerVorgang.Adressdaten, tmpAdresse);
+                    ModelMapping.Copy(kopfdaten, tmpKopf);
+                    ModelMapping.Copy(AktuellerVorgang.Bankdaten, tmpBank);
+                    ModelMapping.Copy(AktuellerVorgang.Adressdaten, tmpAdresse);
 
                     var tmpVorhandenPositionen = zldDataContext.ZLDVorgangPosition.Where(p => p.SapId == kopfdaten.SapId).ToList();
                     foreach (var vorhandenePosition in tmpVorhandenPositionen)
@@ -201,9 +201,9 @@ namespace AppZulassungsdienst.lib
                         var tmpPosition = zldDataContext.ZLDVorgangPosition.FirstOrDefault(p => p.SapId == kopfdaten.SapId && p.PositionsNr == item.PositionsNr);
 
                         if (tmpPosition != null)
-                            new ModelMapping<ZLDVorgangPosition, ZLDPositionVorerfassung>(new Dictionary<string, string>()).CopyBack(item, tmpPosition);
+                            ModelMapping.Copy(item, tmpPosition);
                         else
-                            zldDataContext.ZLDVorgangPosition.InsertOnSubmit(new ModelMapping<ZLDVorgangPosition, ZLDPositionVorerfassung>(new Dictionary<string, string>()).CopyBack(item));
+                            zldDataContext.ZLDVorgangPosition.InsertOnSubmit(ModelMapping.Copy<ZLDPositionVorerfassung, ZLDVorgangPosition>(item));
                     }
                 }
 
@@ -229,13 +229,15 @@ namespace AppZulassungsdienst.lib
 
                 IDCount = ids.Count();
 
-                foreach (var id in ids)
+                foreach (var item in ids)
                 {
-                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == id);
+                    var id = item;
+
+                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == id, new ZLDVorgangKopf());
                     var tmpPositionen = zldDataContext.ZLDVorgangPosition.Where(p => p.SapId == id).ToList();
 
-                    var kopfdaten = new ModelMapping<ZLDVorgangKopf, ZLDKopfdaten>(new Dictionary<string, string>()).Copy(tmpKopf);
-                    var positionen = new ModelMapping<ZLDVorgangPosition, ZLDPositionVorerfassung>(new Dictionary<string, string>()).Copy(tmpPositionen).ToList();
+                    var kopfdaten = ModelMapping.Copy<ZLDVorgangKopf, ZLDKopfdaten>(tmpKopf);
+                    var positionen = ModelMapping.Copy<ZLDVorgangPosition, ZLDPositionVorerfassung>(tmpPositionen).ToList();
 
                     AddVorgangToVorgangsliste(kopfdaten, positionen, kundenStamm);
                 }
@@ -249,23 +251,28 @@ namespace AppZulassungsdienst.lib
         private void AddVorgangToVorgangsliste(ZLDKopfdaten kopfdaten, List<ZLDPositionVorerfassung> positionen, List<Kundenstammdaten> kundenStamm)
         {
             var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
-            var kundenName = (kunde != null ? kunde.Name : "");
 
-            foreach (var pos in positionen)
+            foreach (var pos in positionen.Where(p => p.WebMaterialart == "D"))
             {
+                string kennzTeil1;
+                string kennzTeil2;
+                ZLDCommon.KennzeichenAufteilen(kopfdaten.Kennzeichen, out kennzTeil1, out kennzTeil2);
+
                 Vorgangsliste.Add(new ZLDVorgangUIVorerfassung
                 {
                     SapId = kopfdaten.SapId,
+                    Belegart = kopfdaten.Belegart,
                     VkOrg = kopfdaten.VkOrg,
                     VkBur = kopfdaten.VkBur,
                     KundenNr = kopfdaten.KundenNr,
-                    KundenName = kundenName,
+                    KundenName = (kunde != null ? kunde.Name1 : ""),
                     PositionsNr = pos.PositionsNr,
                     MaterialName = pos.MaterialName,
                     Zulassungsdatum = kopfdaten.Zulassungsdatum,
                     Referenz1 = kopfdaten.Referenz1,
                     Referenz2 = kopfdaten.Referenz2,
-                    Kennzeichen = kopfdaten.Kennzeichen,
+                    KennzeichenTeil1 = kennzTeil1,
+                    KennzeichenTeil2 = kennzTeil2,
                     WebBearbeitungsStatus = kopfdaten.WebBearbeitungsStatus
                 });
             }
@@ -277,15 +284,31 @@ namespace AppZulassungsdienst.lib
 
             try
             {
+                var zldDataContext = new ZLDTableClassesDataContext();
+
                 if (posNr == "10")
                 {
                     // Hauptposition -> kompletten Vorgang löschen
                     Vorgangsliste.RemoveAll(v => v.SapId == sapId);
+
+                    var vorgangToDel = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == sapId);
+                    if (vorgangToDel != null)
+                    {
+                        zldDataContext.ZLDVorgangKopf.DeleteOnSubmit(vorgangToDel);
+                        zldDataContext.SubmitChanges();
+                    }
                 }
                 else
                 {
                     // Unterposition -> nur Unterposition löschen
                     Vorgangsliste.RemoveAll(v => v.SapId == sapId && v.PositionsNr == posNr);
+
+                    var positionToDel = zldDataContext.ZLDVorgangPosition.FirstOrDefault(p => p.SapId == sapId && p.PositionsNr == posNr);
+                    if (positionToDel != null)
+                    {
+                        zldDataContext.ZLDVorgangPosition.DeleteOnSubmit(positionToDel);
+                        zldDataContext.SubmitChanges();
+                    }
                 }
             }
             catch (Exception ex)
@@ -310,23 +333,19 @@ namespace AppZulassungsdienst.lib
                 var adressListeWeb = new List<ZLDAdressdaten>();
                 var posListeWeb = new List<ZLDPositionVorerfassung>();
 
-                foreach (var vg in Vorgangsliste)
+                foreach (var item in Vorgangsliste)
                 {
-                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == vg.SapId);
-                    var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == vg.SapId);
-                    var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == vg.SapId);
+                    var vg = item;
+
+                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == vg.SapId, new ZLDVorgangKopf());
+                    var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == vg.SapId, new ZLDVorgangBank());
+                    var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == vg.SapId, new ZLDVorgangAdresse());
                     var tmpPositionen = zldDataContext.ZLDVorgangPosition.Where(p => p.SapId == vg.SapId).ToList();
 
-                    var kopfdaten =
-                        new ModelMapping<ZLDVorgangKopf, ZLDKopfdaten>(new Dictionary<string, string>()).Copy(tmpKopf);
-                    var bankdaten =
-                        new ModelMapping<ZLDVorgangBank, ZLDBankdaten>(new Dictionary<string, string>()).Copy(tmpBank);
-                    var adressdaten =
-                        new ModelMapping<ZLDVorgangAdresse, ZLDAdressdaten>(new Dictionary<string, string>()).Copy(
-                            tmpAdresse);
-                    var positionen =
-                        new ModelMapping<ZLDVorgangPosition, ZLDPositionVorerfassung>(new Dictionary<string, string>())
-                            .Copy(tmpPositionen).ToList();
+                    var kopfdaten = ModelMapping.Copy<ZLDVorgangKopf, ZLDKopfdaten>(tmpKopf);
+                    var bankdaten = ModelMapping.Copy<ZLDVorgangBank, ZLDBankdaten>(tmpBank);
+                    var adressdaten = ModelMapping.Copy<ZLDVorgangAdresse, ZLDAdressdaten>(tmpAdresse);
+                    var positionen = ModelMapping.Copy<ZLDVorgangPosition, ZLDPositionVorerfassung>(tmpPositionen).ToList();
 
                     var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
                     if (kunde != null)
@@ -434,7 +453,7 @@ namespace AppZulassungsdienst.lib
                 {
                     var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && f.PositionsNr == vg.PositionsNr);
 
-                    if (fehler != null && !String.IsNullOrEmpty(fehler.FehlerText))
+                    if (fehler != null && !String.IsNullOrEmpty(fehler.FehlerText) && fehlerListe.None(f => f.SapId == fehler.SapId && f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
                         vg.FehlerText = fehler.FehlerText;
                     else
                         vg.FehlerText = "OK";
@@ -462,7 +481,6 @@ namespace AppZulassungsdienst.lib
                     if (Vorgangsliste.None(v => v.SapId == id && v.FehlerText != "OK"))
                     {
                         var vorgangToDel = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == id);
-
                         if (vorgangToDel != null)
                         {
                             zldDataContext.ZLDVorgangKopf.DeleteOnSubmit(vorgangToDel);
@@ -636,16 +654,22 @@ namespace AppZulassungsdienst.lib
 
                 var fehlerListe = AppModelMappings.Z_ZLD_IMPORT_ERFASSUNG2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMPORT_ERFASSUNG2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                if (fehlerListe.Any())
+                if (fehlerListe.Any(f => f.FehlerText != "OK" && !f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
                 {
                     RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
 
-                    foreach (var fehler in fehlerListe)
+                    foreach (var item in fehlerListe)
                     {
-                        var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && p.PositionsNr == fehler.PositionsNr);
+                        var fehler = item;
 
+                        var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && p.PositionsNr == fehler.PositionsNr);
                         if (pos != null)
-                            pos.FehlerText = fehler.FehlerText;
+                        {
+                            if (!String.IsNullOrEmpty(fehler.FehlerText) && fehlerListe.None(f => f.SapId == fehler.SapId && f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
+                                pos.FehlerText = fehler.FehlerText;
+                            else
+                                pos.FehlerText = "OK";
+                        }
                     }
                 }
             });

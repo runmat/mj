@@ -90,7 +90,7 @@ namespace AppZulassungsdienst.forms
         {
             if (icDocs != null)
             {
-                rgDokumente.DataSource = icDocs.Documents.DefaultView;
+                rgDokumente.DataSource = icDocs.Documents;
             }
         }
 

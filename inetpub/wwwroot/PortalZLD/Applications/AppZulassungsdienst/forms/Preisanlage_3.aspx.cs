@@ -53,7 +53,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Benötigtes Session-Objekt fehlt!";
             }
 
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
                 fillForm();
             }

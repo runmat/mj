@@ -202,7 +202,7 @@ namespace AppZulassungsdienst.forms
 
         protected void gvAufgaben_Sorting(object sender, GridViewSortEventArgs e)
         {
-            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
+            DataView View = new DataView(mObjFilialbuch.Protokoll.ProtokollTabelle);
             string[] sortparts = e.SortExpression.Split(',');
             string sortString = "";
 
@@ -343,7 +343,7 @@ namespace AppZulassungsdienst.forms
 
         protected void gvProtokollFiliale_Sorting(object sender, GridViewSortEventArgs e)
         {
-            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
+            DataView View = new DataView(mObjFilialbuch.Protokoll.ProtokollTabelle);
             string[] sortparts = e.SortExpression.Split(',');
             string sortString = "";
 
@@ -484,7 +484,7 @@ namespace AppZulassungsdienst.forms
 
         protected void gvProtokollGL_Sorting(object sender, GridViewSortEventArgs e)
         {
-            DataView View = mObjFilialbuch.Protokoll.ProtokollTabelle.DefaultView;
+            DataView View = new DataView(mObjFilialbuch.Protokoll.ProtokollTabelle);
             string[] sortparts = e.SortExpression.Split(',');
             string sortString = "";
 
@@ -803,7 +803,7 @@ namespace AppZulassungsdienst.forms
                     }
                 }
 
-                if (bDelete == false & row["O_STATUS"] != DBNull.Value)
+                if (!bDelete && row["O_STATUS"] != DBNull.Value)
                 {
                     if (row["O_STATUS"].ToString() == "Geschlossen")
                     {

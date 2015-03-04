@@ -142,7 +142,7 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            if (objVorerf.Vorgangsliste.Any(vg => vg.FehlerText != "OK"))
+            if (objVorerf.Vorgangsliste.Any(vg => !String.IsNullOrEmpty(vg.FehlerText) && vg.FehlerText != "OK"))
             {
                 lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
 
@@ -240,31 +240,31 @@ namespace AppZulassungsdienst.forms
 
                     if (strDirection == "asc")
                     {
-                        gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => prop.GetValue(v, null));
+                        gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => prop.GetValue(v, null)).ToList();
                     }
                     else
                     {
-                        gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderByDescending(v => prop.GetValue(v, null));
+                        gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderByDescending(v => prop.GetValue(v, null)).ToList();
                     }
                 }
                 else
                 {
-                    gvZuldienst.DataSource = objVorerf.Vorgangsliste;
+                    gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 gvZuldienst.PageIndex = intTempPageIndex;
                 gvZuldienst.DataBind();
 
-                if (gvZuldienst.DataKeys[0] != null)
+                // Zeilen mit gleicher ID gleich färben
+                if (gvZuldienst.DataKeys.Count > 0 && gvZuldienst.DataKeys[0] != null)
                 {
-                    String mySapId = gvZuldienst.DataKeys[0]["SapId"].ToString();
-                    String myPosId = gvZuldienst.DataKeys[0]["PositionsNr"].ToString();
+                    String myId = gvZuldienst.DataKeys[0]["SapId"].ToString();
                     String Css = "ItemStyle";
                     foreach (GridViewRow row in gvZuldienst.Rows)
                     {
                         if (gvZuldienst.DataKeys[row.RowIndex] != null)
                         {
-                            if (gvZuldienst.DataKeys[row.RowIndex]["SapId"].ToString() == mySapId && gvZuldienst.DataKeys[row.RowIndex]["PositionsNr"].ToString() == myPosId)
+                            if (gvZuldienst.DataKeys[row.RowIndex]["SapId"].ToString() == myId)
                             {
                                 row.CssClass = Css;
                             }
@@ -280,8 +280,7 @@ namespace AppZulassungsdienst.forms
                                 }
                                 row.CssClass = Css;
 
-                                mySapId = gvZuldienst.DataKeys[row.RowIndex]["SapId"].ToString();
-                                myPosId = gvZuldienst.DataKeys[row.RowIndex]["PositionsNr"].ToString();
+                                myId = gvZuldienst.DataKeys[row.RowIndex]["SapId"].ToString();
                             }
                         }
                     }

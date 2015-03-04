@@ -112,6 +112,13 @@ namespace AppZulassungsdienst.forms
                         newLoeschkz = (lblLoeschKZ.Text == "L" ? "" : "L");
 
                         objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, lblIDPos.Text, newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
+                        {
+                            lblError.Text = objNacherf.Message;
+                            return;
+                        }
+
                         lblLoeschKZ.Text = newLoeschkz;
 
                         if (lblIDPos.Text == "10")
@@ -151,29 +158,31 @@ namespace AppZulassungsdienst.forms
                         if (lblLoeschKZ.Text == "L")
                             throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
 
-                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, lblIDPos.Text, newLoeschkz);
-                        lblLoeschKZ.Text = newLoeschkz;
+                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, "10", newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
+                        {
+                            lblError.Text = objNacherf.Message;
+                            return;
+                        }
 
                         foreach (GridViewRow row in GridView1.Rows)
                         {
-                            if (GridView1.DataKeys[row.RowIndex] != null)
+                            if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
                             {
-                                if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text && GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString() == lblIDPos.Text)
+                                Label IDPos = (Label)row.FindControl("lblid_pos");
+                                lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                if (lblLoeschKZ.Text != "L")
                                 {
-                                    Label IDPos = (Label)row.FindControl("lblid_pos");
-                                    lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
-                                    if (lblLoeschKZ.Text != "L")
-                                    {
-                                        lblLoeschKZ.Text = newLoeschkz;
-                                    }
-
-                                    if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
-                                    {
-                                        CheckGridRow(row, GridCheckMode.CheckAll, true);
-                                    }
-
-                                    SetGridRowEdited(row, true);
+                                    lblLoeschKZ.Text = newLoeschkz;
                                 }
+
+                                if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
+                                {
+                                    CheckGridRow(row, GridCheckMode.CheckAll, true);
+                                }
+
+                                SetGridRowEdited(row, true);
                             }
                         }
 
@@ -203,7 +212,7 @@ namespace AppZulassungsdienst.forms
                     }
                 }
             }
-            else if (ddlSuche.SelectedValue == "id_sap")
+            else if (ddlSuche.SelectedValue == "SapId")
             {
                 if (!String.IsNullOrEmpty(txtSuche.Text))
                 {
@@ -225,6 +234,7 @@ namespace AppZulassungsdienst.forms
 
             Fillgrid();
 
+            trSuche.Visible = true;
             ibtnNoFilter.Visible = true;
         }
 
@@ -250,7 +260,7 @@ namespace AppZulassungsdienst.forms
             {
                 lblError.Text = "";
 
-                objNacherf.SendVorgaengeToSap(objCommon.MaterialStamm, m_User.UserName, m_User.FirstName, m_User.LastName, true);
+                objNacherf.SendVorgaengeToSap(objCommon.MaterialStamm, objCommon.StvaStamm, m_User.UserName, m_User.FirstName, m_User.LastName, true);
 
                 if (objNacherf.ErrorOccured)
                 {
@@ -258,7 +268,7 @@ namespace AppZulassungsdienst.forms
                     return;
                 }
 
-                if (objNacherf.Vorgangsliste.Any(v => v.FehlerText != "OK"))
+                if (objNacherf.Vorgangsliste.Any(v => !String.IsNullOrEmpty(v.FehlerText) && v.FehlerText != "OK"))
                 {
                     lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
                     lblMessage.Visible = false;
@@ -275,16 +285,7 @@ namespace AppZulassungsdienst.forms
 
                 Fillgrid(0, "", GridFilterMode.ShowOnlyOk);
 
-                // Matnr
-                GridView1.Columns[0].Visible = true;
-                // Sapid
-                GridView1.Columns[2].Visible = false;
-                // Gebühr
-                if (GridView1.Columns[9] != null) { GridView1.Columns[9].Visible = false; }
-                // Zuldat
-                if (GridView1.Columns[10] != null) { GridView1.Columns[10].Visible = false; }
-                // Ref1
-                if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = false; }
+                ShowHideColumns(true);
 
                 Session["objNacherf"] = objNacherf;
             }
@@ -326,7 +327,7 @@ namespace AppZulassungsdienst.forms
 
         protected void cmdContinue_Click(object sender, EventArgs e)
         {
-            objNacherf.DeleteVorgaengeOkFromList();
+            objNacherf.DeleteVorgaengeOkFromLists();
 
             List<ZLDVorgangUINacherfassung> liste;
 
@@ -362,6 +363,8 @@ namespace AppZulassungsdienst.forms
                 ibtnNoFilter.Visible = false;
                 Fillgrid();
             }
+
+            ShowHideColumns(false);
 
             cmdContinue.Visible = false;
             cmdSend.Enabled = true;
@@ -464,27 +467,31 @@ namespace AppZulassungsdienst.forms
 
                     if (strDirection == "asc")
                     {
-                        GridView1.DataSource = srcList.OrderBy(v => prop.GetValue(v, null));
+                        GridView1.DataSource = srcList.OrderBy(v => prop.GetValue(v, null)).ToList();
                     }
                     else
                     {
-                        GridView1.DataSource = srcList.OrderByDescending(v => prop.GetValue(v, null));
+                        GridView1.DataSource = srcList.OrderByDescending(v => prop.GetValue(v, null)).ToList();
                     }
+                }
+                else
+                {
+                    GridView1.DataSource = srcList.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
                 GridView1.DataBind();
 
-                if (GridView1.DataKeys[0] != null)
+                // Zeilen mit gleicher ID gleich färben
+                if (GridView1.DataKeys.Count > 0 && GridView1.DataKeys[0] != null)
                 {
-                    var mySapId = GridView1.DataKeys[0]["SapId"].ToString();
-                    var myPosId = GridView1.DataKeys[0]["PositionsNr"].ToString();
+                    var myId = GridView1.DataKeys[0]["SapId"].ToString();
                     var Css = "ItemStyle";
                     foreach (GridViewRow row in GridView1.Rows)
                     {
                         if (GridView1.DataKeys[row.RowIndex] != null)
                         {
-                            if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == mySapId && GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString() == myPosId)
+                            if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == myId)
                             {
                                 row.CssClass = Css;
                             }
@@ -500,8 +507,7 @@ namespace AppZulassungsdienst.forms
                                 }
                                 row.CssClass = Css;
 
-                                mySapId = GridView1.DataKeys[row.RowIndex]["SapId"].ToString();
-                                myPosId = GridView1.DataKeys[row.RowIndex]["PositionsNr"].ToString();
+                                myId = GridView1.DataKeys[row.RowIndex]["SapId"].ToString();
                             }
                         }
                     }
@@ -586,7 +592,7 @@ namespace AppZulassungsdienst.forms
 
                 if (posID.Text == "10" && pruefungsrelevant)
                 {
-                    if (String.IsNullOrEmpty(ZulDate.Text) || !checkDate(ZulDate))
+                    if (ZulDate.Visible && (String.IsNullOrEmpty(ZulDate.Text) || !checkDate(ZulDate)))
                     {
                         ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                         lblError.Text = "Bitte geben Sie ein gültiges Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
@@ -594,30 +600,30 @@ namespace AppZulassungsdienst.forms
                     }
                 }
 
-                TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
+                TextBox txtBoxGebuehren = (TextBox)gvRow.FindControl("txtGebPreis");
                 Decimal decGeb = 0;
 
-                if (txtBox.Text.IsDecimal())
+                if (txtBoxGebuehren.Text.IsDecimal())
                 {
-                    Decimal.TryParse(txtBox.Text, out decGeb);
-                    txtBox.Text = String.Format("{0:0.00}", decGeb);
+                    Decimal.TryParse(txtBoxGebuehren.Text, out decGeb);
+                    txtBoxGebuehren.Text = String.Format("{0:0.00}", decGeb);
                 }
 
                 if (pruefungsrelevant && decGeb == 0)
                 {
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == matnr.Text);
-                    if (mat != null && mat.Gebuehrenpflichtig)
+                    if (txtBoxGebuehren.Visible && mat != null && mat.Gebuehrenpflichtig)
                     {
-                        txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        txtBoxGebuehren.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                         lblError.Text = "Bitte geben Sie die Gebühr für die markierten Dienstleistungen/Artikel ein!";
                         return true;
                     }
                 }
 
-                txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
-                if (posID.Text == "10" && pruefungsrelevant && String.IsNullOrEmpty(txtBox.Text))
+                TextBox txtBoxKennzAbc = (TextBox)gvRow.FindControl("txtKennzAbc");
+                if (posID.Text == "10" && pruefungsrelevant && txtBoxKennzAbc.Visible && String.IsNullOrEmpty(txtBoxKennzAbc.Text))
                 {
-                    txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                    txtBoxKennzAbc.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
                     lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
                     return true;
                 }
@@ -626,26 +632,38 @@ namespace AppZulassungsdienst.forms
                 var pos = objNacherf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == lblID.Text && vg.PositionsNr == posID.Text);
                 if (pos != null)
                 {
-                    pos.Gebuehr = decGeb;
-                    pos.KennzeichenTeil2 = txtBox.Text;
-                    pos.Zahlart_Bar = bBar;
-                    pos.Zahlart_EC = bEC;
-                    pos.Zahlart_Rechnung = bRE;
-                    pos.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
+                    if (txtBoxGebuehren.Visible)
+                        pos.Gebuehr = decGeb;
+
+                    if (txtBoxKennzAbc.Visible)
+                        pos.KennzeichenTeil2 = txtBoxKennzAbc.Text;
+
+                    if (rbEC.Visible)
+                    {
+                        pos.Zahlart_Bar = bBar;
+                        pos.Zahlart_EC = bEC;
+                        pos.Zahlart_Rechnung = bRE;
+                    }
+
+                    if (ZulDate.Visible)
+                        pos.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
 
                     if (pos.PositionsNr == "10")
                     {
-                        objNacherf.Vorgangsliste.ForEach(vg =>
+                        foreach (var item in objNacherf.Vorgangsliste.Where(vg => vg.SapId == pos.SapId))
                         {
-                            vg.KennzeichenTeil2 = txtBox.Text;
-                            vg.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
-                        });
+                            if (txtBoxKennzAbc.Visible)
+                                item.KennzeichenTeil2 = txtBoxKennzAbc.Text;
+
+                            if (ZulDate.Visible)
+                                item.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
+                        }
                     }
                 }
             }
             catch (Exception ex)
             {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
                 return true;
             }
 
@@ -714,7 +732,6 @@ namespace AppZulassungsdienst.forms
                 Label lblKennKZ1 = (Label)gvRow.FindControl("lblKennKZ1");
                 Label lblReserviert = (Label)gvRow.FindControl("lblReserviert");
                 Label lblWunschKennz = (Label)gvRow.FindControl("lblWunschKennz");
-                Label lblFeinstaub = (Label)gvRow.FindControl("lblFeinstaub");
 
                 lblsapID.Font.Bold = Edited;
                 lblLoeschKZ.Font.Bold = Edited;
@@ -725,11 +742,10 @@ namespace AppZulassungsdienst.forms
                 lblKennKZ1.Font.Bold = Edited;
                 lblReserviert.Font.Bold = Edited;
                 lblWunschKennz.Font.Bold = Edited;
-                lblFeinstaub.Font.Bold = Edited;
             }
             catch (Exception ex)
             {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
             }
         }
 
@@ -741,6 +757,24 @@ namespace AppZulassungsdienst.forms
         protected bool proofGebMatPflicht(String Matnr)
         {
             return objCommon.proofGebMatPflicht(Matnr);
+        }
+
+        private void ShowHideColumns(bool modusSenden = false)
+        {
+            // Status
+            GridView1.Columns[1].Visible = modusSenden;
+            // Sapid
+            GridView1.Columns[2].Visible = !modusSenden;
+
+            // Gebühr
+            GridView1.Columns[9].Visible = !modusSenden;
+            // Zuldat
+            GridView1.Columns[10].Visible = !modusSenden;
+            // Ref1
+            GridView1.Columns[11].Visible = !modusSenden;
+
+            // Aktions-Buttons
+            GridView1.Columns[15].Visible = !modusSenden;
         }
 
         #endregion

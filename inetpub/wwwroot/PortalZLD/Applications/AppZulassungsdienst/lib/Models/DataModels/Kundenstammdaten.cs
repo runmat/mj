@@ -10,7 +10,16 @@ namespace AppZulassungsdienst.lib.Models
 
         public string Name2 { get; set; }
 
-        public new string Name { get { return String.Format("{0} ~ {1}{2}", Name1, KundenNr, (String.IsNullOrEmpty(Namenserweiterung) ? "" : " - " + Namenserweiterung)); } }
+        public new string Name
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(KundenNr) || KundenNr == "0")
+                    return Name1;
+
+                return String.Format("{0} ~ {1}{2}", Name1, KundenNr, (String.IsNullOrEmpty(Namenserweiterung) ? "" : " - " + Namenserweiterung));
+            }
+        }
 
         public string Strasse { get; set; }
 

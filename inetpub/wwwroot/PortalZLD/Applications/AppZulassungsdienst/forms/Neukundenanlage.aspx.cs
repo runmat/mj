@@ -329,7 +329,7 @@ namespace AppZulassungsdienst.forms
             } while (i < objNeukunde.tblBranchen.Rows.Count);
 
             ddLand.Items.Clear();
-            DataView tmpDataview = objNeukunde.tblLaender.DefaultView;
+            DataView tmpDataview = new DataView(objNeukunde.tblLaender);
             tmpDataview.Sort = "LANDX";
             i = 0;
             do
@@ -494,7 +494,7 @@ namespace AppZulassungsdienst.forms
         {
             Boolean bReturn = false;
 
-            if (rbBarkunde.Checked == false && rbLieferscheinKunde.Checked == false)
+            if (!rbBarkunde.Checked && !rbLieferscheinKunde.Checked)
             {
                 rbBarkunde.BorderStyle = BorderStyle.Solid;
                 rbBarkunde.BorderWidth = 1;
@@ -506,7 +506,7 @@ namespace AppZulassungsdienst.forms
             }
             if (rbLieferscheinKunde.Checked)
             {
-                if (rbEinzugJa.Checked == false && rbEinzugNein.Checked == false)
+                if (!rbEinzugJa.Checked && !rbEinzugNein.Checked)
                 {
                     rbEinzugJa.BorderStyle = BorderStyle.Solid;
                     rbEinzugJa.BorderWidth = 1;
@@ -517,7 +517,7 @@ namespace AppZulassungsdienst.forms
                     bReturn = true;
                 }
             }
-            if (rbFirma.Checked == false && rbHerr.Checked == false && rbFrau.Checked == false)
+            if (!rbFirma.Checked && !rbHerr.Checked && !rbFrau.Checked)
             {
                 rbFirma.BorderStyle = BorderStyle.Solid;
                 rbFirma.BorderWidth = 1;

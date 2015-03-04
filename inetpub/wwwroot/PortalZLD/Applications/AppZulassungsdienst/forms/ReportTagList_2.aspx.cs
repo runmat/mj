@@ -212,7 +212,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = objListe.KopfListe.DefaultView;
+            DataView tmpDataView = new DataView(objListe.KopfListe);
             tmpDataView.RowFilter = "";
 
             if (tmpDataView.Count == 0)
@@ -285,7 +285,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="sKennz">Kennzeichen als Key</param>
         private void Fillgrid2(GridView GV, String RowFilter, Int32 intPageIndex, String strSort, String sKennz)
         {
-            DataView tmpDataView = objListe.TagesListe.DefaultView;
+            DataView tmpDataView = new DataView(objListe.TagesListe);
             tmpDataView.RowFilter = RowFilter;
             Session[GV.ClientID + "RowFilter"] = RowFilter;
             if (tmpDataView.Count == 0)

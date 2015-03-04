@@ -34,7 +34,7 @@ namespace AppZulassungsdienst
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
                 objPreisanlage = new clsPreisanlage(m_User.Reference);
                 fillForm();
@@ -123,7 +123,7 @@ namespace AppZulassungsdienst
         #region Methods
 
         /// <summary>
-        /// Laden neuer angelegter Kunden aus SAP. Z_ZLD_EXPORT_NEW_DEBI.
+        /// Laden neuer angelegter Kunden aus SAP.
         /// </summary>
         private void fillForm()
         {
@@ -144,7 +144,7 @@ namespace AppZulassungsdienst
         /// </summary>
         private void Fillgrid()
         {
-            DataView tmpDataView = objPreisanlage.tblNeueKunden.DefaultView;
+            DataView tmpDataView = new DataView(objPreisanlage.tblNeueKunden);
             String strFilter = "";
             tmpDataView.RowFilter = strFilter;
 

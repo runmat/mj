@@ -52,10 +52,10 @@ namespace AppZulassungsdienst.forms
             
         protected void Page_Load(object sender, EventArgs e)
         {
+            objNacherf = (NacherfZLD)Session["objNacherf"];
+
             if (!IsPostBack)
             {
-                objNacherf = (NacherfZLD)Session["objNacherf"];
-
                 if (Request.QueryString["id"] != null)
                 {
                     var sapId = Request.QueryString["id"];
@@ -188,9 +188,7 @@ namespace AppZulassungsdienst.forms
 
             if (txtHauptPos != null && !String.IsNullOrEmpty(txtHauptPos.Text))
             {
-                DataView tmpDataView = objCommon.tblKennzGroesse.DefaultView;
-                tmpDataView.RowFilter = "Matnr = " + txtHauptPos.Text;
-                tmpDataView.Sort = "Matnr";
+                DataView tmpDataView = new DataView(objCommon.tblKennzGroesse, "Matnr = " + txtHauptPos.Text, "Matnr", DataViewRowState.CurrentRows);
 
                 if (tmpDataView.Count > 0)
                 {
@@ -346,12 +344,11 @@ namespace AppZulassungsdienst.forms
             txtBemerk.Text = kopfdaten.Bemerkung;
 
             // Dropdowns und dazugehörige Textboxen füllen
-            GridView1.DataSource = objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D");
+            GridView1.DataSource = objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr).ToList();
             GridView1.DataBind();
 
-            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
-            tmpDView.RowFilter = "Matnr = 598";
-            tmpDView.Sort = "Matnr";
+            DataView tmpDView = new DataView(objCommon.tblKennzGroesse, "Matnr = 598", "Matnr", DataViewRowState.CurrentRows);
+
             if (tmpDView.Count > 0)
             {
                 ddlKennzForm.DataSource = tmpDView;
@@ -373,7 +370,7 @@ namespace AppZulassungsdienst.forms
             chkKennzSonder.Checked = (kopfdaten.Kennzeichenform != "520x114");
             ddlKennzForm.Enabled = chkKennzSonder.Checked;
 
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();

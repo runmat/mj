@@ -51,19 +51,21 @@ namespace AppZulassungsdienst.forms
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
+
+            if (Session["objNacherf"] != null)
+            {
+                objNacherf = (NacherfZLD)Session["objNacherf"];
+            }
+            else
+            {
+                lblError.Text = "Fehler: Keine Session-Daten übertragen!";
+                return;
+            }
+
             if (!IsPostBack)
             {
-                if (Session["objNacherf"] != null)
-                {
-                    objNacherf = (NacherfZLD)Session["objNacherf"];
-
-                    FillZulUnterlagen();
-                    fillForm();
-                }
-                else
-                {
-                    lblError.Text = "Fehler: Keine Session-Daten übertragen!";
-                }
+                FillZulUnterlagen();
+                fillForm();
             }
         }
 

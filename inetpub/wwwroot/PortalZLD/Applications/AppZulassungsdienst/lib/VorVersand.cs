@@ -139,10 +139,10 @@ namespace AppZulassungsdienst.lib
                     }
 
                     ExcelListe = Liste.Copy();
-                    ExcelListe.Columns.Remove("Belegnr");
+                    ExcelListe.Columns.Remove("VBELN");
                     ExcelListe.Columns.Remove("ZULPOSNR");
                     ExcelListe.Columns.Remove("BLTYP");
-                    ExcelListe.Columns["LoeschKZ"].ColumnName = "L/OK";
+                    ExcelListe.Columns["LOEKZ"].ColumnName = "L/OK";
                 });
 		}
 

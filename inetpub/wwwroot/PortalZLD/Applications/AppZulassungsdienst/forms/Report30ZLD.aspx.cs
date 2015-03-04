@@ -135,7 +135,7 @@ namespace AppZulassungsdienst.forms
         {
             var resTable = (DataTable)Session["ResultTable"];
 
-            DataView tmpDataView = resTable.DefaultView;
+            DataView tmpDataView = new DataView(resTable);
             tmpDataView.RowFilter = "";
 
             if (tmpDataView.Count == 0)
@@ -214,7 +214,7 @@ namespace AppZulassungsdienst.forms
             objZLDSuche.Fill();
 
             Session["ResultTable"] = objZLDSuche.tblResult;
-            Session["ResultTableRaw"] = objZLDSuche.ResultRaw;
+            Session["ResultTableRaw"] = objZLDSuche.tblResultRaw;
 
             if (objZLDSuche.ErrorOccured)
             {

@@ -6,6 +6,8 @@ namespace AppZulassungsdienst.lib.Models
     {
         public string SapId { get; set; }
 
+        public string Belegart { get; set; }
+
         public string VkOrg { get; set; }
 
         public string VkBur { get; set; }
@@ -24,7 +26,11 @@ namespace AppZulassungsdienst.lib.Models
 
         public string Referenz2 { get; set; }
 
-        public string Kennzeichen { get; set; }
+        public string KennzeichenTeil1 { get; set; }
+
+        public string KennzeichenTeil2 { get; set; }
+
+        public string Kennzeichen { get { return KennzeichenTeil1 + (String.IsNullOrEmpty(KennzeichenTeil2) ? "" : "-" + KennzeichenTeil2);} }
 
         public string FehlerText { get; set; }
 

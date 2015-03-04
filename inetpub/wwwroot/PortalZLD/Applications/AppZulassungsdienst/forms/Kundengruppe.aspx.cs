@@ -243,7 +243,7 @@ namespace AppZulassungsdienst.forms
         #region Methods
 
         /// <summary>
-        /// Tabelle mit bereits angelegten Gruppen laden und anzeigen (Z_ZLD_GET_GRUPPE).
+        /// Tabelle mit bereits angelegten Gruppen laden und anzeigen.
         /// </summary>
         private void FillGroupTable()
         {
@@ -260,7 +260,7 @@ namespace AppZulassungsdienst.forms
             if (objCommon.Kundengruppen.Any(k => k.Gruppe != "0"))
             {
                 GridView1.Visible = true;
-                GridView1.DataSource = objCommon.Kundengruppen.Where(k => k.Gruppe != "0");
+                GridView1.DataSource = objCommon.Kundengruppen.Where(k => k.Gruppe != "0").ToList();
                 GridView1.DataBind();
             }
             else
@@ -271,7 +271,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Kundentabelle der ausgewählten Gruppe laden und anzeigen(Z_ZLD_GET_GRUPPE_KDZU). 
+        /// Kundentabelle der ausgewählten Gruppe laden und anzeigen. 
         /// objCommon.GetKunden_TourenZuordnung
         /// </summary>
         private void FillCustomerTable()
@@ -304,7 +304,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void fillDropDown()
         {
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();

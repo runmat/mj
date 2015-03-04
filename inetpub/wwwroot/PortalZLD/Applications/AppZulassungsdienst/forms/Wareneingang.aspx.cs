@@ -18,7 +18,7 @@ namespace AppZulassungsdienst.forms
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
-        /// Erwartete Bestellungen laden(Z_FIL_READ_OFF_BEST_001) und an die Listbox binden.
+        /// Erwartete Bestellungen laden und an die Listbox binden.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -61,14 +61,14 @@ namespace AppZulassungsdienst.forms
                 else
                 {
                     lbWeiter.Visible = true;
-                    lbxBestellungen.DataSource = new DataView(objWareneingang.ErwarteteLieferungen);
+                    lbxBestellungen.DataSource = objWareneingang.ErwarteteLieferungen;
                     lbxBestellungen.DataBind();
                 }
             }
         }
 
         /// <summary>
-        /// Positionen der ausgewählten Bestellung selektieren(Z_FIL_EFA_UML_OFF_POS). Und an die Detailseite übergeben.
+        /// Positionen der ausgewählten Bestellung selektieren und an die Detailseite übergeben.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>

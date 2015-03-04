@@ -38,7 +38,7 @@ namespace AppZulassungsdienst.lib.Models
                 bezeichnung = bezeichnung.Remove(iCut, count);
             }
 
-            if (Menge > 1)
+            if (Menge.HasValue && Menge > 1)
             {
                 // Gesamtlänge mehr als n Zeichen
                 if (bezeichnung.Length + strMengeAddon.Length > 40)

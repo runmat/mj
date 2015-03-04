@@ -695,7 +695,7 @@ namespace AppZulassungsdienst.forms
                     }
                 }
             }
-            else if (custError == false) { lblError.Text = "Keine Vorgänge zum Buchen markiert!"; }
+            else if (!custError) { lblError.Text = "Keine Vorgänge zum Buchen markiert!"; }
 
             if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Einahmen)
             {
@@ -1070,7 +1070,7 @@ namespace AppZulassungsdienst.forms
                     {
                         tblData.Rows[i]["BUDAT"] = txtDate.Text.Trim();
                     }
-                    else if (NewLine == false && chkAuswahl.Checked)
+                    else if (!NewLine && chkAuswahl.Checked)
                     {
                         SetErrBehavior(txtDate, lblError, "Es wurde kein Datum eingetragen!");
                         blError = true;
@@ -1081,7 +1081,7 @@ namespace AppZulassungsdienst.forms
                     {
                         tblData.Rows[i]["KOSTL"] = txtKst.Text.Trim();
                     }
-                    else if (NewLine == false && chkAuswahl.Checked)
+                    else if (!NewLine && chkAuswahl.Checked)
                     {
                         SetErrBehavior(txtKst, lblError, "Es wurde keine Kostenstelle eingetragen!");
                         blError = true;
@@ -1106,7 +1106,7 @@ namespace AppZulassungsdienst.forms
                         {
                             tblData.Rows[i]["SGTXT"] = strFreitext;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtFreitext, lblError, "Es wurde kein Text eingetragen!");
                             blError = true;
@@ -1119,7 +1119,7 @@ namespace AppZulassungsdienst.forms
                         {
                             tblData.Rows[i]["ORDERID"] = txtAuftrag.Text;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtAuftrag, lblPosError, "Es wurde keine Auftragsnummer eingetragen!");
                             blError = true;
@@ -1137,14 +1137,14 @@ namespace AppZulassungsdienst.forms
                         {
                             tblData.Rows[i]["DOCUMENT_NUMBER"] = txtBarcode.Text.Trim();
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtBarcode, lblError, "Barcode nicht 6 Zeichen lang!");
                             blError = true;
                         }
 
                     }
-                    else if (NewLine == false && chkAuswahl.Checked)
+                    else if (!NewLine && chkAuswahl.Checked)
                     {
                         SetErrBehavior(txtBarcode, lblError, "Es wurde kein Barcode eingetragen!");
                         blError = true;
@@ -1162,7 +1162,7 @@ namespace AppZulassungsdienst.forms
                             tblData.Rows[i]["LIFNR"] = txtKreditor.Text.Trim();
                             txtKreditor.BorderColor = System.Drawing.Color.Empty;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtKreditor, lblError, "Es wurde kein Kreditor eingetragen!");
                             blError = true;
@@ -1175,7 +1175,7 @@ namespace AppZulassungsdienst.forms
                             tblData.Rows[i]["KUNNR"] = txtDebitor.Text.Trim();
                             txtDebitor.BorderColor = System.Drawing.Color.Empty;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtDebitor, lblError, "Es wurde kein Kreditor eingetragen!");
                             blError = true;
@@ -1193,7 +1193,7 @@ namespace AppZulassungsdienst.forms
                                 tblData.Rows[i]["H_RECEIPTS"] = betrag;
                                 tblData.Rows[i]["H_PAYMENTS"] = "0,00";
                             }
-                            else if (NewLine == false && chkAuswahl.Checked)
+                            else if (!NewLine && chkAuswahl.Checked)
                             {
                                 SetErrBehavior(txtBruttoEin, lblError, "Es wurde kein Betrag eingegeben!");
                                 blError = true;
@@ -1209,7 +1209,7 @@ namespace AppZulassungsdienst.forms
                                 tblData.Rows[i]["H_PAYMENTS"] = betrag;
 
                             }
-                            else if (NewLine == false && chkAuswahl.Checked)
+                            else if (!NewLine && chkAuswahl.Checked)
                             {
                                 SetErrBehavior(txtBruttoAus, lblError, "Es wurde kein Betrag eingegeben!");
                                 blError = true;
@@ -1645,7 +1645,7 @@ namespace AppZulassungsdienst.forms
                         txtKreditor.Enabled = false;
                         txtKreditor.Visible = false;
                     }
-                    if (debiNeeded == false && krediNeeded == false)
+                    if (!debiNeeded && !krediNeeded)
                     {
                         txtDebitor.Enabled = false;
                         txtKreditor.Enabled = false;

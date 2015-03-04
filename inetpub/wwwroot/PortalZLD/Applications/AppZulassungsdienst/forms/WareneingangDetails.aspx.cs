@@ -263,7 +263,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = objWareneingang.Bestellpositionen.DefaultView;
+            DataView tmpDataView = new DataView(objWareneingang.Bestellpositionen);
 
             if (tmpDataView.Count == 0)
             {
@@ -335,7 +335,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="strSort">Sortierung nach</param>
         private void Fillgrid2(Int32 intPageIndex, String strSort)
         {
-            DataView tmpDataView = objWareneingang.Bestellpositionen.DefaultView;
+            DataView tmpDataView = new DataView(objWareneingang.Bestellpositionen);
 
             if (tmpDataView.Count == 0)
             {
@@ -431,7 +431,7 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Senden der Daten an SAP(Z_FIL_EFA_UML_STEP2).
+        /// Senden der Daten an SAP.
         /// </summary>
         private void doSubmit()
         {

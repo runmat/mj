@@ -42,7 +42,7 @@
                                         <tr>
                                             <td>
                                                 <asp:GridView ID="gvZuldienst" Width="100%" runat="server" AutoGenerateColumns="False"
-                                                    CellPadding="0" CellSpacing="0" GridLines="None"  DataKeyNames="ID"
+                                                    CellPadding="0" CellSpacing="0" GridLines="None" DataKeyNames="SapId,PositionsNr"
                                                     AllowSorting="true" AllowPaging="false" CssClass="GridView" PageSize="1000" 
                                                     onsorting="gvZuldienst_Sorting" onrowcommand="gvZuldienst_RowCommand">
                                                     <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
@@ -61,7 +61,7 @@
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="Löschen" HeaderStyle-Width="30px">
                                                             <ItemTemplate>
-                                                                <asp:ImageButton ID="ibtnDel"  ToolTip="Löschen"
+                                                                <asp:ImageButton ID="ibtnDel" ToolTip="Löschen" OnClientClick='if (!confirm("Wollen Sie die Position bzw. den Vorgang wirklich löschen?")) return false;'
                                                                     ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>' CommandName="Loeschen" runat="server" />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>

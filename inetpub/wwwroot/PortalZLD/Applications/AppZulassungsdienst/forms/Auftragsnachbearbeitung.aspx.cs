@@ -86,7 +86,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenDisplay.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen;
+                rgPositionenDisplay.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr).ToList();
             }
             else
             {
@@ -156,7 +156,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenEdit.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen;
+                rgPositionenEdit.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr).ToList();
             }
             else
             {
@@ -198,7 +198,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objNachbearbeitung.tblOffeneStornos != null)
             {
-                rgOffeneStornos.DataSource = objNachbearbeitung.tblOffeneStornos.DefaultView;
+                rgOffeneStornos.DataSource = objNachbearbeitung.tblOffeneStornos;
             }
             else
             {
@@ -284,7 +284,7 @@ namespace AppZulassungsdienst.forms
             }
             ddlStornogrund.SelectedIndex = 0;
 
-            ddlStornoKunde.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv && !k.Cpd);
+            ddlStornoKunde.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv && !k.Cpd).ToList();
             ddlStornoKunde.DataValueField = "KundenNr";
             ddlStornoKunde.DataTextField = "Name";
             ddlStornoKunde.DataBind();
@@ -548,7 +548,7 @@ namespace AppZulassungsdienst.forms
                     var txtSteuer = (TextBox)item.FindControl("txtSteuer");
                     var txtPreisKennz = (TextBox)item.FindControl("txtPreisKennz");
 
-                    var pos = objNachbearbeitung.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == item["ZULPOSNR"].Text);
+                    var pos = objNachbearbeitung.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == item["PositionsNr"].Text);
                     if (pos != null)
                     {
                         decimal preisNeu;
@@ -625,7 +625,7 @@ namespace AppZulassungsdienst.forms
                         var txtSteuer = (TextBox)item.FindControl("txtSteuer");
                         var txtPreisKennz = (TextBox)item.FindControl("txtPreisKennz");
 
-                        var pos = objNachbearbeitung.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == item["ZULPOSNR"].Text);
+                        var pos = objNachbearbeitung.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == item["PositionsNr"].Text);
                         if (pos != null)
                         {
                             decimal preisNeu;

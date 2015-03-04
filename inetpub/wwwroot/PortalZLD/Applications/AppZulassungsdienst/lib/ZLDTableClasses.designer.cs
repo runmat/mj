@@ -44,8 +44,8 @@ namespace AppZulassungsdienst.lib
     partial void DeleteZLDVorgangKopf(ZLDVorgangKopf instance);
     #endregion
 		
-		public ZLDTableClassesDataContext() : 
-				base(global::System.Configuration.ConfigurationManager.ConnectionStrings["ZLDPortal_TestConnectionString"].ConnectionString, mappingSource)
+		public ZLDTableClassesDataContext() :
+                base(global::System.Configuration.ConfigurationManager.AppSettings["Connectionstring"].ToString(), mappingSource)
 		{
 			OnCreated();
 		}
@@ -119,7 +119,7 @@ namespace AppZulassungsdienst.lib
 		
 		private string _KontoNr;
 		
-		private string _Bankverbindungsname;
+		private string _Geldinstitut;
 		
 		private string _Kontoinhaber;
 		
@@ -143,8 +143,8 @@ namespace AppZulassungsdienst.lib
     partial void OnBankleitzahlChanged();
     partial void OnKontoNrChanging(string value);
     partial void OnKontoNrChanged();
-    partial void OnBankverbindungsnameChanging(string value);
-    partial void OnBankverbindungsnameChanged();
+    partial void OnGeldinstitutChanging(string value);
+    partial void OnGeldinstitutChanged();
     partial void OnKontoinhaberChanging(string value);
     partial void OnKontoinhaberChanged();
     partial void OnEinzugChanging(System.Nullable<bool> value);
@@ -227,22 +227,22 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bankverbindungsname", DbType="NVarChar(40)")]
-		public string Bankverbindungsname
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Geldinstitut", DbType="NVarChar(40)")]
+		public string Geldinstitut
 		{
 			get
 			{
-				return this._Bankverbindungsname;
+				return this._Geldinstitut;
 			}
 			set
 			{
-				if ((this._Bankverbindungsname != value))
+				if ((this._Geldinstitut != value))
 				{
-					this.OnBankverbindungsnameChanging(value);
+					this.OnGeldinstitutChanging(value);
 					this.SendPropertyChanging();
-					this._Bankverbindungsname = value;
-					this.SendPropertyChanged("Bankverbindungsname");
-					this.OnBankverbindungsnameChanged();
+					this._Geldinstitut = value;
+					this.SendPropertyChanged("Geldinstitut");
+					this.OnGeldinstitutChanged();
 				}
 			}
 		}

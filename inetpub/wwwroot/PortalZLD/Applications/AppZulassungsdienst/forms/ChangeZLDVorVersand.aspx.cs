@@ -360,9 +360,8 @@ namespace AppZulassungsdienst.forms
 
             if (txtHauptPos != null && txtHauptPos.Text.Length > 0)
             {
-                DataView tmpDataView = objCommon.tblKennzGroesse.DefaultView;
-                tmpDataView.RowFilter = "Matnr = " + txtHauptPos.Text;
-                tmpDataView.Sort = "Matnr";
+                DataView tmpDataView = new DataView(objCommon.tblKennzGroesse, "Matnr = " + txtHauptPos.Text, "Matnr", DataViewRowState.CurrentRows);
+
                 if (tmpDataView.Count > 0)
                 {
                     ddlKennzForm.DataSource = tmpDataView;
@@ -448,7 +447,7 @@ namespace AppZulassungsdienst.forms
         private void InitLargeDropdowns()
         {
             //Kunde
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();
@@ -542,9 +541,8 @@ namespace AppZulassungsdienst.forms
 
             Session["tblDienst"] = tblData;
 
-            DataView tmpDView = objCommon.tblKennzGroesse.DefaultView;
-            tmpDView.RowFilter = "Matnr = 598";
-            tmpDView.Sort = "Matnr";
+            DataView tmpDView = new DataView(objCommon.tblKennzGroesse, "Matnr = 598", "Matnr", DataViewRowState.CurrentRows);
+
             if (tmpDView.Count > 0)
             {
                 ddlKennzForm.DataSource = tmpDView;
@@ -1013,7 +1011,7 @@ namespace AppZulassungsdienst.forms
                 return false;
             }
 
-            if (checkDienst(tblData) == false)
+            if (!checkDienst(tblData))
             {
                 lblError.Text = "Keine Dienstleistung ausgewählt.";
                 return false;
@@ -1218,7 +1216,7 @@ namespace AppZulassungsdienst.forms
 
                 txtBox.Attributes.Add("onkeyup", "FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
                 txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + ")");
-                ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv);
+                ddl.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
                 ddl.DataValueField = "MaterialNr";
                 ddl.DataTextField = "Name";
                 ddl.DataBind();
@@ -1259,7 +1257,10 @@ namespace AppZulassungsdienst.forms
                 kopfdaten.Referenz2 = txtReferenz2.Text.ToUpper();
 
                 kopfdaten.Landkreis = txtStVa.Text;
-                kopfdaten.KreisBezeichnung = ddlStVa.SelectedItem.Text;
+
+                var amt = objCommon.StvaStamm.FirstOrDefault(s => s.Landkreis == kopfdaten.Landkreis);
+                if (amt != null)
+                    kopfdaten.KreisBezeichnung = amt.KreisBezeichnung;
 
                 kopfdaten.Wunschkennzeichen = chkWunschKZ.Checked;
                 kopfdaten.KennzeichenReservieren = chkReserviert.Checked;
@@ -1282,25 +1283,16 @@ namespace AppZulassungsdienst.forms
                 {
                     if (dRow["Value"].ToString() != "0")
                     {
-                        var matbez = "";
-                        String[] sMaterial = dRow["Text"].ToString().Split('~');
-                        if (dRow["Value"].ToString() == ZLDCommon.CONST_IDSONSTIGEDL)
-                        {
-                            matbez = dRow["DLBezeichnung"].ToString();
-                        }
-                        else if (sMaterial.Length == 2)
-                        {
-                            matbez = sMaterial[0].ToString();
-                        }
+                        var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
                         objVorVersand.AktuellerVorgang.Positionen.Add(new ZLDPositionVorerfassung
                         {
                             SapId = kopfdaten.SapId,
                             PositionsNr = dRow["ID_POS"].ToString(),
+                            WebMaterialart = "D",
                             Menge = (dRow["Menge"].ToString().IsNumeric() ? Decimal.Parse(dRow["Menge"].ToString()) : 1),
                             MaterialNr = dRow["Value"].ToString(),
-                            MaterialName = matbez,
-                            WebMaterialart = "D"
+                            MaterialName = matbez
                         });
                     }
                 }

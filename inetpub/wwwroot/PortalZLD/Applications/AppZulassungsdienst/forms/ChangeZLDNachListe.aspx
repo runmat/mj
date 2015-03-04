@@ -68,13 +68,13 @@
 											<td class="firstLeft active">
 												<asp:DropDownList ID="ddlSuche" runat="server" Style="width: auto" >
 													<asp:ListItem Text="Kennzeichen" Value="Kennzeichen"></asp:ListItem>
-													<asp:ListItem Text="Kundennummer" Value="kundennr"></asp:ListItem>
-													<asp:ListItem Text="Dienstleistung" Value="Matbez"></asp:ListItem>
-													<asp:ListItem Text="Gebühr" Value="GebPreis"></asp:ListItem>
-													<asp:ListItem Text="Referenz1" Value="Referenz1"></asp:ListItem>
-                                                    <asp:ListItem Text="Amt" Value="KreisKZ"></asp:ListItem>
+													<asp:ListItem Text="Kundennummer" Value="KundenNr"></asp:ListItem>
+													<asp:ListItem Text="Dienstleistung" Value="MaterialName"></asp:ListItem>
+													<asp:ListItem Text="Gebühr" Value="Gebuehr"></asp:ListItem>
+													<asp:ListItem Text="Referenz1" Value="Referenz1"></asp:ListItem> 
+                                                    <asp:ListItem Text="Amt" Value="Landkreis"></asp:ListItem>
                                                     <asp:ListItem Text="Zulassungsdatum(ttmmjj)" Value="Zulassungsdatum"></asp:ListItem>
-                                                    <asp:ListItem Text="ID" Value="id_sap"></asp:ListItem>
+                                                    <asp:ListItem Text="ID" Value="SapId"></asp:ListItem>
 												</asp:DropDownList>                                                
 											</td>
 											<td class="firstLeft active">
@@ -154,7 +154,7 @@
 									<asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
 										CellPadding="0" CellSpacing="0" GridLines="None"
 										AllowSorting="true" AllowPaging="true" CssClass="GridView" PageSize="20" onsorting="GridView1_Sorting" 
-										DataKeyNames="ID" onrowcommand="GridView1_RowCommand" onpageindexchanging="GridView1_PageIndexChanging" 
+										DataKeyNames="SapId,PositionsNr" onrowcommand="GridView1_RowCommand" onpageindexchanging="GridView1_PageIndexChanging" 
                                         onrowdatabound="GridView1_RowDataBound" >
                             			<HeaderStyle CssClass="GridTableHead" Width="100%" ForeColor="White" />
 										<PagerSettings Visible="false" />
@@ -182,7 +182,7 @@
 												    <asp:Label ID="lblPosLoesch" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("WebBearbeitungsStatus").ToString() %>'/>
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding" Width="30px" />
-												<ItemStyle CssClass="TablePadding"  Width="30px" />
+												<ItemStyle CssClass="TablePadding"  Width="30px" HorizontalAlign="Center" />
 											</asp:TemplateField>
 											<asp:TemplateField SortExpression="KundenNr" HeaderText="col_Kundennr">
 												<HeaderTemplate>
@@ -276,7 +276,7 @@
 													<asp:LinkButton ID="col_PreisKZ" runat="server" CommandName="Sort" CommandArgument="PreisKennzeichen">col_PreisKZ</asp:LinkButton>
                                                 </HeaderTemplate>
 												<ItemTemplate>
-												    <asp:TextBox ID="txtPreisKZ" Enabled='<%# proofPauschMat(Eval("PauschalKunde").ToString(), Eval("MaterialNr").ToString()) %>' 
+												    <asp:TextBox ID="txtPreisKZ" Enabled='<%# proofPauschMat(Eval("KundenNr").ToString(), Eval("MaterialNr").ToString()) %>' 
 												                 Visible='<%# Eval("PositionsNr").ToString() == "10" %>' onKeyPress="return numbersonly(event, true)"  CssClass="TextBoxNormal" Width="45" 
                                                                  Font-Size="8pt" runat="server"  Text='<%# Eval("PreisKennzeichen", "{0:F}") %>'/>
 												</ItemTemplate>
@@ -392,8 +392,8 @@
 													<asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>' runat="server" CommandName="OK" 
                                                         ToolTip='<%# objNacherf.SelAnnahmeAH ? "Annehmen" : "OK" %>' />
 												</ItemTemplate>
-												<HeaderStyle CssClass="TablePadding" Width="58px" />
-												<ItemStyle CssClass="TablePadding"  Width="58px" />
+												<HeaderStyle CssClass="TablePadding" Width="60px" />
+												<ItemStyle CssClass="TablePadding"  Width="60px" />
 											</asp:TemplateField>
 											<asp:TemplateField SortExpression="Zahlart_EC" HeaderText="col_EC">
 												<HeaderTemplate>

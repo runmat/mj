@@ -168,7 +168,7 @@ namespace AppZulassungsdienst.forms
         #region Methods
 
         /// <summary>
-        /// Sammeln der Selektionsdaten und an Sap übergeben(Z_ZLD_EXPORT_AUSWERTUNG). 
+        /// Sammeln der Selektionsdaten und an Sap übergeben. 
         /// Weiterleiten an Listenansicht Auswertung(ReportAuswertung_2.aspx)
         /// </summary>
         private void DoSubmit()
@@ -260,7 +260,7 @@ namespace AppZulassungsdienst.forms
         private void InitLargeDropdowns()
         {
             //Kunde
-            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv);
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
             ddlKunnr.DataValueField = "KundenNr";
             ddlKunnr.DataTextField = "Name";
             ddlKunnr.DataBind();
@@ -294,7 +294,7 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            ddlDienst.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv);
+            ddlDienst.DataSource = objCommon.MaterialStamm.Where(m => !m.Inaktiv).ToList();
             ddlDienst.DataValueField = "MaterialNr";
             ddlDienst.DataTextField = "Name";
             ddlDienst.DataBind();
