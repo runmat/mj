@@ -148,8 +148,7 @@ namespace AppZulassungsdienst.lib
                 System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
 
                 command.CommandText = "SELECT dbo.KennzeichGroesse.ID, dbo.MaterialKennzGroesse.Matnr, dbo.MaterialKennzGroesse.Kennzart, dbo.KennzeichGroesse.Groesse" +
-                        " FROM dbo.MaterialKennzGroesse INNER JOIN dbo.KennzeichGroesse ON dbo.MaterialKennzGroesse.Matnr = dbo.KennzeichGroesse.Matnr" +
-                        " ORDER BY dbo.MaterialKennzGroesse.Matnr";
+                        " FROM dbo.MaterialKennzGroesse INNER JOIN dbo.KennzeichGroesse ON dbo.MaterialKennzGroesse.Matnr = dbo.KennzeichGroesse.Matnr";
 
                 connection.Open();
                 command.Connection = connection;
