@@ -113,10 +113,18 @@ namespace Upload_Validator
                         continue;
                     }
 
-                    if (objDataset1.Tables[0].Rows.Count > 1)
+                    if (objDataset1.Tables[0].Rows.Count > 0)
                     {
-                        tblTemp = objDataset1.Tables[0];
-                        SheetMitDatenCounter += 1;
+                        var ersteZeile = objDataset1.Tables[0].Rows[0];
+                        for (int j = 0; j < objDataset1.Tables[0].Columns.Count; j++)
+                        {
+                            if (!String.IsNullOrEmpty(ersteZeile[j].ToString()))
+                            {
+                                tblTemp = objDataset1.Tables[0];
+                                SheetMitDatenCounter += 1;
+                                break;
+                            }
+                        }
                     }
 
                     i++;
