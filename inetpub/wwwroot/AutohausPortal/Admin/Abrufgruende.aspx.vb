@@ -1,35 +1,16 @@
 ﻿Option Explicit On
 Option Strict On
 
-Imports CKG.Base.Kernel
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Base.Kernel.Admin
-Imports CKG.Base.Kernel.Security.Crypto
 Imports CKG.Base.Kernel.Security
 
 Partial Public Class Abrufgruende
-    Inherits System.Web.UI.Page
+    Inherits Page
     Private m_App As App
     Private m_User As User
     Private Connection As New SqlClient.SqlConnection()
 
-#Region "Properties"
-
-    Private Property Refferer() As String
-        Get
-            If Not Session.Item(Me.Request.Url.LocalPath & "Refferer") Is Nothing Then
-                Return Session.Item(Me.Request.Url.LocalPath & "Refferer").ToString()
-            Else : Return Nothing
-            End If
-        End Get
-        Set(ByVal value As String)
-            Session.Item(Me.Request.Url.LocalPath & "Refferer") = value
-        End Set
-    End Property
-#End Region
-
-
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         AdminAuth(Me, m_User, AdminLevel.Master)
         m_App = New App(m_User)
@@ -39,13 +20,6 @@ Partial Public Class Abrufgruende
         Connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
 
         If Not IsPostBack Then
-            If Refferer Is Nothing Then
-                If Not Me.Request.UrlReferrer Is Nothing Then
-                    Refferer = Me.Request.UrlReferrer.ToString
-                Else
-                    Refferer = ""
-                End If
-            End If
 
             FillCustomer(Connection)
 
@@ -57,7 +31,7 @@ Partial Public Class Abrufgruende
 
     End Sub
 
-    Private Sub ddlFilterCustomer_SelectedIndexChanged(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlFilterCustomer.SelectedIndexChanged
+    Private Sub ddlFilterCustomer_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlFilterCustomer.SelectedIndexChanged
         fillGrids()
     End Sub
 
@@ -114,13 +88,8 @@ Partial Public Class Abrufgruende
 
 
     End Sub
-    Private Function plausi() As Boolean
-        If Not txtSapWert.Text.Replace(" ", "").Length = 0 AndAlso Not txtWebBezeichnung.Text.Replace(" ", "").Length = 0 AndAlso Not rblTyp.SelectedIndex = -1 Then
-            Return True
-        End If
-    End Function
 
-    Private Sub gvEndgueltig_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvEndgueltig.RowCommand
+    Private Sub gvEndgueltig_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvEndgueltig.RowCommand
         If e.CommandName = "loesch" Then
             DeleteFromAbrufgrund(e.CommandArgument.ToString, "endg")
             fillGrids()
@@ -128,7 +97,7 @@ Partial Public Class Abrufgruende
     End Sub
 
 
-    Private Sub gvTemporaer_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvTemporaer.RowCommand
+    Private Sub gvTemporaer_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvTemporaer.RowCommand
         If e.CommandName = "loesch" Then
             DeleteFromAbrufgrund(e.CommandArgument.ToString, "temp")
             fillGrids()
@@ -194,7 +163,7 @@ Partial Public Class Abrufgruende
         chkZusatzeingabe.Checked = False
     End Sub
 
-    Protected Sub NewSearch_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles NewSearch.Click
+    Protected Sub NewSearch_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles NewSearch.Click
         tab1.Visible = Not tab1.Visible
         lbEintragen.Visible = Not lbEintragen.Visible
         Queryfooter.Visible = Not Queryfooter.Visible
