@@ -44,7 +44,9 @@ namespace CkgDomainLogic.DomainCommon.Services
         public Adresse SaveAdresse(Adresse adresse, Action<string, string> addModelError)
         {
             var storedItem = StoreToSap(adresse, addModelError, false);
-            return ModelMapping.Copy(storedItem, GetAdresseEquals(storedItem));
+            ModelMapping.Copy(storedItem, GetAdresseEquals(storedItem));
+
+            return adresse;
         }
 
         public void DeleteAdresse(Adresse adresse)

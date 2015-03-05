@@ -89,6 +89,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void AdressenDataInit(string adressenKennung, string kundennrOverride)
         {
+            if (AdressenKennungenLocalized.None(kennung => kennung.Key.ToUpper() == adressenKennung.ToUpper()) && AdressenKennungenLocalized.Any())
+                adressenKennung = AdressenKennungenLocalized.First().Key;
+
             AdressenDataService.AdressenKennung = adressenKennung.ToUpper();
             AdressenKennungTemp = adressenKennung;
             AdressenDataService.KundennrOverride = KundennrOverride = kundennrOverride;
@@ -169,9 +172,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public Adresse SaveItem(Adresse item, Action<string, string> addModelError)
         {
             AdressenDataService.KundennrOverride = KundennrOverride;
-            var savdItem = AdressenDataService.SaveAdresse(item, addModelError);
+            var savedItem = AdressenDataService.SaveAdresse(item, addModelError);
             DataMarkForRefresh();
-            return savdItem;
+            return savedItem;
         }
 
         public void ValidateModel(Adresse model, bool insertMode, Action<Expression<Func<Adresse, object>>, string> addModelError)
