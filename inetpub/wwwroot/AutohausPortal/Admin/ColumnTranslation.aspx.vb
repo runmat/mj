@@ -1,9 +1,8 @@
 ﻿Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
-Imports Admin.ColumnTranslation
 
 Partial Public Class ColumnTranslation
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region "Properties"
 
@@ -20,10 +19,9 @@ Partial Public Class ColumnTranslation
 #Region " Membervariables "
     Private m_User As User
     Private m_App As App
-    Private m_context As HttpContext = HttpContext.Current
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         ' Hier Benutzercode zur Seiteninitialisierung einfügen
         m_User = GetUser(Me)
         AdminAuth(Me, m_User, AdminLevel.Master)
@@ -35,8 +33,8 @@ Partial Public Class ColumnTranslation
             If Not IsPostBack Then
                 lblError.Text = ""
 
-                If Not Me.Request.UrlReferrer Is Nothing Then
-                    Refferer = Me.Request.UrlReferrer.ToString
+                If Not Request.UrlReferrer Is Nothing Then
+                    Refferer = Request.UrlReferrer.ToString
                 Else
                     Refferer = "Selection.aspx"
                 End If
@@ -53,13 +51,9 @@ Partial Public Class ColumnTranslation
                 If txtAppID.Text = String.Empty Then
                     lbtnNew.Visible = False
                 Else
-                    Dim lItem As System.Web.UI.WebControls.ListItem
-                    lItem = New System.Web.UI.WebControls.ListItem("Links", "Left")
-                    ddlAlignment.Items.Add(lItem)
-                    lItem = New System.Web.UI.WebControls.ListItem("Zentriert", "Center")
-                    ddlAlignment.Items.Add(lItem)
-                    lItem = New System.Web.UI.WebControls.ListItem("Rechts", "Right")
-                    ddlAlignment.Items.Add(lItem)
+                    ddlAlignment.Items.Add(New ListItem("Links", "Left"))
+                    ddlAlignment.Items.Add(New ListItem("Zentriert", "Center"))
+                    ddlAlignment.Items.Add(New ListItem("Rechts", "Right"))
                     FillForm()
 
 
@@ -200,23 +194,23 @@ Partial Public Class ColumnTranslation
             strBackColor = "LightGray"
         End If
         txtAppID.Enabled = Not blnLock
-        txtAppID.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtAppID.BackColor = Drawing.Color.FromName(strBackColor)
         txtNewName.Enabled = Not blnLock
-        txtNewName.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtNewName.BackColor = Drawing.Color.FromName(strBackColor)
         txtDisplayOrder.Enabled = Not blnLock
-        txtDisplayOrder.BackColor = System.Drawing.Color.FromName(strBackColor)
+        txtDisplayOrder.BackColor = Drawing.Color.FromName(strBackColor)
         cbxNullenEntfernen.Enabled = Not blnLock
-        cbxNullenEntfernen.BackColor = System.Drawing.Color.FromName(strBackColor)
+        cbxNullenEntfernen.BackColor = Drawing.Color.FromName(strBackColor)
         cbxTextBereinigen.Enabled = Not blnLock
-        cbxTextBereinigen.BackColor = System.Drawing.Color.FromName(strBackColor)
+        cbxTextBereinigen.BackColor = Drawing.Color.FromName(strBackColor)
         cbxIstDatum.Enabled = Not blnLock
-        cbxIstDatum.BackColor = System.Drawing.Color.FromName(strBackColor)
+        cbxIstDatum.BackColor = Drawing.Color.FromName(strBackColor)
         cbxIstZeit.Enabled = Not blnLock
-        cbxIstZeit.BackColor = System.Drawing.Color.FromName(strBackColor)
+        cbxIstZeit.BackColor = Drawing.Color.FromName(strBackColor)
         cbxABEDaten.Enabled = Not blnLock
-        cbxABEDaten.BackColor = System.Drawing.Color.FromName(strBackColor)
+        cbxABEDaten.BackColor = Drawing.Color.FromName(strBackColor)
         ddlAlignment.Enabled = Not blnLock
-        ddlAlignment.BackColor = System.Drawing.Color.FromName(strBackColor)
+        ddlAlignment.BackColor = Drawing.Color.FromName(strBackColor)
     End Sub
 
     Private Sub EditEditMode(ByVal intGroupId As Integer, ByVal strOrgName As String)
@@ -309,7 +303,7 @@ Partial Public Class ColumnTranslation
             m_App.WriteErrorText(1, m_User.UserName, "ColumnTranslation", "SetOldLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -348,7 +342,7 @@ Partial Public Class ColumnTranslation
             m_App.WriteErrorText(1, m_User.UserName, "ColumnTranslation", "SetNewLogParameters", ex.ToString)
 
             Dim dt As New DataTable()
-            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", System.Type.GetType("System.String"))
+            dt.Columns.Add("Fehler beim Erstellen der Log-Parameter", Type.GetType("System.String"))
             dt.Rows.Add(dt.NewRow)
             Dim str As String = ex.Message
             If Not ex.InnerException Is Nothing Then
@@ -362,17 +356,17 @@ Partial Public Class ColumnTranslation
     Private Function CreateLogTableStructure() As DataTable
         Dim tblPar As New DataTable()
         With tblPar
-            .Columns.Add("Status", System.Type.GetType("System.String"))
-            .Columns.Add("Anwendung", System.Type.GetType("System.String"))
-            .Columns.Add("SAP-Name", System.Type.GetType("System.String"))
-            .Columns.Add("Übersetzung", System.Type.GetType("System.String"))
-            .Columns.Add("Reihenfolge-Nr.", System.Type.GetType("System.String"))
-            .Columns.Add("Nullen entfernen", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Text bereinigen", System.Type.GetType("System.Boolean"))
-            .Columns.Add("ist Datum", System.Type.GetType("System.Boolean"))
-            .Columns.Add("ist Zeit", System.Type.GetType("System.Boolean"))
-            .Columns.Add("ABE-Daten", System.Type.GetType("System.Boolean"))
-            .Columns.Add("Ausrichtung", System.Type.GetType("System.String"))
+            .Columns.Add("Status", Type.GetType("System.String"))
+            .Columns.Add("Anwendung", Type.GetType("System.String"))
+            .Columns.Add("SAP-Name", Type.GetType("System.String"))
+            .Columns.Add("Übersetzung", Type.GetType("System.String"))
+            .Columns.Add("Reihenfolge-Nr.", Type.GetType("System.String"))
+            .Columns.Add("Nullen entfernen", Type.GetType("System.Boolean"))
+            .Columns.Add("Text bereinigen", Type.GetType("System.Boolean"))
+            .Columns.Add("ist Datum", Type.GetType("System.Boolean"))
+            .Columns.Add("ist Zeit", Type.GetType("System.Boolean"))
+            .Columns.Add("ABE-Daten", Type.GetType("System.Boolean"))
+            .Columns.Add("Ausrichtung", Type.GetType("System.String"))
         End With
         Return tblPar
     End Function
@@ -380,18 +374,18 @@ Partial Public Class ColumnTranslation
 
 #Region " Events "
 
-    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnCancel.Click
+    Private Sub lbtnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnCancel.Click
         Search(, True)
     End Sub
 
-    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnNew.Click
+    Private Sub lbtnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnNew.Click
         SearchMode(False)
         ClearEdit()
         'Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         'cn.Open()
     End Sub
 
-    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnSave.Click
+    Private Sub lbtnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSave.Click
         Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
@@ -444,7 +438,7 @@ Partial Public Class ColumnTranslation
         End Try
     End Sub
 
-    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lbtnDelete.Click
+    Private Sub lbtnDelete_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnDelete.Click
         Dim tblLogParameter As DataTable
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
@@ -473,9 +467,17 @@ Partial Public Class ColumnTranslation
         End Try
     End Sub
 
+    Private Sub responseBack()
+        If String.IsNullOrEmpty(Refferer) Then
+            Dim strLinkPrefix As String = "/" & ConfigurationManager.AppSettings("WebAppPath") & "/"
+            Response.Redirect(strLinkPrefix & "Start/Selection.aspx")
+        Else
+            Response.Redirect(Refferer)
+        End If
+    End Sub
 
-    Private Sub lnkBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lnkBack.Click
-        Response.Redirect(Refferer)
+    Private Sub lnkBack_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkBack.Click
+        responseBack()
     End Sub
 #End Region
 
@@ -487,7 +489,7 @@ Partial Public Class ColumnTranslation
         FillDataGrid()
     End Sub
 
-    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
+    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
         Dim CtrlLabel As Label
         Dim CtrlLabelOrg As Label
         Dim index As Integer
@@ -509,7 +511,7 @@ Partial Public Class ColumnTranslation
         End If
     End Sub
 
-    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles dgSearchResult.Sorting
+    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles dgSearchResult.Sorting
         Dim strSort As String = e.SortExpression
         If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
             strSort &= " DESC"
@@ -517,7 +519,7 @@ Partial Public Class ColumnTranslation
         ViewState("ResultSort") = strSort
         FillDataGrid(strSort)
     End Sub
-    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles dgSearchResult.RowEditing
+    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As GridViewEditEventArgs) Handles dgSearchResult.RowEditing
 
     End Sub
 
