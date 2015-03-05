@@ -17,21 +17,14 @@ Partial Public Class Admin
     End Property
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
-        Dim strLogoPath As String = ""
-        Dim strLogoPath2 As String = ""
         Dim strDocuPath As String = ""
         Dim strTitle As String
         Dim bc As HttpBrowserCapabilities
         bc = Request.Browser
-        'm_User = GetUser(Page)
-        ''imgDADLogo.Alt = Me.Page.User.Identity.Name
-        'Me.
+
         m_User = Session("objUser")
         If m_User Is Nothing Then
-            '    With Me
-            '        'UH: 02.05.2007
-            '        'Fehler: Bei jeder Rückkekr ins Hauptmenü wird eine neue Session erzeugt.
-            '        'Lösungsansatz: SessionID in URL mitgeben
+
             If Not IsPostBack Then
                 tdHandbuch.Visible = False
                 lnkHauptmenue.Text = "Anmeldung"
@@ -40,15 +33,6 @@ Partial Public Class Admin
                 lblUserName.Visible = False
                 imgLogo.Visible = False
                 PlaceHeader.Visible = True
-                '        End If
-
-                '    End With
-            Else
-
-                '    imgDADLogo.Src = "/Portal/Images/empty.gif"
-                '    imgCustomerLogo.Visible = True
-                '    imgCustomerLogo.ImageUrl = "/Portal/Images/Armaturenbrett.jpg"
-
             End If
         Else
             imgLogo.Visible = True
@@ -74,6 +58,7 @@ Partial Public Class Admin
             End If
 
             Dim strCSSLink As String = ""
+            Dim strCustomerCss As String = m_User.Customer.CustomerStyle.CssPath
             With bc
                 If .Type = "IE6" Then
 
@@ -85,19 +70,14 @@ Partial Public Class Admin
                         Case "DAD"
                             strCSSLink &= ("<link href=""/Services/Styles/dadIE6.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
                         Case Else
-                            strCSSLink &= "<link href=""" & m_User.Customer.CustomerStyle.CssPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
-                            Dim strCSS() As String
-                            Dim strCSSPath As String = m_User.Customer.CustomerStyle.CssPath
-                            If strCSSPath.Contains(".css") Then
-                                strCSS = strCSSPath.Split(".css")
+                            If strCustomerCss.Contains(".css") Then
+                                Dim strCSS() As String = strCustomerCss.Split(".css")
                                 If strCSS.Length = 2 Then
-                                    strCSSPath = strCSS(0) & "IE6.css"
-                                    strCSSLink &= "<link href=""" & strCSSPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
+                                    strCSSLink &= "<link href=""" & strCSS(0) & "IE6.css" & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                                 End If
                             End If
                     End Select
                 Else
-                    Dim strtemp As String = Server.MapPath("~/Services/Styles/default.css")
                     strCSSLink = "<link href=""/Services/Styles/default.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
 
                     Select Case m_User.CustomerName
@@ -115,9 +95,11 @@ Partial Public Class Admin
                         Case "DAD"
                             strCSSLink &= ("<link href=""/Services/Styles/dad.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />")
                         Case Else
-                            strCSSLink &= "<link href=""" & m_User.Customer.CustomerStyle.CssPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
+                            If strCustomerCss.Contains(".css") Then
+                                strCSSLink &= "<link href=""" & strCustomerCss & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
+                            End If
                     End Select
-                        End If
+                End If
             End With
             Me.Head1.Controls.Add(New LiteralControl(strCSSLink))
 
@@ -187,19 +169,8 @@ Partial Public Class Admin
 
                 End If
             End If
-            '§§§ JVE 18.09.2006: Rechtes Logo auch parametrisieren.
-            'If (m_User.Customer.LogoPath2 Is Nothing) OrElse (m_User.Customer.LogoPath2 = String.Empty) Then
-            '    strLogoPath2 = ""
-            '    imgDADLogo.Src = ""
-            'Else
-            '    strLogoPath2 = m_User.Customer.LogoPath2
-            '    imgDADLogo.Src = strLogoPath2
-            'End If
-
-            '------------------------------------------------------
 
             If m_User.GroupID > 0 Then
-                strLogoPath = m_User.Organization.LogoPath
                 strDocuPath = m_User.Groups.ItemByID(m_User.GroupID).DocuPath
 
                 Dim cn As SqlClient.SqlConnection
@@ -221,43 +192,13 @@ Partial Public Class Admin
                 lnkHandbuch.NavigateUrl = strDocuPath
             End If
 
-            If strLogoPath = String.Empty Then
-                strLogoPath = m_User.Customer.CustomerStyle.LogoPath
-            End If
-            'If Not strLogoPath = String.Empty Then
-            '    .imgCustomerLogo.Visible = True
-            '    .imgCustomerLogo.ImageUrl = strLogoPath
-            'End If
+        End If
 
-            '.imgDADLogo.Alt &= vbCrLf & m_User.UserID
+        Dim ServicesHeader As Services = New Services()
+        ServicesHeader.FillHeaderMitKundenlogo(imgLogo, m_User, JavaScriptBlock, imgLogoDIV)
 
 
-            'litSetBackground.Visible = False
-            'If m_User.IsTestUser Then
-            '    litSetBackground.Visible = True
-            '    litSetBackground.Text = "		<script language=""JavaScript"">" & vbCrLf & _
-            '                             "<!-- //" & vbCrLf & _
-            '                             " window.document.getElementsByTagName(""body"")[0].background = ""/Portal/Images/TestUser.JPG"";" & vbCrLf & _
-            '                             "//-->" & vbCrLf & _
-            '                             "		</script>"
-            'Else
-            '    If ConfigurationManager.AppSettings("ShowProductiveBackground") = "ON" Then
-            '        litSetBackground.Visible = True
-            '        litSetBackground.Text = "		<script language=""JavaScript"">" & vbCrLf & _
-            '                                 "<!-- //" & vbCrLf & _
-            '                                 " window.document.getElementsByTagName(""body"")[0].background = ""/Portal/Images/ProdUser.JPG"";" & vbCrLf & _
-            '                                 "//-->" & vbCrLf & _
-            '                                 "		</script>"
-            '    End If
-            'End If
-
-            End If
-
-            Dim ServicesHeader As Services = New Services()
-            ServicesHeader.FillHeaderMitKundenlogo(imgLogo, m_User, JavaScriptBlock, imgLogoDIV)
-
-
-            lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString)
+        lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString)
     End Sub
     Public Sub HideLinks()
 

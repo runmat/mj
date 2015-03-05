@@ -412,6 +412,18 @@ textarea[readonly].m-wrap {
 }
 
 
+.form-horizontal.formlabelwidth210 .control-label {
+    text-align: right;
+    width: 210px;
+}
+.form-horizontal.formlabelwidth210 .controls {
+    margin-left: 210px;
+}
+.form-horizontal.formlabelwidth210 .form-actions {
+    padding-left: 224px!important;
+}
+
+
 .form-horizontal.formlabelwidth240 .control-label {
     text-align: right;
     width: 240px;
@@ -859,18 +871,6 @@ i.excel-export
 i.pdf-export 
 {
     background: transparent url(../images/metronic/pdf.png) 0 1px no-repeat !important;
-}
-
-
-.FormSearchResultsGrid {
-}
-.FormSearchResultsGrid.portlet.box.light-grey {
-    border-right: 0 solid transparent!important;
-}
-
-.FormSearchResults {
-}
-.FormSearchResults.portlet.box.light-grey {
 }
 
 .cursor-pointer {
