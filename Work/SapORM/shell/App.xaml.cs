@@ -259,6 +259,9 @@ namespace SapORM
             //new FunctionReflector("Z_AHP_CRE_CHG_PARTNER_FZGDATEN").WriteOrmForExportTableStructures("I_KUNNR", "329247");
 
             //new FunctionReflector("Z_ZANF_READ_KLAERF_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026226");
+            //new FunctionReflector("Z_DPM_READ_ZULDOK_01").WriteOrmForExportTableStructures("I_AG", "329608");
+            //new FunctionReflector("Z_DPM_SAVE_ZULDOK_01").WriteOrmForExportTableStructures("I_AG", "329608");
+            //new FunctionReflector("Z_DPM_READ_DOK_ARCHIV_01").WriteOrmForExportTableStructures("I_DOC_ID", "0");
 
             //CoCTest();
             //TeslaTest();
@@ -336,7 +339,7 @@ namespace SapORM
 
             //TargoTest3();
 
-            AhpZullisteTest();
+            //AhpZullisteTest();
 
             Shutdown();
         }
