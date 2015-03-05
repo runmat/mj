@@ -156,7 +156,7 @@
                                                         <HeaderStyle Width="90px" />
                                                         <ItemStyle Wrap="false" />
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" ID="lblHCOrt" Text='<%# Eval("KMSTAND") %>'>
+                                                            <asp:Label runat="server" ID="lblHCOrt" Text='<%# Eval("HCORT") %>'>
                                                             </asp:Label>
                                                             <asp:TextBox ID="txtHCOrt" runat="server" Visible="False" 
                                                                 Text='<%# Eval("HCORT") %>' 
