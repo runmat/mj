@@ -3,6 +3,7 @@
 // ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
@@ -37,6 +38,8 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         //{
         //    get { return CacheGet<IFahrzeugverwaltungDataService>(); }
         //}
+
+        public string BingMapsLicenseKey { get { return ConfigurationManager.AppSettings["BingMapsLicenseKey"]; } }
 
         [XmlIgnore]
         public List<CommonUiModel> StepModels { get; private set; }

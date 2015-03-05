@@ -1,0 +1,33 @@
+﻿@using CkgDomainLogic.Zanf.Models
+@using CkgDomainLogic.Zanf.ViewModels
+@model ZulassungsunterlagenViewModel 
+
+@{ var gridName = "GridZulassungsUnterlagen"; }
+
+@(Html.Telerik()
+    .Grid<ZulassungsUnterlagen>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("ZulassungsUnterlagenAjaxBinding", "Zanf")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.HalterId).Filterable(false).Sortable(false).Title("").ClientTemplate(
+                "<button onclick='ZulassungsUnterlagenEdit(\"<#= data.HalterId #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+            );
+        columns.XBound(c => c.DokumentId).Filterable(false).Sortable(false).Title("").ClientTemplate(
+                "<# if (data.DokumentId) { #><a class='btn mini gray pdf tooltips a_btn_mini' data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docId=<#= data.DokumentId #>' ></a><# } #>"
+            );
+        columns.XBound(c => c.HalterName);
+        columns.XBound(c => c.HalterOrt);
+        columns.XBound(c => c.Vollstaendig);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.HalterName).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportZulassungsUnterlagenFilteredExcel", "Zanf");
+        commands.FilteredDataCommand("ExportZulassungsUnterlagenFilteredPDF", "Zanf");
+    })
+)
