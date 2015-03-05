@@ -11,8 +11,6 @@ Partial Public Class AppMaster
     End Sub
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
-        Dim strLogoPath As String = ""
-        Dim strLogoPath2 As String = ""
         Dim strDocuPath As String = ""
         Dim strTitle As String
         Dim bc As HttpBrowserCapabilities
@@ -57,22 +55,19 @@ Partial Public Class AppMaster
             lnkChangePassword.Visible = True
 
             Dim strCSSLink As String = ""
+            Dim strCustomerCss As String = m_User.Customer.CustomerStyle.CssPath
             With bc
                 If .Type = "IE6" Then
 
                     strCSSLink = "<link href=""/Services/Styles/defaultIE6.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
 
-                    Dim strCSS() As String
-                    Dim strCSSPath As String = m_User.Customer.CustomerStyle.CssPath
-                    If strCSSPath.Contains(".css") Then
-                        strCSS = strCSSPath.Split(".css")
+                    If strCustomerCss.Contains(".css") Then
+                        Dim strCSS() As String = strCustomerCss.Split(".css")
                         If strCSS.Length = 2 Then
-                            strCSSPath = strCSS(0) & "IE6.css"
-                            strCSSLink &= "<link href=""" & strCSSPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
+                            strCSSLink &= "<link href=""" & strCSS(0) & "IE6.css" & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                         End If
                     End If
                 Else
-                    Dim strtemp As String = Server.MapPath("~/Services/Styles/default.css")
                     strCSSLink = "<link href=""/Services/Styles/default.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                     Select Case m_User.CustomerName
                         Case "Volksfürsorge"
@@ -84,7 +79,9 @@ Partial Public Class AppMaster
                         Case "Porsche"
                             strCSSLink &= "<link href=""/Services/Customize/porsche/porsche.css"" media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
                         Case Else
-                            strCSSLink &= "<link href=""" & m_User.Customer.CustomerStyle.CssPath & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
+                            If strCustomerCss.Contains(".css") Then
+                                strCSSLink &= "<link href=""" & strCustomerCss & """ media=""screen, projection"" type=""text/css"" rel=""stylesheet"" />"
+                            End If
                     End Select
                 End If
             End With
@@ -155,7 +152,6 @@ Partial Public Class AppMaster
             End If
 
             If m_User.GroupID > 0 Then
-                strLogoPath = m_User.Organization.LogoPath
                 strDocuPath = m_User.Groups.ItemByID(m_User.GroupID).DocuPath
 
                 Dim cn As SqlClient.SqlConnection
@@ -177,26 +173,6 @@ Partial Public Class AppMaster
                 lnkHandbuch.NavigateUrl = strDocuPath
             End If
 
-            If strLogoPath = String.Empty Then
-                strLogoPath = m_User.Customer.CustomerStyle.LogoPath
-            End If
-
-
-            'Try
-            '    'CHC ITA 5968
-            '    imgLogo.ImageUrl = m_User.Customer.LogoPath2
-            '    imgLogoDIV.Style.Add("background-image", "url('" & m_User.Customer.LogoPath & "')")
-            '    imgLogoDIV.Style.Add("background-repeat", "no-repeat")
-            '    imgLogoDIV.Style.Add("background-position", "20px")
-            'Catch
-            'End Try
-            'Try
-            '    If m_User.Customer.HeaderBackgroundPath <> "" Then
-            '        Dim x As String = Page.Request.RawUrl()
-            '        JavaScriptBlock.Text = "<script type=""text/javascript"">$(""div#header"").css(""background-image"",""url('" & m_User.Customer.HeaderBackgroundPath.Replace("~", "/Services") & "')"");</script>"
-            '    End If
-            'Catch
-            'End Try
             Dim ServicesHeader As Services = New Services()
             ServicesHeader.FillHeaderMitKundenlogo(imgLogo, m_User, JavaScriptBlock, imgLogoDIV)
         End If
