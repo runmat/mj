@@ -432,6 +432,14 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="apple-touch-icon-120x120-precomposed.png" />
+    <Content Include="apple-touch-icon-120x120.png" />
+    <Content Include="apple-touch-icon-152x152-precomposed.png" />
+    <Content Include="apple-touch-icon-152x152.png" />
+    <Content Include="apple-touch-icon-76x76-precomposed.png" />
+    <Content Include="apple-touch-icon-76x76.png" />
+    <Content Include="apple-touch-icon-precomposed.png" />
+    <Content Include="apple-touch-icon.png" />
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\img\bg-white-lock-header.png" />
@@ -4241,6 +4249,10 @@
     <Content Include="Views\Zanf\ZanfReport\ZanfGrid.cshtml" />
     <Content Include="Views\Zanf\ZanfReport\ZanfSuche.cshtml" />
     <Content Include="Views\Zanf\ZanfReport\ZanfKlaerfalltext.cshtml" />
+    <Content Include="Views\Zanf\ReportZulassungsunterlagen.cshtml" />
+    <Content Include="Views\Zanf\Zulassungsunterlagen\Grid.cshtml" />
+    <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
+    <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
