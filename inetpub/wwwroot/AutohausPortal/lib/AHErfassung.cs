@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Linq;
+using System.Web.UI;
 using CKG.Base.Common;
 using System.Data;
 using CKG.Base.Business;
 using System.Configuration;
+
 namespace AutohausPortal.lib
 {   
     /// <summary>
@@ -25,6 +27,7 @@ namespace AutohausPortal.lib
         public DataTable Positionen { get; set; }
         public DataTable tblFehler { get; set; }
         public DataTable tblPrint { get; set; }
+        public DataTable tblPrintKundenformulare { get; set; }
 
         public String VKORG { get; set; }
         public String VKBUR { get; set; }
@@ -183,7 +186,7 @@ namespace AutohausPortal.lib
         /// <param name="strAppID"></param>
         /// <param name="strSessionID"></param>
         /// <param name="page"></param>
-        public void GiveSapID(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void GiveSapID(String strAppID, String strSessionID, Page page)
         {
 
             m_strClassAndMethod = "VoerfZLD.GiveSapID";
@@ -248,7 +251,7 @@ namespace AutohausPortal.lib
         /// <param name="strSessionID"></param>
         /// <param name="page"></param>
         /// <param name="tblKundenStamm"></param>
-        public void InsertDB_ZLD(String strAppID, String strSessionID, System.Web.UI.Page page, DataTable tblKundenStamm)
+        public void InsertDB_ZLD(String strAppID, String strSessionID, Page page, DataTable tblKundenStamm)
         {
             m_intStatus = 0;
             m_strMessage = "";
@@ -371,7 +374,7 @@ namespace AutohausPortal.lib
 
                         //Intern
                         tblKopf.Vorerfasser = m_objUser.UserName;
-                        tblKopf.VorerfDatum = System.DateTime.Now;
+                        tblKopf.VorerfDatum = DateTime.Now;
                         tblKopf.saved = saved;
                         tblKopf.toDelete = "";
                         tblKopf.bearbeitet = false;
@@ -476,7 +479,7 @@ namespace AutohausPortal.lib
         /// <param name="page"></param>
         /// <param name="tblKundenStamm"></param>
         /// <param name="tblAbmeldung">Abmeldungen</param>
-        public void InsertDB_ZLDAbmeldung(String strAppID, String strSessionID, System.Web.UI.Page page, DataTable tblKundenStamm, DataTable tblAbmeldung)
+        public void InsertDB_ZLDAbmeldung(String strAppID, String strSessionID, Page page, DataTable tblKundenStamm, DataTable tblAbmeldung)
         {
             m_intStatus = 0;
             m_strMessage = "";
@@ -639,7 +642,7 @@ namespace AutohausPortal.lib
 
                             //Intern
                             tblKopf.Vorerfasser = m_objUser.UserName;
-                            tblKopf.VorerfDatum = System.DateTime.Now;
+                            tblKopf.VorerfDatum = DateTime.Now;
                             tblKopf.saved = saved;
                             tblKopf.toDelete = "";
                             tblKopf.bearbeitet = false;
@@ -1312,7 +1315,7 @@ namespace AutohausPortal.lib
         /// <param name="strSessionID">SessionID</param>
         /// <param name="page">Aufträge.aspx</param>
         /// <param name="tblStvaStamm">Stvastamm zur Ergänzung der Daten(KREISBEZ)</param>
-        public void SaveZLDVorerfassung(String strAppID, String strSessionID, System.Web.UI.Page page, DataTable tblStvaStamm)
+        public void SaveZLDVorerfassung(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm)
         {
             m_strClassAndMethod = "VoerfZLD.SaveZLDVorerfassung";
             m_strAppID = strAppID;
@@ -1562,7 +1565,7 @@ namespace AutohausPortal.lib
         /// <param name="page">AbmeldungAHZul.aspx.cs</param>
         /// <param name="VKORG">Verkaufsorganisation</param>
         /// <param name="VKBUR">Verkaufsbüro</param>
-        public void GetAbmeldungAH(String strAppID, String strSessionID, System.Web.UI.Page page, String VKORG, String VKBUR)
+        public void GetAbmeldungAH(String strAppID, String strSessionID, Page page, String VKORG, String VKBUR)
         {
 
             m_strClassAndMethod = "ZLD_Suche.GetAbmeldungAH";
@@ -1622,7 +1625,7 @@ namespace AutohausPortal.lib
         /// <param name="strAppID">AppID</param>
         /// <param name="strSessionID">SessionID</param>
         /// <param name="page">AbmeldungAHZul.aspx.cs</param>
-        public void SaveAbmeldungAH(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void SaveAbmeldungAH(String strAppID, String strSessionID, Page page)
         {
 
             m_strClassAndMethod = "ZLD_Suche.GetAbmeldungAH";
@@ -1694,16 +1697,18 @@ namespace AutohausPortal.lib
         }
 
         /// <summary>
-        /// Vorläufigen Vorgang an SAP geben, um dort das Abrechnungsformular für den Endkunden zu generieren
+        /// Vorläufigen Vorgang an SAP geben, um dort div. Kundenformulare zu generieren
         /// Bapi Z_ZLD_AH_IMPORT_ERFASSUNG1
         /// </summary>
         /// <param name="strAppID">AppID</param>
         /// <param name="strSessionID">SessionID</param>
         /// <param name="page">Aufträge.aspx</param>
         /// <param name="tblStvaStamm">Stvastamm zur Ergänzung der Daten(KREISBEZ)</param>
-        public void CreateKundenformular(String strAppID, String strSessionID, System.Web.UI.Page page, DataTable tblStvaStamm)
+        /// <param name="cpdFormular"></param>
+        /// <param name="zusatzFormulare"></param>
+        public void CreateKundenformulare(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm, bool cpdFormular, bool zusatzFormulare)
         {
-            m_strClassAndMethod = "AHErfassung.CreateKundenformular";
+            m_strClassAndMethod = "AHErfassung.CreateKundenformulare";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
             m_intStatus = 0;
@@ -1716,7 +1721,11 @@ namespace AutohausPortal.lib
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
 
-                    myProxy.setImportParameter("I_FORMULAR", "X");
+                    if (cpdFormular)
+                        myProxy.setImportParameter("I_FORMULAR", "X");
+
+                    if (zusatzFormulare)
+                        myProxy.setImportParameter("I_ZUSATZFORMULARE", "X");
 
                     DataTable importAuftrag = myProxy.getImportTable("GT_BAK_IN");
                     DataTable importPos = myProxy.getImportTable("GT_POS_IN");
@@ -1831,7 +1840,9 @@ namespace AutohausPortal.lib
 
                     myProxy.callBapi();
 
-                    KundenformularPDF = myProxy.getExportParameterByte("E_PDF");
+                    KundenformularPDF = (cpdFormular ? myProxy.getExportParameterByte("E_PDF") : null);
+
+                    tblPrintKundenformulare = (zusatzFormulare ? myProxy.getExportTable("GT_FILENAME") : null);
 
                     Int32 subrc;
                     Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc);
@@ -1846,7 +1857,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -5555;
-                            m_strMessage = "Beim Erstellen des Kundenformulars ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen der Kundenformulare ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }
