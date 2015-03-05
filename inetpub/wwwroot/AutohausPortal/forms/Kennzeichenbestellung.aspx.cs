@@ -369,14 +369,14 @@ namespace AutohausPortal.forms
             else { proofInserted(); }
         }
 
-        private void ShowKundenformular(Boolean redirect = false)
+        private void ShowKundenformular(bool redirect = false)
         {
-            objVorerf.CreateKundenformular(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm);
-            if ((objVorerf.Status == 0) && (objVorerf.KundenformularPDF != null) && (objVorerf.KundenformularPDF.Length > 0))
+            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, true, false);
+            if (objVorerf.Status == 0)
             {
-                Session["PDFXString"] = objVorerf.KundenformularPDF;
+                Session["objVorerf"] = objVorerf;
                 Session["RedirectToAuftragsliste"] = redirect;
-                //Öffnen des Druckdialogs: PrintDialogKundenformular.aspx
+                //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
                 RadWindow downloaddoc = RadWindowManager1.Windows[0];
                 downloaddoc.Visible = true;
                 downloaddoc.VisibleOnPageLoad = true;
