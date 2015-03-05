@@ -6,23 +6,23 @@ Imports CKG.Base.Kernel.Common.Common
 Imports CKG
 
 Public Class ShowBapis
-    Inherits System.Web.UI.Page
+    Inherits Page
 
-    Private m_App As Base.Kernel.Security.App
-    Private m_User As Base.Kernel.Security.User
+    Private m_App As Security.App
+    Private m_User As Security.User
     Private mObjShowBapis As ShowBapisClass
 
 #Region "Properties"
 
     Private Property Refferer() As String
         Get
-            If Not Session.Item(Me.Request.Url.LocalPath & "Refferer") Is Nothing Then
-                Return Session.Item(Me.Request.Url.LocalPath & "Refferer").ToString()
+            If Not Session.Item(Request.Url.LocalPath & "Refferer") Is Nothing Then
+                Return Session.Item(Request.Url.LocalPath & "Refferer").ToString()
             Else : Return Nothing
             End If
         End Get
         Set(ByVal value As String)
-            Session.Item(Me.Request.Url.LocalPath & "Refferer") = value
+            Session.Item(Request.Url.LocalPath & "Refferer") = value
         End Set
     End Property
 #End Region
@@ -30,16 +30,16 @@ Public Class ShowBapis
 #Region "Methods"
 
 
-    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
+    Private Sub Page_Load(ByVal sender As System.Object, ByVal e As EventArgs) Handles MyBase.Load
         ' Hier Benutzercode zur Seiteninitialisierung einfügen
         Try
             m_User = GetUser(Me)
-            m_App = New Base.Kernel.Security.App(m_User) 'erzeugt ein App_objekt 
+            m_App = New Security.App(m_User) 'erzeugt ein App_objekt 
             FormAuth(Me, m_User)
 
             If Not IsPostBack Then
-                If Not Me.Request.UrlReferrer Is Nothing Then
-                    Refferer = Me.Request.UrlReferrer.ToString
+                If Not Request.UrlReferrer Is Nothing Then
+                    Refferer = Request.UrlReferrer.ToString
                 Else
                     Refferer = ""
                 End If
@@ -67,17 +67,14 @@ Public Class ShowBapis
                 'seitenspeziefische Aktionen
                 '-----------------------
 
-                If Me.Request.QueryString.Item("BapiName") Is Nothing Then
+                If Request.QueryString.Item("BapiName") Is Nothing Then
                     FillWebBapisGrid(0)
                 Else
                     'verlinkung
                     FillWebBapisGrid(0)
-                    showSapBapi(Me.Request.QueryString.Item("BapiName"))
-                    showWebBapi(Me.Request.QueryString.Item("BapiName"))
+                    showSapBapi(Request.QueryString.Item("BapiName"))
+                    showWebBapi(Request.QueryString.Item("BapiName"))
                 End If
-
-
-
 
             End If
         Catch ex As Exception
@@ -86,7 +83,7 @@ Public Class ShowBapis
     End Sub
 
     Private Sub responseBack()
-        If Refferer = "" Then
+        If String.IsNullOrEmpty(Refferer) Then
             Dim strLinkPrefix As String = "/" & ConfigurationManager.AppSettings("WebAppPath") & "/"
             Response.Redirect(strLinkPrefix & "Start/Selection.aspx")
         Else
@@ -161,7 +158,7 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub WebBapisDG_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles WebBapisDG.ItemCommand
+    Private Sub WebBapisDG_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles WebBapisDG.ItemCommand
         If e.CommandName = "ShowSAP" Then
             showSapBapi(e.CommandArgument.ToString)
         End If
@@ -173,19 +170,19 @@ Public Class ShowBapis
 
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub lb_zurueck_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lb_zurueck.Click
+    Private Sub lb_zurueck_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lb_zurueck.Click
         responseBack()
     End Sub
 
-    Private Sub WebBapisDG_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles WebBapisDG.SortCommand
+    Private Sub WebBapisDG_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles WebBapisDG.SortCommand
         FillWebBapisGrid(0, e.SortExpression)
     End Sub
 
@@ -198,7 +195,7 @@ Public Class ShowBapis
             lblSAPBapiDatum.Text = mObjShowBapis.SapBapiDatum.ToShortDateString
             lblSAPBapiName.Text = mObjShowBapis.SapBapiName
         Catch ex As Exception
-            lblSAPBapiError.Text = CKG.Base.Business.HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
+            lblSAPBapiError.Text = Base.Business.HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
         End Try
     End Sub
 
@@ -215,18 +212,18 @@ Public Class ShowBapis
         End Try
     End Sub
 
-    Protected Sub imgbSetFilter_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbSetFilter.Click
+    Protected Sub imgbSetFilter_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbSetFilter.Click
         mObjShowBapis.DBFilter = "*"
         mObjShowBapis.DBFilter = txtFilter.Text.Trim(" "c)
         FillWebBapisGrid(0)
     End Sub
 
 
-    Protected Sub imgbLookSAP_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbLookSAP.Click
+    Protected Sub imgbLookSAP_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbLookSAP.Click
         showSapBapi(txtFilter.Text.Trim(" "c).Replace("*", ""))
     End Sub
 
-    Protected Sub imgbWebBapiVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbWebBapiVisible.Click
+    Protected Sub imgbWebBapiVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbWebBapiVisible.Click
         panelWebBapi.Visible = Not panelWebBapi.Visible
         If panelWebBapi.Visible = True Then
             imgbWebBapiVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -313,11 +310,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub WebImportDG_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles WebImportDG.ItemCommand
+    Private Sub WebImportDG_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles WebImportDG.ItemCommand
         If e.CommandName = "Excel" Then
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.WebBapiName & "_" & mObjShowBapis.getWEBImportTabelle(e.CommandArgument.ToString).TableName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getWEBImportTabelle(e.CommandArgument.ToString), Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getWEBImportTabelle(e.CommandArgument.ToString), Page)
         End If
 
         If e.CommandName = "Visible" Then
@@ -331,23 +328,23 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub WebImportDG_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles WebImportDG.SortCommand
+    Private Sub WebImportDG_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles WebImportDG.SortCommand
         FillWebImportGrid(WebImportDG.CurrentPageIndex, e.SortExpression)
     End Sub
 
 
 
-    Protected Sub imgbWebImportParameter_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbWebImportParameter.Click
+    Protected Sub imgbWebImportParameter_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbWebImportParameter.Click
         Try
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.WebBapiName & "_Web-Importparameter"
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.WEBImportParameter, Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.WEBImportParameter, Page)
         Catch ex As Exception
             lblWebImportError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
     End Sub
 
-    Protected Sub imgbWebImportVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbWebImportVisible.Click
+    Protected Sub imgbWebImportVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbWebImportVisible.Click
         panelWebImport.Visible = Not panelWebImport.Visible
         If panelWebImport.Visible = True Then
             imgbWebImportVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -435,11 +432,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub WebExportDG_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles WebExportDG.ItemCommand
+    Private Sub WebExportDG_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles WebExportDG.ItemCommand
         If e.CommandName = "Excel" Then
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.WebBapiName & "_" & mObjShowBapis.getWEBExportTabelle(e.CommandArgument.ToString).TableName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getWEBExportTabelle(e.CommandArgument.ToString), Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getWEBExportTabelle(e.CommandArgument.ToString), Page)
         End If
 
         If e.CommandName = "Visible" Then
@@ -453,21 +450,21 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub WebExportDG_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles WebExportDG.SortCommand
+    Private Sub WebExportDG_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles WebExportDG.SortCommand
         FillWebExportGrid(WebExportDG.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Protected Sub imgbWebExportParameter_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbWebExportParameter.Click
+    Protected Sub imgbWebExportParameter_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbWebExportParameter.Click
         Try
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.WebBapiName & "_WebExportparameter"
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.WEBExportParameter, Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.WEBExportParameter, Page)
         Catch ex As Exception
             lblWebExportError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
     End Sub
 
-    Protected Sub imgbWebExportVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbWebExportVisible.Click
+    Protected Sub imgbWebExportVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbWebExportVisible.Click
         panelWebExport.Visible = Not panelWebExport.Visible
         If panelWebExport.Visible = True Then
             imgbWebExportVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -555,11 +552,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub WebTabellenDG_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles WebTabellenDG.ItemCommand
+    Private Sub WebTabellenDG_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles WebTabellenDG.ItemCommand
         If e.CommandName = "Excel" Then
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.WebBapiName & "_" & mObjShowBapis.getWEBTabellenTabelle(e.CommandArgument.ToString).TableName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getWEBTabellenTabelle(e.CommandArgument.ToString), Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getWEBTabellenTabelle(e.CommandArgument.ToString), Page)
         End If
 
         If e.CommandName = "Visible" Then
@@ -573,11 +570,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub WebTabellenDG_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles WebTabellenDG.SortCommand
+    Private Sub WebTabellenDG_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles WebTabellenDG.SortCommand
         FillWebTabellenGrid(WebTabellenDG.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Protected Sub imgbWebTabellenVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbWebTabellenVisible.Click
+    Protected Sub imgbWebTabellenVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbWebTabellenVisible.Click
         panelWebTabellen.Visible = Not panelWebTabellen.Visible
         If panelWebTabellen.Visible Then
             imgbWebTabellenVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -591,7 +588,7 @@ Public Class ShowBapis
 
 
 
-    Protected Sub imgbSAPBapiVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbSAPBapiVisible.Click
+    Protected Sub imgbSAPBapiVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbSAPBapiVisible.Click
         panelSAPBapi.Visible = Not panelSAPBapi.Visible
         If panelSAPBapi.Visible = True Then
             imgbSAPBapiVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -678,11 +675,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub SAPImportDG_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles SAPImportDG.ItemCommand
+    Private Sub SAPImportDG_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles SAPImportDG.ItemCommand
         If e.CommandName = "Excel" Then
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.SapBapiName & "_" & mObjShowBapis.getSAPImportTabelle(e.CommandArgument.ToString).TableName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getSAPImportTabelle(e.CommandArgument.ToString), Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getSAPImportTabelle(e.CommandArgument.ToString), Page)
         End If
 
         If e.CommandName = "Visible" Then
@@ -696,23 +693,23 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub SAPImportDG_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles SAPImportDG.SortCommand
+    Private Sub SAPImportDG_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles SAPImportDG.SortCommand
         FillSAPImportGrid(SAPImportDG.CurrentPageIndex, e.SortExpression)
     End Sub
 
 
 
-    Protected Sub imgbSAPImportParameter_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbSAPImportParameter.Click
+    Protected Sub imgbSAPImportParameter_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbSAPImportParameter.Click
         Try
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.SapBapiName & "_SAP-Importparameter"
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.SAPImportParameter, Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.SAPImportParameter, Page)
         Catch ex As Exception
             lblSAPImportError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
     End Sub
 
-    Protected Sub imgbSAPImportVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbSAPImportVisible.Click
+    Protected Sub imgbSAPImportVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbSAPImportVisible.Click
         panelSAPImport.Visible = Not panelSAPImport.Visible
         If panelSAPImport.Visible = True Then
             imgbSAPImportVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -800,11 +797,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub SAPExportDG_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles SAPExportDG.ItemCommand
+    Private Sub SAPExportDG_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles SAPExportDG.ItemCommand
         If e.CommandName = "Excel" Then
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.SapBapiName & "_" & mObjShowBapis.getSAPExportTabelle(e.CommandArgument.ToString).TableName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getSAPExportTabelle(e.CommandArgument.ToString), Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getSAPExportTabelle(e.CommandArgument.ToString), Page)
         End If
 
         If e.CommandName = "Visible" Then
@@ -818,21 +815,21 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub SAPExportDG_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles SAPExportDG.SortCommand
+    Private Sub SAPExportDG_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles SAPExportDG.SortCommand
         FillSAPExportGrid(SAPExportDG.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Protected Sub imgbSAPExportParameter_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbSAPExportParameter.Click
+    Protected Sub imgbSAPExportParameter_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbSAPExportParameter.Click
         Try
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.SapBapiName & "_SAPExportparameter"
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.SAPExportParameter, Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.SAPExportParameter, Page)
         Catch ex As Exception
             lblSAPExportError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
         End Try
     End Sub
 
-    Protected Sub imgbSAPExportVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbSAPExportVisible.Click
+    Protected Sub imgbSAPExportVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbSAPExportVisible.Click
         panelSAPExport.Visible = Not panelSAPExport.Visible
         If panelSAPExport.Visible = True Then
             imgbSAPExportVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -920,11 +917,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub SAPTabellenDG_ItemCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridCommandEventArgs) Handles SAPTabellenDG.ItemCommand
+    Private Sub SAPTabellenDG_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles SAPTabellenDG.ItemCommand
         If e.CommandName = "Excel" Then
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & mObjShowBapis.SapBapiName & "_" & mObjShowBapis.getSAPTabellenTabelle(e.CommandArgument.ToString).TableName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getSAPTabellenTabelle(e.CommandArgument.ToString), Me.Page)
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, mObjShowBapis.getSAPTabellenTabelle(e.CommandArgument.ToString), Page)
         End If
 
         If e.CommandName = "Visible" Then
@@ -938,11 +935,11 @@ Public Class ShowBapis
         End If
     End Sub
 
-    Private Sub SAPTabellenDG_SortCommand(ByVal source As Object, ByVal e As System.Web.UI.WebControls.DataGridSortCommandEventArgs) Handles SAPTabellenDG.SortCommand
+    Private Sub SAPTabellenDG_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles SAPTabellenDG.SortCommand
         FillSAPTabellenGrid(SAPTabellenDG.CurrentPageIndex, e.SortExpression)
     End Sub
 
-    Protected Sub imgbSAPTabellenVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbSAPTabellenVisible.Click
+    Protected Sub imgbSAPTabellenVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbSAPTabellenVisible.Click
         panelSAPTabellen.Visible = Not panelSAPTabellen.Visible
         If panelSAPTabellen.Visible Then
             imgbSAPTabellenVisible.ImageUrl = "/PortalZLD/Images/minus.gif"

@@ -368,7 +368,7 @@
     });
 
     function BingInit() {
-        _bingKey = "AqPnjKCh8aPu2peBsLG2RmfNOUJhjWv1McpmcLT8ma_c92x7GXgEzeSbp7LnQgav";
+        _bingKey = '@Model.BingMapsLicenseKey';
         _bingLocationMap = new Microsoft.Maps.Map(document.getElementById("bingLocationDiv"), {
             credentials: _bingKey,
             mapTypeId: Microsoft.Maps.MapTypeId.road
