@@ -1486,15 +1486,15 @@ namespace AppZulassungsdienst.forms
                 if (!neuerVorgang && !objVorerf.ErrorOccured)
                     LinkButton1_Click(this, new EventArgs());
 
-                objVorerf.ConfirmCPDAdress = false;
-                ClearForm();
-                txtBarcode.Focus();
-
                 if (!objVorerf.ErrorOccured)
                 {
                     lblMessage.Visible = true;
                     lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                     lblMessage.Text = "Datensatz unter ID " + objVorerf.AktuellerVorgang.Kopfdaten.SapId + " gespeichert.";
+
+                    objVorerf.ConfirmCPDAdress = false;
+                    ClearForm();
+                    txtBarcode.Focus();
                 }
                 else
                 {
@@ -1558,6 +1558,8 @@ namespace AppZulassungsdienst.forms
             GridView1.DataBind();
 
             addButtonAttr(tblData);
+
+            objVorerf = new VorerfZLD(m_User.Reference);
 
             Session["objVorerf"] = objVorerf;
             Session["tblDienst"] = tblData;

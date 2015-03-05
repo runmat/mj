@@ -814,15 +814,16 @@ namespace AppZulassungsdienst.forms
                 else if (!objKompletterf.ErrorOccured)
                     LinkButton1_Click(this, new EventArgs());
 
-                objKompletterf.ConfirmCPDAdress = false;
-                ClearForm();
-                SetBar_Pauschalkunde();
-                txtBarcode.Focus();
                 if (!objKompletterf.ErrorOccured)
                 {
                     lblMessage.Visible = true;
                     lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                     lblMessage.Text = "Datensatz unter ID " + kopfdaten.SapId + " gespeichert.";
+
+                    objKompletterf.ConfirmCPDAdress = false;
+                    ClearForm();
+                    SetBar_Pauschalkunde();
+                    txtBarcode.Focus();
                 }
                 else
                 {

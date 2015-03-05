@@ -677,7 +677,7 @@ namespace AppZulassungsdienst.lib.Models
             d.VZD_VKBUR = s.VersandzulassungDurchfuehrendesVkBur;
             d.VZERDAT = s.VersandzulassungErledigtDatum;
             d.WUNSCHKENN_JN = s.Wunschkennzeichen.BoolToX();
-            d.ZL_LIFNR = s.LieferantenNr.NotNullOrEmpty().ToSapKunnr();
+            d.ZL_LIFNR = (String.IsNullOrEmpty(s.LieferantenNr) ? "" : s.LieferantenNr.ToSapKunnr());
             d.ZL_RL_FRBNR_HIN = s.FrachtbriefNrHin;
             d.ZL_RL_FRBNR_ZUR = s.FrachtbriefNrZurueck;
             d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
