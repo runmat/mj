@@ -69,7 +69,7 @@ if (/MSIE (\d+\.\d+);/.test(navigator.userAgent)) {
     var ieversion = new Number(RegExp.$1); // capture x.x portion and store as a number
     if (ieversion <= 7) {
         //alert(ieversion);
-        jsAppend('/Scripts/IE7/json.js');
+        jsAppend('~/Scripts/IE7/json.js');
     }
 }
 

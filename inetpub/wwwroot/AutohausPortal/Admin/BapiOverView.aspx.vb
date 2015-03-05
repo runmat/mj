@@ -6,7 +6,7 @@ Imports CKG.Base.Kernel.Common.Common
 
 
 Partial Public Class BapiOverView
-    Inherits System.Web.UI.Page
+    Inherits Page
 
     Private m_App As Security.App
     Private m_User As Security.User
@@ -17,18 +17,18 @@ Partial Public Class BapiOverView
 
     Private Property Refferer() As String
         Get
-            If Not Session.Item(Me.Request.Url.LocalPath & "Refferer") Is Nothing Then
-                Return Session.Item(Me.Request.Url.LocalPath & "Refferer").ToString()
+            If Not Session.Item(Request.Url.LocalPath & "Refferer") Is Nothing Then
+                Return Session.Item(Request.Url.LocalPath & "Refferer").ToString()
             Else : Return Nothing
             End If
         End Get
         Set(ByVal value As String)
-            Session.Item(Me.Request.Url.LocalPath & "Refferer") = value
+            Session.Item(Request.Url.LocalPath & "Refferer") = value
         End Set
     End Property
 #End Region
 
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         GridNavigation2.setGridElment(DBDG)
         m_User = GetUser(Me)
         m_App = New Security.App(m_User) 'erzeugt ein App_objekt 
@@ -36,8 +36,8 @@ Partial Public Class BapiOverView
 
         If Not IsPostBack Then
             If Refferer Is Nothing Then
-                If Not Me.Request.UrlReferrer Is Nothing Then
-                    Refferer = Me.Request.UrlReferrer.ToString
+                If Not Request.UrlReferrer Is Nothing Then
+                    Refferer = Request.UrlReferrer.ToString
                 Else
                     Refferer = ""
                 End If
@@ -136,7 +136,7 @@ Partial Public Class BapiOverView
     End Sub
 
     Private Sub responseBack()
-        If Refferer = "" Then
+        If String.IsNullOrEmpty(Refferer) Then
             Dim strLinkPrefix As String = "/" & ConfigurationManager.AppSettings("WebAppPath") & "/"
             Response.Redirect(strLinkPrefix & "Start/Selection.aspx")
         Else
@@ -144,7 +144,7 @@ Partial Public Class BapiOverView
         End If
     End Sub
 
-    Private Sub DBDG_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles DBDG.RowCommand
+    Private Sub DBDG_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles DBDG.RowCommand
         If e.CommandName = "Delete" Then
             mObjBapiOverView.deleteBapi(e.CommandArgument.ToString)
             mObjBapiOverView.fillDBProxys()
@@ -158,7 +158,7 @@ Partial Public Class BapiOverView
         End If
     End Sub
 
-    Private Sub DBDG_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles DBDG.Sorting
+    Private Sub DBDG_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles DBDG.Sorting
         FillDBGrid(DBDG.PageIndex, e.SortExpression)
     End Sub
 
@@ -169,7 +169,7 @@ Partial Public Class BapiOverView
         FillDBGrid(pageindex)
     End Sub
 
-    Protected Sub imgbDBVisible_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles imgbDBVisible.Click
+    Protected Sub imgbDBVisible_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles imgbDBVisible.Click
         PanelDB.Visible = Not PanelDB.Visible
         If PanelDB.Visible = True Then
             imgbDBVisible.ImageUrl = "/PortalZLD/Images/minus.gif"
@@ -185,19 +185,19 @@ Partial Public Class BapiOverView
 
         FillDBGrid(0)
     End Sub
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub lb_zurueck_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles lb_zurueck.Click
+    Private Sub lb_zurueck_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lb_zurueck.Click
         responseBack()
     End Sub
 
-    Protected Sub DBDG_RowDeleting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewDeleteEventArgs) Handles DBDG.RowDeleting
+    Protected Sub DBDG_RowDeleting(ByVal sender As Object, ByVal e As GridViewDeleteEventArgs) Handles DBDG.RowDeleting
 
     End Sub
 End Class

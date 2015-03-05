@@ -891,7 +891,7 @@
                                                                 Pfad zum Logo:
                                                             </td>
                                                             <td class="active">
-                                                                <asp:TextBox ID="txtLogoPath" runat="server" CssClass="InputTextbox">../Images/Logo.gif</asp:TextBox>
+                                                                <asp:TextBox ID="txtLogoPath" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <telerik:RadAsyncUpload runat="server" ID="RadAsyncUpload1" EnableInlineProgress="false"
@@ -915,7 +915,7 @@
                                                                 Pfad zum Logo rechts:
                                                             </td>
                                                             <td class="active">
-                                                                <asp:TextBox ID="txtLogoPath2" runat="server" CssClass="InputTextbox">../Images/Logo2.gif</asp:TextBox>
+                                                                <asp:TextBox ID="txtLogoPath2" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div id="Div_Buchungskreis_DDL">
@@ -946,7 +946,7 @@
                                                                 Pfad zum Hintergrundbild des Headers:
                                                             </td>
                                                             <td class="active">
-                                                                <asp:TextBox ID="txtHeaderBackgroundPath" runat="server" CssClass="InputTextbox">../Images/Header2.jpg</asp:TextBox>
+                                                                <asp:TextBox ID="txtHeaderBackgroundPath" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                             </td>
                                                             <td>
                                                                 <div id="Div_HeaderBackgroundPath_DDL">
@@ -990,7 +990,7 @@
                                                                 Pfad zu den Stylesheets:
                                                             </td>
                                                             <td class=" active" colspan="4">
-                                                                <asp:TextBox ID="txtCssPath" runat="server" CssClass="InputTextbox">Styles.css</asp:TextBox>
+                                                                <asp:TextBox ID="txtCssPath" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                             </td>
                                                         </tr>
                                                         <tr class="formquery">
