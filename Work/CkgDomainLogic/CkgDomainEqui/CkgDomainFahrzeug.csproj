@@ -106,6 +106,7 @@
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Controllers\VersandAbweichungen\EquipController.cs" />
     <Compile Include="Controllers\Zanf\ZanfController.cs" />
+    <Compile Include="Controllers\Zulassungsunterlagen\ZanfController.cs" />
     <Compile Include="Equi\Contracts\IEquiHistorieDataService.cs" />
     <Compile Include="Equi\Contracts\IEquiGrunddatenDataService.cs" />
     <Compile Include="Equi\Contracts\IBriefbestandDataService.cs" />
@@ -205,10 +206,15 @@
     <Compile Include="Strafzettel\Services\StrafzettelDataServiceSAP.cs" />
     <Compile Include="Strafzettel\ViewModels\StrafzettelViewModel.cs" />
     <Compile Include="Zanf\Contracts\IZanfReportDataService.cs" />
+    <Compile Include="Zanf\Contracts\IZulassungsunterlagenDataService.cs" />
     <Compile Include="Zanf\Models\AppModelMappings.cs" />
+    <Compile Include="Zanf\Models\DataModels\ZulassungsUnterlagen.cs" />
+    <Compile Include="Zanf\Models\UIModels\ZulassungsUnterlagenSuchparameter.cs" />
     <Compile Include="Zanf\Models\UIModels\ZulassungsAnforderungSuchparameter.cs" />
     <Compile Include="Zanf\Models\DataModels\ZulassungsAnforderung.cs" />
+    <Compile Include="Zanf\Services\ZulassungsunterlagenDataServiceSap.cs" />
     <Compile Include="Zanf\Services\ZanfReportDataServiceSAP.cs" />
+    <Compile Include="Zanf\ViewModels\ZulassungsunterlagenViewModel.cs" />
     <Compile Include="Zanf\ViewModels\ZanfReportViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -715,8 +715,8 @@ Namespace Beauftragung2
                 'Fahrzeugdaten
                 .Hersteller = txtHersteller.Text
                 .Typ = txtTyp.Text.ToUpper()
-                .VarianteVersion = txtVarianteVersion.Text
-                .TypPruef = txtTypPruef.Text
+                .VarianteVersion = txtVarianteVersion.Text.ToUpper()
+                .TypPruef = txtTypPruef.Text.ToUpper()
                 If txtFahrzeugklasse.Enabled Then
                     .Fahrzeugklasse = txtFahrzeugklasse.Text.ToUpper()
                 End If

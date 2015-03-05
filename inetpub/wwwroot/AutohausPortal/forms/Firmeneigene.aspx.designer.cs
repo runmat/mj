@@ -409,6 +409,24 @@ namespace AutohausPortal.forms {
         protected global::System.Web.UI.WebControls.Button cmdCancel;
         
         /// <summary>
+        /// RadWindowManager1-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadWindowManager RadWindowManager1;
+        
+        /// <summary>
+        /// RadWindow1-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::Telerik.Web.UI.RadWindow RadWindow1;
+        
+        /// <summary>
         /// Master-Eigenschaft
         /// </summary>
         /// <remarks>
