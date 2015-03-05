@@ -26,8 +26,6 @@ namespace AppRemarketing.Master
         }
         protected void Page_PreRender(object sender, EventArgs e)
         {
-
-            string strLogoPath = "";
             string strDocuPath = "";
             string strTitle = null;
             HttpBrowserCapabilities bc = default(HttpBrowserCapabilities);
@@ -72,51 +70,50 @@ namespace AppRemarketing.Master
                 lnkChangePassword.Visible = true;
 
                 string strCSSLink = "";
+
+                string strCustomerCss = m_User.Customer.CustomerStyle.CssPath;
+
+                if (bc.Type == "IE6")
                 {
-                    if (bc.Type == "IE6")
+
+                    strCSSLink = "<link href=\"/Services/Styles/defaultIE6.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
+
+                    if (strCustomerCss.Contains(".css"))
                     {
+                        string[] strCSS = Regex.Split(strCustomerCss, ".css");
 
-                        strCSSLink = "<link href=\"/Services/Styles/defaultIE6.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-
-                        string[] strCSS = null;
-                        string strCSSPath = m_User.Customer.CustomerStyle.CssPath;
-                        if (strCSSPath.Contains(".css"))
+                        if (strCSS.Length == 2)
                         {
-
-
-                            strCSS = Regex.Split(strCSSPath, ".css");
-
-                            if (strCSS.Length == 2)
-                            {
-                                strCSSPath = strCSS[0] + "IE6.css";
-                                strCSSLink += "<link href=\"" + strCSSPath + "\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string strtemp = Server.MapPath("~/Services/Styles/default.css");
-                        strCSSLink = "<link href=\"/Services/Styles/default.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                        switch (m_User.CustomerName)
-                        {
-                            case "Volksfürsorge":
-                                strCSSLink += "<link href=\"/Services/Customize/Wuerttenbergische/wuerttenb.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            case "AKF Bank Retail":
-                                strCSSLink += "<link href=\"/Services/Customize/Akf_Retail/AKFRetail.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            case "Arval":
-                                strCSSLink += "<link href=\"/Services/Customize/Arval/Arval.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            case "Porsche":
-                                strCSSLink += "<link href=\"/Services/Customize/porsche/porsche.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
-                            default:
-                                strCSSLink += "<link href=\"" + m_User.Customer.CustomerStyle.CssPath + "\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
-                                break;
+                            strCSSLink += "<link href=\"" + strCSS[0] + "IE6.css" + "\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
                         }
                     }
                 }
+                else
+                {
+                    strCSSLink = "<link href=\"/Services/Styles/default.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
+                    switch (m_User.CustomerName)
+                    {
+                        case "Volksfürsorge":
+                            strCSSLink += "<link href=\"/Services/Customize/Wuerttenbergische/wuerttenb.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
+                            break;
+                        case "AKF Bank Retail":
+                            strCSSLink += "<link href=\"/Services/Customize/Akf_Retail/AKFRetail.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
+                            break;
+                        case "Arval":
+                            strCSSLink += "<link href=\"/Services/Customize/Arval/Arval.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
+                            break;
+                        case "Porsche":
+                            strCSSLink += "<link href=\"/Services/Customize/porsche/porsche.css\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
+                            break;
+                        default:
+                            if (strCustomerCss.Contains(".css"))
+                            {
+                                strCSSLink += "<link href=\"" + strCustomerCss + "\" media=\"screen, projection\" type=\"text/css\" rel=\"stylesheet\" />";
+                            }
+                            break;
+                    }
+                }
+
                 this.Head1.Controls.Add(new LiteralControl(strCSSLink));
 
                 if (HttpContext.Current.Request.UserAgent != null && HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10"))
@@ -205,9 +202,7 @@ namespace AppRemarketing.Master
 
                 if (m_User.GroupID > 0)
                 {
-                    strLogoPath = m_User.Organization.LogoPath;
                     strDocuPath = m_User.Groups.get_ItemByID(m_User.GroupID).DocuPath;
-
 
                     System.Data.SqlClient.SqlConnection cn = default(System.Data.SqlClient.SqlConnection);
                     cn = new System.Data.SqlClient.SqlConnection(m_User.App.Connectionstring);
@@ -232,12 +227,6 @@ namespace AppRemarketing.Master
                 {
                     tdHandbuch.Visible = true;
                     lnkHandbuch.NavigateUrl = strDocuPath;
-                }
-
-                if (strLogoPath == string.Empty)
-                {
-                    strLogoPath = m_User.Customer.CustomerStyle.LogoPath;
-
                 }
             }
                 
