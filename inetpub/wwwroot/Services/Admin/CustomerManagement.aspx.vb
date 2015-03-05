@@ -1,7 +1,6 @@
 ﻿Imports CKG.Base.Kernel.Admin
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
-Imports CKG.Base.Business
 Imports CKG.Base.Business.HelpProcedures
 Imports CKG.Base.Common
 Imports CKG.Services
@@ -9,16 +8,16 @@ Imports Telerik.Web.UI
 Imports System.IO
 
 Partial Public Class CustomerManagement
-    Inherits Web.UI.Page
+    Inherits Page
 
 #Region " Membervariables "
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As GridNavigation
 
-    Private logoVirtUploadPath As String = "/Services/Images/Kundenlogos"
-    Private logoVirtUploadPath2 As String = "/Services/Images/Buchungskreis"
-    Private logoVirtUploadPath3 As String = "/Services/Images/HeaderBackgrounds"
+    Private ReadOnly logoVirtUploadPath As String = "/Services/Images/Kundenlogos"
+    Private ReadOnly logoVirtUploadPath2 As String = "/Services/Images/Buchungskreis"
+    Private ReadOnly logoVirtUploadPath3 As String = "/Services/Images/HeaderBackgrounds"
     Const UploadMaxTotalBytes As Integer = 3 * 1024 * 1024 ' 3 MB
     Private uploadTotalBytes As Integer
     Private tblApps As DataTable
@@ -293,9 +292,11 @@ Partial Public Class CustomerManagement
         imageDDL.Items.Add(New RadComboBoxItem("Bild hochladen", "Upload"))
         If Directory.Exists(sPhysPath) Then
             For Each file As String In Directory.GetFiles(sPhysPath)
-                Dim comboItem As New RadComboBoxItem("", sLogoPath.TrimEnd("/"c) & "/" & Path.GetFileNameWithoutExtension(file) & Path.GetExtension(file))
-                comboItem.ImageUrl = comboItem.Value
-                imageDDL.Items.Add(comboItem)
+                If Path.GetFileName(file).ToLower() <> "thumbs.db" Then
+                    Dim comboItem As New RadComboBoxItem("", sLogoPath.TrimEnd("/"c) & "/" & Path.GetFileNameWithoutExtension(file) & Path.GetExtension(file))
+                    comboItem.ImageUrl = comboItem.Value
+                    imageDDL.Items.Add(comboItem)
+                End If
             Next
         End If
 
@@ -314,9 +315,11 @@ Partial Public Class CustomerManagement
         imageHeaderDDL.Items.Add(New RadComboBoxItem("Bild hochladen", "Upload"))
         If Directory.Exists(sPhysPath2) Then
             For Each file As String In Directory.GetFiles(sPhysPath2)
-                Dim comboItem As New RadComboBoxItem("", sLogoPath2.TrimEnd("/"c) & "/" & Path.GetFileNameWithoutExtension(file) & Path.GetExtension(file))
-                comboItem.ImageUrl = comboItem.Value
-                imageHeaderDDL.Items.Add(comboItem)
+                If Path.GetFileName(file).ToLower() <> "thumbs.db" Then
+                    Dim comboItem As New RadComboBoxItem("", sLogoPath2.TrimEnd("/"c) & "/" & Path.GetFileNameWithoutExtension(file) & Path.GetExtension(file))
+                    comboItem.ImageUrl = comboItem.Value
+                    imageHeaderDDL.Items.Add(comboItem)
+                End If
             Next
         End If
     End Sub
@@ -502,7 +505,7 @@ Partial Public Class CustomerManagement
                     If neuanlage Then
                         ddlAccountingArea.Enabled = True
                     Else
-                        Dim newItem As New Web.UI.WebControls.ListItem("Übergeordnet", "-1")
+                        Dim newItem As New ListItem("Übergeordnet", "-1")
                         ddlAccountingArea.Items.Add(newItem)
                         ddlAccountingArea.Items.FindByValue("-1").Selected = True
                         ddlAccountingArea.Enabled = False
@@ -565,11 +568,11 @@ Partial Public Class CustomerManagement
         txtSDSignatur.Text = ""
         txtSDSignatur2.Text = ""
         'Style
-        txtLogoPath.Text = "../Images/Logo.gif"
+        txtLogoPath.Text = ""
         '§§§ JVE 18.09.2006: Logo2
-        txtLogoPath2.Text = "../Images/Logo.gif"
+        txtLogoPath2.Text = ""
         '------------------------
-        txtCssPath.Text = "Styles.css"
+        txtCssPath.Text = ""
         'Buttons
         lbtnSave.Visible = True
         lbtnDelete.Visible = False
@@ -1033,7 +1036,7 @@ Partial Public Class CustomerManagement
         Return tblPar
     End Function
 
-    Private Function setKundenadministrationInfoVisibility() As Boolean
+    Private Sub setKundenadministrationInfoVisibility()
         If rbKeine.Checked Then
             lblKundenadministrationInfo.Visible = False
             txtKundenadministrationBeschreibung.Visible = False
@@ -1050,7 +1053,7 @@ Partial Public Class CustomerManagement
             lblKundenadministrationContact.Visible = True
             EditKundenadministrationContact.Visible = True
         End If
-    End Function
+    End Sub
 
     ''' <summary>
     ''' Füllt die DropdownList mit den Login-Links
@@ -1112,8 +1115,7 @@ Partial Public Class CustomerManagement
             Return
         End If
 
-        Dim dtCustSettings As DataTable = New DataTable
-        dtCustSettings = GetAllCustomerSetting(CInt(ihCustomerID.Value), lstCustomerSettings.Items(index).Value)
+        Dim dtCustSettings As DataTable = GetAllCustomerSetting(CInt(ihCustomerID.Value), lstCustomerSettings.Items(index).Value)
 
         If Not dtCustSettings Is Nothing Then
             gvCustomerSettings.DataSource = dtCustSettings
@@ -1304,7 +1306,6 @@ Partial Public Class CustomerManagement
 
 
         Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
-        Dim cmd As New SqlClient.SqlCommand
         Try
             getKundenInfoDT = New DataTable
             If cn.State = ConnectionState.Closed Then
@@ -1572,7 +1573,6 @@ Partial Public Class CustomerManagement
 
     Private Sub lbtnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSave.Click
 
-        Dim intCustomerId As Integer = CInt(ihCustomerID.Value)
         'Do SAP-Stuff here...
         Dim i_Kunnr As String = Right("0000000000" & txtKUNNR.Text, 10)
         Dim blnNoData As Boolean = False
@@ -1589,7 +1589,7 @@ Partial Public Class CustomerManagement
 
             tblTemp2 = myProxy.getExportTable("GS_WEB")
         Catch ex As Exception
-            If HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) = "NO_DATA" Then
+            If CastSapBizTalkErrorMessage(ex.Message) = "NO_DATA" Then
                 blnNoData = True
             Else
                 plhConfirm.Controls.Add(New LiteralControl(String.Concat("<br /><b>Beim Abfragen der SAP-Daten ist ein Fehler aufgetreten:<br />", ex.Message, "</b>")))
@@ -1602,7 +1602,7 @@ Partial Public Class CustomerManagement
         If blnNoData OrElse tblTemp2 Is Nothing OrElse tblTemp2.Rows.Count = 0 Then
             plhConfirm.Controls.Add(New LiteralControl("<BR><b>Keine Daten gefunden!<b/><BR><BR>"))
         Else
-            Dim sb = New Text.StringBuilder()
+            Dim sb = New StringBuilder()
             With sb
                 .AppendFormat("KUNNR:&nbsp{0}<BR>", tblTemp2.Rows(0)("Kunnr").ToString)
                 .AppendFormat("NAME1:&nbsp{0}<BR>", tblTemp2.Rows(0)("Name1").ToString)
@@ -1821,7 +1821,7 @@ Partial Public Class CustomerManagement
                 EditEditMode(CInt(ihCustomerID.Value))
                 txtIpAddress.Text = ""
             Catch ex As Exception
-                Me.lblError.Text = ex.Message
+                lblError.Text = ex.Message
                 txtIpAddress.Text = "s. Fehlertext"
             Finally
                 If cn.State <> ConnectionState.Closed Then
@@ -1840,7 +1840,7 @@ Partial Public Class CustomerManagement
         FillDataGrid()
     End Sub
 
-    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As Web.UI.WebControls.GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
+    Private Sub dgSearchResult_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles dgSearchResult.RowCommand
 
         Dim CtrlLabel As Label
         Dim index As Integer
@@ -1860,11 +1860,11 @@ Partial Public Class CustomerManagement
         End If
     End Sub
 
-    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As Web.UI.WebControls.GridViewEditEventArgs) Handles dgSearchResult.RowEditing
+    Private Sub dgSearchResult_RowEditing(ByVal sender As Object, ByVal e As GridViewEditEventArgs) Handles dgSearchResult.RowEditing
 
     End Sub
 
-    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As Web.UI.WebControls.GridViewSortEventArgs) Handles dgSearchResult.Sorting
+    Private Sub dgSearchResult_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles dgSearchResult.Sorting
         Dim strSort As String = e.SortExpression
         If Not ViewState("ResultSort") Is Nothing AndAlso ViewState("ResultSort").ToString = strSort Then
             strSort &= " DESC"
@@ -1948,7 +1948,7 @@ Partial Public Class CustomerManagement
         End Try
     End Sub
 
-    Protected Sub btnAssign_Click(ByVal sender As Object, ByVal e As Web.UI.ImageClickEventArgs) Handles btnAssign.Click
+    Protected Sub btnAssign_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnAssign.Click
         Dim chkSelect As CheckBox
 
         For Each item As GridDataItem In rgAppUnAssigned.Items
@@ -1964,7 +1964,7 @@ Partial Public Class CustomerManagement
         rgAppAssigned.Rebind()
     End Sub
 
-    Protected Sub btnUnAssign_Click(ByVal sender As Object, ByVal e As Web.UI.ImageClickEventArgs) Handles btnUnAssign.Click
+    Protected Sub btnUnAssign_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnUnAssign.Click
         Dim chkSelect As CheckBox
 
         For Each item As GridDataItem In rgAppAssigned.Items
@@ -1982,7 +1982,7 @@ Partial Public Class CustomerManagement
         rgAppAssigned.Rebind()
     End Sub
 
-    Protected Sub btnAssignArchiv_Click(ByVal sender As Object, ByVal e As Web.UI.ImageClickEventArgs) Handles btnAssignArchiv.Click
+    Protected Sub btnAssignArchiv_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnAssignArchiv.Click
         Dim _item As ListItem
         Dim _coll As New ListItemCollection()
 
@@ -1999,7 +1999,7 @@ Partial Public Class CustomerManagement
         Next
     End Sub
 
-    Protected Sub btnUnAssignArchiv_Click(ByVal sender As Object, ByVal e As Web.UI.ImageClickEventArgs) Handles btnUnAssignArchiv.Click
+    Protected Sub btnUnAssignArchiv_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnUnAssignArchiv.Click
         Dim _item As ListItem
         Dim _coll As New ListItemCollection()
 
@@ -2016,11 +2016,11 @@ Partial Public Class CustomerManagement
         Next
     End Sub
 
-    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As Web.UI.ImageClickEventArgs) Handles btnEmpty.Click
+    Protected Sub btnEmpty_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles btnEmpty.Click
         btnSuche_Click(sender, e)
     End Sub
 
-    Private Sub Repeater1_ItemCommand(ByVal source As Object, ByVal e As Web.UI.WebControls.RepeaterCommandEventArgs) Handles Repeater1.ItemCommand
+    Private Sub Repeater1_ItemCommand(ByVal source As Object, ByVal e As RepeaterCommandEventArgs) Handles Repeater1.ItemCommand
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         Try
             cn.Open()
@@ -2064,20 +2064,20 @@ Partial Public Class CustomerManagement
         FillCustomerSettingsList(lstCustomerSettings.SelectedIndex)
     End Sub
 
-    Protected Sub gvCustomerSettings_RowEditing(sender As Object, e As Web.UI.WebControls.GridViewEditEventArgs) Handles gvCustomerSettings.RowEditing
+    Protected Sub gvCustomerSettings_RowEditing(sender As Object, e As GridViewEditEventArgs) Handles gvCustomerSettings.RowEditing
 
-        txtKey.Text = Me.gvCustomerSettings.Rows(e.NewEditIndex).Cells(1).Text
-        txtValue.Text = Me.gvCustomerSettings.Rows(e.NewEditIndex).Cells(2).Text
-        txtDescript.Text = Me.gvCustomerSettings.Rows.Item(e.NewEditIndex).Cells(3).Text
+        txtKey.Text = gvCustomerSettings.Rows(e.NewEditIndex).Cells(1).Text
+        txtValue.Text = gvCustomerSettings.Rows(e.NewEditIndex).Cells(2).Text
+        txtDescript.Text = gvCustomerSettings.Rows.Item(e.NewEditIndex).Cells(3).Text
         lbOk.Text = "Ändern&#187"
 
     End Sub
 
-    Protected Sub gvCustomerSettings_RowDeleting(sender As Object, e As Web.UI.WebControls.GridViewDeleteEventArgs) Handles gvCustomerSettings.RowDeleting
+    Protected Sub gvCustomerSettings_RowDeleting(sender As Object, e As GridViewDeleteEventArgs) Handles gvCustomerSettings.RowDeleting
 
         Dim cusid As String = CInt(ihCustomerID.Value)
-        Dim appid As String = Me.lstCustomerSettings.Items(lstCustomerSettings.SelectedIndex).Value
-        Dim key As String = Me.gvCustomerSettings.Rows(e.RowIndex).Cells(1).Text
+        Dim appid As String = lstCustomerSettings.Items(lstCustomerSettings.SelectedIndex).Value
+        Dim key As String = gvCustomerSettings.Rows(e.RowIndex).Cells(1).Text
         DeleteCustomerSetting(cusid, appid, key)
         FillCustomerSettingsList(lstCustomerSettings.SelectedIndex)
 
@@ -2154,7 +2154,7 @@ Partial Public Class CustomerManagement
 
     End Sub
 
-    Private Sub gvBusinessOwner_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvBusinessOwner.RowCommand
+    Private Sub gvBusinessOwner_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvBusinessOwner.RowCommand
         If e.CommandName = "Sort" Then
             fillBusinessownerGrid(gvBusinessOwner.PageIndex, e.CommandArgument)
         ElseIf e.CommandName = "entfernen" Then
@@ -2164,7 +2164,7 @@ Partial Public Class CustomerManagement
 
     End Sub
 
-    Private Sub gvAdminPerson_RowCommand(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewCommandEventArgs) Handles gvAdminPerson.RowCommand
+    Private Sub gvAdminPerson_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvAdminPerson.RowCommand
         If e.CommandName = "Sort" Then
             fillAdminpersonGrid(gvAdminPerson.PageIndex, e.CommandArgument)
         ElseIf e.CommandName = "entfernen" Then
@@ -2182,16 +2182,16 @@ Partial Public Class CustomerManagement
         rgAppAssigned.DataSource = GetViewAppsAssigned()
     End Sub
 
-    Protected Sub rgAppUnAssigned_ItemDataBound(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles rgAppUnAssigned.ItemDataBound
-        If TypeOf e.Item Is Telerik.Web.UI.GridGroupHeaderItem Then
-            Dim item As Telerik.Web.UI.GridGroupHeaderItem = CType(e.Item, Telerik.Web.UI.GridGroupHeaderItem)
+    Protected Sub rgAppUnAssigned_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles rgAppUnAssigned.ItemDataBound
+        If TypeOf e.Item Is GridGroupHeaderItem Then
+            Dim item As GridGroupHeaderItem = CType(e.Item, GridGroupHeaderItem)
             item.DataCell.Text = "Technologie: " & item.DataCell.Text.Split(":"c)(1)
         End If
     End Sub
 
-    Protected Sub rgAppAssigned_ItemDataBound(ByVal sender As Object, ByVal e As Telerik.Web.UI.GridItemEventArgs) Handles rgAppAssigned.ItemDataBound
-        If TypeOf e.Item Is Telerik.Web.UI.GridGroupHeaderItem Then
-            Dim item As Telerik.Web.UI.GridGroupHeaderItem = CType(e.Item, Telerik.Web.UI.GridGroupHeaderItem)
+    Protected Sub rgAppAssigned_ItemDataBound(ByVal sender As Object, ByVal e As GridItemEventArgs) Handles rgAppAssigned.ItemDataBound
+        If TypeOf e.Item Is GridGroupHeaderItem Then
+            Dim item As GridGroupHeaderItem = CType(e.Item, GridGroupHeaderItem)
             item.DataCell.Text = "Technologie: " & item.DataCell.Text.Split(":"c)(1)
         End If
     End Sub
