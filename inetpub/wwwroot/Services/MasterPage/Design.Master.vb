@@ -38,27 +38,16 @@ Partial Public Class Design
     End Sub
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
-        Dim strLogoPath As String = ""
-        Dim strLogoPath2 As String = ""
         Dim strDocuPath As String = ""
         Dim strTitle As String
         Dim strCSSLink As String = ""
-        Dim bc As HttpBrowserCapabilities
-        Dim s As String = ""
-        bc = Request.Browser
+        Dim bc = Request.Browser
 
         'Aktuelles Jahr ins Copyright setzen.
         lblCopyright.Text = lblCopyright.Text.Replace("year", DateTime.Now.Year.ToString)
 
-        'm_User = GetUser(Page)
-        ''imgDADLogo.Alt = Me.Page.User.Identity.Name
-        'Me.
         m_User = Session("objUser")
         If m_User Is Nothing Then
-            '    With Me
-            '        'UH: 02.05.2007
-            '        'Fehler: Bei jeder Rückkekr ins Hauptmenü wird eine neue Session erzeugt.
-            '        'Lösungsansatz: SessionID in URL mitgeben
             If Not IsPostBack Then
                 tdHandbuch.Visible = False
                 lnkHauptmenue.Text = "Anmeldung"
@@ -177,18 +166,6 @@ Partial Public Class Design
                 sidebarRight.Visible = False
             End If
 
-            '§§§ JVE 18.09.2006: Rechtes Logo auch parametrisieren.
-            'If (m_User.Customer.LogoPath2 Is Nothing) OrElse (m_User.Customer.LogoPath2 = String.Empty) Then
-            '    strLogoPath2 = ""
-            '    imgDADLogo.Src = ""
-            'Else
-            '    strLogoPath2 = m_User.Customer.LogoPath2
-            '    imgDADLogo.Src = strLogoPath2
-            'End If
-
-            '------------------------------------------------------
-            '------------------------------------------------------
-
             If Me.Page.User.Identity.IsAuthenticated Then
                 If Me.Page.Title = "Startseite" Then
                     strTitle = m_User.Customer.CustomerName & " - " & "Startseite"
@@ -206,12 +183,6 @@ Partial Public Class Design
             End If
 
             If m_User.GroupID > 0 Then
-                Try
-                    strLogoPath = m_User.Organization.LogoPath
-                Catch ex As Exception
-
-                End Try
-
                 strDocuPath = m_User.Groups.ItemByID(m_User.GroupID).DocuPath
 
                 Dim cn As SqlClient.SqlConnection
@@ -232,44 +203,6 @@ Partial Public Class Design
                 tdHandbuch.Visible = True
                 lnkHandbuch.NavigateUrl = strDocuPath
             End If
-
-            If strLogoPath = String.Empty Then
-                Try
-                    strLogoPath = m_User.Customer.CustomerStyle.LogoPath
-                Catch ex As Exception
-
-                End Try
-
-            End If
-
-
-
-            'If Not strLogoPath = String.Empty Then
-            '    .imgCustomerLogo.Visible = True
-            '    .imgCustomerLogo.ImageUrl = strLogoPath
-            'End If
-
-            '.imgDADLogo.Alt &= vbCrLf & m_User.UserID
-
-
-            'litSetBackground.Visible = False
-            'If m_User.IsTestUser Then
-            '    litSetBackground.Visible = True
-            '    litSetBackground.Text = "		<script language=""JavaScript"">" & vbCrLf & _
-            '                             "<!-- //" & vbCrLf & _
-            '                             " window.document.getElementsByTagName(""body"")[0].background = ""/Portal/Images/TestUser.JPG"";" & vbCrLf & _
-            '                             "//-->" & vbCrLf & _
-            '                             "		</script>"
-            'Else
-            '    If ConfigurationManager.AppSettings("ShowProductiveBackground") = "ON" Then
-            '        litSetBackground.Visible = True
-            '        litSetBackground.Text = "		<script language=""JavaScript"">" & vbCrLf & _
-            '                                 "<!-- //" & vbCrLf & _
-            '                                 " window.document.getElementsByTagName(""body"")[0].background = ""/Portal/Images/ProdUser.JPG"";" & vbCrLf & _
-            '                                 "//-->" & vbCrLf & _
-            '                                 "		</script>"
-            '    End If
-            'End If
 
         End If
         Select Case Me.Page.Title

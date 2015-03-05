@@ -10,10 +10,16 @@ namespace ServicesMvc.Controllers
     {
         public override string DataContextKey { get { return "ZanfReportViewModel"; } }
 
-        public ZanfController(IAppSettings appSettings, ILogonContextDataService logonContext, IZanfReportDataService zanfReportDataService)
+        public ZanfController(
+            IAppSettings appSettings,
+            ILogonContextDataService logonContext,
+            IZanfReportDataService zanfReportDataService,
+            IZulassungsunterlagenDataService zulassungsunterlagenDataService
+            )
             : base(appSettings, logonContext)
         {
             InitViewModel(ZanfReportViewModel, appSettings, logonContext, zanfReportDataService);
+            InitViewModel(ZulassungsunterlagenViewModel, appSettings, logonContext, zulassungsunterlagenDataService);
         }
 
         public ActionResult Index()
