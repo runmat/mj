@@ -299,52 +299,64 @@ namespace AutohausPortal.forms
 
                 objVorerf.AppID = Session["AppID"].ToString();
 
-                if (controls != null && controls.Rows.Count == 1)
-                {
-                    objVorerf.Kennzeichen = controls.Rows[0]["Kennz1"].ToString() + "-" + controls.Rows[0]["Kennz2"].ToString();
-                    objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
-                    objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
-                }
-                else
-                {
-                    lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!";
-                    return;
-                }
+                var idListe = new List<long>();
 
                 if (cbxSave.Checked == false)
                 {
                     objVorerf.saved = true;
-                    objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
+                    idListe = objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
                     getAuftraege();
                 }
                 else
                 {
                     objVorerf.saved = true;
                     objVorerf.bearbeitet = true;
+                    if (controls != null && controls.Rows.Count == 1)
+                    {
+                        objVorerf.Kennzeichen = controls.Rows[0]["Kennz1"].ToString() + "-" + controls.Rows[0]["Kennz2"].ToString();
+                        objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
+                        objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
+                    }
+                    else
+                    {
+                        lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!";
+                        return;
+                    }
+
                     objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
                     ShowKundenformulare(true);
                     return;
                 }
 
-                ClearForm();
                 if (objVorerf.Status == 0)
                 {
                     lblMessage.Visible = true;
                     lblMessage.Text = "Daten erfolgreich gespeichert.";
-                    ShowKundenformulare();
+                    ShowKundenformulare(false, idListe);
                 }
                 else
                 {
                     lblError.Text = "Fehler beim anlegen der Daten: " + objVorerf.Message;
                 }
+
+                ClearForm();
+
                 Session["objVorerf"] = objVorerf;
             }
             else { proofInserted(); }
         }
 
-        private void ShowKundenformulare(bool redirect = false)
+        private void ShowKundenformulare(bool redirect = false, List<long> idListe = null)
         {
-            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true);
+            if (idListe != null)
+            {
+                objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true, idListe);
+            }
+            else
+            {
+                objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true);
+            }
+
             if (objVorerf.Status == 0)
             {
                 Session["objVorerf"] = objVorerf;
