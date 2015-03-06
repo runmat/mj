@@ -408,7 +408,7 @@ namespace AppZulassungsdienst.lib
 
                         posListeWeb.Add(new ZLDPosition
                         {
-                            SapId = p.SapId,
+                            SapId = kopfdaten.SapId,
                             PositionsNr = posNr.ToString(),
                             UebergeordnetePosition = (posNr == 10 ? "" : "10"),
                             Menge = (p.Menge.HasValue && p.Menge > 0 ? p.Menge : 1),
@@ -528,6 +528,7 @@ namespace AppZulassungsdienst.lib
                         {
                             p.PositionsNr = posNr.ToString();
                         }
+                        p.SapId = kopfdaten.SapId;
                         p.MaterialName = p.CombineBezeichnungMenge();
                         posListeWeb.Add(p);
 

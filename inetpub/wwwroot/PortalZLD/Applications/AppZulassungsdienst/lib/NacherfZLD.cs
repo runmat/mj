@@ -405,6 +405,7 @@ namespace AppZulassungsdienst.lib
                         {
                             p.PositionsNr = posNr.ToString();
                         }
+                        p.SapId = kopfdaten.SapId;
                         p.MaterialName = p.CombineBezeichnungMenge();
                         posListeWeb.Add(p);
 
