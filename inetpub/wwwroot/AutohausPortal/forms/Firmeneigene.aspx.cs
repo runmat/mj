@@ -299,10 +299,12 @@ namespace AutohausPortal.forms
 
                 objVorerf.AppID = Session["AppID"].ToString();
 
+                var idListe = new List<long>();
+
                 if (cbxSave.Checked == false)
                 {
                     objVorerf.saved = true;
-                    objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
+                    idListe = objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
                     getAuftraege();
                 }
                 else
@@ -326,25 +328,35 @@ namespace AutohausPortal.forms
                     return;
                 }
 
-                ClearForm();
                 if (objVorerf.Status == 0)
                 {
                     lblMessage.Visible = true;
                     lblMessage.Text = "Daten erfolgreich gespeichert.";
-                    ShowKundenformulare();
+                    ShowKundenformulare(false, idListe);
                 }
                 else
                 {
                     lblError.Text = "Fehler beim anlegen der Daten: " + objVorerf.Message;
                 }
+
+                ClearForm();
+
                 Session["objVorerf"] = objVorerf;
             }
             else { proofInserted(); }
         }
 
-        private void ShowKundenformulare(bool redirect = false)
+        private void ShowKundenformulare(bool redirect = false, List<long> idListe = null)
         {
-            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true);
+            if (idListe != null)
+            {
+                objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true, idListe);
+            }
+            else
+            {
+                objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true);
+            }
+
             if (objVorerf.Status == 0)
             {
                 Session["objVorerf"] = objVorerf;
