@@ -512,20 +512,7 @@ namespace AppZulassungsdienst.lib
             {
                 var kopfdaten = AktuellerVorgang.Kopfdaten;
 
-                if (SelAnnahmeAH)
-                {
-                    // für "neue AH-Vorgänge" den beb_status aktualisieren
-                    switch (kopfdaten.WebBearbeitungsStatus)
-                    {
-                        case "A":
-                            kopfdaten.Bearbeitungsstatus = "A";
-                            break;
-                        default:
-                            kopfdaten.Bearbeitungsstatus = "1";
-                            break;
-                    }
-                }
-                else if (kopfdaten.Bearbeitungsstatus == "F" && !kopfdaten.Flieger.IsTrue())
+                if (kopfdaten.Bearbeitungsstatus == "F" && !kopfdaten.Flieger.IsTrue())
                 {
                     // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
                     kopfdaten.Bearbeitungsstatus = "A";
@@ -607,7 +594,7 @@ namespace AppZulassungsdienst.lib
 
                 if (SelAnnahmeAH && annahmeAhSend)
                 {
-                    idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" ||vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                    idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
                 }
                 else
                 {

@@ -1257,10 +1257,7 @@ namespace AppZulassungsdienst.forms
 
                 if (!chkFlieger.Checked)
                 {
-                    foreach (var item in objNacherf.AktuellerVorgang.Positionen.Where(p => p.Loeschkennzeichen != "L"))
-                    {
-                        item.Loeschkennzeichen = (objNacherf.SelAnnahmeAH ? "A" : "O");
-                    }
+                    kopfdaten.WebBearbeitungsStatus = (objNacherf.SelAnnahmeAH ? "A" : "O");
                 }
 
                 objNacherf.SaveVorgangToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);

@@ -355,9 +355,17 @@ namespace AppZulassungsdienst.lib
                     kopfdaten.Erfasser = userName;
 
                     kopfListeWeb.Add(kopfdaten);
-                    bankListeWeb.Add(bankdaten);
-                    adressListeWeb.Add(adressdaten);
 
+                    if (!String.IsNullOrEmpty(bankdaten.Kontoinhaber))
+                        bankListeWeb.Add(bankdaten);
+
+                    if (!String.IsNullOrEmpty(adressdaten.Name1))
+                    {
+                        adressdaten.KundenNr = kopfdaten.KundenNr;
+                        adressdaten.Partnerrolle = "AG";
+                        adressListeWeb.Add(adressdaten);
+                    }
+                    
                     var posNr = 0;
 
                     foreach (var p in positionen)
