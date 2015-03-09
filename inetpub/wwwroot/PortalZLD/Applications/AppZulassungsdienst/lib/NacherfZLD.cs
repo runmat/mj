@@ -589,6 +589,8 @@ namespace AppZulassungsdienst.lib
 
             ExecuteSapZugriff(() =>
             {
+                Vorgangsliste.ForEach(vg => vg.FehlerText = "");
+
                 ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
 
                 List<string> idList;
@@ -679,6 +681,8 @@ namespace AppZulassungsdienst.lib
 
             ExecuteSapZugriff(() =>
             {
+                Vorgangsliste.ForEach(vg => vg.FehlerText = "");
+
                 ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
 
                 var kopfdatenRel = _lstKopfdaten.Where(k => k.WebBearbeitungsStatus == "O" || k.WebBearbeitungsStatus == "L");

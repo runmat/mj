@@ -326,6 +326,8 @@ namespace AppZulassungsdienst.lib
 
             ExecuteSapZugriff(() =>
             {
+                Vorgangsliste.ForEach(vg => vg.FehlerText = "");
+
                 var zldDataContext = new ZLDTableClassesDataContext();
 
                 var kopfListeWeb = new List<ZLDKopfdaten>();
