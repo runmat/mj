@@ -54,7 +54,9 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="ServiceData.asmx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -141,7 +143,7 @@
     </WebReferenceUrl>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+    <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
     </ProjectReference>
