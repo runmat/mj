@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace AppZulassungsdienst.lib.Models
 {
@@ -29,6 +30,21 @@ namespace AppZulassungsdienst.lib.Models
         public string IBAN { get; set; }
 
         public DateTime? Vorerfassungsdatum { get; set; }
+
+        public string Vorerfassungszeit { get; set; }
+
+        public DateTime? Vorerfasst
+        {
+            get
+            {
+                DateTime tmpZeit;
+
+                if (!Vorerfassungsdatum.HasValue || String.IsNullOrEmpty(Vorerfassungszeit) || !DateTime.TryParseExact(Vorerfassungszeit, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpZeit))
+                    return Vorerfassungsdatum;
+
+                return Vorerfassungsdatum.Value.AddHours(tmpZeit.Hour).AddMinutes(tmpZeit.Minute).AddSeconds(tmpZeit.Second);
+            }
+        }
 
         public string VersandzulassungDurchfuehrendesVkBur { get; set; }
     }

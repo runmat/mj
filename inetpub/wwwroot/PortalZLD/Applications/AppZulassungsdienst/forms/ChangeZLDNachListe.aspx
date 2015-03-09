@@ -373,12 +373,12 @@
 												<HeaderStyle CssClass="TablePadding"  Width="85px" />
 												<ItemStyle CssClass="TablePadding"   Width="85px" />
 											</asp:TemplateField>
-                                            <asp:TemplateField SortExpression="Vorerfassungsdatum" HeaderText="col_Vorerfasst">
+                                            <asp:TemplateField SortExpression="Vorerfasst" HeaderText="col_Vorerfasst">
                                                 <HeaderTemplate>
-													<asp:LinkButton ID="col_Vorerfasst"  runat="server" CommandName="Sort" CommandArgument="Vorerfassungsdatum">col_Vorerfasst</asp:LinkButton>
+													<asp:LinkButton ID="col_Vorerfasst"  runat="server" CommandName="Sort" CommandArgument="Vorerfasst">col_Vorerfasst</asp:LinkButton>
                                                 </HeaderTemplate>
 												<ItemTemplate>
-												    <asp:Label ID="lblVorerfasst" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("Vorerfassungsdatum", "{0:d}") %>'/>
+												    <asp:Label ID="lblVorerfasst" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("Vorerfasst", "{0:G}") %>'/>
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding"  Width="110px" />
 												<ItemStyle CssClass="TablePadding"   Width="110px" />

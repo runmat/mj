@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 
 namespace AppZulassungsdienst.lib.Models
 {
@@ -18,8 +19,10 @@ namespace AppZulassungsdienst.lib.Models
         public string VkOrg { get; set; }
 
         public string VkBur { get; set; }
-
+        
         public DateTime? Vorerfassungsdatum { get; set; }
+
+        public string Vorerfassungszeit { get; set; }
 
         public string Vorerfasser { get; set; }
 

@@ -43,6 +43,8 @@ namespace SapORM.Models
 
 			public string VE_ERNAM { get; set; }
 
+			public string VE_ERZEIT { get; set; }
+
 			public DateTime? ERDAT { get; set; }
 
 			public string ERNAM { get; set; }
@@ -133,6 +135,7 @@ namespace SapORM.Models
 					VKBUR = (string)row["VKBUR"],
 					VE_ERDAT = (string.IsNullOrEmpty(row["VE_ERDAT"].ToString())) ? null : (DateTime?)row["VE_ERDAT"],
 					VE_ERNAM = (string)row["VE_ERNAM"],
+					VE_ERZEIT = (string)row["VE_ERZEIT"],
 					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
 					ERNAM = (string)row["ERNAM"],
 					STATUS = (string)row["STATUS"],

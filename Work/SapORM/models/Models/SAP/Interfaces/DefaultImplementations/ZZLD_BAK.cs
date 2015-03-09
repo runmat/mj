@@ -9,6 +9,7 @@ namespace SapORM.Models
         public string VKORG { get; set; }
         public string VKBUR { get; set; }
         public DateTime? VE_ERDAT { get; set; }
+        public string VE_ERZEIT { get; set; }
         public string VE_ERNAM { get; set; }
         public DateTime? ERDAT { get; set; }
         public string ERNAM { get; set; }

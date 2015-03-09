@@ -290,6 +290,7 @@ namespace AppZulassungsdienst.lib
                     SWIFT = bankdaten.SWIFT,
                     IBAN = bankdaten.IBAN,
                     Vorerfassungsdatum = kopfdaten.Vorerfassungsdatum,
+                    Vorerfassungszeit = kopfdaten.Vorerfassungszeit,
                     VersandzulassungDurchfuehrendesVkBur = kopfdaten.VersandzulassungDurchfuehrendesVkBur
                 });
             }

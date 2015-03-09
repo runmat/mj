@@ -14,6 +14,8 @@ namespace SapORM.Models
 
         DateTime? VE_ERDAT { get; set; }
 
+        string VE_ERZEIT { get; set; }
+
         string VE_ERNAM { get; set; }
 
         DateTime? ERDAT { get; set; }
