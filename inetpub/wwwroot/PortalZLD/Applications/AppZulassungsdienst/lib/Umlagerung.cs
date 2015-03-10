@@ -91,7 +91,7 @@ namespace AppZulassungsdienst.lib
                     ltextId = tmpRow["LTEXT"].ToString();
                 }
 
-                langtextIds.Add(tmpRow["MATNR"].ToString(), ltextId);
+                langtextIds.Add(tmpRow["MATNR"].ToString() + ";" + tmpRow["KENNZFORM"].ToString(), ltextId);
             }
 
             ExecuteSapZugriff(() =>
@@ -106,7 +106,7 @@ namespace AppZulassungsdienst.lib
                         tmpSAPRow["MATNR"] = tmpRow["MATNR"].ToString();
                         tmpSAPRow["MENGE"] = tmpRow["MENGE"].ToString();
                         tmpSAPRow["EAN11"] = tmpRow["EAN11"].ToString();
-                        tmpSAPRow["LTEXT_NR"] = langtextIds[tmpRow["MATNR"].ToString()];
+                        tmpSAPRow["LTEXT_NR"] = langtextIds[tmpRow["MATNR"].ToString() + ";" + tmpRow["KENNZFORM"].ToString()];
                         tmpSAPRow["KENNZFORM"] = tmpRow["KENNZFORM"].ToString();
                         tblSAP.Rows.Add(tmpSAPRow);
                     }
