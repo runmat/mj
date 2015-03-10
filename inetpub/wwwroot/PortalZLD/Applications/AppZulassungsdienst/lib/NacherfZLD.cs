@@ -265,12 +265,12 @@ namespace AppZulassungsdienst.lib
                     Preis = pos.Preis,
                     Gebuehr = (gebuehrenPos != null ? gebuehrenPos.Preis : 0),
                     GebuehrAmt = (gebuehrenPos != null ? gebuehrenPos.GebuehrAmt : 0),
-                    Gebuehrenpaket = pos.Gebuehrenpaket,
+                    Gebuehrenpaket = (gebuehrenPos != null && gebuehrenPos.Gebuehrenpaket.IsTrue()),
                     Steuer = (steuerPos != null ? steuerPos.Preis : 0),
                     PreisKennzeichen = (kennzeichenPos != null ? kennzeichenPos.Preis : 0),
                     Wunschkennzeichen = kopfdaten.Wunschkennzeichen,
                     KennzeichenReservieren = kopfdaten.KennzeichenReservieren,
-                    Zahlart_EC = kopfdaten.Zahlart_EC,
+                    Zahlart_EC = (!kopfdaten.Zahlart_Bar.IsTrue() && !kopfdaten.Zahlart_Rechnung.IsTrue()),
                     Zahlart_Bar = kopfdaten.Zahlart_Bar,
                     Zahlart_Rechnung = kopfdaten.Zahlart_Rechnung,
                     WebBearbeitungsStatus = (pos.Loeschkennzeichen == "X" ? "L" : kopfdaten.WebBearbeitungsStatus),
@@ -290,8 +290,7 @@ namespace AppZulassungsdienst.lib
                     SWIFT = bankdaten.SWIFT,
                     IBAN = bankdaten.IBAN,
                     Vorerfassungsdatum = kopfdaten.Vorerfassungsdatum,
-                    Vorerfassungszeit = kopfdaten.Vorerfassungszeit,
-                    VersandzulassungDurchfuehrendesVkBur = kopfdaten.VersandzulassungDurchfuehrendesVkBur
+                    Vorerfassungszeit = kopfdaten.Vorerfassungszeit
                 });
             }
         }
@@ -346,15 +345,8 @@ namespace AppZulassungsdienst.lib
             {
                 foreach (var p in AktuellerVorgang.Positionen)
                 {
-                    var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == p.MaterialNr);
-                    if (mat != null)
-                    {
-                        if ((p.WebMaterialart == "G" && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            || (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10"))
-                        {
-                            p.Loeschkennzeichen = "X";
-                        }
-                    }
+                    if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
+                        p.Loeschkennzeichen = "X";
                 }
 
                 Z_ZLD_PREISFINDUNG2.Init(SAP);
@@ -525,14 +517,10 @@ namespace AppZulassungsdienst.lib
 
                 foreach (var p in AktuellerVorgang.Positionen)
                 {
-                    var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == p.MaterialNr);
-                    if (mat != null)
+                    if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
+                        || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
                     {
-                        if ((p.WebMaterialart == "G" && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            || (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10"))
-                        {
-                            p.Loeschkennzeichen = "X";
-                        }
+                        p.Loeschkennzeichen = "X";
                     }
                 }
 
@@ -604,8 +592,10 @@ namespace AppZulassungsdienst.lib
                     idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
                 }
 
-                foreach (var kopf in _lstKopfdaten.Where(k => idList.Contains(k.SapId)))
+                foreach (var item in _lstKopfdaten.Where(k => idList.Contains(k.SapId)))
                 {
+                    var kopf = item;
+
                     if (SelAnnahmeAH && annahmeAhSend)
                     {
                         // für "neue AH-Vorgänge" den beb_status aktualisieren
@@ -631,6 +621,15 @@ namespace AppZulassungsdienst.lib
 
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
+
+                    foreach (var p in _lstPositionen.Where(p => p.SapId == kopf.SapId))
+                    {
+                        if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
+                            || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
+                        {
+                            p.Loeschkennzeichen = "X";
+                        }
+                    }
                 }
 
                 Z_ZLD_SAVE_DATA2.Init(SAP);
@@ -690,8 +689,10 @@ namespace AppZulassungsdienst.lib
                 var adressdatenRel = _lstAdressen.Where(a => kopfdatenRel.Any(k => k.SapId == a.SapId));
                 var positionenRel = _lstPositionen.Where(p => kopfdatenRel.Any(k => k.SapId == p.SapId));
 
-                foreach (var kopf in _lstKopfdaten.Where(k => k.WebBearbeitungsStatus == "O" || k.WebBearbeitungsStatus == "L"))
+                foreach (var item in _lstKopfdaten.Where(k => k.WebBearbeitungsStatus == "O" || k.WebBearbeitungsStatus == "L"))
                 {
+                    var kopf = item;
+
                     if (!SelSofortabrechnung)
                     {
                         if (kopf.Belegart == "VZ" || kopf.Belegart == "VE" || kopf.Belegart == "AV" || kopf.Belegart == "AX")
@@ -703,6 +704,15 @@ namespace AppZulassungsdienst.lib
 
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
+
+                    foreach (var p in positionenRel.Where(p => p.SapId == kopf.SapId))
+                    {
+                        if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
+                            || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
+                        {
+                            p.Loeschkennzeichen = "X";
+                        }
+                    }
                 }
 
                 if (SelSofortabrechnung)
@@ -1065,9 +1075,7 @@ namespace AppZulassungsdienst.lib
                     var amt = stvaStamm.FirstOrDefault(s => s.Landkreis == tmpKopf.Landkreis);
                     tmpKopf.KreisBezeichnung = (amt != null ? amt.KreisBezeichnung : "");
 
-                    tmpKopf.Kennzeichen = vg.KennzeichenTeil1;
-                    if (!String.IsNullOrEmpty(vg.KennzeichenTeil2))
-                        tmpKopf.Kennzeichen += "-" + vg.KennzeichenTeil2;
+                    tmpKopf.Kennzeichen = vg.Kennzeichen;
 
                     tmpKopf.Zahlart_EC = vg.Zahlart_EC;
                     tmpKopf.Zahlart_Bar = vg.Zahlart_Bar;

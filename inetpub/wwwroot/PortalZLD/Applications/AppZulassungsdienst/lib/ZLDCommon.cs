@@ -496,15 +496,15 @@ namespace AppZulassungsdienst.lib
         }
 
         /// <summary>
-        /// Gebührenpflichtig?
+        /// Gebührenmaterial vorhanden?
         /// </summary>
         /// <param name="Matnr"></param>
         /// <returns></returns>
-        public bool proofGebMatPflicht(String Matnr)
+        public bool proofGebMat(String Matnr)
         {
             var mat = MaterialStamm.FirstOrDefault(m => m.MaterialNr == Matnr);
 
-            return (mat != null && mat.Gebuehrenpflichtig);
+            return (mat != null && !String.IsNullOrEmpty(mat.GebuehrenMaterialNr));
         }
 
         public string GetMaterialNameFromDienstleistungRow(DataRow dRow)

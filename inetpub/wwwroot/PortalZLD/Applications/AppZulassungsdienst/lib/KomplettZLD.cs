@@ -101,9 +101,7 @@ namespace AppZulassungsdienst.lib
                 {
                     var kopfdaten = AktuellerVorgang.Kopfdaten;
 
-                    kopfdaten.Kennzeichen = kopfL.KennzeichenTeil1;
-                    if (!String.IsNullOrEmpty(kopfL.KennzeichenTeil2))
-                        kopfdaten.Kennzeichen += "-" + kopfL.KennzeichenTeil2;
+                    kopfdaten.Kennzeichen = kopfL.Kennzeichen;
 
                     kopfdaten.Zahlart_EC = kopfL.Zahlart_EC;
                     kopfdaten.Zahlart_Bar = kopfL.Zahlart_Bar;
@@ -112,36 +110,35 @@ namespace AppZulassungsdienst.lib
 
                 foreach (var item in AktuellerVorgang.Positionen)
                 {
+                    var pos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.PositionsNr);
+                    var uebergeordnetePos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.UebergeordnetePosition);
+
                     switch (item.WebMaterialart)
                     {
                         case "D":
-                            var posL = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.PositionsNr);
-                            if (posL != null)
-                                item.Preis = posL.Preis;
+                            if (pos != null)
+                                item.Preis = pos.Preis;
                             break;
 
                         case "G":
-                            var gebuehrenPos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.UebergeordnetePosition);
-                            if (gebuehrenPos != null)
+                            if (uebergeordnetePos != null)
                             {
-                                item.Preis = gebuehrenPos.Gebuehr;
-                                item.GebuehrAmt = gebuehrenPos.GebuehrAmt;
+                                item.Preis = uebergeordnetePos.Gebuehr;
+                                item.GebuehrAmt = uebergeordnetePos.GebuehrAmt;
                             }
                             break;
 
                         case "S":
-                            var steuerPos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.UebergeordnetePosition);
-                            if (steuerPos != null)
+                            if (uebergeordnetePos != null)
                             {
-                                item.Preis = steuerPos.Steuer;
+                                item.Preis = uebergeordnetePos.Steuer;
                             }
                             break;
 
                         case "K":
-                            var kennzeichenPos = Vorgangsliste.FirstOrDefault(vg => vg.SapId == item.SapId && vg.PositionsNr == item.UebergeordnetePosition);
-                            if (kennzeichenPos != null)
+                            if (uebergeordnetePos != null)
                             {
-                                item.Preis = kennzeichenPos.PreisKennzeichen;
+                                item.Preis = uebergeordnetePos.PreisKennzeichen;
                             }
                             break;
                     }
@@ -300,12 +297,12 @@ namespace AppZulassungsdienst.lib
                     Preis = pos.Preis,
                     Gebuehr = (gebuehrenPos != null ? gebuehrenPos.Preis : 0),
                     GebuehrAmt = (gebuehrenPos != null ? gebuehrenPos.GebuehrAmt : 0),
-                    Gebuehrenpaket = pos.Gebuehrenpaket,
+                    Gebuehrenpaket = (gebuehrenPos != null && gebuehrenPos.Gebuehrenpaket.IsTrue()),
                     Steuer = (steuerPos != null ? steuerPos.Preis : 0),
                     PreisKennzeichen = (kennzeichenPos != null ? kennzeichenPos.Preis : 0),
                     Wunschkennzeichen = kopfdaten.Wunschkennzeichen,
                     KennzeichenReservieren = kopfdaten.KennzeichenReservieren,
-                    Zahlart_EC = kopfdaten.Zahlart_EC,
+                    Zahlart_EC = (!kopfdaten.Zahlart_Bar.IsTrue() && !kopfdaten.Zahlart_Rechnung.IsTrue()),
                     Zahlart_Bar = kopfdaten.Zahlart_Bar,
                     Zahlart_Rechnung = kopfdaten.Zahlart_Rechnung,
                     WebBearbeitungsStatus = kopfdaten.WebBearbeitungsStatus,
@@ -620,9 +617,7 @@ namespace AppZulassungsdienst.lib
                     var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == vg.SapId);
                     if (tmpKopf != null)
                     {
-                        tmpKopf.Kennzeichen = vg.KennzeichenTeil1;
-                        if (!String.IsNullOrEmpty(vg.KennzeichenTeil2))
-                            tmpKopf.Kennzeichen += "-" + vg.KennzeichenTeil2;
+                        tmpKopf.Kennzeichen = vg.Kennzeichen;
 
                         tmpKopf.Zahlart_EC = vg.Zahlart_EC;
                         tmpKopf.Zahlart_Bar = vg.Zahlart_Bar;
@@ -686,14 +681,16 @@ namespace AppZulassungsdienst.lib
                 var adressListeWeb = new List<ZLDAdressdaten>();
                 var posListeWeb = new List<ZLDPosition>();
 
-                foreach (var item in Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O"))
-                {
-                    var vg = item;
+                var idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
-                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == vg.SapId, new ZLDVorgangKopf());
-                    var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == vg.SapId, new ZLDVorgangBank());
-                    var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == vg.SapId, new ZLDVorgangAdresse());
-                    var tmpPositionen = zldDataContext.ZLDVorgangPosition.Where(p => p.SapId == vg.SapId).ToList();
+                foreach (var item in idList)
+                {
+                    var id = item;
+
+                    var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == id, new ZLDVorgangKopf());
+                    var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == id, new ZLDVorgangBank());
+                    var tmpAdresse = zldDataContext.ZLDVorgangAdresse.FirstOrDefault(a => a.SapId == id, new ZLDVorgangAdresse());
+                    var tmpPositionen = zldDataContext.ZLDVorgangPosition.Where(p => p.SapId == id).ToList();
 
                     var kopfdaten = ModelMapping.Copy<ZLDVorgangKopf, ZLDKopfdaten>(tmpKopf);
                     var bankdaten = ModelMapping.Copy<ZLDVorgangBank, ZLDBankdaten>(tmpBank);
@@ -719,6 +716,8 @@ namespace AppZulassungsdienst.lib
                         adressListeWeb.Add(adressdaten);
                     }
 
+                    positionen.RemoveAll(p => p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0));
+                    positionen.RemoveAll(p => p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0));
                     positionen.ForEach(p => p.MaterialName = p.CombineBezeichnungMenge());
                     posListeWeb.AddRange(positionen);
                 }

@@ -1006,7 +1006,7 @@ namespace AppZulassungsdienst.forms
             {
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                if (item.WebBearbeitungsStatus != "L" && item.Gebuehr.HasValue && mat != null && mat.Gebuehrenpflichtig)
+                if (item.WebBearbeitungsStatus != "L" && item.Gebuehr.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                 {
                     var valueToAdd = item.Gebuehr.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
@@ -1043,7 +1043,7 @@ namespace AppZulassungsdienst.forms
                 {
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                    if (item.GebuehrAmt.HasValue && mat != null && mat.Gebuehrenpflichtig)
+                    if (item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                     {
                         var valueToAdd = item.GebuehrAmt.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
@@ -1828,22 +1828,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Prüfen ob an der Position ein Gebührenpacket hängt, wenn ja 
-        /// txtGebPreis im Gridview1 sperren. 
-        /// </summary>
-        /// <param name="IDKopf">ID des Kopfes</param>
-        /// <param name="IDPos">ID der Position</param>
-        /// <returns>Visibility von txtGebPreis im Gridview</returns>
-        protected bool proofGebPak(String IDKopf, String IDPos)
-        {
-            var pos = objNacherf.Vorgangsliste.FirstOrDefault(v => v.SapId == IDKopf && v.PositionsNr == IDPos);
-            if (pos != null && pos.Gebuehrenpaket.IsTrue())
-                return false;
-
-            return true;
-        }
-
-        /// <summary>
         /// Aufruf aus dem Gridview der aspx-Seite. Kennzeichenpreis ausblenden 
         /// wenn es sich um einen Pauschalkunden handelt oder kein Kennzeichenmaterial zum
         /// Material hinterlegt ist.
@@ -1857,13 +1841,13 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Gebührenpflichtig?
+        /// Gebührenmaterial vorhanden?
         /// </summary>
         /// <param name="Matnr"></param>
         /// <returns></returns>
-        protected bool proofGebMatPflicht(String Matnr)
+        protected bool proofGebMat(String Matnr)
         {
-            return objCommon.proofGebMatPflicht(Matnr);
+            return objCommon.proofGebMat(Matnr);
         }
 
         /// <summary>

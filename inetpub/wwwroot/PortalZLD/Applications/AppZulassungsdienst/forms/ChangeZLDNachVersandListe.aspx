@@ -177,7 +177,7 @@
                                                             </HeaderTemplate>
 														    <ItemTemplate>
 														        <asp:TextBox ID="txtGebPreis" onKeyPress="return numbersonly(event, true)"  CssClass="TextBoxNormal" Width="45" Font-Size="8pt" runat="server"
-														                     Text='<%# Eval("Gebuehr", "{0:F}") %>' Visible='<%# proofGebMatPflicht(Eval("MaterialNr").ToString()) %>'/>
+														                     Text='<%# Eval("Gebuehr", "{0:F}") %>' Visible='<%# proofGebMat(Eval("MaterialNr").ToString()) %>'/>
 														    </ItemTemplate>
 														    <HeaderStyle CssClass="TablePadding" Width="55px"/>
 														    <ItemStyle CssClass="TablePadding" Width="55px"/>
@@ -220,17 +220,17 @@
                                                             </HeaderTemplate>
 															<ItemTemplate>
 															    <asp:Label ID="lblReserviert" runat="server" Visible='<%# Eval("KennzeichenReservieren") %>' Font-Bold='<%# Eval("Bearbeitet") %>' Text="R"/>
-															    <asp:Label ID="lblWunschKennz" runat="server" Visible='<%# (bool)Eval("Wunschkennzeichen") && !(bool)Eval("KennzeichenReservieren") %>' Font-Bold='<%# Eval("Bearbeitet") %>' Text="W"/>
+															    <asp:Label ID="lblWunschKennz" runat="server" Visible='<%# (bool?)Eval("Wunschkennzeichen") == true && (bool?)Eval("KennzeichenReservieren") == false %>' Font-Bold='<%# Eval("Bearbeitet") %>' Text="W"/>
 															</ItemTemplate>
 															<HeaderStyle CssClass="TablePadding"  Width="14px"  />
 															<ItemStyle CssClass="TablePadding"  Width="14px"  />
 														</asp:TemplateField>
-														<asp:TemplateField SortExpression="VersandzulassungDurchfuehrendesVkBur" HeaderText="col_VersandVKbur">
+														<asp:TemplateField SortExpression="VkBur" HeaderText="col_VersandVKbur">
 															<HeaderTemplate>
-																<asp:LinkButton ID="col_VersandVKbur" runat="server" CommandName="Sort" CommandArgument="VersandzulassungDurchfuehrendesVkBur">col_VersandVKbur</asp:LinkButton>
+																<asp:LinkButton ID="col_VersandVKbur" runat="server" CommandName="Sort" CommandArgument="VkBur">col_VersandVKbur</asp:LinkButton>
                                                             </HeaderTemplate>
 															<ItemTemplate>
-															    <asp:Label ID="lblVersandVKbur" runat="server"  Text='<%# Eval("VersandzulassungDurchfuehrendesVkBur") %>'/>
+															    <asp:Label ID="lblVersandVKbur" runat="server"  Text='<%# Eval("VkBur") %>'/>
 															</ItemTemplate>
 															<HeaderStyle CssClass="TablePadding" Width="20px" />
 															<ItemStyle CssClass="TablePadding" Width="20px" />

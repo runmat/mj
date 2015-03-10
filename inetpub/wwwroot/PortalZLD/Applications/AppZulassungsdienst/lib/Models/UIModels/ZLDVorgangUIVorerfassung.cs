@@ -30,7 +30,7 @@ namespace AppZulassungsdienst.lib.Models
 
         public string KennzeichenTeil2 { get; set; }
 
-        public string Kennzeichen { get { return KennzeichenTeil1 + (String.IsNullOrEmpty(KennzeichenTeil2) ? "" : "-" + KennzeichenTeil2);} }
+        public string Kennzeichen { get { return String.Format("{0}-{1}", KennzeichenTeil1, KennzeichenTeil2);} }
 
         public string FehlerText { get; set; }
 

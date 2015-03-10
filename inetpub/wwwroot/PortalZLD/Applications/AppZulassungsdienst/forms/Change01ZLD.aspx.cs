@@ -604,6 +604,7 @@ namespace AppZulassungsdienst.forms
             txtStVa.Text = kopfdaten.Landkreis;
             ddlStVa.SelectedValue = kopfdaten.Landkreis;
             txtKennz1.Text = kopfdaten.Landkreis;
+            chkEinKennz.Checked = kopfdaten.NurEinKennzeichen.IsTrue();
             chkWunschKZ.Checked = kopfdaten.Wunschkennzeichen.IsTrue();
             chkReserviert.Checked = kopfdaten.KennzeichenReservieren.IsTrue();
             txtNrReserviert.Text = kopfdaten.ReserviertesKennzeichen;
@@ -1481,7 +1482,7 @@ namespace AppZulassungsdienst.forms
                 if (!neuerVorgang)
                     kopfdaten.WebBearbeitungsStatus = "B";
 
-                objVorerf.SaveVorgangToSql(m_User.UserName);
+                objVorerf.SaveVorgangToSql(objCommon.KundenStamm, m_User.UserName);
 
                 if (!neuerVorgang && !objVorerf.ErrorOccured)
                     LinkButton1_Click(this, new EventArgs());

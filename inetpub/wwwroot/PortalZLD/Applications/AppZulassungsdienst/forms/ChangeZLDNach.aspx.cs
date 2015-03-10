@@ -2279,13 +2279,13 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Gebührenpflichtig?
+        /// Gebührenmaterial vorhanden?
         /// </summary>
         /// <param name="Matnr"></param>
         /// <returns></returns>
-        protected bool proofGebMatPflicht(String Matnr)
+        protected bool proofGebMat(String Matnr)
         {
-            return objCommon.proofGebMatPflicht(Matnr);
+            return objCommon.proofGebMat(Matnr);
         }
 
         private void SaveBankAdressdaten()

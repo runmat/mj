@@ -241,8 +241,8 @@
                                                 </HeaderTemplate>
 												<ItemTemplate>
 												    <asp:TextBox ID="txtGebPreis" onKeyPress="return numbersonly(event, true)"  CssClass="TextBoxNormal" Width="45" Font-Size="8pt" runat="server"
-												                 Text='<%# Eval("Gebuehr", "{0:F}") %>' Visible='<%# proofGebMatPflicht(Eval("MaterialNr").ToString()) %>'
-												                 Enabled='<%# proofGebPak(Eval("SapId").ToString(), Eval("PositionsNr").ToString()) %>' />
+												                 Text='<%# Eval("Gebuehr", "{0:F}") %>' Visible='<%# proofGebMat(Eval("MaterialNr").ToString()) %>'
+												                 Enabled='<%# ((bool?)Eval("Gebuehrenpaket")) == false %>' />
                                                     <asp:HiddenField ID="txtGebPreisOld" Value='<%# Eval("Gebuehr", "{0:F}") %>' runat="server" />
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding" Width="52px"  />
@@ -254,7 +254,7 @@
                                                 </HeaderTemplate>
 												<ItemTemplate>
 												    <asp:TextBox ID="txtPreis_Amt" onKeyPress="return numbersonly(event, true)"  CssClass="TextBoxNormal" Width="45" Font-Size="8pt" runat="server"
-												                 Text='<%# Eval("GebuehrAmt", "{0:F}") %>' Visible='<%# proofGebMatPflicht(Eval("MaterialNr").ToString()) %>' />
+												                 Text='<%# Eval("GebuehrAmt", "{0:F}") %>' Visible='<%# proofGebMat(Eval("MaterialNr").ToString()) %>' />
                                                     <asp:HiddenField ID="txtPreis_AmtOld" Value='<%# Eval("GebuehrAmt", "{0:F}") %>' runat="server" />
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding" Width="52px"/>
@@ -345,7 +345,7 @@
                                                 </HeaderTemplate>
 												<ItemTemplate>
 												    <asp:Label ID="lblReserviert" runat="server" Visible='<%# Eval("KennzeichenReservieren") %>' Font-Bold='<%# Eval("Bearbeitet") %>' Text="R"/>
-												    <asp:Label ID="lblWunschKennz" runat="server" Visible='<%# (bool)Eval("Wunschkennzeichen") && !(bool)Eval("KennzeichenReservieren") %>' Font-Bold='<%# Eval("Bearbeitet") %>' Text="W"/>
+												    <asp:Label ID="lblWunschKennz" runat="server" Visible='<%# (bool?)Eval("Wunschkennzeichen") == true && (bool?)Eval("KennzeichenReservieren") == false %>' Font-Bold='<%# Eval("Bearbeitet") %>' Text="W"/>
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding"  Width="14px"  />
 												<ItemStyle CssClass="TablePadding"  Width="14px"  />
@@ -357,7 +357,7 @@
 												<ItemTemplate>
 													<asp:Image runat="server" Visible='<%# (!String.IsNullOrEmpty(Eval("Bemerkung").ToString())) && Eval("PositionsNr").ToString() == "10" %>' 
                                                         ImageUrl="/PortalZLD/images/info.gif" ToolTip='<%# Eval("Bemerkung") %>'/>
-                                                    <asp:Image runat="server" Visible='<%# ((bool)Eval("Nachbearbeiten")) && (!String.IsNullOrEmpty(Eval("Infotext").ToString())) && Eval("PositionsNr").ToString() == "10" %>' 
+                                                    <asp:Image runat="server" Visible='<%# (bool?)Eval("Nachbearbeiten") == true && !String.IsNullOrEmpty(Eval("Infotext").ToString()) && Eval("PositionsNr").ToString() == "10" %>' 
                                                         ImageUrl="/PortalZLD/images/info.gif" ToolTip='<%# Eval("Infotext") %>'/>
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding"  Width="20px" />

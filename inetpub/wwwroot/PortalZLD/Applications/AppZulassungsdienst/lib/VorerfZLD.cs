@@ -135,7 +135,7 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-		public void SaveVorgangToSql(string userName)
+        public void SaveVorgangToSql(List<Kundenstammdaten> kundenStamm, string userName)
 		{
 			ClearError();
 
@@ -208,6 +208,10 @@ namespace AppZulassungsdienst.lib
                 }
 
                 zldDataContext.SubmitChanges();
+
+                // Liste aktualisieren
+                Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
+                AddVorgangToVorgangsliste(kopfdaten, AktuellerVorgang.Positionen, kundenStamm);
 			}
 			catch (Exception ex)
 			{

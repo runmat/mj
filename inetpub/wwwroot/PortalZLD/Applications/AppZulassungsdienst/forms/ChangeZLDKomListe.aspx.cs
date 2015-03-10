@@ -1328,7 +1328,7 @@ namespace AppZulassungsdienst.forms
             {
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                if (item.Gebuehr.HasValue && mat != null && mat.Gebuehrenpflichtig)
+                if (item.Gebuehr.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                 {
                     var valueToAdd = item.Gebuehr.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
@@ -1365,7 +1365,7 @@ namespace AppZulassungsdienst.forms
                 {
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                    if (item.GebuehrAmt.HasValue && mat != null && mat.Gebuehrenpflichtig)
+                    if (item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                     {
                         var valueToAdd = item.GebuehrAmt.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
@@ -1479,13 +1479,13 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Gebührenpflichtig?
+        /// Gebührenmaterial vorhanden?
         /// </summary>
         /// <param name="Matnr"></param>
         /// <returns></returns>
-        protected bool proofGebMatPflicht(String Matnr)
+        protected bool proofGebMat(String Matnr)
         {
-            return objCommon.proofGebMatPflicht(Matnr);
+            return objCommon.proofGebMat(Matnr);
         }
 
         /// <summary>

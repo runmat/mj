@@ -45,7 +45,5 @@ namespace AppZulassungsdienst.lib.Models
                 return Vorerfassungsdatum.Value.AddHours(tmpZeit.Hour).AddMinutes(tmpZeit.Minute).AddSeconds(tmpZeit.Second);
             }
         }
-
-        public string VersandzulassungDurchfuehrendesVkBur { get; set; }
     }
 }
