@@ -1,4 +1,5 @@
 ﻿
+
 <style type="text/css">
     
     .header-icon 
@@ -125,6 +126,9 @@
         display: inline-block;
     }
     
+    span.calendar-termin-editmode-header {
+        font-weight: bold;
+    }
 </style>
 
 
@@ -151,7 +155,7 @@
     }
 
     function Test() {
-        ShowSchadenakteAjax("17", false);
+        ShowSchadenakteAjax("139", false);
         setTimeout(function () {
 //            TerminSchadenfallCreate();
 //            setTimeout(function () {
@@ -160,9 +164,22 @@
 //            }, 300);
 
             setTimeout(function () {
-                $($(".schadenakte-status")[0]).trigger("click");
-            }, 300);
+                $($(".schadenakte-termine")[0]).trigger("click");
+    
+//                setTimeout(function () {
+//                    $("#TerminSchadenfallGrid .debug").trigger("click");
+//                    
+//                    setTimeout(function () {
+//                        $(":radio[value=RE]").uniformRadioCheck();
+//                        
+//                        setTimeout(function () {
+//                            $("#divTerminSchadenfallInit .debug").trigger("click");
+//                        }, 100);
+//                    }, 300);
+//                }, 600);
 
+                $($(".schadenakte-termine")[0]).trigger("click");
+            }, 300);
 
         }, 1500);
     }
@@ -272,7 +289,7 @@
     }
 
     function VorgangDelete(id) {
-        if (!confirm('@Localize.ConfirmOccurenceDeletion'))
+        if (!confirm('@Localize.ConfirmOccurenceDeletion.ToJavascriptString()'))
             return;
 
         $.ajax({
@@ -519,20 +536,37 @@
         });
     }
     
-    function TerminSchadenfallEdit(id) {
+    function TerminSchadenfallMove(id) {
         $.ajax({
             type: "POST",
-            url: "TerminSchadenfallEdit",
+            url: "TerminSchadenfallMove",
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                TerminSchadenfallKalenderDetails(result);
+                TerminSchadenfallKalenderDetails(result, 'move');
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("Message", jqXhr);
             }
         });
     }
+    
+    function TerminSchadenfallEdit(id) {
+        $.ajax({
+            type: "POST",
+            url: "TerminSchadenfallKalenderEditElementFromSchadenfallId",
+            data: {
+                id: id
+            },
+            loadingShow: true,
+            success: function (result) {
+                TerminSchadenfallEditDetails(result, 'from-id');
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("Message", jqXhr);
+            }
+        });
+    }    
 
     function TerminSchadenfallKalenderEditElement(calEvent) {
         $.ajax({
@@ -549,7 +583,7 @@
             },
             loadingShow: true,
             success: function (result) {
-                TerminSchadenfallEditDetails(result);
+                TerminSchadenfallEditDetails(result, 'from-calendar');
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("Message", jqXhr);
@@ -557,17 +591,29 @@
         });
     }
 
-    function TerminSchadenfallEditDetails(result) {
+    var _terminSchadenfallEditDetails_ModeComingFrom = '';
+
+    function TerminSchadenfallEditDetails(result, modeComingFrom) {
+        _terminSchadenfallEditDetails_ModeComingFrom = modeComingFrom;
+        
         $("#divTerminSchadenfallEdit").html(result);
         TerminSchadenfallEditPreparePrivate();
-        $("#divTerminSchadenfallKalender").slideUp(200, function () { $("#divTerminSchadenfallEdit").slideDown(200); });
-        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallTerminDetails)");
 
-        //FormPrepareAjax();
+        var divToHide = (modeComingFrom == "from-calendar") ? $("#divTerminSchadenfallKalender") : GetSchadenfallDiv();
+        divToHide.slideUp(200, function () { $("#divTerminSchadenfallEdit").slideDown(200); });
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallTerminDetails)");
     }
     
     function TerminSchadenfallEditDetailsClose(updateCalendar, useSaveMessage) {
-        $("#divTerminSchadenfallEdit").slideUp(200, function () { $("#divTerminSchadenfallKalender").slideDown(200); });
+
+        var divToShow = $("#divTerminSchadenfallKalender");
+        if (_terminSchadenfallEditDetails_ModeComingFrom != "from-calendar") {
+            divToShow = GetSchadenfallDiv();
+            FilterGrid("TerminSchadenfallGrid");
+        }
+        $("#divTerminSchadenfallEdit").slideUp(200, function () { divToShow.slideDown(200); });
+        
+        
         BreadcrumbsMovePrev();
 
         if (typeof (updateCalendar) !== 'undefined' && updateCalendar) {
@@ -585,7 +631,7 @@
     }
 
     function TerminSchadenfallDelete(id) {
-        if (!confirm("@Localize.AppointmentConfirmDeletion"))
+        if (!confirm("@Localize.AppointmentConfirmDeletion.ToJavascriptString()"))
             return;
 
         $.ajax({
@@ -617,11 +663,7 @@
         $("#divTerminSchadenfallInit").html(result);
         TerminSchadenfallCreatePreparePrivate();
         $("#divSchadenakte").slideUp(200, function () { $("#divTerminSchadenfallInit").slideDown(200); });
-        BreadcrumbsMoveNext(@MvcHtmlString.Create(Localize.VersicherungsFallTerminanlage));
-
-        //$(":radio[value=RE]").uniformRadioDisable();
-
-        //FormPrepareAjax();
+        BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallTerminanlage)");
     }
 
     function TerminSchadenfallCreateFinish() {
@@ -639,19 +681,96 @@
                     return;
                 }
 
-                TerminSchadenfallKalenderDetails(result);
+                TerminSchadenfallKalenderDetails(result, 'create');
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("Message", jqXhr);
             }
         });
     }
+
+    function ReTerminVorschlaegeSearch() {
+        var datum = $(".re-termin-vorschlaege-auswahl-div input[name='Datum']");
+        var uhrzeit = $(".re-termin-vorschlaege-auswahl-div input[name='UhrzeitZeitGewuenscht']");
+        var dauer = $(".re-termin-vorschlaege-auswahl-div input[name='DauerMinutenGewuenscht']");
+
+        $(".re-termin-vorschlaege-results-div").html("");
+
+        if (datum.val().length == 0) {
+            SpanAlertError("ReTerminVorschlagMessage", "@Localize.PleaseFillOutForm" + ": @Localize.Date", 1500);
+            return;
+        }
+        if (uhrzeit.val().length == 0){
+            SpanAlertError("ReTerminVorschlagMessage", "@Localize.PleaseFillOutForm" + ": @Localize._Uhrzeitwunsch", 1500);
+            return;
+        }
+        if (dauer.val().length == 0){
+            SpanAlertError("ReTerminVorschlagMessage", "@Localize.PleaseFillOutForm" + ": @Localize.Duration", 1500);
+            return;
+        }
+
+        $.ajax({
+            type: "POST",
+            url: "ReTerminVorschlaegeSearch",
+            data: {
+                datum: datum.val(), uhrzeit: uhrzeit.val(), dauer: dauer.val()
+            },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.errorMessage) !== 'undefined') {
+                    SpanAlertError("ReTerminVorschlagMessage", result.errorMessage, 2500);
+                    return;
+                }
+
+                $(".re-termin-vorschlaege-results-div").html(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("ReTerminVorschlagMessage", jqXhr);
+            }
+        });
+    }
+
+    function ReTerminVorschlaegeClose() {
+        $(".re-termin-vorschlaege-auswahl-div").slideUp(200);
+    }
     
-    function TerminSchadenfallKalenderDetails(result) {
+    function GetSchadenfallDiv() {
+        return ($("#divTerminSchadenfallInit").css("display") == "none" || $("#divTerminSchadenfallInit").html() == ""
+            ? $("#divSchadenakte")
+            : $("#divTerminSchadenfallInit"));
+    }
+    
+    function ReTerminVorschlagSelect(terminID) {
+        $.ajax({
+            type: "POST",
+            url: "ReTerminVorschlagSelect",
+            data: {
+                terminID: terminID
+            },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.errorMessage) !== 'undefined') {
+                    SpanAlertError("ReTerminVorschlagMessage", result.errorMessage, 2500);
+                    return;
+                }
+
+                ReTerminVorschlaegeClose();
+                setTimeout(function () {
+                    TerminSchadenfallEditDetails(result);
+                }, 500);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("ReTerminVorschlagMessage", jqXhr);
+            }
+        });  
+    }
+
+    function TerminSchadenfallKalenderDetails(result, mode) {
         var divToHide = ($("#divTerminSchadenfallInit").css("display") == "none" || $("#divTerminSchadenfallInit").html() == "" 
-                            ? $("#divSchadenakte") 
+                            ? $("#divSchadenakte")
                             : $("#divTerminSchadenfallInit"));
         $("#divTerminSchadenfallKalender").html(result);
+        $(".calendar-termin-editmode-header").html(mode == 'create' ? '@Localize.AppointmentNew' : '@Localize.AppointmentEdit');
 
         divToHide.slideUp(200, function () {
             $("#divTerminSchadenfallKalender").slideDown(200);
@@ -828,14 +947,6 @@
             dateCurrent = $(elem).fullCalendar('getDate');
         });
 
-//        if (dateCurrent.getDay() == 0) {
-//            // Sonntage überspringen:
-//            if (direction == 0) 
-//                direction = 1;
-//            CalendarsReModeDateScroll(direction);
-//            return;
-//        }
-
         $.each($(".calendar-container-box"), function (i, elem) {
             if ($(elem).data("tmp-display") == "none")
                 $(elem).hide();
@@ -1007,8 +1118,7 @@
                                     }
 
                                     $.each(result, function (e, item) {
-                                        item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
-                                        item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+                                        CalendarCreateItem(item);
                                     });
 
                                     callback(result);
@@ -1022,6 +1132,11 @@
             }
         };
     } ();
+
+    function CalendarCreateItem(item) {
+        item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
+        item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+    }
 
     function CalendarFormatBackgroundReadOnlySlots(date) {
         $.each($(".fc-slot-div"), function (i, elem) {
@@ -1053,7 +1168,6 @@
 
         var dateString = date.toString("yyyy-MM-dd");
         $("#calendarReModeCurrentDay").text(_calendarDayNames[date.getDay()] + ", " + date.toString("dd.MM.yyyy"));
-        //alert("AJAX !!!");
 
         CalendarFormatBackgroundReadOnlySlots(date);
 
@@ -1072,8 +1186,7 @@
                 }
 
                 $.each(result, function (e, item) {
-                    item.start = createDate(item.start, item.startTimeHours, item.startTimeMinutes);
-                    item.end = createDate(item.end, item.endTimeHours, item.endTimeMinutes);
+                    CalendarCreateItem(item);
                 });
 
                 // success: fetched all appointments for one date but for all(!) boxes
@@ -1148,7 +1261,6 @@
     }
 
     function BtnTerminUebersichtRequestShowShowHide() {
-        //console.log($("#TmpVersEventOrtCurrentID").val());
         if ($("#TmpVersEventOrtCurrentID").val() !== '' && $("#TmpVersEventOrtCurrentID").val() != null)
             $("#btnTerminUebersichtRequestShow").removeClass('hide');
         else
@@ -1178,7 +1290,6 @@
             $("#TerminUebersichtKalender").slideDown(200);
             CalendarPreparePrivate();
         });
-        //console.log("Boxen Termine");
         BreadcrumbsMoveNext("@MvcHtmlString.Create(Localize.VersicherungsFallBoxenTermine)");
     }
 

@@ -246,10 +246,13 @@ namespace CkgDomainLogic.General.Services
         public override void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             var dbContext = CreateDbContext(loginModel.UserName);
-            var lastLockedBy = dbContext.GetUserAccountLastLockedBy(dbContext.UserName);
+            if (dbContext.User != null && dbContext.User.AccountIsLockedOut)
+            {
+                var lastLockedBy = dbContext.GetUserAccountLastLockedBy(dbContext.UserName);
 
-            if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0 && String.Compare("[admin-regelprozess]", lastLockedBy, true) != 0)
-                addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
+                if (String.Compare(loginModel.UserName, lastLockedBy, true) != 0 && String.Compare("[admin-regelprozess]", lastLockedBy, true) != 0)
+                    addModelError(m => m.UserName, Localize.PasswordResetNotAllowedHint);
+            }
         }
 
         public override User TryGetUserFromPasswordToken(string passwordToken, int tokenExpirationMinutes)

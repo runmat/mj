@@ -96,10 +96,10 @@ namespace CkgDomainLogic.General.Services
             {
                 AllOrganizations = true,
                 CustomerID = 209,
-                OrganizationID = 266,
-                OrganizationName = "Standard",
-                OrganizationReference = "240145",
-                OrganizationReference2 = "4174",
+                OrganizationID = 238,
+                OrganizationName = "",
+                OrganizationReference = "999",
+                OrganizationReference2 = "",
             };
 
             LocalizationService = localizationService;

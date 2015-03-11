@@ -42,10 +42,10 @@ namespace CkgDomainLogic.Insurance.Models
         public string EventName { get { return Event.EventName; } }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.Insurance)]
+        [LocalizedDisplay(LocalizeConstants.Partner)]
         public string VersicherungID { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Insurance)]
+        [LocalizedDisplay(LocalizeConstants.Partner)]
         [NotMapped]
         public string VersicherungName
         {
@@ -61,6 +61,9 @@ namespace CkgDomainLogic.Insurance.Models
                 return vs.Text;
             }
         }
+
+        [LocalizedDisplay(LocalizeConstants.AnotherFemale)]
+        public string VersicherungAndere { get; set; }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
