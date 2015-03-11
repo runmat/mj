@@ -110,8 +110,8 @@
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
         var fileName = e.files[0].name;
 
-        if (fileName.toLowerCase().indexOf('.csv') <= 0 && fileName.toLowerCase().indexOf('.xls') <= 0) {
-            alert('@Localize.FileUploadOnlyXlsCsvLegal');
+        if (fileName.toLowerCase().indexOf('.csv') <= 0) {
+            alert('@Localize.FileUploadOnlyCsvLegal');
             return false;
         }
 

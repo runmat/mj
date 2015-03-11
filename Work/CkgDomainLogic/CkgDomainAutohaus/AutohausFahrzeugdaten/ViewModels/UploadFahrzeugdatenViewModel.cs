@@ -55,7 +55,7 @@ namespace CkgDomainLogic.AutohausFahrzeugdaten.ViewModels
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, CreateInstanceFromDatarow, ';', true).ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, CreateInstanceFromDatarow, ';', true, true).ToList();
             FileService.TryFileDelete(UploadServerFileName);
             if (list.None())
                 return false;
