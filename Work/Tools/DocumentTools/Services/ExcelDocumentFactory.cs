@@ -34,7 +34,7 @@ namespace DocumentTools.Services
             return selectedSeparator;
         }
 
-        private static DataTable ReadToDataTable(string excelFileName, char separator = '*')
+        private static DataTable ReadToDataTable(string excelFileName, bool skipDataReformatting, char separator, bool maintainLeadingZeros)
         {
             try
             {
@@ -49,6 +49,10 @@ namespace DocumentTools.Services
                     separator = TryAutoFindSeparatorInFile(excelFileName);
 
                 var workbook = new Workbook();
+
+                if (maintainLeadingZeros)
+                    workbook.ConvertNumericData = false;
+
                 if (extension.ToLower().StartsWith(".xls"))
                     workbook.Open(excelFileName, FileFormatType.Default);
                 else if (extension.ToLower() == ".csv")
@@ -59,8 +63,18 @@ namespace DocumentTools.Services
                 //Get the first worksheet in the workbook
                 var worksheet = workbook.Worksheets[0];
 
-                //Export worksheet data to a DataTable object by calling either ExportDataTable or ExportDataTableAsString method of the Cells class		 	
-                return ReFormatDataTableValues(worksheet.Cells.ExportDataTable(0, 0, worksheet.Cells.MaxRow + 1, worksheet.Cells.MaxColumn + 1).DeleteEmptyRows());
+                DataTable tbl;
+
+                //Export worksheet data to a DataTable object by calling either ExportDataTable or ExportDataTableAsString method of the Cells class
+                if (maintainLeadingZeros)
+                    tbl = worksheet.Cells.ExportDataTableAsString(0, 0, worksheet.Cells.MaxRow + 1, worksheet.Cells.MaxColumn + 1).DeleteEmptyRows();
+                else
+                    tbl = worksheet.Cells.ExportDataTable(0, 0, worksheet.Cells.MaxRow + 1, worksheet.Cells.MaxColumn + 1).DeleteEmptyRows();
+
+                if (skipDataReformatting)
+                    return tbl;
+
+                return ReFormatDataTableValues(tbl);
 
             }
             catch { return new DataTable(); }
@@ -83,29 +97,30 @@ namespace DocumentTools.Services
             return dataTable;
         }
 
-        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, Func<DataRow, T> createFromDataRow = null, char separator = '*')
+        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
             where T : class, new()
         {
-            try
-            {
-                var dataTable = ReadToDataTable(excelFileName, separator);
-                if (dataTable.Columns.Count == 0)
-                    return new List<T>();
-
-                return dataTable.AsEnumerable()
-                            .Where(row => dataTable.Rows.IndexOf(row) > 0)
-                    // skip the first row, we asume it's the header row
-                            .Select(row => createFromDataRow != null ? createFromDataRow(row) : AutoCreateFromDataRow<T>(row));
-            }
-            catch { return new List<T>(); }
+            return ReadToDataTable(excelFileName, false, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
         }
 
-        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, bool headerRowAvailable, Func<DataRow, T> createFromDataRow = null, char separator = '*')
+        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, bool headerRowAvailable, Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
             where T : class, new()
+        {
+            return ReadToDataTableInternal(excelFileName, headerRowAvailable, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
+        }
+
+        public IEnumerable<T> ReadToDataTableWithFirstRowAsPropertyMapping<T>(string excelFileName, char separator = ';')
+            where T : class, new()
+        {
+            return ReadToDataTable(excelFileName, CreateFromDataRowWithFirstRowAsPropertyMapping<T>, separator);
+        }
+
+        private IEnumerable<T> ReadToDataTableInternal<T>(string excelFileName, bool headerRowAvailable, Func<DataRow, T> createFromDataRow, char separator, bool skipDataReformatting, bool maintainLeadingZeros)
+           where T : class, new()
         {
             try
             {
-                var dataTable = ReadToDataTable(excelFileName, separator);
+                var dataTable = ReadToDataTable(excelFileName, skipDataReformatting, separator, maintainLeadingZeros);
                 if (dataTable.Columns.Count == 0)
                     return new List<T>();
 
@@ -118,13 +133,6 @@ namespace DocumentTools.Services
             }
             catch { return new List<T>(); }
         }
-
-        public IEnumerable<T> ReadToDataTableWithFirstRowAsPropertyMapping<T>(string excelFileName, char separator = ';')
-            where T : class, new()
-        {
-            return ReadToDataTable(excelFileName, CreateFromDataRowWithFirstRowAsPropertyMapping<T>, separator);
-        }
-
 
         static T AutoCreateFromDataRow<T>(DataRow row)
             where T : class, new()

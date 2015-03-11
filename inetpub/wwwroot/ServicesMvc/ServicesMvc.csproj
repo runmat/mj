@@ -2501,6 +2501,7 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
