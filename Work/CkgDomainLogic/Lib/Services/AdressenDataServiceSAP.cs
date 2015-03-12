@@ -44,7 +44,9 @@ namespace CkgDomainLogic.DomainCommon.Services
         public Adresse SaveAdresse(Adresse adresse, Action<string, string> addModelError)
         {
             var storedItem = StoreToSap(adresse, addModelError, false);
-            return ModelMapping.Copy(storedItem, GetAdresseEquals(storedItem));
+            ModelMapping.Copy(storedItem, GetAdresseEquals(storedItem));
+
+            return adresse;
         }
 
         public void DeleteAdresse(Adresse adresse)
@@ -178,31 +180,6 @@ namespace CkgDomainLogic.DomainCommon.Services
 
                     addModelError(errorPropertyName, e.Message);
                 }
-            }
-
-            //
-            // prüflesen:
-            //
-            if (!deleteOnly)
-            {
-                var savedID = adresse.ID;
-                Adresse savedAdresse;
-
-                MarkForRefreshAdressen();
-                // need to use our web private key here (InternalKey2), 
-                // because we don't know the public key (InternalKey) our data store (SAP) generated
-                savedAdresse = Adressen.FirstOrDefault(a => a.InternalKey2 == adresse.InternalKey2);
-
-                if (savedAdresse != null)
-                    // As long we are in insert mode, let's transfer the public key from our data store (SAP) to our origin item:
-                    adresse.InternalKey = savedAdresse.InternalKey;
-
-                if (savedAdresse != null)
-                    savedAdresse.ID = savedID;
-
-                if (addModelError != null)
-                    ModelMapping.Differences(adresse, savedAdresse).ForEach(
-                        differentPropertyName => addModelError(differentPropertyName, "Ihr Wert wurde aus unbekannten Gründen nicht gespeichert."));
             }
 
             return adresse;

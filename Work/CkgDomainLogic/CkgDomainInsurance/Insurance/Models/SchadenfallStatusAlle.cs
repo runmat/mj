@@ -18,10 +18,19 @@ namespace CkgDomainLogic.Insurance.Models
         [LocalizedDisplay(LocalizeConstants.Insurance)]
         public string VersicherungName { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.AnotherFemale)]
+        public string VersicherungAndere { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
         public string Referenznummer { get; set; }
 
         public int Sort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CurrentStatus)]
+        public string CurrentStatusText { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string CurrentStatusFarbe { get; set; }
 
         public DateTime? Status1 { get; set; }
         public DateTime? Status2 { get; set; }
