@@ -19,9 +19,11 @@
             {
                 columns.XBound(c => c.ID).Title("").Filterable(false).Sortable(false)
                     .ClientTemplate(
-                           //"<button onclick='TerminSchadenfallEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips debug' data-original-title='" + Localize.AppointmentChange + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-                           //+ "&nbsp;"
                            "<a class='btn mini gray tooltips a_btn_mini' data-original-title='" + Localize.AppointmentConfirmation + "' data-placement='right' href='mailto:" + Model.Email + "?subject=" + Localize.AppointmentConfirmationEvent + "&body=<#= data.MailtextTerminbestaetigung #>' ><i class='halflings-icon white envelope'></i></a>"
+                           + "&nbsp;"
+                           + "<button onclick='TerminSchadenfallMove(\"<#= data.ID #>\");' class='btn mini gray tooltips debug' data-original-title='" + Localize.AppointmentChange + "' data-placement='right'><i class='halflings-icon white calendar'></i></button>"
+                           + "&nbsp;"
+                           + "<button onclick='TerminSchadenfallEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips debug' data-original-title='" + Localize.AppointmentEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                            + "&nbsp;"
                            + "<button onclick='TerminSchadenfallDelete(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.AppointmentDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
                     )

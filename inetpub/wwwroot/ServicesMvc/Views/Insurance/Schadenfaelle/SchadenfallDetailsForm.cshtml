@@ -18,9 +18,11 @@
         
         @Html.FormValidationSummary()
 
+        
+        @Html.FormDropDownListFor(m => m.EventID, (ViewBag.AuswahlEvents as SelectList), new { @class = "m-wrap" })
                 
-        @Html.FormDropDownListFor(m => m.EventID, (ViewBag.AuswahlEvents as SelectList), new { @class = "m-wrap", col = "left" })
-        @Html.FormDropDownListFor(m => m.VersicherungID, (ViewBag.AuswahlVersicherungen as SelectList), new { @class = "m-wrap", col = "right" })
+        @Html.FormDropDownListFor(m => m.VersicherungID, (ViewBag.AuswahlVersicherungen as SelectList), new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.VersicherungAndere, new { @class = "m-wrap", col = "right" })
 
         @Html.FormTextBoxFor(m => m.Vorname, new { @class = "m-wrap", col = "left" })
         @Html.FormTextBoxFor(m => m.Nachname, new { @class = "m-wrap", col = "right" })
