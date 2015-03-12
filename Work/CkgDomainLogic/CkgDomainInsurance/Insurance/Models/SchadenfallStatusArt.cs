@@ -13,5 +13,7 @@
         public string Optional { get; set; }
 
         public string Bezeichnung { get; set; }
+
+        public string ArtFarbe { get; set; }
     }
 }
