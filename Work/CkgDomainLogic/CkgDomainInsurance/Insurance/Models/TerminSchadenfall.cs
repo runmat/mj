@@ -26,12 +26,10 @@ namespace CkgDomainLogic.Insurance.Models
         [GridHidden]
         public int VersSchadenfallID { get; set; }
 
-        [GridHidden]
-        [LocalizedDisplay(LocalizeConstants.VersEventLocation)]
+        [GridHidden, LocalizedDisplay(LocalizeConstants.VersEventLocation)]
         public int VersOrtID { get; set; }
 
-        [GridHidden]
-        [LocalizedDisplay(LocalizeConstants.Box)]
+        [GridHidden, LocalizedDisplay(LocalizeConstants.Box)]
         public int VersBoxID { get; set; }
 
         [GridHidden]
@@ -81,12 +79,17 @@ namespace CkgDomainLogic.Insurance.Models
         [NotMapped]
         public string VersicherungName { get { return Schadenfall.VersicherungName; } }
 
+        [LocalizedDisplay(LocalizeConstants.AnotherFemale)]
+        [NotMapped]
+        public string VersicherungAndere { get { return Schadenfall.VersicherungAndere; } }
+
         [LocalizedDisplay(LocalizeConstants.BoxType)]
         [NotMapped]
         public string BoxArtAsText { get { return Box.BoxArtAsText; } }
 
 
         [LocalizedDisplay(LocalizeConstants.Date)]
+        [Required]
         public DateTime Datum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateTo)]
@@ -113,6 +116,14 @@ namespace CkgDomainLogic.Insurance.Models
         [LocalizedDisplay(LocalizeConstants.Duration)]
         [NotMapped]
         public int DauerMinuten { get { return (int)(DatumZeitBis - DatumZeitVon).TotalMinutes; } }
+
+        [LocalizedDisplay(LocalizeConstants._Uhrzeitwunsch)]
+        [GridHidden, Required, NotMapped]
+        public string UhrzeitZeitGewuenscht { get { return PropertyCacheGet(() => "10:00"); } set { PropertyCacheSet(value); } }
+
+        [LocalizedDisplay(LocalizeConstants.AppointmentDuration)]
+        [GridHidden, Required, NotMapped]
+        public int DauerMinutenGewuenscht { get { return PropertyCacheGet(() => 60);} set { PropertyCacheSet(value); } }
         
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string Bemerkung { get; set; }
@@ -184,6 +195,7 @@ namespace CkgDomainLogic.Insurance.Models
         public VersEventOrt Ort
         {
             get { return PropertyCacheGet(() => Event.Orte.FirstOrDefault(ort => ort.ID == VersOrtID) ?? new VersEventOrt()); }
+            set { PropertyCacheSet(value); }
         }
 
         [GridHidden]
@@ -207,9 +219,6 @@ namespace CkgDomainLogic.Insurance.Models
 
                 mailText = mailText.Replace("<br/>", "%0A");
 
-                if (mailText.Length > 400)
-                    mailText = mailText.Substring(0, 400);
-
                 return mailText;
             }      
         }
@@ -218,19 +227,28 @@ namespace CkgDomainLogic.Insurance.Models
         [NotMapped]
         public bool IsBlockerDummyTermin { get { return VersSchadenfallID == 0; } }
 
+        public bool TmpMarkForDelete { get; set; }
 
-        bool ValidateTimeDuplicatesAndIntersections(Action<string, string> addModelError)
+        bool ValidateTimeDuplicatesAndIntersections(Action<string, string> addModelError, List<TerminSchadenfall> additionalTermine = null)
         {
             var viewModel = GetViewModel();
             if (viewModel == null)
                 return false;
 
+            if (!viewModel.InsertMode)
+                return true;
+
             var dataStoreRealTimeItems = viewModel.EventsDataService.TermineGet(null, VersBoxID);
 
             if (!viewModel.InsertMode)
+            {
                 // skip current appointment while comparing with the list of stored appointments
                 // (but only if we are NOT in InsertMode (because item.ID will not be valid in insert mode))
                 dataStoreRealTimeItems = dataStoreRealTimeItems.Where(realTimeItem => realTimeItem.ID != ID).ToList();
+            }
+            
+            if (additionalTermine != null)
+                dataStoreRealTimeItems = dataStoreRealTimeItems.Concat(additionalTermine).ToList();
 
             var existingRealTimeItemOverlapping = dataStoreRealTimeItems
                 .FirstOrDefault(realTimeItem =>
@@ -258,7 +276,7 @@ namespace CkgDomainLogic.Insurance.Models
             return true;
         }
 
-        public bool Validate(Action<string, string> addModelError)
+        public bool Validate(Action<string, string> addModelError, List<TerminSchadenfall> additionalTermine = null)
         {
             if (DatumZeitVon >= DatumZeitBis)
             {
@@ -270,7 +288,7 @@ namespace CkgDomainLogic.Insurance.Models
             if (!Ort.ValidateTimeInDayTimeRange(DatumZeitVon, DatumZeitBis, addModelError))
                 return false;
 
-            if (!ValidateTimeDuplicatesAndIntersections(addModelError))
+            if (!ValidateTimeDuplicatesAndIntersections(addModelError, additionalTermine))
                 return false;
 
             return true;
@@ -283,8 +301,9 @@ namespace CkgDomainLogic.Insurance.Models
 
         public List<VersEventOrtBox> GetValidBoxenForThisTermin()
         {
-            if (GetCachedBoxArt() == "RE")
+            if (GetCachedBoxArt() == "RE" || !GetViewModel().InsertMode)
                 // für RE Modus (Werkstatt Modus) alle Boxen zulassen, weil der User die Box über die entsprechende Calendar Komponente selbst bestimmt
+                // oder bei Edit Modus (nicht Insert) => auch alle Boxen zulassen
                 return GetValidBoxen().ToList();
 
             return GetValidBoxen().Where(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID).Where(t => t.DatumZeitVon == this.DatumZeitVon).None()).ToList();
@@ -298,9 +317,9 @@ namespace CkgDomainLogic.Insurance.Models
             return Ort.GetValidBoxen().ToList();
         }
 
-        public List<TerminSchadenfall> GetTermineForValidBoxen()
+        public List<TerminSchadenfall> GetTermineForValidBoxen(Predicate<TerminSchadenfall> terminSelector)
         {
-            var termineAllerBoxenUeberAllerSchadenFaelle = GetValidBoxen().SelectMany(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID)).ToList();
+            var termineAllerBoxenUeberAllerSchadenFaelle = GetValidBoxen().SelectMany(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID, terminSelector)).ToList();
 
             return termineAllerBoxenUeberAllerSchadenFaelle;
         }

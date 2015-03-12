@@ -1,32 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.OleDb;
-using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-
-using CKG.Base;
 using CKG.Base.Kernel.Security;
-
 
 namespace Upload_Validator
 {
     public class Validator
     {
-
         //finde Deutsches Standard Kennzeichen
-        static string pat = "[a-zA-Z]{1,3}-[a-zA-Z]{0,2}[0-9]{1,4}";
+        static string pat = "[a-zäöüA-ZÄÖÜ]{1,3}-[a-zA-Z]{0,2}[0-9]{1,4}";
         static Regex r = new Regex(pat, RegexOptions.IgnoreCase);
         static Match m;
 
-
         public DataTable UploadXLSDatei(HttpPostedFile uFile, string ExcelPath, User m_User, ref System.Web.UI.WebControls.Label lblerror, string AppID, string SessionID)
         {
-
             DataTable tblTemp = null;
 
             string FileExtension = "";
@@ -58,12 +47,7 @@ namespace Upload_Validator
                 lblerror.Text = "Bitte wählen Sie eine Datei aus.";
                 return new DataTable();       
             }
-            
-
-
-            
-            //Try
-            //string filepath = ConfigurationManager.AppSettings("ExcelPath");
+   
             string filepath = ExcelPath;
             string filename = null;
             System.IO.FileInfo info = null;
@@ -94,7 +78,6 @@ namespace Upload_Validator
                     sConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;" + "Data Source=" + filepath + filename + ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\"";
                 }
                 
-
                 OleDbConnection objConn = new OleDbConnection(sConnectionString);
                 objConn.Open();
 
@@ -107,12 +90,8 @@ namespace Upload_Validator
                     i = i + 1;
                 }
 
-
                 OleDbDataAdapter objAdapter1 = new OleDbDataAdapter();
                 DataSet objDataset1 = new DataSet();
-
-
-
 
                 //herausfinden in welchem Sheet Daten sind, bei mehr als einem gefülltem Sheet erfolgt eine Fehlermeldung
                 int SheetMitDatenCounter = 0;
@@ -134,10 +113,18 @@ namespace Upload_Validator
                         continue;
                     }
 
-                    if (objDataset1.Tables[0].Rows.Count > 1)
+                    if (objDataset1.Tables[0].Rows.Count > 0)
                     {
-                        tblTemp = objDataset1.Tables[0];
-                        SheetMitDatenCounter += 1;
+                        var ersteZeile = objDataset1.Tables[0].Rows[0];
+                        for (int j = 0; j < objDataset1.Tables[0].Columns.Count; j++)
+                        {
+                            if (!String.IsNullOrEmpty(ersteZeile[j].ToString()))
+                            {
+                                tblTemp = objDataset1.Tables[0];
+                                SheetMitDatenCounter += 1;
+                                break;
+                            }
+                        }
                     }
 
                     i++;
@@ -154,18 +141,12 @@ namespace Upload_Validator
             return tblTemp;
         }
 
-
         public DataTable UploadFahrgestellnummern(HttpPostedFile uFile, string ExcelPath, User m_User, ref System.Web.UI.WebControls.Label lblerror, string AppID, string SessionID)
         {
             DataTable tblTemp = null;
             tblTemp = UploadXLSDatei(uFile, ExcelPath, m_User, ref  lblerror, AppID, SessionID);
             if (tblTemp != null && lblerror.Text.IndexOf("Datei enthielt mehrere gefüllte Tabellen.<br>") < 0)
             {
-                if ((tblTemp == null))
-                {
-                    return new DataTable();
-                }
-
                 foreach (DataRow xrow in tblTemp.Rows)
                 {
                     xrow[0] = VIN_bereinigen(xrow[0].ToString());
@@ -183,22 +164,10 @@ namespace Upload_Validator
             tblTemp = UploadXLSDatei(uFile, ExcelPath, m_User, ref  lblerror, AppID, SessionID);
             if (tblTemp != null && lblerror.Text.IndexOf("Datei enthielt mehrere gefüllte Tabellen.<br>") < 0)
             {
-                if ((tblTemp == null))
-                {
-                    return new DataTable();
-                }
-
-
                 return tblTemp;
-
             }
             return new DataTable();
         }
-
-
-
-
-
 
         public string VIN_bereinigen(string strIn)
         {
@@ -213,9 +182,6 @@ namespace Upload_Validator
             }
             return Zahlenreihe;
         }
-
-
-
 
         public int FindeSpalteMitDeutschemKennzeichen(DataRow xrow)
         {
@@ -233,6 +199,7 @@ namespace Upload_Validator
             //wenn kein Kennzeichen gefunden wird, wird -1 zurückgegeben    
             return -1;
         }
+
         public string FindeDeutschesKennzeichen(DataRow xrow)
         {
             int i = 0;
@@ -249,8 +216,6 @@ namespace Upload_Validator
             //wenn kein Kennzeichen gefunden wird, wird "" zurückgegeben    
             return "";
         }
-
-
 
         public int CheckObZeilenMitMehrAlsEinemWertExistieren(DataTable xTable)
         {

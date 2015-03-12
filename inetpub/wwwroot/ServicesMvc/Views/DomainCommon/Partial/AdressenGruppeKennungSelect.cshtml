@@ -1,0 +1,28 @@
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.AdressenPflegeViewModel 
+
+<div id="divSearchFilterSuche">
+    <style type="text/css">
+        #SearchFilterForm .form-horizontal .control-group {
+            margin-bottom: 0!important;
+        }
+        #SearchFilterForm .requiredField {
+            display: none;
+        }
+    </style>
+
+    @using (Ajax.BeginForm("AdressenKennungChange", "DomainCommon", null,
+        new MvcAjaxOptions("divSearchFilterSuche") { OnComplete = "AdressenKennungChangeFinish();" }, new { id = "SearchFilterForm" }))
+    {    
+        
+        <div class="form-horizontal">
+            
+            @Html.FormRadioButtonListFor(m => m.AdressenKennungGruppe, Model.AdressenKennungGruppenLocalized, new { @class = "m-wrap" })
+            @Html.FormRadioButtonListFor(m => m.AdressenKennungTemp, Model.AdressenKennungenLocalized, new { @class = "m-wrap" })
+
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>    

@@ -53,6 +53,14 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult SchadenDokumenteAlle()
+        {
+            EventsViewModel.DataInit(UserCulture);
+
+            return View(EventsViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult Schadenverwaltung()
         {
             EventsViewModel.DataInit(UserCulture);
@@ -125,6 +133,24 @@ namespace ServicesMvc.Controllers
         public ActionResult FilterSchadenStatusAlleGrid(string filterValue, string filterColumns)
         {
             EventsViewModel.AlleSchadenStatusFilter(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Schadenfall Dokumente
+
+        [GridAction]
+        public ActionResult SchadenfallDokumenteAlleAjaxBinding()
+        {
+            return View(new GridModel(EventsViewModel.SchadenDokumenteAlleFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterSchadenDokumenteAlleGrid(string filterValue, string filterColumns)
+        {
+            EventsViewModel.AlleSchadenDokumenteFilter(filterValue, filterColumns);
 
             return new EmptyResult();
         }
@@ -307,8 +333,17 @@ namespace ServicesMvc.Controllers
             return PartialView("Schadenakte/Partial/Termine/TerminKalender", EventsViewModel.TerminCurrent);
         }
 
+        public ActionResult ReTerminVorschlaegeSearch(DateTime? datum, string uhrzeit, int dauer)
+        {
+            var errorMessage = EventsViewModel.ReTerminVorschlaegeSearch(datum, uhrzeit, dauer);
+            if (errorMessage.IsNotNullOrEmpty())
+                return Json(new { errorMessage });
+
+            return PartialView("Schadenakte/Partial/Termine/ReTerminVorschlaegeResults", EventsViewModel);
+        }
+
         [HttpPost]
-        public ActionResult TerminSchadenfallEdit(int id)
+        public ActionResult TerminSchadenfallMove(int id)
         {
             EventsViewModel.InsertMode = false;
             ModelState.Clear();
@@ -360,7 +395,7 @@ namespace ServicesMvc.Controllers
             if (firstBox == null)
                 return new EmptyResult();
 
-            var termineForValidBoxen = termin.GetTermineForValidBoxen().Where(t => t.Datum >= dateStart && t.Datum <= dateEnd);
+            var termineForValidBoxen = termin.GetTermineForValidBoxen(t => t.Datum >= dateStart && t.Datum <= dateEnd);
 
             if (boxArt == "RE")
                 return Json(termineForValidBoxen.Select(t => new TerminEntity
@@ -369,6 +404,7 @@ namespace ServicesMvc.Controllers
                         boxArt = boxArt,
                         title = (t.IsBlockerDummyTermin ? "Blocker" : string.Format("{0} {1}", t.SchadenfallKennzeichen, t.Schadenfall.Nachname)),
                         isBlocker = t.IsBlockerDummyTermin,
+                        isCurrentEditing = (!EventsViewModel.InsertMode && t.ID == termin.ID),
 
                         startDateString = t.Datum.ToJsonDateTimeString(),
                         start = t.Datum.ToJsonDateString(),
@@ -415,6 +451,7 @@ namespace ServicesMvc.Controllers
                             key = timeThisDay.ToShortDateString(),
                             boxArt = boxArt,
                             title = title,
+                            isCurrentEditing = (!EventsViewModel.InsertMode && normalTermine.Any(t => t.ID == termin.ID)),
 
                             startDateString = timeThisDay.ToJsonDateString(),
                             start = timeThisDay.ToJsonDateString(),
@@ -438,6 +475,21 @@ namespace ServicesMvc.Controllers
         public ActionResult TerminSchadenfallKalenderEditElement(string boxArt, string key, string startDateString, int startTimeHours, int startTimeMinutes, int endTimeHours, int endTimeMinutes)
         {
             EventsViewModel.TerminCurrentPrepare(boxArt, key, startDateString, startTimeHours, startTimeMinutes, endTimeHours, endTimeMinutes);
+
+            return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
+        }
+        
+        [HttpPost]
+        public ActionResult TerminSchadenfallKalenderEditElementFromSchadenfallId(int id)
+        {
+            EventsViewModel.TerminCurrentPrepareFromSchadenfallId(id);
+
+            return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
+        }
+
+        public ActionResult ReTerminVorschlagSelect(int terminID)
+        {
+            EventsViewModel.ReTerminVorschlaegeSelect(terminID);
 
             return PartialView("Schadenakte/Partial/Termine/TerminEditDetailsForm", EventsViewModel.TerminCurrent);
         }
@@ -499,6 +551,7 @@ namespace ServicesMvc.Controllers
         {
             EventsViewModel.TerminCurrentPrepareForTerminUebersicht(eventID, ortID);
 
+            ViewData["HideReTerminVorschlaege"] = true;
             return PartialView("Schadenakte/Partial/Termine/TerminKalender", EventsViewModel.TerminCurrent);
         }
 
