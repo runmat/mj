@@ -25,6 +25,49 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    function OnRowDataBound_SchadenStatusAlleGrid(e) {
+
+        if (typeof (e.dataItem["CurrentStatusText"]) === 'undefined' || typeof (e.dataItem["CurrentStatusFarbe"]) === 'undefined')
+            return;
+
+        var grid = $("#SchadenStatusAlleGrid").data("tGrid");
+
+        var statusText = e.dataItem["CurrentStatusText"];
+        var statusFarbe = e.dataItem["CurrentStatusFarbe"];
+
+        for (var i = 0; i < grid.columns.length; i++) {
+            var column = grid.columns[i];
+            //console.log(column);
+            var isCurrentStatusCell = (column.member == "CurrentStatusText");
+            var columnType = column.type.toLowerCase();
+            if (column.title == statusText || isCurrentStatusCell) {
+                SetCellStatusHtml($(e.row.cells[i]), statusFarbe, isCurrentStatusCell, columnType);
+                console.log(column);
+            }
+            else if (columnType == "date") {
+                SetCellStatusHtml($(e.row.cells[i]), "", false, columnType);
+            }
+        }
+    }
+
+    function SetCellStatusHtml(cell, statusFarbe, isCurrentStatusCell, columnType) {
+        var span = $("<div></div>").addClass("schaden-status-cell");
+        if (statusFarbe != "") {
+            span.css("background-color", statusFarbe);
+            span.addClass("shadow");
+        }
+        if (isCurrentStatusCell)
+            span.addClass("current");
+
+        var cellVal = cell.text();
+        if (columnType == "date" && cellVal.length == 10) {
+            // reformat date from "dd.mm.yyyy" to "dd.mm.yy" to ensure that no text will be cut off:
+            cell.text(cellVal.substring(0, 6) + cellVal.substring(8, 10));
+        }
+        
+        cell.prepend(span);
+    }
+    
 </script>
 
 <h3 class="page-title" id="headerTitle">@Localize.Status <small>@Localize.DamageCasesOfAll</small></h3>

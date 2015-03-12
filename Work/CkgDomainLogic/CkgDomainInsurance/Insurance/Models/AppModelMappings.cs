@@ -229,6 +229,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.FzgHersteller = s.FZGMARKE;
                         d.FzgModell = s.FZGTYP;
                         d.VersicherungID = s.VERSICH_ID;
+                        d.VersicherungAndere = s.ANDERE;
                         d.SelbstbeteiligungsHoehe = s.SBHOEHE;
                         d.Sammelbesichtigung = (s.SAMMELBES.NotNullOrEmpty() == "X");
                         d.Referenznummer = s.REFNR;
@@ -251,6 +252,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.FZGMARKE = s.FzgHersteller;
                         d.FZGTYP = s.FzgModell;
                         d.VERSICH_ID = s.VersicherungID;
+                        d.ANDERE = s.VersicherungAndere;
                         d.SBHOEHE = s.SelbstbeteiligungsHoehe;
                         d.SAMMELBES = (s.Sammelbesichtigung ? "X" : "");
                         d.REFNR = s.Referenznummer;
@@ -282,6 +284,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.Zeit = HhMmFromSap(s.UZEIT);
                         d.User = s.BENUTZER;
                         d.Kommentar = s.TEXT;
+                        d.StatusFarbe = s.FARBE_STATUS;
                     }
                 ));
             }
@@ -326,6 +329,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.Sort = s.REIHENFOLGE.ToInt();
                         d.Optional = s.OPTIONAL;
                         d.Bezeichnung = s.TEXT;
+                        d.ArtFarbe = s.FARBE_STATUS;
                     }
                 ));
             }

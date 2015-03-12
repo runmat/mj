@@ -83,5 +83,17 @@ namespace CkgDomainLogic.General.ViewModels
             InitDataService(dataService3);
             InitDataService(dataService4);
         }
+
+        protected string GetApplicationConfigValueForCustomer(string configValue)
+        {
+            if (LogonContext == null || LogonContext.Customer == null)
+                return "";
+
+            var userCustomerId = LogonContext.Customer.CustomerID;
+            var userGroupId = 0;
+            var appId = LogonContext.GetAppIdCurrent();
+
+            return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), userCustomerId, userGroupId);
+        }
     }
 }

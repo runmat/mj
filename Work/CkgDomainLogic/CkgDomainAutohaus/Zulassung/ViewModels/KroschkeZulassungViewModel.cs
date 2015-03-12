@@ -104,18 +104,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
         }
 
-        string GetApplicationConfigValueForCustomer(string configValue)
-        {
-            if (LogonContext == null || LogonContext.Customer == null)
-                return "";
-
-            var userCustomerId = LogonContext.Customer.CustomerID;
-            var userGroupId = 0;
-            var appId = LogonContext.GetAppIdCurrent();
-
-            return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), userCustomerId, userGroupId);
-        }
-
         public void SetParamFahrzeugAkte(string fin)
         {
             ParamFahrzeugAkte = FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor { FIN = fin.NotNullOrEmpty("-") }).FirstOrDefault();

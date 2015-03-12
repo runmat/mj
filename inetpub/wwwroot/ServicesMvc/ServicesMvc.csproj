@@ -2501,6 +2501,7 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
@@ -4244,14 +4245,19 @@
     <Content Include="Views\Logs\UnusedApps.cshtml" />
     <Content Include="Views\Logs\Partial\UnusedApps\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\UnusedApps\SucheUnusedApps.cshtml" />
+    <Content Include="Views\Insurance\SchadenDokumenteAlle.cshtml" />
+    <Content Include="Views\Insurance\Schadenfaelle\DokumenteAlleGrid.cshtml" />
     <Content Include="Views\Zanf\ZanfReport.cshtml" />
     <Content Include="Views\Zanf\ZanfReport\ZanfGrid.cshtml" />
     <Content Include="Views\Zanf\ZanfReport\ZanfSuche.cshtml" />
     <Content Include="Views\Zanf\ZanfReport\ZanfKlaerfalltext.cshtml" />
+    <Content Include="Views\Insurance\Schadenakte\Partial\Termine\ReTerminVorschlaege.cshtml" />
+    <Content Include="Views\Insurance\Schadenakte\Partial\Termine\ReTerminVorschlaegeResults.cshtml" />
     <Content Include="Views\Zanf\ReportZulassungsunterlagen.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Grid.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
+    <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
