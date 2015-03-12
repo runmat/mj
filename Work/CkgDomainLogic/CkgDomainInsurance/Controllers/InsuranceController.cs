@@ -19,7 +19,7 @@ namespace ServicesMvc.Controllers
             IUploadBestandsdatenDataService uploadBestandsdatenDataService, IBestandsdatenDataService bestandsdatenDataService, IVertragsverlaengerungDataService vertragsverlaengerungDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(EventsViewModel, appSettings, logonContext, versEventsDataService, schadenakteDataService);
+            InitViewModel(EventsViewModel, appSettings, logonContext, versEventsDataService, schadenakteDataService, customerDocumentDataService);
             InitModelStatics();
 
             InitViewModel(SchadenakteViewModel, appSettings, logonContext, versEventsDataService, schadenakteDataService);
