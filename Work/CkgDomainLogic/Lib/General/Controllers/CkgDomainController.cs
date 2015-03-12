@@ -301,6 +301,24 @@ namespace CkgDomainLogic.General.Controllers
             return PartialView("AdressenPflege/AdressenDetailsForm", model);
         }
 
+        [CkgApplication]
+        public ActionResult AdressenPflege(string kennung, string kdnr)
+        {
+            AdressenPflegeViewModel.AdressenDataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
+            AdressenPflegeViewModel.AdressenKennungGruppeInit();
+
+            return View(AdressenPflegeViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult AdressenKennungChange(AdressenPflegeViewModel model)
+        {
+            AdressenPflegeViewModel.AdressenKennungGruppeChange(model.AdressenKennungGruppe, model.AdressenKennungTemp);
+            ModelState.Clear();
+
+            return PartialView("Partial/AdressenGruppeKennungSelect", AdressenPflegeViewModel);
+        }
+
         public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);

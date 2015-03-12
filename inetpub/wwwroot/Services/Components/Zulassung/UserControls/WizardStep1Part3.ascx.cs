@@ -60,6 +60,7 @@ namespace CKG.Components.Zulassung.UserControls
                 labelError.Visible = false;
                 Session["UploadedFile"] = fileUpload1.PostedFile;
                 Page.ClientScript.RegisterStartupScript(Page.GetType(), "SearchScript", string.Format("$('#searchPanel').attr('style', 'display:inline'); $('#uploadPanel').attr('style', 'display:none'); $('#filePath').html('<strong>Datei:</strong> {0}');", fileUpload1.PostedFile.FileName.Replace(@"\", @"\\")), true);
+                buttonSearch_Click(null, null);
             }
         }
 
