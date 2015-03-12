@@ -49,6 +49,9 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.DateOfDispatch)]
         public DateTime? Versanddatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.SentBy)]
+        public string VersendetVon { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.DateOfDeactivation)]
         public DateTime? Stilllegungsdatum { get; set; }
 
@@ -96,12 +99,6 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
         public string FahrzeugTyp { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
-        public string VersandGrund { get; set; }
-
-        
-
 
         public bool BriefVersand { get; set; }
 
