@@ -35,8 +35,8 @@ namespace ServicesMvc.Controllers
             // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
             var file = uploadFiles.ToArray()[0];
 
-            if (!UploadFahrzeugdatenViewModel.CsvUploadFileSave(file.FileName, file.SavePostedFile))
-                return Json(new { success = false, message = Localize.ErrorCsvFileCouldNotBeSaved }, "text/plain");
+            if (!UploadFahrzeugdatenViewModel.ExcelUploadFileSave(file.FileName, file.SavePostedFile))
+                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
 
             return Json(new
@@ -113,6 +113,12 @@ namespace ServicesMvc.Controllers
         {
             var pfad = Server.MapPath(Url.Content("/ServicesMvc/Documents/Templates/UploadFahrzeugdaten.csv"));
             return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadFahrzeugdaten.csv");
+        }
+
+        public FileResult DownloadFahrzeugdatenXlsTemplate()
+        {
+            var pfad = Server.MapPath(Url.Content("/ServicesMvc/Documents/Templates/UploadFahrzeugdaten.xls"));
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadFahrzeugdaten.xls");
         }
 
         [HttpPost]
