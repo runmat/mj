@@ -85,7 +85,7 @@
                                                     </div>
                                                     <div class="responsibleText">
                                                         Telefon:&nbsp;<%#DataBinder.Eval(Container, "DataItem.Telefon")%></div>
-                                                    <div class="responsibleText">
+                                                    <div runat="server" ID="divMobil" class="responsibleText" Visible='<%# DataBinder.Eval(Container, "DataItem.Mobile") IsNot Nothing AndAlso Not String.IsNullOrEmpty(DataBinder.Eval(Container, "DataItem.Mobile").ToString().Trim()) %>'>
                                                         Mobil:&nbsp;<%#DataBinder.Eval(Container, "DataItem.Mobile")%></div>
                                                     <div class="responsibleText">
                                                         Telefax:&nbsp;<%#DataBinder.Eval(Container, "DataItem.fax")%></div>

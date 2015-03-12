@@ -34,5 +34,7 @@ namespace CkgDomainLogic.Insurance.Models
         public string Kommentar { get; set; }
 
         public bool IsChecked { get { return Datum != null; } }
+
+        public string StatusFarbe { get; set; }
     }
 }

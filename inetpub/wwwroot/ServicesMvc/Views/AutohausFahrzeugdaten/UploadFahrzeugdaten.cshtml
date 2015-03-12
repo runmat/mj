@@ -1,10 +1,10 @@
 ﻿@model CkgDomainLogic.AutohausFahrzeugdaten.ViewModels.UploadFahrzeugdatenViewModel 
 
-<h3 class="page-title">@Localize.VehicleData <small>@Localize.CsvUpload</small></h3>
+<h3 class="page-title">@Localize.VehicleData <small>@Localize.ExcelUpload</small></h3>
 
 <div class="portlet app-view">
     
-    @Html.FormWizard("icon-arrow-up", "", new[] { Localize.UploadCsvFile, Localize.Send, Localize.DoneStep })
+    @Html.FormWizard("icon-arrow-up", "", new[] { Localize.UploadExcelFile, Localize.Send, Localize.DoneStep })
 
     <div id="formWizardTab1" class="hide">
         @Html.Partial("UploadFahrzeugdaten/FileUpload")
@@ -137,7 +137,7 @@
     function UploadError(e) {
         e.preventDefault();
         setTimeout("LoadingHide()", 1000);
-        alert('@Localize.ErrorCsvFileCouldNotBeSaved');
+        alert('@Localize.ErrorFileCouldNotBeSaved');
     }
 
     function ShowGrid() {

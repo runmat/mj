@@ -1,5 +1,4 @@
 ﻿// ReSharper disable ConvertClosureToMethodGroup
-// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,25 +6,21 @@ using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Models;
+using CkgDomainLogic.DomainCommon.ViewModels;
+using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
 using CkgDomainLogic.Insurance.Contracts;
 using CkgDomainLogic.Insurance.Models;
-using CkgDomainLogic.Insurance.Models;
 using GeneralTools.Models;
-using System.IO;
 using GeneralTools.Resources;
-using GeneralTools.Services;
 using SapORM.Contracts;
-
-// ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Insurance.ViewModels
 {
-    public class VersEventsViewModel : CkgBaseViewModel
+    public class VersEventsViewModel : CustomerDocumentViewModel
     {
         private string _languageKey;
         private const int GutachtenTerminStatusID = 2;
@@ -82,6 +77,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
             DataMarkForRefreshSchadenfallStatusWerte();
             DataMarkForRefreshSchadenfallStatusAlle();
+            DataMarkForRefreshSchadenfallDokumenteAlle();
         }
 
         void DataMarkForRefreshEvents()
@@ -137,10 +133,23 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public void DataMarkForRefreshSchadenfallStatusAlle()
         {
-			PropertyCacheClear(this, m => m.SchadenfallStatusArten);
+            PropertyCacheClear(this, m => m.SchadenfallStatusArten);
             PropertyCacheClear(this, m => m.SchadenStatusAlle);
             PropertyCacheClear(this, m => m.SchadenStatusAlleFiltered);
         }
+
+        public void DataMarkForRefreshSchadenfallDokumenteAlle()
+        {
+            DataService.ApplicationKey = "Schadenakte";
+            PropertyCacheClear(this, m => m.CategoriesFiltered);
+            PropertyCacheClear(this, m => m.AllDocumentsFiltered); 
+
+            PropertyCacheClear(this, m => m.AlleSchadenfallDokumente);
+            PropertyCacheClear(this, m => m.SchadenDokumenteAlle);
+            PropertyCacheClear(this, m => m.SchadenDokumenteAlleFiltered);
+        }
+
+        int? SchadenfallCurrentID { get { return SchadenfallCurrent == null ? null : (int?)SchadenfallCurrent.ID; } }
 
         #region Schadenfall Status Arten
 
@@ -154,8 +163,6 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
 
         #region Schadenfall Status (Werte)
-
-        int? SchadenfallCurrentID { get { return SchadenfallCurrent == null ? null : (int?)SchadenfallCurrent.ID; } }
 
         [XmlIgnore]
         public List<SchadenfallStatus> AlleSchadenfallStatusWerte
@@ -193,36 +200,6 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                             return item;
                                         }).ToList();
         }
-
-        //public List<string> SchadenfallStatusWertSave(int itemID, bool toggleDisabled = false)
-        //{
-        //    var errorList = new List<string>();
-
-        //    var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
-        //    if (item == null)
-        //        return errorList;
-
-        //    if (toggleDisabled && item.User.IsNotNullOrEmpty())
-        //        return errorList;
-
-        //    if (item.User.IsNullOrEmpty())
-        //    {
-        //        item.User = LogonContext.UserName;
-        //        item.Datum = DateTime.Now;
-        //        item.Zeit = DateTime.Now.ToString("HH:mm");
-        //    }
-        //    else
-        //    {
-        //        item.User = null;
-        //        item.Datum = null;
-        //        item.Zeit = null;
-        //    }
-
-        //    SchadenDataService.SchadenfallStatusWertSave(item, (key, error) => errorList.Add(error));
-        //    DataMarkForRefreshSchadenfallStatusWerte();
-
-        //    return errorList;
-        //}
 
         public void SchadenfallStatusWertSave(int itemID, DateTime? saveDate)
         {
@@ -307,18 +284,31 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                             LogonContext.Organization.OrganizationReference.ToSapKunnr() == schadenfall.VersicherungID.ToSapKunnr() )
                         .Select(schadenfall =>
                         {
+                            var thisStatusWerteWithNulls = GetSchadenfallStatusWerteWithNulls(schadenfall.ID)
+                                .Where(statusWerte => statusWerte.VersSchadenfallID == schadenfall.ID)
+                                    .OrderBy(art => art.Sort).ThenBy(art => art.StatusArtID).ToArray();
+
+                            var thisValidStatusWerte = thisStatusWerteWithNulls.Where(s => s.Datum != null).ToArray();
+                            var currentStatus = thisValidStatusWerte.LastOrDefault();
+                            var currentStatusText = "";
+                            if (currentStatus != null)
+                            {
+                                var zeroBasedCurrentStatusIndex = thisStatusWerteWithNulls.ToList().IndexOf(currentStatus);
+                                if (zeroBasedCurrentStatusIndex >= 0)
+                                    currentStatusText = SchadenfallStatusAlleGetHeaderText(zeroBasedCurrentStatusIndex + 1);
+                            }
+
                             var statusAlle = new SchadenfallStatusAlle
                                 {
                                     VersSchadenfallID = schadenfall.ID,
                                     EventName = schadenfall.EventName,
                                     Kennzeichen = schadenfall.Kennzeichen,
                                     VersicherungName = schadenfall.VersicherungName,
+                                    VersicherungAndere = schadenfall.VersicherungAndere,
                                     Referenznummer = schadenfall.Referenznummer,
+                                    CurrentStatusText = currentStatusText,
+                                    CurrentStatusFarbe = (currentStatus == null ? "" : currentStatus.StatusFarbe),
                                 };
-
-                            var thisStatusWerteWithNulls = GetSchadenfallStatusWerteWithNulls(schadenfall.ID)
-                                .Where(statusWerte => statusWerte.VersSchadenfallID == schadenfall.ID)
-                                    .OrderBy(art => art.Sort).ThenBy(art => art.StatusArtID).ToArray();
 
                             for (var i = 0; i < thisStatusWerteWithNulls.Length; i++)
                             {
@@ -329,6 +319,121 @@ namespace CkgDomainLogic.Insurance.ViewModels
                             }
 
                             return statusAlle;
+                        }).ToList();
+        }
+
+        #endregion
+
+
+        #region Schadenfall Dokument Arten
+
+        [XmlIgnore]
+        public List<CustomerDocumentCategory> SchadenfallDokumentArten
+        {
+            get { return PropertyCacheGet(() => DataService.Categories); }
+        }
+
+        #endregion
+
+
+        #region Schadenfall Dokumente
+
+        [XmlIgnore]
+        public List<CustomerDocument> AlleSchadenfallDokumente
+        {
+            get
+            {
+                return PropertyCacheGet(() => DataService.AllDocuments);
+            }
+        }
+
+        public List<CustomerDocument> GetSchadenfallDokumenteWithNulls(int schadenfallID)
+        {
+            return SchadenfallDokumentArten
+                                .Select(art =>
+                                {
+                                    var item = AlleSchadenfallDokumente
+                                                    .FirstOrDefault(
+                                                        status =>
+                                                        status.ReferenceField == schadenfallID.ToString() &&
+                                                        status.CategoryID == art.ID)
+                                                ?? new CustomerDocument
+                                                {
+                                                    ReferenceField = schadenfallID.ToString(),
+                                                    CategoryID = art.ID,
+                                                    Category = art.CategoryName
+                                                };
+                                    return item;
+                                }).ToList();
+        }
+
+        public string SchadenfallDokumenteAlleGetHeaderText(int index)
+        {
+            var zeroBasedIndex = index - 1;
+            var dokumentArtArray = SchadenfallDokumentArten.OrderBy(art => art.CategoryName).ThenBy(art => art.ID).ToArray();
+            return (zeroBasedIndex >= dokumentArtArray.Length ? "" : dokumentArtArray[zeroBasedIndex].CategoryName);
+        }
+
+        public bool SchadenfallDokumenteAlleIsDokumentVisible(int index)
+        {
+            return SchadenfallDokumenteAlleGetHeaderText(index).IsNotNullOrEmpty();
+        }
+
+        [XmlIgnore]
+        public List<SchadenfallDokumenteAlle> SchadenDokumenteAlle
+        {
+            get { return PropertyCacheGet(() => GetSchadenDokumenteAlle()); }
+        }
+
+        [XmlIgnore]
+        public List<SchadenfallDokumenteAlle> SchadenDokumenteAlleFiltered
+        {
+            get
+            {
+                FilteredObjectsCurrent = () => SchadenDokumenteAlleFiltered;
+                return PropertyCacheGet(() => SchadenDokumenteAlle);
+            }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void AlleSchadenDokumenteFilter(string filterValue, string filterProperties)
+        {
+            SchadenDokumenteAlleFiltered = SchadenDokumenteAlle.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        List<SchadenfallDokumenteAlle> GetSchadenDokumenteAlle()
+        {
+            var dokumenteAlleProperties = typeof(SchadenfallDokumenteAlle).GetProperties(BindingFlags.Public | BindingFlags.Instance);
+            return Schadenfaelle
+                    .Where(schadenfall => (LogonContext.Organization == null ||
+                                            LogonContext.Organization.AllOrganizations ||
+                                            LogonContext.Organization.OrganizationReference.IsNullOrEmpty()) ||
+                                            LogonContext.Organization.OrganizationReference.ToSapKunnr() == schadenfall.VersicherungID.ToSapKunnr())
+                        .Select(schadenfall =>
+                        {
+                            var dokumenteAlle = new SchadenfallDokumenteAlle
+                            {
+                                VersSchadenfallID = schadenfall.ID,
+                                EventName = schadenfall.EventName,
+                                Kennzeichen = schadenfall.Kennzeichen,
+                                VersicherungName = schadenfall.VersicherungName,
+                                VersicherungAndere = schadenfall.VersicherungAndere,
+                                Referenznummer = schadenfall.Referenznummer,
+                            };
+
+                            var thisDokumenteWithNulls = GetSchadenfallDokumenteWithNulls(schadenfall.ID)
+                                .Where(dok => dok.ReferenceField == schadenfall.ID.ToString())
+                                    .OrderBy(dok => dok.Category).ThenBy(dok => dok.CategoryID).ToArray();
+
+                            for (var i = 0; i < thisDokumenteWithNulls.Length; i++)
+                            {
+                                var contentProperty = dokumenteAlleProperties.FirstOrDefault(p => p.Name == string.Format("Dokument{0}", (i + 1)));
+                                if (contentProperty == null)
+                                    continue;
+                                contentProperty.SetValue(dokumenteAlle, (String.IsNullOrEmpty(thisDokumenteWithNulls[i].ApplicationKey) ? "" : "X"), null);
+                            }
+
+                            return dokumenteAlle;
                         }).ToList();
         }
 
@@ -558,9 +663,52 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public TerminSchadenfall TerminCurrent { get; private set; }
 
-        public List<TerminSchadenfall> GetTermineEinerBoxAllerSchadenFaelle(int versBoxID)
+        public List<TerminSchadenfall> GetTermineEinerBoxAllerSchadenFaelle(int versBoxID, Predicate<TerminSchadenfall> terminSelector = null)
         {
-            return EventsDataService.TermineGet(null, versBoxID);
+            var boxTermine = EventsDataService.TermineGet(null, versBoxID);
+
+            // Box Blocker Termine auf die Box Zeitscheibe (TaktungMinuten) splitten
+            // d. h. wenn ein Blocker-Termin über die Zeitscheibe hinaus geht, 
+            // => muss er in 2 oder 3 Blocker-Termine gesplittet werden, jeweils mit Terminlänge = TaktungMinuten
+
+            var alleBoxen = VersEventOrtBoxenAlle;
+            var box = alleBoxen.FirstOrDefault(b => b.ID == versBoxID);
+            if (box == null)
+                return boxTermine;
+
+            if (terminSelector == null)
+                terminSelector = t => true;
+
+            var splittedBlockerterminList = new List<TerminSchadenfall>();
+            boxTermine.Where(bt => bt.IsBlockerDummyTermin && terminSelector(bt)).ToListOrEmptyList()
+                .ForEach(bt =>
+                    {
+                        if (box.TaktungMinuten >= bt.DauerMinuten)
+                            return;
+
+                        bt.TmpMarkForDelete = true;
+
+                        var datumZeitVon = bt.DatumZeitVon;
+                        for (var i = 0; i < bt.DauerMinuten / box.TaktungMinuten; i++)
+                        {
+                            var splittedBlockerTermin = ModelMapping.Copy(bt);
+
+                            splittedBlockerTermin.TmpMarkForDelete = false;
+                            splittedBlockerTermin.ZeitVon = datumZeitVon.ToString("HH:mm");
+                            splittedBlockerTermin.ZeitBis = (datumZeitVon.AddMinutes(box.TaktungMinuten)).ToString("HH:mm");
+                            
+                            splittedBlockerterminList.Add(splittedBlockerTermin);
+
+                            datumZeitVon = datumZeitVon.AddMinutes(box.TaktungMinuten);
+                        }
+                    });
+
+            // Entferne alle Box Blocker Termine, die länger als die Zeitscheibe der Box sind:
+            boxTermine.RemoveAll(bt => bt.TmpMarkForDelete);
+            // Füge stattdessen die gesplitteten Blocker-Termine ein:
+            boxTermine.AddRange(splittedBlockerterminList);
+
+            return boxTermine;
         }
 
 
@@ -658,6 +806,11 @@ namespace CkgDomainLogic.Insurance.ViewModels
             termin.ZeitBis = string.Format("{0:00}:{1:00}", endTimeHours, endTimeMinutes);
         }
 
+        public void TerminCurrentPrepareFromSchadenfallId(int id)
+        {
+            TerminGet(id);
+        }
+
         public TerminSchadenfall TerminCurrentSave(ModelStateDictionary modelState, List<TerminSchadenfall> termine)
         {
             var termin = TerminCurrent;
@@ -702,6 +855,84 @@ namespace CkgDomainLogic.Insurance.ViewModels
                 serienTermine.ForEach(t => TerminAdd(t, modelState.AddModelError, termine));
 
             return termin;
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<TerminSchadenfall> TerminVorschlaege { get; private set; }
+
+        public string ReTerminVorschlaegeSearch(DateTime? datum, string uhrzeit, int dauer)
+        {
+            // Versuch 3 Termin-Vorschläge für die übergebenen Parameter zu generieren:
+            const int maxTerminVorschlaege = 3;
+            const int taktungMinuten = 15;
+
+            TerminVorschlaege = new List<TerminSchadenfall>();
+
+            var termin = new TerminSchadenfall
+                {
+                    VersOrtID = TerminCurrent.VersOrtID,
+                    VersBoxID = TerminCurrent.VersBoxID,
+                    Datum = datum.GetValueOrDefault(),
+                    ZeitVon = uhrzeit,
+                };
+            termin.ZeitBis = termin.DatumZeitVon.AddMinutes(dauer).ToString("HH:mm");
+            
+            var uhrzeitCurrent = termin.DatumZeitVon;
+            DateTime startDateTimeForDate; 
+            DateTime endDateTimeForDate;
+            TerminCurrent.Ort.GetDayTimeRangeForDate(datum.GetValueOrDefault(), out startDateTimeForDate, out endDateTimeForDate);
+            if (uhrzeitCurrent.TimeOfDay < startDateTimeForDate.TimeOfDay)
+                uhrzeitCurrent = startDateTimeForDate;
+            if (uhrzeitCurrent.TimeOfDay > endDateTimeForDate.AddMinutes(dauer * -1).TimeOfDay)
+                uhrzeitCurrent = endDateTimeForDate.AddMinutes(dauer * -1);
+
+            while (uhrzeitCurrent < endDateTimeForDate)
+            {
+                foreach (var box in TerminCurrent.GetValidBoxen())
+                {
+                    var boxID = box.ID;
+                    termin = new TerminSchadenfall
+                        {
+                            ID = TerminVorschlaege.Count*-1,
+                            VersOrtID = TerminCurrent.VersOrtID,
+                            Ort = TerminCurrent.Ort,
+                            VersBoxID = boxID,
+                            Datum = datum.GetValueOrDefault(),
+                            ZeitVon = uhrzeitCurrent.ToString("HH:mm"),
+                            ZeitBis = uhrzeitCurrent.AddMinutes(dauer).ToString("HH:mm")
+                        };
+
+                    var validationMessage = "";
+                    termin.Validate((key, message) => validationMessage = message, TerminVorschlaege.Where(t => t.VersBoxID == boxID).ToList());
+                    
+                    if (validationMessage.IsNullOrEmpty())
+                    {
+                        TerminVorschlaege.Add(termin);
+
+                        if (TerminVorschlaege.Count == maxTerminVorschlaege)
+                            return "";
+                    }
+                }
+
+                uhrzeitCurrent = uhrzeitCurrent.AddMinutes(taktungMinuten);
+            }
+
+            if (TerminVorschlaege.None())
+                return Localize.NoAppointmentsFoundForThisDateTime;
+
+            return "";
+        }
+
+        public void ReTerminVorschlaegeSelect(int terminID)
+        {
+            var vorschlagsTermin = TerminVorschlaege.FirstOrDefault(t => t.ID == terminID);
+            if (vorschlagsTermin == null)
+                return;
+
+            TerminCurrent.Datum = vorschlagsTermin.Datum;
+            TerminCurrent.ZeitVon = vorschlagsTermin.ZeitVon;
+            TerminCurrent.ZeitBis = vorschlagsTermin.ZeitBis;
+            TerminCurrent.VersBoxID = vorschlagsTermin.VersBoxID;
         }
 
         #endregion
@@ -976,6 +1207,12 @@ namespace CkgDomainLogic.Insurance.ViewModels
             DataMarkForRefreshBlockerTermine();
 
             return item;
+        }
+
+        [XmlIgnore]
+        public List<VersEventOrtBox> VersEventOrtBoxenAlle
+        {
+            get { return PropertyCacheGet(() => EventsDataService.VersEventOrtBoxenGet(null)); }
         }
 
         public VersEventOrtBox VersEventOrtBoxCreate()

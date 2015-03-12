@@ -14,6 +14,10 @@
         @Html.HiddenFor(m => m.LoeschDatum)
         @Html.HiddenFor(m => m.LoeschUser)
 
+        @Html.HiddenFor(m => m.UhrzeitZeitGewuenscht)
+        @Html.HiddenFor(m => m.DauerMinutenGewuenscht)
+
+
         @Html.FormTemplateControl("", @<text><div class="form-header"><i class="icon-calendar"></i> <span>@Localize.AppointmentDetails</span></div></text>, new { @class = "m-wrap" })
         
         
