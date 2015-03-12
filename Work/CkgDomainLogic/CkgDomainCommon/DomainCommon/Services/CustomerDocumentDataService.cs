@@ -18,6 +18,8 @@ namespace CkgDomainLogic.DomainCommon.Services
         public string ApplicationKey { get; set; }
         public string ReferenceKey { get; set; }
 
+        public List<CustomerDocument> AllDocuments { get { return _domainDbContext.CustomerDocumentsForCustomerApplication(ApplicationKey); } }
+
         public List<CustomerDocument> Documents { get { return _domainDbContext.CustomerDocumentsForCustomerApplicationForReferenceKey(ApplicationKey, ReferenceKey); } }
 
         public CustomerDocument SaveDocument(CustomerDocument doc)

@@ -27,7 +27,15 @@
 
         public bool isBlocker { get; set; }
 
+        public bool isCurrentEditing { get; set; }
+
         public string backgroundColor { get { return spaceAvailable ? "green" : (isBlocker ? "gray" : "red"); } }
+
+        public string textColor { get { return isCurrentEditing ? "yellow" : null; } }
+
+        public string borderColor { get { return isCurrentEditing ? "yellow" : null; } }
+
+        public string borderWidth { get { return isCurrentEditing ? "2px" : null; } }
 
         public int startTimeHours { get; set; }
         public int startTimeMinutes { get; set; }

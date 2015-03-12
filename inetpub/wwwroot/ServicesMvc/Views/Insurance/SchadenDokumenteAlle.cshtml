@@ -1,0 +1,36 @@
+﻿@Html.Partial("Common/StylesScripts")
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("SchadenDokumenteAlleGrid");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+
+    function OnDataBound_SchadenDokumenteAlleGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_SchadenDokumenteAlleGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_SchadenDokumenteAlleGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>
+
+<h3 class="page-title" id="headerTitle">@Localize.Documents <small>@Localize.DamageCasesOfAll</small></h3>
+
+@Html.SpanAlert("Message")
+
+<div class="portlet">
+    @Html.Partial("Schadenfaelle/DokumenteAlleGrid")
+</div>

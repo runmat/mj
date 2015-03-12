@@ -9,14 +9,14 @@
 @if (Model.SubmitMode)
 {
     <h5>
-        <span>@Localize.YourFile <span class="bold">@Model.CsvUploadFileName</span>:</span>
+        <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>:</span>
     </h5>
     <script type="text/javascript">        _formWizardForceHideSubmitButton = false; </script>
 }
 else
 {
     <h5>
-        <span>@Localize.YourFile <span class="bold">@Model.CsvUploadFileName</span>, @Localize.NowInAdditionPleaseCheckTheContent:</span>
+        <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>, @Localize.NowInAdditionPleaseCheckTheContent:</span>
     </h5>
     <script type="text/javascript">        _formWizardForceHideSubmitButton = true; </script>
 }

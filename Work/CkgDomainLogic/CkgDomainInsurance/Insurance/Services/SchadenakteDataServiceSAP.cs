@@ -149,13 +149,6 @@ namespace CkgDomainLogic.Insurance.Services
                 return false;
             }
 
-            // ToDo: Remove this test:
-            //if (savedSapItem != null && savedSapItem.STATUSART.ToInt() == 8)
-            //{
-            //    addModelError("", FormatSapErrorMessage("Bitte nicht Status Art '8' updaten !"));
-            //    return false;
-            //}
-
             return true;
         }
 
