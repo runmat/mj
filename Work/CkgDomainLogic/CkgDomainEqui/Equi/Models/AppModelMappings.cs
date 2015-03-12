@@ -524,7 +524,9 @@ namespace CkgDomainLogic.Equi.Models
                         d.Kennzeichen = s.ZZKENN;
                         d.Eingangsdatum = s.ERDAT;
 
-                        d.VersandGrund = s.TEXT50;
+                        d.Versanddatum = s.ZZTMPDT;
+                        d.VersendetVon = s.FREIGEBER;
+                        d.Versandgrund = s.TEXT50;
 
                         d.Name1 = s.NAME1;
                         d.Name2 = s.NAME2;

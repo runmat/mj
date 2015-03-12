@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using CKG.Base.Common;
@@ -479,10 +480,12 @@ namespace AutohausPortal.lib
         /// <param name="page"></param>
         /// <param name="tblKundenStamm"></param>
         /// <param name="tblAbmeldung">Abmeldungen</param>
-        public void InsertDB_ZLDAbmeldung(String strAppID, String strSessionID, Page page, DataTable tblKundenStamm, DataTable tblAbmeldung)
+        /// <returns>generierte Kopf-IDs</returns>
+        public List<long> InsertDB_ZLDAbmeldung(String strAppID, String strSessionID, Page page, DataTable tblKundenStamm, DataTable tblAbmeldung)
         {
             m_intStatus = 0;
             m_strMessage = "";
+            var ergList = new List<long>();
             dboZLDAutohausDataContext ZLD_Data = new dboZLDAutohausDataContext();
             try
             {
@@ -495,86 +498,60 @@ namespace AutohausPortal.lib
                     GiveSapID(strAppID, strSessionID, page);
                     if (id_sap != 0)
                     {
+                        ZLDKopfTabelle tblKopf = new ZLDKopfTabelle();
+                        tblKopf.id_sap = id_sap;
+                        tblKopf.id_user = m_objUser.UserID;
+                        tblKopf.id_session = strSessionID;
+                        tblKopf.abgerechnet = false;
+                        tblKopf.username = m_objUser.UserName;
+
+                        //Kunden- und Fahrzeugdaten
+                        tblKopf.kundenname = Kundenname;
+                        tblKopf.kundennr = Kunnr;
+                        tblKopf.EVB = EVB;
+                        tblKopf.Feinstaub = Feinstaub;
+                        DataRow[] KundeRow = tblKundenStamm.Select("KUNNR='" + Kunnr + "'");
+
+                        if (KundeRow.Length == 1)
                         {
-                            ZLDKopfTabelle tblKopf = new ZLDKopfTabelle();
-                            tblKopf.id_sap = id_sap;
-                            tblKopf.id_user = m_objUser.UserID;
-                            tblKopf.id_session = strSessionID;
-                            tblKopf.abgerechnet = false;
-                            tblKopf.username = m_objUser.UserName;
+                            tblKopf.KunnrLF = KundeRow[0]["KUNNR_LF"].ToString();
+                        }
+                        //Kunden- und Fahrzeugdaten
 
-                            //Kunden- und Fahrzeugdaten
-                            tblKopf.kundenname = Kundenname;
-                            tblKopf.kundennr = Kunnr;
-                            tblKopf.EVB = EVB;
-                            tblKopf.Feinstaub = Feinstaub;
-                            DataRow[] KundeRow = tblKundenStamm.Select("KUNNR='" + Kunnr + "'");
+                        //Referenzen (werden teilweise bei Anzahl >1 je Vorgang erfasst, deshalb die nachfolgende Fallunterscheidung)
+                        tblKopf.referenz1 = Ref1;
+                        if ((tblAbmeldung.Rows.Count > 1) && (matRow.Table.Columns.Contains("REF2")))
+                        {
+                            tblKopf.referenz2 = matRow["REF2"].ToString();
+                            tblKopf.referenz3 = matRow["REF3"].ToString();
+                            tblKopf.referenz4 = matRow["REF4"].ToString();
+                        }
+                        else
+                        {
+                            tblKopf.referenz2 = Ref2;
+                            tblKopf.referenz3 = Ref3;
+                            tblKopf.referenz4 = Ref4;
+                        }
+                        //Referenzen
 
-                            if (KundeRow.Length == 1)
-                            {
-                                tblKopf.KunnrLF = KundeRow[0]["KUNNR_LF"].ToString();
-                            }
-                            //Kunden- und Fahrzeugdaten
+                        //Zulassungsdaten
+                        tblKopf.KreisKZ = KreisKennz;
+                        tblKopf.KreisBez = Kreis;
+                        tblKopf.WunschKenn = WunschKenn;
+                        tblKopf.Reserviert = Reserviert;
+                        tblKopf.ReserviertKennz = ReserviertKennz;
+                        tblKopf.Fahrz_Art = Fahrzeugart;
 
-                            //Referenzen (werden teilweise bei Anzahl >1 je Vorgang erfasst, deshalb die nachfolgende Fallunterscheidung)
-                            tblKopf.referenz1 = Ref1;
-                            if ((tblAbmeldung.Rows.Count > 1) && (matRow.Table.Columns.Contains("REF2")))
-                            {
-                                tblKopf.referenz2 = matRow["REF2"].ToString();
-                                tblKopf.referenz3 = matRow["REF3"].ToString();
-                                tblKopf.referenz4 = matRow["REF4"].ToString();
-                            }
+                        DateTime tmpDate;
+                        DateTime.TryParse(ZulDate, out tmpDate);
+                        tblKopf.Zulassungsdatum = tmpDate;
+
+                        if (tblAbmeldung.Columns.Contains("KennzFun"))
+                        {
+
+                            if (matRow["KennzFun"].ToString().Length > 0)
+                            { tblKopf.Kennzeichen = matRow["KennzFun"].ToString(); }
                             else
-                            {
-                                tblKopf.referenz2 = Ref2;
-                                tblKopf.referenz3 = Ref3;
-                                tblKopf.referenz4 = Ref4;
-                            }
-                            //Referenzen
-
-                            //Zulassungsdaten
-                            tblKopf.KreisKZ = KreisKennz;
-                            tblKopf.KreisBez = Kreis;
-                            tblKopf.WunschKenn = WunschKenn;
-                            tblKopf.Reserviert = Reserviert;
-                            tblKopf.ReserviertKennz = ReserviertKennz;
-                            tblKopf.Fahrz_Art = Fahrzeugart;
-
-                            DateTime tmpDate;
-                            DateTime.TryParse(ZulDate, out tmpDate);
-                            tblKopf.Zulassungsdatum = tmpDate;
-
-                            if (tblAbmeldung.Columns.Contains("KennzFun"))
-                            {
-
-                                if (matRow["KennzFun"].ToString().Length > 0)
-                                { tblKopf.Kennzeichen = matRow["KennzFun"].ToString(); }
-                                else
-                                {
-                                    tblKopf.Kennzeichen = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
-                                    String sKennz = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
-                                    String sKennzKZ = "";
-                                    String sKennzABC = "";
-                                    String[] sArr = sKennz.Split('-');
-                                    if (sArr.Length == 1)
-                                    {
-                                        sKennzKZ = sArr[0];
-                                    }
-                                    if (sArr.Length == 2)
-                                    {
-                                        sKennzKZ = sArr[0];
-                                        sKennzABC = sArr[1];
-                                    }
-                                    if (sArr.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
-                                    {
-                                        sKennzKZ = sArr[0];
-                                        sKennzABC = sArr[1] + "-" + sArr[2];
-                                    }
-                                    // tblKopf.KennKZ = sKennzKZ;
-                                    tblKopf.KennABC = sKennzABC;
-                                }
-                            }
-                            else 
                             {
                                 tblKopf.Kennzeichen = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
                                 String sKennz = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
@@ -596,127 +573,152 @@ namespace AutohausPortal.lib
                                     sKennzABC = sArr[1] + "-" + sArr[2];
                                 }
                                 // tblKopf.KennKZ = sKennzKZ;
-                                tblKopf.KennABC = sKennzABC;                            
+                                tblKopf.KennABC = sKennzABC;
                             }
-
-                            tblKopf.KennzForm = KennzForm;
-                            if (tblAbmeldung.Columns.Contains("Kennzform")) { tblKopf.KennzForm = matRow["Kennzform"].ToString(); }
-
-                            tblKopf.EinKennz = EinKennz;
-                            if (tblAbmeldung.Columns.Contains("EinKennz")) { tblKopf.EinKennz = (Boolean)matRow["EinKennz"]; }
-
-                            tblKopf.VorhKennzReserv = false;
-                            if (tblAbmeldung.Columns.Contains("KennzVorhanden")) { tblKopf.VorhKennzReserv = (Boolean)matRow["KennzVorhanden"]; }
-                            tblKopf.ZBII_ALT_NEU = ZBII_ALT_NEU;
-                            tblKopf.KennzVH = KennzVorhanden;
-                            tblKopf.KennzAlt = Altkenn;
-                            tblKopf.Vorfuehrung = Vorfuehr;
-                            tblKopf.KennzUebernahme = BoolToX(KennzUebernahme);
-                            tblKopf.Serie = BoolToX(Serie);
-                            if (IsDate(StillDate))
+                        }
+                        else
+                        {
+                            tblKopf.Kennzeichen = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
+                            String sKennz = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
+                            String sKennzKZ = "";
+                            String sKennzABC = "";
+                            String[] sArr = sKennz.Split('-');
+                            if (sArr.Length == 1)
                             {
-                                DateTime.TryParse(StillDate, out tmpDate);
-                                tblKopf.Still_Datum = tmpDate;
+                                sKennzKZ = sArr[0];
                             }
-                            if (IsDate(Haltedauer))
+                            if (sArr.Length == 2)
                             {
-                                DateTime.TryParse(Haltedauer, out tmpDate);
-                                tblKopf.Haltedauer = tmpDate;
+                                sKennzKZ = sArr[0];
+                                sKennzABC = sArr[1];
                             }
-                            tblKopf.SaisonKZ = BoolToX(Saison);
-                            tblKopf.ZusatzKZ = BoolToX(ZusatzKZ);
-                            tblKopf.SaisonBeg = SaisonBeg;
-                            tblKopf.SaisonEnd = SaisonEnd;
-                            tblKopf.Tuev_AU = TuvAu;
-                            tblKopf.ZollVers = ZollVers;
-                            tblKopf.ZollVers_Dauer = ZollVersDauer;
-                            tblKopf.MussResWerden = BoolToX(MussReserviert);
-                            //Zulassungsdaten
-                            tblKopf.Langtextnr = "";
-
-                            // Bemerkung/Notizen
-                            tblKopf.Bemerkung = Bemerkung;
-                            tblKopf.VKKurz = VkKurz;
-                            tblKopf.interneRef = InternRef;
-                            tblKopf.KundenNotiz = Notiz;
-
-                            //Intern
-                            tblKopf.Vorerfasser = m_objUser.UserName;
-                            tblKopf.VorerfDatum = DateTime.Now;
-                            tblKopf.saved = saved;
-                            tblKopf.toDelete = "";
-                            tblKopf.bearbeitet = false;
-                            tblKopf.Vorgang = Vorgang;
-                            tblKopf.testuser = m_objUser.IsTestUser;
-                            tblKopf.Filiale = m_objUser.Reference;
-                            tblKopf.AppID = AppID;
-                            //Intern
-
-                            //Bankdaten
-                            tblKopf.Inhaber = Inhaber;
-                            tblKopf.IBAN = IBAN;
-
-                            if ((!String.IsNullOrEmpty(Geldinstitut)) && (Geldinstitut.Length > 40))
+                            if (sArr.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
                             {
-                                tblKopf.Geldinstitut = Geldinstitut.Substring(0, 40);
+                                sKennzKZ = sArr[0];
+                                sKennzABC = sArr[1] + "-" + sArr[2];
                             }
-                            else { tblKopf.Geldinstitut = Geldinstitut; }
+                            // tblKopf.KennKZ = sKennzKZ;
+                            tblKopf.KennABC = sKennzABC;
+                        }
 
-                            tblKopf.SWIFT = SWIFT;
-                            tblKopf.BankKey = Bankkey;
-                            tblKopf.Kontonr = Kontonr;
-                            tblKopf.EinzugErm = EinzugErm;
-                            tblKopf.Rechnung = Rechnung;
-                            tblKopf.Barzahlung = Barzahlung;
+                        tblKopf.KennzForm = KennzForm;
+                        if (tblAbmeldung.Columns.Contains("Kennzform")) { tblKopf.KennzForm = matRow["Kennzform"].ToString(); }
 
-                            //Bankdaten
+                        tblKopf.EinKennz = EinKennz;
+                        if (tblAbmeldung.Columns.Contains("EinKennz")) { tblKopf.EinKennz = (Boolean)matRow["EinKennz"]; }
 
-                            ZLD_Data.ZLDKopfTabelle.InsertOnSubmit(tblKopf);
+                        tblKopf.VorhKennzReserv = false;
+                        if (tblAbmeldung.Columns.Contains("KennzVorhanden")) { tblKopf.VorhKennzReserv = (Boolean)matRow["KennzVorhanden"]; }
+                        tblKopf.ZBII_ALT_NEU = ZBII_ALT_NEU;
+                        tblKopf.KennzVH = KennzVorhanden;
+                        tblKopf.KennzAlt = Altkenn;
+                        tblKopf.Vorfuehrung = Vorfuehr;
+                        tblKopf.KennzUebernahme = BoolToX(KennzUebernahme);
+                        tblKopf.Serie = BoolToX(Serie);
+                        if (IsDate(StillDate))
+                        {
+                            DateTime.TryParse(StillDate, out tmpDate);
+                            tblKopf.Still_Datum = tmpDate;
+                        }
+                        if (IsDate(Haltedauer))
+                        {
+                            DateTime.TryParse(Haltedauer, out tmpDate);
+                            tblKopf.Haltedauer = tmpDate;
+                        }
+                        tblKopf.SaisonKZ = BoolToX(Saison);
+                        tblKopf.ZusatzKZ = BoolToX(ZusatzKZ);
+                        tblKopf.SaisonBeg = SaisonBeg;
+                        tblKopf.SaisonEnd = SaisonEnd;
+                        tblKopf.Tuev_AU = TuvAu;
+                        tblKopf.ZollVers = ZollVers;
+                        tblKopf.ZollVers_Dauer = ZollVersDauer;
+                        tblKopf.MussResWerden = BoolToX(MussReserviert);
+                        //Zulassungsdaten
+                        tblKopf.Langtextnr = "";
+
+                        // Bemerkung/Notizen
+                        tblKopf.Bemerkung = Bemerkung;
+                        tblKopf.VKKurz = VkKurz;
+                        tblKopf.interneRef = InternRef;
+                        tblKopf.KundenNotiz = Notiz;
+
+                        //Intern
+                        tblKopf.Vorerfasser = m_objUser.UserName;
+                        tblKopf.VorerfDatum = DateTime.Now;
+                        tblKopf.saved = saved;
+                        tblKopf.toDelete = "";
+                        tblKopf.bearbeitet = false;
+                        tblKopf.Vorgang = Vorgang;
+                        tblKopf.testuser = m_objUser.IsTestUser;
+                        tblKopf.Filiale = m_objUser.Reference;
+                        tblKopf.AppID = AppID;
+                        //Intern
+
+                        //Bankdaten
+                        tblKopf.Inhaber = Inhaber;
+                        tblKopf.IBAN = IBAN;
+
+                        if ((!String.IsNullOrEmpty(Geldinstitut)) && (Geldinstitut.Length > 40))
+                        {
+                            tblKopf.Geldinstitut = Geldinstitut.Substring(0, 40);
+                        }
+                        else { tblKopf.Geldinstitut = Geldinstitut; }
+
+                        tblKopf.SWIFT = SWIFT;
+                        tblKopf.BankKey = Bankkey;
+                        tblKopf.Kontonr = Kontonr;
+                        tblKopf.EinzugErm = EinzugErm;
+                        tblKopf.Rechnung = Rechnung;
+                        tblKopf.Barzahlung = Barzahlung;
+
+                        //Bankdaten
+
+                        ZLD_Data.ZLDKopfTabelle.InsertOnSubmit(tblKopf);
+                        ZLD_Data.SubmitChanges();
+                        KopfID = tblKopf.id;
+                        createKopf = true;
+                        try
+                        {
+
+                            ZLDPositionsTabelle tblPos = new ZLDPositionsTabelle();
+                            tblPos.id_Kopf = KopfID;
+                            tblPos.id_pos = 1;
+                            tblPos.Menge = "1";
+                            tblPos.Matnr = NrMaterial;
+                            tblPos.Matbez = Material;
+                            ZLD_Data.ZLDPositionsTabelle.InsertOnSubmit(tblPos);
+
+
+                            ZLDKundenadresse tblKunnadresse = new ZLDKundenadresse();
+                            tblKunnadresse.id_Kopf = KopfID;
+                            tblKunnadresse.Partnerrolle = Partnerrolle;
+                            tblKunnadresse.Name1 = Name1;
+                            tblKunnadresse.Name2 = Name2;
+                            tblKunnadresse.Strasse = Strasse;
+                            tblKunnadresse.Ort = Ort;
+                            tblKunnadresse.PLZ = PLZ;
+                            ZLD_Data.ZLDKundenadresse.InsertOnSubmit(tblKunnadresse);
                             ZLD_Data.SubmitChanges();
-                            KopfID = tblKopf.id;
-                            createKopf = true;
-                            try
+
+                        }
+                        catch (Exception ex)
+                        {
+                            m_intStatus = 9999;
+                            m_strMessage = ex.Message;
+                            if (createKopf == true)
                             {
+                                dboZLDAutohausDataContext ZLD_DataKopf = new dboZLDAutohausDataContext();
+                                var tblKopftoDel = (from k in ZLD_DataKopf.ZLDKopfTabelle
+                                                    where k.id == KopfID
+                                                    select k).Single();
 
-                                ZLDPositionsTabelle tblPos = new ZLDPositionsTabelle();
-                                tblPos.id_Kopf = KopfID;
-                                tblPos.id_pos = 1;
-                                tblPos.Menge = "1";
-                                tblPos.Matnr = NrMaterial;
-                                tblPos.Matbez = Material;
-                                ZLD_Data.ZLDPositionsTabelle.InsertOnSubmit(tblPos);
+                                ZLD_DataKopf.ZLDKopfTabelle.DeleteOnSubmit(tblKopftoDel);
+                                ZLD_DataKopf.SubmitChanges();
 
-
-                                ZLDKundenadresse tblKunnadresse = new ZLDKundenadresse();
-                                tblKunnadresse.id_Kopf = KopfID;
-                                tblKunnadresse.Partnerrolle = Partnerrolle;
-                                tblKunnadresse.Name1 = Name1;
-                                tblKunnadresse.Name2 = Name2;
-                                tblKunnadresse.Strasse = Strasse;
-                                tblKunnadresse.Ort = Ort;
-                                tblKunnadresse.PLZ = PLZ;
-                                ZLD_Data.ZLDKundenadresse.InsertOnSubmit(tblKunnadresse);
-                                ZLD_Data.SubmitChanges();
-
-                            }
-                            catch (Exception ex)
-                            {
-                                m_intStatus = 9999;
-                                m_strMessage = ex.Message;
-                                if (createKopf == true)
-                                {
-                                    dboZLDAutohausDataContext ZLD_DataKopf = new dboZLDAutohausDataContext();
-                                    var tblKopftoDel = (from k in ZLD_DataKopf.ZLDKopfTabelle
-                                                        where k.id == KopfID
-                                                        select k).Single();
-
-                                    ZLD_DataKopf.ZLDKopfTabelle.DeleteOnSubmit(tblKopftoDel);
-                                    ZLD_DataKopf.SubmitChanges();
-
-                                }
                             }
                         }
 
+                        ergList.Add(KopfID);
                     }
                     else
                     {
@@ -736,6 +738,7 @@ namespace AutohausPortal.lib
                 if (ZLD_Data.Connection.State == ConnectionState.Open) { ZLD_Data.Connection.Close(); }
             }
 
+            return ergList;
         }
 
         /// <summary>
@@ -1708,6 +1711,22 @@ namespace AutohausPortal.lib
         /// <param name="zusatzFormulare"></param>
         public void CreateKundenformulare(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm, bool cpdFormular, bool zusatzFormulare)
         {
+            CreateKundenformulare(strAppID, strSessionID, page, tblStvaStamm, cpdFormular, zusatzFormulare, new List<long> { KopfID });
+        }
+
+        /// <summary>
+        /// Vorläufige Vorgänge an SAP geben, um dort div. Kundenformulare zu generieren
+        /// Bapi Z_ZLD_AH_IMPORT_ERFASSUNG1
+        /// </summary>
+        /// <param name="strAppID">AppID</param>
+        /// <param name="strSessionID">SessionID</param>
+        /// <param name="page">Aufträge.aspx</param>
+        /// <param name="tblStvaStamm">Stvastamm zur Ergänzung der Daten(KREISBEZ)</param>
+        /// <param name="cpdFormular"></param>
+        /// <param name="zusatzFormulare"></param>
+        /// <param name="idListe">IDs der Vorgänge</param>
+        public void CreateKundenformulare(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm, bool cpdFormular, bool zusatzFormulare, List<long> idListe)
+        {
             m_strClassAndMethod = "AHErfassung.CreateKundenformulare";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
@@ -1717,6 +1736,7 @@ namespace AutohausPortal.lib
             if (m_blnGestartet == false)
             {
                 m_blnGestartet = true;
+                dboZLDAutohausDataContext ZLD_DataContext = new dboZLDAutohausDataContext();
                 try
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
@@ -1731,111 +1751,144 @@ namespace AutohausPortal.lib
                     DataTable importPos = myProxy.getImportTable("GT_POS_IN");
                     DataTable importAdresse = myProxy.getImportTable("GT_ADRS_IN");
 
-                    DataRow importRowAuftrag = importAuftrag.NewRow();
-                    importRowAuftrag["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
-                    importRowAuftrag["VKORG"] = VKORG;
-                    importRowAuftrag["VKBUR"] = VKBUR;
-                    importRowAuftrag["BLTYP"] = Vorgang;
-                    importRowAuftrag["KUNNR"] = Kunnr;
-                    importRowAuftrag["ZZREFNR1"] = Ref1;
-                    importRowAuftrag["ZZREFNR2"] = Ref2;
-                    importRowAuftrag["ZZREFNR3"] = Ref3;
-                    importRowAuftrag["ZZREFNR4"] = Ref4;
-                    importRowAuftrag["KREISKZ"] = KreisKennz;
-                    DataRow[] RowStva = tblStvaStamm.Select("KREISKZ='" + KreisKennz + "'");
-                    if (RowStva.Length == 1)
+                    foreach (var item in idListe)
                     {
-                        importRowAuftrag["KREISBEZ"] = RowStva[0]["KREISBEZ"];
-                    }
-                    else
-                    {
-                        importRowAuftrag["KREISBEZ"] = Kreis;
-                    }
-                    importRowAuftrag["WUNSCHKENN_JN"] = BoolToX(WunschKenn);
-                    importRowAuftrag["RESERVKENN_JN"] = BoolToX(Reserviert);
-                    importRowAuftrag["RESERVKENN"] = ReserviertKennz;
-                    importRowAuftrag["FEINSTAUB"] = BoolToX(Feinstaub);
-                    importRowAuftrag["ZZZLDAT"] = ZulDate;
-                    importRowAuftrag["ZZKENN"] = Kennzeichen;
-                    importRowAuftrag["WU_KENNZ2"] = WunschKZ2;
-                    importRowAuftrag["WU_KENNZ3"] = WunschKZ3;
-                    importRowAuftrag["O_G_VERSSCHEIN"] = BoolToX(OhneGruenenVersSchein);
+                        var vorgid = item;
 
-                    importRowAuftrag["KENNZTYP"] = "";
-                    importRowAuftrag["KENNZFORM"] = KennzForm;
-                    importRowAuftrag["EINKENN_JN"] = BoolToX(EinKennz);
-                    importRowAuftrag["BEMERKUNG"] = Bemerkung;
-                    importRowAuftrag["VK_KUERZEL"] = VkKurz;
-                    importRowAuftrag["KUNDEN_REF"] = InternRef;
-                    importRowAuftrag["KUNDEN_NOTIZ"] = Notiz;
-                    importRowAuftrag["KENNZ_VH"] = BoolToX(KennzVorhanden);
+                        var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
+                                       where k.id == vorgid
+                                       select k).Single();
 
-                    importRowAuftrag["ALT_KENNZ"] = Altkenn;
-                    importRowAuftrag["ZBII_ALT_NEU"] = (ZBII_ALT_NEU ? "N" : "A");
-                    importRowAuftrag["VH_KENNZ_RES"] = BoolToX(VorhKennzReserv);
-                    if (IsDate(StillDate))
-                    {
-                        importRowAuftrag["STILL_DAT"] = StillDate;
-                    }
+                        DataRow importRowAuftrag = importAuftrag.NewRow();
+                        importRowAuftrag["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
+                        importRowAuftrag["VKORG"] = VKORG;
+                        importRowAuftrag["VKBUR"] = VKBUR;
+                        importRowAuftrag["BLTYP"] = tblKopf.Vorgang;
+                        importRowAuftrag["KUNNR"] = tblKopf.kundennr.PadLeft(10, '0');
+                        importRowAuftrag["ZZREFNR1"] = tblKopf.referenz1;
+                        importRowAuftrag["ZZREFNR2"] = tblKopf.referenz2;
+                        importRowAuftrag["ZZREFNR3"] = tblKopf.referenz3;
+                        importRowAuftrag["ZZREFNR4"] = tblKopf.referenz4;
+                        importRowAuftrag["KREISKZ"] = tblKopf.KreisKZ;
+                        DataRow[] RowStva = tblStvaStamm.Select("KREISKZ='" + tblKopf.KreisKZ + "'");
+                        if (RowStva.Length == 1)
+                        {
+                            importRowAuftrag["KREISBEZ"] = RowStva[0]["KREISBEZ"];
+                        }
+                        else
+                        {
+                            importRowAuftrag["KREISBEZ"] = tblKopf.KreisBez;
+                        }
+                        importRowAuftrag["WUNSCHKENN_JN"] = BoolToX((Boolean)tblKopf.WunschKenn);
+                        importRowAuftrag["RESERVKENN_JN"] = BoolToX((Boolean)tblKopf.Reserviert);
+                        importRowAuftrag["RESERVKENN"] = tblKopf.ReserviertKennz;
+                        importRowAuftrag["FEINSTAUB"] = BoolToX((Boolean)tblKopf.Feinstaub);
+                        importRowAuftrag["ZZZLDAT"] = tblKopf.Zulassungsdatum;
+                        importRowAuftrag["ZZKENN"] = tblKopf.Kennzeichen;
+                        importRowAuftrag["WU_KENNZ2"] = tblKopf.WunschKZ2;
+                        importRowAuftrag["WU_KENNZ3"] = tblKopf.WunschKZ3;
+                        importRowAuftrag["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
 
-                    importRowAuftrag["MNRESW"] = BoolToX(MussReserviert);
-                    importRowAuftrag["ZZEVB"] = EVB;
-                    importRowAuftrag["KENNZ_UEBERNAHME"] = BoolToX(KennzUebernahme);
-                    importRowAuftrag["SERIE"] = BoolToX(Serie);
-                    importRowAuftrag["SAISON_KNZ"] = BoolToX(Saison);
-                    importRowAuftrag["SAISON_BEG"] = SaisonBeg;
-                    importRowAuftrag["SAISON_END"] = SaisonEnd;
-                    importRowAuftrag["ZUSKENNZ"] = BoolToX(ZusatzKZ);
-                    importRowAuftrag["TUEV_AU"] = TuvAu;
-                    importRowAuftrag["KURZZEITVS"] = KurzZeitKennz;
-                    importRowAuftrag["ZOLLVERS"] = ZollVers;
-                    importRowAuftrag["ZOLLVERS_DAUER"] = ZollVersDauer;
-                    importRowAuftrag["FAHRZ_ART"] = Fahrzeugart;
-                    importRowAuftrag["VORFUEHR"] = Vorfuehr;
-                    importRowAuftrag["LTEXT_NR"] = NrLangText;
+                        importRowAuftrag["KENNZTYP"] = "";
+                        importRowAuftrag["KENNZFORM"] = tblKopf.KennzForm;
+                        importRowAuftrag["EINKENN_JN"] = BoolToX((Boolean)tblKopf.EinKennz);
+                        importRowAuftrag["BEMERKUNG"] = tblKopf.Bemerkung;
+                        importRowAuftrag["VK_KUERZEL"] = tblKopf.VKKurz;
+                        importRowAuftrag["KUNDEN_REF"] = tblKopf.interneRef;
+                        importRowAuftrag["KUNDEN_NOTIZ"] = tblKopf.KundenNotiz;
+                        importRowAuftrag["KENNZ_VH"] = BoolToX((Boolean)tblKopf.KennzVH);
 
-                    if (IsDate(Haltedauer))
-                    {
-                        importRowAuftrag["HALTE_DAUER"] = Haltedauer;
-                    }
+                        importRowAuftrag["ALT_KENNZ"] = tblKopf.KennzAlt;
+                        importRowAuftrag["ZBII_ALT_NEU"] = tblKopf.ZBII_ALT_NEU == true ? importRowAuftrag["ZBII_ALT_NEU"] = "N" : importRowAuftrag["ZBII_ALT_NEU"] = "A";
+                        importRowAuftrag["VH_KENNZ_RES"] = BoolToX((Boolean)tblKopf.VorhKennzReserv);
+                        if (IsDate(tblKopf.Still_Datum.ToString()))
+                        {
+                            importRowAuftrag["STILL_DAT"] = tblKopf.Still_Datum;
+                        }
 
-                    importRowAuftrag["VE_ERNAM"] = m_objUser.UserName;
+                        importRowAuftrag["MNRESW"] = tblKopf.MussResWerden;
+                        importRowAuftrag["ZZEVB"] = tblKopf.EVB;
+                        importRowAuftrag["KENNZ_UEBERNAHME"] = tblKopf.KennzUebernahme;
+                        importRowAuftrag["SERIE"] = tblKopf.Serie;
+                        importRowAuftrag["SAISON_KNZ"] = tblKopf.SaisonKZ;
+                        importRowAuftrag["SAISON_BEG"] = tblKopf.SaisonBeg;
+                        importRowAuftrag["SAISON_END"] = tblKopf.SaisonEnd;
+                        importRowAuftrag["ZUSKENNZ"] = tblKopf.ZusatzKZ;
+                        importRowAuftrag["TUEV_AU"] = tblKopf.Tuev_AU;
+                        importRowAuftrag["KURZZEITVS"] = tblKopf.Kurzzeitkennz;
+                        importRowAuftrag["ZOLLVERS"] = tblKopf.ZollVers;
+                        importRowAuftrag["ZOLLVERS_DAUER"] = tblKopf.ZollVers_Dauer;
+                        importRowAuftrag["FAHRZ_ART"] = tblKopf.Fahrz_Art;
+                        importRowAuftrag["VORFUEHR"] = tblKopf.Vorfuehrung;
+                        importRowAuftrag["LTEXT_NR"] = tblKopf.Langtextnr;
 
-                    if (SWIFT != null) { importRowAuftrag["SWIFT"] = SWIFT; }
-                    if (IBAN != null) { importRowAuftrag["IBAN"] = IBAN; }
-                    if (Bankkey != null) { importRowAuftrag["BANKL"] = Bankkey; }
-                    if (Kontonr != null) { importRowAuftrag["BANKN"] = Kontonr; }
-                    if (Geldinstitut != null) { importRowAuftrag["EBPP_ACCNAME"] = Geldinstitut; }
-                    if (Inhaber != null) { importRowAuftrag["KOINH"] = Inhaber; }
-                    importRowAuftrag["EINZ_JN"] = BoolToX(EinzugErm);
-                    importRowAuftrag["RECH_JN"] = BoolToX(Rechnung);
-                    importRowAuftrag["BARZ_JN"] = BoolToX(Barzahlung);
+                        if (IsDate(tblKopf.Haltedauer.ToString()))
+                        {
+                            importRowAuftrag["HALTE_DAUER"] = tblKopf.Haltedauer;
+                        }
 
-                    importRowAuftrag["BEB_STATUS"] = "1";
+                        // ggf. Original-Erfassername erhalten
+                        if ((SendForAll) && (!String.IsNullOrEmpty(tblKopf.Vorerfasser)))
+                        {
+                            importRowAuftrag["VE_ERNAM"] = tblKopf.Vorerfasser;
+                        }
+                        else
+                        {
+                            importRowAuftrag["VE_ERNAM"] = m_objUser.UserName;
+                        }
 
-                    importAuftrag.Rows.Add(importRowAuftrag);
+                        if (tblKopf.SWIFT != null) { importRowAuftrag["SWIFT"] = tblKopf.SWIFT; }
+                        if (tblKopf.IBAN != null) { importRowAuftrag["IBAN"] = tblKopf.IBAN; }
+                        if (tblKopf.BankKey != null) { importRowAuftrag["BANKL"] = tblKopf.BankKey; }
+                        if (tblKopf.Kontonr != null) { importRowAuftrag["BANKN"] = tblKopf.Kontonr; }
+                        if (tblKopf.Geldinstitut != null) { importRowAuftrag["EBPP_ACCNAME"] = tblKopf.Geldinstitut; }
+                        if (tblKopf.Inhaber != null) { importRowAuftrag["KOINH"] = tblKopf.Inhaber; }
+                        if (tblKopf.EinzugErm != null) { importRowAuftrag["EINZ_JN"] = BoolToX((Boolean)tblKopf.EinzugErm); }
+                        if (tblKopf.Rechnung != null) { importRowAuftrag["RECH_JN"] = BoolToX((Boolean)tblKopf.Rechnung); }
+                        if (tblKopf.Barzahlung != null) { importRowAuftrag["BARZ_JN"] = BoolToX((Boolean)tblKopf.Barzahlung); }
 
-                    DataRow importRow;
+                        importRowAuftrag["BEB_STATUS"] = "1";
 
-                    importRow = importPos.NewRow();
-                    importRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
-                    importRow["LFDNR"] = "1".PadLeft(6, '0');
-                    importRow["MENGE"] = "1";
-                    importRow["MATNR"] = NrMaterial;
-                    importPos.Rows.Add(importRow);
+                        DataRow importRow;
 
-                    if (!String.IsNullOrEmpty(Name1))
-                    {
-                        importRow = importAdresse.NewRow();
+                        var tblPosCount = (from p in ZLD_DataContext.ZLDPositionsTabelle
+                                           where p.id_Kopf == vorgid
+                                           select p);
 
-                        importRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
-                        if (Name1 != null) { importRow["NAME1"] = Name1; }
-                        if (Name2 != null) { importRow["NAME2"] = Name2; }
-                        if (PLZ != null) { importRow["PLZ"] = PLZ; }
-                        if (Ort != null) { importRow["CITY1"] = Ort; }
-                        if (Strasse != null) { importRow["STREET"] = Strasse; }
+                        Int32 ROWCOUNT = 10;
+                        foreach (var PosRow in tblPosCount)
+                        {
+                            importRow = importPos.NewRow();
+                            importRow["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
+                            importRow["LFDNR"] = (ROWCOUNT).ToString().PadLeft(6, '0');
+                            importRow["MENGE"] = PosRow.Menge != "" ? importRow["MENGE"] = PosRow.Menge : importRow["MENGE"] = "1";
+                            importRow["MATNR"] = PosRow.Matnr.PadLeft(18, '0');
+                            importPos.Rows.Add(importRow);
+                            ROWCOUNT += 10;
+                        }
 
-                        importAdresse.Rows.Add(importRow);
+                        importAuftrag.Rows.Add(importRowAuftrag);
+
+                        var tblKunnadresse = (from k in ZLD_DataContext.ZLDKundenadresse
+                                              where k.id_Kopf == vorgid
+                                              select k).Single();
+
+                        if (tblKunnadresse.Name1 != null)
+                        {
+                            if (tblKunnadresse.Name1.Length > 0)
+                            {
+                                importRow = importAdresse.NewRow();
+
+                                importRow["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
+                                if (tblKunnadresse.Name1 != null) { importRow["NAME1"] = tblKunnadresse.Name1; }
+                                if (tblKunnadresse.Name2 != null) { importRow["NAME2"] = tblKunnadresse.Name2; }
+                                if (tblKunnadresse.PLZ != null) { importRow["PLZ"] = tblKunnadresse.PLZ; }
+                                if (tblKunnadresse.Ort != null) { importRow["CITY1"] = tblKunnadresse.Ort; }
+                                if (tblKunnadresse.Strasse != null) { importRow["STREET"] = tblKunnadresse.Strasse; }
+
+                                importAdresse.Rows.Add(importRow);
+                            }
+                        }
                     }
 
                     myProxy.callBapi();

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -66,6 +67,8 @@ namespace SapORM.Models
 
 			public string ERROR { get; set; }
 
+			public string ANDERE { get; set; }
+
 			public static GT_SCHADEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_SCHADEN
@@ -88,6 +91,7 @@ namespace SapORM.Models
 					LOESCHDATUM = (string.IsNullOrEmpty(row["LOESCHDATUM"].ToString())) ? null : (DateTime?)row["LOESCHDATUM"],
 					LOESCHUSER = (string)row["LOESCHUSER"],
 					ERROR = (string)row["ERROR"],
+					ANDERE = (string)row["ANDERE"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -112,7 +116,7 @@ namespace SapORM.Models
 
 			public static List<GT_SCHADEN> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_SCHADEN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -126,7 +130,7 @@ namespace SapORM.Models
 
 			public static List<GT_SCHADEN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_SCHADEN> ToList(ISapDataService sapDataService)
@@ -141,7 +145,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_TAB_ZEVENT_SCHADEN_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_SCHADEN> GetExportListWithExecute(ISapDataService sapDataService)
@@ -151,7 +155,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_SCHADEN> GetExportList(ISapDataService sapDataService)
@@ -161,7 +165,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_SCHADEN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -171,7 +175,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_TAB_ZEVENT_SCHADEN_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_SCHADEN> GetImportList(ISapDataService sapDataService)
@@ -181,7 +185,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}

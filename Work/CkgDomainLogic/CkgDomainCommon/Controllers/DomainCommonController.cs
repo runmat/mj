@@ -113,13 +113,5 @@ namespace ServicesMvc.Controllers
         {
             return View();
         }
-
-        [CkgApplication]
-        public ActionResult AdressenPflege(string kennung, string kdnr)
-        {
-            AdressenPflegeViewModel.AdressenDataInit(kennung ?? "VERSANDADRESSE", kdnr ?? LogonContext.KundenNr);
-
-            return View(AdressenPflegeViewModel);
-        }
     }
 }
