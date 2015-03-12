@@ -134,39 +134,44 @@ namespace AppZulassungsdienst.lib
         public void VorgangAbsenden()
         {
             ExecuteSapZugriff(() =>
+            {
+                Z_ZLD_IMP_NACHERF2.Init(SAP);
+
+                var kopfListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(new List<ZLDKopfdaten> { AktuellerVorgang.Kopfdaten });
+                SAP.ApplyImport(kopfListe);
+
+                var bankListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(new List<ZLDBankdaten> { AktuellerVorgang.Bankdaten });
+                SAP.ApplyImport(bankListe);
+
+                var adressListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten });
+                SAP.ApplyImport(adressListe);
+
+                var posListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_POS_From_ZLDPosition.CopyBack(AktuellerVorgang.Positionen);
+                SAP.ApplyImport(posListe);
+
+                CallBapi();
+
+                tblBarquittungen = SAP.GetExportTable("GT_BARQ");
+
+                var fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
+
+                if (fehlerListe.Any(f => !String.IsNullOrEmpty(f.FehlerText) && f.FehlerText != "OK"))
                 {
-                    Z_ZLD_IMP_NACHERF2.Init(SAP);
+                    RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
 
-                    var kopfListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(new List<ZLDKopfdaten> { AktuellerVorgang.Kopfdaten });
-                    SAP.ApplyImport(kopfListe);
-
-                    var bankListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(new List<ZLDBankdaten> { AktuellerVorgang.Bankdaten });
-                    SAP.ApplyImport(bankListe);
-
-                    var adressListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten });
-                    SAP.ApplyImport(adressListe);
-
-                    var posListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_POS_From_ZLDPosition.CopyBack(AktuellerVorgang.Positionen);
-                    SAP.ApplyImport(posListe);
-
-                    CallBapi();
-
-                    tblBarquittungen = SAP.GetExportTable("GT_BARQ");
-
-                    var fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
-
-                    if (fehlerListe.Any(f => f.FehlerText != "OK"))
+                    foreach (var fehler in fehlerListe)
                     {
-                        RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
-
-                        foreach (var fehler in fehlerListe)
+                        var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && (String.IsNullOrEmpty(fehler.PositionsNr) || p.PositionsNr == fehler.PositionsNr));
+                        if (pos != null)
                         {
-                            var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && p.PositionsNr == fehler.PositionsNr);
-                            if (pos != null)
+                            if (!String.IsNullOrEmpty(fehler.FehlerText))
                                 pos.FehlerText = fehler.FehlerText;
+                            else
+                                pos.FehlerText = "OK";
                         }
                     }
-                });
+                }
+            });
         }
 
         public void OffeneStornosLaden(List<Kundenstammdaten> kundenStamm)

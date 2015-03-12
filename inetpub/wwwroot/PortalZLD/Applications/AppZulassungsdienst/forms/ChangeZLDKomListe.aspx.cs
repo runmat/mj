@@ -384,7 +384,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleRE.Enabled = false;
                 cmdContinue.Visible = true;
 
-                Fillgrid(0, "", GridFilterMode.ShowOnlyOk);
+                Fillgrid(0, "", GridFilterMode.ShowOnlyOandL);
 
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
@@ -775,12 +775,8 @@ namespace AppZulassungsdienst.forms
 
             switch (filterMode)
             {
-                case GridFilterMode.ShowOnlyOk:
-                    srcList = objKompletterf.Vorgangsliste.Where(vg => vg.FehlerText == "OK").ToList();
-                    break;
-
-                case GridFilterMode.ShowOnlyError:
-                    srcList = objKompletterf.Vorgangsliste.Where(vg => vg.FehlerText != "OK").ToList();
+                case GridFilterMode.ShowOnlyOandL:
+                    srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
                     break;
 
                 default:

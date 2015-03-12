@@ -1,54 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ZLDPortal_Test" Class="ZLDTableClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=vms047;Initial Catalog=ZLDPortal_Test;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ZLDPortal_TestConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.ZLDVorgangBank" Member="ZLDVorgangBank">
-    <Type Name="ZLDVorgangBank">
-      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Bankleitzahl" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="KontoNr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
-      <Column Name="Bankverbindungsname" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Kontoinhaber" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
-      <Column Name="Einzug" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SWIFT" Type="System.String" DbType="NVarChar(11)" CanBeNull="true" />
-      <Column Name="IBAN" Type="System.String" DbType="NVarChar(34)" CanBeNull="true" />
-      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ZLDVorgangAdresse" Member="ZLDVorgangAdresse">
-    <Type Name="ZLDVorgangAdresse">
-      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Name1" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Name2" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Strasse" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
-      <Column Name="Plz" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="Ort" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Bemerkung" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
-      <Association Name="ZLDVorgangKopf_ZLDVorgangAdresse" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ZLDVorgangPosition" Member="ZLDVorgangPosition">
-    <Type Name="ZLDVorgangPosition">
-      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="PositionsNr" Type="System.String" DbType="NVarChar(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="UebergeordnetePosition" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
-      <Column Name="Menge" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
-      <Column Name="MaterialNr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
-      <Column Name="MaterialName" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="WebMaterialart" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="Preis" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
-      <Column Name="GebuehrAmt" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
-      <Column Name="GebuehrAmtAdd" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
-      <Column Name="SdRelevant" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="NullpreisErlaubt" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Gebuehrenpaket" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="UrspruenglicherPreis" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
-      <Column Name="Differenz" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
-      <Column Name="Konditionstabelle" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
-      <Column Name="Konditionsart" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
-      <Column Name="Kalkulationsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.ZLDVorgangKopf" Member="ZLDVorgangKopf">
     <Type Name="ZLDVorgangKopf">
       <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -80,9 +31,58 @@
       <Column Name="Zahlart_Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="LieferantenNr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
       <Column Name="WebBearbeitungsStatus" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangBank" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangBank" Cardinality="One" />
       <Association Name="ZLDVorgangKopf_ZLDVorgangAdresse" Member="ZLDVorgangAdresse" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangAdresse" Cardinality="One" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangBank" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangBank" Cardinality="One" />
       <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangPosition" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangPosition" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZLDVorgangAdresse" Member="ZLDVorgangAdresse">
+    <Type Name="ZLDVorgangAdresse">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Name1" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Name2" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Strasse" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
+      <Column Name="Plz" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Ort" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Bemerkung" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangAdresse" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZLDVorgangBank" Member="ZLDVorgangBank">
+    <Type Name="ZLDVorgangBank">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Bankleitzahl" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="KontoNr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
+      <Column Name="Geldinstitut" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Kontoinhaber" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
+      <Column Name="Einzug" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SWIFT" Type="System.String" DbType="NVarChar(11)" CanBeNull="true" />
+      <Column Name="IBAN" Type="System.String" DbType="NVarChar(34)" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZLDVorgangPosition" Member="ZLDVorgangPosition">
+    <Type Name="ZLDVorgangPosition">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PositionsNr" Type="System.String" DbType="NVarChar(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UebergeordnetePosition" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="Menge" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="MaterialNr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
+      <Column Name="MaterialName" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="WebMaterialart" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="Preis" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="GebuehrAmt" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="GebuehrAmtAdd" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="SdRelevant" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="NullpreisErlaubt" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Gebuehrenpaket" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UrspruenglicherPreis" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="Differenz" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="Konditionstabelle" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Konditionsart" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Kalkulationsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
 </Database>

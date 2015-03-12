@@ -890,7 +890,7 @@ namespace AppZulassungsdienst.forms
                 tblRow["Text"] = item.MaterialName;
                 tblRow["ID_POS"] = item.PositionsNr;
                 tblRow["NewPos"] = false;
-                tblRow["Menge"] = item.Menge.ToString();
+                tblRow["Menge"] = item.Menge.ToString("F0");
                 tblRow["Preis"] = item.Preis.GetValueOrDefault(0);
 
                 var gebuehrenPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "G");
@@ -2269,7 +2269,7 @@ namespace AppZulassungsdienst.forms
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             bankdaten.Bankleitzahl = objCommon.Bankschluessel;
             bankdaten.KontoNr = objCommon.Kontonr;
-            bankdaten.Geldinstitut = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
+            bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
             bankdaten.Rechnung = chkRechnung.Checked;
@@ -2326,7 +2326,7 @@ namespace AppZulassungsdienst.forms
                         tblRow["GebAmt"] = (gebuehrPos != null ? gebuehrPos.GebuehrAmt.GetValueOrDefault(0) : 0);
                         tblRow["ID_POS"] = pos.PositionsNr;
                         tblRow["NewPos"] = false;
-                        tblRow["Menge"] = (pos.Menge.ToString().IsNumeric() ? pos.Menge : 1);
+                        tblRow["Menge"] = (pos.Menge.ToString().IsNumeric() ? pos.Menge.ToString("F0") : "1");
 
                         if (pos.PositionsNr == "10")
                         {

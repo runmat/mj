@@ -465,9 +465,9 @@ namespace AppZulassungsdienst.lib
 
                 foreach (var vg in Vorgangsliste)
                 {
-                    var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && f.PositionsNr == vg.PositionsNr);
+                    var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && (String.IsNullOrEmpty(f.PositionsNr) || f.PositionsNr == vg.PositionsNr) && !String.IsNullOrEmpty(f.FehlerText));
 
-                    if (fehler != null && !String.IsNullOrEmpty(fehler.FehlerText) && fehlerListe.None(f => f.SapId == fehler.SapId && f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
+                    if (fehler != null && fehlerListe.None(f => f.SapId == fehler.SapId && f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
                         vg.FehlerText = fehler.FehlerText;
                     else
                         vg.FehlerText = "OK";
@@ -668,7 +668,7 @@ namespace AppZulassungsdienst.lib
 
                 var fehlerListe = AppModelMappings.Z_ZLD_IMPORT_ERFASSUNG2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMPORT_ERFASSUNG2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                if (fehlerListe.Any(f => f.FehlerText != "OK" && !f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
+                if (fehlerListe.Any(f => !String.IsNullOrEmpty(f.FehlerText) && f.FehlerText != "OK" && !f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
                 {
                     RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
 
@@ -676,7 +676,7 @@ namespace AppZulassungsdienst.lib
                     {
                         var fehler = item;
 
-                        var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && p.PositionsNr == fehler.PositionsNr);
+                        var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && (String.IsNullOrEmpty(fehler.PositionsNr) || p.PositionsNr == fehler.PositionsNr));
                         if (pos != null)
                         {
                             if (!String.IsNullOrEmpty(fehler.FehlerText) && fehlerListe.None(f => f.SapId == fehler.SapId && f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))

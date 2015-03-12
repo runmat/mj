@@ -227,7 +227,7 @@ namespace AppZulassungsdienst.forms
                             {
                                 if (GridView1.DataKeys[row.RowIndex] != null)
                                 {
-                                    if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblIDPos.Text)
+                                    if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
                                     {
                                         lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
                                         lblLoeschKZ.Text = newLoeschkz;
@@ -534,7 +534,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdContinue_Click(object sender, EventArgs e)
         {
-            objNacherf.DeleteVorgaengeOkFromLists();
+            objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
             List<ZLDVorgangUINacherfassung> liste;
 
@@ -698,14 +698,6 @@ namespace AppZulassungsdienst.forms
 
             switch (filterMode)
             {
-                case GridFilterMode.ShowOnlyOk:
-                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.FehlerText == "OK").ToList();
-                    break;
-
-                case GridFilterMode.ShowOnlyError:
-                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.FehlerText != "OK").ToList();
-                    break;
-
                 case GridFilterMode.ShowOnlyOandL:
                     srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
                     break;
@@ -1645,7 +1637,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleRE.Enabled = false;
                 cmdContinue.Visible = true;
 
-                Fillgrid(0, "", GridFilterMode.ShowOnlyOk);
+                Fillgrid(0, "", (objNacherf.SelAnnahmeAH ? GridFilterMode.ShowOnlyAandL : GridFilterMode.ShowOnlyOandL));
 
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";

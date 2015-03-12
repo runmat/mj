@@ -411,7 +411,8 @@ namespace AppZulassungsdienst.lib
                             Menge = (p.Menge.HasValue && p.Menge > 0 ? p.Menge : 1),
                             MaterialNr = p.MaterialNr,
                             MaterialName = p.CombineBezeichnungMenge(),
-                            WebMaterialart = p.WebMaterialart
+                            WebMaterialart = p.WebMaterialart,
+                            NullpreisErlaubt = mat.NullpreisErlaubt
                         });
 
                         // Gebühren
@@ -430,7 +431,8 @@ namespace AppZulassungsdienst.lib
                                 MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
                                 MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
                                 Menge = 1,
-                                WebMaterialart = "G"
+                                WebMaterialart = "G",
+                                NullpreisErlaubt = mat.NullpreisErlaubt
                             });
                         }
 
@@ -448,7 +450,8 @@ namespace AppZulassungsdienst.lib
                                 MaterialNr = mat.KennzeichenMaterialNr,
                                 MaterialName = "",
                                 Menge = 1,
-                                WebMaterialart = "K"
+                                WebMaterialart = "K",
+                                NullpreisErlaubt = mat.NullpreisErlaubt
                             });
                         }
 
@@ -466,7 +469,8 @@ namespace AppZulassungsdienst.lib
                                 MaterialNr = "591",
                                 MaterialName = "",
                                 Menge = 1,
-                                WebMaterialart = "S"
+                                WebMaterialart = "S",
+                                NullpreisErlaubt = mat.NullpreisErlaubt
                             });
                         }
                     }
@@ -527,6 +531,7 @@ namespace AppZulassungsdienst.lib
                         }
                         p.SapId = kopfdaten.SapId;
                         p.MaterialName = p.CombineBezeichnungMenge();
+                        p.NullpreisErlaubt = mat.NullpreisErlaubt;
                         posListeWeb.Add(p);
 
                         if (p.WebMaterialart == "D")
@@ -546,7 +551,8 @@ namespace AppZulassungsdienst.lib
                                     MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
                                     MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
                                     Menge = 1,
-                                    WebMaterialart = "G"
+                                    WebMaterialart = "G",
+                                    NullpreisErlaubt = mat.NullpreisErlaubt
                                 });
                             }
 
@@ -563,7 +569,8 @@ namespace AppZulassungsdienst.lib
                                     MaterialNr = mat.KennzeichenMaterialNr,
                                     MaterialName = "",
                                     Menge = 1,
-                                    WebMaterialart = "K"
+                                    WebMaterialart = "K",
+                                    NullpreisErlaubt = mat.NullpreisErlaubt
                                 });
                             }
 
@@ -580,7 +587,8 @@ namespace AppZulassungsdienst.lib
                                     MaterialNr = "591",
                                     MaterialName = "",
                                     Menge = 1,
-                                    WebMaterialart = "S"
+                                    WebMaterialart = "S",
+                                    NullpreisErlaubt = mat.NullpreisErlaubt
                                 });
                             }
                         }
@@ -746,9 +754,9 @@ namespace AppZulassungsdienst.lib
 
                 foreach (var vg in Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O"))
                 {
-                    var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && f.PositionsNr == vg.PositionsNr);
+                    var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && (String.IsNullOrEmpty(f.PositionsNr) || f.PositionsNr == vg.PositionsNr) && !String.IsNullOrEmpty(f.FehlerText));
 
-                    if (fehler != null && !String.IsNullOrEmpty(fehler.FehlerText) && fehlerListe.None(f => f.SapId == fehler.SapId && f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
+                    if (fehler != null && fehlerListe.None(f => f.SapId == fehler.SapId && f.FehlerText.StartsWith("SD-Auftrag ist bereits angelegt")))
                         vg.FehlerText = fehler.FehlerText;
                     else
                         vg.FehlerText = "OK";

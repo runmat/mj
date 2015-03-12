@@ -2,49 +2,49 @@
 <ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ZLDTableClasses">
   <DataContextMoniker Name="/ZLDTableClassesDataContext" />
   <nestedChildShapes>
-    <classShape Id="6e70ae4c-7bfa-4fd1-9721-60e1feffa48b" absoluteBounds="2, 0.5, 2, 2.5401025390625">
-      <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangBank" />
-      <nestedChildShapes>
-        <elementListCompartment Id="a6b350a1-bcce-4fd2-acab-43c4eb6c93f6" absoluteBounds="2.015, 0.96, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="32158461-b504-4884-a6df-51dc8cd1bf6a" absoluteBounds="2, 4.125, 2, 2.1554996744791666">
-      <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangAdresse" />
-      <nestedChildShapes>
-        <elementListCompartment Id="a295cd9b-7cd3-4a94-9e28-e421e73af1ea" absoluteBounds="2.015, 4.585, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="84dc7f23-ef0d-454a-9ed4-94736ba0dfa0" absoluteBounds="8.625, 1.75, 2, 4.2708154296875">
-      <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangPosition" />
-      <nestedChildShapes>
-        <elementListCompartment Id="ad4a2bc9-f312-41b6-8f65-294a772d6314" absoluteBounds="8.64, 2.21, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
-      </nestedChildShapes>
-    </classShape>
-    <classShape Id="b84e3230-115b-4e2d-b6bd-8dff6e6e8663" absoluteBounds="5.25, 0.5, 2, 6.3861311848958326">
+    <classShape Id="903caaf5-aa71-4042-b6bc-7b8107a38d7a" absoluteBounds="5.5, 1.125, 2, 6.3861311848958326">
       <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf" />
       <nestedChildShapes>
-        <elementListCompartment Id="e18b2e53-6936-460f-abde-7707f5cff548" absoluteBounds="5.265, 0.96, 1.9700000000000002, 5.826131184895833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+        <elementListCompartment Id="a61200a8-324e-4cff-8cb4-9db711b2d4ac" absoluteBounds="5.515, 1.585, 1.9700000000000002, 5.826131184895833" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.25 : 1.77005126953125); (4 : 1.77005126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
-      <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf/ZLDVorgangKopf_ZLDVorgangBank" />
-      <nodes>
-        <classShapeMoniker Id="b84e3230-115b-4e2d-b6bd-8dff6e6e8663" />
-        <classShapeMoniker Id="6e70ae4c-7bfa-4fd1-9721-60e1feffa48b" />
-      </nodes>
-    </associationConnector>
-    <associationConnector edgePoints="[(5.25 : 5.20274983723958); (4 : 5.20274983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <classShape Id="fb5a3b9e-0382-46dc-946c-40fc97ccca53" absoluteBounds="2.125, 1, 2, 2.1554996744791666">
+      <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangAdresse" />
+      <nestedChildShapes>
+        <elementListCompartment Id="c5c5ae8d-aed5-4da0-b052-4cbb016b19e3" absoluteBounds="2.14, 1.46, 1.9700000000000002, 1.5954996744791665" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 2.14024983723958); (4.125 : 2.14024983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf/ZLDVorgangKopf_ZLDVorgangAdresse" />
       <nodes>
-        <classShapeMoniker Id="b84e3230-115b-4e2d-b6bd-8dff6e6e8663" />
-        <classShapeMoniker Id="32158461-b504-4884-a6df-51dc8cd1bf6a" />
+        <classShapeMoniker Id="903caaf5-aa71-4042-b6bc-7b8107a38d7a" />
+        <classShapeMoniker Id="fb5a3b9e-0382-46dc-946c-40fc97ccca53" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.25 : 3.88540771484375); (8.625 : 3.88540771484375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <classShape Id="37e2721f-ee2b-41c7-a2c5-4d4db5212acc" absoluteBounds="2.125, 3.875, 2, 2.5401025390625">
+      <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangBank" />
+      <nestedChildShapes>
+        <elementListCompartment Id="6398057c-816c-45b7-9750-8c85ccce7bbc" absoluteBounds="2.14, 4.335, 1.9700000000000002, 1.9801025390625" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(5.5 : 5.14505126953125); (4.125 : 5.14505126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+      <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf/ZLDVorgangKopf_ZLDVorgangBank" />
+      <nodes>
+        <classShapeMoniker Id="903caaf5-aa71-4042-b6bc-7b8107a38d7a" />
+        <classShapeMoniker Id="37e2721f-ee2b-41c7-a2c5-4d4db5212acc" />
+      </nodes>
+    </associationConnector>
+    <classShape Id="74e9224b-f8a1-4e6e-96e2-dae7bc3cd550" absoluteBounds="8.75, 1.875, 2, 4.2708154296875">
+      <DataClassMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangPosition" />
+      <nestedChildShapes>
+        <elementListCompartment Id="af3cb0ce-7392-44ea-845d-49e3a5ac91fc" absoluteBounds="8.765, 2.335, 1.9700000000000002, 3.7108154296875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+    <associationConnector edgePoints="[(7.5 : 4.01040771484375); (8.75 : 4.01040771484375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf/ZLDVorgangKopf_ZLDVorgangPosition" />
       <nodes>
-        <classShapeMoniker Id="b84e3230-115b-4e2d-b6bd-8dff6e6e8663" />
-        <classShapeMoniker Id="84dc7f23-ef0d-454a-9ed4-94736ba0dfa0" />
+        <classShapeMoniker Id="903caaf5-aa71-4042-b6bc-7b8107a38d7a" />
+        <classShapeMoniker Id="74e9224b-f8a1-4e6e-96e2-dae7bc3cd550" />
       </nodes>
     </associationConnector>
   </nestedChildShapes>

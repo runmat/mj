@@ -15,8 +15,6 @@ namespace AppZulassungsdienst.lib
     public enum GridFilterMode
     {
         Default,
-        ShowOnlyOk,
-        ShowOnlyError,
         ShowOnlyOandL,
         ShowOnlyAandL
     }

@@ -220,13 +220,13 @@ namespace AppZulassungsdienst.lib.Models
                     , (s, d) =>
                     {
                         d.Gebuehrenpflichtig = s.ZZGEBPFLICHT.XToBool();
-                        d.GebuehrenMaterialNr = s.GEBMAT;
+                        d.GebuehrenMaterialNr = s.GEBMAT.NotNullOrEmpty().TrimStart('0');
                         d.GebuehrenMaterialName = s.GMAKTX;
-                        d.GebuehrenMitUstMaterialNr = s.GBAUST;
+                        d.GebuehrenMitUstMaterialNr = s.GBAUST.NotNullOrEmpty().TrimStart('0');
                         d.GebuehrenMitUstMaterialName = s.GUMAKTX;
                         d.Inaktiv = s.INAKTIV.XToBool();
                         d.Kennzeichenrelevant = s.KENNZREL.XToBool();
-                        d.KennzeichenMaterialNr = s.KENNZMAT;
+                        d.KennzeichenMaterialNr = s.KENNZMAT.NotNullOrEmpty().TrimStart('0');
                         d.MaterialName = s.MAKTX;
                         d.MaterialNr = s.MATNR.NotNullOrEmpty().TrimStart('0');
                         d.MengeErlaubt = s.MENGE_ERL.XToBool();

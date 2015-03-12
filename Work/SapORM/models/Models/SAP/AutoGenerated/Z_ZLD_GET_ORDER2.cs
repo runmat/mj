@@ -125,6 +125,8 @@ namespace SapORM.Models
 
 			public string ZZEVB { get; set; }
 
+			public string ZAHLART { get; set; }
+
 			public static GS_EX_BAK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GS_EX_BAK
@@ -176,6 +178,7 @@ namespace SapORM.Models
 					LTEXT_NR = (string)row["LTEXT_NR"],
 					MOBUSER = (string)row["MOBUSER"],
 					ZZEVB = (string)row["ZZEVB"],
+					ZAHLART = (string)row["ZAHLART"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

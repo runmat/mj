@@ -30,22 +30,23 @@ namespace AppZulassungsdienst.lib
 		
     #region Definitionen der Erweiterungsmethoden
     partial void OnCreated();
-    partial void InsertZLDVorgangBank(ZLDVorgangBank instance);
-    partial void UpdateZLDVorgangBank(ZLDVorgangBank instance);
-    partial void DeleteZLDVorgangBank(ZLDVorgangBank instance);
-    partial void InsertZLDVorgangAdresse(ZLDVorgangAdresse instance);
-    partial void UpdateZLDVorgangAdresse(ZLDVorgangAdresse instance);
-    partial void DeleteZLDVorgangAdresse(ZLDVorgangAdresse instance);
-    partial void InsertZLDVorgangPosition(ZLDVorgangPosition instance);
-    partial void UpdateZLDVorgangPosition(ZLDVorgangPosition instance);
-    partial void DeleteZLDVorgangPosition(ZLDVorgangPosition instance);
     partial void InsertZLDVorgangKopf(ZLDVorgangKopf instance);
     partial void UpdateZLDVorgangKopf(ZLDVorgangKopf instance);
     partial void DeleteZLDVorgangKopf(ZLDVorgangKopf instance);
+    partial void InsertZLDVorgangAdresse(ZLDVorgangAdresse instance);
+    partial void UpdateZLDVorgangAdresse(ZLDVorgangAdresse instance);
+    partial void DeleteZLDVorgangAdresse(ZLDVorgangAdresse instance);
+    partial void InsertZLDVorgangBank(ZLDVorgangBank instance);
+    partial void UpdateZLDVorgangBank(ZLDVorgangBank instance);
+    partial void DeleteZLDVorgangBank(ZLDVorgangBank instance);
+    partial void InsertZLDVorgangPosition(ZLDVorgangPosition instance);
+    partial void UpdateZLDVorgangPosition(ZLDVorgangPosition instance);
+    partial void DeleteZLDVorgangPosition(ZLDVorgangPosition instance);
     #endregion
-		
-		public ZLDTableClassesDataContext() :
+
+        public ZLDTableClassesDataContext() :
                 base(global::System.Configuration.ConfigurationManager.AppSettings["Connectionstring"].ToString(), mappingSource)
+
 		{
 			OnCreated();
 		}
@@ -74,11 +75,11 @@ namespace AppZulassungsdienst.lib
 			OnCreated();
 		}
 		
-		public System.Data.Linq.Table<ZLDVorgangBank> ZLDVorgangBank
+		public System.Data.Linq.Table<ZLDVorgangKopf> ZLDVorgangKopf
 		{
 			get
 			{
-				return this.GetTable<ZLDVorgangBank>();
+				return this.GetTable<ZLDVorgangKopf>();
 			}
 		}
 		
@@ -90,1072 +91,19 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
+		public System.Data.Linq.Table<ZLDVorgangBank> ZLDVorgangBank
+		{
+			get
+			{
+				return this.GetTable<ZLDVorgangBank>();
+			}
+		}
+		
 		public System.Data.Linq.Table<ZLDVorgangPosition> ZLDVorgangPosition
 		{
 			get
 			{
 				return this.GetTable<ZLDVorgangPosition>();
-			}
-		}
-		
-		public System.Data.Linq.Table<ZLDVorgangKopf> ZLDVorgangKopf
-		{
-			get
-			{
-				return this.GetTable<ZLDVorgangKopf>();
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangBank")]
-	public partial class ZLDVorgangBank : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _SapId;
-		
-		private string _Bankleitzahl;
-		
-		private string _KontoNr;
-		
-		private string _Geldinstitut;
-		
-		private string _Kontoinhaber;
-		
-		private System.Nullable<bool> _Einzug;
-		
-		private System.Nullable<bool> _Rechnung;
-		
-		private string _SWIFT;
-		
-		private string _IBAN;
-		
-		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
-		
-    #region Definitionen der Erweiterungsmethoden
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSapIdChanging(string value);
-    partial void OnSapIdChanged();
-    partial void OnBankleitzahlChanging(string value);
-    partial void OnBankleitzahlChanged();
-    partial void OnKontoNrChanging(string value);
-    partial void OnKontoNrChanged();
-    partial void OnGeldinstitutChanging(string value);
-    partial void OnGeldinstitutChanged();
-    partial void OnKontoinhaberChanging(string value);
-    partial void OnKontoinhaberChanged();
-    partial void OnEinzugChanging(System.Nullable<bool> value);
-    partial void OnEinzugChanged();
-    partial void OnRechnungChanging(System.Nullable<bool> value);
-    partial void OnRechnungChanged();
-    partial void OnSWIFTChanging(string value);
-    partial void OnSWIFTChanged();
-    partial void OnIBANChanging(string value);
-    partial void OnIBANChanged();
-    #endregion
-		
-		public ZLDVorgangBank()
-		{
-			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string SapId
-		{
-			get
-			{
-				return this._SapId;
-			}
-			set
-			{
-				if ((this._SapId != value))
-				{
-					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSapIdChanging(value);
-					this.SendPropertyChanging();
-					this._SapId = value;
-					this.SendPropertyChanged("SapId");
-					this.OnSapIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bankleitzahl", DbType="NVarChar(15)")]
-		public string Bankleitzahl
-		{
-			get
-			{
-				return this._Bankleitzahl;
-			}
-			set
-			{
-				if ((this._Bankleitzahl != value))
-				{
-					this.OnBankleitzahlChanging(value);
-					this.SendPropertyChanging();
-					this._Bankleitzahl = value;
-					this.SendPropertyChanged("Bankleitzahl");
-					this.OnBankleitzahlChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KontoNr", DbType="NVarChar(18)")]
-		public string KontoNr
-		{
-			get
-			{
-				return this._KontoNr;
-			}
-			set
-			{
-				if ((this._KontoNr != value))
-				{
-					this.OnKontoNrChanging(value);
-					this.SendPropertyChanging();
-					this._KontoNr = value;
-					this.SendPropertyChanged("KontoNr");
-					this.OnKontoNrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Geldinstitut", DbType="NVarChar(40)")]
-		public string Geldinstitut
-		{
-			get
-			{
-				return this._Geldinstitut;
-			}
-			set
-			{
-				if ((this._Geldinstitut != value))
-				{
-					this.OnGeldinstitutChanging(value);
-					this.SendPropertyChanging();
-					this._Geldinstitut = value;
-					this.SendPropertyChanged("Geldinstitut");
-					this.OnGeldinstitutChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kontoinhaber", DbType="NVarChar(60)")]
-		public string Kontoinhaber
-		{
-			get
-			{
-				return this._Kontoinhaber;
-			}
-			set
-			{
-				if ((this._Kontoinhaber != value))
-				{
-					this.OnKontoinhaberChanging(value);
-					this.SendPropertyChanging();
-					this._Kontoinhaber = value;
-					this.SendPropertyChanged("Kontoinhaber");
-					this.OnKontoinhaberChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Einzug", DbType="Bit")]
-		public System.Nullable<bool> Einzug
-		{
-			get
-			{
-				return this._Einzug;
-			}
-			set
-			{
-				if ((this._Einzug != value))
-				{
-					this.OnEinzugChanging(value);
-					this.SendPropertyChanging();
-					this._Einzug = value;
-					this.SendPropertyChanged("Einzug");
-					this.OnEinzugChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rechnung", DbType="Bit")]
-		public System.Nullable<bool> Rechnung
-		{
-			get
-			{
-				return this._Rechnung;
-			}
-			set
-			{
-				if ((this._Rechnung != value))
-				{
-					this.OnRechnungChanging(value);
-					this.SendPropertyChanging();
-					this._Rechnung = value;
-					this.SendPropertyChanged("Rechnung");
-					this.OnRechnungChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SWIFT", DbType="NVarChar(11)")]
-		public string SWIFT
-		{
-			get
-			{
-				return this._SWIFT;
-			}
-			set
-			{
-				if ((this._SWIFT != value))
-				{
-					this.OnSWIFTChanging(value);
-					this.SendPropertyChanging();
-					this._SWIFT = value;
-					this.SendPropertyChanged("SWIFT");
-					this.OnSWIFTChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IBAN", DbType="NVarChar(34)")]
-		public string IBAN
-		{
-			get
-			{
-				return this._IBAN;
-			}
-			set
-			{
-				if ((this._IBAN != value))
-				{
-					this.OnIBANChanging(value);
-					this.SendPropertyChanging();
-					this._IBAN = value;
-					this.SendPropertyChanged("IBAN");
-					this.OnIBANChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangBank", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ZLDVorgangKopf ZLDVorgangKopf
-		{
-			get
-			{
-				return this._ZLDVorgangKopf.Entity;
-			}
-			set
-			{
-				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
-				if (((previousValue != value) 
-							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ZLDVorgangKopf.Entity = null;
-						previousValue.ZLDVorgangBank = null;
-					}
-					this._ZLDVorgangKopf.Entity = value;
-					if ((value != null))
-					{
-						value.ZLDVorgangBank = this;
-						this._SapId = value.SapId;
-					}
-					else
-					{
-						this._SapId = default(string);
-					}
-					this.SendPropertyChanged("ZLDVorgangKopf");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangAdresse")]
-	public partial class ZLDVorgangAdresse : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _SapId;
-		
-		private string _Name1;
-		
-		private string _Name2;
-		
-		private string _Strasse;
-		
-		private string _Plz;
-		
-		private string _Ort;
-		
-		private string _Bemerkung;
-		
-		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
-		
-    #region Definitionen der Erweiterungsmethoden
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSapIdChanging(string value);
-    partial void OnSapIdChanged();
-    partial void OnName1Changing(string value);
-    partial void OnName1Changed();
-    partial void OnName2Changing(string value);
-    partial void OnName2Changed();
-    partial void OnStrasseChanging(string value);
-    partial void OnStrasseChanged();
-    partial void OnPlzChanging(string value);
-    partial void OnPlzChanged();
-    partial void OnOrtChanging(string value);
-    partial void OnOrtChanged();
-    partial void OnBemerkungChanging(string value);
-    partial void OnBemerkungChanged();
-    #endregion
-		
-		public ZLDVorgangAdresse()
-		{
-			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string SapId
-		{
-			get
-			{
-				return this._SapId;
-			}
-			set
-			{
-				if ((this._SapId != value))
-				{
-					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSapIdChanging(value);
-					this.SendPropertyChanging();
-					this._SapId = value;
-					this.SendPropertyChanged("SapId");
-					this.OnSapIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name1", DbType="NVarChar(40)")]
-		public string Name1
-		{
-			get
-			{
-				return this._Name1;
-			}
-			set
-			{
-				if ((this._Name1 != value))
-				{
-					this.OnName1Changing(value);
-					this.SendPropertyChanging();
-					this._Name1 = value;
-					this.SendPropertyChanged("Name1");
-					this.OnName1Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name2", DbType="NVarChar(40)")]
-		public string Name2
-		{
-			get
-			{
-				return this._Name2;
-			}
-			set
-			{
-				if ((this._Name2 != value))
-				{
-					this.OnName2Changing(value);
-					this.SendPropertyChanging();
-					this._Name2 = value;
-					this.SendPropertyChanged("Name2");
-					this.OnName2Changed();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Strasse", DbType="NVarChar(60)")]
-		public string Strasse
-		{
-			get
-			{
-				return this._Strasse;
-			}
-			set
-			{
-				if ((this._Strasse != value))
-				{
-					this.OnStrasseChanging(value);
-					this.SendPropertyChanging();
-					this._Strasse = value;
-					this.SendPropertyChanged("Strasse");
-					this.OnStrasseChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Plz", DbType="NVarChar(10)")]
-		public string Plz
-		{
-			get
-			{
-				return this._Plz;
-			}
-			set
-			{
-				if ((this._Plz != value))
-				{
-					this.OnPlzChanging(value);
-					this.SendPropertyChanging();
-					this._Plz = value;
-					this.SendPropertyChanged("Plz");
-					this.OnPlzChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ort", DbType="NVarChar(40)")]
-		public string Ort
-		{
-			get
-			{
-				return this._Ort;
-			}
-			set
-			{
-				if ((this._Ort != value))
-				{
-					this.OnOrtChanging(value);
-					this.SendPropertyChanging();
-					this._Ort = value;
-					this.SendPropertyChanged("Ort");
-					this.OnOrtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bemerkung", DbType="NVarChar(120)")]
-		public string Bemerkung
-		{
-			get
-			{
-				return this._Bemerkung;
-			}
-			set
-			{
-				if ((this._Bemerkung != value))
-				{
-					this.OnBemerkungChanging(value);
-					this.SendPropertyChanging();
-					this._Bemerkung = value;
-					this.SendPropertyChanged("Bemerkung");
-					this.OnBemerkungChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangAdresse", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ZLDVorgangKopf ZLDVorgangKopf
-		{
-			get
-			{
-				return this._ZLDVorgangKopf.Entity;
-			}
-			set
-			{
-				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
-				if (((previousValue != value) 
-							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ZLDVorgangKopf.Entity = null;
-						previousValue.ZLDVorgangAdresse = null;
-					}
-					this._ZLDVorgangKopf.Entity = value;
-					if ((value != null))
-					{
-						value.ZLDVorgangAdresse = this;
-						this._SapId = value.SapId;
-					}
-					else
-					{
-						this._SapId = default(string);
-					}
-					this.SendPropertyChanged("ZLDVorgangKopf");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangPosition")]
-	public partial class ZLDVorgangPosition : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private string _SapId;
-		
-		private string _PositionsNr;
-		
-		private string _UebergeordnetePosition;
-		
-		private System.Nullable<decimal> _Menge;
-		
-		private string _MaterialNr;
-		
-		private string _MaterialName;
-		
-		private string _WebMaterialart;
-		
-		private System.Nullable<decimal> _Preis;
-		
-		private System.Nullable<decimal> _GebuehrAmt;
-		
-		private System.Nullable<decimal> _GebuehrAmtAdd;
-		
-		private System.Nullable<bool> _SdRelevant;
-		
-		private System.Nullable<bool> _NullpreisErlaubt;
-		
-		private System.Nullable<bool> _Gebuehrenpaket;
-		
-		private System.Nullable<decimal> _UrspruenglicherPreis;
-		
-		private System.Nullable<decimal> _Differenz;
-		
-		private string _Konditionstabelle;
-		
-		private string _Konditionsart;
-		
-		private System.Nullable<System.DateTime> _Kalkulationsdatum;
-		
-		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
-		
-    #region Definitionen der Erweiterungsmethoden
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnSapIdChanging(string value);
-    partial void OnSapIdChanged();
-    partial void OnPositionsNrChanging(string value);
-    partial void OnPositionsNrChanged();
-    partial void OnUebergeordnetePositionChanging(string value);
-    partial void OnUebergeordnetePositionChanged();
-    partial void OnMengeChanging(System.Nullable<decimal> value);
-    partial void OnMengeChanged();
-    partial void OnMaterialNrChanging(string value);
-    partial void OnMaterialNrChanged();
-    partial void OnMaterialNameChanging(string value);
-    partial void OnMaterialNameChanged();
-    partial void OnWebMaterialartChanging(string value);
-    partial void OnWebMaterialartChanged();
-    partial void OnPreisChanging(System.Nullable<decimal> value);
-    partial void OnPreisChanged();
-    partial void OnGebuehrAmtChanging(System.Nullable<decimal> value);
-    partial void OnGebuehrAmtChanged();
-    partial void OnGebuehrAmtAddChanging(System.Nullable<decimal> value);
-    partial void OnGebuehrAmtAddChanged();
-    partial void OnSdRelevantChanging(System.Nullable<bool> value);
-    partial void OnSdRelevantChanged();
-    partial void OnNullpreisErlaubtChanging(System.Nullable<bool> value);
-    partial void OnNullpreisErlaubtChanged();
-    partial void OnGebuehrenpaketChanging(System.Nullable<bool> value);
-    partial void OnGebuehrenpaketChanged();
-    partial void OnUrspruenglicherPreisChanging(System.Nullable<decimal> value);
-    partial void OnUrspruenglicherPreisChanged();
-    partial void OnDifferenzChanging(System.Nullable<decimal> value);
-    partial void OnDifferenzChanged();
-    partial void OnKonditionstabelleChanging(string value);
-    partial void OnKonditionstabelleChanged();
-    partial void OnKonditionsartChanging(string value);
-    partial void OnKonditionsartChanged();
-    partial void OnKalkulationsdatumChanging(System.Nullable<System.DateTime> value);
-    partial void OnKalkulationsdatumChanged();
-    #endregion
-		
-		public ZLDVorgangPosition()
-		{
-			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string SapId
-		{
-			get
-			{
-				return this._SapId;
-			}
-			set
-			{
-				if ((this._SapId != value))
-				{
-					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnSapIdChanging(value);
-					this.SendPropertyChanging();
-					this._SapId = value;
-					this.SendPropertyChanged("SapId");
-					this.OnSapIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionsNr", DbType="NVarChar(6) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
-		public string PositionsNr
-		{
-			get
-			{
-				return this._PositionsNr;
-			}
-			set
-			{
-				if ((this._PositionsNr != value))
-				{
-					this.OnPositionsNrChanging(value);
-					this.SendPropertyChanging();
-					this._PositionsNr = value;
-					this.SendPropertyChanged("PositionsNr");
-					this.OnPositionsNrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UebergeordnetePosition", DbType="NVarChar(6)")]
-		public string UebergeordnetePosition
-		{
-			get
-			{
-				return this._UebergeordnetePosition;
-			}
-			set
-			{
-				if ((this._UebergeordnetePosition != value))
-				{
-					this.OnUebergeordnetePositionChanging(value);
-					this.SendPropertyChanging();
-					this._UebergeordnetePosition = value;
-					this.SendPropertyChanged("UebergeordnetePosition");
-					this.OnUebergeordnetePositionChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Menge", DbType="Decimal(15,3)")]
-		public System.Nullable<decimal> Menge
-		{
-			get
-			{
-				return this._Menge;
-			}
-			set
-			{
-				if ((this._Menge != value))
-				{
-					this.OnMengeChanging(value);
-					this.SendPropertyChanging();
-					this._Menge = value;
-					this.SendPropertyChanged("Menge");
-					this.OnMengeChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialNr", DbType="NVarChar(18)")]
-		public string MaterialNr
-		{
-			get
-			{
-				return this._MaterialNr;
-			}
-			set
-			{
-				if ((this._MaterialNr != value))
-				{
-					this.OnMaterialNrChanging(value);
-					this.SendPropertyChanging();
-					this._MaterialNr = value;
-					this.SendPropertyChanged("MaterialNr");
-					this.OnMaterialNrChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialName", DbType="NVarChar(40)")]
-		public string MaterialName
-		{
-			get
-			{
-				return this._MaterialName;
-			}
-			set
-			{
-				if ((this._MaterialName != value))
-				{
-					this.OnMaterialNameChanging(value);
-					this.SendPropertyChanging();
-					this._MaterialName = value;
-					this.SendPropertyChanged("MaterialName");
-					this.OnMaterialNameChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WebMaterialart", DbType="NVarChar(1)")]
-		public string WebMaterialart
-		{
-			get
-			{
-				return this._WebMaterialart;
-			}
-			set
-			{
-				if ((this._WebMaterialart != value))
-				{
-					this.OnWebMaterialartChanging(value);
-					this.SendPropertyChanging();
-					this._WebMaterialart = value;
-					this.SendPropertyChanged("WebMaterialart");
-					this.OnWebMaterialartChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Preis", DbType="Decimal(15,3)")]
-		public System.Nullable<decimal> Preis
-		{
-			get
-			{
-				return this._Preis;
-			}
-			set
-			{
-				if ((this._Preis != value))
-				{
-					this.OnPreisChanging(value);
-					this.SendPropertyChanging();
-					this._Preis = value;
-					this.SendPropertyChanged("Preis");
-					this.OnPreisChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebuehrAmt", DbType="Decimal(15,3)")]
-		public System.Nullable<decimal> GebuehrAmt
-		{
-			get
-			{
-				return this._GebuehrAmt;
-			}
-			set
-			{
-				if ((this._GebuehrAmt != value))
-				{
-					this.OnGebuehrAmtChanging(value);
-					this.SendPropertyChanging();
-					this._GebuehrAmt = value;
-					this.SendPropertyChanged("GebuehrAmt");
-					this.OnGebuehrAmtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebuehrAmtAdd", DbType="Decimal(15,3)")]
-		public System.Nullable<decimal> GebuehrAmtAdd
-		{
-			get
-			{
-				return this._GebuehrAmtAdd;
-			}
-			set
-			{
-				if ((this._GebuehrAmtAdd != value))
-				{
-					this.OnGebuehrAmtAddChanging(value);
-					this.SendPropertyChanging();
-					this._GebuehrAmtAdd = value;
-					this.SendPropertyChanged("GebuehrAmtAdd");
-					this.OnGebuehrAmtAddChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SdRelevant", DbType="Bit")]
-		public System.Nullable<bool> SdRelevant
-		{
-			get
-			{
-				return this._SdRelevant;
-			}
-			set
-			{
-				if ((this._SdRelevant != value))
-				{
-					this.OnSdRelevantChanging(value);
-					this.SendPropertyChanging();
-					this._SdRelevant = value;
-					this.SendPropertyChanged("SdRelevant");
-					this.OnSdRelevantChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NullpreisErlaubt", DbType="Bit")]
-		public System.Nullable<bool> NullpreisErlaubt
-		{
-			get
-			{
-				return this._NullpreisErlaubt;
-			}
-			set
-			{
-				if ((this._NullpreisErlaubt != value))
-				{
-					this.OnNullpreisErlaubtChanging(value);
-					this.SendPropertyChanging();
-					this._NullpreisErlaubt = value;
-					this.SendPropertyChanged("NullpreisErlaubt");
-					this.OnNullpreisErlaubtChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gebuehrenpaket", DbType="Bit")]
-		public System.Nullable<bool> Gebuehrenpaket
-		{
-			get
-			{
-				return this._Gebuehrenpaket;
-			}
-			set
-			{
-				if ((this._Gebuehrenpaket != value))
-				{
-					this.OnGebuehrenpaketChanging(value);
-					this.SendPropertyChanging();
-					this._Gebuehrenpaket = value;
-					this.SendPropertyChanged("Gebuehrenpaket");
-					this.OnGebuehrenpaketChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UrspruenglicherPreis", DbType="Decimal(15,3)")]
-		public System.Nullable<decimal> UrspruenglicherPreis
-		{
-			get
-			{
-				return this._UrspruenglicherPreis;
-			}
-			set
-			{
-				if ((this._UrspruenglicherPreis != value))
-				{
-					this.OnUrspruenglicherPreisChanging(value);
-					this.SendPropertyChanging();
-					this._UrspruenglicherPreis = value;
-					this.SendPropertyChanged("UrspruenglicherPreis");
-					this.OnUrspruenglicherPreisChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Differenz", DbType="Decimal(15,3)")]
-		public System.Nullable<decimal> Differenz
-		{
-			get
-			{
-				return this._Differenz;
-			}
-			set
-			{
-				if ((this._Differenz != value))
-				{
-					this.OnDifferenzChanging(value);
-					this.SendPropertyChanging();
-					this._Differenz = value;
-					this.SendPropertyChanged("Differenz");
-					this.OnDifferenzChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionstabelle", DbType="NVarChar(4)")]
-		public string Konditionstabelle
-		{
-			get
-			{
-				return this._Konditionstabelle;
-			}
-			set
-			{
-				if ((this._Konditionstabelle != value))
-				{
-					this.OnKonditionstabelleChanging(value);
-					this.SendPropertyChanging();
-					this._Konditionstabelle = value;
-					this.SendPropertyChanged("Konditionstabelle");
-					this.OnKonditionstabelleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionsart", DbType="NVarChar(4)")]
-		public string Konditionsart
-		{
-			get
-			{
-				return this._Konditionsart;
-			}
-			set
-			{
-				if ((this._Konditionsart != value))
-				{
-					this.OnKonditionsartChanging(value);
-					this.SendPropertyChanging();
-					this._Konditionsart = value;
-					this.SendPropertyChanged("Konditionsart");
-					this.OnKonditionsartChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kalkulationsdatum", DbType="DateTime")]
-		public System.Nullable<System.DateTime> Kalkulationsdatum
-		{
-			get
-			{
-				return this._Kalkulationsdatum;
-			}
-			set
-			{
-				if ((this._Kalkulationsdatum != value))
-				{
-					this.OnKalkulationsdatumChanging(value);
-					this.SendPropertyChanging();
-					this._Kalkulationsdatum = value;
-					this.SendPropertyChanged("Kalkulationsdatum");
-					this.OnKalkulationsdatumChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangPosition", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
-		public ZLDVorgangKopf ZLDVorgangKopf
-		{
-			get
-			{
-				return this._ZLDVorgangKopf.Entity;
-			}
-			set
-			{
-				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
-				if (((previousValue != value) 
-							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ZLDVorgangKopf.Entity = null;
-						previousValue.ZLDVorgangPosition.Remove(this);
-					}
-					this._ZLDVorgangKopf.Entity = value;
-					if ((value != null))
-					{
-						value.ZLDVorgangPosition.Add(this);
-						this._SapId = value.SapId;
-					}
-					else
-					{
-						this._SapId = default(string);
-					}
-					this.SendPropertyChanged("ZLDVorgangKopf");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
 		}
 	}
@@ -1224,9 +172,9 @@ namespace AppZulassungsdienst.lib
 		
 		private string _WebBearbeitungsStatus;
 		
-		private EntityRef<ZLDVorgangBank> _ZLDVorgangBank;
-		
 		private EntityRef<ZLDVorgangAdresse> _ZLDVorgangAdresse;
+		
+		private EntityRef<ZLDVorgangBank> _ZLDVorgangBank;
 		
 		private EntitySet<ZLDVorgangPosition> _ZLDVorgangPosition;
 		
@@ -1296,8 +244,8 @@ namespace AppZulassungsdienst.lib
 		
 		public ZLDVorgangKopf()
 		{
-			this._ZLDVorgangBank = default(EntityRef<ZLDVorgangBank>);
 			this._ZLDVorgangAdresse = default(EntityRef<ZLDVorgangAdresse>);
+			this._ZLDVorgangBank = default(EntityRef<ZLDVorgangBank>);
 			this._ZLDVorgangPosition = new EntitySet<ZLDVorgangPosition>(new Action<ZLDVorgangPosition>(this.attach_ZLDVorgangPosition), new Action<ZLDVorgangPosition>(this.detach_ZLDVorgangPosition));
 			OnCreated();
 		}
@@ -1882,35 +830,6 @@ namespace AppZulassungsdienst.lib
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangBank", Storage="_ZLDVorgangBank", ThisKey="SapId", OtherKey="SapId", IsUnique=true, IsForeignKey=false)]
-		public ZLDVorgangBank ZLDVorgangBank
-		{
-			get
-			{
-				return this._ZLDVorgangBank.Entity;
-			}
-			set
-			{
-				ZLDVorgangBank previousValue = this._ZLDVorgangBank.Entity;
-				if (((previousValue != value) 
-							|| (this._ZLDVorgangBank.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._ZLDVorgangBank.Entity = null;
-						previousValue.ZLDVorgangKopf = null;
-					}
-					this._ZLDVorgangBank.Entity = value;
-					if ((value != null))
-					{
-						value.ZLDVorgangKopf = this;
-					}
-					this.SendPropertyChanged("ZLDVorgangBank");
-				}
-			}
-		}
-		
 		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangAdresse", Storage="_ZLDVorgangAdresse", ThisKey="SapId", OtherKey="SapId", IsUnique=true, IsForeignKey=false)]
 		public ZLDVorgangAdresse ZLDVorgangAdresse
 		{
@@ -1936,6 +855,35 @@ namespace AppZulassungsdienst.lib
 						value.ZLDVorgangKopf = this;
 					}
 					this.SendPropertyChanged("ZLDVorgangAdresse");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangBank", Storage="_ZLDVorgangBank", ThisKey="SapId", OtherKey="SapId", IsUnique=true, IsForeignKey=false)]
+		public ZLDVorgangBank ZLDVorgangBank
+		{
+			get
+			{
+				return this._ZLDVorgangBank.Entity;
+			}
+			set
+			{
+				ZLDVorgangBank previousValue = this._ZLDVorgangBank.Entity;
+				if (((previousValue != value) 
+							|| (this._ZLDVorgangBank.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ZLDVorgangBank.Entity = null;
+						previousValue.ZLDVorgangKopf = null;
+					}
+					this._ZLDVorgangBank.Entity = value;
+					if ((value != null))
+					{
+						value.ZLDVorgangKopf = this;
+					}
+					this.SendPropertyChanged("ZLDVorgangBank");
 				}
 			}
 		}
@@ -1983,6 +931,1059 @@ namespace AppZulassungsdienst.lib
 		{
 			this.SendPropertyChanging();
 			entity.ZLDVorgangKopf = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangAdresse")]
+	public partial class ZLDVorgangAdresse : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _SapId;
+		
+		private string _Name1;
+		
+		private string _Name2;
+		
+		private string _Strasse;
+		
+		private string _Plz;
+		
+		private string _Ort;
+		
+		private string _Bemerkung;
+		
+		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSapIdChanging(string value);
+    partial void OnSapIdChanged();
+    partial void OnName1Changing(string value);
+    partial void OnName1Changed();
+    partial void OnName2Changing(string value);
+    partial void OnName2Changed();
+    partial void OnStrasseChanging(string value);
+    partial void OnStrasseChanged();
+    partial void OnPlzChanging(string value);
+    partial void OnPlzChanged();
+    partial void OnOrtChanging(string value);
+    partial void OnOrtChanged();
+    partial void OnBemerkungChanging(string value);
+    partial void OnBemerkungChanged();
+    #endregion
+		
+		public ZLDVorgangAdresse()
+		{
+			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SapId
+		{
+			get
+			{
+				return this._SapId;
+			}
+			set
+			{
+				if ((this._SapId != value))
+				{
+					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSapIdChanging(value);
+					this.SendPropertyChanging();
+					this._SapId = value;
+					this.SendPropertyChanged("SapId");
+					this.OnSapIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name1", DbType="NVarChar(40)")]
+		public string Name1
+		{
+			get
+			{
+				return this._Name1;
+			}
+			set
+			{
+				if ((this._Name1 != value))
+				{
+					this.OnName1Changing(value);
+					this.SendPropertyChanging();
+					this._Name1 = value;
+					this.SendPropertyChanged("Name1");
+					this.OnName1Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name2", DbType="NVarChar(40)")]
+		public string Name2
+		{
+			get
+			{
+				return this._Name2;
+			}
+			set
+			{
+				if ((this._Name2 != value))
+				{
+					this.OnName2Changing(value);
+					this.SendPropertyChanging();
+					this._Name2 = value;
+					this.SendPropertyChanged("Name2");
+					this.OnName2Changed();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Strasse", DbType="NVarChar(60)")]
+		public string Strasse
+		{
+			get
+			{
+				return this._Strasse;
+			}
+			set
+			{
+				if ((this._Strasse != value))
+				{
+					this.OnStrasseChanging(value);
+					this.SendPropertyChanging();
+					this._Strasse = value;
+					this.SendPropertyChanged("Strasse");
+					this.OnStrasseChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Plz", DbType="NVarChar(10)")]
+		public string Plz
+		{
+			get
+			{
+				return this._Plz;
+			}
+			set
+			{
+				if ((this._Plz != value))
+				{
+					this.OnPlzChanging(value);
+					this.SendPropertyChanging();
+					this._Plz = value;
+					this.SendPropertyChanged("Plz");
+					this.OnPlzChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Ort", DbType="NVarChar(40)")]
+		public string Ort
+		{
+			get
+			{
+				return this._Ort;
+			}
+			set
+			{
+				if ((this._Ort != value))
+				{
+					this.OnOrtChanging(value);
+					this.SendPropertyChanging();
+					this._Ort = value;
+					this.SendPropertyChanged("Ort");
+					this.OnOrtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bemerkung", DbType="NVarChar(120)")]
+		public string Bemerkung
+		{
+			get
+			{
+				return this._Bemerkung;
+			}
+			set
+			{
+				if ((this._Bemerkung != value))
+				{
+					this.OnBemerkungChanging(value);
+					this.SendPropertyChanging();
+					this._Bemerkung = value;
+					this.SendPropertyChanged("Bemerkung");
+					this.OnBemerkungChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangAdresse", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ZLDVorgangKopf ZLDVorgangKopf
+		{
+			get
+			{
+				return this._ZLDVorgangKopf.Entity;
+			}
+			set
+			{
+				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
+				if (((previousValue != value) 
+							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ZLDVorgangKopf.Entity = null;
+						previousValue.ZLDVorgangAdresse = null;
+					}
+					this._ZLDVorgangKopf.Entity = value;
+					if ((value != null))
+					{
+						value.ZLDVorgangAdresse = this;
+						this._SapId = value.SapId;
+					}
+					else
+					{
+						this._SapId = default(string);
+					}
+					this.SendPropertyChanged("ZLDVorgangKopf");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangBank")]
+	public partial class ZLDVorgangBank : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _SapId;
+		
+		private string _Bankleitzahl;
+		
+		private string _KontoNr;
+		
+		private string _Geldinstitut;
+		
+		private string _Kontoinhaber;
+		
+		private System.Nullable<bool> _Einzug;
+		
+		private System.Nullable<bool> _Rechnung;
+		
+		private string _SWIFT;
+		
+		private string _IBAN;
+		
+		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSapIdChanging(string value);
+    partial void OnSapIdChanged();
+    partial void OnBankleitzahlChanging(string value);
+    partial void OnBankleitzahlChanged();
+    partial void OnKontoNrChanging(string value);
+    partial void OnKontoNrChanged();
+    partial void OnGeldinstitutChanging(string value);
+    partial void OnGeldinstitutChanged();
+    partial void OnKontoinhaberChanging(string value);
+    partial void OnKontoinhaberChanged();
+    partial void OnEinzugChanging(System.Nullable<bool> value);
+    partial void OnEinzugChanged();
+    partial void OnRechnungChanging(System.Nullable<bool> value);
+    partial void OnRechnungChanged();
+    partial void OnSWIFTChanging(string value);
+    partial void OnSWIFTChanged();
+    partial void OnIBANChanging(string value);
+    partial void OnIBANChanged();
+    #endregion
+		
+		public ZLDVorgangBank()
+		{
+			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SapId
+		{
+			get
+			{
+				return this._SapId;
+			}
+			set
+			{
+				if ((this._SapId != value))
+				{
+					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSapIdChanging(value);
+					this.SendPropertyChanging();
+					this._SapId = value;
+					this.SendPropertyChanged("SapId");
+					this.OnSapIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bankleitzahl", DbType="NVarChar(15)")]
+		public string Bankleitzahl
+		{
+			get
+			{
+				return this._Bankleitzahl;
+			}
+			set
+			{
+				if ((this._Bankleitzahl != value))
+				{
+					this.OnBankleitzahlChanging(value);
+					this.SendPropertyChanging();
+					this._Bankleitzahl = value;
+					this.SendPropertyChanged("Bankleitzahl");
+					this.OnBankleitzahlChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_KontoNr", DbType="NVarChar(18)")]
+		public string KontoNr
+		{
+			get
+			{
+				return this._KontoNr;
+			}
+			set
+			{
+				if ((this._KontoNr != value))
+				{
+					this.OnKontoNrChanging(value);
+					this.SendPropertyChanging();
+					this._KontoNr = value;
+					this.SendPropertyChanged("KontoNr");
+					this.OnKontoNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Geldinstitut", DbType="NVarChar(40)")]
+		public string Geldinstitut
+		{
+			get
+			{
+				return this._Geldinstitut;
+			}
+			set
+			{
+				if ((this._Geldinstitut != value))
+				{
+					this.OnGeldinstitutChanging(value);
+					this.SendPropertyChanging();
+					this._Geldinstitut = value;
+					this.SendPropertyChanged("Geldinstitut");
+					this.OnGeldinstitutChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kontoinhaber", DbType="NVarChar(60)")]
+		public string Kontoinhaber
+		{
+			get
+			{
+				return this._Kontoinhaber;
+			}
+			set
+			{
+				if ((this._Kontoinhaber != value))
+				{
+					this.OnKontoinhaberChanging(value);
+					this.SendPropertyChanging();
+					this._Kontoinhaber = value;
+					this.SendPropertyChanged("Kontoinhaber");
+					this.OnKontoinhaberChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Einzug", DbType="Bit")]
+		public System.Nullable<bool> Einzug
+		{
+			get
+			{
+				return this._Einzug;
+			}
+			set
+			{
+				if ((this._Einzug != value))
+				{
+					this.OnEinzugChanging(value);
+					this.SendPropertyChanging();
+					this._Einzug = value;
+					this.SendPropertyChanged("Einzug");
+					this.OnEinzugChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rechnung", DbType="Bit")]
+		public System.Nullable<bool> Rechnung
+		{
+			get
+			{
+				return this._Rechnung;
+			}
+			set
+			{
+				if ((this._Rechnung != value))
+				{
+					this.OnRechnungChanging(value);
+					this.SendPropertyChanging();
+					this._Rechnung = value;
+					this.SendPropertyChanged("Rechnung");
+					this.OnRechnungChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SWIFT", DbType="NVarChar(11)")]
+		public string SWIFT
+		{
+			get
+			{
+				return this._SWIFT;
+			}
+			set
+			{
+				if ((this._SWIFT != value))
+				{
+					this.OnSWIFTChanging(value);
+					this.SendPropertyChanging();
+					this._SWIFT = value;
+					this.SendPropertyChanged("SWIFT");
+					this.OnSWIFTChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IBAN", DbType="NVarChar(34)")]
+		public string IBAN
+		{
+			get
+			{
+				return this._IBAN;
+			}
+			set
+			{
+				if ((this._IBAN != value))
+				{
+					this.OnIBANChanging(value);
+					this.SendPropertyChanging();
+					this._IBAN = value;
+					this.SendPropertyChanged("IBAN");
+					this.OnIBANChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangBank", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ZLDVorgangKopf ZLDVorgangKopf
+		{
+			get
+			{
+				return this._ZLDVorgangKopf.Entity;
+			}
+			set
+			{
+				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
+				if (((previousValue != value) 
+							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ZLDVorgangKopf.Entity = null;
+						previousValue.ZLDVorgangBank = null;
+					}
+					this._ZLDVorgangKopf.Entity = value;
+					if ((value != null))
+					{
+						value.ZLDVorgangBank = this;
+						this._SapId = value.SapId;
+					}
+					else
+					{
+						this._SapId = default(string);
+					}
+					this.SendPropertyChanged("ZLDVorgangKopf");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.ZLDVorgangPosition")]
+	public partial class ZLDVorgangPosition : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private string _SapId;
+		
+		private string _PositionsNr;
+		
+		private string _UebergeordnetePosition;
+		
+		private System.Nullable<decimal> _Menge;
+		
+		private string _MaterialNr;
+		
+		private string _MaterialName;
+		
+		private string _WebMaterialart;
+		
+		private System.Nullable<decimal> _Preis;
+		
+		private System.Nullable<decimal> _GebuehrAmt;
+		
+		private System.Nullable<decimal> _GebuehrAmtAdd;
+		
+		private System.Nullable<bool> _SdRelevant;
+		
+		private System.Nullable<bool> _NullpreisErlaubt;
+		
+		private System.Nullable<bool> _Gebuehrenpaket;
+		
+		private System.Nullable<decimal> _UrspruenglicherPreis;
+		
+		private System.Nullable<decimal> _Differenz;
+		
+		private string _Konditionstabelle;
+		
+		private string _Konditionsart;
+		
+		private System.Nullable<System.DateTime> _Kalkulationsdatum;
+		
+		private EntityRef<ZLDVorgangKopf> _ZLDVorgangKopf;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnSapIdChanging(string value);
+    partial void OnSapIdChanged();
+    partial void OnPositionsNrChanging(string value);
+    partial void OnPositionsNrChanged();
+    partial void OnUebergeordnetePositionChanging(string value);
+    partial void OnUebergeordnetePositionChanged();
+    partial void OnMengeChanging(System.Nullable<decimal> value);
+    partial void OnMengeChanged();
+    partial void OnMaterialNrChanging(string value);
+    partial void OnMaterialNrChanged();
+    partial void OnMaterialNameChanging(string value);
+    partial void OnMaterialNameChanged();
+    partial void OnWebMaterialartChanging(string value);
+    partial void OnWebMaterialartChanged();
+    partial void OnPreisChanging(System.Nullable<decimal> value);
+    partial void OnPreisChanged();
+    partial void OnGebuehrAmtChanging(System.Nullable<decimal> value);
+    partial void OnGebuehrAmtChanged();
+    partial void OnGebuehrAmtAddChanging(System.Nullable<decimal> value);
+    partial void OnGebuehrAmtAddChanged();
+    partial void OnSdRelevantChanging(System.Nullable<bool> value);
+    partial void OnSdRelevantChanged();
+    partial void OnNullpreisErlaubtChanging(System.Nullable<bool> value);
+    partial void OnNullpreisErlaubtChanged();
+    partial void OnGebuehrenpaketChanging(System.Nullable<bool> value);
+    partial void OnGebuehrenpaketChanged();
+    partial void OnUrspruenglicherPreisChanging(System.Nullable<decimal> value);
+    partial void OnUrspruenglicherPreisChanged();
+    partial void OnDifferenzChanging(System.Nullable<decimal> value);
+    partial void OnDifferenzChanged();
+    partial void OnKonditionstabelleChanging(string value);
+    partial void OnKonditionstabelleChanged();
+    partial void OnKonditionsartChanging(string value);
+    partial void OnKonditionsartChanged();
+    partial void OnKalkulationsdatumChanging(System.Nullable<System.DateTime> value);
+    partial void OnKalkulationsdatumChanged();
+    #endregion
+		
+		public ZLDVorgangPosition()
+		{
+			this._ZLDVorgangKopf = default(EntityRef<ZLDVorgangKopf>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SapId", DbType="NVarChar(10) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string SapId
+		{
+			get
+			{
+				return this._SapId;
+			}
+			set
+			{
+				if ((this._SapId != value))
+				{
+					if (this._ZLDVorgangKopf.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnSapIdChanging(value);
+					this.SendPropertyChanging();
+					this._SapId = value;
+					this.SendPropertyChanged("SapId");
+					this.OnSapIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PositionsNr", DbType="NVarChar(6) NOT NULL", CanBeNull=false, IsPrimaryKey=true)]
+		public string PositionsNr
+		{
+			get
+			{
+				return this._PositionsNr;
+			}
+			set
+			{
+				if ((this._PositionsNr != value))
+				{
+					this.OnPositionsNrChanging(value);
+					this.SendPropertyChanging();
+					this._PositionsNr = value;
+					this.SendPropertyChanged("PositionsNr");
+					this.OnPositionsNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UebergeordnetePosition", DbType="NVarChar(6)")]
+		public string UebergeordnetePosition
+		{
+			get
+			{
+				return this._UebergeordnetePosition;
+			}
+			set
+			{
+				if ((this._UebergeordnetePosition != value))
+				{
+					this.OnUebergeordnetePositionChanging(value);
+					this.SendPropertyChanging();
+					this._UebergeordnetePosition = value;
+					this.SendPropertyChanged("UebergeordnetePosition");
+					this.OnUebergeordnetePositionChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Menge", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> Menge
+		{
+			get
+			{
+				return this._Menge;
+			}
+			set
+			{
+				if ((this._Menge != value))
+				{
+					this.OnMengeChanging(value);
+					this.SendPropertyChanging();
+					this._Menge = value;
+					this.SendPropertyChanged("Menge");
+					this.OnMengeChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialNr", DbType="NVarChar(18)")]
+		public string MaterialNr
+		{
+			get
+			{
+				return this._MaterialNr;
+			}
+			set
+			{
+				if ((this._MaterialNr != value))
+				{
+					this.OnMaterialNrChanging(value);
+					this.SendPropertyChanging();
+					this._MaterialNr = value;
+					this.SendPropertyChanged("MaterialNr");
+					this.OnMaterialNrChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MaterialName", DbType="NVarChar(40)")]
+		public string MaterialName
+		{
+			get
+			{
+				return this._MaterialName;
+			}
+			set
+			{
+				if ((this._MaterialName != value))
+				{
+					this.OnMaterialNameChanging(value);
+					this.SendPropertyChanging();
+					this._MaterialName = value;
+					this.SendPropertyChanged("MaterialName");
+					this.OnMaterialNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_WebMaterialart", DbType="NVarChar(1)")]
+		public string WebMaterialart
+		{
+			get
+			{
+				return this._WebMaterialart;
+			}
+			set
+			{
+				if ((this._WebMaterialart != value))
+				{
+					this.OnWebMaterialartChanging(value);
+					this.SendPropertyChanging();
+					this._WebMaterialart = value;
+					this.SendPropertyChanged("WebMaterialart");
+					this.OnWebMaterialartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Preis", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> Preis
+		{
+			get
+			{
+				return this._Preis;
+			}
+			set
+			{
+				if ((this._Preis != value))
+				{
+					this.OnPreisChanging(value);
+					this.SendPropertyChanging();
+					this._Preis = value;
+					this.SendPropertyChanged("Preis");
+					this.OnPreisChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebuehrAmt", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> GebuehrAmt
+		{
+			get
+			{
+				return this._GebuehrAmt;
+			}
+			set
+			{
+				if ((this._GebuehrAmt != value))
+				{
+					this.OnGebuehrAmtChanging(value);
+					this.SendPropertyChanging();
+					this._GebuehrAmt = value;
+					this.SendPropertyChanged("GebuehrAmt");
+					this.OnGebuehrAmtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GebuehrAmtAdd", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> GebuehrAmtAdd
+		{
+			get
+			{
+				return this._GebuehrAmtAdd;
+			}
+			set
+			{
+				if ((this._GebuehrAmtAdd != value))
+				{
+					this.OnGebuehrAmtAddChanging(value);
+					this.SendPropertyChanging();
+					this._GebuehrAmtAdd = value;
+					this.SendPropertyChanged("GebuehrAmtAdd");
+					this.OnGebuehrAmtAddChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SdRelevant", DbType="Bit")]
+		public System.Nullable<bool> SdRelevant
+		{
+			get
+			{
+				return this._SdRelevant;
+			}
+			set
+			{
+				if ((this._SdRelevant != value))
+				{
+					this.OnSdRelevantChanging(value);
+					this.SendPropertyChanging();
+					this._SdRelevant = value;
+					this.SendPropertyChanged("SdRelevant");
+					this.OnSdRelevantChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NullpreisErlaubt", DbType="Bit")]
+		public System.Nullable<bool> NullpreisErlaubt
+		{
+			get
+			{
+				return this._NullpreisErlaubt;
+			}
+			set
+			{
+				if ((this._NullpreisErlaubt != value))
+				{
+					this.OnNullpreisErlaubtChanging(value);
+					this.SendPropertyChanging();
+					this._NullpreisErlaubt = value;
+					this.SendPropertyChanged("NullpreisErlaubt");
+					this.OnNullpreisErlaubtChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Gebuehrenpaket", DbType="Bit")]
+		public System.Nullable<bool> Gebuehrenpaket
+		{
+			get
+			{
+				return this._Gebuehrenpaket;
+			}
+			set
+			{
+				if ((this._Gebuehrenpaket != value))
+				{
+					this.OnGebuehrenpaketChanging(value);
+					this.SendPropertyChanging();
+					this._Gebuehrenpaket = value;
+					this.SendPropertyChanged("Gebuehrenpaket");
+					this.OnGebuehrenpaketChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UrspruenglicherPreis", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> UrspruenglicherPreis
+		{
+			get
+			{
+				return this._UrspruenglicherPreis;
+			}
+			set
+			{
+				if ((this._UrspruenglicherPreis != value))
+				{
+					this.OnUrspruenglicherPreisChanging(value);
+					this.SendPropertyChanging();
+					this._UrspruenglicherPreis = value;
+					this.SendPropertyChanged("UrspruenglicherPreis");
+					this.OnUrspruenglicherPreisChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Differenz", DbType="Decimal(15,3)")]
+		public System.Nullable<decimal> Differenz
+		{
+			get
+			{
+				return this._Differenz;
+			}
+			set
+			{
+				if ((this._Differenz != value))
+				{
+					this.OnDifferenzChanging(value);
+					this.SendPropertyChanging();
+					this._Differenz = value;
+					this.SendPropertyChanged("Differenz");
+					this.OnDifferenzChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionstabelle", DbType="NVarChar(4)")]
+		public string Konditionstabelle
+		{
+			get
+			{
+				return this._Konditionstabelle;
+			}
+			set
+			{
+				if ((this._Konditionstabelle != value))
+				{
+					this.OnKonditionstabelleChanging(value);
+					this.SendPropertyChanging();
+					this._Konditionstabelle = value;
+					this.SendPropertyChanged("Konditionstabelle");
+					this.OnKonditionstabelleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Konditionsart", DbType="NVarChar(4)")]
+		public string Konditionsart
+		{
+			get
+			{
+				return this._Konditionsart;
+			}
+			set
+			{
+				if ((this._Konditionsart != value))
+				{
+					this.OnKonditionsartChanging(value);
+					this.SendPropertyChanging();
+					this._Konditionsart = value;
+					this.SendPropertyChanged("Konditionsart");
+					this.OnKonditionsartChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Kalkulationsdatum", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Kalkulationsdatum
+		{
+			get
+			{
+				return this._Kalkulationsdatum;
+			}
+			set
+			{
+				if ((this._Kalkulationsdatum != value))
+				{
+					this.OnKalkulationsdatumChanging(value);
+					this.SendPropertyChanging();
+					this._Kalkulationsdatum = value;
+					this.SendPropertyChanged("Kalkulationsdatum");
+					this.OnKalkulationsdatumChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="ZLDVorgangKopf_ZLDVorgangPosition", Storage="_ZLDVorgangKopf", ThisKey="SapId", OtherKey="SapId", IsForeignKey=true, DeleteOnNull=true, DeleteRule="CASCADE")]
+		public ZLDVorgangKopf ZLDVorgangKopf
+		{
+			get
+			{
+				return this._ZLDVorgangKopf.Entity;
+			}
+			set
+			{
+				ZLDVorgangKopf previousValue = this._ZLDVorgangKopf.Entity;
+				if (((previousValue != value) 
+							|| (this._ZLDVorgangKopf.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._ZLDVorgangKopf.Entity = null;
+						previousValue.ZLDVorgangPosition.Remove(this);
+					}
+					this._ZLDVorgangKopf.Entity = value;
+					if ((value != null))
+					{
+						value.ZLDVorgangPosition.Add(this);
+						this._SapId = value.SapId;
+					}
+					else
+					{
+						this._SapId = default(string);
+					}
+					this.SendPropertyChanged("ZLDVorgangKopf");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

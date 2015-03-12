@@ -505,7 +505,7 @@ namespace AppZulassungsdienst.forms
                     tblRow["Text"] = pos.MaterialName;
                     tblRow["ID_POS"] = pos.PositionsNr;
                     tblRow["NewPos"] = false;
-                    tblRow["Menge"] = pos.Menge.ToString();
+                    tblRow["Menge"] = pos.Menge.ToString("F0");
                     tblRow["DLBezeichnung"] = (pos.MaterialNr == ZLDCommon.CONST_IDSONSTIGEDL ? pos.MaterialName : "");
                 }
                 else
@@ -1337,7 +1337,7 @@ namespace AppZulassungsdienst.forms
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             bankdaten.Bankleitzahl = objCommon.Bankschluessel;
             bankdaten.KontoNr = objCommon.Kontonr;
-            bankdaten.Geldinstitut = txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "";
+            bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
             bankdaten.Rechnung = chkRechnung.Checked;
