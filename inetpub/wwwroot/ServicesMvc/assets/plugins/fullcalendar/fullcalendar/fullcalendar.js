@@ -1959,6 +1959,8 @@
 		event.textColor ||
 		source.textColor ||
 		opt('eventTextColor');
+        var borderWidth = event.borderWidth;
+
         var statements = [];
         if (backgroundColor) {
             statements.push('background-color:' + backgroundColor);
@@ -1968,6 +1970,9 @@
         }
         if (textColor) {
             statements.push('color:' + textColor);
+        }
+        if (borderWidth) {
+            statements.push('border-width:' + borderWidth);
         }
         return statements.join(';');
     }
