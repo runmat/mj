@@ -9,6 +9,8 @@ namespace CkgDomainLogic.DomainCommon.Contracts
         string ApplicationKey { get; set; }
         string ReferenceKey { get; set; }
 
+        List<CustomerDocument> AllDocuments { get; }
+
         List<CustomerDocument> Documents { get; }
 
         List<CustomerDocumentCategory> Categories { get; }
