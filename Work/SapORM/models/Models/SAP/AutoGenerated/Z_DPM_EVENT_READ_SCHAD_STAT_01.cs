@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -44,6 +45,8 @@ namespace SapORM.Models
 
 			public string TEXT { get; set; }
 
+			public string FARBE_STATUS { get; set; }
+
 			public static GT_STATUS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_STATUS
@@ -55,6 +58,7 @@ namespace SapORM.Models
 					UZEIT = (string)row["UZEIT"],
 					BENUTZER = (string)row["BENUTZER"],
 					TEXT = (string)row["TEXT"],
+					FARBE_STATUS = (string)row["FARBE_STATUS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -79,7 +83,7 @@ namespace SapORM.Models
 
 			public static List<GT_STATUS> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_STATUS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -93,7 +97,7 @@ namespace SapORM.Models
 
 			public static List<GT_STATUS> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATUS> ToList(ISapDataService sapDataService)
@@ -108,7 +112,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_EVENT_READ_SCHAD_STAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATUS> GetExportListWithExecute(ISapDataService sapDataService)
@@ -118,7 +122,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATUS> GetExportList(ISapDataService sapDataService)
@@ -128,7 +132,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATUS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -138,7 +142,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_EVENT_READ_SCHAD_STAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATUS> GetImportList(ISapDataService sapDataService)
@@ -148,7 +152,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -174,6 +178,8 @@ namespace SapORM.Models
 
 			public string TEXT { get; set; }
 
+			public string FARBE_STATUS { get; set; }
+
 			public static GT_STATART Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_STATART
@@ -184,6 +190,7 @@ namespace SapORM.Models
 					REIHENFOLGE = (string)row["REIHENFOLGE"],
 					OPTIONAL = (string)row["OPTIONAL"],
 					TEXT = (string)row["TEXT"],
+					FARBE_STATUS = (string)row["FARBE_STATUS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -208,7 +215,7 @@ namespace SapORM.Models
 
 			public static List<GT_STATART> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_STATART> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -222,7 +229,7 @@ namespace SapORM.Models
 
 			public static List<GT_STATART> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATART> ToList(ISapDataService sapDataService)
@@ -237,7 +244,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_EVENT_READ_SCHAD_STAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATART> GetExportListWithExecute(ISapDataService sapDataService)
@@ -247,7 +254,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATART> GetExportList(ISapDataService sapDataService)
@@ -257,7 +264,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATART> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -267,7 +274,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_EVENT_READ_SCHAD_STAT_01", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_STATART> GetImportList(ISapDataService sapDataService)
@@ -277,7 +284,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}

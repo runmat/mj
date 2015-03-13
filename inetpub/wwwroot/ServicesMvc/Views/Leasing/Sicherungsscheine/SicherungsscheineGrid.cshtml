@@ -13,6 +13,7 @@
     .XAjaxDataBinding("SicherungsscheineAjaxBinding", "Leasing")
     .Columns(columns =>
     {
+        columns.Bound(c => c.Vertragsnummer);
         columns.Bound(c => c.Konzernnummer);
         columns.Bound(c => c.Kundenreferenz);
         columns.Bound(c => c.Fahrgestellnummer);

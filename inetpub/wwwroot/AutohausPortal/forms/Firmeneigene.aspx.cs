@@ -77,6 +77,21 @@ namespace AutohausPortal.forms
 
 
             }
+            else if (Request.Params.Get("__EVENTTARGET") == "RadWindow1")
+            {
+                if ((Session["RedirectToAuftragsliste"] != null) && ((bool)Session["RedirectToAuftragsliste"]))
+                {
+                    Session["RedirectToAuftragsliste"] = null;
+                    Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                }
+                else
+                {
+                    //Schließen des Druckdialogs: PrintDialogKundenformular.aspx
+                    RadWindow downloaddoc = RadWindowManager1.Windows[0];
+                    downloaddoc.Visible = false;
+                    downloaddoc.VisibleOnPageLoad = false;
+                }
+            }
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "Form1",
             "<script type='text/javascript'>openform1();</script>", false);
         }
@@ -283,10 +298,13 @@ namespace AutohausPortal.forms
                 objVorerf.InternRef = RemoveDefault;
 
                 objVorerf.AppID = Session["AppID"].ToString();
+
+                var idListe = new List<long>();
+
                 if (cbxSave.Checked == false)
                 {
                     objVorerf.saved = true;
-                    objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
+                    idListe = objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
                     getAuftraege();
                 }
                 else
@@ -299,25 +317,60 @@ namespace AutohausPortal.forms
                         objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
                         objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
                     }
-                    else { return; lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!"; }
+                    else
+                    {
+                        lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!";
+                        return;
+                    }
 
                     objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
-                    Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                    ShowKundenformulare(true);
+                    return;
                 }
 
-                ClearForm();
                 if (objVorerf.Status == 0)
                 {
                     lblMessage.Visible = true;
                     lblMessage.Text = "Daten erfolgreich gespeichert.";
+                    ShowKundenformulare(false, idListe);
                 }
                 else
                 {
                     lblError.Text = "Fehler beim anlegen der Daten: " + objVorerf.Message;
                 }
+
+                ClearForm();
+
                 Session["objVorerf"] = objVorerf;
             }
             else { proofInserted(); }
+        }
+
+        private void ShowKundenformulare(bool redirect = false, List<long> idListe = null)
+        {
+            if (idListe != null)
+            {
+                objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true, idListe);
+            }
+            else
+            {
+                objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, false, true);
+            }
+
+            if (objVorerf.Status == 0)
+            {
+                Session["objVorerf"] = objVorerf;
+                Session["RedirectToAuftragsliste"] = redirect;
+                //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
+                RadWindow downloaddoc = RadWindowManager1.Windows[0];
+                downloaddoc.Visible = true;
+                downloaddoc.VisibleOnPageLoad = true;
+            }
+            else
+            {
+                lblMessage.Text += " (" + objVorerf.Message + ")";
+                if (redirect) { Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe); }
+            }
         }
 
         /// <summary>

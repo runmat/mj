@@ -38,10 +38,12 @@ namespace CkgDomainLogic.Equi.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
-        public void DataMarkForRefresh()
+        public void DataMarkForRefresh(bool refreshSelektor = true)
         {
             PropertyCacheClear(this, m => m.EinAusgaengeFiltered);
-            PropertyCacheClear(this, m => m.EinAusgangSelektor);
+
+            if (refreshSelektor)
+                PropertyCacheClear(this, m => m.EinAusgangSelektor);
         }
 
         public void LoadEinAusgaenge(EinAusgangSelektor model, Action<string, string> addModelError)
@@ -51,7 +53,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             if (EinAusgaenge.None())
                 addModelError("", Localize.NoDataFound);
 
-            DataMarkForRefresh();
+            DataMarkForRefresh(false);
         }
 
         public void FilterEinAusgaenge(string filterValue, string filterProperties)
