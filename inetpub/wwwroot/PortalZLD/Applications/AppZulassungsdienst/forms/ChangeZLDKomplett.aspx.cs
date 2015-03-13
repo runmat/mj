@@ -1926,33 +1926,33 @@ namespace AppZulassungsdienst.forms
                             }
 
                             //Preise einfügen aus internen Dienstleistungstabelle
-                            item.Preis = dRow["Preis"].ToString().ToDecimal();
+                            item.Preis = dRow["Preis"].ToString().ToDecimal(0);
                             item.SdRelevant = (bool)dRow["SdRelevant"];
-                            item.Menge = dRow["Menge"].ToString().ToDecimal();
+                            item.Menge = dRow["Menge"].ToString().ToDecimal(1);
                         }
 
                         // Gebührenmaterial update, Prüfung ob  Gebührenmaterial mit oder ohne Steuer
                         var gebuehrenPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "G");
                         if (gebuehrenPos != null)
                         {
-                            gebuehrenPos.Preis = dRow["GebPreis"].ToString().ToDecimal();
-                            gebuehrenPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal();
-                            gebuehrenPos.Menge = dRow["Menge"].ToString().ToDecimal();
+                            gebuehrenPos.Preis = dRow["GebPreis"].ToString().ToDecimal(0);
+                            gebuehrenPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal(0);
+                            gebuehrenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                         }
 
                         // eingegebenen Kennzeichenpreis übernehmen
                         var kennzeichenPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "K");
                         if (kennzeichenPos != null)
                         {
-                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal();
-                            kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal();
+                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal(0);
+                            kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                         }
 
                         // eingegebene Steuer übernehmen
                         var steuerPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "S");
                         if (steuerPos != null)
                         {
-                            var steuer = txtSteuer.Text.ToDecimal();
+                            var steuer = txtSteuer.Text.ToDecimal(0);
 
                             if (steuer == 0)
                             {
@@ -1960,8 +1960,8 @@ namespace AppZulassungsdienst.forms
                             }
                             else
                             {
-                                steuerPos.Preis = txtSteuer.Text.ToDecimal();
-                                steuerPos.Menge = dRow["Menge"].ToString().ToDecimal();
+                                steuerPos.Preis = txtSteuer.Text.ToDecimal(0);
+                                steuerPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                                 steuerPos.SdRelevant = (bool)dRow["SdRelevant"];
                             }
                         }
@@ -1983,10 +1983,10 @@ namespace AppZulassungsdienst.forms
                                     PositionsNr = dRow["ID_POS"].ToString(),
                                     UebergeordnetePosition = "0",
                                     WebMaterialart = "D",
-                                    Menge = dRow["Menge"].ToString().ToDecimal(),
+                                    Menge = dRow["Menge"].ToString().ToDecimal(1),
                                     MaterialName = matbez,
                                     MaterialNr = dRow["Value"].ToString(),
-                                    Preis = dRow["Preis"].ToString().ToDecimal(),
+                                    Preis = dRow["Preis"].ToString().ToDecimal(0),
                                     GebuehrAmt = 0,
                                     GebuehrAmtAdd = 0,
                                     SdRelevant = (bool)dRow["SdRelevant"]
@@ -2059,7 +2059,7 @@ namespace AppZulassungsdienst.forms
                             else if (selPos.MaterialNr == dRow["Value"].ToString() && dRow["ID_POS"].ToString() == "10")
                             {
                                 // eingegebene Preise übernehmen
-                                selPos.Preis = dRow["Preis"].ToString().ToDecimal();
+                                selPos.Preis = dRow["Preis"].ToString().ToDecimal(0);
                                 selPos.SdRelevant = (bool)dRow["SdRelevant"];
                             }
                             else if (selPos.MaterialNr != dRow["Value"].ToString() && dRow["ID_POS"].ToString() != "10")
@@ -2126,7 +2126,7 @@ namespace AppZulassungsdienst.forms
                     Menge = 1,
                     MaterialName = matbez,
                     MaterialNr = dRow["Value"].ToString(),
-                    Preis = dRow["Preis"].ToString().ToDecimal(),
+                    Preis = dRow["Preis"].ToString().ToDecimal(0),
                     SdRelevant = (bool)dRow["SdRelevant"]
                 });
 
@@ -2215,7 +2215,7 @@ namespace AppZulassungsdienst.forms
                 Menge = 1,
                 MaterialName = matbez,
                 MaterialNr = dRow["Value"].ToString(),
-                Preis = dRow["Preis"].ToString().ToDecimal(),
+                Preis = dRow["Preis"].ToString().ToDecimal(0),
                 SdRelevant = (bool)dRow["SdRelevant"],
                 GebuehrAmt = 0,
                 GebuehrAmtAdd = 0

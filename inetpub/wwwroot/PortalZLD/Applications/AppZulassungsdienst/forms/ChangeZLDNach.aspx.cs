@@ -1827,10 +1827,10 @@ namespace AppZulassungsdienst.forms
                 PositionsNr = NewPosID.ToString(),
                 UebergeordnetePosition = "0",
                 WebMaterialart = "D",
-                Menge = (dRow["Menge"].ToString().IsNumeric() ? dRow["Menge"].ToString().ToDecimal() : 1),
+                Menge = dRow["Menge"].ToString().ToDecimal(1),
                 MaterialName = matbez,
                 MaterialNr = dRow["Value"].ToString(),
-                Preis = dRow["Preis"].ToString().ToDecimal(),
+                Preis = dRow["Preis"].ToString().ToDecimal(0),
                 SdRelevant = (bool)dRow["SdRelevant"],
                 GebuehrAmt = 0,
                 GebuehrAmtAdd = 0,
@@ -1862,7 +1862,7 @@ namespace AppZulassungsdienst.forms
                 Menge = 1,
                 MaterialName = matbez,
                 MaterialNr = dRow["Value"].ToString(),
-                Preis = dRow["Preis"].ToString().ToDecimal(),
+                Preis = dRow["Preis"].ToString().ToDecimal(0),
                 SdRelevant = (bool)dRow["SdRelevant"],
                 Loeschkennzeichen = dRow["PosLoesch"].ToString()
             });
@@ -1983,7 +1983,7 @@ namespace AppZulassungsdienst.forms
                             else if (selPos.MaterialNr == dRow["Value"].ToString() && dRow["ID_POS"].ToString() == "10")
                             {
                                 // eingegebene Preise übernehmen
-                                selPos.Preis = dRow["Preis"].ToString().ToDecimal();
+                                selPos.Preis = dRow["Preis"].ToString().ToDecimal(0);
                                 selPos.SdRelevant = (bool)dRow["SdRelevant"];
                             }
                             else if (selPos.MaterialNr != dRow["Value"].ToString() && dRow["ID_POS"].ToString() != "10")
@@ -2061,9 +2061,9 @@ namespace AppZulassungsdienst.forms
                         pos.MaterialName = matbez;
                         pos.MaterialNr = dRow["Value"].ToString();
 
-                        pos.Preis = dRow["Preis"].ToString().ToDecimal();
+                        pos.Preis = dRow["Preis"].ToString().ToDecimal(0);
                         pos.SdRelevant = (bool)dRow["SdRelevant"];
-                        pos.Menge = dRow["Menge"].ToString().ToDecimal();
+                        pos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                         pos.Loeschkennzeichen = dRow["PosLoesch"].ToString();
 
                         var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == pos.MaterialNr);
@@ -2076,8 +2076,8 @@ namespace AppZulassungsdienst.forms
                                 gebuehrenPos.MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
                                 gebuehrenPos.MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
                             }
-                            gebuehrenPos.Preis = dRow["GebPreis"].ToString().ToDecimal();
-                            gebuehrenPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal();
+                            gebuehrenPos.Preis = dRow["GebPreis"].ToString().ToDecimal(0);
+                            gebuehrenPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal(0);
                             gebuehrenPos.SdRelevant = (bool)dRow["SdRelevant"];
                         }
 
@@ -2086,25 +2086,25 @@ namespace AppZulassungsdienst.forms
                         {
                             if (chkEinKennz.Checked)
                             {
-                                kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal();
+                                kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                             }
                             else
                             {
                                 kennzeichenPos.Menge = 2;
                                 if (dRow["Menge"].ToString().IsNumeric())
                                 {
-                                    kennzeichenPos.Menge = (dRow["Menge"].ToString().ToDecimal() * 2);
+                                    kennzeichenPos.Menge = (dRow["Menge"].ToString().ToDecimal(1) * 2);
                                 }
                             }
 
-                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal();
+                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal(0);
                             kennzeichenPos.SdRelevant = (bool)dRow["SdRelevant"];
                         }
 
                         var steuerPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "S");
                         if (steuerPos != null)
                         {
-                            steuerPos.Preis = txtSteuer.Text.ToDecimal();
+                            steuerPos.Preis = txtSteuer.Text.ToDecimal(0);
                             steuerPos.SdRelevant = (bool)dRow["SdRelevant"];
                         }
                     }
@@ -2125,7 +2125,7 @@ namespace AppZulassungsdienst.forms
                                     Menge = 1,
                                     MaterialNr = dRow["Value"].ToString(),
                                     MaterialName = matbez,
-                                    Preis = dRow["Preis"].ToString().ToDecimal(),
+                                    Preis = dRow["Preis"].ToString().ToDecimal(0),
                                     SdRelevant = (bool)dRow["SdRelevant"],
                                     Loeschkennzeichen = dRow["PosLoesch"].ToString()
                                 }
@@ -2171,18 +2171,18 @@ namespace AppZulassungsdienst.forms
                                 return true;
                             }
 
-                            pos.Preis = dRow["Preis"].ToString().ToDecimal();
+                            pos.Preis = dRow["Preis"].ToString().ToDecimal(0);
                             pos.SdRelevant = (bool)dRow["SdRelevant"];
-                            pos.Menge = dRow["Menge"].ToString().ToDecimal();
+                            pos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                             pos.Loeschkennzeichen = dRow["PosLoesch"].ToString();
                         }
 
                         var gebuehrenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "G");
                         if (gebuehrenPos != null)
                         {
-                            gebuehrenPos.Preis = dRow["GebPreis"].ToString().ToDecimal();
-                            gebuehrenPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal();
-                            gebuehrenPos.Menge = dRow["Menge"].ToString().ToDecimal();
+                            gebuehrenPos.Preis = dRow["GebPreis"].ToString().ToDecimal(0);
+                            gebuehrenPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal(0);
+                            gebuehrenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                         }
 
                         var kennzeichenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "K");
@@ -2190,25 +2190,25 @@ namespace AppZulassungsdienst.forms
                         {
                             if (chkEinKennz.Checked)
                             {
-                                kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal();
+                                kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                             }
                             else
                             {
                                 kennzeichenPos.Menge = 2;
                                 if (dRow["Menge"].ToString().IsNumeric())
                                 {
-                                    kennzeichenPos.Menge = (dRow["Menge"].ToString().ToDecimal() * 2);
+                                    kennzeichenPos.Menge = (dRow["Menge"].ToString().ToDecimal(1) * 2);
                                 }
                             }
 
-                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal();
+                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal(0);
                         }
 
                         var steuerPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "S");
                         if (steuerPos != null)
                         {
-                            steuerPos.Preis = txtSteuer.Text.ToDecimal();
-                            steuerPos.Menge = dRow["Menge"].ToString().ToDecimal();
+                            steuerPos.Preis = txtSteuer.Text.ToDecimal(0);
+                            steuerPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                             steuerPos.SdRelevant = (bool)dRow["SdRelevant"];
                         }
                     }
@@ -2229,7 +2229,7 @@ namespace AppZulassungsdienst.forms
                                     Menge = 1,
                                     MaterialNr = dRow["Value"].ToString(),
                                     MaterialName = matbez,
-                                    Preis = dRow["Preis"].ToString().ToDecimal(),
+                                    Preis = dRow["Preis"].ToString().ToDecimal(0),
                                     SdRelevant = (bool)dRow["SdRelevant"],
                                     Loeschkennzeichen = dRow["PosLoesch"].ToString()
                                 }
