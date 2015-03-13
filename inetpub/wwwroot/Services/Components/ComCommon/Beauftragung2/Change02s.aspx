@@ -491,7 +491,7 @@
                                                                 <asp:TextBox ID="txtNummerZB1_3" runat="server" TabIndex="50" MaxLength="1" Width="10px" 
                                                                     CssClass="InputSolid TextUpperCase"></asp:TextBox>
                                                                 <span>-</span>
-                                                                <asp:TextBox ID="txtNummerZB1_4" runat="server" TabIndex="51" MaxLength="2" Width="20px" 
+                                                                <asp:TextBox ID="txtNummerZB1_4" runat="server" TabIndex="51" MaxLength="3" Width="30px" 
                                                                     CssClass="InputSolid TextUpperCase"></asp:TextBox>
                                                                 <span>/</span>
                                                                 <asp:TextBox ID="txtNummerZB1_5" runat="server" TabIndex="52" MaxLength="2" Width="20px" 
