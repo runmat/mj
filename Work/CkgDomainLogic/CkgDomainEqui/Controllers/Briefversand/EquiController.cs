@@ -310,9 +310,10 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();   
         }
 
-        public ActionResult CsvTemplate()
+        public FileResult DownloadCsvTemplate()
         {
-            return PartialView("Briefversand/Partial/CsvTemplate");
+            var pfad = Server.MapPath(Url.Content(string.Format("~/Documents/Templates/{0}", BriefversandViewModel.CsvTemplateFileName)));
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "Versand.csv");
         }
 
         #endregion

@@ -108,6 +108,8 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public int CurrentAppID { get; set; }
 
+        public bool TechnIdentnummerIsVisible { get { return VersandModus != BriefversandModus.Schluessel; } }
+
 
         #region Step "Fahrzeugwahl"
 
@@ -173,6 +175,11 @@ namespace CkgDomainLogic.Equi.ViewModels
         public bool UploadItemsSuccessfullyStored { get; set; }
         [XmlIgnore]
         public List<FahrzeugCsvUploadEntity> UploadItems { get; private set; }
+
+        public string CsvTemplateFileName
+        {
+            get { return (VersandModus == BriefversandModus.Schluessel ? "UploadSchluesselversand.csv" : "UploadBriefversand.csv"); } 
+        }
 
         #endregion
 
@@ -514,7 +521,9 @@ namespace CkgDomainLogic.Equi.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugCsvUploadEntity>(CsvUploadServerFileName, true).ToList();
+            var commaSeparatedAutoPropertyNamesToIgnore = (VersandModus != BriefversandModus.Schluessel ? "" : "ZBII");
+            var list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugCsvUploadEntity>(CsvUploadServerFileName, true, commaSeparatedAutoPropertyNamesToIgnore).ToList();
+
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())
                 return false;
