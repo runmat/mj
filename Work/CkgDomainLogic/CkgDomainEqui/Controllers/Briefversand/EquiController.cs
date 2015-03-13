@@ -211,9 +211,6 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult VersandOptionen()
         {
-            BriefversandViewModel.DataMarkForRefreshVersandoptionen();
-            BriefversandViewModel.DataMarkForRefreshVersandgruende();
-
             return PartialView("Briefversand/VersandOptionen", BriefversandViewModel);
         }
 

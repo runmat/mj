@@ -266,13 +266,13 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public VersandartOptionen VersandartOptionen
         {
-            get { return PropertyCacheGet(() => new VersandartOptionen{ IstEndgueltigerVersand = true }); }
+            get { return PropertyCacheGet(() => new VersandartOptionen { IstEndgueltigerVersand = true }); }
             set { PropertyCacheSet(value); }
         }
 
         public VersandOptionen VersandOptionen
         {
-            get { return PropertyCacheGet(() => new VersandOptionen()); }
+            get { return PropertyCacheGet(() => new VersandOptionen { AufAbmeldungWarten = VersandOptionAufAbmeldungWartenInitialChecked }); }
             set { PropertyCacheSet(value); }
         }
 
@@ -280,14 +280,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get
             {
-                var configWert = ApplicationConfiguration.GetApplicationConfigValue("OptionAufAbmeldungWarten", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+                return VersandartOptionen.IstEndgueltigerVersand && GetApplicationConfigBoolValueForCustomer("OptionAufAbmeldungWarten", true);
+            }
+        }
 
-                if (VersandartOptionen.IstEndgueltigerVersand && CurrentAppID > 0 &&
-                    !String.IsNullOrEmpty(configWert) && configWert.ToUpper() == "TRUE")
-                {
-                    return true;
-                }
-                return false;
+        public bool VersandOptionAufAbmeldungWartenInitialChecked
+        {
+            get
+            {
+                return VersandOptionAufAbmeldungWartenAvailable && GetApplicationConfigBoolValueForCustomer("OptionAufAbmeldungWarten_Checked", true);
             }
         }
 
@@ -346,22 +347,15 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
+
+            PropertyCacheClear(this, m => m.VersandartOptionen);
+            PropertyCacheClear(this, m => m.VersandOptionen);
         }
 
         public void DataMarkForRefreshVersandAndZulassungAdressenFiltered()
         {
             PropertyCacheClear(this, m => m.VersandAdressenFiltered);
             PropertyCacheClear(this, m => m.ZulassungAdressenFiltered);
-        }
-
-        public void DataMarkForRefreshVersandoptionen()
-        {
-            VersandOptionen.OptionenList = VersandOptionenList;
-        }
-
-        public void DataMarkForRefreshVersandgruende()
-        {
-            VersandOptionen.GruendeList = VersandGruendeList;
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)

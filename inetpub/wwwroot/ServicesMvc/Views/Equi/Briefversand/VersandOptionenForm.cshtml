@@ -11,7 +11,7 @@
         @Html.FormValidationSummary()
 
 
-        @Html.FormDropDownListFor(m => m.VersandOptionKey, VersandOptionen.OptionenList.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormDropDownListFor(m => m.VersandOptionKey, Model.OptionenList.ToSelectList(), new { @class = "m-wrap large" })
 
         if (Model.AufAbmeldungWartenAvailable)
         {
@@ -26,7 +26,7 @@
         {
             @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
 
-            @Html.FormDropDownListFor(m => m.VersandGrundKey, VersandOptionen.GruendeList.ToSelectList(), new { @class = "m-wrap large" })
+            @Html.FormDropDownListFor(m => m.VersandGrundKey, Model.GruendeList.ToSelectList(), new { @class = "m-wrap large" })
         }
         else
         {

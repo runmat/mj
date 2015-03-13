@@ -42,7 +42,7 @@ namespace CkgDomainLogic.Equi.Models
         }
 
         [XmlIgnore]
-        static public List<VersandOption> OptionenList { get; set; }
+        public List<VersandOption> OptionenList { get { return GetViewModel != null ? GetViewModel().VersandOptionenList : new List<VersandOption>(); } }
 
         [LocalizedDisplay(LocalizeConstants.Comment)]
         [MaxLength(60)]
@@ -68,7 +68,7 @@ namespace CkgDomainLogic.Equi.Models
         }
 
         [XmlIgnore]
-        static public List<VersandGrund> GruendeList { get; set; }
+        public List<VersandGrund> GruendeList { get { return GetViewModel != null ? GetViewModel().VersandGruendeList : new List<VersandGrund>(); } }
 
         [LocalizedDisplay(" ")]
         public bool AufAbmeldungWarten { get; set; }
