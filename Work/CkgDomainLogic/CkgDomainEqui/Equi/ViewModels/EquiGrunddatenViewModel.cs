@@ -57,9 +57,16 @@ namespace CkgDomainLogic.Equi.ViewModels
                 Selektor.Fahrgestellnummern = Selektor.Fahrgestellnummer.SplitSeparators()
                     .Select(teil => new Fahrgestellnummer { FIN = teil }).ToList();
 
+            if (Selektor.Fahrgestellnummern.ToListOrEmptyList().Any(fin => fin.FIN.NotNullOrEmpty().Length != 17))
+                addModelError("Fahrgestellnummer", "Fahrgestellnummern bitte 17-stellig angeben, z. B. Komma getrennt");
+
+
             if (Selektor.Fahrgestellnummer10.IsNotNullOrEmpty())
                 Selektor.Fahrgestellnummern10 = Selektor.Fahrgestellnummer10.SplitSeparators()
                     .Select(teil => new Fahrgestellnummer10 { FIN = teil }).ToList();
+
+            if (Selektor.Fahrgestellnummern10.ToListOrEmptyList().Any(fin => fin.FIN.NotNullOrEmpty().Length != 10))
+                addModelError("Fahrgestellnummer10", "Fahrgestellnummern bitte 10-stellig angeben, z. B. Komma getrennt");
         }
 
         /// <summary>

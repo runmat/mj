@@ -585,11 +585,17 @@ namespace CkgDomainLogic.General.Controllers
 
         protected PartialViewResult PersistablePartialView(string viewName, object model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || !SessionHelper.GetSessionValue("PersistablePartialView_Mode", false))
                 return PartialView(viewName, model);
 
-            var persistanceMode = "load";
-            var persistanceMessage = string.Format("{0} {1}", Localize.SearchMask, (persistanceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
+            SessionHelper.SetSessionValue("PersistablePartialView_Mode", false);
+
+            var persistanceMode = (SessionHelper.GetSessionString("PersistablePartialView_PersistDirection") ?? "load");
+            var persistanceMessage = string.Format("{0}: {1}", Localize.SearchMask, (persistanceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
+
+            var noDataFoundModelError = ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage == Localize.NoDataFound));
+            ModelState.Remove(noDataFoundModelError);
+
             ModelState.AddModelError("", persistanceMessage);
             
             return PartialView(viewName, model);
