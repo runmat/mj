@@ -56,7 +56,7 @@
 																	<TD class="TableBannerCell" height="30">ZB2</TD>
 																	<TD class="TableBannerCell" height="30">CoC
 																	</TD>
-																	<TD class="TableBannerCell" height="30">DK&nbsp;
+																	<TD class="TableBannerCell" height="30">eVB
 																	</TD>
 																	<TD class="TableBannerCell" height="30">VM
 																	</TD>
@@ -66,7 +66,7 @@
 																	</TD>
 																	<TD class="TableBannerCell" height="30">HRA
 																	</TD>
-																	<TD class="TableBannerCell" height="30"><asp:hyperlink id="lnkEinzug" runat="server">LEV</asp:hyperlink></TD>
+																	<TD class="TableBannerCell" height="30"><asp:hyperlink id="lnkEinzug" runat="server">SEPA</asp:hyperlink></TD>
 																	<TD class="TableBannerCell" height="30">Bemerkung
 																	</TD>
 																</TR>
@@ -453,12 +453,12 @@
 															<TD><FONT size="1">ZB1=Fahrzeugschein,</FONT></TD>
 															<TD><FONT size="1">ZB2=Fahrzeugbrief,</FONT></TD>
 															<TD noWrap><FONT size="1">CoC=Certificate of Conformity,</FONT></TD>
-															<TD><FONT size="1">DK=Deckungskarte,</FONT></TD>
+															<TD><FONT size="1">eVB=elektronische Versicherungsbestätigung,</FONT></TD>
 															<TD><FONT size="1">VM=Vollmacht,</FONT></TD>
 															<TD><FONT size="1">PA=Personalausweis,</FONT></TD>
 															<TD><FONT size="1">GewA=Gewerbeanmeldung,</FONT></TD>
 															<TD><FONT size="1">HRA=Handelsregister,</FONT></TD>
-															<TD><FONT size="1">LEV=Lastschrifteinzug</FONT></TD>
+															<TD><FONT size="1">SEPA=SEPA-Mandat für Kfz-Steuer</FONT></TD>
 														</TR>
 														<TR>
 															<TD>&nbsp;</TD>
