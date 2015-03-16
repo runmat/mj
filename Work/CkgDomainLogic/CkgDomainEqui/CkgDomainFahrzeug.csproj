@@ -84,6 +84,7 @@
   <ItemGroup>
     <Compile Include="Controllers\Abmeldungen\FahrzeugeController.cs" />
     <Compile Include="Controllers\Bestand\EquiController.cs" />
+    <Compile Include="Controllers\BriefbestandVhc\EquiController.cs" />
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
     <Compile Include="Controllers\Briefversand\EquiController.cs" />
     <Compile Include="Controllers\DatenOhneDokumente\EquiController.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="Controllers\Halterabweichungen\EquiController.cs" />
     <Compile Include="Controllers\Historie\EquiController.cs" />
     <Compile Include="Controllers\FahrzeugeController.cs" />
+    <Compile Include="Controllers\KlaerfaelleVhc\EquiController.cs" />
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
     <Compile Include="Controllers\ZanfController.cs" />
@@ -114,6 +116,8 @@
     <Compile Include="Equi\Contracts\IAbweichungenDataService.cs" />
     <Compile Include="Equi\Contracts\IDokumenteOhneDatenDataService.cs" />
     <Compile Include="Equi\Contracts\IMahnsperreDataService.cs" />
+    <Compile Include="Equi\Contracts\IBriefbestandVhcDataService.cs" />
+    <Compile Include="Equi\Contracts\IKlaerfaelleVhcDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMahnsperre.cs" />
@@ -133,6 +137,8 @@
     <Compile Include="Equi\Models\DataModels\VersandAbweichungSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\VersandAbweichung.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugCsvUploadEntity.cs" />
+    <Compile Include="Equi\Models\DataModels\FahrzeugbriefVhc.cs" />
+    <Compile Include="Equi\Models\DataModels\KlaerfallVhc.cs" />
     <Compile Include="Equi\Models\UIModels\DatenOhneDokumenteFilter.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugbriefErweitert.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
@@ -147,6 +153,8 @@
     <Compile Include="Equi\Models\VersandOptionen.cs" />
     <Compile Include="Equi\Services\BriefbestandDataServiceSAP.cs" />
     <Compile Include="Equi\Services\DokumenteOhneDatenDataServiceSAP.cs" />
+    <Compile Include="Equi\Services\BriefbestandVhcDataServiceSAP.cs" />
+    <Compile Include="Equi\Services\KlaerfaelleVhcDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnsperreDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnreportDataServiceSAP.cs" />
     <Compile Include="Equi\Services\DatenOhneDokumenteDataServiceSAP.cs" />
@@ -155,6 +163,8 @@
     <Compile Include="Equi\ViewModels\BriefbestandViewModel.cs" />
     <Compile Include="Equi\ViewModels\BriefversandViewModel.cs" />
     <Compile Include="Equi\ViewModels\DokumenteOhneDatenViewModel.cs" />
+    <Compile Include="Equi\ViewModels\BriefbestandVhcViewModel.cs" />
+    <Compile Include="Equi\ViewModels\KlaerfaelleVhcViewModel.cs" />
     <Compile Include="Equi\ViewModels\MahnsperreViewModel.cs" />
     <Compile Include="Equi\ViewModels\EinAusgaengeViewModel.cs" />
     <Compile Include="Equi\ViewModels\VersandBeauftragungenViewModel.cs" />

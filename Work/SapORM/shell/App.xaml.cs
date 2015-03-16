@@ -196,7 +196,7 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG, I_VERKZ, I_WEB_USER", "10026883", "N", "CARLM");
             //new FunctionReflector("Z_DPM_LIST_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG", "10026883");
 
-//new FunctionReflector("Z_dpm_Read_Prot_Telefonate_01").WriteOrmForExportTableStructures("I_AG", "10026883");
+            //new FunctionReflector("Z_dpm_Read_Prot_Telefonate_01").WriteOrmForExportTableStructures("I_AG", "10026883");
             //new FunctionReflector("Z_DPM_UPLOAD_GRUDAT_TIP_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10065502");
 
 
@@ -234,6 +234,10 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_READ_PRUEFPUNKTE_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
             //new FunctionReflector("Z_DPM_READ_PRUEFSCHRITTE_03").WriteOrmForExportTableStructures("I_KUNNR_AG, I_PAID", "10026883", "0000000000000000");
             //new FunctionReflector("Z_DPM_SAVE_ERL_PRUEFSCHR_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
+
+            //VHC
+            //new FunctionReflector("Z_M_VHC_ZBII_BESTAND_001").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_VHC_KLAERFAELLE_001").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_DPM_EXP_MAHN_ERSTEINGANG").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
 
