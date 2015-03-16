@@ -16,5 +16,7 @@ namespace SapORM.Models
         string MAKTX { get; set; }
 
         string WEBMTART { get; set; }
+
+        string NULLPREIS_OK { get; set; }
     }
 }

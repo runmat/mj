@@ -393,17 +393,21 @@ namespace AppZulassungsdienst.lib
                                     posNr += 10;
 
                                     var ohneUst = (kunde != null && kunde.OhneUst);
+                                    var matNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
+                                    var matName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
+
+                                    var gebuehrenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == matNr);
 
                                     posListeWeb.Add(new ZLDPositionVorerfassung
                                     {
                                         SapId = kopfdaten.SapId,
                                         PositionsNr = posNr.ToString(),
                                         UebergeordnetePosition = p.PositionsNr,
-                                        MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
-                                        MaterialName =
-                                            (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
+                                        MaterialNr = matNr,
+                                        MaterialName = matName,
                                         Menge = 1,
-                                        WebMaterialart = "G"
+                                        WebMaterialart = "G",
+                                        NullpreisErlaubt = (gebuehrenMat != null && gebuehrenMat.NullpreisErlaubt)
                                     });
                                 }
 
@@ -411,6 +415,8 @@ namespace AppZulassungsdienst.lib
                                 if ((kunde == null || !kunde.Pauschal) && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
                                 {
                                     posNr += 10;
+
+                                    var kennzeichenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == mat.KennzeichenMaterialNr);
 
                                     posListeWeb.Add(new ZLDPositionVorerfassung
                                     {
@@ -420,7 +426,8 @@ namespace AppZulassungsdienst.lib
                                         MaterialNr = mat.KennzeichenMaterialNr,
                                         MaterialName = "",
                                         Menge = 1,
-                                        WebMaterialart = "K"
+                                        WebMaterialart = "K",
+                                        NullpreisErlaubt = (kennzeichenMat != null && kennzeichenMat.NullpreisErlaubt)
                                     });
                                 }
 
@@ -537,11 +544,17 @@ namespace AppZulassungsdienst.lib
                 {
                     kopfdaten.VersandzulassungDurchfuehrendesVkBur = kopfdaten.LieferantenNr.TrimStart('0').Substring(2, 4);
                 }
+                else
+                {
+                    kopfdaten.VersandzulassungDurchfuehrendesVkBur = "";
+                }
 
                 kopfdaten.Vorerfassungsdatum = DateTime.Now;
                 kopfdaten.Vorerfasser = userName;
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
+
+                AktuellerVorgang.Adressdaten.KundenNr = kopfdaten.KundenNr;
 
                 var adressListeWeb = new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten };
 
@@ -600,16 +613,21 @@ namespace AppZulassungsdienst.lib
                                 posNr += 10;
 
                                 var ohneUst = (kunde != null && kunde.OhneUst);
+                                var matNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
+                                var matName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
+
+                                var gebuehrenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == matNr);
 
                                 posListeWeb.Add(new ZLDPositionVorerfassung
                                 {
                                     SapId = kopfdaten.SapId,
                                     PositionsNr = posNr.ToString(),
                                     UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
-                                    MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
+                                    MaterialNr = matNr,
+                                    MaterialName = matName,
                                     Menge = 1,
-                                    WebMaterialart = "G"
+                                    WebMaterialart = "G",
+                                    NullpreisErlaubt = (gebuehrenMat != null && gebuehrenMat.NullpreisErlaubt)
                                 });
                             }
 
@@ -617,6 +635,8 @@ namespace AppZulassungsdienst.lib
                             if ((kunde == null || !kunde.Pauschal) && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
                             {
                                 posNr += 10;
+
+                                var kennzeichenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == mat.KennzeichenMaterialNr);
 
                                 posListeWeb.Add(new ZLDPositionVorerfassung
                                 {
@@ -626,7 +646,8 @@ namespace AppZulassungsdienst.lib
                                     MaterialNr = mat.KennzeichenMaterialNr,
                                     MaterialName = "",
                                     Menge = 1,
-                                    WebMaterialart = "K"
+                                    WebMaterialart = "K",
+                                    NullpreisErlaubt = (kennzeichenMat != null && kennzeichenMat.NullpreisErlaubt)
                                 });
                             }
 

@@ -10,5 +10,6 @@ namespace SapORM.Models
         public string MATNR { get; set; }
         public string MAKTX { get; set; }
         public string WEBMTART { get; set; }
+        public string NULLPREIS_OK { get; set; }
     }
 }

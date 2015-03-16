@@ -114,11 +114,32 @@ namespace AppZulassungsdienst.forms
                 Label lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
                 Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                 Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblLoeschKZ");
-                DropDownList ddStatus = (DropDownList)GridView1.Rows[Index].FindControl("ddlStatus");
 
                 String Loeschkz = (lblLoeschKZ.Visible ? "" : "X");
 
-                objVersandZul.UpdateStatus(lblID.Text, lblIDPos.Text, ddStatus.SelectedValue, Loeschkz, null);
+                DataRow[] RowsEdit;
+                if (lblIDPos.Text != "10")
+                {
+                    RowsEdit = objVersandZul.Liste.Select("ZULBELN=" + lblID.Text + " AND ZULPOSNR ='" + lblIDPos.Text + "'");
+                }
+                else
+                {
+                    RowsEdit = objVersandZul.Liste.Select("ZULBELN=" + lblID.Text);
+                }
+
+                DataTable mTable = CreateTable();
+
+                foreach (var Row in RowsEdit)
+                {
+                    DataRow mNewRow = mTable.NewRow();
+                    mNewRow["ZULBELN"] = Row["ZULBELN"];
+                    mNewRow["ZULPOSNR"] = Row["ZULPOSNR"];
+                    mNewRow["LOEKZ"] = Loeschkz;
+                    mNewRow["STATUS"] = Row["STATUS"];
+                    mTable.Rows.Add(mNewRow);
+                }
+
+                objVersandZul.UpdateStatus(mTable);
 
                 if (objVersandZul.ErrorOccured)
                 {
@@ -126,16 +147,6 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    DataRow[] RowsEdit;
-                    if (lblIDPos.Text != "10")
-                    {
-                        RowsEdit = objVersandZul.Liste.Select("ZULBELN=" + lblID.Text + " AND ZULPOSNR ='" + lblIDPos.Text + "'");
-                    }
-                    else
-                    {
-                        RowsEdit = objVersandZul.Liste.Select("ZULBELN=" + lblID.Text);
-                    }
-
                     foreach (DataRow Row in RowsEdit)
                     {
                         Row["LOEKZ"] = Loeschkz;
@@ -156,12 +167,7 @@ namespace AppZulassungsdienst.forms
             try
             {
                 lblMessage.Visible = false;
-                DataTable mTable = new DataTable();
-                mTable.Columns.Add("ZULBELN", typeof(String));
-                mTable.Columns.Add("ZULPOSNR", typeof(String));
-                mTable.Columns.Add("STATUS", typeof(String));
-                mTable.Columns.Add("LOEKZ", typeof(String));
-                mTable.Columns.Add("VZERDAT", typeof(String));
+                DataTable mTable = CreateTable();
 
                 foreach (GridViewRow gvRow in GridView1.Rows)
                 {
@@ -203,7 +209,7 @@ namespace AppZulassungsdienst.forms
                     Session["objVersandZul"] = objVersandZul;
                 }
 
-                objVersandZul.UpdateStatus("", "", "", "", mTable);
+                objVersandZul.UpdateStatus(mTable);
 
                 if (objVersandZul.ErrorOccured)
                 {
@@ -227,6 +233,17 @@ namespace AppZulassungsdienst.forms
         #endregion
 
         #region Methods
+
+        private DataTable CreateTable()
+        {
+            DataTable tbl = new DataTable();
+            tbl.Columns.Add("ZULBELN", typeof(String));
+            tbl.Columns.Add("ZULPOSNR", typeof(String));
+            tbl.Columns.Add("STATUS", typeof(String));
+            tbl.Columns.Add("LOEKZ", typeof(String));
+            tbl.Columns.Add("VZERDAT", typeof(String));
+            return tbl;
+        }
 
         /// <summary>
         /// Binden der selektierten Daten an das Grid.

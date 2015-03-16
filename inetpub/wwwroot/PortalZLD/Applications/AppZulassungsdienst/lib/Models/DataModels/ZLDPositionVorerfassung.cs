@@ -21,6 +21,8 @@ namespace AppZulassungsdienst.lib.Models
 
         public string WebMaterialart { get; set; }
 
+        public bool? NullpreisErlaubt { get; set; }
+
         public string FehlerText { get; set; }
 
         public string CombineBezeichnungMenge()

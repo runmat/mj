@@ -15,8 +15,8 @@ namespace SapORM.Models
         public decimal? GEB_AMT { get; set; }
         public decimal? GEB_AMT_ADD { get; set; }
         public string WEBMTART { get; set; }
-        public string SD_REL { get; set; }
         public string NULLPREIS_OK { get; set; }
+        public string SD_REL { get; set; }
         public string GBPAK { get; set; }
         public decimal? UPREIS { get; set; }
         public decimal? DIFF { get; set; }

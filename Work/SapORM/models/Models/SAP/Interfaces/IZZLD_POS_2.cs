@@ -14,8 +14,6 @@ namespace SapORM.Models
 
         string SD_REL { get; set; }
 
-        string NULLPREIS_OK { get; set; }
-
         string GBPAK { get; set; }
 
         decimal? UPREIS { get; set; }

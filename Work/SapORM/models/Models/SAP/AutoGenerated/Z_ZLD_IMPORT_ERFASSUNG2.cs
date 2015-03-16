@@ -302,6 +302,8 @@ namespace SapORM.Models
 
 			public string WEBMTART { get; set; }
 
+			public string NULLPREIS_OK { get; set; }
+
 			public static GT_IMP_POS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_IMP_POS
@@ -314,6 +316,7 @@ namespace SapORM.Models
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
 					WEBMTART = (string)row["WEBMTART"],
+					NULLPREIS_OK = (string)row["NULLPREIS_OK"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

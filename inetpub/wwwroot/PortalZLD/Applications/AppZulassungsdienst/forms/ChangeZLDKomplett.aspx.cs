@@ -1876,8 +1876,12 @@ namespace AppZulassungsdienst.forms
 
             foreach (DataRow dRow in tblData.Rows)
             {
-                if (dRow["Value"].ToString() != "0")
+                var materialNr = dRow["Value"].ToString();
+
+                if (materialNr != "0")
                 {
+                    var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
+
                     var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
                     objKompletterf.AktuellerVorgang.Positionen.Add(new ZLDPosition
@@ -1886,11 +1890,12 @@ namespace AppZulassungsdienst.forms
                         PositionsNr = dRow["ID_POS"].ToString(),
                         WebMaterialart = "D",
                         Menge = (dRow["Menge"].ToString().IsNumeric() ? Decimal.Parse(dRow["Menge"].ToString()) : 1),
-                        MaterialNr = dRow["Value"].ToString(),
+                        MaterialNr = materialNr,
                         MaterialName = matbez,
                         Preis = 0,
                         GebuehrAmt = 0,
-                        GebuehrAmtAdd = 0
+                        GebuehrAmtAdd = 0,
+                        NullpreisErlaubt = (mat != null && mat.NullpreisErlaubt)
                     });
                 }
             }
@@ -1899,101 +1904,115 @@ namespace AppZulassungsdienst.forms
         /// <summary>
         /// Dienstleistungsdaten für die Speicherung sammeln.
         /// </summary>
-        /// <param name="tblData">interne Dienstleistungstabelle</param>
-        /// <returns>true wenn Positionen geändert wurden</returns>
+        /// <param name="tblData">Gridtabelle</param>
         private Boolean GetDiensleitungData(ref DataTable tblData)
         {
             proofDienstGrid(ref tblData);
 
-            foreach (DataRow dRow in tblData.Rows)
+            var positionen = objKompletterf.AktuellerVorgang.Positionen;
+
+            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == objKompletterf.AktuellerVorgang.Kopfdaten.KundenNr);
+
+            foreach (DataRow item in tblData.Rows)
             {
-                if (dRow["Value"].ToString() != "0")
+                var dRow = item;
+                var materialNr = dRow["Value"].ToString();
+
+                if (materialNr != "0")
                 {
                     var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
-                    var item = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == dRow["ID_POS"].ToString());
-                    if (item != null)
+                    var pos = positionen.FirstOrDefault(p => p.PositionsNr == dRow["ID_POS"].ToString());
+                    if (pos != null)
                     {
-                        if (item.WebMaterialart == "D")
+                        if (pos.MaterialNr != materialNr)
                         {
-                            item.MaterialName = matbez;
-
-                            // ist die Hauptdienstleistung geändert worden, dann zurück und Aufforderung zur Preisfindung
-                            if (item.MaterialNr != dRow["Value"].ToString())
-                            {
-                                item.MaterialNr = dRow["Value"].ToString();
-                                return true;
-                            }
-
-                            //Preise einfügen aus internen Dienstleistungstabelle
-                            item.Preis = dRow["Preis"].ToString().ToDecimal(0);
-                            item.SdRelevant = (bool)dRow["SdRelevant"];
-                            item.Menge = dRow["Menge"].ToString().ToDecimal(1);
+                            pos.MaterialNr = materialNr;
+                            return true;
                         }
 
-                        // Gebührenmaterial update, Prüfung ob  Gebührenmaterial mit oder ohne Steuer
-                        var gebuehrenPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "G");
-                        if (gebuehrenPos != null)
+                        var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == pos.MaterialNr);
+
+                        pos.MaterialName = matbez;
+                        pos.Preis = dRow["Preis"].ToString().ToDecimal(0);
+                        pos.SdRelevant = (bool)dRow["SdRelevant"];
+                        pos.Menge = dRow["Menge"].ToString().ToDecimal(1);
+                        pos.NullpreisErlaubt = (mat != null && mat.NullpreisErlaubt);
+
+                        var gebuehrenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "G");
+                        if (gebuehrenPos != null && mat != null)
                         {
+                            var pauschalKunde = (kunde != null && kunde.Pauschal);
+                            var ohneUst = (kunde != null && kunde.OhneUst);
+                            var matNr = (pauschalKunde ? gebuehrenPos.MaterialNr : (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr));
+                            var matName = (pauschalKunde ? gebuehrenPos.MaterialName : (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName));
+
+                            var gebuehrenMat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == matNr);
+
+                            gebuehrenPos.MaterialNr = matNr;
+                            gebuehrenPos.MaterialName = matName;
                             gebuehrenPos.Preis = dRow["GebPreis"].ToString().ToDecimal(0);
                             gebuehrenPos.GebuehrAmt = dRow["GebAmt"].ToString().ToDecimal(0);
-                            gebuehrenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
+                            gebuehrenPos.SdRelevant = (bool)dRow["SdRelevant"];
+                            gebuehrenPos.NullpreisErlaubt = (gebuehrenMat != null && gebuehrenMat.NullpreisErlaubt);
                         }
 
-                        // eingegebenen Kennzeichenpreis übernehmen
-                        var kennzeichenPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "K");
-                        if (kennzeichenPos != null)
+                        var kennzeichenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "K");
+                        if (kennzeichenPos != null && mat != null)
                         {
-                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal(0);
-                            kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
-                        }
+                            var kennzeichenMat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == kennzeichenPos.MaterialNr);
 
-                        // eingegebene Steuer übernehmen
-                        var steuerPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "S");
-                        if (steuerPos != null)
-                        {
-                            var steuer = txtSteuer.Text.ToDecimal(0);
-
-                            if (steuer == 0)
+                            if (chkEinKennz.Checked)
                             {
-                                objKompletterf.AktuellerVorgang.Positionen.Remove(steuerPos);
+                                kennzeichenPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
                             }
                             else
                             {
-                                steuerPos.Preis = txtSteuer.Text.ToDecimal(0);
-                                steuerPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
-                                steuerPos.SdRelevant = (bool)dRow["SdRelevant"];
+                                kennzeichenPos.Menge = 2;
+                                if (dRow["Menge"].ToString().IsNumeric())
+                                {
+                                    kennzeichenPos.Menge = (dRow["Menge"].ToString().ToDecimal(1) * 2);
+                                }
                             }
+
+                            kennzeichenPos.Preis = txtPreisKennz.Text.ToDecimal(0);
+                            kennzeichenPos.SdRelevant = (bool)dRow["SdRelevant"];
+                            kennzeichenPos.NullpreisErlaubt = (kennzeichenMat != null && kennzeichenMat.NullpreisErlaubt);
+                        }
+
+                        var steuerPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "S");
+                        if (steuerPos != null)
+                        {
+                            steuerPos.Preis = txtSteuer.Text.ToDecimal(0);
+                            steuerPos.SdRelevant = (bool)dRow["SdRelevant"];
                         }
                     }
                     else
                     {
-                        if (dRow["Value"].ToString() == "559")
+                        if (materialNr == "559")
                         {
                             lblError.Text = "Material 559 kann nicht nachträglich hinzugefügt werden!";
                         }
                         else
                         {
-                            // wenn Position nicht vorhanden, Position neu aufbauen
-                            List<ZLDPosition> NewPositionen = new List<ZLDPosition>();
+                            var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
 
-                            NewPositionen.Add(new ZLDPosition
+                            var neuePos = new List<ZLDPosition> {
+                                new ZLDPosition
                                 {
                                     SapId = objKompletterf.AktuellerVorgang.Kopfdaten.SapId,
                                     PositionsNr = dRow["ID_POS"].ToString(),
-                                    UebergeordnetePosition = "0",
                                     WebMaterialart = "D",
-                                    Menge = dRow["Menge"].ToString().ToDecimal(1),
+                                    Menge = 1,
+                                    MaterialNr = materialNr,
                                     MaterialName = matbez,
-                                    MaterialNr = dRow["Value"].ToString(),
                                     Preis = dRow["Preis"].ToString().ToDecimal(0),
-                                    GebuehrAmt = 0,
-                                    GebuehrAmtAdd = 0,
-                                    SdRelevant = (bool)dRow["SdRelevant"]
-                                });
+                                    SdRelevant = (bool)dRow["SdRelevant"],
+                                    NullpreisErlaubt = (mat != null && mat.NullpreisErlaubt)
+                                }
+                            };
 
-                            // gleich Preise/SDRelevant aus SAP ziehen
-                            objKompletterf.GetPreiseNewPositionen(NewPositionen, objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
+                            objKompletterf.GetPreiseNewPositionen(neuePos, objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
                             if (objKompletterf.ErrorOccured)
                             {
                                 lblError.Text = "Fehler bei der Kommunikation. Daten konnten nicht aus SAP gezogen werden! " + objKompletterf.Message;
@@ -2011,6 +2030,7 @@ namespace AppZulassungsdienst.forms
                     }
                 }
             }
+
             return false;
         }
 
@@ -2113,9 +2133,13 @@ namespace AppZulassungsdienst.forms
             var NewPosID = 10;
             var NewUePosID = 10;
 
+            var materialNr = dRow["Value"].ToString();
+
             var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
             var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == objKompletterf.AktuellerVorgang.Kopfdaten.KundenNr);
+
+            var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
 
             posListe.Add(new ZLDPosition
                 {
@@ -2125,18 +2149,22 @@ namespace AppZulassungsdienst.forms
                     WebMaterialart = "D",
                     Menge = 1,
                     MaterialName = matbez,
-                    MaterialNr = dRow["Value"].ToString(),
+                    MaterialNr = materialNr,
                     Preis = dRow["Preis"].ToString().ToDecimal(0),
-                    SdRelevant = (bool)dRow["SdRelevant"]
+                    SdRelevant = (bool)dRow["SdRelevant"],
+                    NullpreisErlaubt = (mat != null && mat.NullpreisErlaubt)
                 });
 
             // Geb.Material aus der Stammtabelle
-            var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == dRow["Value"].ToString());
             if (mat != null && !String.IsNullOrEmpty(mat.GebuehrenMaterialNr))
             {
                 NewPosID += 10;
 
                 var ohneUst = (kunde != null && kunde.OhneUst);
+                var matNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
+                var matName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
+
+                var gebuehrenMat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == matNr);
 
                 posListe.Add(new ZLDPosition
                 {
@@ -2145,11 +2173,12 @@ namespace AppZulassungsdienst.forms
                     UebergeordnetePosition = NewUePosID.ToString(),
                     WebMaterialart = "G",
                     Menge = 1,
-                    MaterialName = (ohneUst ?  mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
-                    MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
+                    MaterialName = matName,
+                    MaterialNr = matNr,
                     Preis = 0,
                     GebuehrAmt = 0,
-                    GebuehrAmtAdd = 0
+                    GebuehrAmtAdd = 0,
+                    NullpreisErlaubt = (gebuehrenMat != null && gebuehrenMat.NullpreisErlaubt)
                 });
             }
 
@@ -2157,6 +2186,8 @@ namespace AppZulassungsdienst.forms
             if ((kunde == null || !kunde.Pauschal) && mat != null && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
             {
                 NewPosID += 10;
+
+                var kennzeichenMat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == mat.KennzeichenMaterialNr);
 
                 posListe.Add(new ZLDPosition
                 {
@@ -2169,7 +2200,8 @@ namespace AppZulassungsdienst.forms
                     MaterialNr = mat.KennzeichenMaterialNr,
                     Preis = 0,
                     GebuehrAmt = 0,
-                    GebuehrAmtAdd = 0
+                    GebuehrAmtAdd = 0,
+                    NullpreisErlaubt = (kennzeichenMat != null && kennzeichenMat.NullpreisErlaubt)
                 });
             }
 
@@ -2206,6 +2238,10 @@ namespace AppZulassungsdienst.forms
 
             NewPosID += 10;
 
+            var materialNr = dRow["Value"].ToString();
+
+            var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
+
             neuePositionen.Add(new ZLDPosition
             {
                 SapId = objKompletterf.AktuellerVorgang.Kopfdaten.SapId,
@@ -2218,7 +2254,8 @@ namespace AppZulassungsdienst.forms
                 Preis = dRow["Preis"].ToString().ToDecimal(0),
                 SdRelevant = (bool)dRow["SdRelevant"],
                 GebuehrAmt = 0,
-                GebuehrAmtAdd = 0
+                GebuehrAmtAdd = 0,
+                NullpreisErlaubt = (mat != null && mat.NullpreisErlaubt)
             });
         }
 

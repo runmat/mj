@@ -12,8 +12,6 @@ namespace AppZulassungsdienst.lib.Models
 
         public bool? SdRelevant { get; set; }
 
-        public bool? NullpreisErlaubt { get; set; }
-
         public bool? Gebuehrenpaket { get; set; }
 
         public decimal? UrspruenglicherPreis { get; set; }

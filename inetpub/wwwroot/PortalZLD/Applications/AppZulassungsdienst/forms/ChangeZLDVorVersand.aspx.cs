@@ -1281,9 +1281,13 @@ namespace AppZulassungsdienst.forms
 
                 foreach (DataRow dRow in tblData.Rows)
                 {
-                    if (dRow["Value"].ToString() != "0")
+                    var materialNr = dRow["Value"].ToString();
+
+                    if (materialNr != "0")
                     {
                         var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
+
+                        var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
 
                         objVorVersand.AktuellerVorgang.Positionen.Add(new ZLDPositionVorerfassung
                         {
@@ -1291,8 +1295,9 @@ namespace AppZulassungsdienst.forms
                             PositionsNr = dRow["ID_POS"].ToString(),
                             WebMaterialart = "D",
                             Menge = (dRow["Menge"].ToString().IsNumeric() ? Decimal.Parse(dRow["Menge"].ToString()) : 1),
-                            MaterialNr = dRow["Value"].ToString(),
-                            MaterialName = matbez
+                            MaterialNr = materialNr,
+                            MaterialName = matbez,
+                            NullpreisErlaubt = (mat != null && mat.NullpreisErlaubt)
                         });
                     }
                 }

@@ -422,17 +422,21 @@ namespace AppZulassungsdienst.lib
                             posNr += 10;
 
                             var ohneUst = (kunde != null && kunde.OhneUst);
+                            var matNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
+                            var matName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
+
+                            var gebuehrenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == matNr);
 
                             posListeWeb.Add(new ZLDPosition
                             {
                                 SapId = kopfdaten.SapId,
                                 PositionsNr = posNr.ToString(),
                                 UebergeordnetePosition = p.PositionsNr,
-                                MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
-                                MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
+                                MaterialNr = matNr,
+                                MaterialName = matName,
                                 Menge = 1,
                                 WebMaterialart = "G",
-                                NullpreisErlaubt = mat.NullpreisErlaubt
+                                NullpreisErlaubt = (gebuehrenMat != null && gebuehrenMat.NullpreisErlaubt)
                             });
                         }
 
@@ -441,6 +445,8 @@ namespace AppZulassungsdienst.lib
                             && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "K"))
                         {
                             posNr += 10;
+
+                            var kennzeichenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == mat.KennzeichenMaterialNr);
 
                             posListeWeb.Add(new ZLDPosition
                             {
@@ -451,7 +457,7 @@ namespace AppZulassungsdienst.lib
                                 MaterialName = "",
                                 Menge = 1,
                                 WebMaterialart = "K",
-                                NullpreisErlaubt = mat.NullpreisErlaubt
+                                NullpreisErlaubt = (kennzeichenMat != null && kennzeichenMat.NullpreisErlaubt)
                             });
                         }
 
@@ -469,8 +475,7 @@ namespace AppZulassungsdienst.lib
                                 MaterialNr = "591",
                                 MaterialName = "",
                                 Menge = 1,
-                                WebMaterialart = "S",
-                                NullpreisErlaubt = mat.NullpreisErlaubt
+                                WebMaterialart = "S"
                             });
                         }
                     }
@@ -542,17 +547,21 @@ namespace AppZulassungsdienst.lib
                                 posNr += 10;
 
                                 var ohneUst = (kunde != null && kunde.OhneUst);
+                                var matNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr);
+                                var matName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName);
+
+                                var gebuehrenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == matNr);
 
                                 posListeWeb.Add(new ZLDPosition
                                 {
                                     SapId = kopfdaten.SapId,
                                     PositionsNr = posNr.ToString(),
                                     UebergeordnetePosition = p.PositionsNr,
-                                    MaterialNr = (ohneUst ? mat.GebuehrenMaterialNr : mat.GebuehrenMitUstMaterialNr),
-                                    MaterialName = (ohneUst ? mat.GebuehrenMaterialName : mat.GebuehrenMitUstMaterialName),
+                                    MaterialNr = matNr,
+                                    MaterialName = matName,
                                     Menge = 1,
                                     WebMaterialart = "G",
-                                    NullpreisErlaubt = mat.NullpreisErlaubt
+                                    NullpreisErlaubt = (gebuehrenMat != null && gebuehrenMat.NullpreisErlaubt)
                                 });
                             }
 
@@ -560,6 +569,8 @@ namespace AppZulassungsdienst.lib
                             if ((kunde == null || !kunde.Pauschal) && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
                             {
                                 posNr += 10;
+
+                                var kennzeichenMat = materialStamm.FirstOrDefault(m => m.MaterialNr == mat.KennzeichenMaterialNr);
 
                                 posListeWeb.Add(new ZLDPosition
                                 {
@@ -570,7 +581,7 @@ namespace AppZulassungsdienst.lib
                                     MaterialName = "",
                                     Menge = 1,
                                     WebMaterialart = "K",
-                                    NullpreisErlaubt = mat.NullpreisErlaubt
+                                    NullpreisErlaubt = (kennzeichenMat != null && kennzeichenMat.NullpreisErlaubt)
                                 });
                             }
 
@@ -587,8 +598,7 @@ namespace AppZulassungsdienst.lib
                                     MaterialNr = "591",
                                     MaterialName = "",
                                     Menge = 1,
-                                    WebMaterialart = "S",
-                                    NullpreisErlaubt = mat.NullpreisErlaubt
+                                    WebMaterialart = "S"
                                 });
                             }
                         }
@@ -752,7 +762,7 @@ namespace AppZulassungsdienst.lib
 
                 var fehlerListe = AppModelMappings.Z_ZLD_IMP_KOMPER2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_KOMPER2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
 
-                foreach (var vg in Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O"))
+                foreach (var vg in Vorgangsliste.Where(vg => idList.Contains(vg.SapId)))
                 {
                     var fehler = fehlerListe.FirstOrDefault(f => f.SapId == vg.SapId && (String.IsNullOrEmpty(f.PositionsNr) || f.PositionsNr == vg.PositionsNr) && !String.IsNullOrEmpty(f.FehlerText));
 

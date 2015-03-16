@@ -146,7 +146,7 @@ namespace AppZulassungsdienst.lib
                 });
 		}
 
-        public void UpdateStatus(String sID, String sPosNr, String sStatus, String sLoesch, DataTable UpdateListe)
+        public void UpdateStatus(DataTable UpdateListe)
 		{
             ExecuteSapZugriff(() =>
                 {
@@ -156,35 +156,18 @@ namespace AppZulassungsdienst.lib
 
                     DataTable SapTable = SAP.GetImportTable("GT_IMP_VZOZUERL");
 
-                    DataRow NewRow;
-                    if (UpdateListe == null)
+                    foreach (DataRow mRow in UpdateListe.Rows)
                     {
-                        NewRow = SapTable.NewRow();
-                        NewRow["ZULBELN"] = sID.PadLeft(10, '0');
-                        NewRow["ZULPOSNR"] = sPosNr.PadLeft(6, '0');
-                        NewRow["STATUS"] = sStatus;
-                        NewRow["LOEKZ"] = sLoesch;
-                        if (sStatus == "S")
+                        DataRow NewRow = SapTable.NewRow();
+                        NewRow["ZULBELN"] = mRow["ZULBELN"].ToString().PadLeft(10, '0');
+                        NewRow["ZULPOSNR"] = mRow["ZULPOSNR"].ToString().PadLeft(6, '0');
+                        NewRow["STATUS"] = mRow["STATUS"].ToString();
+                        NewRow["LOEKZ"] = mRow["LOEKZ"].ToString();
+                        if (mRow["STATUS"].ToString() == "S")
                         {
                             NewRow["VZERDAT"] = DateTime.Now.ToShortDateString();
                         }
                         SapTable.Rows.Add(NewRow);
-                    }
-                    else
-                    {
-                        foreach (DataRow mRow in UpdateListe.Rows)
-                        {
-                            NewRow = SapTable.NewRow();
-                            NewRow["ZULBELN"] = mRow["ZULBELN"].ToString().PadLeft(10, '0');
-                            NewRow["ZULPOSNR"] = mRow["ZULPOSNR"].ToString().PadLeft(6, '0');
-                            NewRow["STATUS"] = mRow["STATUS"].ToString();
-                            NewRow["LOEKZ"] = mRow["LOEKZ"].ToString();
-                            if (mRow["STATUS"].ToString() == "S")
-                            {
-                                NewRow["VZERDAT"] = DateTime.Now.ToShortDateString();
-                            }
-                            SapTable.Rows.Add(NewRow);
-                        }
                     }
 
                     if (SapTable.Rows.Count > 0)

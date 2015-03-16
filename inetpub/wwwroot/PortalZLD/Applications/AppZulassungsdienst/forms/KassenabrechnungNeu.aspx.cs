@@ -1530,9 +1530,11 @@ namespace AppZulassungsdienst.forms
                                 t["P_PAYMENTS"] = "0,00";
                                 t["LIFNR"] = "";
 
+                                Boolean debiNeeded = _objKassenabrechnung.CheckDebiNeeded(ddl.SelectedValue);
+
                                 if ((txtDebitor.Enabled) || (txtDebitor.Text.Trim() != ""))
                                 {
-                                    if (txtDebitor.Text.Trim() != "")
+                                    if (txtDebitor.Text.Trim() != "" || !debiNeeded)
                                     {
                                         t["KUNNR"] = txtDebitor.Text.Trim();
                                         txtDebitor.BorderColor = System.Drawing.Color.Empty;
@@ -1561,9 +1563,11 @@ namespace AppZulassungsdienst.forms
                                 t["P_PAYMENTS"] = betrag;
                                 t["KUNNR"] = "";
 
+                                Boolean krediNeeded = _objKassenabrechnung.CheckKrediNeeded(ddl.SelectedValue);
+
                                 if ((txtKreditor.Enabled) || (txtKreditor.Text.Trim() != ""))
                                 {
-                                    if (txtKreditor.Text.Trim() != "")
+                                    if (txtKreditor.Text.Trim() != "" || !krediNeeded)
                                     {
                                         t["LIFNR"] = txtKreditor.Text.Trim();
                                         txtKreditor.BorderColor = System.Drawing.Color.Empty;
@@ -1613,8 +1617,8 @@ namespace AppZulassungsdienst.forms
                     ddl.SelectedValue = valueToSelect;
 
                 // Steuerung der Felder für Einnahmen und Ausgaben
-                Boolean debiNeeded = _objKassenabrechnung.CheckDebiNeeded(tblData.Rows[i]["TRANSACT_NUMBER"].ToString());
-                Boolean krediNeeded = _objKassenabrechnung.CheckKrediNeeded(tblData.Rows[i]["TRANSACT_NUMBER"].ToString());
+                Boolean debiNeeded = _objKassenabrechnung.CheckDebiNeeded(valueToSelect);
+                Boolean krediNeeded = _objKassenabrechnung.CheckKrediNeeded(valueToSelect);
                 TextBox ctrl = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
                 TextBox ctrl2 = (TextBox)gvRow.FindControl("txtBetragBruttoAusgaben");
                 TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");

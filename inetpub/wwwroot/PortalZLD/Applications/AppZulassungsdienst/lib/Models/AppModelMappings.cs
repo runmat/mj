@@ -712,6 +712,7 @@ namespace AppZulassungsdienst.lib.Models
             d.WEBMTART = s.WebMaterialart;
             d.ZULBELN = s.SapId.NotNullOrEmpty().ToSapKunnr();
             d.ZULPOSNR = (String.IsNullOrEmpty(s.PositionsNr) ? "" : s.PositionsNr.PadLeft0(6));
+            d.NULLPREIS_OK = s.NullpreisErlaubt.BoolToX();
         }
 
         static private void Map_ZLDPosition_To_ZZLD_POS_2(ZLDPosition s, IZZLD_POS_2 d)

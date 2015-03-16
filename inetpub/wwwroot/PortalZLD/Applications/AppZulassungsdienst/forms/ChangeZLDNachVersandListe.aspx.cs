@@ -622,7 +622,9 @@ namespace AppZulassungsdienst.forms
                 {
                     if (txtBoxGebuehren.Visible)
                     {
-                        pos.Gebuehr = decGeb;
+                        if (!pos.Gebuehrenpaket.IsTrue())
+                            pos.Gebuehr = decGeb;
+
                         pos.GebuehrAmt = decGeb;
                     }
 
