@@ -30,7 +30,7 @@
                     CoC
                 </th>
                 <th scope="col" style="padding-left:0px">
-                    DK
+                    eVB
                 </th>
                 <th scope="col" style="padding-left:0px">
                     VM
@@ -45,7 +45,7 @@
                     HRA
                 </th>
                 <th scope="col" style="padding-left:0px">
-                    <asp:HyperLink ID="lnkEinzug" Style="text-decoration: underline!important; height: 18px" runat="server">LE</asp:HyperLink>
+                    <asp:HyperLink ID="lnkEinzug" Style="text-decoration: underline!important; height: 18px" runat="server">SEPA</asp:HyperLink>
                 </th>
                 <th scope="col" style="width: 360px;" style="padding-left:0px">
                     Bemerkung
@@ -411,7 +411,7 @@
         <div class="legenditem">
             <b>CoC</b> = Certificate of Conformity</div>
         <div class="legenditem">
-            <b>DK</b> = Deckungskarte</div>
+            <b>eVB</b> = elektronische Versicherungsbestätigung</div>
         <div class="legenditem">
             <b>VM</b> = Vollmacht</div>
         <div class="legenditem">
@@ -421,7 +421,7 @@
         <div class="legenditem">
             <b>HRA</b> = Handelsregister</div>
         <div class="legenditem">
-            <b>LE</b> = Lastschrifteinzug</div>
+            <b>SEPA</b> = SEPA-Mandat für Kfz-Steuer</div>
         <div class="clear">
         </div>
     </div>
