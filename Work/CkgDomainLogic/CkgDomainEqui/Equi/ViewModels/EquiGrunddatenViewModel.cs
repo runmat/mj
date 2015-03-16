@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
@@ -8,10 +9,8 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Equi.Models;
 using System.Web.Mvc;
 using GeneralTools.Models;
-// ReSharper disable RedundantUsingDirective
 using System.IO;
 using GeneralTools.Services;
-// ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
@@ -20,9 +19,9 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public IEquiGrunddatenDataService DataService { get { return CacheGet<IEquiGrunddatenDataService>(); } }
 
-        public GrunddatenEquiSuchparameter Suchparameter
+        public EquiGrunddatenSelektor Selektor
         {
-            get { return PropertyCacheGet(() => new GrunddatenEquiSuchparameter { Standorte = new List<string> {"1601"}}); } set { PropertyCacheSet(value); }
+            get { return PropertyCacheGet(() => new EquiGrunddatenSelektor { Standorte = new List<string> {"1601"}}); } set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
@@ -54,12 +53,12 @@ namespace CkgDomainLogic.Equi.ViewModels
         /// </summary>
         public void CheckInput(Action<string, string> addModelError)
         {
-            if (Suchparameter.Fahrgestellnummer.IsNotNullOrEmpty())
-                Suchparameter.Fahrgestellnummern = Suchparameter.Fahrgestellnummer.SplitSeparators()
+            if (Selektor.Fahrgestellnummer.IsNotNullOrEmpty())
+                Selektor.Fahrgestellnummern = Selektor.Fahrgestellnummer.SplitSeparators()
                     .Select(teil => new Fahrgestellnummer { FIN = teil }).ToList();
 
-            if (Suchparameter.Fahrgestellnummer10.IsNotNullOrEmpty())
-                Suchparameter.Fahrgestellnummern10 = Suchparameter.Fahrgestellnummer10.SplitSeparators()
+            if (Selektor.Fahrgestellnummer10.IsNotNullOrEmpty())
+                Selektor.Fahrgestellnummern10 = Selektor.Fahrgestellnummer10.SplitSeparators()
                     .Select(teil => new Fahrgestellnummer10 { FIN = teil }).ToList();
         }
 
@@ -69,11 +68,9 @@ namespace CkgDomainLogic.Equi.ViewModels
         /// <returns></returns>
         public void LoadEquis()
         {
-            GrunddatenEquis = DataService.GetEquis(Suchparameter);
+            GrunddatenEquis = DataService.GetEquis(Selektor);
 
             DataMarkForRefresh();
-
-            //XmlService.XmlSerializeToFile(GrunddatenEquis, Path.Combine(AppSettings.DataPath, @"GrunddatenEquis_02.xml"));
         }
 
         public void FilterEquis(string filterValue, string filterProperties)

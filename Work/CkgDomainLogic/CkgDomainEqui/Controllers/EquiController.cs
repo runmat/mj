@@ -18,7 +18,7 @@ namespace ServicesMvc.Controllers
             IDokumenteOhneDatenDataService dokumenteOhneDatenDataService, IMahnsperreDataService mahnsperreDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
+            InitViewModel(EquiGrunddatenViewModel, appSettings, logonContext, equiGrunddatenDataService);
             InitViewModel(EquipmentHistorieViewModel, appSettings, logonContext, equiHistorieDataService);
             InitViewModel(BriefbestandViewModel, appSettings, logonContext, briefbestandDataService);
             InitViewModel(BriefversandViewModel, appSettings, logonContext, briefbestandDataService, adressenDataService, briefVersandDataService);

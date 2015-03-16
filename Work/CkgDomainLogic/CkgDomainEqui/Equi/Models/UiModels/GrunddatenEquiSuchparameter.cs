@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable RedundantUsingDirective
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using CkgDomainLogic.General.Models;
@@ -13,7 +14,7 @@ namespace CkgDomainLogic.Equi.Models
     /// <summary>
     /// Parametersatz für die Grunddaten-/Equi-Suche
     /// </summary>
-    public class GrunddatenEquiSuchparameter : Store 
+    public class EquiGrunddatenSelektor : Store 
     {
         [LocalizedDisplay(LocalizeConstants._Zielorte)]
         public List<Zielort> AlleZielorte

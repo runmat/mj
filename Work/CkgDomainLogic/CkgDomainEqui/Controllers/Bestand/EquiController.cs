@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using CkgDomainLogic.Equi.ViewModels;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Models;
 using Telerik.Web.Mvc;
 using CkgDomainLogic.Equi.Models;
 
@@ -11,51 +12,49 @@ namespace ServicesMvc.Controllers
 {
     public partial class EquiController
     {
-        public EquiGrunddatenViewModel EquiGrunddatenEquiViewModel { get { return GetViewModel<EquiGrunddatenViewModel>(); }   }
+        public EquiGrunddatenViewModel EquiGrunddatenViewModel { get { return GetViewModel<EquiGrunddatenViewModel>(); }   }
 
         [CkgApplication]
         public ActionResult ReportFahrzeugbestand()
         {
-            EquiGrunddatenEquiViewModel.DataInit();
+            EquiGrunddatenViewModel.DataInit();
 
-            return View(EquiGrunddatenEquiViewModel);
+            return View(EquiGrunddatenViewModel);
         }
 
         [HttpPost]
-        public ActionResult LoadGrunddatenEquis(GrunddatenEquiSuchparameter model)
+        public ActionResult LoadGrunddatenEquis(EquiGrunddatenSelektor model)
         {
-            EquiGrunddatenEquiViewModel.Suchparameter = model;
+            EquiGrunddatenViewModel.Selektor = model;
 
-            EquiGrunddatenEquiViewModel.CheckInput(ModelState.AddModelError);
+            EquiGrunddatenViewModel.CheckInput(ModelState.AddModelError);
 
             if (ModelState.IsValid)
             {
-                EquiGrunddatenEquiViewModel.LoadEquis();
-                if (EquiGrunddatenEquiViewModel.GrunddatenEquis.Count == 0)
-                {
+                EquiGrunddatenViewModel.LoadEquis();
+                if (EquiGrunddatenViewModel.GrunddatenEquis.None())
                     ModelState.AddModelError(String.Empty, Localize.NoDataFound);
-                }
             }
 
-            return PartialView("Bestand/EquiSuche", EquiGrunddatenEquiViewModel.Suchparameter);
+            return PersistablePartialView("Bestand/EquiSuche", EquiGrunddatenViewModel.Selektor);
         }
 
         [HttpPost]
         public ActionResult ShowGrunddatenEquis()
         {
-            return PartialView("Bestand/EquiGrid", EquiGrunddatenEquiViewModel);
+            return PartialView("Bestand/EquiGrid", EquiGrunddatenViewModel);
         }
 
         [GridAction]
         public ActionResult GrunddatenEquiItemsAjaxBinding()
         {
-            return View(new GridModel(EquiGrunddatenEquiViewModel.GrunddatenEquisFiltered));
+            return View(new GridModel(EquiGrunddatenViewModel.GrunddatenEquisFiltered));
         }
 
         [HttpPost]
         public ActionResult FilterGridGrunddatenEquiItems(string filterValue, string filterColumns)
         {
-            EquiGrunddatenEquiViewModel.FilterEquis(filterValue, filterColumns);
+            EquiGrunddatenViewModel.FilterEquis(filterValue, filterColumns);
 
             return new EmptyResult();
         }
@@ -65,7 +64,7 @@ namespace ServicesMvc.Controllers
 
         protected override IEnumerable GetGridExportData()
         {
-            return EquiGrunddatenEquiViewModel.GrunddatenEquisFiltered;
+            return EquiGrunddatenViewModel.GrunddatenEquisFiltered;
         }
 
         #endregion

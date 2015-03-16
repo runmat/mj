@@ -1,5 +1,5 @@
 ﻿@using CkgDomainLogic.Equi.Models
-@model GrunddatenEquiSuchparameter
+@model EquiGrunddatenSelektor
 
 <div id="divEquiSuche">
     @using (Ajax.BeginForm("LoadGrunddatenEquis", "Equi", null,
@@ -22,7 +22,7 @@
             @Html.FormDateRangePickerFor(m => m.AbmeldeDatumRange, new { col = "right" })
             @Html.FormDateRangePickerFor(m => m.ErfassungsDatumRange)
 
-            @Html.FormRadioButtonListFor(m => m.FahrzeugeMitZulassungsStatus, GrunddatenEquiSuchparameter.FahrzeugeZulassungsStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormRadioButtonListFor(m => m.FahrzeugeMitZulassungsStatus, EquiGrunddatenSelektor.FahrzeugeZulassungsStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "left" })
             @Html.FormCheckBoxFor(m => m.NurAbgemeldeteFahrzeuge, new { col = "right" })
             
 

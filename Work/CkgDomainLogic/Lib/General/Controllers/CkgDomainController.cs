@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
@@ -339,7 +340,7 @@ namespace CkgDomainLogic.General.Controllers
 
 
 
-        #region Persistance Service
+        #region Persistance Service, General Objects
 
         protected virtual string GetPersistanceOwnerKey()
         {
@@ -386,7 +387,7 @@ namespace CkgDomainLogic.General.Controllers
 
         #endregion
 
-        
+
         #region Shopping Cart (based on 'Persistance Service')
 
         protected virtual IEnumerable ShoppingCartLoadItems()
@@ -576,6 +577,23 @@ namespace CkgDomainLogic.General.Controllers
         // </Multi Selection>
         //
 
+
+        #endregion
+
+
+        #region Persistance Service, Selektor Persistance
+
+        protected PartialViewResult PersistablePartialView(string viewName, object model)
+        {
+            if (!ModelState.IsValid)
+                return PartialView(viewName, model);
+
+            var persistanceMode = "load";
+            var persistanceMessage = string.Format("{0} {1}", Localize.SearchMask, (persistanceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
+            ModelState.AddModelError("", persistanceMessage);
+            
+            return PartialView(viewName, model);
+        }
 
         #endregion
     }
