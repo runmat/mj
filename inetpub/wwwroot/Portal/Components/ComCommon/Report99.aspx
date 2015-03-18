@@ -66,7 +66,10 @@
 																	</TD>
 																	<TD class="TableBannerCell" height="30">HRA
 																	</TD>
-																	<TD class="TableBannerCell" height="30"><asp:hyperlink id="lnkEinzug" runat="server">SEPA</asp:hyperlink></TD>
+																	<TD class="TableBannerCell" height="30">
+																	    SEPA
+																	    <asp:hyperlink id="lnkEinzug" runat="server" Visible="False">SEPA</asp:hyperlink>
+																	</TD>
 																	<TD class="TableBannerCell" height="30">Bemerkung
 																	</TD>
 																</TR>
