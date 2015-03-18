@@ -403,6 +403,7 @@
     
     function GridColumnTranslationInit(gridName) {
         var grid = $("#" + gridName).data("tGrid");
+        //alert(grid);
         $.each(grid.hiddenColumnsOnStartup, function() {
             grid.hideColumn(this);
         });

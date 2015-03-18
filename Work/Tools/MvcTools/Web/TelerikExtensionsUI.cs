@@ -280,10 +280,10 @@ namespace Telerik.Web.Mvc.UI
             return column.Format(columnFormat);
         }
 
-        public static GridBoundColumnBuilder<TModel> XBound<TModel, TValue>(this GridColumnFactory<TModel> builder, Expression<Func<TModel, TValue>> expression)
+        public static GridBoundColumnBuilder<TModel> XBound<TModel, TValue>(this GridColumnFactory<TModel> builder, Expression<Func<TModel, TValue>> expression, bool columnVisibleOnStart = true)
             where TModel : class
         {
-            return builder.XBound(expression.GetPropertyName());
+            return builder.XBound(expression.GetPropertyName(), columnVisibleOnStart);
         }
 
         public static GridBuilder<TModel> XToolBar<TModel>(this GridBuilder<TModel> builder, string controller)
