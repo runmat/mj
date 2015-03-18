@@ -99,7 +99,7 @@ Imports System.IO
     End Sub
 
     Private Sub cmdBack_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles cmdBack.Click
-        Response.Redirect("/Portal/(" & Session.SessionID.ToString & ")/Start/Selection.aspx")
+        Response.Redirect("/Portal/(S(" & Session.SessionID & "))/Start/Selection.aspx")
     End Sub
 
     Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender

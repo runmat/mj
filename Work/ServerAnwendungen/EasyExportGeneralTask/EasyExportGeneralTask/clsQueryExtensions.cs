@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Threading;
+using SapORM.Models;
 using UniversalFileBasedLogging;
 using WMDQryCln;
 
@@ -256,6 +257,17 @@ namespace EasyExportGeneralTask
                             strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
                             strKennzeichen = row["KENNZEICHEN"].ToString();
                             cls.SavePictureDaimlerFleet(ref LC, logDS, ref row, taskConfig);
+                            break;
+
+                        case AblaufTyp.SixtMobility:
+                            strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
+                            strKennzeichen = row["KENNZEICHEN"].ToString();
+                            Z_M_EXPORTAENDERUNG_01.GT_WEB dataObj = null;
+                            if (additionalData != null)
+                            {
+                                dataObj = (additionalData[0] as Z_M_EXPORTAENDERUNG_01.GT_WEB);
+                            }
+                            cls.SavePictureSixtMobility(ref LC, logDS, ref row, taskConfig, dataObj);
                             break;
                     }
                 }
@@ -870,6 +882,53 @@ namespace EasyExportGeneralTask
             }
 
             File.Move(row["Filepath"].ToString(), newFilePath);
+        }
+
+        public static void SavePictureSixtMobility(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, Z_M_EXPORTAENDERUNG_01.GT_WEB item)
+        {
+            object iStatus;
+            object status = "";
+
+            Console.WriteLine("Wait... for " + row["FAHRGESTELLNUMMER"]);
+
+            if (File.Exists(row["Filepath"].ToString()))
+            {
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
+            }
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
+            {
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
+            }
+
+            // neuen Namen für Datei vergeben
+            var newFileName = String.Format("DAD {0} Kopie {1} {2} {3}", (item.MNCOD == "COC" ? "COC" : "ZBII"), item.ZZFABRIKNAME, item.ZZFAHRG, DateTime.Now.ToShortDateString());
+            string newFilePath = taskConfig.easyBlobPathLocal + "\\" + newFileName + ".pdf";
+            if (File.Exists(newFilePath))
+            {
+                File.Delete(newFilePath);
+            }
+
+            File.Move(row["Filepath"].ToString(), newFilePath);
+
+            Thread.Sleep(2000);
+
+            if (taskConfig.MailsSenden)
+            {
+                var mailBetreff = String.Format("DAD {0} Kopie {1} {2}", (item.MNCOD == "COC" ? "COC" : "ZBII"), item.ZZFABRIKNAME, DateTime.Now.ToShortDateString());
+                var mailText = String.Join(Environment.NewLine, new[]
+                    {
+                        "Sehr geehrte Damen und Herren,",
+                        "anbei erhalten Sie optisch archivierte Dokumente Ihrer Fahrzeuge.",
+                        "Rückfragen richten Sie bitte an den Sie betreuenden Zulassungsdienst."
+                    });
+
+                Helper.SendEMail(mailBetreff, mailText, taskConfig.MailEmpfaenger, newFilePath);
+            }
         }
     }
 }

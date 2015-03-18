@@ -464,6 +464,43 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_M_VHC_ZBII_BESTAND_001.GT_WEB, FahrzeugbriefVhc> Z_M_VHC_ZBII_BESTAND_001_GT_WEB_To_FahrzeugbriefVhc
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_VHC_ZBII_BESTAND_001.GT_WEB, FahrzeugbriefVhc>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.HaendlerNr = s.ZZHAENR;
+                        d.FahrgestellNr = s.ZZFAHRG;
+                        d.Anlagedatum = s.ERDAT;
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_M_VHC_KLAERFAELLE_001.GT_WEB, KlaerfallVhc> Z_M_VHC_KLAERFAELLE_001_GT_WEB_To_KlaerfallVhc
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_VHC_KLAERFAELLE_001.GT_WEB, KlaerfallVhc>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.HaendlerNr = s.ZZHAENR;
+                        d.FahrgestellNr = s.ZZFAHRG;
+                        d.OrderNr = s.ZZORDER;
+                        d.Anlagedatum = s.ERDAT;
+                        d.AnlagedatumKlaerfall = s.ANLAGEDAT_KLAERF;
+                        d.EingangsdatumZb2 = s.ZB2EINGDAT;
+                    }));
+            }
+        }
+
         static public ModelMapping<Z_DPM_ABWEICH_ABRUFGRUND_02.GT_OUT, Fahrzeugbrief> Z_DPM_ABWEICH_ABRUFGRUND_02_GT_OUT_To_Fahrzeugbrief
         {
             get

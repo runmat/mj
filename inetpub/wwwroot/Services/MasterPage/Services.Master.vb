@@ -118,8 +118,14 @@ Partial Public Class Services
                     Me.Page.Title = m_User.Customer.CustomerName
 
                 Else
-                    strTitle = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")(0)("AppFriendlyName").ToString
-                    Me.Page.Title = m_User.Customer.CustomerName & " - " & strTitle
+                    Dim apps() As DataRow = m_User.Applications.Select("AppID = '" & Session("AppID").ToString & "'")
+
+                    If apps.Length > 0 Then
+                        strTitle = apps(0)("AppFriendlyName").ToString
+                        Me.Page.Title = m_User.Customer.CustomerName & " - " & strTitle
+                    Else
+                        Me.Page.Title = m_User.Customer.CustomerName
+                    End If
 
                 End If
 

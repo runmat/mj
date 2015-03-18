@@ -13,10 +13,23 @@ namespace ServicesMvc.Controllers
         public override string DataContextKey { get { return "EquiViewModel"; } }
 
 
-        public EquiController(IAppSettings appSettings, ILogonContextDataService logonContext, IEquiGrunddatenDataService equiGrunddatenDataService, IEquiHistorieDataService equiHistorieDataService, 
-            IBriefbestandDataService briefbestandDataService, IAdressenDataService adressenDataService, IBriefVersandDataService briefVersandDataService, IMahnreportDataService mahnreportDataService,
-            IDatenOhneDokumenteDataService datenOhneDokumenteDataService, IErweiterterBriefbestandDataService erweiterterBriefbestandDataService, IAbweichungenDataService abweichungenDataService, 
-            IDokumenteOhneDatenDataService dokumenteOhneDatenDataService, IMahnsperreDataService mahnsperreDataService)
+
+        public EquiController(
+            IAppSettings appSettings, 
+            ILogonContextDataService logonContext, 
+            IEquiGrunddatenDataService equiGrunddatenDataService, 
+            IEquiHistorieDataService equiHistorieDataService, 
+            IBriefbestandDataService briefbestandDataService, 
+            IAdressenDataService adressenDataService, 
+            IBriefVersandDataService briefVersandDataService, 
+            IMahnreportDataService mahnreportDataService,
+            IDatenOhneDokumenteDataService datenOhneDokumenteDataService, 
+            IErweiterterBriefbestandDataService erweiterterBriefbestandDataService, 
+            IAbweichungenDataService abweichungenDataService, 
+            IDokumenteOhneDatenDataService dokumenteOhneDatenDataService, 
+            IMahnsperreDataService mahnsperreDataService, 
+            IBriefbestandVhcDataService briefbestandVhcDataService, 
+            IKlaerfaelleVhcDataService klaerfaelleVhcDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
@@ -29,6 +42,8 @@ namespace ServicesMvc.Controllers
             InitViewModel(HalterAbweichungenViewModel, appSettings, logonContext, abweichungenDataService);
             InitViewModel(DokumenteOhneDatenViewModel, appSettings, logonContext, dokumenteOhneDatenDataService);
             InitViewModel(MahnsperreViewModel, appSettings, logonContext, mahnsperreDataService);
+            InitViewModel(BriefbestandVhcViewModel, appSettings, logonContext, briefbestandVhcDataService);
+            InitViewModel(KlaerfaelleVhcViewModel, appSettings, logonContext, klaerfaelleVhcDataService);
 
             InitModelStatics();
         }

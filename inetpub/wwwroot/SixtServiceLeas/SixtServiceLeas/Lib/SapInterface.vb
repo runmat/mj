@@ -638,12 +638,31 @@ Public Class SapInterface
     End Function
 
     Public Function WMGetFreisetzungStatus() As String
-        Dim strTest As String = ConfigurationManager.AppSettings("ISTEST")
-
         Try
+            Dim strTest As String = ConfigurationManager.AppSettings("ISTEST")
+
+            Dim datVon As DateTime
+            Dim datBis As DateTime
+
+            Dim strDatumVon As String = ConfigurationManager.AppSettings("StatusDatumVon")
+            Dim strDatumBis As String = ConfigurationManager.AppSettings("StatusDatumBis")
+
+            If String.IsNullOrEmpty(strDatumVon) OrElse String.IsNullOrEmpty(strDatumBis) OrElse Not DateTime.TryParse(strDatumVon, datVon) OrElse Not DateTime.TryParse(strDatumBis, datBis) Then
+                Dim intMonate As Integer
+                Dim strMonate As String = ConfigurationManager.AppSettings("StatusZeitraumMonate")
+                If String.IsNullOrEmpty(strMonate) OrElse Not Integer.TryParse(strMonate, intMonate) Then
+                    intMonate = 6
+                End If
+                datVon = DateTime.Today.AddMonths(-intMonate)
+                datBis = DateTime.Today
+            End If
+
             Dim objS As New S()
 
             objS.AP.Init("Z_M_STATUS_SIXT_LS_001", "I_KUNNR, I_TEST", "A", strTest)
+
+            objS.AP.SetImportParameter("I_DATUM_VON", datVon.ToShortDateString())
+            objS.AP.SetImportParameter("I_DATUM_BIS", datBis.ToShortDateString())
 
             Return objS.AP.GetExportParameterWithExecute("E_XML")
 
