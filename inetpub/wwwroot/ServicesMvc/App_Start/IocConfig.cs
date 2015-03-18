@@ -146,6 +146,8 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<FinanceMahnstufenDataServiceSAP>().As<IFinanceMahnstufenDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceMahnstopDataServiceSAP>().As<IFinanceMahnstopDataService>().InstancePerHttpRequest();
             builder.RegisterType<MahnsperreDataServiceSAP>().As<IMahnsperreDataService>().InstancePerHttpRequest();
+            builder.RegisterType<BriefbestandVhcDataServiceSAP>().As<IBriefbestandVhcDataService>().InstancePerHttpRequest();
+            builder.RegisterType<KlaerfaelleVhcDataServiceSAP>().As<IKlaerfaelleVhcDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceMahnungenVorErsteingangDataServiceSAP>().As<IFinanceMahnungenVorErsteingangDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<TranslationFormatService>().As<ITranslationFormatService>().InstancePerHttpRequest();

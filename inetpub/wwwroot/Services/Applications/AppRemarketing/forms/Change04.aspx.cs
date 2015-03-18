@@ -436,17 +436,16 @@ namespace AppRemarketing.forms
             }
             else
             {
-                lblError.Text = "Fehler beim Lesen der Datei!";
+                lblError.Text += " Fehler beim Lesen der Datei!";
             }
         }
 
         private DataTable LoadUploadFile(System.Web.UI.HtmlControls.HtmlInputFile upFile)
         {
             //Prüfe Fehlerbedingung
-            if (((upFile.PostedFile != null)) && (!(upFile.PostedFile.FileName == string.Empty)))
+            if (((upFile.PostedFile != null)) && (!String.IsNullOrEmpty(upFile.PostedFile.FileName)))
             {
-
-                if ((string)upFile.PostedFile.FileName.PadRight(4).ToUpper() == ".XLS")
+                if (!upFile.PostedFile.FileName.ToUpper().EndsWith(".XLS"))
                 {
                     lblError.Text = "Es können nur Dateien im .XLS - Format verarbeitet werden.";
                     return null;
@@ -461,10 +460,8 @@ namespace AppRemarketing.forms
                 //Lade Datei
                 return getData(upFile.PostedFile);
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         private DataTable getData(System.Web.HttpPostedFile uFile)
