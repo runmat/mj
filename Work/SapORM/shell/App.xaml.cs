@@ -268,6 +268,8 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_SAVE_ZULDOK_01").WriteOrmForExportTableStructures("I_AG", "329608");
             //new FunctionReflector("Z_DPM_READ_DOK_ARCHIV_01").WriteOrmForExportTableStructures("I_DOC_ID", "0");
 
+            //new FunctionReflector("Z_M_EXPORTAENDERUNG_01").WriteOrmForExportTableStructures("I_KUNNR, I_ZZREFERENZ1, I_DATUM_VON, I_DATUM_BIS", "10050817", "20", "01.03.2015", "03.03.2015");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
