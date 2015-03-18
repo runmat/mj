@@ -167,12 +167,11 @@ namespace PortalMvcTools.Web
         public static MvcHtmlString FormValidationSummary(this HtmlHelper html, bool excludePropertyErrors = true)
         {
             var persistenceModeErros = html.ViewData.ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage.ToLower().StartsWith(MvcTag.FormPersistenceModeErrorPrefix.ToLower())));
+            var validationSummaryHeader = Localize.PleaseCheckYourInputs;
             if (persistenceModeErros.Key != null && persistenceModeErros.Value != null)
-            {
-                
-            }
+                validationSummaryHeader = MvcTag.FormPersistenceModeErrorPrefix;
 
-            return html.ValidationSummary(excludePropertyErrors, Localize.PleaseCheckYourInputs);
+            return html.ValidationSummary(excludePropertyErrors, validationSummaryHeader);
         }
 
         public static MvcHtmlString FormPersistenceMenu(this HtmlHelper html)

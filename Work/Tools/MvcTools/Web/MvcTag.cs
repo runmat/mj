@@ -6,7 +6,7 @@ namespace MvcTools.Web
 {
     public class MvcTag : IDisposable
     {
-        public const string FormPersistenceModeErrorPrefix = "[PersistenceMode]";
+        public const string FormPersistenceModeErrorPrefix = "__FormPersistenceMode__";
 
         public const string CR = "\r\n";
 
