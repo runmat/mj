@@ -45,7 +45,8 @@
                     HRA
                 </th>
                 <th scope="col" style="padding-left:0px">
-                    <asp:HyperLink ID="lnkEinzug" Style="text-decoration: underline!important; height: 18px" runat="server">SEPA</asp:HyperLink>
+                    SEPA
+                    <asp:HyperLink ID="lnkEinzug" Visible="False" Style="text-decoration: underline!important; height: 18px" runat="server">SEPA</asp:HyperLink>
                 </th>
                 <th scope="col" style="width: 360px;" style="padding-left:0px">
                     Bemerkung
