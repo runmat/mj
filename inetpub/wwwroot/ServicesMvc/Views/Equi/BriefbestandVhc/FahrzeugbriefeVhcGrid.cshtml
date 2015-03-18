@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridFahrzeugbriefeVhc"; }
+
+@(Html.Telerik()
+    .Grid<FahrzeugbriefVhc>()
+    .Name(gridName)
+    .XGroup("GridFahrzeugbriefeVhc")
+    .XAjaxDataBinding("FahrzeugbriefeVhcAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.HaendlerNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Anlagedatum).Format("{0:dd.MM.yyyy}");
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugbriefeVhc"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFahrzeugbriefeVhcFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportFahrzeugbriefeVhcFilteredPDF", "Equi");
+    })
+)
+

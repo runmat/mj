@@ -4177,6 +4177,10 @@
     <Content Include="Views\Finance\Mahnstop\MahnstopSuche.cshtml" />
     <Content Include="Views\Finance\Mahnstop.cshtml" />
     <Content Include="Views\Finance\Mahnstop\Partial\MahnstopEditForm.cshtml" />
+    <Content Include="Views\Equi\BriefbestandVhc\FahrzeugbriefeVhcGrid.cshtml" />
+    <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcGrid.cshtml" />
+    <Content Include="Views\Equi\BriefbestandVhc.cshtml" />
+    <Content Include="Views\Equi\KlaerfaelleVhc.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang\MahnungenVorErsteingangSuche.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang\MahnungenVorErsteingangGrid.cshtml" />
     <Content Include="Views\Finance\MahnungenVorErsteingang.cshtml" />
