@@ -343,17 +343,20 @@ Public Class Change01
                     lblError.Text = "Batch-ID (von) ungültig."
                     Return False
                 End If
-                If regEx.IsMatch(strBatchIdBis) Then
-                    lblError.Text = "Batch-ID (bis) ungültig."
-                    Return False
-                End If
 
-                Dim lngBatchVon As Long = CType(strBatchIdVon, Long)
-                Dim lngBatchBis As Long = CType(strBatchIdBis, Long)
+                If Not String.IsNullOrEmpty(strBatchIdBis) Then
+                    If regEx.IsMatch(strBatchIdBis) Then
+                        lblError.Text = "Batch-ID (bis) ungültig."
+                        Return False
+                    End If
 
-                If (lngBatchBis < lngBatchVon) Then
-                    lblError.Text = "Batch-ID (von-bis) ungültig."
-                    Return False
+                    Dim lngBatchVon As Long = CType(strBatchIdVon, Long)
+                    Dim lngBatchBis As Long = CType(strBatchIdBis, Long)
+
+                    If (lngBatchBis < lngBatchVon) Then
+                        lblError.Text = "Batch-ID (von-bis) ungültig."
+                        Return False
+                    End If
                 End If
             End If
 
@@ -368,17 +371,20 @@ Public Class Change01
                     lblError.Text = "Unit-Nr. (von) ungültig."
                     Return False
                 End If
-                If regEx.IsMatch(strUnitBis) Then
-                    lblError.Text = "Unit-Nr. (bis) ungültig."
-                    Return False
-                End If
 
-                Dim lngUnitVon As Long = CType(strUnitVon, Long)
-                Dim lngUnitBis As Long = CType(strUnitBis, Long)
+                If Not String.IsNullOrEmpty(strUnitBis) Then
+                    If regEx.IsMatch(strUnitBis) Then
+                        lblError.Text = "Unit-Nr. (bis) ungültig."
+                        Return False
+                    End If
 
-                If (lngUnitBis < lngUnitVon) Then
-                    lblError.Text = "Unit-Nr. (von-bis) ungültig."
-                    Return False
+                    Dim lngUnitVon As Long = CType(strUnitVon, Long)
+                    Dim lngUnitBis As Long = CType(strUnitBis, Long)
+
+                    If (lngUnitBis < lngUnitVon) Then
+                        lblError.Text = "Unit-Nr. (von-bis) ungültig."
+                        Return False
+                    End If
                 End If
             End If
 
@@ -393,7 +399,7 @@ Public Class Change01
                     lblError.Text = "Model-ID (von) ungültig."
                     Return False
                 End If
-                If regEx.IsMatch(strModelIdBis) Then
+                If Not String.IsNullOrEmpty(strModelIdBis) AndAlso regEx.IsMatch(strModelIdBis) Then
                     lblError.Text = "Model-ID (bis) ungültig."
                     Return False
                 End If
@@ -410,7 +416,7 @@ Public Class Change01
                     lblError.Text = "Datum Einsteuerung (von) ungültig."
                     Return False
                 End If
-                If Not (regEx.IsMatch(strDatEinsteuerungBis)) Then
+                If Not String.IsNullOrEmpty(strDatEinsteuerungBis) AndAlso Not (regEx.IsMatch(strDatEinsteuerungBis)) Then
                     lblError.Text = "Datum Einsteuerung (bis) ungültig."
                     Return False
                 End If

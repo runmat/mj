@@ -159,10 +159,10 @@
 												<asp:TextBox id="txtFilterAnlagedatumVon" runat="server"/>
                                             </td>
                                             <td>
+                                                <asp:LinkButton ID="btnKalenderAnlagedatumVon" runat="server" CssClass="StandardButtonTable" 
+                                                        Width="100px"> &#149;&nbsp;Kalender...</asp:LinkButton>
                                             </td>
 											<td>
-											    <asp:LinkButton ID="btnKalenderAnlagedatumVon" runat="server" CssClass="StandardButtonTable" 
-                                                        Width="100px"> &#149;&nbsp;Kalender...</asp:LinkButton>
 											</td>
 										</tr>
                                         <tr>
@@ -172,10 +172,10 @@
 												<asp:TextBox id="txtFilterAnlagedatumBis" runat="server"/>
                                             </td>
                                             <td>
+                                                <asp:LinkButton ID="btnKalenderAnlagedatumBis" runat="server" CssClass="StandardButtonTable" 
+                                                        Width="100px"> &#149;&nbsp;Kalender...</asp:LinkButton>
                                             </td>
 											<td>
-											    <asp:LinkButton ID="btnKalenderAnlagedatumBis" runat="server" CssClass="StandardButtonTable" 
-                                                        Width="100px"> &#149;&nbsp;Kalender...</asp:LinkButton>
 											</td>
 										</tr>
 										<tr>
