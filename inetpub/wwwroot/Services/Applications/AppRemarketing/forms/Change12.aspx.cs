@@ -13,21 +13,21 @@ namespace AppRemarketing.forms
 {
     public partial class Change12 : Page
     {
-        private User m_User;
-        private App m_App;
-        private bool isExcelExportConfigured;
-        private Carport m_Report;
-        private Belastungsanzeigen m_Nachbelastung;
+        private User _mUser;
+        private App _mApp;
+        private bool _isExcelExportConfigured;
+        private Carport _mReport;
+        private Belastungsanzeigen _mNachbelastung;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            m_User = Common.GetUser(this);
-            Common.FormAuth(this, m_User);
+            _mUser = Common.GetUser(this);
+            Common.FormAuth(this, _mUser);
 
-            m_App = new App(m_User);
+            _mApp = new App(_mUser);
             Common.GetAppIDFromQueryString(this);
 
-            lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
+            lblHead.Text = (string)_mUser.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
             lblError.Text = "";
 
             try
@@ -37,41 +37,43 @@ namespace AppRemarketing.forms
                     Common.TranslateTelerikColumns(rgGrid1);
 
                     var persister = new GridSettingsPersister(rgGrid1, GridSettingsType.All);
-                    Session["rgGrid1_original"] = persister.LoadForUser(m_User, (string)Session["AppID"], GridSettingsType.All.ToString());
+                    Session["rgGrid1_original"] = persister.LoadForUser(_mUser, (string)Session["AppID"], GridSettingsType.All.ToString());
 
-                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName + ".xls";
+                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + _mUser.UserName + ".xls";
 
                     // String strFileName; // = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls";
-                    m_Report = new Carport(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, strFileName);
-                    Session.Add("Dropdowns", m_Report);
-                    m_Report.SessionID = this.Session.SessionID;
-                    m_Report.AppID = (string)Session["AppID"];
+                    _mReport = new Carport(ref _mUser, _mApp, (string)Session["AppID"], Session.SessionID, strFileName);
+                    Session.Add("Dropdowns", _mReport);
+                    _mReport.SessionID = this.Session.SessionID;
+                    _mReport.AppID = (string)Session["AppID"];
 
-                    m_Nachbelastung = new Belastungsanzeigen(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, strFileName);
-                    Session.Add("Nachbelastung", m_Nachbelastung);
-                    m_Nachbelastung.SessionID = this.Session.SessionID;
-                    m_Nachbelastung.AppID = (string)Session["AppID"];
+                    _mNachbelastung = new Belastungsanzeigen(ref _mUser, _mApp, (string)Session["AppID"], Session.SessionID, strFileName);
+                    Session.Add("Nachbelastung", _mNachbelastung);
+                    _mNachbelastung.SessionID = this.Session.SessionID;
+                    _mNachbelastung.AppID = (string)Session["AppID"];
 
                     FillDate();
                     FillVermieter(); 
                     FillEmpfaenger();
-                    FillHC();
+                    FillHc();
                 }
                 else
                 {
                     if ((Session["Dropdowns"] != null))
                     {
-                        m_Report = (Carport)Session["Dropdowns"];
+                        _mReport = (Carport)Session["Dropdowns"];
                     }
                     if ((Session["Nachbelastung"] != null))
                     {
-                        m_Nachbelastung = (Belastungsanzeigen)Session["Nachbelastung"];
+                        _mNachbelastung = (Belastungsanzeigen)Session["Nachbelastung"];
                     }
                 }
             }
             catch
             {
+
                 lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
+
             }
         }
 
@@ -85,7 +87,7 @@ namespace AppRemarketing.forms
             Common.SetEndASPXAccess(this);
         }
 
-        protected void lbCreate_Click(object sender, EventArgs e)
+        protected void LbCreateClick(object sender, EventArgs e)
         {
             DoSubmit();
         }
@@ -109,42 +111,42 @@ namespace AppRemarketing.forms
 
             if ((txtDatumVon.Text.Length > 0) && (txtDatumBis.Text.Length > 0))
             {
-                DateTime DateFrom = DateTime.Parse(txtDatumVon.Text).Date;
-                DateTime DateTo = DateTime.Parse(txtDatumBis.Text).Date;
+                DateTime dateFrom = DateTime.Parse(txtDatumVon.Text).Date;
+                DateTime dateTo = DateTime.Parse(txtDatumBis.Text).Date;
 
-                if (DateTo < DateFrom)
+                if (dateTo < dateFrom)
                 {
                     lblError.Text = "Datum von ist größer als Datum bis.";
                     return;
                 }
             }
 
-            m_Nachbelastung.CarportNr = ddlHC.SelectedValue;
-            m_Nachbelastung.AVNR = ddlVermieter.SelectedValue;
-            m_Nachbelastung.Gutachter = ddlGutachter.SelectedValue;
-            m_Nachbelastung.Kennzeichen = txtKennzeichen.Text;
-            m_Nachbelastung.Fahrgestellnummer = txtFahrgestellnummer.Text;
-            m_Nachbelastung.Rechnungsnummer = txtRechnungsnummer.Text;
-            m_Nachbelastung.Inventarnummer = txtInventarnummer.Text;
-            m_Nachbelastung.DatumVon = txtDatumVon.Text;
-            m_Nachbelastung.DatumBis = txtDatumBis.Text;
+            _mNachbelastung.CarportNr = ddlHC.SelectedValue;
+            _mNachbelastung.AVNR = ddlVermieter.SelectedValue;
+            _mNachbelastung.Gutachter = ddlGutachter.SelectedValue;
+            _mNachbelastung.Kennzeichen = txtKennzeichen.Text;
+            _mNachbelastung.Fahrgestellnummer = txtFahrgestellnummer.Text;
+            _mNachbelastung.Rechnungsnummer = txtRechnungsnummer.Text;
+            _mNachbelastung.Inventarnummer = txtInventarnummer.Text;
+            _mNachbelastung.DatumVon = txtDatumVon.Text;
+            _mNachbelastung.DatumBis = txtDatumBis.Text;
 
-            m_Nachbelastung.ShowNachbelastung((string)Session["AppID"], Session.SessionID, this);
+            _mNachbelastung.ShowNachbelastung((string)Session["AppID"], Session.SessionID, this);
 
-            if (m_Nachbelastung.Status != 0)
+            if (_mNachbelastung.Status != 0)
             {
-                lblError.Text = m_Nachbelastung.Message;
+                lblError.Text = _mNachbelastung.Message;
             }
             else
             {
-                Session["Nachbelastung"] = m_Nachbelastung;
+                Session["Nachbelastung"] = _mNachbelastung;
                 Fillgrid();
             }
         }
 
         private void Fillgrid()
         {
-            if (m_Nachbelastung.Result.Rows.Count == 0)
+            if (_mNachbelastung.Result.Rows.Count == 0)
             {
                 SearchMode();
                 lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
@@ -167,11 +169,11 @@ namespace AppRemarketing.forms
             Result.Visible = !search;
         }
 
-        protected void rgGrid1_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
+        protected void RgGrid1NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            if (m_Nachbelastung.Result != null)
+            if (_mNachbelastung.Result != null)
             {
-                rgGrid1.DataSource = m_Nachbelastung.Result.DefaultView;
+                rgGrid1.DataSource = _mNachbelastung.Result.DefaultView;
             }
             else
             {
@@ -179,48 +181,48 @@ namespace AppRemarketing.forms
             }
         }
 
-        protected void NewSearch_Click(object sender, ImageClickEventArgs e)
+        protected void NewSearchClick(object sender, ImageClickEventArgs e)
         {
             SearchMode();
         }
 
-        protected void NewSearchUp_Click(object sender, ImageClickEventArgs e)
+        protected void NewSearchUpClick(object sender, ImageClickEventArgs e)
         {
             SearchMode(false);
         }
 
-        protected void lbBack_Click(object sender, EventArgs e)
+        protected void LbBackClick(object sender, EventArgs e)
         {
             Session["Nachbelastung"] = null;
             Response.Redirect("/Services/(S(" + Session.SessionID + "))/Start/Selection.aspx");
         }
 
-        private void FillHC()
+        private void FillHc()
         {
-            HC mHC = new HC(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "");
+            var mHc = new HC(ref _mUser, _mApp, (string)Session["AppID"], Session.SessionID, "");
 
-            mHC.getHC((string)Session["AppID"], Session.SessionID, this);
+            mHc.getHC((string)Session["AppID"], Session.SessionID, this);
 
-            if (mHC.Status > 0)
+            if (mHc.Status > 0)
             {
-                lblError.Text = mHC.Message;
+                lblError.Text = mHc.Message;
             }
             else
             {
-                if (mHC.Hereinnahmecenter.Rows.Count > 0)
+                if (mHc.Hereinnahmecenter.Rows.Count > 0)
                 {
-                    ListItem litHC;
-                    litHC = new ListItem();
-                    litHC.Text = "- alle -";
-                    litHC.Value = "00";
-                    ddlHC.Items.Add(litHC);
+                    ListItem litHc;
+                    litHc = new ListItem {Text = "- alle -", Value = "00"};
+                    ddlHC.Items.Add(litHc);
 
-                    foreach (DataRow drow in mHC.Hereinnahmecenter.Rows)
+                    foreach (DataRow drow in mHc.Hereinnahmecenter.Rows)
                     {
-                        litHC = new ListItem();
-                        litHC.Text = (string)drow["POS_KURZTEXT"] + " " + (string)drow["POS_TEXT"];
-                        litHC.Value = (string)drow["POS_KURZTEXT"];
-                        ddlHC.Items.Add(litHC);
+                        litHc = new ListItem
+                            {
+                                Text = (string) drow["POS_KURZTEXT"] + " " + (string) drow["POS_TEXT"],
+                                Value = (string) drow["POS_KURZTEXT"]
+                            };
+                        ddlHC.Items.Add(litHc);
                     }
                 }
             }
@@ -228,27 +230,27 @@ namespace AppRemarketing.forms
 
         private void FillVermieter()
         {
-            m_Report.getVermieter((string)Session["AppID"], (string)Session.SessionID, this);
+            _mReport.getVermieter((string)Session["AppID"], Session.SessionID, this);
 
-            if (m_Report.Status > 0)
+            if (_mReport.Status > 0)
             {
-                lblError.Text = m_Report.Message;
+                lblError.Text = _mReport.Message;
             }
             else
             {
-                if (m_Report.Vermieter.Rows.Count > 0)
+                if (_mReport.Vermieter.Rows.Count > 0)
                 {
                     ListItem litVermiet;
-                    litVermiet = new ListItem();
-                    litVermiet.Text = "- alle -";
-                    litVermiet.Value = "00";
+                    litVermiet = new ListItem {Text = "- alle -", Value = "00"};
                     ddlVermieter.Items.Add(litVermiet);
 
-                    foreach (DataRow drow in m_Report.Vermieter.Rows)
+                    foreach (DataRow drow in _mReport.Vermieter.Rows)
                     {
-                        litVermiet = new ListItem();
-                        litVermiet.Text = (string)drow["POS_KURZTEXT"] + " " + (string)drow["POS_TEXT"];
-                        litVermiet.Value = (string)drow["POS_KURZTEXT"];
+                        litVermiet = new ListItem
+                            {
+                                Text = (string) drow["POS_KURZTEXT"] + " " + (string) drow["POS_TEXT"],
+                                Value = (string) drow["POS_KURZTEXT"]
+                            };
                         ddlVermieter.Items.Add(litVermiet);
                     }
                 }
@@ -257,27 +259,23 @@ namespace AppRemarketing.forms
 
         private void FillEmpfaenger()
         {
-            m_Report.getEmpfaenger((string)Session["AppID"], (string)Session.SessionID, this);
+            _mReport.getEmpfaenger((string)Session["AppID"], Session.SessionID, this);
 
-            if (m_Report.Status > 0)
+            if (_mReport.Status > 0)
             {
-                lblError.Text = m_Report.Message;
+                lblError.Text = _mReport.Message;
             }
             else
             {
-                if (m_Report.Empfaenger.Rows.Count > 0)
+                if (_mReport.Empfaenger.Rows.Count > 0)
                 {
                     ListItem litEmpf;
-                    litEmpf = new ListItem();
-                    litEmpf.Text = "- Auswahl -";
-                    litEmpf.Value = "00";
+                    litEmpf = new ListItem {Text = "- Auswahl -", Value = "00"};
                     ddlEmpfaenger.Items.Add(litEmpf);
 
-                    foreach (DataRow drow in m_Report.Empfaenger.Rows)
+                    foreach (DataRow drow in _mReport.Empfaenger.Rows)
                     {
-                        litEmpf = new ListItem();
-                        litEmpf.Text = (string)drow["NAME1"];
-                        litEmpf.Value = (string)drow["POS_KURZTEXT"];
+                        litEmpf = new ListItem {Text = (string) drow["NAME1"], Value = (string) drow["POS_KURZTEXT"]};
                         ddlEmpfaenger.Items.Add(litEmpf);
                     }
                 }
@@ -290,12 +288,12 @@ namespace AppRemarketing.forms
             txtDatumBis.Text = Helper.DateTo;
         }
 
-        protected void Button1_Click(object sender, EventArgs e)
+        protected void Button1Click(object sender, EventArgs e)
         {
             ModalPopupExtender2.Show();
         }
 
-        protected void btnOK_Click(object sender, EventArgs e)
+        protected void BtnOkClick(object sender, EventArgs e)
         {
             try
             {
@@ -311,18 +309,18 @@ namespace AppRemarketing.forms
                 if (txtBetrag.Text.Length == 0)
                 {
                     lblSaveInfo.Visible = true;
-                    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
+                    lblSaveInfo.ForeColor = System.Drawing.Color.Red;
                     lblSaveInfo.Text = "Bitte geben Sie einen Betrag ein.";
                     ModalPopupExtender2.Show();
                     return;
                 }
 
-                double DummyDouble;
+                double dummyDouble;
 
-                if (!Double.TryParse(txtBetrag.Text, out DummyDouble))
+                if (!Double.TryParse(txtBetrag.Text, out dummyDouble))
                 {
                     lblSaveInfo.Visible = true;
-                    lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
+                    lblSaveInfo.ForeColor = System.Drawing.Color.Red;
                     lblSaveInfo.Text = "Bitte geben Sie gültigen Betrag ein.";
                     ModalPopupExtender2.Show();
                     return;
@@ -333,7 +331,7 @@ namespace AppRemarketing.forms
                     if (ddlEmpfaenger.SelectedValue == "00")
                     {
                         lblSaveInfo.Visible = true;
-                        lblSaveInfo.ForeColor = System.Drawing.Color.Red; ;
+                        lblSaveInfo.ForeColor = System.Drawing.Color.Red;
                         lblSaveInfo.Text = "Bitte geben Sie einen Empfänger an.";
                         ModalPopupExtender2.Show();
                         return;
@@ -341,43 +339,43 @@ namespace AppRemarketing.forms
                     }
                 }
 
-                m_Nachbelastung = (Belastungsanzeigen)Session["Nachbelastung"];
-                m_Nachbelastung.Fahrgestellnummer = lblFin.Text;
-                m_Nachbelastung.Rechnungsnummer = lblRechnr.Text;
-                m_Nachbelastung.GutschriftBetrag = txtBetrag.Text;
+                _mNachbelastung = (Belastungsanzeigen)Session["Nachbelastung"];
+                _mNachbelastung.Fahrgestellnummer = lblFin.Text;
+                _mNachbelastung.Rechnungsnummer = lblRechnr.Text;
+                _mNachbelastung.GutschriftBetrag = txtBetrag.Text;
 
                 if (txtBemerkung.Text.Length > 199)
                 {
                     txtBemerkung.Text = txtBemerkung.Text.Substring(0, 199);
                 }
 
-                m_Nachbelastung.GutschriftBemerkung = txtBemerkung.Text;
-                m_Nachbelastung.Belegart = "1";
+                _mNachbelastung.GutschriftBemerkung = txtBemerkung.Text;
+                _mNachbelastung.Belegart = "1";
 
                 if (trEmpfaenger.Visible)
                 {
-                    m_Nachbelastung.Belegart = "2";
-                    m_Nachbelastung.Empfaenger = ddlEmpfaenger.SelectedValue;
+                    _mNachbelastung.Belegart = "2";
+                    _mNachbelastung.Empfaenger = ddlEmpfaenger.SelectedValue;
                 }
                 else
                 {
-                    m_Nachbelastung.Empfaenger = "";
+                    _mNachbelastung.Empfaenger = "";
                 }
 
-                if (cbxMinderwert.Checked == true)
+                if (cbxMinderwert.Checked)
                 {
-                    m_Nachbelastung.MerkantilerMinderwert = "X";
+                    _mNachbelastung.MerkantilerMinderwert = "X";
                 }
                 else
                 {
-                    m_Nachbelastung.MerkantilerMinderwert = "";
+                    _mNachbelastung.MerkantilerMinderwert = "";
                 }
 
 
                 btnOK.Enabled = false;
-                m_Nachbelastung.SetGutschrift((string)Session["AppID"], (string)Session.SessionID, this.Page);
+                _mNachbelastung.SetGutschrift((string)Session["AppID"], Session.SessionID, this.Page);
 
-                if (m_Nachbelastung.Status == 101)
+                if (_mNachbelastung.Status == 101)
                 {
                     lblSaveInfo.ForeColor = System.Drawing.Color.Blue;
                     lblSaveInfo.Visible = true;
@@ -399,7 +397,7 @@ namespace AppRemarketing.forms
                 {
                     lblSaveInfo.Visible = true;
                     lblSaveInfo.ForeColor = System.Drawing.Color.Red;
-                    lblSaveInfo.Text = m_Nachbelastung.Message;
+                    lblSaveInfo.Text = _mNachbelastung.Message;
                     ModalPopupExtender2.Show();
                 }
             }
@@ -415,29 +413,32 @@ namespace AppRemarketing.forms
         private void StoreGridSettings(RadGrid grid, GridSettingsType settingsType)
         {
             var persister = new GridSettingsPersister(grid, settingsType);
-            persister.SaveForUser(m_User, (string)Session["AppID"], settingsType.ToString());
+            persister.SaveForUser(_mUser, (string)Session["AppID"], settingsType.ToString());
         }
 
-        protected void rgGrid1_ItemCreated(object sender, GridItemEventArgs e)
+        protected void RgGrid1ItemCreated(object sender, GridItemEventArgs e)
         {
             if (e.Item.ItemType == GridItemType.CommandItem)
             {
                 var gcitem = e.Item as GridCommandItem;
 
-                var rbutton = gcitem.FindControl("RefreshButton") ?? gcitem.FindControl("RebindGridButton");
-                if (rbutton == null) return;
+                if (gcitem != null)
+                {
+                    var rbutton = gcitem.FindControl("RefreshButton") ?? gcitem.FindControl("RebindGridButton");
+                    if (rbutton == null) return;
 
-                var rbutton_parent = rbutton.Parent;
+                    var rbuttonParent = rbutton.Parent;
 
-                var saveLayoutButton = new Button { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
-                rbutton_parent.Controls.AddAt(0, saveLayoutButton);
+                    var saveLayoutButton = new Button { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
+                    rbuttonParent.Controls.AddAt(0, saveLayoutButton);
 
-                var resetLayoutButton = new Button { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
-                rbutton_parent.Controls.AddAt(1, resetLayoutButton);
+                    var resetLayoutButton = new Button { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
+                    rbuttonParent.Controls.AddAt(1, resetLayoutButton);
+                }
             }
         }
 
-        protected void rgGrid1_ItemCommand(object sender, GridCommandEventArgs e)
+        protected void RgGrid1ItemCommand(object sender, GridCommandEventArgs e)
         {
             switch (e.CommandName)
             {
@@ -471,9 +472,9 @@ namespace AppRemarketing.forms
                     break;
 
                 case "Gutschrift":
-                    lblFin.Text = e.CommandArgument.ToString().Split('|')[0].ToString();
-                    lblRechnr.Text = e.CommandArgument.ToString().Split('|')[1].ToString();
-                    lblSumme.Text = e.CommandArgument.ToString().Split('|')[2].ToString();
+                    lblFin.Text = e.CommandArgument.ToString().Split('|')[0];
+                    lblRechnr.Text = e.CommandArgument.ToString().Split('|')[1];
+                    lblSumme.Text = e.CommandArgument.ToString().Split('|')[2];
                     lblAdressMessage.Text = "Gutschrift";
                     trEmpfaenger.Visible = false;
                     txtBetrag.Text = "";
@@ -486,9 +487,9 @@ namespace AppRemarketing.forms
                     break;
 
                 case "Nachbelastung":
-                    lblFin.Text = e.CommandArgument.ToString().Split('|')[0].ToString();
-                    lblRechnr.Text = e.CommandArgument.ToString().Split('|')[1].ToString();
-                    lblSumme.Text = e.CommandArgument.ToString().Split('|')[2].ToString();
+                    lblFin.Text = e.CommandArgument.ToString().Split('|')[0];
+                    lblRechnr.Text = e.CommandArgument.ToString().Split('|')[1];
+                    lblSumme.Text = e.CommandArgument.ToString().Split('|')[2];
                     lblAdressMessage.Text = "Nachbelastung";
                     trEmpfaenger.Visible = true;
                     txtBetrag.Text = "";
@@ -502,12 +503,12 @@ namespace AppRemarketing.forms
             }
         }
 
-        protected void rgGrid1_ExcelMLExportRowCreated(object sender, GridExportExcelMLRowCreatedArgs e)
+        protected void RgGrid1ExcelMlExportRowCreated(object sender, GridExportExcelMLRowCreatedArgs e)
         {
-            Helper.radGridExcelMLExportRowCreated(ref isExcelExportConfigured, ref e);
+            Helper.radGridExcelMLExportRowCreated(ref _isExcelExportConfigured, ref e);
         }
 
-        protected void rgGrid1_ExcelMLExportStylesCreated(object sender, GridExportExcelMLStyleCreatedArgs e)
+        protected void RgGrid1ExcelMlExportStylesCreated(object sender, GridExportExcelMLStyleCreatedArgs e)
         {
             Helper.radGridExcelMLExportStylesCreated(ref e);
         }
