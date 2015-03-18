@@ -140,7 +140,7 @@
     <Compile Include="Equi\Models\UIModels\MahnsperreEdit.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreSuchparameter.cs" />
     <Compile Include="Equi\Models\VersandartOptionen.cs" />
-    <Compile Include="Equi\Models\UIModels\GrunddatenEquiSuchparameter.cs" />
+    <Compile Include="Equi\Models\UIModels\EquiGrunddatenSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\Betriebsnummer.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
     <Compile Include="Equi\Models\VersandOptionen.cs" />

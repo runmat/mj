@@ -166,7 +166,18 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormValidationSummary(this HtmlHelper html, bool excludePropertyErrors = true)
         {
+            var persistenceModeErros = html.ViewData.ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage.ToLower().StartsWith(MvcTag.FormPersistenceModeErrorPrefix.ToLower())));
+            if (persistenceModeErros.Key != null && persistenceModeErros.Value != null)
+            {
+                
+            }
+
             return html.ValidationSummary(excludePropertyErrors, Localize.PleaseCheckYourInputs);
+        }
+
+        public static MvcHtmlString FormPersistenceMenu(this HtmlHelper html)
+        {
+            return html.Partial("Partial/FormPersistence/Menu");
         }
 
         //public static MvcHtmlString FormValidationSummaryBlankGeneralMessage(this HtmlHelper html, bool excludePropertyErrors = true)

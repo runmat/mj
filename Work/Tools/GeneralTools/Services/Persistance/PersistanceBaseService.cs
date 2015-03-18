@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 
@@ -38,13 +39,32 @@ namespace GeneralTools.Services
             return objectContainers;
         }
 
-        public void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, object o)
+        public object SaveObject(string objectKey, string ownerKey, string groupKey, string userName, object o)
         {
             var type = o.GetType();
             var typeName = type.GetFullTypeName();
             var objectData = XmlService.XmlSerializeToString(o);
 
+            var persistedContainersBeforeSave = (IEnumerable<IPersistableObjectContainer>)null;
+            if (objectKey.IsNullOrEmpty())
+                persistedContainersBeforeSave = GetObjectContainers(ownerKey, groupKey);
+
+
             PersistObject(objectKey, ownerKey, groupKey, userName, typeName, objectData);
+
+
+            var persistedContainersAfterSave = (IEnumerable<IPersistableObjectContainer>)null;
+            if (objectKey.IsNullOrEmpty())
+                persistedContainersAfterSave = GetObjectContainers(ownerKey, groupKey);
+
+            if (persistedContainersBeforeSave == null || persistedContainersAfterSave == null)
+                return null;
+
+            var persistedObjectsBeforeSave = persistedContainersBeforeSave.Where(pc => pc.Object as IPersistableObject != null).Select(pc => pc.Object as IPersistableObject);
+            var persistedObjectsAfterSave = persistedContainersAfterSave.Where(pc => pc.Object as IPersistableObject != null).Select(pc => pc.Object as IPersistableObject);
+
+            var newItem = persistedObjectsAfterSave.Except(persistedObjectsBeforeSave, new IPersistableObjectComparer()).FirstOrDefault();
+            return newItem;
         }
 
         public void DeleteObject(string objectKey)

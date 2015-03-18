@@ -9,7 +9,6 @@
             
             @Html.FormValidationSummary()
 
-
             @Html.FormMultiSelectListFor(m => m.Standorte, Model.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "left" })
             @Html.FormMultiSelectListFor(m => m.Betriebsnummern, Model.AlleBetriebsnummern.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "right" })
 
@@ -30,6 +29,8 @@
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+                
+                @Html.FormPersistenceMenu()
             </div>
         </div>  
         

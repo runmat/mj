@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace GeneralTools.Contracts
 {
@@ -9,5 +10,18 @@ namespace GeneralTools.Contracts
         DateTime? EditDate { get; set; }
 
         string EditUser { get; set; }
+    }
+
+    public class IPersistableObjectComparer : IEqualityComparer<IPersistableObject>
+    {
+        bool IEqualityComparer<IPersistableObject>.Equals(IPersistableObject x, IPersistableObject y)
+        {
+            return x.ObjectKey.Equals(y.ObjectKey);
+        }
+
+        int IEqualityComparer<IPersistableObject>.GetHashCode(IPersistableObject obj)
+        {
+            return obj.ObjectKey.GetHashCode();
+        }
     }
 }

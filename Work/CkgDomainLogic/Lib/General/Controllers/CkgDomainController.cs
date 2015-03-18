@@ -340,7 +340,7 @@ namespace CkgDomainLogic.General.Controllers
 
 
 
-        #region Persistance Service, General Objects
+        #region Persistence Service, General Objects
 
         protected virtual string GetPersistanceOwnerKey()
         {
@@ -364,13 +364,13 @@ namespace CkgDomainLogic.General.Controllers
                         .ToListOrEmptyList();
         }
 
-        protected void PersistanceSaveObject(string groupKey, IPersistableObject o)
+        protected IPersistableObject PersistanceSaveObject(string groupKey, IPersistableObject o)
         {
             var pService = LogonContext.PersistanceService;
             if (pService == null)
-                return;
+                return null;
 
-            pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
+            return (IPersistableObject)pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
         }
 
         protected void PersistanceDeleteObject(string objectKey)
@@ -388,7 +388,7 @@ namespace CkgDomainLogic.General.Controllers
         #endregion
 
 
-        #region Shopping Cart (based on 'Persistance Service')
+        #region Shopping Cart (based on 'Persistence Service')
 
         protected virtual IEnumerable ShoppingCartLoadItems()
         {
@@ -454,10 +454,11 @@ namespace CkgDomainLogic.General.Controllers
             return ShoppingCartItems.Cast<Store>().FirstOrDefault(item => item.ObjectKey == id);
         }
 
-        protected void ShoppingCartSaveItem(string groupKey, IPersistableObject o)
+        protected IPersistableObject ShoppingCartSaveItem(string groupKey, IPersistableObject o)
         {
-            PersistanceSaveObject(groupKey, o);
+            var savedObject = PersistanceSaveObject(groupKey, o);
             ShoppingCartLoadAndCacheItems();
+            return savedObject;
         }
 
         [HttpPost]
@@ -581,23 +582,70 @@ namespace CkgDomainLogic.General.Controllers
         #endregion
 
 
-        #region Persistance Service, Selektor Persistance
+        #region Persistence Service, Selector Persistence
 
-        protected PartialViewResult PersistablePartialView(string viewName, object model)
+        private static string PersistableSelectorGroupKeyCurrent
         {
-            if (!ModelState.IsValid || !SessionHelper.GetSessionValue("PersistablePartialView_Mode", false))
+            get { return SessionHelper.GetSessionString("PersistableSelectorGroupKeyCurrent"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorGroupKeyCurrent", value); }
+        }
+
+        private static string PersistableSelectorItemKeyCurrent
+        {
+            get { return SessionHelper.GetSessionString("PersistableSelectorItemKeyCurrent"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorItemKeyCurrent", value); }
+        }
+
+        protected static IEnumerable PersistableSelectorItems
+        {
+            get { return (IEnumerable)SessionHelper.GetSessionObject("PersistableSelectorItems"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorItems", value); }
+        }
+
+        protected PartialViewResult PersistablePartialView<T>(string viewName, T model) where T : class, new()
+        {
+            // <TEST>
+            SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", true);
+            // </TEST>
+
+            if (SessionHelper.GetSessionValue("PersistablePartialView_IsPersistMode", false))
+            {
+                // remove "No data found" error if we are in "form persisting" mode:
+                var noDataFoundModelError = ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage == Localize.NoDataFound));
+                if (noDataFoundModelError.Key != null && noDataFoundModelError.Value != null)
+                    ModelState.Remove(noDataFoundModelError);
+            }
+
+            if (!ModelState.IsValid || !SessionHelper.GetSessionValue("PersistablePartialView_IsPersistMode", false))
                 return PartialView(viewName, model);
 
-            SessionHelper.SetSessionValue("PersistablePartialView_Mode", false);
+            SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", false);
 
-            var persistanceMode = (SessionHelper.GetSessionString("PersistablePartialView_PersistDirection") ?? "load");
-            var persistanceMessage = string.Format("{0}: {1}", Localize.SearchMask, (persistanceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
+            var persistenceMode = (SessionHelper.GetSessionString("PersistablePartialView_PersistDirection") ?? "load");
+            var persistenceMessage = string.Format("{0}{1}: {2}", 
+                MvcTag.FormPersistenceModeErrorPrefix,
+                Localize.SearchMask, 
+                (persistenceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
 
-            var noDataFoundModelError = ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage == Localize.NoDataFound));
-            ModelState.Remove(noDataFoundModelError);
+            ModelState.AddModelError("", persistenceMessage);
 
-            ModelState.AddModelError("", persistanceMessage);
+            // <TEST>
+            PersistableSelectorGroupKeyCurrent = typeof(T).Name;
             
+            var persistableSelector = (model as IPersistableObject);
+            if (persistableSelector != null)
+            {
+                persistableSelector = ShoppingCartSaveItem(PersistableSelectorGroupKeyCurrent, persistableSelector);
+                if (persistableSelector != null)
+                {
+                    model = (T)persistableSelector;
+                    ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
+                }
+            }
+
+            PersistableSelectorItems = ShoppingCartLoadGenericItems<T>(PersistableSelectorGroupKeyCurrent);
+            // </TEST>
+
             return PartialView(viewName, model);
         }
 
