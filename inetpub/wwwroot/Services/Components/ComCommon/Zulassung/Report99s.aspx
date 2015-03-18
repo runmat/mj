@@ -85,7 +85,8 @@
                                                 HRA
                                             </td>
                                             <td class="firstLeft active">
-                                                <asp:HyperLink ID="lnkEinzug" runat="server">SEPA</asp:HyperLink>
+                                                SEPA
+                                                <asp:HyperLink ID="lnkEinzug" runat="server" Visible="False">SEPA</asp:HyperLink>
                                             </td>
                                             <td class="firstLeft active" style="width: 100%">
                                                 Bemerkung
