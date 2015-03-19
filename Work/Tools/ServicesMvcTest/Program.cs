@@ -15,7 +15,7 @@ namespace ServicesMvcTest
 
             HttpContext.Current = SessionHelper.FakeHttpContext();
 
-            DashboardAppUrlService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index", "Zulassungen", iocContainer);
+            DashboardAppUrlService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index", "ZulassungenProKundeUndMonat", iocContainer);
         }
     }
 }

@@ -93,6 +93,7 @@
     <Compile Include="Contracts\IMaintenanceSecurityRuleDataProvider.cs" />
     <Compile Include="Contracts\IModelMappingApplied.cs" />
     <Compile Include="Contracts\IPasswordSecurityRuleDataProvider.cs" />
+    <Compile Include="Contracts\IPersistableSelectorProvider.cs" />
     <Compile Include="Contracts\ISessionDataHelper.cs" />
     <Compile Include="Contracts\ISmtpSettings.cs" />
     <Compile Include="Contracts\ITranslationFormatService.cs" />

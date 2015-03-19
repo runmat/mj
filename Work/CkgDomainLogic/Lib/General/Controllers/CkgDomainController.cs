@@ -20,7 +20,7 @@ using Telerik.Web.Mvc.UI;
 
 namespace CkgDomainLogic.General.Controllers
 {
-    public abstract class CkgDomainController : LogonCapableController
+    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider
     {
         public IAppSettings AppSettings { get; protected set; }
 
@@ -605,7 +605,7 @@ namespace CkgDomainLogic.General.Controllers
         protected PartialViewResult PersistablePartialView<T>(string viewName, T model) where T : class, new()
         {
             // <TEST>
-            //SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", true);
+            SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", true);
             // </TEST>
 
             if (SessionHelper.GetSessionValue("PersistablePartialView_IsPersistMode", false))
@@ -628,8 +628,6 @@ namespace CkgDomainLogic.General.Controllers
                 (persistenceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
 
             ModelState.AddModelError("", persistenceMessage);
-
-            //PersistableSelectorGroupKeyCurrent = typeof(T).Name;
             
             var persistableSelector = (model as IPersistableObject);
             if (persistableSelector != null)
@@ -640,18 +638,28 @@ namespace CkgDomainLogic.General.Controllers
                     model = (T)persistableSelector;
                     ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
                 }
-                //PersistableSelectorItems = ShoppingCartLoadGenericItems<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
-                PersistableSelectorsLoad<T>();
+                //PersistableSelectorsLoad<T>();
             }
 
             return PartialView(viewName, model);
         }
 
-        protected void PersistableSelectorsLoad<T>(string groupKey = null) where T : class, new()
+
+        #region IPerstableSelectorProvider
+
+        public List<IPersistableObject> PersistableSelectors
         {
-            PersistableSelectorGroupKeyCurrent = groupKey ?? typeof(T).Name;
+            get { return PersistableSelectorItems; }
+        }
+
+        public void PersistableSelectorsLoad<T>(string groupKey = null) where T : class, new()
+        {
+            var relativeUrl = LogonContextHelper.GetAppUrlCurrent();
+            PersistableSelectorGroupKeyCurrent = groupKey ?? (string.Format("{0}_{1}", relativeUrl, typeof(T).Name).ToLower());
             PersistableSelectorItems = ShoppingCartLoadGenericItems<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
         }
+
+        #endregion
 
         #endregion
     }

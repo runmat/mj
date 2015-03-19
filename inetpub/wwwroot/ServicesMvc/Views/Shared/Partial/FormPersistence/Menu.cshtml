@@ -1,4 +1,23 @@
-﻿@model GeneralTools.Contracts.IPersistableObject
+﻿@using GeneralTools.Contracts
+@model IPersistableObject
+
+@{
+    var selectors = new List<IPersistableObject>();
+    var controller = (ViewContext.Controller as IPersistableSelectorProvider);
+    if (controller != null)
+    {
+        selectors = controller.PersistableSelectors;
+    }
+}
+
+@Html.Partial("Partial/FormPersistence/Common")
 
 @Html.HiddenFor(m => m.ObjectKey)
 
+<button class='btn green'><i class='icon-table'></i>&nbsp;@Localize.Final</button>
+
+@foreach (var selector in selectors)
+{
+    var cssClass = (selector.ObjectKey == Model.ObjectKey ? "persistable-selector-current" : "");
+    <span class="margin-left-10 @cssClass">@selector.ObjectKey</span>
+}

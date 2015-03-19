@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Models;
@@ -176,15 +177,12 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormPersistenceMenu<T>(this HtmlHelper html, T model) where T : class, new()
         {
-            html.ViewContext.Controller
+            var controller = (html.ViewContext.Controller as IPersistableSelectorProvider);
+            if (controller != null)
+                controller.PersistableSelectorsLoad<T>();
 
             return html.Partial("Partial/FormPersistence/Menu");
         }
-
-        //public static MvcHtmlString FormValidationSummaryBlankGeneralMessage(this HtmlHelper html, bool excludePropertyErrors = true)
-        //{
-        //    return html.ValidationSummary(excludePropertyErrors);
-        //}
 
         public static MvcHtmlString FormWizard(this HtmlHelper html, string headerIconCssClass, string header, IEnumerable<string> stepTitles, IEnumerable<string> stepKeys = null, bool stepTitlesInNewLine = false)
         {
