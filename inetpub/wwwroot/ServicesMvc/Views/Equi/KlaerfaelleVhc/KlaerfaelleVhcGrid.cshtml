@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridKlaerfaelleVhc"; }
+
+@(Html.Telerik()
+    .Grid<KlaerfallVhc>()
+    .Name(gridName)
+    .XGroup("GridKlaerfaelleVhc")
+    .XAjaxDataBinding("KlaerfaelleVhcAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.HaendlerNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.OrderNr);
+        columns.XBound(c => c.Anlagedatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.AnlagedatumKlaerfall).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.EingangsdatumZb2).Format("{0:dd.MM.yyyy}");
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridKlaerfaelleVhc"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportKlaerfaelleVhcFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportKlaerfaelleVhcFilteredPDF", "Equi");
+    })
+)
