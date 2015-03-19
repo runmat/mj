@@ -5,6 +5,8 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Xml.Serialization;
+using GeneralTools.Models;
+using SapORM.Models;
 using UniversalFileBasedLogging;
 using WMDQryCln;
 
@@ -35,6 +37,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "CharterWay_Single" };
             //args = new[] { "DCBank" };
             //args = new[] { "DaimlerFleet" };
+            //args = new[] { "SixtMobility" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
@@ -257,6 +260,14 @@ namespace EasyExportGeneralTask
                     #region DaimlerFleet
 
                     QueryDaimlerFleet();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.SixtMobility:
+                    #region SixtMobility
+
+                    QuerySixtMobility();
 
                     #endregion
                     break;
@@ -1557,6 +1568,97 @@ namespace EasyExportGeneralTask
             {
                 Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Verarbeitung abgebrochen:  " + ex.Message);
                 EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Verarbeitung abgebrochen:  " + ex.Message, EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für Sixt Mobility
+        /// </summary>
+        private static void QuerySixtMobility()
+        {
+            bool blnErrorOccured = false;
+
+            try
+            {
+                Z_M_EXPORTAENDERUNG_01.Init(S.AP, "I_KUNNR", taskConfiguration.Kundennummer);
+
+                S.AP.SetImportParameter("I_ZZREFERENZ1", "20");
+                S.AP.SetImportParameter("I_DATUM_VON", DateTime.Today.AddDays(-7));
+                S.AP.SetImportParameter("I_DATUM_BIS", DateTime.Today);
+
+                var sapResults = Z_M_EXPORTAENDERUNG_01.GT_WEB.GetExportListWithExecute(S.AP);
+
+                // EasyArchiv-Query initialisieren
+                clsQueryClass Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                foreach (var item in sapResults)
+                {
+                    if (blnErrorOccured)
+                    {
+                        break;
+                    }
+
+                    result.clear();
+
+                    string queryexpression = String.Format(".1001={0} & .110={1}", item.ZZFAHRG, item.MNCOD.SubstringTry(0, 3));
+
+                    string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                    if (status == "Keine Daten gefunden.")
+                    {
+                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name,
+                            "Fehler beim EasyExport (Code 01): " + "Konnte Datei nicht finden. Querystring:" + queryexpression + " Status:" + status, EventLogEntryType.Warning);
+                        Helper.SendErrorEMail("Fehler bei " + "EasyExportGeneralTask_" + taskConfiguration.Name,
+                            "Fehler beim EasyExport (Code 01): " + "Konnte Datei nicht finden. Querystring:" + queryexpression + " / " + EventLogEntryType.Warning);
+                    }
+                    else
+                    {
+                        if (!String.IsNullOrEmpty(status))
+                        {
+                            throw new Exception(status);
+                        }
+
+                        int iIndex = 0;
+
+                        if (result.hitCounter > 1)
+                        {
+                            string strDate = "";
+
+                            for (int i = 0; i < result.hitList.Rows.Count; i++)
+                            {
+                                string strTmpDat = result.hitList.Rows[i][".ARCHIVDATUM"].ToString();
+                                string datum = strTmpDat.Substring(6, 4) + strTmpDat.Substring(3, 2) + strTmpDat.Substring(0, 2);
+
+                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                {
+                                    strDate = datum;
+                                    iIndex = i;
+                                }
+                            }
+                        }
+
+                        status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
+
+                        if (!String.IsNullOrEmpty(status))
+                        {
+                            Console.WriteLine(status);
+                        }
+
+                        if (taskConfiguration.DatumInSapSetzen)
+                        {
+                            if (!SetActionDate(item.MANUM, item.QMNUM))
+                            {
+                                blnErrorOccured = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
             }
         }
 

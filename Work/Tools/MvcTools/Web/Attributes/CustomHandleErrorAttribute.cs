@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System;
+using System.Web;
 using System.Web.Mvc;
 using GeneralTools.Contracts;
 using GeneralTools.Log.Services;
@@ -36,6 +37,8 @@ namespace MvcTools.Web
                 return;
             }
 
+            var logonContext = SessionStore.GetCurrentLogonContext();
+
             // if the request is AJAX return JSON else view.
             if (filterContext.HttpContext.Request.Headers["X-Requested-With"] == "XMLHttpRequest")
             {
@@ -55,10 +58,14 @@ namespace MvcTools.Web
                 var actionName = (string)filterContext.RouteData.Values["action"];
                 var model = new HandleErrorInfo(filterContext.Exception, controllerName, actionName);
 
+                var masterPage = Master;
+                if (String.IsNullOrEmpty(masterPage))
+                    masterPage = String.Format("~/Views/Shared/{0}.cshtml", (logonContext != null && logonContext.MvcEnforceRawLayout ? "_LayoutRaw" : "_Layout"));
+                
                 filterContext.Result = new ViewResult
                 {
                     ViewName = View,
-                    MasterName = Master,
+                    MasterName = masterPage,
                     ViewData = new ViewDataDictionary<HandleErrorInfo>(model),
                     TempData = filterContext.Controller.TempData
                 };
@@ -69,8 +76,6 @@ namespace MvcTools.Web
                 _logService = new LogService(string.Empty, string.Empty);        
             }
 
-            //// Sobald NLog aktiviert ist hier das Loggen der Fehlermeldungen auch loggen
-            var logonContext = SessionStore.GetCurrentLogonContext();
             var dataContext = SessionStore.GetCurrentDataContext();
 
             string strSessionInfo = "";

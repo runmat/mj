@@ -32,15 +32,6 @@ Partial Public Class Change11
     Protected WithEvents Form1 As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''RadScriptManager1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents RadScriptManager1 As Global.Telerik.Web.UI.RadScriptManager
-
-    '''<summary>
     '''lblHead-Steuerelement
     '''</summary>
     '''<remarks>
@@ -50,13 +41,40 @@ Partial Public Class Change11
     Protected WithEvents lblHead As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblPageTitle-Steuerelement
+    '''trSelection-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents lblPageTitle As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents trSelection As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''lbtnStationen-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbtnStationen As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lbtnSpediteure-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbtnSpediteure As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''trEdit-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trEdit As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
     '''lbtnInsert-Steuerelement
@@ -77,13 +95,31 @@ Partial Public Class Change11
     Protected WithEvents lbtnChange As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''rtbStationscode-Steuerelement
+    '''lbtnZurueck-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents rtbStationscode As Global.Telerik.Web.UI.RadTextBox
+    Protected WithEvents lbtnZurueck As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lblSearchFieldName-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblSearchFieldName As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtStationscode-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtStationscode As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''btnCheckStationExists-Steuerelement
@@ -95,15 +131,6 @@ Partial Public Class Change11
     Protected WithEvents btnCheckStationExists As Global.System.Web.UI.WebControls.Button
 
     '''<summary>
-    '''tblAdresseSAP-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents tblAdresseSAP As Global.System.Web.UI.HtmlControls.HtmlTable
-
-    '''<summary>
     '''lblStationsnummer-Steuerelement
     '''</summary>
     '''<remarks>
@@ -111,6 +138,15 @@ Partial Public Class Change11
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblStationsnummer As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtName1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtName1 As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''lblName1-Steuerelement
@@ -122,6 +158,15 @@ Partial Public Class Change11
     Protected WithEvents lblName1 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''txtName2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtName2 As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''lblName2-Steuerelement
     '''</summary>
     '''<remarks>
@@ -129,6 +174,24 @@ Partial Public Class Change11
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblName2 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtStrasse-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtStrasse As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''txtNummer-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtNummer As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''lblStrasse-Steuerelement
@@ -149,6 +212,24 @@ Partial Public Class Change11
     Protected WithEvents lblHausnummer As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''txtPLZ-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtPLZ As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''txtOrt-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtOrt As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''lblPlz-Steuerelement
     '''</summary>
     '''<remarks>
@@ -167,6 +248,15 @@ Partial Public Class Change11
     Protected WithEvents lblOrt As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''txtLand-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtLand As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''lblLand-Steuerelement
     '''</summary>
     '''<remarks>
@@ -174,6 +264,15 @@ Partial Public Class Change11
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblLand As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtTelefon-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtTelefon As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''lblTelefon-Steuerelement
@@ -185,6 +284,15 @@ Partial Public Class Change11
     Protected WithEvents lblTelefon As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
+    '''txtFax-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtFax As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''lblFax-Steuerelement
     '''</summary>
     '''<remarks>
@@ -194,13 +302,94 @@ Partial Public Class Change11
     Protected WithEvents lblFax As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''lblEmail-Steuerelement
+    '''txtEmail1-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents lblEmail As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents txtEmail1 As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblEmail1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblEmail1 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtEmail2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtEmail2 As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblEmail2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblEmail2 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtEmail3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtEmail3 As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblEmail3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblEmail3 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtEmail4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtEmail4 As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblEmail4-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblEmail4 As Global.System.Web.UI.WebControls.Label
+
+    '''<summary>
+    '''txtEmail5-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtEmail5 As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''lblEmail5-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lblEmail5 As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''lblÄnderung-Steuerelement
@@ -210,168 +399,6 @@ Partial Public Class Change11
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lblÄnderung As Global.System.Web.UI.WebControls.Label
-
-    '''<summary>
-    '''trName1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trName1 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbName1-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbName1 As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''trName2-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trName2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbName2-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbName2 As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''trStrasse-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trStrasse As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbStrasse-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbStrasse As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''rtbNummer-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbNummer As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''trPLZ-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trPLZ As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbPLZ-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbPLZ As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''rtbOrt-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbOrt As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''trLand-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trLand As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbLand-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbLand As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''trTelefon-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trTelefon As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbTelefon-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbTelefon As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''trFax-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trFax As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbFax-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbFax As Global.Telerik.Web.UI.RadTextBox
-
-    '''<summary>
-    '''trEmail-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trEmail As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''rtbEmail-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents rtbEmail As Global.Telerik.Web.UI.RadTextBox
 
     '''<summary>
     '''lblError-Steuerelement
