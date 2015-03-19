@@ -45,6 +45,15 @@
                     </tr>
                     <tr>
                         <td valign="top" width="150">
+                            <asp:LinkButton ID="btnTransportbeauftragungUpload" runat="server" class="StandardButton" Width="140px"
+                                PostBackUrl="Change10_BeauftragungUpload.aspx">Transport-Beauftragung Upload</asp:LinkButton>
+                        </td>
+                        <td>
+                            <label style="margin:5px;">Beauftragen Sie hier neue Transporte an Stationen per Datei-Upload.</label>                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="top" width="150">
                             <asp:LinkButton ID="btnKorrekturStorno" runat="server" class="StandardButton" Width="140px" PostBackUrl="Change10_Korrektur.aspx">Korrektur/ Stornierung</asp:LinkButton>
                         </td>
                         <td>

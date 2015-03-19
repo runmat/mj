@@ -1750,7 +1750,7 @@ Namespace Beauftragung2
 
             Dim strZB1Nummer As String = txtNummerZB1_1.Text & "-" & txtNummerZB1_2.Text & "-" & txtNummerZB1_3.Text & "-" & txtNummerZB1_4.Text & "/" & txtNummerZB1_5.Text & "-" & txtNummerZB1_6.Text
 
-            If strZB1Nummer.Length < 18 OrElse (txtNummerZB1_1.Text.Length = 2 And strZB1Nummer.Length < 19) OrElse (txtNummerZB1_1.Text.Length = 3 And strZB1Nummer.Length < 20) Then
+            If strZB1Nummer.Length < 17 Then
                 SetErrBehavior(txtNummerZB1_1, lblNummerZB1Info, "ZB1-Nummer unvollständig")
                 Return True
             End If
@@ -1759,7 +1759,7 @@ Namespace Beauftragung2
             Dim expr1 As New Regex("^[a-zA-ZäöüÄÖÜ]{1,3}$")
             Dim expr2 As New Regex("^[aAkKsS]{1}$")
             Dim expr3 As New Regex("^[a-zA-Z0-9]{1}$")
-            Dim expr4 As New Regex("^[0-9]{3}$")
+            Dim expr4 As New Regex("^[0-9]{2,3}$")
             Dim expr5 As New Regex("^[0-9]{2}$")
             Dim expr6 As New Regex("^[0-9]{5}$")
             If Not expr1.IsMatch(txtNummerZB1_1.Text) Then

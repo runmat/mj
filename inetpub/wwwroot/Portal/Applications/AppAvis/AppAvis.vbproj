@@ -272,6 +272,13 @@
       <DependentUpon>Change11.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="forms\Change10_BeauftragungUpload.aspx.designer.vb">
+      <DependentUpon>Change10_BeauftragungUpload.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change10_BeauftragungUpload.aspx.vb">
+      <DependentUpon>Change10_BeauftragungUpload.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="forms\Report01.aspx.designer.vb">
       <DependentUpon>Report01.aspx</DependentUpon>
     </Compile>
@@ -367,6 +374,7 @@
     <Compile Include="lib\Fahrzeughistorie.vb" />
     <Compile Include="lib\FehlendeCD.vb" />
     <Compile Include="lib\Fehl_AbmeldeUnterlagen.vb" />
+    <Compile Include="lib\UploadTransportbeauftragung.vb" />
     <Compile Include="lib\Rechnungsdatenreport.vb" />
     <Compile Include="lib\MindesthaltefristIngnorieren.vb" />
     <Compile Include="lib\ReservierteKennzeichen.vb" />
@@ -433,7 +441,9 @@
     <Content Include="forms\Change11.aspx" />
     <Content Include="forms\Info01.htm" />
     <Content Include="forms\Info02.htm" />
-    <Content Include="forms\Info3.htm" />
+    <Content Include="forms\Info03.htm" />
+    <Content Include="forms\Change10_BeauftragungUpload.aspx" />
+    <Content Include="forms\Info04.htm" />
     <Content Include="forms\Info01a.htm" />
     <Content Include="forms\Report01.aspx" />
     <Content Include="forms\Report02.aspx" />
