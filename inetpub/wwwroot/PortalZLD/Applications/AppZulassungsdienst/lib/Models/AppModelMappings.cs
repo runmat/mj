@@ -14,7 +14,7 @@ namespace AppZulassungsdienst.lib.Models
         {
             d.Bemerkung = s.BEMERKUNG;
             d.KundenNr = s.KUNNR.NotNullOrEmpty().TrimStart('0');
-            d.Loeschkennzeichen = s.LOEKZ;
+            d.Loeschkennzeichen = s.LOEKZ.NotNullOrEmpty().Replace('X', 'L');
             d.Name1 = s.LI_NAME1;
             d.Name2 = s.LI_NAME2;
             d.Ort = s.LI_CITY1;
@@ -83,7 +83,7 @@ namespace AppZulassungsdienst.lib.Models
             d.IBAN = s.IBAN;
             d.KontoNr = s.BANKN;
             d.Kontoinhaber = s.KOINH;
-            d.Loeschkennzeichen = s.LOEKZ;
+            d.Loeschkennzeichen = s.LOEKZ.NotNullOrEmpty().Replace('X', 'L');
             d.Rechnung = s.RECH_JN.XToBool();
             d.SWIFT = s.SWIFT;
             d.SapId = s.ZULBELN.NotNullOrEmpty().TrimStart('0');
@@ -98,6 +98,7 @@ namespace AppZulassungsdienst.lib.Models
             d.Kalkulationsdatum = s.CALCDAT;
             d.Konditionsart = s.KSCHL;
             d.Konditionstabelle = s.KONDTAB;
+            d.Loeschkennzeichen = s.LOEKZ.NotNullOrEmpty().Replace('X', 'L');
             d.MaterialName = s.MAKTX;
             d.MaterialNr = s.MATNR.NotNullOrEmpty().TrimStart('0');
             d.Menge = s.MENGE;
@@ -633,7 +634,7 @@ namespace AppZulassungsdienst.lib.Models
             d.LI_NAME2 = s.Name2;
             d.LI_PLZ = s.Plz;
             d.LI_STREET = s.Strasse;
-            d.LOEKZ = s.Loeschkennzeichen;
+            d.LOEKZ = s.Loeschkennzeichen.NotNullOrEmpty().Replace('L', 'X');
             d.PARVW = s.Partnerrolle;
             d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
         }
@@ -659,7 +660,7 @@ namespace AppZulassungsdienst.lib.Models
             d.KSTATUS = s.Kopfstatus;
             d.KUNDEBAR_JN = s.BarzahlungKunde.BoolToX();
             d.KUNNR = s.KundenNr.NotNullOrEmpty().ToSapKunnr();
-            d.LOEKZ = s.Loeschkennzeichen;
+            d.LOEKZ = s.Loeschkennzeichen.NotNullOrEmpty().Replace('L', 'X');
             d.LTEXT_NR = s.LangtextNr;
             d.NACHBEARBEITEN = s.Nachbearbeiten.BoolToX();
             d.MOBUSER = s.MobilUser;
@@ -697,7 +698,7 @@ namespace AppZulassungsdienst.lib.Models
             d.EINZ_JN = s.Einzug.BoolToX();
             d.IBAN = s.IBAN;
             d.KOINH = s.Kontoinhaber;
-            d.LOEKZ = s.Loeschkennzeichen;
+            d.LOEKZ = s.Loeschkennzeichen.NotNullOrEmpty().Replace('L', 'X');
             d.RECH_JN = s.Rechnung.BoolToX();
             d.SWIFT = s.SWIFT;
             d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
@@ -724,7 +725,7 @@ namespace AppZulassungsdienst.lib.Models
             d.GEB_AMT_ADD = s.GebuehrAmtAdd;
             d.KONDTAB = s.Konditionstabelle;
             d.KSCHL = s.Konditionsart;
-            d.LOEKZ = s.Loeschkennzeichen;
+            d.LOEKZ = s.Loeschkennzeichen.NotNullOrEmpty().Replace('L', 'X');
             d.MAKTX = s.MaterialName;
             d.MATNR = (String.IsNullOrEmpty(s.MaterialNr) ? "" : s.MaterialNr.PadLeft0(18));
             d.MENGE = s.Menge;

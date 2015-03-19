@@ -160,13 +160,23 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdSaveBank_Click(object sender, EventArgs e)
         {
+            var IsCpd = false;
+            var IsCPDmitEinzug = false;
+
+            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
+            if (kunde != null)
+            {
+                IsCpd = kunde.Cpd;
+                IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
+            }
+
             ClearErrorBackcolor();
             lblErrorBank.Text = "";
-            Boolean bnoError = ProofBank();
+            Boolean bnoError = ProofBank(IsCPDmitEinzug);
 
             if (bnoError)
             {
-                bnoError = (chkCPD.Checked ? proofBankDataCPD() : proofBankDatawithoutCPD());
+                bnoError = (IsCpd ? proofBankDataCPD() : proofBankDatawithoutCPD());
                 if (bnoError)
                 {
                     SaveBankAdressdaten();
@@ -261,47 +271,44 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lbtnBank_Click(object sender, EventArgs e)
         {
-            var IsCPD = false;
             var IsCPDmitEinzug = false;
 
             lblError.Text = "";
 
-            if (ddlKunnr.SelectedIndex < 1)
+            if (String.IsNullOrEmpty(txtKunnr.Text))
             {
                 lblError.Text = "Bitte wählen Sie einen Kunden aus!";
             }
             else
             {
+                var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
+                if (kunde != null)
+                {
+                    IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
+                }
+
                 pnlBankdaten.Attributes.Remove("style");
                 pnlBankdaten.Attributes.Add("style", "display:block");
                 Panel1.Attributes.Remove("style");
                 Panel1.Attributes.Add("style", "display:none");
                 ButtonFooter.Visible = false;
                 txtZulDateBank.Text = txtZulDate.Text;
-                txtKundebank.Text = ddlKunnr.SelectedItem.Text;
+                txtKundebank.Text = (kunde != null ? kunde.Name1 : ddlKunnr.SelectedItem.Text);
                 txtKundeBankSuche.Text = txtKunnr.Text;
                 txtRef1Bank.Text = txtReferenz1.Text.ToUpper();
                 txtRef2Bank.Text = txtReferenz2.Text.ToUpper();
 
-                var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == ddlKunnr.SelectedValue);
-                if (kunde != null)
-                {
-                    IsCPD = kunde.Cpd;
-                    IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
-                }
-
                 var kopfdaten = objKompletterf.AktuellerVorgang.Kopfdaten;
-                var bankdaten = objKompletterf.AktuellerVorgang.Bankdaten;
 
-                chkCPD.Checked = IsCPD;
-                chkCPDEinzug.Checked = IsCPDmitEinzug;
-                chkEinzug.Checked = (IsCPDmitEinzug || bankdaten.Einzug.IsTrue());
-                chkRechnung.Checked = (!IsCPD && bankdaten.Rechnung.IsTrue());
-
-                if (!String.IsNullOrEmpty(kopfdaten.SapId) && kopfdaten.KundenNr == txtKunnr.Text)
+                if (!String.IsNullOrEmpty(kopfdaten.KundenNr) && kopfdaten.KundenNr == txtKunnr.Text)
                 {
-                    chkEinzug.Checked = bankdaten.Einzug.IsTrue();
-                    chkRechnung.Checked = bankdaten.Rechnung.IsTrue();
+                    chkEinzug.Checked = objKompletterf.AktuellerVorgang.Bankdaten.Einzug.IsTrue();
+                    chkRechnung.Checked = objKompletterf.AktuellerVorgang.Bankdaten.Rechnung.IsTrue();
+                }
+                else
+                {
+                    chkEinzug.Checked = IsCPDmitEinzug;
+                    chkRechnung.Checked = false;
                 }
 
                 txtName1.Focus();
@@ -709,6 +716,8 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void DatenSpeichern()
         {
+            var IsCpd = false;
+
             lblError.Text = "";
             lblMessage.Text = "";
 
@@ -774,21 +783,14 @@ namespace AppZulassungsdienst.forms
 
                 Session["tblDienst"] = tblData;
 
-                Boolean bnoError;
+                var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
+                if (kunde != null)
+                {
+                    IsCpd = kunde.Cpd;
+                }
 
-                proofCPDonSave();
-                if (chkCPD.Checked)
-                {
-                    bnoError = proofBankDataCPD();
-                    if (bnoError && !objKompletterf.ConfirmCPDAdress)
-                    {
-                        bnoError = false;
-                    }
-                }
-                else
-                {
-                    bnoError = proofBankDatawithoutCPD();
-                }
+                Boolean bnoError = IsCpd ? proofBankDataCPD() : proofBankDatawithoutCPD();
+
                 if (bnoError)
                 {
                     SaveBankAdressdaten();
@@ -900,6 +902,7 @@ namespace AppZulassungsdienst.forms
 
                 if (item.PositionsNr == "10")
                 {
+                    hfMatnr.Value = item.MaterialNr;
                     txtPreisKennz.Enabled = true;
                     if (!proofPauschMat(item.MaterialNr))
                     {
@@ -1165,7 +1168,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void SetBar_Pauschalkunde()
         {
-            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == ddlKunnr.SelectedValue);
+            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
             if (kunde != null)
             {
                 Pauschal.InnerHtml = (kunde.Pauschal ? "Pauschalkunde" : "");
@@ -1197,9 +1200,9 @@ namespace AppZulassungsdienst.forms
         /// Aufruf objCommon.ProofIBAN
         /// </summary>
         /// <returns>Bei Fehler true</returns>
-        private Boolean ProofBank()
+        private Boolean ProofBank(bool cpdMitEinzug)
         {
-            if (!String.IsNullOrEmpty(txtIBAN.Text) || chkCPDEinzug.Checked)
+            if (!String.IsNullOrEmpty(txtIBAN.Text))
             {
                 objCommon.IBAN = txtIBAN.Text.NotNullOrEmpty().Trim().ToUpper();
                 objCommon.ProofIBAN();
@@ -1214,6 +1217,13 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+            }
+            else if (cpdMitEinzug)
+            {
+                txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                lblErrorBank.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                lblErrorBank.Text = "Keine IBAN angegeben!";
+                return false;
             }
 
             return true;
@@ -1265,7 +1275,7 @@ namespace AppZulassungsdienst.forms
                 bEdited = false;
             }
 
-            if (chkCPDEinzug.Checked)
+            if (chkEinzug.Checked)
             {
                 if (txtKontoinhaber.Text.Length == 0)
                 {
@@ -1508,7 +1518,7 @@ namespace AppZulassungsdienst.forms
             proofDienstGrid(ref tblData);
             Session["tblDienst"] = tblData;
 
-            if (ddlKunnr.SelectedIndex < 1)
+            if (String.IsNullOrEmpty(txtKunnr.Text))
             {
                 lblError.Text = "Kein Kunde ausgewählt.";
                 return false;
@@ -1587,20 +1597,6 @@ namespace AppZulassungsdienst.forms
             }
 
             return checkDate();
-        }
-
-        /// <summary>
-        /// vor dem Speichern prüfen ob sich um CPD handelt
-        /// wenn ja chkCPD.Checked = true und  prüfen ob CPD mit Einzugserm.
-        /// </summary>
-        private void proofCPDonSave()
-        {
-            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == ddlKunnr.SelectedValue);
-            if (kunde != null)
-            {
-                chkCPD.Checked = kunde.Cpd;
-                chkCPDEinzug.Checked = (kunde.Cpd && kunde.CpdMitEinzug);
-            }
         }
 
         /// <summary>
@@ -1816,8 +1812,6 @@ namespace AppZulassungsdienst.forms
             chkWunschKZ.Checked = false;
             chkReserviert.Checked = false;
             chkKennzSonder.Checked = false;
-            chkCPD.Checked = false;
-            chkCPDEinzug.Checked = false;
             chkBar.Checked = false;
 
             DataTable tblData = (DataTable)Session["tblDienst"];
@@ -2301,7 +2295,7 @@ namespace AppZulassungsdienst.forms
 
             var bankdaten = objKompletterf.AktuellerVorgang.Bankdaten;
 
-            adressdaten.SapId = objKompletterf.AktuellerVorgang.Kopfdaten.SapId;
+            bankdaten.SapId = objKompletterf.AktuellerVorgang.Kopfdaten.SapId;
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             bankdaten.Bankleitzahl = objCommon.Bankschluessel;

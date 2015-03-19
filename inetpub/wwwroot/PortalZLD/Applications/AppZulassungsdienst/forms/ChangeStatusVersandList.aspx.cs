@@ -115,7 +115,7 @@ namespace AppZulassungsdienst.forms
                 Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                 Label lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblLoeschKZ");
 
-                String Loeschkz = (lblLoeschKZ.Visible ? "" : "X");
+                String Loeschkz = (lblLoeschKZ.Visible ? "" : "L");
 
                 DataRow[] RowsEdit;
                 if (lblIDPos.Text != "10")
@@ -180,7 +180,7 @@ namespace AppZulassungsdienst.forms
                     String Loeschkz = "";
                     if (lblLoeschKZ.Visible)
                     {
-                        Loeschkz = "X";
+                        Loeschkz = "L";
                     }
                     if (ddStatus.Visible)
                     {

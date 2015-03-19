@@ -72,12 +72,6 @@
                                                     MaxLength="20" />
                                             </td>
                                         </tr>
-                                        <tr class="formquery">
-                                            <td class="firstLeft active" colspan="3" style="height: 30px">
-                                                <asp:CheckBox ID="chkCPD" Visible="False" runat="server" />
-                                                <asp:CheckBox ID="chkCPDEinzug" Visible="False" runat="server" />
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td colspan="3" class="firstLeft active" style="background-color: #dfdfdf; height: 22px;
                                                 padding-left: 15px">

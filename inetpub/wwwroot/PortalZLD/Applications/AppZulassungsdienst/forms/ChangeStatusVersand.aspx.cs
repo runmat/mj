@@ -114,7 +114,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void ddlKunnr_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtKunnr.Text = ddlKunnr.SelectedValue;
+            txtKunnr.Text = (ddlKunnr.SelectedValue == "0" ? "" : ddlKunnr.SelectedValue);
         }
 
         /// <summary>

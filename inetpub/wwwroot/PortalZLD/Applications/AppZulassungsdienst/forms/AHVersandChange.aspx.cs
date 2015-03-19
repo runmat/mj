@@ -124,28 +124,23 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lbtnBank_Click(object sender, EventArgs e)
         {
-            var IsCPD = false;
             var IsCPDmitEinzug = false;
 
             lblError.Text = "";
 
-            if (ddlKunnr.SelectedIndex < 1)
+            if (String.IsNullOrEmpty(txtKunnr.Text))
             {
                 lblError.Text = "Bitte wählen Sie einen Kunden aus!";
             }
             else
             {
-                var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == ddlKunnr.SelectedValue);
+                var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
                 if (kunde != null)
                 {
-                    IsCPD = kunde.Cpd;
                     IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
                 }
 
-                chkCPD.Checked = IsCPD;
                 chkEinzug.Checked = IsCPDmitEinzug;
-                chkCPDEinzug.Checked = IsCPDmitEinzug;
-
                 chkRechnung.Checked = false;
                 pnlBankdaten.Attributes.Remove("style");
                 pnlBankdaten.Attributes.Add("style", "display:block");
@@ -153,7 +148,7 @@ namespace AppZulassungsdienst.forms
                 Panel1.Attributes.Add("style", "display:none");
                 ButtonFooter.Visible = false;
                 txtZulDateBank.Text = txtZulDate.Text;
-                txtKundebank.Text = ddlKunnr.SelectedItem.Text;
+                txtKundebank.Text = (kunde != null ? kunde.Name1 : ddlKunnr.SelectedItem.Text);
                 txtKundeBankSuche.Text = txtKunnr.Text;
                 txtRef1Bank.Text = txtReferenz1.Text.ToUpper();
                 txtRef2Bank.Text = txtReferenz2.Text.ToUpper();
@@ -215,12 +210,22 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdSaveBank_Click(object sender, EventArgs e)
         {
+            var IsCpd = false;
+            var IsCPDmitEinzug = false;
+
+            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
+            if (kunde != null)
+            {
+                IsCpd = kunde.Cpd;
+                IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
+            }
+
             ClearErrorBackcolor();
-            Boolean bnoError = ProofBank();
+            Boolean bnoError = ProofBank(IsCPDmitEinzug);
 
             if (bnoError)
             {
-                bnoError = (chkCPD.Checked ? proofBankDataCPD() : proofBankDatawithoutCPD());
+                bnoError = (IsCpd ? proofBankDataCPD() : proofBankDatawithoutCPD());
                 if (bnoError)
                 {
                     SaveBankAdressdaten();
@@ -243,6 +248,8 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdCreate_Click(object sender, EventArgs e)
         {
+            var IsCpd = false;
+
             lblError.Text = "";
             GetData();
 
@@ -271,8 +278,13 @@ namespace AppZulassungsdienst.forms
                 kopfdaten.AnzahlKennzeichen = (chkEinKennz.Checked ? "1" : "2");
                 kopfdaten.Bemerkung = txtBemerk.Text;
 
-                proofCPD();
-                Boolean bnoError = chkCPD.Checked ? proofBankDataCPD() : proofBankDatawithoutCPD();
+                var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
+                if (kunde != null)
+                {
+                    IsCpd = kunde.Cpd;
+                }
+
+                Boolean bnoError = IsCpd ? proofBankDataCPD() : proofBankDatawithoutCPD();
 
                 if (bnoError)
                 {
@@ -431,27 +443,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// beim Kundenwechsel prüfen ob sich um CPD handelt
-        /// wenn ja chkCPD.Checked = true und  prüfen ob CPD mit Einzugserm. 
-        /// </summary>
-        private void proofCPD()
-        {
-            var IsCPD = false;
-            var IsCPDmitEinzug = false;
-
-            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == ddlKunnr.SelectedValue);
-            if (kunde != null)
-            {
-                IsCPD = kunde.Cpd;
-                IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
-            }
-
-            chkCPD.Checked = IsCPD;
-            chkEinzug.Checked = IsCPDmitEinzug;
-            chkCPDEinzug.Checked = IsCPDmitEinzug;
-        }
-
-        /// <summary>
         /// Entfernt das Errorstyle der Controls.
         /// </summary>
         private void ClearErrorBackcolor()
@@ -473,7 +464,7 @@ namespace AppZulassungsdienst.forms
         private void GetData()
         {
             lblError.Text = "";
-            if (ddlKunnr.SelectedIndex < 1)
+            if (String.IsNullOrEmpty(txtKunnr.Text))
             {
                 lblError.Text = "Kein Kunde ausgewählt.";
             }
@@ -598,7 +589,7 @@ namespace AppZulassungsdienst.forms
                 bEdited = false;
             }
 
-            if (chkCPDEinzug.Checked)
+            if (chkEinzug.Checked)
             {
                 if (txtKontoinhaber.Text.Length == 0)
                 {
@@ -838,9 +829,9 @@ namespace AppZulassungsdienst.forms
         /// Aufruf objCommon.ProofIBAN
         /// </summary>
         /// <returns>Bei Fehler true</returns>
-        private Boolean ProofBank()
+        private Boolean ProofBank(bool cpdMitEinzug)
         {
-            if (!String.IsNullOrEmpty(txtIBAN.Text) || chkCPDEinzug.Checked)
+            if (!String.IsNullOrEmpty(txtIBAN.Text))
             {
                 objCommon.IBAN = txtIBAN.Text.NotNullOrEmpty().Trim().ToUpper();
                 objCommon.ProofIBAN();
@@ -855,6 +846,13 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+            }
+            else if (cpdMitEinzug)
+            {
+                txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                lblErrorBank.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                lblErrorBank.Text = "Keine IBAN angegeben!";
+                return false;
             }
 
             return true;

@@ -232,9 +232,12 @@ namespace AppZulassungsdienst.lib
             });
         }
 
-        private void AddVorgangToVorgangsliste(ZLDKopfdaten kopfdaten, ZLDBankdaten bankdaten, ZLDAdressdaten adresse, List<ZLDPosition> positionen)
+        private void AddVorgangToVorgangsliste(ZLDKopfdaten kopfdaten, ZLDBankdaten bankdaten, ZLDAdressdaten adresse, List<ZLDPosition> positionen, List<Kundenstammdaten> kundenStamm = null)
         {
             var kunde = _lstKundendaten.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
+               
+            if (kunde == null && kundenStamm != null)
+                kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
 
             foreach (var pos in positionen.Where(p => p.WebMaterialart == "D"))
             {
@@ -273,7 +276,7 @@ namespace AppZulassungsdienst.lib
                     Zahlart_EC = (!kopfdaten.Zahlart_Bar.IsTrue() && !kopfdaten.Zahlart_Rechnung.IsTrue()),
                     Zahlart_Bar = kopfdaten.Zahlart_Bar,
                     Zahlart_Rechnung = kopfdaten.Zahlart_Rechnung,
-                    WebBearbeitungsStatus = (pos.Loeschkennzeichen == "X" ? "L" : kopfdaten.WebBearbeitungsStatus),
+                    WebBearbeitungsStatus = (pos.Loeschkennzeichen == "L" ? "L" : kopfdaten.WebBearbeitungsStatus),
                     Landkreis = kopfdaten.Landkreis,
                     KennzeichenTeil1 = kennzTeil1,
                     KennzeichenTeil2 = kennzTeil2,
@@ -346,7 +349,7 @@ namespace AppZulassungsdienst.lib
                 foreach (var p in AktuellerVorgang.Positionen)
                 {
                     if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
-                        p.Loeschkennzeichen = "X";
+                        p.Loeschkennzeichen = "L";
                 }
 
                 Z_ZLD_PREISFINDUNG2.Init(SAP);
@@ -504,7 +507,7 @@ namespace AppZulassungsdienst.lib
 
                 // Liste aktualisieren
                 Vorgangsliste.RemoveAll(vg => vg.SapId == AktuellerVorgang.Kopfdaten.SapId);
-                AddVorgangToVorgangsliste(AktuellerVorgang.Kopfdaten, AktuellerVorgang.Bankdaten, AktuellerVorgang.Adressdaten, AktuellerVorgang.Positionen);
+                AddVorgangToVorgangsliste(AktuellerVorgang.Kopfdaten, AktuellerVorgang.Bankdaten, AktuellerVorgang.Adressdaten, AktuellerVorgang.Positionen, kundenStamm);
             }
         }
 
@@ -532,15 +535,15 @@ namespace AppZulassungsdienst.lib
                     if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
                         || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
                     {
-                        p.Loeschkennzeichen = "X";
+                        p.Loeschkennzeichen = "L";
                     }
                 }
 
                 ApplyAktuellerVorgangChangesToBaseLists();
 
                 var kopfdatenRel = _lstKopfdaten.Where(k => k.SapId == kopfdaten.SapId);
-                var bankdatenRel = _lstBankdaten.Where(b => b.SapId == kopfdaten.SapId && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "X"));
-                var adressdatenRel = _lstAdressen.Where(a => a.SapId == kopfdaten.SapId && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "X"));
+                var bankdatenRel = _lstBankdaten.Where(b => b.SapId == kopfdaten.SapId && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "L"));
+                var adressdatenRel = _lstAdressen.Where(a => a.SapId == kopfdaten.SapId && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "L"));
                 var positionenRel = _lstPositionen.Where(p => p.SapId == kopfdaten.SapId);
 
                 Z_ZLD_SAVE_DATA2.Init(SAP);
@@ -588,7 +591,7 @@ namespace AppZulassungsdienst.lib
 
                 // Liste aktualisieren
                 Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
-                AddVorgangToVorgangsliste(kopfdaten, AktuellerVorgang.Bankdaten, AktuellerVorgang.Adressdaten, AktuellerVorgang.Positionen);
+                AddVorgangToVorgangsliste(kopfdaten, AktuellerVorgang.Bankdaten, AktuellerVorgang.Adressdaten, AktuellerVorgang.Positionen, kundenStamm);
             });
         }
 
@@ -616,8 +619,8 @@ namespace AppZulassungsdienst.lib
                     idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
                 }
 
-                var bankdatenRel = _lstBankdaten.Where(b => idList.Contains(b.SapId) && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "X")).ToList();
-                var adressdatenRel = _lstAdressen.Where(a => idList.Contains(a.SapId) && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "X")).ToList();
+                var bankdatenRel = _lstBankdaten.Where(b => idList.Contains(b.SapId) && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "L")).ToList();
+                var adressdatenRel = _lstAdressen.Where(a => idList.Contains(a.SapId) && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "L")).ToList();
 
                 foreach (var item in _lstKopfdaten.Where(k => idList.Contains(k.SapId)))
                 {
@@ -661,7 +664,7 @@ namespace AppZulassungsdienst.lib
                         if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
                             || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
                         {
-                            p.Loeschkennzeichen = "X";
+                            p.Loeschkennzeichen = "L";
                         }
                     }
                 }
@@ -720,8 +723,8 @@ namespace AppZulassungsdienst.lib
 
                 var idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
-                var bankdatenRel = _lstBankdaten.Where(b => idList.Contains(b.SapId) && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "X"));
-                var adressdatenRel = _lstAdressen.Where(a => idList.Contains(a.SapId) && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "X"));
+                var bankdatenRel = _lstBankdaten.Where(b => idList.Contains(b.SapId) && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "L"));
+                var adressdatenRel = _lstAdressen.Where(a => idList.Contains(a.SapId) && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "L"));
 
                 foreach (var item in _lstKopfdaten.Where(k => idList.Contains(k.SapId)))
                 {
@@ -751,7 +754,7 @@ namespace AppZulassungsdienst.lib
                         if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
                             || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
                         {
-                            p.Loeschkennzeichen = "X";
+                            p.Loeschkennzeichen = "L";
                         }
                     }
                 }
@@ -1096,7 +1099,7 @@ namespace AppZulassungsdienst.lib
                 if (tmpBankdaten != null)
                 {
                     if (String.IsNullOrEmpty(AktuellerVorgang.Bankdaten.Kontoinhaber))
-                        AktuellerVorgang.Bankdaten.Loeschkennzeichen = "X";
+                        AktuellerVorgang.Bankdaten.Loeschkennzeichen = "L";
                     ModelMapping.Copy(AktuellerVorgang.Bankdaten, tmpBankdaten);
                 }
                 else
@@ -1108,7 +1111,7 @@ namespace AppZulassungsdienst.lib
                 if (tmpAdressdaten != null)
                 {
                     if (String.IsNullOrEmpty(AktuellerVorgang.Adressdaten.Name1))
-                        AktuellerVorgang.Adressdaten.Loeschkennzeichen = "X";
+                        AktuellerVorgang.Adressdaten.Loeschkennzeichen = "L";
                     ModelMapping.Copy(AktuellerVorgang.Adressdaten, tmpAdressdaten);
                 }
                 else
@@ -1162,7 +1165,7 @@ namespace AppZulassungsdienst.lib
                     kopf.Zulassungsdatum = hauptPos.Zulassungsdatum;
 
                     kopf.WebBearbeitungsStatus = hauptPos.WebBearbeitungsStatus;
-                    kopf.Loeschkennzeichen = (kopf.WebBearbeitungsStatus == "L" ? "X" : "");
+                    kopf.Loeschkennzeichen = (kopf.WebBearbeitungsStatus == "L" ? "L" : "");
                 }
 
                 var positionen = Vorgangsliste.Where(v => v.SapId == kopf.SapId);
@@ -1173,12 +1176,12 @@ namespace AppZulassungsdienst.lib
                     {
                         var mat = materialStamm.FirstOrDefault(m => m.MaterialNr == dlPos.MaterialNr);
 
-                        var loeschKz = (pos.WebBearbeitungsStatus == "L" ? "X" : "");
+                        var loeschKz = (pos.WebBearbeitungsStatus == "L" ? "L" : "");
 
                         if (dlPos.WebMaterialart == "G" && mat != null && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            loeschKz = "X";
+                            loeschKz = "L";
                         else if (dlPos.WebMaterialart == "S" && dlPos.UebergeordnetePosition != "10")
-                            loeschKz = "X";
+                            loeschKz = "L";
 
                         dlPos.Loeschkennzeichen = loeschKz;
                         dlPos.Preis = pos.Preis;

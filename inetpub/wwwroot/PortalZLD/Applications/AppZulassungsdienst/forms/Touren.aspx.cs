@@ -75,13 +75,14 @@ namespace AppZulassungsdienst.forms
         protected void lbtnInsert_Click(object sender, EventArgs e)
         {
             lblErrorTour.Text = "";
-            if (ddlKunnr.SelectedIndex < 1)
+
+            if (String.IsNullOrEmpty(txtKunnr.Text))
             {
                 lblErrorTour.Text = "Kein Kunde ausgewählt.";
             }
             else
             {
-                objCommon.SetKunden_TourenZuordnung(ddlKunnr.SelectedValue, "I");
+                objCommon.SetKunden_TourenZuordnung(txtKunnr.Text, "I");
 
                 if (objCommon.ErrorOccured)
                 {

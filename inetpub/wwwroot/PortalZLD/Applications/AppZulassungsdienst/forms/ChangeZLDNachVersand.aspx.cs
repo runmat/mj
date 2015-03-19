@@ -71,7 +71,7 @@ namespace AppZulassungsdienst.forms
 
         protected void ddlKunnr_SelectedIndexChanged(object sender, EventArgs e)
         {
-            txtKunnr.Text = ddlKunnr.SelectedValue;
+            txtKunnr.Text = (ddlKunnr.SelectedValue == "0" ? "" : ddlKunnr.SelectedValue);
         }
 
         protected void cmdCreate_Click(object sender, EventArgs e)

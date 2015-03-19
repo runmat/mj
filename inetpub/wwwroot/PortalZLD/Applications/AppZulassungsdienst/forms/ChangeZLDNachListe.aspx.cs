@@ -1106,7 +1106,7 @@ namespace AppZulassungsdienst.forms
 
                 String Loeschkz = lblLoeschKZ.Text;
                 if (lblLoeschKZ.Text == "L")
-                    Loeschkz = "X";
+                    Loeschkz = "L";
 
                 if (checkMode == GridCheckMode.CheckAll)
                 {
