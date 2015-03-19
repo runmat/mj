@@ -596,16 +596,16 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionHelper.SetSessionValue("PersistableSelectorItemKeyCurrent", value); }
         }
 
-        protected static IEnumerable PersistableSelectorItems
+        public static List<IPersistableObject> PersistableSelectorItems
         {
-            get { return (IEnumerable)SessionHelper.GetSessionObject("PersistableSelectorItems"); }
+            get { return (List<IPersistableObject>)SessionHelper.GetSessionObject("PersistableSelectorItems"); }
             set { SessionHelper.SetSessionValue("PersistableSelectorItems", value); }
         }
 
         protected PartialViewResult PersistablePartialView<T>(string viewName, T model) where T : class, new()
         {
             // <TEST>
-            SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", true);
+            //SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", true);
             // </TEST>
 
             if (SessionHelper.GetSessionValue("PersistablePartialView_IsPersistMode", false))
@@ -621,7 +621,7 @@ namespace CkgDomainLogic.General.Controllers
 
             SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", false);
 
-            var persistenceMode = (SessionHelper.GetSessionString("PersistablePartialView_PersistDirection") ?? "load");
+            var persistenceMode = (SessionHelper.GetSessionString("PersistablePartialView_PersistDirection") ?? "save");
             var persistenceMessage = string.Format("{0}{1}: {2}", 
                 MvcTag.FormPersistenceModeErrorPrefix,
                 Localize.SearchMask, 
@@ -629,8 +629,7 @@ namespace CkgDomainLogic.General.Controllers
 
             ModelState.AddModelError("", persistenceMessage);
 
-            // <TEST>
-            PersistableSelectorGroupKeyCurrent = typeof(T).Name;
+            //PersistableSelectorGroupKeyCurrent = typeof(T).Name;
             
             var persistableSelector = (model as IPersistableObject);
             if (persistableSelector != null)
@@ -641,12 +640,17 @@ namespace CkgDomainLogic.General.Controllers
                     model = (T)persistableSelector;
                     ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
                 }
+                //PersistableSelectorItems = ShoppingCartLoadGenericItems<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
+                PersistableSelectorsLoad<T>();
             }
 
-            PersistableSelectorItems = ShoppingCartLoadGenericItems<T>(PersistableSelectorGroupKeyCurrent);
-            // </TEST>
-
             return PartialView(viewName, model);
+        }
+
+        protected void PersistableSelectorsLoad<T>(string groupKey = null) where T : class, new()
+        {
+            PersistableSelectorGroupKeyCurrent = groupKey ?? typeof(T).Name;
+            PersistableSelectorItems = ShoppingCartLoadGenericItems<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
         }
 
         #endregion

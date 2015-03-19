@@ -174,8 +174,10 @@ namespace PortalMvcTools.Web
             return html.ValidationSummary(excludePropertyErrors, validationSummaryHeader);
         }
 
-        public static MvcHtmlString FormPersistenceMenu(this HtmlHelper html)
+        public static MvcHtmlString FormPersistenceMenu<T>(this HtmlHelper html, T model) where T : class, new()
         {
+            html.ViewContext.Controller
+
             return html.Partial("Partial/FormPersistence/Menu");
         }
 
