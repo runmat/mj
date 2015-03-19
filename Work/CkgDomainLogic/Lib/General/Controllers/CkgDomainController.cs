@@ -590,10 +590,22 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionHelper.SetSessionValue("PersistableSelectorGroupKeyCurrent", value); }
         }
 
-        private static string PersistableSelectorItemKeyCurrent
+        private static string PersistableSelectorObjectKeyCurrent
         {
-            get { return SessionHelper.GetSessionString("PersistableSelectorItemKeyCurrent"); }
-            set { SessionHelper.SetSessionValue("PersistableSelectorItemKeyCurrent", value); }
+            get { return SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorObjectKeyCurrent", value); }
+        }
+
+        private static bool PersistableSelectorIsPersistMode
+        {
+            get { return SessionHelper.GetSessionValue("PersistableSelectorIsPersistMode", false); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorIsPersistMode", value); }
+        }
+
+        private static string PersistableSelectorPersistMode
+        {
+            get { return SessionHelper.GetSessionString("PersistableSelectorPersistMode"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorPersistMode", value); }
         }
 
         public static List<IPersistableObject> PersistableSelectorItems
@@ -605,10 +617,10 @@ namespace CkgDomainLogic.General.Controllers
         protected PartialViewResult PersistablePartialView<T>(string viewName, T model) where T : class, new()
         {
             // <TEST>
-            SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", true);
+            // PersistableSelectorIsPersistMode = true;
             // </TEST>
 
-            if (SessionHelper.GetSessionValue("PersistablePartialView_IsPersistMode", false))
+            if (PersistableSelectorIsPersistMode)
             {
                 // remove "No data found" error if we are in "form persisting" mode:
                 var noDataFoundModelError = ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage == Localize.NoDataFound));
@@ -616,16 +628,11 @@ namespace CkgDomainLogic.General.Controllers
                     ModelState.Remove(noDataFoundModelError);
             }
 
-            if (!ModelState.IsValid || !SessionHelper.GetSessionValue("PersistablePartialView_IsPersistMode", false))
+            if (!ModelState.IsValid || !PersistableSelectorIsPersistMode)
                 return PartialView(viewName, model);
 
-            SessionHelper.SetSessionValue("PersistablePartialView_IsPersistMode", false);
-
-            var persistenceMode = (SessionHelper.GetSessionString("PersistablePartialView_PersistDirection") ?? "save");
-            var persistenceMessage = string.Format("{0}{1}: {2}", 
-                MvcTag.FormPersistenceModeErrorPrefix,
-                Localize.SearchMask, 
-                (persistenceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
+            var persistenceMode = (PersistableSelectorPersistMode ?? "save");
+            var persistenceMessage = string.Format("{0}{1}: {2}", MvcTag.FormPersistenceModeErrorPrefix, Localize.SearchMask, (persistenceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
 
             ModelState.AddModelError("", persistenceMessage);
             
@@ -641,10 +648,23 @@ namespace CkgDomainLogic.General.Controllers
                     ModelState.SetModelValue("EditUser", persistableSelector.EditUser);
                     ModelState.SetModelValue("EditDate", persistableSelector.EditDate);
                 }
-                //PersistableSelectorsLoad<T>();
             }
 
+            PersistableSelectorIsPersistMode =  false;
+            PersistableSelectorPersistMode = null;
+            PersistableSelectorObjectKeyCurrent = null;
+
             return PartialView(viewName, model);
+        }
+
+        [HttpPost]
+        public ActionResult PersistablePartialViewSetMode(string mode, string objectKey)
+        {
+            PersistableSelectorIsPersistMode = true;
+            PersistableSelectorPersistMode = mode;
+            PersistableSelectorObjectKeyCurrent = objectKey;
+
+            return Json(new { success = true });
         }
 
 

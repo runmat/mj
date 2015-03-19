@@ -113,4 +113,31 @@
         console.log("load: " + objectKey);
     }
 
+
+    function PersistableSelectorSave(objectKey) {
+        var form = $(this).closest("form");
+        AjaxSetPersistableMode("save", objectKey, function (result) {
+            form.submit();
+        });
+    }
+
+    function PersistableSelectorSaveAs(objectKey) {
+        console.log("save as: " + objectKey);
+    }
+
+    function AjaxSetPersistableMode(mode, objectKey, callBackFunction) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "PersistablePartialViewSetMode",
+                data: { mode: mode, objectKey: objectKey },
+                loadingShow: false,
+                success: function (result) {
+                    callBackFunction(result);
+                }
+            });
+        
+    }
+
 </script>
