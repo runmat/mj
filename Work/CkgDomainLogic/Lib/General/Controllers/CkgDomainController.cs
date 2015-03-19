@@ -637,6 +637,9 @@ namespace CkgDomainLogic.General.Controllers
                 {
                     model = (T)persistableSelector;
                     ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
+                    ModelState.SetModelValue("ObjectName", persistableSelector.ObjectName);
+                    ModelState.SetModelValue("EditUser", persistableSelector.EditUser);
+                    ModelState.SetModelValue("EditDate", persistableSelector.EditDate);
                 }
                 //PersistableSelectorsLoad<T>();
             }

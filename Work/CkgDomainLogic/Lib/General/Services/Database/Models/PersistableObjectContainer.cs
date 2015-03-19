@@ -14,6 +14,8 @@ namespace CkgDomainLogic.General.Database.Models
         [NotMapped, XmlIgnore]
         public string ObjectKey { get { return ID.ToString(); }  set {} }
 
+        public string ObjectName { get; set; }
+
         [NotMapped, XmlIgnore]
         public object Object { get; set; }
 

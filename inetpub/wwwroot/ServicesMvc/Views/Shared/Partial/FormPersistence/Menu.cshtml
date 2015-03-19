@@ -14,10 +14,46 @@
 
 @Html.HiddenFor(m => m.ObjectKey)
 
-<button class='btn green'><i class='icon-table'></i>&nbsp;@Localize.Final</button>
+<li class="dropdown user persistable-form-dropdown-menu">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span id="badgeVisibleItemsCount" class="badge">@selectors.Count</span>
+        <i class="icon-cog"></i>
+        <i class="icon-angle-down"></i>
+    </a>
+    <ul class="dropdown-menu">
+            
+        @foreach (var selector in selectors)
+        {
+            var isCurrentSelector = (selector.ObjectKey == Model.ObjectKey);
+            var liCssClass = (isCurrentSelector ? "" : "loadable");
+            
+            <li class="@liCssClass" id="li_dropdown_@selector.ObjectKey">
+                @if (isCurrentSelector)
+                {
+                    <span class="li-button">
+                        <span class="persistable-selector-current margin-left-10 margin-right-5">@selector.ObjectName</span>
+                    </span>
+                }
+                else
+                {
+                    <span class="li-button" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
+                        <span class="margin-left-10 margin-right-5">@selector.ObjectName</span>
+                    </span>
+                    <span class="li-button" title="@Localize.Delete" onclick="PersistableSelectorDelete('@selector.ObjectKey')">
+                        <i class="icon-remove"></i> 
+                    </span>
+                }
+            </li>
+        }
 
-@foreach (var selector in selectors)
-{
-    var cssClass = (selector.ObjectKey == Model.ObjectKey ? "persistable-selector-current" : "");
-    <span class="margin-left-10 @cssClass">@selector.ObjectKey</span>
-}
+    </ul>
+</li> 
+
+@Html.TextBoxFor(m => m.ObjectName, new { @class = "m-wrap medium persistable-selector-current-textbox" })
+
+<button class='btn gray' title="@Localize.Save" onclick="PersistableSelectorSave('@Model.ObjectKey')">
+    <i class='icon-save'></i>
+</button>
+<button class='btn gray' title="@Localize.SaveAsCopy" onclick="PersistableSelectorSaveAs('@Model.ObjectKey')">
+    <i class='icon-copy'></i>
+</button>

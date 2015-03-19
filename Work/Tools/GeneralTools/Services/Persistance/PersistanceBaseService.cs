@@ -64,6 +64,14 @@ namespace GeneralTools.Services
             var persistedObjectsAfterSave = persistedContainersAfterSave.Where(pc => pc.Object as IPersistableObject != null).Select(pc => pc.Object as IPersistableObject);
 
             var newItem = persistedObjectsAfterSave.Except(persistedObjectsBeforeSave, new IPersistableObjectComparer()).FirstOrDefault();
+            if (newItem != null)
+            {
+                objectKey = newItem.ObjectKey;
+                objectData = XmlService.XmlSerializeToString(newItem);
+                
+                PersistObject(objectKey, ownerKey, groupKey, userName, typeName, objectData);
+            }
+
             return newItem;
         }
 

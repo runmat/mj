@@ -7,6 +7,8 @@ namespace GeneralTools.Contracts
     {
         string ObjectKey { get; set; }
 
+        string ObjectName { get; set; }
+
         DateTime? EditDate { get; set; }
 
         string EditUser { get; set; }

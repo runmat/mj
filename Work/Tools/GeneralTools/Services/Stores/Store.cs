@@ -181,6 +181,8 @@ namespace GeneralTools.Services
 
         public string ObjectKey { get; set; }
 
+        public string ObjectName { get; set; }
+
         public DateTime? EditDate { get; set; }
 
         public string EditUser { get; set; }
