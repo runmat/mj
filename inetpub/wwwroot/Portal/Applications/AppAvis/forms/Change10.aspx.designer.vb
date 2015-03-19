@@ -50,6 +50,15 @@ Partial Public Class Change10
     Protected WithEvents btnTransportbeauftragung As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
+    '''btnTransportbeauftragungUpload-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents btnTransportbeauftragungUpload As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''btnKorrekturStorno-Steuerelement
     '''</summary>
     '''<remarks>

@@ -235,6 +235,10 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_READ_PRUEFSCHRITTE_03").WriteOrmForExportTableStructures("I_KUNNR_AG, I_PAID", "10026883", "0000000000000000");
             //new FunctionReflector("Z_DPM_SAVE_ERL_PRUEFSCHR_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10026883");
 
+            //VHC
+            //new FunctionReflector("Z_M_VHC_ZBII_BESTAND_001").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_VHC_KLAERFAELLE_001").WriteOrmForExportTableStructures();
+
             //new FunctionReflector("Z_DPM_EXP_MAHN_ERSTEINGANG").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
 
             //Kroschke Zulassung
@@ -263,6 +267,8 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_READ_ZULDOK_01").WriteOrmForExportTableStructures("I_AG", "329608");
             //new FunctionReflector("Z_DPM_SAVE_ZULDOK_01").WriteOrmForExportTableStructures("I_AG", "329608");
             //new FunctionReflector("Z_DPM_READ_DOK_ARCHIV_01").WriteOrmForExportTableStructures("I_DOC_ID", "0");
+
+            //new FunctionReflector("Z_M_EXPORTAENDERUNG_01").WriteOrmForExportTableStructures("I_KUNNR, I_ZZREFERENZ1, I_DATUM_VON, I_DATUM_BIS", "10050817", "20", "01.03.2015", "03.03.2015");
 
             //ZLD-Portal
             //new FunctionReflector("Z_ALL_DEBI_CHECK_TABLES").WriteOrmForExportTableStructures();

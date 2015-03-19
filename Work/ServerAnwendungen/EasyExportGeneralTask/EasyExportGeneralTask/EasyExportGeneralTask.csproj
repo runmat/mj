@@ -12,10 +12,14 @@
     <AssemblyName>EasyExportGeneralTask</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <SccProjectName></SccProjectName>
-    <SccLocalPath></SccLocalPath>
-    <SccAuxPath></SccAuxPath>
-    <SccProvider></SccProvider>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -65,6 +69,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\UniversalFileBasedLogging\UniversalFileBasedLogging\UniversalFileBasedLogging.csproj">
       <Project>{49BBB463-CB80-4896-85F6-0D9D9EC3DE6F}</Project>
       <Name>UniversalFileBasedLogging</Name>

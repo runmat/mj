@@ -70,7 +70,7 @@
                                                 CoC
                                             </td>
                                             <td class="firstLeft active">
-                                                DK&nbsp;
+                                                eVB
                                             </td>
                                             <td class="firstLeft active">
                                                 VM
@@ -85,7 +85,8 @@
                                                 HRA
                                             </td>
                                             <td class="firstLeft active">
-                                                <asp:HyperLink ID="lnkEinzug" runat="server">LEV</asp:HyperLink>
+                                                SEPA
+                                                <asp:HyperLink ID="lnkEinzug" runat="server" Visible="False">SEPA</asp:HyperLink>
                                             </td>
                                             <td class="firstLeft active" style="width: 100%">
                                                 Bemerkung
@@ -437,7 +438,7 @@
                                                 CoC=Certificate of Conformity,
                                             </td>
                                             <td>
-                                                DK=Deckungskarte,
+                                                eVB=elektronische Versicherungsbestätigung,
                                             </td>
                                             <td>
                                                 VM=Vollmacht,
@@ -452,7 +453,7 @@
                                                 HRA=Handelsregister,
                                             </td>
                                             <td>
-                                                LEV=Lastschrifteinzug
+                                                SEPA=SEPA-Mandat für Kfz-Steuer
                                             </td>
                                         </tr>
                                         <tr>

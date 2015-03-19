@@ -71,7 +71,7 @@
                                                 CoC
                                             </td>
                                             <td class="firstLeft active">
-                                                DK&nbsp;
+                                                eVB
                                             </td>
                                             <td class="firstLeft active">
                                                 VM
@@ -86,7 +86,8 @@
                                                 HRA
                                             </td>
                                             <td class="firstLeft active">
-                                                <asp:HyperLink ID="lnkEinzug" style="color:#4c4c4c;" runat="server" Font-Underline="True">LE</asp:HyperLink>
+                                                SEPA
+                                                <asp:HyperLink ID="lnkEinzug" style="color:#4c4c4c;" runat="server" Visible="False" Font-Underline="True">SEPA</asp:HyperLink>
                                             </td>
                                             <td class="firstLeft active" style="width: 100%">
                                                 Bemerkung
@@ -438,7 +439,7 @@
                                                 CoC=Certificate of Conformity,
                                             </td>
                                             <td>
-                                                DK=Deckungskarte,
+                                                eVB=elektronische Versicherungsbestätigung,
                                             </td>
                                             <td>
                                                 VM=Vollmacht,
@@ -453,7 +454,7 @@
                                                 HRA=Handelsregister,
                                             </td>
                                             <td>
-                                                LE=Lastschrifteinzug
+                                                SEPA=SEPA-Mandat für Kfz-Steuer
                                             </td>
                                         </tr>
                                         <tr>
