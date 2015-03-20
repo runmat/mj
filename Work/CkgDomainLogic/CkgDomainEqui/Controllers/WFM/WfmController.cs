@@ -2,16 +2,16 @@
 using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.WFL.Models;
-using CkgDomainLogic.Wfl.ViewModels;
+using CkgDomainLogic.WFM.Models;
+using CkgDomainLogic.WFM.ViewModels;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
 {
-    public partial class WflController 
+    public partial class WfmController 
     {
-        public WflViewModel ViewModel { get { return GetViewModel<WflViewModel>(); } }
+        public WfmViewModel ViewModel { get { return GetViewModel<WfmViewModel>(); } }
 
         [CkgApplication]
         public ActionResult Index()
@@ -22,20 +22,20 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadAbmeldungen(WflAbmeldungSelektor model)
+        public ActionResult LoadAbmeldungen(WfmAbmeldungSelektor model)
         {
-            ViewModel.WflAbmeldungSelektor = model;
+            ViewModel.WfmAbmeldungSelektor = model;
 
             ViewModel.Validate(AddModelError);
 
             if (ModelState.IsValid)
             {
                 ViewModel.LoadWflAbmeldungen();
-                if (ViewModel.WflAbmeldungen.None())
+                if (ViewModel.WfmAbmeldungen.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("Abmeldungen/SucheAbmeldungen", ViewModel.WflAbmeldungSelektor);
+            return PartialView("Abmeldungen/SucheAbmeldungen", ViewModel.WfmAbmeldungSelektor);
         }
 
         [HttpPost]
@@ -47,7 +47,7 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult AbgemeldeteFahrzeugeAjaxBinding()
         {
-            return View(new GridModel(ViewModel.WflAbmeldungenFiltered));
+            return View(new GridModel(ViewModel.WfmAbmeldungenFiltered));
         }
 
         [HttpPost]
@@ -62,7 +62,7 @@ namespace ServicesMvc.Controllers
 
         protected override IEnumerable GetGridExportData()
         {
-            return ViewModel.WflAbmeldungenFiltered;
+            return ViewModel.WfmAbmeldungenFiltered;
         }
 
         #endregion

@@ -2,24 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.WFL.Contracts;
-using CkgDomainLogic.WFL.Models;
+using CkgDomainLogic.WFM.Contracts;
+using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
-using AppModelMappings = CkgDomainLogic.WFL.Models.AppModelMappings;
+using AppModelMappings = CkgDomainLogic.WFM.Models.AppModelMappings;
 // ReSharper restore RedundantUsingDirective
 
-namespace CkgDomainLogic.WFL.Services
+namespace CkgDomainLogic.WFM.Services
 {
-    public class WflDataServiceSAP : CkgGeneralDataServiceSAP, IWflDataService
+    public class WfmDataServiceSAP : CkgGeneralDataServiceSAP, IWfmDataService
     {
-        public WflDataServiceSAP(ISapDataService sap)
+        public WfmDataServiceSAP(ISapDataService sap)
             :base(sap)
         {
         }
 
-        public List<WflAbmeldung> GetAbmeldungen(WflAbmeldungSelektor selector)
+        public List<WfmAbmeldung> GetAbmeldungen(WfmAbmeldungSelektor selector)
         {
             Z_DPM_CD_Strafzettel.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 

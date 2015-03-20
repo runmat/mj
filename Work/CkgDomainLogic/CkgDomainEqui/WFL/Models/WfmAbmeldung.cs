@@ -1,9 +1,9 @@
 ﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 
-namespace CkgDomainLogic.WFL.Models
+namespace CkgDomainLogic.WFM.Models
 {
-    public class WflAbmeldung
+    public class WfmAbmeldung
     {
         [LocalizedDisplay(LocalizeConstants.ContractNo)]
         public string VertragsNr { get; set; }

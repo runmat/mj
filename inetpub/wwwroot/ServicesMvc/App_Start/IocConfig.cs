@@ -37,8 +37,8 @@ using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
 using CkgDomainLogic.UserReporting.Services;
-using CkgDomainLogic.WFL.Contracts;
-using CkgDomainLogic.WFL.Services;
+using CkgDomainLogic.WFM.Contracts;
+using CkgDomainLogic.WFM.Services;
 using CkgDomainLogic.Zanf.Contracts;
 using CkgDomainLogic.Zanf.Services;
 using GeneralTools.Contracts;
@@ -177,7 +177,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
 
-            builder.RegisterType<WflDataServiceSAP>().As<IWflDataService>().InstancePerHttpRequest();
+            builder.RegisterType<WfmDataServiceSAP>().As<IWfmDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

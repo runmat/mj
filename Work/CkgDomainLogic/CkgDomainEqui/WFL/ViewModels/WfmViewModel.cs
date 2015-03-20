@@ -7,36 +7,36 @@ using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
-using CkgDomainLogic.WFL.Contracts;
-using CkgDomainLogic.WFL.Models;
+using CkgDomainLogic.WFM.Contracts;
+using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
 using System.IO;
 using GeneralTools.Services;
 
-namespace CkgDomainLogic.Wfl.ViewModels
+namespace CkgDomainLogic.WFM.ViewModels
 {
-    public class WflViewModel : CkgBaseViewModel
+    public class WfmViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IWflDataService DataService { get { return CacheGet<IWflDataService>(); } }
+        public IWfmDataService DataService { get { return CacheGet<IWfmDataService>(); } }
 
-        public WflAbmeldungSelektor WflAbmeldungSelektor
+        public WfmAbmeldungSelektor WfmAbmeldungSelektor
         {
-            get { return PropertyCacheGet(() => new WflAbmeldungSelektor()); }
+            get { return PropertyCacheGet(() => new WfmAbmeldungSelektor()); }
             set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
-        public List<WflAbmeldung> WflAbmeldungen
+        public List<WfmAbmeldung> WfmAbmeldungen
         {
-            get { return PropertyCacheGet(() => new List<WflAbmeldung>()); }
+            get { return PropertyCacheGet(() => new List<WfmAbmeldung>()); }
             private set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
-        public List<WflAbmeldung> WflAbmeldungenFiltered
+        public List<WfmAbmeldung> WfmAbmeldungenFiltered
         {
-            get { return PropertyCacheGet(() => WflAbmeldungen); }
+            get { return PropertyCacheGet(() => WfmAbmeldungen); }
             private set { PropertyCacheSet(value); }
         }
 
@@ -47,16 +47,16 @@ namespace CkgDomainLogic.Wfl.ViewModels
 
         public void DataMarkForRefresh()
         {
-            PropertyCacheClear(this, m => m.WflAbmeldungenFiltered);
+            PropertyCacheClear(this, m => m.WfmAbmeldungenFiltered);
         }
 
-        public void Validate(Action<Expression<Func<WflAbmeldungSelektor, object>>, string> addModelError)
+        public void Validate(Action<Expression<Func<WfmAbmeldungSelektor, object>>, string> addModelError)
         {
         }
 
         public void LoadWflAbmeldungen()
         {
-            WflAbmeldungen = DataService.GetAbmeldungen(WflAbmeldungSelektor);
+            WfmAbmeldungen = DataService.GetAbmeldungen(WfmAbmeldungSelektor);
 
             DataMarkForRefresh();
 
@@ -65,7 +65,7 @@ namespace CkgDomainLogic.Wfl.ViewModels
 
         public void FilterWflAbmeldungen(string filterValue, string filterProperties)
         {
-            WflAbmeldungenFiltered = WflAbmeldungen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            WfmAbmeldungenFiltered = WfmAbmeldungen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
     }
 }
