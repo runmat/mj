@@ -198,6 +198,12 @@
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
