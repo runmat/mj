@@ -1822,11 +1822,6 @@ namespace AppZulassungsdienst.forms
             }
 
             tblData.Rows[0]["Menge"] = "";
-            tblData.Rows[0]["SdRelevant"] = false;
-            tblData.Rows[0]["DLBezeichnung"] = "";
-            tblData.Rows[0]["Preis"] = 0;
-            tblData.Rows[0]["GebPreis"] = 0;
-            tblData.Rows[0]["GebAmt"] = 0;
 
             DataRow tblRow = tblData.NewRow();
             tblRow["Search"] = "";
@@ -1861,6 +1856,14 @@ namespace AppZulassungsdienst.forms
             cmdNewDLPrice.Visible = false;
             Session["objKompletterf"] = objKompletterf;
             Session["tblDienst"] = tblData;
+
+            ShowHideColumns(true);
+
+            pnlBankdaten.Attributes.Remove("style");
+            pnlBankdaten.Attributes.Add("style", "display:none");
+            Panel1.Attributes.Remove("style");
+            Panel1.Attributes.Add("style", "display:block");
+            ButtonFooter.Visible = true;
         }
 
         /// <summary>
