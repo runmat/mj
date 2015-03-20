@@ -35,13 +35,13 @@ namespace ServicesMvc.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("Abmeldungen/SucheFahrzeuge", ViewModel.WflAbmeldungSelektor);
+            return PartialView("Abmeldungen/SucheAbmeldungen", ViewModel.WflAbmeldungSelektor);
         }
 
         [HttpPost]
         public ActionResult ShowAbgmeldeteFahrzeuge()
         {
-            return PartialView("Abmeldungen/FahrzeugeGrid", ViewModel);
+            return PartialView("Abmeldungen/AbmeldungenGrid", ViewModel);
         }
 
         [GridAction]
