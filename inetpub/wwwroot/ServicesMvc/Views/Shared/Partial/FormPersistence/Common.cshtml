@@ -106,11 +106,17 @@
 <script type="text/javascript">
 
     function PersistableSelectorDelete(objectKey) {
-        console.log("delete: " + objectKey);
+        var form = $(".persistable-form-dropdown-menu").closest("form");
+        AjaxSetPersistableMode("delete", objectKey, function (result) {
+            form.submit();
+        });
     }
 
     function PersistableSelectorLoad(objectKey) {
-        console.log("load: " + objectKey);
+        var form = $(".persistable-form-dropdown-menu").closest("form");
+        AjaxSetPersistableMode("load", objectKey, function (result) {
+            form.submit();
+        });
     }
 
 
@@ -122,7 +128,10 @@
     }
 
     function PersistableSelectorSaveAs(objectKey) {
-        console.log("save as: " + objectKey);
+        var form = $(this).closest("form");
+        AjaxSetPersistableMode("saveas", objectKey, function (result) {
+            form.submit();
+        });
     }
 
     function AjaxSetPersistableMode(mode, objectKey, callBackFunction) {
@@ -132,7 +141,7 @@
                 type: "POST",
                 url: "PersistablePartialViewSetMode",
                 data: { mode: mode, objectKey: objectKey },
-                loadingShow: false,
+                loadingShow: true,
                 success: function (result) {
                     callBackFunction(result);
                 }

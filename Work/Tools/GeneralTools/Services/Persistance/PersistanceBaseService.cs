@@ -58,7 +58,7 @@ namespace GeneralTools.Services
                 persistedContainersAfterSave = GetObjectContainers(ownerKey, groupKey);
 
             if (persistedContainersBeforeSave == null || persistedContainersAfterSave == null)
-                return null;
+                return o;
 
             var persistedObjectsBeforeSave = persistedContainersBeforeSave.Where(pc => pc.Object as IPersistableObject != null).Select(pc => pc.Object as IPersistableObject);
             var persistedObjectsAfterSave = persistedContainersAfterSave.Where(pc => pc.Object as IPersistableObject != null).Select(pc => pc.Object as IPersistableObject);

@@ -17,25 +17,25 @@ namespace CkgDomainLogic.Equi.Models
     public class EquiGrunddatenSelektor : Store 
     {
         [LocalizedDisplay(LocalizeConstants._Zielorte)]
-        public List<Zielort> AlleZielorte
+        public static List<Zielort> AlleZielorte
         {
             get
             {
-                return PropertyCacheGet(() => new List<Zielort>
+                return new List<Zielort>
                 {
                     new Zielort("", ""), 
                     new Zielort("900", "900 Neckarsulm"), 
                     new Zielort("960", "960 Ingolstadt")
-                });
+                };
             }
         }
 
         [LocalizedDisplay(LocalizeConstants._Standorte)]
-        public List<Standort> AlleStandorte 
+        public static List<Standort> AlleStandorte 
         {
             get
             {
-                return PropertyCacheGet(() => new List<Standort>
+                return new List<Standort>
                 {
                     new Standort("", ""),
                     new Standort("1601", "Ingolstadt Neuwagen"),
@@ -43,17 +43,17 @@ namespace CkgDomainLogic.Equi.Models
                     new Standort("1603", "Gebrauchtwagen"),
                     new Standort("1604", "Ingolstadt MFC"),
                     new Standort("1651", "Neckarsulm Neuwagen"),
-                });
+                };
             }
         }
 
 
         [LocalizedDisplay(LocalizeConstants._Betriebsnummern)]
-        public List<Betriebsnummer> AlleBetriebsnummern
+        public static List<Betriebsnummer> AlleBetriebsnummern
         {
             get
             {
-                return PropertyCacheGet(() => new List<Betriebsnummer>
+                return new List<Betriebsnummer>
                 {
                     new Betriebsnummer("", ""), 
                     new Betriebsnummer("849", "849 Direktkunden Kauf"), 
@@ -62,7 +62,7 @@ namespace CkgDomainLogic.Equi.Models
                     new Betriebsnummer("953", "953 Behörden-Miete/VIP-Miete Fahrzeuge"), 
                     new Betriebsnummer("956", "956 Leasingfahrzeuge"), 
                     new Betriebsnummer("980", "980 Mitarbeiter Kauffahrzeuge")
-                });
+                };
             }
         }
 

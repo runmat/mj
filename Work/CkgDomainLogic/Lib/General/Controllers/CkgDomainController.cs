@@ -616,10 +616,6 @@ namespace CkgDomainLogic.General.Controllers
 
         protected PartialViewResult PersistablePartialView<T>(string viewName, T model) where T : class, new()
         {
-            // <TEST>
-            // PersistableSelectorIsPersistMode = true;
-            // </TEST>
-
             if (PersistableSelectorIsPersistMode)
             {
                 // remove "No data found" error if we are in "form persisting" mode:
@@ -631,22 +627,31 @@ namespace CkgDomainLogic.General.Controllers
             if (!ModelState.IsValid || !PersistableSelectorIsPersistMode)
                 return PartialView(viewName, model);
 
-            var persistenceMode = (PersistableSelectorPersistMode ?? "save");
-            var persistenceMessage = string.Format("{0}{1}: {2}", MvcTag.FormPersistenceModeErrorPrefix, Localize.SearchMask, (persistenceMode == "load" ? Localize.LoadSuccessful : Localize.SaveSuccessful));
-
-            ModelState.AddModelError("", persistenceMessage);
+            var persistMode = (PersistableSelectorPersistMode ?? "save");
             
             var persistableSelector = (model as IPersistableObject);
+            var modeLocalizationMessage = "";
             if (persistableSelector != null)
             {
-                persistableSelector = ShoppingCartSaveItem(PersistableSelectorGroupKeyCurrent, persistableSelector);
-                if (persistableSelector != null)
+                switch (persistMode)
                 {
-                    model = (T)persistableSelector;
-                    ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
-                    ModelState.SetModelValue("ObjectName", persistableSelector.ObjectName);
-                    ModelState.SetModelValue("EditUser", persistableSelector.EditUser);
-                    ModelState.SetModelValue("EditDate", persistableSelector.EditDate);
+                    case "load":
+                        model = (T)PersistablePartialViewLoad();
+                        modeLocalizationMessage = Localize.LoadSuccessful;
+                        break;
+                    case "delete":
+                        PersistablePartialViewDelete();
+                        model = new T();
+                        modeLocalizationMessage = Localize.DeleteSuccessful;
+                        break;
+                    case "save":
+                        model = (T)PersistablePartialViewSave(persistableSelector);
+                        modeLocalizationMessage = Localize.SaveSuccessful;
+                        break;
+                    case "saveas":
+                        model = (T)PersistablePartialViewSaveAs(persistableSelector);
+                        modeLocalizationMessage = Localize.SaveAsCopySuccessful;
+                        break;
                 }
             }
 
@@ -654,7 +659,57 @@ namespace CkgDomainLogic.General.Controllers
             PersistableSelectorPersistMode = null;
             PersistableSelectorObjectKeyCurrent = null;
 
+            var persistMessage = string.Format("{0}{1}: {2}", MvcTag.FormPersistenceModeErrorPrefix, Localize.SearchMask, modeLocalizationMessage);
+            ModelState.AddModelError("", persistMessage);
+
             return PartialView(viewName, model);
+        }
+
+        private IPersistableObject PersistablePartialViewLoad()
+        {
+            var persistableSelector = PersistableSelectorItems.FirstOrDefault(p => p.ObjectKey == PersistableSelectorObjectKeyCurrent);
+
+            ModelState.Clear();
+
+            return persistableSelector;
+        }
+
+        private void PersistablePartialViewDelete()
+        {
+            PersistanceDeleteObject(PersistableSelectorObjectKeyCurrent);
+        }
+
+        private IPersistableObject PersistablePartialViewSave(IPersistableObject persistableSelector, string defaultObjectName = null)
+        {
+            persistableSelector = PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector);
+            if (persistableSelector != null)
+            {
+                if (persistableSelector.ObjectName.IsNullOrEmpty())
+                {
+                    persistableSelector.ObjectName = PersistableSelectorsGetDefaultObjectNameFor(defaultObjectName ?? Localize.MyReport);
+                    persistableSelector = PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector);
+                }
+
+                ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
+                ModelState.SetModelValue("ObjectName", persistableSelector.ObjectName);
+                ModelState.SetModelValue("EditUser", persistableSelector.EditUser);
+                ModelState.SetModelValue("EditDate", persistableSelector.EditDate);
+            }
+
+            return persistableSelector;
+        }
+
+        private IPersistableObject PersistablePartialViewSaveAs(IPersistableObject persistableSelector)
+        {
+            var defaultObjectName = persistableSelector.ObjectName;
+            persistableSelector.ObjectName = null;
+            persistableSelector.ObjectKey = null;
+
+            persistableSelector = PersistablePartialViewSave(persistableSelector, defaultObjectName);
+
+            ModelState.Clear();
+
+            return persistableSelector;
         }
 
         [HttpPost]
@@ -667,8 +722,20 @@ namespace CkgDomainLogic.General.Controllers
             return Json(new { success = true });
         }
 
+        string PersistableSelectorsGetDefaultObjectNameFor(string objectNameThumb)
+        {
+            objectNameThumb = objectNameThumb.NotNullOrEmpty().TrimEnd(new [] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '});
 
-        #region IPerstableSelectorProvider
+            Func<IPersistableObject, bool> compareFunction = (p => p.ObjectName.NotNullOrEmpty().ToLower().StartsWith(objectNameThumb.ToLower()));
+
+            if (PersistableSelectors.None(compareFunction)) 
+                return objectNameThumb;
+
+            return string.Format("{0} {1}", objectNameThumb, PersistableSelectors.Count(compareFunction));
+        }
+
+
+        #region IPersistableSelectorProvider
 
         public List<IPersistableObject> PersistableSelectors
         {
@@ -679,7 +746,7 @@ namespace CkgDomainLogic.General.Controllers
         {
             var relativeUrl = LogonContextHelper.GetAppUrlCurrent();
             PersistableSelectorGroupKeyCurrent = groupKey ?? (string.Format("{0}_{1}", relativeUrl, typeof(T).Name).ToLower());
-            PersistableSelectorItems = ShoppingCartLoadGenericItems<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
+            PersistableSelectorItems = PersistanceGetObjects<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
         }
 
         #endregion
