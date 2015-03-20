@@ -99,6 +99,8 @@
     <Compile Include="Controllers\KlaerfaelleVhc\EquiController.cs" />
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
+    <Compile Include="Controllers\WflController.cs" />
+    <Compile Include="Controllers\WFL\WflController.cs" />
     <Compile Include="Controllers\ZanfController.cs" />
     <Compile Include="Controllers\VersandBeauftragungen\EquipController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
@@ -198,6 +200,12 @@
     <Compile Include="Fahrzeuge\Models\AbgemeldeteFahrzeugeSelektor.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugeDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\AbgemeldeteFahrzeugeViewModel.cs" />
+    <Compile Include="WFL\Contracts\IWflDataService.cs" />
+    <Compile Include="WFL\Models\AppModelmappings.cs" />
+    <Compile Include="WFL\Models\WflAbmeldung.cs" />
+    <Compile Include="WFL\Models\WflAbmeldungSelektor.cs" />
+    <Compile Include="WFL\Services\WflDataServiceSAP.cs" />
+    <Compile Include="WFL\ViewModels\WflViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strafzettel\Contracts\IStrafzettelDataService.cs" />
     <Compile Include="Strafzettel\Models\StrafzettelSelektor.cs" />
