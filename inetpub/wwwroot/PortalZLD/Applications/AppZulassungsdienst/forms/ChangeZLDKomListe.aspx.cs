@@ -352,7 +352,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
 
-            if (!CheckGrid(GridCheckMode.CheckOnlyRelevant))
+            if (!CheckGrid(GridCheckMode.CheckAll))
             {
                 objKompletterf.SendVorgaengeToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
 
@@ -384,7 +384,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleRE.Enabled = false;
                 cmdContinue.Visible = true;
 
-                Fillgrid(0, "", GridFilterMode.ShowOnlyOandL);
+                Fillgrid(0);
 
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
@@ -995,8 +995,6 @@ namespace AppZulassungsdienst.forms
 
         private Boolean CheckGridRow(GridViewRow gvRow, GridCheckMode checkMode, bool einzelsatzPruefung)
         {
-            bool pruefungsrelevant = false;
-
             if (einzelsatzPruefung)
                 ClearGridRowErrors(gvRow);
 
@@ -1014,16 +1012,7 @@ namespace AppZulassungsdienst.forms
                 Boolean bEC = rbEC.Checked;
                 Boolean bRE = rbRE.Checked;
 
-                String Loeschkz = lblLoeschKZ.Text;
-
-                if (checkMode == GridCheckMode.CheckAll)
-                {
-                    pruefungsrelevant = true;
-                }
-                else if (checkMode == GridCheckMode.CheckOnlyRelevant)
-                {
-                    pruefungsrelevant = (Loeschkz == "O");
-                }
+                var pruefungsrelevant = (checkMode == GridCheckMode.CheckAll);
 
                 var pos = objKompletterf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == lblID.Text && vg.PositionsNr == posID.Text);
 

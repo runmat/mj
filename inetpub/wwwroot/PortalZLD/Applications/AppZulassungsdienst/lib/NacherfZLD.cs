@@ -599,7 +599,18 @@ namespace AppZulassungsdienst.lib
         {
             ClearError();
 
-            if (Vorgangsliste.None() || (SelAnnahmeAH && annahmeAhSend && Vorgangsliste.None(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")))
+            List<ZLDVorgangUINacherfassung> vgList;
+
+            if (DataFilterActive)
+            {
+                vgList = Vorgangsliste.Where(vg => ZLDCommon.FilterData(vg, DataFilterProperty, DataFilterValue, true)).ToList();
+            }
+            else
+            {
+                vgList = Vorgangsliste;
+            }
+
+            if (vgList.None() || (SelAnnahmeAH && annahmeAhSend && vgList.None(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")))
                 return;
 
             ExecuteSapZugriff(() =>
@@ -612,11 +623,11 @@ namespace AppZulassungsdienst.lib
 
                 if (SelAnnahmeAH && annahmeAhSend)
                 {
-                    idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                    idList = vgList.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
                 }
                 else
                 {
-                    idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                    idList = vgList.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
                 }
 
                 var bankdatenRel = _lstBankdaten.Where(b => idList.Contains(b.SapId) && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "L")).ToList();
@@ -709,7 +720,18 @@ namespace AppZulassungsdienst.lib
         {
             ClearError();
 
-            if (Vorgangsliste.None(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L"))
+            List<ZLDVorgangUINacherfassung> vgList;
+
+            if (DataFilterActive)
+            {
+                vgList = Vorgangsliste.Where(vg => ZLDCommon.FilterData(vg, DataFilterProperty, DataFilterValue, true)).ToList();
+            }
+            else
+            {
+                vgList = Vorgangsliste;
+            }
+
+            if (vgList.None(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L"))
             {
                 RaiseError(9999, "Es sind keine Vorgänge mit \"O\" oder \"L\" markiert");
                 return;
@@ -721,7 +743,7 @@ namespace AppZulassungsdienst.lib
 
                 ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
 
-                var idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                var idList = vgList.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
                 var bankdatenRel = _lstBankdaten.Where(b => idList.Contains(b.SapId) && (!String.IsNullOrEmpty(b.Kontoinhaber) || b.Loeschkennzeichen == "L"));
                 var adressdatenRel = _lstAdressen.Where(a => idList.Contains(a.SapId) && (!String.IsNullOrEmpty(a.Name1) || a.Loeschkennzeichen == "L"));
@@ -1142,7 +1164,18 @@ namespace AppZulassungsdienst.lib
         /// <param name="stvaStamm"></param>
         private void ApplyVorgangslisteChangesToBaseLists(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm)
         {
-            var idList = Vorgangsliste.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+            List<ZLDVorgangUINacherfassung> vgList;
+
+            if (DataFilterActive)
+            {
+                vgList = Vorgangsliste.Where(vg => ZLDCommon.FilterData(vg, DataFilterProperty, DataFilterValue, true)).ToList();
+            }
+            else
+            {
+                vgList = Vorgangsliste;
+            }
+
+            var idList = vgList.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
             foreach (var item in _lstKopfdaten.Where(k => idList.Contains(k.SapId)))
             {

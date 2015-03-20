@@ -2185,8 +2185,8 @@ namespace AppZulassungsdienst.forms
         /// <returns>Ja-False, Nein-True</returns>
         protected bool proofGebPak(String IDPos)
         {
-            var pos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == IDPos);
-            if (pos != null && pos.Gebuehrenpaket.IsTrue())
+            var gebuehrenPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == IDPos && p.WebMaterialart == "G");
+            if (gebuehrenPos != null && gebuehrenPos.Gebuehrenpaket.IsTrue())
                 return false;
 
             return true;

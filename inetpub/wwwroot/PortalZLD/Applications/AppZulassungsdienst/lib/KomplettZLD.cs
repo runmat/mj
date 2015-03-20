@@ -403,10 +403,12 @@ namespace AppZulassungsdienst.lib
                     {
                         posNr += 10;
 
+                        var dlPosNr = posNr.ToString();
+
                         posListeWeb.Add(new ZLDPosition
                         {
                             SapId = kopfdaten.SapId,
-                            PositionsNr = posNr.ToString(),
+                            PositionsNr = dlPosNr,
                             UebergeordnetePosition = (posNr == 10 ? "" : "10"),
                             Menge = (p.Menge.HasValue && p.Menge > 0 ? p.Menge : 1),
                             MaterialNr = p.MaterialNr,
@@ -416,8 +418,7 @@ namespace AppZulassungsdienst.lib
                         });
 
                         // Gebühren
-                        if (!String.IsNullOrEmpty(mat.GebuehrenMaterialNr)
-                            && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "G"))
+                        if (!String.IsNullOrEmpty(mat.GebuehrenMaterialNr))
                         {
                             posNr += 10;
 
@@ -431,7 +432,7 @@ namespace AppZulassungsdienst.lib
                             {
                                 SapId = kopfdaten.SapId,
                                 PositionsNr = posNr.ToString(),
-                                UebergeordnetePosition = p.PositionsNr,
+                                UebergeordnetePosition = dlPosNr,
                                 MaterialNr = matNr,
                                 MaterialName = matName,
                                 Menge = 1,
@@ -441,8 +442,7 @@ namespace AppZulassungsdienst.lib
                         }
 
                         // Kennzeichen
-                        if ((kunde == null || !kunde.Pauschal) && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr)
-                            && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "K"))
+                        if ((kunde == null || !kunde.Pauschal) && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
                         {
                             posNr += 10;
 
@@ -452,7 +452,7 @@ namespace AppZulassungsdienst.lib
                             {
                                 SapId = kopfdaten.SapId,
                                 PositionsNr = posNr.ToString(),
-                                UebergeordnetePosition = p.PositionsNr,
+                                UebergeordnetePosition = dlPosNr,
                                 MaterialNr = mat.KennzeichenMaterialNr,
                                 MaterialName = "",
                                 Menge = 1,
@@ -462,8 +462,7 @@ namespace AppZulassungsdienst.lib
                         }
 
                         // Steuern
-                        if (p.PositionsNr == "10"
-                            && AktuellerVorgang.Positionen.None(ap => ap.SapId == p.SapId && ap.UebergeordnetePosition == p.PositionsNr && ap.WebMaterialart == "S"))
+                        if (dlPosNr == "10")
                         {
                             posNr += 10;
 
@@ -471,7 +470,7 @@ namespace AppZulassungsdienst.lib
                             {
                                 SapId = kopfdaten.SapId,
                                 PositionsNr = posNr.ToString(),
-                                UebergeordnetePosition = p.PositionsNr,
+                                UebergeordnetePosition = dlPosNr,
                                 MaterialNr = "591",
                                 MaterialName = "",
                                 Menge = 1,
@@ -623,14 +622,25 @@ namespace AppZulassungsdienst.lib
         {
             ClearError();
 
-            if (Vorgangsliste.None())
+            List<ZLDVorgangUIKompletterfassung> vgList;
+
+            if (DataFilterActive)
+            {
+                vgList = Vorgangsliste.Where(vg => ZLDCommon.FilterData(vg, DataFilterProperty, DataFilterValue, true)).ToList();
+            }
+            else
+            {
+                vgList = Vorgangsliste;
+            }
+
+            if (vgList.None())
                 return;
 
             try
             {
                 var zldDataContext = new ZLDTableClassesDataContext();
 
-                foreach (var vg in Vorgangsliste)
+                foreach (var vg in vgList)
                 {
                     var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == vg.SapId);
                     if (tmpKopf != null)
@@ -682,11 +692,19 @@ namespace AppZulassungsdienst.lib
         {
             ClearError();
 
-            if (Vorgangsliste.None(vg => vg.WebBearbeitungsStatus == "O"))
+            List<ZLDVorgangUIKompletterfassung> vgList;
+
+            if (DataFilterActive)
             {
-                RaiseError(9999, "Es sind keine Vorgänge mit \"O\" markiert");
-                return;
+                vgList = Vorgangsliste.Where(vg => ZLDCommon.FilterData(vg, DataFilterProperty, DataFilterValue, true)).ToList();
             }
+            else
+            {
+                vgList = Vorgangsliste;
+            }
+
+            if (vgList.None())
+                return;
 
             ExecuteSapZugriff(() =>
             {
@@ -699,7 +717,7 @@ namespace AppZulassungsdienst.lib
                 var adressListeWeb = new List<ZLDAdressdaten>();
                 var posListeWeb = new List<ZLDPosition>();
 
-                var idList = Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
+                var idList = vgList.GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
                 foreach (var item in idList)
                 {

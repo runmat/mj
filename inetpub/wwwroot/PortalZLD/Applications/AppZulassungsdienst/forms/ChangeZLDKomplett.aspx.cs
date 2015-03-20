@@ -1822,6 +1822,11 @@ namespace AppZulassungsdienst.forms
             }
 
             tblData.Rows[0]["Menge"] = "";
+            tblData.Rows[0]["SdRelevant"] = false;
+            tblData.Rows[0]["DLBezeichnung"] = "";
+            tblData.Rows[0]["Preis"] = 0;
+            tblData.Rows[0]["GebPreis"] = 0;
+            tblData.Rows[0]["GebAmt"] = 0;
 
             DataRow tblRow = tblData.NewRow();
             tblRow["Search"] = "";
@@ -2260,8 +2265,8 @@ namespace AppZulassungsdienst.forms
         /// <returns>Ja-False, Nein-True</returns>
         protected bool proofGebPak(String IDPos)
         {
-            var pos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.PositionsNr == IDPos);
-            if (pos != null && pos.Gebuehrenpaket.IsTrue())
+            var gebuehrenPos = objKompletterf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == IDPos && p.WebMaterialart == "G");
+            if (gebuehrenPos != null && gebuehrenPos.Gebuehrenpaket.IsTrue())
                 return false;
 
             return true;
