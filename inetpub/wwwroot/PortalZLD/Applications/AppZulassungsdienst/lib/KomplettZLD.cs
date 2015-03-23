@@ -308,7 +308,8 @@ namespace AppZulassungsdienst.lib
                     WebBearbeitungsStatus = kopfdaten.WebBearbeitungsStatus,
                     Landkreis = kopfdaten.Landkreis,
                     KennzeichenTeil1 = kennzTeil1,
-                    KennzeichenTeil2 = kennzTeil2
+                    KennzeichenTeil2 = kennzTeil2,
+                    BarzahlungKunde = kopfdaten.BarzahlungKunde
                 });
             }
         }

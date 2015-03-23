@@ -32,5 +32,7 @@ namespace AppZulassungsdienst.lib.Models
         public bool? Zahlart_Bar { get; set; }
 
         public bool? Zahlart_Rechnung { get; set; }
+
+        public bool? BarzahlungKunde { get; set; }
     }
 }

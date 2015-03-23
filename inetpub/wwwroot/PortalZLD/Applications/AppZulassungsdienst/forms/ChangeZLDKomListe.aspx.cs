@@ -910,7 +910,7 @@ namespace AppZulassungsdienst.forms
                                 myId = GridView1.DataKeys[row.RowIndex]["SapId"].ToString();
                             }
                             // andere Hintergrundfarbe bei Barkunden
-                            if (objKompletterf.Vorgangsliste.Any(v => v.SapId == myId && objCommon.KundenStamm.Any(k => k.KundenNr == v.KundenNr && k.Bar)))
+                            if (objKompletterf.Vorgangsliste.Any(v => v.SapId == myId && v.BarzahlungKunde.IsTrue()))
                             {
                                 row.CssClass = "GridTableBarkunde";
                             }

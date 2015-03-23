@@ -983,7 +983,7 @@ namespace AppZulassungsdienst.forms
             if (kunde != null)
             {
                 Pauschal.InnerHtml = (kunde.Pauschal ? "Pauschalkunde" : "");
-                chkBar.Checked = kunde.Bar;
+                chkBar.Checked = (objNacherf.AktuellerVorgang.Kopfdaten.BarzahlungKunde.IsTrue() || kunde.Bar);
             }
 
             Label lblMenge = (Label)GridView1.HeaderRow.FindControl("lblMenge");

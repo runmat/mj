@@ -280,6 +280,7 @@ namespace AppZulassungsdienst.lib
                     Landkreis = kopfdaten.Landkreis,
                     KennzeichenTeil1 = kennzTeil1,
                     KennzeichenTeil2 = kennzTeil2,
+                    BarzahlungKunde = kopfdaten.BarzahlungKunde,
                     Bemerkung = kopfdaten.Bemerkung,
                     Flieger = kopfdaten.Flieger,
                     Nachbearbeiten = kopfdaten.Nachbearbeiten,

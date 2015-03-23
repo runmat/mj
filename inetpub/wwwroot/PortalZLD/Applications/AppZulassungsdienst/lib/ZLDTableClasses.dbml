@@ -1,41 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ZLDPortal_Test" Class="ZLDTableClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="WebSettings" ConnectionString="Data Source=vms047;Initial Catalog=ZLDPortal_Test;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ZLDPortal_TestConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.ZLDVorgangKopf" Member="ZLDVorgangKopf">
-    <Type Name="ZLDVorgangKopf">
-      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
-      <Column Name="Vorgang" Type="System.String" DbType="NVarChar(1) NOT NULL" CanBeNull="false" />
-      <Column Name="VkOrg" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
-      <Column Name="VkBur" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
-      <Column Name="Vorerfassungsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Vorerfasser" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
-      <Column Name="StatusVersandzulassung" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="Belegart" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="VersandzulassungDurchfuehrendesVkBur" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
-      <Column Name="Barcode" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Column Name="KundenNr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="Referenz1" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Referenz2" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Landkreis" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
-      <Column Name="KreisBezeichnung" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Wunschkennzeichen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="KennzeichenReservieren" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="ReserviertesKennzeichen" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="Zulassungsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Kennzeichen" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Kennzeichenform" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="AnzahlKennzeichen" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
-      <Column Name="NurEinKennzeichen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Bemerkung" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
-      <Column Name="Zahlart_EC" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Zahlart_Bar" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Zahlart_Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="LieferantenNr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="WebBearbeitungsStatus" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Association Name="ZLDVorgangKopf_ZLDVorgangAdresse" Member="ZLDVorgangAdresse" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangAdresse" Cardinality="One" />
-      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangBank" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangBank" Cardinality="One" />
-      <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangPosition" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangPosition" />
-    </Type>
-  </Table>
   <Table Name="dbo.ZLDVorgangAdresse" Member="ZLDVorgangAdresse">
     <Type Name="ZLDVorgangAdresse">
       <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -83,6 +47,43 @@
       <Column Name="Konditionsart" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
       <Column Name="Kalkulationsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZLDVorgangKopf" Member="ZLDVorgangKopf">
+    <Type Name="ZLDVorgangKopf">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Vorgang" Type="System.String" DbType="NVarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="VkOrg" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="VkBur" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Vorerfassungsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Vorerfasser" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="StatusVersandzulassung" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="Belegart" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
+      <Column Name="VersandzulassungDurchfuehrendesVkBur" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Barcode" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="KundenNr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Referenz1" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Referenz2" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Landkreis" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="KreisBezeichnung" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Wunschkennzeichen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="KennzeichenReservieren" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ReserviertesKennzeichen" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Zulassungsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Kennzeichen" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Kennzeichenform" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="AnzahlKennzeichen" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="NurEinKennzeichen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Bemerkung" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
+      <Column Name="Zahlart_EC" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Zahlart_Bar" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Zahlart_Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LieferantenNr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="WebBearbeitungsStatus" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="BarzahlungKunde" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangAdresse" Member="ZLDVorgangAdresse" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangAdresse" Cardinality="One" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangBank" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangBank" Cardinality="One" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangPosition" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangPosition" />
     </Type>
   </Table>
 </Database>
