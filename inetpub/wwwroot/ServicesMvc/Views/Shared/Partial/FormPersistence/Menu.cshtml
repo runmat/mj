@@ -51,9 +51,9 @@
 
 @Html.TextBoxFor(m => m.ObjectName, new { @class = "m-wrap medium persistable-selector-current-textbox" })
 
-<button class='btn gray' title="@Localize.Save" onclick="PersistableSelectorSave('@Model.ObjectKey')">
+<button class='btn mini yellow' title="@Localize.Save" onclick="PersistableSelectorSave('@Model.ObjectKey')">
     <i class='icon-save'></i>
 </button>
-<button class='btn gray' title="@Localize.SaveAsCopy" onclick="PersistableSelectorSaveAs('@Model.ObjectKey')">
+<button class='btn mini yellow' title="@Localize.SaveAsCopy" onclick="PersistableSelectorSaveAs('@Model.ObjectKey')">
     <i class='icon-copy'></i>
 </button>

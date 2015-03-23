@@ -4286,6 +4286,7 @@
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\Menu.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\Common.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

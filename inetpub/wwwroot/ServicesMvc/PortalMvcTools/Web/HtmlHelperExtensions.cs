@@ -234,6 +234,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
@@ -339,6 +340,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
+                PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
@@ -357,6 +359,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -374,6 +377,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = labelHtml.IsNotNullOrEmpty() ? new MvcHtmlString(labelHtml) : html.DisplayName(propertyName),
                 RequiredIndicatorHtml = labelHtml.IsNotNullOrEmpty() ? MvcHtmlString.Empty : html.RequiredIndicator(propertyName),
+                PerstistenceIndicatorHtml = html.PersistenceIndicator(propertyName),
                 ControlHtml = html.TextBox(propertyName, null, controlHtmlAttributes),
                 ValidationMessageHtml = html.ValidationMessage(propertyName),
                 IconCssClass = null,
@@ -393,6 +397,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -410,6 +415,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextAreaFor(expression, rows, columns, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -425,6 +431,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = new MvcHtmlString(label),
                 RequiredIndicatorHtml = MvcHtmlString.Empty,
+                PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = new MvcHtmlString(templateControlHtml.Invoke(null).ToString()),
                 ValidationMessageHtml = null,
                 IconCssClass = null,
@@ -462,6 +469,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = datePickerFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -499,6 +507,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.DropDownListFor(expression, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
@@ -532,6 +541,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.ListBoxFor(expression, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
@@ -563,6 +573,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = radioButtonsFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -597,6 +608,7 @@ namespace PortalMvcTools.Web
                 LabelHidden = labelHidden,
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.CheckBoxFor(expression, controlHtmlAttributesDict), // MJE, deactivated this explicitely for knockout bindings:  .MergePropertiesStrictly(new { @class = "hide" })), 
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -631,6 +643,7 @@ namespace PortalMvcTools.Web
                 IsCheckBox = true,
                 DisplayNameHtml = labelText,
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(firstExpression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(firstExpression),
                 ControlHtml = checkBoxesFor,
                 ValidationMessageHtml = validationMessageHtml,
                 IconCssClass = null,
@@ -674,6 +687,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(dateRangeExpression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(dateRangeExpression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(dateRangeExpression),
                 ControlHtml = innerHtml,
                 ValidationMessageHtml = html.ValidationMessageFor(dateRangeExpression),
                 IconCssClass = null,

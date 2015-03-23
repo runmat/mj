@@ -97,6 +97,35 @@ namespace MvcTools.Web
             return MvcHtmlString.Create(requiredSpan);
         }
 
+
+        public static MvcHtmlString PersistenceIndicator(this HtmlHelper html, string htmlFieldName)
+        {
+            var metadata = ModelMetadata.FromStringExpression(htmlFieldName, html.ViewData);
+
+            return html.PersistenceIndicatorInner(metadata);
+        }
+
+        public static MvcHtmlString PersistenceIndicatorFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+
+            return html.PersistenceIndicatorInner(metadata);
+        }
+
+        private static MvcHtmlString PersistenceIndicatorInner(this HtmlHelper html, ModelMetadata metadata)
+        {
+            var isPersistable = false;
+            if (metadata.PropertyName == null) return MvcHtmlString.Empty;
+
+            if (metadata.ContainerType != null)
+                isPersistable = metadata.ContainerType.GetProperty(metadata.PropertyName).GetCustomAttributes(typeof(FormPersistableAttribute), false).Any();
+
+            if (isPersistable)
+                return html.Partial("Partial/FormPersistence/FieldIndicator");
+
+            return MvcHtmlString.Empty;
+        }
+
         #endregion
 
 

@@ -74,12 +74,15 @@ namespace CkgDomainLogic.Equi.Models
         public List<string> Standorte { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._Betriebsnummern)]
+        [FormPersistable]
         public List<string> Betriebsnummern { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._Erstzulassung)]
+        [FormPersistable]
         public DateRange ErstzulassungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.CancellationDate)]
+        [FormPersistable]
         public DateRange AbmeldeDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants._Erfassungsdatum)]
@@ -99,6 +102,7 @@ namespace CkgDomainLogic.Equi.Models
         public List<Fahrgestellnummer10> Fahrgestellnummern10 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VIN10)]
+        [FormPersistable]
         public string Fahrgestellnummer10
         {
             get { return PropertyCacheGet(() => ""); }
@@ -106,9 +110,11 @@ namespace CkgDomainLogic.Equi.Models
         }
 
         [LocalizedDisplay(LocalizeConstants.VehiclesOnlyUnregistrated)]
+        [FormPersistable]
         public bool NurAbgemeldeteFahrzeuge { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VehiclesLicenseStatus)]
+        [FormPersistable]
         public string FahrzeugeMitZulassungsStatus { get { return PropertyCacheGet(() => "VehiclesAll"); } set { PropertyCacheSet(value); } }
 
         public static string FahrzeugeZulassungsStatusWerte

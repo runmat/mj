@@ -22,7 +22,7 @@
             @Html.FormDateRangePickerFor(m => m.ErfassungsDatumRange)
 
             @Html.FormRadioButtonListFor(m => m.FahrzeugeMitZulassungsStatus, EquiGrunddatenSelektor.FahrzeugeZulassungsStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "left" })
-            @Html.FormCheckBoxFor(m => m.NurAbgemeldeteFahrzeuge, new { col = "right" })
+            @Html.FormCheckBoxFor(m => m.NurAbgemeldeteFahrzeuge, new { col = "right" }, labelHidden:true)
             
 
             @*@Html.FormRequiredFieldsSummary()*@
