@@ -203,7 +203,7 @@ namespace AppZulassungsdienst.lib
 
                     DataRow impRow = impTbl.NewRow();
 
-                    if (rowKopf.Length > 0)
+                    if (rowKopf.Length == 1)
                     {
                         impRow["BUKRS"] = rowKopf[0]["BUKRS"];
                         impRow["CAJO_NUMBER"] = rowKopf[0]["CAJO_NUMBER"];
@@ -354,7 +354,7 @@ namespace AppZulassungsdienst.lib
             DataRow[] rowKopf = DocHeads.Select("POSTING_NUMBER='" + postingnr + "'");
             DataRow[] rowPos = DocPos.Select("POSTING_NUMBER='" + postingnr + "'");
 
-            if (rowKopf.Length > 0)
+            if (rowKopf.Length == 1)
             {
 
                 if (rowKopf[0]["New"].ToString() == "1")
@@ -398,7 +398,7 @@ namespace AppZulassungsdienst.lib
 
                     DataRow impRow = impTbl.NewRow();
 
-                    if (rowKopf.Length > 0)
+                    if (rowKopf.Length == 1)
                     {
                         impRow["BUKRS"] = rowKopf[0]["BUKRS"];
                         impRow["CAJO_NUMBER"] = rowKopf[0]["CAJO_NUMBER"];
@@ -438,7 +438,7 @@ namespace AppZulassungsdienst.lib
 
                     if (!ErrorOccured)
                     {
-                        if (rowKopf.Length > 0)
+                        if (rowKopf.Length == 1)
                         {
                             DocHeads.Rows.Remove(rowKopf[0]);
                         }
@@ -496,7 +496,7 @@ namespace AppZulassungsdienst.lib
 
                     DataRow impRow = impTbl.NewRow();
 
-                    if (rowKopf.Length > 0)
+                    if (rowKopf.Length == 1)
                     {
                         impRow["BUKRS"] = rowKopf[0]["BUKRS"];
                         impRow["CAJO_NUMBER"] = rowKopf[0]["CAJO_NUMBER"];
@@ -561,7 +561,7 @@ namespace AppZulassungsdienst.lib
             try
             {
                 DataRow [] row = Geschaeftsvorfaelle.Select("TRANSACT_NUMBER='" + tranaktionsnummer + "'");
-                if (row.Length > 0)
+                if (row.Length == 1)
                     tc = row[0]["TAX_CODE"].ToString();
             }
             catch 

@@ -127,7 +127,7 @@ namespace AppZulassungsdienst.forms
                             case Kassenabrechnung.VorfallFilter.Einahmen:
                                 hfGesamt.Value = String.Format("{0:N}", headRow[0]["H_RECEIPTS"]);
                                 lblGesamtShow.Text = String.Format("{0:N}", headRow[0]["H_RECEIPTS"]);
-                                if (pos.Length > 0)
+                                if (pos.Length == 1)
                                 {
                                     pos[0]["KUNNR"] = headRow[0]["KUNNR"];
                                 }
@@ -135,14 +135,14 @@ namespace AppZulassungsdienst.forms
                             case Kassenabrechnung.VorfallFilter.Ausgaben:
                                 hfGesamt.Value = String.Format("{0:N}", headRow[0]["H_PAYMENTS"]);
                                 lblGesamtShow.Text = String.Format("{0:N}", headRow[0]["H_PAYMENTS"]);
-                                if (pos.Length > 0)
+                                if (pos.Length == 1)
                                 {
                                     pos[0]["LIFNR"] = headRow[0]["LIFNR"];
                                 }
                                 break;
                         }
 
-                        if (pos.Length > 0)
+                        if (pos.Length == 1)
                         {
                             pos[0]["SGTXT"] = headRow[0]["SGTXT"];
                             pos[0]["ALLOC_NMBR"] = headRow[0]["ZUONR"];
@@ -184,7 +184,7 @@ namespace AppZulassungsdienst.forms
                     DataRow[] confirmHeadRow = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER='" + e.CommandArgument + "'");
                     if (confirmHeadRow.Length > 0 && !proofVorfallGridRow(ref confirmHeadRow[0]))
                     {
-                        if (confirmHeadRow.Length > 0)
+                        if (confirmHeadRow.Length == 1)
                         {
                             confirmHeadRow[0]["ASTATUS"] = "ZB";
                             _objKassenabrechnung.SavePosition2(confirmHeadRow[0]["POSTING_NUMBER"].ToString());
@@ -765,7 +765,7 @@ namespace AppZulassungsdienst.forms
                 Refresh();
                 DataRow[] rowPos = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
 
-                if (rowPos.Length > 0)
+                if (rowPos.Length == 1)
                 {
                     DataRow[] rowPosSteuer =
                         _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
@@ -1918,7 +1918,7 @@ namespace AppZulassungsdienst.forms
                 _objKassenabrechnung.DocPos.Rows.Add(tblRow);
 
             }
-            else if (posRows.Length > 0)
+            else if (posRows.Length == 1)
             {
                 DataRow tblRow = posRows[0];
                 WriteHeadRowToPosRow(headRow, tblRow);
@@ -1935,7 +1935,7 @@ namespace AppZulassungsdienst.forms
         {
             DataRow[] posRows = _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + postNr + "'"); //
 
-            if (posRows.Length > 0)
+            if (posRows.Length == 1)
             {
                 DataRow tblRow = posRows[0];
                 WriteHeadRowToPosRow(headRow, tblRow);
@@ -2171,7 +2171,7 @@ namespace AppZulassungsdienst.forms
                             headRow[0]["H_NET_AMOUNT"] = headRow[0]["H_PAYMENTS"];
                         }
                         DataRow[] docPosRows = _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + postingNr + "'");
-                        if (docPosRows.Length > 0)
+                        if (docPosRows.Length == 1)
                         {
                             WriteHeadToPos(postingNr, headRow[0]);
                         }
