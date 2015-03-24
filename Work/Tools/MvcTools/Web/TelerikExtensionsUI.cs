@@ -56,7 +56,7 @@ namespace Telerik.Web.Mvc.UI
         {
             return builder.Custom()
                 .HtmlAttributes(new { id = string.Format("{0}_FilterCommand", action), @class = "hide" })
-                .Action(action, controller, new { page = 1, orderBy = "~", filterBy = "~" })
+                .Action(action, controller, new { page = 1, orderBy = "~", filterBy = "~", groupBy = "~" })
                 .Text(commandTitle);
         }
 

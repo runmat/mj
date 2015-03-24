@@ -500,6 +500,9 @@ namespace CkgDomainLogic.General.Services
 
         public override void SetUserGridColumnNames(string gridGroup, string columns)
         {
+            if (gridGroup == null)
+                return;
+
             const GridColumnMode gridColumnMode = GridColumnMode.Slave;
             
             var dbContext = CreateDbContext();

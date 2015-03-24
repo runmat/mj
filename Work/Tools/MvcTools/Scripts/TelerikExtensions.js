@@ -94,6 +94,9 @@ function FilteredData_Grid_PrepareCommandHref(grid, hrefId) {
     // Update the 'filter' parameter with the grids' current filtering state
     href = href.replace(/filterBy=([^&]*)/, 'filterBy=' + (grid.filterBy || '~'));
 
+    // Update the 'filter' parameter with the grids' current grouping state
+    href = href.replace(/groupBy=([^&]*)/, 'groupBy=' + (grid.groupBy || '~'));
+
     // Update the 'href' attribute
     $exportLink.attr('href', href);
 

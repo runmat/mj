@@ -5,7 +5,7 @@
     <div class="persistable-selector-current-for-grid-results">
         <span class="margin-right-5">@Model.ObjectName</span>
 
-        <button class='btn mini yellow' title="@Localize.Save" onclick="PersistableSelectorSave('@Model.ObjectKey')">
+        <button id="persistable-gris-save-button" class='btn mini yellow' title="@Localize.Save">
             <i class='icon-save'></i>
         </button>
     </div>
@@ -14,5 +14,41 @@
 <script type="text/javascript">
 
     $(".FormSearchResultsGrid .persistable-selector-current-for-grid-results").html($(".wrapper-persistable-selector-current-for-grid-results").html());
+
+    var objectKey = '@Model.ObjectKey';
+
+    $("#persistable-gris-save-button").on('click', function (e) {
+        //PersistableSelectorSaveGrid(objectKey);
+
+        var orderBy = "Fahrgestellnummer-asc";
+        var groupBy = "Standort";
+
+        var grid = $("#GridGrunddatenEquiItems").data("tGrid");
+        //console.log($("#GridGrunddatenEquiItems").data());
+
+
+
+        var filterBy = "Kennzeichen~startswith~'LB-'";
+        var column = grid.columns[4];
+        column.filters = [];
+        column.filters.push({ operator: "startswith", value: "LB-" });
+
+        column = grid.columns[5];
+        column.filters = [];
+        column.filters.push({ operator: "substringof", value: "Neuwagen" });
+
+        grid.filter(grid.filterExpr());
+
+
+
+        grid.sort(orderBy);
+
+        grid.groups = [];
+        grid.group(groupBy);
+
+
+
+        e.stopPropagation();
+    });
 
 </script>

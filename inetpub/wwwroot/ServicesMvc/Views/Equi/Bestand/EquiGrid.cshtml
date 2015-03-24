@@ -27,6 +27,7 @@
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Erfassungsdatum).Descending())
+    //.Filterable(f => f.Filters(filters => filters.Add(m => m.Abmeldedatum).IsEqualTo(DateTime.Today)))
     .XToolBar("Equi")
 )
 

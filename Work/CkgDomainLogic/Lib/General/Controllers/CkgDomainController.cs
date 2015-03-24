@@ -195,7 +195,7 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult GridDataExportFilteredExcel(int page, string orderBy, string filterBy)
+        public ActionResult GridDataExportFilteredExcel(int page, string orderBy, string filterBy, string groupBy)
         {
             var exportList = GetGridExportData();
             var modelType = exportList.GetItemType();

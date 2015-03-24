@@ -110,10 +110,14 @@
          float: right;
      }
      
-     .btn.yellow i.icon-save, .btn.yellow i.icon-copy {
+     .btn.mini.yellow i.icon-save, .btn.mini.yellow i.icon-copy {
          color: white;
          font-size: 1.3em;
      }
+     .btn.mini.yellow:focus {
+         outline: 0!important; 
+         outline-offset: 0!important; 
+     } 
  </style>
  
  
@@ -144,6 +148,13 @@
     function PersistableSelectorSaveAs(objectKey) {
         var form = $(this).closest("form");
         AjaxSetPersistableMode("saveas", objectKey, function (result) {
+            form.submit();
+        });
+    }
+
+    function PersistableSelectorSaveGrid(objectKey) {
+        var form = $(this).closest("form");
+        AjaxSetPersistableMode("savegrid", objectKey, function (result) {
             form.submit();
         });
     }
