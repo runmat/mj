@@ -132,6 +132,37 @@ namespace MvcTools.Web
             return MvcHtmlString.Empty;
         }
 
+        public static MvcHtmlString FormPersistenceMenu<T>(this HtmlHelper html, T model) where T : class, new()
+        {
+            var controller = (html.ViewContext.Controller as IPersistableSelectorProvider);
+            if (controller != null)
+                controller.PersistableSelectorsLoad<T>();
+
+            return html.Partial("Partial/FormPersistence/Menu");
+        }
+
+        public static MvcHtmlString FormPersistenceGridMenu(this HtmlHelper html)
+        {
+            var controller = (html.ViewContext.Controller as IPersistableSelectorProvider);
+            if (controller == null)
+                return MvcHtmlString.Empty;
+
+            var persistableSelectorObjectKeyCurrent = SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent");
+            if (persistableSelectorObjectKeyCurrent == null)
+                return MvcHtmlString.Empty;
+
+            controller.PersistableSelectorsLoad();
+            var selectors = controller.PersistableSelectors;
+            if (selectors == null || selectors.None())
+                return MvcHtmlString.Empty;
+
+            var selectorCurrent = selectors.FirstOrDefault(s => s.ObjectKey == persistableSelectorObjectKeyCurrent);
+            if (selectorCurrent == null)
+                return MvcHtmlString.Empty;
+
+            return html.Partial("Partial/FormPersistence/GridMenu", selectorCurrent);
+        }
+
         #endregion
 
 

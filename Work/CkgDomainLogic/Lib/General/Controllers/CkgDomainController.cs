@@ -657,7 +657,7 @@ namespace CkgDomainLogic.General.Controllers
 
             PersistableSelectorIsPersistMode =  false;
             PersistableSelectorPersistMode = null;
-            PersistableSelectorObjectKeyCurrent = null;
+            //PersistableSelectorObjectKeyCurrent = null;
 
             var persistMessage = string.Format("{0}{1}: {2}", MvcTag.FormPersistenceModeErrorPrefix, Localize.SearchMask, modeLocalizationMessage);
             ModelState.AddModelError("", persistMessage);
@@ -679,6 +679,7 @@ namespace CkgDomainLogic.General.Controllers
         private void PersistablePartialViewDelete()
         {
             PersistanceDeleteObject(PersistableSelectorObjectKeyCurrent);
+            PersistableSelectorObjectKeyCurrent = null;
         }
 
         private IPersistableObject PersistablePartialViewSave(IPersistableObject persistableSelector, string defaultObjectName = null)
@@ -749,6 +750,14 @@ namespace CkgDomainLogic.General.Controllers
             var relativeUrl = LogonContextHelper.GetAppUrlCurrent();
             PersistableSelectorGroupKeyCurrent = groupKey ?? (string.Format("{0}_{1}", relativeUrl, typeof(T).Name).ToLower());
             PersistableSelectorItems = PersistanceGetObjects<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
+        }
+
+        public void PersistableSelectorsLoad() 
+        {
+            if (PersistableSelectorGroupKeyCurrent.IsNullOrEmpty())
+                return;
+
+            PersistableSelectorItems = PersistanceGetObjects<IPersistableObject>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
         }
 
         #endregion

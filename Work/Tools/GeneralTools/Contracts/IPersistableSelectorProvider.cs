@@ -7,5 +7,7 @@ namespace GeneralTools.Contracts
         List<IPersistableObject> PersistableSelectors { get; }
 
         void PersistableSelectorsLoad<T>(string groupKey = null) where T : class, new();
+
+        void PersistableSelectorsLoad();
     }
 }

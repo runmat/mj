@@ -175,15 +175,6 @@ namespace PortalMvcTools.Web
             return html.ValidationSummary(excludePropertyErrors, validationSummaryHeader);
         }
 
-        public static MvcHtmlString FormPersistenceMenu<T>(this HtmlHelper html, T model) where T : class, new()
-        {
-            var controller = (html.ViewContext.Controller as IPersistableSelectorProvider);
-            if (controller != null)
-                controller.PersistableSelectorsLoad<T>();
-
-            return html.Partial("Partial/FormPersistence/Menu");
-        }
-
         public static MvcHtmlString FormWizard(this HtmlHelper html, string headerIconCssClass, string header, IEnumerable<string> stepTitles, IEnumerable<string> stepKeys = null, bool stepTitlesInNewLine = false)
         {
             var model = new FormWizardModel

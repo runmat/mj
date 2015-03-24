@@ -310,6 +310,8 @@ namespace Telerik.Web.Mvc.UI
 
         public static XViewComponentFactory<TModel> XTelerik<TModel>(this HtmlHelper<TModel> helper) where TModel : class
         {
+            helper.ViewContext.Writer.Write(helper.FormPersistenceGridMenu());
+
             var componentFactory = helper.Telerik();
             var myComponentFactory = new XViewComponentFactory<TModel>(helper,
                                             componentFactory.ClientSideObjectWriterFactory,

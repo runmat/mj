@@ -1,0 +1,18 @@
+﻿@using GeneralTools.Contracts
+@model IPersistableObject
+
+<div class="wrapper-persistable-selector-current-for-grid-results hide">
+    <div class="persistable-selector-current-for-grid-results">
+        <span class="margin-right-5">@Model.ObjectName</span>
+
+        <button class='btn mini yellow' title="@Localize.Save" onclick="PersistableSelectorSave('@Model.ObjectKey')">
+            <i class='icon-save'></i>
+        </button>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(".FormSearchResultsGrid .persistable-selector-current-for-grid-results").html($(".wrapper-persistable-selector-current-for-grid-results").html());
+
+</script>
