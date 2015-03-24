@@ -177,14 +177,19 @@ namespace GeneralTools.Services
 
         #region IPersistableObject
 
+        [FormPersistable]
         public bool IsSelected { get; set; }
 
+        [FormPersistable]
         public string ObjectKey { get; set; }
 
+        [FormPersistable]
         public string ObjectName { get; set; }
 
+        [FormPersistable]
         public DateTime? EditDate { get; set; }
 
+        [FormPersistable]
         public string EditUser { get; set; }
 
         #endregion

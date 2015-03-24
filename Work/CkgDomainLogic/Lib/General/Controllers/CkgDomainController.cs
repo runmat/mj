@@ -636,7 +636,7 @@ namespace CkgDomainLogic.General.Controllers
                 switch (persistMode)
                 {
                     case "load":
-                        model = (T)PersistablePartialViewLoad();
+                        model = PersistablePartialViewLoad<T>();
                         modeLocalizationMessage = Localize.LoadSuccessful;
                         break;
                     case "delete":
@@ -665,13 +665,15 @@ namespace CkgDomainLogic.General.Controllers
             return PartialView(viewName, model);
         }
 
-        private IPersistableObject PersistablePartialViewLoad()
+        private T PersistablePartialViewLoad<T>() where T : class, new()
         {
-            var persistableSelector = PersistableSelectorItems.FirstOrDefault(p => p.ObjectKey == PersistableSelectorObjectKeyCurrent);
+            var persistableSelector = (T)PersistableSelectorItems.FirstOrDefault(p => p.ObjectKey == PersistableSelectorObjectKeyCurrent);
 
             ModelState.Clear();
 
-            return persistableSelector;
+            var selectorOnlyPersistableProperties = ModelMapping.CopyOnlyPersistableProperties(persistableSelector);
+
+            return selectorOnlyPersistableProperties;
         }
 
         private void PersistablePartialViewDelete()
