@@ -202,8 +202,10 @@
     <Compile Include="Fahrzeuge\ViewModels\AbgemeldeteFahrzeugeViewModel.cs" />
     <Compile Include="WFM\Contracts\IWfmDataService.cs" />
     <Compile Include="WFM\Models\AppModelmappings.cs" />
-    <Compile Include="WFM\Models\WfmAbmeldung.cs" />
-    <Compile Include="WFM\Models\WfmAbmeldungSelektor.cs" />
+    <Compile Include="WFM\Models\WfmAuftragFeldname.cs" />
+    <Compile Include="WFM\Models\MultiSelectModels.cs" />
+    <Compile Include="WFM\Models\WfmAuftrag.cs" />
+    <Compile Include="WFM\Models\WfmAuftragSelektor.cs" />
     <Compile Include="WFM\Services\WfmDataServiceSAP.cs" />
     <Compile Include="WFM\ViewModels\WfmViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

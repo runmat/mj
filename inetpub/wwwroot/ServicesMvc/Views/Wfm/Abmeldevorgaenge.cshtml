@@ -1,0 +1,86 @@
+﻿@using CkgDomainLogic.WFM.ViewModels
+@model WfmViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Wfm_Abmeldevorgaenge <small></small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/AuftraegeSuche", Model.Selektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divAuftraegeGrid"></div>
+    <div id="divAuftragDetail"></div>
+}
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowAuftraegeSearchResult(result) {
+        SearchFormHide();
+        $("#divAuftraegeGrid").html(result);
+
+        GridAllColumnFilterApplyToGrid("GridAuftraege");
+
+        $("#divAuftraegeGrid").slideDown();
+        $("#divAuftragDetail").html('');
+    }
+
+    function OnDataBound_GridAuftraege() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnLoad_GridAuftraege() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridAuftraege() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAuftraege() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowAuftragDetailAjax(id) {
+//        LoadingShow();
+//        $.ajax(
+//        {
+//            type: "POST",
+//            url: "GetAuftragDetailPartial",
+//            loadingShow: true,
+//            data: { vorgangsnr: id },
+//            success: function (result) {
+//                ShowAuftragDetail(result);
+//            }
+//        });
+    }
+
+    function ShowAuftragDetail(result) {
+        $("#divAuftragDetail").html(result);
+        $("#divAuftraegeGrid").slideUp();
+        $("#divAuftragDetail").slideDown();
+        $("#btnBackToResult").show();
+        setTimeout('LoadingHide()', 1000);
+        FormPreparePrivateAjax();
+    }
+
+    function CloseAuftragDetail() {
+        $("#btnBackToResult").hide();
+        $("#divAuftragDetail").slideUp(function () { $("#divAuftraegeGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divAuftraegeGrid").slideDown();
+    }
+
+</script>

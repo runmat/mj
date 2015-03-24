@@ -1,10 +1,8 @@
 ﻿using System.Collections;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Models;
 using CkgDomainLogic.WFM.ViewModels;
-using GeneralTools.Models;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
@@ -14,7 +12,7 @@ namespace ServicesMvc.Controllers
         public WfmViewModel ViewModel { get { return GetViewModel<WfmViewModel>(); } }
 
         [CkgApplication]
-        public ActionResult Index()
+        public ActionResult Abmeldevorgaenge()
         {
             ViewModel.DataInit();
 
@@ -22,47 +20,42 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadAbmeldungen(WfmAbmeldungSelektor model)
+        public ActionResult LoadAuftraege(WfmAuftragSelektor model)
         {
-            ViewModel.WfmAbmeldungSelektor = model;
-
-            ViewModel.Validate(AddModelError);
+            ViewModel.Selektor = model;
 
             if (ModelState.IsValid)
-            {
-                ViewModel.LoadWflAbmeldungen();
-                if (ViewModel.WfmAbmeldungen.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
-            }
+                ViewModel.LoadAuftraege(ModelState);
 
-            return PartialView("Abmeldungen/SucheAbmeldungen", ViewModel.WfmAbmeldungSelektor);
+            return PartialView("Partial/AuftraegeSuche", ViewModel.Selektor);
         }
 
         [HttpPost]
-        public ActionResult ShowAbgmeldeteFahrzeuge()
+        public ActionResult ShowAuftraege()
         {
-            return PartialView("Abmeldungen/AbmeldungenGrid", ViewModel);
+            return PartialView("Partial/AuftraegeGrid", ViewModel);
         }
 
         [GridAction]
-        public ActionResult AbgemeldeteFahrzeugeAjaxBinding()
+        public ActionResult AuftraegeAjaxBinding()
         {
-            return View(new GridModel(ViewModel.WfmAbmeldungenFiltered));
+            return View(new GridModel(ViewModel.AuftraegeFiltered));
         }
 
         [HttpPost]
-        public ActionResult FilterGridAbgemeldeteFahrzeuge(string filterValue, string filterColumns)
+        public ActionResult FilterGridAuftraege(string filterValue, string filterColumns)
         {
-            ViewModel.FilterWflAbmeldungen(filterValue, filterColumns);
+            ViewModel.FilterAuftraege(filterValue, filterColumns);
 
             return new EmptyResult();
         }
-        
+
+
         #region Export
 
         protected override IEnumerable GetGridExportData()
         {
-            return ViewModel.WfmAbmeldungenFiltered;
+            return ViewModel.AuftraegeFiltered;
         }
 
         #endregion

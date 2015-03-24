@@ -4,8 +4,10 @@ using CkgDomainLogic.WFM.Models;
 
 namespace CkgDomainLogic.WFM.Contracts
 {
-    public interface IWfmDataService : ICkgGeneralDataService 
+    public interface IWfmDataService : ICkgGeneralDataService
     {
-        List<WfmAbmeldung> GetAbmeldungen(WfmAbmeldungSelektor selector);
+        List<WfmAuftragFeldname> GetFeldnamen();
+
+        List<WfmAuftrag> GetAbmeldeauftraege(WfmAuftragSelektor selector);
     }
 }

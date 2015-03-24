@@ -1,4 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.General.Services;
@@ -8,7 +8,6 @@ using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.WFM.Models.AppModelMappings;
-// ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.WFM.Services
 {
@@ -19,25 +18,69 @@ namespace CkgDomainLogic.WFM.Services
         {
         }
 
-        public List<WfmAbmeldung> GetAbmeldungen(WfmAbmeldungSelektor selector)
+        public List<WfmAuftragFeldname> GetFeldnamen()
         {
-            Z_DPM_CD_Strafzettel.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            Z_WFM_READ_KONVERTER_01.Init(SAP, "I_AG", LogonContext.KundenNr.PadLeft(10, '0'));
 
-            if (selector.VertragsNr.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_VERTRAGS_NR", selector.VertragsNr);
+            return AppModelMappings.Z_WFM_READ_KONVERTER_01_GT_DATEN_To_WfmAuftragFeldname.Copy(Z_WFM_READ_KONVERTER_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+        }
 
-            if (selector.EingangsDatumRange.IsSelected)
+        public List<WfmAuftrag> GetAbmeldeauftraege(WfmAuftragSelektor selector)
+        {
+            Z_WFM_READ_AUFTRAEGE_01.Init(SAP, "I_AG", LogonContext.KundenNr.PadLeft(10, '0'));
+
+            if (!String.IsNullOrEmpty(selector.Selektionsfeld1Name))
+                SAP.SetImportParameter("I_SELEKTION1", selector.Selektionsfeld1.BoolToX());
+
+            if (!String.IsNullOrEmpty(selector.Selektionsfeld2Name))
+                SAP.SetImportParameter("I_SELEKTION2", selector.Selektionsfeld2.BoolToX());
+
+            if (!String.IsNullOrEmpty(selector.Selektionsfeld3Name))
+                SAP.SetImportParameter("I_SELEKTION3", selector.Selektionsfeld3.BoolToX());
+
+            if (!String.IsNullOrEmpty(selector.FahrgestellNr))
+                SAP.SetImportParameter("I_FIN", selector.FahrgestellNr);
+
+            if (!String.IsNullOrEmpty(selector.Kennzeichen))
+                SAP.SetImportParameter("I_KENNZ", selector.Kennzeichen);
+
+            if (!String.IsNullOrEmpty(selector.KundenAuftragsNr))
             {
-                SAP.SetImportParameter("I_EINGDAT_VON", selector.EingangsDatumRange.StartDate);
-                SAP.SetImportParameter("I_EINGDAT_BIS", selector.EingangsDatumRange.EndDate);
+                var kdAufNrList = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_KDAUF_From_KundenAuftragsNrSelektion.CopyBack(new List<KundenAuftragsNrSelektion> { new KundenAuftragsNrSelektion { KundenAuftragsNrVon = selector.KundenAuftragsNr } });
+                SAP.ApplyImport(kdAufNrList);
             }
 
-            SAP.Execute();
+            if (!String.IsNullOrEmpty(selector.Referenz1))
+            {
+                var ref1List = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_REF1_From_Referenz1Selektion.CopyBack(new List<Referenz1Selektion> { new Referenz1Selektion { Referenz1Von = selector.Referenz1 } });
+                SAP.ApplyImport(ref1List);
+            }
 
-            var sapItemsEquis = Z_DPM_CD_Strafzettel.GT_OUT.GetExportList(SAP);
-            //var webItemsEquis = AppModelMappings.Z_DPM_CD_ABM_LIST__ET_ABM_LIST_To_Strafzettel.Copy(sapItemsEquis).ToList();
+            if (!String.IsNullOrEmpty(selector.Referenz2))
+            {
+                var ref2List = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_REF2_From_Referenz2Selektion.CopyBack(new List<Referenz2Selektion> { new Referenz2Selektion { Referenz2Von = selector.Referenz2 } });
+                SAP.ApplyImport(ref2List);
+            }
 
-            return null; // webItemsEquis;
+            if (!String.IsNullOrEmpty(selector.Referenz3))
+            {
+                var ref3List = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_REF3_From_Referenz3Selektion.CopyBack(new List<Referenz3Selektion> { new Referenz3Selektion { Referenz3Von = selector.Referenz3 } });
+                SAP.ApplyImport(ref3List);
+            }
+
+            if (selector.Abmeldearten.AnyAndNotNull())
+            {
+                var abmArtList = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_ABMART_From_AbmeldeArtSelektion.CopyBack(selector.Abmeldearten.Select(a => new AbmeldeArtSelektion { AbmeldeArt = a }));
+                SAP.ApplyImport(abmArtList);
+            }
+
+            if (selector.Abmeldestatus.AnyAndNotNull())
+            {
+                var abmStatList = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_ABMSTAT_From_AbmeldeStatusSelektion.CopyBack(selector.Abmeldestatus.Select(a => new AbmeldeStatusSelektion { AbmeldeStatus = a }));
+                SAP.ApplyImport(abmStatList);
+            }
+
+            return AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_DATEN_To_WfmAuftrag.Copy(Z_WFM_READ_AUFTRAEGE_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
     }
 }

@@ -303,7 +303,7 @@ namespace SapORM.Models
 			}
 		}
 
-		public partial class GT_SEL : IModelMappingApplied
+		public partial class GT_SEL_ABMART : IModelMappingApplied
 		{
 			[SapIgnore]
 			[ScriptIgnore]
@@ -315,13 +315,124 @@ namespace SapORM.Models
 
 			public string ABMELDEART { get; set; }
 
-			public string ABMELDESTATUS { get; set; }
-
-			public static GT_SEL Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			public static GT_SEL_ABMART Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_SEL
+				var o = new GT_SEL_ABMART
 				{
 					ABMELDEART = (string)row["ABMELDEART"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_SEL_ABMART> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_SEL_ABMART> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_SEL_ABMART> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL_ABMART).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_SEL_ABMART> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_ABMART> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_SEL_ABMART> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_ABMART>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_ABMART> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_ABMART>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_ABMART> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_ABMART>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_ABMART> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_ABMART>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_ABMART> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_ABMART>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_SEL_ABMSTAT : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string ABMELDESTATUS { get; set; }
+
+			public static GT_SEL_ABMSTAT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_SEL_ABMSTAT
+				{
 					ABMELDESTATUS = (string)row["ABMELDESTATUS"],
 
 					SAPConnection = sapConnection,
@@ -340,79 +451,664 @@ namespace SapORM.Models
 				OnInitFromExtern();
 			}
 
-			public static IEnumerable<GT_SEL> Select(DataTable dt, ISapConnection sapConnection = null)
+			public static IEnumerable<GT_SEL_ABMSTAT> Select(DataTable dt, ISapConnection sapConnection = null)
 			{
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<GT_SEL> ToList(DataTable dt, ISapConnection sapConnection = null)
+			public static List<GT_SEL_ABMSTAT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
 				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
-			public static IEnumerable<GT_SEL> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			public static IEnumerable<GT_SEL_ABMSTAT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL).Name.ToLower());
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL_ABMSTAT).Name.ToLower());
 				if (tbl == null)
 					return null;
 
 				return Select(tbl, sapConnection);
 			}
 
-			public static List<GT_SEL> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			public static List<GT_SEL_ABMSTAT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_SEL> ToList(ISapDataService sapDataService)
+			public static List<GT_SEL_ABMSTAT> ToList(ISapDataService sapDataService)
 			{
 				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
 			}
 
-			public static List<GT_SEL> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			public static List<GT_SEL_ABMSTAT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
 			{
 				if (sapDataService == null) 
-					return new List<GT_SEL>();
+					return new List<GT_SEL_ABMSTAT>();
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_SEL> GetExportListWithExecute(ISapDataService sapDataService)
+			public static List<GT_SEL_ABMSTAT> GetExportListWithExecute(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_SEL>();
+					return new List<GT_SEL_ABMSTAT>();
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_SEL> GetExportList(ISapDataService sapDataService)
+			public static List<GT_SEL_ABMSTAT> GetExportList(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_SEL>();
+					return new List<GT_SEL_ABMSTAT>();
 				 
 				var dts = sapDataService.GetExportTables();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_SEL> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			public static List<GT_SEL_ABMSTAT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
 			{
 				if (sapDataService == null) 
-					return new List<GT_SEL>();
+					return new List<GT_SEL_ABMSTAT>();
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_SEL> GetImportList(ISapDataService sapDataService)
+			public static List<GT_SEL_ABMSTAT> GetImportList(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_SEL>();
+					return new List<GT_SEL_ABMSTAT>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_SEL_KDAUF : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string KDAUF_VON { get; set; }
+
+			public string KDAUF_BIS { get; set; }
+
+			public static GT_SEL_KDAUF Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_SEL_KDAUF
+				{
+					KDAUF_VON = (string)row["KDAUF_VON"],
+					KDAUF_BIS = (string)row["KDAUF_BIS"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_SEL_KDAUF> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_SEL_KDAUF> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_SEL_KDAUF> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL_KDAUF).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_SEL_KDAUF> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_KDAUF> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_SEL_KDAUF> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_KDAUF>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_KDAUF> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_KDAUF>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_KDAUF> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_KDAUF>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_KDAUF> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_KDAUF>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_KDAUF> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_KDAUF>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_SEL_REF1 : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string REF1_VON { get; set; }
+
+			public string REF1_BIS { get; set; }
+
+			public static GT_SEL_REF1 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_SEL_REF1
+				{
+					REF1_VON = (string)row["REF1_VON"],
+					REF1_BIS = (string)row["REF1_BIS"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_SEL_REF1> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_SEL_REF1> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_SEL_REF1> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL_REF1).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_SEL_REF1> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF1> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_SEL_REF1> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF1>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF1> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF1>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF1> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF1>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF1> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF1>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF1> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF1>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_SEL_REF2 : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string REF2_VON { get; set; }
+
+			public string REF2_BIS { get; set; }
+
+			public static GT_SEL_REF2 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_SEL_REF2
+				{
+					REF2_VON = (string)row["REF2_VON"],
+					REF2_BIS = (string)row["REF2_BIS"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_SEL_REF2> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_SEL_REF2> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_SEL_REF2> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL_REF2).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_SEL_REF2> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF2> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_SEL_REF2> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF2>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF2> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF2>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF2> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF2>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF2> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF2>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF2> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF2>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_SEL_REF3 : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string REF3_VON { get; set; }
+
+			public string REF3_BIS { get; set; }
+
+			public static GT_SEL_REF3 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_SEL_REF3
+				{
+					REF3_VON = (string)row["REF3_VON"],
+					REF3_BIS = (string)row["REF3_BIS"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_SEL_REF3> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_SEL_REF3> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_SEL_REF3> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL_REF3).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_SEL_REF3> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF3> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_SEL_REF3> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF3>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF3> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF3>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF3> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF3>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF3> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF3>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_REF3> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_REF3>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GT_SEL_SOLLDAT : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public DateTime? SOLLDATUM_VON { get; set; }
+
+			public DateTime? SOLLATUM_BIS { get; set; }
+
+			public static GT_SEL_SOLLDAT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_SEL_SOLLDAT
+				{
+					SOLLDATUM_VON = (string.IsNullOrEmpty(row["SOLLDATUM_VON"].ToString())) ? null : (DateTime?)row["SOLLDATUM_VON"],
+					SOLLATUM_BIS = (string.IsNullOrEmpty(row["SOLLATUM_BIS"].ToString())) ? null : (DateTime?)row["SOLLATUM_BIS"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_SEL_SOLLDAT> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_SEL_SOLLDAT> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_SEL_SOLLDAT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_SEL_SOLLDAT).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_SEL_SOLLDAT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_SOLLDAT> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_SEL_SOLLDAT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_SOLLDAT>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_SOLLDAT> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_SOLLDAT>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_SOLLDAT> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_SOLLDAT>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_SOLLDAT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_SOLLDAT>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_AUFTRAEGE_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_SEL_SOLLDAT> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_SEL_SOLLDAT>();
 				 
 				var dts = sapDataService.GetImportTables();
 				 
@@ -435,12 +1131,78 @@ namespace SapORM.Models
 		}
 
 
-		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL> list)
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_ABMART> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL> list, DataTable dtDst)
+		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_ABMART> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_ABMSTAT> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_ABMSTAT> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_KDAUF> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_KDAUF> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF1> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF1> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF2> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF2> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF3> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_REF3> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_SOLLDAT> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_READ_AUFTRAEGE_01.GT_SEL_SOLLDAT> list, DataTable dtDst)
 		{
 			SapDataServiceExtensions.Apply(list, dtDst);
 		}

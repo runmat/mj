@@ -1,0 +1,95 @@
+﻿@using CkgDomainLogic.WFM.Models
+@model WfmAuftragSelektor
+
+<div id="divAuftraegeSuche">
+    @using (Ajax.BeginForm("LoadAuftraege", "Wfm", null,
+        new MvcAjaxOptions("divAuftraegeSuche") { OnComplete = "ShowAuftraege();" }, new { id = "AuftraegeForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+
+            @Html.FormMultiSelectListFor(m => m.Abmeldearten, Model.AlleAbmeldearten.ToSelectList(), new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormMultiSelectListFor(m => m.Abmeldestatus, Model.AlleAbmeldestatus.ToSelectList(), new { @class = "m-wrap chosen", col = "right" })
+            
+            @Html.HiddenFor(m => m.Selektionsfeld1Name)
+            @if (!String.IsNullOrEmpty(Model.Selektionsfeld1Name))
+            {
+                @Html.FormCheckBoxFor(m => m.Selektionsfeld1, new {@class = "m-wrap"}, null, null, null, false, Model.Selektionsfeld1Name)
+            }
+            
+            @Html.HiddenFor(m => m.Selektionsfeld2Name)
+            @if (!String.IsNullOrEmpty(Model.Selektionsfeld2Name))
+            {
+                @Html.FormCheckBoxFor(m => m.Selektionsfeld2, new { @class = "m-wrap" }, null, null, null, false, Model.Selektionsfeld2Name)
+            }
+            
+            @Html.HiddenFor(m => m.Selektionsfeld3Name)
+            @if (!String.IsNullOrEmpty(Model.Selektionsfeld3Name))
+            {
+                @Html.FormCheckBoxFor(m => m.Selektionsfeld3, new { @class = "m-wrap" }, null, null, null, false, Model.Selektionsfeld3Name)
+            }
+
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right" })
+            
+            @Html.FormTextBoxFor(m => m.KundenAuftragsNr, new { @class = "m-wrap" })
+            
+            @Html.HiddenFor(m => m.Referenz1Name)
+            @if (!String.IsNullOrEmpty(Model.Referenz1Name))
+            {
+                @Html.FormTextBoxFor(m => m.Referenz1, new { @class = "m-wrap" }, null, null, null, Model.Referenz1Name)
+            }
+            
+            @Html.HiddenFor(m => m.Referenz2Name)
+            @if (!String.IsNullOrEmpty(Model.Referenz2Name))
+            {
+                @Html.FormTextBoxFor(m => m.Referenz2, new { @class = "m-wrap" }, null, null, null, Model.Referenz2Name)
+            }
+            
+            @Html.HiddenFor(m => m.Referenz3Name)
+            @if (!String.IsNullOrEmpty(Model.Referenz3Name))
+            {
+                @Html.FormTextBoxFor(m => m.Referenz3, new { @class = "m-wrap" }, null, null, null, Model.Referenz3Name)
+            }
+
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowAuftraege() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowAuftraege",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowAuftraegeSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>
