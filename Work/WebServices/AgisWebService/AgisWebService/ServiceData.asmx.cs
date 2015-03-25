@@ -15,7 +15,7 @@ namespace AgisWebService
             {
                 var service = new Agis.CarDocuWebService { Url = Common.AgisUrl };
                 service.ClientCertificates.Add(Common.AgisCert);
-                ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                ServicePointManager.ServerCertificateValidationCallback += delegate { return true; };
 
                 return service.GetVehicleStatus(new GetVehicleStatus
                     {
