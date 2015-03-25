@@ -4262,6 +4262,7 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
+    <Content Include="Views\Test\Cerberus.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
