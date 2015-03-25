@@ -5,7 +5,7 @@
     <div class="persistable-selector-current-for-grid-results">
         <span class="margin-right-5">@Model.ObjectName</span>
 
-        <button id="persistable-gris-save-button" class='btn mini yellow' title="@Localize.Save">
+        <button id="persistable-grid-save-button" class='btn mini yellow' title="@Localize.Save">
             <i class='icon-save'></i>
         </button>
     </div>
@@ -17,7 +17,7 @@
 
     var objectKey = '@Model.ObjectKey';
 
-    $("#persistable-gris-save-button").on('click', function (e) {
+    $("#persistable-grid-save-button").on('click', function (e) {
         //PersistableSelectorSaveGrid(objectKey);
 
         var orderBy = "Fahrgestellnummer-asc";
