@@ -9,7 +9,6 @@
 @(Html.Telerik()
     .Grid<FahrzeugeinsteuerungUploadModel>()
     .Name(gridName)
-    .XGroup("GridUploadSaveFahrzeugeinsteuerung")
     .XAjaxDataBinding("UploadSaveFahrzeugeinsteuerungAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {

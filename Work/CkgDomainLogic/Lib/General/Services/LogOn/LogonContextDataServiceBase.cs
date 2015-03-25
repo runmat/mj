@@ -249,15 +249,6 @@ namespace CkgDomainLogic.General.Services
             return Customer.MvcRawLayout;
         }
 
-        public virtual string GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup)
-        {
-            return "";
-        }
-
-        public virtual void SetUserGridColumnNames(string gridGroup, string columns)
-        {
-        }
-
         public virtual void DataContextPersist(object dataContext) 
         {
         }

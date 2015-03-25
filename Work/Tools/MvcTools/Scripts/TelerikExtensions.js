@@ -37,12 +37,12 @@ function FilteredData_Grid_PrepareAllCommandHrefs(grid, persistColumns) {
     if (typeof(persistColumns) != 'undefined') {
         persistInDb = true;
     }
-    PersistColumns(jsonColumnsString, persistInDb);
+    GridSettingsPersist(jsonColumnsString, persistInDb);
 }
 
-function PersistColumns(jsonColumnsString, persistInDb) {
-    
-    var url = "LogonContextPersistColumns";
+function GridSettingsPersist(jsonColumnsString, persistInDb) {
+
+    var url = "GridSettingsPersist";
     if (document.URL.toLowerCase().indexOf("autohausportalmvc") > 0)
         url = document.URL + "/" + url;
     

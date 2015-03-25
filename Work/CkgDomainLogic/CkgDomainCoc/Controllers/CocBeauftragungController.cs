@@ -284,7 +284,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("CocAuftraege", dt);
 
             return new EmptyResult();
@@ -292,7 +292,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("CocAuftraege", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -300,7 +300,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult VersandadressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("VersandAdressen", dt);
 
             return new EmptyResult();
@@ -308,7 +308,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult VersandadressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("VersandAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

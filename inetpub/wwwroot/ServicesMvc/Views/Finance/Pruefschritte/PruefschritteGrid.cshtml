@@ -16,7 +16,6 @@
 @(Html.Telerik()
     .Grid<Pruefschritt>()
     .Name(gridName)
-    .XGroup(gridName)
     .XAjaxDataBinding("PruefschritteAjaxBinding", "Finance")
     .Columns(columns =>
     {

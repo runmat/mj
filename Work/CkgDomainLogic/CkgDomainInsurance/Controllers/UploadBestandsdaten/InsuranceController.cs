@@ -130,7 +130,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUploadSaveBestandsdatenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = UploadBestandsdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = UploadBestandsdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UploadBestandsdaten", dt);
 
             return new EmptyResult();
@@ -138,7 +138,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUploadSaveBestandsdatenFilteredPdf(int page, string orderBy, string filterBy)
         {
-            var dt = UploadBestandsdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = UploadBestandsdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UploadBestandsdaten", dt, landscapeOrientation: true);
 
             return new EmptyResult();

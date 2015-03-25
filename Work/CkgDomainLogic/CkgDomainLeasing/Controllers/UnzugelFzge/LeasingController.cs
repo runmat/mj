@@ -84,7 +84,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUnzugelFzgFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefeOhneLVNrViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefeOhneLVNrViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UnzugelFzg", dt);
 
             return new EmptyResult();
@@ -92,7 +92,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUnzugelFzgFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefeOhneLVNrViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefeOhneLVNrViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UnzugelFzg", dt, landscapeOrientation: true);
 
             return new EmptyResult();

@@ -135,7 +135,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUploadSaveFahrzeugdatenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = UploadFahrzeugdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = UploadFahrzeugdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UploadFahrzeugdaten", dt);
 
             return new EmptyResult();
@@ -143,7 +143,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUploadSaveFahrzeugdatenFilteredPdf(int page, string orderBy, string filterBy)
         {
-            var dt = UploadFahrzeugdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = UploadFahrzeugdatenViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UploadFahrzeugdaten", dt, landscapeOrientation: true);
 
             return new EmptyResult();

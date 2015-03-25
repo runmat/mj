@@ -82,7 +82,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZulassungsUnterlagenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ZulassungsunterlagenViewModel.ZulassungsUnterlagenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ZulassungsunterlagenViewModel.ZulassungsUnterlagenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationDocuments, dt);
 
             return new EmptyResult();
@@ -90,7 +90,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZulassungsUnterlagenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ZulassungsunterlagenViewModel.ZulassungsUnterlagenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ZulassungsunterlagenViewModel.ZulassungsUnterlagenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationDocuments, dt, landscapeOrientation: true);
 
             return new EmptyResult();

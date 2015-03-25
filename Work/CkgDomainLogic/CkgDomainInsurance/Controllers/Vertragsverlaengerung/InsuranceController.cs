@@ -44,7 +44,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportVertragsdatenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = VertragsverlaengerungViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = VertragsverlaengerungViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Vertragsverlaengerung", dt);
 
             return new EmptyResult();
@@ -52,7 +52,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportVertragsdatenFilteredPdf(int page, string orderBy, string filterBy)
         {
-            var dt = VertragsverlaengerungViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = VertragsverlaengerungViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Vertragsverlaengerung", dt, landscapeOrientation: true);
 
             return new EmptyResult();

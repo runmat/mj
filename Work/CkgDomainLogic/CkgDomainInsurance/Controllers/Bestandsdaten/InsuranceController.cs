@@ -44,7 +44,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportBestandsdatenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BestandsdatenViewModel.BestandsdatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BestandsdatenViewModel.BestandsdatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Bestandsdaten", dt);
 
             return new EmptyResult();
@@ -52,7 +52,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportBestandsdatenFilteredPdf(int page, string orderBy, string filterBy)
         {
-            var dt = BestandsdatenViewModel.BestandsdatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BestandsdatenViewModel.BestandsdatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Bestandsdaten", dt, landscapeOrientation: true);
 
             return new EmptyResult();

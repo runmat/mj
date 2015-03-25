@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
-using MvcTools.Web;
 using Telerik.Web.Mvc.UI.Fluent;
 
 namespace Telerik.Web.Mvc.UI
 {
     public static class GridExtensions
     {
-        private static string GridGroup { get { return SessionHelper.GetSessionString("GridGroup"); } }
-
         public static GridBoundColumnBuilder<TModel> XBoundAllExcept<TModel>(this GridColumnFactory<TModel> builder, Type alternativeType, params Expression<Func<TModel, object>>[] propertiesToExclude)
             where TModel : class
         {
@@ -38,15 +34,10 @@ namespace Telerik.Web.Mvc.UI
             if (alternativeType != null)
                 modelType = alternativeType;
 
-            var userMasterColumns = GetUserGridColumnNames(modelType, GridColumnMode.Master, GridGroup);
-            var userSlaveColumns = GetUserGridColumnNames(modelType, GridColumnMode.Slave, GridGroup);
-            var userSlaveColumnsToHide = userMasterColumns.Except(userSlaveColumns);
-
-            userMasterColumns = SortMasterColumnsLikeSlaveColumns(userMasterColumns, userSlaveColumns);
-
             GridBoundColumnBuilder<TModel> column = null;
 
-            var modelColumnList = userMasterColumns;
+            var modelColumnList = GetUserGridColumnNames(modelType);
+            var userSlaveColumnsToHide = new List<string>();
             var propertyNameList =  modelColumnList.Where(slave => modelType.GetScaffoldPropertyLowerNames().Contains(slave.ToLower())).ToList();
             propertyNameList.ForEach(propertyName =>
                         {
@@ -62,13 +53,9 @@ namespace Telerik.Web.Mvc.UI
             return slaveColumns.Clone().Concat(masterColumns.Except(slaveColumns)).ToList();
         }
 
-        static List<string> GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup)
+        static IEnumerable<string> GetUserGridColumnNames(Type modelType)
         {
-            var logonContext = (SessionStore.GetCurrentLogonContext() as ILogonContextDataService);
-            if (logonContext == null)
-                return new List<string>();
-
-            return logonContext.GetUserGridColumnNames(modelType, gridColumnMode, gridGroup).Split('~', ' ', ',', ';').ToList();
+            return modelType.GetScaffoldPropertyNames().ToListOrEmptyList();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportVorgaengeVersandsperreReportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = VersandsperreReportViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = VersandsperreReportViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Versandsperren", dt);
 
             return new EmptyResult();
@@ -45,7 +45,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportVorgaengeVersandsperreReportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = VersandsperreReportViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = VersandsperreReportViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Versandsperren", dt, landscapeOrientation: true);
 
             return new EmptyResult();

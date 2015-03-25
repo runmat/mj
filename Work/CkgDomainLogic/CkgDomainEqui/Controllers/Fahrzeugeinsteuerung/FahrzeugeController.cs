@@ -92,7 +92,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUploadSaveFahrzeugeinsteuerungFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = UploadFahrzeugeinsteuerungViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = UploadFahrzeugeinsteuerungViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UploadFahrzeugeinsteuerung", dt);
 
             return new EmptyResult();
@@ -100,7 +100,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUploadSaveFahrzeugeinsteuerungFilteredPdf(int page, string orderBy, string filterBy)
         {
-            var dt = UploadFahrzeugeinsteuerungViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = UploadFahrzeugeinsteuerungViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UploadFahrzeugeinsteuerung", dt, landscapeOrientation: true);
 
             return new EmptyResult();

@@ -34,7 +34,6 @@ else
 @(Html.Telerik()
     .Grid<UploadBestandsdatenModel>()
     .Name(gridName)
-    .XGroup("GridUploadBestandsdaten")
     .Editable(editing => editing.Enabled(!Model.SubmitMode))
     .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
     .XAjaxDataBindingWithUpdateAndDelete("UploadBestandsdatenAjaxBinding", "UploadBestandsdatenAjaxUpdateItem", "UploadBestandsdatenAjaxDeleteItem", "Insurance")

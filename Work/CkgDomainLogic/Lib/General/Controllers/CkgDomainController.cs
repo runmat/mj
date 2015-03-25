@@ -38,6 +38,11 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionStore.SetModel("MainViewModel", value); }
         }
 
+        protected string CurrentGridColumns
+        {
+            get { return SessionHelper.GetSessionString("CurrentGridColumns"); }
+            set { SessionHelper.SetSessionValue("CurrentGridColumns", value); }
+        }
 
         protected string GetDataContextKey<T>()
         {
@@ -151,16 +156,16 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [HttpPost]
-        public ActionResult LogonContextPersistColumns(string jsonColumns, bool persistInDb)
+        public ActionResult GridSettingsPersist(string jsonColumns, bool persistInDb)
         {
-            LogonContext.CurrentGridColumns = jsonColumns;
+            CurrentGridColumns = jsonColumns;
 
             if (persistInDb)
             {
                 var jCols = jsonColumns.GetGridColumns();
                 var colMembers = jCols.Select(j => j.member).ToList();
 
-                LogonContext.SetUserGridColumnNames(GridGroup, string.Join(",", colMembers));
+                //LogonContext.SetUserGridColumnNames(GridGroup, string.Join(",", colMembers));
             }
 
             return Json(new { message = "ok" });
@@ -200,7 +205,7 @@ namespace CkgDomainLogic.General.Controllers
             var exportList = GetGridExportData();
             var modelType = exportList.GetItemType();
 
-            var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
 
             var grid = (IGrid)SessionHelper.GetSessionObject(string.Format("Telerik_Grid_{0}", modelType.Name));
             if (grid == null || grid.Grouping == null || grid.Grouping.Groups == null || grid.Grouping.Groups.Count == 0)
@@ -221,7 +226,7 @@ namespace CkgDomainLogic.General.Controllers
         [ValidateInput(false)]
         public ActionResult GridDataExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = GetGridExportData().GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = GetGridExportData().GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("ExcelExport", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -322,7 +327,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Adressen", dt);
 
             return new EmptyResult();
@@ -330,7 +335,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Adressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -504,7 +509,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Warenkorb", dt);
 
             return new EmptyResult();
@@ -512,7 +517,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Warenkorb", dt, landscapeOrientation: true);
 
             return new EmptyResult();
