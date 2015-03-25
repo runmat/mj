@@ -57,57 +57,73 @@ namespace GeneralTools.Services
             return o;
         }
 
-        public object SaveObject(string objectKey, string ownerKey, string groupKey, string userName, object o, object o2)
+        public void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, ref IPersistableObject o, ref IPersistableObject o2)
         {
-            if (o == null)
-                o = new Store { ObjectKey = SaveIgnoreHint };
+            o = o ?? new Store { ObjectKey = objectKey, ObjectName = SaveIgnoreHint };
             var type = o.GetType();
             var typeName = type.GetFullTypeName();
             var objectData = XmlService.XmlSerializeToString(o);
 
-            if (o2 == null)
-                o2 = new Store { ObjectKey = SaveIgnoreHint };
+            o2 = o2 ?? new Store { ObjectKey = objectKey, ObjectName = SaveIgnoreHint };
             var type2 = o2.GetType();
             var typeName2 = type2.GetFullTypeName();
             var objectData2 = XmlService.XmlSerializeToString(o2);
 
-            var persistedContainersBeforeSave = (IEnumerable<IPersistableObjectContainer>)null;
-            if (objectKey.IsNullOrEmpty())
+
+            var useDoubleSavingToEnsureObjectKey = (objectKey.IsNullOrEmpty() || o.ObjectKey.IsNullOrEmpty() || o2.ObjectKey.IsNullOrEmpty());
+
+            var persistedContainersBeforeSave = (IEnumerable<IPersistableObjectContainer>)new List<IPersistableObjectContainer>();
+            if (useDoubleSavingToEnsureObjectKey )
                 persistedContainersBeforeSave = GetObjectContainers(ownerKey, groupKey);
 
 
             PersistObject(objectKey, ownerKey, groupKey, userName, typeName, objectData, typeName2, objectData2);
 
 
-            var persistedContainersAfterSave = (IEnumerable<IPersistableObjectContainer>)null;
-            if (objectKey.IsNullOrEmpty())
-                persistedContainersAfterSave = GetObjectContainers(ownerKey, groupKey);
+            if (!useDoubleSavingToEnsureObjectKey)
+                return;
 
-            if (persistedContainersBeforeSave == null || persistedContainersAfterSave == null)
-                return o;
+            var persistedContainersAfterSave = GetObjectContainers(ownerKey, groupKey);
 
             var validPersistedObjectContainersBeforeSave = persistedContainersBeforeSave.Where(pc => pc.Object as IPersistableObject != null);
             var validPersistedObjectContainersAfterSave = persistedContainersAfterSave.Where(pc => pc.Object as IPersistableObject != null);
 
             var persistedObjectsBeforeSave = validPersistedObjectContainersBeforeSave.Select(pc => pc.Object as IPersistableObject);
             var persistedObjectsAfterSave = validPersistedObjectContainersAfterSave.Select(pc => pc.Object as IPersistableObject);
+            var newItem = persistedObjectsAfterSave.Except(persistedObjectsBeforeSave, new IPersistableObjectComparer()).FirstOrDefault();
+            if (newItem == null && objectKey.IsNotNullOrEmpty())
+                newItem = persistedObjectsAfterSave.FirstOrDefault(n => n != null && n.ObjectKey == objectKey);
+
             var persistedObjects2BeforeSave = validPersistedObjectContainersBeforeSave.Select(pc => pc.Object2 as IPersistableObject);
             var persistedObjects2AfterSave = validPersistedObjectContainersAfterSave.Select(pc => pc.Object2 as IPersistableObject);
-
-            var newItem = persistedObjectsAfterSave.Except(persistedObjectsBeforeSave, new IPersistableObjectComparer()).FirstOrDefault();
             var newItem2 = persistedObjects2AfterSave.Except(persistedObjects2BeforeSave, new IPersistableObjectComparer()).FirstOrDefault();
-            if (newItem != null || newItem2 != null)
-            {
-                objectKey = (newItem ?? newItem2).ObjectKey;
+            if (newItem2 == null && objectKey.IsNotNullOrEmpty())
+                newItem2 = persistedObjects2AfterSave.FirstOrDefault(n => n != null && n.ObjectKey == objectKey);
 
-                objectData = XmlService.XmlSerializeToString(newItem ?? new Store { ObjectKey = SaveIgnoreHint });
+            if (newItem == null && newItem2 == null)
+                return;
+            
+            objectKey = (newItem ?? newItem2).ObjectKey;
 
-                objectData2 = XmlService.XmlSerializeToString(newItem2 ?? new Store { ObjectKey = SaveIgnoreHint });
+            o = newItem ?? o;
+            objectData = XmlService.XmlSerializeToString(o);
+            type = o.GetType();
+            typeName = type.GetFullTypeName();
 
-                PersistObject(objectKey, ownerKey, groupKey, userName, typeName, objectData, typeName2, objectData2);
-            }
+            o2 = newItem2 ?? o2;
+            objectData2 = XmlService.XmlSerializeToString(o2);
+            type2 = o2.GetType();
+            typeName2 = type2.GetFullTypeName();
 
-            return newItem;
+
+            PersistObject(objectKey, ownerKey, groupKey, userName, typeName, objectData, typeName2, objectData2);
+
+
+            if (newItem != null)
+                o = newItem;
+
+            if (newItem2 != null)
+                o2 = newItem2;
         }
 
         public void DeleteObject(string objectKey)

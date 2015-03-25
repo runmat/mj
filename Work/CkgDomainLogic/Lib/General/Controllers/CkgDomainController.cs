@@ -165,10 +165,13 @@ namespace CkgDomainLogic.General.Controllers
         [HttpPost]
         public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy, bool persistInDb)
         {
-            GridCurrentSettings.Columns = jsonColumns;
-            GridCurrentSettings.OrderBy = orderBy;
-            GridCurrentSettings.FilterBy = filterBy;
-            GridCurrentSettings.GroupBy = groupBy;
+            GridCurrentSettings = new GridSettings
+                {
+                    Columns = jsonColumns,
+                    OrderBy = orderBy,
+                    FilterBy = filterBy,
+                    GroupBy = groupBy
+                };
 
             if (persistInDb)
             {
@@ -379,13 +382,16 @@ namespace CkgDomainLogic.General.Controllers
                         .ToListOrEmptyList();
         }
 
-        protected IPersistableObject PersistanceSaveObject(string groupKey, IPersistableObject o, IPersistableObject o2 = null)
+        protected void PersistanceSaveObject(string groupKey, string objectKey, ref IPersistableObject o, ref IPersistableObject o2)
         {
             var pService = LogonContext.PersistanceService;
             if (pService == null)
-                return null;
+                return;
+
+            if (o == null && o2 == null)
+                return;
             
-            return (IPersistableObject)pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o, o2);
+            pService.SaveObject(objectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, ref o, ref o2);
         }
 
         protected void PersistanceDeleteObject(string objectKey)
@@ -471,7 +477,9 @@ namespace CkgDomainLogic.General.Controllers
 
         protected IPersistableObject ShoppingCartSaveItem(string groupKey, IPersistableObject o)
         {
-            var savedObject = PersistanceSaveObject(groupKey, o);
+            IPersistableObject savedObject = null;
+            IPersistableObject savedObject2 = null;
+            PersistanceSaveObject(groupKey, o.ObjectKey, ref savedObject, ref savedObject2);
             ShoppingCartLoadAndCacheItems();
             return savedObject;
         }
@@ -703,14 +711,17 @@ namespace CkgDomainLogic.General.Controllers
 
         private IPersistableObject PersistablePartialViewSave(IPersistableObject persistableSelector, string defaultObjectName = null)
         {
-            persistableSelector = PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector);
+            IPersistableObject dummy = null;
+            PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector.ObjectKey, ref persistableSelector, ref dummy);
             if (persistableSelector != null)
             {
                 if (persistableSelector.ObjectName.IsNullOrEmpty())
                 {
                     persistableSelector.ObjectName = PersistableSelectorsGetDefaultObjectNameFor(defaultObjectName ?? Localize.MyReport);
-                    persistableSelector = PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector);
+                    PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector.ObjectKey, ref persistableSelector, ref dummy);
                 }
+
+                PersistableSelectorObjectKeyCurrent = persistableSelector.ObjectKey;
 
                 ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
                 ModelState.SetModelValue("ObjectName", persistableSelector.ObjectName);
@@ -743,7 +754,12 @@ namespace CkgDomainLogic.General.Controllers
 
             if (PersistableSelectorPersistMode == "savegrid")
             {
-                PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, null, GridCurrentSettings);
+                IPersistableObject dummy = null;
+                IPersistableObject gridSettings = GridCurrentSettings;
+                
+                PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, objectKey, ref dummy, ref gridSettings);
+                GridCurrentSettings = (gridSettings as GridSettings);
+
                 PersistableSelectorPersistModeReset();
             }
 

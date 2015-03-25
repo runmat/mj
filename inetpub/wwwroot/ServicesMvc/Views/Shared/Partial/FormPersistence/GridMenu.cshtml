@@ -5,6 +5,9 @@
     <div class="persistable-selector-current-for-grid-results">
         <span class="margin-right-5">@Model.ObjectName</span>
 
+        <button id="persistable-grid-save-button2" class='btn mini yellow' title="@Localize.Save">
+            <i class='icon-save'></i>
+        </button>
         <button id="persistable-grid-save-button" class='btn mini yellow' title="@Localize.Save">
             <i class='icon-save'></i>
         </button>
@@ -18,7 +21,13 @@
     var objectKey = '@Model.ObjectKey';
 
     $("#persistable-grid-save-button").on('click', function (e) {
-        //PersistableSelectorSaveGrid(objectKey);
+
+        PersistableSelectorSaveGrid(objectKey);
+
+        e.stopPropagation();
+    });
+    
+    $("#persistable-grid-save-button2").on('click', function (e) {
 
         var orderBy = "Fahrgestellnummer-asc";
         var groupBy = "Standort";
@@ -45,8 +54,6 @@
 
         grid.groups = [];
         grid.group(groupBy);
-
-
 
         e.stopPropagation();
     });
