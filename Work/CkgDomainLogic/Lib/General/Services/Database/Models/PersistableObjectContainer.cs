@@ -24,6 +24,14 @@ namespace CkgDomainLogic.General.Database.Models
         public string ObjectData { get; set; }
 
 
+        [NotMapped, XmlIgnore]
+        public object Object2 { get; set; }
+
+        public string ObjectType2 { get; set; }
+
+        public string ObjectData2 { get; set; }
+
+
         public string OwnerKey { get; set; }
 
         public string GroupKey { get; set; }

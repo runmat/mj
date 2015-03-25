@@ -34,13 +34,13 @@ function FilteredData_Grid_PrepareAllCommandHrefs(grid, persistColumns) {
     });
 
     var persistInDb = false;
-    if (typeof(persistColumns) != 'undefined') {
+    if (typeof(persistColumns) != 'undefined') 
         persistInDb = true;
-    }
-    GridSettingsPersist(jsonColumnsString, persistInDb);
+
+    GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, persistInDb);
 }
 
-function GridSettingsPersist(jsonColumnsString, persistInDb) {
+function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, persistInDb) {
 
     var url = "GridSettingsPersist";
     if (document.URL.toLowerCase().indexOf("autohausportalmvc") > 0)
@@ -51,7 +51,13 @@ function GridSettingsPersist(jsonColumnsString, persistInDb) {
             {
                 type: "POST",
                 url: url,
-                data: { jsonColumns: jsonColumnsString, persistInDb: persistInDb },
+                data: {
+                    jsonColumns: jsonColumnsString,
+                    orderBy: orderBy,
+                    filterBy: filterBy,
+                    groupBy: groupBy,
+                    persistInDb: persistInDb
+                },
                 loadingShow: false,
                 success: function(result) {
                     //alert(result.message);

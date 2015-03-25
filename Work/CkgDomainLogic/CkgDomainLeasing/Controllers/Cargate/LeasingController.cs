@@ -110,7 +110,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportCsvUploadFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = LeasingCargateCsvUploadViewModel.LeasingCargateDisplayListItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = LeasingCargateCsvUploadViewModel.LeasingCargateDisplayListItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("CarGateCsvUpload", dt);
 
             return new EmptyResult();
@@ -118,7 +118,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportCsvUploadFilteredPdf(int page, string orderBy, string filterBy)
         {
-            var dt = LeasingCargateCsvUploadViewModel.LeasingCargateDisplayListItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = LeasingCargateCsvUploadViewModel.LeasingCargateDisplayListItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("CarGateCsvUpload", dt, landscapeOrientation: true);
 
             return new EmptyResult();

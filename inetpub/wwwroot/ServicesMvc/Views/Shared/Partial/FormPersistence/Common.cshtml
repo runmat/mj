@@ -153,9 +153,11 @@
     }
 
     function PersistableSelectorSaveGrid(objectKey) {
-        var form = $(this).closest("form");
         AjaxSetPersistableMode("savegrid", objectKey, function (result) {
-            form.submit();
+            if (result.success)
+                alert("grid successfully saved!");
+            else
+                alert("CAUTION, grid saving ERROR!");
         });
     }
 

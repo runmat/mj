@@ -67,7 +67,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPruefschritteFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = PruefschritteViewModel.PruefschritteFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = PruefschritteViewModel.PruefschritteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Aktionen", dt);
 
             return new EmptyResult();
@@ -75,7 +75,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPruefschritteFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = PruefschritteViewModel.PruefschritteFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = PruefschritteViewModel.PruefschritteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Aktionen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

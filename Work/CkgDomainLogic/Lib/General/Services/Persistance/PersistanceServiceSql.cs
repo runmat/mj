@@ -15,11 +15,13 @@ namespace CkgDomainLogic.General.Services
             return dbItems;
         }
 
-        protected override void PersistObject(string objectKey, string ownerKey, string groupKey, string userName, string objectType, string objectData)
+        protected override void PersistObject(string objectKey, string ownerKey, string groupKey, string userName, string objectType, string objectData, string objectType2, string objectData2)
         {
             var ct = CreateDbContext();
 
-            ct.PersistObject(objectKey, ownerKey, groupKey, userName, objectType, objectData);
+            ct.PersistObject(objectKey, ownerKey, groupKey, userName, 
+                (objectData.Contains(SaveIgnoreHint) ? "" : objectType),  objectData,
+                (objectData2.Contains(SaveIgnoreHint) ? "" : objectType2), objectData2);
         }
 
         protected override void DeletePersistedObject(string objectKey)

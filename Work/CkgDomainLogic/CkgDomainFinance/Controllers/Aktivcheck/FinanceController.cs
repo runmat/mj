@@ -64,7 +64,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportAktivcheckTrefferFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = AktivcheckViewModel.TrefferFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = AktivcheckViewModel.TrefferFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Aktivcheck-Treffer", dt);
 
             return new EmptyResult();
@@ -72,7 +72,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportAktivcheckTrefferFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = AktivcheckViewModel.TrefferFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = AktivcheckViewModel.TrefferFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Aktivcheck-Treffer", dt, landscapeOrientation: true);
 
             return new EmptyResult();

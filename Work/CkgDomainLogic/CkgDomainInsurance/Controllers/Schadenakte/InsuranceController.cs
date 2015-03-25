@@ -261,7 +261,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportSchadenakteDocsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Dokumente", dt);
 
             return new EmptyResult();
@@ -269,7 +269,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportSchadenakteDocsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Dokumente", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -338,7 +338,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDocCategoriesFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Kategorien", dt);
 
             return new EmptyResult();
@@ -346,7 +346,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDocCategoriesFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Kategorien", dt, landscapeOrientation: true);
 
             return new EmptyResult();

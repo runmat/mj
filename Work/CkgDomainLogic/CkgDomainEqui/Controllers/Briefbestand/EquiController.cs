@@ -48,7 +48,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugbriefeFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefbestandViewModel.FahrzeugbriefeFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = BriefbestandViewModel.FahrzeugbriefeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Briefbestand", dt);
 
             return new EmptyResult();
@@ -56,7 +56,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugbriefeFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefbestandViewModel.FahrzeugbriefeFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = BriefbestandViewModel.FahrzeugbriefeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Briefbestand", dt, landscapeOrientation: true);
 
             return new EmptyResult();

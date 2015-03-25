@@ -203,14 +203,6 @@ namespace Telerik.Web.Mvc.UI
 
         #region Auto Grid Column Translation Configuration
 
-        //private static string GridGroup
-        //{
-        //    // ReSharper disable UnusedMember.Local
-        //    get { return SessionHelper.GetSessionString("GridGroup"); }
-        //    // ReSharper restore UnusedMember.Local
-        //    set { SessionHelper.SetSessionValue("GridGroup", value); }
-        //}
-
         public static GridBoundColumnBuilder<TModel> XBound<TModel>(this GridColumnFactory<TModel> builder, string propertyName, bool columnVisibleOnStart = true)
             where TModel : class
         {

@@ -453,7 +453,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDokumentsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DokumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = DokumentViewModel.DokumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Dokumente", dt);
 
             return new EmptyResult();
@@ -461,7 +461,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDokumentsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DokumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = DokumentViewModel.DokumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Dokumente", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -469,7 +469,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDocumentTypesFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = DokumentViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("DocumentTypes", dt);
 
             return new EmptyResult();
@@ -477,7 +477,7 @@ namespace CkgDomainLogic.Controllers
 
         public ActionResult ExportDocumentTypesFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = DokumentViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, CurrentGridColumns);
+            var dt = DokumentViewModel.DocumentTypesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("DocumentTypes", dt, landscapeOrientation: true);
 
             return new EmptyResult();
