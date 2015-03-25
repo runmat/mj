@@ -96,7 +96,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="NLog.config" />
-    <None Include="Ressourcen\20140714-AgisWebService.wsdl" />
+    <None Include="Ressourcen\20140714-AgisWebService.wsdl">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -130,10 +132,16 @@
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
-    <WebReferenceUrl Include="C:\dev\WebServices\AgisWebService\AgisWebService\20140714-AgisWebService.wsdl">
+    <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="C:\dev\Work\WebServices\AgisWebService\AgisWebService\Ressourcen\20140714-AgisWebService.wsdl">
       <UrlBehavior>Dynamic</UrlBehavior>
       <RelPath>Web References\Agis\</RelPath>
-      <UpdateFromURL>C:\dev\WebServices\AgisWebService\AgisWebService\20140714-AgisWebService.wsdl</UpdateFromURL>
+      <UpdateFromURL>C:\dev\Work\WebServices\AgisWebService\AgisWebService\Ressourcen\20140714-AgisWebService.wsdl</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
       <CachedDynamicPropName>
@@ -141,12 +149,6 @@
       <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
       <CachedSettingsPropName>AgisWebService_Agis_CarDocuWebService</CachedSettingsPropName>
     </WebReferenceUrl>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
-      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
-      <Name>GeneralTools</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

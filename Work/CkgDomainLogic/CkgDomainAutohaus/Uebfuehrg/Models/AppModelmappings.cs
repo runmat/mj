@@ -23,6 +23,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                         { "STRAS", "Strasse" },
                         { "PSTLZ", "PLZ" },
                         { "ORT01", "Ort" },
+                        { "LAND1", "Land" },
                         { "TELNR", "Telefon" },
                         { "EMAIL", "Email" },
                         { "FAXNR", "Fax" },
