@@ -11,8 +11,10 @@
         });
         onResize();
 
-        var iframe = document.getElementById('ifrMvcApp');
-        iframe.src = iframe.src;
+        setTimeout(function () {
+            var iframe = document.getElementById('ifrMvcApp');
+            iframe.src = iframe.src;
+        }, 500);
     }
 
     function isIeAndVersion() {
