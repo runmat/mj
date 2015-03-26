@@ -42,6 +42,52 @@ namespace CkgDomainLogic.WFM.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public string AktuellerAuftragVorgangsNr { get; set; }
+
+        public WfmAuftrag AktuellerAuftrag { get { return Auftraege.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == AktuellerAuftragVorgangsNr); } }
+
+        [XmlIgnore]
+        public List<WfmInfo> Informationen
+        {
+            get { return PropertyCacheGet(() => new List<WfmInfo>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmInfo> InformationenFiltered
+        {
+            get { return PropertyCacheGet(() => Informationen); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmDokumentInfo> Dokumente
+        {
+            get { return PropertyCacheGet(() => new List<WfmDokumentInfo>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmDokumentInfo> DokumenteFiltered
+        {
+            get { return PropertyCacheGet(() => Dokumente); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmToDo> Aufgaben
+        {
+            get { return PropertyCacheGet(() => new List<WfmToDo>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmToDo> AufgabenFiltered
+        {
+            get { return PropertyCacheGet(() => Aufgaben); }
+            private set { PropertyCacheSet(value); }
+        }
+
         public void DataInit()
         {
             InitFeldnamen();
@@ -51,6 +97,14 @@ namespace CkgDomainLogic.WFM.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.AuftraegeFiltered);
+            DataMarkForRefreshDetails();
+        }
+
+        private void DataMarkForRefreshDetails()
+        {
+            PropertyCacheClear(this, m => m.InformationenFiltered);
+            PropertyCacheClear(this, m => m.DokumenteFiltered);
+            PropertyCacheClear(this, m => m.AufgabenFiltered);
         }
 
         private void InitFeldnamen()
@@ -78,9 +132,41 @@ namespace CkgDomainLogic.WFM.ViewModels
                 state.AddModelError("", Localize.NoDataFound);
         }
 
+        public void LoadAuftragsDetails(string vorgangsNr, ModelStateDictionary state)
+        {
+            DataMarkForRefreshDetails();
+
+            AktuellerAuftragVorgangsNr = vorgangsNr;
+
+            if (AktuellerAuftrag == null)
+            {
+                state.AddModelError("", Localize.NoDataFound);
+                return;
+            }
+
+            Informationen = DataService.GetInfos(AktuellerAuftragVorgangsNr);
+            Dokumente = DataService.GetDokumentInfos(AktuellerAuftragVorgangsNr);
+            Aufgaben = DataService.GetToDos(AktuellerAuftragVorgangsNr);
+        }
+
         public void FilterAuftraege(string filterValue, string filterProperties)
         {
             AuftraegeFiltered = Auftraege.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterInformationen(string filterValue, string filterProperties)
+        {
+            InformationenFiltered = Informationen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterDokumente(string filterValue, string filterProperties)
+        {
+            DokumenteFiltered = Dokumente.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterAufgaben(string filterValue, string filterProperties)
+        {
+            AufgabenFiltered = Aufgaben.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
     }
 }

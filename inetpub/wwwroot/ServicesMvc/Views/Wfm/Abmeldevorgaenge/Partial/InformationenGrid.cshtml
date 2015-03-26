@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.WFM.Models
+
+@{ var gridName = "GridInformationen"; }
+
+@(Html.Telerik()
+    .Grid<WfmInfo>()
+    .Name(gridName)
+    .XGroup("GridWfmInformationen")
+    .XAjaxDataBinding("InformationenAjaxBinding", "Wfm")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.LaufendeNr).Visible(false);
+        columns.XBound(c => c.DatumZeit).Format("{0:dd.MM.yyyy HH:mm:ss}");
+        columns.XBound(c => c.ToDoWer);
+        columns.XBound(c => c.Text);
+        columns.XBound(c => c.User);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.LaufendeNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportInformationenFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportInformationenFilteredPDF", "Wfm");
+    })
+)

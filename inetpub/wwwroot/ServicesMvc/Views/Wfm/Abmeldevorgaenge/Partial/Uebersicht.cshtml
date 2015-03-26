@@ -1,0 +1,12 @@
+﻿@using CkgDomainLogic.WFM.Models
+@model WfmAuftrag
+
+<form action="#" class="form-horizontal">
+    
+    @Html.FormTextBlockFor(m => m.VorgangsNrAbmeldeauftrag, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+
+</form>

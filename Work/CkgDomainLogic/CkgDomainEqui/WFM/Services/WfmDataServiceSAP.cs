@@ -20,14 +20,14 @@ namespace CkgDomainLogic.WFM.Services
 
         public List<WfmAuftragFeldname> GetFeldnamen()
         {
-            Z_WFM_READ_KONVERTER_01.Init(SAP, "I_AG", LogonContext.KundenNr.PadLeft(10, '0'));
+            Z_WFM_READ_KONVERTER_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
             return AppModelMappings.Z_WFM_READ_KONVERTER_01_GT_DATEN_To_WfmAuftragFeldname.Copy(Z_WFM_READ_KONVERTER_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
 
         public List<WfmAuftrag> GetAbmeldeauftraege(WfmAuftragSelektor selector)
         {
-            Z_WFM_READ_AUFTRAEGE_01.Init(SAP, "I_AG", LogonContext.KundenNr.PadLeft(10, '0'));
+            Z_WFM_READ_AUFTRAEGE_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
             if (!String.IsNullOrEmpty(selector.Selektionsfeld1Name))
                 SAP.SetImportParameter("I_SELEKTION1", selector.Selektionsfeld1.BoolToX());
@@ -81,6 +81,27 @@ namespace CkgDomainLogic.WFM.Services
             }
 
             return AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_DATEN_To_WfmAuftrag.Copy(Z_WFM_READ_AUFTRAEGE_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public List<WfmInfo> GetInfos(string vorgangsNr)
+        {
+            Z_WFM_READ_INFO_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+
+            return AppModelMappings.Z_WFM_READ_INFO_01_GT_DATEN_To_WfmInfo.Copy(Z_WFM_READ_INFO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public List<WfmDokumentInfo> GetDokumentInfos(string vorgangsNr)
+        {
+            Z_WFM_LIST_DOKU_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+
+            return AppModelMappings.Z_WFM_LIST_DOKU_01_GT_DOKUMENTE_To_WfmDokumentInfo.Copy(Z_WFM_LIST_DOKU_01.GT_DOKUMENTE.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public List<WfmToDo> GetToDos(string vorgangsNr)
+        {
+            Z_WFM_READ_TODO_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF_VON", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+
+            return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
     }
 }

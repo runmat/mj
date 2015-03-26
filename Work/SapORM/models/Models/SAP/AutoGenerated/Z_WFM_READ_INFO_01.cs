@@ -43,6 +43,10 @@ namespace SapORM.Models
 
 			public string ZEIT { get; set; }
 
+			public string TODO_WER { get; set; }
+
+			public string TEXT { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -53,6 +57,8 @@ namespace SapORM.Models
 					ZUSER = (string)row["ZUSER"],
 					DATUM = (string.IsNullOrEmpty(row["DATUM"].ToString())) ? null : (DateTime?)row["DATUM"],
 					ZEIT = (string)row["ZEIT"],
+					TODO_WER = (string)row["TODO_WER"],
+					TEXT = (string)row["TEXT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

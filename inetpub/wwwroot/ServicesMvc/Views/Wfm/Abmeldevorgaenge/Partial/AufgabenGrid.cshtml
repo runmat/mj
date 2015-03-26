@@ -1,0 +1,29 @@
+﻿@using CkgDomainLogic.WFM.Models
+
+@{ var gridName = "GridAufgaben"; }
+
+@(Html.Telerik()
+    .Grid<WfmToDo>()
+    .Name(gridName)
+    .XGroup("GridWfmAufgaben")
+    .XAjaxDataBinding("AufgabenAjaxBinding", "Wfm")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.LaufendeNr).Visible(false);
+        columns.XBound(c => c.TaskId).Visible(false);
+        columns.XBound(c => c.DatumZeit).Format("{0:dd.MM.yyyy HH:mm:ss}");
+        columns.XBound(c => c.ToDoWer);
+        columns.XBound(c => c.Aufgabe);
+        columns.XBound(c => c.User);
+        columns.XBound(c => c.Anmerkung);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.LaufendeNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportAufgabenFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportAufgabenFilteredPDF", "Wfm");
+    })
+)

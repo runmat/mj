@@ -89,8 +89,69 @@ namespace CkgDomainLogic.WFM.Models
             }
         }
 
-        #endregion
+        static public ModelMapping<Z_WFM_READ_INFO_01.GT_DATEN, WfmInfo> Z_WFM_READ_INFO_01_GT_DATEN_To_WfmInfo
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_READ_INFO_01.GT_DATEN, WfmInfo>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Datum = s.DATUM;
+                        d.LaufendeNr = s.LFD_NR;
+                        d.Text = s.TEXT;
+                        d.ToDoWer = s.TODO_WER;
+                        d.User = s.ZUSER;
+                        d.Zeit = s.ZEIT;
+                    }));
+            }
+        }
 
+        static public ModelMapping<Z_WFM_LIST_DOKU_01.GT_DOKUMENTE, WfmDokumentInfo> Z_WFM_LIST_DOKU_01_GT_DOKUMENTE_To_WfmDokumentInfo
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_LIST_DOKU_01.GT_DOKUMENTE, WfmDokumentInfo>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.ArchivId = s.ARCHIV_ID;
+                        d.Dateiname = s.DATEINAME;
+                        d.Dokumentart = s.AR_OBJECT;
+                        d.ObjectId = s.OBJECT_ID;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_WFM_READ_TODO_01.GT_DATEN, WfmToDo> Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_READ_TODO_01.GT_DATEN, WfmToDo>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Anmerkung = s.ANMERKUNG;
+                        d.Aufgabe = s.AUFGABE;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.FolgetaskAufgabe = s.AUFGABE_FOLGE_TASK;
+                        d.FolgetaskId = s.FOLGE_TASK_ID;
+                        d.Istdatum = s.IST_DATUM;
+                        d.Istzeit = s.IST_ZEIT;
+                        d.LaufendeNr = s.LFD_NR;
+                        d.Solldatum = s.SOLL_DATUM;
+                        d.Sollzeit = s.SOLL_ZEIT;
+                        d.Startdatum = s.STARTDATUM;
+                        d.Startzeit = s.STARTZEIT;
+                        d.Status = s.STATUS;
+                        d.TaskId = s.TASK_ID;
+                        d.ToDoWer = s.TODO_WER;
+                        d.User = s.ZUSER;
+                    }));
+            }
+        }
+
+        #endregion
 
         #region ToSap
 

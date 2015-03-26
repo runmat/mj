@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.WFM.Models
+
+@{ var gridName = "GridDokumente"; }
+
+@(Html.Telerik()
+    .Grid<WfmDokumentInfo>()
+    .Name(gridName)
+    .XGroup("GridWfmDokumente")
+    .XAjaxDataBinding("DokumenteAjaxBinding", "Wfm")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.ArchivId).Visible(false);
+        columns.XBound(c => c.ObjectId).Visible(false);
+        columns.XBound(c => c.Dokumentart);
+        columns.XBound(c => c.Dateiname);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Dokumentart).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDokumenteFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportDokumenteFilteredPDF", "Wfm");
+    })
+)

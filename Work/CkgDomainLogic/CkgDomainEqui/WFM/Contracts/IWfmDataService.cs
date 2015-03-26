@@ -9,5 +9,11 @@ namespace CkgDomainLogic.WFM.Contracts
         List<WfmAuftragFeldname> GetFeldnamen();
 
         List<WfmAuftrag> GetAbmeldeauftraege(WfmAuftragSelektor selector);
+
+        List<WfmInfo> GetInfos(string vorgangsNr);
+
+        List<WfmDokumentInfo> GetDokumentInfos(string vorgangsNr);
+
+        List<WfmToDo> GetToDos(string vorgangsNr);
     }
 }

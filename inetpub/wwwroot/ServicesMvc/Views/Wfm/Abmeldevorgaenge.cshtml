@@ -5,7 +5,7 @@
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("Partial/AuftraegeSuche", Model.Selektor)
+    @Html.Partial("Abmeldevorgaenge/AuftraegeSuche", Model.Selektor)
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -36,6 +36,17 @@
         $("#divAuftragDetail").html('');
     }
 
+    function GetAuftraegeGrid() {
+        return $("#GridAuftraege").data("tGrid");
+    }
+
+    function TryAuftraegeGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetAuftraegeGrid()) !== "undefined") {
+            GetAuftraegeGrid().ajaxRequest();
+        }
+    }
+
     function OnDataBound_GridAuftraege() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
@@ -54,22 +65,25 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function ShowAuftragDetailAjax(id) {
-//        LoadingShow();
-//        $.ajax(
-//        {
-//            type: "POST",
-//            url: "GetAuftragDetailPartial",
-//            loadingShow: true,
-//            data: { vorgangsnr: id },
-//            success: function (result) {
-//                ShowAuftragDetail(result);
-//            }
-//        });
+    function ShowAuftragsDetailAjax(id) {
+        LoadingShow();
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetAuftragsDetailPartial",
+            loadingShow: true,
+            data: { vorgangsnr: id },
+            success: function (result) {
+                ShowAuftragsDetail(result);
+            }
+        });
     }
 
-    function ShowAuftragDetail(result) {
+    function ShowAuftragsDetail(result) {
         $("#divAuftragDetail").html(result);
+        GridAllColumnFilterApplyToGrid("GridInformationen");
+        GridAllColumnFilterApplyToGrid("GridDokumente");
+        GridAllColumnFilterApplyToGrid("GridAufgaben");
         $("#divAuftraegeGrid").slideUp();
         $("#divAuftragDetail").slideDown();
         $("#btnBackToResult").show();
@@ -77,10 +91,85 @@
         FormPreparePrivateAjax();
     }
 
-    function CloseAuftragDetail() {
+    function CloseAuftragsDetail() {
         $("#btnBackToResult").hide();
         $("#divAuftragDetail").slideUp(function () { $("#divAuftraegeGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
         $("#divAuftraegeGrid").slideDown();
+    }
+
+    function GetInformationenGrid() {
+        return $("#GridInformationen").data("tGrid");
+    }
+
+    function TryInformationenGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetInformationenGrid()) !== "undefined") {
+            GetInformationenGrid().ajaxRequest();
+        }
+    }
+
+    function OnDataBound_GridInformationen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridInformationen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridInformationen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GetDokumenteGrid() {
+        return $("#GridDokumente").data("tGrid");
+    }
+
+    function TryDokumenteGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetDokumenteGrid()) !== "undefined") {
+            GetDokumenteGrid().ajaxRequest();
+        }
+    }
+
+    function OnDataBound_GridDokumente() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridDokumente() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridDokumente() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GetAufgabenGrid() {
+        return $("#GridAufgaben").data("tGrid");
+    }
+
+    function TryAufgabenGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetAufgabenGrid()) !== "undefined") {
+            GetAufgabenGrid().ajaxRequest();
+        }
+    }
+
+    function OnDataBound_GridAufgaben() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridAufgaben() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAufgaben() {
+        FilteredData_Grid_OnColumnReorder($(this));
     }
 
 </script>

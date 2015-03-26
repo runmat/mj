@@ -7,12 +7,12 @@
     .Grid<WfmAuftrag>()
     .Name(gridName)
 
-    .XGroup("GridAuftraege")
+    .XGroup("GridWfmAuftraege")
     .XAjaxDataBinding("AuftraegeAjaxBinding", "Wfm")
     .Columns(columns =>
     {
         columns.XBound(c => c.VorgangsNrAbmeldeauftrag).Width(100).Title("").Filterable(false).Sortable(false).ClientTemplate(
-                "<button onclick='ShowAuftragDetailAjax(\"<#= data.VorgangsNrAbmeldeauftrag #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>");
+                "<button onclick='ShowAuftragsDetailAjax(\"<#= data.VorgangsNrAbmeldeauftrag #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>");
         
         columns.XBound(c => c.VorgangsNrAbmeldeauftrag);
         columns.XBound(c => c.AuftragsNr);

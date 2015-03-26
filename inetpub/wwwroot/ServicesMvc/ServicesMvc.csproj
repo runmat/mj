@@ -4263,8 +4263,16 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge.cshtml" />
-    <Content Include="Views\Wfm\Partial\AuftraegeGrid.cshtml" />
-    <Content Include="Views\Wfm\Partial\AuftraegeSuche.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeSuche.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftragsDetail.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Uebersicht.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Informationen.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\InformationenGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Dokumente.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Aufgaben.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\DokumenteGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
