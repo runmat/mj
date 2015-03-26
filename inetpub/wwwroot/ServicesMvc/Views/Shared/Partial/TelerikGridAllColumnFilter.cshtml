@@ -59,7 +59,7 @@
                         <i class='icon-filter'></i><i class='icon-camera margin-left-5'></i> <span class="text"> Abbrechen</span>
                 </button>
 
-                <button class="grid-column-overall-quick-filter-reset btn blue mini tooltips hide" onclick="GridAllColumnFilterQuickMouseClickFilterReset()"
+                <button class="grid-column-overall-quick-filter-reset btn blue mini tooltips hide" 
                         data-original-title="@Localize.GridFilterCameraZuruecksetzen" data-placement="bottom">
                     <i class='icon-filter'></i><i class='icon-remove margin-left-5'></i>
                 </button>
@@ -90,13 +90,18 @@
             grid.pageTo(1);
         });
 
+        $("#" + gridName + " .grid-column-overall-quick-filter-reset").click(function () {
+            GridAllColumnFilterQuickMouseClickFilterReset($(this));
+        });
+
         FilterGridInit(gridName);
     }
 
     var _gridAllColumnFilterQuickMouseClickFilter_isActive = false;
-    function GridAllColumnFilterQuickMouseClickFilterReset() {
-        $(".grid-column-overall-filter").val("");
-        FilterGridAllColumns($(".grid-column-overall-filter"));
+    function GridAllColumnFilterQuickMouseClickFilterReset(btn) {
+        var gridID = btn.parents(".t-widget").first().attr("id");
+        $("#" + gridID + " .grid-column-overall-filter").val("");
+        FilterGridAllColumns($("#" + gridID + " .grid-column-overall-filter"));
         $(".grid-column-overall-quick-filter-reset").hide();
     }
 
@@ -117,8 +122,9 @@
                 .css("cursor", "crosshair")
                 .on("click",
                     function () {
-                        $(".grid-column-overall-filter").val($(this).text());
-                        FilterGridAllColumns($(".grid-column-overall-filter"));
+                        var gridID = $(this).parents(".t-widget").first().attr("id");
+                        $("#" + gridID + " .grid-column-overall-filter").val($(this).text());
+                        FilterGridAllColumns($("#" + gridID + " .grid-column-overall-filter"));
                         $(".grid-column-overall-quick-filter-reset").show();
                         $(this).removeClass("grid-column-overall-quick-filter-highlighted");
                         GridAllColumnFilterQuickMouseClickFilterSwapPickingMode();

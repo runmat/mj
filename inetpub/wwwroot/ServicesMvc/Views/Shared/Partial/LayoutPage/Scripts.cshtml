@@ -352,9 +352,9 @@
 
             $(this).keyup(function() {
                 if ($(this).val() === '')
-                    $(".grid-column-overall-quick-filter-reset").hide();
+                    $("#" + gridID + " .grid-column-overall-quick-filter-reset").hide();
                 else
-                    $(".grid-column-overall-quick-filter-reset").show();
+                    $("#" + gridID + " .grid-column-overall-quick-filter-reset").show();
                 
                 if (_gridAllColumnFilterQuickMouseClickFilter_isActive)
                     GridAllColumnFilterQuickMouseClickFilterSwapPickingMode();
