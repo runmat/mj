@@ -16,9 +16,17 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult Abmeldevorgaenge()
         {
-            ViewModel.DataInit();
+            ViewModel.DataInit(SelektionsModus.Abmeldevorgaenge);
 
             return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult KlaerfallWorkplace()
+        {
+            ViewModel.DataInit(SelektionsModus.KlaerfallWorkplace);
+
+            return View("Abmeldevorgaenge", ViewModel);
         }
 
         [HttpPost]

@@ -44,6 +44,17 @@ namespace CkgDomainLogic.WFM.Services
             if (!String.IsNullOrEmpty(selector.Kennzeichen))
                 SAP.SetImportParameter("I_KENNZ", selector.Kennzeichen);
 
+            if (selector.Modus == SelektionsModus.KlaerfallWorkplace)
+            {
+                SAP.SetImportParameter("I_TODO_WER", selector.ToDoWer);
+
+                if (selector.SolldatumVonBis.IsSelected)
+                {
+                    var solldatumList = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_SOLLDAT_From_SolldatumSelektion.CopyBack(new List<SolldatumSelektion> { new SolldatumSelektion { SolldatumVonBis = selector.SolldatumVonBis } });
+                    SAP.ApplyImport(solldatumList);
+                }
+            }
+
             if (!String.IsNullOrEmpty(selector.KundenAuftragsNr))
             {
                 var kdAufNrList = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_KDAUF_From_KundenAuftragsNrSelektion.CopyBack(new List<KundenAuftragsNrSelektion> { new KundenAuftragsNrSelektion { KundenAuftragsNrVon = selector.KundenAuftragsNr } });

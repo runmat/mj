@@ -88,8 +88,11 @@ namespace CkgDomainLogic.WFM.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
-        public void DataInit()
+        public string Title { get { return (Selektor.Modus == SelektionsModus.KlaerfallWorkplace ? Localize.Wfm_KlaerfallWorkplace : Localize.Wfm_Abmeldevorgaenge); } }
+
+        public void DataInit(SelektionsModus modus)
         {
+            Selektor = new WfmAuftragSelektor { Modus = modus, ToDoWer = "ALLE" };
             InitFeldnamen();
             DataMarkForRefresh();
         }

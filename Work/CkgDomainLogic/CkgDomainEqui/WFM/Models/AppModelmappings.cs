@@ -252,8 +252,8 @@ namespace CkgDomainLogic.WFM.Models
                     , null
                     , (s, d) =>
                     {
-                        d.SOLLDATUM_VON = (s.SolldatumVonBis.IsSelected ? s.SolldatumVonBis.StartDate : null);
-                        d.SOLLATUM_BIS = (s.SolldatumVonBis.IsSelected ? s.SolldatumVonBis.EndDate : null);
+                        d.SOLLDATUM_VON = s.SolldatumVonBis.StartDate;
+                        d.SOLLATUM_BIS = s.SolldatumVonBis.EndDate;
                     }));
             }
         }

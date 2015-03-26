@@ -3,7 +3,7 @@
 
 <div id="divAuftraegeSuche">
     @using (Ajax.BeginForm("LoadAuftraege", "Wfm", null,
-        new MvcAjaxOptions("divAuftraegeSuche") { OnComplete = "ShowAuftraege();" }, new { id = "AuftraegeForm" }))
+        new MvcAjaxOptions("divAuftraegeSuche") { OnComplete = "ShowAuftraege();" }, new { id = "AuftraegeSucheForm" }))
     {    
         <div class="form-horizontal" id="searchForm">
             
@@ -53,7 +53,15 @@
             {
                 @Html.FormTextBoxFor(m => m.Referenz3, new { @class = "m-wrap" }, null, null, null, Model.Referenz3Name)
             }
+            
+            @Html.HiddenFor(m => m.Modus)
+            
+            @if (Model.Modus == SelektionsModus.KlaerfallWorkplace)
+            {
+                @Html.FormDateRangePickerFor(m => m.SolldatumVonBis, new { @class = "m-wrap" })
 
+                @Html.FormRadioButtonListFor(m => m.ToDoWer, Model.AlleToDoWer.ToSelectList())
+            }
 
             @*@Html.FormRequiredFieldsSummary()*@
 
@@ -67,7 +75,6 @@
         </script>
     }
 </div>
-
 
 <script type="text/javascript">
 

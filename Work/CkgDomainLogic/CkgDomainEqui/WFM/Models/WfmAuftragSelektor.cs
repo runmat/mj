@@ -6,6 +6,12 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.WFM.Models
 {
+    public enum SelektionsModus
+    {
+        Abmeldevorgaenge,
+        KlaerfallWorkplace
+    }
+
     public class WfmAuftragSelektor : Store 
     {
         public List<SelectItem> AlleAbmeldearten
@@ -74,5 +80,26 @@ namespace CkgDomainLogic.WFM.Models
         public string Referenz1Name { get; set; }
         public string Referenz2Name { get; set; }
         public string Referenz3Name { get; set; }
+
+        public SelektionsModus Modus { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Date)]
+        public DateRange SolldatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) { IsSelected = false }); } set { PropertyCacheSet(value); } }
+
+        public List<SelectItem> AlleToDoWer
+        {
+            get
+            {
+                return PropertyCacheGet(() => new List<SelectItem>
+                {
+                    new SelectItem("ALLE", Localize.All),
+                    new SelectItem("DAD", "DAD"),
+                    new SelectItem("KUNDE", Localize.Customer)
+                });
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.ToDoWho)]
+        public string ToDoWer { get; set; }
     }
 }
