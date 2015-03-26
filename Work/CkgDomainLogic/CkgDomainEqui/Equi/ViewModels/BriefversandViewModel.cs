@@ -411,6 +411,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode, bool briefVersand, bool schluesselVersand, bool schluesselKombiVersand)
         {
+            var versandAuftrag = new VersandAuftragsAnlage();
             var versandAuftrag = new VersandAuftragsAnlage
             {
                 KundenNr = BriefbestandDataService.ToDataStoreKundenNr(LogonContext.KundenNr),
@@ -431,7 +432,22 @@ namespace CkgDomainLogic.Equi.ViewModels
                 Mahnverfahren = (VersandAdresse.Kennung == "ZULASSUNG" ? "0001" : "0002")
             };
 
+            // Mapping der Versandadress-Daten muss vor der Zuweisung der weiteren Properties passieren, weil sonst ggf. die falschen Daten überschrieben werden
             ModelMapping.Copy(VersandAdresse, versandAuftrag);
+
+            versandAuftrag.KundenNr = BriefbestandDataService.ToDataStoreKundenNr(LogonContext.KundenNr);
+            versandAuftrag.VIN = vin;
+            versandAuftrag.BriefVersand = true;
+            versandAuftrag.SchluesselVersand = false;
+            versandAuftrag.StuecklistenKomponente = stuecklistenCode;
+            versandAuftrag.AbmeldeKennzeichen = (!VersandOptionen.AufAbmeldungWartenAvailable || !VersandOptionen.AufAbmeldungWarten);
+            versandAuftrag.AbcKennzeichen = VersandartOptionen.Versandart;
+            versandAuftrag.MaterialNr = VersandOptionen.VersandOption.MaterialCode;
+            versandAuftrag.DadAnforderungsDatum = DateTime.Today;
+            versandAuftrag.ErfassungsUserName = LogonContext.UserName;
+            versandAuftrag.Bemerkung = VersandOptionen.Bemerkung;
+            versandAuftrag.Versandgrund = VersandOptionen.VersandGrund.Code;
+            versandAuftrag.Mahnverfahren = (VersandAdresse.Kennung == "ZULASSUNG" ? "0001" : "0002");
 
             return versandAuftrag;
         }
