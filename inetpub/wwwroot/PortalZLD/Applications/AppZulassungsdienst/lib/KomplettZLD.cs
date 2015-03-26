@@ -185,7 +185,8 @@ namespace AppZulassungsdienst.lib
 
                     foreach (var item in AktuellerVorgang.Positionen)
                     {
-                        item.MaterialName = item.CombineBezeichnungMenge();
+                        if (item.WebMaterialart == "D")
+                            item.MaterialName = item.CombineBezeichnungMenge();
 
                         zldDataContext.ZLDVorgangPosition.InsertOnSubmit(ModelMapping.Copy<ZLDPosition, ZLDVorgangPosition>(item));
                     }
@@ -211,7 +212,8 @@ namespace AppZulassungsdienst.lib
 
                     foreach (var item in AktuellerVorgang.Positionen)
                     {
-                        item.MaterialName = item.CombineBezeichnungMenge();
+                        if (item.WebMaterialart == "D")
+                            item.MaterialName = item.CombineBezeichnungMenge();
 
                         var tmpPosition = zldDataContext.ZLDVorgangPosition.FirstOrDefault(p => p.SapId == kopfdaten.SapId && p.PositionsNr == item.PositionsNr);
                         if (tmpPosition != null)
@@ -734,10 +736,6 @@ namespace AppZulassungsdienst.lib
                     var adressdaten = ModelMapping.Copy<ZLDVorgangAdresse, ZLDAdressdaten>(tmpAdresse);
                     var positionen = ModelMapping.Copy<ZLDVorgangPosition, ZLDPosition>(tmpPositionen).ToList();
 
-                    var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == kopfdaten.KundenNr);
-                    if (kunde != null)
-                        kopfdaten.BarzahlungKunde = kunde.Bar;
-
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;
 
@@ -755,7 +753,7 @@ namespace AppZulassungsdienst.lib
 
                     positionen.RemoveAll(p => p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0));
                     positionen.RemoveAll(p => p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0));
-                    positionen.ForEach(p => p.MaterialName = p.CombineBezeichnungMenge());
+                    positionen.Where(p => p.WebMaterialart == "D").ToList().ForEach(p => p.MaterialName = p.CombineBezeichnungMenge());
                     posListeWeb.AddRange(positionen);
                 }
 

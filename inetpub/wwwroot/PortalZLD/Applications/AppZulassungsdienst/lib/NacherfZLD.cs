@@ -327,7 +327,12 @@ namespace AppZulassungsdienst.lib
                 if (posNr == "10")
                 {
                     // Hauptposition -> kompletten Vorgang updaten
-                    Vorgangsliste.Where(v => v.SapId == sapId).ToList().ForEach(v => v.WebBearbeitungsStatus = newStatus);
+                    foreach (var item in Vorgangsliste.Where(v => v.SapId == sapId).ToList())
+                    {
+                        // "A" oder "O" nur setzen, wenn Unterpos. kein Loeschkz hat
+                        if ((newStatus != "A" && newStatus != "O") || item.WebBearbeitungsStatus != "L")
+                            item.WebBearbeitungsStatus = newStatus;
+                    }
                 }
                 else
                 {

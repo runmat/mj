@@ -268,8 +268,6 @@ namespace AppZulassungsdienst.forms
                     IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
                 }
 
-                chkEinzug.Checked = false;
-                chkRechnung.Checked = false;
                 pnlBankdaten.Attributes.Remove("style");
                 pnlBankdaten.Attributes.Add("style", "display:block");
                 Panel1.Attributes.Remove("style");
@@ -283,7 +281,7 @@ namespace AppZulassungsdienst.forms
 
                 var kopfdaten = objVorVersand.AktuellerVorgang.Kopfdaten;
 
-                if (!String.IsNullOrEmpty(kopfdaten.KundenNr) && kopfdaten.KundenNr == txtKunnr.Text)
+                if (!kopfdaten.IsNewVorgang && kopfdaten.KundenNr == txtKunnr.Text)
                 {
                     chkEinzug.Checked = objVorVersand.AktuellerVorgang.Bankdaten.Einzug.IsTrue();
                     chkRechnung.Checked = objVorVersand.AktuellerVorgang.Bankdaten.Rechnung.IsTrue();

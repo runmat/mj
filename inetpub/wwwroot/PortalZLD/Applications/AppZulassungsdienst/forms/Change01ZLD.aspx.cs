@@ -261,11 +261,9 @@ namespace AppZulassungsdienst.forms
                 txtRef1Bank.Text = txtReferenz1.Text.ToUpper();
                 txtRef2Bank.Text = txtReferenz2.Text.ToUpper();
 
-                chkEinzug.Checked = IsCPDmitEinzug;
-
                 var kopfdaten = objVorerf.AktuellerVorgang.Kopfdaten;
 
-                if (!String.IsNullOrEmpty(kopfdaten.KundenNr) && kopfdaten.KundenNr == txtKunnr.Text)
+                if (!kopfdaten.IsNewVorgang && kopfdaten.KundenNr == txtKunnr.Text)
                 {
                     chkEinzug.Checked = objVorerf.AktuellerVorgang.Bankdaten.Einzug.IsTrue();
                     chkRechnung.Checked = objVorerf.AktuellerVorgang.Bankdaten.Rechnung.IsTrue();
