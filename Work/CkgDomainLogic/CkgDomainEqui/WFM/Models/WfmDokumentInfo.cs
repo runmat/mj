@@ -5,6 +5,9 @@ namespace CkgDomainLogic.WFM.Models
 {
     public class WfmDokumentInfo
     {
+        [LocalizedDisplay(LocalizeConstants.CaseNoDeregistrationOrder)]
+        public string VorgangsNrAbmeldeauftrag { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.DocumentType)]
         public string Dokumentart { get; set; }
 

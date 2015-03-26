@@ -15,5 +15,7 @@ namespace CkgDomainLogic.WFM.Contracts
         List<WfmDokumentInfo> GetDokumentInfos(string vorgangsNr);
 
         List<WfmToDo> GetToDos(string vorgangsNr);
+
+        string SaveNeueInformation(WfmInfo neueInfo);
     }
 }

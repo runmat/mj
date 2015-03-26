@@ -3,6 +3,8 @@
 
 <h3 class="page-title" id="headerTitle">@Model.Title <small></small></h3>
 
+@Html.SpanAlert("spanAlertAbmeldevorgaenge")
+
 @using (Html.FormSearchBox())
 {
     @Html.Partial("Abmeldevorgaenge/AuftraegeSuche", Model.Selektor)

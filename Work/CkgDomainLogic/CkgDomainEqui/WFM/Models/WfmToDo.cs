@@ -7,6 +7,9 @@ namespace CkgDomainLogic.WFM.Models
 {
     public class WfmToDo
     {
+        [LocalizedDisplay(LocalizeConstants.CaseNoDeregistrationOrder)]
+        public string VorgangsNrAbmeldeauftrag { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.SequenceNo)]
         public string LaufendeNr { get; set; }
 

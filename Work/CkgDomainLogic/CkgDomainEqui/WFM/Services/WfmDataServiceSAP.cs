@@ -114,5 +114,25 @@ namespace CkgDomainLogic.WFM.Services
 
             return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
+
+        public string SaveNeueInformation(WfmInfo neueInfo)
+        {
+            Z_WFM_WRITE_INFO_01.Init(SAP, "I_AG, I_USER", LogonContext.KundenNr.ToSapKunnr(), LogonContext.UserName);
+
+            var infoList = AppModelMappings.Z_WFM_WRITE_INFO_01_GT_DATEN_From_WfmInfo.CopyBack(new List<WfmInfo> { neueInfo }).ToList();
+            SAP.ApplyImport(infoList);
+
+            SAP.Execute();
+
+            if (SAP.ResultCode != 0)
+                return SAP.ResultMessage;
+
+            var outList = Z_WFM_WRITE_INFO_01.GT_DATEN.GetExportList(SAP);
+
+            if (outList.Any(o => !String.IsNullOrEmpty(o.ERR)))
+                return outList.First(o => !String.IsNullOrEmpty(o.ERR)).ERR;
+
+            return "";
+        }
     }
 }

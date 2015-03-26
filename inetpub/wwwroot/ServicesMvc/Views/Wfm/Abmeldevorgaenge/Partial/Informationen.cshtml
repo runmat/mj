@@ -1,10 +1,45 @@
-﻿@using CkgDomainLogic.WFM.Models
-@model WfmAuftrag
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
 
 @Html.Partial("Abmeldevorgaenge/Partial/InformationenGrid")
 
-<form action="#" class="form-horizontal">
+<div class="form-horizontal">
+    <div class="form-actions">
+        <input type="text" id="txtNewInformation" class="input-xxlarge" placeholder="@Localize.NewInformation"/>
+        <button type="button" class="btn green" onclick='SaveNewInformation();'>@Localize.Send <i class="m-icon-swapright m-icon-white"></i></button>
+    </div>
+</div>
 
-    
+<script type="text/javascript">
 
-</form>
+    function SaveNewInformation() {
+
+        FormPreparePrivateAjax();
+
+        var neueInfo = $("#txtNewInformation").val();
+        
+        if (neueInfo != "") {
+            $.ajax({
+                type: "POST",
+                url: "SaveNewInformation",
+                loadingShow: true,
+                data: { neueInfo: neueInfo },
+                success: function (result) {
+
+                    SearchResultsTryHide();
+
+                    LoadingHide();
+
+                    if (result == "OK") {
+                        $("#txtNewInformation").val('');
+                        TryInformationenGridRefresh();
+                        var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
+                        SpanAlertSuccess("spanAlertAbmeldevorgaenge", successMessage, 18000);
+                    } else {
+                        SpanAlertWarning("spanAlertAbmeldevorgaenge", result.message, 5000);
+                    }
+                }
+            });
+        }
+    }
+
+</script>

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Serialization;
@@ -7,6 +8,7 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 
 namespace CkgDomainLogic.WFM.ViewModels
 {
@@ -45,48 +47,6 @@ namespace CkgDomainLogic.WFM.ViewModels
         public string AktuellerAuftragVorgangsNr { get; set; }
 
         public WfmAuftrag AktuellerAuftrag { get { return Auftraege.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == AktuellerAuftragVorgangsNr); } }
-
-        [XmlIgnore]
-        public List<WfmInfo> Informationen
-        {
-            get { return PropertyCacheGet(() => new List<WfmInfo>()); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        [XmlIgnore]
-        public List<WfmInfo> InformationenFiltered
-        {
-            get { return PropertyCacheGet(() => Informationen); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        [XmlIgnore]
-        public List<WfmDokumentInfo> Dokumente
-        {
-            get { return PropertyCacheGet(() => new List<WfmDokumentInfo>()); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        [XmlIgnore]
-        public List<WfmDokumentInfo> DokumenteFiltered
-        {
-            get { return PropertyCacheGet(() => Dokumente); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        [XmlIgnore]
-        public List<WfmToDo> Aufgaben
-        {
-            get { return PropertyCacheGet(() => new List<WfmToDo>()); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        [XmlIgnore]
-        public List<WfmToDo> AufgabenFiltered
-        {
-            get { return PropertyCacheGet(() => Aufgaben); }
-            private set { PropertyCacheSet(value); }
-        }
 
         public string Title { get { return (Selektor.Modus == SelektionsModus.KlaerfallWorkplace ? Localize.Wfm_KlaerfallWorkplace : Localize.Wfm_Abmeldevorgaenge); } }
 
@@ -157,9 +117,69 @@ namespace CkgDomainLogic.WFM.ViewModels
             AuftraegeFiltered = Auftraege.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
+#region Übersicht/Storno
+
+
+
+#endregion
+
+#region Informationen
+
+        [XmlIgnore]
+        public List<WfmInfo> Informationen
+        {
+            get { return PropertyCacheGet(() => new List<WfmInfo>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmInfo> InformationenFiltered
+        {
+            get { return PropertyCacheGet(() => Informationen); }
+            private set { PropertyCacheSet(value); }
+        }
+
         public void FilterInformationen(string filterValue, string filterProperties)
         {
             InformationenFiltered = Informationen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public string SaveNeueInformation(string neueInfo)
+        {
+            var neueInformation = new WfmInfo
+                {
+                    VorgangsNrAbmeldeauftrag = AktuellerAuftragVorgangsNr,
+                    Text = neueInfo,
+                    Datum = DateTime.Today,
+                    Zeit = DateTime.Now.ToString("HHmmss"),
+                    LaufendeNr = (Informationen.Max(i => i.LaufendeNr.ToInt(0)) + 1).ToString(),
+                    User = LogonContext.UserName
+                };
+
+            var saveErg = DataService.SaveNeueInformation(neueInformation);
+
+            if (String.IsNullOrEmpty(saveErg))
+                Informationen.Add(neueInformation);
+
+            return saveErg;
+        }
+
+#endregion
+
+#region Dokumente
+
+        [XmlIgnore]
+        public List<WfmDokumentInfo> Dokumente
+        {
+            get { return PropertyCacheGet(() => new List<WfmDokumentInfo>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmDokumentInfo> DokumenteFiltered
+        {
+            get { return PropertyCacheGet(() => Dokumente); }
+            private set { PropertyCacheSet(value); }
         }
 
         public void FilterDokumente(string filterValue, string filterProperties)
@@ -167,9 +187,30 @@ namespace CkgDomainLogic.WFM.ViewModels
             DokumenteFiltered = Dokumente.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
+#endregion
+        
+#region Aufgaben
+
+        [XmlIgnore]
+        public List<WfmToDo> Aufgaben
+        {
+            get { return PropertyCacheGet(() => new List<WfmToDo>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmToDo> AufgabenFiltered
+        {
+            get { return PropertyCacheGet(() => Aufgaben); }
+            private set { PropertyCacheSet(value); }
+        }
+
         public void FilterAufgaben(string filterValue, string filterProperties)
         {
             AufgabenFiltered = Aufgaben.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+#endregion
+
     }
 }

@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.WFM.Models
-@model WfmAuftrag
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
 
 <style type="text/css">
     a.btn {
@@ -11,9 +10,9 @@
 
 <h5>
     <i class="icon-tag"></i>
-    <span class="margin-left-10 margin-right-5 bold">@Localize.CaseNoDeregistrationOrder</span> @Model.VorgangsNrAbmeldeauftrag
-    <span class="margin-left-10 margin-right-5 bold">@Localize.ChassisNo</span>@Model.FahrgestellNr
-    <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span>@Model.Kennzeichen
+    <span class="margin-left-10 margin-right-5 bold">@Localize.CaseNoDeregistrationOrder</span> @Model.AktuellerAuftrag.VorgangsNrAbmeldeauftrag
+    <span class="margin-left-10 margin-right-5 bold">@Localize.ChassisNo</span>@Model.AktuellerAuftrag.FahrgestellNr
+    <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span>@Model.AktuellerAuftrag.Kennzeichen
 </h5>
 
 <div class="tabbable tabbable-custom margin-top-15">
@@ -35,7 +34,7 @@
             @Html.Partial("Abmeldevorgaenge/Partial/Informationen", @Model)
         </div>               
         <div class="tab-pane active" id="tab_1_4">
-            @Html.Partial("Abmeldevorgaenge/Partial/Uebersicht", @Model)  
+            @Html.Partial("Abmeldevorgaenge/Partial/Uebersicht", @Model.AktuellerAuftrag)  
         </div>
     </div>
 </div>

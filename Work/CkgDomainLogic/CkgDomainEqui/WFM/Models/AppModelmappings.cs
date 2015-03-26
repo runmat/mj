@@ -97,6 +97,7 @@ namespace CkgDomainLogic.WFM.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
+                        d.VorgangsNrAbmeldeauftrag = s.VORG_NR_ABM_AUF;
                         d.Datum = s.DATUM;
                         d.LaufendeNr = s.LFD_NR;
                         d.Text = s.TEXT;
@@ -115,6 +116,7 @@ namespace CkgDomainLogic.WFM.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
+                        d.VorgangsNrAbmeldeauftrag = s.VORG_NR_ABM_AUF;
                         d.ArchivId = s.ARCHIV_ID;
                         d.Dateiname = s.DATEINAME;
                         d.Dokumentart = s.AR_OBJECT;
@@ -131,6 +133,7 @@ namespace CkgDomainLogic.WFM.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
+                        d.VorgangsNrAbmeldeauftrag = s.VORG_NR_ABM_AUF;
                         d.Anmerkung = s.ANMERKUNG;
                         d.Aufgabe = s.AUFGABE;
                         d.FahrgestellNr = s.CHASSIS_NUM;
@@ -254,6 +257,21 @@ namespace CkgDomainLogic.WFM.Models
                     {
                         d.SOLLDATUM_VON = s.SolldatumVonBis.StartDate;
                         d.SOLLATUM_BIS = s.SolldatumVonBis.EndDate;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_WFM_WRITE_INFO_01.GT_DATEN, WfmInfo> Z_WFM_WRITE_INFO_01_GT_DATEN_From_WfmInfo
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_WRITE_INFO_01.GT_DATEN, WfmInfo>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.VORG_NR_ABM_AUF = s.VorgangsNrAbmeldeauftrag;
+                        d.TEXT = s.Text;
                     }));
             }
         }

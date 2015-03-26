@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
@@ -65,7 +66,7 @@ namespace ServicesMvc.Controllers
         {
             ViewModel.LoadAuftragsDetails(vorgangsnr, ModelState);
 
-            return PartialView("Abmeldevorgaenge/AuftragsDetail", ViewModel.AktuellerAuftrag);
+            return PartialView("Abmeldevorgaenge/AuftragsDetail", ViewModel);
         }
 
         protected override IEnumerable GetGridExportData()
@@ -107,6 +108,17 @@ namespace ServicesMvc.Controllers
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Informations, dt, landscapeOrientation: true);
 
             return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult SaveNewInformation(string neueInfo)
+        {
+            var saveErg = ViewModel.SaveNeueInformation(neueInfo);
+
+            if (!String.IsNullOrEmpty(saveErg))
+                return Json(saveErg);
+
+            return Json("OK");
         }
 
         #endregion
