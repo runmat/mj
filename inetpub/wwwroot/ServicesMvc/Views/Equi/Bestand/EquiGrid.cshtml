@@ -2,7 +2,7 @@
 @{ var gridName = "GridGrunddatenEquiItems"; }
 
 @(Html.XTelerik()
-    .Grid<EquiGrunddaten>()
+    .XGrid<EquiGrunddaten>()
     .Name(gridName)
     .XAjaxDataBinding("GrunddatenEquiItemsAjaxBinding", "Equi")
     .Columns(columns =>

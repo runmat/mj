@@ -66,7 +66,7 @@ namespace GeneralTools.Models
             return destination;
         }
 
-        public static IEnumerable<T> Copy<T>(IEnumerable<T> srcEntities, Action<T, T> onInit = null)
+        public static IEnumerable<T> CopyList<T>(IEnumerable<T> srcEntities, Action<T, T> onInit = null)
             where T : class, new()
         {
             return srcEntities.Select(src => Copy(src, new T(), onInit));

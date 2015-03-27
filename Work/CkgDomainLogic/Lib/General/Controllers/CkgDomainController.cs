@@ -167,6 +167,7 @@ namespace CkgDomainLogic.General.Controllers
         {
             GridCurrentSettings = new GridSettings
                 {
+                    ObjectKey = PersistableSelectorObjectKeyCurrent,
                     Columns = jsonColumns,
                     OrderBy = orderBy,
                     FilterBy = filterBy,
@@ -379,6 +380,13 @@ namespace CkgDomainLogic.General.Controllers
         {
             return PersistanceGetObjectContainers(groupKey)
                     .Select(pContainer => (T)pContainer.Object)
+                        .ToListOrEmptyList();
+        }
+
+        protected List<T> PersistanceGetObjects2<T>(string groupKey)
+        {
+            return PersistanceGetObjectContainers(groupKey)
+                    .Select(pContainer => (T)pContainer.Object2)
                         .ToListOrEmptyList();
         }
 
@@ -613,10 +621,15 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionHelper.SetSessionValue("PersistableSelectorGroupKeyCurrent", value); }
         }
 
-        private static string PersistableSelectorObjectKeyCurrent
+        private string PersistableSelectorObjectKeyCurrent
         {
             get { return SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent"); }
-            set { SessionHelper.SetSessionValue("PersistableSelectorObjectKeyCurrent", value); }
+            set
+            {
+                SessionHelper.SetSessionValue("PersistableSelectorObjectKeyCurrent", value);
+                
+                PersistableGridSettingsCurrentLoad(value);
+            }
         }
 
         private static bool PersistableSelectorIsPersistMode
@@ -637,7 +650,7 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionHelper.SetSessionValue("PersistableSelectorItems", value); }
         }
 
-        void PersistableSelectorPersistModeReset()
+        static void PersistableSelectorPersistModeReset()
         {
             PersistableSelectorIsPersistMode = false;
             PersistableSelectorPersistMode = null;
@@ -776,6 +789,27 @@ namespace CkgDomainLogic.General.Controllers
                 return objectNameThumb;
 
             return string.Format("{0} {1}", objectNameThumb, PersistableSelectors.Count(compareFunction));
+        }
+
+        private void PersistableGridSettingsCurrentLoad(string objectKeyCurrent)
+        {
+            if (objectKeyCurrent.IsNullOrEmpty())
+            {
+                GridCurrentSettings = null;
+                return;
+            }
+
+            if (PersistableSelectorGroupKeyCurrent.IsNullOrEmpty() || objectKeyCurrent.IsNullOrEmpty())
+                return;
+
+            if (GridCurrentSettings != null && GridCurrentSettings.ObjectKey == objectKeyCurrent)
+                return;
+
+            var gridSettingsItems = PersistanceGetObjects2<IPersistableObject>(PersistableSelectorGroupKeyCurrent).OfType<GridSettings>();
+            if (gridSettingsItems.None())
+                return;
+
+            GridCurrentSettings = gridSettingsItems.FirstOrDefault(gs => gs.ObjectKey == objectKeyCurrent);
         }
 
 

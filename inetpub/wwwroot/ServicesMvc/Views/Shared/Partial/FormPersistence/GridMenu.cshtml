@@ -1,13 +1,25 @@
 ﻿@using GeneralTools.Contracts
+@using MvcTools.Models
+@using Newtonsoft.Json
+@using Telerik.Web.Mvc
 @model IPersistableObject
+
+@{
+    var gridSettings = SessionHelper.GetSessionObject("GridCurrentSettings", () => new GridSettings());
+    var jCols = gridSettings.Columns.NotNullOrEmpty().GetGridColumns();
+    var gridColumnNameList = JsonConvert.SerializeObject(jCols.Select(jc => (string) jc.member.Value).ToArray());
+
+    var gridGrouping = gridSettings.GroupBy.NotNullOrEmpty();
+    if (gridGrouping.Contains("-"))
+    {
+        gridGrouping = gridGrouping.Split('-')[0];
+    }
+}
 
 <div class="wrapper-persistable-selector-current-for-grid-results hide">
     <div class="persistable-selector-current-for-grid-results">
         <span class="margin-right-5">@Model.ObjectName</span>
 
-        <button id="persistable-grid-save-button2" class='btn mini yellow' title="@Localize.Save">
-            <i class='icon-save'></i>
-        </button>
         <button id="persistable-grid-save-button" class='btn mini yellow' title="@Localize.Save">
             <i class='icon-save'></i>
         </button>
@@ -20,42 +32,125 @@
 
     var objectKey = '@Model.ObjectKey';
 
+    //setTimeout(function() { PrepareGridFromPersistedState(); }, 1000);
+
     $("#persistable-grid-save-button").on('click', function (e) {
 
         PersistableSelectorSaveGrid(objectKey);
 
         e.stopPropagation();
     });
+
+    var _PrepareGridFromPersistedStateFinished = false;
     
-    $("#persistable-grid-save-button2").on('click', function (e) {
+    function PrepareGridFromPersistedState() {
 
-        var orderBy = "Fahrgestellnummer-asc";
-        var groupBy = "Standort";
+        if (_PrepareGridFromPersistedStateFinished)
+            return;
 
-        var grid = $("#GridGrunddatenEquiItems").data("tGrid");
-        //console.log($("#GridGrunddatenEquiItems").data());
+        _PrepareGridFromPersistedStateFinished = true;
 
-
-
-        var filterBy = "Kennzeichen~startswith~'LB-'";
-        var column = grid.columns[4];
-        column.filters = [];
-        column.filters.push({ operator: "startswith", value: "LB-" });
-
-        column = grid.columns[5];
-        column.filters = [];
-        column.filters.push({ operator: "substringof", value: "Neuwagen" });
-
-        grid.filter(grid.filterExpr());
+        var grid = $(".FormSearchResultsGrid").find(".t-grid").data("tGrid");
+        var settingsColumns = @Html.Raw(gridColumnNameList);
+        var orderBy = '@gridSettings.OrderBy.NotNullOrEmpty()';
+        var groupBy = '@gridGrouping';
+        var filterBy = '@gridSettings.FilterBy.NotNullOrEmpty().ToJavascriptString()';
 
 
+        //
+        // 1. hide columns
+        //
+        var hiddenColumns = $.grep(grid.columns, function (column, j) {
+            return (settingsColumns.indexOf(column.member) < 0); 
+        });
+        for (var i = 0; i < hiddenColumns.length; i++) {
+            grid.hideColumn(hiddenColumns[i].member);
+        }
 
-        grid.sort(orderBy);
 
+        //
+        // 2. reorder columns
+        //
+        for (i = settingsColumns.length - 1; i >= 0; i--) {
+            var column = grid.columnFromMember(settingsColumns[i]);
+            grid.reorderColumn(0, column);
+        }
+        
+
+        //
+        // 3. filter grid 
+        //
+        // Kennzeichen~startswith~'H'~and~StandortBez~substringof~'Neuwagen'
+        if (filterBy != '') {
+
+            var filters = [];
+            filters.push(filterBy);
+            if (filterBy.indexOf("~and~") >= 0)
+                filters = filterBy.split("~and~");
+
+            console.log(filters);
+            console.log("***");
+
+            for (i = 0; i < filters.length; i++) {
+                var filter = filters[i].split("~");
+
+                console.log(filter[0]);
+                console.log(filter[1]);
+                filter[2] = filter[2].replace(/&#39;/g, ''); // Hochkommata entfernen
+                console.log(filter[2]);
+                console.log("***");
+
+                var columnToFilter = grid.columnFromMember(filter[0]);
+                columnToFilter.filters = [];
+                columnToFilter.filters.push({ operator: filter[1], value: filter[2] });
+            }
+            grid.filter(grid.filterExpr());
+        }
+
+
+        //
+        // 4. sort grid
+        //
+        if (orderBy != '') {
+            //console.log(orderBy);
+            grid.sort(orderBy);
+        }
+        
+
+        //
+        // 5. grid grouping
+        //
         grid.groups = [];
-        grid.group(groupBy);
+        if (groupBy != '') {
+            grid.group(grid.columnFromMember(groupBy).title);
+        }
+    }
 
-        e.stopPropagation();
-    });
+//    $("#persistable-grid-save-button2").on('click', function (e) {
+
+////        var orderBy = "Fahrgestellnummer-asc";
+////        var groupBy = "Standort";
+
+
+////        var filterBy = "Kennzeichen~startswith~'LB-'";
+////        var column = grid.columns[4];
+////        column.filters = [];
+////        column.filters.push({ operator: "startswith", value: "LB-" });
+
+////        column = grid.columns[5];
+////        column.filters = [];
+////        column.filters.push({ operator: "substringof", value: "Neuwagen" });
+
+////        grid.filter(grid.filterExpr());
+
+
+
+////        grid.sort(orderBy);
+
+////        grid.groups = [];
+////        grid.group(groupBy);
+
+//        e.stopPropagation();
+//    });
 
 </script>

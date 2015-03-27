@@ -330,7 +330,7 @@ namespace Telerik.Web.Mvc.UI
                                    DI.Current.Resolve<IGridHtmlBuilderFactory>());
 
                     SaveGridToSession(grid, typeof (T));
-
+                    
                     return grid;
                 }));
 

@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Web;
+using System.Web.Mvc;
+using System.Web.Routing;
 using GeneralTools.Models;
+using MvcTools.Models;
+using MvcTools.Web;
 using Telerik.Web.Mvc.UI.Fluent;
 
 namespace Telerik.Web.Mvc.UI
@@ -48,14 +53,16 @@ namespace Telerik.Web.Mvc.UI
             return column;
         }
 
-        static List<string> SortMasterColumnsLikeSlaveColumns(List<string> masterColumns, List<string> slaveColumns)
-        {
-            return slaveColumns.Clone().Concat(masterColumns.Except(slaveColumns)).ToList();
-        }
-
         static IEnumerable<string> GetUserGridColumnNames(Type modelType)
         {
-            return modelType.GetScaffoldPropertyNames().ToListOrEmptyList();
+            var gridSettings = (SessionHelper.GetSessionObject("GridCurrentSettings") as GridSettings);
+            if (gridSettings == null || gridSettings.Columns.IsNullOrEmpty())
+                return modelType.GetScaffoldPropertyNames().ToListOrEmptyList();
+
+            var jCols = gridSettings.Columns.GetGridColumns();
+            var columnNameList = jCols.Select(jc => (string)jc.member.Value).ToList();
+
+            return columnNameList;
         }
     }
 }

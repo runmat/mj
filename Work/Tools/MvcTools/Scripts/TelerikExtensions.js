@@ -7,6 +7,9 @@
 var _filteredData_force_Grid_OnColumnReorder = false;
 
 function FilteredData_Grid_OnDataBound(grid, persistColumns) {
+    try { PrepareGridFromPersistedState(); }
+    catch (e) { }
+
     grid = (grid || $(this));
     FilteredData_Grid_PrepareAllCommandHrefs(grid, _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : persistColumns);
     _filteredData_force_Grid_OnColumnReorder = false;
