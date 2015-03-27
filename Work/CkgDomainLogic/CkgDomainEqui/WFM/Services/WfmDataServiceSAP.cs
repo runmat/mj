@@ -94,25 +94,19 @@ namespace CkgDomainLogic.WFM.Services
             return AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_DATEN_To_WfmAuftrag.Copy(Z_WFM_READ_AUFTRAEGE_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
 
+        #region Übersicht/Storno
+
+
+
+        #endregion
+
+        #region Informationen
+
         public List<WfmInfo> GetInfos(string vorgangsNr)
         {
             Z_WFM_READ_INFO_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
 
             return AppModelMappings.Z_WFM_READ_INFO_01_GT_DATEN_To_WfmInfo.Copy(Z_WFM_READ_INFO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
-        }
-
-        public List<WfmDokumentInfo> GetDokumentInfos(string vorgangsNr)
-        {
-            Z_WFM_LIST_DOKU_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
-
-            return AppModelMappings.Z_WFM_LIST_DOKU_01_GT_DOKUMENTE_To_WfmDokumentInfo.Copy(Z_WFM_LIST_DOKU_01.GT_DOKUMENTE.GetExportListWithExecute(SAP)).ToList();
-        }
-
-        public List<WfmToDo> GetToDos(string vorgangsNr)
-        {
-            Z_WFM_READ_TODO_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF_VON", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
-
-            return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
 
         public string SaveNeueInformation(WfmInfo neueInfo)
@@ -134,5 +128,60 @@ namespace CkgDomainLogic.WFM.Services
 
             return "";
         }
+
+        #endregion
+
+        #region Dokumente
+
+        public List<WfmDokumentInfo> GetDokumentInfos(string vorgangsNr)
+        {
+            Z_WFM_LIST_DOKU_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+
+            return AppModelMappings.Z_WFM_LIST_DOKU_01_GT_DOKUMENTE_To_WfmDokumentInfo.Copy(Z_WFM_LIST_DOKU_01.GT_DOKUMENTE.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public WfmDokument GetDokument(WfmDokumentInfo dokInfo)
+        {
+            Z_WFM_READ_DOKU_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            SAP.SetImportParameter("I_VORG_NR_ABM_AUF", dokInfo.VorgangsNrAbmeldeauftrag);
+            SAP.SetImportParameter("I_AR_OBJECT", dokInfo.Dokumentart);
+            SAP.SetImportParameter("I_OBJECT_ID", dokInfo.ObjectId);
+
+            SAP.Execute();
+
+            return AppModelMappings.Z_WFM_READ_DOKU_01_ES_DOKUMENT_To_WfmDokument.Copy(Z_WFM_READ_DOKU_01.ES_DOKUMENT.GetExportList(SAP)).FirstOrDefault();
+        }
+
+        public WfmDokumentInfo SaveDokument(string vorgangsNr, WfmDokument dok)
+        {
+            Z_WFM_WRITE_DOKU_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+
+            SAP.ApplyImport(AppModelMappings.Z_WFM_WRITE_DOKU_01_GS_DOKUMENT_From_WfmDokument.CopyBack(new List<WfmDokument> { dok }));
+
+            SAP.Execute();
+
+            var expDokInfo = AppModelMappings.Z_WFM_WRITE_DOKU_01_ES_EXPORT_To_WfmDokumentInfo.Copy(Z_WFM_WRITE_DOKU_01.ES_EXPORT.GetExportList(SAP)).FirstOrDefault();
+            if (expDokInfo != null)
+            {
+                expDokInfo.VorgangsNrAbmeldeauftrag = vorgangsNr;
+                return expDokInfo;
+            }
+
+            return null;
+        }
+
+        #endregion
+
+        #region Aufgaben
+
+        public List<WfmToDo> GetToDos(string vorgangsNr)
+        {
+            Z_WFM_READ_TODO_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF_VON", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+
+            return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        #endregion
     }
 }

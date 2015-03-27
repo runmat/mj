@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Models;
 using CkgDomainLogic.WFM.ViewModels;
 using DocumentTools.Services;
+using GeneralTools.Models;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
@@ -87,6 +91,17 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult SaveNewInformation(string neueInfo)
+        {
+            var saveErg = ViewModel.SaveNeueInformation(neueInfo);
+
+            if (!String.IsNullOrEmpty(saveErg))
+                return Json(saveErg);
+
+            return Json("OK");
+        }
+
+        [HttpPost]
         public ActionResult FilterGridInformationen(string filterValue, string filterColumns)
         {
             ViewModel.FilterInformationen(filterValue, filterColumns);
@@ -110,17 +125,6 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-        [HttpPost]
-        public ActionResult SaveNewInformation(string neueInfo)
-        {
-            var saveErg = ViewModel.SaveNeueInformation(neueInfo);
-
-            if (!String.IsNullOrEmpty(saveErg))
-                return Json(saveErg);
-
-            return Json("OK");
-        }
-
         #endregion
 
         #region Dokumente
@@ -129,6 +133,28 @@ namespace ServicesMvc.Controllers
         public ActionResult DokumenteAjaxBinding()
         {
             return View(new GridModel(ViewModel.DokumenteFiltered));
+        }
+
+        public FileContentResult PdfDocumentDownload(string docId)
+        {
+            var pdfBytes = ViewModel.GetDokument(docId);
+
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", objectId) };
+        }
+
+        [HttpPost]
+        public ActionResult UploadDokumentStart(IEnumerable<HttpPostedFileBase> uploadFiles)
+        {
+            if (uploadFiles == null || uploadFiles.None())
+                return Json(new { success = false, message = Localize.ErrorNoFileSelected }, "text/plain");
+
+            // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+            var file = uploadFiles.ToArray()[0];
+
+            if (!ViewModel.SaveDokument(file))
+                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
+
+            return Json(new { success = true, message = "ok", uploadFileName = file.FileName }, "text/plain");
         }
 
         [HttpPost]

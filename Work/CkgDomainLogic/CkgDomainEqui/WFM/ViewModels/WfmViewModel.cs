@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Text;
+using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
@@ -8,7 +11,6 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 
 namespace CkgDomainLogic.WFM.ViewModels
 {
@@ -117,13 +119,13 @@ namespace CkgDomainLogic.WFM.ViewModels
             AuftraegeFiltered = Auftraege.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-#region Übersicht/Storno
+        #region Übersicht/Storno
 
 
 
-#endregion
+        #endregion
 
-#region Informationen
+        #region Informationen
 
         [XmlIgnore]
         public List<WfmInfo> Informationen
@@ -139,22 +141,17 @@ namespace CkgDomainLogic.WFM.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
-        public void FilterInformationen(string filterValue, string filterProperties)
-        {
-            InformationenFiltered = Informationen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
-
         public string SaveNeueInformation(string neueInfo)
         {
             var neueInformation = new WfmInfo
-                {
-                    VorgangsNrAbmeldeauftrag = AktuellerAuftragVorgangsNr,
-                    Text = neueInfo,
-                    Datum = DateTime.Today,
-                    Zeit = DateTime.Now.ToString("HHmmss"),
-                    LaufendeNr = (Informationen.Max(i => i.LaufendeNr.ToInt(0)) + 1).ToString(),
-                    User = LogonContext.UserName
-                };
+            {
+                VorgangsNrAbmeldeauftrag = AktuellerAuftragVorgangsNr,
+                Text = neueInfo,
+                Datum = DateTime.Today,
+                Zeit = DateTime.Now.ToString("HHmmss"),
+                LaufendeNr = (Informationen.Max(i => i.LaufendeNr.ToInt(0)) + 1).ToString(),
+                User = LogonContext.UserName
+            };
 
             var saveErg = DataService.SaveNeueInformation(neueInformation);
 
@@ -164,9 +161,14 @@ namespace CkgDomainLogic.WFM.ViewModels
             return saveErg;
         }
 
-#endregion
+        public void FilterInformationen(string filterValue, string filterProperties)
+        {
+            InformationenFiltered = Informationen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
 
-#region Dokumente
+        #endregion
+
+        #region Dokumente
 
         [XmlIgnore]
         public List<WfmDokumentInfo> Dokumente
@@ -182,14 +184,50 @@ namespace CkgDomainLogic.WFM.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        public byte[] GetDokument(string documentId)
+        {
+            var dokInfo = Dokumente.FirstOrDefault(d => d.ObjectId == documentId);
+
+            var dok = DataService.GetDokument(dokInfo);
+            if (dok != null)
+                return Encoding.UTF8.GetBytes(dok.DokumentAsString);
+
+            return null;
+        }
+
+        public bool SaveDokument(string dokArt, HttpPostedFile datei)
+        {
+            byte[] dateiBytes = null;
+            using (var binReader = new BinaryReader(datei.InputStream))
+            {
+                dateiBytes = binReader.ReadBytes(datei.ContentLength);
+            }
+
+            var neuesDok = new WfmDokument
+                {
+                    Dokumentart = dokArt,
+                    Dateiname = datei.FileName,
+                    DokumentAsString = Encoding.UTF8.GetString(dateiBytes)
+                };
+
+            var neueDokInfo = DataService.SaveDokument(AktuellerAuftragVorgangsNr, neuesDok);
+            if (neueDokInfo != null)
+            {
+                Dokumente.Add(neueDokInfo);
+                return true;
+            }
+
+            return false;
+        }
+
         public void FilterDokumente(string filterValue, string filterProperties)
         {
             DokumenteFiltered = Dokumente.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-#endregion
+        #endregion
         
-#region Aufgaben
+        #region Aufgaben
 
         [XmlIgnore]
         public List<WfmToDo> Aufgaben
@@ -210,7 +248,6 @@ namespace CkgDomainLogic.WFM.ViewModels
             AufgabenFiltered = Aufgaben.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-#endregion
-
+        #endregion
     }
 }

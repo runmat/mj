@@ -154,6 +154,36 @@ namespace CkgDomainLogic.WFM.Models
             }
         }
 
+        static public ModelMapping<Z_WFM_READ_DOKU_01.ES_DOKUMENT, WfmDokument> Z_WFM_READ_DOKU_01_ES_DOKUMENT_To_WfmDokument
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_READ_DOKU_01.ES_DOKUMENT, WfmDokument>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Dateiname = s.DATEINAME;
+                        d.DokumentAsString = s.DOK_X;
+                        d.Dokumentart = s.AR_OBJECT;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_WFM_WRITE_DOKU_01.ES_EXPORT, WfmDokumentInfo> Z_WFM_WRITE_DOKU_01_ES_EXPORT_To_WfmDokumentInfo
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_WRITE_DOKU_01.ES_EXPORT, WfmDokumentInfo>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Dateiname = s.DATEINAME;
+                        d.Dokumentart = s.AR_OBJECT;
+                        d.ObjectId = s.OBJECT_ID;
+                    }));
+            }
+        }
+
         #endregion
 
         #region ToSap
@@ -272,6 +302,22 @@ namespace CkgDomainLogic.WFM.Models
                     {
                         d.VORG_NR_ABM_AUF = s.VorgangsNrAbmeldeauftrag;
                         d.TEXT = s.Text;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_WFM_WRITE_DOKU_01.GS_DOKUMENT, WfmDokument> Z_WFM_WRITE_DOKU_01_GS_DOKUMENT_From_WfmDokument
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_WRITE_DOKU_01.GS_DOKUMENT, WfmDokument>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.AR_OBJECT = s.Dokumentart;
+                        d.DATEINAME = s.Dateiname;
+                        d.DOK_X = s.DokumentAsString;
                     }));
             }
         }

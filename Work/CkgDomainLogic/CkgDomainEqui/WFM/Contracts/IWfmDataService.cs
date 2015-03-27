@@ -10,12 +10,34 @@ namespace CkgDomainLogic.WFM.Contracts
 
         List<WfmAuftrag> GetAbmeldeauftraege(WfmAuftragSelektor selector);
 
+        #region Übersicht/Storno
+
+
+
+        #endregion
+
+        #region Informationen
+
         List<WfmInfo> GetInfos(string vorgangsNr);
+
+        string SaveNeueInformation(WfmInfo neueInfo);
+
+        #endregion
+
+        #region Dokumente
 
         List<WfmDokumentInfo> GetDokumentInfos(string vorgangsNr);
 
+        WfmDokument GetDokument(WfmDokumentInfo dokInfo);
+
+        WfmDokumentInfo SaveDokument(string vorgangsNr, WfmDokument dok);
+
+        #endregion
+
+        #region Aufgaben
+
         List<WfmToDo> GetToDos(string vorgangsNr);
 
-        string SaveNeueInformation(WfmInfo neueInfo);
+        #endregion
     }
 }
