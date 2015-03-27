@@ -45,7 +45,8 @@ namespace SapORM.Services
             {
                 var inputParameterKeyArray = inputParameterKeys.Split(',').ToArray();
                 for (var i = 0; i < inputParameterKeyArray.Length; i++)
-                    sapProxy.SetImportParameter(inputParameterKeyArray[i].Trim(), inputParameterValues[i].ToString());
+                    sapProxy.SetImportParameter(inputParameterKeyArray[i].Trim(), 
+                        (inputParameterValues[i] is byte[] ? inputParameterValues[i] : inputParameterValues[i].ToString()));
             }
 
             sapProxy.CallBapi(null, null, true);

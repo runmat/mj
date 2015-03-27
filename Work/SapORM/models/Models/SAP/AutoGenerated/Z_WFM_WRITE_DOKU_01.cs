@@ -158,15 +158,12 @@ namespace SapORM.Models
 
 			public string DATEINAME { get; set; }
 
-			public string DOK_X { get; set; }
-
 			public static GS_DOKUMENT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GS_DOKUMENT
 				{
 					AR_OBJECT = (string)row["AR_OBJECT"],
 					DATEINAME = (string)row["DATEINAME"],
-					DOK_X = (string)row["DOK_X"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

@@ -100,7 +100,7 @@ namespace SapORM.Services
 			return newDataTableCopy;
 		}
 
-
+        private byte[] _lastByteArrayImportParameter = null;
 
         public bool CallBapi(ILogService logService = null, ILogonContext logonContext = null, bool modelGenerationMode = false)
 		{
@@ -131,9 +131,14 @@ namespace SapORM.Services
 
 							if (paraRow[1].ToString() != "DATE") {
                                 // Wenn kein DBNull-Wert dann Inhalt 1:1 kopieren
-								if (!Information.IsDBNull(paraRow[2])) {
-									func.Exports[paraRow[0].ToString()].ParamValue = paraRow[2];                                    
-								} 
+								if (!Information.IsDBNull(paraRow[2]))
+								{
+								    var val = paraRow[2];
+								    if ((string) val == "System.Byte[]")
+								        func.Exports[paraRow[0].ToString()].ParamValue = _lastByteArrayImportParameter; 
+                                    else
+                                        func.Exports[paraRow[0].ToString()].ParamValue = paraRow[2];
+                                } 
                                 else if (func.Exports[paraRow[0].ToString()].Type == RFCTYPE.CHAR) // Wenn Feldtyp Character einen Leerwert definieren 
                                 { 
 									if (func.Exports[paraRow[0].ToString()].ParamValue.ToString().Length > 0) {
@@ -371,7 +376,7 @@ namespace SapORM.Services
 										case RFCTYPE.ITAB:
 
 											break;
-									}
+                                    }
 								}
 								tblTemp.Rows.Add(row);
 								tblTemp.AcceptChanges();
@@ -430,7 +435,7 @@ namespace SapORM.Services
 														row[col.Name] = row[col.Name].ToString();
 													}
 													break;
-											}
+                                            }
 
 										}
 
@@ -688,8 +693,11 @@ namespace SapORM.Services
 
 		public void SetImportParameter(string name, object wert)
 		{
-			try 
-            {
+			try
+			{
+			    var bytes = wert as byte[];
+			    if (bytes != null)
+                    _lastByteArrayImportParameter = bytes;
 				((DataTable)Import.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2] = wert;
 			} 
             catch (Exception) {

@@ -1,4 +1,5 @@
-﻿using System;
+﻿// ReSharper disable InconsistentNaming
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
@@ -9,7 +10,6 @@ using SapORM.Services;
 using SapORM.Models;
 using SapORM.Contracts;
 using GeneralTools.Models;
-using WebTools.Services;
 
 namespace SapORM
 {
@@ -359,6 +359,8 @@ namespace SapORM
             //TargoTest3();
 
             //AhpZullisteTest();
+
+            Z_WFM_READ_WRITE_DOKU_01_Test();
 
             Shutdown();
         }
@@ -1573,6 +1575,49 @@ namespace SapORM
         }
 
         #endregion
+
+        private static readonly string kunnrWfl = "0000340725";
+
+        static void Z_WFM_READ_WRITE_DOKU_01_Test()
+        {
+            Z_WFM_WRITE_DOKU_01_Test();
+        }
+
+        static void Z_WFM_WRITE_DOKU_01_Test()
+        {
+            Z_WFM_WRITE_DOKU_01.Init(Sap, "I_AG", kunnrWfl.ToSapKunnr());
+
+            Sap.SetImportParameter("I_VORG_NR_ABM_AUF", "0000000001");
+            Sap.SetImportParameter("I_SET_TODO", "X");
+
+            Sap.SetImportParameter("E_DOC", new[] { (byte)'0', (byte)'1', (byte)'2', (byte)'3', (byte)'4' });
+
+            var impList = Z_WFM_WRITE_DOKU_01.GS_DOKUMENT.GetImportList(Sap);
+            impList.Add(new Z_WFM_WRITE_DOKU_01.GS_DOKUMENT
+                {
+                    AR_OBJECT = "DOK",
+                    DATEINAME = "Test_MJE.PDF"
+                });
+            Sap.ApplyImport(impList);
+
+            Sap.Execute();
+
+            var retCode = Sap.ResultCode;
+            var retMessage = Sap.ResultMessage;
+        }
+
+        static void Z_WFM_READ_DOKU_01_Test()
+        {
+            Z_WFM_READ_DOKU_01.Init(Sap, "I_AG", kunnrWfl.ToSapKunnr());
+
+            Sap.SetImportParameter("I_VORG_NR_ABM_AUF", "0000000001");
+            Sap.SetImportParameter("I_AR_OBJECT", "DOK");
+            Sap.SetImportParameter("I_OBJECT_ID", "005056B327B01EE4B2988E8C2ABBC89E");
+
+            Sap.Execute();
+
+            var pdfString = Sap.GetExportParameterByte("E_PDF");
+        }
     }
 }
     
