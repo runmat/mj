@@ -679,19 +679,30 @@ namespace CkgDomainLogic.General.Controllers
                 {
                     case "load":
                         model = PersistablePartialViewLoad<T>();
+
+                        var objKey = GridCurrentSettings.ObjectKey;
+                        GridCurrentSettings.ObjectKey = null;
+                        PersistableGridSettingsCurrentLoad(objKey);
+                        
                         modeLocalizationMessage = Localize.LoadSuccessful;
                         break;
+                    
                     case "delete":
                         PersistablePartialViewDelete();
                         model = new T();
+                        
                         modeLocalizationMessage = Localize.DeleteSuccessful;
                         break;
+                    
                     case "save":
                         model = (T)PersistablePartialViewSave(persistableSelector);
+                        
                         modeLocalizationMessage = Localize.SaveSuccessful;
                         break;
+                    
                     case "saveas":
                         model = (T)PersistablePartialViewSaveAs(persistableSelector);
+                        
                         modeLocalizationMessage = Localize.SaveAsCopySuccessful;
                         break;
                 }

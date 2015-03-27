@@ -25,20 +25,14 @@
         @foreach (var selector in selectors)
         {
             var isCurrentSelector = (selector.ObjectKey == Model.ObjectKey);
-            var liCssClass = (isCurrentSelector ? "" : "loadable");
+            var liCssClass = "loadable";
             
             <li class="@liCssClass" id="li_dropdown_@selector.ObjectKey">
-                @if (isCurrentSelector)
+                <span class="li-button" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
+                    <span class="margin-left-10 margin-right-5">@selector.ObjectName</span>
+                </span>
+                @if (!isCurrentSelector)
                 {
-                    <span class="li-button">
-                        <span class="persistable-selector-current margin-left-10 margin-right-5">@selector.ObjectName</span>
-                    </span>
-                }
-                else
-                {
-                    <span class="li-button" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
-                        <span class="margin-left-10 margin-right-5">@selector.ObjectName</span>
-                    </span>
                     <span class="li-button" title="@Localize.Delete" onclick="PersistableSelectorDelete('@selector.ObjectKey')">
                         <i class="icon-remove"></i> 
                     </span>

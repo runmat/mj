@@ -11,7 +11,7 @@
         columns.XBound(c => c.Fahrgestellnummer).ClientTemplate(
                 "<a href='#' class='link tooltips' data-original-title='Historie' data-placement='right' onclick='ShowEquiHistorieAjax(\"<#= data.Fahrgestellnummer #>\");'><#= data.Fahrgestellnummer #></a>"
             );
-        columns.XBound(c => c.Fahrgestellnummer10, false);
+        columns.XBound(c => c.Fahrgestellnummer10);
         columns.XBound(c => c.Handelsname);
         columns.XBound(c => c.Kennzeichen);
         columns.XBound(c => c.StandortBez);
