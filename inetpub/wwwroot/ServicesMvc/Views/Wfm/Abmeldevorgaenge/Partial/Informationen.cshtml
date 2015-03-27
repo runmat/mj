@@ -33,9 +33,9 @@
                         $("#txtNewInformation").val('');
                         TryInformationenGridRefresh();
                         var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
-                        SpanAlertSuccess("spanAlertAbmeldevorgaenge", successMessage, 18000);
+                        SpanAlertSuccess("spanAlertAbmeldevorgaenge", successMessage, 3000);
                     } else {
-                        SpanAlertWarning("spanAlertAbmeldevorgaenge", result.message, 5000);
+                        SpanAlertWarning("spanAlertAbmeldevorgaenge", result.message, 3000);
                     }
                 }
             });

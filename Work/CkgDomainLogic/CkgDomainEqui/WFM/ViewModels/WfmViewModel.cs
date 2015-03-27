@@ -190,24 +190,26 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             var dok = DataService.GetDokument(dokInfo);
             if (dok != null)
-                return Encoding.UTF8.GetBytes(dok.DokumentAsString);
+                return Encoding.UTF8.GetBytes(dok.DocumentAsString);
 
             return null;
         }
 
-        public bool SaveDokument(string dokArt, HttpPostedFile datei)
+        public string CurrentDocumentType { get; set; }
+
+        public bool SaveDokument(HttpPostedFileBase file)
         {
             byte[] dateiBytes = null;
-            using (var binReader = new BinaryReader(datei.InputStream))
+            using (var binReader = new BinaryReader(file.InputStream))
             {
-                dateiBytes = binReader.ReadBytes(datei.ContentLength);
+                dateiBytes = binReader.ReadBytes(file.ContentLength);
             }
 
             var neuesDok = new WfmDokument
                 {
-                    Dokumentart = dokArt,
-                    Dateiname = datei.FileName,
-                    DokumentAsString = Encoding.UTF8.GetString(dateiBytes)
+                    DocumentType = CurrentDocumentType,
+                    FileName = file.FileName,
+                    DocumentAsString = Encoding.UTF8.GetString(dateiBytes)
                 };
 
             var neueDokInfo = DataService.SaveDokument(AktuellerAuftragVorgangsNr, neuesDok);

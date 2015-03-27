@@ -5,7 +5,6 @@
 @(Html.Telerik()
     .Grid<WfmDokumentInfo>()
     .Name(gridName)
-    .XGroup("GridWfmDokumente")
     .XAjaxDataBinding("DokumenteAjaxBinding", "Wfm")
     .Columns(columns =>
     {
@@ -15,7 +14,7 @@
         columns.XBound(c => c.Dateiname);
 
         columns.XBound(c => c.ObjectId).Filterable(false).Sortable(false).Title("").ClientTemplate(
-                "<a class='btn mini gray pdf tooltips a_btn_mini' data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docId=<#= data.ObjectId #>' ></a><# } #>"
+                "<a class='btn mini gray pdf tooltips a_btn_mini' data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docId=<#= data.ObjectId #>' ></a>"
             );
     })
     .XAutoColumnConfiguration()

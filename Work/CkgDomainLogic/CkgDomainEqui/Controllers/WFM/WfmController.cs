@@ -139,7 +139,7 @@ namespace ServicesMvc.Controllers
         {
             var pdfBytes = ViewModel.GetDokument(docId);
 
-            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", objectId) };
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", docId) };
         }
 
         [HttpPost]

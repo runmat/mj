@@ -3,10 +3,10 @@ namespace CkgDomainLogic.WFM.Models
 {
     public class WfmDokument
     {
-        public string Dokumentart { get; set; }
+        public string DocumentType { get; set; }
 
-        public string Dateiname { get; set; }
+        public string FileName { get; set; }
 
-        public string DokumentAsString { get; set; }
+        public string DocumentAsString { get; set; }
     }
 }

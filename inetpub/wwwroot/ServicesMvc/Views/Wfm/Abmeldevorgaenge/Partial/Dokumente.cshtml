@@ -33,7 +33,7 @@
         var fileName = e.files[0].name;
 
         if (fileName.toLowerCase().indexOf('.pdf') <= 0) {
-            alert('@Localize.FileUploadOnlyPdfLegal');
+            alert('@Localize.FileUploadOnlyPdfLegal.ToJavascriptString()');
             return false;
         }
 
@@ -59,7 +59,7 @@
     function UploadError(e) {
         e.preventDefault();
         setTimeout("LoadingHide()", 1000);
-        alert('@Localize.UploadErrorOccurred');
+        alert('@Localize.UploadErrorOccurred.ToJavascriptString()');
     }
 
 </script>

@@ -162,9 +162,9 @@ namespace CkgDomainLogic.WFM.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
-                        d.Dateiname = s.DATEINAME;
-                        d.DokumentAsString = s.DOK_X;
-                        d.Dokumentart = s.AR_OBJECT;
+                        d.FileName = s.DATEINAME;
+                        d.DocumentAsString = s.DOK_X;
+                        d.DocumentType = s.AR_OBJECT;
                     }));
             }
         }
@@ -315,9 +315,9 @@ namespace CkgDomainLogic.WFM.Models
                     , null
                     , (s, d) =>
                     {
-                        d.AR_OBJECT = s.Dokumentart;
-                        d.DATEINAME = s.Dateiname;
-                        d.DOK_X = s.DokumentAsString;
+                        d.AR_OBJECT = s.DocumentType;
+                        d.DATEINAME = s.FileName;
+                        d.DOK_X = s.DocumentAsString;
                     }));
             }
         }
