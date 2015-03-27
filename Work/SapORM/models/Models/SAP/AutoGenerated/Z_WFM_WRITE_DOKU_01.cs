@@ -21,7 +21,7 @@ namespace SapORM.Models
 			sap.Init(typeof(Z_WFM_WRITE_DOKU_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
-		public partial class GT_EXPORT : IModelMappingApplied
+		public partial class ES_EXPORT : IModelMappingApplied
 		{
 			[SapIgnore]
 			[ScriptIgnore]
@@ -39,9 +39,9 @@ namespace SapORM.Models
 
 			public string ERR { get; set; }
 
-			public static GT_EXPORT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			public static ES_EXPORT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
-				var o = new GT_EXPORT
+				var o = new ES_EXPORT
 				{
 					AR_OBJECT = (string)row["AR_OBJECT"],
 					DATEINAME = (string)row["DATEINAME"],
@@ -64,79 +64,199 @@ namespace SapORM.Models
 				OnInitFromExtern();
 			}
 
-			public static IEnumerable<GT_EXPORT> Select(DataTable dt, ISapConnection sapConnection = null)
+			public static IEnumerable<ES_EXPORT> Select(DataTable dt, ISapConnection sapConnection = null)
 			{
 				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
 			}
 
-			public static List<GT_EXPORT> ToList(DataTable dt, ISapConnection sapConnection = null)
+			public static List<ES_EXPORT> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
 				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
-			public static IEnumerable<GT_EXPORT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			public static IEnumerable<ES_EXPORT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_EXPORT).Name.ToLower());
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(ES_EXPORT).Name.ToLower());
 				if (tbl == null)
 					return null;
 
 				return Select(tbl, sapConnection);
 			}
 
-			public static List<GT_EXPORT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			public static List<ES_EXPORT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
 				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_EXPORT> ToList(ISapDataService sapDataService)
+			public static List<ES_EXPORT> ToList(ISapDataService sapDataService)
 			{
 				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
 			}
 
-			public static List<GT_EXPORT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			public static List<ES_EXPORT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
 			{
 				if (sapDataService == null) 
-					return new List<GT_EXPORT>();
+					return new List<ES_EXPORT>();
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_WRITE_DOKU_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_EXPORT> GetExportListWithExecute(ISapDataService sapDataService)
+			public static List<ES_EXPORT> GetExportListWithExecute(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_EXPORT>();
+					return new List<ES_EXPORT>();
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_EXPORT> GetExportList(ISapDataService sapDataService)
+			public static List<ES_EXPORT> GetExportList(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_EXPORT>();
+					return new List<ES_EXPORT>();
 				 
 				var dts = sapDataService.GetExportTables();
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_EXPORT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			public static List<ES_EXPORT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
 			{
 				if (sapDataService == null) 
-					return new List<GT_EXPORT>();
+					return new List<ES_EXPORT>();
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_WRITE_DOKU_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
-			public static List<GT_EXPORT> GetImportList(ISapDataService sapDataService)
+			public static List<ES_EXPORT> GetImportList(ISapDataService sapDataService)
 			{
 				if (sapDataService == null) 
-					return new List<GT_EXPORT>();
+					return new List<ES_EXPORT>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
+		public partial class GS_DOKUMENT : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string AR_OBJECT { get; set; }
+
+			public string DATEINAME { get; set; }
+
+			public string DOK_X { get; set; }
+
+			public static GS_DOKUMENT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GS_DOKUMENT
+				{
+					AR_OBJECT = (string)row["AR_OBJECT"],
+					DATEINAME = (string)row["DATEINAME"],
+					DOK_X = (string)row["DOK_X"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GS_DOKUMENT> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GS_DOKUMENT> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GS_DOKUMENT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GS_DOKUMENT).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GS_DOKUMENT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GS_DOKUMENT> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GS_DOKUMENT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GS_DOKUMENT>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_WRITE_DOKU_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GS_DOKUMENT> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GS_DOKUMENT>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GS_DOKUMENT> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GS_DOKUMENT>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GS_DOKUMENT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GS_DOKUMENT>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_WRITE_DOKU_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GS_DOKUMENT> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GS_DOKUMENT>();
 				 
 				var dts = sapDataService.GetImportTables();
 				 
@@ -148,12 +268,23 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable<Z_WFM_WRITE_DOKU_01.GT_EXPORT> list)
+		public static DataTable ToTable(this IEnumerable<Z_WFM_WRITE_DOKU_01.ES_EXPORT> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable<Z_WFM_WRITE_DOKU_01.GT_EXPORT> list, DataTable dtDst)
+		public static void Apply(this IEnumerable<Z_WFM_WRITE_DOKU_01.ES_EXPORT> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_WRITE_DOKU_01.GS_DOKUMENT> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_WRITE_DOKU_01.GS_DOKUMENT> list, DataTable dtDst)
 		{
 			SapDataServiceExtensions.Apply(list, dtDst);
 		}

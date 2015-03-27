@@ -281,8 +281,6 @@ namespace SapORM
             //new FunctionReflector("Z_WFM_STORNO_AUFTRAG_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0000000001");
             //new FunctionReflector("Z_WFM_READ_TODO_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
             //new FunctionReflector("Z_WFM_SET_STATUS_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
-            //new FunctionReflector("Z_WFM_READ_PDF_01").WriteOrmForExportTableStructures("I_ARCHIV_ID, I_AR_OBJECT, I_OBJECT_ID", "ZU", "SIS", "005056B327B01ED4B0E1CE3CD2FBBF70");
-            //new FunctionReflector("Z_WFM_WRITE_PDF_01").WriteOrmForExportTableStructures();
 
             //CoCTest();
             //TeslaTest();

@@ -20,9 +20,161 @@ namespace SapORM.Models
 		{
 			sap.Init(typeof(Z_WFM_READ_DOKU_01).Name, inputParameterKeys, inputParameterValues);
 		}
+
+		public partial class ES_DOKUMENT : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string KUNNR { get; set; }
+
+			public string VORG_NR_ABM_AUF { get; set; }
+
+			public string LFD_NR { get; set; }
+
+			public string DATUM { get; set; }
+
+			public string AR_OBJECT { get; set; }
+
+			public string ARCHIV_ID { get; set; }
+
+			public string AR_JAHR { get; set; }
+
+			public string DATEINAME { get; set; }
+
+			public string ERR { get; set; }
+
+			public string DOK_X { get; set; }
+
+			public static ES_DOKUMENT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new ES_DOKUMENT
+				{
+					KUNNR = (string)row["KUNNR"],
+					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
+					LFD_NR = (string)row["LFD_NR"],
+					DATUM = (string)row["DATUM"],
+					AR_OBJECT = (string)row["AR_OBJECT"],
+					ARCHIV_ID = (string)row["ARCHIV_ID"],
+					AR_JAHR = (string)row["AR_JAHR"],
+					DATEINAME = (string)row["DATEINAME"],
+					ERR = (string)row["ERR"],
+					DOK_X = (string)row["DOK_X"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<ES_DOKUMENT> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<ES_DOKUMENT> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<ES_DOKUMENT> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(ES_DOKUMENT).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<ES_DOKUMENT> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<ES_DOKUMENT> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<ES_DOKUMENT> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<ES_DOKUMENT>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_WFM_READ_DOKU_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<ES_DOKUMENT> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<ES_DOKUMENT>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<ES_DOKUMENT> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<ES_DOKUMENT>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<ES_DOKUMENT> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<ES_DOKUMENT>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_WFM_READ_DOKU_01", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<ES_DOKUMENT> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<ES_DOKUMENT>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
 	}
 
 	public static partial class DataTableExtensions
 	{
+
+		public static DataTable ToTable(this IEnumerable<Z_WFM_READ_DOKU_01.ES_DOKUMENT> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_WFM_READ_DOKU_01.ES_DOKUMENT> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
 	}
 }
