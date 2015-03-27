@@ -117,7 +117,7 @@ namespace AppZulassungsdienst.forms
 
             if (bnoError)
             {
-                bnoError = (IsCpd ? proofBankDataCPD() : proofBankDatawithoutCPD());
+                bnoError = (IsCpd ? proofBankDataCPD(IsCPDmitEinzug) : proofBankDatawithoutCPD());
                 if (bnoError)
                 {
                     SaveBankAdressdaten();
@@ -712,8 +712,9 @@ namespace AppZulassungsdienst.forms
         /// <summary>
         /// bei Auswahl CPD-Kunde Bankdaten prüfen
         /// </summary>
+        /// /// <param name="cpdMitEinzug"></param>
         /// <returns>false bei Fehler</returns>
-        private Boolean proofBankDataCPD()
+        private Boolean proofBankDataCPD(bool cpdMitEinzug)
         {
             Boolean bEdited = true;
             if (txtName1.Text.Length == 0)
@@ -739,7 +740,7 @@ namespace AppZulassungsdienst.forms
                 bEdited = false;
             }
 
-            if (chkEinzug.Checked)
+            if (cpdMitEinzug)
             {
                 if (txtKontoinhaber.Text.Length == 0)
                 {
@@ -1246,6 +1247,7 @@ namespace AppZulassungsdienst.forms
         private void DatenSpeichern()
         {
             var IsCpd = false;
+            var IsCPDmitEinzug = false;
 
             lblError.Text = "";
 
@@ -1311,9 +1313,10 @@ namespace AppZulassungsdienst.forms
                 if (kunde != null)
                 {
                     IsCpd = kunde.Cpd;
+                    IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
                 }
 
-                Boolean bnoError = IsCpd ? proofBankDataCPD() : proofBankDatawithoutCPD();
+                Boolean bnoError = IsCpd ? proofBankDataCPD(IsCPDmitEinzug) : proofBankDatawithoutCPD();
 
                 if (bnoError)
                 {
