@@ -479,7 +479,7 @@ namespace AppZulassungsdienst.forms
 
                 var kopfdaten = objNacherf.AktuellerVorgang.Kopfdaten;
 
-                if (!kopfdaten.IsNewVorgang && kopfdaten.KundenNr == txtKunnr.Text)
+                if (!kopfdaten.IsNewVorgang && objNacherf.Vorgangsliste.None(v => v.SapId == kopfdaten.SapId && v.KundenNr != txtKunnr.Text))
                 {
                     chkEinzug.Checked = objNacherf.AktuellerVorgang.Bankdaten.Einzug.IsTrue();
                     chkRechnung.Checked = objNacherf.AktuellerVorgang.Bankdaten.Rechnung.IsTrue();
@@ -1198,48 +1198,22 @@ namespace AppZulassungsdienst.forms
 
                 if (!String.IsNullOrEmpty(txtKunnr.Text) && txtKunnr.Text != "0")
                 {
-                    var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
-                    if (kunde != null)
-                    {
-                        IsCpd = kunde.Cpd;
-                        IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
-                    }
-
-                    Boolean bnoError = IsCpd ? proofBankDataCPD(IsCPDmitEinzug) : proofBankDatawithoutCPD();
-
                     if (kopfdaten.KundenNr != txtKunnr.Text)
                     {
                         kopfdaten.KundenNr = txtKunnr.Text;
-
-                        if (bnoError)
-                        {
-                            SaveBankAdressdaten();
-                        }
-                        else
-                        {
-                            lbtnBank_Click(this, new EventArgs());
-                            return;
-                        }
 
                         if (!objNacherf.SelAnnahmeAH)
                         {
                             lblError.Text = "Kunde geändert! Klicken Sie bitte auf 'Preis Finden'!";
                             cmdCreate.Enabled = false;
-                        }
-                        return;
-                    }
-                    else
-                    {
-                        if (bnoError)
-                        {
-                            SaveBankAdressdaten();
-                        }
-                        else
-                        {
-                            lbtnBank_Click(this, new EventArgs());
                             return;
                         }
                     }
+                }
+                else
+                {
+                    lblError.Text = "Bitte Kunde auswählen!";
+                    return;
                 }
 
                 DataTable tblData = (DataTable)Session["tblDienst"];
@@ -1252,6 +1226,25 @@ namespace AppZulassungsdienst.forms
                 }
 
                 Session["tblDienst"] = tblData;
+
+                var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == txtKunnr.Text);
+                if (kunde != null)
+                {
+                    IsCpd = kunde.Cpd;
+                    IsCPDmitEinzug = (kunde.Cpd && kunde.CpdMitEinzug);
+                }
+
+                Boolean bnoError = IsCpd ? proofBankDataCPD(IsCPDmitEinzug) : proofBankDatawithoutCPD();
+
+                if (bnoError)
+                {
+                    SaveBankAdressdaten();
+                }
+                else
+                {
+                    lbtnBank_Click(this, new EventArgs());
+                    return;
+                }
 
                 if (!chkFlieger.Checked)
                 {

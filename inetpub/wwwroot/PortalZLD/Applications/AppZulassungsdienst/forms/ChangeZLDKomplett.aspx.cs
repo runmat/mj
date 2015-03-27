@@ -300,7 +300,7 @@ namespace AppZulassungsdienst.forms
 
                 var kopfdaten = objKompletterf.AktuellerVorgang.Kopfdaten;
 
-                if (!kopfdaten.IsNewVorgang && kopfdaten.KundenNr == txtKunnr.Text)
+                if (!kopfdaten.IsNewVorgang && objKompletterf.Vorgangsliste.None(v => v.SapId == kopfdaten.SapId && v.KundenNr != txtKunnr.Text))
                 {
                     chkEinzug.Checked = objKompletterf.AktuellerVorgang.Bankdaten.Einzug.IsTrue();
                     chkRechnung.Checked = objKompletterf.AktuellerVorgang.Bankdaten.Rechnung.IsTrue();
