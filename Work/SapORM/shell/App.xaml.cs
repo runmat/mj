@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using ERPConnect;
@@ -1581,16 +1582,25 @@ namespace SapORM
         static void Z_WFM_READ_WRITE_DOKU_01_Test()
         {
             Z_WFM_WRITE_DOKU_01_Test();
+            //Z_WFM_READ_DOKU_01_Test();
         }
 
         static void Z_WFM_WRITE_DOKU_01_Test()
         {
+            var fileName = @"C:\Users\JenzenM\Downloads\0001607941_SEPA_Mandat.pdf";
+            var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
+            var numBytes = new FileInfo(fileName).Length;
+            byte[] fileBytes = null;
+
+            using (var binReader = new BinaryReader(fs))
+                fileBytes = binReader.ReadBytes((int)numBytes);
+
             Z_WFM_WRITE_DOKU_01.Init(Sap, "I_AG", kunnrWfl.ToSapKunnr());
 
             Sap.SetImportParameter("I_VORG_NR_ABM_AUF", "0000000001");
             Sap.SetImportParameter("I_SET_TODO", "X");
 
-            Sap.SetImportParameter("E_DOC", new[] { (byte)'0', (byte)'1', (byte)'2', (byte)'3', (byte)'4' });
+            Sap.SetImportParameter("E_DOC", fileBytes);
 
             var impList = Z_WFM_WRITE_DOKU_01.GS_DOKUMENT.GetImportList(Sap);
             impList.Add(new Z_WFM_WRITE_DOKU_01.GS_DOKUMENT
@@ -1612,9 +1622,12 @@ namespace SapORM
 
             Sap.SetImportParameter("I_VORG_NR_ABM_AUF", "0000000001");
             Sap.SetImportParameter("I_AR_OBJECT", "DOK");
-            Sap.SetImportParameter("I_OBJECT_ID", "005056B327B01EE4B2988E8C2ABBC89E");
+            //Sap.SetImportParameter("I_OBJECT_ID", "005056B327B01EE4B2988E8C2ABBC89E");
 
             Sap.Execute();
+
+            var retCode = Sap.ResultCode;
+            var retMessage = Sap.ResultMessage;
 
             var pdfString = Sap.GetExportParameterByte("E_PDF");
         }

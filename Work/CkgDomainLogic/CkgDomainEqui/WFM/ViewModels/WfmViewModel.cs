@@ -119,11 +119,16 @@ namespace CkgDomainLogic.WFM.ViewModels
             AuftraegeFiltered = Auftraege.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
+
         #region Übersicht/Storno
 
-
+        public string StornoAuftrag(string vorgangNr)
+        {
+            return DataService.StornoAuftrag(vorgangNr);
+        }
 
         #endregion
+
 
         #region Informationen
 
@@ -167,6 +172,7 @@ namespace CkgDomainLogic.WFM.ViewModels
         }
 
         #endregion
+
 
         #region Dokumente
 

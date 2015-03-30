@@ -12,7 +12,7 @@ namespace CkgDomainLogic.WFM.Contracts
 
         #region Übersicht/Storno
 
-
+        string StornoAuftrag(string vorgangNr);
 
         #endregion
 

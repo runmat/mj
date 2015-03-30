@@ -96,6 +96,26 @@ namespace CkgDomainLogic.WFM.Services
 
         #region Übersicht/Storno
 
+        public string StornoAuftrag(string vorgangNr)
+        {
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                // exception safe SAP action:
+                () =>
+                {
+                    Z_WFM_STORNO_AUFTRAG_01.Init(SAP);
+                    SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+                    SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr);
+                    SAP.SetImportParameter("I_STORNODATUM", DateTime.Today);
+
+                    SAP.Execute();
+                },
+
+                // SAP custom error handling:
+                () => ((SAP.ResultCode == 0) ? "" : SAP.ResultMessage.NotNullOr(Localize.CancellationFailed + ",  error code: " + SAP.ResultCode)));
+
+            return errorMessage;
+        }
 
 
         #endregion
