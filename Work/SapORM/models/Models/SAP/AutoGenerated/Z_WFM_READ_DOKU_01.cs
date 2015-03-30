@@ -49,8 +49,6 @@ namespace SapORM.Models
 
 			public string ERR { get; set; }
 
-			public string DOK_X { get; set; }
-
 			public static ES_DOKUMENT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new ES_DOKUMENT
@@ -64,7 +62,6 @@ namespace SapORM.Models
 					AR_JAHR = (string)row["AR_JAHR"],
 					DATEINAME = (string)row["DATEINAME"],
 					ERR = (string)row["ERR"],
-					DOK_X = (string)row["DOK_X"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

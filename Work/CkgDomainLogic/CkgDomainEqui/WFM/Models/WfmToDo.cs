@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Configuration;
 using System.Globalization;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -86,10 +87,15 @@ namespace CkgDomainLogic.WFM.Models
             get { return GetViewModel != null && GetViewModel().IstHoechsteLfdNr(LaufendeNr.ToInt()); }
         }
 
+        static string GroupWithToDoConfirmationRights { get { return ConfigurationManager.AppSettings["GroupWithToDoConfirmationRights"] ?? "KUNDE"; } }
+
         [GridHidden, NotMapped]
         public bool ToDoKundeBestaetigungsBerechtigung
         {
-            get { return ToDoWer.NotNullOrEmpty().ToUpper() == "KUNDE" && IstHoechsteLfdNr; }
+            get 
+            {
+                return (ToDoWer.NotNullOrEmpty().ToUpper() == GroupWithToDoConfirmationRights) && (Status.NotNullOrEmpty() == "1") && IstHoechsteLfdNr; 
+            }
         }
         
         

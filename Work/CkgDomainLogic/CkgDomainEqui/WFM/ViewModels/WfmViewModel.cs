@@ -11,6 +11,8 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
+using GeneralTools.Resources;
+using MvcTools.Web;
 
 namespace CkgDomainLogic.WFM.ViewModels
 {
@@ -51,6 +53,16 @@ namespace CkgDomainLogic.WFM.ViewModels
         public WfmAuftrag AktuellerAuftrag { get { return Auftraege.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == AktuellerAuftragVorgangsNr); } }
 
         public string Title { get { return (Selektor.Modus == SelektionsModus.KlaerfallWorkplace ? Localize.Wfm_KlaerfallWorkplace : Localize.Wfm_Abmeldevorgaenge); } }
+
+        public string DokArten { get { return "VER;SIP;SOS"; } }
+
+        [LocalizedDisplay(LocalizeConstants.DocumentType)]
+        public string SelectedDokArt
+        {
+            get { return PropertyCacheGet(() => DokArten.ToSelectList().First().Value); }
+            set { PropertyCacheSet(value); }
+        }
+
 
         public void DataInit(SelektionsModus modus)
         {
@@ -214,8 +226,6 @@ namespace CkgDomainLogic.WFM.ViewModels
             return null;
         }
 
-        public string CurrentDocumentType { get; set; }
-
         public string SaveDokument(HttpPostedFileBase file)
         {
             byte[] fileBytes;
@@ -226,7 +236,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             var neuesDok = new WfmDokument
                 {
-                    DocumentType = CurrentDocumentType,
+                    DocumentType = SelectedDokArt,
                     FileName = file.FileName,
                     FileBytes = fileBytes,
                 };
@@ -277,19 +287,13 @@ namespace CkgDomainLogic.WFM.ViewModels
             return (hoechsteNummer == lfdNr);
         }
 
-        public string ConfirmToDo(string lfdNr)
+        public string ConfirmToDo(string lfdNr, string remark)
         {
-            var message = DataService.ConfirmToDo(AktuellerAuftragVorgangsNr, lfdNr);
+            var message = DataService.ConfirmToDo(AktuellerAuftragVorgangsNr, lfdNr, remark);
             if (message.IsNullOrEmpty())
             {
-                var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == lfdNr);
-                if (auftrag != null)
-                {
-                    auftrag.StornoDatum = DateTime.Today;
-                    auftrag.AbmeldeStatusCode = "3";
-                }
-
-                DataMarkForRefresh();
+                Aufgaben = DataService.GetToDos(AktuellerAuftragVorgangsNr);
+                PropertyCacheClear(this, m => m.AufgabenFiltered);
             }
 
             return message;

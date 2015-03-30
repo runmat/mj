@@ -16,6 +16,14 @@
     <div id="divAuftragDetail"></div>
 }
 
+<style type="text/css">
+    
+    #tbNoteForToDo {
+        background-color: white!important;
+    }
+    
+</style>
+
 <script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
@@ -200,10 +208,13 @@
             type: "POST",
             url: "ConfirmToDo",
             loadingShow: true,
-            data: { lfdNr: lfdNr },
+            data: { lfdNr: lfdNr, remark: $("#tbNoteForToDo").val() },
             success: function (result) {
                 if (result.success) {
                     SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                    try { FilterGrid("GridAufgaben"); }
+                    catch (e) { }
+           
                 } else {
                     SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
                 }

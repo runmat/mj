@@ -216,15 +216,23 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ConfirmToDo(string lfdNr)
+        public ActionResult ConfirmToDo(string lfdNr, string remark)
         {
-            var message = ViewModel.ConfirmToDo(lfdNr);
+            var message = ViewModel.ConfirmToDo(lfdNr, remark);
 
             return Json(new
             {
                 success = message.IsNullOrEmpty(),
                 message = (message.IsNotNullOrEmpty() ? message : (Localize.Confirm + " " + Localize.Successful.ToLower()))
             });
+        }
+
+        [HttpPost]
+        public ActionResult SetSelectedDokArt(string dokArt)
+        {
+            ViewModel.SelectedDokArt = dokArt;
+
+            return new EmptyResult();
         }
 
         public ActionResult ExportAufgabenFilteredExcel(int page, string orderBy, string filterBy)

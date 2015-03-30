@@ -219,7 +219,7 @@ namespace CkgDomainLogic.WFM.Services
             return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
 
-        public string ConfirmToDo(string vorgangsNr, string lfdNr)
+        public string ConfirmToDo(string vorgangsNr, string lfdNr, string remark)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -238,6 +238,7 @@ namespace CkgDomainLogic.WFM.Services
                                     LFD_NR = lfdNr,
                                     STATUS = "2",
                                     INS_FOLGE_TASK = "X",
+                                    ANMERKUNG = remark,
                                 }
                         };
                     SAP.ApplyImport(list);
