@@ -1,5 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Globalization;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.WFM.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -75,5 +79,21 @@ namespace CkgDomainLogic.WFM.Models
 
         [LocalizedDisplay(LocalizeConstants.NextTask)]
         public string FolgetaskAufgabe { get; set; }
+
+        [GridHidden, NotMapped]
+        public bool IstHoechsteLfdNr
+        {
+            get { return GetViewModel != null && GetViewModel().IstHoechsteLfdNr(LaufendeNr.ToInt()); }
+        }
+
+        [GridHidden, NotMapped]
+        public bool ToDoKundeBestaetigungsBerechtigung
+        {
+            get { return ToDoWer.NotNullOrEmpty().ToUpper() == "KUNDE" && IstHoechsteLfdNr; }
+        }
+        
+        
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<WfmViewModel> GetViewModel { get; set; }
     }
 }

@@ -124,7 +124,20 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public string StornoAuftrag(string vorgangNr)
         {
-            return DataService.StornoAuftrag(vorgangNr);
+            var message = DataService.StornoAuftrag(vorgangNr);
+            if (message.IsNullOrEmpty())
+            {
+                var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
+                if (auftrag != null)
+                {
+                    auftrag.StornoDatum = DateTime.Today;
+                    auftrag.AbmeldeStatusCode = "3";
+                }
+
+                DataMarkForRefresh();
+            }
+
+            return message;
         }
 
         #endregion
@@ -196,36 +209,34 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             var dok = DataService.GetDokument(dokInfo);
             if (dok != null)
-                return Encoding.UTF8.GetBytes(dok.DocumentAsString);
+                return dok.FileBytes;
 
             return null;
         }
 
         public string CurrentDocumentType { get; set; }
 
-        public bool SaveDokument(HttpPostedFileBase file)
+        public string SaveDokument(HttpPostedFileBase file)
         {
-            byte[] dateiBytes = null;
+            byte[] fileBytes;
             using (var binReader = new BinaryReader(file.InputStream))
             {
-                dateiBytes = binReader.ReadBytes(file.ContentLength);
+                fileBytes = binReader.ReadBytes(file.ContentLength);
             }
 
             var neuesDok = new WfmDokument
                 {
                     DocumentType = CurrentDocumentType,
                     FileName = file.FileName,
-                    DocumentAsString = Encoding.UTF8.GetString(dateiBytes)
+                    FileBytes = fileBytes,
                 };
 
             var neueDokInfo = DataService.SaveDokument(AktuellerAuftragVorgangsNr, neuesDok);
-            if (neueDokInfo != null)
-            {
-                Dokumente.Add(neueDokInfo);
-                return true;
-            }
+            if (neueDokInfo.ObjectId == null)
+                return neueDokInfo.ErrorMessage;
 
-            return false;
+            Dokumente.Add(neueDokInfo);
+            return "";
         }
 
         public void FilterDokumente(string filterValue, string filterProperties)
@@ -254,6 +265,34 @@ namespace CkgDomainLogic.WFM.ViewModels
         public void FilterAufgaben(string filterValue, string filterProperties)
         {
             AufgabenFiltered = Aufgaben.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public bool IstHoechsteLfdNr(int lfdNr)
+        {
+            if (Aufgaben.ToListOrEmptyList().None())
+                return false;
+
+            var hoechsteNummer = Aufgaben.Select(a => a.LaufendeNr.ToInt()).Max();
+            
+            return (hoechsteNummer == lfdNr);
+        }
+
+        public string ConfirmToDo(string lfdNr)
+        {
+            var message = DataService.ConfirmToDo(AktuellerAuftragVorgangsNr, lfdNr);
+            if (message.IsNullOrEmpty())
+            {
+                var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == lfdNr);
+                if (auftrag != null)
+                {
+                    auftrag.StornoDatum = DateTime.Today;
+                    auftrag.AbmeldeStatusCode = "3";
+                }
+
+                DataMarkForRefresh();
+            }
+
+            return message;
         }
 
         #endregion

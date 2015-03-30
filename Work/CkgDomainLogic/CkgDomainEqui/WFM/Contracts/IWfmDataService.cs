@@ -38,6 +38,8 @@ namespace CkgDomainLogic.WFM.Contracts
 
         List<WfmToDo> GetToDos(string vorgangsNr);
 
+        string ConfirmToDo(string vorgangsNr, string lfdNr);
+
         #endregion
     }
 }

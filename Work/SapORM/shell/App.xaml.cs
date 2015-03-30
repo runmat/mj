@@ -1581,8 +1581,8 @@ namespace SapORM
 
         static void Z_WFM_READ_WRITE_DOKU_01_Test()
         {
-            Z_WFM_WRITE_DOKU_01_Test();
-            //Z_WFM_READ_DOKU_01_Test();
+            //Z_WFM_WRITE_DOKU_01_Test();
+            Z_WFM_READ_DOKU_01_Test();
         }
 
         static void Z_WFM_WRITE_DOKU_01_Test()
@@ -1622,14 +1622,14 @@ namespace SapORM
 
             Sap.SetImportParameter("I_VORG_NR_ABM_AUF", "0000000001");
             Sap.SetImportParameter("I_AR_OBJECT", "DOK");
-            //Sap.SetImportParameter("I_OBJECT_ID", "005056B327B01EE4B2988E8C2ABBC89E");
+            Sap.SetImportParameter("I_OBJECT_ID", "005056B327B01EE4B5D8F6F518415878");
 
             Sap.Execute();
 
             var retCode = Sap.ResultCode;
             var retMessage = Sap.ResultMessage;
 
-            var pdfString = Sap.GetExportParameterByte("E_PDF");
+            var pdfString = Sap.GetExportParameterByte("E_DOC");
         }
     }
 }

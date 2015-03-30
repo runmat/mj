@@ -1,4 +1,5 @@
-﻿using GeneralTools.Models;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.WFM.Models
@@ -19,5 +20,8 @@ namespace CkgDomainLogic.WFM.Models
 
         [LocalizedDisplay(LocalizeConstants.ObjectId)]
         public string ObjectId { get; set; }
+
+        [GridHidden, NotMapped]
+        public string ErrorMessage { get; set; }
     }
 }

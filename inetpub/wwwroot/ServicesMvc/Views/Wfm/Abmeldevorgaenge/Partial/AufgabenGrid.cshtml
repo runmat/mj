@@ -15,6 +15,10 @@
         columns.XBound(c => c.Aufgabe);
         columns.XBound(c => c.User);
         columns.XBound(c => c.Anmerkung);
+
+        columns.XBound(c => c.VorgangsNrAbmeldeauftrag).Filterable(false).Sortable(false).Title("").ClientTemplate(
+                "<# if (data.ToDoKundeBestaetigungsBerechtigung) { #><a class='tooltips btn mini green a_btn_mini' href='#' onclick='return ConfirmToDo(<#= data.LaufendeNr #>)' data-original-title='" + Localize.Confirm + "' data-placement='right'><i class='halflings-icon ok white'></i></a><# } #> "
+            );
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

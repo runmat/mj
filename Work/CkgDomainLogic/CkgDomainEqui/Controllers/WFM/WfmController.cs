@@ -80,6 +80,18 @@ namespace ServicesMvc.Controllers
 
         #region Übersicht/Storno
 
+        [HttpPost]
+        public ActionResult CancelOrder(string vorgangsNr)
+        {
+            var message = ViewModel.StornoAuftrag(vorgangsNr);
+
+            return Json(new
+                {
+                    success = message.IsNullOrEmpty(), 
+                    message = (message.IsNotNullOrEmpty() ? message : (Localize.CancelOrder + " " + Localize.Successful.ToLower()))
+                });
+        }
+
         #endregion
 
         #region Informationen
@@ -151,10 +163,14 @@ namespace ServicesMvc.Controllers
             // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
             var file = uploadFiles.ToArray()[0];
 
-            if (!ViewModel.SaveDokument(file))
-                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
+            var message = ViewModel.SaveDokument(file);
 
-            return Json(new { success = true, message = "ok", uploadFileName = file.FileName }, "text/plain");
+            return Json(new
+            {
+                success = message.IsNullOrEmpty(),
+                message = (message.IsNotNullOrEmpty() ? message : Localize.UploadFailed),
+                uploadFileName = file.FileName 
+            });
         }
 
         [HttpPost]
@@ -197,6 +213,18 @@ namespace ServicesMvc.Controllers
             ViewModel.FilterAufgaben(filterValue, filterColumns);
 
             return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmToDo(string lfdNr)
+        {
+            var message = ViewModel.ConfirmToDo(lfdNr);
+
+            return Json(new
+            {
+                success = message.IsNullOrEmpty(),
+                message = (message.IsNotNullOrEmpty() ? message : (Localize.Confirm + " " + Localize.Successful.ToLower()))
+            });
         }
 
         public ActionResult ExportAufgabenFilteredExcel(int page, string orderBy, string filterBy)

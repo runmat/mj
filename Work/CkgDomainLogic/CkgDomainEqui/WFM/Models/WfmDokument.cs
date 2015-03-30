@@ -7,6 +7,6 @@ namespace CkgDomainLogic.WFM.Models
 
         public string FileName { get; set; }
 
-        public string DocumentAsString { get; set; }
+        public byte[] FileBytes { get; set; }
     }
 }

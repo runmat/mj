@@ -44,9 +44,8 @@
 
     function TryAuftraegeGridRefresh() {
         // Refresh grid only
-        if (typeof (GetAuftraegeGrid()) !== "undefined") {
-            GetAuftraegeGrid().ajaxRequest();
-        }
+        try { FilterGrid("GridAuftraege"); }
+        catch(e){}
     }
 
     function OnDataBound_GridAuftraege() {
@@ -95,7 +94,11 @@
 
     function CloseAuftragsDetail() {
         $("#btnBackToResult").hide();
-        $("#divAuftragDetail").slideUp(function () { $("#divAuftraegeGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divAuftragDetail").slideUp(function () {
+            $("#divAuftraegeGrid").delay(200).slideDown();
+            TryAuftraegeGridRefresh();
+            window.scrollTo(0, 0);
+        });
         //$("#divAuftraegeGrid").slideDown();
     }
 
@@ -172,6 +175,42 @@
 
     function OnColumnReorder_GridAufgaben() {
         FilteredData_Grid_OnColumnReorder($(this));
+    }
+    
+    function CancelOrder(vorgangsNr) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "CancelOrder",
+            loadingShow: true,
+            data: { vorgangsNr: vorgangsNr },
+            success: function (result) {
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                } else {
+                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                }
+            }
+        });
+    }
+    
+    function ConfirmToDo(lfdNr) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "ConfirmToDo",
+            loadingShow: true,
+            data: { lfdNr: lfdNr },
+            success: function (result) {
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                } else {
+                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                }
+            }
+        });
+        
+        return false;
     }
 
 </script>

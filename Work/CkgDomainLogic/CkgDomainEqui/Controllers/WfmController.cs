@@ -1,6 +1,8 @@
 ﻿using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.WFM.Contracts;
+using CkgDomainLogic.WFM.Models;
+using CkgDomainLogic.WFM.ViewModels;
 using GeneralTools.Contracts;
 
 namespace ServicesMvc.Controllers
@@ -13,6 +15,12 @@ namespace ServicesMvc.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, wflDataService);
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            WfmToDo.GetViewModel = GetViewModel<WfmViewModel>;
         }
     }
 }

@@ -163,7 +163,6 @@ namespace CkgDomainLogic.WFM.Models
                     , (s, d) =>
                     {
                         d.FileName = s.DATEINAME;
-                        d.DocumentAsString = s.DOK_X;
                         d.DocumentType = s.AR_OBJECT;
                     }));
             }
@@ -317,7 +316,6 @@ namespace CkgDomainLogic.WFM.Models
                     {
                         d.AR_OBJECT = s.DocumentType;
                         d.DATEINAME = s.FileName;
-                        d.DOK_X = s.DocumentAsString;
                     }));
             }
         }

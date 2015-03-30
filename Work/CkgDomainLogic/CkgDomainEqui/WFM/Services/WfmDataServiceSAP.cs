@@ -112,7 +112,7 @@ namespace CkgDomainLogic.WFM.Services
                 },
 
                 // SAP custom error handling:
-                () => ((SAP.ResultCode == 0) ? "" : SAP.ResultMessage.NotNullOr(Localize.CancellationFailed + ",  error code: " + SAP.ResultCode)));
+                () => ((SAP.ResultCode == 0) ? "" : SAP.ResultMessage.NotNullOr(Localize.CancellationFailed + ",  SAP Error Code: " + SAP.ResultCode)));
 
             return errorMessage;
         }
@@ -165,30 +165,47 @@ namespace CkgDomainLogic.WFM.Services
             Z_WFM_READ_DOKU_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
             SAP.SetImportParameter("I_VORG_NR_ABM_AUF", dokInfo.VorgangsNrAbmeldeauftrag);
-            SAP.SetImportParameter("I_AR_OBJECT", dokInfo.Dokumentart);
+            SAP.SetImportParameter("I_AR_OBJECT", dokInfo.Dokumentart ?? "DOK");
             SAP.SetImportParameter("I_OBJECT_ID", dokInfo.ObjectId);
 
             SAP.Execute();
 
-            return AppModelMappings.Z_WFM_READ_DOKU_01_ES_DOKUMENT_To_WfmDokument.Copy(Z_WFM_READ_DOKU_01.ES_DOKUMENT.GetExportList(SAP)).FirstOrDefault();
+            var dok = AppModelMappings.Z_WFM_READ_DOKU_01_ES_DOKUMENT_To_WfmDokument.Copy(Z_WFM_READ_DOKU_01.ES_DOKUMENT.GetExportList(SAP)).FirstOrDefault();
+            if (dok != null)
+                dok.FileBytes = SAP.GetExportParameterByte("E_DOC");
+
+            return dok;
         }
 
         public WfmDokumentInfo SaveDokument(string vorgangsNr, WfmDokument dok)
         {
-            Z_WFM_WRITE_DOKU_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
+            WfmDokumentInfo expDokInfo = null;
 
-            SAP.ApplyImport(AppModelMappings.Z_WFM_WRITE_DOKU_01_GS_DOKUMENT_From_WfmDokument.CopyBack(new List<WfmDokument> { dok }));
+            var errorMessage = SAP.ExecuteAndCatchErrors(
 
-            SAP.Execute();
+                // exception safe SAP action:
+                () =>
+                {
+                    Z_WFM_WRITE_DOKU_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
 
-            var expDokInfo = AppModelMappings.Z_WFM_WRITE_DOKU_01_ES_EXPORT_To_WfmDokumentInfo.Copy(Z_WFM_WRITE_DOKU_01.ES_EXPORT.GetExportList(SAP)).FirstOrDefault();
-            if (expDokInfo != null)
-            {
-                expDokInfo.VorgangsNrAbmeldeauftrag = vorgangsNr;
+                    SAP.ApplyImport(AppModelMappings.Z_WFM_WRITE_DOKU_01_GS_DOKUMENT_From_WfmDokument.CopyBack(new List<WfmDokument> { dok }));
+                    SAP.SetImportParameter("E_DOC", dok.FileBytes);
+
+                    SAP.Execute();
+
+                    expDokInfo = AppModelMappings.Z_WFM_WRITE_DOKU_01_ES_EXPORT_To_WfmDokumentInfo.Copy(Z_WFM_WRITE_DOKU_01.ES_EXPORT.GetExportList(SAP)).FirstOrDefault();
+                    if (expDokInfo != null)
+                        expDokInfo.VorgangsNrAbmeldeauftrag = vorgangsNr;
+                },
+
+                // SAP custom error handling:
+                () => ((SAP.ResultCode == 0) ? "" : SAP.ResultMessage.NotNullOr(Localize.ErrorFileCouldNotBeSaved + ",  SAP Error Code: " + SAP.ResultCode)));
+
+
+            if (errorMessage.IsNullOrEmpty() && expDokInfo != null)
                 return expDokInfo;
-            }
 
-            return null;
+            return new WfmDokumentInfo { ObjectId = null, ErrorMessage = Localize.UploadFailed };
         }
 
         #endregion
@@ -200,6 +217,43 @@ namespace CkgDomainLogic.WFM.Services
             Z_WFM_READ_TODO_01.Init(SAP, "I_AG, I_VORG_NR_ABM_AUF_VON", LogonContext.KundenNr.ToSapKunnr(), vorgangsNr);
 
             return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public string ConfirmToDo(string vorgangsNr, string lfdNr)
+        {
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                // exception safe SAP action:
+                () =>
+                {
+                    Z_WFM_SET_STATUS_01.Init(SAP);
+                    SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+                    SAP.SetImportParameter("I_USER", LogonContext.UserName);
+
+                    var list = new List<Z_WFM_SET_STATUS_01.GT_DATEN>
+                        {
+                            new Z_WFM_SET_STATUS_01.GT_DATEN
+                                {
+                                    VORG_NR_ABM_AUF = vorgangsNr,
+                                    LFD_NR = lfdNr,
+                                    STATUS = "2",
+                                    INS_FOLGE_TASK = "X",
+                                }
+                        };
+                    SAP.ApplyImport(list);
+
+                    SAP.Execute();
+                },
+
+                // SAP custom error handling:
+                () =>
+                    {
+                        var exportList = Z_WFM_SET_STATUS_01.GT_DATEN.GetExportList(SAP);
+                        var errorItem = exportList.ToListOrEmptyList().FirstOrDefault(i => i.ERR.IsNotNullOrEmpty());
+                        return (errorItem == null) ? "" : errorItem.ERR;
+                    });
+
+            return errorMessage;
         }
 
         #endregion
