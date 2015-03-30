@@ -1285,7 +1285,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
                 if (model.VersicherungID.IsNullOrEmpty())
                 {
-                    addModelError(m => m.VersicherungID, "Bitte geben Sie eine Versicherung an");
+                    addModelError(m => m.VersicherungID, Localize.PleaseSelectAnInsurance);
                     return;
                 }
 
