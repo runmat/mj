@@ -287,9 +287,9 @@ namespace CkgDomainLogic.WFM.ViewModels
             return (hoechsteNummer == lfdNr);
         }
 
-        public string ConfirmToDo(string lfdNr, string remark)
+        public string ConfirmToDo(int lfdNr, string remark)
         {
-            var message = DataService.ConfirmToDo(AktuellerAuftragVorgangsNr, lfdNr, remark);
+            var message = DataService.ConfirmToDo(AktuellerAuftragVorgangsNr.ToInt(), lfdNr, remark);
             if (message.IsNullOrEmpty())
             {
                 Aufgaben = DataService.GetToDos(AktuellerAuftragVorgangsNr);

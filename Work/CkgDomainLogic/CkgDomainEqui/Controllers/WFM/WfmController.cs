@@ -218,7 +218,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ConfirmToDo(string lfdNr, string remark)
         {
-            var message = ViewModel.ConfirmToDo(lfdNr, remark);
+            var message = ViewModel.ConfirmToDo(lfdNr.ToInt(), remark);
 
             return Json(new
             {

@@ -219,7 +219,7 @@ namespace CkgDomainLogic.WFM.Services
             return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
 
-        public string ConfirmToDo(string vorgangsNr, string lfdNr, string remark)
+        public string ConfirmToDo(int vorgangsNr, int lfdNr, string remark)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -234,8 +234,8 @@ namespace CkgDomainLogic.WFM.Services
                         {
                             new Z_WFM_SET_STATUS_01.GT_DATEN
                                 {
-                                    VORG_NR_ABM_AUF = vorgangsNr,
-                                    LFD_NR = lfdNr,
+                                    VORG_NR_ABM_AUF = vorgangsNr.ToString(),
+                                    LFD_NR = lfdNr.ToString(),
                                     STATUS = "2",
                                     INS_FOLGE_TASK = "X",
                                     ANMERKUNG = remark,

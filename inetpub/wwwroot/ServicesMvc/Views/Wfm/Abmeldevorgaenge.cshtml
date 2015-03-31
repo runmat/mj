@@ -18,7 +18,7 @@
 
 <style type="text/css">
     
-    #tbNoteForToDo {
+    .tbNoteForToDo {
         background-color: white!important;
     }
     
@@ -177,6 +177,16 @@
         LoadingHide();
     }
 
+    function OnRowDataBound_GridAufgaben(e) {
+        var isConfirmed = e.dataItem["IsConfirmed"];
+        if (isConfirmed)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-confirmed" : "t-grid-confirmed-alt");
+
+        var isUnConfirmed = e.dataItem["IsUnConfirmed"];
+        if (isUnConfirmed)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-unconfirmed" : "t-grid-unconfirmed-alt");
+    }
+
     function OnColumnShowHide_GridAufgaben() {
         FilteredData_Grid_OnColumnShowHide($(this));
     }
@@ -202,13 +212,14 @@
         });
     }
     
-    function ConfirmToDo(lfdNr) {
+    function ConfirmToDo(a, lfdNr) {
+
         $.ajax(
         {
             type: "POST",
             url: "ConfirmToDo",
             loadingShow: true,
-            data: { lfdNr: lfdNr, remark: $("#tbNoteForToDo").val() },
+            data: { lfdNr: lfdNr, remark: a.parent().find(".tbNoteForToDo").val() },
             success: function (result) {
                 if (result.success) {
                     SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);

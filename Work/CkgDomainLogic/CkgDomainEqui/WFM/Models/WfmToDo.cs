@@ -81,7 +81,7 @@ namespace CkgDomainLogic.WFM.Models
         [LocalizedDisplay(LocalizeConstants.NextTask)]
         public string FolgetaskAufgabe { get; set; }
 
-        [GridHidden, NotMapped]
+        [GridHidden, NotMapped, XmlIgnore]
         public bool IstHoechsteLfdNr
         {
             get { return GetViewModel != null && GetViewModel().IstHoechsteLfdNr(LaufendeNr.ToInt()); }
@@ -89,15 +89,20 @@ namespace CkgDomainLogic.WFM.Models
 
         static string GroupWithToDoConfirmationRights { get { return ConfigurationManager.AppSettings["GroupWithToDoConfirmationRights"] ?? "KUNDE"; } }
 
-        [GridHidden, NotMapped]
+        [GridHidden, NotMapped, XmlIgnore]
         public bool ToDoKundeBestaetigungsBerechtigung
         {
             get 
             {
-                return (ToDoWer.NotNullOrEmpty().ToUpper() == GroupWithToDoConfirmationRights) && (Status.NotNullOrEmpty() == "1") && IstHoechsteLfdNr; 
+                return (ToDoWer.NotNullOrEmpty().ToUpper() == GroupWithToDoConfirmationRights) && IsUnConfirmed && IstHoechsteLfdNr; 
             }
         }
-        
+
+        [GridHidden, NotMapped, XmlIgnore]
+        public bool IsUnConfirmed { get { return Status.NotNullOrEmpty() == "1"; } }
+
+        [GridHidden, NotMapped, XmlIgnore]
+        public bool IsConfirmed { get { return Status.NotNullOrEmpty() == "2"; } }
         
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<WfmViewModel> GetViewModel { get; set; }
