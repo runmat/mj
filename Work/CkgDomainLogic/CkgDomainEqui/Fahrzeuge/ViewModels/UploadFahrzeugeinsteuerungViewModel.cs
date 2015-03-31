@@ -48,7 +48,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, true, CreateInstanceFromDatarow, ';').ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, true, "", CreateInstanceFromDatarow, ';').ToList();
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())
                 return false;

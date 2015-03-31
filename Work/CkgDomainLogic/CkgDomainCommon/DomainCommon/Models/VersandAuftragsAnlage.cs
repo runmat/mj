@@ -32,6 +32,8 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string Mahnverfahren { get; set; }
 
+        public bool SchluesselKombiVersand { get; set; }
+
 
         #region Versand Adresse
 
