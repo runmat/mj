@@ -75,7 +75,7 @@
     }
 
     function ShowAuftragsDetailAjax(id) {
-        LoadingShow();
+        setTimeout('LoadingShow();', 500);
         $.ajax(
         {
             type: "POST",
@@ -89,6 +89,7 @@
     }
 
     function ShowAuftragsDetail(result) {
+        LoadingShow();
         $("#divAuftragDetail").html(result);
         GridAllColumnFilterApplyToGrid("GridInformationen");
         GridAllColumnFilterApplyToGrid("GridDokumente");
@@ -96,8 +97,8 @@
         $("#divAuftraegeGrid").slideUp();
         $("#divAuftragDetail").slideDown();
         $("#btnBackToResult").show();
-        setTimeout('LoadingHide()', 1000);
         FormPreparePrivateAjax();
+        setTimeout('LoadingHide()', 1000);
     }
 
     function CloseAuftragsDetail() {
