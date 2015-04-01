@@ -84,6 +84,9 @@ namespace CkgDomainLogic.WFM.Models
         [LocalizedDisplay(LocalizeConstants.ReversalDate)]
         public DateTime? StornoDatum { get; set; }
 
+        [GridHidden]
+        public bool IstStorniert { get { return StornoDatum != null; } }
+
         [LocalizedDisplay(LocalizeConstants.Zb1AvailableDate)]
         public DateTime? Zb1VorhandenDatum { get; set; }
 

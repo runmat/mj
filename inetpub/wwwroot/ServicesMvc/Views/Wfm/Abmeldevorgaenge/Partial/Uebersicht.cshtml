@@ -8,9 +8,16 @@
 
     @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap", col = "left" })
     @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
-
-    <div class="form-actions">
-        <button type="button" class="btn yellow" onclick="CancelOrder('@Model.VorgangsNrAbmeldeauftrag');">@Localize.CancelOrder <i class="icon-remove"></i></button>
-    </div>
-
+    
+    @if (!Model.IstStorniert)
+    {
+        <div class="form-actions">
+            <button type="button" class="btn yellow" onclick=" CancelOrder('@Model.VorgangsNrAbmeldeauftrag'); ">@Localize.CancelOrder <i class="icon-remove"></i></button>
+        </div>
+    }
+    else
+    {
+        @Html.FormError("", Localize.Order + " " + Localize.Cancelled + "!")
+    }
+    
 </form>
