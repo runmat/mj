@@ -40,16 +40,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public void DataInit()
         {
-            DataMarkForRefresh();
-        }
-
-        public void DataMarkForRefresh()
-        {
-            PropertyCacheClear(this, m => m.ModellIdsFiltered);
-        }
-
-        public void Validate(Action<string, string> addModelError)
-        {
+            LoadModellIds();
         }
 
         public void LoadModellIds()
@@ -59,6 +50,15 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             DataMarkForRefresh();
 
             //XmlService.XmlSerializeToFile(ModellId, Path.Combine(AppSettings.DataPath, @"ModellId.xml"));
+        }
+
+        public void DataMarkForRefresh()
+        {
+            PropertyCacheClear(this, m => m.ModellIdsFiltered);
+        }
+
+        public void Validate(Action<string, string> addModelError)
+        {
         }
 
         public ModellId GetItem(string id)
@@ -71,7 +71,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             ModellIds.Add(newItem);
         }
 
-        public ModellId NewItem()
+        public ModellId NewItem(string idToDuplicate)
         {
             return new ModellId
             {
@@ -84,10 +84,10 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             var errorMessage = DataService.SaveModellId(item);
 
-            DataMarkForRefresh();
-            
             if (errorMessage.IsNotNullOrEmpty())
                 addModelError("", errorMessage);
+            else
+                LoadModellIds();
         }
 
         public void ValidateModel(ModellId model, bool insertMode, Action<Expression<Func<ModellId, object>>, string> addModelError)

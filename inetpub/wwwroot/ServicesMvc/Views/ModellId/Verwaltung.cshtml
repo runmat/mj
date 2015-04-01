@@ -1,44 +1,21 @@
-﻿@model CkgDomainLogic.DomainCommon.ViewModels.AdressenPflegeViewModel 
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.ModellIdViewModel
 
 @section LayoutScript { _controlGroupValidationType = "default"; }
 
-@Html.Partial("AdressenPflege/AdresseCommon")
+@Html.Partial("Partial/Common")
 
-<script type="text/javascript">
+<h3 class="page-title">Modell ID<small> Pflege</small></h3>
 
-    var _modelStateValid = false;
+<div class="portlet">
+    <div id="divGridEditStart">
+        @Html.Partial("Partial/Grid")
+    </div>
+</div>
 
-    function FormPreparePrivate() {
-        FormPreparePrivateAdressenPflege();
-        InitRadiobuttonHandler();
-    }
+<div id="divGridItemDetails"></div>
 
-    function FormPreparePrivateAjax() {
-        FormPrepareAjax();
-    }
-    
-    function AdressenKennungChangeFinish() {
-        //alert('ok');
-        FormPrepareAjax();
-        InitRadiobuttonHandler();
-        TryAddressGridRefresh();
-    }
 
-    function InitRadiobuttonHandler() {
-        $(":radio").click(function () {
-            $("#SearchFilterForm").submit();
-        });
-    }
-    
-</script>
 
-<h3 class="page-title">Adressenverwaltung <small></small></h3>
 
-@if (Model.AdressenKennungGruppenLocalized.None())
-{
-    <div class="alert warning margin-top-30"><i class="icon-bell margin-right-10"></i> <span>@Localize.NoAddressTypesAvailableForThisCustomer</span></div>
-}
-else
-{
-    @Html.Partial("AdressenPflege/AdressenGrid")
-}
+
+

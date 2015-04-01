@@ -33,7 +33,7 @@ namespace ServicesMvc.Controllers
         }
 
         [GridAction]
-        public ActionResult ModellIdAjaxBinding()
+        public ActionResult ModellIdsAjaxBinding()
         {
             return View(new GridModel(ViewModel.ModellIdsFiltered));
         }
@@ -48,11 +48,11 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult NewModellId()
+        public ActionResult NewModellId(string idToDuplicate)
         {
             ViewModel.InsertMode = true;
             ModelState.Clear();
-            return PartialView("Partial/DetailsForm", ViewModel.NewItem().SetInsertMode(ViewModel.InsertMode));
+            return PartialView("Partial/DetailsForm", ViewModel.NewItem(idToDuplicate).SetInsertMode(ViewModel.InsertMode));
         }
 
         [HttpPost]
