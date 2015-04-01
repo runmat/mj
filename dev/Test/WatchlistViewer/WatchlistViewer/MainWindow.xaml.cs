@@ -16,10 +16,10 @@ namespace WatchlistViewer
 
         private void MainWindow_OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            const int marginRight = 0;
+            const int marginRight = FirefoxWebDriver.BrowserWidth + FirefoxWebDriver.BrowserMarginRight;
 
             var desktopWorkingArea = SystemParameters.WorkArea;
-            this.Left = desktopWorkingArea.Width / 2 - e.NewSize.Width / 2 - marginRight;
+            this.Left = desktopWorkingArea.Width - e.NewSize.Width - marginRight + 55;
         }
     }
 }

@@ -16,6 +16,8 @@ namespace WatchlistViewer
 {
     public class FirefoxWebDriver
     {
+        public const int BrowserMarginRight = 130;
+        public const int BrowserWidth = 560;
         private const string FirefoxProcessName = "FireFox";
 
         static FirefoxDriver _driver;
@@ -49,7 +51,7 @@ namespace WatchlistViewer
             return parsedStocks;
         }
 
-        public static void InvokeWatchlist()
+        public static void InvokeEurUsd()
         {
             ProcessHelper.KillAllProcessesOf(FirefoxProcessName);
 
@@ -59,10 +61,7 @@ namespace WatchlistViewer
                 var firefoxProfile =
                     new FirefoxProfile(
                         @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\8c0l0x02.default-1366789569892");
-                _driver = new FirefoxDriver(ffBinary, firefoxProfile)
-                {
-                    //Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Matz"
-                };
+                _driver = new FirefoxDriver(ffBinary, firefoxProfile);
             }
             catch (Exception)
             {
@@ -73,39 +72,89 @@ namespace WatchlistViewer
             {
                 var window = _driver.Manage().Window;
 
-                var width = 1000;
-                var height = 600;
+                var width = BrowserWidth;
+                var height = 35;
 
                 var screenBounds = Screen.PrimaryScreen.Bounds;
                 _driver.FindElement(By.TagName("body")).SendKeys(Keys.F11);
                 Thread.Sleep(1000);
                 window.Position = new Point
                 {
-                    X = (screenBounds.Width / 2 - width / 2),
-                    Y = (screenBounds.Height / 2 - height / 2),
+                    X = screenBounds.Width - BrowserWidth - BrowserMarginRight,
+                    Y = 15,
                 };
                 window.Size = new Size { Height = height, Width = width };
 
-                _driver.Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Matz";
+                _driver.Url = "http://www.finanzen100.de/waehrungen/euro-us-dollar-eur-usd_H1763038774_14959435/?gps=1";
 
-                var tbMail = _driver.FindElementById("MAIL_ADDRESS");
-                tbMail.SendKeys("runningmatzi@web.de");
+                _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.ShowNormal, FirefoxProcessName);
 
-                var tbPwd = _driver.FindElementById("PASSWORD");
-                tbPwd.SendKeys("Walter36");
-
-                var submit = _driver.FindElementByName("LOGIN_FORM_SUBMIT");
-                submit.Click();
-
-                Thread.Sleep(10000);
-                _driver.ExecuteScript("document.getElementById('TABLE').scrollIntoView(true);");
-
-                Thread.Sleep(2000);
-                _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.Hide, FirefoxProcessName);
+                var scrollX = 210;
+                var scrollY = 375;
+                ((IJavaScriptExecutor)_driver).ExecuteScript("window.scrollBy(" + scrollX + "," + scrollY + ");");
             }
             catch 
             {
             }
-        }
+        }        
+
+        //public static void InvokeWatchlist()
+        //{
+        //    ProcessHelper.KillAllProcessesOf(FirefoxProcessName);
+
+        //    try
+        //    {
+        //        var ffBinary = new FirefoxBinary(@"c:\Program Files (x86)\Mozilla Firefox\firefox.exe");
+        //        var firefoxProfile =
+        //            new FirefoxProfile(
+        //                @"C:\Users\JenzenM\AppData\Roaming\Mozilla\Firefox\Profiles\8c0l0x02.default-1366789569892");
+        //        _driver = new FirefoxDriver(ffBinary, firefoxProfile)
+        //        {
+        //            //Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Matz"
+        //        };
+        //    }
+        //    catch (Exception)
+        //    {
+        //        return;
+        //    }
+
+        //    try
+        //    {
+        //        var window = _driver.Manage().Window;
+
+        //        var width = 1000;
+        //        var height = 600;
+
+        //        var screenBounds = Screen.PrimaryScreen.Bounds;
+        //        _driver.FindElement(By.TagName("body")).SendKeys(Keys.F11);
+        //        Thread.Sleep(1000);
+        //        window.Position = new Point
+        //        {
+        //            X = (screenBounds.Width / 2 - width / 2),
+        //            Y = (screenBounds.Height / 2 - height / 2),
+        //        };
+        //        window.Size = new Size { Height = height, Width = width };
+
+        //        _driver.Url = "http://www.finanzen100.de/watchlist/uebersicht.html?NAME_DEPOT=Matz";
+
+        //        var tbMail = _driver.FindElementById("MAIL_ADDRESS");
+        //        tbMail.SendKeys("runningmatzi@web.de");
+
+        //        var tbPwd = _driver.FindElementById("PASSWORD");
+        //        tbPwd.SendKeys("Walter36");
+
+        //        var submit = _driver.FindElementByName("LOGIN_FORM_SUBMIT");
+        //        submit.Click();
+
+        //        Thread.Sleep(10000);
+        //        _driver.ExecuteScript("document.getElementById('TABLE').scrollIntoView(true);");
+
+        //        Thread.Sleep(2000);
+        //        _browserWindowIntPtr = WindowHelper.ShowWindow(WindowShowStyle.Hide, FirefoxProcessName);
+        //    }
+        //    catch 
+        //    {
+        //    }
+        //}
     }
 }

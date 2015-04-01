@@ -21,15 +21,15 @@ namespace WatchlistViewer
 
         private readonly Dictionary<string, string> _nameTranslateDict = new Dictionary<string, string>
         {
-            { "Dow Jones", "Dow" },
-            { "National Bank", "NGR" },
-            { "Goldpreis", "Gold~1326189" },
-            { "Siemens", "SIE" },
-            { "OSRAM", "Osr" },
+            //{ "Dow Jones", "Dow" },
+            //{ "National Bank", "NGR" },
+            //{ "Goldpreis", "Gold~1326189" },
+            //{ "Siemens", "SIE" },
+            //{ "OSRAM", "Osr" },
             { "Euro / US", "€/US~1390634~0.0000" },
-            { "Euro / Schwei", "€/CHF~8362186~0.0000" },
-            { "Ölpreis Brent", "Öl~31117610" },
-            { "Put", "Put"}
+            //{ "Euro / Schwei", "€/CHF~8362186~0.0000" },
+            //{ "Ölpreis Brent", "Öl~31117610" },
+            //{ "Put", "Put"}
         };
 
         public string Name

@@ -1,5 +1,4 @@
-﻿using System.Windows;
-// ReSharper disable RedundantUsingDirective
+﻿// ReSharper disable RedundantUsingDirective
 using System.Diagnostics;
 using GeneralTools.Models;
 using WpfTools4.ViewModels;
@@ -42,26 +41,26 @@ namespace WatchlistViewer
 #if TEST
             _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 20 };
 #else
-            FirefoxWebDriver.InvokeWatchlist();
-            _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
+            FirefoxWebDriver.InvokeEurUsd();
+            //_initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
 #endif
-            _initialDelayTimer.Tick += InitialDelayTimerTick;
+            //_initialDelayTimer.Tick += InitialDelayTimerTick;
         }
 
-        void InitialDelayTimerTick(object sender, EventArgs e)
-        {
-            _initialDelayTimer.Stop();
-            _initialDelayTimer.Dispose();
+        //void InitialDelayTimerTick(object sender, EventArgs e)
+        //{
+        //    _initialDelayTimer.Stop();
+        //    _initialDelayTimer.Dispose();
 
-            WatchlistHide();
-            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
-            _workTimer.Tick += WorkTimerTick;
-        }
+        //    WatchlistHide();
+        //    _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
+        //    _workTimer.Tick += WorkTimerTick;
+        //}
 
-        void WorkTimerTick(object sender, EventArgs e)
-        {
-            TaskService.StartLongRunningTask(GetStockData);
-        }
+        //void WorkTimerTick(object sender, EventArgs e)
+        //{
+        //    TaskService.StartLongRunningTask(GetStockData);
+        //}
 
         private static void WatchlistShow()
         {
