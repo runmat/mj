@@ -4,6 +4,8 @@ using CkgDomainLogic.Equi.Models;
 
 namespace CkgDomainLogic.Equi.Contracts
 {
+    public enum BriefversandModus { Brief, Schluessel, BriefMitSchluessel }
+
     public interface IBriefbestandDataService : ICkgGeneralDataService
     {
         #region Briefbestand
@@ -12,6 +14,7 @@ namespace CkgDomainLogic.Equi.Contracts
 
         List<Fahrzeugbrief> FahrzeugbriefeBestand { get; }
 
+        BriefversandModus FahrzeugbriefeZumVersandModus { get; set; }
         List<Fahrzeugbrief> FahrzeugbriefeZumVersand { get; }
 
         void MarkForRefreshFahrzeugbriefe();
