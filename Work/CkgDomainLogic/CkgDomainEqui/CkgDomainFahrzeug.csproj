@@ -99,6 +99,7 @@
     <Compile Include="Controllers\KlaerfaelleVhc\EquiController.cs" />
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
+    <Compile Include="Controllers\ModellIdController.cs" />
     <Compile Include="Controllers\ZanfController.cs" />
     <Compile Include="Controllers\VersandBeauftragungen\EquipController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
@@ -198,6 +199,11 @@
     <Compile Include="Fahrzeuge\Models\AbgemeldeteFahrzeugeSelektor.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugeDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\AbgemeldeteFahrzeugeViewModel.cs" />
+    <Compile Include="ModellId\Contracts\IModellIdDataService.cs" />
+    <Compile Include="ModellId\Models\AppModelmappings.cs" />
+    <Compile Include="ModellId\Models\ModellId.cs" />
+    <Compile Include="ModellId\Services\ModellIdDataServiceSAP.cs" />
+    <Compile Include="ModellId\ViewModels\ModellIdViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strafzettel\Contracts\IStrafzettelDataService.cs" />
     <Compile Include="Strafzettel\Models\StrafzettelSelektor.cs" />

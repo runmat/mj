@@ -4262,6 +4262,10 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
+    <Content Include="Views\ModellId\Verwaltung.cshtml" />
+    <Content Include="Views\ModellId\Partial\Common.cshtml" />
+    <Content Include="Views\ModellId\Partial\Grid.cshtml" />
+    <Content Include="Views\ModellId\Partial\DetailsForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

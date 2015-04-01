@@ -270,6 +270,9 @@ namespace SapORM
 
             //new FunctionReflector("Z_M_EXPORTAENDERUNG_01").WriteOrmForExportTableStructures("I_KUNNR, I_ZZREFERENZ1, I_DATUM_VON, I_DATUM_BIS", "10050817", "20", "01.03.2015", "03.03.2015");
 
+            //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
+            //new FunctionReflector("Z_DPM_CHANGE_MODELID").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
@@ -347,6 +350,8 @@ namespace SapORM
             //TargoTest3();
 
             //AhpZullisteTest();
+
+            ModellIdTest();
 
             Shutdown();
         }
@@ -1442,6 +1447,30 @@ namespace SapORM
 
             //var listCount = list.Count;
         }
+
+        const string ModellIdKunnr = "0000219853";
+
+        static void ModellIdTest()
+        {
+            ModellIdSave();
+        }
+
+        static void ModellIdLoad()
+        {
+            var list2 = Z_DPM_READ_MODELID_TAB.GT_OUT.GetExportListWithInitExecute(Sap, "I_KUNNR", ModellIdKunnr);
+        }
+        
+        static void ModellIdSave()
+        {
+            Z_DPM_CHANGE_MODELID.Init(Sap, "I_KUNNR", ModellIdKunnr);
+            Sap.SetImportParameter("I_MODELID", "10000M");
+            Sap.SetImportParameter("I_ZZBEZEI", "Dies ist ein Test");
+            Sap.Execute();
+
+            var resultCode = Sap.ResultCode;
+            var resultMessage = Sap.ResultMessage;
+        }
+
 
         #region Chart Table Export
 

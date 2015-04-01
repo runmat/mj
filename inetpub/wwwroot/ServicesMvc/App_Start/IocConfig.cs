@@ -18,6 +18,8 @@ using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Services;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Services;
+using CkgDomainLogic.FzgModelle.Contracts;
+using CkgDomainLogic.FzgModelle.Services;
 using CkgDomainLogic.Insurance.Contracts;
 using CkgDomainLogic.Insurance.Services;
 using CkgDomainLogic.General.Contracts;
@@ -174,6 +176,8 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<ModellIdDataServiceSAP>().As<IModellIdDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

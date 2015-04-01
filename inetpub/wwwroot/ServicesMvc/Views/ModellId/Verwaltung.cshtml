@@ -1,0 +1,44 @@
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.AdressenPflegeViewModel 
+
+@section LayoutScript { _controlGroupValidationType = "default"; }
+
+@Html.Partial("AdressenPflege/AdresseCommon")
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+        FormPreparePrivateAdressenPflege();
+        InitRadiobuttonHandler();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+    
+    function AdressenKennungChangeFinish() {
+        //alert('ok');
+        FormPrepareAjax();
+        InitRadiobuttonHandler();
+        TryAddressGridRefresh();
+    }
+
+    function InitRadiobuttonHandler() {
+        $(":radio").click(function () {
+            $("#SearchFilterForm").submit();
+        });
+    }
+    
+</script>
+
+<h3 class="page-title">Adressenverwaltung <small></small></h3>
+
+@if (Model.AdressenKennungGruppenLocalized.None())
+{
+    <div class="alert warning margin-top-30"><i class="icon-bell margin-right-10"></i> <span>@Localize.NoAddressTypesAvailableForThisCustomer</span></div>
+}
+else
+{
+    @Html.Partial("AdressenPflege/AdressenGrid")
+}
