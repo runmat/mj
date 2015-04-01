@@ -179,7 +179,7 @@ namespace CkgDomainLogic.WFM.ViewModels
                 Text = neueInfo,
                 Datum = DateTime.Today,
                 Zeit = DateTime.Now.ToString("HHmmss"),
-                LaufendeNr = (Informationen.Max(i => i.LaufendeNr.ToInt(0)) + 1).ToString(),
+                LaufendeNr = (Informationen.None() ? 1 : Informationen.Max(i => i.LaufendeNr.ToInt(0)) + 1).ToString(),
                 User = LogonContext.UserName
             };
 
