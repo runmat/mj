@@ -1,10 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
-    public class ModellId
+    public class ModellId : Store
     {
         [LocalizedDisplay(LocalizeConstants.Model)]
         public string ID { get; set; }

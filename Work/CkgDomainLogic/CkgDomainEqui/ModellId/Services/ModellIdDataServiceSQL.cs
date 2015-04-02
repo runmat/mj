@@ -24,6 +24,10 @@ namespace CkgDomainLogic.FzgModelle.Services
 {
     public class ModellIdDataServiceSQL : IModellIdDataService
     {
+        IPersistanceService PService { get { return ((LogonContextDataServiceBase)LogonContext).PersistanceService; } }
+        const string PGroupKey = "ModellIdDataService";
+        private string POwnerKey { get { return LogonContext.UserName; } }
+
         public List<ModellId> GetModellIds()
         {
             return new List<ModellId>
@@ -36,6 +40,8 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         public string SaveModellId(ModellId modellId)
         {
+            PService.SaveObject(modellId.ObjectKey, POwnerKey, PGroupKey, LogonContext.UserName, modellId);
+            
             var error = "";
 
             return error;

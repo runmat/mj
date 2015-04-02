@@ -8,8 +8,9 @@
 
         @Html.FormValidationSummary()
 
+        @Html.HiddenFor(m => m.ObjectKey)
         @Html.HiddenFor(m => m.InsertModeTmp)
-        
+
         if (Model.InsertModeTmp)
         {
             @Html.FormTextBoxFor(m => m.ID, new { @class = "m-wrap medium" })
