@@ -97,8 +97,26 @@
     }
 
     function FormInitValidationSummaryStyles() {
+        var formPersistenceModeErrorPrefix = '@MvcTag.FormPersistenceModeErrorPrefix';
         $('.validation-summary-errors').each(function () {
-            $(this).addClass("alert alert-error");
+            var span = $(this).find("span");
+            if (span.text().indexOf(formPersistenceModeErrorPrefix) < 0)
+                $(this).addClass("alert alert-error");
+            else 
+            {
+                // Form Persistence mode, validation "error" acts as success notification hint:
+                $(this).addClass("alert alert-success");
+                span.text(span.text().replace(/@MvcTag.FormPersistenceModeErrorPrefix/g, ""));
+                var lis = $(this).find("ul li");
+                lis.each(function() {
+                    var li = $(this);
+                    li.text(li.text().replace(/@MvcTag.FormPersistenceModeErrorPrefix/g, ""));
+                });
+
+                setTimeout(function() {
+                    $('.validation-summary-errors').slideUp(200);
+                }, 1000);
+            }
         });
         $('.field-validation-error').each(function () {
             $(this).removeClass("field-validation-error").addClass("help-inline");
@@ -403,6 +421,7 @@
     
     function GridColumnTranslationInit(gridName) {
         var grid = $("#" + gridName).data("tGrid");
+        //alert(grid);
         $.each(grid.hiddenColumnsOnStartup, function() {
             grid.hideColumn(this);
         });
@@ -642,11 +661,7 @@
         return sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
     };
     
-    function showBusy(domElementID, centerOfsX, centerOfsY) {
-        if (typeof(centerOfsX) == 'undefined') centerOfsX = 0;
-        if (typeof(centerOfsY) == 'undefined') centerOfsY = 0;
-            
-        var elem = $("#" + domElementID);
+    function showBusy(elem) {
         var opts = {
             lines: 11, // The number of lines to draw
             length: 5, // The length of each line
@@ -661,20 +676,15 @@
             shadow: false, // Whether to render a shadow
             hwaccel: false, // Whether to use hardware acceleration
             className: 'spinner', // The CSS class to assign to the spinner
-            zIndex: 2e9, // The z-index (defaults to 2000000000)
-            top: parseInt(parseInt(elem.css("height"),10)/2 + centerOfsY,10) + 'px', // Top position relative to parent in px
-            left: parseInt(parseInt(elem.css("width"),10)/2 + centerOfsX,10) + 'px' // Left position relative to parent in px
+            zIndex: 2000000000 // The z-index (defaults to 2000000000)
+            ,top: '50%' 
+            ,left: '50%'
         };
-        var target = document.getElementById(domElementID);
-        var spinner = new Spinner(opts).spin(target);
-        $.data(elem[0], "busyIndicator", spinner);
+        elem.spin(opts);
     }
 
-    function hideBusy(domElementID) {
-        var elem = $("#" + domElementID);
-        var spinner = $.data(elem[0], "busyIndicator");
-        //alert('x');
-        spinner.stop();
+    function hideBusy(elem) {
+        elem.spin(false);
     }
     
     function MetronicSidebarEnforceClosed() {

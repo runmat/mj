@@ -91,6 +91,9 @@
         });
 
         FilterGridInit(gridName);
+        setTimeout(function() {
+            GridColumnTranslationInit(gridName);
+        }, 50);
     }
 
     var _gridAllColumnFilterQuickMouseClickFilter_isActive = false;

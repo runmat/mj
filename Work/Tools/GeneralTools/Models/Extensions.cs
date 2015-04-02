@@ -412,6 +412,52 @@ namespace GeneralTools.Models
             return tmp;
         }
 
+        public static DateTime ToFirstDayOfWeek(this DateTime? dateValue)
+        {
+            var date = dateValue.GetValueOrDefault();
+
+            return date.AddDays(date.DayOfWeek.ToString("d").ToInt() * -1);
+        }
+
+        public static DateTime ToFirstDayOfMonth(this DateTime? dateValue)
+        {
+            var date = dateValue.GetValueOrDefault();
+
+            return date.AddDays((date.Day * -1) + 1);
+        }
+
+        public static int GetWeekNumber(this DateTime? dateValue)
+        {
+            return dateValue.GetValueOrDefault().GetWeekNumber();
+        }
+
+        public static int GetWeekNumber(this DateTime dateValue)
+        {
+            var cul = CultureInfo.CurrentCulture;
+            var weekNum = cul.Calendar.GetWeekOfYear(dateValue, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+
+            return weekNum;
+        }
+
+        public static string FormatYearAndWeek(this DateTime? dateValue, string yearFormat = "yyyy")
+        {
+            return dateValue.GetValueOrDefault().FormatYearAndWeek(yearFormat);
+        }
+
+        public static string FormatYearAndWeek(this DateTime dateValue, string yearFormat = "yyyy")
+        {
+            return string.Format("{0}{1}", dateValue.ToString(yearFormat), dateValue.GetWeekNumber().ToString("00"));
+        }
+
+        public static double ToJsonTicks(this DateTime dateValue)
+        {
+            var d1 = new DateTime(1970, 1, 1);
+            var d2 = dateValue.ToUniversalTime();
+            var ts = new TimeSpan(d2.Ticks - d1.Ticks);
+
+            return Math.Round(ts.TotalMilliseconds, 0);
+        }
+
         public static bool XToBool(this string stringValue)
         {
             return (stringValue.NotNullOrEmpty().ToUpper() == "X");
@@ -593,6 +639,71 @@ namespace GeneralTools.Models
 
                 return true;
             });
+        }
+
+
+        /// <summary>
+        /// Alle Properties von Typ "type" mit Property-Klassen die ein Attribut "attributeType" besitzen
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="attributeType"></param>
+        /// <returns></returns>
+        public static IEnumerable<PropertyInfo> GetPropertiesWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.GetCustomAttributes(true)
+                    .Any(p => p.GetType() == attributeType));
+        }
+
+        public static PropertyInfo GetPropertyWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetPropertiesWithAttribute(attributeType).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Alle Properties von Typ "type" mit Property-Klassen die ein Klassen-Attribut "classAttributeType" besitzen
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="classAttributeType"></param>
+        /// <returns></returns>
+        public static IEnumerable<PropertyInfo> GetPropertiesOfClassWithAttribute(this Type type, Type classAttributeType)
+        {
+            return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.PropertyType.GetCustomAttributes(true).Any(attr => attr.GetType() == classAttributeType));
+        }
+
+        public static PropertyInfo GetPropertyOfClassWithAttribute(this Type type, Type propertyClassAttributeType)
+        {
+            return type.GetPropertiesOfClassWithAttribute(propertyClassAttributeType).FirstOrDefault();
+        }
+
+        /// <summary>
+        /// Alle Methoden von Typ "type" mit Property-Klassen die ein Attribut "attributeType" besitzen
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="attributeType"></param>
+        /// <returns></returns>
+        public static IEnumerable<MethodInfo> GetMethodsWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.GetCustomAttributes(true).Any(attr => attr.GetType() == attributeType));
+        }
+
+        public static MethodInfo GetMethodWithAttribute(this Type type, Type attributeType)
+        {
+            return type.GetMethodsWithAttribute(attributeType).FirstOrDefault();
+        }
+
+        public static IEnumerable<MethodInfo> GetMethodsWithAttribute<T>(this Type type, Predicate<T> filterAttributeFunc) where T : Attribute
+        {
+            var attributeType = typeof (T);
+            return type.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .Where(property => property.GetCustomAttributes(true).Any(attr => attr.GetType() == attributeType && filterAttributeFunc((T)attr)));
+        }
+
+        public static MethodInfo GetMethodWithAttribute<T>(this Type type, Predicate<T> filterAttributeFunc) where T : Attribute
+        {
+            return type.GetMethodsWithAttribute<T>(filterAttributeFunc).FirstOrDefault();
         }
     }
 

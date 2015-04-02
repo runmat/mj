@@ -71,7 +71,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUserListFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.UsersFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.UsersFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.UserList, dt);
 
             return new EmptyResult();
@@ -79,7 +79,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUserListFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.UsersFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.UsersFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.UserList, dt, landscapeOrientation: true);
 
             return new EmptyResult();

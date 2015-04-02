@@ -47,7 +47,7 @@ namespace AutohausPortalMvc.Controllers
 
         public ActionResult ExportVergabeInfosExcel(int page, string orderBy, string filterBy)
         {
-            var dt = FeinstaubReportViewModel.VergabeInfos.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = FeinstaubReportViewModel.VergabeInfos.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Feinstaubplakettenstatistik", dt);
 
             return new EmptyResult();
@@ -55,7 +55,7 @@ namespace AutohausPortalMvc.Controllers
 
         public ActionResult ExportVergabeInfosPDF(int page, string orderBy, string filterBy)
         {
-            var dt = FeinstaubReportViewModel.VergabeInfos.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = FeinstaubReportViewModel.VergabeInfos.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Feinstaubplakettenstatistik", dt, landscapeOrientation: true);
 
             return new EmptyResult();

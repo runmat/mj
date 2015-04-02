@@ -82,7 +82,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportVorgaengeFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BewertungViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BewertungViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Vorgänge", dt);
 
             return new EmptyResult();
@@ -90,7 +90,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportVorgaengeFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BewertungViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BewertungViewModel.VorgaengeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Vorgänge", dt, landscapeOrientation: true);
 
             return new EmptyResult();

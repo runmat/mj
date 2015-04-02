@@ -34,7 +34,7 @@ namespace MvcTools.Data
             return result;
         }
 
-        private HttpSessionState Session
+        private static HttpSessionState Session
         {
             get { return HttpContext.Current.Session; }
         }

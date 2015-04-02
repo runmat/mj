@@ -62,6 +62,8 @@ namespace ServicesMvc.Autohaus.Controllers
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
 
+            //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");
+
             return View("Index", ViewModel);
         }
 
@@ -211,7 +213,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public ActionResult HalterAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("HalterAdressen", dt);
 
             return new EmptyResult();
@@ -219,7 +221,7 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public ActionResult HalterAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("HalterAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

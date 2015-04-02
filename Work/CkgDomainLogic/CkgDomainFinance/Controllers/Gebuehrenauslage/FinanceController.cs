@@ -75,7 +75,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportAuftraegeFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = GebuehrenauslageViewModel.AuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = GebuehrenauslageViewModel.AuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Auftraege", dt);
 
             return new EmptyResult();
@@ -83,7 +83,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportAuftraegeFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = GebuehrenauslageViewModel.AuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = GebuehrenauslageViewModel.AuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Auftraege", dt, landscapeOrientation: true);
 
             return new EmptyResult();

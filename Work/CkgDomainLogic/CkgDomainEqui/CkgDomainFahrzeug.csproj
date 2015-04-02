@@ -104,7 +104,6 @@
     <Compile Include="Controllers\VersandBeauftragungen\EquipController.cs" />
     <Compile Include="Controllers\Mahnreport\EquiController.cs" />
     <Compile Include="Controllers\Mahnsperre\EquiController.cs" />
-    <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Controllers\VersandAbweichungen\EquipController.cs" />
     <Compile Include="Controllers\Zanf\ZanfController.cs" />
     <Compile Include="Controllers\Zulassungsunterlagen\ZanfController.cs" />
@@ -148,7 +147,7 @@
     <Compile Include="Equi\Models\UIModels\MahnsperreEdit.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreSuchparameter.cs" />
     <Compile Include="Equi\Models\VersandartOptionen.cs" />
-    <Compile Include="Equi\Models\UIModels\GrunddatenEquiSuchparameter.cs" />
+    <Compile Include="Equi\Models\UIModels\EquiGrunddatenSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\Betriebsnummer.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefFilter.cs" />
     <Compile Include="Equi\Models\VersandOptionen.cs" />
