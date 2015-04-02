@@ -202,6 +202,7 @@
     <Compile Include="ModellId\Contracts\IModellIdDataService.cs" />
     <Compile Include="ModellId\Models\AppModelmappings.cs" />
     <Compile Include="ModellId\Models\ModellId.cs" />
+    <Compile Include="ModellId\Services\ModellIdDataServiceSQL.cs" />
     <Compile Include="ModellId\Services\ModellIdDataServiceSAP.cs" />
     <Compile Include="ModellId\ViewModels\ModellIdViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -177,7 +177,7 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
 
-            builder.RegisterType<ModellIdDataServiceSAP>().As<IModellIdDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ModellIdDataServiceSQL>().As<IModellIdDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
