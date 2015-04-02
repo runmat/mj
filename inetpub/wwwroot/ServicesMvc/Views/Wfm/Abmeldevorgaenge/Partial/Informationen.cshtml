@@ -4,7 +4,7 @@
 
 <div class="form-horizontal">
     <div class="form-actions">
-        <input type="text" id="txtNewInformation" class="input-xxlarge" placeholder="@Localize.NewInformation"/>
+        <input type="text" id="txtNewInformation" class="m-wrap large placeholder-no-fix" placeholder="@Localize.NewInformation" />
         <button type="button" class="btn green" onclick='SaveNewInformation();'>@Localize.Send <i class="m-icon-swapright m-icon-white"></i></button>
     </div>
 </div>
@@ -16,6 +16,10 @@
         FormPreparePrivateAjax();
 
         var neueInfo = $("#txtNewInformation").val();
+        if (neueInfo == '') {
+            SpanAlertError("spanAlertAbmeldevorgaenge", '@Localize.PleaseProvideText.ToJavascriptString()', 3000);
+            return;
+        }
         
         if (neueInfo != "") {
             $.ajax({
