@@ -57,6 +57,13 @@ namespace GeneralTools.Services
             return o;
         }
 
+        public IPersistableObject SaveObject(string objectKey, string ownerKey, string groupKey, string userName, IPersistableObject o)
+        {
+            IPersistableObject o2 = null;
+            SaveObject(objectKey, ownerKey, groupKey, userName, ref o, ref o2);
+            return o;
+        }
+
         public void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, ref IPersistableObject o, ref IPersistableObject o2)
         {
             o = o ?? new Store { ObjectKey = objectKey, ObjectName = SaveIgnoreHint };
