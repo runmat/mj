@@ -107,7 +107,7 @@ namespace StockCapture
             return matchingObjects;
         }
 
-        public void AddStockQuote(StockQuote quote)
+        public void SaveStockQuote(StockQuote quote)
         {
             using (_session.BeginTransaction())
             {

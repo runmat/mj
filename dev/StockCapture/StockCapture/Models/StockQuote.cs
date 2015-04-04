@@ -12,6 +12,10 @@ namespace StockCapture.Models
         public virtual DateTime? Date { get; set; }
 
         public virtual DateTime? InsertDate { get; set; }
+
+        public virtual double? DiffToPrev { get; set; }
+
+        public virtual double? DiffToPrevPrev { get; set; }
     }
 }
 

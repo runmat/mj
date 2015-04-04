@@ -23,3 +23,5 @@ C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHiber
 C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\Iesi.Collections.xml
 C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\bin\Debug\NHibernate.xml
 C:\Users\JenzenM\Documents\mj\dev\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.csprojResolveAssemblyReference.cache
+C:\Users\Matz\Documents\mj\dev\Test\NHibernateTest\NHibernateTest\bin\Debug\NHibernateTest.exe.config
+C:\Users\Matz\Documents\mj\dev\Test\NHibernateTest\NHibernateTest\obj\x86\Debug\NHibernateTest.pdb
