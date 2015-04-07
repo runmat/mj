@@ -15,9 +15,9 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var sq in Model.StockQuotes)
+        @foreach (var sq in Model.LatestStockQuotes)
         {
-            <tr>
+            <tr class="@sq.RowCssClass">
                 <td>@sq.ID</td>
                 <td>@sq.Date.GetValueOrDefault().ToString("dd.MM.yy HH:mm")</td>
                 <td>@sq.InsertDate.GetValueOrDefault().ToString("dd.MM.yy HH:mm")</td>

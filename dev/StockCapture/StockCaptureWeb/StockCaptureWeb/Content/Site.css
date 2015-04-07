@@ -22,3 +22,52 @@ select,
 textarea {
     max-width: 280px;
 }
+
+
+
+.table > thead > tr > td.success2,
+.table > tbody > tr > td.success2,
+.table > tfoot > tr > td.success2,
+.table > thead > tr > th.success2,
+.table > tbody > tr > th.success2,
+.table > tfoot > tr > th.success2,
+.table > thead > tr.success2 > td,
+.table > tbody > tr.success2 > td,
+.table > tfoot > tr.success2 > td,
+.table > thead > tr.success2 > th,
+.table > tbody > tr.success2 > th,
+.table > tfoot > tr.success2 > th {
+  background-color: #BCEFA7;
+  border-color: #B3E2A0;
+}
+
+.table-hover > tbody > tr > td.success2:hover,
+.table-hover > tbody > tr > th.success2:hover,
+.table-hover > tbody > tr.success2:hover > td {
+  background-color: #BCEFA7;
+  border-color: #B3E2A0;
+}
+
+
+.table > thead > tr > td.danger2,
+.table > tbody > tr > td.danger2,
+.table > tfoot > tr > td.danger2,
+.table > thead > tr > th.danger2,
+.table > tbody > tr > th.danger2,
+.table > tfoot > tr > th.danger2,
+.table > thead > tr.danger2 > td,
+.table > tbody > tr.danger2 > td,
+.table > tfoot > tr.danger2 > td,
+.table > thead > tr.danger2 > th,
+.table > tbody > tr.danger2 > th,
+.table > tfoot > tr.danger2 > th {
+  background-color: #F5A1A1;
+  border-color: #E29797;
+}
+
+.table-hover > tbody > tr > td.danger2:hover,
+.table-hover > tbody > tr > th.danger2:hover,
+.table-hover > tbody > tr.danger2:hover > td {
+  background-color: #F5A1A1;
+  border-color: #E29797;
+}

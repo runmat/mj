@@ -11,6 +11,8 @@ namespace StockCapture
 {
     public class StockService
     {
+        public static double EmailWarningThreshold { get { return 0.005; } }
+
         public static void CaptureStockQuote()
         {
             var testStockQuery = (GetAppSettingsVal("TestStockQuery") == "true");
@@ -49,9 +51,8 @@ namespace StockCapture
 
                 repository.SaveStockQuote(sq);
 
-                const double threshold = 0.005;
-                if (Math.Abs((decimal)sq.DiffToPrev.GetValueOrDefault()) > Math.Abs((decimal)threshold) ||
-                    Math.Abs((decimal)sq.DiffToPrevPrev.GetValueOrDefault()) > Math.Abs((decimal)threshold))
+                var threshold = EmailWarningThreshold;
+                if (Math.Abs((decimal)sq.DiffToPrev.GetValueOrDefault()) >= Math.Abs((decimal)threshold))
                     SendMail(sq);
             }
         }
@@ -97,6 +98,9 @@ namespace StockCapture
 
         static void SendMail(StockQuote sq)
         {
+            if (Repository.IsLocalhost)
+                return;
+
             SetSmtpSettings();
 
             WebMail.Send(
@@ -105,11 +109,10 @@ namespace StockCapture
                  body: string.Format(
                         "DateTime: {0:dd.MM.yy HH:mm}<br/>" +
                         "Diff To Prev: {1} ticks<br/>" +
-                        "Diff To PrevPrev: {2} ticks", 
+                        "Diff To PrevPrev: {2} ticks<br/><br/>Thx ;-)",
                             sq.Date,
                             sq.DiffToPrev.GetValueOrDefault()*1000,
-                            sq.DiffToPrevPrev.GetValueOrDefault()*1000),
-                 isBodyHtml: true
+                            sq.DiffToPrevPrev.GetValueOrDefault()*1000)
             );
         }
 

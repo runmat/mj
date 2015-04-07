@@ -213,6 +213,8 @@
     <Content Include="Global.asax" />
     <None Include="Properties\PublishProfiles\TM.pubxml" />
     <Content Include="Scripts\bootstrap-datagrid.js" />
+    <Content Include="Scripts\Flotr2\flotr2.ie.min.js" />
+    <Content Include="Scripts\Flotr2\flotr2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\bootstrap.js" />
@@ -281,6 +283,7 @@
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Home\Index - Org.cshtml" />
+    <Content Include="Views\Home\Chart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -6,7 +6,6 @@ using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
 using NHibernate;
 using NHibernate.Criterion;
-using NHibernate.Type;
 using StockCapture.Models;
 
 namespace StockCapture
@@ -15,11 +14,13 @@ namespace StockCapture
     {
         private readonly ISession _session;
 
+        public static bool IsLocalhost { get { return (Environment.MachineName.ToUpper() != "CT114176"); } }
+
         public static string ConnectionString
         {
             get
             {
-                var connStringKey = (Environment.MachineName.ToUpper() == "CT114176" ? "ConnectionstringTM" : "ConnectionstringLocal");
+                var connStringKey = (IsLocalhost ? "ConnectionstringLocal" : "ConnectionstringTM");
                 return ConfigurationManager.AppSettings[connStringKey];
             }
         }
