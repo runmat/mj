@@ -76,7 +76,7 @@ namespace StockCapture
         /// </summary>
         /// <typeparam name="T">The type of the objects to be retrieved.</typeparam>
         /// <returns>A list of all objects of the specified type.</returns>
-        public IList<T> RetrieveAll<T>(int maxItems=-1)
+        public IList<T> RetrieveAll<T>(int maxItems=-1, bool ascending=true)
         {
             /* Note that NHibernate guarantees that two object references will point to the
              * same object only if the references are set in the same session. For example,
@@ -91,6 +91,7 @@ namespace StockCapture
             var targetObjects = _session.CreateCriteria(typeof(T));
             if (maxItems >= 0)
                 targetObjects.SetMaxResults(maxItems);
+            targetObjects.AddOrder(new Order("ID", ascending));
             var itemList = targetObjects.List<T>();
 
             // Set return value
@@ -125,15 +126,16 @@ namespace StockCapture
             }
         }
 
-        public List<StockQuote> LoadStockQuotes(int maxItems = -1)
+        public List<StockQuote> LoadStockQuotes()
         {
-            var stocks = RetrieveAll<StockQuote>(maxItems);
+            var stocks = RetrieveAll<StockQuote>();
             return stocks.ToList();
         }
 
-        public List<StockQuote> GetLatestStockQuotes(int amount)
+        public List<StockQuote> GetLatestStockQuotes(int maxItems)
         {
-            return LoadStockQuotes(amount);
+            var stocks = RetrieveAll<StockQuote>(maxItems, false);
+            return stocks.ToList();
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿using System.Web.Mvc;
-using StockCapture;
+using StockCapture.ViewModels;
 
 namespace StockCaptureWeb.Controllers
 {
@@ -7,15 +7,9 @@ namespace StockCaptureWeb.Controllers
     {
         public ActionResult Index()
         {
-            using (var repository = new Repository())
-            {
-                var stocks = repository.LoadStockQuotes();
-                var latestStocks = repository.GetLatestStockQuotes(2);
-            }
-
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
-            return View();
+            return View(new StockQuoteViewModel());
         }
 
         public ActionResult About()

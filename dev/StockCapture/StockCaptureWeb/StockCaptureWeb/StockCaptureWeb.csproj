@@ -49,9 +49,6 @@
     <Reference Include="NHibernate">
       <HintPath>..\..\GAC\NHibernate.dll</HintPath>
     </Reference>
-    <Reference Include="StockCaptureLib">
-      <HintPath>..\..\StockCapture\bin\Debug\StockCaptureLib.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.Entity" />
@@ -283,12 +280,19 @@
     <Content Include="Views\Manage\ManageLogins.cshtml" />
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
+    <Content Include="Views\Home\Index - Org.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\StockCaptureLib\StockCaptureLib.csproj">
+      <Project>{602a55b9-946d-42c7-a62e-5a1e78eabe36}</Project>
+      <Name>StockCaptureLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
