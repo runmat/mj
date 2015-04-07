@@ -90,9 +90,9 @@ namespace StockCapture
 
             // Retrieve all objects of the type passed in
             var targetObjects = _session.CreateCriteria(typeof(T));
+            targetObjects.AddOrder(new Order("ID", ascending));
             if (maxItems >= 0)
                 targetObjects.SetMaxResults(maxItems);
-            targetObjects.AddOrder(new Order("ID", ascending));
             var itemList = targetObjects.List<T>();
 
             // Set return value
