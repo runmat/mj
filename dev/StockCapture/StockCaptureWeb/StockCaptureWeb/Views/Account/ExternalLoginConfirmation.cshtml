@@ -1,34 +1,34 @@
-﻿@model StockCaptureWeb.Models.RegisterExternalLoginModel
+﻿@model WebApplication1.Models.ExternalLoginConfirmationViewModel
 @{
     ViewBag.Title = "Registrieren";
 }
+<h2>@ViewBag.Title.</h2>
+<h3>@ViewBag.LoginProvider-Konto zuordnen.</h3>
 
-<hgroup class="title">
-    <h1>@ViewBag.Title.</h1>
-    <h2>Ordnen Sie Ihr @ViewBag.ProviderDisplayName-Konto zu.</h2>
-</hgroup>
-
-@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl })) {
+@using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
     @Html.AntiForgeryToken()
-    @Html.ValidationSummary(true)
 
-    <fieldset>
-        <legend>Zuordnungsformular</legend>
-        <p>
-            Sie haben sich erfolgreich authentifiziert mit <strong>@ViewBag.ProviderDisplayName</strong>.
-            Bitte geben Sie unten einen Benutzernamen für diese Website ein, und klicken Sie dann auf die Schaltfläche "Bestätigen", um die Anmeldung
-            abzuschließen.
-        </p>
-        <ol>
-            <li class="name">
-                @Html.LabelFor(m => m.UserName)
-                @Html.TextBoxFor(m => m.UserName)
-                @Html.ValidationMessageFor(m => m.UserName)
-            </li>
-        </ol>
-        @Html.HiddenFor(m => m.ExternalLoginData)
-        <input type="submit" value="Registrieren" />
-    </fieldset>
+    <h4>Zuordnungsformular</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <p class="text-info">
+        Sie haben sich erfolgreich authentifiziert mit <strong>@ViewBag.LoginProvider</strong>.
+        Bitte geben Sie unten einen Benutzernamen für diese Website ein, und klicken Sie dann auf die Schaltfläche "Registrieren", um die Anmeldung
+        fertigzustellen.
+    </p>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Registrieren" />
+        </div>
+    </div>
 }
 
 @section Scripts {

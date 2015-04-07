@@ -1,25 +1,28 @@
-﻿@model ICollection<AuthenticationClientData>
+﻿@model WebApplication1.Models.ExternalLoginListViewModel
+@using Microsoft.Owin.Security
 
-@if (Model.Count == 0)
-{
-    <div class="message-info">
-        <p>Es sind keine externen Authentifizierungsdienste konfiguriert. In <a href="http://go.microsoft.com/fwlink/?LinkId=252166">diesem Artikel</a>
-        finden Sie weitere Informationen zum Einrichten dieser ASP.NET-Anwendung für die Unterstützung der Anmeldung über externe Dienste.</p>
-    </div>
-}
-else
-{
-    using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }))
-    {
-    @Html.AntiForgeryToken()
-    <fieldset id="socialLoginList">
-        <legend>Mit einem anderen Dienst anmelden</legend>
-        <p>
-        @foreach (AuthenticationClientData p in Model)
-        {
-            <button type="submit" name="provider" value="@p.AuthenticationClient.ProviderName" title="Mit Ihrem @p.DisplayName-Konto anmelden">@p.DisplayName</button>
+<h4>Einen anderen Dienst zum Anmelden verwenden.</h4>
+<hr />
+@{
+    var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    if (loginProviders.Count() == 0) {
+        <div>
+            <p>
+                Es sind keine externen Authentifizierungsdienste konfiguriert. In <a href="http://go.microsoft.com/fwlink/?LinkId=403804">diesem Artikel</a>
+                finden Sie weitere Informationen zum Einrichten dieser ASP.NET-Anwendung für die Unterstützung der Anmeldung über externe Dienste.
+            </p>
+        </div>
+    }
+    else {
+        using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = Model.ReturnUrl })) {
+            @Html.AntiForgeryToken()
+            <div id="socialLoginList">
+                <p>
+                    @foreach (AuthenticationDescription p in loginProviders) {
+                        <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Mit Ihrem @p.Caption-Konto anmelden">@p.AuthenticationType</button>
+                    }
+                </p>
+            </div>
         }
-        </p>
-    </fieldset>
     }
 }

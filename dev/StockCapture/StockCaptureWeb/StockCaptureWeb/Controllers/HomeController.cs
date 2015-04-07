@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using StockCapture;
 
 namespace StockCaptureWeb.Controllers
 {
@@ -10,6 +7,12 @@ namespace StockCaptureWeb.Controllers
     {
         public ActionResult Index()
         {
+            using (var repository = new Repository())
+            {
+                var stocks = repository.LoadStockQuotes();
+                var latestStocks = repository.GetLatestStockQuotes(2);
+            }
+
             ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
 
             return View();

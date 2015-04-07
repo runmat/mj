@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockCapture", "StockCapture\StockCapture.csproj", "{8A42E24A-D7A6-47B9-A294-CBFF41C20B2B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StockCaptureLib", "StockCaptureLib\StockCaptureLib.csproj", "{602A55B9-946D-42C7-A62E-5A1E78EABE36}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{8A42E24A-D7A6-47B9-A294-CBFF41C20B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8A42E24A-D7A6-47B9-A294-CBFF41C20B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8A42E24A-D7A6-47B9-A294-CBFF41C20B2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{602A55B9-946D-42C7-A62E-5A1E78EABE36}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{602A55B9-946D-42C7-A62E-5A1E78EABE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{602A55B9-946D-42C7-A62E-5A1E78EABE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{602A55B9-946D-42C7-A62E-5A1E78EABE36}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
