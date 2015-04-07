@@ -536,25 +536,23 @@ function SetDate(Day, Textbox) {
 	}
 
     // Morgen
-    if (Day == 1) 
-    {
-        if (datum.getDay() == 5) 
-        {
-	        datum.setDate(datum.getDate() + 3);
-		}
-	    else if (datum.getDay() == 6) 
-        {
-	        datum.setDate(datum.getDate() + 2);
-		}
-	    else 
-        {
-		    datum.setDate(datum.getDate() + 1);
-		}
-		// ggf. Feiertage überspringen
-		while (!keinFeiertag(datum)[0])
-        {
-            datum.setDate(datum.getDate() + 1);
-		}
+    if (Day == 1) {
+        var tomorrowSuccess = false;
+        while (!tomorrowSuccess) {
+            if (datum.getDay() == 5) {
+                datum.setDate(datum.getDate() + 3);
+            } else if (datum.getDay() == 6) {
+                datum.setDate(datum.getDate() + 2);
+            } else {
+                datum.setDate(datum.getDate() + 1);
+            }
+            // ggf. Feiertage überspringen
+            while (!keinFeiertag(datum)[0]) {
+                datum.setDate(datum.getDate() + 1);
+            }
+
+            tomorrowSuccess = (datum.getDay() != 6 && datum.getDay() != 7 && keinFeiertag(datum));
+        }
     }
 
 	var t;
