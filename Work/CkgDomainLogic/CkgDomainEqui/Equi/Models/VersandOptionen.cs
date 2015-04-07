@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
@@ -41,6 +41,9 @@ namespace CkgDomainLogic.Equi.Models
         [MaxLength(60)]
         public string Bemerkung { get; set; }
 
+        [GridHidden, NotMapped, XmlIgnore, ModelMappingCompareIgnore]
+        public string BemerkungAsString { get { return Bemerkung.NotNullOr("- " + Localize.None.ToLower() +  " -"); } }
+
         [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
         [Required]
         public string VersandGrundKey { get; set; }
@@ -78,8 +81,7 @@ namespace CkgDomainLogic.Equi.Models
             if (AufAbmeldungWartenAvailable && AufAbmeldungWarten)
                 s += string.Format("<br/>{0}", Localize.WaitForDeregistration);
 
-            if (Bemerkung.IsNotNullOrEmpty())
-                s += string.Format("<br/><br/>{0}:<br/>{1}", Localize.Comment, Bemerkung);
+            s += string.Format("<br/><br/>{0}:<br/>{1}", Localize.Comment, BemerkungAsString);
 
             s += string.Format("<br/><br/>{0}: {1}", Localize.CauseOfDispatch, VersandGrund.Bezeichnung);
 

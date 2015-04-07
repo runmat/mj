@@ -395,7 +395,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             versandAuftrag.MaterialNr = VersandOptionen.VersandOption.MaterialCode;
             versandAuftrag.DadAnforderungsDatum = DateTime.Today;
             versandAuftrag.ErfassungsUserName = LogonContext.UserName;
-            versandAuftrag.Bemerkung = VersandOptionen.Bemerkung;
+            versandAuftrag.Bemerkung = VersandOptionen.BemerkungAsString;
             versandAuftrag.Versandgrund = VersandOptionen.VersandGrund.Code;
             versandAuftrag.Mahnverfahren = (VersandAdresse.Kennung == "ZULASSUNG" ? "0001" : "0002");
 
