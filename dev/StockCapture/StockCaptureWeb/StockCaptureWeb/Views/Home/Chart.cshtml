@@ -16,6 +16,17 @@
         width: 1024px;
         height: 500px;
     }
+
+    .chart-tooltip {
+        font-weight: bold;
+    }
+    .chart-tooltip .val {
+        color: yellow;
+    }
+    .chart-tooltip .time {
+        color: white;
+        margin-left: 20px;
+    }
 </style>
 
 <div id="chart"></div>
@@ -64,11 +75,27 @@
                 mode: 'x'
             },
             mouse: {
-                track: true,  
+                track: true,
+                trackFormatter: function(obj) {
+                    var dt = new Date(obj.x);
+                    var ofs = date.getTimezoneOffset() / 60;
+                    return "<span class=\"chart-tooltip\">"
+                        + "<span class=\"val\">" + obj.y.replace('.', ',') + "</span>"
+                        + "<span class=\"time\">" + leadingZero(dt.getHours() + ofs) + ":" + leadingZero(dt.getMinutes()) + ":" + leadingZero(dt.getSeconds()) + "</span>"
+                        + "</span>";
+                },
+                relative: true
             },
             HtmlText: false,
             title: 'Time'
         };
+
+        function leadingZero(v) {
+            if (v < 10)
+                return "0" + v;
+
+            return "" + v;
+        }
 
         // Draw graph with default options, overwriting with passed options
         function drawGraph(opts) {
