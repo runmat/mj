@@ -115,7 +115,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 FahrgestellNr = ParamFahrzeugAkte.FIN,
                 Zb2Nr = ParamFahrzeugAkte.Briefnummer,
             });
-            HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == ParamFahrzeugAkte.Halter.NotNullOrEmpty().ToSapKunnr());
+            HalterAdresse = HalterAdressen
+                .FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == ParamFahrzeugAkte.Halter.NotNullOrEmpty().ToSapKunnr()) 
+                ?? new Adresse { Typ = "Halter"};
         }
 
         public void SetParamHalter(string halterNr)

@@ -97,25 +97,25 @@ namespace DocumentTools.Services
             return dataTable;
         }
 
-        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
+        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, string commaSeparatedAutoPropertyNamesToIgnore = "", Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
             where T : class, new()
         {
-            return ReadToDataTable(excelFileName, false, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
+            return ReadToDataTable(excelFileName, false, commaSeparatedAutoPropertyNamesToIgnore, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
         }
 
-        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, bool headerRowAvailable, Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
+        public IEnumerable<T> ReadToDataTable<T>(string excelFileName, bool headerRowAvailable, string commaSeparatedAutoPropertyNamesToIgnore = "", Func<DataRow, T> createFromDataRow = null, char separator = '*', bool skipDataReformatting = false, bool maintainLeadingZeros = false)
             where T : class, new()
         {
-            return ReadToDataTableInternal(excelFileName, headerRowAvailable, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
+            return ReadToDataTableInternal(excelFileName, headerRowAvailable, commaSeparatedAutoPropertyNamesToIgnore, createFromDataRow, separator, skipDataReformatting, maintainLeadingZeros);
         }
 
         public IEnumerable<T> ReadToDataTableWithFirstRowAsPropertyMapping<T>(string excelFileName, char separator = ';')
             where T : class, new()
         {
-            return ReadToDataTable(excelFileName, CreateFromDataRowWithFirstRowAsPropertyMapping<T>, separator);
+            return ReadToDataTable(excelFileName, "", CreateFromDataRowWithFirstRowAsPropertyMapping<T>, separator);
         }
 
-        private IEnumerable<T> ReadToDataTableInternal<T>(string excelFileName, bool headerRowAvailable, Func<DataRow, T> createFromDataRow, char separator, bool skipDataReformatting, bool maintainLeadingZeros)
+        private static IEnumerable<T> ReadToDataTableInternal<T>(string excelFileName, bool headerRowAvailable, string commaSeparatedAutoPropertyNamesToIgnore, Func<DataRow, T> createFromDataRow, char separator, bool skipDataReformatting, bool maintainLeadingZeros)
            where T : class, new()
         {
             try
@@ -124,27 +124,29 @@ namespace DocumentTools.Services
                 if (dataTable.Columns.Count == 0)
                     return new List<T>();
 
-                int rowToStart = headerRowAvailable ? 0 : -1;
+                var rowToStart = headerRowAvailable ? 0 : -1;
 
                 return dataTable.AsEnumerable()
                             .Where(row => dataTable.Rows.IndexOf(row) > rowToStart)
-                    // skip the first row, we asume it's the header row
-                            .Select(row => createFromDataRow != null ? createFromDataRow(row) : AutoCreateFromDataRow<T>(row));
+                            // skip the first row, we asume it's the header row
+                            .Select(row => createFromDataRow != null ? createFromDataRow(row) : AutoCreateFromDataRow<T>(row, commaSeparatedAutoPropertyNamesToIgnore));
             }
             catch { return new List<T>(); }
         }
 
-        static T AutoCreateFromDataRow<T>(DataRow row)
+        static T AutoCreateFromDataRow<T>(DataRow row, string commaSeparatedAutoPropertyNamesToIgnore)
             where T : class, new()
         {
             var item = new T();
 
             var properties = typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance);
             var column = 0;
+            var autoPropertyNamesToIgnore = commaSeparatedAutoPropertyNamesToIgnore.NotNullOrEmpty().Split(',').Select(s => s.Trim().ToLower());
             foreach (var property in properties)
             {
                 if (property != null && property.GetSetMethod() != null &&
-                    property.GetCustomAttributes(true).OfType<ScaffoldColumnAttribute>().None())
+                    property.GetCustomAttributes(true).OfType<ScaffoldColumnAttribute>().None() &&
+                    !autoPropertyNamesToIgnore.Contains(property.Name.ToLower()))
                 {
                     var value = row[column++];
                     value = ModelMapping.TryConvertValue(property, value, "us");
