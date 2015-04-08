@@ -15,8 +15,8 @@ namespace StockCapture.ViewModels
             {
                 using (var repository = new Repository())
                 {
-                    var latestStocks = repository.GetLatestStockQuotes(60*24)
-                        .Where(sq => sq.Date.GetValueOrDefault() > DateTime.Parse("07.04.2015 12:20"))
+                    var latestStocks = repository.GetLatestStockQuotes(24 * 60 * StockService.QueryCallsPerMinute)
+                        .Where(sq => sq.Date.GetValueOrDefault() > DateTime.Now.AddDays(-1))
                             .ToList();
                     return latestStocks;
                 }

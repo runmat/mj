@@ -1,4 +1,6 @@
-﻿@using StockCapture.ViewModels;
+﻿@{ Layout = "~/Views/Shared/_Layout_Raw.cshtml"; }
+
+@using StockCapture.ViewModels;
 @model StockQuoteViewModel
 
 <!-- load flotr2 charting library -->
@@ -7,11 +9,8 @@
 <![endif]-->
 <script src="@Url.Content("~/Scripts/Flotr2/flotr2.js")" type="text/javascript"> </script>
 
-
-<h3>Chart</h3>
-
-
 <style type="text/css">
+    
     #chart {
         width: 1024px;
         height: 500px;
@@ -32,8 +31,15 @@
 <div id="chart"></div>
 
 <script type="text/javascript">
-    
+
+    var _chartData = null;
+
     function InitChart() {
+
+        $(window).resize(function () {
+            ResizeChart();
+        });
+
         $.ajax(
         {
             type: "POST",
@@ -41,9 +47,21 @@
             data: { },
             loadingShow: false,
             success: function (result) {
-                DrawChart(document.getElementById("chart"), result.chartData);
+                _chartData = result.chartData;
+                ResizeChart();
             }
         });
+    }
+
+    function ResizeChart() {
+        var screenWidth = $(window).width() - 20;
+        var screenHeight = $(window).height();
+
+        $("#chart").css("width", screenWidth);
+        $("#chart").css("height", screenHeight);
+
+        if (_chartData != null)
+            DrawChart(document.getElementById("chart"), _chartData);
     }
 
     function DrawChart(container, chartData) {
@@ -76,6 +94,7 @@
             },
             mouse: {
                 track: true,
+                position: 'nw',
                 trackFormatter: function(obj) {
                     var dt = new Date(obj.x);
                     var ofs = date.getTimezoneOffset() / 60;
@@ -142,7 +161,7 @@
 
             //console.log("pop: " + areaIndex + " ~ " + area.x1 + " - " + new Date());
             graph = drawGraph({
-                xaxis: { min: area.x1, max: area.x2, mode: 'time', labelsAngle: 45 + (10 * areas.length) },
+                xaxis: { min: area.x1, max: area.x2, mode: 'time', labelsAngle: 45 },
                 yaxis: { min: area.y1, max: area.y2 }
             });
         });
