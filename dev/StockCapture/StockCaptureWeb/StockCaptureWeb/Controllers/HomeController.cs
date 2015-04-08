@@ -19,7 +19,7 @@ namespace StockCaptureWeb.Controllers
             { 
                 return (_isoConvert ?? (_isoConvert = new IsoDateTimeConverter
                                                         {
-                                                            DateTimeFormat = "yyyy/MM/dd hh:mm tt",
+                                                            DateTimeFormat = "yyyy/MM/dd hh:mm:ss tt",
                                                             Culture = _cultureInfo
                                                         })); 
             }
@@ -59,7 +59,7 @@ namespace StockCaptureWeb.Controllers
 
             var chartData = stockQuotes.Select(sq => new[]
             {
-                GetJsonDateTime(sq.Date.GetValueOrDefault()), sq.Val.GetValueOrDefault().ToString("0.0000", _cultureInfo)
+                GetJsonDateTime(sq.InsertDate.GetValueOrDefault()), sq.Val.GetValueOrDefault().ToString("0.0000", _cultureInfo)
             }).ToArray();
 
             return Json(new
@@ -70,7 +70,8 @@ namespace StockCaptureWeb.Controllers
 
         string GetJsonDateTime(DateTime dt)
         {
-            return JsonConvert.SerializeObject(dt.AddMinutes(0).AddSeconds(-dt.Second), IsoConvert).Replace("\"","");
+            var jsonDate = JsonConvert.SerializeObject(dt, IsoConvert).Replace("\"","");
+            return jsonDate;
         }
     }
 }
