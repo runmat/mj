@@ -33,6 +33,9 @@
 <script type="text/javascript">
 
     var _chartData = null;
+    var _areas = [200];
+    var _areaIndex = 0;
+    _areas[_areaIndex] = null;
 
     function InitChart() {
 
@@ -40,6 +43,15 @@
             ResizeChart();
         });
 
+        $(window).click(function (e) {
+            if(e.toElement == document.body)
+                ReloadChart();
+        });
+
+        ReloadChart();
+    }
+
+    function ReloadChart() {
         $.ajax(
         {
             type: "POST",
@@ -47,10 +59,40 @@
             data: { },
             loadingShow: false,
             success: function (result) {
-                _chartData = result.chartData;
+                SetChartData(result.chartData);
+
                 ResizeChart();
             }
         });
+    }
+
+    function SetChartData(chartData) {
+        //console.log(chartData);
+        for (var j = 0; j < chartData.length; j++) {
+            var subArray = chartData[j];
+            var date = new Date(subArray[0]);
+            var offset = date.getTimezoneOffset() / 60;
+            var hours = date.getHours();
+            date.setHours(hours - offset);
+            subArray[0] = date;
+        }
+
+        _chartData = chartData;
+        if (_areaIndex == 0)
+            return;
+
+        // Expand zoomed area to the new bounds at right hand side:
+        var area = _areas[_areaIndex];
+
+        var newLastDateInPixel = Flotr.toPixel(_chartData[_chartData.length - 1][0]);
+
+        //console.log(newLastDateInPixel);
+        //console.log(area.x2 + "*");
+        //var fac = (Math.abs(area.x2) < Math.abs(newLastDateInPixel) ? Math.abs(area.x2) / Math.abs(newLastDateInPixel) : Math.abs(newLastDateInPixel) / Math.abs(area.x2));
+        //console.log(fac);
+
+        //if (fac > 0.95)
+            area.x2 = newLastDateInPixel;
     }
 
     function ResizeChart() {
@@ -61,28 +103,12 @@
         $("#chart").css("height", screenHeight);
 
         if (_chartData != null)
-            DrawChart(document.getElementById("chart"), _chartData);
+            DrawChart(document.getElementById("chart"));
     }
 
-    function DrawChart(container, chartData) {
+    function DrawChart(container) {
 
-        var
-            d1 = chartData || [],
-            //start = new Date("2009/01/01 01:00").getTime(),
-            //start = new Date().getTime(),
-            options,
-            graph,
-            i, x, o;
-
-        //console.log(chartData);
-        for (var j = 0; j < chartData.length; j++) {
-            var subArray = chartData[j];
-            var date = new Date(subArray[0]);
-            var offset = date.getTimezoneOffset() / 60;
-            var hours = date.getHours();
-            date.setHours(hours - offset);
-            subArray[0] = date;
-        }
+        var d1 = _chartData || [], options, graph, o;
 
         options = {
             xaxis: {
@@ -96,8 +122,8 @@
                 track: true,
                 position: 'nw',
                 trackFormatter: function(obj) {
-                    var dt = new Date(obj.x);
-                    var ofs = date.getTimezoneOffset() / 60;
+                    var dt = obj.x;
+                    var ofs = dt.getTimezoneOffset() / 60;
                     return "<span class=\"chart-tooltip\">"
                         + "<span class=\"val\">" + obj.y.replace('.', ',') + "</span>"
                         + "<span class=\"time\">" + leadingZero(dt.getHours() + ofs) + ":" + leadingZero(dt.getMinutes()) + ":" + leadingZero(dt.getSeconds()) + "</span>"
@@ -130,11 +156,20 @@
             );
         }
 
-        graph = drawGraph(options);
+        function drawGraphZoomed() {
+            if (_areaIndex == 0) 
+                return drawGraph();
 
-        var areas = [200];
-        var areaIndex = 0;
-        areas[areaIndex] = null;
+            var area = _areas[_areaIndex];
+
+            //console.log("pop: " + _areaIndex + " ~ " + area.x1 + " - " + new Date());
+            return drawGraph({
+                xaxis: { min: area.x1, max: area.x2, mode: 'time', labelsAngle: 45 },
+                yaxis: { min: area.y1, max: area.y2 }
+            });
+        }
+
+        graph = drawGraphZoomed(options);
 
         Flotr.EventAdapter.observe(container, 'flotr:select', function (area) {
             // Draw selected area
@@ -142,28 +177,19 @@
                 xaxis: { min: area.x1, max: area.x2, mode: 'time', labelsAngle: 45 },
                 yaxis: { min: area.y1, max: area.y2 }
             });
-            areas[++areaIndex] = area;
-            //console.log("push: " + areaIndex + " ~ " + area.x1 + " - " + new Date());
+            _areas[++_areaIndex] = area;
+            //console.log("push: " + _areaIndex + " ~ " + area.x1 + " - " + new Date());
         });
 
         // When graph is clicked, draw the graph with default area.
         Flotr.EventAdapter.observe(container, 'flotr:click', function() {
 
-            if (areaIndex == 0) {
+            if (_areaIndex == 0) 
                 return;
-            }
 
-            var area = areas[--areaIndex];
-            if (areaIndex == 0) {
-                graph = drawGraph();
-                return;
-            }
+            --_areaIndex;
 
-            //console.log("pop: " + areaIndex + " ~ " + area.x1 + " - " + new Date());
-            graph = drawGraph({
-                xaxis: { min: area.x1, max: area.x2, mode: 'time', labelsAngle: 45 },
-                yaxis: { min: area.y1, max: area.y2 }
-            });
+            graph = drawGraphZoomed();
         });
     }
 
