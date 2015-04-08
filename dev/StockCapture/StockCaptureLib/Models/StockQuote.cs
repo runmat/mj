@@ -19,6 +19,12 @@ namespace StockCapture.Models
         public virtual double? DiffToPrevPrev { get; set; }
         public virtual double DiffToPrevPrevTicks { get { return DiffToPrevPrev.GetValueOrDefault() * 1000; } }
 
+        public virtual double? QueryDuration { get; set; }
+
+        public virtual bool? EmailAlertSent { get; set; }
+
+        public virtual string EmailAlertSentAsString { get { return EmailAlertSent.GetValueOrDefault() ? "X" : ""; } }
+
         public virtual string RowCssClass
         {
             get

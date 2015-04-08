@@ -9,6 +9,8 @@
             <th>ID</th>
             <th>Date</th>
             <th>Insert-Date</th>
+            <th>Duration</th>
+            <th>E-Mail?</th>
             <th>Val</th>
             <th>Diff</th>
             <th>Diff 2</th>
@@ -20,7 +22,9 @@
             <tr class="@sq.RowCssClass">
                 <td>@sq.ID</td>
                 <td>@sq.Date.GetValueOrDefault().ToString("dd.MM.yy HH:mm")</td>
-                <td>@sq.InsertDate.GetValueOrDefault().ToString("dd.MM.yy HH:mm")</td>
+                <td>@sq.InsertDate.GetValueOrDefault().ToString("dd.MM.yy HH:mm:ss")</td>
+                <td>@sq.QueryDuration.GetValueOrDefault().ToString("0.00")</td>
+                <td>@sq.EmailAlertSentAsString</td>
                 <td>@sq.Val.GetValueOrDefault().ToString("0.0000")</td>
                 <td>@sq.DiffToPrevTicks.ToString("0.0")</td>
                 <td>@sq.DiffToPrevPrevTicks.ToString("0.0")</td>

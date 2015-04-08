@@ -29,7 +29,19 @@ namespace StockCapture
         {
             var sessionFactory = ConfigureNHibernate();
             _session = sessionFactory.OpenSession();
+
+            //PatchDatabase();
         }
+
+        //void PatchDatabase()
+        //{
+        //    try
+        //    {
+        //        var query = _session.CreateSQLQuery("alter table StockQuote add EmailAlertSent bit null");
+        //        query.ExecuteUpdate();
+        //    }
+        //    catch { }
+        //}
 
         public void Dispose()
         {
@@ -111,6 +123,19 @@ namespace StockCapture
             // Create a criteria object with the specified criteria
             var criteria = _session.CreateCriteria(typeof(T));
             criteria.Add(Restrictions.Eq(propertyName, propertyValue));
+
+            // Get the matching objects
+            var matchingObjects = criteria.List<T>();
+
+            // Set return value
+            return matchingObjects;
+        }
+
+        public IList<T> RetrieveBetween<T>(string propertyName, object propertyValueLower, object propertyValueUpper)
+        {
+            // Create a criteria object with the specified criteria
+            var criteria = _session.CreateCriteria(typeof(T));
+            criteria.Add(Restrictions.Between(propertyName, propertyValueLower, propertyValueUpper));
 
             // Get the matching objects
             var matchingObjects = criteria.List<T>();
