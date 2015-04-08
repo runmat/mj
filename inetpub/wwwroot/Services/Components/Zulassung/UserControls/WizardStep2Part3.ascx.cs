@@ -237,7 +237,10 @@ namespace CKG.Components.Zulassung.UserControls
             if (nextButton == null)
                 return;
 
-            nextButton.Visible = enable;
+            if (!enable)
+                nextButton.Style.Add("visibility", "hidden");
+            else
+                nextButton.Style.Remove("visibility");
         }
     }
 }
