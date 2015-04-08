@@ -45,12 +45,6 @@
             graph,
             i, x, o;
 
-        //for (i = 0; i < 100; i++) {
-        //    x = start + (i*60*60);
-        //    //d1.push([x, i + Math.random() * 30 + Math.sin(i / 20 + Math.random() * 2) * 20 + Math.sin(i / 10 + Math.random()) * 10]);
-        //    d1.push([x, i/100.0]);
-        //}
-
         //console.log(chartData);
         for (var j = 0; j < chartData.length; j++) {
             var subArray = chartData[j];
@@ -68,6 +62,9 @@
             },
             selection: {
                 mode: 'x'
+            },
+            mouse: {
+                track: true,  
             },
             HtmlText: false,
             title: 'Time'
@@ -87,7 +84,11 @@
             );
         }
 
-        graph = drawGraph();
+        graph = drawGraph(options);
+
+        var areas = [200];
+        var areaIndex = 0;
+        areas[areaIndex] = null;
 
         Flotr.EventAdapter.observe(container, 'flotr:select', function (area) {
             // Draw selected area
@@ -95,10 +96,29 @@
                 xaxis: { min: area.x1, max: area.x2, mode: 'time', labelsAngle: 45 },
                 yaxis: { min: area.y1, max: area.y2 }
             });
+            areas[++areaIndex] = area;
+            //console.log("push: " + areaIndex + " ~ " + area.x1 + " - " + new Date());
         });
 
         // When graph is clicked, draw the graph with default area.
-        Flotr.EventAdapter.observe(container, 'flotr:click', function () { graph = drawGraph(); });
+        Flotr.EventAdapter.observe(container, 'flotr:click', function() {
+
+            if (areaIndex == 0) {
+                return;
+            }
+
+            var area = areas[--areaIndex];
+            if (areaIndex == 0) {
+                graph = drawGraph();
+                return;
+            }
+
+            //console.log("pop: " + areaIndex + " ~ " + area.x1 + " - " + new Date());
+            graph = drawGraph({
+                xaxis: { min: area.x1, max: area.x2, mode: 'time', labelsAngle: 45 + (10 * areas.length) },
+                yaxis: { min: area.y1, max: area.y2 }
+            });
+        });
     }
 
     jQuery(document).ready(function () {
