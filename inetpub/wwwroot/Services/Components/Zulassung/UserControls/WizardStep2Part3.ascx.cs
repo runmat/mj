@@ -110,18 +110,24 @@ namespace CKG.Components.Zulassung.UserControls
 
         protected void GridView1_RowEditing(object sender, GridViewEditEventArgs e)
         {
+            EnableNextButton(false);
+
             GridView1.EditIndex = e.NewEditIndex;
             FillGrid(GridView1.PageIndex);
         }
 
         protected void GridView1_RowCancelingEdit(object sender, GridViewCancelEditEventArgs e)
         {
+            EnableNextButton(true);
+
             GridView1.EditIndex = -1;
             FillGrid(GridView1.PageIndex);
         }
 
         protected void GridView1_RowUpdating(object sender, GridViewUpdateEventArgs e)
         {
+            EnableNextButton(true);
+
             var dt = page.DAL.SelectedVehicles;
             var prefix = this.page.DAL.Stva + "-";
 
@@ -211,6 +217,27 @@ namespace CKG.Components.Zulassung.UserControls
                 dataLoaded = true;
                 return;
             }
+        }
+
+        void EnableNextButton(bool enable)
+        {
+            var parent = this.Parent;
+            if (parent == null)
+                return;
+
+            var pParent = parent.Parent;
+            if (pParent == null)
+                return;
+
+            var parentWizardStepControl = (pParent.Parent as WizardStep2);
+            if (parentWizardStepControl == null)
+                return;
+
+            var nextButton = (parentWizardStepControl.FindControl("LinkButton2") as LinkButton);
+            if (nextButton == null)
+                return;
+
+            nextButton.Visible = enable;
         }
     }
 }
