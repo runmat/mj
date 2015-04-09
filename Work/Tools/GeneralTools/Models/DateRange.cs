@@ -3,7 +3,7 @@ using GeneralTools.Contracts;
 
 namespace GeneralTools.Models
 {
-    public enum DateRangeType { LastYear, Last3Months, LastMonth, CurrentMonth, Last30Days, Last7Days, Today, Yesterday }
+    public enum DateRangeType { LastYear, Last3Months, LastMonth, CurrentMonth, Last6Months, Last90Days, Last60Days, Last30Days, Last7Days, Today, Yesterday }
 
     public class DateRange : INullable
     {
@@ -41,6 +41,21 @@ namespace GeneralTools.Models
                 case DateRangeType.CurrentMonth:
                     StartDate = DateTime.Today.AddMonths(0).MoveToFirstDay();
                     EndDate = DateTime.Today.AddMonths(0).MoveToLastDay();
+                    break;
+
+                case DateRangeType.Last6Months:
+                    StartDate = DateTime.Today.AddMonths(-6);
+                    EndDate = DateTime.Today;
+                    break;
+
+                case DateRangeType.Last90Days:
+                    StartDate = DateTime.Today.AddDays(-90);
+                    EndDate = DateTime.Today;
+                    break;
+
+                case DateRangeType.Last60Days:
+                    StartDate = DateTime.Today.AddDays(-60);
+                    EndDate = DateTime.Today;
                     break;
 
                 case DateRangeType.Last30Days:
