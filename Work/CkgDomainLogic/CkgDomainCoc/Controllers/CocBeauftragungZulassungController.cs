@@ -269,14 +269,14 @@ namespace ServicesMvc.Controllers
         }
         public ActionResult HalterAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("HalterAdressen", dt);
 
             return new EmptyResult();
         }
         public ActionResult HalterAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("HalterAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -305,14 +305,14 @@ namespace ServicesMvc.Controllers
         }
         public ActionResult ReguliererAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.ReguliererAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.ReguliererAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ReguliererAdressen", dt);
 
             return new EmptyResult();
         }
         public ActionResult ReguliererAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.ReguliererAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.ReguliererAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("ReguliererAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -341,14 +341,14 @@ namespace ServicesMvc.Controllers
         }
         public ActionResult RechnungsEmpfaengerAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.RechnungsEmpfaengerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.RechnungsEmpfaengerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("RechnungsEmpfaengerAdressen", dt);
 
             return new EmptyResult();
         }
         public ActionResult RechnungsEmpfaengerAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.RechnungsEmpfaengerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.RechnungsEmpfaengerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("RechnungsEmpfaengerAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -376,14 +376,14 @@ namespace ServicesMvc.Controllers
         }
         public ActionResult VersandScheinSchilderAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.VersandScheinSchilderAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.VersandScheinSchilderAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("VersandScheinSchilderAdressen", dt);
 
             return new EmptyResult();
         }
         public ActionResult VersandScheinSchilderAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.VersandScheinSchilderAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.VersandScheinSchilderAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("VersandScheinSchilderAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -411,14 +411,14 @@ namespace ServicesMvc.Controllers
         }
         public ActionResult VersandZb2CocAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.VersandZb2CocAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.VersandZb2CocAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("VersandZb2CocAdressen", dt);
 
             return new EmptyResult();
         }
         public ActionResult VersandZb2CocAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.VersandZb2CocAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.VersandZb2CocAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("VersandZb2CocAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

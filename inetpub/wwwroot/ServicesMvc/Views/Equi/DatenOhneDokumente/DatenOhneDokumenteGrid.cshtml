@@ -9,7 +9,6 @@
 @(Html.Telerik()
     .Grid<DatenOhneDokumente>()
     .Name(gridName)
-    .XGroup("GridDatenOhneDokumente")
     .DataKeys(d => d.Add(a => a.Fahrgestellnummer).RouteKey("Fahrgestellnummer"))
     .XAjaxDataBinding("DatenOhneDokumenteAjaxBinding", "Equi")
     .Columns(columns =>

@@ -59,7 +59,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportMahnungenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = MahnstufenViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnstufenViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Mahnstufen", dt);
 
             return new EmptyResult();
@@ -67,7 +67,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportMahnungenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = MahnstufenViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnstufenViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Mahnstufen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

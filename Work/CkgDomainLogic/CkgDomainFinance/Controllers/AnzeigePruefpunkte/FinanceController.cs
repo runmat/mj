@@ -59,7 +59,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPruefpunkteFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = AnzeigePruefpunkteViewModel.PruefpunkteFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = AnzeigePruefpunkteViewModel.PruefpunkteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Prüfpunkte", dt);
 
             return new EmptyResult();
@@ -67,7 +67,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPruefpunkteFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = AnzeigePruefpunkteViewModel.PruefpunkteFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = AnzeigePruefpunkteViewModel.PruefpunkteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Prüfpunkte", dt, landscapeOrientation: true);
 
             return new EmptyResult();

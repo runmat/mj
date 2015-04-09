@@ -1,17 +1,53 @@
 ﻿using System;
+using System.Linq;
+using System.Xml.Serialization;
 using GeneralTools.Contracts;
 
 namespace GeneralTools.Models
 {
-    public enum DateRangeType { LastYear, Last3Months, LastMonth, CurrentMonth, Last6Months, Last90Days, Last60Days, Last30Days, Last7Days, Today, Yesterday }
-
     public class DateRange : INullable
     {
+        private DateRangeType _rangeType;
+        private DateTime? _startDate;
+        private DateTime? _endDate;
+        private DateRangePresets _dateRangePresets;
+
         public bool IsSelected { get; set; }
 
-        public DateTime? StartDate { get; set; }
+        [XmlIgnore]
+        DateRangePresets DateRangePresets
+        {
+            get { return (_dateRangePresets ?? (_dateRangePresets = new DateRangePresets())); }
+        }
 
-        public DateTime? EndDate { get; set; }
+        public DateTime? StartDate
+        {
+            get { return _startDate; }
+            set
+            {
+                _rangeType = DateRangeType.None;
+                _startDate = value;
+                TrySetDateRangeFromIndividualRange(_startDate.GetValueOrDefault(), _endDate.GetValueOrDefault());
+            }
+        }
+
+        public DateTime? EndDate
+        {
+            get { return _endDate; }
+            set
+            {
+                _rangeType = DateRangeType.None;
+                _endDate = value;
+                TrySetDateRangeFromIndividualRange(_startDate.GetValueOrDefault(), _endDate.GetValueOrDefault());
+            }
+        }
+
+        public DateRangeType RangeType
+        {
+            get { return _rangeType; }
+            set { SetRangeType(value); }
+        }
+
 
         public DateRange()
         {
@@ -19,65 +55,15 @@ namespace GeneralTools.Models
 
         public DateRange(DateRangeType dateRangeType, bool isSelected = false)
         {
+            RangeType = dateRangeType;
             IsSelected = isSelected;
+        }
 
-            switch (dateRangeType)
-            {
-                case DateRangeType.LastYear:
-                    StartDate = new DateTime(DateTime.Today.Year - 1, 1, 1);
-                    EndDate = new DateTime(DateTime.Today.Year - 1, 12, 31);
-                    break;
+        private void SetRangeType(DateRangeType dateRangeType)
+        {
+            _rangeType = dateRangeType;
 
-                case DateRangeType.Last3Months:
-                    StartDate = DateTime.Today.AddMonths(-3).MoveToFirstDay();
-                    EndDate = DateTime.Today.AddMonths(-1).MoveToLastDay();
-                    break;
-
-                case DateRangeType.LastMonth:
-                    StartDate = DateTime.Today.AddMonths(-1).MoveToFirstDay();
-                    EndDate = DateTime.Today.AddMonths(-1).MoveToLastDay();
-                    break;
-
-                case DateRangeType.CurrentMonth:
-                    StartDate = DateTime.Today.AddMonths(0).MoveToFirstDay();
-                    EndDate = DateTime.Today.AddMonths(0).MoveToLastDay();
-                    break;
-
-                case DateRangeType.Last6Months:
-                    StartDate = DateTime.Today.AddMonths(-6);
-                    EndDate = DateTime.Today;
-                    break;
-
-                case DateRangeType.Last90Days:
-                    StartDate = DateTime.Today.AddDays(-90);
-                    EndDate = DateTime.Today;
-                    break;
-
-                case DateRangeType.Last60Days:
-                    StartDate = DateTime.Today.AddDays(-60);
-                    EndDate = DateTime.Today;
-                    break;
-
-                case DateRangeType.Last30Days:
-                    StartDate = DateTime.Today.AddDays(-30);
-                    EndDate = DateTime.Today;
-                    break;
-
-                case DateRangeType.Last7Days:
-                    StartDate = DateTime.Today.AddDays(-7);
-                    EndDate = DateTime.Today.AddDays(0);
-                    break;
-
-                case DateRangeType.Today:
-                    StartDate = DateTime.Today;
-                    EndDate = DateTime.Today;
-                    break;
-
-                case DateRangeType.Yesterday:
-                    StartDate = DateTime.Today.AddDays(-1);
-                    EndDate = DateTime.Today.AddDays(-1);
-                    break;
-            }
+            TrySetIndividualRangeFromActualPresets(dateRangeType);
         }
 
         public bool IsNull()
@@ -88,6 +74,30 @@ namespace GeneralTools.Models
         public bool MoreDaysThan(int days)
         {
             return (IsSelected && (EndDate.GetValueOrDefault() - StartDate.GetValueOrDefault()).TotalDays > days);
+        }
+
+        void TrySetIndividualRangeFromActualPresets(DateRangeType dateRangeType)
+        {
+            if (dateRangeType == DateRangeType.None)
+                return;
+
+            if (!DateRangePresets.Presets.ContainsKey(dateRangeType))
+                return;
+
+            var preset = DateRangePresets.Presets[dateRangeType];
+            _rangeType = dateRangeType;
+            _startDate = preset.StartDate;
+            _endDate = preset.EndDate;
+        }
+
+        void TrySetDateRangeFromIndividualRange(DateTime startDate, DateTime endDate)
+        {
+            var presets = DateRangePresets.Presets.Where(p => p.Value.StartDate == startDate && p.Value.EndDate == endDate);
+            if (presets.None())
+                return;
+
+            var preset = presets.First();
+            _rangeType = preset.Key;
         }
     }
 }

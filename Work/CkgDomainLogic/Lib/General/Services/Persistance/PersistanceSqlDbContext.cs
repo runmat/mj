@@ -32,11 +32,11 @@ namespace CkgDomainLogic.General.Services
             return Database.SqlQuery<PersistableObjectContainer>("SELECT * FROM PersistableObjectContainer WHERE OwnerKey = {0} and GroupKey = {1}", ownerKey, groupKey);
         }
 
-        public void PersistObject(string objectKey, string ownerKey, string groupKey, string userName, string objectType, string objectData)
+        public void PersistObject(string objectKey, string ownerKey, string groupKey, string userName, string objectType, string objectData, string objectType2, string objectData2)
         {
             Database.ExecuteSqlCommand(
-                "EXEC PersistableObjectContainerSave {0}, {1}, {2}, {3}, {4}, {5}",
-                objectKey, ownerKey, groupKey, userName, objectType, objectData);
+                "EXEC PersistableObjectContainerSave {0}, {1}, {2}, {3}, {4}, {5}, {6}, {7}",
+                objectKey, ownerKey, groupKey, userName, objectType, objectData, objectType2, objectData2);
         }
 
         public void DeletePersistedObject(string objectKey)

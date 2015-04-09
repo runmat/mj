@@ -63,7 +63,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportTelefoniedatenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = TelefonieReportViewModel.TelefoniedatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = TelefonieReportViewModel.TelefoniedatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Telefoniedaten", dt);
 
             return new EmptyResult();
@@ -71,7 +71,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportTelefoniedatenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = TelefonieReportViewModel.TelefoniedatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = TelefonieReportViewModel.TelefoniedatenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Telefoniedaten", dt, landscapeOrientation: true);
 
             return new EmptyResult();

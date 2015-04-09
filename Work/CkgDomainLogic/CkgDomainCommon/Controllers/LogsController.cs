@@ -294,7 +294,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("PageVisits", dt);
 
             return new EmptyResult();
@@ -302,7 +302,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("PageVisits", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -310,7 +310,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsDetailFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("PageVisits Detail", dt);
 
             return new EmptyResult();
@@ -318,7 +318,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsDetailFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("PageVisits Detail", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -326,7 +326,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportWebServiceTrafficLogItemsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Webservice-Log", dt);
 
             return new EmptyResult();
@@ -334,7 +334,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportWebServiceTrafficLogItemsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Webservice-Log", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -342,7 +342,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUnusedAppsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UnusedApps", dt);
 
             return new EmptyResult();
@@ -350,7 +350,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUnusedAppsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UnusedApps", dt, landscapeOrientation: true);
 
             return new EmptyResult();

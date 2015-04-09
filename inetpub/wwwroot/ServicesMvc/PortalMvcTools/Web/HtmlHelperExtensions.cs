@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Models;
@@ -166,13 +167,13 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormValidationSummary(this HtmlHelper html, bool excludePropertyErrors = true)
         {
-            return html.ValidationSummary(excludePropertyErrors, Localize.PleaseCheckYourInputs);
-        }
+            var persistenceModeErros = html.ViewData.ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage.ToLower().StartsWith(MvcTag.FormPersistenceModeErrorPrefix.ToLower())));
+            var validationSummaryHeader = Localize.PleaseCheckYourInputs;
+            if (persistenceModeErros.Key != null && persistenceModeErros.Value != null)
+                validationSummaryHeader = MvcTag.FormPersistenceModeErrorPrefix;
 
-        //public static MvcHtmlString FormValidationSummaryBlankGeneralMessage(this HtmlHelper html, bool excludePropertyErrors = true)
-        //{
-        //    return html.ValidationSummary(excludePropertyErrors);
-        //}
+            return html.ValidationSummary(excludePropertyErrors, validationSummaryHeader);
+        }
 
         public static MvcHtmlString FormWizard(this HtmlHelper html, string headerIconCssClass, string header, IEnumerable<string> stepTitles, IEnumerable<string> stepKeys = null, bool stepTitlesInNewLine = false)
         {
@@ -224,6 +225,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
@@ -329,6 +331,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
+                PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
@@ -347,6 +350,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -364,6 +368,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = labelHtml.IsNotNullOrEmpty() ? new MvcHtmlString(labelHtml) : html.DisplayName(propertyName),
                 RequiredIndicatorHtml = labelHtml.IsNotNullOrEmpty() ? MvcHtmlString.Empty : html.RequiredIndicator(propertyName),
+                PerstistenceIndicatorHtml = html.PersistenceIndicator(propertyName),
                 ControlHtml = html.TextBox(propertyName, null, controlHtmlAttributes),
                 ValidationMessageHtml = html.ValidationMessage(propertyName),
                 IconCssClass = null,
@@ -383,6 +388,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -400,6 +406,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextAreaFor(expression, rows, columns, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -415,6 +422,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = new MvcHtmlString(label),
                 RequiredIndicatorHtml = MvcHtmlString.Empty,
+                PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = new MvcHtmlString(templateControlHtml.Invoke(null).ToString()),
                 ValidationMessageHtml = null,
                 IconCssClass = null,
@@ -452,6 +460,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = datePickerFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -489,6 +498,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.DropDownListFor(expression, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
@@ -522,6 +532,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.ListBoxFor(expression, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
@@ -553,6 +564,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = radioButtonsFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -584,6 +596,7 @@ namespace PortalMvcTools.Web
                 LabelHidden = labelHidden,
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.CheckBoxFor(expression, controlHtmlAttributesDict), // MJE, deactivated this explicitely for knockout bindings:  .MergePropertiesStrictly(new { @class = "hide" })), 
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -616,6 +629,7 @@ namespace PortalMvcTools.Web
                 IsCheckBox = true,
                 DisplayNameHtml = labelText,
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(firstExpression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(firstExpression),
                 ControlHtml = checkBoxesFor,
                 ValidationMessageHtml = validationMessageHtml,
                 IconCssClass = null,
@@ -655,6 +669,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(dateRangeExpression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(dateRangeExpression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(dateRangeExpression),
                 ControlHtml = innerHtml,
                 ValidationMessageHtml = html.ValidationMessageFor(dateRangeExpression),
                 IconCssClass = null,

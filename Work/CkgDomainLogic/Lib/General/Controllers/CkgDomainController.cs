@@ -7,19 +7,21 @@ using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Controllers;
+using MvcTools.Models;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 using Telerik.Web.Mvc.UI;
 
 namespace CkgDomainLogic.General.Controllers
 {
-    public abstract class CkgDomainController : LogonCapableController
+    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider
     {
         public IAppSettings AppSettings { get; protected set; }
 
@@ -37,6 +39,17 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionStore.SetModel("MainViewModel", value); }
         }
 
+        protected GridSettings GridCurrentSettings
+        {
+            get { return SessionHelper.GetSessionObject("GridCurrentSettings", () => new GridSettings()); }
+            set { SessionHelper.SetSessionValue("GridCurrentSettings", value); }
+        }
+
+        protected string GridCurrentColumns
+        {
+            get { return GridCurrentSettings.Columns; }
+            set { GridCurrentSettings.Columns = value; }
+        }
 
         protected string GetDataContextKey<T>()
         {
@@ -150,16 +163,23 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [HttpPost]
-        public ActionResult LogonContextPersistColumns(string jsonColumns, bool persistInDb)
+        public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy, bool persistInDb)
         {
-            LogonContext.CurrentGridColumns = jsonColumns;
+            GridCurrentSettings = new GridSettings
+                {
+                    ObjectKey = PersistableSelectorObjectKeyCurrent,
+                    Columns = jsonColumns,
+                    OrderBy = orderBy,
+                    FilterBy = filterBy,
+                    GroupBy = groupBy
+                };
 
             if (persistInDb)
             {
-                var jCols = jsonColumns.GetGridColumns();
-                var colMembers = jCols.Select(j => j.member).ToList();
+                //var jCols = jsonColumns.GetGridColumns();
+                //var colMembers = jCols.Select(j => j.member).ToList();
 
-                LogonContext.SetUserGridColumnNames(GridGroup, string.Join(",", colMembers));
+                //LogonContext.SetUserGridColumnNames(GridGroup, string.Join(",", colMembers));
             }
 
             return Json(new { message = "ok" });
@@ -194,12 +214,12 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [ValidateInput(false)]
-        public ActionResult GridDataExportFilteredExcel(int page, string orderBy, string filterBy)
+        public ActionResult GridDataExportFilteredExcel(int page, string orderBy, string filterBy, string groupBy)
         {
             var exportList = GetGridExportData();
             var modelType = exportList.GetItemType();
 
-            var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
 
             var grid = (IGrid)SessionHelper.GetSessionObject(string.Format("Telerik_Grid_{0}", modelType.Name));
             if (grid == null || grid.Grouping == null || grid.Grouping.Groups == null || grid.Grouping.Groups.Count == 0)
@@ -220,7 +240,7 @@ namespace CkgDomainLogic.General.Controllers
         [ValidateInput(false)]
         public ActionResult GridDataExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = GetGridExportData().GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = GetGridExportData().GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("ExcelExport", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -321,7 +341,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Adressen", dt);
 
             return new EmptyResult();
@@ -329,7 +349,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Adressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -339,7 +359,7 @@ namespace CkgDomainLogic.General.Controllers
 
 
 
-        #region Persistance Service
+        #region Persistence Service, General Objects
 
         protected virtual string GetPersistanceOwnerKey()
         {
@@ -363,13 +383,23 @@ namespace CkgDomainLogic.General.Controllers
                         .ToListOrEmptyList();
         }
 
-        protected void PersistanceSaveObject(string groupKey, IPersistableObject o)
+        protected List<T> PersistanceGetObjects2<T>(string groupKey)
+        {
+            return PersistanceGetObjectContainers(groupKey)
+                    .Select(pContainer => (T)pContainer.Object2)
+                        .ToListOrEmptyList();
+        }
+
+        protected void PersistanceSaveObject(string groupKey, string objectKey, ref IPersistableObject o, ref IPersistableObject o2)
         {
             var pService = LogonContext.PersistanceService;
             if (pService == null)
                 return;
 
-            pService.SaveObject(o.ObjectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
+            if (o == null && o2 == null)
+                return;
+            
+            pService.SaveObject(objectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, ref o, ref o2);
         }
 
         protected void PersistanceDeleteObject(string objectKey)
@@ -386,8 +416,8 @@ namespace CkgDomainLogic.General.Controllers
 
         #endregion
 
-        
-        #region Shopping Cart (based on 'Persistance Service')
+
+        #region Shopping Cart (based on 'Persistence Service')
 
         protected virtual IEnumerable ShoppingCartLoadItems()
         {
@@ -453,10 +483,12 @@ namespace CkgDomainLogic.General.Controllers
             return ShoppingCartItems.Cast<Store>().FirstOrDefault(item => item.ObjectKey == id);
         }
 
-        protected void ShoppingCartSaveItem(string groupKey, IPersistableObject o)
+        protected IPersistableObject ShoppingCartSaveItem(string groupKey, IPersistableObject o)
         {
-            PersistanceSaveObject(groupKey, o);
+            IPersistableObject savedObject2 = null;
+            PersistanceSaveObject(groupKey, o.ObjectKey, ref o, ref savedObject2);
             ShoppingCartLoadAndCacheItems();
+            return o;
         }
 
         [HttpPost]
@@ -502,7 +534,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Warenkorb", dt);
 
             return new EmptyResult();
@@ -510,7 +542,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Warenkorb", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -576,6 +608,244 @@ namespace CkgDomainLogic.General.Controllers
         // </Multi Selection>
         //
 
+
+        #endregion
+
+
+        #region Persistence Service, Selector Persistence
+
+        private static string PersistableSelectorGroupKeyCurrent
+        {
+            get { return SessionHelper.GetSessionString("PersistableSelectorGroupKeyCurrent"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorGroupKeyCurrent", value); }
+        }
+
+        private string PersistableSelectorObjectKeyCurrent
+        {
+            get { return SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent"); }
+            set
+            {
+                SessionHelper.SetSessionValue("PersistableSelectorObjectKeyCurrent", value);
+                
+                PersistableGridSettingsCurrentLoad(value);
+            }
+        }
+
+        private static bool PersistableSelectorIsPersistMode
+        {
+            get { return SessionHelper.GetSessionValue("PersistableSelectorIsPersistMode", false); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorIsPersistMode", value); }
+        }
+
+        private static string PersistableSelectorPersistMode
+        {
+            get { return SessionHelper.GetSessionString("PersistableSelectorPersistMode"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorPersistMode", value); }
+        }
+
+        public static List<IPersistableObject> PersistableSelectorItems
+        {
+            get { return (List<IPersistableObject>)SessionHelper.GetSessionObject("PersistableSelectorItems"); }
+            set { SessionHelper.SetSessionValue("PersistableSelectorItems", value); }
+        }
+
+        static void PersistableSelectorPersistModeReset()
+        {
+            PersistableSelectorIsPersistMode = false;
+            PersistableSelectorPersistMode = null;
+        }
+
+        protected PartialViewResult PersistablePartialView<T>(string viewName, T model) where T : class, new()
+        {
+            if (PersistableSelectorIsPersistMode)
+            {
+                // remove "No data found" error if we are in "form persisting" mode:
+                var noDataFoundModelError = ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage == Localize.NoDataFound));
+                if (noDataFoundModelError.Key != null && noDataFoundModelError.Value != null)
+                    ModelState.Remove(noDataFoundModelError);
+            }
+
+            if (!ModelState.IsValid || !PersistableSelectorIsPersistMode)
+                return PartialView(viewName, model);
+
+            var persistMode = (PersistableSelectorPersistMode ?? "save");
+            
+            var persistableSelector = (model as IPersistableObject);
+            var modeLocalizationMessage = "";
+            if (persistableSelector != null)
+            {
+                switch (persistMode)
+                {
+                    case "load":
+                        model = PersistablePartialViewLoad<T>();
+
+                        var objKey = GridCurrentSettings.ObjectKey;
+                        GridCurrentSettings.ObjectKey = null;
+                        PersistableGridSettingsCurrentLoad(objKey);
+                        
+                        modeLocalizationMessage = Localize.LoadSuccessful;
+                        break;
+                    
+                    case "delete":
+                        PersistablePartialViewDelete();
+                        model = new T();
+                        
+                        modeLocalizationMessage = Localize.DeleteSuccessful;
+                        break;
+                    
+                    case "save":
+                        model = (T)PersistablePartialViewSave(persistableSelector);
+                        
+                        modeLocalizationMessage = Localize.SaveSuccessful;
+                        break;
+                    
+                    case "saveas":
+                        model = (T)PersistablePartialViewSaveAs(persistableSelector);
+                        
+                        modeLocalizationMessage = Localize.SaveAsCopySuccessful;
+                        break;
+                }
+            }
+
+            PersistableSelectorPersistModeReset();
+
+            var persistMessage = string.Format("{0}{1}: {2}", MvcTag.FormPersistenceModeErrorPrefix, Localize.SearchMask, modeLocalizationMessage);
+            ModelState.AddModelError("", persistMessage);
+
+            return PartialView(viewName, model);
+        }
+
+        private T PersistablePartialViewLoad<T>() where T : class, new()
+        {
+            var persistableSelector = (T)PersistableSelectorItems.FirstOrDefault(p => p.ObjectKey == PersistableSelectorObjectKeyCurrent);
+
+            ModelState.Clear();
+
+            var selectorOnlyPersistableProperties = ModelMapping.CopyOnlyPersistableProperties(persistableSelector);
+
+            return selectorOnlyPersistableProperties;
+        }
+
+        private void PersistablePartialViewDelete()
+        {
+            PersistanceDeleteObject(PersistableSelectorObjectKeyCurrent);
+            PersistableSelectorObjectKeyCurrent = null;
+        }
+
+        private IPersistableObject PersistablePartialViewSave(IPersistableObject persistableSelector, string defaultObjectName = null)
+        {
+            IPersistableObject dummy = null;
+            PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector.ObjectKey, ref persistableSelector, ref dummy);
+            if (persistableSelector != null)
+            {
+                if (persistableSelector.ObjectName.IsNullOrEmpty())
+                {
+                    persistableSelector.ObjectName = PersistableSelectorsGetDefaultObjectNameFor(defaultObjectName ?? Localize.MyReport);
+                    PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, persistableSelector.ObjectKey, ref persistableSelector, ref dummy);
+                }
+
+                PersistableSelectorObjectKeyCurrent = persistableSelector.ObjectKey;
+
+                ModelState.SetModelValue("ObjectKey", persistableSelector.ObjectKey);
+                ModelState.SetModelValue("ObjectName", persistableSelector.ObjectName);
+                ModelState.SetModelValue("EditUser", persistableSelector.EditUser);
+                ModelState.SetModelValue("EditDate", persistableSelector.EditDate);
+            }
+
+            return persistableSelector;
+        }
+
+        private IPersistableObject PersistablePartialViewSaveAs(IPersistableObject persistableSelector)
+        {
+            var defaultObjectName = persistableSelector.ObjectName;
+            persistableSelector.ObjectName = null;
+            persistableSelector.ObjectKey = null;
+
+            persistableSelector = PersistablePartialViewSave(persistableSelector, defaultObjectName);
+
+            ModelState.Clear();
+
+            return persistableSelector;
+        }
+
+        [HttpPost]
+        public ActionResult PersistablePartialViewSetMode(string mode, string objectKey)
+        {
+            PersistableSelectorIsPersistMode = true;
+            PersistableSelectorPersistMode = mode;
+            PersistableSelectorObjectKeyCurrent = objectKey;
+
+            if (PersistableSelectorPersistMode == "savegrid")
+            {
+                IPersistableObject dummy = null;
+                IPersistableObject gridSettings = GridCurrentSettings;
+                
+                PersistanceSaveObject(PersistableSelectorGroupKeyCurrent, objectKey, ref dummy, ref gridSettings);
+                GridCurrentSettings = (gridSettings as GridSettings);
+
+                PersistableSelectorPersistModeReset();
+            }
+
+            return Json(new { success = true });
+        }
+
+        string PersistableSelectorsGetDefaultObjectNameFor(string objectNameThumb)
+        {
+            objectNameThumb = objectNameThumb.NotNullOrEmpty().TrimEnd(new [] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '});
+
+            Func<IPersistableObject, bool> compareFunction = (p => p.ObjectName.NotNullOrEmpty().ToLower().StartsWith(objectNameThumb.ToLower()));
+
+            if (PersistableSelectors.None(compareFunction)) 
+                return objectNameThumb;
+
+            return string.Format("{0} {1}", objectNameThumb, PersistableSelectors.Count(compareFunction));
+        }
+
+        private void PersistableGridSettingsCurrentLoad(string objectKeyCurrent)
+        {
+            if (objectKeyCurrent.IsNullOrEmpty())
+            {
+                GridCurrentSettings = null;
+                return;
+            }
+
+            if (PersistableSelectorGroupKeyCurrent.IsNullOrEmpty() || objectKeyCurrent.IsNullOrEmpty())
+                return;
+
+            if (GridCurrentSettings != null && GridCurrentSettings.ObjectKey == objectKeyCurrent)
+                return;
+
+            var gridSettingsItems = PersistanceGetObjects2<IPersistableObject>(PersistableSelectorGroupKeyCurrent).OfType<GridSettings>();
+            if (gridSettingsItems.None())
+                return;
+
+            GridCurrentSettings = gridSettingsItems.FirstOrDefault(gs => gs.ObjectKey == objectKeyCurrent);
+        }
+
+
+        #region IPersistableSelectorProvider
+
+        public List<IPersistableObject> PersistableSelectors
+        {
+            get { return PersistableSelectorItems; }
+        }
+
+        public void PersistableSelectorsLoad<T>(string groupKey = null) where T : class, new()
+        {
+            var relativeUrl = LogonContextHelper.GetAppUrlCurrent();
+            PersistableSelectorGroupKeyCurrent = groupKey ?? (string.Format("{0}_{1}", relativeUrl, typeof(T).Name).ToLower());
+            PersistableSelectorItems = PersistanceGetObjects<T>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
+        }
+
+        public void PersistableSelectorsLoad() 
+        {
+            if (PersistableSelectorGroupKeyCurrent.IsNullOrEmpty())
+                return;
+
+            PersistableSelectorItems = PersistanceGetObjects<IPersistableObject>(PersistableSelectorGroupKeyCurrent).Cast<IPersistableObject>().ToListOrEmptyList();
+        }
+
+        #endregion
 
         #endregion
     }

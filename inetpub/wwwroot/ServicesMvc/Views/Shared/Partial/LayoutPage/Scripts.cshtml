@@ -97,8 +97,26 @@
     }
 
     function FormInitValidationSummaryStyles() {
+        var formPersistenceModeErrorPrefix = '@MvcTag.FormPersistenceModeErrorPrefix';
         $('.validation-summary-errors').each(function () {
-            $(this).addClass("alert alert-error");
+            var span = $(this).find("span");
+            if (span.text().indexOf(formPersistenceModeErrorPrefix) < 0)
+                $(this).addClass("alert alert-error");
+            else 
+            {
+                // Form Persistence mode, validation "error" acts as success notification hint:
+                $(this).addClass("alert alert-success");
+                span.text(span.text().replace(/@MvcTag.FormPersistenceModeErrorPrefix/g, ""));
+                var lis = $(this).find("ul li");
+                lis.each(function() {
+                    var li = $(this);
+                    li.text(li.text().replace(/@MvcTag.FormPersistenceModeErrorPrefix/g, ""));
+                });
+
+                setTimeout(function() {
+                    $('.validation-summary-errors').slideUp(200);
+                }, 1000);
+            }
         });
         $('.field-validation-error').each(function () {
             $(this).removeClass("field-validation-error").addClass("help-inline");
@@ -403,6 +421,7 @@
     
     function GridColumnTranslationInit(gridName) {
         var grid = $("#" + gridName).data("tGrid");
+        //alert(grid);
         $.each(grid.hiddenColumnsOnStartup, function() {
             grid.hideColumn(this);
         });

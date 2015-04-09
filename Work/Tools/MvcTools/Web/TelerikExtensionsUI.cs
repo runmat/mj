@@ -56,7 +56,7 @@ namespace Telerik.Web.Mvc.UI
         {
             return builder.Custom()
                 .HtmlAttributes(new { id = string.Format("{0}_FilterCommand", action), @class = "hide" })
-                .Action(action, controller, new { page = 1, orderBy = "~", filterBy = "~" })
+                .Action(action, controller, new { page = 1, orderBy = "~", filterBy = "~", groupBy = "~" })
                 .Text(commandTitle);
         }
 
@@ -203,21 +203,6 @@ namespace Telerik.Web.Mvc.UI
 
         #region Auto Grid Column Translation Configuration
 
-        private static string GridGroup
-        {
-            // ReSharper disable UnusedMember.Local
-            get { return SessionHelper.GetSessionString("GridGroup"); }
-            // ReSharper restore UnusedMember.Local
-            set { SessionHelper.SetSessionValue("GridGroup", value); }
-        }
-
-        public static TBuilder XGroup<TBuilder>(this TBuilder builder, string gridGroup)
-        {
-            GridGroup = gridGroup;
-
-            return builder;
-        }
-
         public static GridBoundColumnBuilder<TModel> XBound<TModel>(this GridColumnFactory<TModel> builder, string propertyName, bool columnVisibleOnStart = true)
             where TModel : class
         {
@@ -280,10 +265,10 @@ namespace Telerik.Web.Mvc.UI
             return column.Format(columnFormat);
         }
 
-        public static GridBoundColumnBuilder<TModel> XBound<TModel, TValue>(this GridColumnFactory<TModel> builder, Expression<Func<TModel, TValue>> expression)
+        public static GridBoundColumnBuilder<TModel> XBound<TModel, TValue>(this GridColumnFactory<TModel> builder, Expression<Func<TModel, TValue>> expression, bool columnVisibleOnStart = true)
             where TModel : class
         {
-            return builder.XBound(expression.GetPropertyName());
+            return builder.XBound(expression.GetPropertyName(), columnVisibleOnStart);
         }
 
         public static GridBuilder<TModel> XToolBar<TModel>(this GridBuilder<TModel> builder, string controller)
@@ -310,6 +295,8 @@ namespace Telerik.Web.Mvc.UI
 
         public static XViewComponentFactory<TModel> XTelerik<TModel>(this HtmlHelper<TModel> helper) where TModel : class
         {
+            helper.ViewContext.Writer.Write(helper.FormPersistenceGridMenu());
+
             var componentFactory = helper.Telerik();
             var myComponentFactory = new XViewComponentFactory<TModel>(helper,
                                             componentFactory.ClientSideObjectWriterFactory,
@@ -343,7 +330,7 @@ namespace Telerik.Web.Mvc.UI
                                    DI.Current.Resolve<IGridHtmlBuilderFactory>());
 
                     SaveGridToSession(grid, typeof (T));
-
+                    
                     return grid;
                 }));
 

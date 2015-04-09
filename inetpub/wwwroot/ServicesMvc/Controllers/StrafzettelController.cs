@@ -47,7 +47,7 @@ namespace ServicesMvc.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("Partial/SucheStrafzettel", ViewModel.StrafzettelSelektor);
+            return PersistablePartialView("Partial/SucheStrafzettel", ViewModel.StrafzettelSelektor);
         }
 
         [HttpPost]

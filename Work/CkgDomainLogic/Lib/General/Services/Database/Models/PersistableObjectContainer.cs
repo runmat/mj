@@ -14,12 +14,22 @@ namespace CkgDomainLogic.General.Database.Models
         [NotMapped, XmlIgnore]
         public string ObjectKey { get { return ID.ToString(); }  set {} }
 
+        public string ObjectName { get; set; }
+
         [NotMapped, XmlIgnore]
         public object Object { get; set; }
 
         public string ObjectType { get; set; }
 
         public string ObjectData { get; set; }
+
+
+        [NotMapped, XmlIgnore]
+        public object Object2 { get; set; }
+
+        public string ObjectType2 { get; set; }
+
+        public string ObjectData2 { get; set; }
 
 
         public string OwnerKey { get; set; }

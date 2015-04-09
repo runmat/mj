@@ -7,6 +7,9 @@
 var _filteredData_force_Grid_OnColumnReorder = false;
 
 function FilteredData_Grid_OnDataBound(grid, persistColumns) {
+    try { PrepareGridFromPersistedState(); }
+    catch (e) { }
+
     grid = (grid || $(this));
     FilteredData_Grid_PrepareAllCommandHrefs(grid, _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : persistColumns);
     _filteredData_force_Grid_OnColumnReorder = false;
@@ -34,15 +37,15 @@ function FilteredData_Grid_PrepareAllCommandHrefs(grid, persistColumns) {
     });
 
     var persistInDb = false;
-    if (typeof(persistColumns) != 'undefined') {
+    if (typeof(persistColumns) != 'undefined') 
         persistInDb = true;
-    }
-    PersistColumns(jsonColumnsString, persistInDb);
+
+    GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, persistInDb);
 }
 
-function PersistColumns(jsonColumnsString, persistInDb) {
-    
-    var url = "LogonContextPersistColumns";
+function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, persistInDb) {
+
+    var url = "GridSettingsPersist";
     if (document.URL.toLowerCase().indexOf("autohausportalmvc") > 0)
         url = document.URL + "/" + url;
     
@@ -51,7 +54,13 @@ function PersistColumns(jsonColumnsString, persistInDb) {
             {
                 type: "POST",
                 url: url,
-                data: { jsonColumns: jsonColumnsString, persistInDb: persistInDb },
+                data: {
+                    jsonColumns: jsonColumnsString,
+                    orderBy: orderBy,
+                    filterBy: filterBy,
+                    groupBy: groupBy,
+                    persistInDb: persistInDb
+                },
                 loadingShow: false,
                 success: function(result) {
                     //alert(result.message);
@@ -93,6 +102,9 @@ function FilteredData_Grid_PrepareCommandHref(grid, hrefId) {
 
     // Update the 'filter' parameter with the grids' current filtering state
     href = href.replace(/filterBy=([^&]*)/, 'filterBy=' + (grid.filterBy || '~'));
+
+    // Update the 'filter' parameter with the grids' current grouping state
+    href = href.replace(/groupBy=([^&]*)/, 'groupBy=' + (grid.groupBy || '~'));
 
     // Update the 'href' attribute
     $exportLink.attr('href', href);

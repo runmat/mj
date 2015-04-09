@@ -323,7 +323,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Fahrzeuge", dt);
 
             return new EmptyResult();
@@ -331,7 +331,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Fahrzeuge", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -339,7 +339,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult VersandadressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefversandViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("VersandAdressen", dt);
 
             return new EmptyResult();
@@ -347,7 +347,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult VersandadressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefversandViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("VersandAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -355,7 +355,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ZulassungadressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.ZulassungAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefversandViewModel.ZulassungAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ZulassungsAdressen", dt);
 
             return new EmptyResult();
@@ -363,7 +363,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ZulassungadressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.ZulassungAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefversandViewModel.ZulassungAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("ZulassungsAdressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

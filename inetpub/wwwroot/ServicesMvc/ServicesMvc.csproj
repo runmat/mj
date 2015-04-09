@@ -4289,6 +4289,10 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\Menu.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\Common.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\GridMenu.cshtml" />
     <Content Include="Views\Test\Cerberus.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeGrid.cshtml" />

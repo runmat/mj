@@ -1218,3 +1218,9 @@ i.dienstleistung-gewaehlt {
 div.controls-width-400 .controls {
     width: 400px;
 }
+
+.persistable-field-marker {
+    margin-left: 3px;
+    color: orange;
+    font-size: 0.9em;
+}
