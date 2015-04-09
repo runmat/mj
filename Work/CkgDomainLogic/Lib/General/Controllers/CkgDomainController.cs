@@ -163,7 +163,7 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [HttpPost]
-        public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy, bool persistInDb)
+        public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy)
         {
             GridCurrentSettings = new GridSettings
                 {
@@ -174,6 +174,7 @@ namespace CkgDomainLogic.General.Controllers
                     GroupBy = groupBy
                 };
 
+            var persistInDb = true;
             if (persistInDb)
             {
                 //var jCols = jsonColumns.GetGridColumns();
