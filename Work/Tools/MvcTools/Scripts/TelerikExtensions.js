@@ -27,7 +27,7 @@ function FilteredData_Grid_OnColumnShowHide(grid) {
     FilteredData_Grid_OnDataBound(grid, true);
 }
 
-function FilteredData_Grid_PrepareAllCommandHrefs(grid, persistColumns) {
+function FilteredData_Grid_PrepareAllCommandHrefs(grid) {
     var dataGrid = grid.data('tGrid');
 
     var jsonColumnsString = GetJsonColumns(dataGrid);
@@ -36,14 +36,10 @@ function FilteredData_Grid_PrepareAllCommandHrefs(grid, persistColumns) {
         FilteredData_Grid_PrepareCommandHref(dataGrid, $(this).attr('id'));
     });
 
-    var persistInDb = false;
-    if (typeof(persistColumns) != 'undefined') 
-        persistInDb = true;
-
-    GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, persistInDb);
+    GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy);
 }
 
-function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, persistInDb) {
+function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy) {
 
     var url = "GridSettingsPersist";
     if (document.URL.toLowerCase().indexOf("autohausportalmvc") > 0)
@@ -58,8 +54,7 @@ function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, pers
                     jsonColumns: jsonColumnsString,
                     orderBy: orderBy,
                     filterBy: filterBy,
-                    groupBy: groupBy,
-                    persistInDb: persistInDb
+                    groupBy: groupBy
                 },
                 loadingShow: false,
                 success: function(result) {
