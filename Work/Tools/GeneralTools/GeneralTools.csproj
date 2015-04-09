@@ -114,6 +114,7 @@
     <Compile Include="Log\Services\SapLogger.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Attributes\GridColumnsAutoPersist.cs" />
     <Compile Include="Models\Attributes\RequiredConditionalAttribute.cs" />
     <Compile Include="Models\Attributes\AddressPostcodeCityMappingAttribute.cs" />
     <Compile Include="Models\Attributes\GridHiddenAttribute.cs" />

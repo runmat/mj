@@ -9,6 +9,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.WFM.Models
 {
+    [GridColumnsAutoPersist]
     public class WfmAuftrag
     {
         [LocalizedDisplay(LocalizeConstants.CaseNoDeregistrationOrder)]
