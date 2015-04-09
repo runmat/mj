@@ -242,8 +242,32 @@ namespace CkgDomainLogic.WFM.Services
                                 }
                         };
                     SAP.ApplyImport(list);
-
                     SAP.Execute();
+
+
+                    // clear remark in following To-Do (because SAP unfortununately also sets remark in follower To-Do)
+                    var newToDoList = GetToDos(vorgangsNr.ToString().ToSapKunnr());
+                    var followingToDoItem = newToDoList.FirstOrDefault(t => t.LaufendeNr.ToInt() == (lfdNr + 1));
+
+                    Z_WFM_SET_STATUS_01.Init(SAP);
+                    SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+                    SAP.SetImportParameter("I_USER", LogonContext.UserName);
+                    if (followingToDoItem != null)
+                    {
+                        list = new List<Z_WFM_SET_STATUS_01.GT_DATEN>
+                            {
+                                new Z_WFM_SET_STATUS_01.GT_DATEN
+                                    {
+                                        VORG_NR_ABM_AUF = vorgangsNr.ToString(),
+                                        LFD_NR = followingToDoItem.LaufendeNr,
+                                        STATUS = "1",
+                                        INS_FOLGE_TASK = "",
+                                        ANMERKUNG = "",
+                                    }
+                            };
+                        SAP.ApplyImport(list);
+                        SAP.Execute();
+                    }
                 },
 
                 // SAP custom error handling:
@@ -255,6 +279,12 @@ namespace CkgDomainLogic.WFM.Services
                     });
 
             return errorMessage;
+        }
+
+        public string SetOrderToKlaerfall(string vorgangsNr, string remark)
+        {
+            // ToDo: When SAP Bapi is finished, call it right here:
+            return "";
         }
 
         #endregion

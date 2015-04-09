@@ -9,15 +9,38 @@
     @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap", col = "left" })
     @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
     
-    @if (!Model.IstStorniert)
-    {
+    <div class="wmf-uebersicht-section-nicht-storniert">
         <div class="form-actions">
-            <button type="button" class="btn yellow" onclick=" CancelOrder('@Model.VorgangsNrAbmeldeauftrag'); ">@Localize.CancelOrder <i class="icon-remove"></i></button>
+            <button type="button" class="btn yellow" onclick="CancelOrder('@Model.VorgangsNrAbmeldeauftrag');">@Localize.CancelOrder <i class="icon-remove"></i></button>
+            
+            <div class="wmf-uebersicht-section-abmeldeart-standard hide">
+                <a class="btn red" href="#" onclick="return SetOrderToKlaerfall($(this), '@Model.VorgangsNrAbmeldeauftrag');">@Localize.SetClarificationCase <i class="icon-exclamation-sign"></i></a>
+                <input type="text" class="tbNoteForToDo m-wrap medium placeholder-no-fix" placeholder="@Localize.Annotation" />
+            </div>
+            
         </div>
-    }
-    else
-    {
-        @Html.FormError("", Localize.Order + " " + Localize.Cancelled + "!")
-    }
+    </div>
     
+    <div class="wmf-uebersicht-section-storniert hide">
+        @Html.FormError("", Localize.Order + " " + Localize.Cancelled + "!")
+    </div>
+    <div class="wmf-uebersicht-section-abmeldeart-nicht-standard">
+        @Html.FormError("", Localize.ClarificationCase)
+    </div>    
+
+    @if (Model.IstStorniert)
+    {
+        <script type="text/javascript">
+            $(".wmf-uebersicht-section-nicht-storniert").hide();
+            $(".wmf-uebersicht-section-storniert").show();
+        </script>    
+    }    
+
+    @if (Model.AbmeldeArtIstStandard)
+    {
+        <script type="text/javascript">
+            $(".wmf-uebersicht-section-abmeldeart-nicht-standard").addClass("hide");
+            $(".wmf-uebersicht-section-abmeldeart-standard").removeClass("hide");
+        </script>    
+    }
 </form>

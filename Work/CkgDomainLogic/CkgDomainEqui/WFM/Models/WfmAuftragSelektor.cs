@@ -92,7 +92,7 @@ namespace CkgDomainLogic.WFM.Models
             {
                 return PropertyCacheGet(() => new List<SelectItem>
                 {
-                    new SelectItem("ALLE", Localize.All),
+                    new SelectItem("", Localize.All),
                     new SelectItem("DAD", "DAD"),
                     new SelectItem("KUNDE", Localize.Customer)
                 });

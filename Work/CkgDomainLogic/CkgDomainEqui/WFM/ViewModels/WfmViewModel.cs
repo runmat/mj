@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
@@ -66,7 +65,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public void DataInit(SelektionsModus modus)
         {
-            Selektor = new WfmAuftragSelektor { Modus = modus, ToDoWer = "ALLE" };
+            Selektor = new WfmAuftragSelektor { Modus = modus, ToDoWer = "" };
             InitFeldnamen();
             DataMarkForRefresh();
         }
@@ -152,6 +151,17 @@ namespace CkgDomainLogic.WFM.ViewModels
             return message;
         }
 
+        public string SetOrderToKlaerfall(string vorgangsNr, string remark)
+        {
+            var message = DataService.SetOrderToKlaerfall(vorgangsNr, remark);
+            if (message.IsNullOrEmpty())
+            {
+                AktuellerAuftrag.AbmeldeArtCode = "2";
+                AktuellerAuftrag.Anmerkung = remark;
+            }
+
+            return message;
+        }
         #endregion
 
 

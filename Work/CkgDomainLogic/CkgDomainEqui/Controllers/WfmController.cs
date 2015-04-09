@@ -20,6 +20,7 @@ namespace ServicesMvc.Controllers
 
         void InitModelStatics()
         {
+            WfmAuftrag.GetViewModel = GetViewModel<WfmViewModel>;
             WfmToDo.GetViewModel = GetViewModel<WfmViewModel>;
         }
     }

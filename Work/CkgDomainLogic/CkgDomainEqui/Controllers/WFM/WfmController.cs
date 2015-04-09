@@ -81,15 +81,27 @@ namespace ServicesMvc.Controllers
         #region Übersicht/Storno
 
         [HttpPost]
+        public ActionResult SetOrderToKlaerfall(string vorgangsNr, string remark)
+        {
+            var message = ViewModel.SetOrderToKlaerfall(vorgangsNr, remark);
+
+            return Json(new
+            {
+                success = message.IsNullOrEmpty(),
+                message = (message.IsNotNullOrEmpty() ? message : (Localize.SetClarificationCase + " " + Localize.Successful.ToLower()))
+            });
+        }
+
+        [HttpPost]
         public ActionResult CancelOrder(string vorgangsNr)
         {
             var message = ViewModel.StornoAuftrag(vorgangsNr);
 
             return Json(new
-                {
-                    success = message.IsNullOrEmpty(), 
-                    message = (message.IsNotNullOrEmpty() ? message : (Localize.CancelOrder + " " + Localize.Successful.ToLower()))
-                });
+            {
+                success = message.IsNullOrEmpty(),
+                message = (message.IsNotNullOrEmpty() ? message : (Localize.CancelOrder + " " + Localize.Successful.ToLower()))
+            });
         }
 
         #endregion

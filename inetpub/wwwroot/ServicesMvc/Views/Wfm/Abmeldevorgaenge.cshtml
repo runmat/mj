@@ -22,6 +22,11 @@
         background-color: white!important;
     }
     
+    .wmf-uebersicht-section-abmeldeart-standard {
+        display: inline-block;
+        margin-left: 20px;
+    }
+    
 </style>
 
 <script type="text/javascript">
@@ -195,7 +200,7 @@
     function OnColumnReorder_GridAufgaben() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
-    
+
     function CancelOrder(vorgangsNr) {
         $.ajax(
         {
@@ -206,6 +211,27 @@
             success: function (result) {
                 if (result.success) {
                     SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                    $(".wmf-uebersicht-section-nicht-storniert").hide();
+                    $(".wmf-uebersicht-section-storniert").show();
+                } else {
+                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                }
+            }
+        });
+    }
+
+    function SetOrderToKlaerfall(a, vorgangsNr) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "SetOrderToKlaerfall",
+            loadingShow: true,
+            data: { vorgangsNr: vorgangsNr, remark: a.parent().find(".tbNoteForToDo").val() },
+            success: function (result) {
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                    $(".wmf-uebersicht-section-abmeldeart-standard").addClass("hide");
+                    $(".wmf-uebersicht-section-abmeldeart-nicht-standard").removeClass("hide");
                 } else {
                     SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
                 }

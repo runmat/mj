@@ -14,6 +14,8 @@ namespace CkgDomainLogic.WFM.Contracts
 
         string StornoAuftrag(string vorgangNr);
 
+        string SetOrderToKlaerfall(string vorgangNr, string remark);
+
         #endregion
 
         #region Informationen

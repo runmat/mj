@@ -1,5 +1,9 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
+using CkgDomainLogic.WFM.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -53,6 +57,9 @@ namespace CkgDomainLogic.WFM.Models
                 }
             }
         }
+
+        [GridHidden]
+        public bool AbmeldeArtIstStandard { get { return AbmeldeArtCode.NotNullOrEmpty() == "1"; } }
 
         [GridHidden]
         public string AbmeldeStatusCode { get; set; }
@@ -212,5 +219,9 @@ namespace CkgDomainLogic.WFM.Models
 
         [LocalizedDisplay(LocalizeConstants.NextTaskId)]
         public string FolgetaskId { get; set; }
+
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<WfmViewModel> GetViewModel { get; set; }
     }
 }
