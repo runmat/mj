@@ -135,7 +135,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportInformationenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.InformationenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.InformationenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Informations, dt);
 
             return new EmptyResult();
@@ -143,7 +143,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportInformationenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.InformationenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.InformationenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Informations, dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -195,7 +195,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDokumenteFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.DokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.DokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Documents, dt);
 
             return new EmptyResult();
@@ -203,7 +203,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDokumenteFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.DokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.DokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Documents, dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -249,7 +249,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportAufgabenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.AufgabenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.AufgabenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Tasks, dt);
 
             return new EmptyResult();
@@ -257,7 +257,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportAufgabenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.AufgabenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.AufgabenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Tasks, dt, landscapeOrientation: true);
 
             return new EmptyResult();
