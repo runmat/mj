@@ -296,7 +296,7 @@ namespace Telerik.Web.Mvc.UI
         public static XViewComponentFactory<TModel> XTelerik<TModel>(this HtmlHelper<TModel> helper) where TModel : class
         {
             helper.ViewContext.Writer.Write(helper.FormPersistenceGridMenu());
-
+           
             var componentFactory = helper.Telerik();
             var myComponentFactory = new XViewComponentFactory<TModel>(helper,
                                             componentFactory.ClientSideObjectWriterFactory,
@@ -317,6 +317,7 @@ namespace Telerik.Web.Mvc.UI
 
         private static void SaveGridToSession(IGrid grid, Type type)
         {
+            SessionHelper.SetSessionObject("Telerik_Grid_CurrentModelType", type);
             SessionHelper.SetSessionObject(string.Format("Telerik_Grid_{0}", type.Name), grid);
         }
 
@@ -330,6 +331,8 @@ namespace Telerik.Web.Mvc.UI
                                    DI.Current.Resolve<IGridHtmlBuilderFactory>());
 
                     SaveGridToSession(grid, typeof (T));
+
+                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns());
                     
                     return grid;
                 }));

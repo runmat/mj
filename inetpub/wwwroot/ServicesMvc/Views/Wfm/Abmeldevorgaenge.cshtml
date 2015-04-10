@@ -31,7 +31,7 @@
 
 <script type="text/javascript">
 
-    var ladeHinweis = '@Localize.LoadingData';
+    var _ladeHinweis = '@Localize.LoadingData';
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
@@ -68,7 +68,7 @@
     }
 
     function OnLoad_GridAuftraege() {
-        $('.t-no-data td').text(ladeHinweis);
+        $('.t-no-data td').text(_ladeHinweis);
     }
 
     function OnColumnShowHide_GridAuftraege() {

@@ -1,10 +1,12 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Web;
 using System.Web.SessionState;
 using GeneralTools.Models;
+using Telerik.Web.Mvc.UI;
 
 namespace MvcTools.Web
 {
@@ -135,6 +137,23 @@ namespace MvcTools.Web
                                 .Invoke(new object[] { sessionContainer });
 
             return httpContext;
+        }
+
+        public static string GridCurrentGetAutoPersistColumnsKey()
+        {
+            var gridCurrentModelType = (GetSessionObject("Telerik_Grid_CurrentModelType", () => null) as Type);
+            if (gridCurrentModelType == null)
+                return "";
+
+            if (gridCurrentModelType.GetCustomAttributes(true).OfType<GridColumnsAutoPersistAttribute>().None())
+                return "";
+
+            var grid = (IGrid)GetSessionObject(string.Format("Telerik_Grid_{0}", gridCurrentModelType.Name));
+            if (grid == null)
+                return "";
+
+            var relativeUrl = HttpContext.Current.GetAppUrlCurrent();
+            return string.Format("GridColumnsAutoPersist_{0}_{1}", relativeUrl, gridCurrentModelType.Name);
         }
     }
 }

@@ -3,11 +3,10 @@
 
 @{ var gridName = "GridAuftraege"; }
 
-@(Html.Telerik()
-    .Grid<WfmAuftrag>()
+@(Html.XTelerik()
+    .XGrid<WfmAuftrag>()
     .Name(gridName)
 
-    .XGroup("GridWfmAuftraege")
     .XAjaxDataBinding("AuftraegeAjaxBinding", "Wfm")
     .Columns(columns =>
     {

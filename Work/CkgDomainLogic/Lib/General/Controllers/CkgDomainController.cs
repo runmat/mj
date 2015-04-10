@@ -13,6 +13,7 @@ using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
+using MvcTools.Contracts;
 using MvcTools.Controllers;
 using MvcTools.Models;
 using MvcTools.Web;
@@ -21,7 +22,7 @@ using Telerik.Web.Mvc.UI;
 
 namespace CkgDomainLogic.General.Controllers
 {
-    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider
+    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider, IGridColumnsAutoPersistProvider
     {
         public IAppSettings AppSettings { get; protected set; }
 
@@ -49,6 +50,39 @@ namespace CkgDomainLogic.General.Controllers
         {
             get { return GridCurrentSettings.Columns; }
             set { GridCurrentSettings.Columns = value; }
+        }
+
+        public GridSettings GridCurrentAutoPersistColumns
+        {
+            get
+            {
+                var gridCurrentGetAutoPersistColumnsKey = SessionHelper.GridCurrentGetAutoPersistColumnsKey();
+                if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
+                    return null;
+
+                var gridCurrentAutoPersistColumnsItems = PersistanceGetObjects<GridSettings>(gridCurrentGetAutoPersistColumnsKey);
+                if (gridCurrentAutoPersistColumnsItems.None())
+                    return null;
+
+                var gridCurrentAutoPersistColumnsItem = gridCurrentAutoPersistColumnsItems.FirstOrDefault();
+                if (gridCurrentAutoPersistColumnsItem == null)
+                    return null;
+
+                return gridCurrentAutoPersistColumnsItem;
+            } 
+            set
+            {
+                var gridCurrentGetAutoPersistColumnsKey = SessionHelper.GridCurrentGetAutoPersistColumnsKey();
+                if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
+                    return;
+
+                var gridSettings = GridCurrentAutoPersistColumns ?? ModelMapping.Copy(value);
+                
+                gridSettings.ObjectName = "GridCurrentAutoPersistColumns";
+                gridSettings.Columns = value.Columns;
+
+                PersistanceSaveObject(gridCurrentGetAutoPersistColumnsKey, gridSettings.ObjectKey, gridSettings);
+            }
         }
 
         protected string GetDataContextKey<T>()
@@ -174,14 +208,11 @@ namespace CkgDomainLogic.General.Controllers
                     GroupBy = groupBy
                 };
 
-            var persistInDb = true;
-            if (persistInDb)
-            {
-                //var jCols = jsonColumns.GetGridColumns();
-                //var colMembers = jCols.Select(j => j.member).ToList();
+            GridCurrentAutoPersistColumns = GridCurrentSettings;
 
-                //LogonContext.SetUserGridColumnNames(GridGroup, string.Join(",", colMembers));
-            }
+            //var jCols = jsonColumns.GetGridColumns();
+            //var colMembers = jCols.Select(j => j.member).ToList();
+            //LogonContext.SetUserGridColumnNames(GridGroup, string.Join(",", colMembers));
 
             return Json(new { message = "ok" });
         }
@@ -399,8 +430,20 @@ namespace CkgDomainLogic.General.Controllers
 
             if (o == null && o2 == null)
                 return;
-            
+
             pService.SaveObject(objectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, ref o, ref o2);
+        }
+
+        protected void PersistanceSaveObject(string groupKey, string objectKey, IPersistableObject o)
+        {
+            var pService = LogonContext.PersistanceService;
+            if (pService == null)
+                return;
+
+            if (o == null)
+                return;
+
+            pService.SaveObject(objectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
         }
 
         protected void PersistanceDeleteObject(string objectKey)

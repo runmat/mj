@@ -11,6 +11,7 @@ using System.Web.WebPages;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using MvcTools.Contracts;
 using MvcTools.Models;
 
 namespace MvcTools.Web
@@ -161,6 +162,23 @@ namespace MvcTools.Web
                 return MvcHtmlString.Empty;
 
             return html.Partial("Partial/FormPersistence/GridMenu", selectorCurrent);
+        }
+
+        public static MvcHtmlString FormGridCurrentLoadAutoPersistColumns(this HtmlHelper html)
+        {
+            var gridCurrentGetAutoPersistColumnsKey = SessionHelper.GridCurrentGetAutoPersistColumnsKey();
+            if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
+                return MvcHtmlString.Empty;
+
+            var controller = (html.ViewContext.Controller as IGridColumnsAutoPersistProvider);
+            if (controller == null)
+                return MvcHtmlString.Empty;
+
+            var gridCurrentGetAutoPersistColumns = controller.GridCurrentAutoPersistColumns;
+            if (gridCurrentGetAutoPersistColumns == null)
+                return MvcHtmlString.Empty;
+
+            return html.Partial("Partial/FormGridCurrent/LoadAutoPersistColumns", gridCurrentGetAutoPersistColumns);
         }
 
         #endregion
