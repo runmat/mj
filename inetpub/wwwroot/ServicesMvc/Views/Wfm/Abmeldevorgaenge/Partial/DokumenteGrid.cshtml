@@ -2,8 +2,8 @@
 
 @{ var gridName = "GridDokumente"; }
 
-@(Html.Telerik()
-    .Grid<WfmDokumentInfo>()
+@(Html.XTelerik()
+    .XGrid<WfmDokumentInfo>()
     .Name(gridName)
     .XAjaxDataBinding("DokumenteAjaxBinding", "Wfm")
     .Columns(columns =>

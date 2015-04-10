@@ -2499,6 +2499,8 @@
     <Content Include="Views\Leasing\CsvUpload\Receipt.cshtml" />
     <Content Include="Views\CocBeauftragung\SelbstDruck.cshtml" />
     <Content Include="Views\CocBeauftragung\VersandAdresseSelbstDruck.cshtml" />
+    <None Include="Views\Shared\Partial\TelerikExtensionsScripts.cshtml" />
+    <None Include="Views\Shared\Partial\TelerikExtensionsStyles.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
     <Content Include="Areas\Web.config" />
@@ -4306,7 +4308,6 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\DokumenteGrid.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
     <Content Include="Views\Shared\Partial\FormGridCurrent\SetAutoPersistColumns.cshtml" />
-    <Content Include="Views\Shared\Partial\FormGridCurrent\ResetAutoPersistColumns.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

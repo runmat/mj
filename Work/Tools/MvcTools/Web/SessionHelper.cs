@@ -141,7 +141,7 @@ namespace MvcTools.Web
 
         public static string GridCurrentGetAutoPersistColumnsKey()
         {
-            var gridCurrentModelType = (GetSessionObject("Telerik_Grid_CurrentModelType", () => null) as Type);
+            var gridCurrentModelType = (GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type);
             if (gridCurrentModelType == null)
                 return "";
 

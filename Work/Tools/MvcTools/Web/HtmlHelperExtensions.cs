@@ -164,24 +164,24 @@ namespace MvcTools.Web
             return html.Partial("Partial/FormPersistence/GridMenu", selectorCurrent);
         }
 
-        public static MvcHtmlString FormGridCurrentLoadAutoPersistColumns(this HtmlHelper html)
+        public static MvcHtmlString FormGridCurrentLoadAutoPersistColumns(this HtmlHelper html, Type type)
         {
-            var setAutoPersistColumnsView = "Partial/FormGridCurrent/SetAutoPersistColumns";
-            var resetAutoPersistColumnsView = "Partial/FormGridCurrent/ResetAutoPersistColumns";
+            if (type.GetCustomAttributes(true).OfType<GridColumnsAutoPersistAttribute>().None())
+                return MvcHtmlString.Empty;
 
             var gridCurrentGetAutoPersistColumnsKey = SessionHelper.GridCurrentGetAutoPersistColumnsKey();
             if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
-                return html.Partial(resetAutoPersistColumnsView);
+                return MvcHtmlString.Empty;
 
             var controller = (html.ViewContext.Controller as IGridColumnsAutoPersistProvider);
             if (controller == null)
-                return html.Partial(resetAutoPersistColumnsView);
+                return MvcHtmlString.Empty;
 
             var gridCurrentGetAutoPersistColumns = controller.GridCurrentAutoPersistColumns;
             if (gridCurrentGetAutoPersistColumns == null || gridCurrentGetAutoPersistColumns.Columns.IsNullOrEmpty())
-                return html.Partial(resetAutoPersistColumnsView);
+                return MvcHtmlString.Empty;
 
-            return html.Partial(setAutoPersistColumnsView, gridCurrentGetAutoPersistColumns);
+            return html.Partial("Partial/FormGridCurrent/SetAutoPersistColumns", gridCurrentGetAutoPersistColumns);
         }
 
         #endregion

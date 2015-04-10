@@ -42,13 +42,14 @@
     }
 
     function ShowAuftraegeSearchResult(result) {
-        SearchFormHide();
-        $("#divAuftraegeGrid").html(result);
+        SearchFormHide(function() {
+            $("#divAuftraegeGrid").html(result);
 
-        GridAllColumnFilterApplyToGrid("GridAuftraege");
+            GridAllColumnFilterApplyToGrid("GridAuftraege");
 
-        $("#divAuftraegeGrid").slideDown();
-        $("#divAuftragDetail").html('');
+            $("#divAuftraegeGrid").slideDown();
+            $("#divAuftragDetail").html('');
+        });
     }
 
     function GetAuftraegeGrid() {

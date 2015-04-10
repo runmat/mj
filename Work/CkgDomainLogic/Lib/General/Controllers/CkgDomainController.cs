@@ -198,7 +198,7 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         [HttpPost]
-        public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy)
+        public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy, bool autoPersistInDb)
         {
             GridCurrentSettings = new GridSettings
                 {
@@ -209,11 +209,8 @@ namespace CkgDomainLogic.General.Controllers
                     GroupBy = groupBy
                 };
 
-            GridCurrentAutoPersistColumns = GridCurrentSettings;
-
-            //var jCols = jsonColumns.GetGridColumns();
-            //var colMembers = jCols.Select(j => j.member).ToList();
-            //LogonContext.SetUserGridColumnNames(GridGroup, string.Join(",", colMembers));
+            if (autoPersistInDb)
+                GridCurrentAutoPersistColumns = GridCurrentSettings;
 
             return Json(new { message = "ok" });
         }

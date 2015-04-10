@@ -2,8 +2,8 @@
 
 @{ var gridName = "GridAufgaben"; }
 
-@(Html.Telerik()
-    .Grid<WfmToDo>()
+@(Html.XTelerik()
+    .XGrid<WfmToDo>()
     .Name(gridName)
     .XAjaxDataBinding("AufgabenAjaxBinding", "Wfm")
     .Columns(columns =>

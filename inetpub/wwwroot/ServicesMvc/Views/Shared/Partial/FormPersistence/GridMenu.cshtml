@@ -43,14 +43,13 @@
 
     var _PrepareGridFromPersistedStateFinished = false;
     
-    function PrepareGridFromPersistedState() {
+    function GridPrepareFromSelectorPersistedState(grid) {
 
         if (_PrepareGridFromPersistedStateFinished)
             return;
 
         _PrepareGridFromPersistedStateFinished = true;
 
-        var grid = $(".FormSearchResultsGrid").find(".t-grid").data("tGrid");
         var settingsColumns = @Html.Raw(gridColumnNameList);
         var orderBy = '@gridSettings.OrderBy.NotNullOrEmpty()';
         var groupBy = '@gridGrouping';
