@@ -10,7 +10,7 @@ using GeneralTools.Resources;
 namespace CkgDomainLogic.WFM.Models
 {
     [GridColumnsAutoPersist]
-    public class WfmAuftrag
+    public class WfmAuftrag 
     {
         [LocalizedDisplay(LocalizeConstants.CaseNoDeregistrationOrder)]
         public string VorgangsNrAbmeldeauftrag { get; set; }
@@ -224,5 +224,9 @@ namespace CkgDomainLogic.WFM.Models
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<WfmViewModel> GetViewModel { get; set; }
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Action { get; set; }
     }
 }

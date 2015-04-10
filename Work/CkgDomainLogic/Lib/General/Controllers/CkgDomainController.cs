@@ -76,10 +76,11 @@ namespace CkgDomainLogic.General.Controllers
                 if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
                     return;
 
-                var gridSettings = GridCurrentAutoPersistColumns ?? ModelMapping.Copy(value);
-                
+                var objectKey = (GridCurrentAutoPersistColumns == null ? "" : GridCurrentAutoPersistColumns.ObjectKey);
+                var gridSettings = ModelMapping.Copy(value);
+
+                gridSettings.ObjectKey = objectKey;
                 gridSettings.ObjectName = "GridCurrentAutoPersistColumns";
-                gridSettings.Columns = value.Columns;
 
                 PersistanceSaveObject(gridCurrentGetAutoPersistColumnsKey, gridSettings.ObjectKey, gridSettings);
             }

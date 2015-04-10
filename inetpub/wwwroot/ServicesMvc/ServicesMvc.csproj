@@ -4305,7 +4305,8 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Aufgaben.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\DokumenteGrid.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
-    <Content Include="Views\Shared\Partial\FormGridCurrent\LoadAutoPersistColumns.cshtml" />
+    <Content Include="Views\Shared\Partial\FormGridCurrent\SetAutoPersistColumns.cshtml" />
+    <Content Include="Views\Shared\Partial\FormGridCurrent\ResetAutoPersistColumns.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

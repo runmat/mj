@@ -60,8 +60,8 @@
         //
         // 1. hide columns
         //
-        var hiddenColumns = $.grep(grid.columns, function (column, j) {
-            return (settingsColumns.indexOf(column.member) < 0); 
+        var hiddenColumns = $.grep(grid.columns, function (col, j) {
+            return (settingsColumns.indexOf(col.member) < 0); 
         });
         for (var i = 0; i < hiddenColumns.length; i++) {
             grid.hideColumn(hiddenColumns[i].member);

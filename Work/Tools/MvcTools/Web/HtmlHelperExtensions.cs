@@ -166,19 +166,22 @@ namespace MvcTools.Web
 
         public static MvcHtmlString FormGridCurrentLoadAutoPersistColumns(this HtmlHelper html)
         {
+            var setAutoPersistColumnsView = "Partial/FormGridCurrent/SetAutoPersistColumns";
+            var resetAutoPersistColumnsView = "Partial/FormGridCurrent/ResetAutoPersistColumns";
+
             var gridCurrentGetAutoPersistColumnsKey = SessionHelper.GridCurrentGetAutoPersistColumnsKey();
             if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
-                return MvcHtmlString.Empty;
+                return html.Partial(resetAutoPersistColumnsView);
 
             var controller = (html.ViewContext.Controller as IGridColumnsAutoPersistProvider);
             if (controller == null)
-                return MvcHtmlString.Empty;
+                return html.Partial(resetAutoPersistColumnsView);
 
             var gridCurrentGetAutoPersistColumns = controller.GridCurrentAutoPersistColumns;
-            if (gridCurrentGetAutoPersistColumns == null)
-                return MvcHtmlString.Empty;
+            if (gridCurrentGetAutoPersistColumns == null || gridCurrentGetAutoPersistColumns.Columns.IsNullOrEmpty())
+                return html.Partial(resetAutoPersistColumnsView);
 
-            return html.Partial("Partial/FormGridCurrent/LoadAutoPersistColumns", gridCurrentGetAutoPersistColumns);
+            return html.Partial(setAutoPersistColumnsView, gridCurrentGetAutoPersistColumns);
         }
 
         #endregion

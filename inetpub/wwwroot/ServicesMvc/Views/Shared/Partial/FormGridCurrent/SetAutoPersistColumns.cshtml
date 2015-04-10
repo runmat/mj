@@ -4,14 +4,15 @@
 @model GridSettings
 
 @{
-    var gridSettings = SessionHelper.GetSessionObject("GridCurrentSettings", () => new GridSettings());
+    var gridSettings = Model;
     var jCols = gridSettings.Columns.NotNullOrEmpty().GetGridColumns();
     var gridColumnNameList = JsonConvert.SerializeObject(jCols.Select(jc => (string) jc.member.Value).ToArray());
 }
 
-<h4>
-    @gridColumnNameList
-</h4>
-
 <script type="text/javascript">
+
+    _gridColumnNameList = @Html.Raw(gridColumnNameList);
+    _gridColumnNameListIsValid = true;
+    _gridColumnNameListMode = 'AutoPersistColumns';
+ 
 </script>
