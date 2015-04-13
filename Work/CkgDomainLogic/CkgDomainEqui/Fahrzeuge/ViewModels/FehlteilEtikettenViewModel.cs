@@ -77,7 +77,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, CreateFromDataRowWithHeaderAndContentInSeparateColumns<FehlteilEtikett>).ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, "", CreateFromDataRowWithHeaderAndContentInSeparateColumns<FehlteilEtikett>).ToList();
             var id = 1;
             list.ForEach(item => item.ID = id++);
             FileService.TryFileDelete(CsvUploadServerFileName);
