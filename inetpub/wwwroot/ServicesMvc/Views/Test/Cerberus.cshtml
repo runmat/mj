@@ -1,6 +1,4 @@
-﻿@model CkgDomainLogic.DomainCommon.ViewModels.XarisViewModel
-
-<script type="text/javascript">
+﻿<script type="text/javascript">
 
     function FormPreparePrivate() {
 
@@ -11,10 +9,8 @@
         });
         onResize();
 
-        setTimeout(function () {
-            var iframe = document.getElementById('ifrMvcApp');
-            iframe.src = iframe.src;
-        }, 500);
+        var iframe = document.getElementById('ifrMvcApp');
+        iframe.src = iframe.src;
     }
 
     function isIeAndVersion() {
@@ -49,5 +45,7 @@
 
 </script>
 
-<a target='_blank' href='@Html.Raw(Model.XarisUrl)'>Sepia im seaparaten Tab...</a>
-<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src="@Html.Raw(Model.XarisUrl)"></iframe>
+@{ var iframeUrl = "https://cerberus-marketvalue.test.acheron-services.net/cerberus/marketValue-kroschke/home.html"; }
+
+<a target='_blank' href='@Html.Raw(iframeUrl)'>iFrame im seaparaten Tab...</a>
+<iframe ID="ifrMvcApp" scrolling="auto" frameborder="0" width="800" height="500" src="@Html.Raw(iframeUrl)"></iframe>
