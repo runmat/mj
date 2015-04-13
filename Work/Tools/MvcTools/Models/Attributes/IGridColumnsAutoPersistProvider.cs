@@ -4,6 +4,8 @@ namespace MvcTools.Contracts
 {
     public interface IGridColumnsAutoPersistProvider
     {
-        GridSettings GridCurrentAutoPersistColumns { get; set; }
+        GridSettings GridCurrentSettingsAutoPersist { get; }
+
+        void ResetGridCurrentModelTypeAutoPersist();
     }
 }

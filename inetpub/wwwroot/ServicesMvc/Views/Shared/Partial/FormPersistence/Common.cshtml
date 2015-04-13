@@ -100,6 +100,9 @@
      ul.dropdown-menu li.loadable {
          cursor: pointer!important;
      }
+     ul.dropdown-menu li.current {
+         font-weight: bold;
+     }
      ul.dropdown-menu li.loadable:hover {
          background-color: #c6c6c6;
      }
@@ -109,10 +112,15 @@
      ul.dropdown-menu li span.li-button i.icon-remove {
          float: right;
      }
+     ul.dropdown-menu li span.li-item {
+         white-space: nowrap;
+     }
      
-     .btn.mini.yellow i.icon-save, .btn.mini.yellow i.icon-copy {
+     .btn.mini.yellow i.icon-save, .btn.mini.yellow i.icon-copy, .btn.mini.yellow i.icon-remove {
          color: white;
          font-size: 1.3em;
+         padding-top: 1px;
+         display: inline-block;
      }
      .btn.mini.yellow:focus {
          outline: 0!important; 
@@ -138,19 +146,27 @@
     }
 
 
-    function PersistableSelectorSave(objectKey) {
-        var form = $(this).closest("form");
+    function PersistableSelectorSave(span, objectKey) {
+        var form = span.closest("form");
         AjaxSetPersistableMode("save", objectKey, function (result) {
             form.submit();
         });
     }
 
-    function PersistableSelectorSaveAs(objectKey) {
-        var form = $(this).closest("form");
+    function PersistableSelectorSaveAs(span, objectKey) {
+        var form = span.closest("form");
         AjaxSetPersistableMode("saveas", objectKey, function (result) {
             form.submit();
         });
     }
+
+    function PersistableSelectorClear(span) {
+        var form = span.closest("form");
+        AjaxSetPersistableMode("clear", "", function (result) {
+            form.submit();
+        });
+    }
+
 
     function PersistableSelectorSaveGrid(objectKey) {
         AjaxSetPersistableMode("savegrid", objectKey, function (result) {
@@ -171,6 +187,10 @@
                 loadingShow: true,
                 success: function (result) {
                     callBackFunction(result);
+
+                    setTimeout(function () {
+                        LoadingHide();
+                    }, 500);
                 }
             });
         

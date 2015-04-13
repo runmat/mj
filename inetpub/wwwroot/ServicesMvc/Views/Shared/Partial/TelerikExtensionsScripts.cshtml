@@ -6,12 +6,27 @@
     var _gridColumnNameListIsValid = false;
     var _gridColumnNameListMode = '';
 
-
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
 
         grid = (grid || $(this));
 
-        setTimeout(function() {
+        var gridDataBoundFirstTime = grid.data("gridDataBoundFirstTime");
+        if (typeof (gridDataBoundFirstTime) == 'undefined') {
+            gridDataBoundFirstTime = true;
+            grid.data("gridDataBoundFirstTime", false);
+        }
+        
+        if (gridDataBoundFirstTime) {
+            grid.css("opacity", 0.1);
+            var closestCaption = grid.closest(".FormSearchResultsGrid").find(".caption");
+            var waitHint = closestCaption.find(".wait-hint");
+            if (waitHint == null || waitHint.length == 0)
+                closestCaption.append("<span class='wait-hint alert warning hide'>@Localize.PleaseWait.ToJavascriptString()</span>");
+            waitHint = closestCaption.find(".wait-hint");
+            waitHint.show();
+        }
+
+        setTimeout(function () {
             if (typeof (autoPersistColumns) == 'undefined') {
                 try {
                     GridPrepareFromSelectorPersistedState(grid.data("tGrid"));
@@ -22,6 +37,11 @@
 
             FilteredData_Grid_PrepareAllCommandHrefs(grid, _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns);
             _filteredData_force_Grid_OnColumnReorder = false;
+
+            if (gridDataBoundFirstTime) {
+                waitHint.hide();
+                grid.animate({ opacity: "1.0" }, 300);
+            }
         }, 500);
     }
 

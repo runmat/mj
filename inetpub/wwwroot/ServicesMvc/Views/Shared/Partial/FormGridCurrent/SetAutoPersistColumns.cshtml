@@ -6,12 +6,12 @@
 @{
     var gridSettings = Model;
     var jCols = gridSettings.Columns.NotNullOrEmpty().GetGridColumns();
-    var gridColumnNameList = JsonConvert.SerializeObject(jCols.Select(jc => (string) jc.member.Value).ToArray());
+    var gridColumnNameList = (jCols == null ? null : JsonConvert.SerializeObject(jCols.Select(jc => (string)jc.member.Value).ToArray()));
 }
 
 <script type="text/javascript">
 
-    _gridColumnNameList = @Html.Raw(gridColumnNameList);
+    _gridColumnNameList = @Html.Raw(gridColumnNameList ?? "[]");
     _gridColumnNameListIsValid = true;
     _gridColumnNameListMode = 'AutoPersistColumns';
  

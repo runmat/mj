@@ -25,10 +25,10 @@
         @foreach (var selector in selectors)
         {
             var isCurrentSelector = (selector.ObjectKey == Model.ObjectKey);
-            var liCssClass = "loadable";
+            var liCssClass = (isCurrentSelector ? "current" : "");
             
-            <li class="@liCssClass" id="li_dropdown_@selector.ObjectKey">
-                <span class="li-button" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
+            <li class="loadable @liCssClass" id="li_dropdown_@selector.ObjectKey">
+                <span class="li-button" title="@Localize.Load" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
                     <span class="margin-left-10 margin-right-5">@selector.ObjectName</span>
                 </span>
                 @if (!isCurrentSelector)
@@ -39,15 +39,26 @@
                 }
             </li>
         }
+        @if (selectors.None())
+        {
+            <li class="" id="li_dropdown_none">
+                <span class="li-button">
+                    <span class="li-item margin-left-10 margin-right-5">@Localize.NoSavedSearchFormsAvailableYet</span>
+                </span>
+            </li>
+        }
 
     </ul>
 </li> 
 
 @Html.TextBoxFor(m => m.ObjectName, new { @class = "m-wrap medium persistable-selector-current-textbox" })
 
-<button class='btn mini yellow' title="@Localize.Save" onclick="PersistableSelectorSave('@Model.ObjectKey')">
+<span class='btn mini yellow' title="@Localize.Save" onclick="PersistableSelectorSave($(this), '@Model.ObjectKey')">
     <i class='icon-save'></i>
-</button>
-<button class='btn mini yellow' title="@Localize.SaveAsCopy" onclick="PersistableSelectorSaveAs('@Model.ObjectKey')">
+</span>
+<span class='btn mini yellow' title="@Localize.SaveAsCopy" onclick="PersistableSelectorSaveAs($(this), '@Model.ObjectKey')">
     <i class='icon-copy'></i>
-</button>
+</span>
+<span class='btn mini yellow' title="@Localize.ClearForm" onclick="PersistableSelectorClear($(this))">
+    <i class='icon-remove'></i>
+</span>

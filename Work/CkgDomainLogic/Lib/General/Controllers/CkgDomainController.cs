@@ -52,7 +52,7 @@ namespace CkgDomainLogic.General.Controllers
             set { GridCurrentSettings.Columns = value; }
         }
 
-        public GridSettings GridCurrentAutoPersistColumns
+        public GridSettings GridCurrentSettingsAutoPersist
         {
             get
             {
@@ -70,13 +70,13 @@ namespace CkgDomainLogic.General.Controllers
 
                 return gridCurrentAutoPersistColumnsItem;
             } 
-            set
+            private set
             {
                 var gridCurrentGetAutoPersistColumnsKey = SessionHelper.GridCurrentGetAutoPersistColumnsKey();
                 if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
                     return;
 
-                var objectKey = (GridCurrentAutoPersistColumns == null ? "" : GridCurrentAutoPersistColumns.ObjectKey);
+                var objectKey = (GridCurrentSettingsAutoPersist == null ? "" : GridCurrentSettingsAutoPersist.ObjectKey);
                 var gridSettings = ModelMapping.Copy(value);
 
                 gridSettings.ObjectKey = objectKey;
@@ -84,6 +84,12 @@ namespace CkgDomainLogic.General.Controllers
 
                 PersistanceSaveObject(gridCurrentGetAutoPersistColumnsKey, gridSettings.ObjectKey, gridSettings);
             }
+        }
+
+        public void ResetGridCurrentModelTypeAutoPersist()
+        {
+            GridCurrentSettings = null;
+            SessionHelper.SetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", null);
         }
 
         protected string GetDataContextKey<T>()
@@ -210,7 +216,7 @@ namespace CkgDomainLogic.General.Controllers
                 };
 
             if (autoPersistInDb && PersistableSelectorObjectKeyCurrent.IsNullOrEmpty())
-                GridCurrentAutoPersistColumns = GridCurrentSettings;
+                GridCurrentSettingsAutoPersist = GridCurrentSettings;
 
             return Json(new { message = "ok" });
         }
@@ -386,7 +392,6 @@ namespace CkgDomainLogic.General.Controllers
         }
 
         #endregion
-
 
 
         #region Persistence Service, General Objects
@@ -707,12 +712,18 @@ namespace CkgDomainLogic.General.Controllers
                     ModelState.Remove(noDataFoundModelError);
             }
 
+            var persistableSelector = (model as IPersistableObject);
+
             if (!ModelState.IsValid || !PersistableSelectorIsPersistMode)
+            {
+                if (persistableSelector != null && persistableSelector.ObjectKey != null)
+                    PersistableGridSettingsCurrentLoad(persistableSelector.ObjectKey, true);
+
                 return PartialView(viewName, model);
+            }
 
             var persistMode = (PersistableSelectorPersistMode ?? "save");
             
-            var persistableSelector = (model as IPersistableObject);
             var modeLocalizationMessage = "";
             if (persistableSelector != null)
             {
@@ -720,19 +731,22 @@ namespace CkgDomainLogic.General.Controllers
                 {
                     case "load":
                         model = PersistablePartialViewLoad<T>();
-
-                        var objKey = GridCurrentSettings.ObjectKey;
-                        GridCurrentSettings.ObjectKey = null;
-                        PersistableGridSettingsCurrentLoad(objKey);
                         
                         modeLocalizationMessage = Localize.LoadSuccessful;
                         break;
-                    
+
                     case "delete":
                         PersistablePartialViewDelete();
                         model = new T();
-                        
+
                         modeLocalizationMessage = Localize.DeleteSuccessful;
+                        break;
+
+                    case "clear":
+                        PersistablePartialViewClear();
+                        model = new T();
+
+                        modeLocalizationMessage = Localize.ClearForm + " " + Localize.Successful;
                         break;
                     
                     case "save":
@@ -763,6 +777,8 @@ namespace CkgDomainLogic.General.Controllers
 
             ModelState.Clear();
 
+            PersistableGridSettingsCurrentLoad(GridCurrentSettings.ObjectKey, true);
+
             var selectorOnlyPersistableProperties = ModelMapping.CopyOnlyPersistableProperties(persistableSelector);
 
             return selectorOnlyPersistableProperties;
@@ -771,7 +787,14 @@ namespace CkgDomainLogic.General.Controllers
         private void PersistablePartialViewDelete()
         {
             PersistanceDeleteObject(PersistableSelectorObjectKeyCurrent);
+
+            PersistablePartialViewClear();
+        }
+
+        private void PersistablePartialViewClear()
+        {
             PersistableSelectorObjectKeyCurrent = null;
+            ModelState.Clear();
         }
 
         private IPersistableObject PersistablePartialViewSave(IPersistableObject persistableSelector, string defaultObjectName = null)
@@ -843,7 +866,7 @@ namespace CkgDomainLogic.General.Controllers
             return string.Format("{0} {1}", objectNameThumb, PersistableSelectors.Count(compareFunction));
         }
 
-        private void PersistableGridSettingsCurrentLoad(string objectKeyCurrent)
+        private void PersistableGridSettingsCurrentLoad(string objectKeyCurrent, bool forceLoad = false)
         {
             if (objectKeyCurrent.IsNullOrEmpty())
             {
@@ -854,7 +877,7 @@ namespace CkgDomainLogic.General.Controllers
             if (PersistableSelectorGroupKeyCurrent.IsNullOrEmpty() || objectKeyCurrent.IsNullOrEmpty())
                 return;
 
-            if (GridCurrentSettings != null && GridCurrentSettings.ObjectKey == objectKeyCurrent)
+            if (!forceLoad && GridCurrentSettings != null && GridCurrentSettings.ObjectKey == objectKeyCurrent)
                 return;
 
             var gridSettingsItems = PersistanceGetObjects2<IPersistableObject>(PersistableSelectorGroupKeyCurrent).OfType<GridSettings>();

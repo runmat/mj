@@ -177,7 +177,7 @@ namespace MvcTools.Web
             if (controller == null)
                 return MvcHtmlString.Empty;
 
-            var gridCurrentGetAutoPersistColumns = controller.GridCurrentAutoPersistColumns;
+            var gridCurrentGetAutoPersistColumns = controller.GridCurrentSettingsAutoPersist;
             if (gridCurrentGetAutoPersistColumns == null || gridCurrentGetAutoPersistColumns.Columns.IsNullOrEmpty())
                 return MvcHtmlString.Empty;
 
