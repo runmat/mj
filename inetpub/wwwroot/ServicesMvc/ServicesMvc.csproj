@@ -2501,7 +2501,9 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Documents\Templates\UploadBriefversand.csv" />
     <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
+    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
@@ -4168,7 +4170,6 @@
     <Content Include="Views\CocSendung\VerfolgungMulti\Id\Suche.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Grid.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Suche.cshtml" />
-    <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
     <Content Include="Views\Login\Partial\Footer.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenGrid.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenSuche.cshtml" />
@@ -4262,6 +4263,7 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
+    <Content Include="Views\Test\Cerberus.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

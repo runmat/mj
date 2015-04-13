@@ -7,12 +7,11 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormVersandOptionen" }))
     {
         @Html.HiddenFor(m => m.IsValid)
-        @Html.HiddenFor(m => m.AufAbmeldungWartenAvailable)
 
         @Html.FormValidationSummary()
 
 
-        @Html.FormDropDownListFor(m => m.VersandOptionKey, VersandOptionen.OptionenList.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormDropDownListFor(m => m.VersandOptionKey, Model.OptionenList.ToSelectList(), new { @class = "m-wrap large" })
 
         if (Model.AufAbmeldungWartenAvailable)
         {
@@ -22,12 +21,19 @@
         {
             @Html.HiddenFor(m => m.AufAbmeldungWarten)
         }
-        
-        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
 
-        @Html.FormDropDownListFor(m => m.VersandGrundKey, VersandOptionen.GruendeList.ToSelectList(), new { @class = "m-wrap large" })
-        
-        
+        if (Model.VersandGrundIsRequired)
+        {
+            @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+
+            @Html.FormDropDownListFor(m => m.VersandGrundKey, Model.GruendeList.ToSelectList(), new { @class = "m-wrap large" })
+        }
+        else
+        {
+            @Html.HiddenFor(m => m.Bemerkung)
+            @Html.HiddenFor(m => m.VersandGrundKey)
+        }
+
         @Html.FormRequiredFieldsSummary()
 
         
