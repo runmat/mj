@@ -17,25 +17,7 @@ namespace CkgDomainLogic.Equi.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_READ_GRUEQUIDAT_02.GT_OUT, EquiGrunddaten>(
-                    // MJE, 10.02.2014
-                    // Performance optimization, avoid property mapping via reflection here, use inline mapping code instead
                     new Dictionary<string, string> ()
-                    //{
-                        //{ "FIN", "Fahrgestellnummer" },
-                        //{ "FIN_10", "Fahrgestellnummer10" },
-                        //{ "ERDAT", "Erfassungsdatum" },
-                        //{ "LICENSE_NUM", "Kennzeichen" },
-                        //{ "TIDNR", "TechnIdentnummer" },
-                        //{ "REPLA_DATE", "Erstzulassungsdatum" },
-                        //{ "EXPIRY_DATE", "Abmeldedatum" },
-                        //{ "BETRIEB", "Betrieb" },
-                        //{ "STORT", "Standort" },
-                        //{ "STORT_TEXT", "StandortBez" },
-                        //{ "ZZCOCKZ", "CocVorhanden" },
-                        //{ "ZZEDCOC", "EingangCoc" },
-                        //{ "ZZHANDELSNAME", "Handelsname" },
-                        //{ "ZIELORT", "Zielort" },
-                    //}
                     , (s, d) =>
                         {
                             d.Fahrgestellnummer = s.FIN;

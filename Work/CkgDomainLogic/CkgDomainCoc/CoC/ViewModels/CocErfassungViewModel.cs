@@ -138,7 +138,7 @@ namespace CkgDomainLogic.CoC.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable<CsvUploadEntityDpmCoc>(CsvUploadServerFileName, null, ',').ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable<CsvUploadEntityDpmCoc>(CsvUploadServerFileName, "", null, ',').ToList();
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())
                 return false;
