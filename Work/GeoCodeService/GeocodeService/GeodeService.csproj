@@ -115,6 +115,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="NLog.config" />
     <None Include="Service References\RouteService\RouteService.wsdl" />
     <None Include="Service References\RouteService\routeservice.xsd" />
     <None Include="Service References\RouteService\routeservice1.wsdl" />
