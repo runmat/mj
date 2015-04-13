@@ -1,5 +1,6 @@
 ﻿<script type="text/javascript">
 
+    var _filteredData_DisableDataBound = false;
     var _filteredData_force_Grid_OnColumnReorder = false;
 
     var _gridColumnNameList = [];
@@ -7,6 +8,9 @@
     var _gridColumnNameListMode = '';
 
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
+
+        if (_filteredData_DisableDataBound)
+            return; 
 
         grid = (grid || $(this));
 
@@ -46,6 +50,10 @@
     }
 
     function FilteredData_Grid_OnColumnReorder(grid) {
+
+        if (_filteredData_DisableDataBound)
+            return;
+
         grid = (grid || $(this));
         //FilteredData_Grid_PrepareAllCommandHrefs(grid);
 
@@ -54,10 +62,18 @@
     }
 
     function FilteredData_Grid_OnColumnShowHide(grid) {
+
+        if (_filteredData_DisableDataBound)
+            return;
+
         FilteredData_Grid_OnDataBound(grid, true);
     }
 
     function FilteredData_Grid_PrepareAllCommandHrefs(grid, autoPersistColumns) {
+
+        if (_filteredData_DisableDataBound)
+            return;
+        
         var dataGrid = grid.data('tGrid');
 
         var jsonColumnsString = GetJsonColumns(dataGrid);
@@ -73,7 +89,14 @@
         GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, autoPersistInDb);
     }
 
+    function getFilteredData_DisableDataBound() {
+        return _filteredData_DisableDataBound;
+    }
+
     function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, autoPersistInDb) {
+
+        if (_filteredData_DisableDataBound)
+            return;
 
         var url = "GridSettingsPersist";
         if (document.URL.toLowerCase().indexOf("autohausportalmvc") > 0)
