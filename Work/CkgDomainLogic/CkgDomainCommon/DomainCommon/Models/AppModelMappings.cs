@@ -64,6 +64,8 @@ namespace CkgDomainLogic.DomainCommon.Models
                         // stupid SAP "NumC" conversions ....
                         destination.ZZBRFVERS = source.BriefVersand.ToNumC();
                         destination.ZZSCHLVERS = source.SchluesselVersand.ToNumC();
+
+                        destination.NUR_MIT_ZB2 = source.SchluesselKombiVersand.BoolToX();
                     }
                 ));
             }
