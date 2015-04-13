@@ -21,6 +21,16 @@ namespace CkgDomainLogic.Equi.ViewModels
 {
     public class BriefversandViewModel : CkgBaseViewModel
     {
+        public BriefversandModus VersandModus
+        {
+            get { return PropertyCacheGet(() => BriefversandModus.Brief); } 
+            set
+            {
+                PropertyCacheSet(value);
+                BriefbestandDataService.FahrzeugbriefeZumVersandModus = value;
+            }
+        }  
+
         [XmlIgnore]
         public IBriefbestandDataService BriefbestandDataService { get { return CacheGet<IBriefbestandDataService>(); } }
 
@@ -66,6 +76,26 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
+        public string AppTitle
+        {
+            get
+            {
+                switch (VersandModus)
+                {
+                    case BriefversandModus.Brief:
+                        return Localize.Equi_Briefversand;
+                    
+                    case BriefversandModus.Schluessel:
+                        return Localize.Equi_Schluesselversand;
+                    
+                    case BriefversandModus.BriefMitSchluessel:
+                        return Localize.Equi_BriefSchluesselversand;
+                }
+
+                return "";
+            }
+        }
+
         [XmlIgnore]
         public string ParamVins { get; private set; }
 
@@ -77,6 +107,8 @@ namespace CkgDomainLogic.Equi.ViewModels
         public LogonLevel UserLogonLevel { get { return LogonContext.UserLogonLevel; } }
 
         public int CurrentAppID { get; set; }
+
+        public bool TechnIdentnummerIsVisible { get { return VersandModus != BriefversandModus.Schluessel; } }
 
 
         #region Step "Fahrzeugwahl"
@@ -143,6 +175,11 @@ namespace CkgDomainLogic.Equi.ViewModels
         public bool UploadItemsSuccessfullyStored { get; set; }
         [XmlIgnore]
         public List<FahrzeugCsvUploadEntity> UploadItems { get; private set; }
+
+        public string CsvTemplateFileName
+        {
+            get { return (VersandModus == BriefversandModus.Schluessel ? "UploadSchluesselversand.csv" : "UploadBriefversand.csv"); } 
+        }
 
         #endregion
 
@@ -236,13 +273,13 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public VersandartOptionen VersandartOptionen
         {
-            get { return PropertyCacheGet(() => new VersandartOptionen{ IstEndgueltigerVersand = true }); }
+            get { return PropertyCacheGet(() => new VersandartOptionen { IstEndgueltigerVersand = true }); }
             set { PropertyCacheSet(value); }
         }
 
         public VersandOptionen VersandOptionen
         {
-            get { return PropertyCacheGet(() => new VersandOptionen()); }
+            get { return PropertyCacheGet(() => new VersandOptionen { AufAbmeldungWarten = VersandOptionAufAbmeldungWartenInitialChecked }); }
             set { PropertyCacheSet(value); }
         }
 
@@ -250,14 +287,15 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             get
             {
-                var configWert = ApplicationConfiguration.GetApplicationConfigValue("OptionAufAbmeldungWarten", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+                return VersandartOptionen.IstEndgueltigerVersand && GetApplicationConfigBoolValueForCustomer("OptionAufAbmeldungWarten", true);
+            }
+        }
 
-                if (VersandartOptionen.IstEndgueltigerVersand && CurrentAppID > 0 &&
-                    !String.IsNullOrEmpty(configWert) && configWert.ToUpper() == "TRUE")
-                {
-                    return true;
-                }
-                return false;
+        public bool VersandOptionAufAbmeldungWartenInitialChecked
+        {
+            get
+            {
+                return VersandOptionAufAbmeldungWartenAvailable && GetApplicationConfigBoolValueForCustomer("OptionAufAbmeldungWarten_Checked", true);
             }
         }
 
@@ -287,7 +325,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             {
                 return new GeneralEntity
                 {
-                    Title = "Ihre Beauftragung",
+                    Title = "Ihre Beauftragung für " + AppTitle,
                     Body = BeauftragungBezeichnung,
                     Tag = "SummaryMainItem"
                 };
@@ -316,22 +354,15 @@ namespace CkgDomainLogic.Equi.ViewModels
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
+
+            PropertyCacheClear(this, m => m.VersandartOptionen);
+            PropertyCacheClear(this, m => m.VersandOptionen);
         }
 
         public void DataMarkForRefreshVersandAndZulassungAdressenFiltered()
         {
             PropertyCacheClear(this, m => m.VersandAdressenFiltered);
             PropertyCacheClear(this, m => m.ZulassungAdressenFiltered);
-        }
-
-        public void DataMarkForRefreshVersandoptionen()
-        {
-            VersandOptionen.OptionenList = VersandOptionenList;
-        }
-
-        public void DataMarkForRefreshVersandgruende()
-        {
-            VersandOptionen.GruendeList = VersandGruendeList;
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)
@@ -378,7 +409,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             allFoundCount = Fahrzeuge.Count(c => !c.IsMissing);
         }
 
-        VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode)
+        VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode, bool briefVersand, bool schluesselVersand, bool schluesselKombiVersand)
         {
             var versandAuftrag = new VersandAuftragsAnlage();
 
@@ -387,8 +418,9 @@ namespace CkgDomainLogic.Equi.ViewModels
 
             versandAuftrag.KundenNr = BriefbestandDataService.ToDataStoreKundenNr(LogonContext.KundenNr);
             versandAuftrag.VIN = vin;
-            versandAuftrag.BriefVersand = true;
-            versandAuftrag.SchluesselVersand = false;
+            versandAuftrag.BriefVersand = briefVersand;
+            versandAuftrag.SchluesselVersand = schluesselVersand;
+            versandAuftrag.SchluesselKombiVersand = schluesselKombiVersand;
             versandAuftrag.StuecklistenKomponente = stuecklistenCode;
             versandAuftrag.AbmeldeKennzeichen = (!VersandOptionen.AufAbmeldungWartenAvailable || !VersandOptionen.AufAbmeldungWarten);
             versandAuftrag.AbcKennzeichen = VersandartOptionen.Versandart;
@@ -409,7 +441,20 @@ namespace CkgDomainLogic.Equi.ViewModels
             // 1. Versandauftrags-Datensätze anlegen
             var versandAuftraege = new List<VersandAuftragsAnlage>();
 
-            SelectedFahrzeuge.ForEach(fzg => versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "")));
+            SelectedFahrzeuge.ForEach(fzg =>
+                {
+                    if (VersandModus == BriefversandModus.Brief)
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: true, schluesselVersand: false, schluesselKombiVersand: false));
+                    
+                    if (VersandModus == BriefversandModus.Schluessel)
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: false, schluesselVersand: true, schluesselKombiVersand: false));
+
+                    if (VersandModus == BriefversandModus.BriefMitSchluessel)
+                    {
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: true, schluesselVersand: false, schluesselKombiVersand: false));
+                        versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: false, schluesselVersand: true, schluesselKombiVersand: true));
+                    }
+                });
 
             SaveErrorMessage = BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege);
         }
@@ -474,7 +519,9 @@ namespace CkgDomainLogic.Equi.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugCsvUploadEntity>(CsvUploadServerFileName, true).ToList();
+            var commaSeparatedAutoPropertyNamesToIgnore = (VersandModus != BriefversandModus.Schluessel ? "" : "ZBII");
+            var list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugCsvUploadEntity>(CsvUploadServerFileName, true, commaSeparatedAutoPropertyNamesToIgnore).ToList();
+
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())
                 return false;

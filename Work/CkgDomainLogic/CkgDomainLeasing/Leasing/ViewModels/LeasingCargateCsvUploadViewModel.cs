@@ -69,7 +69,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
             text = text.Replace("#NV", string.Empty);
             File.WriteAllText(fileNameAndPath, text);
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, false, CreateInstanceFromDatarow, ';').ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, false, "", CreateInstanceFromDatarow, ';').ToList();
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())
                 return false;

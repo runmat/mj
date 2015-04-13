@@ -17,12 +17,14 @@ namespace CkgDomainLogic.Equi.Services
 
         public FahrzeugbriefFilter DatenFilter { get; set; }
 
+        public BriefversandModus FahrzeugbriefeZumVersandModus { get; set; }
+        
         public List<Fahrzeugbrief> FahrzeugbriefeZumVersand
         {
-            get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap(true, true).ToList()); }
+            get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap(true, true, FahrzeugbriefeZumVersandModus).ToList()); }
         }
 
-        private List<Fahrzeugbrief> FahrzeugbriefeGesamt
+        List<Fahrzeugbrief> FahrzeugbriefeGesamt
         {
             get { return PropertyCacheGet(() => LoadFahrzeugbriefeFromSap(true, true).ToList()); }
         }
@@ -70,7 +72,7 @@ namespace CkgDomainLogic.Equi.Services
             PropertyCacheClear(this, m => m.FahrzeugbriefeZumVersand);
         }
 
-        private IEnumerable<Fahrzeugbrief> LoadFahrzeugbriefeFromSap(bool mitBestand, bool mitTempVers)
+        private IEnumerable<Fahrzeugbrief> LoadFahrzeugbriefeFromSap(bool mitBestand, bool mitTempVers, BriefversandModus versandModus = BriefversandModus.Brief)
         {
             Z_DPM_BRIEFBESTAND_001.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
@@ -79,6 +81,13 @@ namespace CkgDomainLogic.Equi.Services
 
             if (mitTempVers)
                 SAP.SetImportParameter("I_TEMPVERS", "X");
+
+            string sapVersandKennzeichen = null;
+            if (versandModus == BriefversandModus.Brief || versandModus == BriefversandModus.BriefMitSchluessel)
+                sapVersandKennzeichen = "B";
+            if (versandModus == BriefversandModus.Schluessel)
+                sapVersandKennzeichen = "T";
+            SAP.SetImportParameter("I_EQTYP", sapVersandKennzeichen);
 
             var sapList = Z_DPM_BRIEFBESTAND_001.GT_DATEN.GetExportListWithExecute(SAP);
 
