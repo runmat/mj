@@ -209,7 +209,7 @@ namespace CkgDomainLogic.General.Controllers
                     GroupBy = groupBy
                 };
 
-            if (autoPersistInDb)
+            if (autoPersistInDb && PersistableSelectorObjectKeyCurrent.IsNullOrEmpty())
                 GridCurrentAutoPersistColumns = GridCurrentSettings;
 
             return Json(new { message = "ok" });

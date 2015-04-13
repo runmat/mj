@@ -11,16 +11,18 @@
 
         grid = (grid || $(this));
 
-        if (typeof (autoPersistColumns) == 'undefined') {
-            try {
-                GridPrepareFromSelectorPersistedState(grid.data("tGrid"));
-            } catch(e) {
-                GridPrepareFromAutoColumnsPersistedState(grid.data("tGrid"));
+        setTimeout(function() {
+            if (typeof (autoPersistColumns) == 'undefined') {
+                try {
+                    GridPrepareFromSelectorPersistedState(grid.data("tGrid"));
+                } catch (e) {
+                    GridPrepareFromAutoColumnsPersistedState(grid.data("tGrid"));
+                }
             }
-        }
 
-        FilteredData_Grid_PrepareAllCommandHrefs(grid, _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns);
-        _filteredData_force_Grid_OnColumnReorder = false;
+            FilteredData_Grid_PrepareAllCommandHrefs(grid, _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns);
+            _filteredData_force_Grid_OnColumnReorder = false;
+        }, 500);
     }
 
     function FilteredData_Grid_OnColumnReorder(grid) {
