@@ -43,6 +43,9 @@ namespace CkgDomainLogic.General.Contracts
 
         string ReturnUrl { get; set; }
 
+        // only for backward compatibility:
+        string CurrentGridColumns { get; }
+
         IHtmlString GetUserEncrytpedUrl(IApplicationUserMenuItem menuItem);
 
         IHtmlString FormatUserEncrytpedUrl(string url);
