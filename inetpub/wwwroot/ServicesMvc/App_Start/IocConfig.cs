@@ -179,12 +179,11 @@ namespace ServicesMvc
 
             builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
-
-            builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<WfmDataServiceSAP>().As<IWfmDataService>().InstancePerHttpRequest();
 
