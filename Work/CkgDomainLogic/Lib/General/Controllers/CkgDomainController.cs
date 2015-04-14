@@ -255,7 +255,7 @@ namespace CkgDomainLogic.General.Controllers
             var exportList = GetGridExportData();
             var modelType = exportList.GetItemType();
 
-            var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
 
             var grid = (IGrid)SessionHelper.GetSessionObject(string.Format("Telerik_Grid_{0}", modelType.Name));
             if (grid == null || grid.Grouping == null || grid.Grouping.Groups == null || grid.Grouping.Groups.Count == 0)
@@ -276,7 +276,7 @@ namespace CkgDomainLogic.General.Controllers
         [ValidateInput(false)]
         public ActionResult GridDataExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = GetGridExportData().GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = GetGridExportData().GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("ExcelExport", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -377,7 +377,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Adressen", dt);
 
             return new EmptyResult();
@@ -385,7 +385,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = AdressenPflegeViewModel.AdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Adressen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -581,7 +581,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Warenkorb", dt);
 
             return new EmptyResult();
@@ -589,7 +589,7 @@ namespace CkgDomainLogic.General.Controllers
 
         public ActionResult ShoppingCartExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ShoppingCartItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Warenkorb", dt, landscapeOrientation: true);
 
             return new EmptyResult();

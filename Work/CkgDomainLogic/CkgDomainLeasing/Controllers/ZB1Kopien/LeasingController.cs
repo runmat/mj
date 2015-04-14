@@ -61,7 +61,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZB1KopienFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ZB1KopienViewModel.ZB1KopienFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ZB1KopienViewModel.ZB1KopienFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ZB1Kopien", dt);
 
             return new EmptyResult();
@@ -69,7 +69,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZB1KopienFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ZB1KopienViewModel.ZB1KopienFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ZB1KopienViewModel.ZB1KopienFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("ZB1Kopien", dt, landscapeOrientation: true);
 
             return new EmptyResult();

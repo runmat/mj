@@ -181,7 +181,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = CocTypenViewModel.CocTypenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = CocTypenViewModel.CocTypenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("CocTypen", dt);
 
             return new EmptyResult();
@@ -189,7 +189,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = CocTypenViewModel.CocTypenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = CocTypenViewModel.CocTypenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("CocTypen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

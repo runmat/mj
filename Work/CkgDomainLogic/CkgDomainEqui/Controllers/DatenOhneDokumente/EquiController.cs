@@ -56,7 +56,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDatenOhneDokumenteFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = DatenOhneDokumenteViewModel.DatenOhneDokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = DatenOhneDokumenteViewModel.DatenOhneDokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("DatenOhneDokumente", dt);
 
             return new EmptyResult();
@@ -64,7 +64,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDatenOhneDokumenteFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = DatenOhneDokumenteViewModel.DatenOhneDokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = DatenOhneDokumenteViewModel.DatenOhneDokumenteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("DatenOhneDokumente", dt, landscapeOrientation: true);
 
             return new EmptyResult();

@@ -75,7 +75,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportEquiHistorieInfosFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = EquipmentHistorieViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = EquipmentHistorieViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Historie", dt);
 
             return new EmptyResult();
@@ -83,7 +83,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportEquiHistorieInfosFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = EquipmentHistorieViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = EquipmentHistorieViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Historie", dt, landscapeOrientation: true);
 
             return new EmptyResult();
