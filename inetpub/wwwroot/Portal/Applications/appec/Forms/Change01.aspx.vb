@@ -563,9 +563,6 @@ Public Class Change01
                 trEditBatch.Visible = True
                 trKeepData.Visible = False
                 txtBatchId.Enabled = False
-                txtUnitNrVon.Enabled = False
-                txtUnitNrBis.Enabled = False
-                trUnitNrUpload.Visible = False
                 cmdReset.Visible = False
 
                 txtModelId.Text = row("ZMODEL_ID").ToString()

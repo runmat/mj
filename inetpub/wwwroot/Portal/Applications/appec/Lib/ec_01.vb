@@ -425,25 +425,34 @@ Public Class ec_01
         Try
             S.AP.Init("Z_M_EC_AVM_BATCH_SELECT")
 
-            Dim SAPTable As DataTable = S.AP.GetImportTable("GT_IN")
+            If Not String.IsNullOrEmpty(strFilterBatchIdVon) OrElse Not String.IsNullOrEmpty(strFilterBatchIdBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterUnitnrVon) OrElse Not String.IsNullOrEmpty(strFilterUnitnrBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterModelIdVon) OrElse Not String.IsNullOrEmpty(strFilterModelIdBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterEinsteuerungVon) OrElse Not String.IsNullOrEmpty(strFilterEinsteuerungBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterAnlagedatumVon) OrElse Not String.IsNullOrEmpty(strFilterAnlagedatumBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterErfasser) Then
 
-            Dim SAPTableRow As DataRow = SAPTable.NewRow()
+                Dim SAPTable As DataTable = S.AP.GetImportTable("GT_IN")
 
-            With SAPTableRow
-                If Not String.IsNullOrEmpty(strFilterBatchIdVon) Then .Item("ZBATCH_ID_VON") = strFilterBatchIdVon
-                If Not String.IsNullOrEmpty(strFilterBatchIdBis) Then .Item("ZBATCH_ID_BIS") = strFilterBatchIdBis
-                If Not String.IsNullOrEmpty(strFilterUnitnrVon) Then .Item("ZUNIT_NR_VON") = strFilterUnitnrVon
-                If Not String.IsNullOrEmpty(strFilterUnitnrBis) Then .Item("ZUNIT_NR_BIS") = strFilterUnitnrBis
-                If Not String.IsNullOrEmpty(strFilterModelIdVon) Then .Item("ZMODEL_ID_VON") = strFilterModelIdVon
-                If Not String.IsNullOrEmpty(strFilterModelIdBis) Then .Item("ZMODEL_ID_BIS") = strFilterModelIdBis
-                If Not String.IsNullOrEmpty(strFilterEinsteuerungVon) Then .Item("ZPURCH_MTH_VON") = strFilterEinsteuerungVon
-                If Not String.IsNullOrEmpty(strFilterEinsteuerungBis) Then .Item("ZPURCH_MTH_BIS") = strFilterEinsteuerungBis
-                If Not String.IsNullOrEmpty(strFilterAnlagedatumVon) Then .Item("ERDAT_VON") = strFilterAnlagedatumVon
-                If Not String.IsNullOrEmpty(strFilterAnlagedatumBis) Then .Item("ERDAT_BIS") = strFilterAnlagedatumBis
-                If Not String.IsNullOrEmpty(strFilterErfasser) Then .Item("ZERNAM") = strFilterErfasser
-            End With
+                Dim SAPTableRow As DataRow = SAPTable.NewRow()
 
-            SAPTable.Rows.Add(SAPTableRow)
+                With SAPTableRow
+                    If Not String.IsNullOrEmpty(strFilterBatchIdVon) Then .Item("ZBATCH_ID_VON") = strFilterBatchIdVon
+                    If Not String.IsNullOrEmpty(strFilterBatchIdBis) Then .Item("ZBATCH_ID_BIS") = strFilterBatchIdBis
+                    If Not String.IsNullOrEmpty(strFilterUnitnrVon) Then .Item("ZUNIT_NR_VON") = strFilterUnitnrVon
+                    If Not String.IsNullOrEmpty(strFilterUnitnrBis) Then .Item("ZUNIT_NR_BIS") = strFilterUnitnrBis
+                    If Not String.IsNullOrEmpty(strFilterModelIdVon) Then .Item("ZMODEL_ID_VON") = strFilterModelIdVon
+                    If Not String.IsNullOrEmpty(strFilterModelIdBis) Then .Item("ZMODEL_ID_BIS") = strFilterModelIdBis
+                    If Not String.IsNullOrEmpty(strFilterEinsteuerungVon) Then .Item("ZPURCH_MTH_VON") = strFilterEinsteuerungVon
+                    If Not String.IsNullOrEmpty(strFilterEinsteuerungBis) Then .Item("ZPURCH_MTH_BIS") = strFilterEinsteuerungBis
+                    If Not String.IsNullOrEmpty(strFilterAnlagedatumVon) Then .Item("ERDAT_VON") = strFilterAnlagedatumVon
+                    If Not String.IsNullOrEmpty(strFilterAnlagedatumBis) Then .Item("ERDAT_BIS") = strFilterAnlagedatumBis
+                    If Not String.IsNullOrEmpty(strFilterErfasser) Then .Item("ZERNAM") = strFilterErfasser
+                End With
+
+                SAPTable.Rows.Add(SAPTableRow)
+
+            End If
 
             tblBatche = S.AP.GetExportTableWithExecute("GT_OUT")
 
