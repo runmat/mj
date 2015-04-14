@@ -2503,8 +2503,8 @@
     <Content Include="Views\CocBeauftragung\SelbstDruck.cshtml" />
     <Content Include="Views\CocBeauftragung\VersandAdresseSelbstDruck.cshtml" />
     <Content Include="Areas\Common\Content\Web.config" />
-    <None Include="Views\Shared\Partial\TelerikExtensionsScripts.cshtml" />
-    <None Include="Views\Shared\Partial\TelerikExtensionsStyles.cshtml" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsScripts.cshtml" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsStyles.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
     <Content Include="Areas\Web.config" />
