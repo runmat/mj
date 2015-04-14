@@ -53,6 +53,8 @@ namespace CkgDomainLogic.WFM.Models
                         return Localize.Standard;
                     case "2":
                         return Localize.ClarificationCases;
+                    case "3":
+                        return Localize.WithoutOrder;
                     default:
                         return AbmeldeArtCode;
                 }

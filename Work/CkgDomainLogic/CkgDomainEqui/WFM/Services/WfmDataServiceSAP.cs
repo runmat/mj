@@ -281,10 +281,28 @@ namespace CkgDomainLogic.WFM.Services
             return errorMessage;
         }
 
-        public string SetOrderToKlaerfall(string vorgangsNr, string remark)
+        public string SetOrderToKlaerfall(string vorgangNr, string remark)
         {
-            // ToDo: When SAP Bapi is finished, call it right here:
-            return "";
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                // exception safe SAP action:
+                () =>
+                {
+                    Z_WFM_WRITE_TODO_02.Init(SAP);
+                    SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+                    SAP.SetImportParameter("I_FUNKTIONSNAME", "ZWFM_KLAERFALL");
+                    SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr);
+                    SAP.SetImportParameter("I_ANMERKUNG", remark);
+
+                    SAP.Execute();
+                },
+
+                // SAP custom error handling:
+                () => ((SAP.ResultCode == 0) 
+                    ? "" 
+                    : SAP.ResultMessage.NotNullOr(Localize.SetClarificationCase + " " + Localize.Failed.ToLower() + ",  SAP Error Code: " + SAP.ResultCode)));
+
+            return errorMessage;
         }
 
         #endregion
