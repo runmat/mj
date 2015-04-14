@@ -21,7 +21,8 @@ namespace CkgDomainLogic.WFM.Models
                 return PropertyCacheGet(() => new List<SelectItem>
                 {
                     new SelectItem("1", Localize.Standard),
-                    new SelectItem("2", Localize.ClarificationCases)
+                    new SelectItem("2", Localize.ClarificationCases),
+                    new SelectItem("3", Localize.WithoutOrder),
                 });
             }
         }
@@ -35,7 +36,7 @@ namespace CkgDomainLogic.WFM.Models
                     new SelectItem("0", Localize.Outstanding),
                     new SelectItem("1", Localize.WorkInProgress),
                     new SelectItem("2", Localize.Deregistered),
-                    new SelectItem("3", Localize.Cancelled)
+                    new SelectItem("3", Localize.Cancelled),
                 });
             }
         }
