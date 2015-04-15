@@ -71,6 +71,7 @@
     <Compile Include="Controllers\Cargate\LeasingController.cs" />
     <Compile Include="Controllers\Klaerfaelle\LeasingController.cs" />
     <Compile Include="Controllers\LeasingController.cs" />
+    <Compile Include="Controllers\NichtDurchfuehrbareZulassungen\LeasingController.cs" />
     <Compile Include="Controllers\Sicherungsscheine\LeasingController.cs" />
     <Compile Include="Controllers\UnzugelFzge\LeasingController.cs" />
     <Compile Include="Controllers\ZB1Kopien\LeasingController.cs" />
@@ -80,10 +81,12 @@
     <Compile Include="Leasing\Contracts\ILeasingAbmeldungDataService.cs" />
     <Compile Include="Leasing\Contracts\ILeasingKlaerfaelleDataService.cs" />
     <Compile Include="Leasing\Contracts\ILeasingSicherungsscheineDataService.cs" />
+    <Compile Include="Leasing\Contracts\INichtDurchfuehrbZulDataService.cs" />
     <Compile Include="Leasing\Models\DataModels\Abmeldedaten.cs" />
     <Compile Include="Leasing\Models\DataModels\Klaerfall.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Leasing\Models\DataModels\NichtDurchfuehrbareZulassung.cs" />
     <Compile Include="Leasing\Models\DataModels\Sicherungsschein.cs" />
     <Compile Include="Leasing\Models\DataModels\LeasingCargateDisplayModel.cs" />
     <Compile Include="Leasing\Models\DataModels\UnzugelFzg.cs" />
@@ -93,12 +96,14 @@
     <Compile Include="Leasing\Models\UIModels\KlaerfallSucheArtFehlendeDaten.cs" />
     <Compile Include="Leasing\Models\UIModels\ZB1KopieSucheKunde.cs" />
     <Compile Include="Leasing\Models\UIModels\ZB1KopieSuchparameter.cs" />
+    <Compile Include="Leasing\Services\NichtDurchfuehrbZulDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\LeasingSicherungsscheineDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\LeasingCargateCsvUploadDataServiceSap.cs" />
     <Compile Include="Leasing\Services\LeasingKlaerfaelleDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\LeasingAbmeldungDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\LeasingUnzugelFzgDataServiceSAP.cs" />
     <Compile Include="Leasing\Services\LeasingZB1KopienDataServiceSAP.cs" />
+    <Compile Include="Leasing\ViewModels\NichtDurchfuehrbZulViewModel.cs" />
     <Compile Include="Leasing\ViewModels\LeasingSicherungsscheineViewModel.cs" />
     <Compile Include="Leasing\ViewModels\LeasingCargateCsvUploadViewModel.cs" />
     <Compile Include="Leasing\ViewModels\LeasingKlaerfaelleViewModel.cs" />
