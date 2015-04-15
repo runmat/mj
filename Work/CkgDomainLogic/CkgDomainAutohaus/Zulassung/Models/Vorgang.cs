@@ -32,6 +32,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public Adresse Halterdaten { get; set; }
 
+        public Adresse Kontoinhaberdaten { get; set; }
+
         public List<Kunde> Kunden { get; set; }
 
         public string Halter
@@ -40,6 +42,17 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 if (Halterdaten != null)
                     return String.Format("{0} {1}", Halterdaten.Name1, Halterdaten.Name2);
+
+                return "";
+            }
+        }
+
+        public string Kontoinhaber
+        {
+            get
+            {
+                if (Kontoinhaberdaten != null)
+                    return String.Format("{0} {1}", Kontoinhaberdaten.Name1, Kontoinhaberdaten.Name2);
 
                 return "";
             }
@@ -68,6 +81,7 @@ namespace CkgDomainLogic.Autohaus.Models
                     FahrzeugartId = "1",
                 };
             Halterdaten = new Adresse { Land = "DE", Kennung = "HALTER" };
+            Kontoinhaberdaten = new Adresse { Land = "DE", Kennung = "KONTOINHABER" };
             OptionenDienstleistungen = new OptionenDienstleistungen();
         }
 
@@ -144,6 +158,12 @@ namespace CkgDomainLogic.Autohaus.Models
                             {
                                 Title = Localize.Holder,
                                 Body = Halterdaten.GetPostLabelString(),
+                            },
+
+                            new GeneralEntity
+                            {
+                                Title = Localize.AccountHolder,
+                                Body = Kontoinhaberdaten.GetPostLabelString(),
                             },
 
                             new GeneralEntity

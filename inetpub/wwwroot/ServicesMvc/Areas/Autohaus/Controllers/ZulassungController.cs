@@ -226,6 +226,82 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         #endregion
+
+        #region KontoinhaberAdresse
+
+        [HttpPost]
+        public ActionResult KontoinhaberAdresse()
+        {
+            return PartialView("Partial/KontoinhaberAdresse", ViewModel);
+        }
+
+        [HttpPost]
+        public JsonResult KontoinhaberAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ViewModel.GetKontoinhaberAdressenAsAutoCompleteItems() });
+        }
+
+        [HttpPost]
+        public ActionResult KontoinhaberAdresseForm(Adresse model)
+        {
+            if (model.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                model = ViewModel.GetKontoinhaberadresse(model.TmpSelectionKey);
+                if (model == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                model.IsValid = false;
+                return PartialView("Partial/KontoinhaberAdresseForm", model);
+            }
+
+            if (ModelState.IsValid)
+                ViewModel.SetKontoinhaberAdresse(model);
+
+            model.IsValid = ModelState.IsValid;
+
+            return PartialView("Partial/KontoinhaberAdresseForm", model);
+        }
+
+        [GridAction]
+        public ActionResult KontoinhaberAdressenAjaxBinding()
+        {
+            var items = ViewModel.KontoinhaberAdressenFiltered;
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterKontoinhaberAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterKontoinhaberAdressen(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult KontoinhaberAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshKontoinhaberAdressen();
+
+            return PartialView("Partial/KontoinhaberAdressenAuswahlGrid");
+        }
+
+        public ActionResult KontoinhaberAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.KontoinhaberAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("KontoinhaberAdressen", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult KontoinhaberAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.KontoinhaberAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("KontoinhaberAdressen", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
         
         #region Zulassungsdaten
 

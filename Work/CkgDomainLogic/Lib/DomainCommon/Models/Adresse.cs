@@ -107,6 +107,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         [GridHidden]
         public bool IsDefaultPartner { get; set; }
 
+        [GridHidden]
+        [LocalizedDisplay(LocalizeConstants.PartnerRolesToCreate)]
+        public List<string> KennungenToInsert { get; set; }
+
         public Adresse SetInsertMode(bool insertMode)
         {
             InsertModeTmp = insertMode;

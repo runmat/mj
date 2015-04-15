@@ -259,6 +259,37 @@
         $("#AjaxFormHalterAdresse").submit();
     }
 
+    // KontoinhaberAdresse
+    function AjaxFormKontoinhaberAdresseComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+
+        var detailWindow = $("#Adressen").data("tWindow");
+        detailWindow.center().close();
+    }
+
+    function OnDataBound_KontoinhaberAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_KontoinhaberAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_KontoinhaberAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GridKontoinhaberAdresseOnSelect(id) {
+        $("#TmpSelectionKey").val(id);
+        $("#AjaxFormKontoinhaberAdresse").submit();
+    }
+
     // Zulassungsdaten
     function AjaxFormZulassungsdatenComplete() {
         FormPrepareAjax();

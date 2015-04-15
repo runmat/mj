@@ -45,7 +45,7 @@
 
     function PickPartnerAddress(partnerKennung) {
 
-        var dropdownThis = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown");
+        var dropdownThis = $("#" + partnerKennung.substr(0, 2) + "-" + "dropdown");
         if (_dropdownCurrent != null) {
             if (_dropdownCurrent.attr("id") != dropdownThis.attr("id")) {
                 ClosePartnerAddressGrid("PickPartnerAddress('" + partnerKennung + "')");
@@ -56,7 +56,7 @@
         }
 
         _dropdownCurrent = dropdownThis;
-        _dropdownGridCurrent = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown-grid");
+        _dropdownGridCurrent = $("#" + partnerKennung.substr(0, 2) + "-" + "dropdown-grid");
 
         $.ajax(
         {
@@ -85,10 +85,10 @@
             success: function (result) {
                 //console.log(result.partnerKennung);
                 //console.log(result.partnerName);
-                var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-dropdown-text");
+                var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 2) + "-dropdown-text");
                 console.log(dropdownTextSpan);
                 dropdownTextSpan.html(result.partnerName);
-                $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-textbox").val(result.partnerID);
+                $("#" + result.partnerKennung.toLowerCase().substr(0, 2) + "-textbox").val(result.partnerID);
 
                 ClosePartnerAddressGrid();
             },

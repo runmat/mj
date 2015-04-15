@@ -44,20 +44,29 @@
                     @Html.HiddenFor(m => m.Halter)
                     @Html.FormTemplateControl(Localize.Holder,
                             @<text>
-                                <a id="h-dropdown" class="btn white" onclick="return PickPartnerAddress('HALTER');">
+                                <a id="ha-dropdown" class="btn white" onclick="return PickPartnerAddress('HALTER');">
                                     <i class="icon-chevron-right margin-right-10"></i> 
-                                    <span id="h-dropdown-text" class="p-dropdown">@Model.SelectedHalter.GetAutoSelectString()</span>
+                                    <span id="ha-dropdown-text" class="p-dropdown">@Model.SelectedHalter.GetAutoSelectString()</span>
                                 </a>
-                            </text>, new { @class = "m-wrap", col = "left" })                
+                            </text>, new { @class = "m-wrap", col = "left3" })                
 
                     @Html.HiddenFor(m => m.Kaeufer)
                     @Html.FormTemplateControl(Localize.Buyer,
                             @<text>
-                                <a id="k-dropdown" class="btn white" onclick="return PickPartnerAddress('KAEUFER');">
+                                <a id="ka-dropdown" class="btn white" onclick="return PickPartnerAddress('KAEUFER');">
                                     <i class="icon-chevron-right margin-right-10"></i> 
-                                    <span id="k-dropdown-text" class="p-dropdown">@Model.SelectedKaeufer.GetAutoSelectString()</span>
+                                    <span id="ka-dropdown-text" class="p-dropdown">@Model.SelectedKaeufer.GetAutoSelectString()</span>
                                 </a>
-                            </text>, new { @class = "m-wrap", col = "right" })
+                            </text>, new { @class = "m-wrap", col = "middle3" })
+
+                    @Html.HiddenFor(m => m.Kontoinhaber)
+                    @Html.FormTemplateControl(Localize.AccountHolder,
+                            @<text>
+                                <a id="ko-dropdown" class="btn white" onclick="return PickPartnerAddress('KONTOINHABER');">
+                                    <i class="icon-chevron-right margin-right-10"></i> 
+                                    <span id="ko-dropdown-text" class="p-dropdown">@Model.SelectedKontoinhaber.GetAutoSelectString()</span>
+                                </a>
+                            </text>, new { @class = "m-wrap", col = "right3" })
 
                     @Html.FormDropDownListFor(m => m.BriefbestandsInfo, FahrzeugAkteBestand.BriefbestandsInfoOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
                     @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })

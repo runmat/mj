@@ -96,6 +96,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.Buyer)]
         public string Kaeufer { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.AccountHolder)]
+        public string Kontoinhaber { get; set; }
+
 
         [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
         [Length(1)]
@@ -228,6 +231,15 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
             get
             {
                 return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("KAEUFER", Kaeufer) : null);
+            }
+        }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public Adresse SelectedKontoinhaber
+        {
+            get
+            {
+                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("KONTOINHABER", Kontoinhaber) : null);
             }
         }
 

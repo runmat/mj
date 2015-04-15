@@ -7,7 +7,6 @@ using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Models;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -45,6 +44,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
+
+        [XmlIgnore]
+        [LocalizedDisplay(LocalizeConstants.AccountHolder)]
+        public string KontoinhaberDatenAsString { get { return KontoinhaberAdresse.GetAutoSelectString(); } }
 
         public static string PfadAuftragszettel { get { return GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel"); } }
         public bool ModusAbmeldung { get; set; }
@@ -252,6 +255,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         List<Adresse> GetHalterAdressen()
         {
             PartnerDataService.AdressenKennung = "HALTER";
+            PartnerDataService.MarkForRefreshAdressen();
             var list = PartnerDataService.Adressen;
             list.ForEach(a => a.Typ = "Halter");
             return list;
@@ -288,6 +292,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
+
+            var tmpAdr = ModelMapping.Copy(model);
+            tmpAdr.Kennung = "KONTOINHABER";
+            tmpAdr.Typ = "Kontoinhaber";
+            KontoinhaberAdresse = tmpAdr;
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
@@ -319,6 +328,72 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void LoadKfzKennzeichenFromKreis(string kreis, out string kennzeichen)
         {
             ZulassungDataService.GetZulassungsKennzeichen(kreis, out kennzeichen);
+        }
+
+        #endregion
+
+
+        #region KontoinhaberAdresse
+
+        [XmlIgnore, ScriptIgnore]
+        public Adresse KontoinhaberAdresse
+        {
+            get { return Zulassung.Kontoinhaberdaten; }
+            set { Zulassung.Kontoinhaberdaten = value; }
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Adresse> KontoinhaberAdressen
+        {
+            // ReSharper disable ConvertClosureToMethodGroup
+            get { return PropertyCacheGet(() => GetKontoinhaberAdressen()); }
+            // ReSharper restore ConvertClosureToMethodGroup
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Adresse> KontoinhaberAdressenFiltered
+        {
+            get { return PropertyCacheGet(() => KontoinhaberAdressen); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void FilterKontoinhaberAdressen(string filterValue, string filterProperties)
+        {
+            KontoinhaberAdressenFiltered = KontoinhaberAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        List<Adresse> GetKontoinhaberAdressen()
+        {
+            PartnerDataService.AdressenKennung = "KONTOINHABER";
+            PartnerDataService.MarkForRefreshAdressen();
+            var list = PartnerDataService.Adressen;
+            list.ForEach(a => a.Typ = "Kontoinhaber");
+            return list;
+        }
+
+        public List<string> GetKontoinhaberAdressenAsAutoCompleteItems()
+        {
+            return KontoinhaberAdressen.Select(a => a.GetAutoSelectString()).ToList();
+        }
+
+        public Adresse GetKontoinhaberadresse(string key)
+        {
+            int id;
+            if (Int32.TryParse(key, out id))
+                return KontoinhaberAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+
+            return KontoinhaberAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+        }
+
+        public void SetKontoinhaberAdresse(Adresse model)
+        {
+            KontoinhaberAdresse = model;
+        }
+
+        public void DataMarkForRefreshKontoinhaberAdressen()
+        {
+            PropertyCacheClear(this, m => m.KontoinhaberAdressen);
+            PropertyCacheClear(this, m => m.KontoinhaberAdressenFiltered);
         }
 
         #endregion

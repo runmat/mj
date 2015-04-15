@@ -288,12 +288,7 @@ namespace CkgDomainLogic.General.Controllers
             viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
 
             if (ModelState.IsValid)
-            {
-                if (viewModel.InsertMode)
-                    viewModel.AddItem(model);
-
                 model = viewModel.SaveItem(model, ModelState.AddModelError);
-            }
 
             model.IsValid = ModelState.IsValid;
             model.InsertModeTmp = viewModel.InsertMode;
@@ -313,7 +308,7 @@ namespace CkgDomainLogic.General.Controllers
         [HttpPost]
         public ActionResult AdressenKennungChange(AdressenPflegeViewModel model)
         {
-            AdressenPflegeViewModel.AdressenKennungGruppeChange(model.AdressenKennungGruppe, model.AdressenKennungTemp);
+            AdressenPflegeViewModel.AdressenKennungGruppeChange(model.AdressenKennungGruppe, model.AdressenKennung);
             ModelState.Clear();
 
             return PartialView("Partial/AdressenGruppeKennungSelect", AdressenPflegeViewModel);

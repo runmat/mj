@@ -252,6 +252,8 @@ namespace CkgDomainLogic.Autohaus.Services
                     }
                     // Halteradresse
                     adressen.Add(new Adressdaten().AdresseToAdressdaten(vorgang.BelegNr, "ZH", vorgang.Halterdaten));
+                    // Kontoinhaberadresse
+                    adressen.Add(new Adressdaten().AdresseToAdressdaten(vorgang.BelegNr, "ZY", vorgang.Kontoinhaberdaten));
                 }
 
                 var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(zulassungen).ToList();

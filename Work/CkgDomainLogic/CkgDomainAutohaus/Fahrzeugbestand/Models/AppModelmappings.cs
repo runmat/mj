@@ -33,6 +33,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         // Fahrzeug Bestand
                         d.Halter = s.HALTER;
                         d.Kaeufer = s.KAEUFER;
+                        d.Kontoinhaber = s.KONTOINHABER;
 
                         d.BriefbestandsInfo = s.BRIEFBESTAND;
                         d.BriefLagerort = s.LGORT;
@@ -102,6 +103,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         // Fahrzeug Bestand
                         d.KAEUFER = s.Kaeufer;
                         d.HALTER = s.Halter;
+                        d.KONTOINHABER = s.Kontoinhaber;
 
                         d.BRIEFBESTAND = s.BriefbestandsInfo;
                         d.LGORT = s.BriefLagerort;
