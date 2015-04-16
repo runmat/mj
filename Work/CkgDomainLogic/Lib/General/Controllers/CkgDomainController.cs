@@ -86,6 +86,11 @@ namespace CkgDomainLogic.General.Controllers
             }
         }
 
+        public void PersistableSelectorResetCurrent()
+        {
+            PersistableSelectorObjectKeyCurrent = null;
+        }
+
         public void ResetGridCurrentModelTypeAutoPersist()
         {
             GridCurrentSettings = null;
@@ -717,7 +722,10 @@ namespace CkgDomainLogic.General.Controllers
             if (!ModelState.IsValid || !PersistableSelectorIsPersistMode)
             {
                 if (persistableSelector != null && persistableSelector.ObjectKey != null)
+                {
+                    PersistableSelectorObjectKeyCurrent = persistableSelector.ObjectKey;
                     PersistableGridSettingsCurrentLoad(persistableSelector.ObjectKey, true);
+                }
 
                 return PartialView(viewName, model);
             }
@@ -793,7 +801,7 @@ namespace CkgDomainLogic.General.Controllers
 
         private void PersistablePartialViewClear()
         {
-            PersistableSelectorObjectKeyCurrent = null;
+            PersistableSelectorResetCurrent();
             ModelState.Clear();
         }
 

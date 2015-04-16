@@ -52,7 +52,11 @@ namespace CkgDomainLogic.General.Controllers
             {
                 var gridColumnsAutoPersistProvider = (controller as IGridColumnsAutoPersistProvider);
                 if (gridColumnsAutoPersistProvider != null)
-                    gridColumnsAutoPersistProvider.ResetGridCurrentModelTypeAutoPersist(); 
+                    gridColumnsAutoPersistProvider.ResetGridCurrentModelTypeAutoPersist();
+
+                var persistableSelectorProvider = (controller as IPersistableSelectorProvider);
+                if (persistableSelectorProvider != null)
+                    persistableSelectorProvider.PersistableSelectorResetCurrent();
             }
 
             var logonAction = logonController.UrlGetLogonAction(requestUserName, requestRemoteLoginID, requestRemoteLoginDateTime, requestRemoteLoginLogoutUrl, requestSurroundingSessionId);

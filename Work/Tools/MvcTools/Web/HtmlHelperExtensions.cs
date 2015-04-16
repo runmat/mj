@@ -144,22 +144,24 @@ namespace MvcTools.Web
 
         public static MvcHtmlString FormPersistenceGridMenu(this HtmlHelper html)
         {
+            var viewGridMenuReset = "Partial/FormPersistence/GridMenuReset";
+
             var controller = (html.ViewContext.Controller as IPersistableSelectorProvider);
             if (controller == null)
-                return MvcHtmlString.Empty;
+                return html.Partial(viewGridMenuReset);
 
             var persistableSelectorObjectKeyCurrent = SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent");
             if (persistableSelectorObjectKeyCurrent == null)
-                return MvcHtmlString.Empty;
+                return html.Partial(viewGridMenuReset);
 
             controller.PersistableSelectorsLoad();
             var selectors = controller.PersistableSelectors;
             if (selectors == null || selectors.None())
-                return MvcHtmlString.Empty;
+                return html.Partial(viewGridMenuReset);
 
             var selectorCurrent = selectors.FirstOrDefault(s => s.ObjectKey == persistableSelectorObjectKeyCurrent);
             if (selectorCurrent == null)
-                return MvcHtmlString.Empty;
+                return html.Partial(viewGridMenuReset);
 
             return html.Partial("Partial/FormPersistence/GridMenu", selectorCurrent);
         }

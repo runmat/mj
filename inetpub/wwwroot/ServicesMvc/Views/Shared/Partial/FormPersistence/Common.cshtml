@@ -133,14 +133,14 @@
 
     function PersistableSelectorDelete(objectKey) {
         var form = $(".persistable-form-dropdown-menu").closest("form");
-        AjaxSetPersistableMode("delete", objectKey, function (result) {
+        AjaxSetPersistableMode("delete", form, objectKey, function (result) {
             form.submit();
         });
     }
 
     function PersistableSelectorLoad(objectKey) {
         var form = $(".persistable-form-dropdown-menu").closest("form");
-        AjaxSetPersistableMode("load", objectKey, function (result) {
+        AjaxSetPersistableMode("load", form, objectKey, function (result) {
             form.submit();
         });
     }
@@ -148,28 +148,28 @@
 
     function PersistableSelectorSave(span, objectKey) {
         var form = span.closest("form");
-        AjaxSetPersistableMode("save", objectKey, function (result) {
+        AjaxSetPersistableMode("save", form, objectKey, function (result) {
             form.submit();
         });
     }
 
     function PersistableSelectorSaveAs(span, objectKey) {
         var form = span.closest("form");
-        AjaxSetPersistableMode("saveas", objectKey, function (result) {
+        AjaxSetPersistableMode("saveas", form, objectKey, function (result) {
             form.submit();
         });
     }
 
     function PersistableSelectorClear(span) {
         var form = span.closest("form");
-        AjaxSetPersistableMode("clear", "", function (result) {
+        AjaxSetPersistableMode("clear", form, "", function (result) {
             form.submit();
         });
     }
 
 
     function PersistableSelectorSaveGrid(objectKey) {
-        AjaxSetPersistableMode("savegrid", objectKey, function (result) {
+        AjaxSetPersistableMode("savegrid", form, objectKey, function (result) {
             if (result.success)
                 alert("grid successfully saved!");
             else
@@ -177,8 +177,10 @@
         });
     }
 
-    function AjaxSetPersistableMode(mode, objectKey, callBackFunction) {
+    function AjaxSetPersistableMode(mode, form, objectKey, callBackFunction) {
 
+        form.animate({ opacity: "0.1" }, 300);
+        
         $.ajax(
             {
                 type: "POST",
