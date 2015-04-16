@@ -139,7 +139,7 @@ namespace MvcTools.Web
             if (controller != null)
                 controller.PersistableSelectorsLoad<T>();
 
-            return html.Partial("Partial/FormPersistence/Menu");
+            return html.Partial("Partial/FormPersistence/Menu", model);
         }
 
         public static MvcHtmlString FormPersistenceGridMenu(this HtmlHelper html)

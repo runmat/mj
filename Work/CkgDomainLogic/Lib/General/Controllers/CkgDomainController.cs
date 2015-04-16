@@ -739,41 +739,41 @@ namespace CkgDomainLogic.General.Controllers
                 {
                     case "load":
                         model = PersistablePartialViewLoad<T>();
-                        
-                        modeLocalizationMessage = Localize.LoadSuccessful;
+
+                        modeLocalizationMessage = Localize.FormPersistableSelector_FormLoad + " " + Localize.Successful.ToLower();
                         break;
 
                     case "delete":
                         PersistablePartialViewDelete();
                         model = new T();
 
-                        modeLocalizationMessage = Localize.DeleteSuccessful;
+                        modeLocalizationMessage = Localize.FormPersistableSelector_FormDelete + " " + Localize.Successful.ToLower();
                         break;
 
                     case "clear":
                         PersistablePartialViewClear();
                         model = new T();
 
-                        modeLocalizationMessage = Localize.ClearForm + " " + Localize.Successful;
+                        modeLocalizationMessage = Localize.FormPersistableSelector_FormReset + " " + Localize.Successful.ToLower();
                         break;
                     
                     case "save":
                         model = (T)PersistablePartialViewSave(persistableSelector);
-                        
-                        modeLocalizationMessage = Localize.SaveSuccessful;
+
+                        modeLocalizationMessage = Localize.FormPersistableSelector_FormSave + " " + Localize.Successful.ToLower();
                         break;
                     
                     case "saveas":
                         model = (T)PersistablePartialViewSaveAs(persistableSelector);
-                        
-                        modeLocalizationMessage = Localize.SaveAsCopySuccessful;
+
+                        modeLocalizationMessage = Localize.FormPersistableSelector_FormSaveAs + " " + Localize.Successful.ToLower();
                         break;
                 }
             }
 
             PersistableSelectorPersistModeReset();
 
-            var persistMessage = string.Format("{0}{1}: {2}", MvcTag.FormPersistenceModeErrorPrefix, Localize.SearchMask, modeLocalizationMessage);
+            var persistMessage = string.Format("{0}{1}", MvcTag.FormPersistenceModeErrorPrefix, modeLocalizationMessage);
             ModelState.AddModelError("", persistMessage);
 
             return PartialView(viewName, model);
