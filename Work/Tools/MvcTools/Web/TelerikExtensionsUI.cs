@@ -234,6 +234,12 @@ namespace Telerik.Web.Mvc.UI
             }
         }
 
+        [Obsolete]
+        public static TBuilder XGroup<TBuilder>(this TBuilder builder, string gridGroup)
+        {
+            return builder;
+        }
+
         public static GridBuilder<T> XPageSize<T>(this GridBuilder<T> builder, int pageSize) where T : class
         {
             return builder.Pageable(paging => paging.PageSize(pageSize));
