@@ -349,10 +349,18 @@
 
     // <Grid all column search>
 
-    function FilterGrid(gridID) {
+    function FilterGrid(gridID, page) {
+        if (typeof(page) == 'undefined')
+            page = 1;
+        
         $("#" + gridID + " .grid-column-overall-filter").each(function() {
-             FilterGridAllColumns($(this));
+             FilterGridAllColumns($(this), page);
         });
+    }
+
+    function FilterGridPreservePage(gridID) {
+        var grid = $("#" + gridID).data("tGrid");
+        FilterGrid(gridID, grid.currentPage);
     }
 
     function FilterGridInit(gridID) {
@@ -380,7 +388,10 @@
         });
     }
 
-    function FilterGridAllColumns(tb) {
+    function FilterGridAllColumns(tb, page) {
+
+        if (typeof(page) == 'undefined')
+            page = 1;
 
         var gridName = tb.parents(".t-widget").first().attr("id");
         LoadingHide();
@@ -392,12 +403,12 @@
             url: "Filter" + gridName,
             data: {
                 filterValue: tb.val(),
-                filterColumns: GridGetFilterColumns(grid),
+                filterColumns: GridGetFilterColumns(grid)
             },
             success: function (result) {
                 LoadingHide();
                 setTimeout(function() {
-                    grid.pageTo(1);
+                    grid.pageTo(page);
                     $("#" + gridName).trigger('filter_all_columns');
                 }, 500);
             }

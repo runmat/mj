@@ -96,7 +96,7 @@ namespace CkgDomainLogic.WFM.Services
 
         #region Übersicht/Storno
 
-        public string StornoAuftrag(string vorgangNr)
+        public string StornoAuftrag(int vorgangNr)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -105,7 +105,7 @@ namespace CkgDomainLogic.WFM.Services
                 {
                     Z_WFM_STORNO_AUFTRAG_01.Init(SAP);
                     SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
-                    SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr);
+                    SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr.ToString());
                     SAP.SetImportParameter("I_STORNODATUM", DateTime.Today);
 
                     SAP.Execute();
@@ -219,7 +219,7 @@ namespace CkgDomainLogic.WFM.Services
             return AppModelMappings.Z_WFM_READ_TODO_01_GT_DATEN_To_WfmToDo.Copy(Z_WFM_READ_TODO_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
 
-        public string ConfirmToDo(int vorgangsNr, int lfdNr, string remark)
+        public string ConfirmToDo(int vorgangNr, int lfdNr, string remark)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -234,7 +234,7 @@ namespace CkgDomainLogic.WFM.Services
                         {
                             new Z_WFM_SET_STATUS_01.GT_DATEN
                                 {
-                                    VORG_NR_ABM_AUF = vorgangsNr.ToString(),
+                                    VORG_NR_ABM_AUF = vorgangNr.ToString(),
                                     LFD_NR = lfdNr.ToString(),
                                     STATUS = "2",
                                     INS_FOLGE_TASK = "X",
@@ -244,30 +244,8 @@ namespace CkgDomainLogic.WFM.Services
                     SAP.ApplyImport(list);
                     SAP.Execute();
 
-
                     // clear remark in following To-Do (because SAP unfortununately also sets remark in follower To-Do)
-                    var newToDoList = GetToDos(vorgangsNr.ToString().ToSapKunnr());
-                    var followingToDoItem = newToDoList.FirstOrDefault(t => t.LaufendeNr.ToInt() == (lfdNr + 1));
-
-                    Z_WFM_SET_STATUS_01.Init(SAP);
-                    SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
-                    SAP.SetImportParameter("I_USER", LogonContext.UserName);
-                    if (followingToDoItem != null)
-                    {
-                        list = new List<Z_WFM_SET_STATUS_01.GT_DATEN>
-                            {
-                                new Z_WFM_SET_STATUS_01.GT_DATEN
-                                    {
-                                        VORG_NR_ABM_AUF = vorgangsNr.ToString(),
-                                        LFD_NR = followingToDoItem.LaufendeNr,
-                                        STATUS = "1",
-                                        INS_FOLGE_TASK = "",
-                                        ANMERKUNG = "",
-                                    }
-                            };
-                        SAP.ApplyImport(list);
-                        SAP.Execute();
-                    }
+                    ClearRemarkInFollowingToDo(vorgangNr);
                 },
 
                 // SAP custom error handling:
@@ -281,7 +259,7 @@ namespace CkgDomainLogic.WFM.Services
             return errorMessage;
         }
 
-        public string SetOrderToKlaerfall(string vorgangNr, string remark)
+        public string SetOrderToKlaerfall(int vorgangNr, string remark)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -291,10 +269,13 @@ namespace CkgDomainLogic.WFM.Services
                     Z_WFM_WRITE_TODO_02.Init(SAP);
                     SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
                     SAP.SetImportParameter("I_FUNKTIONSNAME", "ZWFM_KLAERFALL");
-                    SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr);
+                    SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr.ToString());
                     SAP.SetImportParameter("I_ANMERKUNG", remark);
 
                     SAP.Execute();
+
+                    // clear remark in following To-Do (because SAP unfortununately also sets remark in follower To-Do)
+                    ClearRemarkInFollowingToDo(vorgangNr);
                 },
 
                 // SAP custom error handling:
@@ -303,6 +284,35 @@ namespace CkgDomainLogic.WFM.Services
                     : SAP.ResultMessage.NotNullOr(Localize.SetClarificationCase + " " + Localize.Failed.ToLower() + ",  SAP Error Code: " + SAP.ResultCode)));
 
             return errorMessage;
+        }
+
+        void ClearRemarkInFollowingToDo(int vorgangNr)
+        {
+            // clear remark in following To-Do (because SAP unfortununately also sets remark in follower To-Do)
+
+            var newToDoList = GetToDos(vorgangNr.ToString().ToSapKunnr());
+            var maxLfdNr = newToDoList.Max(todo => todo.LaufendeNr.ToInt());
+            var followingToDoItem = newToDoList.FirstOrDefault(t => t.LaufendeNr.ToInt() == maxLfdNr);
+
+            Z_WFM_SET_STATUS_01.Init(SAP);
+            SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_USER", LogonContext.UserName);
+            if (followingToDoItem != null)
+            {
+                var list = new List<Z_WFM_SET_STATUS_01.GT_DATEN>
+                    {
+                        new Z_WFM_SET_STATUS_01.GT_DATEN
+                            {
+                                VORG_NR_ABM_AUF = vorgangNr.ToString(),
+                                LFD_NR = followingToDoItem.LaufendeNr,
+                                STATUS = "1",
+                                INS_FOLGE_TASK = "",
+                                ANMERKUNG = "",
+                            }
+                    };
+                SAP.ApplyImport(list);
+                SAP.Execute();
+            }
         }
 
         #endregion

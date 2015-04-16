@@ -135,7 +135,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public string StornoAuftrag(string vorgangNr)
         {
-            var message = DataService.StornoAuftrag(vorgangNr);
+            var message = DataService.StornoAuftrag(vorgangNr.ToInt());
             if (message.IsNullOrEmpty())
             {
                 var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
@@ -153,7 +153,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public string SetOrderToKlaerfall(string vorgangsNr, string remark)
         {
-            var message = DataService.SetOrderToKlaerfall(vorgangsNr, remark);
+            var message = DataService.SetOrderToKlaerfall(vorgangsNr.ToInt(), remark);
             if (message.IsNullOrEmpty())
             {
                 AktuellerAuftrag.AbmeldeArtCode = "2";

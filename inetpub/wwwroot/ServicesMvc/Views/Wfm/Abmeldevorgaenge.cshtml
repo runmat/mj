@@ -58,7 +58,7 @@
 
     function TryAuftraegeGridRefresh() {
         // Refresh grid only
-        try { FilterGrid("GridAuftraege"); }
+        try { FilterGridPreservePage("GridAuftraege"); }
         catch(e){}
     }
 
@@ -237,6 +237,7 @@
         }
         if (!confirm('@(Localize.SetClarificationCase.ToJavascriptString() + "?")'))
             return false;
+
         
         $.ajax(
         {
@@ -249,7 +250,7 @@
                     SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
                     $(".wmf-uebersicht-section-abmeldeart-standard").addClass("hide");
                     $(".wmf-uebersicht-section-abmeldeart-nicht-standard").removeClass("hide");
-                    try { FilterGrid("GridAufgaben"); }
+                    try { FilterGridPreservePage("GridAufgaben"); }
                     catch (e) { }
                 } else {
                     SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
@@ -271,7 +272,7 @@
             success: function (result) {
                 if (result.success) {
                     SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
-                    try { FilterGrid("GridAufgaben"); }
+                    try { FilterGridPreservePage("GridAufgaben"); }
                     catch (e) { }
            
                 } else {
