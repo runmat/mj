@@ -272,6 +272,8 @@ namespace SapORM
 
             //new FunctionReflector("Z_M_BAPIRDZ").WriteOrmForExportTableStructures("IZKFZKZ", "UN");
 
+            //new FunctionReflector("Z_M_KLAERFAELLEVW").WriteOrmForExportTableStructures("I_KUNNR", "0000336070");      
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
