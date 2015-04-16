@@ -149,6 +149,30 @@ namespace CkgDomainLogic.Leasing.Models
             }
         }
 
+        static public ModelMapping<Z_M_KLAERFAELLEVW.GT_WEB, NichtDurchfuehrbareZulassung> Z_M_KLAERFAELLEVW_GT_WEB_To_NichtDurchfuehrbareZulassung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_KLAERFAELLEVW.GT_WEB, NichtDurchfuehrbareZulassung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.AuftragsNr = s.VBELN;
+                        d.Belegdatum = s.AUDAT;
+                        d.FahrgestellNr = s.ZZFAHRG;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.KlaerfallTextZeile1 = s.TDLINE1;
+                        d.KlaerfallTextZeile2 = s.TDLINE2;
+                        d.KlaerfallTextZeile3 = s.TDLINE3;
+                        d.KlaerfallTextZeile4 = s.TDLINE4;
+                        d.KlaerfallTextZeile5 = s.TDLINE5;
+                        d.KundenNr = s.KUNNR;
+                        d.ReferenzNr = s.ZZREFNR;
+                    }
+                ));
+            }
+        }
+
         #endregion
 
 
