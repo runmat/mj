@@ -122,7 +122,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             Informationen = DataService.GetInfos(AktuellerAuftragVorgangsNr);
             Dokumente = DataService.GetDokumentInfos(AktuellerAuftragVorgangsNr);
-            Aufgaben = DataService.GetToDos(AktuellerAuftragVorgangsNr);
+            RefreshAufgaben();
         }
 
         public void FilterAuftraege(string filterValue, string filterProperties)
@@ -158,6 +158,8 @@ namespace CkgDomainLogic.WFM.ViewModels
             {
                 AktuellerAuftrag.AbmeldeArtCode = "2";
                 AktuellerAuftrag.Anmerkung = remark;
+
+                RefreshAufgaben();
             }
 
             return message;
@@ -297,13 +299,18 @@ namespace CkgDomainLogic.WFM.ViewModels
             return (hoechsteNummer == lfdNr);
         }
 
+        private void RefreshAufgaben()
+        {
+            Aufgaben = DataService.GetToDos(AktuellerAuftragVorgangsNr);
+            PropertyCacheClear(this, m => m.AufgabenFiltered);
+        }
+
         public string ConfirmToDo(int lfdNr, string remark)
         {
             var message = DataService.ConfirmToDo(AktuellerAuftragVorgangsNr.ToInt(), lfdNr, remark);
             if (message.IsNullOrEmpty())
             {
-                Aufgaben = DataService.GetToDos(AktuellerAuftragVorgangsNr);
-                PropertyCacheClear(this, m => m.AufgabenFiltered);
+                RefreshAufgaben();
             }
 
             return message;

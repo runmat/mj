@@ -223,10 +223,18 @@
                 }
             }
         });
+
+        return false;
     }
 
     function SetOrderToKlaerfall(a, vorgangsNr) {
 
+        var remark = a.parent().find(".tbNoteForToDo").val();
+
+        if (remark == null || remark == '') {
+            alert('@(Localize.SetClarificationCase.ToJavascriptString() + ": " + Localize.PleaseProvideRemark.ToJavascriptString())');
+            return false;
+        }
         if (!confirm('@(Localize.SetClarificationCase.ToJavascriptString() + "?")'))
             return false;
         
@@ -235,12 +243,14 @@
             type: "POST",
             url: "SetOrderToKlaerfall",
             loadingShow: true,
-            data: { vorgangsNr: vorgangsNr, remark: a.parent().find(".tbNoteForToDo").val() },
+            data: { vorgangsNr: vorgangsNr, remark: remark },
             success: function (result) {
                 if (result.success) {
                     SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
                     $(".wmf-uebersicht-section-abmeldeart-standard").addClass("hide");
                     $(".wmf-uebersicht-section-abmeldeart-nicht-standard").removeClass("hide");
+                    try { FilterGrid("GridAufgaben"); }
+                    catch (e) { }
                 } else {
                     SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
                 }
