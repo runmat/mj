@@ -157,7 +157,6 @@ namespace CkgDomainLogic.WFM.ViewModels
             if (message.IsNullOrEmpty())
             {
                 AktuellerAuftrag.AbmeldeArtCode = "2";
-                AktuellerAuftrag.Anmerkung = remark;
 
                 RefreshAufgaben();
             }
