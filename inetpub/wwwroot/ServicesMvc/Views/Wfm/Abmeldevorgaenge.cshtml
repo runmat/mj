@@ -222,6 +222,10 @@
     }
 
     function SetOrderToKlaerfall(a, vorgangsNr) {
+
+        if (!confirm('@(Localize.SetClarificationCase.ToJavascriptString() + "?")'))
+            return false;
+        
         $.ajax(
         {
             type: "POST",

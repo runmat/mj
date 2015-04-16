@@ -88,8 +88,9 @@
 
         // build grid page sizer
         $("#" + gridName + " .grid-page-sizer").change(function () {
-            grid.pageSize = $(this).val();
-            grid.pageTo(1);
+            var thatGrid = $("#" + gridName).data("tGrid");
+            thatGrid.pageSize = $(this).val();
+            thatGrid.pageTo(1);
         });
 
         $("#" + gridName + " .grid-column-overall-quick-filter-reset").click(function () {
