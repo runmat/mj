@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@{ var gridName = "GridNichtDurchfuehrbareZulassungen"; }
+
+@(Html.Telerik()
+    .Grid<NichtDurchfuehrbareZulassung>()
+    .Name(gridName)
+    .XGroup(gridName)
+    .XAjaxDataBinding("NichtDurchfuehrbareZulassungenAjaxBinding", "Leasing")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.FahrgestellNr);
+            columns.XBound(c => c.ReferenzNr);
+            columns.XBound(c => c.KlaerfallText).HtmlAttributes(new { style = "min-width: 500px; white-space: normal" });
+            columns.XBound(c => c.Belegdatum).Format("{0:dd.MM.yyyy}");
+        }
+    )
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridNichtDurchfuehrbareZulassungen"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr).Ascending())
+    .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportNichtDurchfuehrbareZulassungenFilteredExcel", "Leasing");
+            commands.FilteredDataCommand("ExportNichtDurchfuehrbareZulassungenFilteredPDF", "Leasing");
+        }
+    )
+)
