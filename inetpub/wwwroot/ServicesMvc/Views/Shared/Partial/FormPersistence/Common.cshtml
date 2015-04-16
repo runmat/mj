@@ -9,7 +9,7 @@
          font-weight: bold!important;
          margin-right: 5px;
          display: inline;
-         float: right;
+         margin-left: 20px;
      }
      
      input[type=text].persistable-selector-current-textbox {
@@ -169,17 +169,21 @@
 
 
     function PersistableSelectorSaveGrid(objectKey) {
-        AjaxSetPersistableMode("savegrid", form, objectKey, function (result) {
-            if (result.success)
-                alert("grid successfully saved!");
-            else
-                alert("CAUTION, grid saving ERROR!");
+        AjaxSetPersistableMode("savegrid", null, objectKey, function (result) {
+            if (result.success) {
+                GridCaptionHintShowAsSuccess("@Localize.SaveSuccessful.ToJavascriptString()");
+                setTimeout(function () {
+                    GridCaptionHintHide();
+                }, 1500);
+            } else
+                alert("ACHTUNG, Fehler beim Speichern der Grid Einstellungen!");
         });
     }
 
     function AjaxSetPersistableMode(mode, form, objectKey, callBackFunction) {
 
-        form.animate({ opacity: "0.1" }, 300);
+        if (form != null)
+            form.animate({ opacity: "0.1" }, 300);
         
         $.ajax(
             {

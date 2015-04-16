@@ -20,7 +20,7 @@
     <div class="persistable-selector-current-for-grid-results">
         <span class="margin-right-5">@Model.ObjectName</span>
 
-        <button id="persistable-grid-save-button" class='btn mini yellow' title="@Localize.Save">
+        <button id="persistable-grid-save-button" class='btn mini yellow' title="@Localize.FormPersistableSelector_FormSaveGrid">
             <i class='icon-save'></i>
         </button>
     </div>
@@ -35,7 +35,6 @@
     //setTimeout(function() { PrepareGridFromPersistedState(); }, 1000);
 
     $("#persistable-grid-save-button").on('click', function (e) {
-
         PersistableSelectorSaveGrid(objectKey);
 
         e.stopPropagation();

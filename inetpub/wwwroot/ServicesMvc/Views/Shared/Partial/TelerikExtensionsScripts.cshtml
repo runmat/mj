@@ -22,12 +22,7 @@
         
         if (gridDataBoundFirstTime) {
             grid.css("opacity", 0.1);
-            var closestCaption = grid.closest(".FormSearchResultsGrid").find(".caption");
-            var waitHint = closestCaption.find(".wait-hint");
-            if (waitHint == null || waitHint.length == 0)
-                closestCaption.append("<span class='wait-hint alert warning hide'>@Localize.PleaseWait.ToJavascriptString()</span>");
-            waitHint = closestCaption.find(".wait-hint");
-            waitHint.show();
+            GridCaptionHintShowAsWait(grid);
         }
 
         setTimeout(function () {
@@ -43,7 +38,7 @@
             _filteredData_force_Grid_OnColumnReorder = false;
 
             if (gridDataBoundFirstTime) {
-                waitHint.hide();
+                GridCaptionHintHide(grid);
                 grid.animate({ opacity: "1.0" }, 300);
             }
         }, 500);
@@ -204,5 +199,43 @@
         }
         catch(e) {}
     }
-   
+
+    function GridCaptionGetWaitHintElement(grid) {
+        var closestCaption;
+        if (typeof (grid) == "undefined")
+            closestCaption = $(".FormSearchResultsGrid").find(".portlet-title");
+        else
+            closestCaption = grid.closest(".FormSearchResultsGrid").find(".portlet-title");
+
+        var waitHint = closestCaption.find(".grid-caption-alert");
+        return waitHint;
+    }
+
+    function GridCaptionHintHide(grid) {
+        var waitHint = GridCaptionGetWaitHintElement(grid);
+
+        waitHint.hide();
+    }
+
+    function GridCaptionHintShowAsWait(grid) {
+        var waitHint = GridCaptionGetWaitHintElement(grid);
+
+        waitHint.removeClass("alert-success");
+        waitHint.addClass("warning");
+
+        waitHint.html("@Localize.PleaseWait.ToJavascriptString()");
+
+        waitHint.show();
+    }
+
+    function GridCaptionHintShowAsSuccess(successMessage, grid) {
+        var waitHint = GridCaptionGetWaitHintElement(grid);
+
+        waitHint.removeClass("warning");
+        waitHint.addClass("alert-success");
+
+        waitHint.html(successMessage);
+
+        waitHint.show();
+    }   
 </script>
