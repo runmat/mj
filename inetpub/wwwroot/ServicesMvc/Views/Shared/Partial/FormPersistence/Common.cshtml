@@ -192,11 +192,14 @@
                 data: { mode: mode, objectKey: objectKey },
                 loadingShow: true,
                 success: function (result) {
+                    
+                    LoadingShow();
+                    
                     callBackFunction(result);
 
                     setTimeout(function () {
                         LoadingHide();
-                    }, 500);
+                    }, 2000);
                 }
             });
         
