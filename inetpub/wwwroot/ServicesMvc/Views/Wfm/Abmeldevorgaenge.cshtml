@@ -203,6 +203,10 @@
     }
 
     function CancelOrder(vorgangsNr) {
+
+        if (!confirm('@(Localize.CancelOrder.ToJavascriptString() + "?")'))
+            return false;
+
         $.ajax(
         {
             type: "POST",
