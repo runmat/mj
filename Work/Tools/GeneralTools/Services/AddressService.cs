@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Linq;
+using System.Text.RegularExpressions;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 
@@ -8,6 +9,14 @@ namespace GeneralTools.Services
     {
         public static void ExtractStreetAndHouseNo(string streetAndHouseNo, out string street, out string houseNo)
         {
+            if (streetAndHouseNo.IsNotNullOrEmpty() && streetAndHouseNo.Length > 0 &&
+                new[] {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'}.ToList().Contains(streetAndHouseNo[0]))
+            {
+                street = streetAndHouseNo;
+                houseNo = "";
+                return;
+            }
+
             var match = Regex.Match(streetAndHouseNo, @"(?<strasse>.*?\.*)\s*(?<hausnr>\d+\s*.*)");
             
             street = match.Groups["strasse"].Value;
