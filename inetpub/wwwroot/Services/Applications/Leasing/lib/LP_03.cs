@@ -165,7 +165,7 @@ namespace Leasing.lib
 			else { return null; }
 		}
 
-		public void Fill(string strAppID, string strSessionID, Page page, string status, string type, Boolean Mahn)
+		public void Fill(string strAppID, string strSessionID, Page page, string status, string type, Boolean mahn)
 		{
 			m_strClassAndMethod = "LP_03.FILL";
 			m_strAppID = strAppID;
@@ -207,9 +207,12 @@ namespace Leasing.lib
 					DataTable tblTemp2 = myProxy.getExportTable("GT_WEB");
 					
 
-                     if( Mahn == true)
+                     if (mahn)
                      {
-                        tblTemp2.DefaultView.RowFilter = "STORT <> '0001' AND STAT <> 'I0320'";
+                         // Ticket #2015040810000397, MSc / MJe, 08.04.2015
+                         //   " Der Standort 0001 darf nur dann ausgegrenzt werden wenn der Klärfallgrund (Feld ZZLABEL = KF1 oder KF2) ist. "
+                         //   " In allen anderen Fällen sollen die Klärfälle trotzdem angezeigt werden. "
+                        tblTemp2.DefaultView.RowFilter = "NOT (STORT = '0001' AND (ZZLABEL = 'KF1' OR ZZLABEL = 'KF2'))";
                         tblTemp2 = tblTemp2.DefaultView.ToTable();
                      }
 
