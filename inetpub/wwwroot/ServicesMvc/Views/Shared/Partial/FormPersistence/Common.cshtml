@@ -131,6 +131,8 @@
  
 <script type="text/javascript">
 
+    App.unblockUI2($(".persistable-form-dropdown-menu").closest("form"));
+
     function PersistableSelectorDelete(objectKey) {
         var form = $(".persistable-form-dropdown-menu").closest("form");
         AjaxSetPersistableMode("delete", form, objectKey, function (result) {
@@ -182,24 +184,20 @@
 
     function AjaxSetPersistableMode(mode, form, objectKey, callBackFunction) {
 
-        if (form != null)
-            form.animate({ opacity: "0.1" }, 300);
-        
+        if (form != null) {
+            App.blockUI2(form);
+        }
+
         $.ajax(
             {
                 type: "POST",
                 url: "PersistablePartialViewSetMode",
                 data: { mode: mode, objectKey: objectKey },
-                loadingShow: true,
+                loadingShow: false,
                 success: function (result) {
-                    
-                    LoadingShow();
                     
                     callBackFunction(result);
 
-                    setTimeout(function () {
-                        LoadingHide();
-                    }, 500);
                 }
             });
         
