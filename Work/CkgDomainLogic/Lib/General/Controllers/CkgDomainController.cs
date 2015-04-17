@@ -263,7 +263,7 @@ namespace CkgDomainLogic.General.Controllers
             var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
 
             var grid = (IGrid)SessionHelper.GetSessionObject(string.Format("Telerik_Grid_{0}", modelType.Name));
-            if (grid == null || grid.Grouping == null || grid.Grouping.Groups == null || grid.Grouping.Groups.Count == 0)
+            if (grid == null || (groupBy.NotNullOrEmpty().Length <= 1 && (grid.Grouping == null || grid.Grouping.Groups == null || grid.Grouping.Groups.Count == 0)))
                 new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ExcelExport", dt);
             else
             {
@@ -272,7 +272,11 @@ namespace CkgDomainLogic.General.Controllers
 
                 var gridAggregateColumnNames = GetValidGridAggregatesColumnNames(grid);
 
-                new ExcelDocumentFactory().CreateExcelGroupedDocumentAndSendAsResponse("ExcelExport", dt, gridAggregateColumnNames);
+                var groupByFirstColumn = groupBy.Split('~').FirstOrDefault();
+                if (groupByFirstColumn.NotNullOrEmpty().Contains("-"))
+                    groupByFirstColumn = groupBy.Split('-').FirstOrDefault();
+
+                new ExcelDocumentFactory().CreateExcelGroupedDocumentAndSendAsResponse("ExcelExport", dt, gridAggregateColumnNames, groupByFirstColumn);
             }
 
             return new EmptyResult();
