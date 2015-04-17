@@ -468,6 +468,14 @@ namespace GeneralTools.Models
         {
             return (stringValue.NotNullOrEmpty().ToUpper() == "TRUE");
         }
+
+        public static double ToDouble(this string stringValue, double defaultValue = -1)
+        {
+            double tmp;
+            if (!double.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return defaultValue;
+            return tmp;
+        }
     }
 
     public static class ExpressionExtensions

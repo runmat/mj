@@ -86,7 +86,6 @@ Public Class MeldungDAD
         Kennzeichen = ""
     End Sub
 
-
     ''' <summary>
     ''' Vorgang speichern. Bapi: Z_ZLD_SAVE_TAGGLEICHE_MELDUNG
     ''' </summary>

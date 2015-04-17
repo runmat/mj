@@ -1,4 +1,5 @@
-﻿
+﻿Imports KBSBase
+
 Public Class Umlagerung
     Inherits ErrorHandlingClass
 
@@ -12,8 +13,6 @@ Public Class Umlagerung
     Private mstrBelegNrParken As String = ""
     Private mstrFilePath As String = ""
     Private mstrMandant As String = ""
-
-    Dim SAPExc As SAPExecutor.SAPExecutor
 
 #Region "Properties"
 
@@ -182,22 +181,15 @@ Public Class Umlagerung
     Public Sub ShowERP()
         ClearErrorState()
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
+            S.AP.Init("Z_FIL_EFA_UML_MAT", "I_KOSTL", mstrKostStelle)
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle, 10})
-            dt.Rows.Add(New Object() {"GT_MAT", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_UML_MAT", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode = 0 Then
+                mArtikel = S.AP.GetExportTable("GT_MAT")
             Else
-                mArtikel = DirectCast(dt.Rows(1)("Data"), DataTable)
-
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -212,112 +204,83 @@ Public Class Umlagerung
     Public Sub ChangeERP()
         ClearErrorState()
 
-        Dim tblSAP As New DataTable()
-        tblSAP.Columns.Add("MATNR", String.Empty.GetType)
-        tblSAP.Columns.Add("MENGE", String.Empty.GetType)
-        tblSAP.Columns.Add("EAN11", String.Empty.GetType)
-        tblSAP.Columns.Add("LTEXT_NR", String.Empty.GetType)
-        tblSAP.Columns.Add("KENNZFORM", String.Empty.GetType)
-
-        Dim tmpSAPRow As DataRow
-
         If Umlagerung.Rows.Count = 0 Then
-            RaiseError("", "Ausgewählte Artikel konnten nicht gefunden werden!")
+            RaiseError("9999", "Ausgewählte Artikel konnten nicht gefunden werden!")
             Exit Sub
         End If
 
         Dim LSTS As New LongStringToSap
 
-        For Each tmprow As DataRow In Umlagerung.Rows
-            tmpSAPRow = tblSAP.NewRow
-            tmpSAPRow("MATNR") = tmprow("MATNR").ToString
-            tmpSAPRow("MENGE") = tmprow("MENGE").ToString
-            tmpSAPRow("EAN11") = tmprow("EAN11").ToString
-            If tmprow("LTEXT_NR").ToString = "" Then
-                If tmprow("LTEXT").ToString <> "" Then
-                    tmpSAPRow("LTEXT_NR") = LSTS.InsertStringERP(tmprow("LTEXT").ToString, "UMLT")
-                End If
-            Else
-                LSTS.UpdateStringERP(tmprow("LTEXT").ToString, tmprow("LTEXT_NR").ToString)
-                tmpSAPRow("LTEXT_NR") = tmprow("LTEXT_NR").ToString
-            End If
-
-            tmpSAPRow("KENNZFORM") = tmprow("KENNZFORM").ToString
-            tblSAP.Rows.Add(tmpSAPRow)
-        Next
-
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+            S.AP.Init("Z_FIL_EFA_UML_STEP1")
+            Dim tblSAP As DataTable = S.AP.GetImportTable("GT_MAT")
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            For Each tmprow As DataRow In Umlagerung.Rows
+                Dim tmpSAPRow As DataRow = tblSAP.NewRow
+                tmpSAPRow("MATNR") = tmprow("MATNR").ToString
+                tmpSAPRow("MENGE") = tmprow("MENGE").ToString
+                tmpSAPRow("EAN11") = tmprow("EAN11").ToString
+                If tmprow("LTEXT_NR").ToString = "" Then
+                    If tmprow("LTEXT").ToString <> "" Then
+                        tmpSAPRow("LTEXT_NR") = LSTS.InsertStringERP(tmprow("LTEXT").ToString, "UMLT")
+                    End If
+                Else
+                    LSTS.UpdateStringERP(tmprow("LTEXT").ToString, tmprow("LTEXT_NR").ToString)
+                    tmpSAPRow("LTEXT_NR") = tmprow("LTEXT_NR").ToString
+                End If
 
-            dt.Rows.Add(New Object() {"I_KOSTL_IN", False, mstrKostStelleNeu, 4})
-            dt.Rows.Add(New Object() {"GT_MAT", False, tblSAP})
-            dt.Rows.Add(New Object() {"I_KOSTL_OUT", False, mstrKostStelle, 4})
+                tmpSAPRow("KENNZFORM") = tmprow("KENNZFORM").ToString
+                tblSAP.Rows.Add(tmpSAPRow)
+            Next
+
+            'erneutes Init erforderlich nach Aufruf der Langtext-Bapis
+            S.AP.Init("Z_FIL_EFA_UML_STEP1")
+
+            S.AP.SetImportParameter("I_KOSTL_IN", mstrKostStelleNeu)
+            S.AP.SetImportParameter("I_KOSTL_OUT", mstrKostStelle)
+            S.AP.SetImportParameter("I_BUDAT", DateTime.Today)
+
             If Not String.IsNullOrEmpty(mstrBelegNrParken) Then
-                dt.Rows.Add(New Object() {"I_BELNR", False, mstrBelegNrParken.PadLeft(10, "0"c), 10})
+                S.AP.SetImportParameter("I_BELNR", mstrBelegNrParken.PadLeft(10, "0"c))
             End If
-            dt.Rows.Add(New Object() {"GT_BELNR", True})
-            dt.Rows.Add(New Object() {"I_BUDAT", False, DateTime.Today, 8})
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_UML_STEP1", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-            Else
+            If S.AP.ResultCode = 0 Then
                 mstrBelegNrParken = ""
 
-                Dim BelegTable As DataTable
-                Dim retRows As DataRow = dt.Select("Fieldname='GT_BELNR'")(0)
-                If Not retRows Is Nothing Then
-                    BelegTable = DirectCast(retRows("Data"), DataTable)
-                    If BelegTable.Rows.Count > 0 Then
-                        For i = 0 To BelegTable.Rows.Count - 1
-                            mstrBelegNr += BelegTable.Rows(i)("BELNR").ToString & vbCrLf
-                        Next
-                    End If
+                Dim BelegTable As DataTable = S.AP.GetExportTable("GT_BELNR")
+                If BelegTable.Rows.Count > 0 Then
+                    For i = 0 To BelegTable.Rows.Count - 1
+                        mstrBelegNr += BelegTable.Rows(i)("BELNR").ToString & vbCrLf
+                    Next
                 End If
 
-                If mstrBelegNr = "" Then
-                    RaiseError("", "Es wurde keine Belegnummer erzeugt!")
+                If String.IsNullOrEmpty(mstrBelegNr) Then
+                    RaiseError("9999", "Es wurde keine Belegnummer erzeugt!")
                 End If
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub CheckKostStelleERP(ByVal NeuKost As String)
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+            S.AP.Init("Z_FIL_EFA_GET_KOSTL", "I_KOSTL_SEND, I_KOSTL_RECEIVE", KostStelle.PadLeft(10, "0"c), NeuKost.PadLeft(10, "0"c))
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"I_KOSTL_SEND", False, KostStelle.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_KOSTL_RECEIVE", False, NeuKost.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"E_KOSTL", True})
-            dt.Rows.Add(New Object() {"E_KTEXT", True})
-            dt.Rows.Add(New Object() {"E_LTEXT", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_GET_KOSTL", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode = 0 Then
+                mstrKostText = S.AP.GetExportParameter("E_KTEXT")
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_KTEXT'")(0)
-                If Not retRows Is Nothing Then
-                    mstrKostText = retRows("Data").ToString
-                End If
-            End If
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
 
-        Catch ex As Exception
-            RaiseError("9999", ex.Message)
-        Finally
-            If ErrorOccured Then
                 Select Case ErrorCode
                     Case "102"
                         RaiseError("102", "KST " & NeuKost & " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben.")
@@ -325,38 +288,27 @@ Public Class Umlagerung
                         RaiseError("104", "KST nicht zulässig! Bitte richtige KST eingeben.")
                 End Select
             End If
-        End Try
 
+        Catch ex As Exception
+            RaiseError("9999", ex.Message)
+        End Try
     End Sub
 
     Public Function GetListeAusparkenERP() As DataTable
         ClearErrorState()
+
         Dim tblListeAusparken As New DataTable()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+            S.AP.Init("Z_FIL_EFA_UML_PARK_LISTE", "I_KOSTL_IN", mstrKostStelle)
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"I_KOSTL_IN", False, mstrKostStelle, 4})
-            dt.Rows.Add(New Object() {"GT_PARK_LISTE", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_UML_PARK_LISTE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                Select Case SAPExc.E_SUBRC
-                    Case "101"
-                        'E_MESSAGE = ""
-                    Case Else
-                        RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-                End Select
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_PARK_LISTE'")(0)
-
-            If Not retRows Is Nothing Then
-                tblListeAusparken = DirectCast(retRows("Data"), DataTable)
-            End If
+            tblListeAusparken = S.AP.GetExportTable("GT_PARK_LISTE")
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
@@ -369,124 +321,96 @@ Public Class Umlagerung
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
-            If Umlagerung.Rows.Count > 0 Then
-                Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-
-                If String.IsNullOrEmpty(mstrBelegNrParken) Then
-
-                    'Insert
-                    dt.Rows.Add(New Object() {"I_KOSTL_IN", False, mstrKostStelleNeu, 4})
-                    dt.Rows.Add(New Object() {"I_KOSTL_OUT", False, mstrKostStelle, 4})
-
-                    Dim tblTemp As New DataTable
-                    tblTemp.Columns.Add("MATNR")
-                    tblTemp.Columns.Add("MENGE")
-                    tblTemp.Columns.Add("EAN11")
-                    tblTemp.Columns.Add("LTEXT_NR")
-                    tblTemp.Columns.Add("KENNZFORM")
-
-                    Dim LSTS As New LongStringToSap
-
-                    For Each row As DataRow In Umlagerung.Rows
-                        Dim tRow As DataRow = tblTemp.NewRow()
-                        tRow("MATNR") = row("MATNR")
-                        tRow("MENGE") = row("MENGE")
-                        tRow("EAN11") = row("EAN11")
-                        tRow("KENNZFORM") = row("KENNZFORM")
-                        'Steuerung der Langtexte
-                        Dim tmpText As String = ""
-                        If Not IsDBNull(row("LTEXT")) Then
-                            tmpText = CStr(row("LTEXT"))
-                        End If
-                        If tmpText <> "" And row("LTEXT_NR").ToString.Length = 0 Then
-                            tRow("LTEXT_NR") = LSTS.InsertStringERP(tmpText, "UMLT")
-                        ElseIf tRow("LTEXT_NR").ToString.Length = 0 Then
-                            LSTS.UpdateStringERP(tmpText, row("LTEXT_NR").ToString)
-                            tRow("LTEXT_NR") = row("LTEXT_NR").ToString
-                        End If
-
-                        tblTemp.Rows.Add(tRow)
-                    Next
-                    dt.Rows.Add(New Object() {"GT_MAT", False, tblTemp})
-                    dt.Rows.Add(New Object() {"E_BELNR", True})
-
-                    SAPExc.ExecuteERP("Z_FIL_EFA_UML_PARK_INS", dt)
-                Else
-
-                    'Update
-                    Dim tblKopf As New DataTable
-                    tblKopf.Columns.Add("MANDT")
-                    tblKopf.Columns.Add("BELNR")
-                    tblKopf.Columns.Add("LGORT_SEND")
-                    tblKopf.Columns.Add("LGORT_EMPF")
-                    tblKopf.Columns.Add("ERDAT")
-
-                    Dim kRow As DataRow = tblKopf.NewRow()
-                    kRow("MANDT") = mstrMandant
-                    kRow("BELNR") = mstrBelegNrParken.PadLeft(10, "0"c)
-                    kRow("LGORT_SEND") = mstrKostStelle
-                    kRow("LGORT_EMPF") = mstrKostStelleNeu
-                    tblKopf.Rows.Add(kRow)
-
-                    dt.Rows.Add(New Object() {"IS_UMLK_PARK", False, tblKopf})
-
-                    Dim tblTemp As New DataTable
-                    tblTemp.Columns.Add("MANDT")
-                    tblTemp.Columns.Add("BELNR")
-                    tblTemp.Columns.Add("POSNR")
-                    tblTemp.Columns.Add("MATNR")
-                    tblTemp.Columns.Add("MENGE")
-                    tblTemp.Columns.Add("EAN11")
-                    tblTemp.Columns.Add("LTEXT_NR")
-                    tblTemp.Columns.Add("KENNZFORM")
-
-                    Dim LSTS As New LongStringToSap
-
-                    For Each row As DataRow In Umlagerung.Rows
-                        Dim tRow As DataRow = tblTemp.NewRow()
-                        tRow("MANDT") = mstrMandant
-                        tRow("BELNR") = mstrBelegNrParken.PadLeft(10, "0"c)
-                        tRow("POSNR") = row("POSNR")
-                        tRow("MATNR") = row("MATNR")
-                        tRow("MENGE") = row("MENGE")
-                        tRow("EAN11") = row("EAN11")
-                        tRow("KENNZFORM") = row("KENNZFORM")
-                        'Steuerung der Langtexte
-                        Dim tmpText As String = ""
-                        If Not IsDBNull(row("LTEXT")) Then
-                            tmpText = CStr(row("LTEXT"))
-                        End If
-                        If tmpText <> "" And row("LTEXT_NR").ToString.Length = 0 Then
-                            tRow("LTEXT_NR") = LSTS.InsertStringERP(tmpText, "UMLT")
-                        ElseIf tRow("LTEXT_NR").ToString.Length = 0 Then
-                            LSTS.UpdateStringERP(tmpText, row("LTEXT_NR").ToString)
-                            tRow("LTEXT_NR") = row("LTEXT_NR").ToString
-                        End If
-
-                        tblTemp.Rows.Add(tRow)
-                    Next
-                    dt.Rows.Add(New Object() {"GT_UMLP_PARK", False, tblTemp})
-
-                    SAPExc.ExecuteERP("Z_FIL_EFA_UML_PARK_UPD", dt)
-                End If
-
-                If (SAPExc.ErrorOccured) Then
-                    RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-                Else
-                    mUmlagerung.Rows.Clear()
-                    mstrKostStelleNeu = ""
-                    mstrBelegNrParken = ""
-                End If
-
-            Else
+            If Umlagerung.Rows.Count = 0 Then
                 RaiseError("0001", "Keine Datensätze für Umlagerung vorhanden!")
+                Exit Sub
             End If
+
+            Dim LSTS As New LongStringToSap
+
+            If String.IsNullOrEmpty(mstrBelegNrParken) Then
+                'Insert
+                S.AP.Init("Z_FIL_EFA_UML_PARK_INS")
+                Dim tblTemp As DataTable = S.AP.GetImportTable("GT_MAT")
+
+                For Each row As DataRow In Umlagerung.Rows
+                    Dim tRow As DataRow = tblTemp.NewRow()
+                    tRow("MATNR") = row("MATNR")
+                    tRow("MENGE") = row("MENGE")
+                    tRow("EAN11") = row("EAN11")
+                    tRow("KENNZFORM") = row("KENNZFORM")
+                    'Steuerung der Langtexte
+                    Dim tmpText As String = ""
+                    If Not IsDBNull(row("LTEXT")) Then
+                        tmpText = CStr(row("LTEXT"))
+                    End If
+                    If tmpText <> "" And row("LTEXT_NR").ToString.Length = 0 Then
+                        tRow("LTEXT_NR") = LSTS.InsertStringERP(tmpText, "UMLT")
+                    ElseIf tRow("LTEXT_NR").ToString.Length = 0 Then
+                        LSTS.UpdateStringERP(tmpText, row("LTEXT_NR").ToString)
+                        tRow("LTEXT_NR") = row("LTEXT_NR").ToString
+                    End If
+
+                    tblTemp.Rows.Add(tRow)
+                Next
+
+                'erneutes Init erforderlich nach Aufruf der Langtext-Bapis
+                S.AP.Init("Z_FIL_EFA_UML_PARK_INS", "I_KOSTL_IN, I_KOSTL_OUT", mstrKostStelleNeu, mstrKostStelle)
+            Else
+                'Update
+                S.AP.Init("Z_FIL_EFA_UML_PARK_UPD")
+                Dim tblKopf As DataTable = S.AP.GetImportTable("IS_UMLK_PARK")
+
+                Dim kRow As DataRow = tblKopf.NewRow()
+                kRow("MANDT") = mstrMandant
+                kRow("BELNR") = mstrBelegNrParken.PadLeft(10, "0"c)
+                kRow("LGORT_SEND") = mstrKostStelle
+                kRow("LGORT_EMPF") = mstrKostStelleNeu
+                tblKopf.Rows.Add(kRow)
+
+                Dim tblPos As DataTable = S.AP.GetImportTable("GT_UMLP_PARK")
+
+                For Each row As DataRow In Umlagerung.Rows
+                    Dim tRow As DataRow = tblPos.NewRow()
+                    tRow("MANDT") = mstrMandant
+                    tRow("BELNR") = mstrBelegNrParken.PadLeft(10, "0"c)
+                    tRow("POSNR") = row("POSNR")
+                    tRow("MATNR") = row("MATNR")
+                    tRow("MENGE") = row("MENGE")
+                    tRow("EAN11") = row("EAN11")
+                    tRow("KENNZFORM") = row("KENNZFORM")
+                    'Steuerung der Langtexte
+                    Dim tmpText As String = ""
+                    If Not IsDBNull(row("LTEXT")) Then
+                        tmpText = CStr(row("LTEXT"))
+                    End If
+                    If tmpText <> "" And row("LTEXT_NR").ToString.Length = 0 Then
+                        tRow("LTEXT_NR") = LSTS.InsertStringERP(tmpText, "UMLT")
+                    ElseIf tRow("LTEXT_NR").ToString.Length = 0 Then
+                        LSTS.UpdateStringERP(tmpText, row("LTEXT_NR").ToString)
+                        tRow("LTEXT_NR") = row("LTEXT_NR").ToString
+                    End If
+
+                    tblPos.Rows.Add(tRow)
+                Next
+
+                'erneutes Init erforderlich nach Aufruf der Langtext-Bapis
+                S.AP.Init("Z_FIL_EFA_UML_PARK_UPD")
+            End If
+
+            S.AP.Execute()
+
+            If S.AP.ResultCode = 0 Then
+                mUmlagerung.Rows.Clear()
+                mstrKostStelleNeu = ""
+                mstrBelegNrParken = ""
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+            End If
+
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Function AusparkenERP(ByVal BelNr As String) As DataTable
@@ -597,7 +521,7 @@ Public Class Umlagerung
             End If
 
         Catch ex As Exception
-           RaiseError("9999", ex.Message)
+            RaiseError("9999", ex.Message)
         End Try
 
     End Sub

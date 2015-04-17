@@ -10,7 +10,6 @@
         Private protokoll(,) As FilialbuchEntry
         Private length As Integer = 0
         Private dtExport As DataTable
-        Private SapExc As SAPExecutor.SAPExecutor
         Private lstVorgangsarten As List(Of VorgangsartDetails)
         Private mFehler As Boolean
         Private mStatus As String
@@ -40,8 +39,7 @@
             End Get
         End Property
 
-        Sub New(ByRef SapExc As SAPExecutor.SAPExecutor, ByRef lstVorgänge As List(Of VorgangsartDetails))
-            Me.SapExc = SapExc
+        Sub New(ByRef lstVorgänge As List(Of VorgangsartDetails))
             protokoll = New FilialbuchEntry(-1, 1) {}
             lstVorgangsarten = lstVorgänge
         End Sub
@@ -83,7 +81,7 @@
 
         Public Sub EintragAbschliessen(ByVal rowindex As Integer, ByVal BedienernummerAbs As String, ByVal stat As IFilialbuchEntry.EntryStatus)
             Dim Aus As Ausgang = protokoll(rowindex, Side.Output)
-            Aus.EintragAbschliessen(SapExc, BedienernummerAbs, stat)
+            Aus.EintragAbschliessen(BedienernummerAbs, stat)
             mFehler = Aus.ErrorOccured
             mStatus = Aus.ErrorCode
             mMessage = Aus.ErrorMessage
@@ -91,7 +89,7 @@
 
         Public Sub EintragBeantworten(ByVal rowindex As Integer, ByVal BedienernummerAbs As String, ByVal stat As IFilialbuchEntry.EmpfängerStatus)
             Dim Ein As Eingang = protokoll(rowindex, Side.Input)
-            Ein.EintragBeantworten(SapExc, BedienernummerAbs, stat)
+            Ein.EintragBeantworten(BedienernummerAbs, stat)
             mFehler = Ein.ErrorOccured
             mStatus = Ein.ErrorCode
             mMessage = Ein.ErrorMessage
@@ -99,7 +97,7 @@
 
         Public Sub EintragBeantworten(ByVal rowindex As Integer, ByVal Betreff As String, ByVal Text As String, ByVal BedienernummerAbs As String)
             Dim Ein As Eingang = protokoll(rowindex, Side.Input)
-            Ein.EintragBeantworten(SapExc, Betreff, Text, BedienernummerAbs)
+            Ein.EintragBeantworten(Betreff, Text, BedienernummerAbs)
             mFehler = Ein.ErrorOccured
             mStatus = Ein.ErrorCode
             mMessage = Ein.ErrorMessage
@@ -107,7 +105,7 @@
 
         Public Sub Rückfrage(ByVal rowindex As Integer, ByVal Betreff As String, ByVal Text As String, ByVal BedienernummerAbs As String, ByVal kostenstelle As String)
             Dim Ein As Eingang = protokoll(rowindex, Side.Input)
-            Ein.Rückfrage(SapExc, Betreff, Text, BedienernummerAbs, kostenstelle)
+            Ein.Rückfrage(Betreff, Text, BedienernummerAbs, kostenstelle)
             mFehler = Ein.ErrorOccured
             mStatus = Ein.ErrorCode
             mMessage = Ein.ErrorMessage

@@ -1,4 +1,6 @@
-﻿Namespace DigitalesFilialbuch
+﻿Imports KBSBase
+
+Namespace DigitalesFilialbuch
     Public Class Eingang
         Inherits FilialbuchEntry
 
@@ -18,8 +20,7 @@
             Me.VON = von
         End Sub
 
-        Public Sub EintragBeantworten(ByRef SapExc As SAPExecutor.SAPExecutor, ByVal betr As String, ByVal Text As String, ByVal BedienernummerAbs As String)
-            ' FehlerStatus zurücksetzen
+        Public Sub EintragBeantworten(ByVal betr As String, ByVal Text As String, ByVal BedienernummerAbs As String)
             ClearErrorState()
 
             Dim lsts As New LongStringToSap()
@@ -32,35 +33,31 @@
                 End If
             End If
 
-            ' SAPKomunikationstabelle holen
-            Dim dtValues As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            Try
+                S.AP.Init("Z_MC_SAVE_ANSWER")
 
-            'Import-Parameter
-            dtValues.Rows.Add(New Object() {"I_VORGID", False, VorgangsID})
-            dtValues.Rows.Add(New Object() {"I_LFDNR", False, LaufendeNummer})
-            dtValues.Rows.Add(New Object() {"I_VON", False, Empfänger})
-            dtValues.Rows.Add(New Object() {"I_AN", False, Verfasser})
-            dtValues.Rows.Add(New Object() {"I_BD_NR", False, BedienernummerAbs})
-            dtValues.Rows.Add(New Object() {"I_LTXNR", False, ltextnr})
+                S.AP.SetImportParameter("I_VORGID", VorgangsID)
+                S.AP.SetImportParameter("I_LFDNR", LaufendeNummer)
+                S.AP.SetImportParameter("I_VON", Empfänger)
+                S.AP.SetImportParameter("I_AN", Verfasser)
+                S.AP.SetImportParameter("I_BD_NR", BedienernummerAbs)
+                S.AP.SetImportParameter("I_LTXNR", ltextnr)
 
-            'Export-Parameter          
-            dtValues.Rows.Add(New Object() {"E_SUBRC", True})
-            dtValues.Rows.Add(New Object() {"E_MESSAGE", True})
+                S.AP.Execute()
 
-            SapExc.ExecuteERP("Z_MC_SAVE_ANSWER", dtValues)
-
-            If SapExc.ErrorOccured Then
-                RaiseError(SapExc.E_SUBRC, SapExc.E_MESSAGE)
-                If ltextnr <> "" Then
-                    lsts.DeleteStringERP(ltextnr)
+                If S.AP.ResultCode <> 0 Then
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+                    If ltextnr <> "" Then
+                        lsts.DeleteStringERP(ltextnr)
+                    End If
                 End If
-            End If
 
-            'GetEinträge(UserLoggedIn, letzterStatus, VON, Bis)
+            Catch ex As Exception
+                RaiseError("9999", ex.Message)
+            End Try
         End Sub
 
-        Public Sub Rückfrage(ByRef SapExc As SAPExecutor.SAPExecutor, ByVal betr As String, ByVal Text As String, ByVal BedienernummerAbs As String, ByVal kostenstelle As String)
-            ' FehlerStatus zurücksetzen
+        Public Sub Rückfrage(ByVal betr As String, ByVal Text As String, ByVal BedienernummerAbs As String, ByVal kostenstelle As String)
             ClearErrorState()
 
             Dim lsts As New LongStringToSap()
@@ -73,56 +70,53 @@
                 End If
             End If
 
-            ' SAPKomunikationstabelle holen
-            Dim dtValues As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            Try
+                S.AP.Init("Z_MC_NEW_VORGANG")
 
-            'Import-Parameter
-            dtValues.Rows.Add(New Object() {"I_UNAME", False, AN})
-            dtValues.Rows.Add(New Object() {"I_BD_NR", False, BedienernummerAbs})
-            dtValues.Rows.Add(New Object() {"I_AN", False, Verfasser})
-            dtValues.Rows.Add(New Object() {"I_LTXNR", False, ltextnr})
-            dtValues.Rows.Add(New Object() {"I_BETREFF", False, betr})
-            dtValues.Rows.Add(New Object() {"I_VGART", False, "FILL"})
-            dtValues.Rows.Add(New Object() {"I_ZERLDAT", False, ""})
-            dtValues.Rows.Add(New Object() {"I_VKBUR", False, kostenstelle})
+                S.AP.SetImportParameter("I_UNAME", AN)
+                S.AP.SetImportParameter("I_BD_NR", BedienernummerAbs)
+                S.AP.SetImportParameter("I_AN", Verfasser)
+                S.AP.SetImportParameter("I_LTXNR", ltextnr)
+                S.AP.SetImportParameter("I_BETREFF", betr)
+                S.AP.SetImportParameter("I_VGART", "FILL")
+                S.AP.SetImportParameter("I_ZERLDAT", "")
+                S.AP.SetImportParameter("I_VKBUR", kostenstelle)
 
-            'Export-Parameter          
-            dtValues.Rows.Add(New Object() {"E_SUBRC", True})
-            dtValues.Rows.Add(New Object() {"E_MESSAGE", True})
+                S.AP.Execute()
 
-            SapExc.ExecuteERP("Z_MC_NEW_VORGANG", dtValues)
-
-            If SapExc.ErrorOccured Then
-                RaiseError(SapExc.E_SUBRC, SapExc.E_MESSAGE)
-                If ltextnr <> "" Then
-                    lsts.DeleteStringERP(ltextnr)
+                If S.AP.ResultCode <> 0 Then
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+                    If ltextnr <> "" Then
+                        lsts.DeleteStringERP(ltextnr)
+                    End If
                 End If
-            End If
+
+            Catch ex As Exception
+                RaiseError("9999", ex.Message)
+            End Try
         End Sub
 
-        Public Sub EintragBeantworten(ByRef SapExc As SAPExecutor.SAPExecutor, ByVal BedienernummerAbs As String, ByVal stat As IFilialbuchEntry.EmpfängerStatus)
-            ' FehlerStatus zurücksetzen
+        Public Sub EintragBeantworten(ByVal BedienernummerAbs As String, ByVal stat As IFilialbuchEntry.EmpfängerStatus)
             ClearErrorState()
 
-            ' SAPKomunikationstabelle holen
-            Dim dtValues As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            Try
+                S.AP.Init("Z_MC_SAVE_STATUS_IN")
 
-            'Import-Parameter
-            dtValues.Rows.Add(New Object() {"I_VORGID", False, VORGID})
-            dtValues.Rows.Add(New Object() {"I_LFDNR", False, LFDNR})
-            dtValues.Rows.Add(New Object() {"I_AN", False, Empfänger})
-            dtValues.Rows.Add(New Object() {"I_BD_NR", False, BedienernummerAbs})
-            dtValues.Rows.Add(New Object() {"I_STATUSE", False, TranslateEmpfängerStatus(stat)})
+                S.AP.SetImportParameter("I_VORGID", VORGID)
+                S.AP.SetImportParameter("I_LFDNR", LFDNR)
+                S.AP.SetImportParameter("I_AN", Empfänger)
+                S.AP.SetImportParameter("I_BD_NR", BedienernummerAbs)
+                S.AP.SetImportParameter("I_STATUSE", TranslateEmpfängerStatus(stat))
 
-            'Export-Parameter          
-            dtValues.Rows.Add(New Object() {"E_SUBRC", True})
-            dtValues.Rows.Add(New Object() {"E_MESSAGE", True})
+                S.AP.Execute()
 
-            SapExc.ExecuteERP("Z_MC_SAVE_STATUS_IN", dtValues)
+                If S.AP.ResultCode <> 0 Then
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+                End If
 
-            If SapExc.ErrorOccured Then
-                RaiseError(SapExc.E_SUBRC, SapExc.E_MESSAGE)
-            End If
+            Catch ex As Exception
+                RaiseError("9999", ex.Message)
+            End Try
         End Sub
     End Class
 End Namespace

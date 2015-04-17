@@ -498,7 +498,6 @@
     </Compile>
     <Compile Include="Lib\Bestellung.vb" />
     <Compile Include="Lib\Einzahlungsbelege.vb" />
-    <Compile Include="Lib\ErrorHandlingClass.vb" />
     <Compile Include="Lib\Filialbuch\Ausgang.vb" />
     <Compile Include="Lib\Filialbuch\Eingang.vb" />
     <Compile Include="Lib\Filialbuch\FilialbuchClass.vb" />
@@ -512,7 +511,6 @@
     <Compile Include="Lib\ComCommon.vb" />
     <Compile Include="Lib\InventurSonstigeLagerware.vb" />
     <Compile Include="Lib\KVP.vb" />
-    <Compile Include="Lib\Logging.vb" />
     <Compile Include="Lib\LongStringToSap.vb" />
     <Compile Include="Lib\MeldungDAD.vb" />
     <Compile Include="Lib\offBestellungen.vb" />
@@ -750,14 +748,6 @@
     <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\++Projekte\PM_Common_Functions\PM_Common_Functions\PM_Common_Functions.csproj">
-      <Project>{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}</Project>
-      <Name>PM_Common_Functions</Name>
-    </ProjectReference>
-    <ProjectReference Include="SapExecutor\SapExecutor.csproj">
-      <Project>{C209B8CE-195A-4C9D-9397-C3B63BE585F6}</Project>
-      <Name>SapExecutor</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

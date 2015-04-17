@@ -1,5 +1,5 @@
-﻿
-Imports System.Globalization
+﻿Imports System.Globalization
+Imports KBSBase
 
 Public Class Platinen
     Inherits ErrorHandlingClass
@@ -23,8 +23,6 @@ Public Class Platinen
     Private mLetzteBestellungenKopf As DataTable
     Private mLetzteBestellungenPos As DataTable
     Private mAusgeparkteBestellungPos As DataTable
-
-    Dim SAPExc As SAPExecutor.SAPExecutor
 
 #Region "Properties"
 
@@ -174,74 +172,48 @@ Public Class Platinen
 
 #End Region
 
-    Public Sub New()
-
-    End Sub
-
     Public Sub getLieferantenERP(ByVal bMaster As Boolean, Optional ByVal Customername As String = "")
-
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_PLATSTAMM", "I_KOSTL", mstrKostStelle)
 
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle, 10})
-            If bMaster = True Then
-                dt.Rows.Add(New Object() {"I_SUPER_USER", False, "X", 1})
-            Else
-                dt.Rows.Add(New Object() {"I_SUPER_USER", False, "", 1})
+            If bMaster Then
+                S.AP.SetImportParameter("I_SUPER_USER", "X")
             End If
-            Dim IsFil As String = ""
-            Dim IsZLD As String = ""
 
             If Customername.Contains("ZLD") Then
-                IsZLD = "X"
+                S.AP.SetImportParameter("I_ZLD", "X")
             ElseIf Customername.Contains("Kroschke") Then
-                IsFil = "X"
-            End If
-            dt.Rows.Add(New Object() {"I_FIL", False, IsFil, 1})
-            dt.Rows.Add(New Object() {"I_ZLD", False, IsZLD, 1})
-            dt.Rows.Add(New Object() {"GT_PLATSTAMM", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_PLATSTAMM", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+                S.AP.SetImportParameter("I_FIL", "X")
             End If
 
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_PLATSTAMM'")(0)
-            If Not retRows Is Nothing Then
-                mLieferanten = DirectCast(retRows("Data"), DataTable)
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
+
+            mLieferanten = S.AP.GetExportTable("GT_PLATSTAMM")
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub getOffeneBestellungERP()
-
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_LGORT", False, mstrKostStelle, 4})
-            dt.Rows.Add(New Object() {"I_LIFNR", False, mstrLieferantennr.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"GT_WEB", True})
+            S.AP.Init("Z_FIL_READ_OFF_BEST_001", "I_LGORT, I_LIFNR", mstrKostStelle, mstrLieferantennr.PadLeft(10, "0"c))
 
-            SAPExc.ExecuteERP("Z_FIL_READ_OFF_BEST_001", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_WEB'")(0)
-            If Not retRows Is Nothing Then
-                mOffBestellungen = DirectCast(retRows("Data"), DataTable)
-            End If
+
+            mOffBestellungen = S.AP.GetExportTable("GT_WEB")
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
@@ -249,205 +221,157 @@ Public Class Platinen
     End Sub
 
     Public Sub sendOrderToSAPERP()
-
         ClearErrorState()
 
-        Dim tblSAP As New DataTable()
-        tblSAP.Columns.Add("ARTLIF", String.Empty.GetType)
-        tblSAP.Columns.Add("MENGE", String.Empty.GetType)
-        tblSAP.Columns.Add("ZUSINFO_TXT", String.Empty.GetType)
-        tblSAP.Columns.Add("PREIS", String.Empty.GetType)
-        tblSAP.Columns.Add("LTEXT_NR", String.Empty.GetType)
-
-        Dim tmpSAPRow As DataRow
-        Dim selRows() As DataRow
-        selRows = Artikel.Select("Menge > 0")
-        If selRows.Length = 0 Then
-            RaiseError("0", "Ausgewählte Artikel konnten nicht gefunden werden!")
-            Exit Sub
-        End If
-        'mit select filter, da sonst auch deletet rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
-        For Each tmprow As DataRow In selRows
-            tmpSAPRow = tblSAP.NewRow
-            tmpSAPRow("ARTLIF") = tmprow("ARTLIF").ToString
-            tmpSAPRow("MENGE") = tmprow("Menge").ToString
-            tmpSAPRow("ZUSINFO_TXT") = tmprow("Beschreibung").ToString
-            tblSAP.Rows.Add(tmpSAPRow)
-        Next
-
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle, 4})
-            dt.Rows.Add(New Object() {"I_LIFNR", False, mstrLieferantennr.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_VERKAEUFER", False, mstrBedienerNr, 4})
+            Dim selRows() As DataRow = Artikel.Select("Menge > 0")
+            If selRows.Length = 0 Then
+                RaiseError("0", "Ausgewählte Artikel konnten nicht gefunden werden!")
+                Exit Sub
+            End If
+
+            S.AP.Init("Z_FIL_EFA_PO_CREATE")
+
+            S.AP.SetImportParameter("I_KOSTL", mstrKostStelle)
+            S.AP.SetImportParameter("I_LIFNR", mstrLieferantennr.PadLeft(10, "0"c))
+            S.AP.SetImportParameter("I_VERKAEUFER", mstrBedienerNr)
+
             If mstrGeliefert = "X" Then
-                dt.Rows.Add(New Object() {"I_LIEF_KZ", False, mstrGeliefert, 1})
-            Else
-                dt.Rows.Add(New Object() {"I_LIEF_KZ", False, "", 1})
+                S.AP.SetImportParameter("I_LIEF_KZ", "X")
             End If
-            If mstrLieferscheinnr.Length > 0 Then
-                dt.Rows.Add(New Object() {"I_LIEF_NR", False, mstrLieferscheinnr.ToString(), 20})
-            Else
-                dt.Rows.Add(New Object() {"I_LIEF_NR", False, "", 20})
+
+            If Not String.IsNullOrEmpty(mstrLieferscheinnr) Then
+                S.AP.SetImportParameter("I_LIEF_NR", mstrLieferscheinnr)
             End If
+
             If mLieferdatum.HasValue Then
-                dt.Rows.Add(New Object() {"I_EEIND", False, mLieferdatum.Value, 8})
+                S.AP.SetImportParameter("I_EEIND", mLieferdatum.Value)
             End If
+
             If Not String.IsNullOrEmpty(mBestellnummerParken) Then
-                dt.Rows.Add(New Object() {"I_BSTNR_PARK", False, mBestellnummerParken.PadLeft(10, "0"c), 10})
+                S.AP.SetImportParameter("I_BSTNR_PARK", mBestellnummerParken.PadLeft(10, "0"c))
             End If
 
-            dt.Rows.Add(New Object() {"GT_POS", False, tblSAP})
+            Dim tblSAP As DataTable = S.AP.GetImportTable("GT_POS")
+            'mit select filter, da sonst auch deleted rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
+            For Each tmprow As DataRow In selRows
+                Dim tmpSAPRow As DataRow = tblSAP.NewRow
+                tmpSAPRow("ARTLIF") = tmprow("ARTLIF").ToString
+                tmpSAPRow("MENGE") = tmprow("Menge").ToString
+                tmpSAPRow("ZUSINFO_TXT") = tmprow("Beschreibung").ToString
+                tblSAP.Rows.Add(tmpSAPRow)
+            Next
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_PO_CREATE", dt)
-            Commited = True
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-                Commited = False
-            Else
+            If S.AP.ResultCode = 0 Then
                 mBestellnummerParken = ""
+                Commited = True
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+                Commited = False
             End If
-        Catch ex As Exception
-            RaiseError("0", ex.Message)
-        End Try
 
+        Catch ex As Exception
+            RaiseError("9999", ex.Message)
+        End Try
     End Sub
 
     Public Sub getArtikelReiterERP()
-
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle, 4})
-            dt.Rows.Add(New Object() {"I_LIFNR", False, mstrLieferantennr.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_RUECKS", False, "*", 1})
+            S.AP.Init("Z_FIL_EFA_PLATARTIKEL")
 
-            dt.Rows.Add(New Object() {"GT_PLATART", True})
-            dt.Rows.Add(New Object() {"GT_PLATRTR", True})
+            S.AP.SetImportParameter("I_KOSTL", mstrKostStelle)
+            S.AP.SetImportParameter("I_LIFNR", mstrLieferantennr.PadLeft(10, "0"c))
+            S.AP.SetImportParameter("I_RUECKS", "*")
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_PLATARTIKEL", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_PLATRTR'")(0)
-            If Not retRows Is Nothing Then
-                mReiter = DirectCast(retRows("Data"), DataTable)
-                For Each dRow As DataRow In mReiter.Rows
-                    dRow("REITER") = dRow("REITER").ToString().TrimStart("0")
-                Next
-            End If
-            retRows = dt.Select("Fieldname='GT_PLATART'")(0)
-            If Not retRows Is Nothing Then
-                mArtikel = DirectCast(retRows("Data"), DataTable)
-                mArtikel.Columns.Add("Menge", Type.GetType("System.Int32"))
-                mArtikel.Columns.Add("SortPos", Type.GetType("System.Int32"))
-                mArtikel.Columns.Add("Beschreibung", Type.GetType("System.String"))
-                mArtikel.Columns.Add("ImageUrl", Type.GetType("System.String"))
-                For Each dRow As DataRow In mArtikel.Rows
-                    If dRow("TOPSELLER") Is DBNull.Value Then
-                        dRow("TOPSELLER") = String.Empty
-                    End If
-                    dRow("SortPos") = CInt(dRow("POS"))
-                    If dRow("ZUSINFO") Is DBNull.Value Then
-                        dRow("ZUSINFO") = String.Empty
-                    End If
-                    dRow("ImageUrl") = "/kbs/Images/" & dRow("ARTLIF").ToString & ".jpg"
-                    dRow("REITER") = dRow("REITER").ToString().TrimStart("0")
-                Next
-            End If
+            mReiter = S.AP.GetExportTable("GT_PLATRTR")
+            For Each dRow As DataRow In mReiter.Rows
+                dRow("REITER") = dRow("REITER").ToString().TrimStart("0")
+            Next
+
+            mArtikel = S.AP.GetExportTable("GT_PLATART")
+            mArtikel.Columns.Add("Menge", Type.GetType("System.Int32"))
+            mArtikel.Columns.Add("SortPos", Type.GetType("System.Int32"))
+            mArtikel.Columns.Add("Beschreibung", Type.GetType("System.String"))
+            mArtikel.Columns.Add("ImageUrl", Type.GetType("System.String"))
+            For Each dRow As DataRow In mArtikel.Rows
+                If dRow("TOPSELLER") Is DBNull.Value Then
+                    dRow("TOPSELLER") = String.Empty
+                End If
+                dRow("SortPos") = CInt(dRow("POS"))
+                If dRow("ZUSINFO") Is DBNull.Value Then
+                    dRow("ZUSINFO") = String.Empty
+                End If
+                dRow("ImageUrl") = "/kbs/Images/" & dRow("ARTLIF").ToString & ".jpg"
+                dRow("REITER") = dRow("REITER").ToString().TrimStart("0")
+            Next
 
         Catch ex As Exception
-            RaiseError("0", ex.Message)
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub CheckKostStelleERP(ByVal NeuKost As String)
-
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_GET_KOSTL", "I_KOSTL_SEND, I_KOSTL_RECEIVE", NeuKost.PadLeft(10, "0"c), NeuKost.PadLeft(10, "0"c))
 
-            dt.Rows.Add(New Object() {"I_KOSTL_SEND", False, NeuKost.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_KOSTL_RECEIVE", False, NeuKost.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"E_KOSTL", True})
-            dt.Rows.Add(New Object() {"E_KTEXT", True})
-            dt.Rows.Add(New Object() {"E_LTEXT", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_GET_KOSTL", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                Select Case SAPExc.E_SUBRC
-                    Case "102"
-                        RaiseError(SAPExc.E_SUBRC, "KST " & NeuKost & " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben.")
-                    Case "104"
-                        RaiseError(SAPExc.E_SUBRC, "KST nicht zulässig! Bitte richtige KST eingeben.")
-                    Case Else
-                        RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-                End Select
-
+            If S.AP.ResultCode = 0 Then
+                mstrKostText = S.AP.GetExportParameter("E_KTEXT")
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_KTEXT'")(0)
-                If Not retRows Is Nothing Then
-                    mstrKostText = retRows("Data").ToString
-                End If
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+
+                Select Case ErrorCode
+                    Case "102"
+                        RaiseError("102", "KST " & NeuKost & " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben.")
+                    Case "104"
+                        RaiseError("104", "KST nicht zulässig! Bitte richtige KST eingeben.")
+                End Select
             End If
 
         Catch ex As Exception
-            RaiseError("0", ex.Message)
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub getLetzteBestellungenERP()
-
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_LIFNR", False, mstrLieferantennr.PadLeft(10, "0"c), 10})
+            S.AP.Init("Z_FIL_EFA_PO_LISTE", "I_KOSTL, I_LIFNR", mstrKostStelle.PadLeft(10, "0"c), mstrLieferantennr.PadLeft(10, "0"c))
 
-            dt.Rows.Add(New Object() {"GT_PO_K", True})
-            dt.Rows.Add(New Object() {"GT_PO_P", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_PO_LISTE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim retRowsKopf As DataRow = dt.Select("Fieldname='GT_PO_K'")(0)
-            If Not retRowsKopf Is Nothing Then
-                Dim tmpDate As DateTime
-                mLetzteBestellungenKopf = DirectCast(retRowsKopf("Data"), DataTable)
-                mLetzteBestellungenKopf.Columns.Add("Bestelldatum", GetType(DateTime))
-                mLetzteBestellungenKopf.Columns.Add("Lieferdatum", GetType(DateTime))
-                For Each row As DataRow In mLetzteBestellungenKopf.Rows
-                    If Not String.IsNullOrEmpty(row("BEDAT").ToString()) AndAlso DateTime.TryParse(row("BEDAT").ToString(), tmpDate) Then
-                        row("Bestelldatum") = tmpDate
-                    End If
-                    If Not String.IsNullOrEmpty(row("EEIND").ToString()) AndAlso DateTime.TryParse(row("EEIND").ToString(), tmpDate) Then
-                        row("Lieferdatum") = tmpDate
-                    End If
-                Next
-            End If
-            Dim retRowsPos As DataRow = dt.Select("Fieldname='GT_PO_P'")(0)
-            If Not retRowsPos Is Nothing Then
-                mLetzteBestellungenPos = DirectCast(retRowsPos("Data"), DataTable)
-            End If
+            mLetzteBestellungenKopf = S.AP.GetExportTable("GT_PO_K")
+            mLetzteBestellungenKopf.Columns.Add("Bestelldatum", GetType(DateTime))
+            mLetzteBestellungenKopf.Columns.Add("Lieferdatum", GetType(DateTime))
+            Dim tmpDate As DateTime
+            For Each row As DataRow In mLetzteBestellungenKopf.Rows
+                If Not String.IsNullOrEmpty(row("BEDAT").ToString()) AndAlso DateTime.TryParse(row("BEDAT").ToString(), tmpDate) Then
+                    row("Bestelldatum") = tmpDate
+                End If
+                If Not String.IsNullOrEmpty(row("EEIND").ToString()) AndAlso DateTime.TryParse(row("EEIND").ToString(), tmpDate) Then
+                    row("Lieferdatum") = tmpDate
+                End If
+            Next
+
+            mLetzteBestellungenPos = S.AP.GetExportTable("GT_PO_P")
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
@@ -456,39 +380,26 @@ Public Class Platinen
 
     Public Function GetListeAusparkenERP() As DataTable
         ClearErrorState()
+
         Dim tblListeAusparken As New DataTable()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+            S.AP.Init("Z_FIL_EFA_PO_PARK_LISTE", "I_KOSTL", mstrKostStelle.PadLeft(10, "0"c))
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"GT_LISTE", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_PO_PARK_LISTE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                Select Case SAPExc.E_SUBRC
-                    Case "101"
-                        'E_MESSAGE = ""
-                    Case Else
-                        RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-                End Select
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_LISTE'")(0)
-
-            If Not retRows Is Nothing Then
-                tblListeAusparken = DirectCast(retRows("Data"), DataTable)
-                tblListeAusparken.Columns.Add("Lieferant")
-                For Each row As DataRow In tblListeAusparken.Rows
-                    Dim liefRows() As DataRow = Lieferanten.Select("LIFNR = '" & row("LIFNR") & "'")
-                    If liefRows.Length > 0 Then
-                        row("Lieferant") = liefRows(0)("NAME1")
-                    End If
-                Next
-            End If
+            tblListeAusparken = S.AP.GetExportTable("GT_LISTE")
+            tblListeAusparken.Columns.Add("Lieferant")
+            For Each row As DataRow In tblListeAusparken.Rows
+                Dim liefRows() As DataRow = Lieferanten.Select("LIFNR = '" & row("LIFNR") & "'")
+                If liefRows.Length > 0 Then
+                    row("Lieferant") = liefRows(0)("NAME1")
+                End If
+            Next
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
@@ -501,143 +412,104 @@ Public Class Platinen
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
             Dim selRows() As DataRow = Artikel.Select("Menge > 0")
 
-            If selRows.Length > 0 Then
-                Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-
-                If String.IsNullOrEmpty(mBestellnummerParken) Then
-
-                    'Insert
-                    dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle.PadLeft(10, "0"c), 10})
-                    dt.Rows.Add(New Object() {"I_LIFNR", False, lieferant.PadLeft(10, "0"c), 10})
-                    dt.Rows.Add(New Object() {"I_LIEF_KZ", False, Geliefert, 1})
-                    dt.Rows.Add(New Object() {"I_LIEF_NR", False, Lieferscheinnummer, 20})
-                    If mLieferdatum.HasValue Then
-                        dt.Rows.Add(New Object() {"I_EEIND", False, Lieferdatum.Value, 8})
-                    End If
-
-                    Dim tblTemp As New DataTable
-                    tblTemp.Columns.Add("ARTLIF")
-                    tblTemp.Columns.Add("MENGE")
-                    tblTemp.Columns.Add("ZUSINFO_TXT")
-                    tblTemp.Columns.Add("PREIS")
-                    tblTemp.Columns.Add("LTEXT_NR")
-
-                    For Each row As DataRow In selRows
-                        Dim tRow As DataRow = tblTemp.NewRow()
-                        tRow("ARTLIF") = row("ARTLIF")
-                        tRow("MENGE") = row("MENGE")
-                        tRow("ZUSINFO_TXT") = row("Beschreibung")
-                        tblTemp.Rows.Add(tRow)
-                    Next
-                    dt.Rows.Add(New Object() {"GT_POS", False, tblTemp})
-                    dt.Rows.Add(New Object() {"E_BSTNR", True})
-
-                    SAPExc.ExecuteERP("Z_FIL_EFA_PO_PARK_INS", dt)
-                Else
-
-                    'Update
-                    Dim tblKopf As New DataTable
-                    tblKopf.Columns.Add("BSTNR")
-                    tblKopf.Columns.Add("LIFNR")
-                    tblKopf.Columns.Add("KOSTL")
-                    tblKopf.Columns.Add("LIEFERSNR")
-                    tblKopf.Columns.Add("LIEF_KZ")
-                    tblKopf.Columns.Add("EEIND")
-
-                    Dim kRow As DataRow = tblKopf.NewRow()
-                    kRow("BSTNR") = mBestellnummerParken.PadLeft(10, "0"c)
-                    kRow("LIFNR") = lieferant.PadLeft(10, "0"c)
-                    kRow("KOSTL") = mstrKostStelle.PadLeft(10, "0"c)
-                    kRow("LIEFERSNR") = Lieferscheinnummer
-                    kRow("LIEF_KZ") = Geliefert
-                    If mLieferdatum.HasValue Then
-                        kRow("EEIND") = Lieferdatum.Value.ToString("yyyyMMdd")
-                    Else
-                        kRow("EEIND") = ""
-                    End If
-                    tblKopf.Rows.Add(kRow)
-
-                    dt.Rows.Add(New Object() {"IS_KOPF", False, tblKopf})
-
-                    Dim tblTemp As New DataTable
-                    tblTemp.Columns.Add("BSTNR")
-                    tblTemp.Columns.Add("ARTLIF")
-                    tblTemp.Columns.Add("MENGE")
-                    tblTemp.Columns.Add("ZUSINFO_TXT")
-                    tblTemp.Columns.Add("PREIS")
-
-                    For Each row As DataRow In selRows
-                        Dim tRow As DataRow = tblTemp.NewRow()
-                        tRow("BSTNR") = mBestellnummerParken.PadLeft(10, "0"c)
-                        tRow("ARTLIF") = row("ARTLIF")
-                        tRow("MENGE") = row("MENGE")
-                        tRow("ZUSINFO_TXT") = row("Beschreibung")
-                        tblTemp.Rows.Add(tRow)
-                    Next
-                    dt.Rows.Add(New Object() {"GT_POS", False, tblTemp})
-
-                    SAPExc.ExecuteERP("Z_FIL_EFA_PO_PARK_UPD", dt)
-                End If
-
-                If (SAPExc.ErrorOccured) Then
-                    RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-                Else
-                    For Each row As DataRow In selRows
-                        row("MENGE") = DBNull.Value
-                        row("Beschreibung") = DBNull.Value
-                    Next
-                    Artikel.AcceptChanges()
-                    mstrGeliefert = ""
-                    mstrLieferscheinnr = ""
-                    mLieferdatum = Nothing
-                    mBestellnummerParken = ""
-                End If
-
-            Else
+            If selRows.Length = 0 Then
                 RaiseError("0001", "Keine Datensätze für Bestellung vorhanden!")
+                Exit Sub
             End If
+
+            If String.IsNullOrEmpty(mBestellnummerParken) Then
+                'Insert
+                S.AP.Init("Z_FIL_EFA_PO_PARK_INS")
+
+                S.AP.SetImportParameter("I_KOSTL", mstrKostStelle.PadLeft(10, "0"c))
+                S.AP.SetImportParameter("I_LIFNR", lieferant.PadLeft(10, "0"c))
+                S.AP.SetImportParameter("I_LIEF_KZ", Geliefert)
+                S.AP.SetImportParameter("I_LIEF_NR", Lieferscheinnummer)
+
+                If mLieferdatum.HasValue Then
+                    S.AP.SetImportParameter("I_EEIND", Lieferdatum.Value)
+                End If
+
+                Dim tblPos As DataTable = S.AP.GetImportTable("GT_POS")
+                For Each row As DataRow In selRows
+                    Dim tRow As DataRow = tblPos.NewRow()
+                    tRow("ARTLIF") = row("ARTLIF")
+                    tRow("MENGE") = row("MENGE")
+                    tRow("ZUSINFO_TXT") = row("Beschreibung")
+                    tblPos.Rows.Add(tRow)
+                Next
+            Else
+                'Update
+                S.AP.Init("Z_FIL_EFA_PO_PARK_UPD")
+
+                Dim tblKopf As DataTable = S.AP.GetImportTable("IS_KOPF")
+                Dim kRow As DataRow = tblKopf.NewRow()
+                kRow("BSTNR") = mBestellnummerParken.PadLeft(10, "0"c)
+                kRow("LIFNR") = lieferant.PadLeft(10, "0"c)
+                kRow("KOSTL") = mstrKostStelle.PadLeft(10, "0"c)
+                kRow("LIEFERSNR") = Lieferscheinnummer
+                kRow("LIEF_KZ") = Geliefert
+                If mLieferdatum.HasValue Then
+                    kRow("EEIND") = Lieferdatum.Value.ToString("yyyyMMdd")
+                Else
+                    kRow("EEIND") = ""
+                End If
+                tblKopf.Rows.Add(kRow)
+
+                Dim tblPos As DataTable = S.AP.GetImportTable("GT_POS")
+                For Each row As DataRow In selRows
+                    Dim tRow As DataRow = tblPos.NewRow()
+                    tRow("BSTNR") = mBestellnummerParken.PadLeft(10, "0"c)
+                    tRow("ARTLIF") = row("ARTLIF")
+                    tRow("MENGE") = row("MENGE")
+                    tRow("ZUSINFO_TXT") = row("Beschreibung")
+                    tblPos.Rows.Add(tRow)
+                Next
+            End If
+
+            S.AP.Execute()
+
+            If S.AP.ResultCode = 0 Then
+                For Each row As DataRow In selRows
+                    row("MENGE") = DBNull.Value
+                    row("Beschreibung") = DBNull.Value
+                Next
+                Artikel.AcceptChanges()
+                mstrGeliefert = ""
+                mstrLieferscheinnr = ""
+                mLieferdatum = Nothing
+                mBestellnummerParken = ""
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+            End If
+
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Function AusparkenERP(ByVal BstNr As String) As DataTable
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_PO_PARK_READ", "I_BSTNR, I_KOSTL", BstNr.PadLeft(10, "0"c), mstrKostStelle.PadLeft(10, "0"c))
 
-            dt.Rows.Add(New Object() {"I_BSTNR", False, BstNr.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"E_KOPF", True})
-            dt.Rows.Add(New Object() {"GT_POS", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_PO_PARK_READ", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-            Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_KOPF'")(0)
-                Dim tblTemp As DataTable
-                If Not retRows Is Nothing Then
-                    tblTemp = DirectCast(retRows("Data"), DataTable)
-                    If tblTemp.Rows.Count > 0 Then
-                        mBestellnummerParken = tblTemp.Rows(0)("BSTNR")
-                        mstrLieferantennr = tblTemp.Rows(0)("LIFNR")
-                        mstrGeliefert = tblTemp.Rows(0)("LIEF_KZ")
-                        mstrLieferscheinnr = tblTemp.Rows(0)("LIEFERSNR")
-                        Dim tmpDate As DateTime
-                        If Not IsDBNull(tblTemp.Rows(0)("EEIND")) AndAlso Not String.IsNullOrEmpty(tblTemp.Rows(0)("EEIND").ToString()) AndAlso DateTime.TryParseExact(tblTemp.Rows(0)("EEIND"), "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, tmpDate) Then
-                            mLieferdatum = tmpDate
-                        Else
-                            mLieferdatum = Nothing
-                        End If
+            If S.AP.ResultCode = 0 Then
+                Dim tblTemp As DataTable = S.AP.GetExportTable("E_KOPF")
+                If tblTemp.Rows.Count > 0 Then
+                    mBestellnummerParken = tblTemp.Rows(0)("BSTNR")
+                    mstrLieferantennr = tblTemp.Rows(0)("LIFNR")
+                    mstrGeliefert = tblTemp.Rows(0)("LIEF_KZ")
+                    mstrLieferscheinnr = tblTemp.Rows(0)("LIEFERSNR")
+                    Dim tmpDate As DateTime
+                    If Not IsDBNull(tblTemp.Rows(0)("EEIND")) AndAlso Not String.IsNullOrEmpty(tblTemp.Rows(0)("EEIND").ToString()) AndAlso DateTime.TryParseExact(tblTemp.Rows(0)("EEIND"), "yyyyMMdd", CultureInfo.CurrentCulture, DateTimeStyles.None, tmpDate) Then
+                        mLieferdatum = tmpDate
+                    Else
+                        mLieferdatum = Nothing
                     End If
                 End If
 
@@ -646,17 +518,16 @@ Public Class Platinen
                     row("MENGE") = DBNull.Value
                 Next
 
-                retRows = dt.Select("Fieldname='GT_POS'")(0)
-                If Not retRows Is Nothing Then
-                    mAusgeparkteBestellungPos = DirectCast(retRows("Data"), DataTable)
-                End If
+                mAusgeparkteBestellungPos = S.AP.GetExportTable("GT_POS")
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
+
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
 
         Return mArtikel
-
     End Function
 
     Public Sub GeparktePositionenUebernehmen()
@@ -677,15 +548,12 @@ Public Class Platinen
                 mBestellnummerParken = ""
             End If
 
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_PO_PARK_DEL", "I_BSTNR, I_TEXTDEL", BstNr.PadLeft(10, "0"c), TextDel)
 
-            dt.Rows.Add(New Object() {"I_BSTNR", False, BstNr.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_TEXTDEL", False, TextDel, 1})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_PO_PARK_DEL", dt)
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
