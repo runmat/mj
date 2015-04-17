@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
-using GeneralTools.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -41,6 +41,9 @@ namespace CkgDomainLogic.CoC.Models
         [MaxLength(60)]
         public string Bemerkung { get; set; }
 
+        [GridHidden, NotMapped, XmlIgnore, ModelMappingCompareIgnore]
+        public string BemerkungAsString { get { return Bemerkung.NotNullOr("- " + Localize.None.ToLower() + " -"); } }
+
         [ModelMappingCompareIgnore]
         public bool IsValid { get; set; }
 
@@ -48,8 +51,7 @@ namespace CkgDomainLogic.CoC.Models
         {
             var s = string.Format("{0}", VersandOption.Name);
 
-            if (Bemerkung.IsNotNullOrEmpty())
-                s += string.Format("<br/><br/>{0}:<br/>{1}", Localize.Comment, Bemerkung);
+            s += string.Format("<br/><br/>{0}:<br/>{1}", Localize.Comment, BemerkungAsString);
 
             return s;
         }
