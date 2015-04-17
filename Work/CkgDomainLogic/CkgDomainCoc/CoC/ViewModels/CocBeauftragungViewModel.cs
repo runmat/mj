@@ -503,7 +503,7 @@ namespace CkgDomainLogic.CoC.ViewModels
                 MaterialNr = VersandOptionen.VersandOption.MaterialCode,
                 DadAnforderungsDatum = DateTime.Today,
                 ErfassungsUserName = LogonContext.UserName,
-                Bemerkung = VersandOptionen.Bemerkung,
+                Bemerkung = VersandOptionen.BemerkungAsString,
             };
 
             ModelMapping.Copy(VersandAdresse, versandAuftrag);
