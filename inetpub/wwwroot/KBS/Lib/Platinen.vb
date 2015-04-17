@@ -205,7 +205,11 @@ Public Class Platinen
         ClearErrorState()
 
         Try
-            S.AP.Init("Z_FIL_READ_OFF_BEST_001", "I_LGORT, I_LIFNR", mstrKostStelle, mstrLieferantennr.PadLeft(10, "0"c))
+            S.AP.Init("Z_FIL_READ_OFF_BEST_001", "I_LGORT", mstrKostStelle)
+
+            If Not String.IsNullOrEmpty(mstrLieferantennr) Then
+                S.AP.SetImportParameter("I_LIFNR", mstrLieferantennr.PadLeft(10, "0"c))
+            End If
 
             S.AP.Execute()
 
@@ -452,9 +456,7 @@ Public Class Platinen
                 kRow("LIEFERSNR") = Lieferscheinnummer
                 kRow("LIEF_KZ") = Geliefert
                 If mLieferdatum.HasValue Then
-                    kRow("EEIND") = Lieferdatum.Value.ToString("yyyyMMdd")
-                Else
-                    kRow("EEIND") = ""
+                    kRow("EEIND") = Lieferdatum.Value.ToShortDateString()
                 End If
                 tblKopf.Rows.Add(kRow)
 

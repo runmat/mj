@@ -105,13 +105,13 @@ namespace TimeRegistration
                     return string.Empty;
                 }
 
-                // Gebuchte Rüstzeiten neu laden
-                getRuestzeiten(strVkBur);
-
                 //Auswertung der Export-Parameter
                 var strBuZeit = S.AP.GetExportParameter("E_BUZEIT");
                 strBuZeit = strBuZeit.Insert(2, ":");
                 strBuZeit = strBuZeit.Insert(5, ":");
+
+                // Gebuchte Rüstzeiten neu laden
+                getRuestzeiten(strVkBur);
 
                 return strBuZeit;
             }
@@ -564,11 +564,9 @@ namespace TimeRegistration
         /// <summary>
         /// Liefert die aktuelle SAP-Serverzeit
         /// </summary>
-        /// <returns>Serverzeit als Date-Objekt</returns>
-        public string getServerzeit()
+        /// <returns>Serverzeit</returns>
+        public static string getServerzeit(bool asBuZeit = false)
         {
-            ClearErrorState();
-
             try
             {
                 S.AP.Init("Z_HR_ZE_GET_SAP_TIME");
@@ -576,40 +574,14 @@ namespace TimeRegistration
                 S.AP.Execute();
 
                 if (S.AP.ResultCode != 0)
-                {
-                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage);
                     return DateTime.Now.TimeOfDay.ToString().Remove(5);
-                }
 
-                return ParseTimeFromBuzeit(S.AP.GetExportParameter("TIME"));
+                var zeit = S.AP.GetExportParameter("TIME");
+                return (asBuZeit ? zeit : ParseTimeFromBuzeit(zeit));
             }
             catch (Exception)
             {
                 return DateTime.Now.TimeOfDay.ToString().Remove(5);
-            }
-        }
-
-        public string getServerzeitAsBUZEIT()
-        {
-            ClearErrorState();
-
-            try
-            {
-                S.AP.Init("Z_HR_ZE_GET_SAP_TIME");
-
-                S.AP.Execute();
-
-                if (S.AP.ResultCode != 0)
-                {
-                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage);
-                    return DateTime.Now.TimeOfDay.ToString().Remove(5);
-                }
-
-                return S.AP.GetExportParameter("TIME");
-            }
-            catch (Exception)
-            {
-                return DateTime.Now.TimeOfDay.ToString().Remove(7);
             }
         }
 

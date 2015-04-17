@@ -31,8 +31,8 @@ Public Class Filialziele
 
             mObjFilialvergleich = New Filialvergleich()
             mObjFilialvergleich.getDataFromSAP(mObjKasse.Lagerort, "PK", kalenderwoche)
-            If mObjFilialvergleich.ErrorText <> String.Empty Then
-                lblError.Text = "Fehler beim Abruf der Daten aus SAP." & Environment.NewLine & "Fehlerdetails: " & mObjFilialvergleich.ErrorText
+            If mObjFilialvergleich.ErrorOccured Then
+                lblError.Text = "Fehler beim Abruf der Daten aus SAP." & Environment.NewLine & "Fehlerdetails: " & mObjFilialvergleich.ErrorMessage
             End If
 
             Session("mObjFilialvergleich") = mObjFilialvergleich
@@ -193,8 +193,8 @@ Public Class Filialziele
         Dim kalenderwoche As String = GetKalenderwocheAndYear(datum)
 
         mObjFilialvergleich.getDataFromSAP(mObjKasse.Lagerort, "PK", kalenderwoche)
-        If mObjFilialvergleich.ErrorText <> String.Empty Then
-            lblError.Text = "Fehler beim Abruf der Daten aus SAP." & Environment.NewLine & "Fehlerdetails: " & mObjFilialvergleich.ErrorText
+        If mObjFilialvergleich.ErrorOccured Then
+            lblError.Text = "Fehler beim Abruf der Daten aus SAP." & Environment.NewLine & "Fehlerdetails: " & mObjFilialvergleich.ErrorMessage
         End If
 
         Session("mObjFilialvergleich") = mObjFilialvergleich

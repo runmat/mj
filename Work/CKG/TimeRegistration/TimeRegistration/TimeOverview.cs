@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Data;
-using SapORM.Contracts;
+using System.Globalization;
 
 namespace TimeRegistration
 {
@@ -8,7 +8,6 @@ namespace TimeRegistration
     {
         private string _sVon;
         private string _sBis;
-        private bool _bOffen;
         private DataTable _dtKopf;
         private DataTable _dtPos;
         private DataTable _dtPosIn;
@@ -31,11 +30,6 @@ namespace TimeRegistration
         public string Bis
         {
             get { return _sBis; }
-        }
-
-        public bool OffenePositionen
-        {
-            get { return _bOffen; }
         }
 
         public DataTable Kopftabelle
@@ -216,7 +210,7 @@ namespace TimeRegistration
             var strKommenKey = TimeRegistrator.TranslateAction(TimeRegistrator.TimeAction.Kommen);
             var strGehenKey = TimeRegistrator.TranslateAction(TimeRegistrator.TimeAction.Gehen);
 
-            var datBudat = kopfsatzDatum.ToDateTimeOrNull();
+            var datBudat = DateTime.ParseExact(kopfsatzDatum, "yyyyMMdd", CultureInfo.CurrentCulture);
 
             for (int i=0;i<drPos.GetLength(0);i++)
             {

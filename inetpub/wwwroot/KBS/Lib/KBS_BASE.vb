@@ -20,32 +20,6 @@ Public Class KBS_BASE
 
 #Region "Properties"
 
-    Protected Friend Shared ReadOnly Property SAPConnectionString() As String
-        Get
-            Dim conStr As String
-
-            If KBSBase.Common.ProdSAP Then
-                'prod
-                conStr = "ASHOST=" & ConfigurationManager.AppSettings("SAPAppServerHost") & _
-                                        ";CLIENT=" & CShort(ConfigurationManager.AppSettings("SAPClient")) & _
-                                        ";SYSNR=" & CShort(ConfigurationManager.AppSettings("SAPSystemNumber")) & _
-                                        ";USER=" & ConfigurationManager.AppSettings("SAPUsername") & _
-                                        ";PASSWD=" & ConfigurationManager.AppSettings("SAPPassword") & _
-                                        ";LANG=DE"
-            Else
-                'vm,test,entwicklung
-                conStr = "ASHOST=" & ConfigurationManager.AppSettings("TESTSAPAppServerHost") & _
-                                    ";CLIENT=" & CShort(ConfigurationManager.AppSettings("TESTSAPClient")) & _
-                                    ";SYSNR=" & CShort(ConfigurationManager.AppSettings("TESTSAPSystemNumber")) & _
-                                    ";USER=" & ConfigurationManager.AppSettings("TESTSAPUsername") & _
-                                    ";PASSWD=" & ConfigurationManager.AppSettings("TESTSAPPassword") & _
-                                    ";LANG=DE"
-            End If
-
-            Return conStr
-        End Get
-    End Property
-
     Public Shared ReadOnly Property IPtoKassen() As DataTable
         Get
             If mIPtoKassen Is Nothing Then
@@ -324,6 +298,12 @@ Public Class KBS_BASE
                 Return False
             Else
                 page.Session("mKasse") = tmpKassenObj
+                'Daten fürs SAP-Logging
+                page.Session("LastAppID") = 0
+                page.Session("LastUserID") = 0
+                page.Session("LastCustomerID") = tmpKassenObj.CustomerID
+                page.Session("LastKunnr") = tmpKassenObj.KUNNR
+                page.Session("LastPortalType") = 4
                 Return True
             End If
         End If

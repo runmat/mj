@@ -98,7 +98,7 @@ Public Class MeldungDAD
 
             Dim newRow As DataRow = tmpTable.NewRow()
             newRow("VKORG") = "1510"
-            newRow("VBELN") = ID.PadLeft(10, "0"c)
+            If Not String.IsNullOrEmpty(ID) Then newRow("VBELN") = ID.PadLeft(10, "0"c)
             newRow("EBELN") = Bestellnummer
             newRow("FAHRG") = Fahrgestellnummer
             newRow("BRIEF") = Briefnummer

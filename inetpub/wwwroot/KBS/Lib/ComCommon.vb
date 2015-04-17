@@ -398,7 +398,7 @@ Public Class ComCommon
         ClearErrorState()
 
         Try
-            Dim cn As New SqlClient.SqlConnection(KBS_BASE.SAPConnectionString)
+            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
             cn.Open()
 
             Dim da As New SqlClient.SqlDataAdapter("SELECT * FROM vwGetMailTexte WHERE KundenID=@KundenID " & _

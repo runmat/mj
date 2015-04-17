@@ -69,6 +69,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Zeitnachweis.cs" />
     <Compile Include="KW_Berechnung.cs" />
     <Compile Include="PDFPrintObj.cs" />
     <Compile Include="RuestzeitList.cs" />

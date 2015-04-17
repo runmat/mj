@@ -194,12 +194,12 @@ Public Class Kasse
         Get
             If CHANGE12_GLOBALOBJHANDLING Then
                 If mObjRetoure Is Nothing Then
-                    mObjRetoure = New Retoure(Me)
+                    mObjRetoure = New Retoure()
                 End If
                 Return mObjRetoure
             Else 'wenn kein globales ObjHandling, dann ins Session
                 If page.Session("mObjRetoure") Is Nothing Then
-                    page.Session.Add("mObjRetoure", New Retoure(Me))
+                    page.Session.Add("mObjRetoure", New Retoure())
                 End If
                 Return CType(page.Session("mObjRetoure"), Retoure)
             End If

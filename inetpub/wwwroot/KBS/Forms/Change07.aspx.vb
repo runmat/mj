@@ -425,8 +425,8 @@ Partial Public Class Change07
 
     Protected Sub txtEAN_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtEAN.TextChanged
         If Not mObjBestellung.getArtikelInfo(txtEAN.Text.Trim, True, txtMaterialnummer.Text, lblArtikelbezeichnung.Text) Then
-            If mObjBestellung.E_MESSAGE.Length > 0 Then
-                lblError.Text = mObjBestellung.E_MESSAGE
+            If mObjBestellung.ErrorOccured Then
+                lblError.Text = mObjBestellung.ErrorMessage
             Else
                 lblError.Text = "Artikel nicht vorhanden"
             End If

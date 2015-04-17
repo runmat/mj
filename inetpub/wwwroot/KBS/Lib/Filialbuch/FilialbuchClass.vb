@@ -278,10 +278,10 @@ Namespace DigitalesFilialbuch
 
             If Status = StatusFilter.Alle Then
                 If datVon.CompareTo(Nothing) = 0 Then
-                    RaiseError("9999", "Es wurde kein gültiges Von-Datum für die Auswal mitgegeben!")
+                    RaiseError("9999", "Es wurde kein gültiges Von-Datum für die Auswahl mitgegeben!")
                     Exit Sub
                 ElseIf datBis.CompareTo(Nothing) = 0 Then
-                    RaiseError("9999", "Es wurde kein gültiges Bis-Datum für die Auswal mitgegeben!")
+                    RaiseError("9999", "Es wurde kein gültiges Bis-Datum für die Auswahl mitgegeben!")
                     Exit Sub
                 Else
                     strVon = datVon.ToShortDateString()
@@ -307,18 +307,18 @@ Namespace DigitalesFilialbuch
                     For Each row In dtIn.Rows
                         If Not an_kst Is Nothing Then
                             If row("VON") = an_kst Or row("VON") = UserLoggedIn.UsernameSAP Then 'Filter auf Kostenstelle und User
-                                Protokoll.addEntry(Protokoll.Side.Input, New Eingang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), UserLoggedIn.UsernameSAP))
+                                Protokoll.addEntry(Protokoll.Side.Input, New Eingang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), UserLoggedIn.UsernameSAP))
                             End If
                         Else
-                            Protokoll.addEntry(Protokoll.Side.Input, New Eingang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), UserLoggedIn.UsernameSAP))
+                            Protokoll.addEntry(Protokoll.Side.Input, New Eingang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), UserLoggedIn.UsernameSAP))
                         End If
                     Next
 
@@ -327,18 +327,18 @@ Namespace DigitalesFilialbuch
                     For Each row In dtOut.Rows
                         If Not an_kst Is Nothing Then
                             If row("ZAN") = an_kst Or row("ZAN") = UserLoggedIn.UsernameSAP Then 'Filter auf Kostenstelle und User
-                                Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), CStr(row(13))))
+                                Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), row(13).ToString()))
                             End If
                         Else
-                            Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), CStr(row(13))))
+                            Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), row(13).ToString()))
                         End If
                     Next
 

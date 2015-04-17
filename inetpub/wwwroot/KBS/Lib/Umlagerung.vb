@@ -240,6 +240,8 @@ Public Class Umlagerung
             S.AP.SetImportParameter("I_KOSTL_OUT", mstrKostStelle)
             S.AP.SetImportParameter("I_BUDAT", DateTime.Today)
 
+            S.AP.SetImportTable("GT_MAT", tblSAP)
+
             If Not String.IsNullOrEmpty(mstrBelegNrParken) Then
                 S.AP.SetImportParameter("I_BELNR", mstrBelegNrParken.PadLeft(10, "0"c))
             End If
@@ -356,6 +358,8 @@ Public Class Umlagerung
 
                 'erneutes Init erforderlich nach Aufruf der Langtext-Bapis
                 S.AP.Init("Z_FIL_EFA_UML_PARK_INS", "I_KOSTL_IN, I_KOSTL_OUT", mstrKostStelleNeu, mstrKostStelle)
+
+                S.AP.SetImportTable("GT_MAT", tblTemp)
             Else
                 'Update
                 S.AP.Init("Z_FIL_EFA_UML_PARK_UPD")
@@ -396,6 +400,9 @@ Public Class Umlagerung
 
                 'erneutes Init erforderlich nach Aufruf der Langtext-Bapis
                 S.AP.Init("Z_FIL_EFA_UML_PARK_UPD")
+
+                S.AP.SetImportTable("IS_UMLK_PARK", tblKopf)
+                S.AP.SetImportTable("GT_UMLP_PARK", tblPos)
             End If
 
             S.AP.Execute()
@@ -417,36 +424,22 @@ Public Class Umlagerung
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_UML_PARK_READ", "I_BELNR", BelNr.PadLeft(10, "0"c))
 
-            dt.Rows.Add(New Object() {"I_BELNR", False, BelNr.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"ES_UMLK_PARK", True})
-            dt.Rows.Add(New Object() {"GT_UMLP_PARK", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_UML_PARK_READ", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-            Else
-                Dim retRows As DataRow = dt.Select("Fieldname='ES_UMLK_PARK'")(0)
-                Dim tblTemp As DataTable
-                If Not retRows Is Nothing Then
-                    tblTemp = DirectCast(retRows("Data"), DataTable)
-                    If tblTemp.Rows.Count > 0 Then
-                        mstrMandant = tblTemp.Rows(0)("MANDT")
-                        mstrBelegNrParken = tblTemp.Rows(0)("BELNR")
-                        mstrKostStelleNeu = tblTemp.Rows(0)("LGORT_EMPF")
-                    End If
+            If S.AP.ResultCode = 0 Then
+                Dim tblTemp As DataTable = S.AP.GetExportTable("ES_UMLK_PARK")
+                If tblTemp.Rows.Count > 0 Then
+                    mstrMandant = tblTemp.Rows(0)("MANDT")
+                    mstrBelegNrParken = tblTemp.Rows(0)("BELNR")
+                    mstrKostStelleNeu = tblTemp.Rows(0)("LGORT_EMPF")
                 End If
 
                 mUmlagerung.Rows.Clear()
 
-                Dim tblTemp2 As New DataTable
-                retRows = dt.Select("Fieldname='GT_UMLP_PARK'")(0)
-                If Not retRows Is Nothing Then
-                    tblTemp2 = DirectCast(retRows("Data"), DataTable)
-                End If
+                Dim tblTemp2 As DataTable = S.AP.GetExportTable("GT_UMLP_PARK")
+
                 Dim mLSTS As New LongStringToSap()
 
                 For Each row As DataRow In tblTemp2.Rows
@@ -468,13 +461,15 @@ Public Class Umlagerung
 
                     mUmlagerung.Rows.Add(trow)
                 Next
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
+
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
 
         Return mUmlagerung
-
     End Function
 
     Public Sub GeparktLoeschenERP(ByVal BelNr As String, ByVal TextDel As String)
@@ -485,15 +480,12 @@ Public Class Umlagerung
                 mstrBelegNrParken = ""
             End If
 
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_UML_PARK_DEL", "I_BELNR, I_TEXTDEL", BelNr.PadLeft(10, "0"c), TextDel)
 
-            dt.Rows.Add(New Object() {"I_BELNR", False, BelNr.PadLeft(10, "0"c), 10})
-            dt.Rows.Add(New Object() {"I_TEXTDEL", False, TextDel, 1})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_UML_PARK_DEL", dt)
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -505,20 +497,15 @@ Public Class Umlagerung
         ClearErrorState()
 
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_UML_MAT_GROESSE", "I_MATNR", Matnr)
 
-            dt.Rows.Add(New Object() {"I_MATNR", False, Matnr, 18})
-            dt.Rows.Add(New Object() {"GT_MAT", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_UML_MAT_GROESSE", dt)
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_MAT'")(0)
-            If Not retRows Is Nothing Then
-                mListeGroesse = DirectCast(retRows("Data"), DataTable)
-            End If
+
+            mListeGroesse = S.AP.GetExportTable("GT_MAT")
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
@@ -527,26 +514,20 @@ Public Class Umlagerung
     End Sub
 
     Public Function GetAdresseLagerort(ByVal vkorg As String, ByVal vkbur As String) As DataTable
-        Dim tblAdresse As New DataTable()
-
         ClearErrorState()
 
+        Dim tblAdresse As New DataTable()
+
         Try
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_GET_LGORT_ADRESSE", "I_WERKS, I_LGORT", vkorg, vkbur)
 
-            dt.Rows.Add(New Object() {"I_WERKS", False, vkorg, 4})
-            dt.Rows.Add(New Object() {"I_LGORT", False, vkbur, 4})
-            dt.Rows.Add(New Object() {"E_ADRC", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_GET_LGORT_ADRESSE", dt)
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='E_ADRC'")(0)
-            If Not retRows Is Nothing Then
-                tblAdresse = DirectCast(retRows("Data"), DataTable)
-            End If
+
+            tblAdresse = S.AP.GetExportTable("E_ADRC")
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)

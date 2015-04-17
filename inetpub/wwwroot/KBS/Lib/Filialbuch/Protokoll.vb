@@ -296,7 +296,7 @@
                         Row("I_LFDNR") = Ein.LaufendeNummer
                         Row("I_ERDAT") = Ein.DatumErfassung
                         Row("I_ERZEIT") = Ein.ZeitErfassung.ToString().Insert(4, ":").Insert(2, ":")
-                        Row("I_DATETIME") = DateTime.Parse(Ein.DatumErfassung & " " & Ein.ZeitErfassung.ToString().Insert(4, ":").Insert(2, ":"))
+                        Row("I_DATETIME") = DateTime.Parse(Ein.DatumErfassung.Substring(0, 10) & " " & Ein.ZeitErfassung.ToString().Insert(4, ":").Insert(2, ":"))
                         Row("I_VON") = Ein.Verfasser
                         Row("I_VERTR") = Ein.Vertreter
                         Row("I_BETREFF") = Ein.Betreff
@@ -332,7 +332,7 @@
                         Row("O_LFDNR") = Aus.LaufendeNummer
                         Row("O_ERDAT") = Aus.DatumErfassung
                         Row("O_ERZEIT") = Aus.ZeitErfassung.ToString().Insert(4, ":").Insert(2, ":")
-                        Row("O_DATETIME") = DateTime.Parse(Aus.DatumErfassung & " " & Aus.ZeitErfassung.ToString().Insert(4, ":").Insert(2, ":"))
+                        Row("O_DATETIME") = DateTime.Parse(Aus.DatumErfassung.Substring(0, 10) & " " & Aus.ZeitErfassung.ToString().Insert(4, ":").Insert(2, ":"))
                         Row("O_AN") = Aus.Empfänger
                         Row("O_VERTR") = Aus.Vertreter
                         Row("O_BETREFF") = Aus.Betreff

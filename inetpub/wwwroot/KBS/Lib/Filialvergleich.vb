@@ -107,11 +107,11 @@ Public Class Filialvergleich
             If S.AP.ResultCode = 0 Then
                 dblRahmenquote = S.AP.GetExportParameter("E_RAHMENQUOTE").ToDouble(0)
                 strDatumFilialAuswertung = S.AP.GetExportParameter("E_DATE")
-                If strDatumFilialAuswertung = "00000000" Then
-                    strDatumFilialAuswertung = ""
+                Dim tmpDatAuswertung As DateTime
+                If DateTime.TryParse(strDatumFilialAuswertung, tmpDatAuswertung) Then
+                    strDatumFilialAuswertung = tmpDatAuswertung.ToShortDateString()
                 Else
-                    Dim datAuswertung As Date = DateTime.ParseExact(strDatumFilialAuswertung, "yyyyMMdd", CultureInfo.CurrentCulture)
-                    strDatumFilialAuswertung = datAuswertung.ToShortDateString()
+                    strDatumFilialAuswertung = ""
                 End If
 
                 dtFilialauswertung = S.AP.GetExportTable("GT_WEB")
@@ -139,14 +139,12 @@ Public Class Filialvergleich
                 S.AP.Execute()
 
                 If S.AP.ResultCode = 0 Then
-                    dblRahmenquote = S.AP.GetExportParameter("E_RAHMENQUOTE").ToDouble(0)
-
                     strDatumFilialVergleich = S.AP.GetExportParameter("E_DATE")
-                    If strDatumFilialVergleich = "00000000" Then
-                        strDatumFilialVergleich = ""
+                    Dim tmpDatVergleich As DateTime
+                    If DateTime.TryParse(strDatumFilialVergleich, tmpDatVergleich) Then
+                        strDatumFilialVergleich = tmpDatVergleich.ToShortDateString()
                     Else
-                        Dim datVergleich As Date = DateTime.ParseExact(strDatumFilialVergleich, "yyyyMMdd", CultureInfo.CurrentCulture)
-                        strDatumFilialVergleich = datVergleich.ToShortDateString()
+                        strDatumFilialVergleich = ""
                     End If
 
                     Dim dtRahmenquote As DataTable = S.AP.GetExportTable("GT_RAHMENQUOTE")

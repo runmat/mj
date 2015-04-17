@@ -1,4 +1,5 @@
 ﻿Imports KBSBase
+Imports GeneralTools.Models
 
 Public Class Retoure
     Inherits ErrorHandlingClass
@@ -286,7 +287,7 @@ Public Class Retoure
             S.AP.SetImportParameter("I_KOSTL", IIf(bMaster, mstrSendToKost, mstrKostStelle))
             S.AP.SetImportParameter("I_LIFNR", mLieferant)
             S.AP.SetImportParameter("I_VERKAEUFER", Verkaeufer)
-            S.AP.SetImportParameter("I_LIEFERSNR", Lieferscheinnummer.PadLeft(20, "0"c))
+            S.AP.SetImportParameter("I_LIEFERSNR", Lieferscheinnummer.NotNullOrEmpty().PadLeft(20, "0"c))
 
             Dim tblSAP As DataTable = S.AP.GetImportTable("GT_RUECK")
             'mit select filter, da sonst auch deleted rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
