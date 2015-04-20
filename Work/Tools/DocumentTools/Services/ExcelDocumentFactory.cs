@@ -146,7 +146,8 @@ namespace DocumentTools.Services
             {
                 if (property != null && property.GetSetMethod() != null &&
                     property.GetCustomAttributes(true).OfType<ScaffoldColumnAttribute>().None() &&
-                    !autoPropertyNamesToIgnore.Contains(property.Name.ToLower()))
+                    property.GetCustomAttributes(true).OfType<ImportIgnoreAttribute>().None()
+                    )
                 {
                     var value = row[column++];
                     value = ModelMapping.TryConvertValue(property, value, "us");
