@@ -61,8 +61,191 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+
+
+        // Z_M_ECA_TAB_BESTAND
+        static public ModelMapping<Z_M_ECA_TAB_BESTAND.GT_WEB, Zb2BestandSecurityFleet> Z_M_ECA_TAB_BESTAND_To_Zb2BestandSecurityFleet
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_ECA_TAB_BESTAND.GT_WEB, Zb2BestandSecurityFleet>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.EingangZb2 = sap.DATAB;
+                        business.Zulassungsdatum = sap.REPLA_DATE;
+                        business.Bemerkung = sap.ZBEMERKUNG;
+                        business.Hersteller = sap.HERST_T;
+                        business.Modellbezeichnung = sap.ZZBEZEI;
+                        business.Lagerstatus = sap.ABCKZ;                                                                                        
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller> Z_M_HERSTELLERGROUP_To_Fahrzeughersteller
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.HerstellerKey = sap.HERST_GROUP;
+                        business.HerstellerName = sap.HERST_T;                        
+                    }));
+            }
+        }
+
+
+        static public ModelMapping<Z_M_TH_BESTAND.GT_BESTAND, Treuhandbestand> Z_M_TH_BESTAND__GET_BESTAND_LIST_To_Treuhandbestand
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_TH_BESTAND.GT_BESTAND, Treuhandbestand>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.NameAG = sap.AG_NAME1;
+                        business.NameTG = sap.TG_NAME1;                       
+                        business.Zb2Nummer = sap.TIDNR;
+                        business.Vertragsnummer = sap.LIZNR;
+                        business.Versandstatus = sap.ABCTX;                       
+                        business.Versandadresse = string.Concat(sap.NAME1.AppendIfNotNull(", "), sap.STREET.AppendIfNotNull(", "), sap.POST_CODE1.AppendIfNotNull(", "), sap.CITY1);                       
+                        business.Referenz = sap.ZZREFERENZ2;                        
+                    }));
+            }
+        }
+
+
+        static public ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung> Z_DPM_UF_MELDUNGS_SUCHE_To_Unfallmeldungen
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung>(
+                     new Dictionary<string, string> ()
+                    ,(sap, business) => {
+                        business.Anlagedatum = sap.ERDAT;
+                        business.WebUser = sap.ERNAM;
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.Erstzulassung = sap.ERSTZULDAT;
+                        business.Kennzeicheneingang = sap.EG_KENNZ;
+                        business.Abmeldung = sap.ABMDT;
+                        business.StationsCode = sap.STATION;
+                        business.Mahnstufe = sap.MAHNSTUFE;                        
+                    }));
+            }
+        }
+
+
+
+        static public ModelMapping<Z_M_Abm_Abgemeldete_Kfz.AUSGABE, AbgemeldetesFahrzeug> Z_M_Abm_Abgemeldete_Kfz_AUSGABE_ToAbgemeldetesFahrzeug
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_Abm_Abgemeldete_Kfz.AUSGABE, AbgemeldetesFahrzeug>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.AbmeldeDatum = sap.VDATU; 
+                        business.Briefnummer = sap.ZZBRIEF;                         
+                        business.Fahrgestellnummer = sap.ZZFAHRG;
+                        business.Kennzeichen = sap.ZZKENN;                        
+                        business.Durchfuehrung = sap.PICKDAT;
+                        business.Versand = sap.ZZTMPDT;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKunden
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.TGName = sap.NAME1_TG;
+                        business.AGName = sap.NAME1_AG;
+                        business.AGNummer = sap.AG;
+                        business.TGNummer = sap.TREU;
+                       
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAG
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.TGName = sap.NAME1_AG;
+                        business.AGName = sap.NAME1_TG;
+                        business.AGNummer = sap.TREU;
+                        business.TGNummer = sap.AG;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_VERSAND_SPERR_001.GT_OUT, Treuhandbestand> Z_DPM_READ_VERSAND_SPERR_001_GT_OUT_ToTreuhandfreigabe    
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_VERSAND_SPERR_001.GT_OUT, Treuhandbestand>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.NameAG = sap.NAME1_AG;
+                        business.AGNummer = sap.ZZKUNNR_AG;
+                        business.NameTG = sap.NAME1_TG;
+                        business.TGNummer = sap.KUNNR_TG;
+                        business.Zb2Nummer = sap.TIDNR;
+                        business.Vertragsnummer = sap.LIZNR;                        
+                        business.Versandadresse = string.Concat(sap.NAME2_ZS.AppendIfNotNull(", "), sap.STRASSE_ZS.AppendIfNotNull(", "), sap.PLZ_ZS.AppendIfNotNull(", "), sap.ORT_ZS);
+                        business.Ersteller = sap.ERNAM;
+                        business.Belegnummer = sap.BELNR;
+                        business.Referenz = sap.ZZREFERENZ2;     
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAGServices
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.TGName = sap.NAME1_AG;
+                        business.AGName = sap.NAME1_TG;
+                        business.AGNummer = sap.TREU;
+                        business.TGNummer = sap.AG;
+                        business.IsServicesAGMapping = true;
+                    }));
+            }
+        }
+
         #endregion
 
+        
 
         #region Save to Repository
 
@@ -203,6 +386,77 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 ));
             }
         }
+       
+
+        /// <summary>
+        /// Validiere Treuhandverwaltung
+        /// </summary>
+        static public ModelMapping<Z_DPM_CHECK_TH_CODE.GT_IN, TreuhandverwaltungCsvUpload> Z_DPM_CHECK_TH_CODE_GT_IN_From_TreuhandverwaltungCsvUpload
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CHECK_TH_CODE.GT_IN, TreuhandverwaltungCsvUpload>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.EQUI_KEY = source.Fahrgestellnummer;
+                        destination.ERDAT = source.Datum;
+                        destination.SPERRDAT = source.Sperrdatum;
+                        destination.ERNAM = source.Sachbearbeiter;
+                        destination.ZZREFERENZ2 = source.Referenznummer;
+                    }
+                ));
+            }
+        }
+
+        /// <summary>
+        /// Speichere Treuhandverwaltung Ent-/sperrung
+        /// </summary>
+        static public ModelMapping<Z_M_TH_INS_VORGANG.GT_IN, TreuhandverwaltungCsvUpload> Z_M_TH_INS_VORGANG_GT_IN_From_TreuhandverwaltungCsvUpload
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_TH_INS_VORGANG.GT_IN, TreuhandverwaltungCsvUpload>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.AG = source.AGNummer;
+                        destination.EQUI_KEY = source.Fahrgestellnummer;
+                        destination.ERNAM = source.Sachbearbeiter;
+                        destination.ERDAT = source.Datum;                        
+                        destination.SPERRDAT = source.Sperrdatum >= source.Datum ? source.Sperrdatum : source.Datum;
+                        destination.TREUH_VGA =  source.IsSperren ? "S" : "F";
+                        destination.SUBRC = 0;                        
+                        destination.MESSAGE = string.Empty;
+                        // VERTR_beginn / Ends? -> s. Legacy                        
+                        destination.ZZREFERENZ2 = source.Referenznummer;
+                    }
+                ));
+            }
+        }
+
+
+        static public ModelMapping<Z_DPM_FREIG_VERSAND_SPERR_001.GT_WEB, Treuhandbestand> Z_DPM_FREIG_VERSAND_SPERR_001_GT_WEB_From_Treuhandbestand
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FREIG_VERSAND_SPERR_001.GT_WEB, Treuhandbestand>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {                       
+                        destination.BELNR = source.Belegnummer;                       
+                        destination.SPERRSTATUS = source.IsActionFreigeben ? "F" : "A";
+                        destination.NICHT_FREIG_GRU = !source.IsActionFreigeben ? source.Ablehnungsgrund + "" : "";                      
+                        destination.BEM = "";
+                    }
+                ));
+            }
+        }
+
+
 
         #endregion
     }

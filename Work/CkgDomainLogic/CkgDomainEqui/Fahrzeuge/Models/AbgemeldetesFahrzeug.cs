@@ -57,6 +57,21 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.DepartmentHead)]
         public string AbteilungsLeiter { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string Kennzeichen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        public string Fahrgestellnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
+        public string Briefnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ExecutionDate)]
+        public DateTime? Durchfuehrung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ShippingDate)]
+        public DateTime? Versand { get; set; }
+
         [GridHidden]
         public bool HistorieAvailable { get { return Art.IsNotNullOrEmpty() || Bemerkung.IsNotNullOrEmpty(); } }
 

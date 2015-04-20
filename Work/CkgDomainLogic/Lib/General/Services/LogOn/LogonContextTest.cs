@@ -395,5 +395,10 @@ namespace CkgDomainLogic.General.Services
         {
             return LogonContextHelper.GetAppIdCurrent(UserApps);
         }
+
+        public string GetEmailAddressForUser()
+        {
+            return "";
+        }
     }
 }

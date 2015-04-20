@@ -121,6 +121,7 @@
     <Compile Include="Models\Attributes\GridResponsiveWidthRangeAttribute.cs" />
     <Compile Include="Models\Attributes\GridRawHtmlAttribute.cs" />
     <Compile Include="Models\Attributes\GridExportIgnoreAttribute.cs" />
+    <Compile Include="Models\Attributes\ImportIgnoreAttribute.cs" />
     <Compile Include="Models\Attributes\LengthAttribute.cs" />
     <Compile Include="Models\Attributes\LocalizedDisplayAttribute.cs" />
     <Compile Include="Models\Attributes\UpperCaseAttribute.cs" />

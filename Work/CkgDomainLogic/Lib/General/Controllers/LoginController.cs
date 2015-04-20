@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web.Security;
 using CkgDomainLogic.General.Services;
 using MvcTools.Web;
 using CkgDomainLogic.General.Contracts;
@@ -89,6 +90,14 @@ namespace CkgDomainLogic.General.Controllers
                 if (!model.ModePasswordReset)
                     // Login successfull:
                     LogonContext = ViewModel.LogonContext;
+
+                // Test Code für ITA7575-6
+                // Jetzt kann ich den User ebenfalls in aspnetdb anmelden!
+                if (Membership.ValidateUser(LogonContext.UserID, "test1%"))
+                {
+                    FormsAuthentication.SetAuthCookie(LogonContext.UserID, false);
+                }
+
                 else
                 {
                     ViewModel.CheckIfPasswordResetAllowed(model, ModelState.AddModelError);

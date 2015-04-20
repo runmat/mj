@@ -230,15 +230,18 @@ namespace CkgDomainLogic.General.Services
             LogonUser(loginModel.UserName);
         }
 
+        public override string GetEmailAddressForUser()
+        {
+            var dbContext = CreateDbContext(UserName);
+
+            return dbContext.GetEmailAddressFromUserName(dbContext.UserName);
+        }
+
         public override string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             var dbContext = CreateDbContext(loginModel.UserName);
-            //if (dbContext.User == null)
-            //    addModelError(m => m.UserName, Localize.LoginUserDoesNotExist);
 
             var email = dbContext.GetEmailAddressFromUserName(dbContext.UserName);
-            //if (email.IsNullOrEmpty())
-            //    addModelError(m => m.UserName, Localize.UserInvalidEmail);
 
             return email;
         }
