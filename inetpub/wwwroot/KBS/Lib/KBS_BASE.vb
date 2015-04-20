@@ -287,6 +287,7 @@ Public Class KBS_BASE
                 page.Response.Redirect("/KBS/Login.aspx")
             Else
                 page.Session("mKasse") = tmpKassenObj
+                SetLoggingInfos(page, tmpKassenObj)
             End If
         End If
     End Sub
@@ -298,16 +299,19 @@ Public Class KBS_BASE
                 Return False
             Else
                 page.Session("mKasse") = tmpKassenObj
-                'Daten fürs SAP-Logging
-                page.Session("LastAppID") = 0
-                page.Session("LastUserID") = 0
-                page.Session("LastCustomerID") = tmpKassenObj.CustomerID
-                page.Session("LastKunnr") = tmpKassenObj.KUNNR
-                page.Session("LastPortalType") = 4
+                SetLoggingInfos(page, tmpKassenObj)
                 Return True
             End If
         End If
     End Function
+
+    Private Shared Sub SetLoggingInfos(ByVal page As Page, ByVal tmpKassenObj As Kasse)
+        page.Session("LastAppID") = 0
+        page.Session("LastUserID") = 0
+        page.Session("LastCustomerID") = tmpKassenObj.CustomerID
+        page.Session("LastKunnr") = tmpKassenObj.KUNNR
+        page.Session("LastPortalType") = 4
+    End Sub
 
     Public Shared Function CastSapBizTalkErrorMessage(ByVal errorMessage As String) As String
         If errorMessage.Contains("SapErrorMessage") = True Then
