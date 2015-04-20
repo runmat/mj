@@ -32,6 +32,10 @@
                 } catch (e) {
                     GridPrepareFromAutoColumnsPersistedState(grid.data("tGrid"));
                 }
+                
+                try {
+                    TryPrepareGridSettingsAdministration(grid);
+                } catch (e) { }
             }
 
             FilteredData_Grid_PrepareAllCommandHrefs(grid, _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns);
@@ -152,6 +156,13 @@
         }
 
         GridColumnResetOrderAndVisibility();
+    }
+
+    function GridSettingsAdminEditColumnHeader(columnMember) {
+        
+        alert(columnMember);
+        
+        return false;
     }
     
     function GetJsonColumns(grid) {

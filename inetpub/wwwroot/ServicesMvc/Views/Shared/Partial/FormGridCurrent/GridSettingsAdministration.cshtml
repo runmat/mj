@@ -1,0 +1,19 @@
+﻿
+<script type="text/javascript">
+
+    function TryPrepareGridSettingsAdministration(gridEl) {
+
+        var grid = gridEl.data("tGrid");
+        
+        var gridHeaders = gridEl.find("th.t-header");
+        //alert(gridHeaders.length);
+
+        $.each(grid.columns, function (index, col) {
+
+            var gridHeader = $(gridHeaders[index]);
+            if (gridHeader.find(".t-column-header-admin").length == 0)
+                gridHeader.append($("<a class='t-column-header-admin' href='#' onclick='return GridSettingsAdminEditColumnHeader(\"" + col.member + "\");'>X</a>"));
+
+        });
+    }
+</script>

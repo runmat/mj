@@ -4313,6 +4313,7 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
     <Content Include="Views\Shared\Partial\FormGridCurrent\SetAutoPersistColumns.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\GridMenuReset.cshtml" />
+    <Content Include="Views\Shared\Partial\FormGridCurrent\GridSettingsAdministration.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
