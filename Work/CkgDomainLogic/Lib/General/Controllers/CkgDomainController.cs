@@ -485,11 +485,10 @@ namespace CkgDomainLogic.General.Controllers
 
         protected IPersistableObject ShoppingCartSaveItem(string groupKey, IPersistableObject o)
         {
-            IPersistableObject savedObject = null;
             IPersistableObject savedObject2 = null;
-            PersistanceSaveObject(groupKey, o.ObjectKey, ref savedObject, ref savedObject2);
+            PersistanceSaveObject(groupKey, o.ObjectKey, ref o, ref savedObject2);
             ShoppingCartLoadAndCacheItems();
-            return savedObject;
+            return o;
         }
 
         [HttpPost]

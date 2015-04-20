@@ -39,7 +39,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugbriefeVhcFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefbestandVhcViewModel.FahrzeugbriefeVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefbestandVhcViewModel.FahrzeugbriefeVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("FahrzeugbriefeVhc", dt);
 
             return new EmptyResult();
@@ -47,7 +47,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugbriefeVhcFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefbestandVhcViewModel.FahrzeugbriefeVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = BriefbestandVhcViewModel.FahrzeugbriefeVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("FahrzeugbriefeVhc", dt, landscapeOrientation: true);
 
             return new EmptyResult();

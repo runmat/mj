@@ -40,7 +40,7 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         public string SaveModellId(ModellId modellId)
         {
-            PService.SaveObject(modellId.ObjectKey, POwnerKey, PGroupKey, LogonContext.UserName, modellId);
+            PService.SaveObject(modellId.ObjectKey, POwnerKey, PGroupKey, LogonContext.UserName, ref modellId, null);
             
             var error = "";
 
