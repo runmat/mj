@@ -497,6 +497,7 @@ Partial Public Class Change07
     End Sub
 
     Private Sub lbAusparken_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAusparken.Click
+        lblErrorAusparken.Text = ""
         MPEAusparken.Show()
     End Sub
 
@@ -559,21 +560,23 @@ Partial Public Class Change07
     End Sub
 
     Protected Sub gvAusparken_RowCommand(ByVal sender As Object, ByVal e As GridViewCommandEventArgs) Handles gvAusparken.RowCommand
+        lblErrorAusparken.Text = ""
+
         Select Case e.CommandName
 
             Case "ausparken"
                 mObjUmlagerung.AusparkenERP(e.CommandArgument)
                 If mObjUmlagerung.ErrorOccured Then
-                    lblError.Text = mObjUmlagerung.ErrorMessage
+                    lblErrorAusparken.Text = mObjUmlagerung.ErrorMessage
                 Else
                     txtKST.Text = mObjUmlagerung.KostStelleNeu
                     ApplyKst()
                 End If
-                
+
             Case "löschen"
                 mObjUmlagerung.GeparktLoeschenERP(e.CommandArgument, "X")
                 If mObjUmlagerung.ErrorOccured Then
-                    lblError.Text = mObjUmlagerung.ErrorMessage
+                    lblErrorAusparken.Text = mObjUmlagerung.ErrorMessage
                 End If
                 MPEAusparken.Show()
 

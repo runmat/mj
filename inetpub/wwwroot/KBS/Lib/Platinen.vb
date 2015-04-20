@@ -392,7 +392,7 @@ Public Class Platinen
 
             S.AP.Execute()
 
-            If S.AP.ResultCode <> 0 Then
+            If S.AP.ResultCode <> 0 AndAlso S.AP.ResultCode <> 101 Then
                 RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 

@@ -468,7 +468,7 @@ Public Class ComCommon
 
             S.AP.Execute()
 
-            If S.AP.ResultCode = 0 Then
+            If S.AP.ResultCode = 0 OrElse S.AP.ResultCode = 101 Then
                 mListeAusparken = S.AP.GetExportTable("GT_LISTE")
             Else
                 RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
