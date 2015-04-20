@@ -5,6 +5,7 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.Uebfuehrg.Models
 {
+    [GridColumnsAutoPersist]
     public class HistoryAuftrag
     {
         [LocalizedDisplay(LocalizeConstants.OrderID)]
@@ -71,5 +72,13 @@ namespace CkgDomainLogic.Uebfuehrg.Models
                 return anr.ToString();
             }
         }
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Action1 { get; set; }
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.ActionDot)]
+        public string Action2 { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web.Mvc;
@@ -39,6 +40,8 @@ namespace CkgDomainLogic.General.Controllers
             get { return (CkgBaseViewModel)SessionStore.GetModel("MainViewModel"); } 
             set { SessionStore.SetModel("MainViewModel", value); }
         }
+
+        public bool AdminModeGridSettings { get { return ConfigurationManager.AppSettings["AdminModeGridSettings"].NotNullOrEmpty().ToLower() == "true"; } }
 
         protected GridSettings GridCurrentSettings
         {
