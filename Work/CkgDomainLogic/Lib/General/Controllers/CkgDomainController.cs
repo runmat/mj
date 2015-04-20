@@ -263,7 +263,7 @@ namespace CkgDomainLogic.General.Controllers
             var dt = exportList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
 
             var grid = (IGrid)SessionHelper.GetSessionObject(string.Format("Telerik_Grid_{0}", modelType.Name));
-            if (grid == null || (groupBy.NotNullOrEmpty().Length <= 1 && (grid.Grouping == null || grid.Grouping.Groups == null || grid.Grouping.Groups.Count == 0)))
+            if (grid == null || groupBy.NotNullOrEmpty().Length <= 1)
                 new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("ExcelExport", dt);
             else
             {
