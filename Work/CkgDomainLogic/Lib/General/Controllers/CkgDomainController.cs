@@ -23,7 +23,7 @@ using Telerik.Web.Mvc.UI;
 
 namespace CkgDomainLogic.General.Controllers
 {
-    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider, IGridColumnsAutoPersistProvider
+    public abstract class CkgDomainController : LogonCapableController, IPersistableSelectorProvider, IGridColumnsAutoPersistProvider, IGridSettingsAdministrationProvider
     {
         public IAppSettings AppSettings { get; protected set; }
 
@@ -41,7 +41,7 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionStore.SetModel("MainViewModel", value); }
         }
 
-        public bool AdminModeGridSettings { get { return ConfigurationManager.AppSettings["AdminModeGridSettings"].NotNullOrEmpty().ToLower() == "true"; } }
+        public bool GridSettingsAdminMode { get { return ConfigurationManager.AppSettings["AdminModeGridSettings"].NotNullOrEmpty().ToLower() == "true"; } }
 
         protected GridSettings GridCurrentSettings
         {
@@ -413,6 +413,14 @@ namespace CkgDomainLogic.General.Controllers
             return LogonContext.UserName;
         }
 
+        protected string GetRealPersistanceOwnerKey()
+        {
+            if (GridSettingsAdminMode)
+                return string.Format("ADMIN_for_customer_{0}", LogonContext.KundenNr);
+
+            return GetPersistanceOwnerKey();
+        }
+
 
         private IEnumerable<IPersistableObjectContainer> PersistanceGetObjectContainers(string groupKey)
         {
@@ -420,7 +428,7 @@ namespace CkgDomainLogic.General.Controllers
             if (pService == null)
                 return new List<IPersistableObjectContainer>();
 
-            return pService.GetObjectContainers(GetPersistanceOwnerKey(), groupKey);
+            return pService.GetObjectContainers(GetRealPersistanceOwnerKey(), groupKey);
         }
 
         protected List<T> PersistanceGetObjects<T>(string groupKey)
@@ -446,7 +454,7 @@ namespace CkgDomainLogic.General.Controllers
             if (o == null && o2 == null)
                 return;
 
-            pService.SaveObject(objectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, ref o, ref o2);
+            pService.SaveObject(objectKey, GetRealPersistanceOwnerKey(), groupKey, LogonContext.UserName, ref o, ref o2);
         }
 
         protected void PersistanceSaveObject(string groupKey, string objectKey, IPersistableObject o)
@@ -458,7 +466,7 @@ namespace CkgDomainLogic.General.Controllers
             if (o == null)
                 return;
 
-            pService.SaveObject(objectKey, GetPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
+            pService.SaveObject(objectKey, GetRealPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
         }
 
         protected void PersistanceDeleteObject(string objectKey)

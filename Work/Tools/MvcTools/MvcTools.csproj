@@ -103,6 +103,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\Attributes\IGridColumnsAutoPersistProvider.cs" />
+    <Compile Include="Models\Attributes\IGridSettingsAdministrationProvider.cs" />
     <Compile Include="Models\GridSettings.cs" />
     <Compile Include="Web\AreaAutoRegistration.cs" />
     <Compile Include="Web\ModelBinders\AnnotationsAndConventionsBasedModelMetaDataProvider.cs" />
