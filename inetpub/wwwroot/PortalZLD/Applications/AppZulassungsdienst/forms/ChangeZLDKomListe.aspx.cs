@@ -1130,7 +1130,7 @@ namespace AppZulassungsdienst.forms
                         pos.PreisKennzeichen = decPreisKZ;
 
                     if (txtKennzAbc.Visible)
-                        pos.KennzeichenTeil2 = txtKennzAbc.Text;
+                        pos.KennzeichenTeil2 = txtKennzAbc.Text.NotNullOrEmpty().ToUpper();
 
                     if (rbEC.Visible)
                     {
@@ -1144,7 +1144,7 @@ namespace AppZulassungsdienst.forms
                         foreach (var item in objKompletterf.Vorgangsliste.Where(vg => vg.SapId == pos.SapId))
                         {
                             if (txtKennzAbc.Visible)
-                                item.KennzeichenTeil2 = txtKennzAbc.Text;
+                                item.KennzeichenTeil2 = txtKennzAbc.Text.NotNullOrEmpty().ToUpper();
                         }
                     }
                 }

@@ -629,7 +629,7 @@ namespace AppZulassungsdienst.forms
                     }
 
                     if (txtBoxKennzAbc.Visible)
-                        pos.KennzeichenTeil2 = txtBoxKennzAbc.Text;
+                        pos.KennzeichenTeil2 = txtBoxKennzAbc.Text.NotNullOrEmpty().ToUpper();
 
                     if (rbEC.Visible)
                     {
@@ -646,7 +646,7 @@ namespace AppZulassungsdienst.forms
                         foreach (var item in objNacherf.Vorgangsliste.Where(vg => vg.SapId == pos.SapId))
                         {
                             if (txtBoxKennzAbc.Visible)
-                                item.KennzeichenTeil2 = txtBoxKennzAbc.Text;
+                                item.KennzeichenTeil2 = txtBoxKennzAbc.Text.NotNullOrEmpty().ToUpper();
 
                             if (ZulDate.Visible)
                                 item.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");

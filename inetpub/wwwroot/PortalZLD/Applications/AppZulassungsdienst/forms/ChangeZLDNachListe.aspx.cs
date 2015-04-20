@@ -1258,7 +1258,7 @@ namespace AppZulassungsdienst.forms
                     if (objNacherf.SelAnnahmeAH)
                     {
                         if (txtAmt.Visible)
-                            pos.Landkreis = txtAmt.Text;
+                            pos.Landkreis = txtAmt.Text.NotNullOrEmpty().ToUpper();
                     }
                     else if (objNacherf.SelSofortabrechnung)
                     {
@@ -1297,7 +1297,7 @@ namespace AppZulassungsdienst.forms
                     }
 
                     if (txtKennzAbc.Visible)
-                        pos.KennzeichenTeil2 = txtKennzAbc.Text;
+                        pos.KennzeichenTeil2 = txtKennzAbc.Text.NotNullOrEmpty().ToUpper();
 
                     if (ZulDateBox.Visible)
                         pos.Zulassungsdatum = ZulDateBox.Text.ToNullableDateTime("ddMMyy");
@@ -1309,7 +1309,7 @@ namespace AppZulassungsdienst.forms
                         foreach (var item in objNacherf.Vorgangsliste.Where(vg => vg.SapId == pos.SapId))
                         {
                             if (txtKennzAbc.Visible)
-                                item.KennzeichenTeil2 = txtKennzAbc.Text;
+                                item.KennzeichenTeil2 = txtKennzAbc.Text.NotNullOrEmpty().ToUpper();
 
                             if (ZulDateBox.Visible)
                                 item.Zulassungsdatum = ZulDateBox.Text.ToNullableDateTime("ddMMyy");
@@ -1317,7 +1317,7 @@ namespace AppZulassungsdienst.forms
                                 item.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("dd.MM.yyyy");
 
                             if (objNacherf.SelAnnahmeAH && txtAmt.Visible)
-                                item.Landkreis = txtAmt.Text;
+                                item.Landkreis = txtAmt.Text.NotNullOrEmpty().ToUpper();
                         }
                     }
                 }
