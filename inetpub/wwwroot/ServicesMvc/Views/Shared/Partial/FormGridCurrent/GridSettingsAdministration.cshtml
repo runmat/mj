@@ -6,14 +6,23 @@
         var grid = gridEl.data("tGrid");
         
         var gridHeaders = gridEl.find("th.t-header");
-        //alert(gridHeaders.length);
 
         $.each(grid.columns, function (index, col) {
 
             var gridHeader = $(gridHeaders[index]);
-            if (gridHeader.find(".t-column-header-admin").length == 0)
-                gridHeader.append($("<a class='t-column-header-admin' href='#' onclick='return GridSettingsAdminEditColumnHeader(\"" + col.member + "\");'>X</a>"));
+            if (gridHeader.find(".grid-t-column-header-admin").length == 0) {
+                var adminButton = $(
+                    "<a class='grid-t-column-header-admin' href='#' data-original-title='Spalte customizen + übersetzen!' data-placement='bottom'" +
+                    " onclick='return GridSettingsAdminEditColumnHeader(\"" + gridEl.attr("id") + "\", \"" + col.member + "\");'>" +
+                    " <i class='icon-wrench'>" +
+                    "</a>");
 
+                adminButton.tooltip();
+                gridHeader.append(adminButton);
+            }
         });
+
+        if (gridEl.parent().find(".grid-t-column-header-admin-edit-div").length == 0)
+            gridEl.parent().prepend($("<div class='grid-t-column-header-admin-edit-div hide'></div>"));
     }
 </script>

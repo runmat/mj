@@ -158,9 +158,33 @@
         GridColumnResetOrderAndVisibility();
     }
 
-    function GridSettingsAdminEditColumnHeader(columnMember) {
-        
-        alert(columnMember);
+    function GridSettingsAdminEditColumnHeader(gridName, columnMember) {
+
+        var gridEl = $("#" + gridName);
+        var grid = gridEl.data("tGrid");
+
+        //grid.ajaxRequest();
+        //alert(gridName + " - " + columnMember);
+
+        var adminEditDiv = gridEl.parent().find(".grid-t-column-header-admin-edit-div");
+        adminEditDiv.hide();
+
+        $.ajax(
+                {
+                    type: "POST",
+                    url: "/ServicesMvc/Common/GridAdmin/Edit",
+                    data: {
+                        columnMember: columnMember
+                    },
+                    loadingShow: true,
+                    success: function (result) {
+                        //alert(result);
+                        adminEditDiv.html(result);
+                        adminEditDiv.slideDown(300);
+                    }
+                });
+
+        //$("#FormSearchBox form .form-actions button[type='submit']").trigger("click");
         
         return false;
     }
