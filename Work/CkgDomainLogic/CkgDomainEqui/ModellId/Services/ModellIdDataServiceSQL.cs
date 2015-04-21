@@ -30,17 +30,17 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         public List<ModellId> GetModellIds()
         {
-            return new List<ModellId>
-                {
-                    new ModellId { ID = "BMW", Bezeichnung = "M5 Turbo" },
-                    new ModellId { ID = "Audi", Bezeichnung = "A4 Avant" },
-                    new ModellId { ID = "VW", Bezeichnung = "Golf VII" },
-                };
+            var containerList = PService.GetObjectContainers(POwnerKey, PGroupKey);
+            var objectList = containerList.Select(container => (container.Object as ModellId)).ToListOrEmptyList();
+
+            return objectList;
         }
 
         public string SaveModellId(ModellId modellId)
         {
-            PService.SaveObject(modellId.ObjectKey, POwnerKey, PGroupKey, LogonContext.UserName, ref modellId, null);
+            IPersistableObject o = modellId;
+            IPersistableObject o2 = null;
+            PService.SaveObject(modellId.ObjectKey, POwnerKey, PGroupKey, LogonContext.UserName, ref o, ref o2);
             
             var error = "";
 
