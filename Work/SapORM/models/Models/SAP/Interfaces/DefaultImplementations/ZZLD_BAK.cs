@@ -51,5 +51,6 @@ namespace SapORM.Models
         public string ZZEVB { get; set; }
         public string INFO_TEXT { get; set; }
         public string LTEXT_NR { get; set; }
+        public string WEB_STATUS { get; set; }
     }
 }

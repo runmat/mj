@@ -111,6 +111,8 @@ namespace SapORM.Models
 
 			public string BEB_STATUS { get; set; }
 
+			public string WEB_STATUS { get; set; }
+
 			public string INFO_TEXT { get; set; }
 
 			public string ZL_RL_FRBNR_HIN { get; set; }
@@ -171,6 +173,7 @@ namespace SapORM.Models
 					PRALI_PRINT = (string)row["PRALI_PRINT"],
 					FLIEGER = (string)row["FLIEGER"],
 					BEB_STATUS = (string)row["BEB_STATUS"],
+					WEB_STATUS = (string)row["WEB_STATUS"],
 					INFO_TEXT = (string)row["INFO_TEXT"],
 					ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
 					ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],

@@ -97,5 +97,7 @@ namespace SapORM.Models
         string INFO_TEXT { get; set; }
 
         string LTEXT_NR { get; set; }
+
+        string WEB_STATUS { get; set; }
     }
 }
