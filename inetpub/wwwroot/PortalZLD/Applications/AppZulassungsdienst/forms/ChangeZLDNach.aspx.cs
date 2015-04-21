@@ -1253,9 +1253,10 @@ namespace AppZulassungsdienst.forms
 
                 objNacherf.SaveVorgangToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
 
-                // Bei Änderung von StVa oder Zulassungsdatum, Vorgang aus Selektion ausschliessen
+                // Bei Änderung von StVa, Zulassungsdatum oder Flieger-Flag Vorgang aus Selektion ausschliessen
                 if ((!String.IsNullOrEmpty(objNacherf.SelKreis) && kopfdaten.Landkreis != objNacherf.SelKreis)
-                    || (!String.IsNullOrEmpty(objNacherf.SelDatum) && kopfdaten.Zulassungsdatum.ToString("dd.MM.yyyy") != objNacherf.SelDatum))
+                    || (!String.IsNullOrEmpty(objNacherf.SelDatum) && kopfdaten.Zulassungsdatum.ToString("dd.MM.yyyy") != objNacherf.SelDatum)
+                    || (objNacherf.SelFlieger && !kopfdaten.Flieger.IsTrue()))
                 {
                     objNacherf.Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
                 }

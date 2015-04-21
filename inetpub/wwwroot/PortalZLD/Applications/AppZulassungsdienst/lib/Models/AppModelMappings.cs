@@ -67,7 +67,7 @@ namespace AppZulassungsdienst.lib.Models
             d.Vorerfasser = s.VE_ERNAM;
             d.Vorerfassungsdatum = s.VE_ERDAT;
             d.Vorerfassungszeit = s.VE_ERZEIT;
-            d.WebBearbeitungsStatus = "";
+            d.WebBearbeitungsStatus = s.WEB_STATUS;
             d.Wunschkennzeichen = s.WUNSCHKENN_JN.XToBool();
             d.Zahlart_Bar = s.BAR_JN.XToBool();
             d.Zahlart_EC = s.EC_JN.XToBool();
@@ -679,6 +679,7 @@ namespace AppZulassungsdienst.lib.Models
             d.VZB_STATUS = s.VersandzulassungBearbeitungsstatus;
             d.VZD_VKBUR = s.VersandzulassungDurchfuehrendesVkBur;
             d.VZERDAT = s.VersandzulassungErledigtDatum;
+            d.WEB_STATUS = s.WebBearbeitungsStatus;
             d.WUNSCHKENN_JN = s.Wunschkennzeichen.BoolToX();
             d.ZL_LIFNR = (String.IsNullOrEmpty(s.LieferantenNr) ? "" : s.LieferantenNr.ToSapKunnr());
             d.ZL_RL_FRBNR_HIN = s.FrachtbriefNrHin;

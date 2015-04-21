@@ -305,7 +305,7 @@ namespace AppZulassungsdienst.lib
 
             try
             {
-                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, false);
 
                 AktuellerVorgang.Kopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == sapId, new ZLDKopfdaten());
                 AktuellerVorgang.Bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == sapId, new ZLDBankdaten());
@@ -605,6 +605,8 @@ namespace AppZulassungsdienst.lib
         {
             ClearError();
 
+            var blnAnnahmeAhSenden = (SelAnnahmeAH && annahmeAhSend);
+
             List<ZLDVorgangUINacherfassung> vgList;
 
             if (DataFilterActive)
@@ -616,18 +618,18 @@ namespace AppZulassungsdienst.lib
                 vgList = Vorgangsliste;
             }
 
-            if (vgList.None() || (SelAnnahmeAH && annahmeAhSend && vgList.None(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")))
+            if (vgList.None() || (blnAnnahmeAhSenden && vgList.None(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")))
                 return;
 
             ExecuteSapZugriff(() =>
             {
                 Vorgangsliste.ForEach(vg => vg.FehlerText = "");
 
-                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, blnAnnahmeAhSenden);
 
                 List<string> idList;
 
-                if (SelAnnahmeAH && annahmeAhSend)
+                if (blnAnnahmeAhSenden)
                 {
                     idList = vgList.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
                 }
@@ -643,8 +645,10 @@ namespace AppZulassungsdienst.lib
                 {
                     var kopf = item;
 
-                    if (SelAnnahmeAH && annahmeAhSend)
+                    if (blnAnnahmeAhSenden)
                     {
+                        kopf.WebBearbeitungsStatus = "";
+
                         // für "neue AH-Vorgänge" den beb_status aktualisieren
                         switch (kopf.WebBearbeitungsStatus)
                         {
@@ -747,7 +751,7 @@ namespace AppZulassungsdienst.lib
             {
                 Vorgangsliste.ForEach(vg => vg.FehlerText = "");
 
-                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm);
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, true);
 
                 var idList = vgList.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").GroupBy(v => v.SapId).Select(grp => grp.First().SapId).ToList();
 
@@ -769,6 +773,7 @@ namespace AppZulassungsdienst.lib
 
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
+                    kopf.WebBearbeitungsStatus = "";
 
                     var adresse = adressdatenRel.FirstOrDefault(a => a.SapId == kopf.SapId);
                     if (adresse != null)
@@ -1168,7 +1173,8 @@ namespace AppZulassungsdienst.lib
         /// </summary>
         /// <param name="materialStamm"></param>
         /// <param name="stvaStamm"></param>
-        private void ApplyVorgangslisteChangesToBaseLists(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm)
+        /// <param name="setLoeschkennzeichen"></param>
+        private void ApplyVorgangslisteChangesToBaseLists(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, bool setLoeschkennzeichen)
         {
             List<ZLDVorgangUINacherfassung> vgList;
 
@@ -1204,7 +1210,9 @@ namespace AppZulassungsdienst.lib
                     kopf.Zulassungsdatum = hauptPos.Zulassungsdatum;
 
                     kopf.WebBearbeitungsStatus = hauptPos.WebBearbeitungsStatus;
-                    kopf.Loeschkennzeichen = (kopf.WebBearbeitungsStatus == "L" ? "L" : "");
+
+                    if (setLoeschkennzeichen)
+                        kopf.Loeschkennzeichen = (kopf.WebBearbeitungsStatus == "L" ? "L" : "");
                 }
 
                 var positionen = Vorgangsliste.Where(v => v.SapId == kopf.SapId);
@@ -1217,12 +1225,9 @@ namespace AppZulassungsdienst.lib
 
                         var loeschKz = (pos.WebBearbeitungsStatus == "L" ? "L" : "");
 
-                        if (dlPos.WebMaterialart == "G" && mat != null && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
-                            loeschKz = "L";
-                        else if (dlPos.WebMaterialart == "S" && dlPos.UebergeordnetePosition != "10")
-                            loeschKz = "L";
+                        if (setLoeschkennzeichen)
+                            dlPos.Loeschkennzeichen = loeschKz;
 
-                        dlPos.Loeschkennzeichen = loeschKz;
                         dlPos.Preis = pos.Preis;
                         dlPos.MaterialName = pos.MaterialName;
                         dlPos.MaterialName = dlPos.CombineBezeichnungMenge();
@@ -1231,7 +1236,9 @@ namespace AppZulassungsdienst.lib
                         var gebuehrenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");
                         if (gebuehrenPos != null)
                         {
-                            gebuehrenPos.Loeschkennzeichen = loeschKz;
+                            if (setLoeschkennzeichen)
+                                gebuehrenPos.Loeschkennzeichen = loeschKz;
+
                             gebuehrenPos.Preis = pos.Gebuehr;
                             gebuehrenPos.GebuehrAmt = pos.GebuehrAmt;
                             gebuehrenPos.Gebuehrenpaket = pos.Gebuehrenpaket;
@@ -1240,16 +1247,26 @@ namespace AppZulassungsdienst.lib
                         var steuerPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "S");
                         if (steuerPos != null)
                         {
-                            steuerPos.Loeschkennzeichen = loeschKz;
+                            if (setLoeschkennzeichen)
+                                steuerPos.Loeschkennzeichen = loeschKz;
+
                             steuerPos.Preis = pos.Steuer;
                         }
 
                         var kennzeichenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "K");
                         if (kennzeichenPos != null)
                         {
-                            kennzeichenPos.Loeschkennzeichen = loeschKz;
+                            if (setLoeschkennzeichen)
+                                kennzeichenPos.Loeschkennzeichen = loeschKz;
+
                             kennzeichenPos.Preis = pos.PreisKennzeichen;
                         }
+
+                        // überflüssige Unterpositionen löschen
+                        if (dlPos.WebMaterialart == "G" && mat != null && String.IsNullOrEmpty(mat.KennzeichenMaterialNr))
+                            dlPos.Loeschkennzeichen = "L";
+                        else if (dlPos.WebMaterialart == "S" && dlPos.UebergeordnetePosition != "10")
+                            dlPos.Loeschkennzeichen = "L";
                     }
                 }
             }

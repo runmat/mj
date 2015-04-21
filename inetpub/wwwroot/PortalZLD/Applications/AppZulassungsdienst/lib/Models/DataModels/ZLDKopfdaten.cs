@@ -106,7 +106,7 @@ namespace AppZulassungsdienst.lib.Models
         public string LangtextNr { get; set; }
 
         /// <summary>
-        /// B = bearbeitet, O = OK, ...
+        /// B = bearbeitet, O = OK, A = Angenommen, L = Löschen, ...
         /// </summary>
         public string WebBearbeitungsStatus { get; set; }
     }

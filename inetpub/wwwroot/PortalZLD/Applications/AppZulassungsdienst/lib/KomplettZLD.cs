@@ -738,6 +738,7 @@ namespace AppZulassungsdienst.lib
 
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;
+                    kopfdaten.WebBearbeitungsStatus = "";
 
                     kopfListeWeb.Add(kopfdaten);
 

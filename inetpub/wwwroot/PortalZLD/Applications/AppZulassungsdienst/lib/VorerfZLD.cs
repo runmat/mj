@@ -330,8 +330,6 @@ namespace AppZulassungsdienst.lib
 
             ExecuteSapZugriff(() =>
             {
-                Vorgangsliste.ForEach(vg => vg.FehlerText = "");
-
                 var zldDataContext = new ZLDTableClassesDataContext();
 
                 var kopfListeWeb = new List<ZLDKopfdaten>();
@@ -342,6 +340,8 @@ namespace AppZulassungsdienst.lib
                 foreach (var item in Vorgangsliste)
                 {
                     var vg = item;
+
+                    vg.FehlerText = "";
 
                     var tmpKopf = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == vg.SapId, new ZLDVorgangKopf());
                     var tmpBank = zldDataContext.ZLDVorgangBank.FirstOrDefault(b => b.SapId == vg.SapId, new ZLDVorgangBank());
@@ -359,6 +359,7 @@ namespace AppZulassungsdienst.lib
 
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;
+                    kopfdaten.WebBearbeitungsStatus = "";
 
                     kopfListeWeb.Add(kopfdaten);
 
