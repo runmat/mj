@@ -308,7 +308,7 @@ namespace CkgDomainLogic.General.Controllers
         [HttpPost]
         public ActionResult AdressenKennungChange(AdressenPflegeViewModel model)
         {
-            AdressenPflegeViewModel.AdressenKennungGruppeChange(model.AdressenKennungGruppe, model.AdressenKennung);
+            AdressenPflegeViewModel.AdressenKennungGruppeChange(model.AdressenKennungGruppe, model.AdressenKennungTemp);
             ModelState.Clear();
 
             return PartialView("Partial/AdressenGruppeKennungSelect", AdressenPflegeViewModel);
