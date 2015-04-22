@@ -51,5 +51,14 @@ namespace CkgDomainLogic.DomainCommon.Services
             var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
             dbContextProdServer.TranslatedResourceCustomerUpdate(r);
         }
+
+        public void TranslatedResourceCustomerDelete(TranslatedResourceCustom r)
+        {
+            var dbContextTestServer = CreateDbContext(ConnectionStringTestServer);
+            dbContextTestServer.TranslatedResourceCustomerDelete(r);
+
+            var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
+            dbContextProdServer.TranslatedResourceCustomerDelete(r);
+        }
     }
 }

@@ -581,7 +581,7 @@ namespace CkgDomainLogic.General.Database.Services
         {
             Database.ExecuteSqlCommand(
                 " if not exists (select Resource from TranslatedResourceCustom where Resource = {0} and CustomerID = {1}) " +
-                "   insert into TranslatedResourceCustom (Resource, CustomerID, en, de) select {0}, {1}, {2}, {3}", 
+                "   insert into TranslatedResourceCustom (Resource, CustomerID, en, de) select {0}, {1}, {2}, {3}",
                 r.Resource, r.CustomerID, r.en, r.de);
 
             Database.ExecuteSqlCommand(
@@ -597,6 +597,13 @@ namespace CkgDomainLogic.General.Database.Services
                     r.de, r.de_kurz,
                     r.fr, r.fr_kurz,
                     r.Resource, r.CustomerID);
+        }
+
+        public void TranslatedResourceCustomerDelete(TranslatedResourceCustom r)
+        {
+            Database.ExecuteSqlCommand(
+                " delete from TranslatedResourceCustom where Resource = {0} and CustomerID = {1}",
+                    r.Resource, r.CustomerID, r.en, r.de);
         }
         
         #endregion

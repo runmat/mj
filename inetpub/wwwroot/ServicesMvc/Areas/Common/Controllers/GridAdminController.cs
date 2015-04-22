@@ -43,12 +43,14 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadGridColumnTranslations(GridAdminViewModel model)
+        public ActionResult EditGridColumnTranslations(GridAdminViewModel model)
         {
             if (!ModelState.IsValid)
                 return PartialView("Partial/Edit", model);
 
-            ViewModel.DataSave(model.CurrentTranslatedResource, model.CurrentTranslatedResourceCustomer);
+            ViewModel.DataSave(model);
+            if (model.TmpDeleteCustomerTranslation)
+                ModelState.Clear();
 
             return PartialView("Partial/Edit", model);
         }

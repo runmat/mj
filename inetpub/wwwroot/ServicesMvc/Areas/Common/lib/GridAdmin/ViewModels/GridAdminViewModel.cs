@@ -20,6 +20,8 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         [XmlIgnore]
         public IGridAdminDataService DataService { get { return CacheGet<IGridAdminDataService>(); } }
 
+        public bool TmpDeleteCustomerTranslation { get; set; }
+
         public int CurrentCustomerID { get; set; }
 
         public string CurrentResourceID { get; set; }
@@ -46,10 +48,16 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             return true;
         }
 
-        public void DataSave(TranslatedResource resource, TranslatedResourceCustom resourceCustomer)
+        public void DataSave(GridAdminViewModel model)
         {
-            DataService.TranslatedResourceUpdate(resource);
-            DataService.TranslatedResourceCustomerUpdate(resourceCustomer);
+            if (model.TmpDeleteCustomerTranslation)
+            {
+                DataService.TranslatedResourceCustomerDelete(model.CurrentTranslatedResourceCustomer);
+                return;
+            }
+
+            DataService.TranslatedResourceUpdate(model.CurrentTranslatedResource);
+            DataService.TranslatedResourceCustomerUpdate(model.CurrentTranslatedResourceCustomer);
         }
     }
 }

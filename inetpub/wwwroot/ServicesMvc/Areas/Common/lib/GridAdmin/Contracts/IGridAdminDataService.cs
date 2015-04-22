@@ -9,5 +9,6 @@ namespace CkgDomainLogic.General.Contracts
 
         void TranslatedResourceUpdate(TranslatedResource r);
         void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r);
+        void TranslatedResourceCustomerDelete(TranslatedResourceCustom r);
     }
 }

@@ -5,7 +5,21 @@
         background-color: white!important;
     }
     
+    .grid-t-column-header-admin-edit-div .divider {
+        font-weight: bold;
+        margin: 8px;
+        margin-left: 50px;
+        border-bottom: 1px solid #efefef;
+        padding-bottom: 5px;
+    }
+    
 </style>
+
+<div class="hide">
+    <img class="flag-de" alt="" src="/ServicesMvc/assets/img/flags/de.png">
+    <img class="flag-en" alt="" src="/ServicesMvc/assets/img/flags/en.png">
+    <img class="flag-fr" alt="" src="/ServicesMvc/assets/img/flags/fr.png">
+</div>
 
 <script type="text/javascript">
 
@@ -38,8 +52,31 @@
             gridEl.parent().prepend($("<div class='grid-t-column-header-admin-edit-div hide'></div>"));
     }
 
+    function GridColumnTranslationsFormPrepare() {
+        $(".tooltips").tooltip();
+        console.log($("#GridColumnTranslationsForm label.control-label").length);
+        $.each($("#GridColumnTranslationsForm label.control-label"), function(index, elem) {
+            var labelText = $(elem).text().trim();
+            if (labelText.length < 2)
+                return;
+
+            var flag = labelText.substring(0, 2);
+            $(elem).append($("img.flag-" + flag).clone().attr("class", ""));
+        });
+    }
+    
+    function GridColumnTranslationsFormDeletCustomerTranslation() {
+        if (!confirm("Diese kundenbezogene Übersetzung wirklich löschen?"))
+            return false;
+        
+        $("#TmpDeleteCustomerTranslation").val(true);
+        $("#GridColumnTranslationsForm").submit();
+        return false;
+    }
+
     function GridColumnTranslationsComplete() {
 
+        $("#TmpDeleteCustomerTranslation").val(false);
         FormPreparePrivateAjax();
 
         if (!_modelStateGridColumnTranslationValid)
