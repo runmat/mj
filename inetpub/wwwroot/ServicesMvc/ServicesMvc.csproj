@@ -4301,10 +4301,14 @@
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload\ValidationGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\ExcelUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungKundenAuswahl.cshtml" />
-    <Content Include="Views\Fahrzeuge\ExcelUpload.cshtml" />
+    <Content Include="Views\Fahrzeuge\FahrzeugvoravisierungExcelUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungReportsSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungFreigabeGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Treuhandverwaltung\TreuhandverwaltungFreigabeKommentar.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\FileUpload.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\Receipt.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\ValidationGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\FahrzeugvoravisierungSuche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

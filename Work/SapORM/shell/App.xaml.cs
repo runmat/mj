@@ -45,7 +45,7 @@ namespace SapORM
                 myProxy.setImportParameter("I_EQTYP", "B")                                        
              */
 
-
+            //new FunctionReflector("Z_DPM_IMP_MODELL_ID_01").WriteOrmForExportTableStructures("I_AG, I_WEB_USER", new object[] { "0000219853", "EC"});;  
             //new FunctionReflector("Z_DPM_FREIG_VERSAND_SPERR_001").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_DPM_READ_VERSAND_SPERR_001").WriteOrmForExportTableStructures("I_TREU, I_AKTION", new object[] { "0000219853", "G"});
             //new FunctionReflector("Z_M_TH_INS_VORGANG").WriteOrmForExportTableStructures("I_TREU, I_EQTYP, I_KOMBI", new object[] { "0000219853", "B", "X" });

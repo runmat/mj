@@ -1,5 +1,5 @@
 ﻿<div class="control-group">
-    <label class="control-label">Excel file upload:</label>
+    <label class="control-label">CSV Datei hochladen:</label>
     <div class="controls">
                 
         @(Html.Telerik().Upload()
@@ -7,8 +7,8 @@
                 .Multiple(false)
                 .Localizable("de-DE")
                 .Async(async => async
-                                    .Save("ExcelUploadStart", "Fahrzeuge")
-                                    .SaveField("uploadFiles")
+                                    .Save("ExcelUploadAvisierungStart", "Fahrzeuge")
+                                    .SaveField("uploadFiles")                                    
                                     //.Remove("UploadFilesRemove", "CoC")
                                     .AutoUpload(true))
                 .Multiple(false)

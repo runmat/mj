@@ -19,7 +19,8 @@ namespace ServicesMvc.Controllers
             IFahrzeugeDataService fahrzeugeDataService,
             IFehlteilEtikettenDataService fehlteilEtikettenDataService,
             IUploadFahrzeugeinsteuerungDataService uploadFahrzeugeinsteuerungDataService,
-            ITreuhandDataService tempTreuhandDataService)
+            ITreuhandDataService tempTreuhandDataService,
+            IFahrzeugvoravisierungDataService tempfahrzeugvoravisierungDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(AbgemeldeteFahrzeugeViewModel, appSettings, logonContext, fahrzeugeDataService);         
@@ -30,7 +31,9 @@ namespace ServicesMvc.Controllers
             InitModelStatics();
             InitViewModel(TreuhandbestandViewModel, appSettings, logonContext, fahrzeugeDataService);            
             InitViewModel(UnfallmeldungenViewModel, appSettings, logonContext, fahrzeugeDataService);
-            InitViewModel(TreuhandverwaltungViewModel, appSettings, logonContext, tempTreuhandDataService);            
+            InitViewModel(TreuhandverwaltungViewModel, appSettings, logonContext, tempTreuhandDataService);
+            InitViewModel(TreuhandverwaltungViewModel, appSettings, logonContext, tempTreuhandDataService);
+            InitViewModel(FahrzeugvoravisierungViewModel, appSettings, logonContext, tempfahrzeugvoravisierungDataService);   
         }
 
         private void InitModelStatics()
