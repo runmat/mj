@@ -23,5 +23,6 @@ namespace SapORM.Models
         public string KONDTAB { get; set; }
         public string KSCHL { get; set; }
         public DateTime? CALCDAT { get; set; }
+        public string WEB_STATUS { get; set; }
     }
 }

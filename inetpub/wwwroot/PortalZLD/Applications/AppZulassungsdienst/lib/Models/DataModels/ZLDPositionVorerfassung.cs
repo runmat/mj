@@ -11,8 +11,6 @@ namespace AppZulassungsdienst.lib.Models
 
         public string UebergeordnetePosition { get; set; }
 
-        public string Loeschkennzeichen { get; set; }
-
         public decimal? Menge { get; set; }
 
         public string MaterialNr { get; set; }
@@ -24,6 +22,11 @@ namespace AppZulassungsdienst.lib.Models
         public bool? NullpreisErlaubt { get; set; }
 
         public string FehlerText { get; set; }
+
+        /// <summary>
+        /// O = OK, A = Angenommen, L = Löschen, ...
+        /// </summary>
+        public string WebBearbeitungsStatus { get; set; }
 
         public string CombineBezeichnungMenge()
         {

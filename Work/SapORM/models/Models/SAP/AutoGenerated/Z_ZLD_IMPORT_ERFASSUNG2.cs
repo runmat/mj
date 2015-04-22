@@ -111,8 +111,6 @@ namespace SapORM.Models
 
 			public string BEB_STATUS { get; set; }
 
-			public string WEB_STATUS { get; set; }
-
 			public string INFO_TEXT { get; set; }
 
 			public string ZL_RL_FRBNR_HIN { get; set; }
@@ -173,7 +171,6 @@ namespace SapORM.Models
 					PRALI_PRINT = (string)row["PRALI_PRINT"],
 					FLIEGER = (string)row["FLIEGER"],
 					BEB_STATUS = (string)row["BEB_STATUS"],
-					WEB_STATUS = (string)row["WEB_STATUS"],
 					INFO_TEXT = (string)row["INFO_TEXT"],
 					ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
 					ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
@@ -295,8 +292,6 @@ namespace SapORM.Models
 
 			public string UEPOS { get; set; }
 
-			public string LOEKZ { get; set; }
-
 			public decimal? MENGE { get; set; }
 
 			public string MATNR { get; set; }
@@ -314,7 +309,6 @@ namespace SapORM.Models
 					ZULBELN = (string)row["ZULBELN"],
 					ZULPOSNR = (string)row["ZULPOSNR"],
 					UEPOS = (string)row["UEPOS"],
-					LOEKZ = (string)row["LOEKZ"],
 					MENGE = (decimal?)row["MENGE"],
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],

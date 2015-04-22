@@ -1246,9 +1246,19 @@ namespace AppZulassungsdienst.forms
                     return;
                 }
 
-                if (!chkFlieger.Checked)
+                if (!kopfdaten.Flieger.IsTrue())
                 {
-                    kopfdaten.WebBearbeitungsStatus = (objNacherf.SelAnnahmeAH ? "A" : "O");
+                    if (kopfdaten.Bearbeitungsstatus == "F")
+                    {
+                        // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
+                        kopfdaten.Bearbeitungsstatus = "A";
+                        kopfdaten.MobilUser = "";
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = "");
+                    }
+                    else
+                    {
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.Loeschkennzeichen == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
+                    }
                 }
 
                 objNacherf.SaveVorgangToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);

@@ -276,7 +276,7 @@ namespace AppZulassungsdienst.lib
                     Zahlart_EC = (!kopfdaten.Zahlart_Bar.IsTrue() && !kopfdaten.Zahlart_Rechnung.IsTrue()),
                     Zahlart_Bar = kopfdaten.Zahlart_Bar,
                     Zahlart_Rechnung = kopfdaten.Zahlart_Rechnung,
-                    WebBearbeitungsStatus = (pos.Loeschkennzeichen == "L" ? "L" : kopfdaten.WebBearbeitungsStatus),
+                    WebBearbeitungsStatus = (pos.Loeschkennzeichen == "L" ? "L" : pos.WebBearbeitungsStatus),
                     Landkreis = kopfdaten.Landkreis,
                     KennzeichenTeil1 = kennzTeil1,
                     KennzeichenTeil2 = kennzTeil2,
@@ -523,13 +523,6 @@ namespace AppZulassungsdienst.lib
             {
                 var kopfdaten = AktuellerVorgang.Kopfdaten;
 
-                if (kopfdaten.Bearbeitungsstatus == "F" && !kopfdaten.Flieger.IsTrue())
-                {
-                    // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
-                    kopfdaten.Bearbeitungsstatus = "A";
-                    kopfdaten.MobilUser = "";
-                }
-
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
 
@@ -645,31 +638,6 @@ namespace AppZulassungsdienst.lib
                 {
                     var kopf = item;
 
-                    if (blnAnnahmeAhSenden)
-                    {
-                        kopf.WebBearbeitungsStatus = "";
-
-                        // für "neue AH-Vorgänge" den beb_status aktualisieren
-                        switch (kopf.WebBearbeitungsStatus)
-                        {
-                            case "A":
-                                kopf.Bearbeitungsstatus = "A";
-                                break;
-                            case "L":
-                                kopf.Bearbeitungsstatus = "L";
-                                break;
-                            default:
-                                kopf.Bearbeitungsstatus = "1";
-                                break;
-                        }
-                    }
-                    else if (kopf.Bearbeitungsstatus == "F" && !kopf.Flieger.IsTrue())
-                    {
-                        // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
-                        kopf.Bearbeitungsstatus = "A";
-                        kopf.MobilUser = "";
-                    }
-
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
 
@@ -682,6 +650,28 @@ namespace AppZulassungsdienst.lib
 
                     foreach (var p in _lstPositionen.Where(p => p.SapId == kopf.SapId))
                     {
+                        if (blnAnnahmeAhSenden)
+                        {
+                            if (p.PositionsNr == "10")
+                            {
+                                // für "neue AH-Vorgänge" den beb_status aktualisieren
+                                switch (p.WebBearbeitungsStatus)
+                                {
+                                    case "A":
+                                        kopf.Bearbeitungsstatus = "A";
+                                        break;
+                                    case "L":
+                                        kopf.Bearbeitungsstatus = "L";
+                                        break;
+                                    default:
+                                        kopf.Bearbeitungsstatus = "1";
+                                        break;
+                                }
+                            }
+
+                            p.WebBearbeitungsStatus = "";
+                        }
+
                         if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
                             || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
                         {
@@ -773,7 +763,6 @@ namespace AppZulassungsdienst.lib
 
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
-                    kopf.WebBearbeitungsStatus = "";
 
                     var adresse = adressdatenRel.FirstOrDefault(a => a.SapId == kopf.SapId);
                     if (adresse != null)
@@ -784,6 +773,8 @@ namespace AppZulassungsdienst.lib
 
                     foreach (var p in _lstPositionen.Where(p => p.SapId == kopf.SapId))
                     {
+                        p.WebBearbeitungsStatus = "";
+
                         if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
                             || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
                         {
@@ -1208,11 +1199,6 @@ namespace AppZulassungsdienst.lib
                     kopf.Zahlart_Rechnung = hauptPos.Zahlart_Rechnung;
 
                     kopf.Zulassungsdatum = hauptPos.Zulassungsdatum;
-
-                    kopf.WebBearbeitungsStatus = hauptPos.WebBearbeitungsStatus;
-
-                    if (setLoeschkennzeichen)
-                        kopf.Loeschkennzeichen = (kopf.WebBearbeitungsStatus == "L" ? "L" : "");
                 }
 
                 var positionen = Vorgangsliste.Where(v => v.SapId == kopf.SapId);
@@ -1231,6 +1217,7 @@ namespace AppZulassungsdienst.lib
                         dlPos.Preis = pos.Preis;
                         dlPos.MaterialName = pos.MaterialName;
                         dlPos.MaterialName = dlPos.CombineBezeichnungMenge();
+                        dlPos.WebBearbeitungsStatus = pos.WebBearbeitungsStatus;
 
                         // eingegebene Preise auf die entspr. Unterpositionen verteilen
                         var gebuehrenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");

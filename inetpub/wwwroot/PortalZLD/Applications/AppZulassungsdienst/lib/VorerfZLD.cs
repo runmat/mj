@@ -277,7 +277,7 @@ namespace AppZulassungsdienst.lib
                     Referenz2 = kopfdaten.Referenz2,
                     KennzeichenTeil1 = kennzTeil1,
                     KennzeichenTeil2 = kennzTeil2,
-                    WebBearbeitungsStatus = kopfdaten.WebBearbeitungsStatus
+                    WebBearbeitungsStatus = pos.WebBearbeitungsStatus
                 });
             }
         }
@@ -359,7 +359,6 @@ namespace AppZulassungsdienst.lib
 
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;
-                    kopfdaten.WebBearbeitungsStatus = "";
 
                     kopfListeWeb.Add(kopfdaten);
 

@@ -1460,8 +1460,8 @@ namespace AppZulassungsdienst.forms
 
                 var neuerVorgang = kopfdaten.IsNewVorgang;
 
-                if (!neuerVorgang)
-                    kopfdaten.WebBearbeitungsStatus = "B";
+                if (!neuerVorgang && objVorerf.AktuellerVorgang.Positionen.All(p => String.IsNullOrEmpty(p.WebBearbeitungsStatus)))
+                    objVorerf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = "B");
 
                 objVorerf.SaveVorgangToSql(objCommon.KundenStamm, m_User.UserName);
 

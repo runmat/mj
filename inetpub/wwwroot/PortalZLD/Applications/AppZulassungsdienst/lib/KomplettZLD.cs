@@ -307,7 +307,7 @@ namespace AppZulassungsdienst.lib
                     Zahlart_EC = (!kopfdaten.Zahlart_Bar.IsTrue() && !kopfdaten.Zahlart_Rechnung.IsTrue()),
                     Zahlart_Bar = kopfdaten.Zahlart_Bar,
                     Zahlart_Rechnung = kopfdaten.Zahlart_Rechnung,
-                    WebBearbeitungsStatus = kopfdaten.WebBearbeitungsStatus,
+                    WebBearbeitungsStatus = pos.WebBearbeitungsStatus,
                     Landkreis = kopfdaten.Landkreis,
                     KennzeichenTeil1 = kennzTeil1,
                     KennzeichenTeil2 = kennzTeil2,
@@ -738,7 +738,6 @@ namespace AppZulassungsdienst.lib
 
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;
-                    kopfdaten.WebBearbeitungsStatus = "";
 
                     kopfListeWeb.Add(kopfdaten);
 
@@ -755,6 +754,7 @@ namespace AppZulassungsdienst.lib
                     positionen.RemoveAll(p => p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0));
                     positionen.RemoveAll(p => p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0));
                     positionen.Where(p => p.WebMaterialart == "D").ToList().ForEach(p => p.MaterialName = p.CombineBezeichnungMenge());
+                    positionen.ForEach(p => p.WebBearbeitungsStatus = "");
                     posListeWeb.AddRange(positionen);
                 }
 

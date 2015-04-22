@@ -111,8 +111,6 @@ namespace SapORM.Models
 
 			public string BEB_STATUS { get; set; }
 
-			public string WEB_STATUS { get; set; }
-
 			public string INFO_TEXT { get; set; }
 
 			public string ZL_RL_FRBNR_HIN { get; set; }
@@ -173,7 +171,6 @@ namespace SapORM.Models
 					PRALI_PRINT = (string)row["PRALI_PRINT"],
 					FLIEGER = (string)row["FLIEGER"],
 					BEB_STATUS = (string)row["BEB_STATUS"],
-					WEB_STATUS = (string)row["WEB_STATUS"],
 					INFO_TEXT = (string)row["INFO_TEXT"],
 					ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
 					ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
@@ -327,6 +324,8 @@ namespace SapORM.Models
 
 			public DateTime? CALCDAT { get; set; }
 
+			public string WEB_STATUS { get; set; }
+
 			public static GT_EX_POS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_EX_POS
@@ -350,6 +349,7 @@ namespace SapORM.Models
 					KONDTAB = (string)row["KONDTAB"],
 					KSCHL = (string)row["KSCHL"],
 					CALCDAT = (string.IsNullOrEmpty(row["CALCDAT"].ToString())) ? null : (DateTime?)row["CALCDAT"],
+					WEB_STATUS = (string)row["WEB_STATUS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

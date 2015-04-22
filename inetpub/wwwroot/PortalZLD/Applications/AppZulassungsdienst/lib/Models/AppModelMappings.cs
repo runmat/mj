@@ -67,7 +67,6 @@ namespace AppZulassungsdienst.lib.Models
             d.Vorerfasser = s.VE_ERNAM;
             d.Vorerfassungsdatum = s.VE_ERDAT;
             d.Vorerfassungszeit = s.VE_ERZEIT;
-            d.WebBearbeitungsStatus = s.WEB_STATUS;
             d.Wunschkennzeichen = s.WUNSCHKENN_JN.XToBool();
             d.Zahlart_Bar = s.BAR_JN.XToBool();
             d.Zahlart_EC = s.EC_JN.XToBool();
@@ -109,6 +108,7 @@ namespace AppZulassungsdienst.lib.Models
             d.SdRelevant = s.SD_REL.XToBool();
             d.UebergeordnetePosition = s.UEPOS.NotNullOrEmpty().TrimStart('0');
             d.UrspruenglicherPreis = s.UPREIS;
+            d.WebBearbeitungsStatus = s.WEB_STATUS;
             d.WebMaterialart = s.WEBMTART;
         }
 
@@ -679,7 +679,6 @@ namespace AppZulassungsdienst.lib.Models
             d.VZB_STATUS = s.VersandzulassungBearbeitungsstatus;
             d.VZD_VKBUR = s.VersandzulassungDurchfuehrendesVkBur;
             d.VZERDAT = s.VersandzulassungErledigtDatum;
-            d.WEB_STATUS = s.WebBearbeitungsStatus;
             d.WUNSCHKENN_JN = s.Wunschkennzeichen.BoolToX();
             d.ZL_LIFNR = (String.IsNullOrEmpty(s.LieferantenNr) ? "" : s.LieferantenNr.ToSapKunnr());
             d.ZL_RL_FRBNR_HIN = s.FrachtbriefNrHin;
@@ -735,6 +734,7 @@ namespace AppZulassungsdienst.lib.Models
             d.SD_REL = s.SdRelevant.BoolToX();
             d.UEPOS = (String.IsNullOrEmpty(s.UebergeordnetePosition) ? "" : s.UebergeordnetePosition.PadLeft0(6));
             d.UPREIS = s.UrspruenglicherPreis;
+            d.WEB_STATUS = s.WebBearbeitungsStatus;
             d.WEBMTART = s.WebMaterialart;
             d.ZULBELN = s.SapId.NotNullOrEmpty().ToSapKunnr();
             d.ZULPOSNR = (String.IsNullOrEmpty(s.PositionsNr) ? "" : s.PositionsNr.PadLeft0(6));

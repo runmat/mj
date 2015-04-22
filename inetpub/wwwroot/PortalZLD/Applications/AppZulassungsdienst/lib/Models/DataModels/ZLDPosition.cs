@@ -4,6 +4,8 @@ namespace AppZulassungsdienst.lib.Models
 {
     public class ZLDPosition : ZLDPositionVorerfassung
     {
+        public string Loeschkennzeichen { get; set; }
+
         public decimal? Preis { get; set; }
 
         public decimal? GebuehrAmt { get; set; }

@@ -25,5 +25,7 @@ namespace SapORM.Models
         string KSCHL { get; set; }
 
         DateTime? CALCDAT { get; set; }
+
+        string WEB_STATUS { get; set; }
     }
 }
