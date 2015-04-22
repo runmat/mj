@@ -270,8 +270,11 @@ namespace SapORM
 
             //new FunctionReflector("Z_M_EXPORTAENDERUNG_01").WriteOrmForExportTableStructures("I_KUNNR, I_ZZREFERENZ1, I_DATUM_VON, I_DATUM_BIS", "10050817", "20", "01.03.2015", "03.03.2015");
 
-            //new FunctionReflector("Z_M_KLAERFAELLEVW").WriteOrmForExportTableStructures("I_KUNNR", "0000336070");      
+            //new FunctionReflector("Z_M_KLAERFAELLEVW").WriteOrmForExportTableStructures("I_KUNNR", "0000336070");
 
+            //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_EC_AVM_ZULAUF").WriteOrmForExportTableStructures("ZUL_DAT, ZUL_BIS, I_HERSTNR", "01.04.2015", "10.04.2015", "0");
+            
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
