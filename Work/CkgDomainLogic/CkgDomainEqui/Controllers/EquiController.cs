@@ -29,7 +29,8 @@ namespace ServicesMvc.Controllers
             IDokumenteOhneDatenDataService dokumenteOhneDatenDataService, 
             IMahnsperreDataService mahnsperreDataService, 
             IBriefbestandVhcDataService briefbestandVhcDataService, 
-            IKlaerfaelleVhcDataService klaerfaelleVhcDataService)
+            IKlaerfaelleVhcDataService klaerfaelleVhcDataService,
+            IEquiHistorieVermieterDataService equiHistorieVermieterDataService)
             : base(appSettings, logonContext)
         {
             InitViewModel(EquiGrunddatenEquiViewModel, appSettings, logonContext, equiGrunddatenDataService);
@@ -44,6 +45,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(MahnsperreViewModel, appSettings, logonContext, mahnsperreDataService);
             InitViewModel(BriefbestandVhcViewModel, appSettings, logonContext, briefbestandVhcDataService);
             InitViewModel(KlaerfaelleVhcViewModel, appSettings, logonContext, klaerfaelleVhcDataService);
+            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
 
             InitModelStatics();
         }
