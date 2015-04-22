@@ -456,7 +456,25 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+      
 
+        static public ModelMapping<Z_DPM_IMP_MODELL_ID_01.GT_IN, FahrzeugvoravisierungUploadModel> Z_DPM_IMP_MODELL_ID_01_GT_IN_From_FahrzeugvoravisierungUploadModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_IMP_MODELL_ID_01.GT_IN, FahrzeugvoravisierungUploadModel>(
+                        new Dictionary<string, string>()
+                        , null
+                        , (source, destination) =>
+                        {
+                            destination.CHASSIS_NUM = source.Fahrgestellnummer;
+                            destination.ZAUFTRAGS_NR = source.Auftragsnummer;
+                            destination.ZMODELL = source.ModelID;
+                            destination.LICENSE_NUM = source.Kennzeichen;
+                        }
+                    ));
+            }
+        }
 
         #endregion
     }

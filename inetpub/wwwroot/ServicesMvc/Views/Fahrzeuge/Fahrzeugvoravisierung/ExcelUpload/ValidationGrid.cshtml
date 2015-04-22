@@ -27,30 +27,34 @@
 
 @(Html.Telerik()
     .Grid<FahrzeugvoravisierungUploadModel>()
-        .Name(gridname)
-        .XGroup(gridname)
-                 .XAjaxDataBinding("FahrzeugvoravisierungAjaxBinding", "Fahrzeuge")    
-       // .BindTo(Model.UploadItemsFiltered)
+        .Name(gridname)      
+        .XAjaxDataBinding("FahrzeugvoravisierungAjaxBinding", "Fahrzeuge")    
         .Columns(columns =>
                 {
-                    columns.XBound("")
-                    .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='FahrzeugvoravisierungGrid_OnSelectionChange($(this))' />")
+                    //columns.XBound("")
+                    //.ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='FahrzeugvoravisierungGrid_OnSelectionChange($(this))' />")
                     //.HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='FahrzeugvoravisierungGrid_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                    .Filterable(false).Width(30);
+                    //.Filterable(false).Width(30);
                                                                                                              
-                    columns.XBound(c => c.Fahrgestellnummer).Width(130);
-                    columns.XBound(c => c.Auftragsnummer).Width(70);
+                    columns.XBound(c => c.Fahrgestellnummer).Width(150);
+                    columns.XBound(c => c.Auftragsnummer).Width(130);
                     columns.XBound(c => c.AuftragsnummerEqui).Width(130);
-                    columns.XBound(c => c.DatumZulassung).Format("{0:dd.MM.yyyy}").Width(130);
-                    columns.XBound(c => c.ModelID);
+                    columns.XBound(c => c.DatumZulassung).Format("{0:dd.MM.yyyy}").Width(100);
+                    columns.XBound(c => c.ModelID).Width(80); 
                     columns.XBound(c => c.UnitNr).Width(80);
-                    columns.XBound(c => c.ModelID2UnitNr).Width(80);
-                    columns.XBound(c => c.Status).Width(80);
+                    columns.XBound(c => c.ModelID2UnitNr).Width(130);
+                    columns.XBound(c => c.Kennzeichen).Width(100);
+                    columns.XBound(c => c.Status).Width(130);
                     columns.XBound(c => c.ValidationErrors).Width(200);               
             })
         .Scrollable(scroll => scroll.Enabled(true).Height(200)).TableHtmlAttributes(new { @class = "table-no-paging" })
              .XAutoColumnConfiguration()
             .ClientEvents(events => events.XAutoClientEvents(gridname).OnRowDataBound("OnRowDataBound_FahrzeugvoravisierungGrid"))
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportFahrzeugvoravisierungFilteredExcel", "Fahrzeuge");
+            commands.FilteredDataCommand("ExportFahrzeugvoravisierungFilteredPDF", "Fahrzeuge");
+        })
 )
 
 <div class="margin-top-10"></div>

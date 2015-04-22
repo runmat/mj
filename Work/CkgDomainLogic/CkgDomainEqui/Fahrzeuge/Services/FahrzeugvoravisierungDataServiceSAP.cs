@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CkgDomainLogic.General.Services;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
 using SapORM.Contracts;
@@ -18,43 +19,32 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
         }
 
-        public List<FahrzeugvoravisierungUploadModel> UploadItems { get; set; }
+        // public List<FahrzeugvoravisierungUploadModel> UploadItems { get; set; }
+               
+        void ValidateSingleUploadItem(FahrzeugvoravisierungUploadModel item)
+        {    /* TODO: Remove if not needed */     }
 
-        public void ValidateFahrzeugeinsteuerungCsvUpload()
-        {
-          //  UploadItems.ForEach(ValidateSingleUploadItem);
-        }
-
-        public string SaveCsvUpload()
+        public string SaveUploadItems(List<FahrzeugvoravisierungUploadModel> uploadItems)
         {
             Z_DPM_IMP_MODELL_ID_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_WEB_USER", LogonContext.UserName);
+            string email = ((ILogonContextDataService)LogonContext).GetEmailAddressForUser();
+            SAP.SetImportParameter("I_WEB_MAIL", email);
+
+            var vgList = AppModelMappings.Z_DPM_IMP_MODELL_ID_01_GT_IN_From_FahrzeugvoravisierungUploadModel.CopyBack(uploadItems).ToList();
+            SAP.ApplyImport(vgList);
+
+            SAP.Execute();
+           
+            if (SAP.ResultCode != 0)
+                return SAP.ResultMessage;
+
+            var outList = Z_DPM_IMP_MODELL_ID_01.GT_OUT.GetExportList(SAP);
+
+            foreach (var item in uploadItems)            
+                item.Status = outList.Find(o => o.CHASSIS_NUM.ToUpper() == item.Fahrgestellnummer.ToUpper()).BEM;
             
-            //var vgList = AppModelMappings.Z_DPM_UPLOAD_GRUDAT_TIP_01_GT_IN_From_FahrzeugeinsteuerungUploadModel.CopyBack(UploadItems).ToList();
-            //SAP.ApplyImport(vgList);
-
-            //SAP.Execute();
-
-            //if (SAP.ResultCode != 0)
-            //    return SAP.ResultMessage;
-
-            //var outList = Z_DPM_UPLOAD_GRUDAT_TIP_01.GT_OUT.GetExportList(SAP);
-
-            //foreach (var item in UploadItems)
-            //{
-            //    item.SaveStatus = outList.Find(o => o.CHASSIS_NUM.ToUpper() == item.Fahrgestellnummer.ToUpper()).BEM;
-            //}
-
-            return "";
-        }
-
-        void ValidateSingleUploadItem(FahrzeugvoravisierungUploadModel item)
-        {
-            
-        }
-
-        public bool SaveUploadItems(List<FahrzeugvoravisierungUploadModel> uploadItems)
-        {
-            throw new NotImplementedException();
+            return null;
         }
     }
 }

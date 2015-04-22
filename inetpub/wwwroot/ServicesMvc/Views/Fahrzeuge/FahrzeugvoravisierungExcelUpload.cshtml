@@ -14,7 +14,7 @@
 
 <div id="divExcelUpload" class="portlet app-view">
        
-    @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Daten überprüfen", "Fertig!" })
+    @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })
 
     <div id="formWizardTab1" class="hide">      
         @Html.Partial("Fahrzeugvoravisierung/ExcelUpload/FileUpload")                                                                                   
@@ -100,7 +100,7 @@
 
         function UploadError(e) {
             e.preventDefault();
-            alert('Fehler: Es gab ein Problem beim Speichern Ihrer Datei!');
+            alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei! Bitte prüfen Sie die Herstelleroption');
         }
 
         function ShowGrid() {
@@ -117,6 +117,7 @@
                     FormWizard.SetTabHtml(2, result);
                     FormPreparePrivateAjax();
                     FormWizard.ButtonNextInvoke();
+                    
                     if (_formWizardForceHideSubmitButton)
                         FormWizard.ButtonSubmitShow(false);
                 }
@@ -204,7 +205,29 @@
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
         //alert(count);
-    }     
+    }
+
+   
+    function OnColumnReorder_FahrzeugvoravisierungGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+   
+    function OnColumnShowHide_FahrzeugvoravisierungGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+   
+    function OnDataBound_FahrzeugvoravisierungGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+   
+    function OnRowDataBound_FahrzeugvoravisierungGrid(e) {
+        var hasError = e.dataItem["ValidationErrors"];
+
+        if (hasError)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
 
 
 </script>

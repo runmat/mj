@@ -108,6 +108,8 @@ namespace ServicesMvc.Controllers
 
             FahrzeugvoravisierungViewModel.UploadItemsShowErrorsOnly = showErrorsOnly;
 
+            FahrzeugvoravisierungViewModel.SaveUploadItems();
+
             return PartialView("Fahrzeugvoravisierung/ExcelUpload/ValidationGrid", FahrzeugvoravisierungViewModel);
         }
 
@@ -116,7 +118,7 @@ namespace ServicesMvc.Controllers
         {
             // Step 3:  Save CSV data to data store
 
-            FahrzeugvoravisierungViewModel.SaveUploadItems();
+            //FahrzeugvoravisierungViewModel.SaveUploadItems();
 
             return PartialView("Fahrzeugvoravisierung/ExcelUpload/Receipt", FahrzeugvoravisierungViewModel);
         }

@@ -52,6 +52,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public bool UploadItemsSuccessfullyStored { get; set; }
 
+        public string UploadSAPErrortext { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ListItemsWithErrorsOnly)]
         public bool UploadItemsShowErrorsOnly { get; set; }
 
@@ -103,14 +105,23 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", null, ',', false, false).ToList();
+            IEnumerable<FahrzeugvoravisierungUploadModel> list = null;
+            try
+            {
+                if (FahrzeugvoravisierungSelektor.Option == "volkswagen")
+                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceVWFromDatarow, ',', false, false).ToList();
+                else
+                    list = new ExcelDocumentFactory().ReadToDataTable<FahrzeugvoravisierungUploadModel>(CsvUploadServerFileName, true, "", CreateInstanceSonstigeFromDatarow, ',', false, false).ToList();
+            }
+            catch { return false; } // falsches Dateiformat
+
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())
                 return false;
 
-            UploadItems = list;
+            UploadItems = list.ToList();
             ValidateUploadItems();
-
+            
             return true;
         }
 
@@ -119,30 +130,45 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             // vorab validierung
             foreach (var item in UploadItems)
             {
-                //item.IsSelected = true;
-                //item.AGNummer = TreuhandverwaltungSelektor.AGNummer;
-                //item.TGNummer = TreuhandverwaltungSelektor.TGNummer;
-                //item.AppId = LogonContext.GetAppIdCurrent().ToString();
-                //item.Datum = (DateTime?)DateTime.Now;
-                //item.Sachbearbeiter = LogonContext.FullName;
-                //item.IsSperren = (TreuhandverwaltungSelektor.Sperraktion == SperrAktion.Sperren);
-                //item.Aktion = item.IsSperren ? Localize.TrusteeBlock : Localize.TrusteeUnBlock;               
-                //DateTime? dateValue = null;
-                //try { dateValue = new DateTime(item.Sperrdatum.Value.Year, item.Sperrdatum.Value.Day, item.Sperrdatum.Value.Month); }
-                //catch { /* fix Excel format issue */}
-                //item.Sperrdatum = dateValue != null ? dateValue : item.Sperrdatum; 
-            }
-
-            //TreuhandverwaltungSelektor.UploadItems = UploadItems;
-
-            //DataService.ValidateUploadTreuhandverwaltung(TreuhandverwaltungSelektor);
+                item.IsSelected = true;                              
+            }                        
         }
 
       
         public void SaveUploadItems()
-        {            
-            UploadItemsSuccessfullyStored = DataService.SaveUploadItems(UploadItems);
+        {
+            string sapError = DataService.SaveUploadItems(UploadItems);
+
+            if (sapError.IsNullOrEmpty())
+                UploadItemsSuccessfullyStored = true;
+            else
+                UploadSAPErrortext = sapError;
         }
+
+        static FahrzeugvoravisierungUploadModel CreateInstanceSonstigeFromDatarow(DataRow row)
+        {
+            var item = new FahrzeugvoravisierungUploadModel
+            {                                             
+                Fahrgestellnummer = row[0].ToString(),
+                ModelID = row[1].ToString(),
+                Auftragsnummer = row[2].ToString(),
+                Kennzeichen = row[3].ToString(),                            
+            };
+            return item;
+        }
+
+        static FahrzeugvoravisierungUploadModel CreateInstanceVWFromDatarow(DataRow row)
+        {
+            var item = new FahrzeugvoravisierungUploadModel
+            {
+                Fahrgestellnummer = row[13].ToString(),
+                ModelID = row[8].ToString(),
+                Auftragsnummer = row[11].ToString(),
+                //Kennzeichen = row[11].ToString(), -> TODO: VW Kennzeichen
+            };
+            return item;
+        }
+
 
         #endregion
 

@@ -18,26 +18,30 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string Auftragsnummer { get; set; }
-                      
+
+        [ImportIgnore()]     
         [LocalizedDisplay(LocalizeConstants.OrderNumberEqui)]
         public string AuftragsnummerEqui { get; set; }
 
+        [ImportIgnore()]
         [LocalizedDisplay(LocalizeConstants.UnitNumber)]
         public string UnitNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         public string ModelID { get; set; }
 
+        [ImportIgnore()]
         [LocalizedDisplay(LocalizeConstants.ModelID2UnitNr)]
         public string ModelID2UnitNr { get; set; }
 
-
+        [ImportIgnore()]
         [LocalizedDisplay(LocalizeConstants.Registration)]
         public DateTime? DatumZulassung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
 
+        [ImportIgnore()]
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
 
