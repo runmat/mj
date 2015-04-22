@@ -531,11 +531,8 @@ namespace AppZulassungsdienst.lib
 
                 foreach (var p in AktuellerVorgang.Positionen)
                 {
-                    if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
-                        || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
-                    {
+                    if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
                         p.Loeschkennzeichen = "L";
-                    }
                 }
 
                 ApplyAktuellerVorgangChangesToBaseLists();
@@ -672,11 +669,8 @@ namespace AppZulassungsdienst.lib
                             p.WebBearbeitungsStatus = "";
                         }
 
-                        if ((p.WebMaterialart == "S" && (p.UebergeordnetePosition != "10" || !p.Preis.HasValue || p.Preis == 0))
-                            || (p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0)))
-                        {
+                        if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
                             p.Loeschkennzeichen = "L";
-                        }
                     }
                 }
 
