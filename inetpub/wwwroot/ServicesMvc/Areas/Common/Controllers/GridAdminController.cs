@@ -1,4 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
+
+using System;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
@@ -6,6 +8,7 @@ using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
 using System.Linq;
 using GeneralTools.Models;
+using MvcTools.Web;
 
 namespace ServicesMvc.Common.Controllers
 {
@@ -26,9 +29,28 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult Edit(string columnMember)
         {
-            ViewModel.DataInit();
+            // ToDo: Change this to the administrated(!) Customer ID
+            ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
 
-            return PartialView("Partial/Edit", columnMember);
+            var gridCurrentModelType = (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type);
+            if (gridCurrentModelType == null)
+                return new EmptyResult();
+
+            if (!ViewModel.DataInit(gridCurrentModelType, columnMember))
+                return new EmptyResult();
+
+            return PartialView("Partial/Edit", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult LoadGridColumnTranslations(GridAdminViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return PartialView("Partial/Edit", model);
+
+            ViewModel.DataSave(model.CurrentTranslatedResource, model.CurrentTranslatedResourceCustomer);
+
+            return PartialView("Partial/Edit", model);
         }
     }
 }

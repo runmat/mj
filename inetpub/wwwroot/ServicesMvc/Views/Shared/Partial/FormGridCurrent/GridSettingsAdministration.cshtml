@@ -1,8 +1,20 @@
 ﻿
+<style type="text/css">
+    
+    .grid-t-column-header-admin-edit-div input[type='text'] {
+        background-color: white!important;
+    }
+    
+</style>
+
 <script type="text/javascript">
+
+    var _modelStateGridColumnTranslationValid = false;
+    var _gridName = null;
 
     function TryPrepareGridSettingsAdministration(gridEl) {
 
+        _gridName = gridEl.attr("id");
         var grid = gridEl.data("tGrid");
         
         var gridHeaders = gridEl.find("th.t-header");
@@ -25,4 +37,24 @@
         if (gridEl.parent().find(".grid-t-column-header-admin-edit-div").length == 0)
             gridEl.parent().prepend($("<div class='grid-t-column-header-admin-edit-div hide'></div>"));
     }
+
+    function GridColumnTranslationsComplete() {
+
+        FormPreparePrivateAjax();
+
+        if (!_modelStateGridColumnTranslationValid)
+            return;
+
+        GridColumnTranslationsCancel();
+        $('#FormSearchBox form .form-actions button[type="submit"]').trigger('click');
+    }
+
+    function GridColumnTranslationsCancel() {
+        //var gridEl = $("#" + _gridName);
+        var adminEditDiv = $(".grid-t-column-header-admin-edit-div");
+        adminEditDiv.closest(".portlet-body").css("background-color", "");
+        adminEditDiv.slideUp(300);
+        return false;
+    }
+    
 </script>

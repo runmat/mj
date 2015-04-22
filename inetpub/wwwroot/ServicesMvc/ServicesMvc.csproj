@@ -2464,7 +2464,6 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminDataServiceSql.cs" />
-    <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\ViewModels\GridAdminViewModel.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
@@ -4341,7 +4340,7 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
-    <Folder Include="Areas\Common\lib\GridAdmin\Models\Database\" />
+    <Folder Include="Areas\Common\lib\GridAdmin\Models\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

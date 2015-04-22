@@ -1,13 +1,44 @@
-﻿@model string
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.GridAdminViewModel
 
-<style type='text/css'>
-</style>
+<div id="divGridColumnTranslations" class="margin-bottom-10">
+    @using (Ajax.BeginForm("LoadGridColumnTranslations", "GridAdmin", null,
+        new MvcAjaxOptions("divGridColumnTranslations") { OnComplete = "GridColumnTranslationsComplete();" }, new { id = "GridColumnTranslationsForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+            
+            @Html.HiddenFor(m => m.CurrentTranslatedResource.Resource)
+
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.de, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.de_kurz, new { @class = "m-wrap small", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.en, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResource.en_kurz, new { @class = "m-wrap small", col = "right" })
 
 
-<h1>
-    
-    Editing column [@Model] ...
+            <div>Customer:</div>
+            @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.Resource)
+            @Html.HiddenFor(m => m.CurrentTranslatedResourceCustomer.CustomerID)
 
-    <button onclick="$('#FormSearchBox form .form-actions button[type=\'submit\']').trigger('click');">Test Refresh</button>
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.de, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.de_kurz, new { @class = "m-wrap small", col = "right" })
 
-</h1>
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.en, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.en_kurz, new { @class = "m-wrap small", col = "right" })
+            
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-save margin-right-5'></i>@Localize.Save</button>
+                <button onclick="return GridColumnTranslationsCancel()" class='btn grey'><i class='icon-remove margin-right-5'></i>@Localize.Cancel</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateGridColumnTranslationValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
