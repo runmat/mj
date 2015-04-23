@@ -38,9 +38,7 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         public string SaveModellId(ModellId modellId)
         {
-            IPersistableObject o = modellId;
-            IPersistableObject o2 = null;
-            PService.SaveObject(modellId.ObjectKey, POwnerKey, PGroupKey, LogonContext.UserName, ref o, ref o2);
+            modellId = (ModellId)PService.SaveObject(modellId.ObjectKey, POwnerKey, PGroupKey, LogonContext.UserName, modellId);
             
             var error = "";
 

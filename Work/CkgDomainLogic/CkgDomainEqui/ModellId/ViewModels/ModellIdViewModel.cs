@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
 using CkgDomainLogic.FzgModelle.Contracts;
@@ -73,11 +74,25 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public ModellId NewItem(string idToDuplicate)
         {
-            return new ModellId
+            if (idToDuplicate.IsNullOrEmpty())
+                return new ModellId
+                {
+                    ID = "",
+                    Bezeichnung = "[Bez]",
+                };
+
+            var itemToDuplicate = ModellIds.FirstOrDefault(m => m.ID == idToDuplicate);
+            if (itemToDuplicate != null)
             {
-                ID = "",
-                Bezeichnung = "[Bez]",
-            };
+                var newItem = ModelMapping.Copy(itemToDuplicate);
+
+                newItem.ID = null;
+                newItem.ObjectKey = null;
+
+                return newItem;
+            }
+
+            return null;
         }
 
         public void SaveItem(ModellId item, Action<string, string> addModelError)
@@ -92,6 +107,11 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public void ValidateModel(ModellId model, bool insertMode, Action<Expression<Func<ModellId, object>>, string> addModelError)
         {
+            if (!insertMode)
+                return;
+
+            if (ModellIds.Any(m => m.ID.ToLowerAndNotEmpty() == model.ID.ToLowerAndNotEmpty()))
+                addModelError(m => m.ID, Localize.ItemAlreadyExistsWithThisID);
         }
 
         public void FilterModellIds(string filterValue, string filterProperties)

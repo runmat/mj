@@ -292,6 +292,11 @@ namespace GeneralTools.Models
             return s.NotNullOrEmpty("");
         }
 
+        public static string ToLowerAndNotEmpty(this string s)
+        {
+            return s.NotNullOrEmpty().ToLower();
+        }
+
         public static string NotNullOr(this string s, string alternativeValue)
         {
             return s.IsNotNullOrEmpty() ? s : alternativeValue;
