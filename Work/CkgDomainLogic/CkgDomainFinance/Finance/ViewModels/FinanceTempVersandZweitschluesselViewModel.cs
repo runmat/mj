@@ -33,7 +33,7 @@ namespace CkgDomainLogic.Finance.ViewModels
                 return;
 
             fzg.IsSelected = select;
-            allSelectionCount = TempVersandZweitschluesselsFiltered.Count(c => c.IsSelected);
+            allSelectionCount = TempVersandZweitschluessels.Count(c => c.IsSelected);
         }
 
         public void SetMahnsperre()

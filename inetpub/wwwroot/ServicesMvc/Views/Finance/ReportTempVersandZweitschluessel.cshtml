@@ -16,6 +16,8 @@
     }
 </div>
 
+@Html.SpanAlert("spanAlertMahnsperre")
+
 @using (Html.FormSearchResultsGrid())
 {
     <div id="divTempVersandZweitschluesselGrid"></div>
@@ -89,11 +91,13 @@
             loadingShow: false,
             
             success: function (result) {
-                ShowTempVersandZweitschluessel();
+                ShowTempVersandZweitschluessel();               
+                var successMessage = '@Localize.DeleteSuccessful.ToJavascriptString()';
+                SpanAlertSuccess("spanAlertMahnsperre", successMessage, 1800);
                 FormPreparePrivateAjax();
             },
             error: function (result) {
-               
+                SpanAlertWarning("spanAlertMahnsperre", result.data, 5000);
             }
         });
 
