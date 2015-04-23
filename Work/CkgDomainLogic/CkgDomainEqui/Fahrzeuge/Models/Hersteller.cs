@@ -3,7 +3,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
-    public class Fahrzeughersteller
+    public class Hersteller
     {
         [SelectListKey]
         [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]

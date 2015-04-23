@@ -59,11 +59,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        static public ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller> Z_M_HERSTELLERGROUP_T_HERST_To_Fahrzeughersteller
+        static public ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Hersteller> Z_M_HERSTELLERGROUP_T_HERST_To_Hersteller
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Hersteller>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {

@@ -14,7 +14,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
     {
         public FahrzeugzulaeufeSelektor Suchparameter { get; set; }
 
-        public List<Fahrzeughersteller> HerstellerListe { get { return PropertyCacheGet(() => LoadFahrzeugherstellerFromSap().ToList()); } }
+        public List<Hersteller> HerstellerListe { get { return PropertyCacheGet(() => LoadFahrzeugherstellerFromSap().ToList()); } }
 
         public List<Fahrzeugzulauf> Fahrzeugzulaeufe { get { return PropertyCacheGet(() => LoadFahrzeugzulaeufeFromSap().ToList()); } }
 
@@ -34,11 +34,11 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             PropertyCacheClear(this, m => m.HerstellerListe);
         }
 
-        private IEnumerable<Fahrzeughersteller> LoadFahrzeugherstellerFromSap()
+        private IEnumerable<Hersteller> LoadFahrzeugherstellerFromSap()
         {
             Z_M_HERSTELLERGROUP.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-            return AppModelMappings.Z_M_HERSTELLERGROUP_T_HERST_To_Fahrzeughersteller.Copy(Z_M_HERSTELLERGROUP.T_HERST.GetExportListWithExecute(SAP));
+            return AppModelMappings.Z_M_HERSTELLERGROUP_T_HERST_To_Hersteller.Copy(Z_M_HERSTELLERGROUP.T_HERST.GetExportListWithExecute(SAP));
         }
 
         private IEnumerable<Fahrzeugzulauf> LoadFahrzeugzulaeufeFromSap()

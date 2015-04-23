@@ -15,7 +15,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public IFahrzeugzulaeufeDataService DataService { get { return CacheGet<IFahrzeugzulaeufeDataService>(); } }
 
         [XmlIgnore]
-        public List<Fahrzeughersteller> HerstellerListe { get { return DataService.HerstellerListe; } }
+        public List<Hersteller> HerstellerListe { get { return DataService.HerstellerListe; } }
 
         [XmlIgnore]
         public List<Fahrzeugzulauf> Fahrzeugzulaeufe { get { return DataService.Fahrzeugzulaeufe; } }
