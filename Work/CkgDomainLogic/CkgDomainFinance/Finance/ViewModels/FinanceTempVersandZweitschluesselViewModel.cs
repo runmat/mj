@@ -38,7 +38,7 @@ namespace CkgDomainLogic.Finance.ViewModels
 
         public void SetMahnsperre()
         {
-            foreach (var item in TempVersandZweitschluesselsFiltered.Where(x => x.IsSelected))            
+            foreach (var item in TempVersandZweitschluessels.Where(x => x.IsSelected))            
                 DataService.SetTempVersandZweitschluesselMahnsperreToSap(item.Vertragsnummer);
 
             DataInit();

@@ -28,18 +28,18 @@ namespace CkgDomainLogic.Finance.ViewModels
         public void SelectFahrzeug(string fin, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = FehlendeSchluesseltuetesFiltered.FirstOrDefault(f => f.Fahrgestellnummer == fin);
+            var fzg = FehlendeSchluesseltuetes.FirstOrDefault(f => f.Fahrgestellnummer == fin);
             if (fzg == null)
                 return;
 
             fzg.IsSelected = select;
-            allSelectionCount = FehlendeSchluesseltuetesFiltered.Count(c => c.IsSelected);
+            allSelectionCount = FehlendeSchluesseltuetes.Count(c => c.IsSelected);
         }
 
 
         public void DeleteFehlendeSchluesseltuete()
         {
-            foreach (var item in FehlendeSchluesseltuetesFiltered.Where(x => x.IsSelected))
+            foreach (var item in FehlendeSchluesseltuetes.Where(x => x.IsSelected))
                 DataService.DeleteFehlendeSchluesseltueteToSap(item);
 
             DataInit();

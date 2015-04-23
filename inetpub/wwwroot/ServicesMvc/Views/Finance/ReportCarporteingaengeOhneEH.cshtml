@@ -16,6 +16,8 @@
     }
 </div>
 
+@Html.SpanAlert("spanAlertAbmelden")
+
 @using (Html.FormSearchResultsGrid())
 {
     <div id="divCarporteingaengeOhneEHGrid"></div>
@@ -92,16 +94,17 @@
 
                 success: function (result) {
                     ShowCarporteingaengeOhneEH();
+                    var successMessage = '@Localize.DeRegistrationSuccessful.ToJavascriptString()';
+                    SpanAlertSuccess("spanAlertAbmelden", successMessage, 1800);
                     FormPreparePrivateAjax();
                 },
                 error: function (result) {
-
+                    SpanAlertWarning("spanAlertAbmelden", result.data, 5000);
                 }
             });
         }
         return false;
     }
-
 
     function CarporteingaengeOhneEHGrid_OnSelectionChange(cb) {
 

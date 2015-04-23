@@ -27,21 +27,21 @@ namespace CkgDomainLogic.Finance.ViewModels
         public void SelectFahrzeug(string fin, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = CarporteingaengeOhneEHsFiltered.FirstOrDefault(f => f.Fahrgestellnummer == fin);
+            var fzg = CarporteingaengeOhneEHs.FirstOrDefault(f => f.Fahrgestellnummer == fin);
             if (fzg == null)
                 return;
 
             fzg.IsSelected = select;
-            allSelectionCount = CarporteingaengeOhneEHsFiltered.Count(c => c.IsSelected);
+            allSelectionCount = CarporteingaengeOhneEHs.Count(c => c.IsSelected);
         }
 
         public void DeleteCarporteingaengeOhneEH()
         {
-            foreach (var item in CarporteingaengeOhneEHsFiltered.Where(x => x.IsSelected))
+            foreach (var item in CarporteingaengeOhneEHs.Where(x => x.IsSelected))
             {
-                string kennzeichen = CarporteingaengeOhneEHsFiltered.Where(x => x.Fahrgestellnummer == item.Fahrgestellnummer).FirstOrDefault().Kennzeichen;
-                string pdiNummer = CarporteingaengeOhneEHsFiltered.Where(x => x.Fahrgestellnummer == item.Fahrgestellnummer).FirstOrDefault().PDINummer;
-                DataService.DeleteCarporteingaengeOhneEHToSap(kennzeichen ,item.Fahrgestellnummer, pdiNummer);
+                string kennzeichen = CarporteingaengeOhneEHs.Where(x => x.Fahrgestellnummer == item.Fahrgestellnummer).FirstOrDefault().Kennzeichen;
+                string pdiNummer = CarporteingaengeOhneEHs.Where(x => x.Fahrgestellnummer == item.Fahrgestellnummer).FirstOrDefault().PDINummer;
+                DataService.DeleteCarporteingaengeOhneEHToSap(kennzeichen, item.Fahrgestellnummer, pdiNummer);
             }
 
             DataInit();

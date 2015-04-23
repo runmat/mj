@@ -16,6 +16,8 @@
     }
 </div>
 
+@Html.SpanAlert("spanAlertLoeschen")
+
 @using (Html.FormSearchResultsGrid())
 {
     <div id="divFehlendeSchluesseltueteGrid"></div>
@@ -90,17 +92,19 @@
 
             success: function (result) {
                 ShowFehlendeSchluesseltuete();
+                var successMessage = '@Localize.DeleteSuccessful.ToJavascriptString()';
+                SpanAlertSuccess("spanAlertLoeschen", successMessage, 1800);
                 FormPreparePrivateAjax();
             },
             error: function (result) {
-
+                SpanAlertWarning("spanAlertLoeschen", result.data, 5000);
             }
         });
 
         return false;
     }
 
-
+     
     function FehlendeSchluesseltueteGrid_OnSelectionChange(cb) {
 
         Grid_FormatMultiRowSelected(cb);
