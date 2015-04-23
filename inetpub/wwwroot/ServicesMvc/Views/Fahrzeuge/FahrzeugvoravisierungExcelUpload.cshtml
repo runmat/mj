@@ -117,13 +117,15 @@
                     FormWizard.SetTabHtml(2, result);
                     FormPreparePrivateAjax();
                     FormWizard.ButtonNextInvoke();
-                    
+
+                    GridAllColumnFilterApplyToGrid("FahrzeugvoravisierungGrid");
+
                     if (_formWizardForceHideSubmitButton)
                         FormWizard.ButtonSubmitShow(false);
                 }
             });
         }
-
+       
         function FilterGrid(showErrorsOnly) {
             $.ajax({
                 type: "POST",
@@ -160,54 +162,58 @@
             });
         }
 
-   
-    function FahrzeugvoravisierungGrid_OnSelectionChange(cb) {
+        /*
+        
+        // wird evtl. nicht gebraucht (Tests abwarten)
+
+        function FahrzeugvoravisierungGrid_OnSelectionChange(cb) {
 
         Grid_FormatMultiRowSelected(cb);
 
         $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlAvisierungSelectionChanged",
-            data: { fin: cb.val(), isChecked: cb.is(':checked') },
-            loadingShow: false,
-            success: function (result) {
-                var count = result.allSelectionCount;
-                FahrzeugvoravisierungGrid_MultiSelectUpdate(result.allSelectionCount);
-                //alert(result.itemsWithoutErrorOnly);
-                FormWizard.ButtonSubmitShow(result.itemsWithoutErrorOnly == 0 && count > 0);
-            }
+        type: "POST",
+        url: "FahrzeugAuswahlAvisierungSelectionChanged",
+        data: { fin: cb.val(), isChecked: cb.is(':checked') },
+        loadingShow: false,
+        success: function (result) {
+        var count = result.allSelectionCount;
+        FahrzeugvoravisierungGrid_MultiSelectUpdate(result.allSelectionCount);
+        //alert(result.itemsWithoutErrorOnly);
+        FormWizard.ButtonSubmitShow(result.itemsWithoutErrorOnly == 0 && count > 0);
+        }
         });
-    }
+        }
 
-    function FahrzeugvoravisierungGrid_OnAllSelectionChange(check) {
+        function FahrzeugvoravisierungGrid_OnAllSelectionChange(check) {
         $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlAvisierungSelectionChanged",
-            data: { fin: "", isChecked: check },
-            loadingShow: true,
-            success: function (result) {
-                var count = result.allSelectionCount;
-                FahrzeugvoravisierungGrid_MultiSelectUpdate(result.allSelectionCount);
+        type: "POST",
+        url: "FahrzeugAuswahlAvisierungSelectionChanged",
+        data: { fin: "", isChecked: check },
+        loadingShow: true,
+        success: function (result) {
+        var count = result.allSelectionCount;
+        FahrzeugvoravisierungGrid_MultiSelectUpdate(result.allSelectionCount);
 
-                FilterGrid("FahrzeugvoravisierungGrid");
-            }
+        FilterGrid("FahrzeugvoravisierungGrid");
+        }
         });
-    }
+        }
 
-    function FahrzeugvoravisierungGrid_MultiSelectUpdate(count) {
+        function FahrzeugvoravisierungGrid_MultiSelectUpdate(count) {
         if (count == 0) {
-            // $("#FahrzeugAuswahlCount").addClass('hide');
-            $("#uncheckAllRecords").attr("checked", false);
-            $.uniform.update($("#uncheckAllRecords"));
-            return;
+        // $("#FahrzeugAuswahlCount").addClass('hide');
+        $("#uncheckAllRecords").attr("checked", false);
+        $.uniform.update($("#uncheckAllRecords"));
+        return;
         }
 
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
         //alert(count);
-    }
+        }
 
-   
+        */
+
     function OnColumnReorder_FahrzeugvoravisierungGrid() {
         FilteredData_Grid_OnColumnReorder($(this));
     }

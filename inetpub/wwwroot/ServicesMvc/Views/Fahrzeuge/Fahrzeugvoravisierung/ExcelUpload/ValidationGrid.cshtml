@@ -47,9 +47,9 @@
                     columns.XBound(c => c.Status).Width(130);
                     columns.XBound(c => c.ValidationErrors).Width(200);               
             })
-        .Scrollable(scroll => scroll.Enabled(true).Height(200)).TableHtmlAttributes(new { @class = "table-no-paging" })
              .XAutoColumnConfiguration()
             .ClientEvents(events => events.XAutoClientEvents(gridname).OnRowDataBound("OnRowDataBound_FahrzeugvoravisierungGrid"))
+            .XPageSize(10)
         .ToolBar(commands =>
         {
             commands.FilteredDataCommand("ExportFahrzeugvoravisierungFilteredExcel", "Fahrzeuge");

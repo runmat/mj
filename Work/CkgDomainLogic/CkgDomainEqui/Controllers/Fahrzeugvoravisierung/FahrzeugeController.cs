@@ -26,8 +26,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult FahrzeugvoravisierungExcelUpload()
         {
-            _dataContextKey = typeof(FahrzeugvoravisierungViewModel).Name;
-            FahrzeugvoravisierungViewModel.DataMarkForRefresh();
+            _dataContextKey = typeof(FahrzeugvoravisierungViewModel).Name;           
             FahrzeugvoravisierungViewModel.Init();
 
             return View(FahrzeugvoravisierungViewModel);
@@ -47,22 +46,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult FilterGridFahrzeugvoravisierung(string filterValue, string filterColumns)
+        public ActionResult FilterFahrzeugvoravisierungGrid(string filterValue, string filterColumns)
         {
             FahrzeugvoravisierungViewModel.FilterFahrzeugvoravisierungUploadModels(filterValue, filterColumns);
 
             return new EmptyResult();
         }
 
-        
-        [HttpPost]
-        public ActionResult FilterGridFahrzeugvoravisierungFreigabe(string filterValue, string filterColumns)
-        {
-            FahrzeugvoravisierungViewModel.FilterFahrzeugvoravisierungUploadModels(filterValue, filterColumns);
-
-            return new EmptyResult();
-        }
-
+               
         #region Excel Upload
 
         [HttpPost]
@@ -129,7 +120,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugvoravisierungFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = FahrzeugvoravisierungViewModel.FahrzeugvoravisierungUploadModelsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = FahrzeugvoravisierungViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Fahrzeugvoravisierung", dt);
 
             return new EmptyResult();
@@ -137,7 +128,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugvoravisierungFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = FahrzeugvoravisierungViewModel.FahrzeugvoravisierungUploadModelsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = FahrzeugvoravisierungViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Fahrzeugvoravisierung", dt, landscapeOrientation: true);
 
             return new EmptyResult();

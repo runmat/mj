@@ -22,14 +22,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
     {
         [XmlIgnore]
         public IFahrzeugvoravisierungDataService DataService { get { return CacheGet<IFahrzeugvoravisierungDataService>(); } }
-            
-        [XmlIgnore]
-        public List<FahrzeugvoravisierungUploadModel> FahrzeugvoravisierungUploadModels
-        {
-            get { return PropertyCacheGet(() => new List<FahrzeugvoravisierungUploadModel>()); }
-            private set { PropertyCacheSet(value); }
-        }
-        
+                           
         public FahrzeugvoravisierungSelektor FahrzeugvoravisierungSelektor
         {
             get
@@ -60,11 +53,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [LocalizedDisplay(LocalizeConstants.DataWithErrorsOccurred)]
         public bool UploadItemsErrorsOccurred { get { return UploadItems.Any(item => item.ValidationErrors.IsNotNullOrEmpty()); } }
 
-        public List<FahrzeugvoravisierungUploadModel> UploadItemsFiltered
+        public List<FahrzeugvoravisierungUploadModel> UploadItemsFilteredErrorList
         {
-            get { return !UploadItemsShowErrorsOnly ? UploadItems : UploadItems.Where(item => item.ValidationErrors.IsNotNullOrEmpty()).ToList(); }
+            get { return !UploadItemsShowErrorsOnly ? UploadItems : UploadItems.Where(item => item.ValidationErrors.IsNotNullOrEmpty()).ToList(); }          
         }
-                     
+
+        List<FahrzeugvoravisierungUploadModel> _uploadItemsFiltered;
+        public List<FahrzeugvoravisierungUploadModel> UploadItemsFiltered { get {
+            if (_uploadItemsFiltered == null)
+                _uploadItemsFiltered = UploadItemsFilteredErrorList;
+            return _uploadItemsFiltered; 
+        }
+            set { _uploadItemsFiltered = value; } 
+        }
 
         #region CSV Upload
 
@@ -174,34 +175,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
 
         #region Filter
-
-        [XmlIgnore]
-        public List<FahrzeugvoravisierungUploadModel> FahrzeugvoravisierungUploadModelsFiltered
-        {
-            get { return PropertyCacheGet(() => FahrzeugvoravisierungUploadModels); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        public void DataMarkForRefresh()
-        {            
-        }
-       
-
-        public void LoadFahrzeugvoravisierung(TreuhandverwaltungSelektor selector)
-        {
-            FahrzeugvoravisierungUploadModels = null;//  DataService.(selector);
-                                    
-           
-            DataMarkForRefresh();
-            
-            //XmlService.XmlSerializeToFile(Fahrzeuge, Path.Combine(AppSettings.DataPath, @"Fahrzeuge.xml"));
-        }
-
-      
-
+             
         public void FilterFahrzeugvoravisierungUploadModels(string filterValue, string filterProperties)
         {
-            FahrzeugvoravisierungUploadModels = FahrzeugvoravisierungUploadModels.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            UploadItemsFiltered = UploadItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         #endregion
