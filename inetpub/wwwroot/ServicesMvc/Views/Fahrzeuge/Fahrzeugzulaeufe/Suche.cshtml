@@ -1,0 +1,54 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model FahrzeugzulaeufeSelektor
+
+<div id="divFahrzeugzulaeufeSuche">
+    @using (Ajax.BeginForm("LoadFahrzeugzulaeufe", "Fahrzeuge", null,
+        new MvcAjaxOptions("divFahrzeugzulaeufeSuche") { OnComplete = "ShowFahrzeugzulaeufe();" }, new { id = "FahrzeugzulaeufeForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap" })
+            
+            @Html.FormDropDownListFor(m => m.HerstellerSchluessel, (ViewBag.HerstellerListe as List<Fahrzeughersteller>).ToSelectList(true), new { @class = "m-wrap" })
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowFahrzeugzulaeufe() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeugzulaeufe",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowFahrzeugzulaeufeSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

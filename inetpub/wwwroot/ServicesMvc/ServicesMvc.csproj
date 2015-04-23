@@ -4269,6 +4269,9 @@
     <Content Include="Views\Test\Cerberus.cshtml" />
     <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
     <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
+    <Content Include="Views\Fahrzeuge\ReportFahrzeugzulaeufe.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugzulaeufe\Suche.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeugzulaeufe\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

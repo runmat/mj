@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-// ReSharper disable RedundantUsingDirective
 using CkgDomainLogic.General.Models;
-// ReSharper restore RedundantUsingDirective
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -58,6 +56,43 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         { "TODO_TXT", "GeplanteAktionen" },
                         { "BEMERKUNG_TXT", "Bemerkung" },
                     }));
+            }
+        }
+
+        static public ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller> Z_M_HERSTELLERGROUP_T_HERST_To_Fahrzeughersteller
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.HerstellerName = s.HERST_T;
+                        d.HerstellerSchluessel = s.HERST_GROUP;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_EC_AVM_ZULAUF.GT_WEB, Fahrzeugzulauf> Z_M_EC_AVM_ZULAUF_GT_WEB_To_Fahrzeugzulauf
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_ZULAUF.GT_WEB, Fahrzeugzulauf>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.AuftragsNr = s.LIZNR;
+                            d.EingangPdi = s.ZZDAT_EIN;
+                            d.EingangZb2 = s.ERDAT_EQUI;
+                            d.FahrgestellNr = s.CHASSIS_NUM;
+                            d.Hersteller = s.ZMAKE;
+                            d.Modell = s.ZMOD_DESCR;
+                            d.ModellId = s.ZMODEL_ID;
+                            d.UnitNr = s.ZUNIT_NR;
+                            d.UnitNrPruefziffer = s.ZPZ_UNIT;
+                            d.ZulaufDatumDatum = s.ZVERGDAT;
+                            d.ZulaufDatumUhrzeit = s.ZVERGZEIT;
+                        }));
             }
         }
 
