@@ -751,3 +751,4 @@ Partial Public Class Change01Neu
     '''</remarks>
     Protected WithEvents divInfoText As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 End Class
+
