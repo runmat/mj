@@ -247,6 +247,8 @@ namespace SapORM.Models
 
 			public string KOSTL { get; set; }
 
+			public string KONTOINHABER { get; set; }
+
 			public static GT_WEB_FZG_IMP Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB_FZG_IMP
@@ -278,6 +280,7 @@ namespace SapORM.Models
 					FAREF1 = (string)row["FAREF1"],
 					FAREF2 = (string)row["FAREF2"],
 					KOSTL = (string)row["KOSTL"],
+					KONTOINHABER = (string)row["KONTOINHABER"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -763,6 +766,8 @@ namespace SapORM.Models
 
 			public string KOSTL { get; set; }
 
+			public string KONTOINHABER { get; set; }
+
 			public static GT_WEB_FZG_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB_FZG_OUT
@@ -794,6 +799,7 @@ namespace SapORM.Models
 					FAREF1 = (string)row["FAREF1"],
 					FAREF2 = (string)row["FAREF2"],
 					KOSTL = (string)row["KOSTL"],
+					KONTOINHABER = (string)row["KONTOINHABER"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -955,6 +961,8 @@ namespace SapORM.Models
 
 			public string KOSTL { get; set; }
 
+			public string KONTOINHABER { get; set; }
+
 			public static GT_WEB_FZG_ERR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB_FZG_ERR
@@ -986,6 +994,7 @@ namespace SapORM.Models
 					FAREF1 = (string)row["FAREF1"],
 					FAREF2 = (string)row["FAREF2"],
 					KOSTL = (string)row["KOSTL"],
+					KONTOINHABER = (string)row["KONTOINHABER"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
