@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AppZulassungsdienst.lib.Models;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
-using System.Data;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {
     public partial class ChangeZLDNachVersandListe : Page
     {
         private User m_User;
-        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
-        DataTable tblTracing;
-        private const string CONST_IDSONSTIGEDL = "570";
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User, "");
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
@@ -33,18 +33,16 @@ namespace AppZulassungsdienst.forms
             }
 
             objNacherf = (NacherfZLD)Session["objNacherf"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -53,382 +51,24 @@ namespace AppZulassungsdienst.forms
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
 
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
-                Fillgrid(0, "", null);
-                if (objNacherf.MatError == -4444)
-                { lblError.Text = objNacherf.MatErrorText;}
-            }
-        }
-
-        private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
-        {
-            DataTable tmpTable = objNacherf.tblEingabeListe;
-            if (!tmpTable.Columns.Contains("DLBezeichnung"))
-            {
-                tmpTable.Columns.Add("DLBezeichnung", typeof(String));
-            }
-            DataView tmpDataView = tmpTable.DefaultView;
-            String strFilter = "";
-            if (Rowfilter != null)
-            {
-                ViewState["Rowfilter"] = Rowfilter;
-                strFilter = Rowfilter;
-            }
-            else if (ViewState["Rowfilter"] != null)
-            {
-                strFilter = (String)this.ViewState["Rowfilter"];
-            }
-
-            tmpDataView.RowFilter = strFilter;
-
-            if (tmpDataView.Count == 0)
-            {
-                GridView1.Visible = false;
-                Result.Visible = false;
-                trSuche.Visible = false;
-            }
-            else
-            {
-                Result.Visible = true;
-                GridView1.Visible = true;
-                trSuche.Visible = true;
-                Int32 intTempPageIndex = intPageIndex;
-                String strTempSort = "";
-                String strDirection = null;
-
-                if (strSort.Trim(' ').Length > 0)
-                {
-                    intTempPageIndex = 0;
-                    strTempSort = strSort.Trim(' ');
-                    if ((this.ViewState["Sort"] == null) || ((String)this.ViewState["Sort"] == strTempSort))
-                    {
-                        if (this.ViewState["Direction"] == null)
-                        {
-                            strDirection = "desc";
-                        }
-                        else
-                        {
-                            strDirection = (String)this.ViewState["Direction"];
-                        }
-                    }
-                    else
-                    {
-                        strDirection = "desc";
-                    }
-
-                    if (strDirection == "asc")
-                    {
-                        strDirection = "desc";
-                    }
-                    else
-                    {
-                        strDirection = "asc";
-                    }
-
-                    this.ViewState["Sort"] = strTempSort;
-                    this.ViewState["Direction"] = strDirection;
-                }
-
-                if (strTempSort.Length != 0)
-                {
-                    tmpDataView.Sort = strTempSort + " " + strDirection;
-                }
-
-                GridView1.PageIndex = intTempPageIndex;
-                GridView1.DataSource = tmpDataView;
-                GridView1.DataBind();
-
-                String myId = GridView1.DataKeys[0]["ID"].ToString();
-                String Css = "ItemStyle";
-                foreach (GridViewRow row in GridView1.Rows)
-                {
-
-                    if (GridView1.DataKeys[row.RowIndex]["ID"].ToString() == myId)
-                    {
-                        row.CssClass = Css;
-                        myId = GridView1.DataKeys[row.RowIndex]["ID"].ToString();
-                    }
-                    else
-                    {
-                        if (Css == "ItemStyle")
-                        {
-                            Css = "GridTableAlternate2";
-                        }
-                        else
-                        {
-                            Css = "ItemStyle";
-                        }
-                        row.CssClass = Css;
-                        myId = GridView1.DataKeys[row.RowIndex]["ID"].ToString();
-
-                    }
-
-                    Label lblMatnr = (Label)row.FindControl("lblMatnr");
-                    Label lblMatbez = (Label)row.FindControl("lblMatbez");
-                    Label lblDLBezeichnung = (Label)row.FindControl("lblDLBezeichnung");
-                    if (lblMatnr.Text.TrimStart('0') == CONST_IDSONSTIGEDL)
-                    {
-                        lblDLBezeichnung.Text = lblMatbez.Text;
-                    }
-                    else
-                    {
-                        lblDLBezeichnung.Text = "";
-                    }
-                }
-
+                Fillgrid();
+                if (objNacherf != null && objNacherf.MatError != 0)
+                    lblError.Text = objNacherf.MatErrorText;
             }
         }
 
         protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
         {
-            Fillgrid(0, e.SortExpression, null);
+            CheckGrid(GridCheckMode.CheckNone);
+            Session["objNacherf"] = objNacherf;
+            Fillgrid(0, e.SortExpression);
         }
 
         protected void lb_zurueck_Click(object sender, EventArgs e)
         {
             Response.Redirect("ChangeZLDNachVersand.aspx?AppID=" + Session["AppID"].ToString());
-        }
-
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void ClearGridRowErrors(GridViewRow gvRow)
-        {
-            TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
-            ZulDate.BorderColor = System.Drawing.Color.Empty;
-            TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
-        }
-
-        private Boolean CheckGrid(String RowUpdate)
-        {
-            Boolean bError = false;
-            try
-            {
-                foreach (GridViewRow gvRow in GridView1.Rows)
-                {
-                    if (CheckGridRow(gvRow, RowUpdate))
-                    {
-                        bError = true;
-                        break;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-                bError = true;
-            }
-
-            return bError;
-        }
-
-        private Boolean CheckGridRow(GridViewRow gvRow, String rowUpdate)
-        {
-            bool pruefungsrelevant = false;
-
-            ClearGridRowErrors(gvRow);
-            Boolean bError = false;
-            try
-            {
-                Label lblID = (Label)gvRow.FindControl("lblID");
-                Label posID = (Label)gvRow.FindControl("lblid_pos");
-                TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
-                Label matnr = (Label)gvRow.FindControl("lblMatnr");
-                Label matbez = (Label)gvRow.FindControl("lblMatbez");
-                RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
-                RadioButton rbEC = (RadioButton)gvRow.FindControl("rbEC");
-                RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
-                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
-                Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
-
-                String Loeschkz = lblLoeschKZ.Text;
-                if (lblLoeschKZ.Text == "L")
-                {
-                    Loeschkz = "X";
-                }
-
-                if (rowUpdate == "")
-                {
-                    pruefungsrelevant = true;
-                }
-                else if (rowUpdate == "R")
-                {
-                    pruefungsrelevant = (Loeschkz == "O");
-                }
-
-                Int32 intID = 0;
-                Int32 intPosID = 0;
-
-                Boolean bBar = rb.Checked;
-                Boolean bEC = rbEC.Checked;
-                Boolean bRE = rbRE.Checked;
-
-                if (ZLDCommon.IsNumeric(lblID.Text))
-                {
-                    Int32.TryParse(lblID.Text, out intID);
-                }
-
-                if (ZLDCommon.IsNumeric(posID.Text))
-                {
-                    Int32.TryParse(posID.Text, out intPosID);
-                }
-                if (pruefungsrelevant && intPosID == 10)
-                {
-                    if (ZulDate.Text == "")
-                    {
-                        ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                        lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
-                        return true;
-                    }
-
-                    if (checkDate(ZulDate) == false)
-                    {
-                        return true;
-                    }
-                }
-                
-                if ((matnr.Text == CONST_IDSONSTIGEDL) && (String.IsNullOrEmpty(lblDLBezeichnung.Text)))
-                {
-                    matbez.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                    lblError.Text = "Bitte erfassen Sie für die \"Sonstige Dienstleistung\" einen Beschreibungstext!";
-                    return true;
-                }
-
-                TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-                Decimal decGeb = 0;
-
-                if (ZLDCommon.IsDecimal(txtBox.Text))
-                {
-                    Decimal.TryParse(txtBox.Text, out decGeb);
-                    txtBox.Text = String.Format("{0:0.00}", decGeb);
-                }
-
-                if ((pruefungsrelevant) && (decGeb == 0))
-                {
-                    DataRow[] matRow = objCommon.tblMaterialStamm.Select("MATNR = '" + matnr.Text.TrimStart('0') + "'");
-
-                    if (matRow.Length == 1)
-                    {
-                        if (matRow[0]["ZZGEBPFLICHT"].ToString() == "X")
-                        { 
-                            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                            lblError.Text = "Bitte geben Sie die Gebühr für die markierten Dienstleistungen/Artikel ein!";
-                            return true;                            
-                        }                        
-                    }
-                }
-
-                txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
-
-                if (pruefungsrelevant && txtBox.Text.Length == 0 && intPosID == 10)
-                {
-                    txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                    lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
-                    bError = true;
-                }
-                objNacherf.UpdateDB_GridDataGeb(intID, intPosID, decGeb, txtBox.Text, bBar, bEC, ZulDate.Text, lblDLBezeichnung.Text);
-
-                if (objNacherf.Status != 0)
-                {
-                    lblError.Text = "Fehler beim Speichern der Daten(SQL):" + objNacherf.Message;
-                    bError = true;
-                }
-                else
-                {
-                    DataRow[] RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID + " AND id_pos=" + intPosID);
-                    foreach (DataRow Row in RowsEdit)
-                    {
-                        Row["GebPreis"] = decGeb;
-                        Row["Bar"] = bBar;
-                        Row["EC"] = bEC;
-                        Row["RE"] = bRE;
-                        String ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
-                        if (ZDat != String.Empty)
-                        { Row["Zulassungsdatum"] = ZDat; }
-                        Row["DLBezeichnung"] = lblDLBezeichnung.Text;
-                    }
-                    if (intPosID == 10)
-                    {
-                        RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID);
-                        foreach (DataRow Row in RowsEdit)
-                        {
-                            Row["KennABC"] = txtBox.Text;
-                        }
-                    }
-                }
-                
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-                bError = true;
-            }
-
-            return bError;
-        }
-
-        private Boolean checkDate(TextBox ZulDate)
-        {
-            Boolean bReturn = true;
-            String ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
-
-            if (ZDat != String.Empty)
-            {
-                if (ZLDCommon.IsDate(ZDat) == false)
-                {
-                    lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                    bReturn = false;
-                }
-                else
-                {
-                    DateTime tagesdatum = DateTime.Today;
-                    int i = 60;
-                    do
-                    {
-                        if (tagesdatum.DayOfWeek == DayOfWeek.Saturday || tagesdatum.DayOfWeek == DayOfWeek.Sunday)
-                        {
-
-                        }
-                        else
-                        {
-                            i--;
-                        }
-                        tagesdatum = tagesdatum.AddDays(-1);
-                    } while (i > 0);
-                    DateTime DateNew;
-                    DateTime.TryParse(ZDat, out DateNew);
-                    if (DateNew < tagesdatum)
-                    {
-                        lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
-                        ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                        bReturn = false;
-                    }
-                    else
-                    {
-                        tagesdatum = DateTime.Today;
-                        tagesdatum = tagesdatum.AddYears(1);
-                        if (DateNew > tagesdatum)
-                        {
-                            lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
-                            ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                            bReturn = false;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                    lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                    ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                    bReturn = false;
-            }
-
-            return bReturn;
-
         }
 
         private void Page_PreRender(object sender, EventArgs e)
@@ -441,145 +81,114 @@ namespace AppZulassungsdienst.forms
             Common.SetEndASPXAccess(this);
         }
 
-        protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-
-        }
-
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
             try
             {
                 Int32 Index;
                 Label lblID;
+                Label lblIDPos;
                 Label lblLoeschKZ;
-                String Loeschkz = "";
-                Int32 IDSatz;
-                DataRow[] RowsEdit;
-
+                String newLoeschkz;
                 lblError.Text = "";
-                objNacherf = (NacherfZLD)Session["objNacherf"];
-                Int32.TryParse(e.CommandArgument.ToString(), out Index);
 
                 switch (e.CommandName)
                 {
                     case "Edt":
-                        CheckGrid("X");
-                        DataRow[] drow = objNacherf.tblEingabeListe.Select("ID=" + e.CommandArgument);
-                        if (drow.Length > 0)
-                        {
-                            objNacherf.Vorgang = drow[0]["Vorgang"].ToString();
-                        }
+                        CheckGrid(GridCheckMode.CheckNone);
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
                         objNacherf.SelEditDurchzufVersZul = true;
                         Session["objNacherf"] = objNacherf;
-                        Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + e.CommandArgument + "&B=true");
+                        Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + lblID.Text + "&B=true");
                         break;
 
                     case "Del":
-                        Int32 IDPos;
-                        lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
-                        Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                        lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
                         lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
 
-                        Int32.TryParse(lblID.Text, out IDSatz);
-                        Int32.TryParse(lblIDPos.Text, out IDPos);
-                        if (lblLoeschKZ.Text == "L")
-                        {
-                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, IDPos);
-                            lblLoeschKZ.Text = Loeschkz;
-                        }
-                        else
-                        {
-                            Loeschkz = "L";
-                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, IDPos);
-                            lblLoeschKZ.Text = Loeschkz;
-                        }
+                        newLoeschkz = (lblLoeschKZ.Text == "L" ? "" : "L");
 
-                        if (objNacherf.Status != 0)
+                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, lblIDPos.Text, newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
                         {
                             lblError.Text = objNacherf.Message;
-
+                            return;
                         }
 
-                        if (IDPos != 10)
-                        {
-                            RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + IDSatz + " AND id_pos =" + IDPos);
-                        }
-                        else
+                        lblLoeschKZ.Text = newLoeschkz;
+
+                        if (lblIDPos.Text == "10")
                         {
                             foreach (GridViewRow row in GridView1.Rows)
                             {
-
-                                if (GridView1.DataKeys[row.RowIndex]["ID"].ToString() == IDSatz.ToString())
+                                if (GridView1.DataKeys[row.RowIndex] != null)
                                 {
-                                    lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
-                                    lblLoeschKZ.Text = Loeschkz;
-                                    SetGridRowEdited(row, true);
+                                    if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
+                                    {
+                                        lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                        lblLoeschKZ.Text = newLoeschkz;
+                                        ImageButton ibtnedt = (ImageButton)row.FindControl("ibtnedt");
+                                        ibtnedt.Visible = (newLoeschkz != "L");
+
+                                        SetGridRowEdited(row, true);
+                                    }
                                 }
-
                             }
-                            RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + IDSatz);
                         }
 
-                        foreach (DataRow Row in RowsEdit)
-                        {
-                            Row["PosLoesch"] = Loeschkz;
-                            Row["bearbeitet"] = true;
-                        }
                         SetGridRowEdited(GridView1.Rows[Index], true);
                         Session["objNacherf"] = objNacherf;
                         break;
 
                     case "OK":
-                        if (CheckGridRow(GridView1.Rows[Index], "") == false)
+                        newLoeschkz = "O";
+
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        if (CheckGridRow(GridView1.Rows[Index], GridCheckMode.CheckAll, true))
+                            return;
+
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                        lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
+                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+
+                        if (lblLoeschKZ.Text == "L")
+                            throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
+
+                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, "10", newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
                         {
-                            CheckGridRowforTracing(GridView1.Rows[Index]);
-                            lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
-                            lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+                            lblError.Text = objNacherf.Message;
+                            return;
+                        }
 
-                            Int32.TryParse(lblID.Text, out IDSatz);
-                            if (lblLoeschKZ.Text == "L")
+                        foreach (GridViewRow row in GridView1.Rows)
+                        {
+                            if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
                             {
-                                throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
-                            }
-
-                            Loeschkz = "O";
-                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, 0);
-
-                            if (objNacherf.Status != 0)
-                            {
-                                lblError.Text = objNacherf.Message;
-
-                            }
-                            foreach (GridViewRow row in GridView1.Rows)
-                            {
-
-                                if (GridView1.DataKeys[row.RowIndex]["ID"].ToString() == IDSatz.ToString())
+                                Label IDPos = (Label)row.FindControl("lblid_pos");
+                                lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                if (lblLoeschKZ.Text != "L")
                                 {
-                                    lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
-                                    lblLoeschKZ.Text = Loeschkz;
-                                    SetGridRowEdited(row, true);
+                                    lblLoeschKZ.Text = newLoeschkz;
                                 }
 
-                            }
-                            RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + IDSatz);
-                            foreach (DataRow Row in RowsEdit)
-                            {
-                                Row["PosLoesch"] = Loeschkz;
-                                Row["bearbeitet"] = true;
-                            }
-                            Session["objNacherf"] = objNacherf;
+                                if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
+                                {
+                                    CheckGridRow(row, GridCheckMode.CheckAll, true);
+                                }
 
+                                SetGridRowEdited(row, true);
+                            }
                         }
-                        break;
 
-                    case "SetDLBez":
-                        ihAktuellerDatensatz.Value = Index.ToString();
-                        mpeDLBezeichnung.Show();
+                        Session["objNacherf"] = objNacherf;
                         break;
                 }
-
-                Result.Visible = true;
             }
             catch (Exception ex)
             {
@@ -587,108 +196,45 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        /// <summary>
-        /// Den im PopUp gesetzten Beschreibungstext übernehmen
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void dlgErfassungDLBez_TexteingabeBestaetigt(object sender, EventArgs e)
-        {            
-            Int32 rowIndex;
-
-            Int32.TryParse(ihAktuellerDatensatz.Value, out rowIndex);
-            GridViewRow gvRow = GridView1.Rows[rowIndex];
-
-            Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
-            lblDLBezeichnung.Text = dlgErfassungDLBez.DLBezeichnung;         
-
-            mpeDLBezeichnung.Hide();
-        }
-
-        private void SetGridRowEdited(GridViewRow gvRow, Boolean Edited)
-        {
-
-            try
-            {
-                Label lblsapID = (Label)gvRow.FindControl("lblsapID");
-                Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
-                Label lblKundennr = (Label)gvRow.FindControl("lblKundennr");
-                Label lblKundenname = (Label)gvRow.FindControl("lblKundenname");
-                Label lblMatbez = (Label)gvRow.FindControl("lblMatbez");
-                Label lblReferenz1 = (Label)gvRow.FindControl("lblReferenz1");
-                Label lblKennKZ1 = (Label)gvRow.FindControl("lblKennKZ1");
-                Label lblReserviert = (Label)gvRow.FindControl("lblReserviert");
-                Label lblWunschKennz = (Label)gvRow.FindControl("lblWunschKennz");
-                Label lblFeinstaub = (Label)gvRow.FindControl("lblFeinstaub");
-
-
-                lblsapID.Font.Bold = Edited;
-                lblLoeschKZ.Font.Bold = Edited;
-                lblKundennr.Font.Bold = Edited;
-                lblKundenname.Font.Bold = Edited;
-                lblMatbez.Font.Bold = Edited;
-                lblReferenz1.Font.Bold = Edited;
-                lblKennKZ1.Font.Bold = Edited;
-                lblReserviert.Font.Bold = Edited;
-                lblWunschKennz.Font.Bold = Edited;
-                lblFeinstaub.Font.Bold = Edited;
-
-
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-            }
-        }
-
         protected void ibtnSearch_Click(object sender, ImageClickEventArgs e)
         {
-            String sFilter = "";
-            if (ddlSuche.SelectedValue.Contains("Preis"))
+            lblError.Text = "";
+
+            if (ddlSuche.SelectedValue == "Zulassungsdatum")
             {
-                if (ZLDCommon.IsDecimal(txtSuche.Text))
+                if (!String.IsNullOrEmpty(txtSuche.Text))
                 {
-                    Decimal Preis;
-                    Decimal.TryParse(txtSuche.Text, out Preis);
-                    sFilter = ddlSuche.SelectedValue + " = " + txtSuche.Text.Replace(",", ".");
-                }
-            }
-            else if (ddlSuche.SelectedValue.Contains("Zulassungsdatum"))
-            {
-                if (txtSuche.Text.Length > 0)
-                {
-                    String SelDatum = ZLDCommon.toShortDateStr(txtSuche.Text);
-                    if (ZLDCommon.IsDate(SelDatum))
-                    {
-                        sFilter = ddlSuche.SelectedValue + " = '" + SelDatum + "'";
-                    }
-                    else
+                    var SelDatum = ZLDCommon.toShortDateStr(txtSuche.Text);
+                    if (!SelDatum.IsDate())
                     {
                         lblError.Text = "Die Eingabe konnte nicht als Datum erkannt werden!(ttmmjj)";
+                        return;
                     }
                 }
             }
-            else if (ddlSuche.SelectedValue.Contains("id_sap"))
+            else if (ddlSuche.SelectedValue == "SapId")
             {
-                if (txtSuche.Text.Length > 0)
+                if (!String.IsNullOrEmpty(txtSuche.Text))
                 {
-                    String SelID = txtSuche.Text;
-                    if (ZLDCommon.IsNumeric(SelID))
-                    {
-                        sFilter = ddlSuche.SelectedValue + " = " + SelID;
-                    }
-                    else
+                    var SelID = txtSuche.Text;
+                    if (!SelID.IsNumeric())
                     {
                         lblError.Text = "Die Eingabe konnte nicht als numerisch erkannt werden!";
+                        return;
                     }
                 }
             }
-            else
-            {
 
-                sFilter = ddlSuche.SelectedValue + " Like '*" + txtSuche.Text + "*'";
-            }
-            Fillgrid(0, "", sFilter);
+            CheckGrid(GridCheckMode.CheckNone);
+
+            objNacherf.DataFilterActive = true;
+            objNacherf.DataFilterProperty = ddlSuche.SelectedValue;
+            objNacherf.DataFilterValue = txtSuche.Text;
+            Session["objNacherf"] = objNacherf;
+
+            Fillgrid();
+
+            trSuche.Visible = true;
             ibtnNoFilter.Visible = true;
         }
 
@@ -696,230 +242,82 @@ namespace AppZulassungsdienst.forms
         {
             ddlSuche.SelectedIndex = 0;
             txtSuche.Text = "";
-            Fillgrid(0, "", "");
+
+            CheckGrid(GridCheckMode.CheckNone);
+
+            objNacherf.DataFilterActive = false;
+            Session["objNacherf"] = objNacherf;
+
+            Fillgrid();
+
             ibtnSearch.Visible = true;
             ibtnNoFilter.Visible = false;
         }
 
         protected void cmdSend_Click(object sender, EventArgs e)
         {
-            //CheckGridforTracing();
-            if (CheckGrid("R") == false)
+            if (!CheckGrid(GridCheckMode.CheckOnlyRelevant))
             {
                 lblError.Text = "";
-                objNacherf = (NacherfZLD)Session["objNacherf"];
-                objNacherf.SaveDZLDNacherfassung(Session["AppID"].ToString(), Session.SessionID, this,objCommon.tblStvaStamm, objCommon.tblMaterialStamm);
-                if (objNacherf.Status != 0)
+
+                objNacherf.SendVorgaengeToSap(objCommon.MaterialStamm, objCommon.StvaStamm, m_User.UserName, m_User.FirstName, m_User.LastName, true);
+
+                if (objNacherf.ErrorOccured)
                 {
-                    tab1.Visible = true;
-                    if (objNacherf.Status == -5555)
-                    {
-                        lblError.Text = "Fehler bei der Kommunikation. Daten konnten nicht in SAP gespeichert werden! " + objNacherf.Message;
-                        return;
-                    }
                     lblError.Text = objNacherf.Message;
-                    if (objNacherf.Status == -7777)// "Es sind keine Vorgänge mit \"O\" oder \"L\" markiert"
-                    {
-                        return;
-                    }
+                    return;
+                }
 
-                    DataRow[] rowListe = objNacherf.tblEingabeListe.Select("Status = '' AND PosLoesch <> ''");
-
-                    if (rowListe.Length > 0)
-                    {
-                        foreach (DataRow dRow in rowListe)
-                        {
-                            Int32 id;
-                            Int32.TryParse(dRow["ID"].ToString(), out id);
-                            objNacherf.DeleteRecordSet(id);
-                            objNacherf.tblEingabeListe.Rows.Remove(dRow);
-                        }
-                    }
-
-                    Fillgrid(0, "", null);
-                    GridView1.Columns[1].Visible = true;
-                    GridView1.Columns[3].Visible = false;
-
-                    if (GridView1.Columns[10] != null) { GridView1.Columns[10].Visible = false; }
-                    if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = false; }
-                    if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = false; }
+                if (objNacherf.Vorgangsliste.Any(v => !String.IsNullOrEmpty(v.FehlerText) && v.FehlerText != "OK"))
+                {
+                    lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+                    lblMessage.Visible = false;
                 }
                 else
                 {
-                    tab1.Visible = true;
-                    //tab1.Height = "250px";
                     lblMessage.Visible = true;
                     lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                     lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
-                    DataRow[] rowListe = objNacherf.tblEingabeListe.Select("Status = '' AND PosLoesch <> ''");
-
-                    if (rowListe.Length > 0)
-                    {
-                        foreach (DataRow dRow in rowListe)
-                        {
-                            Int32 id;
-                            Int32.TryParse(dRow["ID"].ToString(), out id);
-                            objNacherf.DeleteRecordSet(id);
-                            objNacherf.tblEingabeListe.Rows.Remove(dRow);
-                        }
-
-                    }
-                    cmdSend.Enabled = false;
-                    cmdContinue.Visible = true;
-                    Fillgrid(0, "", null);
                 }
+
+                cmdSend.Enabled = false;
+                cmdContinue.Visible = true;
+
+                Fillgrid(0, "", GridFilterMode.ShowOnlyOandL);
+
+                ShowHideColumns(true);
 
                 Session["objNacherf"] = objNacherf;
             }
         }
 
-        private void CheckGridRowforTracing(GridViewRow gvRow)
-        {
-            tblTracing = new DataTable();
-            tblTracing.Columns.Add("Wert", typeof(String));
-            tblTracing.Columns.Add("ID", typeof(String));
-            tblTracing.Columns.Add("Kunde", typeof(String));
-            tblTracing.Columns.Add("Kennzeichen", typeof(String));
-            tblTracing.Columns.Add("Dienstleistung", typeof(String));
-            tblTracing.Columns.Add("Zulassungsdatum", typeof(String));
-            tblTracing.Columns.Add("Gebuehr", typeof(String));
-            try
-            {
-                Label lblID = (Label)gvRow.FindControl("lblID");
-                Label posID = (Label)gvRow.FindControl("lblid_pos");
-                Int32 intID = 0;
-                Int32 intPosID = 0;
-
-                if (ZLDCommon.IsNumeric(lblID.Text))
-                {
-                    Int32.TryParse(lblID.Text, out intID);
-                }
-
-                if (ZLDCommon.IsNumeric(posID.Text))
-                {
-                    Int32.TryParse(posID.Text, out intPosID);
-                }
-
-                TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-                Decimal Geb = 0;
-                if (ZLDCommon.IsDecimal(txtBox.Text))
-                {
-                    Decimal.TryParse(txtBox.Text, out Geb);
-                }
-
-                txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
-                String Kennzeichen = txtBox.Text;
-
-                Label lblTemp = (Label)gvRow.FindControl("lblKundennr");
-                String Kundenname = lblTemp.Text;
-                lblTemp = (Label)gvRow.FindControl("lblKundenname");
-                String Kunnr = lblTemp.Text;
-                lblTemp = (Label)gvRow.FindControl("lblMatbez");
-                String Dienstleistung = lblTemp.Text;
-                String Kennz1 = txtBox.Text;
-                Boolean Change = false;
-                DataRow[] RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID + " AND id_pos=" + intPosID);
-                foreach (DataRow Row in RowsEdit)
-                {
-
-                    Decimal OldPreisGeb = 0;
-                    if (ZLDCommon.IsDecimal(Row["GebPreis"].ToString()))
-                    {
-                        Decimal.TryParse(Row["GebPreis"].ToString(), out OldPreisGeb);
-                    }
-                    if (OldPreisGeb != Geb)
-                    {
-                        Change = true;
-                    }
-
-                    if (Row["KennABC"].ToString() != Kennzeichen)
-                    {
-                        Change = true;
-                    }
-
-                    if (Change)
-                    {
-                        DataRow TracingRow = tblTracing.NewRow();
-                        TracingRow["Wert"] = "alt";
-                        TracingRow["ID"] = intID.ToString();
-                        TracingRow["Kunde"] = Kunnr + "  " + Kundenname;
-                        TracingRow["Kennzeichen"] = Kennz1 + "-" + Row["KennABC"].ToString();
-                        TracingRow["Dienstleistung"] = Dienstleistung;
-                        TracingRow["Gebuehr"] = String.Format("{0:0.00}", OldPreisGeb);
-
-                        tblTracing.Rows.Add(TracingRow);
-
-                        TracingRow = tblTracing.NewRow();
-                        TracingRow["Wert"] = "neu";
-                        TracingRow["ID"] = intID.ToString();
-                        TracingRow["Kunde"] = Kunnr + "  " + Kundenname;
-                        TracingRow["Kennzeichen"] = Kennz1 + "-" + Kennzeichen;
-                        TracingRow["Dienstleistung"] = Dienstleistung;
-                        TracingRow["Gebuehr"] = Geb;
-
-
-                        tblTracing.Rows.Add(TracingRow);
-                        
-                    }
-
-                }
-                if (tblTracing.Rows.Count > 0)
-                {
-                    int AppID;
-                    int.TryParse(Session["AppID"].ToString(), out AppID);
-                    CKG.Base.Kernel.Logging.Trace logApp = new CKG.Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel);
-                    logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, AppID, lblHead.Text, m_User.Reference,
-                        "Änderung Nacherfassung am " + DateTime.Now.ToString() + ".", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, tblTracing);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-            }
-        }
-
         protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
         {
-            if (e.Row.RowType == DataControlRowType.DataRow) 
+            if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 TextBox Zuldat = (TextBox)e.Row.FindControl("txtZulassungsdatum");
-                if (Zuldat.Text.Length > 0) 
+                if (!String.IsNullOrEmpty(Zuldat.Text))
                 {
-
-                    String tmpDate = Zuldat.Text;
+                    var tmpDate = Zuldat.Text;
                     Zuldat.Text = tmpDate.Substring(0, 2) + tmpDate.Substring(3, 2) + tmpDate.Substring(8, 2);
-
                 }
-            
             }
         }
 
         protected void cmdSave_Click(object sender, EventArgs e)
         {
-            Update();
-        }
-
-        private void Update()
-        {
-
-            if (CheckGrid("X") == false)
+            if (!CheckGrid(GridCheckMode.CheckNone))
             {
                 lblError.Text = "";
-                objNacherf = (NacherfZLD)Session["objNacherf"];
 
-                objNacherf.UpdateZLDNacherfassung(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, objCommon.tblMaterialStamm);
+                objNacherf.SaveVorgaengeToSap(objCommon.MaterialStamm, objCommon.StvaStamm, m_User.UserName);
 
-
-                if (objNacherf.Status != 0)
+                if (objNacherf.ErrorOccured)
                 {
-                    tab1.Visible = true;
                     lblError.Text = objNacherf.Message;
-
                 }
                 else
                 {
-
                     lblMessage.Visible = true;
                     lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                     lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
@@ -929,15 +327,23 @@ namespace AppZulassungsdienst.forms
 
         protected void cmdContinue_Click(object sender, EventArgs e)
         {
-            cmdContinue.Visible = false;
-            cmdSend.Enabled = true;
+            objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
-            LoescheAusEingabeliste("Status = 'OK'");
+            List<ZLDVorgangUINacherfassung> liste;
 
-            if (objNacherf.tblEingabeListe.DefaultView.Count == 0)
+            if (objNacherf.DataFilterActive)
             {
-                Session["Rowfilter"] = null;
-                Fillgrid(0, "", null);
+                liste = objNacherf.Vorgangsliste.Where(vg =>
+                    ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true)).ToList();
+            }
+            else
+            {
+                liste = objNacherf.Vorgangsliste;
+            }
+
+            if (liste.Count == 0)
+            {
+                Fillgrid();
                 Result.Visible = false;
                 cmdSend.Enabled = false;
                 cmdSave.Enabled = false;
@@ -955,31 +361,415 @@ namespace AppZulassungsdienst.forms
                 txtSuche.Text = "";
                 ibtnSearch.Visible = true;
                 ibtnNoFilter.Visible = false;
-                Fillgrid(0, "", null);
+                Fillgrid();
+            }
+
+            ShowHideColumns(false);
+
+            cmdContinue.Visible = false;
+            cmdSend.Enabled = true;
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void Fillgrid(Int32 intPageIndex = -1, String strSort = "", GridFilterMode filterMode = GridFilterMode.Default)
+        {
+            List<ZLDVorgangUINacherfassung> srcList;
+
+            switch (filterMode)
+            {
+                case GridFilterMode.ShowOnlyOandL:
+                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    break;
+
+                default:
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true)).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste;
+                    }
+                    break;
+            }
+
+            if (srcList.Count == 0)
+            {
+                GridView1.Visible = false;
+                Result.Visible = false;
+                trSuche.Visible = false;
+            }
+            else
+            {
+                Result.Visible = true;
+                GridView1.Visible = true;
+                trSuche.Visible = true;
+                var intTempPageIndex = (intPageIndex > -1 ? intPageIndex : GridView1.PageIndex);
+                var strTempSort = "";
+                String strDirection = null;
+
+                if (!String.IsNullOrEmpty(strSort))
+                {
+                    intTempPageIndex = 0;
+                    strTempSort = strSort.Trim(' ');
+                    if ((Session["Sort"] == null) || ((String)Session["Sort"] == strTempSort))
+                    {
+                        if (Session["Direction"] == null)
+                        {
+                            strDirection = "desc";
+                        }
+                        else
+                        {
+                            strDirection = (String)Session["Direction"];
+                        }
+                    }
+                    else
+                    {
+                        strDirection = "desc";
+                    }
+
+                    if (strDirection == "asc")
+                    {
+                        strDirection = "desc";
+                    }
+                    else
+                    {
+                        strDirection = "asc";
+                    }
+
+                    Session["Sort"] = strTempSort;
+                    Session["Direction"] = strDirection;
+                }
+                else if (Session["Sort"] != null)
+                {
+                    strTempSort = Session["Sort"].ToString();
+                    strDirection = Session["Direction"].ToString();
+                }
+                if (!String.IsNullOrEmpty(strTempSort))
+                {
+                    var prop = typeof(ZLDVorgangUINacherfassung).GetProperty(strTempSort);
+
+                    if (strDirection == "asc")
+                    {
+                        GridView1.DataSource = srcList.OrderBy(v => prop.GetValue(v, null)).ToList();
+                    }
+                    else
+                    {
+                        GridView1.DataSource = srcList.OrderByDescending(v => prop.GetValue(v, null)).ToList();
+                    }
+                }
+                else
+                {
+                    GridView1.DataSource = srcList.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                }
+
+                GridView1.PageIndex = intTempPageIndex;
+                GridView1.DataBind();
+
+                // Zeilen mit gleicher ID gleich färben
+                if (GridView1.DataKeys.Count > 0 && GridView1.DataKeys[0] != null)
+                {
+                    var myId = GridView1.DataKeys[0]["SapId"].ToString();
+                    var Css = "ItemStyle";
+                    foreach (GridViewRow row in GridView1.Rows)
+                    {
+                        if (GridView1.DataKeys[row.RowIndex] != null)
+                        {
+                            if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == myId)
+                            {
+                                row.CssClass = Css;
+                            }
+                            else
+                            {
+                                if (Css == "ItemStyle")
+                                {
+                                    Css = "GridTableAlternate2";
+                                }
+                                else
+                                {
+                                    Css = "ItemStyle";
+                                }
+                                row.CssClass = Css;
+
+                                myId = GridView1.DataKeys[row.RowIndex]["SapId"].ToString();
+                            }
+                        }
+                    }
+                }
             }
         }
 
-        private void LoescheAusEingabeliste(string filter)
+        private void ClearGridErrors()
         {
-            DataRow[] rowListe = objNacherf.tblEingabeListe.Select(filter);
-            List<int> loeschIds = new List<int>();
-            foreach (DataRow dRow in rowListe)
+            foreach (GridViewRow gvRow in GridView1.Rows)
             {
-                Int32 id;
-                Int32.TryParse(dRow["id"].ToString(), out id);
-                if (!loeschIds.Contains(id))
-                {
-                    loeschIds.Add(id);
-                }
-            }
-            foreach (int remId in loeschIds)
-            {
-                DataRow[] rowPos = objNacherf.tblEingabeListe.Select("id = " + remId);
-                for (int i = (rowPos.Length - 1); i >= 0; i--)
-                {
-                    objNacherf.tblEingabeListe.Rows.Remove(rowPos[i]);
-                }
+                ClearGridRowErrors(gvRow);
             }
         }
+
+        private void ClearGridRowErrors(GridViewRow gvRow)
+        {
+            TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
+            ZulDate.BorderColor = System.Drawing.Color.Empty;
+            TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
+            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
+        }
+
+        private Boolean CheckGrid(GridCheckMode checkMode)
+        {
+            ClearGridErrors();
+            var bError = false;
+            try
+            {
+                foreach (GridViewRow gvRow in GridView1.Rows)
+                {
+                    if (CheckGridRow(gvRow, checkMode, false))
+                    {
+                        bError = true;
+                        break;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
+                bError = true;
+            }
+
+            return bError;
+        }
+
+        private Boolean CheckGridRow(GridViewRow gvRow, GridCheckMode checkMode, bool einzelsatzPruefung)
+        {
+            var pruefungsrelevant = false;
+
+            if (einzelsatzPruefung)
+                ClearGridRowErrors(gvRow);
+
+            try
+            {
+                Label lblID = (Label)gvRow.FindControl("lblSapId");
+                Label posID = (Label)gvRow.FindControl("lblid_pos");
+                TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
+                Label matnr = (Label)gvRow.FindControl("lblMatnr");
+                RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
+                RadioButton rbEC = (RadioButton)gvRow.FindControl("rbEC");
+                RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
+                Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
+
+                var Loeschkz = lblLoeschKZ.Text;
+                if (lblLoeschKZ.Text == "L")
+                    Loeschkz = "L";
+
+                if (checkMode == GridCheckMode.CheckAll)
+                {
+                    pruefungsrelevant = true;
+                }
+                else if (checkMode == GridCheckMode.CheckOnlyRelevant)
+                {
+                    pruefungsrelevant = (Loeschkz == "O");
+                }
+
+                var bBar = rb.Checked;
+                var bEC = rbEC.Checked;
+                var bRE = rbRE.Checked;
+
+                if (posID.Text == "10" && pruefungsrelevant)
+                {
+                    if (ZulDate.Visible && (String.IsNullOrEmpty(ZulDate.Text) || !checkDate(ZulDate)))
+                    {
+                        ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        lblError.Text = "Bitte geben Sie ein gültiges Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
+                        return true;
+                    }
+                }
+
+                TextBox txtBoxGebuehren = (TextBox)gvRow.FindControl("txtGebPreis");
+                Decimal decGeb = 0;
+
+                if (txtBoxGebuehren.Text.IsDecimal())
+                {
+                    Decimal.TryParse(txtBoxGebuehren.Text, out decGeb);
+                    txtBoxGebuehren.Text = String.Format("{0:0.00}", decGeb);
+                }
+
+                if (pruefungsrelevant && decGeb == 0)
+                {
+                    var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == matnr.Text);
+                    if (txtBoxGebuehren.Visible && mat != null && mat.Gebuehrenpflichtig)
+                    {
+                        txtBoxGebuehren.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        lblError.Text = "Bitte geben Sie die Gebühr für die markierten Dienstleistungen/Artikel ein!";
+                        return true;
+                    }
+                }
+
+                TextBox txtBoxKennzAbc = (TextBox)gvRow.FindControl("txtKennzAbc");
+                if (posID.Text == "10" && pruefungsrelevant && txtBoxKennzAbc.Visible && String.IsNullOrEmpty(txtBoxKennzAbc.Text))
+                {
+                    txtBoxKennzAbc.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                    lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
+                    return true;
+                }
+
+                // Daten aktualisieren
+                var pos = objNacherf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == lblID.Text && vg.PositionsNr == posID.Text);
+                if (pos != null)
+                {
+                    if (txtBoxGebuehren.Visible)
+                    {
+                        if (!pos.Gebuehrenpaket.IsTrue())
+                            pos.Gebuehr = decGeb;
+
+                        pos.GebuehrAmt = decGeb;
+                    }
+
+                    if (txtBoxKennzAbc.Visible)
+                        pos.KennzeichenTeil2 = txtBoxKennzAbc.Text.NotNullOrEmpty().ToUpper();
+
+                    if (rbEC.Visible)
+                    {
+                        pos.Zahlart_Bar = bBar;
+                        pos.Zahlart_EC = bEC;
+                        pos.Zahlart_Rechnung = bRE;
+                    }
+
+                    if (ZulDate.Visible)
+                        pos.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
+
+                    if (pos.PositionsNr == "10")
+                    {
+                        foreach (var item in objNacherf.Vorgangsliste.Where(vg => vg.SapId == pos.SapId))
+                        {
+                            if (txtBoxKennzAbc.Visible)
+                                item.KennzeichenTeil2 = txtBoxKennzAbc.Text.NotNullOrEmpty().ToUpper();
+
+                            if (ZulDate.Visible)
+                                item.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
+                return true;
+            }
+
+            return false;
+        }
+
+        private Boolean checkDate(TextBox ZulDate)
+        {
+            var ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
+
+            if (String.IsNullOrEmpty(ZDat))
+            {
+                lblError.Text = "Ungültiges Zulassungsdatum!";
+                ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
+            }
+
+            if (!ZDat.IsDate())
+            {
+                lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
+                ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
+            }
+
+            var tagesdatum = DateTime.Today;
+            var i = 60;
+            do
+            {
+                if (tagesdatum.DayOfWeek != DayOfWeek.Saturday && tagesdatum.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    i--;
+                }
+                tagesdatum = tagesdatum.AddDays(-1);
+            } while (i > 0);
+            DateTime DateNew;
+            DateTime.TryParse(ZDat, out DateNew);
+            if (DateNew < tagesdatum)
+            {
+                lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
+                ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
+            }
+
+            tagesdatum = DateTime.Today;
+            tagesdatum = tagesdatum.AddYears(1);
+            if (DateNew > tagesdatum)
+            {
+                lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
+                ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
+            }
+
+            return true;
+        }
+
+        private void SetGridRowEdited(GridViewRow gvRow, Boolean Edited)
+        {
+            try
+            {
+                Label lblsapID = (Label)gvRow.FindControl("lblsapID");
+                Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
+                Label lblKundennr = (Label)gvRow.FindControl("lblKundennr");
+                Label lblKundenname = (Label)gvRow.FindControl("lblKundenname");
+                Label lblMatbez = (Label)gvRow.FindControl("lblMatbez");
+                Label lblReferenz1 = (Label)gvRow.FindControl("lblReferenz1");
+                Label lblKennKZ1 = (Label)gvRow.FindControl("lblKennKZ1");
+                Label lblReserviert = (Label)gvRow.FindControl("lblReserviert");
+                Label lblWunschKennz = (Label)gvRow.FindControl("lblWunschKennz");
+
+                lblsapID.Font.Bold = Edited;
+                lblLoeschKZ.Font.Bold = Edited;
+                lblKundennr.Font.Bold = Edited;
+                lblKundenname.Font.Bold = Edited;
+                lblMatbez.Font.Bold = Edited;
+                lblReferenz1.Font.Bold = Edited;
+                lblKennKZ1.Font.Bold = Edited;
+                lblReserviert.Font.Bold = Edited;
+                lblWunschKennz.Font.Bold = Edited;
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Gebührenmaterial vorhanden?
+        /// </summary>
+        /// <param name="Matnr"></param>
+        /// <returns></returns>
+        protected bool proofGebMat(String Matnr)
+        {
+            return objCommon.proofGebMat(Matnr);
+        }
+
+        private void ShowHideColumns(bool modusSenden = false)
+        {
+            // Status
+            GridView1.Columns[1].Visible = modusSenden;
+            // Sapid
+            GridView1.Columns[2].Visible = !modusSenden;
+
+            // Gebühr
+            GridView1.Columns[9].Visible = !modusSenden;
+            // Zuldat
+            GridView1.Columns[10].Visible = !modusSenden;
+            // Ref1
+            GridView1.Columns[11].Visible = !modusSenden;
+
+            // Aktions-Buttons
+            GridView1.Columns[15].Visible = !modusSenden;
+        }
+
+        #endregion
     }
 }

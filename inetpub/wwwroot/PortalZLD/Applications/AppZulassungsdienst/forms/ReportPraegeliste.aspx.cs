@@ -11,8 +11,8 @@ namespace AppZulassungsdienst.forms
     public partial class ReportPraegeliste : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
-        private Listen objListe;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
@@ -22,26 +22,32 @@ namespace AppZulassungsdienst.forms
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
-
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
-
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
-            if (IsPostBack == false)
-            {
-
-            }
 
             SetAttributes();
         }
+
+        /// <summary>
+        /// Funktionsaufruf DoSubmit().
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdCreate_Click(object sender, EventArgs e)
+        {
+            DoSubmit();
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Javascript-Funktionen an Controls binden.
@@ -56,32 +62,15 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Funktionsaufruf DoSubmit().
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void cmdCreate_Click(object sender, EventArgs e)
-        {
-            DoSubmit();
-        }
-
-        /// <summary>
-        /// Selektionsdaten sammeln, validieren und an SAP übergeben(Z_ZLD_EXPORT_PRALI).
+        /// Selektionsdaten sammeln, validieren und an SAP übergeben.
         /// </summary>
         private void DoSubmit()
         {
-
             lblError.Text = "";
-            objListe = new Listen(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
-            objListe.KennzeichenVon = "";
-            objListe.KennzeichenBis = "";
-            objListe.KundeVon = "";
-            objListe.KundeBis = "";
-            objListe.Zuldat = "";
-            objListe.Delta = "";
-            objListe.Gesamt = "";
 
-            if (txtStVavon.Text.Trim(' ').Length + txtStVaBis.Text.Trim(' ').Length == 0)
+            Listen objListe = new Listen(m_User.Reference);
+
+            if (String.IsNullOrEmpty(txtStVavon.Text) && String.IsNullOrEmpty(txtStVaBis.Text))
             {
                 lblError.Text = "Bitte geben Sie min. ein Amt ein!";
                 return;
@@ -89,10 +78,8 @@ namespace AppZulassungsdienst.forms
 
             objListe.KennzeichenVon = txtStVavon.Text;
             objListe.KennzeichenBis = txtStVaBis.Text;
-            if (txtStVavon.Text.Trim(' ').Length == 0) { objListe.KennzeichenVon = ""; }
-            if (txtStVaBis.Text.Trim(' ').Length == 0) { objListe.KennzeichenBis = ""; }
 
-            if (txtZulDate.Text.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(txtZulDate.Text))
             {
                 lblError.Text = "Bitte geben Sie ein Zulassungsdatum ein!";
                 return;
@@ -118,14 +105,12 @@ namespace AppZulassungsdienst.forms
                 objListe.Delta = "";
                 objListe.Gesamt = "X";
             }
-            objListe.VKBUR = m_User.Reference.Substring(4, 4);
-            objListe.VKORG = m_User.Reference.Substring(0, 4);
+
             objListe.Sortierung = rblSort.SelectedValue;
 
-            objListe.FillPraegeliste(Session["AppID"].ToString(), Session.SessionID, this);
-                        
+            objListe.FillPraegeliste();
 
-            if (objListe.Status != 0)
+            if (objListe.ErrorOccured)
             {
                 lblError.Text = "Fehler: " + objListe.Message;
             }
@@ -138,11 +123,11 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    lblError.Text += "PDF-Generierung fehlgeschlagen.";
+                    lblError.Text = "PDF-Generierung fehlgeschlagen.";
                 }
             }
-
         }
 
+        #endregion
     }
 }
