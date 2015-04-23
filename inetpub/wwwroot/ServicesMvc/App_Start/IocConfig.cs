@@ -221,7 +221,7 @@ namespace ServicesMvc
 
             builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<ModellIdDataServiceSQL>().As<IModellIdDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ModellIdDataServiceSAP>().As<IModellIdDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

@@ -44,8 +44,7 @@ namespace CkgDomainLogic.FzgModelle.Services
                 {
                     Z_DPM_CHANGE_MODELID.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-                    SAP.SetImportParameter("I_MODELID", modellId.ID);
-                    SAP.SetImportParameter("I_ZZBEZEI", modellId.Bezeichnung);
+                    AppModelMappings.Z_DPM_CHANGE_MODELID_From_ModellId(SAP, LogonContext, modellId);
 
                     SAP.Execute();
                 },

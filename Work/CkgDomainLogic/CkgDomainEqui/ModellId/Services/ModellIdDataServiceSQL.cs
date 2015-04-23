@@ -96,6 +96,8 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         public List<FahrzeugStatus> FahrzeugStatusWerte { get; private set; }
 
+        public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
+
 
         public string ToDataStoreKundenNr(string kundenNr)
         {

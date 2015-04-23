@@ -1,4 +1,5 @@
-﻿@model CkgDomainLogic.FzgModelle.Models.ModellId
+﻿@using CkgDomainLogic.FzgModelle.Models
+@model ModellId
 
 <div id="DivModellId">
     @using (Ajax.BeginForm("ModellIdDetailsFormSave", "ModellId", null,
@@ -8,6 +9,7 @@
 
         @Html.FormValidationSummary()
 
+        
         @Html.HiddenFor(m => m.ObjectKey)
         @Html.HiddenFor(m => m.InsertModeTmp)
 
@@ -21,14 +23,34 @@
             @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium" })
         }
         
-        @Html.FormTextBoxFor(m => m.Bezeichnung, new { @class = "m-wrap large" })
+        @Html.FormTextBlockFor(m => m.HerstellerName, new { @class = "m-wrap large", col = "left" })
+        @Html.FormDropDownListFor(m => m.HerstellerCode, Model.HerstellerList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
 
-        
+        @Html.FormTextBoxFor(m => m.Bezeichnung, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap large", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.LaufzeitTage, new { @class = "m-wrap large", col = "left" })
+        @Html.FormCheckBoxFor(m => m.LaufzeitBindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+
+        @Html.FormDropDownListFor(m => m.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "left" })
+        @Html.FormCheckBoxFor(m => m.Lkw, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.Winterreifen, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.AnhaengerKupplung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.NaviVorhanden, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.SecurityFleet, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.KennzeichenLeasingFahrzeug, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Bluetooth, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+
+                
         @Html.FormRequiredFieldsSummary()
 
+        
         <div class="form-actions">
-            <button type="submit" class="btn green"><i class="icon-ok"></i> Speichern</button>
-            <button type="button" class="btn" onclick="CloseItemDetails();">Abbrechen</button>
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseItemDetails();">@Localize.Cancel</button>
         </div>
 
         <script type="text/javascript">

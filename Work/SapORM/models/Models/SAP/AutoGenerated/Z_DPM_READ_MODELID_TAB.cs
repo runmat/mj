@@ -63,6 +63,10 @@ namespace SapORM.Models
 
 			public string BLUETOOTH { get; set; }
 
+			public string HERST { get; set; }
+
+			public string HERST_T { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -83,6 +87,8 @@ namespace SapORM.Models
 					LEASING = (string)row["LEASING"],
 					ANTR = (string)row["ANTR"],
 					BLUETOOTH = (string)row["BLUETOOTH"],
+					HERST = (string)row["HERST"],
+					HERST_T = (string)row["HERST_T"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

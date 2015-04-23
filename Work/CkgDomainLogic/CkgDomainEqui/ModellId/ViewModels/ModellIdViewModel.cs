@@ -39,6 +39,26 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<Hersteller> HerstellerList
+        {
+            get { return PropertyCacheGet(() => DataService.Hersteller); }
+        }
+
+        public List<SelectItem> AntriebeList
+        {
+            get
+            {
+                return PropertyCacheGet(() => new List<SelectItem>
+                    {
+                        new SelectItem ("", Localize.DropdownDefaultOptionNotSpecified),
+                        new SelectItem ("B", Localize.EngineGasoline),
+                        new SelectItem ("D", Localize.EngineDiesel),
+                        new SelectItem ("K", Localize.EngineCompressor),
+                    });
+            }
+        }
+
         public void DataInit()
         {
             LoadModellIds();
@@ -64,7 +84,15 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public ModellId GetItem(string id)
         {
-            return ModellIds.FirstOrDefault(m => m.ID == id);
+            var model = ModellIds.FirstOrDefault(m => m.ID == id) ?? new ModellId();
+
+            // ggfls. Hersteller Code aktualiseren:
+            var herstellerModel = HerstellerList.FirstOrDefault( h => h.Name.NotNullOrEmpty().ToLower() == model.HerstellerName.NotNullOrEmpty().ToLower());
+            model.HerstellerCode = "";
+            if (herstellerModel != null && model.HerstellerCode != herstellerModel.Code)
+                model.HerstellerCode = herstellerModel.Code;
+
+            return model;
         }
 
         public void AddItem(ModellId newItem)
@@ -78,7 +106,6 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 return new ModellId
                 {
                     ID = "",
-                    Bezeichnung = "[Bez]",
                 };
 
             var itemToDuplicate = ModellIds.FirstOrDefault(m => m.ID == idToDuplicate);
@@ -86,7 +113,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             {
                 var newItem = ModelMapping.Copy(itemToDuplicate);
 
-                newItem.ID = null;
+                newItem.ID = "";
                 newItem.ObjectKey = null;
 
                 return newItem;

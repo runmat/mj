@@ -273,6 +273,8 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
             //new FunctionReflector("Z_DPM_CHANGE_MODELID").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
 
+            //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
@@ -1463,8 +1465,12 @@ namespace SapORM
         static void ModellIdSave()
         {
             Z_DPM_CHANGE_MODELID.Init(Sap, "I_KUNNR", ModellIdKunnr);
-            Sap.SetImportParameter("I_MODELID", "10000M");
+
+            Sap.SetImportParameter("I_VERKZ", "N");
+            Sap.SetImportParameter("I_MODELID", "BMW 327I");
             Sap.SetImportParameter("I_ZZBEZEI", "Dies ist ein Test");
+            Sap.SetImportParameter("I_ZSIPP_CODE", "4711");
+            Sap.SetImportParameter("I_HERST", "BMW");
             Sap.Execute();
 
             var resultCode = Sap.ResultCode;

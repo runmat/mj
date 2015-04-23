@@ -4,8 +4,8 @@
     var gridName = "GridModellId";
 }
 
-@(Html.Telerik()
-    .Grid<ModellId>()
+@(Html.XTelerik()
+    .XGrid<ModellId>()
     .Name(gridName)
     .XAjaxDataBinding("ModellIdsAjaxBinding", "ModellId")
     .Columns(columns =>
@@ -20,11 +20,13 @@
                 );
 
             columns.XBound(c => c.ID);
+            columns.XBound(c => c.HerstellerName);
             columns.XBound(c => c.Bezeichnung);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Bezeichnung).Ascending())
     .XToolBar("ModellId")
 )
 

@@ -22,6 +22,7 @@ namespace ServicesMvc.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, modellIdDataService);
+            InitModelStatics();
         }
 
         [CkgApplication]
@@ -36,6 +37,11 @@ namespace ServicesMvc.Controllers
         public ActionResult ModellIdsAjaxBinding()
         {
             return View(new GridModel(ViewModel.ModellIdsFiltered));
+        }
+
+        void InitModelStatics()
+        {
+            ModellId.GetViewModel = GetViewModel<ModellIdViewModel>;
         }
 
 
