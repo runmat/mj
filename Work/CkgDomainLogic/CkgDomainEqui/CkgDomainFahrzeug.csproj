@@ -89,6 +89,7 @@
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
     <Compile Include="Controllers\Briefversand\EquiController.cs" />
     <Compile Include="Controllers\DatenOhneDokumente\EquiController.cs" />
+    <Compile Include="Controllers\Dispositionsliste\FahrzeugeController.cs" />
     <Compile Include="Controllers\DokumenteOhneDaten\EquiController.cs" />
     <Compile Include="Controllers\EquiController.cs" />
     <Compile Include="Controllers\ErweiterterBriefbestand\EquiController.cs" />
@@ -183,6 +184,7 @@
     <Compile Include="Fahrzeuge\Contracts\ITreuhandDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IUploadFahrzeugeinsteuerungDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugvoravisierungDataService.cs" />
+    <Compile Include="Fahrzeuge\Contracts\IDispositionslisteDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\Fahrzeughersteller.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungUploadModel.cs" />
@@ -190,6 +192,8 @@
     <Compile Include="Fahrzeuge\Models\FehlteilEtikettSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugeinsteuerungUploadModel.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungSelektor.cs" />
+    <Compile Include="Fahrzeuge\Models\Dispositionsliste.cs" />
+    <Compile Include="Fahrzeuge\Models\DispositionslisteSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\Treuhandberechtigung.cs" />
     <Compile Include="Fahrzeuge\Models\TreuhandverwaltungCsvUpload.cs" />
     <Compile Include="Fahrzeuge\Models\TreuhandverwaltungSelektor.cs" />
@@ -201,10 +205,12 @@
     <Compile Include="Fahrzeuge\Models\UnfallmeldungenSelektor.cs" />
     <Compile Include="Fahrzeuge\Services\FehlteilEtikettenDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugvoravisierungDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\DispositionslisteDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FehlteilEtikettenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugvoravisierungViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandbestandViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandverwaltungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\UnfallmeldungenViewModel.cs" />

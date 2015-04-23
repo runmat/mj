@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+
+
+@{  var gridName = "DispositionslisteGrid";  }
+
+@(Html.Telerik()
+        .Grid<Dispositionsliste>()
+    .Name(gridName)
+   
+    .XAjaxDataBinding("DispositionslisteAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {        
+        columns.XBoundAll();   
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Zulassungsdatum).Descending())
+    .XToolBar("Fahrzeuge")
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportDispositionslisteFilteredExcel", "Fahrzeuge");
+            commands.FilteredDataCommand("ExportDispositionslisteFilteredPDF", "Fahrzeuge");
+        })
+)
+

@@ -4309,6 +4309,9 @@
     <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\ExcelUpload\ValidationGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeugvoravisierung\FahrzeugvoravisierungSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\ReportDispositionsliste.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
