@@ -40,7 +40,7 @@ namespace ServicesMvc.Controllers
 
             ViewModel.Validate(ModelState.AddModelError);
 
-            if (ModelState.IsValid && !ReportGeneratorMode)
+            if (ModelState.IsValid && !PersistableMode)
             {
                 ViewModel.LoadStrafzettel();
                 if (ViewModel.Strafzettel.None())

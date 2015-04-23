@@ -4,10 +4,18 @@
 <form action="#" class="form-horizontal">
     
     @Html.FormTextBlockFor(m => m.VorgangsNrAbmeldeauftrag, new { @class = "m-wrap", col = "left" })
-    @Html.FormTextBlockFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
+    @Html.FormTextBlockFor(m => m.Referenz1, new { @class = "m-wrap", col = "right" }, labelText: WfmAuftrag.GetViewModel().Selektor.Referenz1Name)
 
     @Html.FormTextBlockFor(m => m.FahrgestellNr, new { @class = "m-wrap", col = "left" })
     @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.Zb2VorhandenDatum, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Zb1VorhandenDatum, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.KennzeichenVornVorhandenDatum, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.KennzeichenHintenVorhandenDatum, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormTextBlockFor(m => m.KennzeichenVornEntwertetDatum, new { @class = "m-wrap" })
     
     <div class="wmf-uebersicht-section-nicht-storniert">
         <div class="form-actions">

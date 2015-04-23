@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeneralTools.Models;
+using SapORM.Contracts;
 using SapORM.Models;
 
 namespace CkgDomainLogic.WFM.Models
@@ -45,7 +46,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.FahrgestellNr = s.FAHRG;
                         d.FolgetaskId = s.FOLGE_TASK_ID;
                         d.Istdatum = s.IST_DATUM;
-                        d.Istzeit = s.IST_ZEIT;
+                        d.Istzeit = s.IST_ZEIT.ToTimeString();
                         d.Kennzeichen = s.KENNZ;
                         d.KennzeichenHintenEntwertetDatum = s.KENNZH_ENTWERTET;
                         d.KennzeichenHintenGestohlenDatum = s.KENNZH_DIEBSTAHL;
@@ -65,9 +66,9 @@ namespace CkgDomainLogic.WFM.Models
                         d.Selektion2 = s.SELEKTION2.XToBool();
                         d.Selektion3 = s.SELEKTION3.XToBool();
                         d.Solldatum = s.SOLL_DATUM;
-                        d.Sollzeit = s.SOLL_ZEIT;
+                        d.Sollzeit = s.SOLL_ZEIT.ToTimeString();
                         d.Startdatum = s.STARTDATUM;
-                        d.Startzeit = s.STARTZEIT;
+                        d.Startzeit = s.STARTZEIT.ToTimeString();
                         d.Status = s.STATUS;
                         d.StornoDatum = s.STORNODATUM;
                         d.TaskId = s.TASK_ID;
@@ -103,7 +104,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.Text = s.TEXT;
                         d.ToDoWer = s.TODO_WER;
                         d.User = s.ZUSER;
-                        d.Zeit = s.ZEIT;
+                        d.Zeit = s.ZEIT.ToTimeString();
                     }));
             }
         }
@@ -140,12 +141,12 @@ namespace CkgDomainLogic.WFM.Models
                         d.FolgetaskAufgabe = s.AUFGABE_FOLGE_TASK;
                         d.FolgetaskId = s.FOLGE_TASK_ID;
                         d.Istdatum = s.IST_DATUM;
-                        d.Istzeit = s.IST_ZEIT;
+                        d.Istzeit = s.IST_ZEIT.ToTimeString();
                         d.LaufendeNr = s.LFD_NR;
                         d.Solldatum = s.SOLL_DATUM;
-                        d.Sollzeit = s.SOLL_ZEIT;
+                        d.Sollzeit = s.SOLL_ZEIT.ToTimeString();
                         d.Startdatum = s.STARTDATUM;
-                        d.Startzeit = s.STARTZEIT;
+                        d.Startzeit = s.STARTZEIT.ToTimeString();
                         d.Status = s.STATUS;
                         d.TaskId = s.TASK_ID;
                         d.ToDoWer = s.TODO_WER;

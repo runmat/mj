@@ -687,7 +687,7 @@ namespace CkgDomainLogic.General.Controllers
             }
         }
         
-        protected static bool ReportGeneratorMode { get { return PersistableSelectorIsPersistMode; } }
+        protected static bool PersistableMode { get { return PersistableSelectorIsPersistMode; } }
         
         private static bool PersistableSelectorIsPersistMode
         {
