@@ -686,7 +686,9 @@ namespace CkgDomainLogic.General.Controllers
                 PersistableGridSettingsCurrentLoad(value);
             }
         }
-
+        
+        protected static bool ReportGeneratorMode { get { return PersistableSelectorIsPersistMode; } }
+        
         private static bool PersistableSelectorIsPersistMode
         {
             get { return SessionHelper.GetSessionValue("PersistableSelectorIsPersistMode", false); }
