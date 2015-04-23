@@ -57,6 +57,8 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             }
 
             DataService.TranslatedResourceUpdate(model.CurrentTranslatedResource);
+            
+            
             DataService.TranslatedResourceCustomerUpdate(model.CurrentTranslatedResourceCustomer);
         }
     }

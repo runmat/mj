@@ -1,19 +1,22 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CkgDomainLogic.General.Services;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.General.Database.Models
 {
     [Table("TranslatedResourceCustom")]
-    public class TranslatedResourceCustom 
+    public class TranslatedResourceCustom : IValidatableObject
     {
         [Key]
         public string Resource { get; set; }
 
-        [Required]
+        [RequiredConditional]
         public string en { get; set; }
         public string en_kurz { get; set; }
 
-        [Required]
+        [RequiredConditional]
         public string de { get; set; }
         public string de_kurz { get; set; }
 
@@ -30,6 +33,26 @@ namespace CkgDomainLogic.General.Database.Models
         public string fr_kurz { get; set; }
 
         public int CustomerID { get; set; }
+
+
+        private bool IsEmpty
+        {
+            get
+            {
+                return (de.IsNullOrEmpty() && de_kurz.IsNullOrEmpty() &&
+                        en.IsNullOrEmpty() && en_kurz.IsNullOrEmpty() &&
+                        fr.IsNullOrEmpty() && fr_kurz.IsNullOrEmpty());
+            }
+        }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!IsEmpty && de.IsNullOrEmpty())
+                yield return new ValidationResult(Localize.Required, new[] { "de" });
+
+            if (!IsEmpty && en.IsNullOrEmpty())
+                yield return new ValidationResult(Localize.Required, new[] { "en" });
+        }
     }
 }
 
