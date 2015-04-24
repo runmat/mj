@@ -18,6 +18,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ReportDispositionsliste()
         {          
             DispositionslisteViewModel.DataInit();
+            DispositionslisteViewModel.Init();
             return View(DispositionslisteViewModel);
         }
 

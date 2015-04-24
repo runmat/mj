@@ -6,16 +6,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public class Dispositionsliste
     {
-
-        // TODO localize it
-                
+                        
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [LocalizedDisplay(LocalizeConstants.PDINumber)]
         public string PDINummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string PDIBezeichnung { get; set; }
         
         [LocalizedDisplay(LocalizeConstants.CarModel)]
@@ -27,13 +25,13 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
         public string Hersteller { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.StockState)]
-        public string Anzahl { get; set; }
+        [LocalizedDisplay(LocalizeConstants.NumberOfVehicles)]
+        public int? Anzahl { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.StockState)]
+        [LocalizedDisplay(LocalizeConstants.LicenceNoFrom)]
         public string KennzeichenVon { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.StockState)]
+        [LocalizedDisplay(LocalizeConstants.LicenceNoUntil)]
         public string KennzeichenBis { get; set; }
 
     }

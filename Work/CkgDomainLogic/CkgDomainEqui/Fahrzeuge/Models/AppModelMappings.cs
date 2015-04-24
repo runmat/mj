@@ -243,6 +243,31 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+
+        static public ModelMapping<Z_M_EC_AVM_ZULASSUNGEN.GT_WEB, Dispositionsliste> Z_M_EC_AVM_ZULASSUNGEN_GT_WEB_ToDispositionsliste        
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_ZULASSUNGEN.GT_WEB, Dispositionsliste>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Zulassungsdatum = sap.REPLA_DATE;
+                        business.PDINummer = sap.ZZCARPORT;
+                        business.PDIBezeichnung = sap.ZCARPORT_NAME1;
+                        business.ModellCode = sap.ZMODEL_ID;
+                        business.Modellbezeichnung = sap.ZMOD_DESCR;
+                        business.Hersteller = sap.ZMAKE;
+                        int result = 0;
+                        int.TryParse(sap.ZANZAHL, out result);
+                        business.Anzahl = result;
+                        business.KennzeichenVon = sap.LICENSE_NUM_VON;
+                        business.KennzeichenBis = sap.LICENSE_NUM_BIS;                                             
+                    }));
+            }
+        }
+
+
         #endregion
 
         

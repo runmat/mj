@@ -1,7 +1,7 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
 @model DispositionslisteViewModel
 
-<h3 class="page-title" id="headerTitle">@Localize.Report_ZBIIStockSecurityFleet</h3>
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeug_Dispositionsliste</h3>
 
 @using (Html.FormSearchBox())
 {
@@ -22,6 +22,31 @@
     }
 
     function FormPreparePrivate() {}
+
+  
+    function ShowDispositionsliste() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDispositionsliste",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowDispositionslisteSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+
 
     function ShowDispositionslisteSearchResult(result) {
         SearchFormHide();

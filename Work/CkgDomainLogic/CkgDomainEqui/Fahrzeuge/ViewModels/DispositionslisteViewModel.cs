@@ -43,7 +43,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get { return PropertyCacheGet(() => Dispositionslistes); }
             private set { PropertyCacheSet(value); }
         }
-            
+
+        public void Init()
+        {
+            DispositionslisteSelektor.ZulassungsdatumRange.IsSelected = true;
+        }
+
         public void DataInit()
         {          
             DataMarkForRefresh();
