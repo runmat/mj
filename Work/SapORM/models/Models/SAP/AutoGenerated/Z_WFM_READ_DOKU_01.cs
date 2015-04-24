@@ -37,7 +37,7 @@ namespace SapORM.Models
 
 			public string LFD_NR { get; set; }
 
-			public string DATUM { get; set; }
+			public DateTime? DATUM { get; set; }
 
 			public string AR_OBJECT { get; set; }
 
@@ -56,7 +56,7 @@ namespace SapORM.Models
 					KUNNR = (string)row["KUNNR"],
 					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
 					LFD_NR = (string)row["LFD_NR"],
-					DATUM = (string)row["DATUM"],
+					DATUM = (string.IsNullOrEmpty(row["DATUM"].ToString())) ? null : (DateTime?)row["DATUM"],
 					AR_OBJECT = (string)row["AR_OBJECT"],
 					ARCHIV_ID = (string)row["ARCHIV_ID"],
 					AR_JAHR = (string)row["AR_JAHR"],
