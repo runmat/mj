@@ -60,8 +60,7 @@ namespace ServicesMvc.Common.Controllers
         [AllowAnonymous]
         public ActionResult ReportSolution(string un)
         {
-            if (LogonContext.UserName.IsNullOrEmpty())
-                UrlLogOn("mjecardocu", null, null);
+            UrlLogOn("mjecardocu", null, null);
 
             ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un));
 
