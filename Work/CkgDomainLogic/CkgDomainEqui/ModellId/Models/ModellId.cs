@@ -7,13 +7,13 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.FzgModelle.ViewModels;
 using CkgDomainLogic.General.Models;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
+    [GridColumnsAutoPersist]
     public class ModellId : Store
     {
         [LocalizedDisplay(LocalizeConstants.Model)]
