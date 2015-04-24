@@ -18,12 +18,12 @@ namespace SapORM.Services
     [Serializable]
     public class DynSapProxyObjectErp35 : IDynSapProxyObject
     {
-		#region Properties
+        #region Properties
 
 
-	    private bool _clearMe;
+        private bool _clearMe;
 
-		private ISapConnection _sapConnection;
+        private ISapConnection _sapConnection;
 
         private string[] _acceptableErpExceptions = new string[]
             {
@@ -35,20 +35,20 @@ namespace SapORM.Services
                 "NO_HEADER"
             };
 
-	    public string BapiName { get; set; }
+        public string BapiName { get; set; }
 
-	    public DateTime BapiDate { get; set; }
+        public DateTime BapiDate { get; set; }
 
-	    public DateTime BapiLoaded { get; set; }
+        public DateTime BapiLoaded { get; set; }
 
-	    public DataTable Import { get; set; }
+        public DataTable Import { get; set; }
 
-	    public DataTable Export { get; set; }
+        public DataTable Export { get; set; }
 
 
-	    #endregion
+        #endregion
 
-		#region Methods
+        #region Methods
 
 
         public DynSapProxyObjectErp35(string bapiName, DateTime sapDatum, DataTable impStruktur, DataTable expStruktur)
@@ -71,222 +71,276 @@ namespace SapORM.Services
                 throw new Exception("SAP 'ERPConnectLicense' is empty!");
 
             var conn = new R3Connection(_sapConnection.SAPAppServerHost, _sapConnection.SAPSystemNumber, _sapConnection.SAPUsername, _sapConnection.SAPPassword, "DE", Convert.ToInt16(_sapConnection.SAPClient).ToString());
-            
+
             LIC.SetLic(_sapConnection.ErpConnectLicense);
-            
+
             return conn;
         }
 
         public void SetSapConnection(ISapConnection sapConnection)
-		{
+        {
             _sapConnection = sapConnection;
-		}
+        }
 
-		private static DataTable GenerateANewDataTableCopy(DataTable originalDataTable)
-		{
-		    var newDataTableCopy = originalDataTable.Clone();
-			foreach (DataRow tmpRow in originalDataTable.Rows) {
-				var newRow = newDataTableCopy.NewRow();
-				for (var i = 0; i <= tmpRow.ItemArray.Length - 1; i += 1) {
-					if ((tmpRow[i]) is DataTable) {
-						newRow[i] = GenerateANewDataTableCopy((DataTable)tmpRow[i]);
-					} else {
-						newRow[i] = tmpRow[i];
-					}
-				}
-				newDataTableCopy.Rows.Add(newRow);
-				newDataTableCopy.AcceptChanges();
-			}
-			return newDataTableCopy;
-		}
+        private static DataTable GenerateANewDataTableCopy(DataTable originalDataTable)
+        {
+            var newDataTableCopy = originalDataTable.Clone();
+            foreach (DataRow tmpRow in originalDataTable.Rows)
+            {
+                var newRow = newDataTableCopy.NewRow();
+                for (var i = 0; i <= tmpRow.ItemArray.Length - 1; i += 1)
+                {
+                    if ((tmpRow[i]) is DataTable)
+                    {
+                        newRow[i] = GenerateANewDataTableCopy((DataTable)tmpRow[i]);
+                    }
+                    else
+                    {
+                        newRow[i] = tmpRow[i];
+                    }
+                }
+                newDataTableCopy.Rows.Add(newRow);
+                newDataTableCopy.AcceptChanges();
+            }
+            return newDataTableCopy;
+        }
 
         private byte[] _lastByteArrayImportParameter = null;
 
+
         public bool CallBapi(ILogService logService = null, ILogonContext logonContext = null, bool modelGenerationMode = false)
-		{
-		    var itemsCollect = new RFCTableCollection();
+        {
+            var itemsCollect = new RFCTableCollection();
 
             var con = CreateErpConnection(_sapConnection);
 
             Stopwatch stopwatch = null;
 
-            try {
-				if (_clearMe) {
-					ClearAllValues();
-				}
+            try
+            {
+                if (_clearMe)
+                {
+                    ClearAllValues();
+                }
 
-				con.Open(false);
+                con.Open(false);
 
-				var func = con.CreateFunction(BapiName);
+                var func = con.CreateFunction(BapiName);
 
-			    RFCStructure item;
+                RFCStructure item;
 
                 #region Aufbereitung der Import Paramter, Werttypen und Tabellen
 
-                try {
-					foreach (DataRow impRow in Import.Rows) {
-						if (impRow[1].ToString() == "PARA") {
-							var paraTabelle = (DataTable)impRow[0];
-							foreach (DataRow paraRow in paraTabelle.Rows) {
+                try
+                {
+                    foreach (DataRow impRow in Import.Rows)
+                    {
+                        if (impRow[1].ToString() == "PARA")
+                        {
+                            var paraTabelle = (DataTable)impRow[0];
+                            foreach (DataRow paraRow in paraTabelle.Rows)
+                            {
 
-							if (paraRow[1].ToString() != "DATE") {
-                                // Wenn kein DBNull-Wert dann Inhalt 1:1 kopieren
-								if (!Information.IsDBNull(paraRow[2]))
-								{
-								    var val = paraRow[2];
-								    if ((string) val == "System.Byte[]")
-								        func.Exports[paraRow[0].ToString()].ParamValue = _lastByteArrayImportParameter; 
-                                    else
-                                        func.Exports[paraRow[0].ToString()].ParamValue = paraRow[2];
-                                } 
-                                else if (func.Exports[paraRow[0].ToString()].Type == RFCTYPE.CHAR) // Wenn Feldtyp Character einen Leerwert definieren 
-                                { 
-									if (func.Exports[paraRow[0].ToString()].ParamValue.ToString().Length > 0) {
-										func.Exports[paraRow[0].ToString()].ParamValue = "";
-									}
-
-                                }
-                                else if (func.Exports[paraRow[0].ToString()].Type == RFCTYPE.BCD)// Wenn Feldtyp Character einen Leerwert definieren
-                                {  
-                                    if (func.Exports[paraRow[0].ToString()].ParamValue.ToString().Length > 0)
+                                if (paraRow[1].ToString() != "DATE")
+                                {
+                                    // Wenn kein DBNull-Wert dann Inhalt 1:1 kopieren
+                                    if (!Information.IsDBNull(paraRow[2]))
                                     {
-                                        func.Exports[paraRow[0].ToString()].ParamValue = 0d;
+                                        var val = paraRow[2];
+                                        if ((string)val == "System.Byte[]")
+                                            func.Exports[paraRow[0].ToString()].ParamValue = _lastByteArrayImportParameter;
+                                        else
+                                            func.Exports[paraRow[0].ToString()].ParamValue = paraRow[2];
+                                    }
+                                    else if (func.Exports[paraRow[0].ToString()].Type == RFCTYPE.CHAR) // Wenn Feldtyp Character einen Leerwert definieren 
+                                    {
+                                        if (func.Exports[paraRow[0].ToString()].ParamValue.ToString().Length > 0)
+                                        {
+                                            func.Exports[paraRow[0].ToString()].ParamValue = "";
+                                        }
+
+                                    }
+                                    else if (func.Exports[paraRow[0].ToString()].Type == RFCTYPE.BCD)// Wenn Feldtyp Character einen Leerwert definieren
+                                    {
+                                        if (func.Exports[paraRow[0].ToString()].ParamValue.ToString().Length > 0)
+                                        {
+                                            func.Exports[paraRow[0].ToString()].ParamValue = 0d;
+                                        }
                                     }
                                 }
-							} else {
-								if (!Information.IsDBNull(paraRow[2])) {
-									if (paraRow[2].ToString() != "00000000" & !string.IsNullOrEmpty(paraRow[2].ToString())) {
-										func.Exports[paraRow[0].ToString()].ParamValue = ConversionUtils.NetDate2SAPDate(Convert.ToDateTime(paraRow[2]));
-									}
-								}
-							}
-						}
-					}
+                                else
+                                {
+                                    if (!Information.IsDBNull(paraRow[2]))
+                                    {
+                                        if (paraRow[2].ToString() != "00000000" & !string.IsNullOrEmpty(paraRow[2].ToString()))
+                                        {
+                                            func.Exports[paraRow[0].ToString()].ParamValue = ConversionUtils.NetDate2SAPDate(Convert.ToDateTime(paraRow[2]));
+                                        }
+                                    }
+                                }
+                            }
+                        }
 
 
-					if (impRow[1].ToString() == "TABLE") {
-						var items = new RFCTable();
+                        if (impRow[1].ToString() == "TABLE")
+                        {
+                            var items = new RFCTable();
 
-						var booFound = false;
+                            var booFound = false;
 
-						//Schauen, ob die Importtabelle Bestandteil der SAP-Tabellen ist.
+                            //Schauen, ob die Importtabelle Bestandteil der SAP-Tabellen ist.
 
-						foreach (RFCTable rfcT in func.Tables) {
-							if (rfcT.Name == ((DataTable)impRow[0]).TableName) {
-								booFound = true;
-								break; 
-							}
+                            foreach (RFCTable rfcT in func.Tables)
+                            {
+                                if (rfcT.Name == ((DataTable)impRow[0]).TableName)
+                                {
+                                    booFound = true;
+                                    break;
+                                }
 
-						}
+                            }
 
-						DataTable tempTable;
-						if (booFound) {
-							items = func.Tables[((DataTable)impRow[0]).TableName];
-							//new RFCStructure(items.Columns);
-						//wenn nein dann schauen ob die Tabelle eine Importstruktur ist
-						} else {
-							foreach (RFCParameter sapStructure in func.Exports) {
+                            DataTable tempTable;
+                            if (booFound)
+                            {
+                                items = func.Tables[((DataTable)impRow[0]).TableName];
+                                //new RFCStructure(items.Columns);
+                                //wenn nein dann schauen ob die Tabelle eine Importstruktur ist
+                            }
+                            else
+                            {
+                                foreach (RFCParameter sapStructure in func.Exports)
+                                {
 
-								if (sapStructure.IsStructure()) {
-									if (sapStructure.Name == ((DataTable)impRow[0]).TableName) {
-										item = func.Exports[((DataTable)impRow[0]).TableName].ToStructure();
+                                    if (sapStructure.IsStructure())
+                                    {
+                                        if (sapStructure.Name == ((DataTable)impRow[0]).TableName)
+                                        {
+                                            item = func.Exports[((DataTable)impRow[0]).TableName].ToStructure();
 
-										tempTable = (DataTable)impRow[0];
-										foreach (DataRow dr in tempTable.Rows) {
-											foreach (RFCTableColumn col in item.Columns) {
-												switch (col.Type) {
-													case RFCTYPE.NUM:
-														if ((!ReferenceEquals(dr[col.Name], DBNull.Value))) {
-															if (Information.IsNumeric(dr[col.Name].ToString())) {
-																item[col.Name] = dr[col.Name].ToString();
-															}
+                                            tempTable = (DataTable)impRow[0];
+                                            foreach (DataRow dr in tempTable.Rows)
+                                            {
+                                                foreach (RFCTableColumn col in item.Columns)
+                                                {
+                                                    switch (col.Type)
+                                                    {
+                                                        case RFCTYPE.NUM:
+                                                            if ((!ReferenceEquals(dr[col.Name], DBNull.Value)))
+                                                            {
+                                                                if (Information.IsNumeric(dr[col.Name].ToString()))
+                                                                {
+                                                                    item[col.Name] = dr[col.Name].ToString();
+                                                                }
 
-														}
-														break;
-													case RFCTYPE.CHAR:
-														item[col.Name] = dr[col.Name].ToString();
-														break;
-													case RFCTYPE.BCD:
-														if ((!ReferenceEquals(dr[col.Name], DBNull.Value))) {
-															if (Information.IsNumeric(dr[col.Name].ToString())) {
-																item[col.Name] = dr[col.Name].ToString();
-															}
-														}
-														break;
-													case RFCTYPE.DATE:
-														if (dr[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(dr[col.Name].ToString())) {
-															item[col.Name] = "";
-														} else {
-															item[col.Name] = ConversionUtils.NetDate2SAPDate(Convert.ToDateTime(dr[col.Name].ToString()));
-														}
-														break;
-													case RFCTYPE.TIME:
-														if (dr[col.Name].ToString() == "000000" || string.IsNullOrEmpty(dr[col.Name].ToString())) {
-															item[col.Name] = "";
-														} else {
-															item[col.Name] = dr[col.Name].ToString();
-														}
+                                                            }
+                                                            break;
+                                                        case RFCTYPE.CHAR:
+                                                            item[col.Name] = dr[col.Name].ToString();
+                                                            break;
+                                                        case RFCTYPE.BCD:
+                                                            if ((!ReferenceEquals(dr[col.Name], DBNull.Value)))
+                                                            {
+                                                                if (Information.IsNumeric(dr[col.Name].ToString()))
+                                                                {
+                                                                    item[col.Name] = dr[col.Name].ToString();
+                                                                }
+                                                            }
+                                                            break;
+                                                        case RFCTYPE.DATE:
+                                                            if (dr[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(dr[col.Name].ToString()))
+                                                            {
+                                                                item[col.Name] = "";
+                                                            }
+                                                            else
+                                                            {
+                                                                item[col.Name] = ConversionUtils.NetDate2SAPDate(Convert.ToDateTime(dr[col.Name].ToString()));
+                                                            }
+                                                            break;
+                                                        case RFCTYPE.TIME:
+                                                            if (dr[col.Name].ToString() == "000000" || string.IsNullOrEmpty(dr[col.Name].ToString()))
+                                                            {
+                                                                item[col.Name] = "";
+                                                            }
+                                                            else
+                                                            {
+                                                                item[col.Name] = dr[col.Name].ToString();
+                                                            }
 
-														break;
-												}
-											}
-										}
-										func.Exports[sapStructure.Name].ParamValue = item;
-									}
-								}
-							}
+                                                            break;
+                                                    }
+                                                }
+                                            }
+                                            func.Exports[sapStructure.Name].ParamValue = item;
+                                        }
+                                    }
+                                }
 
-						}
+                            }
 
-						if (booFound) {
-							tempTable = (DataTable)impRow[0];
-							foreach (DataRow dr in tempTable.Rows) {
-								item = items.AddRow();
+                            if (booFound)
+                            {
+                                tempTable = (DataTable)impRow[0];
+                                foreach (DataRow dr in tempTable.Rows)
+                                {
+                                    item = items.AddRow();
 
-								foreach (RFCTableColumn col in item.Columns) {
-									switch (col.Type) {
-										case RFCTYPE.NUM:
-											if ((!ReferenceEquals(dr[col.Name], DBNull.Value))) {
-												if (Information.IsNumeric(dr[col.Name].ToString())) {
-													item[col.Name] = dr[col.Name].ToString();
-												}
-											}
-											break;
-										case RFCTYPE.CHAR:
-											item[col.Name] = dr[col.Name].ToString();
-											break;
-										case RFCTYPE.BCD:
-											if ((!ReferenceEquals(dr[col.Name], DBNull.Value))) {
-												if (Information.IsNumeric(dr[col.Name].ToString())) {
-													item[col.Name] = Convert.ToDecimal(dr[col.Name].ToString());
-												}
-											}
-											break;
-										case RFCTYPE.DATE:
-											if (dr[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(dr[col.Name].ToString())) {
-												item[col.Name] = "";
-											} else {
-												item[col.Name] = ConversionUtils.NetDate2SAPDate(Convert.ToDateTime(dr[col.Name].ToString()));
-											}
-											break;
-										case RFCTYPE.TIME:
-											if (dr[col.Name].ToString() == "000000" || string.IsNullOrEmpty(dr[col.Name].ToString())) {
-												item[col.Name] = "";
-											} else {
-												item[col.Name] = dr[col.Name].ToString();
-											}
+                                    foreach (RFCTableColumn col in item.Columns)
+                                    {
+                                        switch (col.Type)
+                                        {
+                                            case RFCTYPE.NUM:
+                                                if ((!ReferenceEquals(dr[col.Name], DBNull.Value)))
+                                                {
+                                                    if (Information.IsNumeric(dr[col.Name].ToString()))
+                                                    {
+                                                        item[col.Name] = dr[col.Name].ToString();
+                                                    }
+                                                }
+                                                break;
+                                            case RFCTYPE.CHAR:
+                                                item[col.Name] = dr[col.Name].ToString();
+                                                break;
+                                            case RFCTYPE.BCD:
+                                                if ((!ReferenceEquals(dr[col.Name], DBNull.Value)))
+                                                {
+                                                    if (Information.IsNumeric(dr[col.Name].ToString()))
+                                                    {
+                                                        item[col.Name] = Convert.ToDecimal(dr[col.Name].ToString());
+                                                    }
+                                                }
+                                                break;
+                                            case RFCTYPE.DATE:
+                                                if (dr[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(dr[col.Name].ToString()))
+                                                {
+                                                    item[col.Name] = "";
+                                                }
+                                                else
+                                                {
+                                                    item[col.Name] = ConversionUtils.NetDate2SAPDate(Convert.ToDateTime(dr[col.Name].ToString()));
+                                                }
+                                                break;
+                                            case RFCTYPE.TIME:
+                                                if (dr[col.Name].ToString() == "000000" || string.IsNullOrEmpty(dr[col.Name].ToString()))
+                                                {
+                                                    item[col.Name] = "";
+                                                }
+                                                else
+                                                {
+                                                    item[col.Name] = dr[col.Name].ToString();
+                                                }
 
-											break;
-									}
-								}
-							}
+                                                break;
+                                        }
+                                    }
+                                }
 
-							itemsCollect.Add(items);
+                                itemsCollect.Add(items);
 
-						} 
-					}
-				}
-				} 
+                            }
+                        }
+                    }
+                }
                 catch
                 {
                 }
@@ -297,7 +351,7 @@ namespace SapORM.Services
 
                 try
                 {
-				func.Execute();
+                    func.Execute();
                 }
                 catch (ERPException erpEx)
                 {
@@ -321,72 +375,73 @@ namespace SapORM.Services
                 #region Aufbereitung der Export Paramter, Werttypen und Tabellen
 
                 //Export-Tabellen
-				foreach (var tmpRow in Export.Select("ElementCode='TABLE'")) {
-					// Exportparameter Struktur oder Tabelle
+                foreach (var tmpRow in Export.Select("ElementCode='TABLE'"))
+                {
+                    // Exportparameter Struktur oder Tabelle
                     foreach (RFCParameter it in func.Imports)
                     {
                         if (it.IsStructure())
                         {
                             if (it.Name == ((DataTable)tmpRow[0]).TableName)
                             {
-								item = it.ToStructure();
-							    var tblTemp = ((DataTable) tmpRow[0]).Clone();
+                                item = it.ToStructure();
+                                var tblTemp = ((DataTable)tmpRow[0]).Clone();
 
-							    var row = tblTemp.NewRow();
+                                var row = tblTemp.NewRow();
 
                                 foreach (RFCTableColumn col in item.Columns)
                                 {
                                     switch (col.Type)
                                     {
-										case RFCTYPE.NUM:
-											row[col.Name] = item[col.Name].ToString();
-											break;
-										case RFCTYPE.CHAR:
-											row[col.Name] = item[col.Name].ToString();
-											break;
-										case RFCTYPE.BCD:
+                                        case RFCTYPE.NUM:
+                                            row[col.Name] = item[col.Name].ToString();
+                                            break;
+                                        case RFCTYPE.CHAR:
+                                            row[col.Name] = item[col.Name].ToString();
+                                            break;
+                                        case RFCTYPE.BCD:
                                             if (ReferenceEquals(item[col.Name], DBNull.Value))
                                             {
-												row[col.Name] = "";
-											}
-											break;
-										case RFCTYPE.DATE:
+                                                row[col.Name] = "";
+                                            }
+                                            break;
+                                        case RFCTYPE.DATE:
                                             if (item[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(item[col.Name].ToString()))
                                             {
-												row[col.Name] = DBNull.Value;
+                                                row[col.Name] = DBNull.Value;
                                             }
                                             else
                                             {
-												row[col.Name] = ConversionUtils.SAPDate2NetDate(item[col.Name].ToString());
-											}
-											break;
-										case RFCTYPE.TIME:
+                                                row[col.Name] = ConversionUtils.SAPDate2NetDate(item[col.Name].ToString());
+                                            }
+                                            break;
+                                        case RFCTYPE.TIME:
                                             if (item[col.Name].ToString() == "000000" || string.IsNullOrEmpty(item[col.Name].ToString()))
                                             {
-												row[col.Name] = "";
+                                                row[col.Name] = "";
                                             }
                                             else
                                             {
-												row[col.Name] = item[col.Name].ToString();
-											}
-											break;
-										case RFCTYPE.BYTE:
-										case RFCTYPE.ITAB:
+                                                row[col.Name] = item[col.Name].ToString();
+                                            }
+                                            break;
+                                        case RFCTYPE.BYTE:
+                                        case RFCTYPE.ITAB:
 
-											break;
+                                            break;
                                     }
-								}
-								tblTemp.Rows.Add(row);
-								tblTemp.AcceptChanges();
-								tmpRow[0] = tblTemp;
+                                }
+                                tblTemp.Rows.Add(row);
+                                tblTemp.AcceptChanges();
+                                tmpRow[0] = tblTemp;
                             }
                             else if (it.IsTable())
                             {
-								var rfcT = it.ToTable();
+                                var rfcT = it.ToTable();
 
                                 if (rfcT.Name == ((DataTable)tmpRow[0]).TableName)
                                 {
-									var tblTemp = rfcT.ToADOTable();
+                                    var tblTemp = rfcT.ToADOTable();
 
 
                                     foreach (RFCTableColumn col in rfcT.Columns)
@@ -396,72 +451,75 @@ namespace SapORM.Services
                                             switch (col.Type)
                                             {
 
-												case RFCTYPE.NUM:
-													row[col.Name] = row[col.Name].ToString();
+                                                case RFCTYPE.NUM:
+                                                    row[col.Name] = row[col.Name].ToString();
 
-													break;
-												case RFCTYPE.CHAR:
-													row[col.Name] = row[col.Name].ToString();
-													break;
-												case RFCTYPE.BCD:
+                                                    break;
+                                                case RFCTYPE.CHAR:
+                                                    row[col.Name] = row[col.Name].ToString();
+                                                    break;
+                                                case RFCTYPE.BCD:
                                                     if (ReferenceEquals(row[col.Name], DBNull.Value))
                                                     {
-														row[col.Name] = "";
-													}
-													break;
-												case RFCTYPE.DATE:
+                                                        row[col.Name] = "";
+                                                    }
+                                                    break;
+                                                case RFCTYPE.DATE:
                                                     if (row[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(row[col.Name].ToString()))
                                                     {
-														row[col.Name] = "";
+                                                        row[col.Name] = "";
                                                     }
                                                     else
                                                     {
-														row[col.Name] = ConversionUtils.SAPDate2NetDate(row[col.Name].ToString());
-													}
-													break;
-												case RFCTYPE.BYTE:
-												case RFCTYPE.ITAB:
+                                                        row[col.Name] = ConversionUtils.SAPDate2NetDate(row[col.Name].ToString());
+                                                    }
+                                                    break;
+                                                case RFCTYPE.BYTE:
+                                                case RFCTYPE.ITAB:
 
-													break;
-												case RFCTYPE.TIME:
+                                                    break;
+                                                case RFCTYPE.TIME:
                                                     if (row[col.Name].ToString() == "000000" || string.IsNullOrEmpty(row[col.Name].ToString()))
                                                     {
-														row[col.Name] = "";
+                                                        row[col.Name] = "";
                                                     }
                                                     else
                                                     {
-														row[col.Name] = row[col.Name].ToString();
-													}
-													break;
+                                                        row[col.Name] = row[col.Name].ToString();
+                                                    }
+                                                    break;
                                             }
 
-										}
+                                        }
 
-									}
+                                    }
 
-									tblTemp.AcceptChanges();
+                                    tblTemp.AcceptChanges();
 
-									tmpRow[0] = tblTemp;
-								}
-							}
-						}
-					}
+                                    tmpRow[0] = tblTemp;
+                                }
+                            }
+                        }
+                    }
 
-					foreach (RFCTable rfcT in func.Tables) {
+                    foreach (RFCTable rfcT in func.Tables)
+                    {
 
-						if (rfcT.Name == ((DataTable)tmpRow[0]).TableName) {
+                        if (rfcT.Name == ((DataTable)tmpRow[0]).TableName)
+                        {
 
                             tmpRow[0] = UpdateColumnTypes(rfcT);
-						}
-					}
-				}
-							
+                        }
+                    }
+                }
+
                 // Tabellen die nicht als Export-Parameter gespeichert sind manuell hinzufügen
                 // +++++++
                 foreach (RFCTable rfcT in func.Tables)
                 {
                     var bInList = false;
-                    foreach(DataRow expItem in Export.Rows){
+                    foreach (DataRow expItem in Export.Rows)
+                    {
                         if (((DataTable)expItem[0]).TableName == rfcT.Name)
                         {
                             bInList = true;
@@ -471,7 +529,7 @@ namespace SapORM.Services
 
                     if (bInList) continue;
 
-			
+
                     DataRow newExpRow = Export.NewRow();
 
                     newExpRow[0] = UpdateColumnTypes(rfcT);
@@ -479,37 +537,46 @@ namespace SapORM.Services
 
                     Export.Rows.Add(newExpRow);
                     Export.AcceptChanges();
-                
+
                 }
                 // +++++++
 
 
-				foreach (var tmpRow in Export.Select("ElementCode='PARA'")) {
-					var paraTabelle = (DataTable)tmpRow[0];
-					foreach (DataRow paraRow in paraTabelle.Rows) {
-						if (paraRow[1].ToString() != "DATE") {
-							foreach (RFCParameter it in func.Imports) {
-								if (paraRow["Parameter"].ToString() == it.Name) {
-									paraRow["ParameterValue"] = it.ParamValue;
-								}
-							}
-						} else {
-							foreach (RFCParameter it in func.Imports) {
-								if (paraRow["Parameter"].ToString() == it.Name) {
-									paraRow["ParameterValue"] = ConversionUtils.SAPDate2NetDate(it.ParamValue.ToString());
-								}
-							}
-						}
-					}
-				}
+                foreach (var tmpRow in Export.Select("ElementCode='PARA'"))
+                {
+                    var paraTabelle = (DataTable)tmpRow[0];
+                    foreach (DataRow paraRow in paraTabelle.Rows)
+                    {
+                        if (paraRow[1].ToString() != "DATE")
+                        {
+                            foreach (RFCParameter it in func.Imports)
+                            {
+                                if (paraRow["Parameter"].ToString() == it.Name)
+                                {
+                                    paraRow["ParameterValue"] = it.ParamValue;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (RFCParameter it in func.Imports)
+                            {
+                                if (paraRow["Parameter"].ToString() == it.Name)
+                                {
+                                    paraRow["ParameterValue"] = ConversionUtils.SAPDate2NetDate(it.ParamValue.ToString());
+                                }
+                            }
+                        }
+                    }
+                }
 
-#endregion
+                #endregion
 
                 LogSapBapiCall(logService, logonContext, false, stopwatch == null ? -1 : stopwatch.Elapsed.TotalSeconds);
 
-				return true;
+                return true;
 
-			} 
+            }
             catch (Exception generalException)
             {
                 double callduration = -1;
@@ -523,18 +590,18 @@ namespace SapORM.Services
 
                 LogSapBapiCall(logService, logonContext, true, callduration);
 
-					    
-						throw;
-					} 
-            finally 
+                throw;
+            }
+            finally
             {
-                if ((con != null)) {
-					con.Close();
-					con.Dispose();
-				}
-				_clearMe = true;
-			}
-		}
+                if ((con != null))
+                {
+                    con.Close();
+                    con.Dispose();
+                }
+                _clearMe = true;
+            }
+        }
 
         /// <summary>
         /// Generiert eine neue DataTable mit angepassten Spaltentypen aus einer RFCTable
@@ -632,7 +699,7 @@ namespace SapORM.Services
         private void LogSapBapiCall(ILogService logService, ILogonContext logonContext, bool exceptionOccurred, double dauer)
         {
             if (logService == null)
-                logService = new LogService(string.Empty, string.Empty);                
+                logService = new LogService(string.Empty, string.Empty);
 
             var logon = string.Empty;
 
@@ -648,40 +715,45 @@ namespace SapORM.Services
             logService.LogSapCall(BapiName, logon, Import, Export, true, dauer);
         }
 
-		public DataTable GetImportTable(string name)
-		{
-			try {
+        public DataTable GetImportTable(string name)
+        {
+            try
+            {
                 //if (_clearMe) {
                 //    ClearAllValues();
                 //}
-				foreach (var tmpRow in Import.Select("ElementCode='TABLE'")) {
-					if (((DataTable)tmpRow[0]).TableName == name) {
-						return (DataTable)tmpRow[0];
-					}
-				}
-				throw new Exception();
-			} catch (Exception) {
-				throw new Exception("Importtabelle mit dem Namen: " + name + " nicht vorhanden!");
-			}
-		}
+                foreach (var tmpRow in Import.Select("ElementCode='TABLE'"))
+                {
+                    if (((DataTable)tmpRow[0]).TableName == name)
+                    {
+                        return (DataTable)tmpRow[0];
+                    }
+                }
+                throw new Exception();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Importtabelle mit dem Namen: " + name + " nicht vorhanden!");
+            }
+        }
 
-		public IEnumerable<DataTable> GetImportTables()
-		{
-			//----------------------------------------------------------------------
-			//Methode:       GetImportTables
-			//Autor:         Matthias Jenzen
-			//Beschreibung:  liefert alle Importtabellen zurück
-			//Erstellt am:   10.12.2012
-			//----------------------------------------------------------------------
+        public IEnumerable<DataTable> GetImportTables()
+        {
+            //----------------------------------------------------------------------
+            //Methode:       GetImportTables
+            //Autor:         Matthias Jenzen
+            //Beschreibung:  liefert alle Importtabellen zurück
+            //Erstellt am:   10.12.2012
+            //----------------------------------------------------------------------
 
-		    var list = new List<DataTable>();
+            var list = new List<DataTable>();
 
-			foreach (var tmpRow in Import.Select("ElementCode='TABLE'"))
-			    if ((!ReferenceEquals(tmpRow[0], DBNull.Value)))
-			        list.Add((DataTable) tmpRow[0]);
+            foreach (var tmpRow in Import.Select("ElementCode='TABLE'"))
+                if ((!ReferenceEquals(tmpRow[0], DBNull.Value)))
+                    list.Add((DataTable)tmpRow[0]);
 
-			return list;
-		}
+            return list;
+        }
 
         //private List<DataTable> GetImportTablesToListOrNull()
         //{
@@ -689,19 +761,20 @@ namespace SapORM.Services
         //    return list.Any() ? list : null;
         //}
 
-		public void SetImportParameter(string name, object wert)
-		{
-			try
-			{
-			    var bytes = wert as byte[];
-			    if (bytes != null)
+        public void SetImportParameter(string name, object wert)
+        {
+            try
+            {
+                var bytes = wert as byte[];
+                if (bytes != null)
                     _lastByteArrayImportParameter = bytes;
-				((DataTable)Import.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2] = wert;
-			} 
-            catch (Exception) {
-				throw new Exception("ImportParameter mit dem Namen: " + name + " und dem Wert: " + wert + " konnte nicht gesetzt werden!");
-			}
-		}
+                ((DataTable)Import.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2] = wert;
+            }
+            catch (Exception)
+            {
+                throw new Exception("ImportParameter mit dem Namen: " + name + " und dem Wert: " + wert + " konnte nicht gesetzt werden!");
+            }
+        }
 
         public void SetImportTable(string name, DataTable table)
         {
@@ -721,77 +794,87 @@ namespace SapORM.Services
             }
         }
 
-		public string GetExportParameter(string name)
-		{
-			try
-			{
-			    if ((!ReferenceEquals(((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2], DBNull.Value))) {
-					return ((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2].ToString().Trim();
-				}
-			    return "";
-			}
-            catch (Exception)
+        public string GetExportParameter(string name)
+        {
+            try
             {
-				throw new Exception("ExportParameter mit dem Namen: " + name + " nicht vorhanden!");
-			}
-		}
-
-		public byte[] GetExportParameterByte(string name)
-		{
-		    try {
-				if (((!ReferenceEquals(((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select(("PARAMETER='" + name + "'"))[0][2], DBNull.Value)))) {
-					if ((ReferenceEquals(((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select(("PARAMETER='" + name + "'"))[0][2].GetType(), Type.GetType("System.Byte[]")))) {
-						return (byte[])((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select(("PARAMETER='" + name + "'"))[0][2];
-					}
-					return null;
-				}
+                if ((!ReferenceEquals(((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2], DBNull.Value)))
+                {
+                    return ((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2].ToString().Trim();
+                }
+                return "";
             }
             catch (Exception)
             {
-				throw new Exception(("ExportParameter mit dem Namen: " + name + " nicht vorhanden!"));
-			}
-			return null;
-		}
+                throw new Exception("ExportParameter mit dem Namen: " + name + " nicht vorhanden!");
+            }
+        }
 
-
-
-		public DataTable GetExportTable(string name)
-		{
-			try {
-				foreach (var tmpRow in Export.Select("ElementCode='TABLE'")) {
-					if ((!ReferenceEquals(tmpRow[0], DBNull.Value))) {
-						if (((DataTable)tmpRow[0]).TableName == name) {
-							return ((DataTable)tmpRow[0]).Copy();
-						}
-					}
-				}
-				throw new Exception();
+        public byte[] GetExportParameterByte(string name)
+        {
+            try
+            {
+                if (((!ReferenceEquals(((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select(("PARAMETER='" + name + "'"))[0][2], DBNull.Value))))
+                {
+                    if ((ReferenceEquals(((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select(("PARAMETER='" + name + "'"))[0][2].GetType(), Type.GetType("System.Byte[]"))))
+                    {
+                        return (byte[])((DataTable)Export.Select("ElementCode='PARA'")[0][0]).Select(("PARAMETER='" + name + "'"))[0][2];
+                    }
+                    return null;
+                }
             }
             catch (Exception)
             {
-				throw new Exception("Exportabelle mit dem Namen: " + name + " nicht vorhanden!");
-			}
-		}
+                throw new Exception(("ExportParameter mit dem Namen: " + name + " nicht vorhanden!"));
+            }
+            return null;
+        }
 
-		public IEnumerable<DataTable> GetExportTables()
-		{
-			//----------------------------------------------------------------------
-			//Methode:       GetExportTables
-			//Autor:         Matthias Jenzen
-			//Beschreibung:  liefert alle Exporttabellen zurück
-			//Erstellt am:   10.12.2012
-			//----------------------------------------------------------------------
 
-		    var list = new List<DataTable>();
 
-			foreach (var tmpRow in Export.Select("ElementCode='TABLE'")) {
-				if ((!ReferenceEquals(tmpRow[0], DBNull.Value))) {
-					list.Add(((DataTable)tmpRow[0]).Copy());
-				}
-			}
+        public DataTable GetExportTable(string name)
+        {
+            try
+            {
+                foreach (var tmpRow in Export.Select("ElementCode='TABLE'"))
+                {
+                    if ((!ReferenceEquals(tmpRow[0], DBNull.Value)))
+                    {
+                        if (((DataTable)tmpRow[0]).TableName == name)
+                        {
+                            return ((DataTable)tmpRow[0]).Copy();
+                        }
+                    }
+                }
+                throw new Exception();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Exportabelle mit dem Namen: " + name + " nicht vorhanden!");
+            }
+        }
 
-			return list;
-		}
+        public IEnumerable<DataTable> GetExportTables()
+        {
+            //----------------------------------------------------------------------
+            //Methode:       GetExportTables
+            //Autor:         Matthias Jenzen
+            //Beschreibung:  liefert alle Exporttabellen zurück
+            //Erstellt am:   10.12.2012
+            //----------------------------------------------------------------------
+
+            var list = new List<DataTable>();
+
+            foreach (var tmpRow in Export.Select("ElementCode='TABLE'"))
+            {
+                if ((!ReferenceEquals(tmpRow[0], DBNull.Value)))
+                {
+                    list.Add(((DataTable)tmpRow[0]).Copy());
+                }
+            }
+
+            return list;
+        }
 
         public void Reset()
         {
@@ -799,44 +882,55 @@ namespace SapORM.Services
         }
 
         private void ClearAllValues()
-		{
-			try {
-				foreach (DataRow impRow in Import.Rows) {
-					if (impRow[1].ToString() == "PARA") {
-						var paraTabelle = (DataTable)impRow[0];
-						foreach (DataRow paraRow in paraTabelle.Rows) {
-							paraRow[2] = "";
-						}
-						paraTabelle.AcceptChanges();
-					}
-					if (impRow[1].ToString() == "TABLE" || impRow[1].ToString() == "SAPTABLE") {
-						((DataTable)impRow[0]).Rows.Clear();
-						((DataTable)impRow[0]).Clear();
-						((DataTable)impRow[0]).AcceptChanges();
-					}
-				}
-				foreach (DataRow expRow in Export.Rows) {
-					if (expRow[1].ToString() == "PARA") {
-						var paraTabelle = (DataTable)expRow[0];
-						foreach (DataRow paraRow in paraTabelle.Rows) {
-							paraRow[2] = "";
-						}
-						paraTabelle.AcceptChanges();
-					}
+        {
+            try
+            {
+                foreach (DataRow impRow in Import.Rows)
+                {
+                    if (impRow[1].ToString() == "PARA")
+                    {
+                        var paraTabelle = (DataTable)impRow[0];
+                        foreach (DataRow paraRow in paraTabelle.Rows)
+                        {
+                            paraRow[2] = "";
+                        }
+                        paraTabelle.AcceptChanges();
+                    }
+                    if (impRow[1].ToString() == "TABLE" || impRow[1].ToString() == "SAPTABLE")
+                    {
+                        ((DataTable)impRow[0]).Rows.Clear();
+                        ((DataTable)impRow[0]).Clear();
+                        ((DataTable)impRow[0]).AcceptChanges();
+                    }
+                }
+                foreach (DataRow expRow in Export.Rows)
+                {
+                    if (expRow[1].ToString() == "PARA")
+                    {
+                        var paraTabelle = (DataTable)expRow[0];
+                        foreach (DataRow paraRow in paraTabelle.Rows)
+                        {
+                            paraRow[2] = "";
+                        }
+                        paraTabelle.AcceptChanges();
+                    }
 
-					if (expRow[1].ToString() == "TABLE") {
-						((DataTable)expRow[0]).Rows.Clear();
-						((DataTable)expRow[0]).Clear();
-						((DataTable)expRow[0]).AcceptChanges();
-					}
-				}
-				//mbizTalkExportParameter.Clear()
-				//mbizTalkImportParameter.Clear()
-				_clearMe = false;
-			} catch (Exception ex) {
-				throw new Exception("Fehler in DynSapProxyObjectErp35.clearAllValues: " + ex.Message);
-			}
-		}
+                    if (expRow[1].ToString() == "TABLE")
+                    {
+                        ((DataTable)expRow[0]).Rows.Clear();
+                        ((DataTable)expRow[0]).Clear();
+                        ((DataTable)expRow[0]).AcceptChanges();
+                    }
+                }
+                //mbizTalkExportParameter.Clear()
+                //mbizTalkImportParameter.Clear()
+                _clearMe = false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Fehler in DynSapProxyObjectErp35.clearAllValues: " + ex.Message);
+            }
+        }
 
         public DateTime? CallBapiForBapi(ref DataTable mExportTabelle, ref DataTable mImportTabelle, string bapiName, ISapConnection sapConnection)
         {
@@ -932,8 +1026,8 @@ namespace SapORM.Services
             var si = new SerializationInfo(e.GetType(), new FormatterConverter());
 
             e.GetObjectData(si, ctx);
-            mgr.RegisterObject(e, 1, si); 
-            mgr.DoFixups(); 
+            mgr.RegisterObject(e, 1, si);
+            mgr.DoFixups();
         }
 
         #endregion
