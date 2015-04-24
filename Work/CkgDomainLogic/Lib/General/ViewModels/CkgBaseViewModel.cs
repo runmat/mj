@@ -178,7 +178,7 @@ namespace CkgDomainLogic.General.ViewModels
 
         #endregion
 
-        protected string GetApplicationConfigValueForCustomer(string configValue)
+        protected string GetApplicationConfigValueForCustomer(string configValue, bool considerGroupId = false)
         {
             if (LogonContext == null || LogonContext.Customer == null)
                 return "";
