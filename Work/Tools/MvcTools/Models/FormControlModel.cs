@@ -86,5 +86,10 @@ namespace MvcTools.Models
         public IHtmlString PreControlHtml { get; set; }
 
         public IHtmlString PostControlHtml { get; set; }
+
+        /// <summary>
+        /// indicates if this property is persistable
+        /// </summary>
+        public MvcHtmlString PerstistenceIndicatorHtml { get; set; }
     }
 }

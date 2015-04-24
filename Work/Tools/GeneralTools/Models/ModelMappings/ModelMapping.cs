@@ -64,7 +64,25 @@ namespace GeneralTools.Models
             return destination;
         }
 
-        public static IEnumerable<T> Copy<T>(IEnumerable<T> srcEntities, Action<T, T> onInit = null)
+        public static T CopyOnlyPersistableProperties<T>(T source, Action<T, T> onInit = null)
+            where T : class, new()
+        {
+            if (source == null)
+                return null;
+
+            var destination = new T();
+            UpdateRecursivelyWithBaseClasses(source, destination, 'X', 
+                (propertySrc, propertyDst) =>
+                    propertySrc.GetCustomAttributes(true).OfType<FormPersistableAttribute>().Any() &&
+                    propertyDst.GetCustomAttributes(true).OfType<FormPersistableAttribute>().Any()
+                );
+            if (onInit != null)
+                onInit(source, destination);
+
+            return destination;
+        }
+
+        public static IEnumerable<T> CopyList<T>(IEnumerable<T> srcEntities, Action<T, T> onInit = null)
             where T : class, new()
         {
             return srcEntities.Select(src => Copy(src, new T(), onInit));
@@ -77,7 +95,7 @@ namespace GeneralTools.Models
             return srcEntities.Select(src => Copy(src, new T2(), onInit));
         }
 
-        private static void UpdateRecursivelyWithBaseClasses<T1, T2>(T1 source, T2 destination, char booleanStringConvertCharacter = 'X')
+        private static void UpdateRecursivelyWithBaseClasses<T1, T2>(T1 source, T2 destination, char booleanStringConvertCharacter = 'X', Func<PropertyInfo, PropertyInfo, bool> additionalCopyConditionFunc = null)
             where T1 : class
             where T2 : class
         {
@@ -89,7 +107,8 @@ namespace GeneralTools.Models
                 var propertyDst = propertiesDst.FirstOrDefault(pDst => pDst.Name.ToLower() == propertySrc.Name.ToLower());
                 if (propertyDst != null && propertyDst.GetSetMethod() != null
                     && propertySrc.GetCustomAttributes(true).OfType<ModelMappingCopyIgnoreAttribute>().None()
-                    && propertyDst.GetCustomAttributes(true).OfType<ModelMappingCopyIgnoreAttribute>().None())
+                    && propertyDst.GetCustomAttributes(true).OfType<ModelMappingCopyIgnoreAttribute>().None()
+                    && (additionalCopyConditionFunc == null || additionalCopyConditionFunc(propertySrc, propertyDst)))
                 {
                     propertyDst.SetValue(destination, TryConvertValue(propertySrc, propertyDst, propertySrc.GetValue(source, null), booleanStringConvertCharacter), null);
                 }

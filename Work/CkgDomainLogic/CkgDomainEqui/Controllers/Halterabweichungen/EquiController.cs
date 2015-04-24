@@ -51,7 +51,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportHalterabweichungenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = HalterAbweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = HalterAbweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Halterabweichungen", dt);
 
             return new EmptyResult();
@@ -59,7 +59,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportHalterabweichungenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = HalterAbweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = HalterAbweichungenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Halterabweichungen", dt, landscapeOrientation: true);
 
             return new EmptyResult();
