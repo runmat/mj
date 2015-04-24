@@ -9,15 +9,16 @@ using GeneralTools.Contracts;
 using System.Linq;
 using GeneralTools.Models;
 using MvcTools.Web;
+using WebTools.Services;
 
 namespace ServicesMvc.Common.Controllers
 {
+    [AllowAnonymous]
     public class GridAdminController : CkgDomainController
     {
         public override string DataContextKey { get { return "GridAdminViewModel"; } }
 
         public GridAdminViewModel ViewModel { get { return GetViewModel<GridAdminViewModel>(); } }
-
 
         public GridAdminController(IAppSettings appSettings, ILogonContextDataService logonContext, IGridAdminDataService gridAdminDataService)
             : base(appSettings, logonContext)
@@ -53,6 +54,18 @@ namespace ServicesMvc.Common.Controllers
                 ModelState.Clear();
 
             return PartialView("Partial/Edit", model);
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ReportSolution(string un)
+        {
+            if (LogonContext.UserName.IsNullOrEmpty())
+                UrlLogOn("mjecardocu", null, null);
+
+            ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un));
+
+            return View(ViewModel);
         }
     }
 }

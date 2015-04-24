@@ -2463,6 +2463,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
+    <Compile Include="Areas\Common\lib\GridAdmin\Models\ReportSolution.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\ViewModels\GridAdminViewModel.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
@@ -2526,6 +2527,7 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4340,7 +4342,6 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
-    <Folder Include="Areas\Common\lib\GridAdmin\Models\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

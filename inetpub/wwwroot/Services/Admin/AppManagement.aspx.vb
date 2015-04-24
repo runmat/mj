@@ -2,6 +2,7 @@
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Services
+Imports WebTools.Services
 
 Partial Public Class AppManagement
     Inherits Page
@@ -152,6 +153,17 @@ Partial Public Class AppManagement
                 cn.Close()
             End If
         End Try
+    End Sub
+
+    Private Sub lnkMvcReportSolution_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkMvcReportSolution.Click
+        Dim strAppID As String
+        Dim strRetAppID As String = txtAppID.Text
+        If CInt(ddlAppParent.SelectedItem.Value) < 1 Then
+            strAppID = txtAppID.Text
+        Else
+            strAppID = ddlAppParent.SelectedItem.Value
+        End If
+        Response.Redirect("/ServicesMvc/Common/GridAdmin/ReportSolution?un=" & CryptoMd5.EncryptToUrlEncoded(strAppID & "-" & m_User.UserName & "-" & DateTime.Now.Ticks.ToString()))
     End Sub
 
     Private Sub lnkColumnTranslation_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkColumnTranslation.Click

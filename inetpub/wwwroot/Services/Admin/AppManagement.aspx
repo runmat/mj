@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AppManagement.aspx.vb"
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AppManagement.aspx.vb" ValidateRequest="false"
     Inherits="Admin.AppManagement" MasterPageFile="MasterPage/Admin.Master" %>
 
 <%@ Register Assembly="AjaxControlToolkit" Namespace="AjaxControlToolkit" TagPrefix="ajaxToolkit" %>
@@ -244,6 +244,14 @@
                                                                             </td>
                                                                             <td align="left" class="active">
                                                                                 <asp:TextBox ID="txtAppParam" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="formquery">
+                                                                            <td class="firstLeft active">
+                                                                                <asp:LinkButton ID="lnkMvcReportSolution" runat="server" CssClass="LinksVerwaltung">Metronic Report Solution Tool&nbsp;» </asp:LinkButton>
+                                                                            </td>
+                                                                            <td class="active">
+                                                                                &nbsp;
                                                                             </td>
                                                                         </tr>
                                                                         <tr class="formquery">
