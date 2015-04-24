@@ -115,6 +115,7 @@
     <Compile Include="Log\Services\SapLogger.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Attributes\RequiredConditionalAttribute.cs" />
     <Compile Include="Models\Attributes\AddressPostcodeCityMappingAttribute.cs" />
     <Compile Include="Models\Attributes\GridHiddenAttribute.cs" />
     <Compile Include="Models\Attributes\DisplayFormatDateAttribute.cs" />
@@ -124,7 +125,6 @@
     <Compile Include="Models\Attributes\FormPersistableAttribute.cs" />
     <Compile Include="Models\Attributes\LengthAttribute.cs" />
     <Compile Include="Models\Attributes\LocalizedDisplayAttribute.cs" />
-    <Compile Include="Models\Attributes\RequiredConditionalAttribute.cs" />
     <Compile Include="Models\Attributes\UpperCaseAttribute.cs" />
     <Compile Include="Models\Attributes\LowerCaseAttribute.cs" />
     <Compile Include="Models\Attributes\RequiredAsGroupAttribute.cs" />

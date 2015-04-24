@@ -110,6 +110,7 @@
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\DomainCommonController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserReportingController.cs" />
     <Compile Include="Controllers\XarisController.cs" />
     <Compile Include="Controllers\LogsController.cs" />

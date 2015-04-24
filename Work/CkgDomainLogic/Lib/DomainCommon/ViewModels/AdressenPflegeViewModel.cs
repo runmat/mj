@@ -89,7 +89,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void AdressenDataInit(string adressenKennung, string kundennrOverride)
         {
-            if (AdressenKennungenLocalized.None(kennung => kennung.Key.ToUpper() == adressenKennung.ToUpper()) && AdressenKennungenLocalized.Any())
+            if (adressenKennung.IsNullOrEmpty() && AdressenKennungenLocalized.None(kennung => kennung.Key.ToUpper() == adressenKennung.ToUpper()) && AdressenKennungenLocalized.Any())
                 adressenKennung = AdressenKennungenLocalized.First().Key;
 
             AdressenDataService.AdressenKennung = adressenKennung.ToUpper();

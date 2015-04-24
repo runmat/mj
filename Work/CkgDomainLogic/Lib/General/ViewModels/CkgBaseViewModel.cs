@@ -183,11 +183,16 @@ namespace CkgDomainLogic.General.ViewModels
             if (LogonContext == null || LogonContext.Customer == null)
                 return "";
 
-            var userCustomerId = LogonContext.Customer.CustomerID;
-            var userGroupId = 0;
             var appId = LogonContext.GetAppIdCurrent();
+            var customerId = LogonContext.Customer.CustomerID;
+            var groupId = (considerGroupId ? LogonContext.Group.GroupID : 0);
 
-            return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), userCustomerId, userGroupId);
+            return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), customerId, groupId);
+        }
+
+        protected bool GetApplicationConfigBoolValueForCustomer(string configValue, bool considerGroupId = false)
+        {
+            return GetApplicationConfigValueForCustomer(configValue, considerGroupId).ToBool();
         }
     }
 }

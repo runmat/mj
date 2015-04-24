@@ -85,6 +85,9 @@
     <Reference Include="FluentValidation.Mvc">
       <HintPath>..\..\..\work\GAC\IoC\FluentValidation.MVC4.4.0.0.1\lib\Net40\FluentValidation.Mvc.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySQL.Data, Version=6.7.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -2527,7 +2530,9 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Documents\Templates\UploadBriefversand.csv" />
     <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
+    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
@@ -4194,7 +4199,6 @@
     <Content Include="Views\CocSendung\VerfolgungMulti\Id\Suche.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Grid.cshtml" />
     <Content Include="Views\CocSendung\VerfolgungMulti\Docs\Suche.cshtml" />
-    <Content Include="Views\Equi\Briefversand\Partial\CsvTemplate.cshtml" />
     <Content Include="Views\Login\Partial\Footer.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenGrid.cshtml" />
     <Content Include="Views\Finance\Mahnstufen\MahnungenSuche.cshtml" />
@@ -4288,6 +4292,9 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
+    <Content Include="Views\Test\Cerberus.cshtml" />
+    <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
+    <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\Menu.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\Common.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
@@ -4585,10 +4592,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\css\.DS_Store" />
-    <None Include="assets\fonts\cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff" />
-    <None Include="assets\fonts\DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff" />
-    <None Include="assets\fonts\k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff" />
-    <None Include="assets\fonts\MTP_ySUJH_bn48VBG8sNSnhCUOGz7vYGh680lGh-uXM.woff" />
+    <Content Include="assets\fonts\cJZKeOuBrn4kERxqtaUH3T8E0i7KZn-EPnyo3HZu7kw.woff" />
+    <Content Include="assets\fonts\DXI1ORHCpsQm3Vp6mXoaTXhCUOGz7vYGh680lGh-uXM.woff" />
+    <Content Include="assets\fonts\k3k702ZOKiLJc3WVjuplzHhCUOGz7vYGh680lGh-uXM.woff" />
+    <Content Include="assets\fonts\MTP_ySUJH_bn48VBG8sNSnhCUOGz7vYGh680lGh-uXM.woff" />
     <None Include="assets\img\blog\Thumbs.db" />
     <None Include="assets\img\pages\Thumbs.db" />
     <None Include="assets\img\social\Thumbs.db" />

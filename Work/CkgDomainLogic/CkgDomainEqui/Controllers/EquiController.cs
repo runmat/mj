@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.Equi.Contracts;
+using CkgDomainLogic.Equi.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
@@ -43,6 +44,13 @@ namespace ServicesMvc.Controllers
             InitViewModel(MahnsperreViewModel, appSettings, logonContext, mahnsperreDataService);
             InitViewModel(BriefbestandVhcViewModel, appSettings, logonContext, briefbestandVhcDataService);
             InitViewModel(KlaerfaelleVhcViewModel, appSettings, logonContext, klaerfaelleVhcDataService);
+
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            CkgDomainLogic.Equi.Models.VersandOptionen.GetViewModel = GetViewModel<BriefversandViewModel>;
         }
 
         public ActionResult Index()
