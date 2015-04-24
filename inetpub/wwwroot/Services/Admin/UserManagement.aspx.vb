@@ -512,6 +512,8 @@ Partial Public Class UserManagement
             Session("UsernameStart") = _User.UserName
             Session("LockedOutStart") = _User.AccountIsLockedOut
             txtReference.Text = _User.Reference
+            txtReference2.Text = _User.Reference2
+            txtReference3.Text = _User.Reference3
             txtMail.Text = _User.Email
             txtPhone.Text = _User.Telephone
             txtReadMessageCount.Text = _User.ReadMessageCount.ToString
@@ -576,6 +578,9 @@ Partial Public Class UserManagement
                 _li.Selected = True
                 ddlOrganizations.Items.Add(_li)
             End If
+
+            initialize_ReferenceFields()
+
             lblLastPwdChange.Text = String.Format("{0:dd.MM.yy}", _User.LastPasswordChange)
             cbxPwdNeverExpires.Checked = _User.PasswordNeverExpires
             lblFailedLogins.Text = _User.FailedLogins.ToString
@@ -701,6 +706,8 @@ Partial Public Class UserManagement
         txtUserName.Text = ""
 
         txtReference.Text = ""
+        txtReference2.Text = ""
+        txtReference3.Text = ""
         txtPassword.Text = ""
         txtConfirmPassword.Text = ""
         txtFirstName.Text = ""
@@ -797,6 +804,10 @@ Partial Public Class UserManagement
 
         txtReference.Enabled = enabled
         txtReference.BackColor = backColor
+        txtReference2.Enabled = enabled
+        txtReference2.BackColor = backColor
+        txtReference3.Enabled = enabled
+        txtReference3.BackColor = backColor
         cbxTestUser.Enabled = enabled
         chkLoggedOn.Enabled = enabled
         chkNewPasswort.Enabled = enabled
@@ -1981,6 +1992,7 @@ Partial Public Class UserManagement
         trMasterUser.Visible = False
 
         refill_Groups()
+        initialize_ReferenceFields()
 
     End Sub
 
@@ -2072,7 +2084,9 @@ Partial Public Class UserManagement
 
             Dim _User As User = New User(CInt(txtUserID.Text), _
                                               txtUserName.Text, _
-                                              txtReference.Text, _
+                                              IIf(trReference.Visible, txtReference.Text, ""), _
+                                              IIf(trReference2.Visible, txtReference2.Text, ""), _
+                                              IIf(trReference3.Visible, txtReference3.Text, ""), _
                                               cbxTestUser.Checked, _
                                               CInt(ddlCustomer.SelectedItem.Value), _
                                               cbxCustomerAdmin.Checked, _
@@ -2357,6 +2371,7 @@ Partial Public Class UserManagement
 
     Private Sub ddlCustomer_SelectedIndexChanged(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles ddlCustomer.SelectedIndexChanged
         refill_Groups()
+        initialize_ReferenceFields()
 
         'NameEditMode(Not _customer.CustomerPasswordRules.NameInputOptional)
     End Sub
@@ -2371,8 +2386,6 @@ Partial Public Class UserManagement
         FillOrganization(ddlOrganizations, False, dtOrganizations)
         Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
 
-        ' AutoPasswort wenn Passwort per Mail OR Kein Kundenadmin OR kein Orga-Admin
-
         Dim autoPW As Boolean = False
         ' AutoPasswort wenn Passwort per Mail OR Kein Kundenadmin OR kein Orga-Admin
         If cbxNoCustomerAdmin.Checked And cbxOrganizationAdmin.Checked = False Then
@@ -2384,6 +2397,31 @@ Partial Public Class UserManagement
         PasswordEditMode(autoPW)
 
         ddlCustomer.Focus()
+    End Sub
+
+    Private Sub initialize_ReferenceFields()
+        Dim intCustomerID As Integer = CInt(ddlCustomer.SelectedItem.Value)
+        Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
+
+        ' Referenzfelder initialisieren
+        If _customer.ReferenceType1 <> 0 Then
+            trReference.Visible = True
+            lblReferenceType.Text = _customer.ReferenceType1Name
+        Else
+            trReference.Visible = False
+        End If
+        If _customer.ReferenceType2 <> 0 Then
+            trReference2.Visible = True
+            lblReferenceType2.Text = _customer.ReferenceType2Name
+        Else
+            trReference2.Visible = False
+        End If
+        If _customer.ReferenceType3 <> 0 Then
+            trReference3.Visible = True
+            lblReferenceType3.Text = _customer.ReferenceType3Name
+        Else
+            trReference3.Visible = False
+        End If
     End Sub
 
     Private Sub btnSuche_Click(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles btnSuche.Click
@@ -2910,7 +2948,7 @@ Partial Public Class UserManagement
     Protected Sub lbtnMasterUser_Click(sender As Object, e As EventArgs) Handles lbtnMasterUser.Click
         Dim masterUser = FindMasterUser()
 
-        Dim changedUser = New User(masterUser.UserID, masterUser.UserName, txtReference.Text, masterUser.IsTestUser, CInt(ddlCustomer.SelectedValue),
+        Dim changedUser = New User(masterUser.UserID, masterUser.UserName, txtReference.Text, txtReference2.Text, txtReference3.Text, masterUser.IsTestUser, CInt(ddlCustomer.SelectedValue),
                                    masterUser.IsCustomerAdmin, masterUser.PasswordNeverExpires, masterUser.AccountIsLockedOut,
                                    masterUser.FirstLevelAdmin, masterUser.LoggedOn, masterUser.Organization.OrganizationAdmin, m_User.App.Connectionstring, masterUser.ReadMessageCount,
                                    m_User.UserName, masterUser.Approved, masterUser.FirstName, masterUser.LastName, masterUser.Title, txtStore.Text, masterUser.Matrixfilled, masterUser.ValidFrom)
@@ -2966,7 +3004,7 @@ Partial Public Class UserManagement
         Dim connectionString = m_User.App.Connectionstring
 
         Try
-            Dim newUser = New User(-1, m_User.UserName & "Master1", m_User.Reference, m_User.IsTestUser, m_User.Customer.CustomerId, m_User.IsCustomerAdmin, _
+            Dim newUser = New User(-1, m_User.UserName & "Master1", m_User.Reference, m_User.Reference2, m_User.Reference3, m_User.IsTestUser, m_User.Customer.CustomerId, m_User.IsCustomerAdmin, _
                                    m_User.PasswordNeverExpires, m_User.AccountIsLockedOut, m_User.FirstLevelAdmin, m_User.LoggedOn, m_User.Organization.OrganizationAdmin, _
                                    connectionString, m_User.ReadMessageCount, m_User.UserName, m_User.Approved, m_User.Store, m_User.Matrixfilled, m_User.ValidFrom)
             newUser.Groups.Add(New Group(m_User.Groups(0).GroupId, m_User.Groups(0).CustomerId))
