@@ -18,7 +18,10 @@ using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.FzgModelle.Models.AppModelMappings;
+using Hersteller = CkgDomainLogic.General.Models.Hersteller;
+
 // ReSharper restore RedundantUsingDirective
+
 
 namespace CkgDomainLogic.FzgModelle.Services
 {
