@@ -70,6 +70,11 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<Customer>("SELECT * FROM Customer WHERE CustomerID = {0}", customerID).FirstOrDefault();
         }
 
+        public List<Customer> GetAllCustomer()
+        {
+            return Database.SqlQuery<Customer>("SELECT * FROM Customer").ToListOrEmptyList();
+        }
+
         public string GetEmailAddressFromUserName(string userName)
         {
             return Database.SqlQuery<string>("select mail from vwWebUser inner join WebUserInfo on vwWebUser.UserID = WebUserInfo.id_user where Username = {0}", userName).FirstOrDefault();
@@ -83,6 +88,11 @@ namespace CkgDomainLogic.General.Database.Services
         public User GetUserFromPasswordToken(string passwordRequestKey)
         {
             return Database.SqlQuery<User>("select * from vwWebUser where PasswordChangeRequestKey = {0}", passwordRequestKey).FirstOrDefault();
+        }
+
+        public List<User> GetUserForCustomer(Customer customer)
+        {
+            return Database.SqlQuery<User>("select * from vwWebUser where CustomerID = {0}", customer.CustomerID).ToListOrEmptyList();
         }
 
         public User GetUser(string userName)

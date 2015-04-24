@@ -9,6 +9,7 @@ using GeneralTools.Contracts;
 using System.Linq;
 using GeneralTools.Models;
 using MvcTools.Web;
+using ServicesMvc.DomainCommon.Models;
 using WebTools.Services;
 
 namespace ServicesMvc.Common.Controllers
@@ -56,16 +57,65 @@ namespace ServicesMvc.Common.Controllers
             return PartialView("Partial/Edit", model);
         }
 
+        [HttpPost]
+        public JsonResult OnCustomerChanged(int customerId)
+        {
+            ViewModel.LoadUserForCustomer(customerId);
+            if (ViewModel.Users.None())
+                return Json(new { success = false });
+
+            return Json(new
+            {
+                success = true,
+                users = ViewModel.Users.Select(user => new
+                {
+                    ID = user.UserID,
+                    Name = user.Username
+                })
+            });
+        }
+
+        [HttpPost]
+        public ActionResult OnUserChanged(int userId)
+        {
+            ViewModel.SetCurrentUser(userId);
+
+            return new EmptyResult();
+        }
+
+        
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Test()
+        {
+            ViewModel.ReportSettings = new ReportSolution();
+
+            TryUserLogon("mjecardocu");
+
+            return View(ViewModel);
+        }
+
         [HttpGet]
         [AllowAnonymous]
         public ActionResult ReportSolution(string un)
         {
-            UrlLogOn("mjecardocu", null, null);
-
             if (!ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un)))
                 return View(ViewModel);
 
+            TryUserLogon("mjecardocu");
+
             return RedirectPermanent("~/Strafzettel/Report");
+        }
+
+        void TryUserLogon(string userName)
+        {
+            var orgDataService = ViewModel.DataService;
+            var orgAppSettings = ViewModel.AppSettings;
+            
+            UrlLogOn(userName, null, null);
+
+            InitViewModel(ViewModel, orgAppSettings, LogonContext, orgDataService);
         }
     }
 }

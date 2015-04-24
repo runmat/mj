@@ -1,0 +1,93 @@
+﻿<style type="text/css">
+     
+     #CustomerUserSelectionDiv {
+         margin-top: 50px;
+     }
+     
+    .span4 a {
+        text-align: left!important;
+    }     
+</style>
+
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+<script type="text/javascript">
+
+
+    function FormPreparePrivate() {
+        InitDropdowns();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function InitDropdowns() {
+        $('#customer-dropdown').select2({
+            allowClear: true
+        }).on("change", function (e) {
+
+            $("#user-control-group").addClass("hide");
+            $(".form-actions").addClass("hide");
+
+            if (e.val == -1)
+                return;
+
+            $.ajax({
+                type: "POST",
+                url: "OnCustomerChanged",
+                data: { customerId: e.val },
+                loadingShow: false,
+                success: function (result) {
+                    if (!result.success)
+                        return;
+
+                    PopulateDropdown($("#user-dropdown"), result.users);
+
+                    $('#user-dropdown').select2("destroy");
+
+                    $('#user-dropdown').select2({
+                        allowClear: true
+                    }).off("change").on("change", function (user) {
+                        OnUserChanged(user.val);
+                    });
+
+                    if (result.users.length <= 1)
+                        return;
+
+                    SpanAlertSuccess("message", "Wählen Sie nun noch optional einen User (dieser mag ggfls. relevant sein für gültige Daten im Report-Grid)", 8000);
+                    $("#user-control-group").removeClass("hide");
+                    $(".form-actions").removeClass("hide");
+                }
+            });
+        });
+
+        setTimeout(function () {
+            $('#customer-dropdown').data('select2').open();
+        }, 100);
+    }
+    
+    function OnUserChanged(userId) {
+        $.ajax({
+            type: "POST",
+            url: "OnUserChanged",
+            data: { userId: userId },
+            loadingShow: false,
+            success: function (result) {
+            }
+        });
+    }
+    
+    function PopulateDropdown(dropdown, items) {
+        dropdown.empty();
+        $.each(items, function (index, val) {
+            dropdown.append($("<option />").val(val.ID).text(val.Name));
+            dropdown.val(0);
+        });
+
+        // val(xxx):
+        // $example.val("CA").trigger("change");
+    }    
+    
+</script>

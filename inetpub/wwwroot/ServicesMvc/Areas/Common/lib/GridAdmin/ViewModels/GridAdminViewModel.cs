@@ -34,6 +34,23 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public ReportSolution ReportSettings { get; set; }
 
 
+        public Customer CurrentCustomer { get; set; }
+
+        public List<Customer> Customers
+        {
+            get
+            {
+                return PropertyCacheGet(() => DataService.GetCustomers().OrderBy(c => c.Customername).ToListOrEmptyList()
+                            .CopyAndInsertAtTop(new Customer { CustomerID = -1, Customername = "" }));
+            }
+        }
+
+
+        public User CurrentUser { get; set; }
+        
+        public List<User> Users { get; set; }
+
+
         public bool DataInit(Type modelType, string columnMember)
         {
             var propertyInfo = modelType.GetProperty(columnMember);
@@ -86,6 +103,27 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             ReportSettings.AdminUserName = items[1];
             ReportSettings.AdminIsAuthorized = true;
             return true;
+        }
+
+        public void LoadUserForCustomer(int customerId)
+        {
+            Users = new List<User>();
+            CurrentUser = null;
+
+            CurrentCustomer = Customers.FirstOrDefault(c => c.CustomerID == customerId);
+            if (CurrentCustomer == null)
+                return;
+
+            Users = DataService.GetUsersForCustomer(CurrentCustomer)
+                        .CopyAndInsertAtTop(new User { UserID = -1, Username = Localize.DropdownDefaultOptionNotSpecified });
+        }
+
+        public void SetCurrentUser(int userId)
+        {
+            if (Users == null || Users.None())
+                return;
+
+            CurrentUser = Users.FirstOrDefault(user => user.UserID == userId);
         }
     }
 }

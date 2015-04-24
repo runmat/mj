@@ -2528,6 +2528,9 @@
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

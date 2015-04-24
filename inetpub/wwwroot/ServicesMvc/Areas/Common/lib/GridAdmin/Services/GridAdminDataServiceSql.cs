@@ -14,13 +14,32 @@ namespace CkgDomainLogic.DomainCommon.Services
 {
     public class GridAdminDataServiceSql : IGridAdminDataService 
     {
+        static string ConnectionStringWorkServer { get { return ConfigurationManager.AppSettings["ConnectionString"].NotNullOrEmpty(); } }
+
         static string ConnectionStringTestServer { get { return ConfigurationManager.AppSettings["ConnectionStringTestServer"].NotNullOrEmpty(); } }
+        
         static string ConnectionStringProdServer { get { return ConfigurationManager.AppSettings["ConnectionStringProdServer"].NotNullOrEmpty(); } }
+
 
         static DomainDbContext CreateDbContext(string connectionString)
         {
             return new DomainDbContext(connectionString, "");
         }
+
+        public List<Customer> GetCustomers()
+        {
+            var ct = CreateDbContext(ConnectionStringWorkServer);
+            return ct.GetAllCustomer();
+        }
+
+        public List<User> GetUsersForCustomer(Customer customer)
+        {
+            var ct = CreateDbContext(ConnectionStringWorkServer);
+            return ct.GetUserForCustomer(customer);
+        }
+
+
+        #region Translated Resource
 
         public TranslatedResource TranslatedResourceLoad(string resourceKey)
         {
@@ -60,5 +79,8 @@ namespace CkgDomainLogic.DomainCommon.Services
             var dbContextProdServer = CreateDbContext(ConnectionStringProdServer);
             dbContextProdServer.TranslatedResourceCustomerDelete(r);
         }
+
+        #endregion
+
     }
 }
