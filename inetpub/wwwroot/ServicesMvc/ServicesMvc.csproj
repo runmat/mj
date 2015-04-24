@@ -4312,6 +4312,9 @@
     <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\Dispositionsliste\DispositionslisteGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportDispositionsliste.cshtml" />
+    <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\ReportZulaufEinsteuerung.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4372,7 +4375,6 @@
     <Folder Include="assets_v2\plugins\jquery-file-upload\server\php\files\thumbnail\" />
     <Folder Include="Content\fonts\" />
     <Folder Include="TmpUpload\Images\" />
-    <Folder Include="Views\Fahrzeuge\ZulaufEinsteuernug\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -182,7 +182,8 @@ namespace ServicesMvc.App_Start
             builder.RegisterType<FinanceCarporteingaengeOhneEHDataServiceSAP>().As<IFinanceCarporteingaengeOhneEHDataService>().InstancePerHttpRequest();
             builder.RegisterType<TreuhandDataServiceSAP>().As<ITreuhandDataService>().InstancePerHttpRequest();
             builder.RegisterType<FahrzeugvoravisierungDataServiceSAP>().As<IFahrzeugvoravisierungDataService>().InstancePerHttpRequest();
-            builder.RegisterType<DispositionslisteDataServiceSAP>().As<IDispositionslisteDataService>().InstancePerHttpRequest();            
+            builder.RegisterType<DispositionslisteDataServiceSAP>().As<IDispositionslisteDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ZulaufEinsteuerungDataServiceSAP>().As<IZulaufEinsteuerungDataService>().InstancePerHttpRequest();            
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

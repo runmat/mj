@@ -268,6 +268,23 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
 
+        static public ModelMapping<Z_M_EC_AVM_STATUS_ZUL.GT_WEB, ZulaufEinsteuerung> Z_M_EC_AVM_STATUS_ZUL_GT_WEB_ToZulaufEinsteuerung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_STATUS_ZUL.GT_WEB, ZulaufEinsteuerung>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Hersteller = sap.ZKLTXT;
+                        business.Fahrzeugzulauf = sap.FZG_EING_GES;
+                        business.Zulassungen = sap.ZUL_GES;
+                        business.ZBIIOhneFzgPKW = sap.BR_O_FZG_PKW;
+                        business.ZBIIOhneFzgLKW = sap.BR_O_FZG_LKW;                       
+                    }));
+            }
+        }
+
         #endregion
 
         
