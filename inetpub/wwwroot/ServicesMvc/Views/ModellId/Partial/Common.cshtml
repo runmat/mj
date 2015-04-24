@@ -115,6 +115,10 @@
         LoadingHide();
         GridLoadingHide();
 
+        $("button[type='submit']").click(function() {
+            LoadingShow();
+        });
+
         if (_modelIsValid)
             CloseItemDetails();
     }
