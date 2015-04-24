@@ -10,7 +10,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     public class DispositionslisteSelektor : Store 
     {
 
-        //[LocalizedDisplay(LocalizeConstants.CostCenter)]
+        [LocalizedDisplay(LocalizeConstants.PDINumber)]
         public string PDINummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]

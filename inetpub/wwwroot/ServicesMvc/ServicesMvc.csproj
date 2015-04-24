@@ -4372,6 +4372,7 @@
     <Folder Include="assets_v2\plugins\jquery-file-upload\server\php\files\thumbnail\" />
     <Folder Include="Content\fonts\" />
     <Folder Include="TmpUpload\Images\" />
+    <Folder Include="Views\Fahrzeuge\ZulaufEinsteuernug\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
