@@ -10,7 +10,7 @@
     .XAjaxDataBinding("ModellIdsAjaxBinding", "ModellId")
     .Columns(columns =>
         {
-            columns.XBound(c => c.ID).Width(145).Title("").Filterable(false).Sortable(false)
+            columns.XBound(c => c.Aktion).Filterable(false).Sortable(false)
                     .ClientTemplate(
                         "<button onclick='ItemEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                         + "&nbsp;"
@@ -19,9 +19,22 @@
                     "<button onclick='ItemNew(\"\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
                 );
 
-            columns.XBound(c => c.ID);
+            columns.XBound(c => c.HerstellerCode);
             columns.XBound(c => c.HerstellerName);
+            columns.XBound(c => c.ID);
             columns.XBound(c => c.Bezeichnung);
+            columns.XBound(c => c.SippCode);
+            columns.XBound(c => c.LaufzeitTage);
+
+            columns.XBound(c => c.LaufzeitBindung, false);
+            columns.XBound(c => c.AntriebAsText, false);
+            columns.XBound(c => c.Lkw, false);
+            columns.XBound(c => c.Winterreifen, false);
+            columns.XBound(c => c.AnhaengerKupplung, false);
+            columns.XBound(c => c.NaviVorhanden, false);
+            columns.XBound(c => c.SecurityFleet, false);
+            columns.XBound(c => c.KennzeichenLeasingFahrzeug, false);
+            columns.XBound(c => c.Bluetooth, false);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

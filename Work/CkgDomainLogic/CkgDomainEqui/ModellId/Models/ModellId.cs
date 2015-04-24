@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.FzgModelle.ViewModels;
@@ -20,7 +21,7 @@ namespace CkgDomainLogic.FzgModelle.Models
         [Length(20)]
         public string ID { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Manufacturer)]
+        [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
         [Required]
         [Length(4)]
         public string HerstellerCode { get; set; }
@@ -67,9 +68,19 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.LicensePlateLeaseCar)]
         public bool KennzeichenLeasingFahrzeug { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.EngineType)]
+        [GridHidden, GridExportIgnore]
         public string Antrieb { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.EngineType)]
+        public string AntriebAsText
+        {
+            get
+            {
+                return (HerstellerList.FirstOrDefault(h => h.Code == HerstellerCode) ?? new Hersteller {Name = ""}).Name;
+            }
+        }
+
+        [XmlIgnore, GridHidden, NotMapped]
         public List<SelectItem> AntriebeList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().AntriebeList; } }
 
         [LocalizedDisplay(LocalizeConstants.Bluetooth)]
@@ -85,7 +96,7 @@ namespace CkgDomainLogic.FzgModelle.Models
             return this;
         }
 
-        [XmlIgnore]
+        [XmlIgnore, GridHidden, NotMapped]
         public List<Hersteller> HerstellerList
         {
             get { return GetViewModel == null ? new List<Hersteller>() : GetViewModel().HerstellerList; }
@@ -93,5 +104,10 @@ namespace CkgDomainLogic.FzgModelle.Models
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<ModellIdViewModel> GetViewModel { get; set; }
+
+
+        [XmlIgnore, NotMapped, GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Aktion { get; set; }
     }
 }

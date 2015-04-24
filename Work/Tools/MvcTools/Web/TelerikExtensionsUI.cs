@@ -249,7 +249,10 @@ namespace Telerik.Web.Mvc.UI
                 columnFormat = displayFormatAttribute.DataFormatString;
 
             if (!columnVisibleOnStart)
-                columnFormat = "X~" + columnFormat;
+            {
+                //columnFormat = "X~" + columnFormat;
+                column.Hidden(true);
+            }
 
             var gridResponsiveVisibleAttribute = typeof(TModel).GetAttributeFrom<GridResponsiveVisibleAttribute>(propertyName);
             if (gridResponsiveVisibleAttribute != null)
