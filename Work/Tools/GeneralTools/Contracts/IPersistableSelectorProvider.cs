@@ -9,5 +9,7 @@ namespace GeneralTools.Contracts
         void PersistableSelectorsLoad<T>(string groupKey = null) where T : class, new();
 
         void PersistableSelectorsLoad();
+
+        void PersistableSelectorResetCurrent();
     }
 }

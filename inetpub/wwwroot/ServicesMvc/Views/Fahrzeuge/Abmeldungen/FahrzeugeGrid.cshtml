@@ -6,16 +6,16 @@
 
 <a class="a_btn_mini new"></a>
 
-@(Html.Telerik()
-    .Grid<AbgemeldetesFahrzeug>()
+@(Html.XTelerik()
+    .XGrid<AbgemeldetesFahrzeug>()
     .Name(gridName)
 
     .XAjaxDataBinding("AbgemeldeteFahrzeugeAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
-        columns.XBound("").ClientTemplate(historieLink);
-        columns.XBoundAll();
-        columns.XBound("").ClientTemplate(historieLink.Replace("data-placement='right'", "data-placement='left'"));
+        columns.XBound(m => m.Action1).ClientTemplate(historieLink);
+        columns.XBoundAllExcept(m => m.Action1, m => m.Action2);
+        columns.XBound(m => m.Action2).ClientTemplate(historieLink.Replace("data-placement='right'", "data-placement='left'"));
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

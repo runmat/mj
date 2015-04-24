@@ -40,5 +40,9 @@ namespace CkgDomainLogic.General.Database.Models
         public DateTime? EditDate { get; set; }
 
         public string EditUser { get; set; }
+
+
+        [NotMapped, XmlIgnore]
+        public bool PersistablePropertiesAvailable { get { return false; } }
     }
 }

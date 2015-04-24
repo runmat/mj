@@ -12,6 +12,15 @@
 
 @Html.Partial("Partial/FormPersistence/Common")
 
+@if (!Model.PersistablePropertiesAvailable)
+{
+    <div class="alert alert-error margin-top-10">
+        <i class="icon-bell margin-right-5"></i> 
+        Achtung, für diesen Selektor vom Typ <strong>@Model.GetType().Name</strong> scheinen keine als persistierbar deklarierten Properties vorhanden zu sein. <br/>
+        Es sollte mindestens eine Property mit dem Attribut <strong>[FormPersistable]</strong> dekoriert werden, damit ein Persistieren des Such-Formulars überhaupt Sinn macht!
+    </div>
+}
+
 @Html.HiddenFor(m => m.ObjectKey)
 
 <li class="dropdown user persistable-form-dropdown-menu">
@@ -25,29 +34,41 @@
         @foreach (var selector in selectors)
         {
             var isCurrentSelector = (selector.ObjectKey == Model.ObjectKey);
-            var liCssClass = "loadable";
+            var liCssClass = (isCurrentSelector ? "current" : "");
             
-            <li class="@liCssClass" id="li_dropdown_@selector.ObjectKey">
-                <span class="li-button" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
+            <li class="loadable @liCssClass" id="li_dropdown_@selector.ObjectKey">
+                <span class="li-button" title="@Localize.FormPersistableSelector_FormLoad" onclick="PersistableSelectorLoad('@selector.ObjectKey')">
                     <span class="margin-left-10 margin-right-5">@selector.ObjectName</span>
                 </span>
                 @if (!isCurrentSelector)
                 {
-                    <span class="li-button" title="@Localize.Delete" onclick="PersistableSelectorDelete('@selector.ObjectKey')">
+                    <span class="li-button" title="@Localize.FormPersistableSelector_FormDelete" onclick="PersistableSelectorDelete('@selector.ObjectKey')">
                         <i class="icon-remove"></i> 
                     </span>
                 }
+            </li>
+        }
+        @if (selectors.None())
+        {
+            <li class="" id="li_dropdown_none">
+                <span class="li-button">
+                    <span class="li-item margin-left-10 margin-right-5">@Localize.FormPersistableSelector_NoFormsAvailable</span>
+                </span>
             </li>
         }
 
     </ul>
 </li> 
 
-@Html.TextBoxFor(m => m.ObjectName, new { @class = "m-wrap medium persistable-selector-current-textbox" })
+@Html.TextBoxFor(m => m.ObjectName, new { @class = "m-wrap large persistable-selector-current-textbox placeholder-no-fix", placeholder = Localize.FormPersistableSelector_FormNamePlaceholderHint })
 
-<button class='btn mini yellow' title="@Localize.Save" onclick="PersistableSelectorSave('@Model.ObjectKey')">
+<span class='btn mini yellow' title="@Localize.FormPersistableSelector_FormSave" onclick="PersistableSelectorSave($(this), '@Model.ObjectKey')">
     <i class='icon-save'></i>
-</button>
-<button class='btn mini yellow' title="@Localize.SaveAsCopy" onclick="PersistableSelectorSaveAs('@Model.ObjectKey')">
+</span>
+<span class='btn mini yellow' title="@Localize.FormPersistableSelector_FormSaveAs" onclick="PersistableSelectorSaveAs($(this), '@Model.ObjectKey')">
     <i class='icon-copy'></i>
-</button>
+</span>
+<span class='btn mini yellow' title="@Localize.FormPersistableSelector_FormReset" onclick="PersistableSelectorClear($(this))">
+    <i class='icon-remove'></i>
+</span>
+

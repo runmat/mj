@@ -39,6 +39,8 @@ using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
 using CkgDomainLogic.UserReporting.Services;
+using CkgDomainLogic.WFM.Contracts;
+using CkgDomainLogic.WFM.Services;
 using CkgDomainLogic.Zanf.Contracts;
 using CkgDomainLogic.Zanf.Services;
 using GeneralTools.Contracts;
@@ -121,41 +123,6 @@ namespace ServicesMvc
             builder.RegisterType<StrafzettelDataServiceSAP>().As<IStrafzettelDataService>().InstancePerLifetimeScope();
             builder.RegisterType<FehlteilEtikettenDataServiceSAP>().As<IFehlteilEtikettenDataService>().InstancePerLifetimeScope();
             
-            builder.RegisterType<CocTypenDataServiceSAP>().As<ICocTypenDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<CocErfassungDataServiceSAP>().As<ICocErfassungDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<AdressenDataServiceSAP>().As<IAdressenDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<BriefVersandDataServiceSAP>().As<IBriefVersandDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<CkgDomainLogic.CoC.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.CoC.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<InfoCenterDataService>().As<IInfoCenterDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<LeasingZB1KopienDataServiceSAP>().As<ILeasingZB1KopienDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<LeasingUnzugelFzgDataServiceSAP>().As<ILeasingUnzugelFzgDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<LeasingAbmeldungDataServiceSAP>().As<ILeasingAbmeldungDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<LeasingKlaerfaelleDataServiceSAP>().As<ILeasingKlaerfaelleDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<EasyAccessDataService>().As<IEasyAccessDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceAktivcheckDataServiceSAP>().As<IFinanceAktivcheckDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FahrerDataServiceSAP>().As<IFahrerDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<LeasingCargateCsvUploadDataServiceSAP>().As<ILeasingCargateCsvUploadDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceGebuehrenauslageDataServiceSAP>().As<IFinanceGebuehrenauslageDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<LeasingSicherungsscheineDataService>().As<ILeasingSicherungsscheineDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceBewertungDataServiceSAP>().As<IFinanceBewertungDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<CustomerDocumentDataService>().As<ICustomerDocumentDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<UploadBestandsdatenDataServiceSap>().As<IUploadBestandsdatenDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<BestandsdatenDataServiceSap>().As<IBestandsdatenDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<VertragsverlaengerungDataServiceSap>().As<IVertragsverlaengerungDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<BriefbestandDataServiceSAP>().As<IBriefbestandDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceVersandsperreDataServiceSAP>().As<IFinanceVersandsperreDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceVersandsperreReportDataServiceSAP>().As<IFinanceVersandsperreReportDataService>().InstancePerLifetimeScope();
-	        builder.RegisterType<FinanceTelefonieReportDataServiceSAP>().As<IFinanceTelefonieReportDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<UploadFahrzeugeinsteuerungDataServiceSAP>().As<IUploadFahrzeugeinsteuerungDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<MahnreportDataServiceSAP>().As<IMahnreportDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<DatenOhneDokumenteDataServiceSAP>().As<IDatenOhneDokumenteDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<ErweiterterBriefbestandDataServiceSAP>().As<IErweiterterBriefbestandDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<AbweichungenDataServiceSAP>().As<IAbweichungenDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<DokumenteOhneDatenDataServiceSAP>().As<IDokumenteOhneDatenDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceMahnstufenDataServiceSAP>().As<IFinanceMahnstufenDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceMahnstopDataServiceSAP>().As<IFinanceMahnstopDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<MahnsperreDataServiceSAP>().As<IMahnsperreDataService>().InstancePerLifetimeScope();
-            builder.RegisterType<FinanceMahnungenVorErsteingangDataServiceSAP>().As<IFinanceMahnungenVorErsteingangDataService>().InstancePerLifetimeScope();
             builder.RegisterType<CocTypenDataServiceSAP>().As<ICocTypenDataService>().InstancePerHttpRequest();
             builder.RegisterType<CocErfassungDataServiceSAP>().As<ICocErfassungDataService>().InstancePerHttpRequest();
             builder.RegisterType<AdressenDataServiceSAP>().As<IAdressenDataService>().InstancePerHttpRequest();
@@ -212,15 +179,16 @@ namespace ServicesMvc
             builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerLifetimeScope();
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceTest>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
             builder.RegisterType<NichtDurchfuehrbZulDataServiceSAP>().As<INichtDurchfuehrbZulDataService>().InstancePerHttpRequest();
 
-            builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<WfmDataServiceSAP>().As<IWfmDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<ModellIdDataServiceSAP>().As<IModellIdDataService>().InstancePerHttpRequest();
 

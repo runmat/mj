@@ -9,7 +9,7 @@
          font-weight: bold!important;
          margin-right: 5px;
          display: inline;
-         float: right;
+         margin-left: 20px;
      }
      
      input[type=text].persistable-selector-current-textbox {
@@ -100,6 +100,9 @@
      ul.dropdown-menu li.loadable {
          cursor: pointer!important;
      }
+     ul.dropdown-menu li.current {
+         font-weight: bold;
+     }
      ul.dropdown-menu li.loadable:hover {
          background-color: #c6c6c6;
      }
@@ -109,10 +112,15 @@
      ul.dropdown-menu li span.li-button i.icon-remove {
          float: right;
      }
+     ul.dropdown-menu li span.li-item {
+         white-space: nowrap;
+     }
      
-     .btn.mini.yellow i.icon-save, .btn.mini.yellow i.icon-copy {
+     .btn.mini.yellow i.icon-save, .btn.mini.yellow i.icon-copy, .btn.mini.yellow i.icon-remove {
          color: white;
          font-size: 1.3em;
+         padding-top: 1px;
+         display: inline-block;
      }
      .btn.mini.yellow:focus {
          outline: 0!important; 
@@ -123,54 +131,73 @@
  
 <script type="text/javascript">
 
+    App.unblockUI2($(".persistable-form-dropdown-menu").closest("form"));
+
     function PersistableSelectorDelete(objectKey) {
         var form = $(".persistable-form-dropdown-menu").closest("form");
-        AjaxSetPersistableMode("delete", objectKey, function (result) {
+        AjaxSetPersistableMode("delete", form, objectKey, function (result) {
             form.submit();
         });
     }
 
     function PersistableSelectorLoad(objectKey) {
         var form = $(".persistable-form-dropdown-menu").closest("form");
-        AjaxSetPersistableMode("load", objectKey, function (result) {
+        AjaxSetPersistableMode("load", form, objectKey, function (result) {
             form.submit();
         });
     }
 
 
-    function PersistableSelectorSave(objectKey) {
-        var form = $(this).closest("form");
-        AjaxSetPersistableMode("save", objectKey, function (result) {
+    function PersistableSelectorSave(span, objectKey) {
+        var form = span.closest("form");
+        AjaxSetPersistableMode("save", form, objectKey, function (result) {
             form.submit();
         });
     }
 
-    function PersistableSelectorSaveAs(objectKey) {
-        var form = $(this).closest("form");
-        AjaxSetPersistableMode("saveas", objectKey, function (result) {
+    function PersistableSelectorSaveAs(span, objectKey) {
+        var form = span.closest("form");
+        AjaxSetPersistableMode("saveas", form, objectKey, function (result) {
             form.submit();
         });
     }
+
+    function PersistableSelectorClear(span) {
+        var form = span.closest("form");
+        AjaxSetPersistableMode("clear", form, "", function (result) {
+            form.submit();
+        });
+    }
+
 
     function PersistableSelectorSaveGrid(objectKey) {
-        AjaxSetPersistableMode("savegrid", objectKey, function (result) {
-            if (result.success)
-                alert("grid successfully saved!");
-            else
-                alert("CAUTION, grid saving ERROR!");
+        AjaxSetPersistableMode("savegrid", null, objectKey, function (result) {
+            if (result.success) {
+                GridCaptionHintShowAsSuccess("@Localize.FormPersistableSelector_FormSaveGridSuccessful.ToJavascriptString()");
+                setTimeout(function () {
+                    GridCaptionHintHide();
+                }, 1500);
+            } else
+                alert("ACHTUNG, Fehler beim Speichern der Grid Einstellungen!");
         });
     }
 
-    function AjaxSetPersistableMode(mode, objectKey, callBackFunction) {
+    function AjaxSetPersistableMode(mode, form, objectKey, callBackFunction) {
+
+        if (form != null) {
+            App.blockUI2(form);
+        }
 
         $.ajax(
             {
                 type: "POST",
                 url: "PersistablePartialViewSetMode",
                 data: { mode: mode, objectKey: objectKey },
-                loadingShow: true,
+                loadingShow: false,
                 success: function (result) {
+                    
                     callBackFunction(result);
+
                 }
             });
         

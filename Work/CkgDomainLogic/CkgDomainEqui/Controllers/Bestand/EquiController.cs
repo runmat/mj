@@ -29,7 +29,7 @@ namespace ServicesMvc.Controllers
 
             EquiGrunddatenViewModel.CheckInput(ModelState.AddModelError);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !PersistableMode)
             {
                 EquiGrunddatenViewModel.LoadEquis();
                 if (EquiGrunddatenViewModel.GrunddatenEquis.None())

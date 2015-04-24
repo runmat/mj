@@ -19,8 +19,6 @@ namespace CkgDomainLogic.General.Services
     /// </summary>
     public class LogonContextDataServiceDadServices : LogonContextDataServiceBase, ILogonContextDataService
     {
-        public string CurrentGridColumns { get; set; }
-
         private IEnumerable<LoginUserMessageConfirmations> _loginUserMessageConfirmations;
 
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages

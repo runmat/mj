@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using GeneralTools.Services;
 using Microsoft.VisualBasic;
 using SapORM.Contracts;
@@ -23,6 +24,16 @@ namespace SapORM.Services
 	    private bool _clearMe;
 
 		private ISapConnection _sapConnection;
+
+        private string[] _acceptableErpExceptions = new string[]
+            {
+                "NRF",
+                "NO_DATA",
+                "NO_RESULT",
+                "ERR_NO_DATA",
+                "ERR_DAT",
+                "NO_HEADER"
+            };
 
 	    public string BapiName { get; set; }
 
@@ -89,9 +100,9 @@ namespace SapORM.Services
 			return newDataTableCopy;
 		}
 
+        private byte[] _lastByteArrayImportParameter = null;
 
-
-        public bool CallBapi(ILogService logService = null, ILogonContext logonContext = null)
+        public bool CallBapi(ILogService logService = null, ILogonContext logonContext = null, bool modelGenerationMode = false)
 		{
 		    var itemsCollect = new RFCTableCollection();
 
@@ -120,9 +131,14 @@ namespace SapORM.Services
 
 							if (paraRow[1].ToString() != "DATE") {
                                 // Wenn kein DBNull-Wert dann Inhalt 1:1 kopieren
-								if (!Information.IsDBNull(paraRow[2])) {
-									func.Exports[paraRow[0].ToString()].ParamValue = paraRow[2];                                    
-								} 
+								if (!Information.IsDBNull(paraRow[2]))
+								{
+								    var val = paraRow[2];
+								    if ((string) val == "System.Byte[]")
+								        func.Exports[paraRow[0].ToString()].ParamValue = _lastByteArrayImportParameter; 
+                                    else
+                                        func.Exports[paraRow[0].ToString()].ParamValue = paraRow[2];
+                                } 
                                 else if (func.Exports[paraRow[0].ToString()].Type == RFCTYPE.CHAR) // Wenn Feldtyp Character einen Leerwert definieren 
                                 { 
 									if (func.Exports[paraRow[0].ToString()].ParamValue.ToString().Length > 0) {
@@ -279,7 +295,25 @@ namespace SapORM.Services
 
                 stopwatch = Stopwatch.StartNew();
 
+                try
+                {
 				func.Execute();
+                }
+                catch (ERPException erpEx)
+                {
+                    // No-Data-Exceptions sollen nicht zu Exceptions führen
+                    if (erpEx.Source.Contains("ERPConnect35")
+                        && !String.IsNullOrEmpty(erpEx.ABAPException)
+                        && Array.IndexOf(_acceptableErpExceptions, erpEx.ABAPException.ToUpper()) > -1)
+                    {
+                        if (!modelGenerationMode)
+                            return false;
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
 
                 if (stopwatch != null)
                     stopwatch.Stop();
@@ -289,18 +323,21 @@ namespace SapORM.Services
                 //Export-Tabellen
 				foreach (var tmpRow in Export.Select("ElementCode='TABLE'")) {
 					// Exportparameter Struktur oder Tabelle
-					foreach (RFCParameter it in func.Imports) {
-						if (it.IsStructure()) {
-							if (it.Name == ((DataTable)tmpRow[0]).TableName) {
+                    foreach (RFCParameter it in func.Imports)
+                    {
+                        if (it.IsStructure())
+                        {
+                            if (it.Name == ((DataTable)tmpRow[0]).TableName)
+                            {
 								item = it.ToStructure();
-							    var tblTemp = new DataTable {TableName = it.Name};
-							    foreach (RFCTableColumn col in item.Columns) {
-									tblTemp.Columns.Add(col.Name, typeof(String));
-								}
+							    var tblTemp = ((DataTable) tmpRow[0]).Clone();
+
 							    var row = tblTemp.NewRow();
 
-								foreach (RFCTableColumn col in item.Columns) {
-									switch (col.Type) {
+                                foreach (RFCTableColumn col in item.Columns)
+                                {
+                                    switch (col.Type)
+                                    {
 										case RFCTYPE.NUM:
 											row[col.Name] = item[col.Name].ToString();
 											break;
@@ -308,21 +345,28 @@ namespace SapORM.Services
 											row[col.Name] = item[col.Name].ToString();
 											break;
 										case RFCTYPE.BCD:
-											if (ReferenceEquals(item[col.Name], DBNull.Value)) {
+                                            if (ReferenceEquals(item[col.Name], DBNull.Value))
+                                            {
 												row[col.Name] = "";
 											}
 											break;
 										case RFCTYPE.DATE:
-											if (item[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(item[col.Name].ToString())) {
-												row[col.Name] = "";
-											} else {
+                                            if (item[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(item[col.Name].ToString()))
+                                            {
+												row[col.Name] = DBNull.Value;
+                                            }
+                                            else
+                                            {
 												row[col.Name] = ConversionUtils.SAPDate2NetDate(item[col.Name].ToString());
 											}
 											break;
 										case RFCTYPE.TIME:
-											if (item[col.Name].ToString() == "000000" || string.IsNullOrEmpty(item[col.Name].ToString())) {
+                                            if (item[col.Name].ToString() == "000000" || string.IsNullOrEmpty(item[col.Name].ToString()))
+                                            {
 												row[col.Name] = "";
-											} else {
+                                            }
+                                            else
+                                            {
 												row[col.Name] = item[col.Name].ToString();
 											}
 											break;
@@ -330,21 +374,27 @@ namespace SapORM.Services
 										case RFCTYPE.ITAB:
 
 											break;
-									}
+                                    }
 								}
 								tblTemp.Rows.Add(row);
 								tblTemp.AcceptChanges();
 								tmpRow[0] = tblTemp;
-							} else if (it.IsTable()) {
+                            }
+                            else if (it.IsTable())
+                            {
 								var rfcT = it.ToTable();
 
-								if (rfcT.Name == ((DataTable)tmpRow[0]).TableName) {
+                                if (rfcT.Name == ((DataTable)tmpRow[0]).TableName)
+                                {
 									var tblTemp = rfcT.ToADOTable();
 
 
-									foreach (RFCTableColumn col in rfcT.Columns) {
-										foreach (DataRow row in tblTemp.Rows) {
-											switch (col.Type) {
+                                    foreach (RFCTableColumn col in rfcT.Columns)
+                                    {
+                                        foreach (DataRow row in tblTemp.Rows)
+                                        {
+                                            switch (col.Type)
+                                            {
 
 												case RFCTYPE.NUM:
 													row[col.Name] = row[col.Name].ToString();
@@ -354,14 +404,18 @@ namespace SapORM.Services
 													row[col.Name] = row[col.Name].ToString();
 													break;
 												case RFCTYPE.BCD:
-													if (ReferenceEquals(row[col.Name], DBNull.Value)) {
+                                                    if (ReferenceEquals(row[col.Name], DBNull.Value))
+                                                    {
 														row[col.Name] = "";
 													}
 													break;
 												case RFCTYPE.DATE:
-													if (row[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(row[col.Name].ToString())) {
+                                                    if (row[col.Name].ToString() == "00000000" || string.IsNullOrEmpty(row[col.Name].ToString()))
+                                                    {
 														row[col.Name] = "";
-													} else {
+                                                    }
+                                                    else
+                                                    {
 														row[col.Name] = ConversionUtils.SAPDate2NetDate(row[col.Name].ToString());
 													}
 													break;
@@ -370,13 +424,16 @@ namespace SapORM.Services
 
 													break;
 												case RFCTYPE.TIME:
-													if (row[col.Name].ToString() == "000000" || string.IsNullOrEmpty(row[col.Name].ToString())) {
+                                                    if (row[col.Name].ToString() == "000000" || string.IsNullOrEmpty(row[col.Name].ToString()))
+                                                    {
 														row[col.Name] = "";
-													} else {
+                                                    }
+                                                    else
+                                                    {
 														row[col.Name] = row[col.Name].ToString();
 													}
 													break;
-											}
+                                            }
 
 										}
 
@@ -455,7 +512,6 @@ namespace SapORM.Services
 			} 
             catch (Exception generalException)
             {
-
                 double callduration = -1;
                 if (stopwatch != null && stopwatch.IsRunning)
                 {
@@ -463,46 +519,13 @@ namespace SapORM.Services
                     callduration = stopwatch.Elapsed.TotalSeconds;
                 }
 
-
                 PreserveStackTrace(generalException);
 
                 LogSapBapiCall(logService, logonContext, true, callduration);
 
-                // ERPException NRF, NO_DATA, ERR_NO_DATA, und ERR_DATA hier behandeln und den Aufrufer einen false zurückgeben
-                // Alle anderen Exceptions NICHT hier behandeln und weitergeben
-                // Anstelle von throw new Exception(generalException.Message); komme ich hier mit einem throw aus
-                // - der original Exception ist erhalten und wird von der Fehlerbehandlung abgefangen
-                // - der original Stacktrace ist erhalten (PreserveStackTrace ist aufgerufen worden) 
-                var ex = generalException as ERPException;
-			    if (ex != null && ex.Source.Contains("ERPConnect35")) {
-					if (ex.ABAPException.Length > 0) {
-                        if (ex.ABAPException.ToUpper() == "NRF")
-                            return false;
-                        if (ex.ABAPException.ToUpper() == "NO_DATA")
-                            return false;
-                        if (ex.ABAPException.ToUpper() == "NO_RESULT")
-                            return false;
-                        if (ex.ABAPException.ToUpper() == "ERR_NO_DATA")
-                            return false;
-                        if (ex.ABAPException.ToUpper() == "ERR_DAT")
-                            return false;
-
 					    
 						throw;
 					} 
-                    else if (ex.Message.Contains("Connect to SAP gateway failed")) {
-                        
-                        throw;
-					} 
-                    else
-                    {
-                        throw;
-					}
-				} 
-                else {
-                    throw;
-				}
-			} 
             finally 
             {
                 if ((con != null)) {
@@ -668,8 +691,11 @@ namespace SapORM.Services
 
 		public void SetImportParameter(string name, object wert)
 		{
-			try 
-            {
+			try
+			{
+			    var bytes = wert as byte[];
+			    if (bytes != null)
+                    _lastByteArrayImportParameter = bytes;
 				((DataTable)Import.Select("ElementCode='PARA'")[0][0]).Select("PARAMETER='" + name + "'")[0][2] = wert;
 			} 
             catch (Exception) {

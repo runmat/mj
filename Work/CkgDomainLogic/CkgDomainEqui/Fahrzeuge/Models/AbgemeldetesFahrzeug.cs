@@ -4,6 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
+    [GridColumnsAutoPersist]
     public class AbgemeldetesFahrzeug
     {
         [LocalizedDisplay(LocalizeConstants.Status)]
@@ -62,5 +63,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [GridHidden]
         public string HistorieCssClass { get { return HistorieAvailable ? "" : "hide"; } }
+
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Action1 { get; set; }
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.ActionDot)]
+        public string Action2 { get; set; }
     }
 }

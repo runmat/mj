@@ -99,6 +99,8 @@
     <Compile Include="Controllers\KlaerfaelleVhc\EquiController.cs" />
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
+    <Compile Include="Controllers\WfmController.cs" />
+    <Compile Include="Controllers\WFM\WfmController.cs" />
     <Compile Include="Controllers\ModellIdController.cs" />
     <Compile Include="Controllers\ZanfController.cs" />
     <Compile Include="Controllers\VersandBeauftragungen\EquipController.cs" />
@@ -198,6 +200,18 @@
     <Compile Include="Fahrzeuge\Models\AbgemeldeteFahrzeugeSelektor.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugeDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\AbgemeldeteFahrzeugeViewModel.cs" />
+    <Compile Include="WFM\Contracts\IWfmDataService.cs" />
+    <Compile Include="WFM\Models\AppModelmappings.cs" />
+    <Compile Include="WFM\Models\WfmDokument.cs" />
+    <Compile Include="WFM\Models\WfmToDo.cs" />
+    <Compile Include="WFM\Models\WfmDokumentInfo.cs" />
+    <Compile Include="WFM\Models\WfmInfo.cs" />
+    <Compile Include="WFM\Models\WfmAuftragFeldname.cs" />
+    <Compile Include="WFM\Models\MultiSelectModels.cs" />
+    <Compile Include="WFM\Models\WfmAuftrag.cs" />
+    <Compile Include="WFM\Models\WfmAuftragSelektor.cs" />
+    <Compile Include="WFM\Services\WfmDataServiceSAP.cs" />
+    <Compile Include="WFM\ViewModels\WfmViewModel.cs" />
     <Compile Include="ModellId\Contracts\IModellIdDataService.cs" />
     <Compile Include="ModellId\Models\AppModelmappings.cs" />
     <Compile Include="ModellId\Models\ModellId.cs" />

@@ -11,6 +11,7 @@ using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using MvcTools.Models;
 using MvcTools.Web;
 
 namespace CkgDomainLogic.General.Services
@@ -102,6 +103,18 @@ namespace CkgDomainLogic.General.Services
         }
 
         public string ReturnUrl { get { return SessionHelper.GetSessionString("ReturnUrl"); } set { SessionHelper.SetSessionValue("ReturnUrl", value); } }
+
+        // only for backward compatibility:
+        public string CurrentGridColumns
+        {
+            get
+            {
+                var gridSettings = SessionHelper.GetSessionObject("GridCurrentSettings", () => new GridSettings());
+
+                return gridSettings.Columns;
+            }
+        }
+
 
         virtual public bool AppFavoritesEditSwitchOneFavorite(int appID)
         {

@@ -55,7 +55,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZulassungsAnforderungenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationRequests, dt);
 
             return new EmptyResult();
@@ -63,7 +63,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZulassungsAnforderungenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationRequests, dt, landscapeOrientation: true);
 
             return new EmptyResult();

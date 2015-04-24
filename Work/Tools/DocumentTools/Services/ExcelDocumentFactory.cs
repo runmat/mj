@@ -191,12 +191,12 @@ namespace DocumentTools.Services
 
         #region Write to Excel
 
-        public void CreateExcelGroupedDocumentAndSendAsResponse(string reportName, DataTable data, string[] subtotalColumnNames)
+        public void CreateExcelGroupedDocumentAndSendAsResponse(string reportName, DataTable data, string[] subtotalColumnNames, string groupByFirstColumn)
         {
             // Advanced Excel Export with groupings, aggregates, subtotals, etc
             // no Aspose needed anymore, based on SpreadsheetLight library + "DocumentFormat Open XML" library
 
-            var sl = SpreadsheetLightService.CreateSpreadsheetLightDocument(data, subtotalColumnNames);
+            var sl = SpreadsheetLightService.CreateSpreadsheetLightDocument(data, subtotalColumnNames, groupByFirstColumn);
             var bytes = sl.GetBytes();
             HttpContext.Current.Response.ContentType = "application/vnd.ms-excel";
             HttpContext.Current.Response.AppendHeader("Content-Disposition", string.Format("attachment; filename={0}.xlsx", reportName));

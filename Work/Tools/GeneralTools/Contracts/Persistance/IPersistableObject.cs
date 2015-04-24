@@ -12,6 +12,8 @@ namespace GeneralTools.Contracts
         DateTime? EditDate { get; set; }
 
         string EditUser { get; set; }
+
+        bool PersistablePropertiesAvailable { get; }
     }
 
     public class IPersistableObjectComparer : IEqualityComparer<IPersistableObject>

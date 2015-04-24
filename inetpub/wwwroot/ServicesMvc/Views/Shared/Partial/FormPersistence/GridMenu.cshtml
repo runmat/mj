@@ -7,7 +7,7 @@
 @{
     var gridSettings = SessionHelper.GetSessionObject("GridCurrentSettings", () => new GridSettings());
     var jCols = gridSettings.Columns.NotNullOrEmpty().GetGridColumns();
-    var gridColumnNameList = JsonConvert.SerializeObject(jCols.Select(jc => (string) jc.member.Value).ToArray());
+    var gridColumnNameList = (jCols == null ? null : JsonConvert.SerializeObject(jCols.Select(jc => (string) jc.member.Value).ToArray()));
 
     var gridGrouping = gridSettings.GroupBy.NotNullOrEmpty();
     if (gridGrouping.Contains("-"))
@@ -20,7 +20,7 @@
     <div class="persistable-selector-current-for-grid-results">
         <span class="margin-right-5">@Model.ObjectName</span>
 
-        <button id="persistable-grid-save-button" class='btn mini yellow' title="@Localize.Save">
+        <button id="persistable-grid-save-button" class='btn mini yellow' title="@Localize.FormPersistableSelector_FormSaveGrid">
             <i class='icon-save'></i>
         </button>
     </div>
@@ -35,33 +35,33 @@
     //setTimeout(function() { PrepareGridFromPersistedState(); }, 1000);
 
     $("#persistable-grid-save-button").on('click', function (e) {
-
         PersistableSelectorSaveGrid(objectKey);
 
         e.stopPropagation();
     });
 
-    var _PrepareGridFromPersistedStateFinished = false;
-    
-    function PrepareGridFromPersistedState() {
+    var _prepareGridFromPersistedStateFinished = @((gridColumnNameList == null).ToString().ToLower());
 
-        if (_PrepareGridFromPersistedStateFinished)
+    function GridPrepareFromSelectorPersistedState(grid) {
+        
+        if (_prepareGridFromPersistedStateFinished)
             return;
-
-        _PrepareGridFromPersistedStateFinished = true;
-
-        var grid = $(".FormSearchResultsGrid").find(".t-grid").data("tGrid");
-        var settingsColumns = @Html.Raw(gridColumnNameList);
+        
+        _prepareGridFromPersistedStateFinished = true;
+        
+        var settingsColumns = @Html.Raw(gridColumnNameList ?? "[]");
         var orderBy = '@gridSettings.OrderBy.NotNullOrEmpty()';
         var groupBy = '@gridGrouping';
         var filterBy = '@gridSettings.FilterBy.NotNullOrEmpty().ToJavascriptString()';
 
 
+        _filteredData_DisableDataBound = true;
+        
         //
         // 1. hide columns
         //
-        var hiddenColumns = $.grep(grid.columns, function (column, j) {
-            return (settingsColumns.indexOf(column.member) < 0); 
+        var hiddenColumns = $.grep(grid.columns, function (col, j) {
+            return (settingsColumns.indexOf(col.member) < 0); 
         });
         for (var i = 0; i < hiddenColumns.length; i++) {
             grid.hideColumn(hiddenColumns[i].member);
@@ -78,7 +78,16 @@
         
 
         //
-        // 3. filter grid 
+        // 3. grid grouping
+        //
+        grid.groups = [];
+        if (groupBy != '') {
+            grid.group(grid.columnFromMember(groupBy).title);
+        }
+        
+
+        //
+        // 4. filter grid 
         //
         // Kennzeichen~startswith~'H'~and~StandortBez~substringof~'Neuwagen'
         if (filterBy != '') {
@@ -109,48 +118,14 @@
 
 
         //
-        // 4. sort grid
+        // 5. sort grid
         //
         if (orderBy != '') {
-            //console.log(orderBy);
             grid.sort(orderBy);
         }
-        
 
-        //
-        // 5. grid grouping
-        //
-        grid.groups = [];
-        if (groupBy != '') {
-            grid.group(grid.columnFromMember(groupBy).title);
-        }
+        _filteredData_DisableDataBound = false;
+        grid.pageTo(1);
     }
-
-//    $("#persistable-grid-save-button2").on('click', function (e) {
-
-////        var orderBy = "Fahrgestellnummer-asc";
-////        var groupBy = "Standort";
-
-
-////        var filterBy = "Kennzeichen~startswith~'LB-'";
-////        var column = grid.columns[4];
-////        column.filters = [];
-////        column.filters.push({ operator: "startswith", value: "LB-" });
-
-////        column = grid.columns[5];
-////        column.filters = [];
-////        column.filters.push({ operator: "substringof", value: "Neuwagen" });
-
-////        grid.filter(grid.filterExpr());
-
-
-
-////        grid.sort(orderBy);
-
-////        grid.groups = [];
-////        grid.group(groupBy);
-
-//        e.stopPropagation();
-//    });
 
 </script>

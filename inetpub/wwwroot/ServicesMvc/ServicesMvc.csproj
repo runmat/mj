@@ -2502,6 +2502,9 @@
     <Content Include="Views\Leasing\CsvUpload\Receipt.cshtml" />
     <Content Include="Views\CocBeauftragung\SelbstDruck.cshtml" />
     <Content Include="Views\CocBeauftragung\VersandAdresseSelbstDruck.cshtml" />
+    <Content Include="Areas\Common\Content\Web.config" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsScripts.cshtml" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsStyles.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
     <Content Include="Areas\Web.config" />
@@ -2519,7 +2522,6 @@
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
-    <Content Include="Areas\Common\Content\Web.config" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4299,6 +4301,22 @@
     <Content Include="Views\Shared\Partial\FormPersistence\Common.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\GridMenu.cshtml" />
+    <Content Include="Views\Test\Cerberus.cshtml" />
+    <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
+    <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeSuche.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftragsDetail.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Uebersicht.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Informationen.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\InformationenGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Dokumente.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Aufgaben.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\DokumenteGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
+    <Content Include="Views\Shared\Partial\FormGridCurrent\SetAutoPersistColumns.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\GridMenuReset.cshtml" />
     <Content Include="Views\ModellId\Verwaltung.cshtml" />
     <Content Include="Views\ModellId\Partial\Common.cshtml" />
     <Content Include="Views\ModellId\Partial\Grid.cshtml" />
