@@ -1,5 +1,6 @@
 Imports System.Configuration
 Imports System.Web
+Imports GeneralTools.Models
 Imports WebTools.Services
 
 
@@ -2828,6 +2829,23 @@ Namespace Kernel.Security
             End Try
 
         End Sub
+
+        Public Function GetUserReferenceValueByReferenceType(ByVal referenceType As Referenzfeldtyp) As String
+            If Customer.ReferenceType1 = referenceType.ToString() Then
+                Return Reference
+            End If
+
+            If Customer.ReferenceType2 = referenceType.ToString() Then
+                Return Reference2
+            End If
+
+            If Customer.ReferenceType3 = referenceType.ToString() Then
+                Return Reference3
+            End If
+
+            Return ""
+
+        End Function
 
 #End Region
 
