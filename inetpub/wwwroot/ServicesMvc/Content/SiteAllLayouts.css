@@ -1224,3 +1224,10 @@ div.controls-width-400 .controls {
     color: orange;
     font-size: 0.9em;
 }
+
+button.btn.copy {
+    width: 35px!important;
+}
+button.btn.copy i.icon-copy {
+    color: white!important;
+}
