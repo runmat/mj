@@ -19,7 +19,11 @@ namespace ServicesMvc.Common.Controllers
     {
         public override string DataContextKey { get { return "GridAdminViewModel"; } }
 
-        public GridAdminViewModel ViewModel { get { return GetViewModel<GridAdminViewModel>(); } }
+        public GridAdminViewModel ViewModel
+        {
+            get { return GetViewModel<GridAdminViewModel>(); }
+            set { SetViewModel(value); }
+        }
 
         public GridAdminController(IAppSettings appSettings, ILogonContextDataService logonContext, IGridAdminDataService gridAdminDataService)
             : base(appSettings, logonContext)
@@ -58,6 +62,7 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult OnCustomerChanged(int customerId)
         {
             ViewModel.LoadUserForCustomer(customerId);
@@ -76,6 +81,7 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public ActionResult OnUserChanged(int userId)
         {
             ViewModel.SetCurrentUser(userId);
@@ -89,9 +95,12 @@ namespace ServicesMvc.Common.Controllers
         [AllowAnonymous]
         public ActionResult Test()
         {
-            ViewModel.ReportSettings = new ReportSolution();
-
-            TryUserLogon("mjecardocu");
+            ViewModel.ReportSettings = new ReportSolution
+                {
+                    AdminIsAuthorized = true,
+                    AdminUserName = "JenzenM",
+                    AppID = 1731,
+                };
 
             return View(ViewModel);
         }
@@ -100,20 +109,30 @@ namespace ServicesMvc.Common.Controllers
         [AllowAnonymous]
         public ActionResult ReportSolution(string un)
         {
-            if (!ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un)))
-                return View(ViewModel);
+            ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un));
+            
+            return View(ViewModel);
+        }
 
-            TryUserLogon("mjecardocu");
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult ReportSolutionReroute()
+        {
+            var currentValidUser = ViewModel.GetCurrentValidUser();
 
-            return RedirectPermanent("~/Strafzettel/Report");
+            TryUserLogon(currentValidUser.Username);
+
+            return View(ViewModel);
         }
 
         void TryUserLogon(string userName)
         {
             var orgDataService = ViewModel.DataService;
             var orgAppSettings = ViewModel.AppSettings;
-            
+
+            var vmOrg = ViewModel;
             UrlLogOn(userName, null, null);
+            ViewModel = vmOrg;
 
             InitViewModel(ViewModel, orgAppSettings, LogonContext, orgDataService);
         }

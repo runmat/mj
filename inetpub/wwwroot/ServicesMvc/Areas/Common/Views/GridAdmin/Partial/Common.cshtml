@@ -1,19 +1,22 @@
 ﻿<style type="text/css">
      
      #CustomerUserSelectionDiv {
-         margin-top: 50px;
+         margin-top: 30px;
      }
      
     .span4 a {
         text-align: left!important;
     }     
+    
+    .alert-user-amount {
+        font-size: 0.85em;
+    }
 </style>
 
 <script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
 
 <script type="text/javascript">
-
 
     function FormPreparePrivate() {
         InitDropdowns();
@@ -26,56 +29,60 @@
     function InitDropdowns() {
         $('#customer-dropdown').select2({
             allowClear: true
-        }).on("change", function (e) {
-
-            $("#user-control-group").addClass("hide");
-            $(".form-actions").addClass("hide");
-
-            if (e.val == -1)
-                return;
-
-            $.ajax({
-                type: "POST",
-                url: "OnCustomerChanged",
-                data: { customerId: e.val },
-                loadingShow: false,
-                success: function (result) {
-                    if (!result.success)
-                        return;
-
-                    PopulateDropdown($("#user-dropdown"), result.users);
-
-                    $('#user-dropdown').select2("destroy");
-
-                    $('#user-dropdown').select2({
-                        allowClear: true
-                    }).off("change").on("change", function (user) {
-                        OnUserChanged(user.val);
-                    });
-
-                    if (result.users.length <= 1)
-                        return;
-
-                    SpanAlertSuccess("message", "Wählen Sie nun noch optional einen User (dieser mag ggfls. relevant sein für gültige Daten im Report-Grid)", 8000);
-                    $("#user-control-group").removeClass("hide");
-                    $(".form-actions").removeClass("hide");
-                }
-            });
+        }).off("change").on("change", function (e) {
+            OnCustomerChanged(e.val);
         });
 
         setTimeout(function () {
             $('#customer-dropdown').data('select2').open();
         }, 100);
     }
-    
+
+    function OnCustomerChanged(customerId) {
+        $("#user-control-group").addClass("hide");
+        $(".alert-user").addClass("hide");
+        $(".form-actions").addClass("hide");
+
+        if (customerId == -1)
+            return;
+        
+        $.ajax({
+            type: "POST",
+            url: "OnCustomerChanged",
+            data: { customerId: customerId },
+            loadingShow: false,
+            success: function (result) {
+                if (!result.success)
+                    return;
+
+                PopulateDropdown($("#user-dropdown"), result.users);
+
+                $('#user-dropdown').select2("destroy");
+
+                $('#user-dropdown').select2({
+                    allowClear: true
+                }).off("change").on("change", function (user) {
+                    OnUserChanged(user.val);
+                });
+
+                if (result.users.length <= 1)
+                    return;
+
+                $("#alert-user-amount").html((result.users.length-1) + " User für diesen Kunden gefunden");
+
+                $("#user-control-group").removeClass("hide");
+                $(".alert-user").removeClass("hide");
+                $(".form-actions").removeClass("hide");
+            }
+        });
+    }
+
     function OnUserChanged(userId) {
         $.ajax({
             type: "POST",
             url: "OnUserChanged",
             data: { userId: userId },
-            loadingShow: false,
-            success: function (result) {
-            }
+            loadingShow: false
         });
     }
     
@@ -85,9 +92,16 @@
             dropdown.append($("<option />").val(val.ID).text(val.Name));
             dropdown.val(0);
         });
+    }
 
-        // val(xxx):
-        // $example.val("CA").trigger("change");
-    }    
+    function ShowHideUserDetailInfo() {
+        if ($("#user-details-info").hasClass("hide")) {
+            $("#user-details-info").removeClass("hide");
+            $("#user-details-button").text("Info schließen ...");
+        } else {
+            $("#user-details-info").addClass("hide");
+            $("#user-details-button").text("Mehr Infos ...");
+        }
+    }
     
 </script>

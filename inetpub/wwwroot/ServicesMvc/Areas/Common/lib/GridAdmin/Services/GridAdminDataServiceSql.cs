@@ -1,6 +1,7 @@
 ﻿// ReSharper disable RedundantUsingDirective
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using CkgDomainLogic.DomainCommon.Contracts;
 using System.Linq;
 using CkgDomainLogic.General.Contracts;
@@ -36,6 +37,12 @@ namespace CkgDomainLogic.DomainCommon.Services
         {
             var ct = CreateDbContext(ConnectionStringWorkServer);
             return ct.GetUserForCustomer(customer);
+        }
+
+        public string GetAppUrl(int appId)
+        {
+            var ct = CreateDbContext(ConnectionStringWorkServer);
+            return ct.Database.SqlQuery<string>("select AppURL from Application where AppID = {0}", appId).FirstOrDefault();
         }
 
 

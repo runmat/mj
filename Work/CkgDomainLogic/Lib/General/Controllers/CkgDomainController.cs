@@ -118,7 +118,6 @@ namespace CkgDomainLogic.General.Controllers
             if (LogonContext != null && LogonContext.UserName.IsNotNullOrEmpty() && SessionHelper.GetSessionString(typeName + "_valid").IsNullOrEmpty())
             {
                 // User Context changed => a probably stored viewModel should abandon!
-                SessionHelper.SetSessionValue(typeName + "_valid", "valid");
                 SetViewModel<T>(null);
             }
 
@@ -131,6 +130,8 @@ namespace CkgDomainLogic.General.Controllers
 
         protected void SetViewModel<T>(T model) where T : class, new()
         {
+            var typeName = typeof(T).Name;
+            SessionHelper.SetSessionValue(typeName + "_valid", "valid");
             SessionStore<T>.Model = model;
         }
 

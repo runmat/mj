@@ -1,42 +1,54 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.GridAdminViewModel
 
+<h3 class="page-title">
+    Report Solution <small>Tool</small>
+</h3>
+
 <div class="form-horizontal" id="CustomerUserSelectionDiv">
     
-    <div class="row-fluid">
-        <div class="span4">
 
-            <div class="control-group">
-                <label class="control-label">@Localize.Customer @Html.RequiredIndicator("")</label>
-                <div class="controls">
-                    <select id="customer-dropdown" class="m-wrap medium select2">
-                        @foreach (var customer in Model.Customers)
-                        {
-                            <option value="@customer.CustomerID">@customer.Customername</option>
-                        }
-                    </select>
-                </div>
-            </div>    
-        
-        </div>    
-        <div class="span4">
-            
-            <div id="user-control-group" class="control-group hide">
-                <label class="control-label">@Localize.User</label>
-                <div class="controls">
-                    <select id="user-dropdown" class="m-wrap medium select2">
-                    </select>
-                </div>
-            </div>    
-
+    <div class="control-group">
+        <label class="control-label">@Localize.Customer <span class="requiredField requiredFieldMarker">*</span></label>
+        <div class="controls">
+            <select id="customer-dropdown" class="m-wrap medium select2">
+                @foreach (var customer in Model.Customers)
+                {
+                    <option value="@customer.CustomerID">@customer.Customername</option>
+                }
+            </select>
         </div>
-    </div>
+    </div>    
 
-    @Html.SpanAlert("message")
+    <div class="alert alert-success alert-user hide margin-left-5">
+        <span class="margin-right-20">Wählen Sie nun noch bei Bedarf einen User.</span>
+    
+        <button id="user-details-button" onclick="ShowHideUserDetailInfo();" class="btn mini red">Mehr Infos ...</button>
+        <span id="user-details-info" class="hide">
+            <br /><br/>
+            <i class="icon-info-sign"></i> 
+            <small>
+                Die Angabe des Users ist nicht relevant für die "Report Solution", <br />
+                sondern steuert ggfls. nur die Daten für das Report-<strong>Grid - und dies auch nur innerhalb dieser Wysiwyg-Administration!</strong><br/>
+                Beispiel: <br />
+                Es kann Reports geben, die nur dann einen Grid-Output erzeugen, wenn bestimmte Referenzwerte im Web-User gesetzt sind.<br/>
+                In diesen Fällen ist es hilfreich, hier noch einen expliziten User anzugeben.
+            </small>
+        </span>
+    </div>
+            
+    <div id="user-control-group" class="control-group hide">
+        <label class="control-label">@Localize.User</label>
+        <div class="controls">
+            <select id="user-dropdown" class="m-wrap medium select2">
+            </select>
+            <span class="alert alert-success margin-left-10 alert-user-amount"><i class="icon-info-sign margin-right-5"></i> <span id="alert-user-amount"></span></span>
+        </div>
+    </div>    
 
     @Html.FormRequiredFieldsSummary()
 
     <div class="form-actions hide">
-        <button class='btn blue'><i class='icon-chevron-right margin-right-5'></i>@Localize.Continue</button>
+        <a href="ReportSolutionReroute" class='btn blue'><i class='icon-chevron-right margin-right-5'></i>@Localize.Continue</a>
     </div>
 
 </div>

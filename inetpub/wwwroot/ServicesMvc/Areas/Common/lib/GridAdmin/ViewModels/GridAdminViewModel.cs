@@ -125,5 +125,21 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             CurrentUser = Users.FirstOrDefault(user => user.UserID == userId);
         }
+
+        public User GetCurrentValidUser()
+        {
+            if (CurrentUser != null)
+                return CurrentUser;
+
+            return Users.FirstOrDefault(user => user.UserID > 0);
+        }
+
+        public string GetRelativeAppUrl()
+        {
+            var appUrl = DataService.GetAppUrl(ReportSettings.AppID);
+            appUrl = LogonContext.FormatUrl(appUrl).ToString();
+
+            return appUrl;
+        }
     }
 }
