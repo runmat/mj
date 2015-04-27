@@ -21,7 +21,7 @@ namespace CkgDomainLogic.FzgModelle.Models
         [Length(20)]
         public string ID { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
+        [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         [GridHidden]
         [Required]
         [Length(4)]

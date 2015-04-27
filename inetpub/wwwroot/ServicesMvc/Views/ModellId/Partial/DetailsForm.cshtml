@@ -12,18 +12,18 @@
         
         @Html.HiddenFor(m => m.ObjectKey)
         @Html.HiddenFor(m => m.InsertModeTmp)
+        @Html.HiddenFor(m => m.HerstellerName)
 
         if (Model.InsertModeTmp)
         {
-            @Html.FormTextBoxFor(m => m.ID, new { @class = "m-wrap medium" })
+            @Html.FormTextBoxFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
         }
         else
         {
             @Html.HiddenFor(m => m.ID)
-            @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium" })
+            @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
         }
         
-        @Html.FormTextBlockFor(m => m.HerstellerName, new { @class = "m-wrap large", col = "left" })
         @Html.FormDropDownListFor(m => m.HerstellerCode, Model.HerstellerList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
 
         @Html.FormTextBoxFor(m => m.Bezeichnung, new { @class = "m-wrap large", col = "left" })
