@@ -587,7 +587,8 @@ namespace AppZulassungsdienst.lib
 
                 // Liste aktualisieren
                 Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
-                AddVorgangToVorgangsliste(kopfdaten, AktuellerVorgang.Bankdaten, AktuellerVorgang.Adressdaten, AktuellerVorgang.Positionen, kundenStamm);
+                if (kopfdaten.Flieger == SelFlieger)
+                    AddVorgangToVorgangsliste(kopfdaten, AktuellerVorgang.Bankdaten, AktuellerVorgang.Adressdaten, AktuellerVorgang.Positionen, kundenStamm);
             });
         }
 
