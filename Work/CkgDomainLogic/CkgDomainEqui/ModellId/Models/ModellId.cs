@@ -16,12 +16,13 @@ namespace CkgDomainLogic.FzgModelle.Models
     [GridColumnsAutoPersist]
     public class ModellId : Store
     {
-        [LocalizedDisplay(LocalizeConstants.Model)]
+        [LocalizedDisplay(LocalizeConstants.ModelID)]
         [Required]
         [Length(20)]
         public string ID { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
+        [GridHidden]
         [Required]
         [Length(4)]
         public string HerstellerCode { get; set; }
