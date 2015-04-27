@@ -22,7 +22,8 @@ namespace ServicesMvc.Controllers
             ITreuhandDataService tempTreuhandDataService,
             IFahrzeugvoravisierungDataService tempfahrzeugvoravisierungDataService,
             IDispositionslisteDataService dispositionslisteDataService,
-            IZulaufEinsteuerungDataService zulaufEinsteuerungDataService
+            IZulaufEinsteuerungDataService zulaufEinsteuerungDataService,
+            IFahrzeuguebersichtDataService fahrzeuguebersichtDataService
             )
             : base(appSettings, logonContext)
         {
@@ -38,7 +39,9 @@ namespace ServicesMvc.Controllers
             InitViewModel(TreuhandverwaltungViewModel, appSettings, logonContext, tempTreuhandDataService);
             InitViewModel(FahrzeugvoravisierungViewModel, appSettings, logonContext, tempfahrzeugvoravisierungDataService);
             InitViewModel(DispositionslisteViewModel, appSettings, logonContext, dispositionslisteDataService);
-            InitViewModel(ZulaufEinsteuerungViewModel, appSettings, logonContext, zulaufEinsteuerungDataService);           
+            InitViewModel(ZulaufEinsteuerungViewModel, appSettings, logonContext, zulaufEinsteuerungDataService);
+            InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeuguebersichtDataService);
+            InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeugeDataService);           
         }
 
         private void InitModelStatics()
@@ -47,6 +50,8 @@ namespace ServicesMvc.Controllers
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.Zb2BestandSecurityFleetViewModel>;
             TreuhandverwaltungSelektor.GetViewModel =
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.TreuhandverwaltungViewModel>;
+            FahrzeuguebersichtSelektor.GetViewModel =
+                GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeuguebersichtViewModel>;
         }
     }
 }

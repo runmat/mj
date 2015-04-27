@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{
+    var gridName = "GridFahrzeuguebersicht";  
+}
+
+@(Html.Telerik()
+        .Grid<Fahrzeuguebersicht>()
+    .Name(gridName)
+   
+    .XAjaxDataBinding("FahrzeuguebersichtAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {        
+        columns.XBoundAll();   
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen).Descending())
+    .XToolBar("Fahrzeuge")
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportFahrzeuguebersichtFilteredExcel", "Fahrzeuge");
+            commands.FilteredDataCommand("ExportFahrzeuguebersichtFilteredPDF", "Fahrzeuge");
+        })
+)
+

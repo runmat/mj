@@ -107,10 +107,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             FahrzeuguebersichtsFiltered = Fahrzeuguebersichts.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
-
        
-
-
-
     }
 }

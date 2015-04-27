@@ -94,6 +94,7 @@
     <Compile Include="Controllers\EquiController.cs" />
     <Compile Include="Controllers\ErweiterterBriefbestand\EquiController.cs" />
     <Compile Include="Controllers\Fahrzeugeinsteuerung\FahrzeugeController.cs" />
+    <Compile Include="Controllers\Fahrzeuguebersicht\FahrzeugeController.cs" />
     <Compile Include="Controllers\Fahrzeugvoravisierung\FahrzeugeController.cs" />
     <Compile Include="Controllers\Fehlteiletiketten\FahrzeugeController.cs" />
     <Compile Include="Controllers\Halterabweichungen\EquiController.cs" />

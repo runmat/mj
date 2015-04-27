@@ -1,0 +1,55 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model FahrzeuguebersichtSelektor
+
+<div id="divFahrzeuguebersichtSuche">
+    @using (Ajax.BeginForm("LoadFahrzeuguebersicht", "Fahrzeuge", null,
+        new MvcAjaxOptions("divFahrzeuguebersichtSuche") { OnComplete = "ShowFahrzeuguebersicht();" }, new { id = "FahrzeuguebersichtSearchForm" }))
+    {    
+        <div class="form-horizontal">
+            
+            @Html.FormValidationSummary()
+
+            @Html.FormRadioButtonListFor(m => m.Akion, Model.Akionen.ToSelectList()) 
+
+            <div id="divOptionalSearchparams">                            
+                @Html.FormTextBoxFor(m => m.Fahrgestellnummer, new { @class = "m-wrap uppercase", col = "left" })
+                @Html.FormTextBoxFor(m => m.Kennzeichen , new { @class = "m-wrap uppercase", col = "right" })
+
+                @Html.FormTextBoxFor(m => m.Zb2Nummer, new { @class = "m-wrap uppercase", col = "left" })
+                @Html.FormTextBoxFor(m => m.ModelID , new { @class = "m-wrap uppercase", col = "right" })
+
+                @Html.FormTextBoxFor(m => m.Unitnummer, new { @class = "m-wrap uppercase", col = "left" })
+                @Html.FormTextBoxFor(m => m.Auftragsnummer , new { @class = "m-wrap uppercase", col = "right" })
+
+                @Html.FormTextBoxFor(m => m.BatchId, new { @class = "m-wrap uppercase", col = "left" })
+                @Html.FormTextBoxFor(m => m.SIPPCode , new { @class = "m-wrap uppercase", col = "right" })                                                       
+            </div> 
+            
+            @Html.FormDateRangePickerFor(m => m.EingangZb2DatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.EingangFahrzeugDatumRange, new { col = "right" })
+                           
+            @Html.FormDateRangePickerFor(m => m.BereitmeldungDatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.ZulassungDatumRange, new { col = "right" })
+            
+            <div id="divExcelupload">
+                                                
+            </div> 
+
+            @Html.FormDropDownListFor(m => m.Herstellerkennung, FahrzeuguebersichtSelektor.FahrzeugHersteller, new { @class = "m-wrap" })
+         
+            @Html.FormDropDownListFor(m => m.PDIkennung, FahrzeuguebersichtSelektor.PDIStandorte, new { @class = "m-wrap" })
+
+            @Html.FormDropDownListFor(m => m.Statuskennung, FahrzeuguebersichtSelektor.FahrzeugStatus, new { @class = "m-wrap" })
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+

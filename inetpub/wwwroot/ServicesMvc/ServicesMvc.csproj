@@ -4315,6 +4315,9 @@
     <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\ZulaufEinsteuerung\ZulaufEinsteuerungSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportZulaufEinsteuerung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
+    <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

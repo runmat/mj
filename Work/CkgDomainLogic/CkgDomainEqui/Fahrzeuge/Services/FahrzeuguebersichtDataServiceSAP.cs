@@ -43,14 +43,13 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
         public List<FahrzeuguebersichtStatus> GetFahrzeugStatus()
         {                        
-            Z_DPM_READ_AUFTR_006.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            Z_DPM_READ_AUFTR_006.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
             SAP.SetImportParameter("I_KENNUNG", "STATUS");
 
             var sapItemsEquis = Z_DPM_READ_AUFTR_006.GT_OUT.GetExportList(SAP);
             var webItemsEquis = AppModelMappings.Z_DPM_READ_AUFTR_006_GT_OUT_ToFahrzeuguebersichtStatus.Copy(sapItemsEquis).ToList();
 
             return webItemsEquis;          
-
         }
     }
 }

@@ -293,11 +293,15 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {
-                        //business.Hersteller = sap.ZKLTXT;
-                        //business.Fahrzeugzulauf = sap.FZG_EING_GES;
-                        //business.Zulassungen = sap.ZUL_GES;
-                        //business.ZBIIOhneFzgPKW = sap.BR_O_FZG_PKW;
-                        //business.ZBIIOhneFzgLKW = sap.BR_O_FZG_LKW;
+                        business.Carport = sap.KUNPDI;
+                        business.Carportname = sap.KUNPDI_TXT;
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.Zulassungsdatum = sap.REPLA_DATE;
+                        business.Unitnummer = sap.ZZREFERENZ1;
+                        business.ModelID = sap.ZZMODELL;
+                        business.Modell = sap.ZZBEZEI;
+                        business.Status = sap.STATUS_TEXT;
                     }));
             }
         }

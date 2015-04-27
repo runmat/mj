@@ -1,0 +1,74 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model FahrzeuguebersichtViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Fahrzeuguebersicht</h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Fahrzeuguebersicht/FahrzeuguebersichtSuche", Model.FahrzeuguebersichtSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divHistorie"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {        
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();        
+    }
+
+    function ShowFahrzeuguebersicht() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFahrzeuguebersicht",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowFahrzeuguebersichtSearchResult(result);                   
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowFahrzeuguebersichtSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");        
+        $("#divGrid").slideDown();               
+    }
+
+
+    function OnDataBound_GridFahrzeuguebersicht() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridFahrzeuguebersicht() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFahrzeuguebersicht() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+       
+    
+</script>
