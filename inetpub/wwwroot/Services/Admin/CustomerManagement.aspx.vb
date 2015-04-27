@@ -1125,14 +1125,20 @@ Partial Public Class CustomerManagement
         cn.Close()
         cn.Dispose()
 
-        ddlReferenzTyp1.Items.Add(New ListItem("", "0"))
-        ddlReferenzTyp2.Items.Add(New ListItem("", "0"))
-        ddlReferenzTyp3.Items.Add(New ListItem("", "0"))
+        ddlReferenzTyp1.Items.Add(New ListItem("", ""))
+        ddlReferenzTyp2.Items.Add(New ListItem("", ""))
+        ddlReferenzTyp3.Items.Add(New ListItem("", ""))
 
         For Each row As DataRow In TempTable.Rows
-            ddlReferenzTyp1.Items.Add(New ListItem(row("ReferenzTypName").ToString(), row("ReferenzTypID").ToString()))
-            ddlReferenzTyp2.Items.Add(New ListItem(row("ReferenzTypName").ToString(), row("ReferenzTypID").ToString()))
-            ddlReferenzTyp3.Items.Add(New ListItem(row("ReferenzTypName").ToString(), row("ReferenzTypID").ToString()))
+            Dim strTyp As String = row("ReferenzTyp").ToString()
+            Dim strName As String = row("ReferenzTypName").ToString()
+            If String.IsNullOrEmpty(strName) Then
+                strName = strTyp
+            End If
+
+            ddlReferenzTyp1.Items.Add(New ListItem(strName, strTyp))
+            ddlReferenzTyp2.Items.Add(New ListItem(strName, strTyp))
+            ddlReferenzTyp3.Items.Add(New ListItem(strName, strTyp))
         Next
 
     End Sub
@@ -1565,9 +1571,9 @@ Partial Public Class CustomerManagement
         ddlAccountingArea.SelectedIndex = 0
         ddlPortalLink.SelectedIndex = 0
         ddlPortalType.SelectedValue = ""
-        ddlReferenzTyp1.SelectedValue = "0"
-        ddlReferenzTyp2.SelectedValue = "0"
-        ddlReferenzTyp3.SelectedValue = "0"
+        ddlReferenzTyp1.SelectedValue = ""
+        ddlReferenzTyp2.SelectedValue = ""
+        ddlReferenzTyp3.SelectedValue = ""
         txtMvcSelectionUrl.Text = String.Empty
         ddlMvcSelectionType.SelectedValue = ""
         chkKundenSperre.Checked = False

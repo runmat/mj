@@ -51,9 +51,9 @@ Namespace Kernel.Security
         Private m_PortalType As String
         Private m_MvcSelectionUrl As String
         Private m_MvcSelectionType As String
-        Private m_ReferenceType1 As Integer
-        Private m_ReferenceType2 As Integer
-        Private m_ReferenceType3 As Integer
+        Private m_ReferenceType1 As String
+        Private m_ReferenceType2 As String
+        Private m_ReferenceType3 As String
         Private m_ReferenceType1Name As String
         Private m_ReferenceType2Name As String
         Private m_ReferenceType3Name As String
@@ -112,9 +112,9 @@ Namespace Kernel.Security
                                ByVal blnUsernameDontSendEmail As Boolean, _
                                ByVal intLoginLinkID As Integer, _
                                ByVal strPortalType As String, _
-                               ByVal intReferenzTyp1 As Integer, _
-                               ByVal intReferenzTyp2 As Integer, _
-                               ByVal intReferenzTyp3 As Integer, _
+                               ByVal strReferenzTyp1 As String, _
+                               ByVal strReferenzTyp2 As String, _
+                               ByVal strReferenzTyp3 As String, _
                                Optional ByVal intDaysUntilLock As Integer = 90, _
                                Optional ByVal intDaysUntilDelete As Integer = 9999, _
                                Optional ByVal strSDCustomerNumber As String = "", _
@@ -161,9 +161,9 @@ Namespace Kernel.Security
             m_intLoginLinkID = intLoginLinkID
             m_DcDatCredentials = New DatCredentials(strSDCustomerNumber, strSDUserName, strSDPassword, strSDUserLogin, strSDSignatur, strSDSignatur2)
             m_PortalType = strPortalType
-            m_ReferenceType1 = intReferenzTyp1
-            m_ReferenceType2 = intReferenzTyp2
-            m_ReferenceType3 = intReferenzTyp3
+            m_ReferenceType1 = strReferenzTyp1
+            m_ReferenceType2 = strReferenzTyp2
+            m_ReferenceType3 = strReferenzTyp3
             m_MvcSelectionUrl = strMvcSelectionUrl
             m_MvcSelectionType = strMvcSelectionType
         End Sub
@@ -520,19 +520,19 @@ Namespace Kernel.Security
             End Get
         End Property
 
-        Public ReadOnly Property ReferenceType1 As Integer
+        Public ReadOnly Property ReferenceType1 As String
             Get
                 Return m_ReferenceType1
             End Get
         End Property
 
-        Public ReadOnly Property ReferenceType2 As Integer
+        Public ReadOnly Property ReferenceType2 As String
             Get
                 Return m_ReferenceType2
             End Get
         End Property
 
-        Public ReadOnly Property ReferenceType3 As Integer
+        Public ReadOnly Property ReferenceType3 As String
             Get
                 Return m_ReferenceType3
             End Get
@@ -594,13 +594,13 @@ Namespace Kernel.Security
                         m_PortalType = ""
                     End Try
                     Try
-                        m_ReferenceType1 = dr("Userreferenzfeld1").ToString().ToInt(0)
-                        m_ReferenceType2 = dr("Userreferenzfeld2").ToString().ToInt(0)
-                        m_ReferenceType3 = dr("Userreferenzfeld3").ToString().ToInt(0)
+                        m_ReferenceType1 = dr("Userreferenzfeld1").ToString()
+                        m_ReferenceType2 = dr("Userreferenzfeld2").ToString()
+                        m_ReferenceType3 = dr("Userreferenzfeld3").ToString()
                     Catch
-                        m_ReferenceType1 = 0
-                        m_ReferenceType2 = 0
-                        m_ReferenceType3 = 0
+                        m_ReferenceType1 = ""
+                        m_ReferenceType2 = ""
+                        m_ReferenceType3 = ""
                     End Try
                     Try
                         m_MvcSelectionUrl = dr("MvcSelectionUrl").ToString
@@ -773,14 +773,23 @@ Namespace Kernel.Security
             Dim daReferenceTypeNames As SqlClient.SqlDataAdapter = New SqlClient.SqlDataAdapter("SELECT * FROM ReferenzTypen", cn)
             daReferenceTypeNames.Fill(tmpTable)
 
-            If m_ReferenceType1 <> 0 Then
-                m_ReferenceType1Name = tmpTable.Select("ReferenzTypID = " & ReferenceType1)(0)("ReferenzTypName").ToString()
+            If Not String.IsNullOrEmpty(m_ReferenceType1) Then
+                m_ReferenceType1Name = tmpTable.Select("ReferenzTyp = '" & ReferenceType1 & "'")(0)("ReferenzTypName").ToString()
+                If String.IsNullOrEmpty(m_ReferenceType1Name) Then
+                    m_ReferenceType1Name = m_ReferenceType1
+                End If
             End If
-            If m_ReferenceType2 <> 0 Then
-                m_ReferenceType2Name = tmpTable.Select("ReferenzTypID = " & ReferenceType2)(0)("ReferenzTypName").ToString()
+            If Not String.IsNullOrEmpty(m_ReferenceType2) Then
+                m_ReferenceType2Name = tmpTable.Select("ReferenzTyp = '" & ReferenceType2 & "'")(0)("ReferenzTypName").ToString()
+                If String.IsNullOrEmpty(m_ReferenceType2Name) Then
+                    m_ReferenceType2Name = m_ReferenceType2
+                End If
             End If
-            If m_ReferenceType3 <> 0 Then
-                m_ReferenceType3Name = tmpTable.Select("ReferenzTypID = " & ReferenceType3)(0)("ReferenzTypName").ToString()
+            If Not String.IsNullOrEmpty(m_ReferenceType3) Then
+                m_ReferenceType3Name = tmpTable.Select("ReferenzTyp = '" & ReferenceType3 & "'")(0)("ReferenzTypName").ToString()
+                If String.IsNullOrEmpty(m_ReferenceType3Name) Then
+                    m_ReferenceType3Name = m_ReferenceType3
+                End If
             End If
         End Sub
 

@@ -2404,19 +2404,19 @@ Partial Public Class UserManagement
         Dim _customer As New Customer(intCustomerID, m_User.App.Connectionstring)
 
         ' Referenzfelder initialisieren
-        If _customer.ReferenceType1 <> 0 Then
+        If Not String.IsNullOrEmpty(_customer.ReferenceType1) Then
             trReference.Visible = True
             lblReferenceType.Text = _customer.ReferenceType1Name
         Else
             trReference.Visible = False
         End If
-        If _customer.ReferenceType2 <> 0 Then
+        If Not String.IsNullOrEmpty(_customer.ReferenceType2) Then
             trReference2.Visible = True
             lblReferenceType2.Text = _customer.ReferenceType2Name
         Else
             trReference2.Visible = False
         End If
-        If _customer.ReferenceType3 <> 0 Then
+        If Not String.IsNullOrEmpty(_customer.ReferenceType3) Then
             trReference3.Visible = True
             lblReferenceType3.Text = _customer.ReferenceType3Name
         Else
