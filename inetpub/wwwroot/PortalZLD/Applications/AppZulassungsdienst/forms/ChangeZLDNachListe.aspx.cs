@@ -68,14 +68,13 @@ namespace AppZulassungsdienst.forms
             }
             if (!IsPostBack)
             {
-                Fillgrid();
-                if (objNacherf != null && objNacherf.DataFilterActive)
+                if (objNacherf != null)
                 {
-                    ddlSuche.SelectedValue = objNacherf.DataFilterProperty;
-                    txtSuche.Text = objNacherf.DataFilterValue;
-                    trSuche.Visible = true;
-                    ibtnNoFilter.Visible = true;
+                    objNacherf.DataFilterActive = false;
+                    Session["objNacherf"] = objNacherf;
                 }
+
+                Fillgrid();
             }
             else
             {
@@ -698,11 +697,27 @@ namespace AppZulassungsdienst.forms
             switch (filterMode)
             {
                 case GridFilterMode.ShowOnlyOandL:
-                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
                     break;
 
                 case GridFilterMode.ShowOnlyAandL:
-                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").ToList();
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
                     break;
 
                 default:
@@ -796,7 +811,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;

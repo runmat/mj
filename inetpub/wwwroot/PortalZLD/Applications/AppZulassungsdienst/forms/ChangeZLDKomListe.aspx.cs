@@ -68,14 +68,13 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                Fillgrid();
-                if (objKompletterf != null && objKompletterf.DataFilterActive)
+                if (objKompletterf != null)
                 {
-                    ddlSuche.SelectedValue = objKompletterf.DataFilterProperty;
-                    txtSuche.Text = objKompletterf.DataFilterValue;
-                    trSuche.Visible = true;
-                    ibtnNoFilter.Visible = true;
+                    objKompletterf.DataFilterActive = false;
+                    Session["objKompletterf"] = objKompletterf;
                 }
+
+                Fillgrid();
 
                 LadeBenutzer();
             }
@@ -775,7 +774,15 @@ namespace AppZulassungsdienst.forms
             switch (filterMode)
             {
                 case GridFilterMode.ShowOnlyOandL:
-                    srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    if (objKompletterf.DataFilterActive)
+                    {
+                        srcList = objKompletterf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objKompletterf.DataFilterProperty, objKompletterf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
                     break;
 
                 default:
@@ -873,7 +880,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
@@ -1005,7 +1012,6 @@ namespace AppZulassungsdienst.forms
                 RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
                 RadioButton rbEC = (RadioButton)gvRow.FindControl("rbEC");
                 RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
-                Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
 
                 Boolean bBar = rb.Checked;
                 Boolean bEC = rbEC.Checked;
