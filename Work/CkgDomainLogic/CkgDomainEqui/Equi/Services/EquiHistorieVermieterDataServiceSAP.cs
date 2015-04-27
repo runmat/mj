@@ -85,7 +85,14 @@ namespace CkgDomainLogic.Equi.Services
 
         public byte[] GetHistorieAsPdf(string equiNr, string meldungsNr)
         {
-            return null;
+            Z_DPM_DRUCK_FZG_HISTORIE_AVM.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            SAP.SetImportParameter("I_EQUNR", equiNr);
+            SAP.SetImportParameter("I_QMNUM", meldungsNr);
+
+            SAP.Execute();
+
+            return SAP.GetExportParameterByte("E_PDF");
         }
     }
 }
