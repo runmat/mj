@@ -65,26 +65,27 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataService.TranslatedResourceCustomerUpdate(model.CurrentTranslatedResourceCustomer);
         }
 
-        public void TrySetReportSettings(string un)
+        public bool TrySetReportSettings(string un)
         {
             ReportSettings = new ReportSolution();
 
             var items = un.NotNullOrEmpty().Split('-');
             if (items.None() || items.Count() < 3)
-                return;
+                return false;
 
             var adminDate = new DateTime(items[2].ToLong(0));
             if ((DateTime.Now - adminDate).TotalMinutes > 1)
-                return;
+                return false;
 
             var appID = items[0].ToInt();
             if (appID < 0)
-                return;
+                return false;
 
             ReportSettings.CallingDateTime = adminDate;
             ReportSettings.AppID = items[0].ToInt();
             ReportSettings.AdminUserName = items[1];
             ReportSettings.AdminIsAuthorized = true;
+            return true;
         }
     }
 }

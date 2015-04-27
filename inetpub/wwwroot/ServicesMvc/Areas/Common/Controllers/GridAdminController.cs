@@ -62,9 +62,10 @@ namespace ServicesMvc.Common.Controllers
         {
             UrlLogOn("mjecardocu", null, null);
 
-            ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un));
+            if (!ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un)))
+                return View(ViewModel);
 
-            return View(ViewModel);
+            return RedirectPermanent("~/Strafzettel/Report");
         }
     }
 }
