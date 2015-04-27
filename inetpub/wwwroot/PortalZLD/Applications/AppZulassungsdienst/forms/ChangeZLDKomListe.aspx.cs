@@ -50,7 +50,6 @@ namespace AppZulassungsdienst.forms
             objKompletterf = (KomplettZLD)Session["objKompletterf"];
 
             GridNavigation1.setGridElment(ref GridView1);
-            GridNavigation1.PagerSize = 20;
             GridNavigation1.PagerChanged += GridView1_PageIndexChanged;
             GridNavigation1.PageSizeChanged += GridView1_ddlPageSizeChanged;
 
@@ -874,7 +873,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    GridView1.DataSource = srcList.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
