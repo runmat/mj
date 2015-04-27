@@ -285,6 +285,51 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht> Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        //business.Hersteller = sap.ZKLTXT;
+                        //business.Fahrzeugzulauf = sap.FZG_EING_GES;
+                        //business.Zulassungen = sap.ZUL_GES;
+                        //business.ZBIIOhneFzgPKW = sap.BR_O_FZG_PKW;
+                        //business.ZBIIOhneFzgLKW = sap.BR_O_FZG_LKW;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, FahrzeuguebersichtStatus> Z_DPM_READ_AUFTR_006_GT_OUT_ToFahrzeuguebersichtStatus
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, FahrzeuguebersichtStatus>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.StatusKey = sap.POS_KURZTEXT;
+                        business.StatusText = sap.POS_TEXT;                        
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_LIST_PDI_001.GT_WEB, FahrzeuguebersichtPDI> Z_DPM_LIST_PDI_001_GT_WEB_ToFahrzeuguebersichtPDI
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_LIST_PDI_001.GT_WEB, FahrzeuguebersichtPDI>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.PDIKey = sap.KUNPDI;
+                        business.PDIText = sap.PDIWEB;
+                    }));
+            }
+        }
+
         #endregion
 
         
