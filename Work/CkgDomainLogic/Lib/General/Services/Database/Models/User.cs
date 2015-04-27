@@ -17,6 +17,10 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string Reference { get; set; }
 
+        public string Reference2 { get; set; }
+
+        public string Reference3 { get; set; }
+
         public string Title { get; set; }
 
         public string FirstName { get; set; }

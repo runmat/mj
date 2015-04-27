@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Models;
@@ -128,7 +129,7 @@ namespace CkgDomainLogic.Uebfuehrg.Services
 
         public void OnInit(ILogonContext logonContext, IAppSettings appSettings)
         {
-            LogonContext = logonContext;
+            LogonContext = (ILogonContextDataService)logonContext;
             AppSettings = appSettings;
         }
 
