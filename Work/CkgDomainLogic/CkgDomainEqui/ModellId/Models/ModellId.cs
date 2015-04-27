@@ -13,7 +13,6 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
-    [GridColumnsAutoPersist]
     public class ModellId : Store
     {
         [LocalizedDisplay(LocalizeConstants.ModelID)]
