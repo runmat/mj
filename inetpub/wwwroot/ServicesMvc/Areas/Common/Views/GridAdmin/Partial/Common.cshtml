@@ -27,6 +27,7 @@
     }
 
     function InitDropdowns() {
+        $('#customer-dropdown').val(0);
         $('#customer-dropdown').select2({
             allowClear: true
         }).off("change").on("change", function (e) {
@@ -83,6 +84,17 @@
             url: "OnUserChanged",
             data: { userId: userId },
             loadingShow: false
+        });
+    }
+    
+    function ReportSolutionReroute() {
+        $.ajax({
+            type: "POST",
+            url: "ReportSolutionReroute",
+            loadingShow: false,
+            success: function (result) {
+                location.href = result.url;
+            }
         });
     }
     

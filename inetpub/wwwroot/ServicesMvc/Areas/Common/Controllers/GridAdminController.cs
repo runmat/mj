@@ -35,7 +35,6 @@ namespace ServicesMvc.Common.Controllers
         [HttpPost]
         public ActionResult Edit(string columnMember)
         {
-            // ToDo: Change this to the administrated(!) Customer ID
             ViewModel.CurrentCustomerID = LogonContext.KundenNr.ToInt();
 
             var gridCurrentModelType = (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", () => null) as Type);
@@ -89,6 +88,16 @@ namespace ServicesMvc.Common.Controllers
             return new EmptyResult();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        public JsonResult ReportSolutionReroute()
+        {
+            var currentValidUser = ViewModel.GetCurrentValidUser();
+
+            TryUserLogon(currentValidUser.Username);
+
+            return Json(new { url = ViewModel.GetRelativeAppUrl() });
+        }
         
 
         [HttpGet]
@@ -111,17 +120,6 @@ namespace ServicesMvc.Common.Controllers
         {
             ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un));
             
-            return View(ViewModel);
-        }
-
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult ReportSolutionReroute()
-        {
-            var currentValidUser = ViewModel.GetCurrentValidUser();
-
-            TryUserLogon(currentValidUser.Username);
-
             return View(ViewModel);
         }
 
