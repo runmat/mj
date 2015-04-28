@@ -342,6 +342,9 @@ namespace AppZulassungsdienst.forms
             ShowHideColumns(true);
 
             ShowButtons();
+
+            calculateGebuehr();
+
             trSuche.Visible = true;
             ibtnNoFilter.Visible = true;
         }
@@ -372,6 +375,9 @@ namespace AppZulassungsdienst.forms
 
             ibtnNoFilter.Visible = false;
             ShowButtons();
+
+            calculateGebuehr();
+
             cmdContinue.Visible = false;
         }
 
@@ -393,6 +399,7 @@ namespace AppZulassungsdienst.forms
                 cmdOK.Enabled = false;
                 cmdContinue.Visible = true;
                 Fillgrid(0, "", GridFilterMode.ShowOnlyAandL);
+                trSuche.Visible = false;
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
                 lblGesamtGebBar.Text = "0,00";
@@ -534,19 +541,9 @@ namespace AppZulassungsdienst.forms
         {
             objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
-            List<ZLDVorgangUINacherfassung> liste;
+            objNacherf.DataFilterActive = false;
 
-            if (objNacherf.DataFilterActive)
-            {
-                liste = objNacherf.Vorgangsliste.Where(vg =>
-                    ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true)).ToList();
-            }
-            else
-            {
-                liste = objNacherf.Vorgangsliste;
-            }
-
-            if (liste.Count == 0)
+            if (objNacherf.Vorgangsliste.Count == 0)
             {
                 Fillgrid();
                 Result.Visible = false;
@@ -574,6 +571,7 @@ namespace AppZulassungsdienst.forms
                 ddlSuche.SelectedIndex = 0;
                 txtSuche.Text = "";
                 Fillgrid();
+                calculateGebuehr();
             }
             cmdContinue.Visible = false;
 
@@ -746,7 +744,9 @@ namespace AppZulassungsdienst.forms
                     cmdalleEC.Enabled = false;
                     cmdalleBar.Enabled = false;
                     cmdalleRE.Enabled = false;
+                    trSuche.Visible = true;
                     tblGebuehr.Visible = false;
+                    ibtnNoFilter.Visible = true;
                     lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
                 }
             }
@@ -1653,6 +1653,7 @@ namespace AppZulassungsdienst.forms
 
                 Fillgrid(0, "", (objNacherf.SelAnnahmeAH ? GridFilterMode.ShowOnlyAandL : GridFilterMode.ShowOnlyOandL));
 
+                trSuche.Visible = false;
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
                 lblGesamtGebBar.Text = "0,00";

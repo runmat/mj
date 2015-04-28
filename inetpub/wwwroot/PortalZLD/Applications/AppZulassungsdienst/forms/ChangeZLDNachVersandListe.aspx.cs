@@ -292,6 +292,8 @@ namespace AppZulassungsdienst.forms
 
                 Fillgrid(0, "", GridFilterMode.ShowOnlyOandL);
 
+                trSuche.Visible = false;
+
                 ShowHideColumns(true);
 
                 Session["objNacherf"] = objNacherf;
@@ -336,25 +338,15 @@ namespace AppZulassungsdienst.forms
         {
             objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
-            List<ZLDVorgangUINacherfassung> liste;
+            objNacherf.DataFilterActive = false;
 
-            if (objNacherf.DataFilterActive)
-            {
-                liste = objNacherf.Vorgangsliste.Where(vg =>
-                    ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true)).ToList();
-            }
-            else
-            {
-                liste = objNacherf.Vorgangsliste;
-            }
-
-            if (liste.Count == 0)
+            if (objNacherf.Vorgangsliste.Count == 0)
             {
                 Fillgrid();
                 Result.Visible = false;
                 cmdSend.Enabled = false;
                 cmdSave.Enabled = false;
-                trSuche.Visible = true;
+                trSuche.Visible = false;
                 lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
             }
             else
@@ -362,7 +354,7 @@ namespace AppZulassungsdienst.forms
                 Result.Visible = true;
                 cmdSend.Enabled = true;
                 cmdSave.Enabled = true;
-                trSuche.Visible = false;
+                trSuche.Visible = true;
                 tab1.Visible = true;
                 ddlSuche.SelectedIndex = 0;
                 txtSuche.Text = "";
