@@ -19,6 +19,7 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(FahrzeuguebersichtViewModel).Name;
             FahrzeuguebersichtViewModel.DataInit();
+            FahrzeuguebersichtViewModel.Init();
 
             return View(FahrzeuguebersichtViewModel);
         }
