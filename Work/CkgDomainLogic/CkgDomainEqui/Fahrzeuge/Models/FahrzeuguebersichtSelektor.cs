@@ -94,10 +94,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static SelectItem WrapManufacturer(Fahrzeughersteller hersteller)
-        {            
-            if(hersteller.ShowAllToken)
-                return new SelectItem(String.Empty, hersteller.HerstellerName);
-            else
+        {                                   
+            if(hersteller.HerstellerKey.IsNullOrEmpty())
+                return new SelectItem(hersteller.HerstellerKey, hersteller.HerstellerName);
+            else            
                 return new SelectItem(hersteller.HerstellerName, hersteller.HerstellerName);
         }
 

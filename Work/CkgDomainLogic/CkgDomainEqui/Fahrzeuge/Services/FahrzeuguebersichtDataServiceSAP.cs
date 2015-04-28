@@ -23,34 +23,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         public List<Fahrzeuguebersicht> GetFahrzeuguebersicht(FahrzeuguebersichtSelektor selector)
         {
             Z_DPM_LIST_POOLS_001.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
-
-            // TODO -> Der Filter scheint nachgeschaltet zu sein!!
-            // Combo-Auswahl dito -> fragen
-
-            //if (selector.Fahrgestellnummer.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("CHASSIS_NUM", selector.Fahrgestellnummer);
-
-            //if (selector.Kennzeichen.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("LICENSE_NUM", selector.Kennzeichen);
-
-            //if (selector.Unitnummer.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("ZZREFERENZ1", selector.Unitnummer);
-
-            //if (selector.Auftragsnummer.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("LIZNR", selector.Auftragsnummer);
-
-            //if (selector.BatchId.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("ZUNIT_NR_BIS", selector.BatchId);
-
-            //if (selector.SIPPCode.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("ZZSIPP", selector.SIPPCode);
-
-            //if (selector.ModelID.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("ZZMODELL", selector.ModelID);
-
-            //if (selector.Zb2Nummer.IsNotNullOrEmpty())
-            //    SAP.SetImportParameter("TIDNR", selector.Zb2Nummer);
-
+                        
             if (selector.EingangZb2DatumRange.IsSelected)
             {
                 SAP.SetImportParameter("I_ERDAT_EQUI_VON", selector.EingangZb2DatumRange.StartDate);

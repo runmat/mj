@@ -302,6 +302,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.ModelID = sap.ZZMODELL;
                         business.Modell = sap.ZZBEZEI;
                         business.Status = sap.STATUS_TEXT;
+                        business.EingangZb2Datum = sap.ERDAT_EQUI;
+                        business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
+                        business.BereitmeldungDatum = sap.ZZDAT_BER;
+                        business.Hersteller = sap.ZZHERST_TEXT;
                     }));
             }
         }

@@ -10,7 +10,10 @@ using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using System.IO;
+using System.Data;
+using DocumentTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
@@ -85,7 +88,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             FahrzeuguebersichtSelektor.Akion = "manuell";
             FahrzeuguebersichtSelektor.Herstellerkennung = string.Empty;
             FahrzeuguebersichtSelektor.Statuskennung = string.Empty;
-            FahrzeuguebersichtSelektor.PDIkennung = string.Empty;
+            FahrzeuguebersichtSelektor.PDIkennung = string.Empty;            
         }
 
         public void DataInit()
@@ -101,7 +104,65 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
        
         public void LoadFahrzeuguebersicht()
         {
-            Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor); 
+            
+            Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor);
+
+            #region custom selector post load filter
+
+            if (FahrzeuguebersichtSelektor.Akion == "manuell")
+            {
+                UploadItems = null;
+                CsvUploadFileName = String.Empty;
+
+                var customList = Fahrzeuguebersichts.Select(x => x).ToList();
+
+                if (FahrzeuguebersichtSelektor.Kennzeichen.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Kennzeichen == FahrzeuguebersichtSelektor.Kennzeichen).ToList();
+
+                if (FahrzeuguebersichtSelektor.Unitnummer.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Unitnummer == FahrzeuguebersichtSelektor.Unitnummer).ToList();
+
+                if (FahrzeuguebersichtSelektor.Auftragsnummer.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Auftragsnummer == FahrzeuguebersichtSelektor.Auftragsnummer).ToList();
+
+                if (FahrzeuguebersichtSelektor.BatchId.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.BatchId == FahrzeuguebersichtSelektor.BatchId).ToList();
+
+                if (FahrzeuguebersichtSelektor.SIPPCode.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.SIPPCode == FahrzeuguebersichtSelektor.SIPPCode).ToList();
+
+                if (FahrzeuguebersichtSelektor.ModelID.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.ModelID == FahrzeuguebersichtSelektor.ModelID).ToList();
+
+                if (FahrzeuguebersichtSelektor.Zb2Nummer.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Zb2Nummer == FahrzeuguebersichtSelektor.Zb2Nummer).ToList();
+
+                if (FahrzeuguebersichtSelektor.Herstellerkennung.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Hersteller.Contains(FahrzeuguebersichtSelektor.Herstellerkennung)).ToList();
+
+                Fahrzeuguebersichts = customList;
+            }
+                      
+            #endregion
+
+            #region custom excel upload filter
+
+            if (FahrzeuguebersichtSelektor.Akion == "upload" && UploadItems != null && UploadItems.Count > 0)
+            {
+                                
+                var filterList = Fahrzeuguebersichts.Intersect(UploadItems, new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Fahrgestellnummer));
+
+                filterList = filterList.Intersect(UploadItems, new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Kennzeichen));
+
+                filterList = filterList.Intersect(UploadItems, new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.ModelID));
+
+                // ...  TODO -> testen, ob additiv
+
+                Fahrzeuguebersichts = filterList.ToList();
+                
+            }
+            #endregion
+                                  
             DataMarkForRefresh();
 
             //XmlService.XmlSerializeToFile(Fahrzeuguebersichts, Path.Combine(AppSettings.DataPath, @"Fahrzeuguebersichts.xml"));
@@ -111,6 +172,71 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             FahrzeuguebersichtsFiltered = Fahrzeuguebersichts.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
-       
+
+
+        public List<Fahrzeuguebersicht> UploadItems { get; private set; }
+
+        public string CsvUploadFileName { get; private set; }
+        public string CsvUploadServerFileName { get; private set; }
+
+
+        public bool CsvUploadFileSave(string fileName, Func<string, bool> fileSaveAction)
+        {
+            UploadItems = null;
+                
+            CsvUploadFileName = fileName;
+            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, Guid.NewGuid() + ".xls");
+
+            if (!fileSaveAction(CsvUploadServerFileName))
+                return false;
+
+            IEnumerable<Fahrzeuguebersicht> list = new ExcelDocumentFactory().ReadToDataTable<Fahrzeuguebersicht>(CsvUploadServerFileName,
+                                                                                            true, "", CreateInstanceFromDatarow, ',', false, false).ToList();
+            
+            FileService.TryFileDelete(CsvUploadServerFileName);
+            if (list.None())
+                return false;
+
+            UploadItems = list.ToList();
+           
+            return true;
+        }
+
+        static Fahrzeuguebersicht CreateInstanceFromDatarow(DataRow row)
+        {
+            var item = new Fahrzeuguebersicht
+            {                                
+                Fahrgestellnummer = row[0].ToString(),
+                Kennzeichen = row[1].ToString(),
+                Zb2Nummer = row[2].ToString(),
+                ModelID = row[3].ToString(),
+                Unitnummer = row[4].ToString(),                
+                Auftragsnummer = row[5].ToString(),
+                BatchId = row[6].ToString(),
+                SIPPCode = row[7].ToString(),
+            };
+            return item;
+        }
+
+    }
+
+    class KeyEqualityComparer<T> : IEqualityComparer<T>
+    {
+        private readonly Func<T, object> keyExtractor;
+
+        public KeyEqualityComparer(Func<T, object> keyExtractor)
+        {
+            this.keyExtractor = keyExtractor;
+        }
+
+        public bool Equals(T x, T y)
+        {
+            return this.keyExtractor(x).Equals(this.keyExtractor(y));
+        }
+
+        public int GetHashCode(T obj)
+        {
+            return this.keyExtractor(obj).GetHashCode();
+        }
     }
 }

@@ -4318,6 +4318,7 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
+    <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

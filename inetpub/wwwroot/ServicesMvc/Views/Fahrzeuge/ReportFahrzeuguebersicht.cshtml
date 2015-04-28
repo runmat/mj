@@ -5,7 +5,7 @@
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("Fahrzeuguebersicht/FahrzeuguebersichtSuche", Model.FahrzeuguebersichtSelektor)
+    @Html.Partial("Fahrzeuguebersicht/FahrzeuguebersichtSuche", Model.FahrzeuguebersichtSelektor)                
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -14,12 +14,15 @@
     <div id="divHistorie"></div>
 }
 
+
 <script type="text/javascript">
-
+   
     var _modelStateValid = 'false';
-
-    function FormPreparePrivate() {        
-    }
+    
+    //  -> u.s. FormWizard
+    //    function FormPreparePrivate() {
+    //        LoadingHide();     
+    //    }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();        
@@ -69,6 +72,94 @@
     function OnColumnReorder_GridFahrzeuguebersicht() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
-       
-    
+
+
+    ///////////////// Excel upload ///////////////////
+
+    var _formWizardForceHideSubmitButton = false;
+
+    function FormPreparePrivate() {
+        LoadingHide();
+        FormWizardInitPrivate();
+    }
+
+   
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsShow(false);
+        });
+      
+        FormWizard.OnPrev(function (step, maxSteps) {
+            if (step == 1)
+                FormWizard.ActionsShow(false);
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+            SubmitUpload();
+        });
+
+        FormWizard.OnRestart(function () {
+            //alert('Ok, let´s restart! :)');
+            LocationReloadWithoutQueryString();
+        });
+    }
+
+
+    function UploadStart(e) {
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.xls') <= 0) {
+            alert('Bitte nur XLS-Dateien hochladen!');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        ShowGrid(false);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei!');
+    }
+
+    function ShowGrid() {
+        $.ajax({
+            type: "POST",
+            url: "ExcelUploadFahrzeuguebersichtShowGrid",         
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(2, result);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+
+                GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");
+
+                if (_formWizardForceHideSubmitButton)
+                    FormWizard.ButtonSubmitShow(false);
+            }
+        });
+    }
+   
+             
 </script>
