@@ -45,6 +45,7 @@ namespace AppZulassungsdienst.forms
             {
                 //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zur 1. Seite
                 Response.Redirect("ChangeZLDKomplett.aspx?AppID=" + Session["AppID"].ToString());
+                return;
             }
 
             objKompletterf = (KomplettZLD)Session["objKompletterf"];
@@ -68,13 +69,20 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                if (objKompletterf != null)
+                if (objKompletterf.DataFilterActive)
                 {
-                    objKompletterf.DataFilterActive = false;
-                    Session["objKompletterf"] = objKompletterf;
+                    ddlSuche.SelectedValue = objKompletterf.DataFilterProperty;
+                    txtSuche.Text = objKompletterf.DataFilterValue;
                 }
 
-                Fillgrid();
+                // ggf. letzte Seitengröße/-nummer wiederherstellen
+                if (objKompletterf.LastPageSize > 0)
+                {
+                    GridView1.PageSize = objKompletterf.LastPageSize;
+                    GridNavigation1.PagerSize = objKompletterf.LastPageSize;
+                }
+
+                Fillgrid(objKompletterf.LastPageIndex);
 
                 LadeBenutzer();
             }
@@ -92,6 +100,7 @@ namespace AppZulassungsdienst.forms
         {
             CheckGrid(GridCheckMode.CheckNone);
             Fillgrid(pageindex);
+            objKompletterf.LastPageIndex = pageindex;
             Session["objKompletterf"] = objKompletterf;
         }
 
@@ -101,8 +110,8 @@ namespace AppZulassungsdienst.forms
         private void GridView1_ddlPageSizeChanged()
         {
             CheckGrid(GridCheckMode.CheckNone);
-
             Fillgrid();
+            objKompletterf.LastPageSize = GridView1.PageSize;
             Session["objKompletterf"] = objKompletterf;
         }
 

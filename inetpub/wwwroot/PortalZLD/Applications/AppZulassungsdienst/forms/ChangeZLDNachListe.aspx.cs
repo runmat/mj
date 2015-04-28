@@ -41,6 +41,7 @@ namespace AppZulassungsdienst.forms
             {
                 //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
                 Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+                return;
             }
 
             objNacherf = (NacherfZLD)Session["objNacherf"];
@@ -68,13 +69,20 @@ namespace AppZulassungsdienst.forms
             }
             if (!IsPostBack)
             {
-                if (objNacherf != null)
+                if (objNacherf.DataFilterActive)
                 {
-                    objNacherf.DataFilterActive = false;
-                    Session["objNacherf"] = objNacherf;
+                    ddlSuche.SelectedValue = objNacherf.DataFilterProperty;
+                    txtSuche.Text = objNacherf.DataFilterValue;
                 }
 
-                Fillgrid();
+                // ggf. letzte Seitengröße/-nummer wiederherstellen
+                if (objNacherf.LastPageSize > 0)
+                {
+                    GridView1.PageSize = objNacherf.LastPageSize;
+                    GridNavigation1.PagerSize = objNacherf.LastPageSize;
+                }
+
+                Fillgrid(objNacherf.LastPageIndex);
             }
             else
             {
@@ -97,6 +105,7 @@ namespace AppZulassungsdienst.forms
         {
             CheckGrid(GridCheckMode.CheckNone);
             Fillgrid(pageindex);
+            objNacherf.LastPageIndex = pageindex;
             Session["objNacherf"] = objNacherf;
         }
 
@@ -107,6 +116,7 @@ namespace AppZulassungsdienst.forms
         {
             CheckGrid(GridCheckMode.CheckNone);
             Fillgrid();
+            objNacherf.LastPageSize = GridView1.PageSize;
             Session["objNacherf"] = objNacherf;
         }
 

@@ -31,6 +31,8 @@ namespace AppZulassungsdienst.lib
         public bool DataFilterActive { get; set; }
         public string DataFilterProperty { get; set; }
         public string DataFilterValue { get; set; }
+        public int LastPageIndex { get; set; }
+        public int LastPageSize { get; set; }
 
         #endregion
 

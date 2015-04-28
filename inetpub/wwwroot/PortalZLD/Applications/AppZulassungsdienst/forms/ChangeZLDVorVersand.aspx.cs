@@ -75,6 +75,7 @@ namespace AppZulassungsdienst.forms
                     {
                         //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
                         Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+                        return;
                     }
 
                     objVorVersand = (VorerfZLD)Session["objVorVersand"];
