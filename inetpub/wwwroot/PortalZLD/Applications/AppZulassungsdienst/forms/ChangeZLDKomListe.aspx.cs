@@ -73,6 +73,7 @@ namespace AppZulassungsdienst.forms
                 {
                     ddlSuche.SelectedValue = objKompletterf.DataFilterProperty;
                     txtSuche.Text = objKompletterf.DataFilterValue;
+                    ibtnNoFilter.Visible = true;
                 }
 
                 // ggf. letzte Seitengröße/-nummer wiederherstellen
@@ -513,6 +514,10 @@ namespace AppZulassungsdienst.forms
             objKompletterf.DeleteVorgaengeOkFromList();
 
             objKompletterf.DataFilterActive = false;
+            ddlSuche.SelectedIndex = 0;
+            txtSuche.Text = "";
+            ibtnSearch.Visible = true;
+            ibtnNoFilter.Visible = false;
 
             if (objKompletterf.Vorgangsliste.Count == 0)
             {
@@ -540,10 +545,6 @@ namespace AppZulassungsdienst.forms
                 trSuche.Visible = true;
                 tblGebuehr.Visible = true;
                 tab1.Visible = true;
-                ddlSuche.SelectedIndex = 0;
-                txtSuche.Text = "";
-                ibtnSearch.Visible = true;
-                ibtnNoFilter.Visible = false;
                 Fillgrid();
                 calculateGebuehr();
             }
