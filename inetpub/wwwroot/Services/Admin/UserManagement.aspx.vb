@@ -2406,19 +2406,19 @@ Partial Public Class UserManagement
         ' Referenzfelder initialisieren
         If Not String.IsNullOrEmpty(_customer.ReferenceType1) Then
             trReference.Visible = True
-            lblReferenceType.Text = _customer.ReferenceType1Name
+            lblReferenceType.Text = String.Format("{0}:", _customer.ReferenceType1Name)
         Else
             trReference.Visible = False
         End If
         If Not String.IsNullOrEmpty(_customer.ReferenceType2) Then
             trReference2.Visible = True
-            lblReferenceType2.Text = _customer.ReferenceType2Name
+            lblReferenceType2.Text = String.Format("{0}:", _customer.ReferenceType2Name)
         Else
             trReference2.Visible = False
         End If
         If Not String.IsNullOrEmpty(_customer.ReferenceType3) Then
             trReference3.Visible = True
-            lblReferenceType3.Text = _customer.ReferenceType3Name
+            lblReferenceType3.Text = String.Format("{0}:", _customer.ReferenceType3Name)
         Else
             trReference3.Visible = False
         End If
