@@ -50,7 +50,6 @@ namespace AppZulassungsdienst.forms
             objKompletterf = (KomplettZLD)Session["objKompletterf"];
 
             GridNavigation1.setGridElment(ref GridView1);
-            GridNavigation1.PagerSize = 20;
             GridNavigation1.PagerChanged += GridView1_PageIndexChanged;
             GridNavigation1.PageSizeChanged += GridView1_ddlPageSizeChanged;
 
@@ -69,14 +68,13 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                Fillgrid();
-                if (objKompletterf != null && objKompletterf.DataFilterActive)
+                if (objKompletterf != null)
                 {
-                    ddlSuche.SelectedValue = objKompletterf.DataFilterProperty;
-                    txtSuche.Text = objKompletterf.DataFilterValue;
-                    trSuche.Visible = true;
-                    ibtnNoFilter.Visible = true;
+                    objKompletterf.DataFilterActive = false;
+                    Session["objKompletterf"] = objKompletterf;
                 }
+
+                Fillgrid();
 
                 LadeBenutzer();
             }
@@ -297,6 +295,9 @@ namespace AppZulassungsdienst.forms
             ShowHideColumns();
 
             ShowButtons();
+
+            calculateGebuehr();
+
             trSuche.Visible = true;
             ibtnNoFilter.Visible = true;
         }
@@ -328,6 +329,9 @@ namespace AppZulassungsdienst.forms
             ibtnSearch.Visible = true;
             ibtnNoFilter.Visible = false;
             ShowButtons();
+
+            calculateGebuehr();
+
             cmdContinue.Visible = false;
         }
 
@@ -386,6 +390,7 @@ namespace AppZulassungsdienst.forms
 
                 Fillgrid(0);
 
+                trSuche.Visible = false;
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
                 lblGesamtGebBar.Text = "0,00";
@@ -498,19 +503,9 @@ namespace AppZulassungsdienst.forms
         {
             objKompletterf.DeleteVorgaengeOkFromList();
 
-            List<ZLDVorgangUIKompletterfassung> liste;
+            objKompletterf.DataFilterActive = false;
 
-            if (objKompletterf.DataFilterActive)
-            {
-                liste = objKompletterf.Vorgangsliste.Where(vg =>
-                    ZLDCommon.FilterData(vg, objKompletterf.DataFilterProperty, objKompletterf.DataFilterValue, true)).ToList();
-            }
-            else
-            {
-                liste = objKompletterf.Vorgangsliste;
-            }
-
-            if (liste.Count == 0)
+            if (objKompletterf.Vorgangsliste.Count == 0)
             {
                 Fillgrid();
                 Result.Visible = false;
@@ -520,7 +515,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = false;
                 cmdalleBar.Enabled = false;
                 cmdalleRE.Enabled = false;
-                trSuche.Visible = true;
+                trSuche.Visible = false;
                 tblGebuehr.Visible = false;
                 lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
             }
@@ -533,7 +528,7 @@ namespace AppZulassungsdienst.forms
                 cmdalleEC.Enabled = true;
                 cmdalleBar.Enabled = true;
                 cmdalleRE.Enabled = true;
-                trSuche.Visible = false;
+                trSuche.Visible = true;
                 tblGebuehr.Visible = true;
                 tab1.Visible = true;
                 ddlSuche.SelectedIndex = 0;
@@ -541,6 +536,7 @@ namespace AppZulassungsdienst.forms
                 ibtnSearch.Visible = true;
                 ibtnNoFilter.Visible = false;
                 Fillgrid();
+                calculateGebuehr();
             }
             cmdContinue.Visible = false;
 
@@ -776,7 +772,15 @@ namespace AppZulassungsdienst.forms
             switch (filterMode)
             {
                 case GridFilterMode.ShowOnlyOandL:
-                    srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    if (objKompletterf.DataFilterActive)
+                    {
+                        srcList = objKompletterf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objKompletterf.DataFilterProperty, objKompletterf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objKompletterf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
                     break;
 
                 default:
@@ -809,7 +813,7 @@ namespace AppZulassungsdienst.forms
                     cmdalleRE.Enabled = false;
                     trSuche.Visible = true;
                     tblGebuehr.Visible = false;
-                    ibtnNoFilter.Visible = false;
+                    ibtnNoFilter.Visible = true;
                     lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
                 }
             }
@@ -874,7 +878,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    GridView1.DataSource = srcList.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
@@ -1006,7 +1010,6 @@ namespace AppZulassungsdienst.forms
                 RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
                 RadioButton rbEC = (RadioButton)gvRow.FindControl("rbEC");
                 RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
-                Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
 
                 Boolean bBar = rb.Checked;
                 Boolean bEC = rbEC.Checked;

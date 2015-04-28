@@ -53,9 +53,16 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
+                if (objNacherf != null)
+                {
+                    objNacherf.DataFilterActive = false;
+                    Session["objNacherf"] = objNacherf;
+
+                    if (objNacherf.MatError != 0)
+                        lblError.Text = objNacherf.MatErrorText;
+                }
+
                 Fillgrid();
-                if (objNacherf != null && objNacherf.MatError != 0)
-                    lblError.Text = objNacherf.MatErrorText;
             }
         }
 
@@ -285,6 +292,8 @@ namespace AppZulassungsdienst.forms
 
                 Fillgrid(0, "", GridFilterMode.ShowOnlyOandL);
 
+                trSuche.Visible = false;
+
                 ShowHideColumns(true);
 
                 Session["objNacherf"] = objNacherf;
@@ -329,25 +338,15 @@ namespace AppZulassungsdienst.forms
         {
             objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
-            List<ZLDVorgangUINacherfassung> liste;
+            objNacherf.DataFilterActive = false;
 
-            if (objNacherf.DataFilterActive)
-            {
-                liste = objNacherf.Vorgangsliste.Where(vg =>
-                    ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true)).ToList();
-            }
-            else
-            {
-                liste = objNacherf.Vorgangsliste;
-            }
-
-            if (liste.Count == 0)
+            if (objNacherf.Vorgangsliste.Count == 0)
             {
                 Fillgrid();
                 Result.Visible = false;
                 cmdSend.Enabled = false;
                 cmdSave.Enabled = false;
-                trSuche.Visible = true;
+                trSuche.Visible = false;
                 lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
             }
             else
@@ -355,7 +354,7 @@ namespace AppZulassungsdienst.forms
                 Result.Visible = true;
                 cmdSend.Enabled = true;
                 cmdSave.Enabled = true;
-                trSuche.Visible = false;
+                trSuche.Visible = true;
                 tab1.Visible = true;
                 ddlSuche.SelectedIndex = 0;
                 txtSuche.Text = "";
@@ -364,7 +363,7 @@ namespace AppZulassungsdienst.forms
                 Fillgrid();
             }
 
-            ShowHideColumns(false);
+            ShowHideColumns();
 
             cmdContinue.Visible = false;
             cmdSend.Enabled = true;
@@ -381,7 +380,15 @@ namespace AppZulassungsdienst.forms
             switch (filterMode)
             {
                 case GridFilterMode.ShowOnlyOandL:
-                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
                     break;
 
                 default:
@@ -464,7 +471,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    GridView1.DataSource = srcList.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;

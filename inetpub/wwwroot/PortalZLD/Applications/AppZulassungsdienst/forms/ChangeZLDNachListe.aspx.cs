@@ -46,7 +46,6 @@ namespace AppZulassungsdienst.forms
             objNacherf = (NacherfZLD)Session["objNacherf"];
 
             GridNavigation1.setGridElment(ref GridView1);
-            GridNavigation1.PagerSize = 20;
             GridNavigation1.PagerChanged += GridView1_PageIndexChanged;
             GridNavigation1.PageSizeChanged += GridView1_ddlPageSizeChanged;
 
@@ -69,14 +68,13 @@ namespace AppZulassungsdienst.forms
             }
             if (!IsPostBack)
             {
-                Fillgrid();
-                if (objNacherf != null && objNacherf.DataFilterActive)
+                if (objNacherf != null)
                 {
-                    ddlSuche.SelectedValue = objNacherf.DataFilterProperty;
-                    txtSuche.Text = objNacherf.DataFilterValue;
-                    trSuche.Visible = true;
-                    ibtnNoFilter.Visible = true;
+                    objNacherf.DataFilterActive = false;
+                    Session["objNacherf"] = objNacherf;
                 }
+
+                Fillgrid();
             }
             else
             {
@@ -344,6 +342,9 @@ namespace AppZulassungsdienst.forms
             ShowHideColumns(true);
 
             ShowButtons();
+
+            calculateGebuehr();
+
             trSuche.Visible = true;
             ibtnNoFilter.Visible = true;
         }
@@ -374,6 +375,9 @@ namespace AppZulassungsdienst.forms
 
             ibtnNoFilter.Visible = false;
             ShowButtons();
+
+            calculateGebuehr();
+
             cmdContinue.Visible = false;
         }
 
@@ -395,6 +399,7 @@ namespace AppZulassungsdienst.forms
                 cmdOK.Enabled = false;
                 cmdContinue.Visible = true;
                 Fillgrid(0, "", GridFilterMode.ShowOnlyAandL);
+                trSuche.Visible = false;
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
                 lblGesamtGebBar.Text = "0,00";
@@ -536,19 +541,9 @@ namespace AppZulassungsdienst.forms
         {
             objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
-            List<ZLDVorgangUINacherfassung> liste;
+            objNacherf.DataFilterActive = false;
 
-            if (objNacherf.DataFilterActive)
-            {
-                liste = objNacherf.Vorgangsliste.Where(vg =>
-                    ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true)).ToList();
-            }
-            else
-            {
-                liste = objNacherf.Vorgangsliste;
-            }
-
-            if (liste.Count == 0)
+            if (objNacherf.Vorgangsliste.Count == 0)
             {
                 Fillgrid();
                 Result.Visible = false;
@@ -576,6 +571,7 @@ namespace AppZulassungsdienst.forms
                 ddlSuche.SelectedIndex = 0;
                 txtSuche.Text = "";
                 Fillgrid();
+                calculateGebuehr();
             }
             cmdContinue.Visible = false;
 
@@ -699,11 +695,27 @@ namespace AppZulassungsdienst.forms
             switch (filterMode)
             {
                 case GridFilterMode.ShowOnlyOandL:
-                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
                     break;
 
                 case GridFilterMode.ShowOnlyAandL:
-                    srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").ToList();
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "A" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
                     break;
 
                 default:
@@ -732,7 +744,9 @@ namespace AppZulassungsdienst.forms
                     cmdalleEC.Enabled = false;
                     cmdalleBar.Enabled = false;
                     cmdalleRE.Enabled = false;
+                    trSuche.Visible = true;
                     tblGebuehr.Visible = false;
+                    ibtnNoFilter.Visible = true;
                     lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
                 }
             }
@@ -797,7 +811,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    GridView1.DataSource = srcList.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
@@ -1035,7 +1049,7 @@ namespace AppZulassungsdienst.forms
                 {
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                    if (item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
+                    if (item.WebBearbeitungsStatus != "L" && item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                     {
                         var valueToAdd = item.GebuehrAmt.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
@@ -1639,6 +1653,7 @@ namespace AppZulassungsdienst.forms
 
                 Fillgrid(0, "", (objNacherf.SelAnnahmeAH ? GridFilterMode.ShowOnlyAandL : GridFilterMode.ShowOnlyOandL));
 
+                trSuche.Visible = false;
                 lblGesamtGebAmt.Text = "0,00";
                 lblGesamtGebEC.Text = "0,00";
                 lblGesamtGebBar.Text = "0,00";

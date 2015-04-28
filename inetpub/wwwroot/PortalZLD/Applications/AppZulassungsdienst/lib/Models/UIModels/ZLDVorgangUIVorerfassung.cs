@@ -1,4 +1,5 @@
 ﻿using System;
+using SapORM.Contracts;
 
 namespace AppZulassungsdienst.lib.Models
 {
@@ -13,6 +14,8 @@ namespace AppZulassungsdienst.lib.Models
         public string VkBur { get; set; }
 
         public string KundenNr { get; set; }
+
+        public string KundenNrAsSapKunnr { get { return KundenNr.ToSapKunnr(); } }
 
         public string KundenName { get; set; }
 

@@ -249,7 +249,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => v.KundenName).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 gvZuldienst.PageIndex = intTempPageIndex;
