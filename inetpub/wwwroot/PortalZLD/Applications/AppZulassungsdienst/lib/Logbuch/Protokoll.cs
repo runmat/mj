@@ -5,7 +5,7 @@ using CKG.Base.Business;
 
 namespace AppZulassungsdienst.lib.Logbuch
 {
-    public class Protokoll : BankBase
+    public class Protokoll : SapOrmBusinessBase
     {
         public enum Side
         {
@@ -15,17 +15,11 @@ namespace AppZulassungsdienst.lib.Logbuch
 
         private LogbuchEntry[,] protokoll;
         private int length;
-        private DataTable dtExport;
         private List<VorgangsartDetails> lstVorgangsarten;
 
-        public DataTable ProtokollTabelle
-        {
-            get { return dtExport; }
-        }
+        public DataTable ProtokollTabelle { get; private set; }
 
-        public Protokoll(ref List<VorgangsartDetails> lstVorgänge, ref CKG.Base.Kernel.Security.User objUser, 
-            CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
-            : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename)
+        public Protokoll(ref List<VorgangsartDetails> lstVorgänge)
         {
             protokoll = new LogbuchEntry[1, 2];
             lstVorgangsarten = lstVorgänge;
@@ -62,36 +56,40 @@ namespace AppZulassungsdienst.lib.Logbuch
             return Antwort.Antwortart.ToString();
         }
 
-        public void EintragAbschliessen(string strAppID, string strSessionID, System.Web.UI.Page page, int rowindex, EntryStatus status)
+        public void EintragAbschliessen(int rowindex, EntryStatus status, string userName)
         {
             Ausgang Aus = (Ausgang)protokoll[rowindex, (int)Side.Output];
-            Aus.EintragAbschliessen(strAppID, strSessionID, page, status);
-            m_intStatus = Aus.IntStatus;
-            m_strMessage = Aus.Message;
+            Aus.EintragAbschliessen(status, userName);
+            
+            if (Aus.ErrorOccured)
+                RaiseError(Aus.ErrorCode, Aus.Message);
         }
 
-        public void EintragBeantworten(string strAppID, string strSessionID, System.Web.UI.Page page, int rowindex, EmpfängerStatus status)
+        public void EintragBeantworten(int rowindex, EmpfängerStatus status, string userName)
         {
             Eingang Ein = (Eingang)protokoll[rowindex, (int)Side.Input];
-            Ein.EintragBeantworten(strAppID, strSessionID, page, status);
-            m_intStatus = Ein.IntStatus;
-            m_strMessage = Ein.Message;
+            Ein.EintragBeantworten(status, userName);
+
+            if (Ein.ErrorOccured)
+                RaiseError(Ein.ErrorCode, Ein.Message);
         }
 
-        public void EintragBeantworten(string strAppID, string strSessionID, System.Web.UI.Page page, int rowindex, string Betreff, string Text)
+        public void EintragBeantworten(int rowindex, string Betreff, string Text, string userName)
         {
             Eingang Ein = (Eingang)protokoll[rowindex, (int)Side.Input];
-            Ein.EintragBeantworten(strAppID, strSessionID, page, Betreff, Text);
-            m_intStatus = Ein.IntStatus;
-            m_strMessage = Ein.Message;
+            Ein.EintragBeantworten(Betreff, Text, userName);
+
+            if (Ein.ErrorOccured)
+                RaiseError(Ein.ErrorCode, Ein.Message);
         }
 
-        public void Rückfrage(string strAppID, string strSessionID, System.Web.UI.Page page, int rowindex, string Betreff, string Text)
+        public void Rückfrage(int rowindex, string Betreff, string Text, string userName, string kostenstelle)
         {
             Eingang Ein = (Eingang)protokoll[rowindex, (int)Side.Input];
-            Ein.Rückfrage(strAppID, strSessionID, page, Betreff, Text);
-            m_intStatus = Ein.IntStatus;
-            m_strMessage = Ein.Message;
+            Ein.Rückfrage(Betreff, Text, userName, kostenstelle);
+
+            if (Ein.ErrorOccured)
+                RaiseError(Ein.ErrorCode, Ein.Message);
         }
 
         private void ExtendArray()
@@ -172,50 +170,50 @@ namespace AppZulassungsdienst.lib.Logbuch
         public DataTable CreateTable(EntryStatus? FilterInput = null, EntryStatus? FilterOutput = null, 
             EmpfängerStatus? FilterInputE = null, EmpfängerStatus? FilterOutputE = null)
         {
-            dtExport = new DataTable();
+            ProtokollTabelle = new DataTable();
 
-            dtExport.Columns.Add("Rowindex");
+            ProtokollTabelle.Columns.Add("Rowindex");
 
-            dtExport.Columns.Add("I_VORGID");
-            dtExport.Columns.Add("I_LFDNR");
-            dtExport.Columns.Add("I_DATUM", typeof(DateTime));
-            dtExport.Columns.Add("I_VON");
-            dtExport.Columns.Add("I_VERTR");
-            dtExport.Columns.Add("I_BETREFF");
-            dtExport.Columns.Add("I_LTXNR");
-            dtExport.Columns.Add("I_ANTW_LFDNR");
-            dtExport.Columns.Add("I_STATUS");
-            dtExport.Columns.Add("I_STATUSE");
-            dtExport.Columns.Add("I_VGART");
-            dtExport.Columns.Add("I_ZERLDAT");
+            ProtokollTabelle.Columns.Add("I_VORGID");
+            ProtokollTabelle.Columns.Add("I_LFDNR");
+            ProtokollTabelle.Columns.Add("I_DATUM", typeof(DateTime));
+            ProtokollTabelle.Columns.Add("I_VON");
+            ProtokollTabelle.Columns.Add("I_VERTR");
+            ProtokollTabelle.Columns.Add("I_BETREFF");
+            ProtokollTabelle.Columns.Add("I_LTXNR");
+            ProtokollTabelle.Columns.Add("I_ANTW_LFDNR");
+            ProtokollTabelle.Columns.Add("I_STATUS");
+            ProtokollTabelle.Columns.Add("I_STATUSE");
+            ProtokollTabelle.Columns.Add("I_VGART");
+            ProtokollTabelle.Columns.Add("I_ZERLDAT");
 
-            dtExport.Columns.Add("I_HASLANGTEXT", typeof(bool));
-            dtExport.Columns.Add("I_ERL", typeof(bool));
-            dtExport.Columns.Add("I_READ", typeof(bool));
-            dtExport.Columns.Add("I_ANTW", typeof(bool));
-            dtExport.Columns.Add("I_TRENN", typeof(bool));
+            ProtokollTabelle.Columns.Add("I_HASLANGTEXT", typeof(bool));
+            ProtokollTabelle.Columns.Add("I_ERL", typeof(bool));
+            ProtokollTabelle.Columns.Add("I_READ", typeof(bool));
+            ProtokollTabelle.Columns.Add("I_ANTW", typeof(bool));
+            ProtokollTabelle.Columns.Add("I_TRENN", typeof(bool));
 
-            dtExport.Columns.Add("O_VORGID");
-            dtExport.Columns.Add("O_LFDNR");
-            dtExport.Columns.Add("O_DATUM", typeof(DateTime));
-            dtExport.Columns.Add("O_AN");
-            dtExport.Columns.Add("O_VERTR");
-            dtExport.Columns.Add("O_BETREFF");
-            dtExport.Columns.Add("O_LTXNR");
-            dtExport.Columns.Add("O_ANTW_LFDNR");
-            dtExport.Columns.Add("O_STATUS");
-            dtExport.Columns.Add("O_STATUSE");
-            dtExport.Columns.Add("O_VGART");
-            dtExport.Columns.Add("O_ZERLDAT");
+            ProtokollTabelle.Columns.Add("O_VORGID");
+            ProtokollTabelle.Columns.Add("O_LFDNR");
+            ProtokollTabelle.Columns.Add("O_DATUM", typeof(DateTime));
+            ProtokollTabelle.Columns.Add("O_AN");
+            ProtokollTabelle.Columns.Add("O_VERTR");
+            ProtokollTabelle.Columns.Add("O_BETREFF");
+            ProtokollTabelle.Columns.Add("O_LTXNR");
+            ProtokollTabelle.Columns.Add("O_ANTW_LFDNR");
+            ProtokollTabelle.Columns.Add("O_STATUS");
+            ProtokollTabelle.Columns.Add("O_STATUSE");
+            ProtokollTabelle.Columns.Add("O_VGART");
+            ProtokollTabelle.Columns.Add("O_ZERLDAT");
 
-            dtExport.Columns.Add("O_HASLANGTEXT", typeof(bool));
-            dtExport.Columns.Add("O_LOE", typeof(bool));
-            dtExport.Columns.Add("O_CLO", typeof(bool));
-            dtExport.Columns.Add("O_TRENN", typeof(bool));
+            ProtokollTabelle.Columns.Add("O_HASLANGTEXT", typeof(bool));
+            ProtokollTabelle.Columns.Add("O_LOE", typeof(bool));
+            ProtokollTabelle.Columns.Add("O_CLO", typeof(bool));
+            ProtokollTabelle.Columns.Add("O_TRENN", typeof(bool));
 
-            dtExport.Columns.Add("DEBUG", typeof(bool));
+            ProtokollTabelle.Columns.Add("DEBUG", typeof(bool));
 
-            dtExport.AcceptChanges();
+            ProtokollTabelle.AcceptChanges();
 
             for (int i = 0; i < length; i++)
             {
@@ -276,7 +274,7 @@ namespace AppZulassungsdienst.lib.Logbuch
 
                 if (!bExit)
                 {
-                    DataRow Row = dtExport.NewRow();
+                    DataRow Row = ProtokollTabelle.NewRow();
                     Row["Rowindex"] = i;
 
                     Row["I_HASLANGTEXT"] = false;
@@ -365,25 +363,14 @@ namespace AppZulassungsdienst.lib.Logbuch
                         Row["DEBUG"] = true; 
                     #endif
 
-                    dtExport.Rows.Add(Row);
+                        ProtokollTabelle.Rows.Add(Row);
                 }
             }
 
-            dtExport.AcceptChanges();
+            ProtokollTabelle.AcceptChanges();
 
-            return dtExport;
+            return ProtokollTabelle;
         }
-
-        public override void Show()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Change()
-        {
-            throw new System.NotImplementedException();
-        }
-
     }
 }
 

@@ -115,6 +115,7 @@
     <None Include="app.config">
       <SubType>Designer</SubType>
     </None>
+    <None Include="NLog.config" />
     <None Include="Service References\RouteService\RouteService.wsdl" />
     <None Include="Service References\RouteService\routeservice.xsd" />
     <None Include="Service References\RouteService\routeservice1.wsdl" />
@@ -197,6 +198,12 @@
     <None Include="Service References\RouteService\GeodeService.RouteService.RouteResponse.datasource">
       <DependentUpon>Reference.svcmap</DependentUpon>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
