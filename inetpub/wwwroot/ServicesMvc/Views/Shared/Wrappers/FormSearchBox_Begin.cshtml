@@ -21,9 +21,15 @@
         SearchFormShowHide("expand");
     }
 
-    function SearchFormHide() {
+    function SearchFormHide(continueWithFunction) {
         SearchFormShowHide("collapse");
-        $("#FormSearchResults").show();
+
+        setTimeout(function () {
+            $("#FormSearchResults").show();
+
+            if (typeof(continueWithFunction) != 'undefined')
+                continueWithFunction();
+        }, 200);
     }
 
     function SearchFormToggle() {

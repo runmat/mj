@@ -1,35 +1,22 @@
 ﻿using System;
 using System.Data;
-using CKG.Base.Common;
 using CKG.Base.Business;
+using SapORM.Contracts;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib
 {
-    /// <summary>
-    /// Statusänderung Vorgang
-    /// </summary>
-    public class StatusaenderungVorgang : DatenimportBase
+    public class StatusaenderungVorgang : SapOrmBusinessBase
     {
         #region "Properties"
 
-        public string VkOrg { get; set; }
-
-        public string VkBur { get; set; }
-
         public string IDSuche { get; set; }
-
         public string ID { get; set; }
-
         public string Belegtyp { get; set; }
-
         public DateTime? Zulassungsdatum { get; set; }
-
         public string Kundennummer { get; set; }
-
         public string Kreis { get; set; }
-
         public string Kennzeichen { get; set; }
-
         public string BEBStatus { get; set; }
 
         public string BEBStatusText
@@ -52,7 +39,6 @@ namespace AppZulassungsdienst.lib
         public string BEBStatusNeu { get; set; }
 
         public DataTable tblBEBStatusWerte { get; private set; }
-
         public DataTable tblBelegTypen { get; private set; }
 
         public string BelegtypLangtext
@@ -76,171 +62,47 @@ namespace AppZulassungsdienst.lib
 
         #region "Methods"
 
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="objUser">Webuserobjekt</param>
-        /// <param name="objApp">Applikationsobjekt</param>
-        /// <param name="strFilename">Filename</param>
-        public StatusaenderungVorgang(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp,
-                                      string strFilename)
-            : base(ref objUser, objApp, strFilename)
+        public StatusaenderungVorgang(string userReferenz)
         {
-            if ((objUser != null) && (!String.IsNullOrEmpty(objUser.Reference)))
-            {
-                if (objUser.Reference.Length > 4)
-                {
-                    VkOrg = objUser.Reference.Substring(0, 4);
-                    VkBur = objUser.Reference.Substring(4);
-                }
-                else
-                {
-                    VkOrg = objUser.Reference;
-                    VkBur = "";
-                }
-            }
-            else
-            {
-                VkOrg = "";
-                VkBur = "";
-            }
+            VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
+            VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
         }
 
-        /// <summary>
-        /// Werte für BEB-Status laden. Bapi: Z_ZLD_DOMAENEN_WERTE
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void LoadStatuswerte(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void LoadStatuswerte()
         {
-
-            m_strClassAndMethod = "StatusaenderungVorgang.LoadStatuswerte";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_DOMAENEN_WERTE", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_DOMAENEN_WERTE.Init(SAP, "I_DOMNAME", "ZZLD_BEB_STATUS");
 
-                    myProxy.setImportParameter("I_DOMNAME", "ZZLD_BEB_STATUS");
+                    CallBapi();
 
-                    myProxy.callBapi();
-
-                    tblBEBStatusWerte = myProxy.getExportTable("GT_WERTE");
-
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
-                    {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    tblBEBStatusWerte = SAP.GetExportTable("GT_WERTE");
+                });
         }
 
-        /// <summary>
-        /// Werte für Belegtyp laden. Bapi: Z_ZLD_DOMAENEN_WERTE
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void LoadBelegtypen(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void LoadBelegtypen()
         {
-
-            m_strClassAndMethod = "StatusaenderungVorgang.LoadBelegtypen";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_DOMAENEN_WERTE", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_DOMAENEN_WERTE.Init(SAP, "I_DOMNAME", "ZZLD_BLTYP");
 
-                    myProxy.setImportParameter("I_DOMNAME", "ZZLD_BLTYP");
+                    CallBapi();
 
-                    myProxy.callBapi();
-
-                    tblBelegTypen = myProxy.getExportTable("GT_WERTE");
-
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
-                    {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    tblBelegTypen = SAP.GetExportTable("GT_WERTE");
+                });
         }
 
-        /// <summary>
-        /// Vorgang zur ID laden. Bapi: Z_ZLD_MOB_GET_VG_FOR_UPD
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void LoadVorgang(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void LoadVorgang()
         {
-
-            m_strClassAndMethod = "StatusaenderungVorgang.LeseVorgang";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_MOB_GET_VG_FOR_UPD", ref m_objApp, ref m_objUser, ref page);
-                  
-                    myProxy.setImportParameter("I_ZULBELN", IDSuche.PadLeft(10, '0'));
-                    myProxy.setImportParameter("I_VKBUR", VkBur);
+                    Z_ZLD_MOB_GET_VG_FOR_UPD.Init(SAP, "I_ZULBELN, I_VKBUR", IDSuche.PadLeft0(10), VKBUR);
 
-                    myProxy.callBapi();
+                    CallBapi();
 
-                    var tmpTable = myProxy.getExportTable("GT_VG_STAT");
+                    var tmpTable = SAP.GetExportTable("GT_VG_STAT");
 
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
-                    {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
-
-                    if (m_intStatus == 0)
+                    if (!ErrorOccured)
                     {
                         var row = tmpTable.Rows[0];
                         ID = row["ZULBELN"].ToString();
@@ -259,72 +121,20 @@ namespace AppZulassungsdienst.lib
                         Kennzeichen = row["ZZKENN"].ToString();
                         BEBStatus = row["BEB_STATUS"].ToString();
                     }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                });
         }
 
-        /// <summary>
-        /// Vorgangs-Status speichern. Bapi: Z_ZLD_MOB_SET_VG_STATUS
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void SaveVorgang(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void SaveVorgang()
         {
-
-            m_strClassAndMethod = "StatusaenderungVorgang.SaveVorgang";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_MOB_SET_VG_STATUS", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_MOB_SET_VG_STATUS.Init(SAP, "I_ZULBELN, I_STATUS", ID.PadLeft0(10), BEBStatusNeu);
 
-                    myProxy.setImportParameter("I_ZULBELN", ID.PadLeft(10, '0'));
-                    myProxy.setImportParameter("I_STATUS", BEBStatusNeu);
+                    CallBapi();
 
-                    myProxy.callBapi();
-
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
-                    {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
-
-                    if (m_intStatus == 0)
-                    {
+                    if (!ErrorOccured)
                         BEBStatus = BEBStatusNeu;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                });
         }
 
         #endregion

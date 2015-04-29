@@ -139,35 +139,35 @@
     </Compile>
     <Compile Include="forms\Change03.aspx.vb">
       <DependentUpon>Change03.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="forms\Change04.aspx.designer.vb">
       <DependentUpon>Change04.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\Change04.aspx.vb">
-      <SubType>ASPXCodebehind</SubType>
       <DependentUpon>Change04.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="forms\dokverandKontingente.aspx.designer.vb">
       <DependentUpon>dokverandKontingente.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\dokverandKontingente.aspx.vb">
       <DependentUpon>dokverandKontingente.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="forms\Report01Neu.aspx.designer.vb">
       <DependentUpon>Report01Neu.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\Report01Neu.aspx.vb">
       <DependentUpon>Report01Neu.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="forms\Report02Neu.aspx.designer.vb">
       <DependentUpon>Report02Neu.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\Report02Neu.aspx.vb">
       <DependentUpon>Report02Neu.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="forms\Report03New.aspx.designer.vb">
       <DependentUpon>Report03New.aspx</DependentUpon>
@@ -181,7 +181,7 @@
     </Compile>
     <Compile Include="forms\Report04.aspx.vb">
       <DependentUpon>Report04.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="forms\Report05.aspx.designer.vb">
       <DependentUpon>Report05.aspx</DependentUpon>
@@ -195,14 +195,14 @@
     </Compile>
     <Compile Include="forms\Report06.aspx.vb">
       <DependentUpon>Report06.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="forms\Report07.aspx.designer.vb">
       <DependentUpon>Report07.aspx</DependentUpon>
     </Compile>
     <Compile Include="forms\Report07.aspx.vb">
       <DependentUpon>Report07.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="lib\Briefanforderung.vb" />
     <Compile Include="lib\Klaerfaelle.vb" />

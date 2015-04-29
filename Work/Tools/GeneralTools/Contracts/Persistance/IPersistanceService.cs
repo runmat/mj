@@ -6,7 +6,8 @@ namespace GeneralTools.Contracts
     {
         IEnumerable<IPersistableObjectContainer> GetObjectContainers(string ownerKey, string groupKey);
 
-        void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, object o);
+        IPersistableObject SaveObject(string objectKey, string ownerKey, string groupKey, string userName, IPersistableObject o);
+        void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, ref IPersistableObject o, ref IPersistableObject o2);
 
         void DeleteObject(string objectKey);
     }

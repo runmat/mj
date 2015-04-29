@@ -9,7 +9,6 @@
     @(Html.Telerik()
         .Grid<CustomerDocumentCategory>()
         .Name(gridName)
-        .XGroup(gridName)
         .XAjaxDataBinding("DocCategoriesAjaxBinding", "Insurance")
         .Columns(columns =>
         {

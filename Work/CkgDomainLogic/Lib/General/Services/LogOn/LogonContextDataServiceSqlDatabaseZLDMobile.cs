@@ -15,8 +15,6 @@ namespace CkgDomainLogic.General.Services
     /// </summary>
     public class LogonContextDataServiceSqlDatabaseZLDMobile : LogonContextDataServiceBase, ILogonContextDataServiceZLDMobile
     {
-        public string CurrentGridColumns { get; set; }
-
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return null; } }
 
         public string VkOrg
