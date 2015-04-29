@@ -10,8 +10,7 @@
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divGrid"></div>
-    <div id="divHistorie"></div>
+    <div id="divGrid"></div>   
 }
 
 
@@ -23,14 +22,14 @@
     //    function FormPreparePrivate() {
     //        LoadingHide();     
     //    }
-
+   
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
         FormWizardInitPrivate();        
     }
 
     function ShowFahrzeuguebersicht() {
-
+        
         FormPreparePrivateAjax();
 
         $.ajax({
@@ -54,9 +53,12 @@
         SearchFormHide();
         $("#divGrid").html(result);
 
+        var grid = $("#GridFahrzeuguebersicht").data("tGrid");
         // move our grid filter form into grid's toolbar:
-        GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");        
-        $("#divGrid").slideDown();               
+        if (grid != null)
+            GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");
+        $("#divGrid").slideDown();
+        ShowElements();                        
     }
 
 
@@ -81,7 +83,7 @@
 
     function FormPreparePrivate() {
         LoadingHide();
-        FormWizardInitPrivate();
+        FormWizardInitPrivate();     
     }
 
    
@@ -146,26 +148,6 @@
         FormWizard.ButtonNextInvoke();
         if (_formWizardForceHideSubmitButton)
             FormWizard.ButtonSubmitShow(false);
-
-//        $.ajax({
-//            type: "POST",
-//            url: "ExcelUploadFahrzeuguebersichtShowGrid",         
-//            loadingShow: true,
-//            success: function (result) {
-//                if (typeof (result.message) !== "undefined") {
-//                    alert(result.message);
-//                    return;
-//                }
-//                FormWizard.SetTabHtml(2, result);
-//                FormPreparePrivateAjax();
-//                FormWizard.ButtonNextInvoke();
-
-//                GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");
-
-//                if (_formWizardForceHideSubmitButton)
-//                    FormWizard.ButtonSubmitShow(false);
-//            }
-//        });
     }
    
              

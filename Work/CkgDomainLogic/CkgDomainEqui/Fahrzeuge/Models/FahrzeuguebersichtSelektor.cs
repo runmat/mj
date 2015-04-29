@@ -17,6 +17,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         
         [LocalizedDisplay(LocalizeConstants.Action)]
+        [FormPersistable]
         public string Akion { get; set; }
 
         public string Akionen { get { return string.Format("manuell,{0};upload,{1}", Localize.ManuelInput, Localize.FileUpload); } }
@@ -46,15 +47,19 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string SIPPCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
+        [FormPersistable]
         public DateRange EingangZb2DatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.DateOfVehicleArrival)]
+        [FormPersistable]
         public DateRange EingangFahrzeugDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.DateOfReadyIndication)]
+        [FormPersistable]
         public DateRange BereitmeldungDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
+        [FormPersistable]
         public DateRange ZulassungDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
 
@@ -62,9 +67,12 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
         public string Herstellerkennung { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Status)]
         public string Statuskennung { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Carport)]
         public string PDIkennung { get; set; }
+
 
         public static List<SelectItem> FahrzeugHersteller
         {

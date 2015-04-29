@@ -35,14 +35,14 @@ namespace ServicesMvc.Controllers
 
             //FahrzeuguebersichtViewModel.Validate(AddModelError);
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && !PersistableMode)
             {
                 FahrzeuguebersichtViewModel.LoadFahrzeuguebersicht();
                 if (FahrzeuguebersichtViewModel.Fahrzeuguebersichts.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("Fahrzeuguebersicht/FahrzeuguebersichtSuche", FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor);
+            return PersistablePartialView("Fahrzeuguebersicht/FahrzeuguebersichtSuche", FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor);
         }
 
         [HttpPost]
@@ -91,29 +91,8 @@ namespace ServicesMvc.Controllers
             }, "text/plain");
         }
 
-        [HttpPost]
-        public ActionResult ExcelUploadFahrzeuguebersichtShowGrid()
-        {
-            // Step 2:  Show filter results
-        
-            //FahrzeuguebersichtViewModel.ApplyFilter(); 
-
-            return PartialView("Fahrzeuguebersicht/FahrzeuguebersichtGrid", FahrzeuguebersichtViewModel);
-        }
-
-        //[HttpPost]
-        //public ActionResult ExcelUploadFahrzeuguebersichtSubmit()
-        //{
-        //    // Step 3:  Save CSV data to data store
-
-        //    // -> TODO -> wird das gebraucht? 
-
-        //    return PartialView("Fahrzeuguebersicht/ExcelUpload/Receipt", FahrzeuguebersichtViewModel);
-        //}
-
+       
         #endregion
-
-
        
         #region Export
        

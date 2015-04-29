@@ -51,10 +51,13 @@
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
-            </div>
+                 @Html.FormPersistenceMenu(Model)
+            </div>           
         </div>  
-        
-       
+                
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>       
     }
 </div>
 
@@ -72,10 +75,5 @@
             $("#divOptionalSearchparams").removeClass('hide');
         }
     }
-
-
-
-
-
 
 </script>

@@ -5,7 +5,9 @@ using GeneralTools.Resources;
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public class Fahrzeuguebersicht
-    {       
+    {
+        public bool IsFilteredByExcelUpload;
+
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string Carport { get; set; }
 

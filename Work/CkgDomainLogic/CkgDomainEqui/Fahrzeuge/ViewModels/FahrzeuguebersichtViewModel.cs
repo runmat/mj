@@ -159,15 +159,38 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (FahrzeuguebersichtSelektor.Akion == "upload" && UploadItems != null && UploadItems.Count > 0)
             {
                                 
-                var filterList = Fahrzeuguebersichts.Intersect(UploadItems, new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Fahrgestellnummer));
+                var filterList = Fahrzeuguebersichts.Intersect(UploadItems.Where(x => x.Fahrgestellnummer.IsNotNullOrEmpty()), 
+                                    new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Fahrgestellnummer)).ToList();
 
-                filterList = filterList.Intersect(UploadItems, new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Kennzeichen));
+                foreach (var item in filterList)
+                {
+                    List<bool> exclusionList = new List<bool>();
 
-                filterList = filterList.Intersect(UploadItems, new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.ModelID));
+                    if (UploadItems.Where(x => x.Kennzeichen.IsNotNullOrEmpty()).Count() > 0)
+                        exclusionList.Add(UploadItems.Where(x => x.Kennzeichen == item.Kennzeichen).Count() == 0);
 
-                // ...  TODO -> testen, ob additiv
+                    if (UploadItems.Where(x => x.Zb2Nummer.IsNotNullOrEmpty()).Count() > 0)
+                        exclusionList.Add(UploadItems.Where(x => x.Zb2Nummer == item.Zb2Nummer).Count() == 0);
+                  
+                    if (UploadItems.Where(x => x.ModelID.IsNotNullOrEmpty()).Count() > 0)                                           
+                        exclusionList.Add(UploadItems.Where(x => x.ModelID == item.ModelID).Count() == 0);
 
-                Fahrzeuguebersichts = filterList.ToList();
+                    if (UploadItems.Where(x => x.Unitnummer.IsNotNullOrEmpty()).Count() > 0)
+                        exclusionList.Add(UploadItems.Where(x => x.Unitnummer == item.Unitnummer).Count() == 0);
+
+                    if (UploadItems.Where(x => x.Auftragsnummer.IsNotNullOrEmpty()).Count() > 0)
+                        exclusionList.Add(UploadItems.Where(x => x.Auftragsnummer == item.Auftragsnummer).Count() == 0);
+
+                    if (UploadItems.Where(x => x.BatchId.IsNotNullOrEmpty()).Count() > 0)
+                        exclusionList.Add(UploadItems.Where(x => x.BatchId == item.BatchId).Count() == 0);
+
+                    if (UploadItems.Where(x => x.SIPPCode.IsNotNullOrEmpty()).Count() > 0)
+                        exclusionList.Add(UploadItems.Where(x => x.SIPPCode == item.SIPPCode).Count() == 0);
+              
+                    item.IsFilteredByExcelUpload = exclusionList.Where(x => x == true).Count() > 0;                              
+                }
+              
+                Fahrzeuguebersichts = filterList.Where(c => c.IsFilteredByExcelUpload == false).ToList();
                 
             }
             #endregion
@@ -239,13 +262,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         public bool Equals(T x, T y)
-        {
+        {         
             return this.keyExtractor(x).Equals(this.keyExtractor(y));
         }
 
         public int GetHashCode(T obj)
-        {
-            return this.keyExtractor(obj).GetHashCode();
+        {            
+            return this.keyExtractor(obj).GetHashCode();;
         }
     }
 }
