@@ -16,7 +16,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         public TranslationFormatService(ISessionDataHelper sessionDataHelper)
         {
             var logonContext = sessionDataHelper.GetLogoncontext();
-            string username = string.Empty;
+            var username = string.Empty;
             if (logonContext != null)
             {
                 username = logonContext.UserName;

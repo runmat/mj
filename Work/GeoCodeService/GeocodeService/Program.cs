@@ -9,8 +9,6 @@ namespace GeodeService
     {
         static void Main(string[] args)
         {
-            Common.BingKey = ConfigurationManager.AppSettings["BingKey"];
-
             // define server object
             LIC.SetLic("5DVZ5588DC-25444");
             RFCServer s = new RFCServer();
@@ -33,7 +31,7 @@ namespace GeodeService
             // start server
             s.Start(false);
 
-            Console.Write("Server gestarted. Beliebige Taste drücken um zu beenden.");
+            Console.Write("Server gestartet. Beliebige Taste drücken um zu beenden.");
             Console.ReadLine();
             s.Stop();    
         }
@@ -84,7 +82,7 @@ namespace GeodeService
                 else if (sAktion == "G")
                 {
                     GeoSearch.CalculateCordRoute(ref CalledFunction);
-                }         
+                }
             }
             else if (CalledFunction.FunctionName == "ZBC_GEOCODIERUNG_001")
             {

@@ -39,7 +39,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugeMahnFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = MahnreportViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnreportViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Briefbestand", dt);
 
             return new EmptyResult();
@@ -47,7 +47,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFahrzeugeMahnFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = MahnreportViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnreportViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Briefbestand", dt, landscapeOrientation: true);
 
             return new EmptyResult();

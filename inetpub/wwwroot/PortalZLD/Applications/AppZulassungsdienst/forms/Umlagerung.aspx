@@ -145,7 +145,7 @@
                                         <Columns>
                                             <asp:TemplateField Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'></asp:Label>
+                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("MATNR") %>'></asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField HeaderStyle-Width="15%" HeaderText="an Kostenstelle" DataField="UMLGO"
@@ -154,7 +154,7 @@
                                             <asp:BoundField HeaderStyle-Width="10%" HeaderText="Kennz.-Größe" DataField="KENNZFORM" />
                                             <asp:TemplateField>
                                                 <ItemTemplate>
-                                                    <asp:ImageButton CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'
+                                                    <asp:ImageButton CommandArgument='<%# Eval("MATNR") %>'
                                                         CommandName="minusMenge" ID="imgbMinus" ImageUrl="~/Images/Minus.jpg" Width="15px"
                                                         Height="15px" runat="server" />
                                                 </ItemTemplate>
@@ -162,7 +162,7 @@
                                             <asp:BoundField HeaderStyle-Width="10%" HeaderText="Menge" DataField="Menge" ItemStyle-HorizontalAlign="Center" />
                                             <asp:TemplateField>
                                                 <ItemTemplate>
-                                                    <asp:ImageButton CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'
+                                                    <asp:ImageButton CommandArgument='<%# Eval("MATNR") %>'
                                                         CommandName="plusMenge" ID="imgbPlus" ImageUrl="~/Images/Plus.jpg" Width="15px"
                                                         Height="15px" runat="server" />
                                                 </ItemTemplate>
@@ -172,13 +172,13 @@
                                             <asp:TemplateField Visible="true">
                                                 <ItemTemplate>
                                                     <asp:ImageButton ID="ibEditInfotext" runat="server" Width="27px" Height="30px" ImageUrl="~/Images/edit_01.gif"
-                                                        CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>' CommandName="bearbeiten" />
+                                                        CommandArgument='<%# Eval("MATNR") %>' CommandName="bearbeiten" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
                                                     <asp:ImageButton ID="lbDelete" runat="server" Width="32px" Height="32px" ImageUrl="~/Images/RecycleBin.png"
-                                                        TabIndex="-1" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>' CommandName="entfernen" />
+                                                        TabIndex="-1" CommandArgument='<%# Eval("MATNR") %>' CommandName="entfernen" />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -226,7 +226,7 @@
                                             <Columns>
                                                 <asp:TemplateField Visible="false">
                                                     <ItemTemplate>
-                                                        <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.MATNR") %>'></asp:Label>
+                                                        <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("MATNR") %>'></asp:Label>
                                                     </ItemTemplate>
                                                 </asp:TemplateField>
                                                 <asp:BoundField DataField="UMLGO" HeaderStyle-Width="15%" HeaderText="an Kostenstelle" />
