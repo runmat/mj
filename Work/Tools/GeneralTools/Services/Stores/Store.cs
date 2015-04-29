@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Threading;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
@@ -177,13 +178,35 @@ namespace GeneralTools.Services
 
         #region IPersistableObject
 
+        [FormPersistable]
         public bool IsSelected { get; set; }
 
+        [FormPersistable]
         public string ObjectKey { get; set; }
 
+        [FormPersistable]
+        public string ObjectName { get; set; }
+
+        [FormPersistable]
         public DateTime? EditDate { get; set; }
 
+        [FormPersistable]
         public string EditUser { get; set; }
+
+        public bool PersistablePropertiesAvailable
+        {
+            get
+            {
+                var type = this.GetType();
+
+                var propertiesWithFormPersistableAttribute = type.GetProperties(BindingFlags.Instance | BindingFlags.Public)
+                    .Where(property => property.GetCustomAttributes(typeof(FormPersistableAttribute), true).Any());
+
+                var propertiesNotOfTypeStore = propertiesWithFormPersistableAttribute.Where(pi => pi.DeclaringType != typeof(Store));
+
+                return propertiesNotOfTypeStore.Any();
+            }
+        }
 
         #endregion
     }

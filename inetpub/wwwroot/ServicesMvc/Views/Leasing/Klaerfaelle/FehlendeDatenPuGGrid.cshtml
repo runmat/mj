@@ -8,7 +8,6 @@
 @(Html.Telerik()
     .Grid<Klaerfall>()
     .Name(gridName)
-    .XGroup(gridName)
     .XAjaxDataBinding("KlaerfaelleAjaxBinding", "Leasing")
     .Columns(columns =>
         {

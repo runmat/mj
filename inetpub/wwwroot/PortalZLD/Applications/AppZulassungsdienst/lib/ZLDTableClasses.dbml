@@ -1,176 +1,89 @@
-﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ZLDPortal" Class="ZLDTableClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="WebSettings" ConnectionString="Data Source=VMS019;Initial Catalog=ZLDPortal;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ZLDPortalConnectionString" Provider="System.Data.SqlClient" />
-  <Table Name="dbo.ZLDBankverbindung" Member="ZLDBankverbindung">
-    <Type Name="ZLDBankverbindung">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="id_Kopf" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="BankKey" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="Kontonr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
-      <Column Name="EinzugErm" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Geldinstitut" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Inhaber" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="IBAN" Type="System.String" DbType="NVarChar(34)" CanBeNull="true" />
-      <Column Name="SWIFT" Type="System.String" DbType="NVarChar(11)" CanBeNull="true" />
-      <Association Name="ZLDKopfTabelle_ZLDBankverbindung" Member="ZLDKopfTabelle" ThisKey="id_Kopf" OtherKey="id" Type="ZLDKopfTabelle" IsForeignKey="true" DeleteRule="CASCADE" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ZLDKundenadresse" Member="ZLDKundenadresse">
-    <Type Name="ZLDKundenadresse">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="id_Kopf" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Partnerrolle" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="Kundennr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="ZLDPortal_Test" Class="ZLDTableClassesDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=vms047;Initial Catalog=ZLDPortal_Test;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="ZLDPortal_TestConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.ZLDVorgangAdresse" Member="ZLDVorgangAdresse">
+    <Type Name="ZLDVorgangAdresse">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
       <Column Name="Name1" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
       <Column Name="Name2" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="PLZ" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="Ort" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
       <Column Name="Strasse" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
-      <Association Name="ZLDKopfTabelle_ZLDKundenadresse" Member="ZLDKopfTabelle" ThisKey="id_Kopf" OtherKey="id" Type="ZLDKopfTabelle" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Column Name="Plz" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Ort" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Bemerkung" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangAdresse" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
     </Type>
   </Table>
-  <Table Name="dbo.ZLDKopfTabelle" Member="ZLDKopfTabelle">
-    <Type Name="ZLDKopfTabelle">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="id_sap" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="id_user" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="id_session" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="abgerechnet" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="tstamp" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="username" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="kundenname" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="kundennr" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="referenz1" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="referenz2" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="KreisKZ" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
-      <Column Name="KreisBez" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="KennKZ" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
-      <Column Name="KennABC" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="WunschKenn" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Reserviert" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="ReserviertKennz" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Feinstaub" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+  <Table Name="dbo.ZLDVorgangBank" Member="ZLDVorgangBank">
+    <Type Name="ZLDVorgangBank">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Bankleitzahl" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
+      <Column Name="KontoNr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
+      <Column Name="Geldinstitut" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Kontoinhaber" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
+      <Column Name="Einzug" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="SWIFT" Type="System.String" DbType="NVarChar(11)" CanBeNull="true" />
+      <Column Name="IBAN" Type="System.String" DbType="NVarChar(34)" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZLDVorgangPosition" Member="ZLDVorgangPosition">
+    <Type Name="ZLDVorgangPosition">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="PositionsNr" Type="System.String" DbType="NVarChar(6) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UebergeordnetePosition" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
+      <Column Name="Menge" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="MaterialNr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
+      <Column Name="MaterialName" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="WebMaterialart" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="Preis" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="GebuehrAmt" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="GebuehrAmtAdd" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="SdRelevant" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="NullpreisErlaubt" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Gebuehrenpaket" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="UrspruenglicherPreis" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="Differenz" Type="System.Decimal" DbType="Decimal(15,3)" CanBeNull="true" />
+      <Column Name="Konditionstabelle" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Konditionsart" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Kalkulationsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangKopf" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangKopf" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.ZLDVorgangKopf" Member="ZLDVorgangKopf">
+    <Type Name="ZLDVorgangKopf">
+      <Column Name="SapId" Type="System.String" DbType="NVarChar(10) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Vorgang" Type="System.String" DbType="NVarChar(1) NOT NULL" CanBeNull="false" />
+      <Column Name="VkOrg" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="VkBur" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Vorerfassungsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Vorerfasser" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
+      <Column Name="StatusVersandzulassung" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="Belegart" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
+      <Column Name="VersandzulassungDurchfuehrendesVkBur" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
+      <Column Name="Barcode" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
+      <Column Name="KundenNr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="Referenz1" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Referenz2" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="Landkreis" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="KreisBezeichnung" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
+      <Column Name="Wunschkennzeichen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="KennzeichenReservieren" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="ReserviertesKennzeichen" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
       <Column Name="Zulassungsdatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Kennzeichen" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Kennztyp" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="KennzForm" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="KennzAnz" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="EinKennz" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Kennzeichenform" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
+      <Column Name="AnzahlKennzeichen" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
+      <Column Name="NurEinKennzeichen" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
       <Column Name="Bemerkung" Type="System.String" DbType="NVarChar(120)" CanBeNull="true" />
-      <Column Name="EC" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Bar" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="saved" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="toSave" Type="System.Int16" DbType="SmallInt" CanBeNull="true" />
-      <Column Name="toDelete" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="bearbeitet" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="testuser" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Barcode" Type="System.String" DbType="NVarChar(64)" CanBeNull="true" />
-      <Column Name="Filiale" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
-      <Column Name="OhneSteuer" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="PauschalKunde" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="KunnrLF" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="KreisKZ_Direkt" Type="System.String" DbType="NVarChar(3)" CanBeNull="true" />
-      <Column Name="Steuer" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="Vorgang" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="NrFrachtHin" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="NrFrachtZu" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="Barkunde" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="VersandVKBUR" Type="System.String" DbType="NVarChar(8)" CanBeNull="true" />
-      <Column Name="FLAG" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="VZB_STATUS" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="STATUS_Versand" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="RE" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Zahlungsart" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="VorerfDatum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Vorerfasser" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="VKKurz" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="interneRef" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="KundenNotiz" Type="System.String" DbType="NVarChar(100)" CanBeNull="true" />
-      <Column Name="KennzVH" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="KennzAlt" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="ZBII_ALT_NEU" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="VorhKennzReserv" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Still_Datum" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="Prali_Print" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Flieger" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="UMBU" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="ABGESAGT" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="RUECKBU" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="EVB" Type="System.String" DbType="NVarChar(7)" CanBeNull="true" />
-      <Column Name="OBJECT_ID" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="FAHRZ_ART" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="MNRESW" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SERIE" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SAISON_KNZ" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SAISON_BEG" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="SAISON_END" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="TUEV_AU" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
-      <Column Name="ZOLLVERS_DAUER" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="VORFUEHR" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="HALTE_DAUER" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="LTEXT_NR" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="BEB_STATUS" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="ZZREFNR3" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZZREFNR4" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZZREFNR5" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZZREFNR6" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZZREFNR7" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZZREFNR8" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZZREFNR9" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZZREFNR10" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="AH_DOKNAME" Type="System.String" DbType="NVarChar(60)" CanBeNull="true" />
-      <Column Name="ZusatzKZ" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="WunschKZ2" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="WunschKZ3" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="OhneGruenenVersSchein" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="VorerfUhrzeit" Type="System.String" DbType="NVarChar(6)" CanBeNull="true" />
-      <Column Name="Infotext" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Nachbearbeiten" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="Mobuser" Type="System.String" DbType="NVarChar(12)" CanBeNull="true" />
-      <Column Name="POOLNR" Type="System.String" DbType="NVarChar(20)" CanBeNull="true" />
-      <Column Name="ZOLLVERS" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="KURZZEITVS" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="ONLINE_VG" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SofortabrechnungErledigt" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Column Name="SofortabrechnungPfad" Type="System.String" DbType="NVarChar(30)" CanBeNull="true" />
-      <Column Name="Briefnr" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
-      <Column Name="Orderid" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
-      <Column Name="Hppos" Type="System.String" DbType="NVarChar(4)" CanBeNull="true" />
-      <Association Name="ZLDKopfTabelle_ZLDBankverbindung" Member="ZLDBankverbindung" ThisKey="id" OtherKey="id_Kopf" Type="ZLDBankverbindung" />
-      <Association Name="ZLDKopfTabelle_ZLDKundenadresse" Member="ZLDKundenadresse" ThisKey="id" OtherKey="id_Kopf" Type="ZLDKundenadresse" />
-      <Association Name="ZLDKopfTabelle_ZLDPositionsTabelle" Member="ZLDPositionsTabelle" ThisKey="id" OtherKey="id_Kopf" Type="ZLDPositionsTabelle" />
-    </Type>
-  </Table>
-  <Table Name="dbo.ZLDPositionsTabelle" Member="ZLDPositionsTabelle">
-    <Type Name="ZLDPositionsTabelle">
-      <Column Name="id" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="id_Kopf" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="id_pos" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="Menge" Type="System.String" DbType="NVarChar(15)" CanBeNull="true" />
-      <Column Name="Matnr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
-      <Column Name="Matbez" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="Preis" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="Preis_Amt" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="PosLoesch" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="GebMatnr" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
-      <Column Name="GebMatbez" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="GebMatnrSt" Type="System.String" DbType="NVarChar(18)" CanBeNull="true" />
-      <Column Name="GebMatBezSt" Type="System.String" DbType="NVarChar(40)" CanBeNull="true" />
-      <Column Name="GebPreis" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="Kennzmat" Type="System.String" DbType="NChar(18)" CanBeNull="true" />
-      <Column Name="PreisKZ" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Column Name="UEPOS" Type="System.Int32" DbType="Int" CanBeNull="true" />
-      <Column Name="WebMTArt" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="SDRelevant" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="GebMatPflicht" Type="System.String" DbType="NVarChar(2)" CanBeNull="true" />
-      <Column Name="UPreis" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
-      <Column Name="Differrenz" Type="System.String" DbType="NVarChar(25)" CanBeNull="true" />
-      <Column Name="Konditionstab" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="Konditionsart" Type="System.String" DbType="NVarChar(50)" CanBeNull="true" />
-      <Column Name="CalcDat" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-      <Column Name="GebPak" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
-      <Column Name="Preis_Amt_Add" Type="System.Decimal" DbType="Money" CanBeNull="true" />
-      <Association Name="ZLDKopfTabelle_ZLDPositionsTabelle" Member="ZLDKopfTabelle" ThisKey="id_Kopf" OtherKey="id" Type="ZLDKopfTabelle" IsForeignKey="true" DeleteRule="CASCADE" DeleteOnNull="true" />
+      <Column Name="Zahlart_EC" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Zahlart_Bar" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="Zahlart_Rechnung" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="LieferantenNr" Type="System.String" DbType="NVarChar(10)" CanBeNull="true" />
+      <Column Name="WebBearbeitungsStatus" Type="System.String" DbType="NVarChar(1)" CanBeNull="true" />
+      <Column Name="BarzahlungKunde" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangAdresse" Member="ZLDVorgangAdresse" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangAdresse" Cardinality="One" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangBank" Member="ZLDVorgangBank" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangBank" Cardinality="One" />
+      <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangPosition" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangPosition" />
     </Type>
   </Table>
 </Database>

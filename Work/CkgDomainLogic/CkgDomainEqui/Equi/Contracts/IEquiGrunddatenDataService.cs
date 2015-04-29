@@ -5,6 +5,6 @@ namespace CkgDomainLogic.Equi.Contracts
 {
     public interface IEquiGrunddatenDataService
     {
-        List<EquiGrunddaten> GetEquis(GrunddatenEquiSuchparameter suchparameter);
+        List<EquiGrunddaten> GetEquis(EquiGrunddatenSelektor suchparameter);
     }
 }

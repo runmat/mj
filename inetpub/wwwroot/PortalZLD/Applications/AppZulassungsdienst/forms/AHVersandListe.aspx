@@ -3,7 +3,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 	<script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?26082013"></script>
-	<script src="/PortalZLD/Applications/AppZulassungsdienst/Javascript/GridViewHelper.js" type="text/javascript"></script>
     <script src="/PortalZLD/JScript/jquery-1.6.2.min.js" type="text/javascript"></script>
     <script src="/PortalZLD/JScript/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
 
@@ -66,78 +65,64 @@
 										<tr>
 											<td>
                                                 <asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
-                                                    CellPadding="0" CellSpacing="0" GridLines="None"  DataKeyNames="ZULBELN"
+                                                    CellPadding="0" CellSpacing="0" GridLines="None" DataKeyNames="ZULBELN"
                                                     AllowSorting="true" AllowPaging="false" CssClass="GridView" PageSize="1000" 
-                                                    onsorting="GridView1_Sorting" onrowcommand="GridView1_RowCommand" 
-                                                   >
+                                                    onsorting="GridView1_Sorting" onrowcommand="GridView1_RowCommand">
                                                     <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
                                                     <RowStyle CssClass="ItemStyle"/>
                                                     <AlternatingRowStyle CssClass="GridTableAlternate" />
                                                     <PagerSettings Visible="False" />
 													<Columns>
-													   
 														<asp:TemplateField  SortExpression="ZULBELN"  HeaderText="ID">
-															 <ItemTemplate>
-																<asp:Label ID="lblID" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ZULBELN") %>'></asp:Label>
-
+															<ItemTemplate>
+															    <asp:Label ID="lblSapId" runat="server" Text='<%# Eval("ZULBELN") %>'/>
 															</ItemTemplate>
-																<HeaderStyle Width="50px" />
-																<ItemStyle Width="50px" />    													
+															<HeaderStyle Width="50px" />
+															<ItemStyle Width="50px" />
 														</asp:TemplateField> 
 														<asp:TemplateField SortExpression="toDelete"  HeaderText="Löschen">
 															<ItemTemplate>
-															<asp:Label ID="lblLoeschKZ" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.toDelete").ToString() %>'></asp:Label>
-														</ItemTemplate>
-																<HeaderStyle Width="30px" />
-																<ItemStyle Width="30px" />    
-														</asp:TemplateField>	                                     
-
-                                                 
+															    <asp:Label ID="lblLoeschKZ" runat="server" Text='<%# Eval("toDelete").ToString() %>'/>
+														    </ItemTemplate>
+															<HeaderStyle Width="30px" />
+															<ItemStyle Width="30px" />    
+														</asp:TemplateField>
 														<asp:TemplateField SortExpression="KUNNR" HeaderText="Kundennr.">
 															<ItemTemplate>
-																<asp:Label ID="lblKundennr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.KUNNR") %>'></asp:Label>
+															    <asp:Label ID="lblKundennr" runat="server" Text='<%# Eval("KUNNR") %>'/>
 															</ItemTemplate>
-
 														</asp:TemplateField>
 														<asp:TemplateField SortExpression="NAME1" HeaderText="Kundenname">
 															<ItemTemplate>
-																<asp:Label ID="lblKundenname" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.NAME1") %>'></asp:Label>
+															    <asp:Label ID="lblKundenname" runat="server" Text='<%# Eval("NAME1") %>'/>
 															</ItemTemplate>
-
 														</asp:TemplateField> 
-	  
 														<asp:TemplateField SortExpression="MAKTX" HeaderText="Dienstleistung">
-														<ItemTemplate>
-															<asp:Label ID="lblMatbez" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.MAKTX") %>'></asp:Label>
-														</ItemTemplate>
-
-													</asp:TemplateField>
+														    <ItemTemplate>
+														        <asp:Label ID="lblMatbez" runat="server" Text='<%# Eval("MAKTX") %>'/>
+														    </ItemTemplate>
+													    </asp:TemplateField>
 														<asp:TemplateField SortExpression="ZZZLDAT" HeaderText="Zulassungsdatum">
 															<ItemTemplate>
-                                                            <asp:Label ID="lblDate" runat="server" Visible='<%# DataBinder.Eval(Container, "DataItem.ZULPOSNR").ToString() == "10" %>' Text='<%# DataBinder.Eval(Container, "DataItem.ZZZLDAT", "{0:d}") %>'></asp:Label>
+															    <asp:Label ID="lblDate" runat="server" Visible='<%# Eval("ZULPOSNR").ToString() == "10" %>' Text='<%# Eval("ZZZLDAT", "{0:d}") %>'/>
 															</ItemTemplate>
-
 														</asp:TemplateField>
 														<asp:TemplateField SortExpression="ZZREFNR1" HeaderText="Referenz1">
 															<ItemTemplate>
-																<asp:Label ID="lblReferenz1"  runat="server" Visible='<%# DataBinder.Eval(Container, "DataItem.ZULPOSNR").ToString() == "10" %>' Text='<%# DataBinder.Eval(Container, "DataItem.ZZREFNR1") %>'></asp:Label>
+															    <asp:Label ID="lblReferenz1"  runat="server" Visible='<%# Eval("ZULPOSNR").ToString() == "10" %>' Text='<%# Eval("ZZREFNR1") %>'/>
 															</ItemTemplate>
-                                                 
 														</asp:TemplateField>  
 														<asp:TemplateField SortExpression="Kennzeichen" HeaderText="Kennzeichen">
 															<ItemTemplate>
-																<asp:Label ID="lblKennz"  runat="server" Visible='<%# DataBinder.Eval(Container, "DataItem.ZULPOSNR").ToString() == "10" %>' Text='<%# DataBinder.Eval(Container, "DataItem.ZZKENN") %>'></asp:Label>
+															    <asp:Label ID="lblKennz"  runat="server" Visible='<%# Eval("ZULPOSNR").ToString() == "10" %>' Text='<%# Eval("ZZKENN") %>'/>
 															</ItemTemplate>
-                                                     
 														</asp:TemplateField> 
 														<asp:TemplateField >
 															 <ItemTemplate>
-																 <asp:ImageButton ID="ibtnedt" Visible='<%# DataBinder.Eval(Container, "DataItem.toDelete").ToString() != "L" %>' ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ZULBELN") %>'  runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16px" Height="16px" />
+																 <asp:ImageButton ID="ibtnedt" Visible='<%# Eval("toDelete").ToString() != "L" %>' ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# Eval("ZULBELN") %>'  runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16px" Height="16px" />
 																 <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%#  ((GridViewRow)Container).RowIndex %>'  runat="server" CommandName="Del" ToolTip="Löschen" />
 															</ItemTemplate>
-                                                   
-														</asp:TemplateField>                                                             
-																																																												  
+														</asp:TemplateField>
 													</Columns>
 												</asp:GridView>
 											</td>

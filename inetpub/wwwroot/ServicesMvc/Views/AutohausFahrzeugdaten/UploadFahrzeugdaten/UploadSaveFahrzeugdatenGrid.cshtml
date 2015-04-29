@@ -19,7 +19,6 @@
 @(Html.Telerik()
     .Grid<UploadFahrzeug>()
     .Name(gridName)
-    .XGroup("GridUploadSaveFahrzeugdaten")
     .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
     .XAjaxDataBinding("UploadSaveFahrzeugdatenAjaxBinding", "AutohausFahrzeugdaten")
     .Columns(columns =>
