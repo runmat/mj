@@ -1,437 +1,141 @@
 ﻿using System;
-using CKG.Base.Common;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
+using System.Text;
+using AppZulassungsdienst.lib.Models;
 using System.Data;
 using CKG.Base.Business;
 using System.Configuration;
+using GeneralTools.Models;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib 
 {
-    /// <summary>
-    /// Klasse zum Laden der Stammdaten aus SAP.
-    /// </summary>
-	public class ZLDCommon: DatenimportBase
+    public enum GridFilterMode
+    {
+        Default,
+        ShowOnlyOandL,
+        ShowOnlyAandL
+    }
+
+    public enum GridCheckMode
+    {
+        CheckAll,
+        CheckOnlyRelevant,
+        CheckNone
+    }
+
+    public enum Zahlart
+    {
+        EC,
+        Bar,
+        Rechnung
+    }
+
+	public class ZLDCommon : SapOrmBusinessBase
     {
         #region Properties
 
-        /// <summary>
-        /// Kundenstammtabelle
-        /// </summary>
-        public DataTable tblKundenStamm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Stammdatentabelle Zulassungskreise
-        /// </summary>
-        public DataTable tblStvaStamm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Stammdatentabelle Sonderkreisen 
-        /// z.B. HH2(Städte mit mehreren Zulassungsdienststellen)
-        /// </summary>
-        public DataTable tblSonderStva
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Stammdatentabelle mit Dienstleistungen und Materialien
-        /// </summary>
-        public DataTable tblMaterialStamm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Stammdatentabelle Dienstleistungen/Materialien ohne 
-        /// Materialnummer im Materialtext
-        /// </summary>
-        public DataTable tblMaterialtextohneMatNr
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Stamdatentabelle Kennzeichengrössen
-        /// </summary>
-        public DataTable tblKennzGroesse
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Verkaufsorganisation
-        /// </summary>
-        public String VKORG
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Verkaufsbüro
-        /// </summary>
-        public String VKBUR
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Adresstaden einer Filiale
-        /// </summary>
-        public DataTable AdresseFiliale
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name des Kunden
-        /// </summary>
-        public String Kundename
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// "Nickname" des Kunden
-        /// </summary>
-        public String Nickname
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Tabelle der Gruppen zur Gruppenart 
-        /// </summary>
-        public DataTable tblGruppeTouren
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Tabelle der Kunden zur Gruppe
-        /// </summary>
-        public DataTable tblKundeGruppe
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Tabelle der Gruppe zur Gruppenart für Selektionen
-        /// </summary>
-        public DataTable tblTourenforSelection
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Tabelle der Kunden zur Gruppefür Selektionen
-        /// </summary>
-        public DataTable tblKdGruppeforSelection
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Bezeichnung der Gruppe oder der Tour
-        /// </summary>
-        public String Bezeichnung
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Gruppen- bzw. TourID
-        /// </summary>
-        public String GroupOrTourID 
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// SWIFT-BIC des Kunden
-        /// </summary>
-        public String SWIFT
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// IBAN des Kunden
-        /// </summary>
-        public String IBAN
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name der Bank
-        /// </summary>
-        public String Bankname
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Bankschlüssel
-        /// </summary>
-        public String Bankschluessel
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Bankleitzahl des Kunden
-        /// </summary>
-        public String BLZ
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kontonummer des Kunden
-        /// </summary>
-        public String Kontonr
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Rückgabe der Kunden zur Kundengruppe eines Kunden
-        /// </summary>
-        public DataTable tblAHKundenStamm
-        {
-            get;
-            set;
-        }
+        public static string CONST_IDSONSTIGEDL = "570";
+
+        public List<Kundenstammdaten> KundenStamm { get; private set; }
+        public List<Materialstammdaten> MaterialStamm { get; private set; }
+        public List<Stva> StvaStamm { get; private set; }
+        public List<SonderStva> SonderStvaStamm { get; private set; }
+        public DataTable tblKennzGroesse { get; private set; }
+        public Filialadresse AdresseFiliale { get; private set; }
+        public List<GruppeTour> Touren { get; private set; }
+        public List<GruppeTour> Kundengruppen { get; private set; }
+        public List<Kundenadresse> KundenZurGruppe { get; private set; }
+
+        public String Kundename { get; set; }
+        public String Bezeichnung { get; set; }
+        public String GroupOrTourID { get; set; }
+        public String SWIFT { get; set; }
+        public String IBAN { get; set; }
+        public String Bankname { get; set; }
+        public String Bankschluessel { get; set; }
+        public String BLZ { get; set; }
+        public String Kontonr { get; set; }
 
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="objUser">Webuserobjekt</param>
-        /// <param name="objApp">Applikationsobjekt</param>
-        /// 
-        public ZLDCommon(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp)
-			: base(ref objUser, objApp, "")
-		{
-            tblKundenStamm = new DataTable();
-            tblStvaStamm = new DataTable();
-            tblMaterialStamm = new DataTable();
-            tblMaterialtextohneMatNr = new DataTable();
+        public ZLDCommon(string userReferenz)
+        {
+            VKORG = GetVkOrgFromUserReference(userReferenz);
+            VKBUR = GetVkBurFromUserReference(userReferenz);
+            
             tblKennzGroesse = new DataTable();
 		}
 
-        /// <summary>
-        /// Laden der Stammdaten der jeweiligen Gruppe aus SAP. Bapi: Z_ZLD_EXPORT_KUNDE_MAT
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">alle Erfassungsmasken</param>
-        public void getSAPDatenStamm(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public static string GetDocRootPath(bool isTestuser)
         {
-            m_strClassAndMethod = "ZLDCommon.getSAPDatenStamm";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
+            var pathTemplate = ConfigurationManager.AppSettings["ZldDocumentsRootPath"];
+            if (String.IsNullOrEmpty(pathTemplate))
+                return "";
 
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_EXPORT_KUNDE_MAT", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_VKORG", VKORG);
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
-
-                    myProxy.callBapi();
-
-                    tblKundenStamm = myProxy.getExportTable("GT_EX_KUNDE");
-                    foreach (DataRow drow in tblKundenStamm.Rows)
-                    {
-                        drow["KUNNR"] = drow["KUNNR"].ToString().TrimStart('0');
-                        drow["NAME1"] = drow["NAME1"] + " ~ " + drow["KUNNR"].ToString();
-                        if (drow["EXTENSION1"].ToString().Length > 0) 
-                        {
-                            drow["NAME1"] = drow["NAME1"] + " / " + drow["EXTENSION1"].ToString();
-                        }
-                    }
-
-                    DataRow dr = tblKundenStamm.NewRow();
-                    dr["KUNNR"] = "0";
-                    dr["NAME1"] = " - keine Auswahl - ";
-                    dr["INAKTIV"] = "";
-                    tblKundenStamm.Rows.Add(dr);
-                    tblMaterialtextohneMatNr = new DataTable();
-
-                    tblMaterialtextohneMatNr = myProxy.getExportTable("GT_EX_MATERIAL");
-                    tblMaterialStamm = tblMaterialtextohneMatNr.Copy();
-                    foreach (DataRow drow in tblMaterialStamm.Rows)
-                    {
-                        drow["MATNR"] = drow["MATNR"].ToString().TrimStart('0');
-                        drow["MAKTX"] = drow["MAKTX"].ToString() + " ~ " + drow["MATNR"];
-                    }
-
-                    if (tblMaterialStamm.Rows.Count == 0)
-                    {
-                        m_intStatus = -5555;
-                        m_strMessage = "Keine Materialdaten gefunden!";
-                    }
-
-                    dr = tblMaterialStamm.NewRow();
-                    dr["MATNR"] = "0";
-                    dr["MAKTX"] = " - keine Auswahl - ";
-                    dr["INAKTIV"] = "";
-                    tblMaterialStamm.Rows.Add(dr);
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+            return String.Format(pathTemplate, (isTestuser ? "test" : "prod"));
         }
 
-       // /// <summary>
-       // /// Laden der Stammdaten der jeweiligen Autohausgruppe aus SAP. Bapi: Z_ZLD_AH_KUNDE_ZU_GRUPPE
-       // /// </summary>
-       // /// <param name="strAppID">AppID</param>
-       // /// <param name="strSessionID">SessionID</param>
-       // /// <param name="page">ChangeZLDNach.aspx, AHVersandChange.aspx</param>
-       // /// <param name="Kunnr">Kundennummer</param>
-       // public void getSAPAHDatenStamm(String strAppID, String strSessionID, System.Web.UI.Page page, String Kunnr)
-       // {
-       //    m_strClassAndMethod = "ZLDCommon.getSAPAHDatenStamm";
-       //    m_strAppID = strAppID;
-       //    m_strSessionID = strSessionID;
-       //    m_intStatus = 0;
-       //    m_strMessage = String.Empty;
-
-       //    if (m_blnGestartet == false)
-       //    {
-       //        m_blnGestartet = true;
-       //        try
-       //        {
-       //            DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_KUNDE_ZU_GRUPPE", ref m_objApp, ref m_objUser, ref page);
-
-       //            myProxy.setImportParameter("I_VKORG", VKORG);
-       //            myProxy.setImportParameter("I_VKBUR", VKBUR);
-       //            myProxy.setImportParameter("I_KUNNR", Kunnr.PadLeft(10,'0'));
-
-       //            myProxy.callBapi();
-
-       //            tblAHKundenStamm = myProxy.getExportTable("GT_DEB");
-       //            foreach (DataRow drow in tblAHKundenStamm.Rows)
-       //            {
-       //                drow["KUNNR"] = drow["KUNNR"].ToString().TrimStart('0');
-       //                drow["NAME1"] = drow["NAME1"] + " ~ " + drow["KUNNR"].ToString();
-       //                if (drow["EXTENSION1"].ToString().Length > 0)
-       //                {
-       //                    drow["NAME1"] = drow["NAME1"] + " / " + drow["EXTENSION1"].ToString();
-       //                }
-       //            }
-
-       //            DataRow dr = tblAHKundenStamm.NewRow();
-       //            dr["KUNNR"] = "0";
-       //            dr["NAME1"] = " - keine Auswahl - ";
-       //            tblAHKundenStamm.Rows.Add(dr);
-       //        }
-       //        catch (Exception ex)
-       //        {
-       //            switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-       //            {
-       //                default:
-       //                    m_intStatus = -9999;
-       //                    m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-       //                    break;
-       //            }
-       //        }
-       //        finally { m_blnGestartet = false; }
-       //    }
-       //}
-
-        /// <summary>
-       /// Laden der Zulassungsstellen aus SAP. Bapi: Z_ZLD_EXPORT_ZULSTEL
-       /// </summary>
-       /// <param name="strAppID"></param>
-       /// <param name="strSessionID"></param>
-       /// <param name="page"></param>
-        public void getSAPZulStellen(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void getSAPDatenStamm()
         {
-            m_strClassAndMethod = "ZLDCommon.getSAPZulStellen";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_EXPORT_ZULSTEL", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_EXPORT_KUNDE_MAT.Init(SAP, "I_VKORG, I_VKBUR", VKORG, VKBUR);
 
-                    myProxy.callBapi();
+                    CallBapi();
 
-                    tblStvaStamm = myProxy.getExportTable("GT_EX_ZULSTELL");
-                    tblSonderStva = myProxy.getExportTable("GT_SONDER");
+                    KundenStamm = AppModelMappings.Z_ZLD_EXPORT_KUNDE_MAT_GT_EX_KUNDE_To_Kundenstammdaten.Copy(Z_ZLD_EXPORT_KUNDE_MAT.GT_EX_KUNDE.GetExportList(SAP)).OrderBy(k => k.Name).ToList();
 
-                    if (tblStvaStamm.Rows.Count == 0)
+                    KundenStamm.Insert(0, new Kundenstammdaten
                     {
-                        m_intStatus = -5555;
-                        m_strMessage = "Keine STVA-Daten gefunden!";
-                    }
-                    tblStvaStamm.Columns.Add("KREISTEXT", typeof(String));
-                    DataRow dr = tblStvaStamm.NewRow();
+                        KundenNr = "0",
+                        Name1 = " - keine Auswahl - "
+                    });
 
-                    dr["KREISKZ"] = "";
-                    dr["KREISBEZ"] = " - keine Auswahl - ";
-                    tblStvaStamm.Rows.Add(dr);
-                    foreach (DataRow row in tblStvaStamm.Rows)
-                    {
-                        row["KREISTEXT"] = row["KREISKZ"].ToString().PadRight(4, '.') + row["KREISBEZ"].ToString();
-                    }
+                    MaterialStamm = AppModelMappings.Z_ZLD_EXPORT_KUNDE_MAT_GT_EX_MATERIAL_To_Materialstammdaten.Copy(Z_ZLD_EXPORT_KUNDE_MAT.GT_EX_MATERIAL.GetExportList(SAP)).OrderBy(m => m.Name).ToList();
 
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                    if (MaterialStamm.None())
+                        RaiseError(5555, "Keine Materialdaten gefunden!");
+
+                    MaterialStamm.Insert(0, new Materialstammdaten
                     {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden(Kreiskennzeichen).";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                        MaterialNr = "0",
+                        MaterialName = " - keine Auswahl - "
+                    });
+                });
         }
 
-        /// <summary>
-        /// Laden der in der SQL-Tabelle hinterlegten Kennzeichengösse pro Materialnummer
-        /// </summary>
+        public void getSAPZulStellen()
+        {
+            ExecuteSapZugriff(() =>
+                {
+                    Z_ZLD_EXPORT_ZULSTEL.Init(SAP);
+
+                    CallBapi();
+
+                    StvaStamm = AppModelMappings.Z_ZLD_EXPORT_ZULSTEL_GT_EX_ZULSTELL_To_Stva.Copy(Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL.GetExportList(SAP)).OrderBy(s => s.Bezeichnung).ToList();
+
+                    SonderStvaStamm = AppModelMappings.Z_ZLD_EXPORT_ZULSTEL_GT_SONDER_To_SonderStva.Copy(Z_ZLD_EXPORT_ZULSTEL.GT_SONDER.GetExportList(SAP)).OrderBy(s => s.Landkreis).ToList();
+
+                    if (StvaStamm.None())
+                        RaiseError(5555, "Keine STVA-Daten gefunden!");
+
+                    StvaStamm.Insert(0, new Stva
+                    {
+                        Landkreis = "",
+                        KreisBezeichnung = " - keine Auswahl - "
+                    });
+                });
+        }
+
         public void LadeKennzeichenGroesse()
         {
-            m_intStatus = 0;
-            m_strMessage = "";
+            ClearError();
+
             System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
             try
@@ -441,9 +145,8 @@ namespace AppZulassungsdienst.lib
                 System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand();
                 System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
 
-                command.CommandText = "SELECT  dbo.KennzeichGroesse.ID, dbo.MaterialKennzGroesse.Matnr, dbo.MaterialKennzGroesse.Kennzart, dbo.KennzeichGroesse.Groesse" +
-                        " FROM dbo.MaterialKennzGroesse INNER JOIN" +
-                        " dbo.KennzeichGroesse ON dbo.MaterialKennzGroesse.Matnr = dbo.KennzeichGroesse.Matnr";
+                command.CommandText = "SELECT dbo.KennzeichGroesse.ID, dbo.MaterialKennzGroesse.Matnr, dbo.MaterialKennzGroesse.Kennzart, dbo.KennzeichGroesse.Groesse" +
+                        " FROM dbo.MaterialKennzGroesse INNER JOIN dbo.KennzeichGroesse ON dbo.MaterialKennzGroesse.Matnr = dbo.KennzeichGroesse.Matnr";
 
                 connection.Open();
                 command.Connection = connection;
@@ -452,15 +155,11 @@ namespace AppZulassungsdienst.lib
                 adapter.Fill(tblKennzGroesse);
 
                 if (tblKennzGroesse.Rows.Count == 0)
-                {
-                    m_intStatus = 9999;
-                    m_strMessage = "Keine Daten gefunden!";
-                }
+                    RaiseError(9999, "Keine Daten gefunden!");
             }
             catch (Exception ex)
             {
-                m_intStatus = 9999;
-                m_strMessage = "Fehler beim Laden der Eingabeliste: " + ex.Message;
+                RaiseError(9999, "Fehler beim Laden der Eingabeliste: " + ex.Message);
             }
             finally
             {
@@ -468,576 +167,107 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        /// <summary>
-        /// Prüfung ob das angebene Material in der Stammtabelle Gebührenpflichtig ist.
-        /// </summary>
-        /// <param name="matnr">Materialnummer</param>
-        /// <returns>Ja/Nein</returns>
-        public Boolean proofGebPflicht(String matnr)
+        public void getFilialadresse()
         {
-            Boolean GebPflicht = false;
-            DataRow[] MatRow = tblMaterialStamm.Select("MATNR = " + matnr.PadLeft(18, '0'));
-
-            if (MatRow.Length == 1)
-            {
-                if (MatRow[0]["ZZGEBPFLICHT"].ToString() == "X")
+            ExecuteSapZugriff(() =>
                 {
-                    GebPflicht = true;
-                }
-            }
-            return GebPflicht;
-        }   
+                    Z_ZLD_EXPORT_FILIAL_ADRESSE.Init(SAP, "I_VKORG, I_VKBUR", VKORG, VKBUR);
 
-        /// <summary>
-        ///  Adresse des durchzuführenden Zulassungsdienstes. Bapi: Z_ZLD_EXPORT_FILIAL_ADRESSE
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">ChangeZLDVorVersand_2.aspx</param>
-        public void getFilialadresse(String strAppID, String strSessionID, System.Web.UI.Page page)
-        {
-            m_strClassAndMethod = "VoerfZLD.getFilialadresse";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
+                    CallBapi();
 
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_EXPORT_FILIAL_ADRESSE", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_VKORG", VKORG);
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
-
-                    myProxy.callBapi();
-
-                    AdresseFiliale = myProxy.getExportTable("ES_FIL_ADRS");
-
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_intStatus = -9999;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    AdresseFiliale = AppModelMappings.Z_ZLD_EXPORT_FILIAL_ADRESSE_ES_FIL_ADRS_To_Filialadresse.Copy(Z_ZLD_EXPORT_FILIAL_ADRESSE.ES_FIL_ADRS.GetExportList(SAP)).ToList().FirstOrDefault();
+                });
         }
 
-        /// <summary>
-        /// Nickname bzw. Namenszusatz eines Kunden laden. Bapi: Z_ZLD_GET_NICKNAME
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Nickname.aspx</param>
-        /// <param name="SearchKunnr">Kundennummer</param>
-        public void GetKundeNickname(String strAppID, String strSessionID, System.Web.UI.Page page, String SearchKunnr)
+        public void GetGruppen_Touren(string GroupArt)
         {
-            m_strClassAndMethod = "ZLDCommon.getKundeNickname";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_GET_NICKNAME", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_GET_GRUPPE.Init(SAP, "I_VKBUR, I_GRUPART", VKBUR, GroupArt);
 
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
-                    myProxy.setImportParameter("I_KUNNR", SearchKunnr.PadLeft(10, '0'));
+                    CallBapi();
 
-                    myProxy.callBapi();
+                    var gruppenTouren = AppModelMappings.Z_ZLD_GET_GRUPPE_GT_GRUPPE_To_GruppeTour.Copy(Z_ZLD_GET_GRUPPE.GT_GRUPPE.GetExportList(SAP)).ToList();
 
-                    String Name1 = myProxy.getExportParameter("E_NAME1").ToString();
-                    String Name2 = myProxy.getExportParameter("E_NAME1").ToString();
-                    String Extension = myProxy.getExportParameter("E_EXTENSION1").ToString();
-                    Nickname = myProxy.getExportParameter("E_NICK_NAME").ToString();
-                                        Kundename = Name1 + " ~ " + Name2;
-                    if (Extension.Length > 0)
+                    var newGroupName = (gruppenTouren.Any() ? " - keine Auswahl - " : (GroupArt == "T" ? " - keine Touren gepflegt - " : " - keine Gruppen gepflegt - "));
+
+                    gruppenTouren.Add(new GruppeTour
                     {
-                        Kundename += " / " + Extension;
-                    }
+                        Gruppe = "0",
+                        VkBur = VKBUR,
+                        GruppenArt = GroupArt,
+                        GruppenName = newGroupName
+                    });
 
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_intStatus = -9999;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
-        }
-
-        /// <summary>
-        /// Nickname bzw. Namenszusatz eines Kunden speichern oder löschen. Bapi: Z_ZLD_SET_NICKNAME
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Nickname.aspx</param>
-        /// <param name="SearchKunnr">Kundennummer</param>
-        /// <param name="Delete">Löschkennzeichen</param>
-        public void SetKundeNickname(String strAppID, String strSessionID, System.Web.UI.Page page, String SearchKunnr, String Delete)
-        {
-            m_strClassAndMethod = "ZLDCommon.SetKundeNickname";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_SET_NICKNAME", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
-                    myProxy.setImportParameter("I_KUNNR", SearchKunnr.PadLeft(10,'0'));
-                    myProxy.setImportParameter("I_NICK_NAME", Nickname);
-                    myProxy.setImportParameter("I_DELETE", Delete);
-
-                    myProxy.callBapi();
-
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_intStatus = -9999;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
-        }
-
-        /// <summary>
-        /// Laden der Kundengruppen oder Touren der Filiale. Bapi: Z_ZLD_GET_GRUPPE
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Kundengruppe.aspx, Neukundenanlage</param>
-        /// <param name="GroupArt">"K" für Kundengruppe, "T" für Touren</param>
-        public void GetGruppen_Touren(String strAppID, String strSessionID, System.Web.UI.Page page, String GroupArt)
-        {
-            m_strClassAndMethod = "ZLDCommon.GetGruppen_Touren";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_GET_GRUPPE", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
-                    myProxy.setImportParameter("I_GRUPART", GroupArt);
-
-                    myProxy.callBapi();
-
-                    tblGruppeTouren = myProxy.getExportTable("GT_GRUPPE");
-
-                    foreach (DataRow drow in tblGruppeTouren.Rows)
-                    {
-                        drow["GRUPPE"] = drow["GRUPPE"].ToString().TrimStart('0');
-                    }
-
-                    DataRow dRow;
                     if (GroupArt == "T")
-                    {
-                        tblTourenforSelection = tblGruppeTouren.Copy();
+                        Touren = new List<GruppeTour>(gruppenTouren);
+                    else
+                        Kundengruppen = new List<GruppeTour>(gruppenTouren);
+                });
+        }
 
-                        dRow = tblTourenforSelection.NewRow();
-                        dRow["GRUPPE"] = "0";
-                        dRow["VKBUR"] = VKBUR;
-                        dRow["GRUPART"] = GroupArt;
-                        if (tblTourenforSelection.Rows.Count > 0)
-                        { dRow["BEZEI"] = " - keine Auswahl - "; }
-                        else
-                        { dRow["BEZEI"] = " - keine Touren gepflegt - "; }
-                      
-                        tblTourenforSelection.Rows.Add(dRow);
-                    }
-                    else if(GroupArt == "K")
-                    {
-                        tblKdGruppeforSelection = tblGruppeTouren.Copy();
-                        dRow = tblKdGruppeforSelection.NewRow();
-                        dRow["GRUPPE"] = "0";
-                        dRow["VKBUR"] = VKBUR;
-                        dRow["GRUPART"] = GroupArt;
-                        if (tblKdGruppeforSelection.Rows.Count > 0)
-                        { dRow["BEZEI"] = " - keine Auswahl - "; }
-                        else
-                        { dRow["BEZEI"] = " - keine Gruppen gepflegt - "; }
-                        tblKdGruppeforSelection.Rows.Add(dRow);
-                    }
-
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_intStatus = -9999;
-                    }
-                }
-                catch (Exception ex)
+        public void GetKunden_TourenZuordnung()
+        {
+            ExecuteSapZugriff(() =>
                 {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    Z_ZLD_GET_GRUPPE_KDZU.Init(SAP, "I_GRUPPE", GroupOrTourID);
+
+                    CallBapi();
+
+                    KundenZurGruppe = AppModelMappings.Z_ZLD_GET_GRUPPE_KDZU_GT_KDZU_To_Kundenadresse.Copy(Z_ZLD_GET_GRUPPE_KDZU.GT_KDZU.GetExportList(SAP)).ToList();
+                });
         }
 
-        /// <summary>
-        /// Laden der Zuordnung Gruppe zu Kunden oder Kunden zur Gruppe. Bapi: Z_ZLD_GET_GRUPPE_KDZU
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Touren.aspx</param>
-        public void GetKunden_TourenZuordnung(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void SetKunden_Touren(string GroupArt, string Action)
         {
-            m_strClassAndMethod = "ZLDCommon.GetKunden_TourenZuordnung";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_GET_GRUPPE_KDZU", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_SET_GRUPPE.Init(SAP);
 
-                    myProxy.setImportParameter("I_GRUPPE", GroupOrTourID);
+                    SAP.SetImportParameter("I_VKBUR", VKBUR);
+                    SAP.SetImportParameter("I_GRUPPE", GroupOrTourID);
+                    SAP.SetImportParameter("I_GRUPART", GroupArt);
+                    SAP.SetImportParameter("I_BEZEI", Bezeichnung);
+                    SAP.SetImportParameter("I_FUNC", Action);
 
-                    myProxy.callBapi();
+                    CallBapi();
+                });
+        }
 
-                    tblKundeGruppe = myProxy.getExportTable("GT_KDZU");
-
-                    foreach (DataRow dRow in tblKundeGruppe.Rows) 
-                    {
-                        String Name1 = dRow["NAME1"].ToString();
-                        String KUNNR = dRow["KUNNR"].ToString();
-                        String Extension = dRow["EXTENSION1"].ToString();
-                        Kundename = Name1 + " ~ " + KUNNR.TrimStart('0');
-                        if (Extension.Length > 0)
-                        {
-                            Kundename += " / " + Extension;
-                        }
-                        dRow["NAME1"] = Kundename;
-                    }
-                   
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_intStatus = -9999;
-                    }
-                }
-                catch (Exception ex)
+        public void SetKunden_TourenZuordnung(string Kunnr, string Action)
+        {
+            ExecuteSapZugriff(() =>
                 {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    Z_ZLD_SET_GRUPPE_KDZU.Init(SAP);
+
+                    SAP.SetImportParameter("I_GRUPPE", GroupOrTourID);
+                    SAP.SetImportParameter("I_KUNNR", Kunnr);
+                    SAP.SetImportParameter("I_FUNC", Action);
+
+                    CallBapi();
+                });
         }
 
-        /// <summary>
-       /// Gruppe oder Tour speichern, aktulisieren oder löschen. Bapi: Z_ZLD_SET_GRUPPE
-       /// </summary>
-       /// <param name="strAppID">AppID</param>
-       /// <param name="strSessionID">SessionID</param>
-       /// <param name="page">Touren.aspx</param>
-       /// <param name="GroupArt">"K" für Kundengruppe, "T" für Touren</param>
-       /// <param name="Action">I = insert, C = change, D = delete</param>
-        public void SetKunden_Touren(String strAppID, String strSessionID, System.Web.UI.Page page, String GroupArt, String Action)
+        public void ProofIBAN()
         {
-            m_strClassAndMethod = "ZLDCommon.SetKunden_Touren";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
+            Bankname = "";
+            Bankschluessel = "";
+            SWIFT = "";
+            Kontonr = "";
 
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_SET_GRUPPE", ref m_objApp, ref m_objUser, ref page);
+                    Z_FI_CONV_IBAN_2_BANK_ACCOUNT.Init(SAP, "I_IBAN", IBAN);
 
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
-                    myProxy.setImportParameter("I_GRUPPE", GroupOrTourID);
-                    myProxy.setImportParameter("I_GRUPART", GroupArt);
-                    myProxy.setImportParameter("I_BEZEI",Bezeichnung);
-                    myProxy.setImportParameter("I_FUNC", Action);
+                    CallBapi();
 
-                    myProxy.callBapi();
-
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_intStatus = -9999;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    Bankname = SAP.GetExportParameter("E_BANKA");
+                    Bankschluessel = SAP.GetExportParameter("E_BANK_NUMBER");
+                    SWIFT = SAP.GetExportParameter("E_SWIFT");
+                    Kontonr = SAP.GetExportParameter("E_BANK_ACCOUNT");
+                });
         }
 
-        /// <summary>
-       /// Anlegen / löschen der Zuordnung  Kunden zu Gruppe oder Tour. Bapi: Z_ZLD_SET_GRUPPE_KDZU
-       /// </summary>
-       /// <param name="strAppID">AppID</param>
-       /// <param name="strSessionID">SessionID</param>
-       /// <param name="page">Touren.aspx</param>
-       /// <param name="Kunnr">Kundennummer</param>
-       /// <param name="Action">I = insert, D = delete</param>
-        public void SetKunden_TourenZuordnung(String strAppID, String strSessionID, System.Web.UI.Page page, String Kunnr, String Action)
-        {
-            m_strClassAndMethod = "ZLDCommon.SetGruppen_Touren";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_SET_GRUPPE_KDZU", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_GRUPPE", GroupOrTourID);
-                    myProxy.setImportParameter("I_KUNNR", Kunnr);
-                    myProxy.setImportParameter("I_FUNC", Action);
-
-                    myProxy.callBapi();
-
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_intStatus = -9999;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
-        }
-
-        /// <summary>
-        /// IBAN prüfen und daraus Bankinfos ermitteln. Bapi: Z_FI_CONV_IBAN_2_BANK_ACCOUNT
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page"></param>
-        public void ProofIBAN(String strAppID, String strSessionID, System.Web.UI.Page page)
-        {
-            m_strClassAndMethod = "Neukunde.ProofIBAN";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_FI_CONV_IBAN_2_BANK_ACCOUNT", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_IBAN", IBAN);
-
-                    myProxy.callBapi();
-
-                    Bankname = myProxy.getExportParameter("E_BANKA");
-                    Bankschluessel = myProxy.getExportParameter("E_BANK_NUMBER");
-                    SWIFT = myProxy.getExportParameter("E_SWIFT");
-                    Kontonr = myProxy.getExportParameter("E_BANK_ACCOUNT");
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                    if (m_strMessage.Length > 0)
-                    {
-                        m_strMessage = "IBAN fehlerhaft: " + sapMessage;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Fehler bei der IBAN-Prüfung: " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
-        }
-
-        /// <summary>
-        /// Prüft ob der mitgegebene String ein numerischer Wert ist.
-        /// </summary>
-        /// <param name="val">numerischer String</param>
-        /// <returns>true bei numerisch, false bei nicht numerisch</returns>
-        public static bool IsNumeric(string val)
-        {
-            try
-            {
-                int dummy;
-                return Int32.TryParse(val, out dummy);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Prüft ob der mitgegebene String dezimal-Wert ist.
-        /// </summary>
-        /// <param name="val">String dezimal</param>
-        /// <returns>true bei dezimal, false bei nicht dezimal</returns>
-        public static bool IsDecimal(string val)
-        {
-            try
-            {
-                decimal dummy;
-                return Decimal.TryParse(val, out dummy);
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Prüft ob der mitgegebene String ein Datum ist
-        /// </summary>
-        /// <param name="val">Date String</param>
-        /// <returns>true bei Date, false bei nicht Date</returns>
-        public static bool IsDate(String val)
-        {
-            bool result;
-
-            try
-            {
-                DateTime myDT;
-                result = DateTime.TryParse(val, out myDT);
-
-            }
-            catch (FormatException)
-            {
-                result = false;
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Wandelt Boolean-Wert in X oder "" für die
-        /// Datenaufbereitung SAP um.
-        /// </summary>
-        /// <param name="val">Boolean-Wert</param>
-        /// <returns>X bei true, "" bei false</returns>
-        public static String BoolToX(Boolean? val)
-        {
-            return ((val.HasValue && val.Value) ? "X" : "");
-        }
-
-        /// <summary>
-        /// Wandelt Boolean-Wert in X oder "" für die
-        /// Datenaufbereitung SAP um.
-        /// </summary>
-        /// <param name="val">Boolean-Wert</param>
-        /// <returns>X bei true, "" bei false</returns>
-        public static String BoolToX(Boolean val)
-        {
-            return (val ? "X" : "");
-        }
-
-        /// <summary>
-        /// Wandelt X bzw. " " in boolean-Wert um
-        /// </summary>
-        /// <param name="val"></param>
-        /// <returns></returns>
-        public static Boolean XToBool(String val)
-        {
-            return (val == "X");
-        }
-
-        /// <summary>
-        /// Helper.
-        /// wandelt das benutzte Kurzdatum z.B. 010112 in 01.01.2012
-        /// </summary>
-        /// <param name="dat">Kurzdatum</param>
-        /// <returns>norm. Datum</returns>
         public static string toShortDateStr(string dat)
         {
             DateTime datum;
@@ -1051,6 +281,245 @@ namespace AppZulassungsdienst.lib
                 return string.Empty;
             }
             return datum.ToShortDateString();
+        }
+
+        public static string GetVkOrgFromUserReference(string userReferenz)
+        {
+            return userReferenz.NotNullOrEmpty().Substring(0, Math.Min(4, userReferenz.Length));
+        }
+
+        public static string GetVkBurFromUserReference(string userReferenz)
+        {
+            return (userReferenz.NotNullOrEmpty().Length > 4 ? userReferenz.Substring(4, Math.Min(4, (userReferenz.Length - 4))) : "");
+        }
+
+        public string SonderStvaStammToJsArray()
+        {
+            StringBuilder javaScript = new StringBuilder();
+
+            for (int i = 0; i < SonderStvaStamm.Count; i++)
+            {
+                if (i == 0)
+                    javaScript.Append("ArraySonderStva = \n[\n");
+
+                var item = SonderStvaStamm[i];
+
+                javaScript.Append(" [ ");
+                javaScript.Append("'" + item.Landkreis + "'");
+                javaScript.Append(",");
+                javaScript.Append("'" + item.KfzKreiskennzeichen + "'");
+                javaScript.Append(" ]");
+
+                if ((i + 1) == SonderStvaStamm.Count)
+                    javaScript.Append("\n];\n");
+                else
+                    javaScript.Append(",\n");
+            }
+
+            return javaScript.ToString();
+        }
+
+        public string MaterialStammToJsArray()
+        {
+            StringBuilder javaScript = new StringBuilder();
+
+            for (int i = 0; i < MaterialStamm.Count; i++)
+            {
+                if (i == 0)
+                    javaScript.Append("ArrayMengeERL = \n[\n");
+
+                var item = MaterialStamm[i];
+
+                javaScript.Append(" [ ");
+                javaScript.Append("'" + item.MaterialNr + "'");
+                javaScript.Append(",");
+                javaScript.Append("'" + item.MengeErlaubt.BoolToX() + "'");
+                javaScript.Append(" ]");
+
+                if ((i + 1) == MaterialStamm.Count)
+                    javaScript.Append("\n];\n");
+                else
+                    javaScript.Append(",\n");
+            }
+
+            return javaScript.ToString();
+        }
+
+        public string KundenStammToJsArray()
+        {
+            StringBuilder javaScript = new StringBuilder();
+
+            for (int i = 0; i < KundenStamm.Count; i++)
+            {
+                if (i == 0)
+                    javaScript.Append("ArrayBarkunde = \n[\n");
+
+                var item = KundenStamm[i];
+
+                javaScript.Append(" [ ");
+                javaScript.Append("'" + item.KundenNr + "'");
+                javaScript.Append(",");
+                javaScript.Append("'" + item.Bar.BoolToX() + "'");
+                javaScript.Append(",");
+                javaScript.Append("'" + item.Pauschal.BoolToX() + "'");
+                javaScript.Append(",");
+                javaScript.Append("'" + item.Cpd.BoolToX() + "'");
+                javaScript.Append(" ]");
+
+                if ((i + 1) == KundenStamm.Count)
+                    javaScript.Append("\n];\n");
+                else
+                    javaScript.Append(",\n");
+            }
+
+            return javaScript.ToString();
+        }
+
+        public static bool FilterData<T>(T item, string filterProperty, string filterValue, bool useStringLike)
+        {
+            var blnResult = false;
+            var prop = typeof(T).GetProperty(filterProperty);
+
+            if (prop.PropertyType == typeof(string))
+            {
+                var itemValue = (string)prop.GetValue(item, null);
+
+                if (useStringLike)
+                {
+                    blnResult = (itemValue.NotNullOrEmpty().ToLower().Contains(filterValue.NotNullOrEmpty().ToLower()));
+                }
+                else
+                {
+                    blnResult = (String.Compare(itemValue, filterValue, true) == 0);
+                }
+            }
+            else if (prop.PropertyType == typeof(DateTime))
+            {
+                var itemValue = (DateTime)prop.GetValue(item, null);
+
+                DateTime tmpDate;
+
+                if (DateTime.TryParseExact(filterValue, "ddMMyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDate))
+                {
+                    blnResult = (itemValue.Date == tmpDate.Date);
+                }
+            }
+            else if (prop.PropertyType == typeof(DateTime?))
+            {
+                var itemValue = (DateTime?)prop.GetValue(item, null);
+
+                DateTime tmpDate;
+
+                if (itemValue.HasValue && DateTime.TryParseExact(filterValue, "ddMMyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDate))
+                {
+                    blnResult = (itemValue.Value.Date == tmpDate.Date);
+                }
+            }
+            else if (prop.PropertyType == typeof(Decimal))
+            {
+                var itemValue = (decimal)prop.GetValue(item, null);
+
+                decimal tmpDec;
+
+                if (Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                {
+                    blnResult = (itemValue == tmpDec);
+                }
+            }
+            else if (prop.PropertyType == typeof(Decimal?))
+            {
+                var itemValue = (decimal?)prop.GetValue(item, null);
+
+                decimal tmpDec;
+
+                if (itemValue.HasValue && Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                {
+                    blnResult = (itemValue == tmpDec);
+                }
+            }
+
+            return blnResult;
+        }
+
+        public static void KennzeichenAufteilen(string kennzeichen, out string kennzTeil1, out string kennzTeil2)
+        {
+            kennzTeil1 = "";
+            kennzTeil2 = "";
+
+            var k = kennzeichen.NotNullOrEmpty();
+
+            if (k.Contains('-'))
+            {
+                string[] tmpKennz = k.Split('-');
+
+                if (tmpKennz.Length == 1)
+                {
+                    kennzTeil1 = tmpKennz[0];
+                }
+                else if (tmpKennz.Length == 2)
+                {
+                    kennzTeil1 = tmpKennz[0];
+                    kennzTeil2 = tmpKennz[1];
+                }
+                else if (tmpKennz.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
+                {
+                    kennzTeil1 = tmpKennz[0];
+                    kennzTeil2 = tmpKennz[1] + "-" + tmpKennz[2];
+                }
+            }
+            else
+            {
+                kennzTeil1 = k.Substring(0, Math.Min(3, k.Length));
+                if (k.Length > 3)
+                {
+                    kennzTeil2 = k.Substring(3);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Aufruf aus dem Gridview der aspx-Seite. Kennzeichenpreis ausblenden 
+        /// wenn es sich um einen Pauschalkunden handelt oder kein Kennzeichenmaterial zum
+        /// Material hinterlegt ist.
+        /// </summary>
+        /// <param name="kundenNr"></param>
+        /// <param name="Matnr">Materialnr.</param>
+        /// <returns>Visibility von txtPreisKZ im Gridview</returns>
+        public bool proofPauschMat(String kundenNr, String Matnr)
+        {
+            var kunde = KundenStamm.FirstOrDefault(k => k.KundenNr == kundenNr);
+            var mat = MaterialStamm.FirstOrDefault(m => m.MaterialNr == Matnr);
+
+            return ((kunde == null || !kunde.Pauschal) && mat != null && !String.IsNullOrEmpty(mat.KennzeichenMaterialNr));
+        }
+
+        /// <summary>
+        /// Gebührenmaterial vorhanden?
+        /// </summary>
+        /// <param name="Matnr"></param>
+        /// <returns></returns>
+        public bool proofGebMat(String Matnr)
+        {
+            var mat = MaterialStamm.FirstOrDefault(m => m.MaterialNr == Matnr);
+
+            return (mat != null && !String.IsNullOrEmpty(mat.GebuehrenMaterialNr));
+        }
+
+        public string GetMaterialNameFromDienstleistungRow(DataRow dRow)
+        {
+            String[] sMaterial = dRow["Text"].ToString().Split('~');
+
+            if (dRow["Value"].ToString() == CONST_IDSONSTIGEDL)
+            {
+                return dRow["DLBezeichnung"].ToString().Trim();
+            }
+
+            if (sMaterial.Length == 2)
+            {
+                return sMaterial[0].Trim();
+            }
+
+            return "";
         }
 
         #endregion

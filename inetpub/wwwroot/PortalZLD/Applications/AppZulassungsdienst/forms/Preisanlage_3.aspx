@@ -195,7 +195,7 @@ function keyPressed(TB , e) {
                                                                     <asp:Label ID="lblMatnr" runat="server" Text="Material"></asp:Label>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblDienstNr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Matnr") %>' Font-Bold="False"></asp:Label>
+                                                                    <asp:Label ID="lblDienstNr" runat="server" Text='<%# Eval("Matnr") %>' Font-Bold="False"></asp:Label>
                                                                 </ItemTemplate>
                                                                 <HeaderStyle Width="50px" BorderColor="#dfdfdf" BorderStyle="Solid" BorderWidth="1px"
                                                                     HorizontalAlign="Left" />
@@ -206,7 +206,7 @@ function keyPressed(TB , e) {
                                                                     <asp:Label ID="Label1" runat="server" Text="Bezeichnung"></asp:Label>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:Label Width="250px" ID="lblDienst" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Maktx") %>'></asp:Label>
+                                                                    <asp:Label Width="250px" ID="lblDienst" runat="server" Text='<%# Eval("Maktx") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderColor="#dfdfdf" BorderStyle="Solid" BorderWidth="1px" />
                                                                 <HeaderStyle BorderColor="#dfdfdf" BorderStyle="Solid" BorderWidth="1px" HorizontalAlign="Left" />
@@ -217,7 +217,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput1" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva1") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva1") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen"  />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />

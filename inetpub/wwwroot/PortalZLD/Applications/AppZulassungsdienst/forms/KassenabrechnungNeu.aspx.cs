@@ -15,8 +15,9 @@ namespace AppZulassungsdienst.forms
     public partial class KassenabrechnungNeu : Page
     {
         private User _mUser;
-        private App _mApp;
         private Kassenabrechnung _objKassenabrechnung;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
@@ -27,21 +28,18 @@ namespace AppZulassungsdienst.forms
         {
             _mUser = Common.GetUser(this);
             Common.FormAuth(this, _mUser);
-            _mApp = new App(_mUser);
             Common.GetAppIDFromQueryString(this);
-            lblHead.Text =
-                (string) _mUser.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
+            lblHead.Text = (string)_mUser.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
-            lblError.Text = string.Empty;
-            if (_mUser.Reference.Trim(' ').Length == 0)
+            lblError.Text = "";
+            if (String.IsNullOrEmpty(_mUser.Reference))
             {
-                lblErrorMain.Text =
-                    "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
+                lblErrorMain.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
             if (!IsPostBack)
             {
-                _objKassenabrechnung = new Kassenabrechnung(ref _mApp, ref _mUser, this);
+                _objKassenabrechnung = new Kassenabrechnung(_mUser.Reference);
                 Session["objKassenabrechnung"] = _objKassenabrechnung;
 
                 _objKassenabrechnung.GetPeriodeFromDateNeu(DateTime.Today);
@@ -54,16 +52,15 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    lblErrorMain.Text = _objKassenabrechnung.ErrorMessage;
+                    lblErrorMain.Text = _objKassenabrechnung.Message;
                 }
             }
             else
             {
                 if (Session["objKassenabrechnung"] == null)
-                {
-                    Session["objKassenabrechnung"] = new Kassenabrechnung(ref _mApp, ref _mUser, this);
-                }
-                _objKassenabrechnung = (Kassenabrechnung) Session["objKassenabrechnung"];
+                    Session["objKassenabrechnung"] = new Kassenabrechnung(_mUser.Reference);
+
+                _objKassenabrechnung = (Kassenabrechnung)Session["objKassenabrechnung"];
                 ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsSetScrollPos",
                                                   "SetScrollPos();", true);
             }
@@ -101,7 +98,7 @@ namespace AppZulassungsdienst.forms
                     FillWerte();
                     if (_objKassenabrechnung.ErrorOccured)
                     {
-                        lblError.Text = _objKassenabrechnung.ErrorCode;
+                        lblError.Text = _objKassenabrechnung.Message;
                     }
                     break;
 
@@ -117,8 +114,6 @@ namespace AppZulassungsdienst.forms
                         DataRow[] pos = _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + e.CommandArgument + "'");
 
                         hfPostingNumber.Value = e.CommandArgument.ToString();
-
-
 
                         // neuer Kopf ohne Position ? neue Posistion anlegen
                         if (pos.Length == 0)
@@ -147,12 +142,12 @@ namespace AppZulassungsdienst.forms
                                 break;
                         }
 
-                        if (pos.Length==1)
+                        if (pos.Length == 1)
                         {
                             pos[0]["SGTXT"] = headRow[0]["SGTXT"];
                             pos[0]["ALLOC_NMBR"] = headRow[0]["ZUONR"];
                         }
-                        DataView posRows = _objKassenabrechnung.DocPos.DefaultView; 
+                        DataView posRows = _objKassenabrechnung.DocPos.DefaultView;
                         posRows.RowFilter = "POSTING_NUMBER='" + e.CommandArgument + "'";
 
                         GridView1.DataSource = posRows;
@@ -207,10 +202,10 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void ddlVorfall_SelectedIndexChanged2(object sender, EventArgs e)
         {
-            DropDownList ddl = (DropDownList) sender;
-            GridViewRow gvRow = (GridViewRow) ddl.Parent.Parent;
-            TextBox txtBetragBruttoEinnahmen = (TextBox) gvRow.FindControl("txtBetragBruttoEinnahmen");
-            TextBox txtBetragBruttoAusgaben = (TextBox) gvRow.FindControl("txtBetragBruttoAusgaben");
+            DropDownList ddl = (DropDownList)sender;
+            GridViewRow gvRow = (GridViewRow)ddl.Parent.Parent;
+            TextBox txtBetragBruttoEinnahmen = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
+            TextBox txtBetragBruttoAusgaben = (TextBox)gvRow.FindControl("txtBetragBruttoAusgaben");
             TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
             TextBox txtKreditor = (TextBox)gvRow.FindControl("txtKreditor");
             TextBox txtZuordnung = (TextBox)gvRow.FindControl("txtZuordnung");
@@ -267,7 +262,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                txtKST.Text = _objKassenabrechnung.Kostenstelle;
+                txtKST.Text = _objKassenabrechnung.VKBUR;
             }
         }
 
@@ -278,16 +273,16 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void ddlVorfall_SelectedIndexChanged(object sender, EventArgs e)
         {
-            DropDownList ddl = (DropDownList) sender;
-            GridViewRow gvRow = (GridViewRow) ddl.Parent.Parent;
-            Label lblStatus = (Label) gvRow.FindControl("lblStatus");
-            TextBox txtBetragBruttoEinnahmen = (TextBox) gvRow.FindControl("txtBetragBruttoEinnahmen");
-            TextBox txtBetragBruttoAusgaben = (TextBox) gvRow.FindControl("txtBetragBruttoAusgaben");
+            DropDownList ddl = (DropDownList)sender;
+            GridViewRow gvRow = (GridViewRow)ddl.Parent.Parent;
+            Label lblStatus = (Label)gvRow.FindControl("lblStatus");
+            TextBox txtBetragBruttoEinnahmen = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
+            TextBox txtBetragBruttoAusgaben = (TextBox)gvRow.FindControl("txtBetragBruttoAusgaben");
             TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
             TextBox txtKreditor = (TextBox)gvRow.FindControl("txtKreditor");
             TextBox txtZuordnung = (TextBox)gvRow.FindControl("txtZuordnung");
             TextBox txtFreitext = (TextBox)gvRow.FindControl("txtFreitext");
-            TextBox txtKST = (TextBox) gvRow.FindControl("txtKST");
+            TextBox txtKST = (TextBox)gvRow.FindControl("txtKST");
 
             switch (_objKassenabrechnung.VorfallGewaehlt)
             {
@@ -306,7 +301,7 @@ namespace AppZulassungsdienst.forms
                 txtDebitor.Enabled = _objKassenabrechnung.CheckDebiNeeded(ddl.SelectedValue);
                 txtKreditor.Enabled = _objKassenabrechnung.CheckKrediNeeded(ddl.SelectedValue);
                 txtKreditor.Visible = txtKreditor.Enabled;
-                txtDebitor.Visible =  txtDebitor.Enabled;
+                txtDebitor.Visible = txtDebitor.Enabled;
                 if (!txtDebitor.Visible && !txtKreditor.Visible)
                 {
                     txtDebitor.Visible = true;
@@ -314,7 +309,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                txtDebitor.Enabled =  false;
+                txtDebitor.Enabled = false;
                 txtKreditor.Enabled = false;
             }
             if (!txtDebitor.Enabled) txtDebitor.Text = string.Empty;
@@ -345,9 +340,563 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                txtKST.Text = _objKassenabrechnung.Kostenstelle;
+                txtKST.Text = _objKassenabrechnung.VKBUR;
             }
         }
+
+        /// <summary>
+        /// Tagesdatum setzen. Werte im Kopfbereich füllen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void btnToday_Click(object sender, EventArgs e)
+        {
+            lblErrorMain.Text = "";
+            txtStartDate.Text = DateTime.Today.ToShortDateString();
+            txtEndDate.Text = DateTime.Today.ToShortDateString();
+
+            _objKassenabrechnung.DatumVon = DateTime.Today;
+            _objKassenabrechnung.DatumBis = DateTime.Today;
+            FillWerte();
+
+            ShowData(false);
+        }
+
+        /// <summary>
+        /// Laufende Periode setzen. Werte im Kopfbereich füllen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void btnCurrentPeriod_Click(object sender, EventArgs e)
+        {
+            lblErrorMain.Text = "";
+            _objKassenabrechnung.GetPeriodeFromDateNeu(DateTime.Today);
+            if (!_objKassenabrechnung.ErrorOccured)
+            {
+                txtStartDate.Text = _objKassenabrechnung.DatumVon.ToShortDateString();
+                txtEndDate.Text = _objKassenabrechnung.DatumBis.ToShortDateString();
+
+                FillWerte();
+            }
+            else
+            {
+                lblError.Text = _objKassenabrechnung.Message;
+            }
+
+            ShowData(false);
+        }
+
+        /// <summary>
+        /// Aktuelle Woche setzen. Werte im Kopfbereich füllen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void btnThisWeek_Click(object sender, EventArgs e)
+        {
+            lblErrorMain.Text = "";
+            DateTime firstDayOfWeek = DateTime.Today;
+            DateTime lastDayOfWeek = DateTime.Today;
+
+            switch (DateTime.Today.DayOfWeek)
+            {
+                case DayOfWeek.Monday:
+                    lastDayOfWeek = lastDayOfWeek.AddDays(6);
+                    break;
+                case DayOfWeek.Tuesday:
+                    firstDayOfWeek = firstDayOfWeek.AddDays(-1);
+                    lastDayOfWeek = lastDayOfWeek.AddDays(5);
+                    break;
+                case DayOfWeek.Wednesday:
+                    firstDayOfWeek = firstDayOfWeek.AddDays(-2);
+                    lastDayOfWeek = lastDayOfWeek.AddDays(4);
+                    break;
+                case DayOfWeek.Thursday:
+                    firstDayOfWeek = firstDayOfWeek.AddDays(-3);
+                    lastDayOfWeek = lastDayOfWeek.AddDays(3);
+                    break;
+                case DayOfWeek.Friday:
+                    firstDayOfWeek = firstDayOfWeek.AddDays(-4);
+                    lastDayOfWeek = lastDayOfWeek.AddDays(2);
+                    break;
+                case DayOfWeek.Saturday:
+                    firstDayOfWeek = firstDayOfWeek.AddDays(-5);
+                    lastDayOfWeek = lastDayOfWeek.AddDays(1);
+                    break;
+                case DayOfWeek.Sunday:
+                    firstDayOfWeek = firstDayOfWeek.AddDays(-6);
+                    break;
+            }
+            txtStartDate.Text = firstDayOfWeek.ToShortDateString();
+            txtEndDate.Text = lastDayOfWeek.ToShortDateString();
+
+            _objKassenabrechnung.DatumVon = firstDayOfWeek;
+            _objKassenabrechnung.DatumBis = lastDayOfWeek;
+            FillWerte();
+
+            ShowData(false);
+        }
+
+        /// <summary>
+        /// Neue Zeile im Hauptgrid einfügen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void lbNewLine_Click(object sender, EventArgs e)
+        {
+            DataTable table = _objKassenabrechnung.DocHeads;
+
+            proofVorfallGrid(ref table, true);
+            _objKassenabrechnung.GetNewPostingNumber();
+            if (_objKassenabrechnung.ErrorOccured)
+            {
+                lblError.Text = _objKassenabrechnung.Message;
+                return;
+            }
+            DataRow tblRow = table.NewRow();
+            tblRow["Ampel"] = "/PortalZLD/Images/onebit_10.png";
+            tblRow["BUDAT"] = DateTime.Today.ToShortDateString();
+            tblRow["BUKRS"] = _objKassenabrechnung.VKORG;
+            tblRow["KOSTL"] = _objKassenabrechnung.VKBUR;
+            tblRow["CAJO_NUMBER"] = _objKassenabrechnung.KassenbuchNr;
+            tblRow["Posting_Number"] = _objKassenabrechnung.NewPostingNumber;
+            tblRow["New"] = "1";
+            tblRow["ASTATUS"] = "";
+
+            table.Rows.Add(tblRow);
+
+            gvDaten.DataSource = table.DefaultView;
+            gvDaten.DataBind();
+            visibility();
+            addButtonAttr(table, gvDaten);
+
+            GridViewRow gvRow = gvDaten.Rows[gvDaten.Rows.Count - 1];
+            DropDownList ddl = (DropDownList)gvRow.FindControl("ddlVorfall");
+            ddl.Focus();
+            TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
+            TextBox txtKreditor = (TextBox)gvRow.FindControl("txtKreditor");
+            switch (_objKassenabrechnung.VorfallGewaehlt)
+            {
+                case Kassenabrechnung.VorfallFilter.Einahmen:
+                    lblHead.Text = "Kassenabrechnung  - Einnahmen";
+                    break;
+                case Kassenabrechnung.VorfallFilter.Ausgaben:
+                    lblHead.Text = "Kassenabrechnung  - Ausgaben";
+                    break;
+            }
+
+            txtDebitor.Enabled = _objKassenabrechnung.CheckDebiNeeded(ddl.SelectedValue);
+            txtKreditor.Enabled = _objKassenabrechnung.CheckKrediNeeded(ddl.SelectedValue);
+            if (!txtDebitor.Enabled) txtDebitor.Text = string.Empty;
+            if (!txtKreditor.Enabled) txtKreditor.Text = string.Empty;
+            lblErrorMain.Text = "";
+            lblMessage.Text = "";
+            lblError.Text = "";
+        }
+
+        /// <summary>
+        /// Aktuelle Einahmen anzeigen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void lbShowEinnahmen_Click(object sender, EventArgs e)
+        {
+            lblErrorMain.Text = "";
+            lblHead.Text = "Kassenabrechnung  - Einnahmen";
+
+            DateTime dtBegin;
+            DateTime dtEnd;
+            DateTime.TryParse(txtStartDate.Text, out dtBegin);
+            DateTime.TryParse(txtEndDate.Text, out dtEnd);
+            _objKassenabrechnung.DatumVon = dtBegin;
+            _objKassenabrechnung.DatumBis = dtEnd;
+
+            _objKassenabrechnung.FillPositionen2(Kassenabrechnung.VorfallFilter.Einahmen);
+
+            if (_objKassenabrechnung.ErrorOccured)
+            {
+                lblErrorMain.Text = _objKassenabrechnung.Message;
+            }
+            else
+            {
+                if (_objKassenabrechnung.DocHeads.Rows.Count == 0)
+                {
+                    lblErrorMain.Text = "Es sind keine Einträge vorhanden!";
+                }
+
+                try
+                {
+                    ShowData(true);
+                }
+                catch (Exception ex)
+                {
+                    lblErrorMain.Text = ex.Message;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Aktuelle Ausgaben anzeigen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void lbShowAusgaben_Click(object sender, EventArgs e)
+        {
+            lblErrorMain.Text = "";
+            lblHead.Text = "Kassenabrechnung  - Ausgaben";
+
+            DateTime dtBegin;
+            DateTime dtEnd;
+            DateTime.TryParse(txtStartDate.Text, out dtBegin);
+            DateTime.TryParse(txtEndDate.Text, out dtEnd);
+            _objKassenabrechnung.DatumVon = dtBegin;
+            _objKassenabrechnung.DatumBis = dtEnd;
+
+            _objKassenabrechnung.FillPositionen2(Kassenabrechnung.VorfallFilter.Ausgaben);
+
+            if (_objKassenabrechnung.ErrorOccured)
+            {
+                lblErrorMain.Text = _objKassenabrechnung.Message;
+            }
+            else
+            {
+                if (_objKassenabrechnung.DocHeads.Rows.Count == 0)
+                {
+                    lblErrorMain.Text = "Es sind keine Einträge vorhanden!";
+                }
+
+                try
+                {
+                    ShowData(true);
+                }
+                catch (Exception ex)
+                {
+                    lblErrorMain.Text = ex.Message;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Startdatum geändert -> formatiert anzeigen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void txtStartDate_TextChanged(object sender, EventArgs e)
+        {
+            DateTime date;
+            DateTime.TryParse(txtStartDate.Text, out date);
+            _objKassenabrechnung.DatumVon = date;
+        }
+
+        /// <summary>
+        /// Endedatum geändert -> formatiert anzeigen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void txtEndDate_TextChanged(object sender, EventArgs e)
+        {
+            DateTime date;
+            DateTime.TryParse(txtEndDate.Text, out date);
+            _objKassenabrechnung.DatumBis = date;
+        }
+
+        /// <summary>
+        /// Speicherfunktion aufrufen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void btnSave_Click(object sender, EventArgs e)
+        {
+            Save();
+        }
+
+        /// <summary>
+        /// Kopfbereich anzeigen. Vorgangsbereich ausblenden.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void btnBack_Click(object sender, EventArgs e)
+        {
+            lblHead.Text = "Kassenabrechnung";
+            lblErrorMain.Text = "";
+            ShowData(false);
+        }
+
+        /// <summary>
+        /// Buchen der Vorgänge in SAP. Kopfbereich aktulisieren.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void btnBuchen_Click(object sender, EventArgs e)
+        {
+            lblError.Text = "";
+            lblMessage.Text = "";
+            lblErrorMain.Text = "";
+            DataTable table = _objKassenabrechnung.DocHeads;
+            Int32 iCount = 0;
+
+            Boolean custError = proofVorfallGrid(ref table, false);
+            if (!custError)
+            {
+                for (int i = 0; i < table.Rows.Count; i++)
+                {
+                    if (table.Rows[i]["New"].ToString() == "0")
+                    {
+                        DataRow row = table.Rows[i];
+                        String status = row["Status"].ToString();
+                        String aStatus = row["ASTATUS"].ToString();
+                        Boolean bError = !proofVorfallGridRow(ref row);
+                        if (bError)
+                        {
+                            if (status == "" || status == "ZE")
+                            {
+                                if ((Boolean)row["Auswahl"])
+                                {
+                                    if (aStatus != "ZA")
+                                    {
+                                        _objKassenabrechnung.Buchen2(row);
+                                        if (_objKassenabrechnung.ErrorOccured)
+                                        {
+                                            lblError.Text += _objKassenabrechnung.Message;
+                                        }
+                                    }
+                                    else if (!lblError.Text.Contains("Bestätigen Sie \"Betrag erhalten\" um Vorgänge buchen zu können!"))
+                                    {
+                                        lblError.Text += "Bestätigen Sie \"Betrag erhalten\" um Vorgänge buchen zu können!";
+                                    }
+                                    iCount++;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        lblError.Text += "Es können nur Einträge gebucht werden, die bereits gesichert wurden.";
+                    }
+                }
+            }
+            if (iCount > 0)
+            {
+
+                _objKassenabrechnung.FillPositionen2(_objKassenabrechnung.VorfallGewaehlt);
+                gvDaten.DataSource = _objKassenabrechnung.DocHeads;
+                gvDaten.DataBind();
+                visibility();
+                table = _objKassenabrechnung.DocHeads;
+                addButtonAttr(table, gvDaten);
+                FillWerte();
+                if (lblError.Text == "")// Fehler? nochmal prüfen um Details anzeigen zu können
+                {
+                    lblMessage.Text = "Daten für die Kassenabrechnung gebucht!";
+
+                    for (int i = 0; i < table.Rows.Count; i++)
+                    {
+                        DataRow row = table.Rows[i];
+                        proofVorfallGridRow(ref row);
+                    }
+                }
+            }
+            else if (!custError) { lblError.Text = "Keine Vorgänge zum Buchen markiert!"; }
+
+            if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Einahmen)
+            {
+                lblHead.Text = "Kassenabrechnung  - Einnahmen";
+            }
+            else if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Ausgaben)
+            {
+                lblHead.Text = "Kassenabrechnung  - Ausgaben";
+            }
+        }
+
+        /// <summary>
+        /// Zurück zur Startseite.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"]);
+        }
+
+        /// <summary>
+        /// Datum Textbox im Hauptgrid an Javafunktion binden.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void gvDaten_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.DataItem == null)
+                return;
+            TextBox txtDatum = (TextBox)e.Row.FindControl("txtDatum");
+            txtDatum.Attributes.Add("onfocus", "datePick('#" + txtDatum.ClientID + "')");
+        }
+
+        /// <summary>
+        /// Neu Position im "Splitgrid" einfügen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdNewPos_Click(object sender, EventArgs e)
+        {
+            DataTable table = _objKassenabrechnung.DocPos;
+
+            proofPosGrid();
+            DataView posRows = _objKassenabrechnung.DocPos.DefaultView; //
+            posRows.RowFilter = "POSTING_NUMBER='" + hfPostingNumber.Value + "'";
+            DataRow tblRow = table.NewRow();
+            tblRow["KOSTL"] = _objKassenabrechnung.VKBUR;
+            tblRow["Posting_Number"] = hfPostingNumber.Value;
+            tblRow["Position_Number"] = "";
+            table.Rows.Add(tblRow);
+            GridView1.DataSource = posRows;
+            GridView1.DataBind();
+
+            addButtonAttr(posRows.ToTable(), GridView1);
+        }
+
+        /// <summary>
+        /// Neu Positionen im "Splitgrid" in der Tabelle speichern.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdSavePos_Click(object sender, EventArgs e)
+        {
+            if (!proofPosGrid())
+            {
+                Refresh();
+                DataRow[] rowPos = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
+
+                if (rowPos.Length == 1)
+                {
+                    DataRow[] rowPosSteuer =
+                        _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
+                    if (rowPosSteuer.Length > 0)
+                    {
+                        switch (_objKassenabrechnung.VorfallGewaehlt)
+                        {
+                            case Kassenabrechnung.VorfallFilter.Einahmen:
+                                rowPos[0]["H_RECEIPTS"] = lblGesamtPosShow.Text;
+                                break;
+                            case Kassenabrechnung.VorfallFilter.Ausgaben:
+                                rowPos[0]["H_PAYMENTS"] = lblGesamtPosShow.Text;
+                                break;
+                        }
+
+                        rowPos[0]["H_NET_AMOUNT"] = hfNettoGesamt.Value;
+                        rowPos[0]["LIFNR"] = "*";
+                        rowPos[0]["KUNNR"] = "*";
+                    }
+                }
+
+                RefreshHeadGrid();
+                Session["objKassenabrechnung"] = _objKassenabrechnung;
+                ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg",
+                                                    "closeDialogandSave();", true);
+            }
+        }
+
+        /// <summary>
+        /// Daten aus dem "Splitgrid" sammeln, kumlieren und anzeigen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">ImageClickEventArgs</param>
+        protected void cmdRefresh_Click(object sender, ImageClickEventArgs e)
+        {
+            proofPosGrid();
+            Refresh();
+        }
+
+        /// <summary>
+        /// Das Hauptgrid aktualisieren.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void btnRefreshGrid_Click(object sender, EventArgs e)
+        {
+            RefreshHeadGrid();
+        }
+
+        /// <summary>
+        /// Splitdialog schliessen und Eingaben übernehmen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdCloseDialog_Click(object sender, EventArgs e)
+        {
+            if (!proofPosGrid())
+            {
+                addButtonAttr(_objKassenabrechnung.DocHeads, gvDaten);
+                Session["objKassenabrechnung"] = _objKassenabrechnung;
+                ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog();", true);
+            }
+        }
+
+        /// <summary>
+        /// Posititionen aus dem "Splitgrid" löschen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">GridViewCommandEventArgs</param>
+        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            lblError.Text = "";
+            try
+            {
+                if (e.CommandName == "Del")
+                {
+                    DataRow[] rowsToDel =
+                            _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
+                    DataRow delRow = rowsToDel[Convert.ToInt16(e.CommandArgument)];
+                    _objKassenabrechnung.DocPos.Rows.Remove(delRow);
+                    DataView posRows = _objKassenabrechnung.DocPos.DefaultView;//
+                    posRows.RowFilter = "POSTING_NUMBER='" + hfPostingNumber.Value + "'";
+
+                    GridView1.DataSource = posRows;
+                    GridView1.DataBind();
+
+                    addButtonAttr(posRows.ToTable(), GridView1);
+                }
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = ex.Message;
+            }
+        }
+
+        /// <summary>
+        /// Über die angebenene Zeitspanne selektieren und Daten anzeigen.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void lbtnTimeRange_Click(object sender, EventArgs e)
+        {
+            lblErrorMain.Text = "";
+            DateTime dtBegin;
+            DateTime dtEnd;
+            DateTime.TryParse(txtStartDate.Text, out dtBegin);
+            DateTime.TryParse(txtEndDate.Text, out dtEnd);
+            _objKassenabrechnung.DatumVon = dtBegin;
+            _objKassenabrechnung.DatumBis = dtEnd;
+            FillWerte();
+
+            ShowData(false);
+        }
+
+        /// <summary>
+        /// Alle Vorgänge im Hauptgrid zum Speichern markieren.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdMark_Click(object sender, EventArgs e)
+        {
+            foreach (GridViewRow gvRow in gvDaten.Rows)
+            {
+                CheckBox chkAuswahl = (CheckBox)gvRow.FindControl("chkAuswahl");
+                chkAuswahl.Checked = chkAuswahl.Visible;
+            }
+        }
+
+        #endregion
+
+        #region Methods
 
         /// <summary>
         /// Setzen des Errorstyles/Fehlertextes für Controls.
@@ -482,7 +1031,7 @@ namespace AppZulassungsdienst.forms
                     }
                 }
             }
-            catch{}
+            catch { }
 
             return erg;
         }
@@ -493,7 +1042,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="tblData">Vorgangstabelle</param>
         /// <param name="NewLine">hinzufügen eines Vorgangs = kein Fehler ausgeben </param>
         /// <returns>true bei Fehler</returns>
-        private bool proofVorfallGrid(ref DataTable tblData,Boolean NewLine)
+        private bool proofVorfallGrid(ref DataTable tblData, Boolean NewLine)
         {
             bool blError = false;
             int i = 0;
@@ -502,18 +1051,18 @@ namespace AppZulassungsdienst.forms
             {
                 if (tblData.Rows[i]["Status"].ToString() == "ZE" || tblData.Rows[i]["Status"].ToString() == "")
                 {
-                    DropDownList ddl = (DropDownList) gvRow.FindControl("ddlVorfall");
-                    TextBox txtDate = (TextBox) gvRow.FindControl("txtDatum");
-                    TextBox txtKst = (TextBox) gvRow.FindControl("txtKST");
-                    TextBox txtZuordnung = (TextBox) gvRow.FindControl("txtZuordnung");
-                    TextBox txtFreitext = (TextBox) gvRow.FindControl("txtFreitext");
-                    TextBox txtBarcode = (TextBox) gvRow.FindControl("txtBarcode");
-                    TextBox txtAuftrag = (TextBox) gvRow.FindControl("txtAuftrag");
+                    DropDownList ddl = (DropDownList)gvRow.FindControl("ddlVorfall");
+                    TextBox txtDate = (TextBox)gvRow.FindControl("txtDatum");
+                    TextBox txtKst = (TextBox)gvRow.FindControl("txtKST");
+                    TextBox txtZuordnung = (TextBox)gvRow.FindControl("txtZuordnung");
+                    TextBox txtFreitext = (TextBox)gvRow.FindControl("txtFreitext");
+                    TextBox txtBarcode = (TextBox)gvRow.FindControl("txtBarcode");
+                    TextBox txtAuftrag = (TextBox)gvRow.FindControl("txtAuftrag");
                     CheckBox chkAuswahl = (CheckBox)gvRow.FindControl("chkAuswahl");
 
                     DataRow dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
 
-                    tblData.Rows[i]["BUKRS"] = _objKassenabrechnung.Buchungskreis;
+                    tblData.Rows[i]["BUKRS"] = _objKassenabrechnung.VKORG;
                     tblData.Rows[i]["TRANSACT_NUMBER"] = ddl.SelectedValue;
 
                     string strBudat = txtDate.Text.Trim();
@@ -521,7 +1070,7 @@ namespace AppZulassungsdienst.forms
                     {
                         tblData.Rows[i]["BUDAT"] = txtDate.Text.Trim();
                     }
-                    else if (NewLine == false && chkAuswahl.Checked)
+                    else if (!NewLine && chkAuswahl.Checked)
                     {
                         SetErrBehavior(txtDate, lblError, "Es wurde kein Datum eingetragen!");
                         blError = true;
@@ -532,7 +1081,7 @@ namespace AppZulassungsdienst.forms
                     {
                         tblData.Rows[i]["KOSTL"] = txtKst.Text.Trim();
                     }
-                    else if (NewLine == false && chkAuswahl.Checked)
+                    else if (!NewLine && chkAuswahl.Checked)
                     {
                         SetErrBehavior(txtKst, lblError, "Es wurde keine Kostenstelle eingetragen!");
                         blError = true;
@@ -557,7 +1106,7 @@ namespace AppZulassungsdienst.forms
                         {
                             tblData.Rows[i]["SGTXT"] = strFreitext;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtFreitext, lblError, "Es wurde kein Text eingetragen!");
                             blError = true;
@@ -570,7 +1119,7 @@ namespace AppZulassungsdienst.forms
                         {
                             tblData.Rows[i]["ORDERID"] = txtAuftrag.Text;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtAuftrag, lblPosError, "Es wurde keine Auftragsnummer eingetragen!");
                             blError = true;
@@ -588,14 +1137,14 @@ namespace AppZulassungsdienst.forms
                         {
                             tblData.Rows[i]["DOCUMENT_NUMBER"] = txtBarcode.Text.Trim();
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtBarcode, lblError, "Barcode nicht 6 Zeichen lang!");
                             blError = true;
                         }
 
                     }
-                    else if (NewLine == false && chkAuswahl.Checked)
+                    else if (!NewLine && chkAuswahl.Checked)
                     {
                         SetErrBehavior(txtBarcode, lblError, "Es wurde kein Barcode eingetragen!");
                         blError = true;
@@ -613,7 +1162,7 @@ namespace AppZulassungsdienst.forms
                             tblData.Rows[i]["LIFNR"] = txtKreditor.Text.Trim();
                             txtKreditor.BorderColor = System.Drawing.Color.Empty;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtKreditor, lblError, "Es wurde kein Kreditor eingetragen!");
                             blError = true;
@@ -626,7 +1175,7 @@ namespace AppZulassungsdienst.forms
                             tblData.Rows[i]["KUNNR"] = txtDebitor.Text.Trim();
                             txtDebitor.BorderColor = System.Drawing.Color.Empty;
                         }
-                        else if (NewLine == false && chkAuswahl.Checked)
+                        else if (!NewLine && chkAuswahl.Checked)
                         {
                             SetErrBehavior(txtDebitor, lblError, "Es wurde kein Kreditor eingetragen!");
                             blError = true;
@@ -636,7 +1185,7 @@ namespace AppZulassungsdienst.forms
                     switch (_objKassenabrechnung.VorfallGewaehlt)
                     {
                         case Kassenabrechnung.VorfallFilter.Einahmen:
-                            TextBox txtBruttoEin = (TextBox) gvRow.FindControl("txtBetragBruttoEinnahmen");
+                            TextBox txtBruttoEin = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
 
                             if (txtBruttoEin.Text.Trim() != "")
                             {
@@ -644,14 +1193,14 @@ namespace AppZulassungsdienst.forms
                                 tblData.Rows[i]["H_RECEIPTS"] = betrag;
                                 tblData.Rows[i]["H_PAYMENTS"] = "0,00";
                             }
-                            else if (NewLine == false && chkAuswahl.Checked)
+                            else if (!NewLine && chkAuswahl.Checked)
                             {
                                 SetErrBehavior(txtBruttoEin, lblError, "Es wurde kein Betrag eingegeben!");
                                 blError = true;
                             }
                             break;
                         case Kassenabrechnung.VorfallFilter.Ausgaben:
-                            TextBox txtBruttoAus = (TextBox) gvRow.FindControl("txtBetragBruttoAusgaben");
+                            TextBox txtBruttoAus = (TextBox)gvRow.FindControl("txtBetragBruttoAusgaben");
 
                             if (txtBruttoAus.Text.Trim() != "")
                             {
@@ -660,7 +1209,7 @@ namespace AppZulassungsdienst.forms
                                 tblData.Rows[i]["H_PAYMENTS"] = betrag;
 
                             }
-                            else if (NewLine == false && chkAuswahl.Checked)
+                            else if (!NewLine && chkAuswahl.Checked)
                             {
                                 SetErrBehavior(txtBruttoAus, lblError, "Es wurde kein Betrag eingegeben!");
                                 blError = true;
@@ -698,7 +1247,7 @@ namespace AppZulassungsdienst.forms
 
                 DataRow dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
 
-                gvRow["BUKRS"] = _objKassenabrechnung.Buchungskreis;
+                gvRow["BUKRS"] = _objKassenabrechnung.VKORG;
                 gvRow["TRANSACT_NUMBER"] = ddl.SelectedValue;
                 gvRow["Auswahl"] = chkAuswahl.Checked;
                 string strBudat = txtDate.Text.Trim();
@@ -774,14 +1323,14 @@ namespace AppZulassungsdienst.forms
                     {
                         gvRow["DOCUMENT_NUMBER"] = txtBarcode.Text.Trim();
                     }
-                    else 
+                    else
                     {
                         SetErrBehavior(txtBarcode, lblError, "Barcode nicht 6 Zeichen lang!");
                         blError = true;
                     }
 
                 }
-                else 
+                else
                 {
                     SetErrBehavior(txtBarcode, lblError, "Es wurde kein Barcode eingetragen!");
                     blError = true;
@@ -840,7 +1389,7 @@ namespace AppZulassungsdienst.forms
                         TextBox txtBruttoAus = (TextBox)gvDatenRow.FindControl("txtBetragBruttoAusgaben");
 
                         if (txtBruttoAus.Text.Trim() != "")
-                        {   
+                        {
                             betrag = Convert.ToDecimal(txtBruttoAus.Text);
                             gvRow["H_RECEIPTS"] = "0,00";
                             gvRow["H_PAYMENTS"] = betrag;
@@ -853,33 +1402,27 @@ namespace AppZulassungsdienst.forms
                         break;
                 }
 
-                if (_objKassenabrechnung.tblError != null) 
+                if (_objKassenabrechnung.tblError != null)
                 {
                     if (_objKassenabrechnung.tblError.Rows.Count > 0)
                     {
                         if (_objKassenabrechnung.tblError.Select("Postingnr='" + gvRow["POSTING_NUMBER"] + "' AND ErrorNr='134'").Length > 0)
                         {
                             SetErrBehavior(txtFreitext, lblError, "Das Feld Text ist ein Pflichtfeld, bitte einen Wert eingeben!");
-                            blError = true; 
-
+                            blError = true;
                         }
                         if (_objKassenabrechnung.tblError.Select("Postingnr='" + gvRow["POSTING_NUMBER"] + "' AND ErrorNr='135'").Length > 0)
                         {
                             SetErrBehavior(txtZuordnung, lblError, " Das Feld Zuordnung ist ein Pflichtfeld, bitte einen Wert eingeben!");
                             blError = true;
-
                         }
                         if (_objKassenabrechnung.tblError.Select("Postingnr='" + gvRow["POSTING_NUMBER"] + "' AND ErrorNr='136'").Length > 0)
                         {
                             SetErrBehavior(txtBarcode, lblError, "Das Feld Barcode ist ein Pflichtfeld, bitte einen Wert eingeben!");
                             blError = true;
-
                         }
                     }
-                    
                 }
-
-
             }
             return blError;
         }
@@ -898,19 +1441,19 @@ namespace AppZulassungsdienst.forms
             for (int i = 0; i < GridView1.Rows.Count; i++)
             {
                 GridViewRow gvRow = GridView1.Rows[i];
-                DropDownList ddl = (DropDownList) gvRow.FindControl("ddlVorfall");
-                TextBox txtKst = (TextBox) gvRow.FindControl("txtKST");
-                TextBox txtFreitext = (TextBox) gvRow.FindControl("txtFreitext");
-                TextBox txtAuftrag = (TextBox) gvRow.FindControl("txtAuftrag");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlVorfall");
+                TextBox txtKst = (TextBox)gvRow.FindControl("txtKST");
+                TextBox txtFreitext = (TextBox)gvRow.FindControl("txtFreitext");
+                TextBox txtAuftrag = (TextBox)gvRow.FindControl("txtAuftrag");
                 TextBox txtZuordnung = (TextBox)gvRow.FindControl("txtZuordnung");
-                Label lblPositionNr = (Label) gvRow.FindControl("lblPositionNr");
+                Label lblPositionNr = (Label)gvRow.FindControl("lblPositionNr");
 
                 DataRow dr = _objKassenabrechnung.Geschaeftsvorfaelle.Select("TRANSACT_NUMBER = '" + ddl.SelectedValue + "'")[0];
 
                 DataRow t = listePos[i];
                 if (lblPositionNr.Text == t["POSITION_NUMBER"].ToString())
                 {
-                    t["BUKRS"] = _objKassenabrechnung.Buchungskreis;
+                    t["BUKRS"] = _objKassenabrechnung.VKORG;
                     t["TRANSACT_NUMBER"] = ddl.SelectedValue;
                     if (ddl.SelectedValue == "*")
                     {
@@ -972,14 +1515,13 @@ namespace AppZulassungsdienst.forms
                         t["ORDERID"] = "";
                     }
 
-
                     decimal betrag;
 
                     switch (_objKassenabrechnung.VorfallGewaehlt)
                     {
                         case Kassenabrechnung.VorfallFilter.Einahmen:
-                            TextBox txtBruttoEin = (TextBox) gvRow.FindControl("txtBetragBruttoEinnahmen");
-                            TextBox txtDebitor = (TextBox) gvRow.FindControl("txtDebitor");
+                            TextBox txtBruttoEin = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
+                            TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
 
                             if (txtBruttoEin.Text.Trim() != "")
                             {
@@ -988,9 +1530,11 @@ namespace AppZulassungsdienst.forms
                                 t["P_PAYMENTS"] = "0,00";
                                 t["LIFNR"] = "";
 
+                                Boolean debiNeeded = _objKassenabrechnung.CheckDebiNeeded(ddl.SelectedValue);
+
                                 if ((txtDebitor.Enabled) || (txtDebitor.Text.Trim() != ""))
                                 {
-                                    if (txtDebitor.Text.Trim() != "")
+                                    if (txtDebitor.Text.Trim() != "" || !debiNeeded)
                                     {
                                         t["KUNNR"] = txtDebitor.Text.Trim();
                                         txtDebitor.BorderColor = System.Drawing.Color.Empty;
@@ -1009,8 +1553,8 @@ namespace AppZulassungsdienst.forms
                             }
                             break;
                         case Kassenabrechnung.VorfallFilter.Ausgaben:
-                            TextBox txtBruttoAus = (TextBox) gvRow.FindControl("txtBetragBruttoAusgaben");
-                            TextBox txtKreditor = (TextBox) gvRow.FindControl("txtKreditor");
+                            TextBox txtBruttoAus = (TextBox)gvRow.FindControl("txtBetragBruttoAusgaben");
+                            TextBox txtKreditor = (TextBox)gvRow.FindControl("txtKreditor");
 
                             if (txtBruttoAus.Text.Trim() != "")
                             {
@@ -1019,9 +1563,11 @@ namespace AppZulassungsdienst.forms
                                 t["P_PAYMENTS"] = betrag;
                                 t["KUNNR"] = "";
 
+                                Boolean krediNeeded = _objKassenabrechnung.CheckKrediNeeded(ddl.SelectedValue);
+
                                 if ((txtKreditor.Enabled) || (txtKreditor.Text.Trim() != ""))
                                 {
-                                    if (txtKreditor.Text.Trim() != "")
+                                    if (txtKreditor.Text.Trim() != "" || !krediNeeded)
                                     {
                                         t["LIFNR"] = txtKreditor.Text.Trim();
                                         txtKreditor.BorderColor = System.Drawing.Color.Empty;
@@ -1041,7 +1587,6 @@ namespace AppZulassungsdienst.forms
                             break;
                     }
                 }
-
             }
 
             return blError;
@@ -1058,7 +1603,7 @@ namespace AppZulassungsdienst.forms
             foreach (GridViewRow gvRow in grdView.Rows)
             {
                 // Vorfall Dropdown befüllen
-                DropDownList ddl = (DropDownList) gvRow.FindControl("ddlVorfall");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlVorfall");
 
                 DataView tmpDataView = _objKassenabrechnung.Geschaeftsvorfaelle.DefaultView;
                 tmpDataView.Sort = "TRANSACT_NAME";
@@ -1072,19 +1617,19 @@ namespace AppZulassungsdienst.forms
                     ddl.SelectedValue = valueToSelect;
 
                 // Steuerung der Felder für Einnahmen und Ausgaben
-                Boolean debiNeeded = _objKassenabrechnung.CheckDebiNeeded(tblData.Rows[i]["TRANSACT_NUMBER"].ToString());
-                Boolean krediNeeded = _objKassenabrechnung.CheckKrediNeeded(tblData.Rows[i]["TRANSACT_NUMBER"].ToString());
-                TextBox ctrl = (TextBox) gvRow.FindControl("txtBetragBruttoEinnahmen");
-                TextBox ctrl2 = (TextBox) gvRow.FindControl("txtBetragBruttoAusgaben");
+                Boolean debiNeeded = _objKassenabrechnung.CheckDebiNeeded(valueToSelect);
+                Boolean krediNeeded = _objKassenabrechnung.CheckKrediNeeded(valueToSelect);
+                TextBox ctrl = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
+                TextBox ctrl2 = (TextBox)gvRow.FindControl("txtBetragBruttoAusgaben");
                 TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
                 TextBox txtKreditor = (TextBox)gvRow.FindControl("txtKreditor");
-                Label lblPostNr = (Label) gvRow.FindControl("lblPostNr");
+                Label lblPostNr = (Label)gvRow.FindControl("lblPostNr");
                 if (lblPostNr == null)
                 {
                     lblPostNr = (Label)gvRow.FindControl("lblPostingNr");
                 }
 
-                DataRow [] rowStatus = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER = '" + lblPostNr.Text + "'");
+                DataRow[] rowStatus = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER = '" + lblPostNr.Text + "'");
                 String status = rowStatus[0]["Status"].ToString();
 
                 // Kreditoren-/Debitoren-Felder nur freischalten, wenn Datensatz noch nicht gebucht
@@ -1104,7 +1649,7 @@ namespace AppZulassungsdienst.forms
                         txtKreditor.Enabled = false;
                         txtKreditor.Visible = false;
                     }
-                    if (debiNeeded == false && krediNeeded == false)
+                    if (!debiNeeded && !krediNeeded)
                     {
                         txtDebitor.Enabled = false;
                         txtKreditor.Enabled = false;
@@ -1141,7 +1686,6 @@ namespace AppZulassungsdienst.forms
 
                 i++;
             }
-
         }
 
         /// <summary>
@@ -1160,245 +1704,8 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                lblErrorMain.Text = _objKassenabrechnung.ErrorMessage;
+                lblErrorMain.Text = _objKassenabrechnung.Message;
             }
-        }
-
-        /// <summary>
-        /// Tagesdatum setzen. Werte im Kopfbereich füllen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void btnToday_Click(object sender, EventArgs e)
-        {
-            lblErrorMain.Text = "";
-            txtStartDate.Text = DateTime.Today.ToShortDateString();
-            txtEndDate.Text = DateTime.Today.ToShortDateString();
-
-            _objKassenabrechnung.DatumVon = DateTime.Today;
-            _objKassenabrechnung.DatumBis = DateTime.Today;
-            FillWerte();
-
-            ShowData(false);
-        }
-
-        /// <summary>
-        /// Laufende Periode setzen. Werte im Kopfbereich füllen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void btnCurrentPeriod_Click(object sender, EventArgs e)
-        {
-            lblErrorMain.Text = "";
-            _objKassenabrechnung.GetPeriodeFromDateNeu(DateTime.Today);
-            if (!_objKassenabrechnung.ErrorOccured)
-            {
-                txtStartDate.Text = _objKassenabrechnung.DatumVon.ToShortDateString();
-                txtEndDate.Text = _objKassenabrechnung.DatumBis.ToShortDateString();
-
-                FillWerte();
-            }
-            else
-            {
-                lblError.Text = _objKassenabrechnung.ErrorMessage;
-            }
-
-            ShowData(false);
-        }
-
-        /// <summary>
-        /// Aktuelle Woche setzen. Werte im Kopfbereich füllen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void btnThisWeek_Click(object sender, EventArgs e)
-        {
-            lblErrorMain.Text = "";
-            DateTime firstDayOfWeek = DateTime.Today;
-            DateTime lastDayOfWeek = DateTime.Today;
-
-            switch (DateTime.Today.DayOfWeek)
-            {
-                case DayOfWeek.Monday:
-                    lastDayOfWeek = lastDayOfWeek.AddDays(6);
-                    break;
-                case DayOfWeek.Tuesday:
-                    firstDayOfWeek = firstDayOfWeek.AddDays(-1);
-                    lastDayOfWeek = lastDayOfWeek.AddDays(5);
-                    break;
-                case DayOfWeek.Wednesday:
-                    firstDayOfWeek = firstDayOfWeek.AddDays(-2);
-                    lastDayOfWeek = lastDayOfWeek.AddDays(4);
-                    break;
-                case DayOfWeek.Thursday:
-                    firstDayOfWeek = firstDayOfWeek.AddDays(-3);
-                    lastDayOfWeek = lastDayOfWeek.AddDays(3);
-                    break;
-                case DayOfWeek.Friday:
-                    firstDayOfWeek = firstDayOfWeek.AddDays(-4);
-                    lastDayOfWeek = lastDayOfWeek.AddDays(2);
-                    break;
-                case DayOfWeek.Saturday:
-                    firstDayOfWeek = firstDayOfWeek.AddDays(-5);
-                    lastDayOfWeek = lastDayOfWeek.AddDays(1);
-                    break;
-                case DayOfWeek.Sunday:
-                    firstDayOfWeek = firstDayOfWeek.AddDays(-6);
-                    break;
-            }
-            txtStartDate.Text = firstDayOfWeek.ToShortDateString();
-            txtEndDate.Text = lastDayOfWeek.ToShortDateString();
-
-            _objKassenabrechnung.DatumVon = firstDayOfWeek;
-            _objKassenabrechnung.DatumBis = lastDayOfWeek;
-            FillWerte();
-
-            ShowData(false);
-        }
-
-        /// <summary>
-        /// Neue Zeile im Hauptgrid einfügen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void lbNewLine_Click(object sender, EventArgs e)
-        {
-              
-                DataTable table = _objKassenabrechnung.DocHeads;
-
-                proofVorfallGrid(ref table,true);
-                _objKassenabrechnung.GetNewPostingNumber();
-                if (_objKassenabrechnung.ErrorOccured)
-                {
-                    lblError.Text = _objKassenabrechnung.ErrorMessage;
-                    return;
-                }
-                DataRow tblRow = table.NewRow();
-                tblRow["Ampel"] = "/PortalZLD/Images/onebit_10.png";
-                tblRow["BUDAT"] = DateTime.Today.ToShortDateString();
-                tblRow["BUKRS"] = _objKassenabrechnung.Buchungskreis;
-                tblRow["KOSTL"] = _objKassenabrechnung.Kostenstelle;
-                tblRow["CAJO_NUMBER"] = _objKassenabrechnung.KassenbuchNr;
-                tblRow["Posting_Number"] = _objKassenabrechnung.NewPostingNumber;
-                tblRow["New"] = "1";
-                tblRow["ASTATUS"] = "";
-
-                table.Rows.Add(tblRow);
-
-                gvDaten.DataSource = table.DefaultView;
-                gvDaten.DataBind();
-                visibility();
-                addButtonAttr(table, gvDaten);
-
-                GridViewRow gvRow = gvDaten.Rows[gvDaten.Rows.Count - 1];
-                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlVorfall");
-                ddl.Focus();
-                TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
-                TextBox txtKreditor = (TextBox)gvRow.FindControl("txtKreditor");
-                switch (_objKassenabrechnung.VorfallGewaehlt)
-                {
-                    case Kassenabrechnung.VorfallFilter.Einahmen:
-                        lblHead.Text = "Kassenabrechnung  - Einnahmen";
-                        break;
-                    case Kassenabrechnung.VorfallFilter.Ausgaben:
-                        lblHead.Text = "Kassenabrechnung  - Ausgaben";
-                        break;
-                }
-            
-               txtDebitor.Enabled = _objKassenabrechnung.CheckDebiNeeded(ddl.SelectedValue);
-               txtKreditor.Enabled = _objKassenabrechnung.CheckKrediNeeded(ddl.SelectedValue);
-               if (!txtDebitor.Enabled) txtDebitor.Text = string.Empty;
-               if (!txtKreditor.Enabled) txtKreditor.Text = string.Empty;
-               lblErrorMain.Text = "";
-               lblMessage.Text = "";
-               lblError.Text = "";
-        }
-
-        /// <summary>
-        /// Aktuelle Einahmen anzeigen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void lbShowEinnahmen_Click(object sender, EventArgs e)
-        {
-            lblErrorMain.Text = "";
-            lblHead.Text = "Kassenabrechnung  - Einnahmen";
-
-            DateTime dtBegin;
-            DateTime dtEnd;
-            DateTime.TryParse(txtStartDate.Text, out dtBegin);
-            DateTime.TryParse(txtEndDate.Text, out dtEnd);
-            _objKassenabrechnung.DatumVon = dtBegin;
-            _objKassenabrechnung.DatumBis = dtEnd;
-
-            _objKassenabrechnung.FillPositionen2(Kassenabrechnung.VorfallFilter.Einahmen);
-
-            if (_objKassenabrechnung.ErrorOccured)
-            {
-                lblErrorMain.Text = _objKassenabrechnung.ErrorMessage;
-            }
-            else
-            {
-                if (_objKassenabrechnung.DocHeads.Rows.Count == 0)
-                {
-                    lblErrorMain.Text = "Es sind keine Einträge vorhanden!";
-                }
-
-                try
-                {
-                    ShowData(true);
-
-
-                }
-                catch (Exception ex)
-                {
-                    lblErrorMain.Text = ex.Message;
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Aktuelle Ausgaben anzeigen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void lbShowAusgaben_Click(object sender, EventArgs e)
-        {
-            lblErrorMain.Text = "";
-            lblHead.Text = "Kassenabrechnung  - Ausgaben";
-
-            DateTime dtBegin;
-            DateTime dtEnd;
-            DateTime.TryParse(txtStartDate.Text, out dtBegin);
-            DateTime.TryParse(txtEndDate.Text, out dtEnd);
-            _objKassenabrechnung.DatumVon = dtBegin;
-            _objKassenabrechnung.DatumBis = dtEnd;
-
-            _objKassenabrechnung.FillPositionen2(Kassenabrechnung.VorfallFilter.Ausgaben);
-
-            if (_objKassenabrechnung.ErrorOccured)
-            {
-                lblErrorMain.Text = _objKassenabrechnung.ErrorMessage;
-            }
-            else
-            {
-                if (_objKassenabrechnung.DocHeads.Rows.Count == 0)
-                {
-                    lblErrorMain.Text = "Es sind keine Einträge vorhanden!";
-                }
-
-                try
-                {
-                    ShowData(true);
-                }
-                catch (Exception ex)
-                {
-                    lblErrorMain.Text = ex.Message;
-                }
-            }
-
-            // gvDaten.Columns[11].HeaderText = "Kreditor";          
         }
 
         /// <summary>
@@ -1419,7 +1726,7 @@ namespace AppZulassungsdienst.forms
                 DataTable table = _objKassenabrechnung.DocHeads;
                 gvDaten.DataSource = table.DefaultView;
                 gvDaten.DataBind();
-                visibility(); 
+                visibility();
                 addButtonAttr(table, gvDaten);
                 txtStartDate.Visible = false;
                 txtEndDate.Visible = false;
@@ -1448,45 +1755,10 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Startdatum geändert -> formatiert anzeigen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void txtStartDate_TextChanged(object sender, EventArgs e)
-        {
-            DateTime date;
-            DateTime.TryParse(txtStartDate.Text, out date);
-            _objKassenabrechnung.DatumVon = date;
-        }
-
-        /// <summary>
-        /// Endedatum geändert -> formatiert anzeigen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void txtEndDate_TextChanged(object sender, EventArgs e)
-        {
-            DateTime date;
-            DateTime.TryParse(txtEndDate.Text, out date);
-            _objKassenabrechnung.DatumBis = date;
-        }
-
-        /// <summary>
-        /// Speicherfunktion aufrufen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void btnSave_Click(object sender, EventArgs e)
-        {
-            Save();
-        }
-
-        /// <summary>
         /// Speichern der Vorgänge in SAP. "Ampel" aktualisieren.
         /// </summary>
         private void Save()
         {
-
             DataTable table = _objKassenabrechnung.DocHeads;
             lblMessage.Text = "";
             lblError.Text = "";
@@ -1502,33 +1774,29 @@ namespace AppZulassungsdienst.forms
                 {
                     if (status == "" || status == "ZE")
                     {
-
-                            AddNewPosForSave(row["POSTING_NUMBER"].ToString(), row);
-                            _objKassenabrechnung.SavePosition2(row["POSTING_NUMBER"].ToString());
-                            if (_objKassenabrechnung.ErrorOccured)
+                        AddNewPosForSave(row["POSTING_NUMBER"].ToString(), row);
+                        _objKassenabrechnung.SavePosition2(row["POSTING_NUMBER"].ToString());
+                        if (_objKassenabrechnung.ErrorOccured)
+                        {
+                            lblError.Text += _objKassenabrechnung.Message;
+                        }
+                        else
+                        {
+                            HeadGridCalculate(row["POSTING_NUMBER"].ToString());
+                            row["Status"] = "ZE";
+                            row["New"] = "0";
+                            row["Auswahl"] = false;
+                            if (row["AStatus"].ToString() == "ZA")
                             {
-                                lblError.Text += _objKassenabrechnung.ErrorMessage;
+                                row["Ampel"] = "/PortalZLD/Images/InfoAuto.gif";
                             }
                             else
                             {
-                                HeadGridCalculate(row["POSTING_NUMBER"].ToString());
-                                row["Status"] = "ZE";
-                                row["New"] = "0";
-                                row["Auswahl"] = false;
-                                if (row["AStatus"].ToString() == "ZA")
-                                {
-                                    row["Ampel"] = "/PortalZLD/Images/InfoAuto.gif";
-                                }
-                                else
-                                {
-                                    row["Ampel"] = "/PortalZLD/Images/onebit_07.png";
-                                }
-
-
+                                row["Ampel"] = "/PortalZLD/Images/onebit_07.png";
                             }
+                        }
                     }
                 }
-
             }
 
             table = _objKassenabrechnung.DocHeads;
@@ -1548,112 +1816,8 @@ namespace AppZulassungsdienst.forms
                 }
                 lblMessage.Text = "";
             }
-              
+
             FillWerte();
-
-            if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Einahmen)
-            {
-                lblHead.Text = "Kassenabrechnung  - Einnahmen";
-            }
-            else if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Ausgaben)
-            {
-                lblHead.Text = "Kassenabrechnung  - Ausgaben";
-            }
-        }
-
-        /// <summary>
-        /// Kopfbereich anzeigen. Vorgangsbereich ausblenden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void btnBack_Click(object sender, EventArgs e)
-        {
-            lblHead.Text = "Kassenabrechnung";
-            lblErrorMain.Text = "";
-            ShowData(false);
-        }
-
-        /// <summary>
-        /// Buchen der Vorgänge in SAP. Kopfbereich aktulisieren.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void btnBuchen_Click(object sender, EventArgs e)
-        {
-            lblError.Text = "";
-            lblMessage.Text = "";
-            lblErrorMain.Text = "";
-            DataTable table = _objKassenabrechnung.DocHeads;
-            Int32 iCount = 0;
-
-            Boolean custError = proofVorfallGrid(ref table, false);
-            if (!custError)
-            {
-                for (int i = 0; i < table.Rows.Count; i++)
-                {
-                    if (table.Rows[i]["New"].ToString() == "0")
-                    {
-                        DataRow row = table.Rows[i];
-                        String status = row["Status"].ToString();
-                        String aStatus = row["ASTATUS"].ToString();
-                        Boolean bError = !proofVorfallGridRow(ref row);
-                        if (bError)
-                        {
-                            if (status == "" || status == "ZE")
-                            {
-                                if ((Boolean)row["Auswahl"])
-                                {
-                                    if (aStatus != "ZA")
-                                    {
-
-                                        _objKassenabrechnung.Buchen2(row);
-                                        if (_objKassenabrechnung.ErrorOccured)
-                                        {
-                                            lblError.Text += _objKassenabrechnung.ErrorMessage;
-                                        }
-                                   
-
-                                    }
-                                    else if (!lblError.Text.Contains("Bestätigen Sie \"Betrag erhalten\" um Vorgänge buchen zu können!"))
-                                    {
-                                        lblError.Text += "Bestätigen Sie \"Betrag erhalten\" um Vorgänge buchen zu können!";
-                                    }
-                                    iCount++;
-                                }
-
-                            }                        
-                        }
-                    }
-                    else
-                    {
-                        lblError.Text += "Es können nur Einträge gebucht werden, die bereits gesichert wurden.";
-                    }
-
-                }
-                
-            }
-            if (iCount > 0)
-            {
-                 
-                _objKassenabrechnung.FillPositionen2(_objKassenabrechnung.VorfallGewaehlt);
-                gvDaten.DataSource = _objKassenabrechnung.DocHeads;
-                gvDaten.DataBind();
-                visibility();
-                table = _objKassenabrechnung.DocHeads;
-                addButtonAttr(table, gvDaten);
-                FillWerte();
-                if (lblError.Text == "")// Fehler? nochmal prüfen um Details anzeigen zu können
-                {
-                    lblMessage.Text = "Daten für die Kassenabrechnung gebucht!";
-
-                    for (int i = 0; i < table.Rows.Count; i++)
-                    {   
-                        DataRow row = table.Rows[i];
-                        proofVorfallGridRow(ref row);
-                    }
-                }
-            }
-            else if (custError == false) { lblError.Text = "Keine Vorgänge zum Buchen markiert!"; }
 
             if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Einahmen)
             {
@@ -1681,14 +1845,14 @@ namespace AppZulassungsdienst.forms
                 lblHead.Text = "Kassenabrechnung  - Ausgaben";
             }
 
-            DataRow [] rowStatus = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER = '" + postNr + "'");
+            DataRow[] rowStatus = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER = '" + postNr + "'");
             String status = rowStatus[0]["Status"].ToString();
             switch (status)
             {
                 case "":
                     return true;
                 case "ZE":
-                   return true;
+                    return true;
                 case "ZG":
                     return false;
                 case "ZL":
@@ -1698,7 +1862,7 @@ namespace AppZulassungsdienst.forms
                 case "P":
                     return false;
                 default:
-                    
+
                     return false;
             }
         }
@@ -1710,10 +1874,9 @@ namespace AppZulassungsdienst.forms
         /// <returns>true/false</returns>
         protected bool ShowAuswahl(String postNr)
         {
-
             DataRow[] rowStatus = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER = '" + postNr + "'");
             String status = rowStatus[0]["Status"].ToString();
-            if (status == "ZE") { return true; } 
+            if (status == "ZE") { return true; }
             return false;
         }
 
@@ -1760,7 +1923,6 @@ namespace AppZulassungsdienst.forms
                 DataRow tblRow = posRows[0];
                 WriteHeadRowToPosRow(headRow, tblRow);
             }
-
         }
 
         /// <summary>
@@ -1769,7 +1931,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="postNr">POSTING_NUMBER</param>
         /// <param name="headRow">Kopfzeile</param>
-        private void WriteHeadToPos (String postNr, DataRow headRow)
+        private void WriteHeadToPos(String postNr, DataRow headRow)
         {
             DataRow[] posRows = _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + postNr + "'"); //
 
@@ -1800,126 +1962,24 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Zurück zur Startseite.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"]);
-        }
-
-        /// <summary>
-        /// Datum Textbox im Hauptgrid an Javafunktion binden.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void gvDaten_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.DataItem == null)
-                return;
-            TextBox txtDatum = (TextBox)e.Row.FindControl("txtDatum");
-            txtDatum.Attributes.Add("onfocus", "datePick('#" + txtDatum.ClientID + "')");
-        }
-
-        /// <summary>
-        /// Neu Position im "Splitgrid" einfügen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void cmdNewPos_Click(object sender, EventArgs e)
-        {
-            DataTable table = _objKassenabrechnung.DocPos;
-
-            proofPosGrid();
-            DataView posRows = _objKassenabrechnung.DocPos.DefaultView; //
-            posRows.RowFilter = "POSTING_NUMBER='" + hfPostingNumber.Value + "'";
-            DataRow tblRow = table.NewRow();
-            tblRow["KOSTL"] = _objKassenabrechnung.Kostenstelle;
-            tblRow["Posting_Number"] = hfPostingNumber.Value;
-            tblRow["Position_Number"] = "";
-            table.Rows.Add(tblRow);
-            GridView1.DataSource = posRows;
-            GridView1.DataBind();
-
-            addButtonAttr(posRows.ToTable(), GridView1);
-        }
-
-        /// <summary>
-        /// Neu Positionen im "Splitgrid" in der Tabelle speichern.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void cmdSavePos_Click(object sender, EventArgs e)
-        {
-            if (!proofPosGrid())
-            {                
-                Refresh();
-                DataRow[] rowPos = _objKassenabrechnung.DocHeads.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
-
-                if (rowPos.Length == 1)
-                {
-
-                    DataRow[] rowPosSteuer =
-                        _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
-                    if (rowPosSteuer.Length > 0)
-                    {
-                        switch (_objKassenabrechnung.VorfallGewaehlt)
-                        {
-                            case Kassenabrechnung.VorfallFilter.Einahmen:
-                                rowPos[0]["H_RECEIPTS"] = lblGesamtPosShow.Text;
-                                break;
-                            case Kassenabrechnung.VorfallFilter.Ausgaben:
-                                rowPos[0]["H_PAYMENTS"] = lblGesamtPosShow.Text;
-                                break;
-                        }
-
-                        rowPos[0]["H_NET_AMOUNT"] = hfNettoGesamt.Value;
-                        rowPos[0]["LIFNR"] = "*";
-                        rowPos[0]["KUNNR"] = "*";
-
-                    }
-                }
-
-                RefreshHeadGrid();
-                Session["objKassenabrechnung"] = _objKassenabrechnung;
-                ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg",
-                                                    "closeDialogandSave();", true);
-            }
-        }
-
-        /// <summary>
-        /// Daten aus dem "Splitgrid" sammeln, kumlieren und anzeigen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">ImageClickEventArgs</param>
-        protected void cmdRefresh_Click(object sender, ImageClickEventArgs e)
-        {
-            proofPosGrid();
-            Refresh();
-        }
-
-        /// <summary>
         /// MwSt im SAP berechnen lassen, neu kumulieren und anzeigen.
         /// </summary>
         private void Refresh()
         {
-
             _objKassenabrechnung.GetMwSt2(hfPostingNumber.Value);
-                if (!_objKassenabrechnung.ErrorOccured)
-                {
-                    DataView posRows = _objKassenabrechnung.DocPos.DefaultView; //
-                    posRows.RowFilter = "POSTING_NUMBER='" + hfPostingNumber.Value + "'";
-                    GridView1.DataSource = posRows;
-                    GridView1.DataBind();
-                    addButtonAttr(posRows.ToTable(), GridView1);
-                    calculate();
-                }
-                else
-                {
-                    lblError.Text = _objKassenabrechnung.ErrorMessage;
-                }
-
+            if (!_objKassenabrechnung.ErrorOccured)
+            {
+                DataView posRows = _objKassenabrechnung.DocPos.DefaultView; //
+                posRows.RowFilter = "POSTING_NUMBER='" + hfPostingNumber.Value + "'";
+                GridView1.DataSource = posRows;
+                GridView1.DataBind();
+                addButtonAttr(posRows.ToTable(), GridView1);
+                calculate();
+            }
+            else
+            {
+                lblError.Text = _objKassenabrechnung.Message;
+            }
         }
 
         /// <summary>
@@ -1931,7 +1991,6 @@ namespace AppZulassungsdienst.forms
             gvDaten.DataBind();
             visibility();
             addButtonAttr(_objKassenabrechnung.DocHeads, gvDaten);
-            
         }
 
         /// <summary>
@@ -1943,14 +2002,12 @@ namespace AppZulassungsdienst.forms
             decimal betragNetto = 0;
             foreach (GridViewRow gvRow in GridView1.Rows)
             {
-
-
                 TextBox txtBetragNetto = (TextBox)gvRow.FindControl("txtBetragNetto");
                 switch (_objKassenabrechnung.VorfallGewaehlt)
                 {
                     case Kassenabrechnung.VorfallFilter.Einahmen:
                         TextBox txtBruttoEin = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
-                        
+
                         if (txtBruttoEin.Text.Trim() != "")
                         {
                             betrag += Convert.ToDecimal(txtBruttoEin.Text);
@@ -1967,7 +2024,7 @@ namespace AppZulassungsdienst.forms
                         if (txtBruttoAus.Text.Trim() != "")
                         {
                             betrag += Convert.ToDecimal(txtBruttoAus.Text);
-      
+
                         }
                         if (txtBetragNetto.Text.Trim() != "")
                         {
@@ -1975,7 +2032,6 @@ namespace AppZulassungsdienst.forms
                         }
                         break;
                 }
-
             }
 
             lblGesamtPosShow.Text = String.Format("{0:N}", betrag);
@@ -1999,66 +2055,6 @@ namespace AppZulassungsdienst.forms
             else
             {
                 lblDiffShow.Text = "0,00";
-            }
-        }
-
-        /// <summary>
-        /// Das Hauptgrid aktualisieren.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void btnRefreshGrid_Click(object sender, EventArgs e)
-        {
-            RefreshHeadGrid();
-        }
-
-        /// <summary>
-        /// Splitdialog schliessen und Eingaben übernehmen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void cmdCloseDialog_Click(object sender, EventArgs e)
-        {
-            if (!proofPosGrid())
-            {
-                addButtonAttr(_objKassenabrechnung.DocHeads, gvDaten);
-                Session["objKassenabrechnung"] = _objKassenabrechnung;
-                ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog();", true);
-            }
-
-        }
-
-        /// <summary>
-        /// Posititionen aus dem "Splitgrid" löschen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">GridViewCommandEventArgs</param>
-        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            lblError.Text = "";
-            try
-            {
-                switch (e.CommandName)
-                {
-                    case "Del":
-                        
-                        DataRow[] rowsToDel =
-                            _objKassenabrechnung.DocPos.Select("POSTING_NUMBER='" + hfPostingNumber.Value + "'");
-                        DataRow delRow = rowsToDel[Convert.ToInt16(e.CommandArgument)];
-                        _objKassenabrechnung.DocPos.Rows.Remove(delRow);
-                        DataView posRows = _objKassenabrechnung.DocPos.DefaultView;//
-                        posRows.RowFilter = "POSTING_NUMBER='" + hfPostingNumber.Value + "'";
-
-                        GridView1.DataSource = posRows;
-                        GridView1.DataBind();
-
-                        addButtonAttr(posRows.ToTable(), GridView1);
-                        break;
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = ex.Message;
             }
         }
 
@@ -2110,9 +2106,9 @@ namespace AppZulassungsdienst.forms
                 {
                     String sTaxCode =
                         _objKassenabrechnung.GetTaxCode(posRows.ToTable().Rows[0]["TRANSACT_NUMBER"].ToString());
-                    if (sTaxCode != "" )// Kein TAXCODE, keine MwSt-Berechnung!!
+                    if (sTaxCode != "")// Kein TAXCODE, keine MwSt-Berechnung!!
                     {
-                         WriteHeadToPos(postingNr, headRow[0]);
+                        WriteHeadToPos(postingNr, headRow[0]);
                         _objKassenabrechnung.GetMwSt2(postingNr);
                         if (!_objKassenabrechnung.ErrorOccured)
                         {
@@ -2147,7 +2143,6 @@ namespace AppZulassungsdienst.forms
                                         }
                                         break;
                                 }
-
                             }
 
                             if (_objKassenabrechnung.VorfallGewaehlt == Kassenabrechnung.VorfallFilter.Einahmen)
@@ -2162,7 +2157,7 @@ namespace AppZulassungsdienst.forms
                         }
                         else
                         {
-                            lblError.Text = _objKassenabrechnung.ErrorMessage;
+                            lblError.Text = _objKassenabrechnung.Message;
                         }
                     }
                     else
@@ -2180,17 +2175,12 @@ namespace AppZulassungsdienst.forms
                         {
                             WriteHeadToPos(postingNr, headRow[0]);
                         }
-
-
                     }
-
                 }
                 else
                 {
                     return true;
                 }
-
-
             }
             return bError;
         }
@@ -2203,13 +2193,13 @@ namespace AppZulassungsdienst.forms
             Boolean bShowMark = false;
             foreach (GridViewRow gvRow in gvDaten.Rows)
             {
-                DropDownList ddl = (DropDownList) gvRow.FindControl("ddlVorfall");
-                TextBox txtVorfall = (TextBox) gvRow.FindControl("txtVorfall");
-                Label lblPostNr = (Label) gvRow.FindControl("lblPostNr");
-                TextBox txtBetragBruttoEinnahmen = (TextBox) gvRow.FindControl("txtBetragBruttoEinnahmen");
-                TextBox txtBetragBruttoAusgaben = (TextBox) gvRow.FindControl("txtBetragBruttoAusgaben");
-                TextBox txtDebitor = (TextBox) gvRow.FindControl("txtDebitor");
-                TextBox txtKreditor = (TextBox) gvRow.FindControl("txtKreditor");
+                DropDownList ddl = (DropDownList)gvRow.FindControl("ddlVorfall");
+                TextBox txtVorfall = (TextBox)gvRow.FindControl("txtVorfall");
+                Label lblPostNr = (Label)gvRow.FindControl("lblPostNr");
+                TextBox txtBetragBruttoEinnahmen = (TextBox)gvRow.FindControl("txtBetragBruttoEinnahmen");
+                TextBox txtBetragBruttoAusgaben = (TextBox)gvRow.FindControl("txtBetragBruttoAusgaben");
+                TextBox txtDebitor = (TextBox)gvRow.FindControl("txtDebitor");
+                TextBox txtKreditor = (TextBox)gvRow.FindControl("txtKreditor");
                 TextBox txtDatum = (TextBox)gvRow.FindControl("txtDatum");
                 TextBox txtKST = (TextBox)gvRow.FindControl("txtKST");
                 TextBox txtZuordnung = (TextBox)gvRow.FindControl("txtZuordnung");
@@ -2255,11 +2245,9 @@ namespace AppZulassungsdienst.forms
                         txtKreditor.Visible = true;
                         break;
                 }
-                
+
             }
             cmdMark.Visible = bShowMark;
-            
-
         }
 
         private bool IsEnabledZuordnung(string postNr)
@@ -2329,38 +2317,6 @@ namespace AppZulassungsdienst.forms
             return true;
         }
 
-        /// <summary>
-        /// Über die angebenene Zeitspanne selektieren und Daten anzeigen.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void lbtnTimeRange_Click(object sender, EventArgs e)
-        {
-            lblErrorMain.Text = "";
-            DateTime dtBegin;
-            DateTime dtEnd;
-            DateTime.TryParse(txtStartDate.Text, out dtBegin);
-            DateTime.TryParse(txtEndDate.Text, out dtEnd);
-            _objKassenabrechnung.DatumVon = dtBegin;
-            _objKassenabrechnung.DatumBis = dtEnd;
-            FillWerte();
-
-            ShowData(false);
-        }
-
-        /// <summary>
-        /// Alle Vorgänge im Hauptgrid zum Speichern markieren.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void cmdMark_Click(object sender, EventArgs e)
-        {
-            foreach (GridViewRow gvRow in gvDaten.Rows)
-            {
-                CheckBox chkAuswahl = (CheckBox)gvRow.FindControl("chkAuswahl");
-                chkAuswahl.Checked = chkAuswahl.Visible;
-           
-            }
-        }
+        #endregion
     }
 }

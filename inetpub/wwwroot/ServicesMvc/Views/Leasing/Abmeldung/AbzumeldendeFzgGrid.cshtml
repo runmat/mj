@@ -9,7 +9,6 @@
 @(Html.Telerik()
     .Grid<Abmeldedaten>()
     .Name(gridName)
-    .XGroup("GridAbzumeldendeFzg")
     .DataKeys(d => d.Add(a => a.FahrgestellnummerShow).RouteKey("FahrgestellnummerShow"))
     .XAjaxDataBinding("AbzumeldendeFzgAjaxBinding", "Leasing")
     .Columns(columns =>

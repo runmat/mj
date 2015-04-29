@@ -286,7 +286,10 @@ namespace SapORM.Services
 
             if (!string.IsNullOrEmpty(paramName))
             {
-                _sapProxy.SetImportParameter(paramName,(value == null) ? null : value.ToString());
+                if (value is  byte[])
+                    _sapProxy.SetImportParameter(paramName, value);
+                else
+                    _sapProxy.SetImportParameter(paramName, (value == null) ? null : value.ToString());
             }       
         }
 

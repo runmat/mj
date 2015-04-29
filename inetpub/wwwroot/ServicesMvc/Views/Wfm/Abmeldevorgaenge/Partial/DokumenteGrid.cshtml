@@ -1,0 +1,29 @@
+﻿@using CkgDomainLogic.WFM.Models
+
+@{ var gridName = "GridDokumente"; }
+
+@(Html.XTelerik()
+    .XGrid<WfmDokumentInfo>()
+    .Name(gridName)
+    .XAjaxDataBinding("DokumenteAjaxBinding", "Wfm")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.ArchivId).Visible(false);
+        columns.XBound(c => c.ObjectId).Visible(false);
+        columns.XBound(c => c.Dokumentart);
+        columns.XBound(c => c.Dateiname);
+
+        columns.XBound(c => c.ObjectId).Filterable(false).Sortable(false).Title("").ClientTemplate(
+                "<a class='btn mini gray pdf tooltips a_btn_mini' data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docId=<#= data.ObjectId #>' ></a>"
+            );
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Dokumentart).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDokumenteFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportDokumenteFilteredPDF", "Wfm");
+    })
+)

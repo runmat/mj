@@ -34,17 +34,7 @@ Partial Public Class Change01Neu
         lblError.Text = ""
         Try
             If Not IsPostBack Then
-                Dim item As ListItem
-                Dim intLoop As Integer
-                For intLoop = 5 To 75 Step 5
-                    item = New ListItem(intLoop.ToString, intLoop.ToString)
-                    ddlAnzahlKennzeichen.Items.Add(item)
-                Next
-                For intLoop = 100 To 150 Step 25
-                    item = New ListItem(intLoop.ToString, intLoop.ToString)
-                    ddlAnzahlKennzeichen.Items.Add(item)
-                Next
-                ddlAnzahlKennzeichen.SelectedIndex = 0
+                FillAnzahlKennzeichen()
             End If
 
             If Session("AppChange") Is Nothing Then
@@ -187,8 +177,7 @@ Partial Public Class Change01Neu
                 Response.Redirect("/Services/Start/Selection.aspx", False)
                 ' ReSharper restore Html.PathError
             Else
-
-                'Dim Stichtag As String = ConfigurationManager.AppSettings("Stichtag")
+                
                 Dim stichtag As String = GetApplicationConfigValue("BestellfristJanuarAb", Session("AppID").ToString, _mUser.Customer.CustomerId, _mUser.GroupID)
 
                 If String.IsNullOrEmpty(stichtag) Then Throw New Exception("Key 'BestellfristJanuarAb' nicht in der Tabelle 'ApplicationConfig' gepflegt.")
@@ -695,9 +684,10 @@ Partial Public Class Change01Neu
                     'formControl.Controls.id
 
                     For Each PanelControl In formControl.Controls
-                        If TypeOf PanelControl Is TextBox Then
-                            If CType(PanelControl, TextBox).ID.Contains("Vermittlernummer") Then
-                                CType(PanelControl, TextBox).Enabled = Not Enabled
+                        Dim textBox = TryCast(PanelControl, TextBox)
+                        If (textBox IsNot Nothing) Then
+                            If textBox.ID.Contains("Vermittlernummer") Then
+                                textBox.Enabled = Not enabled
                             End If
                         End If
                     Next
@@ -708,7 +698,27 @@ Partial Public Class Change01Neu
         Next
 
     End Sub
+    Private Sub FillAnzahlKennzeichen ()
+        Dim item As ListItem
+        Dim intLoop As Integer
 
+        For intLoop = 1 To 19
+            item = New ListItem(intLoop.ToString, intLoop.ToString)
+            ddlAnzahlKennzeichen.Items.Add(item)
+        Next
+
+        For intLoop = 20 To 75 Step 5
+            item = New ListItem(intLoop.ToString, intLoop.ToString)
+            ddlAnzahlKennzeichen.Items.Add(item)
+        Next
+
+        For intLoop = 100 To 150 Step 25
+            item = New ListItem(intLoop.ToString, intLoop.ToString)
+            ddlAnzahlKennzeichen.Items.Add(item)
+        Next
+        ddlAnzahlKennzeichen.SelectedIndex = 0
+
+    End Sub
     Private Sub FillVersicherungsjahr()
 
         Dim dl As ListItem
