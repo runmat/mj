@@ -158,7 +158,7 @@
                                                         <HeaderStyle Width="45px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" Visible='<%# (Eval("MENGE").ToString() != "0") %>' Text='<%# Eval("MENGE") %>'></asp:Label>
+                                                            <asp:Label runat="server" Visible='<%# (Eval("MENGE").ToString() != "0") %>' Text='<%# Eval("MENGE") %>'/>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="MAKTX" SortExpression="MAKTX" HeaderText="Dienstleistung" >
@@ -198,7 +198,7 @@
                                                     <telerik:GridTemplateColumn DataField="FEINSTAUBAMT" SortExpression="FEINSTAUBAMT" HeaderText="Feinstaub" >
                                                         <HeaderStyle Width="30px" />
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" Visible='<%# (Eval("FEINSTAUBAMT").ToString() == "X") %>' Text="F"></asp:Label>
+                                                            <asp:Label runat="server" Visible='<%# (Eval("FEINSTAUBAMT").ToString() == "X") %>' Text="F"/>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn> 
                                                     <telerik:GridBoundColumn DataField="RESWUNSCH" SortExpression="RESWUNSCH" HeaderText="RW" >

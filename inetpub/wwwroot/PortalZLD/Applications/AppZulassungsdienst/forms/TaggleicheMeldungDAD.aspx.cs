@@ -3,36 +3,31 @@ using System.Web.UI;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {
-    /// <summary>
-    /// Taggleiche Meldung DAD
-    /// </summary>
     public partial class TaggleicheMeldungDAD : Page
     {
         private User m_User;
-        private App m_App;
         private MeldungDAD objMeldungDAD;
         private ZLDCommon objCommon;
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -43,7 +38,7 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                objMeldungDAD = new MeldungDAD(ref m_User, m_App, "");
+                objMeldungDAD = new MeldungDAD(m_User.Reference);
                 Session["objMeldungDAD"] = objMeldungDAD;
 
                 Title = lblHead.Text;
@@ -84,6 +79,20 @@ namespace AppZulassungsdienst.forms
             DoSubmit();
         }
 
+        protected void cmdFrachtbriefnummer_Click(object sender, EventArgs e)
+        {
+            trFrachtbriefnummer.Visible = true;
+        }
+
+        protected void cmdSend_Click(object sender, EventArgs e)
+        {
+            SaveMeldung();
+        }
+
+        #endregion
+
+        #region Methods
+
         private void DoSubmit()
         {
             lblError.Text = "";
@@ -98,11 +107,11 @@ namespace AppZulassungsdienst.forms
             objMeldungDAD.FahrgestellnummerSuche = txtFahrgestellnummer.Text.Trim().ToUpper();
             objMeldungDAD.BriefnummerSuche = txtBriefnummer.Text.Trim().ToUpper();
 
-            objMeldungDAD.LoadVorgang(Session["AppID"].ToString(), Session.SessionID, this);
+            objMeldungDAD.LoadVorgang();
 
             Session["objMeldungDAD"] = objMeldungDAD;
 
-            if (objMeldungDAD.Status != 0)
+            if (objMeldungDAD.ErrorOccured)
             {
                 lblError.Text = "Fehler: " + objMeldungDAD.Message;
             }
@@ -110,7 +119,7 @@ namespace AppZulassungsdienst.forms
             {
                 FillForm();
             }
-        }     
+        }
 
         private void FillForm()
         {
@@ -132,46 +141,11 @@ namespace AppZulassungsdienst.forms
                 txtZulassungsdatum.Text = "";
             }
 
-            if (!String.IsNullOrEmpty(objMeldungDAD.Kennzeichen))
-            {
-                if (objMeldungDAD.Kennzeichen.Contains("-"))
-                {
-                    String[] tmpKennz = objMeldungDAD.Kennzeichen.Split('-');
-                    txtKennz1.Text = "";
-                    txtKennz2.Text = "";
-                    if (tmpKennz.Length == 1)
-                    {
-                        txtKennz1.Text = tmpKennz[0];
-                    }
-                    else if (tmpKennz.Length == 2)
-                    {
-                        txtKennz1.Text = tmpKennz[0];
-                        txtKennz2.Text = tmpKennz[1];
-                    }
-                    else if (tmpKennz.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
-                    {
-                        txtKennz1.Text = tmpKennz[0];
-                        txtKennz2.Text = tmpKennz[1] + "-" + tmpKennz[2];
-                    }
-                }
-                else
-                {
-                    txtKennz1.Text = objMeldungDAD.Kennzeichen.Substring(0, Math.Min(3, objMeldungDAD.Kennzeichen.Length));
-                    if (objMeldungDAD.Kennzeichen.Length > 3)
-                    {
-                        txtKennz2.Text = objMeldungDAD.Kennzeichen.Substring(3);
-                    }
-                    else
-                    {
-                        txtKennz2.Text = "";
-                    }
-                }
-            }
-            else
-            {
-                txtKennz1.Text = "";
-                txtKennz2.Text = "";
-            }
+            string tmpKennz1;
+            string tmpKennz2;
+            ZLDCommon.KennzeichenAufteilen(objMeldungDAD.Kennzeichen, out tmpKennz1, out tmpKennz2);
+            txtKennz1.Text = tmpKennz1;
+            txtKennz2.Text = tmpKennz2;
 
             txtGebuehr.Text = "";
             cbxAuslieferung.Checked = false;
@@ -179,16 +153,6 @@ namespace AppZulassungsdienst.forms
 
             Panel2.Visible = true;
             cmdSend.Visible = true;
-        }
-
-        protected void cmdFrachtbriefnummer_Click(object sender, EventArgs e)
-        {
-            trFrachtbriefnummer.Visible = true;
-        }
-
-        protected void cmdSend_Click(object sender, EventArgs e)
-        {
-            SaveMeldung();
         }
 
         private void SaveMeldung()
@@ -214,7 +178,7 @@ namespace AppZulassungsdienst.forms
                 }
                 objMeldungDAD.Kennzeichen = txtKennz1.Text.ToUpper() + "-" + txtKennz2.Text.ToUpper();
 
-                if (!String.IsNullOrEmpty(txtGebuehr.Text) && !ZLDCommon.IsDecimal(txtGebuehr.Text.Trim()))
+                if (!String.IsNullOrEmpty(txtGebuehr.Text) && !txtGebuehr.Text.Trim().IsDecimal())
                 {
                     lblError.Text = "Bitte geben Sie einen Zahlenwert für die Gebühr ein.";
                     return;
@@ -228,9 +192,9 @@ namespace AppZulassungsdienst.forms
                     objMeldungDAD.Frachtbriefnummer = txtFrachtbriefnummer.Text;
                 }
 
-                objMeldungDAD.SaveVorgang(Session["AppID"].ToString(), Session.SessionID, this);
+                objMeldungDAD.SaveVorgang(m_User.UserName);
 
-                if (objMeldungDAD.Status != 0)
+                if (objMeldungDAD.ErrorOccured)
                 {
                     lblError.Text = "Fehler beim Absenden: " + objMeldungDAD.Message;
                 }
@@ -255,5 +219,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Fehler beim Absenden: " + ex.Message;
             }
         }
+
+        #endregion
     }
 }

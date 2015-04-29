@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Web.UI.WebControls;
+using AppZulassungsdienst.lib.Models;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
-using System.Data;
+using System.Linq;
 using CKG.Base.Business;
 
 namespace AppZulassungsdienst.forms
@@ -11,62 +12,62 @@ namespace AppZulassungsdienst.forms
     public partial class ChangeZLDListe : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
-        private VoerfZLD objVorerf;
+        private VorerfZLD objVorerf;
         private ZLDCommon objCommon;
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
-
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
-
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
+
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
-
             }
 
             if (Session["objVorerf"] == null)
             {
                 //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zur 1. Seite
                 Response.Redirect("Change01ZLD.aspx?AppID=" + Session["AppID"].ToString());
+                return;
             }
 
-            objVorerf = (VoerfZLD)Session["objVorerf"];
+            objVorerf = (VorerfZLD)Session["objVorerf"];
 
-            if (IsPostBack == false)
+            if (!IsPostBack)
             {
-                objVorerf.LadeVorerfassungDB_ZLD(objVorerf.Vorgang);
+                objVorerf.LoadVorgaengeFromSql(objCommon.KundenStamm, m_User.UserName);
                 Session["objVorerf"] = objVorerf;
-                if (objVorerf.Status != 0)
+                if (objVorerf.ErrorOccured)
                 {
                     tab1.Visible = true;
                     tab1.Height = "250px";
                     lblError.Text = objVorerf.Message;
                     cmdSend.Visible = false;
                 }
-                else { Fillgrid(0, ""); }
+                else
+                {
+                    Fillgrid(0, "");
+                }
             }
         }
 
@@ -74,7 +75,6 @@ namespace AppZulassungsdienst.forms
         {
             Common.SetEndASPXAccess(this);
             HelpProcedures.FixedGridViewCols(gvZuldienst);
-
         }
 
         private void Page_Unload(object sender, EventArgs e)
@@ -82,13 +82,108 @@ namespace AppZulassungsdienst.forms
             Common.SetEndASPXAccess(this);
         }
 
+        protected void gvZuldienst_Sorting(object sender, GridViewSortEventArgs e)
+        {
+            Fillgrid(0, e.SortExpression);
+        }
+
+        protected void gvZuldienst_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            Int32 Index;
+            Label lblID;
+
+            switch (e.CommandName)
+            {
+                case "Bearbeiten":
+                    Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                    lblID = (Label)gvZuldienst.Rows[Index].FindControl("lblsapID");
+
+                    Response.Redirect("Change01ZLD.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + lblID.Text + "&B=true");
+                    break;
+
+                case "Loeschen":
+                    Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                    lblID = (Label)gvZuldienst.Rows[Index].FindControl("lblsapID");
+                    Label lblIDPos = (Label)gvZuldienst.Rows[Index].FindControl("lblid_pos");
+
+                    objVorerf.DeleteVorgangPosition(lblID.Text, lblIDPos.Text);
+
+                    if (objVorerf.ErrorOccured)
+                    {
+                        lblError.Text = objVorerf.Message;
+                    }
+
+                    Session["objVorerf"] = objVorerf;
+
+                    Fillgrid(0, "");
+                    break;
+            }
+        }
+
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Change01ZLD.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        protected void cmdCreate_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Change01ZLD.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        protected void cmdSend_Click(object sender, EventArgs e)
+        {
+            objVorerf.SendVorgaengeToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
+
+            tab1.Visible = true;
+
+            if (objVorerf.ErrorOccured)
+            {
+                lblError.Text = "Kommunikationfehler: Daten konnten nicht in SAP gespeichert werden! " + objVorerf.Message;
+                return;
+            }
+
+            if (objVorerf.Vorgangsliste.Any(vg => !String.IsNullOrEmpty(vg.FehlerText) && vg.FehlerText != "OK"))
+            {
+                lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+
+                Fillgrid(0, "");
+
+                // Status
+                gvZuldienst.Columns[0].Visible = true;
+                // Bearbeiten
+                gvZuldienst.Columns[1].Visible = false;
+                // Löschen
+                gvZuldienst.Columns[2].Visible = false;
+                // Zulassungsdatum
+                if (gvZuldienst.Columns[8] != null)
+                    gvZuldienst.Columns[8].Visible = false;
+                // Referenz 1
+                if (gvZuldienst.Columns[9] != null)
+                    gvZuldienst.Columns[9].Visible = false;
+                // Referenz 2
+                if (gvZuldienst.Columns[10] != null)
+                    gvZuldienst.Columns[10].Visible = false;
+            }
+            else
+            {
+                tab1.Height = "250px";
+                lblMessage.Visible = true;
+                lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
+                lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
+
+                Result.Visible = false;
+
+                cmdSend.Enabled = false;
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
         private void Fillgrid(Int32 intPageIndex, String strSort)
         {
-
-            DataView tmpDataView = objVorerf.tblEingabeListe.DefaultView;
-            tmpDataView.RowFilter = "";
-
-            if (tmpDataView.Count == 0)
+            if (objVorerf.Vorgangsliste.Count == 0)
             {
                 gvZuldienst.Visible = false;
                 Result.Visible = false;
@@ -102,7 +197,7 @@ namespace AppZulassungsdienst.forms
                 String strTempSort = "";
                 String strDirection = null;
 
-                if (strSort.Trim(' ').Length > 0)
+                if (!String.IsNullOrEmpty(strSort))
                 {
                     intTempPageIndex = 0;
                     strTempSort = strSort.Trim(' ');
@@ -139,227 +234,62 @@ namespace AppZulassungsdienst.forms
                     strTempSort = Session["VorerfSort"].ToString();
                     strDirection = Session["VorerfDirection"].ToString();
                 }
-                if (strTempSort.Length != 0)
+                if (!String.IsNullOrEmpty(strTempSort))
                 {
-                    tmpDataView.Sort = strTempSort + " " + strDirection;
+                    System.Reflection.PropertyInfo prop = typeof(ZLDVorgangUIVorerfassung).GetProperty(strTempSort);
+
+                    if (strDirection == "asc")
+                    {
+                        gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => prop.GetValue(v, null)).ToList();
+                    }
+                    else
+                    {
+                        gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderByDescending(v => prop.GetValue(v, null)).ToList();
+                    }
+                }
+                else
+                {
+                    gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
                 }
 
                 gvZuldienst.PageIndex = intTempPageIndex;
-                gvZuldienst.DataSource = tmpDataView;
                 gvZuldienst.DataBind();
 
-                String myId = gvZuldienst.DataKeys[0]["ID"].ToString();
-                String Css = "ItemStyle";
-                foreach (GridViewRow row in gvZuldienst.Rows)
+                // Zeilen mit gleicher ID gleich färben
+                if (gvZuldienst.DataKeys.Count > 0 && gvZuldienst.DataKeys[0] != null)
                 {
-
-                    if (gvZuldienst.DataKeys[row.RowIndex]["ID"].ToString() == myId)
-                    {
-                        row.CssClass = Css;
-                        myId = gvZuldienst.DataKeys[row.RowIndex]["ID"].ToString();
-                    }
-                    else
-                    {
-                        if (Css == "ItemStyle")
-                        {
-                            Css = "GridTableAlternate2";
-                        }
-                        else
-                        {
-                            Css = "ItemStyle";
-                        }
-                        row.CssClass = Css;
-                        myId = gvZuldienst.DataKeys[row.RowIndex]["ID"].ToString();
-
-                    }
-                }
-                lblAnzahl.Text = "Anzahl Vorgänge: " + objVorerf.IDCount;
-
-            }
-        }
-
-        protected void gvZuldienst_Sorting(object sender, GridViewSortEventArgs e)
-        {
-            Fillgrid(0, e.SortExpression);
-        }
-
-        protected void gvZuldienst_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            if (e.CommandName == "Bearbeiten")
-            {
-                Response.Redirect("Change01ZLD.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + e.CommandArgument.ToString() + "&B=true");
-            }
-            if (e.CommandName == "Loeschen")
-            {
-                objVorerf = (VoerfZLD)Session["objVorerf"];
-                Int32 Index;
-                Int32.TryParse(e.CommandArgument.ToString(), out Index);
-                Label lblID = (Label)gvZuldienst.Rows[Index].FindControl("lblID");
-                Label lblLoeschKZ = (Label)gvZuldienst.Rows[Index].FindControl("lblLoeschKZ");
-                Label lblIDPos = (Label)gvZuldienst.Rows[Index].FindControl("lblid_pos");
-                String Loeschkz = "";
-                Int32 IDSatz;
-                Int32 IDPos;
-                Int32.TryParse(lblID.Text, out IDSatz);
-                Int32.TryParse(lblIDPos.Text, out IDPos);
-                if (lblLoeschKZ.Text == "L")
-                {
-                    objVorerf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, IDPos);
-                    lblLoeschKZ.Text = Loeschkz;
-                    // Wenn LöschKz für Unterposition entfernt -> auch bei Hauptposition rausnehmen
-                    if (IDPos > 10)
-                    {
-                        objVorerf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, 10);
-                        foreach (GridViewRow dRow in gvZuldienst.Rows)
-                        {
-                            Label zeileID = (Label)dRow.FindControl("lblID");
-                            Label zeilelblIDPos = (Label)dRow.FindControl("lblid_pos");
-                            if ((zeileID.Text == IDSatz.ToString()) && (zeilelblIDPos.Text == "10"))
-                            {
-                                Label zeilelblLoeschKZ = (Label)dRow.FindControl("lblLoeschKZ");
-                                zeilelblLoeschKZ.Text = Loeschkz;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    Loeschkz = "L";
-                    objVorerf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, IDPos);
-                    lblLoeschKZ.Text = Loeschkz;
-                    
-                }
-
-                if (objVorerf.Status != 0)
-                {
-                    lblError.Text = objVorerf.Message;
-
-                }
-                DataRow[] RowsEdit;
-                if (IDPos != 10)
-                {
-                    if (Loeschkz == "")
-                    {
-                        RowsEdit = objVorerf.tblEingabeListe.Select("ID=" + IDSatz + " AND (id_pos =" + IDPos + " OR id_pos = 10)");
-                    }
-                    else
-                    {
-                        RowsEdit = objVorerf.tblEingabeListe.Select("ID=" + IDSatz + " AND id_pos =" + IDPos);
-                    }
-                }
-                else
-                {
+                    String myId = gvZuldienst.DataKeys[0]["SapId"].ToString();
+                    String Css = "ItemStyle";
                     foreach (GridViewRow row in gvZuldienst.Rows)
                     {
-
-                        if (gvZuldienst.DataKeys[row.RowIndex]["ID"].ToString() == IDSatz.ToString())
+                        if (gvZuldienst.DataKeys[row.RowIndex] != null)
                         {
-                            lblLoeschKZ = (Label)row.FindControl("lblLoeschKZ");
-                            lblLoeschKZ.Text = Loeschkz;
-                            ImageButton ibtnedt = (ImageButton)row.FindControl("ibtnEdit");
-                            ibtnedt.Visible = true;
-                            if (Loeschkz == "L")
+                            if (gvZuldienst.DataKeys[row.RowIndex]["SapId"].ToString() == myId)
                             {
-                                ibtnedt.Visible = false;
+                                row.CssClass = Css;
+                            }
+                            else
+                            {
+                                if (Css == "ItemStyle")
+                                {
+                                    Css = "GridTableAlternate2";
+                                }
+                                else
+                                {
+                                    Css = "ItemStyle";
+                                }
+                                row.CssClass = Css;
+
+                                myId = gvZuldienst.DataKeys[row.RowIndex]["SapId"].ToString();
                             }
                         }
-
                     }
-                    RowsEdit = objVorerf.tblEingabeListe.Select("ID=" + IDSatz);
                 }
 
-                foreach (DataRow Row in RowsEdit)
-                {
-                    Row["PosLoesch"] = Loeschkz;
-                    Row["bearbeitet"] = true;
-                }
-                Session["objVorerf"] = objVorerf;
+                lblAnzahl.Text = "Anzahl Vorgänge: " + objVorerf.IDCount;
             }
         }
 
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Change01ZLD.aspx?AppID=" + Session["AppID"].ToString());
-        }
-
-        protected void cmdSend_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Change01ZLD.aspx?AppID=" + Session["AppID"].ToString());
-        }
-
-        protected void cmdCreate_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        protected void cmdCreate_Click1(object sender, EventArgs e)
-        {
-            objVorerf = (VoerfZLD)Session["objVorerf"];
-
-            objVorerf.SaveZLDVorerfassung(Session["AppID"].ToString(), Session.SessionID, this,objCommon.tblKundenStamm,objCommon.tblMaterialStamm,objCommon.tblStvaStamm);
-            if (objVorerf.Status != 0)
-            {
-
-                tab1.Visible = true;
-                if (objVorerf.Status == -5555)
-                {
-                    lblError.Text = "Kommunikationfehler: Daten konnten nicht in SAP gespeichert werden!" + objVorerf.Message;
-                    return;
-                }
-
-
-                lblError.Text = objVorerf.Message;
-
-                DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status = '' OR toDelete ='X'");
-
-                if (rowListe.Length > 0)
-                {
-                    foreach (DataRow dRow in rowListe) 
-                    {
-                        Int32 id;
-                        Int32.TryParse(dRow["ID"].ToString(), out id);
-                        objVorerf.DeleteRecordSet(id);
-                        objVorerf.tblEingabeListe.Rows.Remove(dRow);
-                    }
-
-                }
-                Fillgrid(0, "");
-                gvZuldienst.Columns[1].Visible = true;
-                gvZuldienst.Columns[2].Visible = false;
-                gvZuldienst.Columns[3].Visible = false;
-
-                if (gvZuldienst.Columns[10] != null) { gvZuldienst.Columns[10].Visible = false; }
-                if (gvZuldienst.Columns[11] != null) { gvZuldienst.Columns[11].Visible = false; }
-                if (gvZuldienst.Columns[12] != null) { gvZuldienst.Columns[12].Visible = false; }
-                
-            }
-            else
-            {
-                tab1.Visible = true;
-                tab1.Height = "250px";
-                lblMessage.Visible = true;
-                lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
-                lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
-                DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status = ''");
-
-                if (rowListe.Length > 0)
-                {
-                    foreach (DataRow dRow in rowListe)
-                    {
-                        Int32 id;
-                        Int32.TryParse(dRow["ID"].ToString(), out id);
-                        objVorerf.DeleteRecordSet(id);
-                        objVorerf.tblEingabeListe.Rows.Remove(dRow);
-                    }
-
-                }
-                Result.Visible = false;
-                
-                cmdSend.Enabled = false;
-                
-            }
-        }
-
+        #endregion
     }
 }

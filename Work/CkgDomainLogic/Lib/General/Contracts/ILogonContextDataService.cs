@@ -43,17 +43,14 @@ namespace CkgDomainLogic.General.Contracts
 
         string ReturnUrl { get; set; }
 
-        string CurrentGridColumns { get; set; }
+        // only for backward compatibility:
+        string CurrentGridColumns { get; }
 
         IHtmlString GetUserEncrytpedUrl(IApplicationUserMenuItem menuItem);
 
         IHtmlString FormatUserEncrytpedUrl(string url);
 
         IHtmlString FormatUrl(string url);
-
-        string GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup);
-
-        void SetUserGridColumnNames(string gridGroup, string columns);
 
         void DataContextPersist(object dataContext);
 

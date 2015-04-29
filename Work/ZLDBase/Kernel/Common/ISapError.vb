@@ -4,7 +4,7 @@
     ''' </summary>
     Public Interface ISapError
         ReadOnly Property ErrorMessage As String
-        ReadOnly Property ErrorCode As String
+        ReadOnly Property ErrorCode As Integer
         ReadOnly Property ErrorOccured As Boolean
 
         '''<summary>
@@ -15,7 +15,7 @@
         '''<summary>
         ''' Löst ein Fehlerereignis mit Fehlercode und Fehlermeldung aus
         '''</summary>
-        Sub RaiseError(ByVal errorcode As String, ByVal message As String)
+        Sub RaiseError(ByVal errorcode As Integer, ByVal message As String)
 
     End Interface
 End Namespace

@@ -61,7 +61,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ReportZulassungExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = CocReportsViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = CocReportsViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("CocAuftraege", dt);
 
             return new EmptyResult();
@@ -69,7 +69,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ReportZulassungExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = CocReportsViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = CocReportsViewModel.CocAuftraegeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("CocAuftraege", dt, landscapeOrientation: true);
 
             return new EmptyResult();

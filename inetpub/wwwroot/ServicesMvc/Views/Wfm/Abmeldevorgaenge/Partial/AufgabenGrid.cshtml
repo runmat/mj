@@ -1,0 +1,42 @@
+﻿@using CkgDomainLogic.WFM.Models
+
+@{ var gridName = "GridAufgaben"; }
+
+@(Html.XTelerik()
+    .XGrid<WfmToDo>()
+    .Name(gridName)
+    .XAjaxDataBinding("AufgabenAjaxBinding", "Wfm")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.LaufendeNr);
+        columns.XBound(c => c.TaskId).Visible(false);
+        columns.XBound(c => c.DatumZeit).Format("{0:dd.MM.yyyy HH:mm:ss}");
+        columns.XBound(c => c.ToDoWer);
+        columns.XBound(c => c.Aufgabe);
+        columns.XBound(c => c.User);
+
+        columns.XBound(c => c.Anmerkung);
+        columns.XBound(c => c.IsConfirmed).Visible(false);
+        columns.XBound(c => c.IsUnConfirmed).Visible(false);
+
+        columns.XBound(c => c.VorgangsNrAbmeldeauftrag).Title(Localize.Confirm).Filterable(false).Sortable(false).ClientTemplate(
+                "<# if (data.ToDoKundeBestaetigungsBerechtigung) { #><input type='text' class='tbNoteForToDo m-wrap medium placeholder-no-fix' placeholder='" + Localize.Annotation + "' /><a class='tooltips btn mini green a_btn_mini' href='#' onclick='return ConfirmToDo($(this), \"<#= data.LaufendeNr #>\")' data-original-title='" + Localize.Confirm + "' data-placement='right'><i class='halflings-icon ok white'></i></a><# } #> "
+            );
+
+        columns.XBound(c => c.Startdatum);
+        columns.XBound(c => c.Startzeit);
+        columns.XBound(c => c.Solldatum);
+        columns.XBound(c => c.Sollzeit);
+        columns.XBound(c => c.Istdatum);
+        columns.XBound(c => c.Istzeit);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridAufgaben"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.LaufendeNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportAufgabenFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportAufgabenFilteredPDF", "Wfm");
+    })
+)

@@ -78,12 +78,6 @@
                                                     MaxLength="20" />
                                             </td>
                                         </tr>
-                                        <tr class="formquery">
-                                            <td class="firstLeft active" colspan="3">
-                                                <asp:CheckBox ID="chkCPD" Visible="False" runat="server" />
-                                                <asp:CheckBox ID="chkCPDEinzug" Visible="False" runat="server" />
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td colspan="3" class="firstLeft active" style="background-color: #dfdfdf; height: 22px;
                                                 padding-left: 15px">
@@ -268,29 +262,27 @@
                                                         <Columns>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtSearch" CssClass="TextBoxNormal" runat="server" 
-                                                                     Width="55px"></asp:TextBox>
-                                                                     <asp:Label ID="lblID_POS" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ID_POS") %>' style="display:none"></asp:Label>
-                                                                     <asp:Label ID="lblOldMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.OldValue") %>' style="display:none"></asp:Label>
-
+                                                                    <asp:TextBox ID="txtSearch" CssClass="TextBoxNormal" runat="server" Width="55px"/>
+                                                                    <asp:Label ID="lblID_POS" runat="server" Text='<%# Eval("ID_POS") %>' style="display:none"/>
+                                                                    <asp:Label ID="lblOldMatnr" runat="server" Text='<%# Eval("OldValue") %>' style="display:none"/>
                                                                 </ItemTemplate>
-                                                               <ItemStyle BorderStyle="None" Width="80px" CssClass="firstLeft active"/>
-                                                               <HeaderStyle BorderStyle="None" BorderColor="#ffffff" BorderWidth="0px"/>
-                  
+                                                                <ItemStyle BorderStyle="None" Width="80px" CssClass="firstLeft active"/>
+                                                                <HeaderStyle BorderStyle="None" BorderColor="#ffffff" BorderWidth="0px"/>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:DropDownList ID="ddlItems" Style="width: 325px" runat="server"></asp:DropDownList>
+                                                                    <asp:DropDownList ID="ddlItems" Style="width: 325px" runat="server"/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="active"/>
                                                                 <HeaderStyle BorderStyle="None" CssClass="active" BorderColor="#ffffff" BorderWidth="0px"/>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField>
                                                                 <HeaderTemplate>
-                                                                    <asp:Label ID="lblMenge" runat="server" Text="Stk."></asp:Label></HeaderTemplate>
+                                                                    <asp:Label ID="lblMenge" runat="server" Text="Stk."/>
+                                                                </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtMenge" CssClass="TextBoxNormal" runat="server" Width="30px" onKeyPress="return numbersonly(event, true)"
-                                                                        Text='<%# DataBinder.Eval(Container, "DataItem.Menge") %>'></asp:TextBox>
+                                                                                 Text='<%# Eval("Menge") %>'/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="TablePadding" Width="55px" />
                                                                 <HeaderStyle BorderStyle="None" HorizontalAlign="Left" CssClass="GridDetail active"
@@ -298,30 +290,30 @@
                                                             </asp:TemplateField>
                                                             <asp:TemplateField  HeaderText="Preis">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtPreis" Width="55px" onKeyPress="return numbersonly(event, true)" Text='<%# DataBinder.Eval(Container, "DataItem.Preis", "{0:F}") %>' CssClass="TextBoxNormal" runat="server" ></asp:TextBox>
+                                                                    <asp:TextBox ID="txtPreis" Width="55px" onKeyPress="return numbersonly(event, true)" Text='<%# Eval("Preis", "{0:F}") %>' CssClass="TextBoxNormal" runat="server"/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="TablePadding"/>
                                                                 <HeaderStyle BorderStyle="None" HorizontalAlign="Left" CssClass="GridDetail active"  BorderColor="#ffffff" BorderWidth="0px"/>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField HeaderText="Gebühr">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtGebPreis"  Visible='<%# DataBinder.Eval(Container, "DataItem.GebMatPflicht").ToString() == "X" %>'  
-                                                                    Enabled='<%# proofGebPak(DataBinder.Eval(Container, "DataItem.ID_POS").ToString()) %>' 
-                                                                    onKeyPress="return numbersonly(event, true)" Width="55px"  Text='<%# DataBinder.Eval(Container, "DataItem.GebPreis", "{0:F}") %>' CssClass="TextBoxNormal" runat="server" ></asp:TextBox>
+                                                                    <asp:TextBox ID="txtGebPreis"  Visible='<%# proofGebMat(Eval("Value").ToString()) %>'  
+                                                                                 Enabled='<%# proofGebPak(Eval("ID_POS").ToString()) %>' 
+                                                                                 onKeyPress="return numbersonly(event, true)" Width="55px"  Text='<%# Eval("GebPreis", "{0:F}") %>' CssClass="TextBoxNormal" runat="server"/>
                                                                 </ItemTemplate>
                                                                <ItemStyle BorderStyle="None" CssClass="TablePadding"/>
                                                                <HeaderStyle BorderStyle="None" HorizontalAlign="Left" CssClass="GridDetail active" BorderColor="#ffffff" BorderWidth="0px"/>
                                                             </asp:TemplateField>   
                                                             <asp:TemplateField HeaderText="Gebühr Amt">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtGebAmt" Visible='<%# DataBinder.Eval(Container, "DataItem.GebMatPflicht").ToString() == "X" %>'
-                                                                        onKeyPress="return numbersonly(event, true)" Width="55px" Text='<%# DataBinder.Eval(Container, "DataItem.GebAmt", "{0:F}") %>'
-                                                                        CssClass="TextBoxNormal" runat="server"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtGebAmt" Visible='<%# proofGebMat(Eval("Value").ToString()) %>'
+                                                                                 onKeyPress="return numbersonly(event, true)" Width="55px" Text='<%# Eval("GebAmt", "{0:F}") %>'
+                                                                                 CssClass="TextBoxNormal" runat="server"/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="TablePadding" />
                                                                 <HeaderStyle BorderStyle="None" HorizontalAlign="Left" CssClass="TablePadding"
                                                                     BorderColor="#ffffff" BorderWidth="0px" />
-                                                            </asp:TemplateField>                                                                                                                                                                                 
+                                                            </asp:TemplateField>
                                                             <asp:TemplateField >
                                                                 <ItemTemplate>
                                                                     <asp:ImageButton ID="ibtnDel" CommandName="Del" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
@@ -333,7 +325,7 @@
                                                             </asp:TemplateField>
                                                             <asp:TemplateField Visible="false">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblDLBezeichnung" runat="server" Text='<%# Eval("DLBezeichnung") %>'></asp:Label>
+                                                                    <asp:Label ID="lblDLBezeichnung" runat="server" Text='<%# Eval("DLBezeichnung") %>'/>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                         </Columns>
@@ -397,7 +389,7 @@
                                             </tr>
                                             <tr class="formquery">
                                                 <td class="firstLeft active">
-                                                    <asp:CheckBox ID="cbxSave" runat="server" Enabled="False" Text="saved" Visible="False" />
+                                                    &nbsp;
                                                 </td>
                                                 <td class="firstLeft active" colspan="2">
                                                     <asp:LinkButton runat="server" ID="lbtnFeinstaub" CssClass="TablebuttonXSmall" Width="20px" Height="16px" Text="+" OnClick="lbtnFeinstaub_Click"></asp:LinkButton>
