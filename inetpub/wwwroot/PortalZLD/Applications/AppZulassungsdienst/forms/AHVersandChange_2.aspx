@@ -185,7 +185,7 @@
                                                     runat="server" CssClass="TextBoxNormal" MaxLength="8" Width="70px"></asp:TextBox>
                                             </td>
                                             <td class="firstLeft active">
-                                                <asp:DropDownList ID="ddlKunnr" runat="server" Style="width: 375px">
+                                                <asp:DropDownList ID="ddlLief" runat="server" Style="width: 375px">
                                                 </asp:DropDownList>
                                             </td>
                                             <td class="firstLeft active" >

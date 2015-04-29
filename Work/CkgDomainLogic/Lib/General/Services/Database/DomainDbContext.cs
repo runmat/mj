@@ -31,8 +31,6 @@ namespace CkgDomainLogic.General.Database.Services
 
         public DbSet<ApplicationType> ApplicationTypes { get; set; }
 
-        public DbSet<ColumnTranslationsMvc> ColumnTranslations { get; set; }
-
         public DbSet<LoginUserMessage> LoginMessages { get; set; }
 
         public List<LoginUserMessage> ActiveLoginMessages { get { return LoginMessages.ToListOrEmptyList(); } }
