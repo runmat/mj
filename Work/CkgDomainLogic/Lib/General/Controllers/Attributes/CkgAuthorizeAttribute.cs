@@ -1,5 +1,8 @@
 ﻿using System.Linq;
 using System.Web.Mvc;
+using GeneralTools.Contracts;
+using GeneralTools.Models;
+using MvcTools.Contracts;
 using MvcTools.Controllers;
 
 namespace CkgDomainLogic.General.Controllers
@@ -15,6 +18,7 @@ namespace CkgDomainLogic.General.Controllers
             var requestRemoteLoginID = filterContext.HttpContext.Request["ra"];
             var requestRemoteLoginDateTime = filterContext.HttpContext.Request["rb"];
             var requestRemoteLoginLogoutUrl = filterContext.HttpContext.Request["logouturl"];
+            var requestIsGet = (filterContext.HttpContext.Request.RequestType.NotNullOrEmpty().ToUpper() == "GET");
 
             // if MVC runs in embedded mode (iFrame), extract the session id of the surrounding web application
             // => user context might not be valid any more if the surrounding session has changed
@@ -39,8 +43,21 @@ namespace CkgDomainLogic.General.Controllers
                 return;
 
             logonController.ValidateMaintenance();
-            if (filterContext.ActionDescriptor.GetCustomAttributes(true).OfType<CkgApplicationAttribute>().Any())
+
+            var requestIsCkgApplication = filterContext.ActionDescriptor.GetCustomAttributes(true).OfType<CkgApplicationAttribute>().Any();
+            if (requestIsCkgApplication)
                 logonController.ValidateApplication();
+
+            if (requestIsGet && requestIsCkgApplication)
+            {
+                var gridColumnsAutoPersistProvider = (controller as IGridColumnsAutoPersistProvider);
+                if (gridColumnsAutoPersistProvider != null)
+                    gridColumnsAutoPersistProvider.ResetGridCurrentModelTypeAutoPersist();
+
+                var persistableSelectorProvider = (controller as IPersistableSelectorProvider);
+                if (persistableSelectorProvider != null)
+                    persistableSelectorProvider.PersistableSelectorResetCurrent();
+            }
 
             var logonAction = logonController.UrlGetLogonAction(requestUserName, requestRemoteLoginID, requestRemoteLoginDateTime, requestRemoteLoginLogoutUrl, requestSurroundingSessionId);
             if (logonAction != null)

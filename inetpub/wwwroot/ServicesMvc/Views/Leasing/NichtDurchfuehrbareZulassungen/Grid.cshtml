@@ -4,7 +4,6 @@
 @(Html.Telerik()
     .Grid<NichtDurchfuehrbareZulassung>()
     .Name(gridName)
-    .XGroup(gridName)
     .XAjaxDataBinding("NichtDurchfuehrbareZulassungenAjaxBinding", "Leasing")
     .Columns(columns =>
         {

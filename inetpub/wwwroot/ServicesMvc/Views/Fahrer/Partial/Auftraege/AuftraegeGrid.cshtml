@@ -6,7 +6,6 @@
 @(Html.Telerik()
     .Grid<FahrerAuftrag>()
     .Name(gridName)
-    .XGroup("GridAuftraegeModel")
 
     .XAjaxDataBinding("FahrerAuftraegeAjaxBinding", "Fahrer")
     .Columns(columns => columns.XBoundAll())

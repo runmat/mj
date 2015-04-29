@@ -1,9 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
-using System.Data;
 
 namespace AppZulassungsdienst.forms
 {
@@ -13,29 +13,27 @@ namespace AppZulassungsdienst.forms
     public partial class Touren : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private ZLDCommon objCommon;
+
+        #region Events
 
         protected void Page_Init(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
-
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -56,87 +54,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        ///  Tabelle mit bereits angelegten Touren laden und anzeigen (Z_ZLD_GET_GRUPPE).
-        /// </summary>
-        private void FillTourTable()
-        {
-            lblError.Text = "";
-            objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
-            if (objCommon.Message.Length > 0)
-            {
-                lblError.Text = objCommon.Message;
-                GridView1.Visible = false;
-            }
-            else if (objCommon.tblGruppeTouren.Rows.Count > 0)
-            {
-                DataView tmpDataView = objCommon.tblGruppeTouren.DefaultView;
-                tmpDataView.Sort = "GRUPPE";
-                if (tmpDataView.Count == 0)
-                {
-                    GridView1.Visible = false;
-                }
-                else
-                {
-                    GridView1.Visible = true;
-                    GridView1.DataSource = tmpDataView;
-                    GridView1.DataBind();
-                }
-            }
-            else
-            {
-                lblError.Text = "Es sind noch keine Gruppen angelegt!";
-            }
-        }
-
-        /// <summary>
-        /// Kundentabelle der ausgewählten Gruppe laden und anzeigen(Z_ZLD_GET_GRUPPE_KDZU). 
-        /// </summary>
-        private void FillCustomerTable()
-        {
-            lblErrorTour.Text = "";
-            objCommon.GetKunden_TourenZuordnung(Session["AppID"].ToString(), Session.SessionID, this);
-            if (objCommon.Message.Length > 0)
-            {
-                lblErrorTour.Text = objCommon.Message;
-                GridView2.Visible = false;
-            }
-            else if (objCommon.tblKundeGruppe.Rows.Count > 0)
-            {
-                DataView tmpDataView = objCommon.tblKundeGruppe.DefaultView;
-                if (tmpDataView.Count == 0)
-                {
-                    GridView2.Visible = false;
-                }
-                else
-                {
-                    GridView2.Visible = true;
-                    GridView2.DataSource = tmpDataView;
-                    GridView2.DataBind();
-                }
-            }
-            else
-            {
-                lblError.Text = "Es sind noch keine Zuordnungen angelegt!";
-            }
-        }
-
-        /// <summary>
-        ///  Dropdown mit Kundenstamm daten laden.
-        /// </summary>
-        private void fillDropDown()
-        {
-            DataView tmpDView = objCommon.tblKundenStamm.DefaultView;
-            tmpDView.Sort = "NAME1";
-            ddlKunnr.DataSource = tmpDView;
-            ddlKunnr.DataValueField = "KUNNR";
-            ddlKunnr.DataTextField = "NAME1";
-            ddlKunnr.DataBind();
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
-            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
-            ddlKunnr.Attributes.Add("onchange", "SetTexttValue(" + ddlKunnr.ClientID + "," + txtKunnr.ClientID + ")");
-        }
-
-        /// <summary>
         /// Neue Gruppe anlegen. Panels für die Eingabe sichtbar machen.
         /// </summary>
         /// <param name="sender">object</param>
@@ -151,21 +68,23 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Kunden zur Tour hinzufügen(Z_ZLD_SET_GRUPPE_KDZU).
+        /// Kunden zur Tour hinzufügen.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
         protected void lbtnInsert_Click(object sender, EventArgs e)
         {
             lblErrorTour.Text = "";
-            if (ddlKunnr.SelectedIndex < 1)
+
+            if (String.IsNullOrEmpty(txtKunnr.Text))
             {
                 lblErrorTour.Text = "Kein Kunde ausgewählt.";
             }
             else
             {
-                objCommon.SetKunden_TourenZuordnung(Session["AppID"].ToString(), Session.SessionID, this, ddlKunnr.SelectedValue, "I");
-                if (objCommon.Message.Length > 0)
+                objCommon.SetKunden_TourenZuordnung(txtKunnr.Text, "I");
+
+                if (objCommon.ErrorOccured)
                 {
                     lblErrorTour.Text = objCommon.Message;
                 }
@@ -179,21 +98,21 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Neue Tour anlegen( Z_ZLD_SET_GRUPPE).
+        /// Neue Tour anlegen.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
         protected void lbtnInsertTour_Click(object sender, EventArgs e)
         {
-            if (txtGruppe.Text.Length == 0)
+            if (String.IsNullOrEmpty(txtGruppe.Text))
             {
-                lblErrorInsert.Text = "Bitte geben Sie eine Gruppenbezeichnung ein.";
+                lblErrorInsert.Text = "Bitte geben Sie eine Tourenbezeichnung ein.";
             }
             else
             {
                 objCommon.Bezeichnung = txtGruppe.Text;
                 String sAction = "I";
-                if (lblTourIDEdit.Text == "")
+                if (String.IsNullOrEmpty(lblTourIDEdit.Text))
                 {
                     objCommon.GroupOrTourID = "";
                 }
@@ -202,8 +121,9 @@ namespace AppZulassungsdienst.forms
                     objCommon.GroupOrTourID = lblTourIDEdit.Text.PadLeft(10, '0');
                     sAction = "C";
                 }
-                objCommon.SetKunden_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T", sAction);
-                if (objCommon.Message.Length > 0)
+                objCommon.SetKunden_Touren("T", sAction);
+
+                if (objCommon.ErrorOccured)
                 {
                     lblErrorInsert.Text = objCommon.Message;
                 }
@@ -226,10 +146,11 @@ namespace AppZulassungsdienst.forms
         {
             switch (e.CommandName)
             {
-                case ("Del"):
+                case "Del":
                     objCommon.GroupOrTourID = e.CommandArgument.ToString().PadLeft(10, '0');
-                    objCommon.SetKunden_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T", "D");
-                    if (objCommon.Message.Length > 0)
+                    objCommon.SetKunden_Touren("T", "D");
+
+                    if (objCommon.ErrorOccured)
                     {
                         lblError.Text = objCommon.Message;
                     }
@@ -242,20 +163,28 @@ namespace AppZulassungsdienst.forms
                     }
                     break;
 
-                case ("Insert"):
+                case "Insert":
                     lblTourID.Text = e.CommandArgument.ToString();
                     objCommon.GroupOrTourID = e.CommandArgument.ToString().PadLeft(10, '0');
-                    lblTourShow.Text = objCommon.tblGruppeTouren.Select("GRUPPE = '" + lblTourID.Text + "'")[0]["BEZEI"].ToString();
+
+                    var tour = objCommon.Touren.FirstOrDefault(k => k.Gruppe == lblTourID.Text);
+                    if (tour != null)
+                        lblTourShow.Text = tour.GruppenName;
+
                     FillCustomerTable();
                     pnlQuery.Visible = false;
                     Panel2.Visible = false;
                     Panel1.Visible = true;
                     break;
 
-                case ("Edt"):
+                case "Edt":
                     lblTourIDEdit.Text = e.CommandArgument.ToString();
                     objCommon.GroupOrTourID = e.CommandArgument.ToString().PadLeft(10, '0');
-                    txtGruppe.Text = objCommon.tblGruppeTouren.Select("GRUPPE = '" + lblTourIDEdit.Text + "'")[0]["BEZEI"].ToString();
+
+                    var tourEdit = objCommon.Touren.FirstOrDefault(k => k.Gruppe == lblTourIDEdit.Text);
+                    if (tourEdit != null)
+                        txtGruppe.Text = tourEdit.GruppenName;
+
                     pnlQuery.Visible = false;
                     Panel1.Visible = false;
                     Panel2.Visible = true;
@@ -270,23 +199,21 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">GridViewCommandEventArgs</param>
         protected void GridView2_RowCommand(object sender, GridViewCommandEventArgs e)
         {
-            switch (e.CommandName)
+            if (e.CommandName == "Del")
             {
-                case ("Del"):
+                objCommon.SetKunden_TourenZuordnung(e.CommandArgument.ToString(), "D");
 
-                    objCommon.SetKunden_TourenZuordnung(Session["AppID"].ToString(), Session.SessionID, this, e.CommandArgument.ToString(), "D");
-                    if (objCommon.Message.Length > 0)
-                    {
-                        lblError.Text = objCommon.Message;
-                    }
-                    else
-                    {
-                        FillCustomerTable();
-                        pnlQuery.Visible = false;
-                        Panel1.Visible = true;
-                        Panel2.Visible = false;
-                    }
-                    break;
+                if (objCommon.ErrorOccured)
+                {
+                    lblError.Text = objCommon.Message;
+                }
+                else
+                {
+                    FillCustomerTable();
+                    pnlQuery.Visible = false;
+                    Panel1.Visible = true;
+                    Panel2.Visible = false;
+                }
             }
         }
 
@@ -311,5 +238,82 @@ namespace AppZulassungsdienst.forms
         {
             Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        ///  Tabelle mit bereits angelegten Touren laden und anzeigen.
+        /// </summary>
+        private void FillTourTable()
+        {
+            lblError.Text = "";
+            objCommon.GetGruppen_Touren("T");
+
+            if (objCommon.ErrorOccured)
+            {
+                lblError.Text = objCommon.Message;
+                GridView1.Visible = false;
+                return;
+            }
+
+            if (objCommon.Touren.Any(k => k.Gruppe != "0"))
+            {
+                GridView1.Visible = true;
+                GridView1.DataSource = objCommon.Touren.Where(k => k.Gruppe != "0").ToList();
+                GridView1.DataBind();
+            }
+            else
+            {
+                GridView1.Visible = false;
+                lblError.Text = "Es sind noch keine Touren angelegt!";
+            }
+        }
+
+        /// <summary>
+        /// Kundentabelle der ausgewählten Gruppe laden und anzeigen. 
+        /// </summary>
+        private void FillCustomerTable()
+        {
+            lblErrorTour.Text = "";
+            objCommon.GetKunden_TourenZuordnung();
+
+            if (objCommon.ErrorOccured)
+            {
+                lblErrorTour.Text = objCommon.Message;
+                GridView2.Visible = false;
+                return;
+            }
+
+            if (objCommon.KundenZurGruppe.Any())
+            {
+                GridView2.Visible = true;
+                GridView2.DataSource = objCommon.KundenZurGruppe;
+                GridView2.DataBind();
+            }
+            else
+            {
+                GridView2.Visible = false;
+                lblError.Text = "Es sind noch keine Zuordnungen angelegt!";
+            }
+        }
+
+        /// <summary>
+        ///  Dropdown mit Kundenstamm daten laden.
+        /// </summary>
+        private void fillDropDown()
+        {
+            ddlKunnr.DataSource = objCommon.KundenStamm.Where(k => !k.Inaktiv).ToList();
+            ddlKunnr.DataValueField = "KundenNr";
+            ddlKunnr.DataTextField = "Name";
+            ddlKunnr.DataBind();
+
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunnr.ClientID + ")");
+            txtKunnr.Attributes.Add("onblur", "SetDDLValue(this," + ddlKunnr.ClientID + ")");
+            ddlKunnr.Attributes.Add("onchange", "SetTexttValue(" + ddlKunnr.ClientID + "," + txtKunnr.ClientID + ")");
+        }
+
+        #endregion
     }
 }

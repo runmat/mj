@@ -69,12 +69,12 @@
                                                             <HeaderStyle Width="45px"/>
                                                             <ItemStyle HorizontalAlign="Center"/>
                                                             <ItemTemplate>
-                                                                <asp:Label runat="server" ID="lblAmt" Text='<%# Eval("AMT") %>'/>
+                                                                <asp:Label runat="server" ID="lblAmt" Text='<%# Eval("Amt") %>'/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:BoundField DataField="KREISBEZ" HeaderText="">
+                                                        <asp:BoundField DataField="KreisBezeichnung" HeaderText="">
                                                         </asp:BoundField>
-                                                        <asp:BoundField DataField="VG_ANZ" HeaderText="Anzahl Vorgänge">
+                                                        <asp:BoundField DataField="AnzahlVorgaenge" HeaderText="Anzahl Vorgänge">
                                                             <HeaderStyle Width="120px" HorizontalAlign="Center"/>
                                                             <ItemStyle HorizontalAlign="Center"/>
                                                         </asp:BoundField>

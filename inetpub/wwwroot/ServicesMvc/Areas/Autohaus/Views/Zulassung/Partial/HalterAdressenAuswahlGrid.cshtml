@@ -9,7 +9,6 @@
 @(Html.Telerik()
     .Grid<Adresse>()
     .Name(gridName)
-    .XGroup(gridName)
     .XAjaxDataBinding("HalterAdressenAjaxBinding", "Zulassung")
     .Columns(columns =>
     {

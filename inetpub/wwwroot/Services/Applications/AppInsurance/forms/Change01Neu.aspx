@@ -7,7 +7,7 @@
         <div id="site">
             <div id="content">
                 <asp:UpdatePanel ID="UpdatePanel1" runat="server">
-                    <ContentTemplate>
+                    <contenttemplate>
                         <div id="divMessage" runat="server" visible="false" style="top: 400px; margin-left: 235px;
                             z-index: 3; width: 400px; position: absolute;">
                             <div style="background-image: url(/services/images/MsgTitle.png); width: 400px;">
@@ -196,10 +196,7 @@
                                                     </td>
                                                     <td style="width: 100%">
                                                         <asp:DropDownList ID="ddlAnzahlKennzeichen" runat="server" Width="70px" Font-Names="Verdana,sans-serif">
-                                                            <asp:ListItem>1</asp:ListItem>
-                                                            <asp:ListItem>2</asp:ListItem>
-                                                            <asp:ListItem>3</asp:ListItem>
-                                                            <asp:ListItem>4</asp:ListItem>
+    
                                                         </asp:DropDownList>
                                                     </td>
                                                 </tr>
@@ -493,7 +490,7 @@
                                     &nbsp;</div>
                             </div>
                         </div>
-                    </ContentTemplate>
+                    </contenttemplate>
                 </asp:UpdatePanel>
             </div>
         </div>
