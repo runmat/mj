@@ -60,6 +60,7 @@ Public Class Zulassungsdienstsuche
         tmpDataView.RowFilter = ""
 
         If tmpDataView.Count = 0 Then
+            lblError.Text = "Keine Ergebnisse für die gewählten Kriterien."
             gvZuldienst.Visible = False
             Result.Visible = False
             GridNavigation1.Visible = False
@@ -67,7 +68,6 @@ Public Class Zulassungsdienstsuche
             cmdCreate.Visible = True
         Else
             Result.Visible = True
-            lblError.Visible = False
             Panel1.Visible = False
             cmdCreate.Visible = False
             gvZuldienst.Visible = True
@@ -111,7 +111,7 @@ Public Class Zulassungsdienstsuche
     Private Sub DoSubmit()
         lblError.Text = ""
         objZLDSuche = New ZLD_Suche()
-        objZLDSuche.Kennzeichen = txtKennzeichen.Text
+        objZLDSuche.Kennzeichen = txtKennzeichen.Text.ToUpper()
         objZLDSuche.Zulassungspartner = txtZulassungspartner.Text
         objZLDSuche.PLZ = txtPLZ.Text
 
@@ -122,11 +122,7 @@ Public Class Zulassungsdienstsuche
         If objZLDSuche.ErrorOccured Then
             lblError.Text = "Fehler: " & objZLDSuche.ErrorMessage
         Else
-            If objZLDSuche.tblResult.Rows.Count = 0 Then
-                lblError.Text = "Keine Ergebnisse für die gewählten Kriterien."
-            Else
-                Fillgrid(0, "")
-            End If
+            Fillgrid(0, "")
         End If
     End Sub
 

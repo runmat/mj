@@ -46,7 +46,6 @@
                                                 <tr class="formquery">
                                                     <td class="firstLeft active" colspan="2" width="100%">
                                                         <asp:Label ID="lblError" runat="server" CssClass="TextError"></asp:Label>
-                                                        <asp:Label ID="lblMessage" runat="server" Font-Bold="True" Visible="False"></asp:Label>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
@@ -54,7 +53,7 @@
                                                         <asp:Label ID="lblKennzeichen" runat="server">Kennzeichen:</asp:Label>
                                                     </td>
                                                     <td class="active" style="width: 100%">
-                                                        <asp:TextBox ID="txtKennzeichen" runat="server" MaxLength="3" CssClass="TextBoxNormal"></asp:TextBox>
+                                                        <asp:TextBox ID="txtKennzeichen" runat="server" MaxLength="3" CssClass="TextBoxNormal" style="text-transform: uppercase"></asp:TextBox>
                                                       </td>
                                                 </tr>                                            
                                                 <tr class="formquery">
