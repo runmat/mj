@@ -71,7 +71,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 var hersteller = GetViewModel().FahrzeugHersteller;
-                return  hersteller.ConvertAll(new Converter<Fahrzeughersteller, SelectItem>(WrapManufacturer));                
+                return hersteller.ConvertAll(new Converter<Fahrzeughersteller, SelectItem>(WrapManufacturer));              
             }
         }
 
@@ -79,8 +79,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get
             {
-                var hersteller = GetViewModel().FahrzeugStatus;
-                return hersteller.ConvertAll(new Converter<FahrzeuguebersichtStatus, SelectItem>(WrapStatus));
+                var status = GetViewModel().FahrzeugStatus;
+                return status.ConvertAll(new Converter<FahrzeuguebersichtStatus, SelectItem>(WrapStatus));
             }
         }
 
@@ -88,22 +88,25 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get
             {
-                var hersteller = GetViewModel().PDIStandorte;
-                return hersteller.ConvertAll(new Converter<FahrzeuguebersichtPDI, SelectItem>(WrapPDI));
+                var pdi = GetViewModel().PDIStandorte;
+                return pdi.ConvertAll(new Converter<FahrzeuguebersichtPDI, SelectItem>(WrapPDI));
             }
         }
 
         static SelectItem WrapManufacturer(Fahrzeughersteller hersteller)
-        {                                   
-            if(hersteller.HerstellerKey.IsNullOrEmpty())
-                return new SelectItem(hersteller.HerstellerKey, hersteller.HerstellerName);
+        {
+            if (hersteller.HerstellerName.StartsWith("(")) // wg. empty keys aus sap
+                return new SelectItem(String.Empty, hersteller.HerstellerName);
             else            
                 return new SelectItem(hersteller.HerstellerName, hersteller.HerstellerName);
         }
 
         static SelectItem WrapStatus(FahrzeuguebersichtStatus status)
         {
-            return new SelectItem(status.StatusKey, status.StatusText);
+            if (status.StatusKey.IsNullOrEmpty())
+                return new SelectItem(String.Empty, status.StatusText);
+            else                
+                return new SelectItem(status.StatusText, status.StatusText);
         }
 
         static SelectItem WrapPDI(FahrzeuguebersichtPDI pdi)

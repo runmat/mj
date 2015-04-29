@@ -116,6 +116,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var customList = Fahrzeuguebersichts.Select(x => x).ToList();
 
+                if (FahrzeuguebersichtSelektor.Fahrgestellnummer.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Fahrgestellnummer == FahrzeuguebersichtSelektor.Fahrgestellnummer).ToList();
+
                 if (FahrzeuguebersichtSelektor.Kennzeichen.IsNotNullOrEmpty())
                     customList = customList.Where(x => x.Kennzeichen == FahrzeuguebersichtSelektor.Kennzeichen).ToList();
 
@@ -139,6 +142,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 if (FahrzeuguebersichtSelektor.Herstellerkennung.IsNotNullOrEmpty())
                     customList = customList.Where(x => x.Hersteller.Contains(FahrzeuguebersichtSelektor.Herstellerkennung)).ToList();
+
+                if (FahrzeuguebersichtSelektor.PDIkennung.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Carport == FahrzeuguebersichtSelektor.PDIkennung).ToList();
+
+                if (FahrzeuguebersichtSelektor.Statuskennung.IsNotNullOrEmpty())
+                    customList = customList.Where(x => x.Status == FahrzeuguebersichtSelektor.Statuskennung).ToList();
 
                 Fahrzeuguebersichts = customList;
             }

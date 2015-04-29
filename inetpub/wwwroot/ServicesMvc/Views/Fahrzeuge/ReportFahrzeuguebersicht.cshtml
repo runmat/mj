@@ -25,7 +25,8 @@
     //    }
 
     function FormPreparePrivateAjax() {
-        FormPrepareAjax();        
+        FormPrepareAjax();
+        FormWizardInitPrivate();        
     }
 
     function ShowFahrzeuguebersicht() {
@@ -140,25 +141,31 @@
     }
 
     function ShowGrid() {
-        $.ajax({
-            type: "POST",
-            url: "ExcelUploadFahrzeuguebersichtShowGrid",         
-            loadingShow: true,
-            success: function (result) {
-                if (typeof (result.message) !== "undefined") {
-                    alert(result.message);
-                    return;
-                }
-                FormWizard.SetTabHtml(2, result);
-                FormPreparePrivateAjax();
-                FormWizard.ButtonNextInvoke();
+        //FormWizard.SetTabHtml(2, result);
+        FormPreparePrivate();
+        FormWizard.ButtonNextInvoke();
+        if (_formWizardForceHideSubmitButton)
+            FormWizard.ButtonSubmitShow(false);
 
-                GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");
+//        $.ajax({
+//            type: "POST",
+//            url: "ExcelUploadFahrzeuguebersichtShowGrid",         
+//            loadingShow: true,
+//            success: function (result) {
+//                if (typeof (result.message) !== "undefined") {
+//                    alert(result.message);
+//                    return;
+//                }
+//                FormWizard.SetTabHtml(2, result);
+//                FormPreparePrivateAjax();
+//                FormWizard.ButtonNextInvoke();
 
-                if (_formWizardForceHideSubmitButton)
-                    FormWizard.ButtonSubmitShow(false);
-            }
-        });
+//                GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");
+
+//                if (_formWizardForceHideSubmitButton)
+//                    FormWizard.ButtonSubmitShow(false);
+//            }
+//        });
     }
    
              
