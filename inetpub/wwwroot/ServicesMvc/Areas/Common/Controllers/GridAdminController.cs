@@ -104,11 +104,14 @@ namespace ServicesMvc.Common.Controllers
         [AllowAnonymous]
         public ActionResult Test()
         {
+            TryUserLogoff();
+
             ViewModel.ReportSettings = new ReportSolution
                 {
                     AdminIsAuthorized = true,
                     AdminUserName = "JenzenM",
                     AppID = 1731,
+                    AppFriendlyName = "Strafzettel-Report"
                 };
 
             return View(ViewModel);
@@ -118,19 +121,36 @@ namespace ServicesMvc.Common.Controllers
         [AllowAnonymous]
         public ActionResult ReportSolution(string un)
         {
+            TryUserLogoff();
+
             ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un));
             
             return View(ViewModel);
         }
 
-        void TryUserLogon(string userName)
+        private void TryUserLogoff()
+        {
+            TryUserLogonLogoffInner(UrlLogOff);
+        }
+
+        private void TryUserLogon(string userName)
+        {
+            TryUserLogonLogoffInner(() => UrlLogOn(userName, null, null));
+        }
+
+        void TryUserLogonLogoffInner(Action func)
         {
             var orgDataService = ViewModel.DataService;
             var orgAppSettings = ViewModel.AppSettings;
 
             var vmOrg = ViewModel;
-            UrlLogOn(userName, null, null);
+
+            func();
+
             ViewModel = vmOrg;
+
+            LogonContext.UserName = "Report-Solution";
+            LogonContext.MvcEnforceRawLayout = false;
 
             InitViewModel(ViewModel, orgAppSettings, LogonContext, orgDataService);
         }

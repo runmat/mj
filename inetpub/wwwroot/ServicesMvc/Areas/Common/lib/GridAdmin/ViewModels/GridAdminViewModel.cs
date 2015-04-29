@@ -100,6 +100,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             ReportSettings.CallingDateTime = adminDate;
             ReportSettings.AppID = items[0].ToInt();
+            ReportSettings.AppFriendlyName = GetRelativeAppFriendlyName(ReportSettings.AppID);
             ReportSettings.AdminUserName = items[1];
             ReportSettings.AdminIsAuthorized = true;
             return true;
@@ -140,6 +141,13 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             appUrl = LogonContext.FormatUrl(appUrl).ToString();
 
             return appUrl;
+        }
+
+        string GetRelativeAppFriendlyName(int appId)
+        {
+            var appFriendlyName = DataService.GetAppFriendlyName(appId);
+
+            return appFriendlyName;
         }
     }
 }

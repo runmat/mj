@@ -11,6 +11,7 @@ namespace CkgDomainLogic.General.Contracts
         List<Customer> GetCustomers();
         List<User> GetUsersForCustomer(Customer customer);
         string GetAppUrl(int appId);
+        string GetAppFriendlyName(int appId);
 
         void TranslatedResourceUpdate(TranslatedResource r);
         void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r);

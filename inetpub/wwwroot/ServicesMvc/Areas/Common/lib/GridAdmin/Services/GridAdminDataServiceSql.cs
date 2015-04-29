@@ -45,6 +45,12 @@ namespace CkgDomainLogic.DomainCommon.Services
             return ct.Database.SqlQuery<string>("select AppURL from Application where AppID = {0}", appId).FirstOrDefault();
         }
 
+        public string GetAppFriendlyName(int appId)
+        {
+            var ct = CreateDbContext(ConnectionStringWorkServer);
+            return ct.Database.SqlQuery<string>("select AppFriendlyName from Application where AppID = {0}", appId).FirstOrDefault();
+        }
+
 
         #region Translated Resource
 

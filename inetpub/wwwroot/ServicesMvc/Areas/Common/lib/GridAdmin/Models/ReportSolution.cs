@@ -10,6 +10,8 @@ namespace ServicesMvc.DomainCommon.Models
 
         public int AppID { get; set; }
 
+        public string AppFriendlyName { get; set; }
+
         public DateTime CallingDateTime { get; set; }
     }
 }

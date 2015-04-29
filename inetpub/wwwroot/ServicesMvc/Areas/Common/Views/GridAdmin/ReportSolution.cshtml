@@ -8,9 +8,11 @@
 }
 else
 {
-    <div>@Model.ReportSettings.AppID</div>
-    <div>@Model.ReportSettings.AdminUserName</div>
-    <div>@Model.ReportSettings.CallingDateTime.ToString("dd.MM.yyyy HH:mm:ss")</div>
+    <div class="hide">
+        <div>@Model.ReportSettings.AppID</div>
+        <div>@Model.ReportSettings.AdminUserName</div>
+        <div>@Model.ReportSettings.CallingDateTime.ToString("dd.MM.yyyy HH:mm:ss")</div>
+    </div>
     
     @Html.Partial("Partial/Common")
 

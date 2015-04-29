@@ -47,12 +47,16 @@
         if (customerId == -1)
             return;
         
+        App.blockUI2($(".form-horizontal"));
+        
         $.ajax({
             type: "POST",
             url: "OnCustomerChanged",
             data: { customerId: customerId },
             loadingShow: false,
             success: function (result) {
+                App.unblockUI2($(".form-horizontal"));
+                
                 if (!result.success)
                     return;
 
@@ -79,15 +83,22 @@
     }
 
     function OnUserChanged(userId) {
+        App.blockUI2($(".form-horizontal"));
+        
         $.ajax({
             type: "POST",
             url: "OnUserChanged",
             data: { userId: userId },
-            loadingShow: false
+            loadingShow: false,
+            success: function() {
+                App.unblockUI2($(".form-horizontal"));
+            }
         });
     }
     
     function ReportSolutionReroute() {
+        App.blockUI2($(".form-horizontal"));
+        
         $.ajax({
             type: "POST",
             url: "ReportSolutionReroute",
