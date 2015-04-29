@@ -812,6 +812,9 @@ namespace CKG.Components.Zulassung.DAL
                 myProxy.setImportParameter("AG", strKUNNR);
                 myProxy.setImportParameter("WEB_USER", m_objUser.UserName);
 
+                if (String.Compare(bapiName, "Z_DPM_WEB_ZULA_ANF_CKPT_01", true) == 0)
+                    myProxy.setImportParameter("I_NEU", "X");
+
                 var importZul = myProxy.getImportTable("GT_AUF");
                 var partnerZul = myProxy.getImportTable("GT_PARTNER");
                 var dienstlZul = myProxy.getImportTable("GT_DIENSTL");

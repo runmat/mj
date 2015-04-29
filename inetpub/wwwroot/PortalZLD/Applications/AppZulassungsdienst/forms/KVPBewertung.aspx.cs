@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using CKG.Base.Business;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
@@ -15,6 +16,8 @@ namespace AppZulassungsdienst.forms
         private App m_App;
         private KVP mObjKVP;
 
+        #region Events
+
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
@@ -26,7 +29,7 @@ namespace AppZulassungsdienst.forms
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
             lblError.Text = "";
 
-            if ((this.Session["mObjKVP"] != null))
+            if ((Session["mObjKVP"] != null))
             {
                 mObjKVP = (KVP)Session["mObjKVP"];
             }
@@ -42,6 +45,78 @@ namespace AppZulassungsdienst.forms
 
             Session["LastPage"] = this;
         }
+
+        protected void rgGrid1_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
+        {
+            if (mObjKVP.Vorschlagsliste != null)
+            {
+                rgGrid1.DataSource = mObjKVP.Vorschlagsliste;
+            }
+            else
+            {
+                rgGrid1.DataSource = null;
+            }
+        }
+
+        protected void rgGrid1_ItemCommand(object sender, GridCommandEventArgs e)
+        {
+            if (e.Item is GridDataItem)
+            {
+                GridDataItem gridRow = e.Item as GridDataItem;
+
+                if (e.CommandName == "bewerten")
+                {
+                    mObjKVP.SelectKVPForBewertung(gridRow["KVPID"].Text);
+                    LadeKVP();
+                    Session["mObjKVP"] = mObjKVP;
+
+                    Bewertungsliste.Visible = false;
+                    Bewertung.Visible = true;
+                }
+            }
+        }
+
+        protected void btnLike_Click(object sender, EventArgs e)
+        {
+            mObjKVP.BewertungPositiv = true;
+            mObjKVP.BewertungNegativ = false;
+            Session["mObjKVP"] = mObjKVP;
+            lblBewertung.Text = btnLike.Text;
+            mpeConfirmBewertung.Show();
+        }
+
+        protected void btnDontLike_Click(object sender, EventArgs e)
+        {
+            mObjKVP.BewertungPositiv = false;
+            mObjKVP.BewertungNegativ = true;
+            Session["mObjKVP"] = mObjKVP;
+            lblBewertung.Text = btnDontLike.Text;
+            mpeConfirmBewertung.Show();
+        }
+
+        protected void btnPanelConfirmDeleteOK_Click(object sender, EventArgs e)
+        {
+            mpeConfirmBewertung.Hide();
+            BewerteKVP();
+        }
+
+        protected void btnPanelConfirmDeleteCancel_Click(object sender, EventArgs e)
+        {
+            mpeConfirmBewertung.Hide();
+            mObjKVP.BewertungPositiv = false;
+            mObjKVP.BewertungNegativ = false;
+            Session["mObjKVP"] = mObjKVP;
+        }
+
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            Session["mObjKVP"] = null;
+            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        #endregion
+
+        #region Methods
 
         private void LoginKVPUser()
         {
@@ -92,54 +167,6 @@ namespace AppZulassungsdienst.forms
                 rgGrid1.Visible = false;
                 lblNoData.Text = "Keine Daten gefunden";
             }
-        }
-
-        protected void rgGrid1_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
-        {
-            if (mObjKVP.Vorschlagsliste != null)
-            {
-                rgGrid1.DataSource = mObjKVP.Vorschlagsliste.DefaultView;
-            }
-            else
-            {
-                rgGrid1.DataSource = null;
-            }
-        }
-
-        protected void rgGrid1_ItemCommand(object sender, GridCommandEventArgs e)
-        {
-            if (e.Item is GridDataItem)
-            {
-                GridDataItem gridRow = e.Item as GridDataItem;
-
-                if (e.CommandName == "bewerten")
-                {
-                    mObjKVP.SelectKVPForBewertung(gridRow["KVPID"].Text);
-                    LadeKVP();
-                    Session["mObjKVP"] = mObjKVP;
-
-                    Bewertungsliste.Visible = false;
-                    Bewertung.Visible = true;
-                }
-            }
-        }
-
-        protected void btnLike_Click(object sender, EventArgs e)
-        {
-            mObjKVP.BewertungPositiv = true;
-            mObjKVP.BewertungNegativ = false;
-            Session["mObjKVP"] = mObjKVP;
-            lblBewertung.Text = btnLike.Text;
-            mpeConfirmBewertung.Show();
-        }
-
-        protected void btnDontLike_Click(object sender, EventArgs e)
-        {
-            mObjKVP.BewertungPositiv = false;
-            mObjKVP.BewertungNegativ = true;
-            Session["mObjKVP"] = mObjKVP;
-            lblBewertung.Text = btnDontLike.Text;
-            mpeConfirmBewertung.Show();
         }
 
         private void LadeKVP()
@@ -201,25 +228,6 @@ namespace AppZulassungsdienst.forms
             txtBewertungsfrist.Text = "";
         }
 
-        protected void btnPanelConfirmDeleteOK_Click(object sender, EventArgs e)
-        {
-            mpeConfirmBewertung.Hide();
-            BewerteKVP();
-        }
-
-        protected void btnPanelConfirmDeleteCancel_Click(object sender, EventArgs e)
-        {
-            mpeConfirmBewertung.Hide();
-            mObjKVP.BewertungPositiv = false;
-            mObjKVP.BewertungNegativ = false;
-            Session["mObjKVP"] = mObjKVP;
-        }
-
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            Session["mObjKVP"] = null;
-            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
-        }
-
+        #endregion
     }
 }

@@ -8,7 +8,6 @@
 @(Html.Telerik()
     .Grid<DocumentType>()
     .Name(gridName)
-    .XGroup(gridName)
     .XAjaxDataBinding("DocumentTypeAjaxBinding", "Document")
     .Columns(columns =>
     {

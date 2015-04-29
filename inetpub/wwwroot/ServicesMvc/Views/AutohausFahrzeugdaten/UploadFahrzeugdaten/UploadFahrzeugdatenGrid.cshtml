@@ -34,7 +34,6 @@ else
 @(Html.Telerik()
     .Grid<UploadFahrzeug>()
     .Name(gridName)
-    .XGroup("GridUploadFahrzeugdaten")
     .Editable(editing => editing.Enabled(!Model.SubmitMode))
     .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
     .XAjaxDataBindingWithUpdateAndDelete("UploadFahrzeugdatenAjaxBinding", "UploadFahrzeugdatenAjaxUpdateItem", "UploadFahrzeugdatenAjaxDeleteItem", "AutohausFahrzeugdaten")

@@ -109,7 +109,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportMahnsperreEquisFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = MahnsperreViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnsperreViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Mahnsperre", dt);
 
             return new EmptyResult();
@@ -117,7 +117,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportMahnsperreEquisFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = MahnsperreViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnsperreViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Mahnsperre", dt, landscapeOrientation: true);
 
             return new EmptyResult();

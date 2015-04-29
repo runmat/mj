@@ -1,0 +1,80 @@
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+@Html.Partial("Abmeldevorgaenge/Partial/DokumenteGrid")
+
+<form action="#" class="form-horizontal">
+    
+    @Html.FormDropDownListFor(m => m.SelectedDokArt, Model.DokArten.ToSelectList(), new { @class = "m-wrap small" } )
+
+    <div class="control-group">
+        <label class="control-label">@Localize.DocumentUploadDocument:</label>
+        
+        <div class="controls">         
+            @(Html.Telerik().Upload()
+                  .Name("dokumentUpload")
+                  .Localizable("de-DE")
+                  .Async(async => async
+                                      .Save("UploadDokumentStart", "Wfm")
+                                      .SaveField("uploadFiles")
+                                      .AutoUpload(true))
+                  .Multiple(false)
+                  .ShowFileList(false)
+                  .ClientEvents(events => events
+                                              .OnUpload("UploadStart")
+                                              .OnSuccess("UploadFinished")
+                                              .OnError("UploadError")
+                  )
+              )
+        </div>
+    </div>
+
+</form>
+
+<script type="text/javascript">
+
+    $("#SelectedDokArt").on("change", function() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "SetSelectedDokArt",
+            loadingShow: true,
+            data: { dokArt: $(this).val() },
+            success: function () {
+            }
+        });
+    });
+    
+    function UploadStart(e) {
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.pdf') <= 0) {
+            alert('@Localize.FileUploadOnlyPdfLegal.ToJavascriptString()');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        TryDokumenteGridRefresh();
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('@Localize.UploadErrorOccurred.ToJavascriptString()');
+    }
+
+</script>
