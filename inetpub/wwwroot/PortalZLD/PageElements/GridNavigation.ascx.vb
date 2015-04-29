@@ -1,5 +1,5 @@
 ﻿Partial Public Class GridNavigation
-    Inherits System.Web.UI.UserControl
+    Inherits UserControl
 
     Protected WithEvents mGridView As GridView
     Protected WithEvents mDataGrid As DataGrid
@@ -9,7 +9,7 @@
     Delegate Sub Pager_Changed(ByVal PageIndex As Integer)
     Private PageCount As Integer
     Private PagerStart As Integer
-    Private m_PagerSize As Int32
+    Private m_PagerSize As Int32 = 20
 
     Public Property PagerSize As Integer
         Get
@@ -18,10 +18,9 @@
         Set(ByVal Value As Integer)
             m_PagerSize = Value
         End Set
-
-
     End Property
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Load
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         If Not IsPostBack Then
             fillPageSizeDropDown()
         End If
@@ -111,17 +110,17 @@
         ddlPageSize.Items.Add("50")
         ddlPageSize.Items.Add("100")
         ddlPageSize.Items.Add("200")
-        ddlPageSize.SelectedIndex = m_PagerSize
+        ddlPageSize.SelectedValue = m_PagerSize
     End Sub
 
-    Private Sub GridView1_DataBound(ByVal sender As Object, ByVal e As System.EventArgs) Handles mGridView.DataBound
+    Private Sub GridView1_DataBound(ByVal sender As Object, ByVal e As EventArgs) Handles mGridView.DataBound
         ' Retrieve the pager row.
 
         Dim i As Integer
         Dim LinkTable As New DataTable
 
-        LinkTable.Columns.Add("Index", System.Type.GetType("System.String"))
-        LinkTable.Columns.Add("Page", System.Type.GetType("System.String"))
+        LinkTable.Columns.Add("Index", Type.GetType("System.String"))
+        LinkTable.Columns.Add("Page", Type.GetType("System.String"))
         Dim RepRow As DataRow
 
 
@@ -181,13 +180,13 @@
         ProofPager()
     End Sub
 
-    Private Sub DataGrid1_DataBound(ByVal sender As Object, ByVal e As System.EventArgs) Handles mDataGrid.ItemDataBound
+    Private Sub DataGrid1_DataBound(ByVal sender As Object, ByVal e As EventArgs) Handles mDataGrid.ItemDataBound
 
         Dim i As Integer
         Dim LinkTable As New DataTable
 
-        LinkTable.Columns.Add("Index", System.Type.GetType("System.String"))
-        LinkTable.Columns.Add("Page", System.Type.GetType("System.String"))
+        LinkTable.Columns.Add("Index", Type.GetType("System.String"))
+        LinkTable.Columns.Add("Page", Type.GetType("System.String"))
         Dim RepRow As DataRow
 
 
@@ -248,8 +247,7 @@
 
     End Sub
 
-
-    Private Sub ddlPageSize_SelectedIndexChanged1(ByVal sender As Object, ByVal e As System.EventArgs) Handles ddlPageSize.SelectedIndexChanged
+    Private Sub ddlPageSize_SelectedIndexChanged1(ByVal sender As Object, ByVal e As EventArgs) Handles ddlPageSize.SelectedIndexChanged
         Select Case False
             Case mDataGrid Is Nothing
                 mDataGrid.PageSize = ddlPageSize.SelectedValue
@@ -261,12 +259,11 @@
         RaiseEvent PageSizeChanged()
     End Sub
 
-
-    Public Sub lbtnPage_PageIndexChanging(ByVal sender As Object, ByVal e As System.EventArgs)
+    Public Sub lbtnPage_PageIndexChanging(ByVal sender As Object, ByVal e As EventArgs)
         RaiseEvent PagerChanged(CInt(sender.CommandArgument))
     End Sub
 
-    Private Sub lbtnPrevious_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lbtnPrevious.Click
+    Private Sub lbtnPrevious_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnPrevious.Click
 
         Dim tmpIntPageintex As Integer
         Select Case False
@@ -280,7 +277,7 @@
         RaiseEvent PagerChanged(tmpIntPageintex)
     End Sub
 
-    Private Sub lbtnNext_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lbtnNext.Click
+    Private Sub lbtnNext_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnNext.Click
         Dim tmpIntPageintex As Integer
         Select Case False
             Case mDataGrid Is Nothing
@@ -294,8 +291,7 @@
         RaiseEvent PagerChanged(tmpIntPageintex)
     End Sub
 
-
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
         ProofPager()
 
         lblAnzahl.Visible = True
@@ -305,6 +301,8 @@
                     lblAnzahl.Text = "Gesamtanzahl: " & CType(mDataGrid.DataSource, DataView).Count
                 ElseIf TypeOf mDataGrid.DataSource Is DataTable Then
                     lblAnzahl.Text = "Gesamtanzahl: " & CType(mDataGrid.DataSource, DataTable).Rows.Count
+                ElseIf TypeOf mDataGrid.DataSource Is IList Then
+                    lblAnzahl.Text = "Gesamtanzahl: " & CType(mDataGrid.DataSource, IList).Count
                 Else
                     lblAnzahl.Visible = False
                 End If
@@ -313,6 +311,8 @@
                     lblAnzahl.Text = "Gesamtanzahl: " & CType(mGridView.DataSource, DataView).Count
                 ElseIf TypeOf mGridView.DataSource Is DataTable Then
                     lblAnzahl.Text = "Gesamtanzahl: " & CType(mGridView.DataSource, DataTable).Rows.Count
+                ElseIf TypeOf mGridView.DataSource Is IList Then
+                    lblAnzahl.Text = "Gesamtanzahl: " & CType(mGridView.DataSource, IList).Count
                 Else
                     lblAnzahl.Visible = False
                 End If
@@ -372,44 +372,3 @@
         RaiseEvent PagerChanged(tmpIntPageintex)
     End Sub
 End Class
-
-' ************************************************
-' $History: GridNavigation.ascx.vb $
-' 
-' *****************  Version 1  *****************
-' User: Rudolpho     Date: 11.03.11   Time: 13:59
-' Created in $/CKPortalZLD/PortalZLD/PageElements
-' 
-' *****************  Version 13  *****************
-' User: Rudolpho     Date: 24.08.10   Time: 16:21
-' Updated in $/CKAG2/Services/PageElements
-' 
-' *****************  Version 12  *****************
-' User: Dittbernerc  Date: 29.07.09   Time: 11:48
-' Updated in $/CKAG2/Services/PageElements
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 5.05.09    Time: 17:16
-' Updated in $/CKAG2/Services/PageElements
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 28.04.09   Time: 15:45
-' Updated in $/CKAG2/Services/PageElements
-' 
-' *****************  Version 9  *****************
-' User: Rudolpho     Date: 23.04.09   Time: 13:36
-' Updated in $/CKAG2/Services/PageElements
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 14.04.09   Time: 17:19
-' Updated in $/CKAG2/Services/PageElements
-' 
-' *****************  Version 7  *****************
-' User: Jungj        Date: 14.04.09   Time: 16:52
-' Updated in $/CKAG2/Services/PageElements
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 14.04.09   Time: 16:48
-' Updated in $/CKAG2/Services/PageElements
-' 
-' ************************************************

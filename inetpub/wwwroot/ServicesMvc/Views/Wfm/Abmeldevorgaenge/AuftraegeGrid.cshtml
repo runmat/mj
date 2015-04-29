@@ -1,0 +1,78 @@
+﻿@using CkgDomainLogic.WFM.Models
+@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+@{ var gridName = "GridAuftraege"; }
+
+@(Html.XTelerik()
+    .XGrid<WfmAuftrag>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("AuftraegeAjaxBinding", "Wfm")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Action).Width(100).Filterable(false).Sortable(false).ClientTemplate(
+                "<button onclick='ShowAuftragsDetailAjax(\"<#= data.VorgangsNrAbmeldeauftrag #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>");
+        
+        columns.XBound(c => c.VorgangsNrAbmeldeauftrag);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.KundenAuftragsNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Zb1Nr);
+        columns.XBound(c => c.Zb2Nr);
+        columns.XBound(c => c.EquiNrZb1);
+        columns.XBound(c => c.EquiNrZb2);
+        columns.XBound(c => c.AbmeldeArt);
+        columns.XBound(c => c.AbmeldeStatus);
+        columns.XBound(c => c.AbmeldeDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.StornoDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Zb1VorhandenDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Zb2VorhandenDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.KennzeichenVornVorhandenDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.KennzeichenHintenVorhandenDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.KennzeichenVornEntwertetDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.KennzeichenHintenEntwertetDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.KennzeichenVornGestohlenDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.KennzeichenHintenGestohlenDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Verkaufsbeleg);
+        columns.XBound(c => c.Carport);
+        columns.XBound(c => c.Erfassungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.WiedervorlageKundeDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.WiedervorlageScDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.ZustimmungZlsDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.ZustimmungEmpfaenger);
+        columns.XBound(c => c.ZustimmungUser);
+        columns.XBound(c => c.NeuanforderungZlsDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.NeuanforderungEmpfaenger);
+        columns.XBound(c => c.NeuanforderungUser);
+        columns.XBound(c => c.Selektion1).Title(Model.Selektor.Selektionsfeld1Name).Visible(!String.IsNullOrEmpty(Model.Selektor.Selektionsfeld1Name));
+        columns.XBound(c => c.Selektion2).Title(Model.Selektor.Selektionsfeld2Name).Visible(!String.IsNullOrEmpty(Model.Selektor.Selektionsfeld2Name));
+        columns.XBound(c => c.Selektion3).Title(Model.Selektor.Selektionsfeld3Name).Visible(!String.IsNullOrEmpty(Model.Selektor.Selektionsfeld3Name));
+        columns.XBound(c => c.Referenz1).Title(Model.Selektor.Referenz1Name).Visible(!String.IsNullOrEmpty(Model.Selektor.Referenz1Name));
+        columns.XBound(c => c.Referenz2).Title(Model.Selektor.Referenz2Name).Visible(!String.IsNullOrEmpty(Model.Selektor.Referenz2Name));
+        columns.XBound(c => c.Referenz3).Title(Model.Selektor.Referenz3Name).Visible(!String.IsNullOrEmpty(Model.Selektor.Referenz3Name));
+        columns.XBound(c => c.VorgangsNrVorgaengerAuftrag);
+        columns.XBound(c => c.LaufendeNr);
+        columns.XBound(c => c.Aufgabe);
+        columns.XBound(c => c.Erfasst);
+        columns.XBound(c => c.Ende);
+        columns.XBound(c => c.TaskId);
+        columns.XBound(c => c.ToDoWer);
+        columns.XBound(c => c.Startdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Startzeit);
+        columns.XBound(c => c.Solldatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Sollzeit);
+        columns.XBound(c => c.Istdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Istzeit);
+        columns.XBound(c => c.User);
+        columns.XBound(c => c.Anmerkung);
+        columns.XBound(c => c.Status);
+        columns.XBound(c => c.FolgetaskId);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridAuftraege"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.VorgangsNrAbmeldeauftrag).Ascending())
+    .XToolBar("Wfm")
+)
+

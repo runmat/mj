@@ -15,8 +15,9 @@ namespace AppZulassungsdienst.forms
     public partial class ReportAuswertung_2 : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private Listen objListe;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
@@ -27,8 +28,6 @@ namespace AppZulassungsdienst.forms
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
@@ -60,27 +59,6 @@ namespace AppZulassungsdienst.forms
             Common.SetEndASPXAccess(this);
         }
 
-        private void Fillgrid()
-        {
-            if (objListe.Auswertung.Rows.Count == 0)
-            {
-                SearchMode();
-                lblError.Text = "Keine Daten zur Anzeige gefunden.";
-            }
-            else
-            {
-                SearchMode(false);
-
-                rgGrid1.Rebind();
-                //Setzen der DataSource geschieht durch das NeedDataSource-Event
-            }
-        }
-
-        private void SearchMode(bool search = true)
-        {
-            Result.Visible = !search;
-        }
-
         /// <summary>
         /// Bei Änderung der Auswahl FillGrid() aufrufen.
         /// </summary>
@@ -95,7 +73,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objListe.Auswertung != null)
             {
-                rgGrid1.DataSource = objListe.Auswertung.DefaultView;
+                rgGrid1.DataSource = objListe.Auswertung;
             }
             else
             {
@@ -140,7 +118,7 @@ namespace AppZulassungsdienst.forms
 
         protected void rgGrid1_ItemCommand(object sender, GridCommandEventArgs e)
         {
-            String FilePath;
+            string FilePath;
             DataRow[] RowTemp;
 
             switch (e.CommandName)
@@ -155,9 +133,8 @@ namespace AppZulassungsdienst.forms
 
                         if (!String.IsNullOrEmpty(EasyID))
                         {
-                            objListe.GetBarqFromEasy(Session["AppID"].ToString(), Session.SessionID, this, Barqnr,
-                                                     EasyID);
-                            if (objListe.Status != 0)
+                            objListe.GetBarqFromEasy(Barqnr, EasyID);
+                            if (objListe.ErrorOccured)
                             {
                                 lblError.Text = objListe.Message;
                                 return;
@@ -167,22 +144,20 @@ namespace AppZulassungsdienst.forms
                         {
                             objListe.Filename = Barqnr + ".pdf";
                         }
-                        if (m_User.IsTestUser)
+
+                        FilePath = ZLDCommon.GetDocRootPath(m_User.IsTestUser) + "barquittung\\" + objListe.Filename;
+
+                        if (File.Exists(FilePath))
                         {
-                            FilePath = "\\\\192.168.10.96\\test\\portal\\barquittung\\" + objListe.Filename;
-                        }
-                        else
-                        {
-                            FilePath = "\\\\192.168.10.96\\prod\\portal\\barquittung\\" + objListe.Filename;
-                        }
-                        Session["App_ContentType"] = "Application/pdf";
-                        Session["App_Filepath"] = FilePath;
-                        if (EasyID.Length > 0)
-                        {
-                            Session["App_FileDelete"] = "X";
-                        }
-                        ResponseHelper.Redirect("Printpdf.aspx", "_blank",
-                                                "left=0,top=0,resizable=YES,scrollbars=YES");
+                            Session["App_ContentType"] = "Application/pdf";
+                            Session["App_Filepath"] = FilePath;
+                            if (EasyID.Length > 0)
+                            {
+                                Session["App_FileDelete"] = "X";
+                            }
+                            ResponseHelper.Redirect("Printpdf.aspx", "_blank",
+                                                    "left=0,top=0,resizable=YES,scrollbars=YES");
+                        } 
                     }
                     break;
 
@@ -193,14 +168,7 @@ namespace AppZulassungsdienst.forms
                     {
                         objListe.Filename = RowTemp[0]["SA_PFAD"].ToString().TrimStart('/').Replace('/', '\\');
 
-                        if (m_User.IsTestUser)
-                        {
-                            FilePath = "\\\\192.168.10.96\\test\\portal\\sofortabrechnung\\" + objListe.Filename;
-                        }
-                        else
-                        {
-                            FilePath = "\\\\192.168.10.96\\prod\\portal\\sofortabrechnung\\" + objListe.Filename;
-                        }
+                        FilePath = ZLDCommon.GetDocRootPath(m_User.IsTestUser) + "sofortabrechnung\\" + objListe.Filename;
 
                         if (File.Exists(FilePath))
                         {
@@ -296,6 +264,31 @@ namespace AppZulassungsdienst.forms
             PerformExcelExport();
         }
 
+        #endregion
+
+        #region Methods
+
+        private void Fillgrid()
+        {
+            if (objListe.Auswertung.Rows.Count == 0)
+            {
+                SearchMode();
+                lblError.Text = "Keine Daten zur Anzeige gefunden.";
+            }
+            else
+            {
+                SearchMode(false);
+
+                rgGrid1.Rebind();
+                //Setzen der DataSource geschieht durch das NeedDataSource-Event
+            }
+        }
+
+        private void SearchMode(bool search = true)
+        {
+            Result.Visible = !search;
+        }
+
         /// <summary>
         /// Nutzung einer separaten Excel-Export-Funktion, um eine vorformatierte Excel-Datei als Vorlage nutzen zu können
         /// </summary>
@@ -340,7 +333,7 @@ namespace AppZulassungsdienst.forms
             tblTemp.AcceptChanges();
 
             // Sortierung setzen
-            DataView dvExport = tblTemp.DefaultView;
+            DataView dvExport = new DataView(tblTemp);
 
             switch (rbAuswahl.SelectedValue)
             {
@@ -373,8 +366,9 @@ namespace AppZulassungsdienst.forms
 
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
             string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, dvExport.ToTable(), this.Page, false, @"Applications\AppZulassungsdienst\Documents\Vorlage_Auswertung.xls", 0, 0);
+            excelFactory.CreateDocumentAndSendAsResponse(filename, dvExport.ToTable(), this.Page, false, @"Applications\AppZulassungsdienst\Documents\Vorlage_Auswertung.xls");
         }
 
+        #endregion
     }
 }

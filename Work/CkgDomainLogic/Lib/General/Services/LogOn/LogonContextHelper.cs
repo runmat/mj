@@ -6,6 +6,7 @@ using System.Web;
 using CkgDomainLogic.General.Contracts;
 using System.Linq;
 using GeneralTools.Models;
+using MvcTools.Web;
 
 namespace CkgDomainLogic.General.Services
 {
@@ -16,16 +17,19 @@ namespace CkgDomainLogic.General.Services
             if (HttpContext.Current == null || userApps == null)
                 return 0;
 
-            var url = HttpContext.Current.Request.Url;
-            if (HttpContext.Current.Request.HttpMethod.NotNullOrEmpty().ToUpper().Contains("POST") && HttpContext.Current.Request.UrlReferrer != null)
-                url = HttpContext.Current.Request.UrlReferrer;
+            var url = GetAppUrlCurrent();
 
-            var urlCurrent = url.ToString().ToLower().Replace("%2f", "/");
+            var urlCurrent = url.ToLower().Replace("%2f", "/");
             var userAppCurrent = userApps.FirstOrDefault(ua => urlCurrent.Contains(ExtractUrlFromUserApp(ua.AppURL)));
             if (userAppCurrent == null)
                 return 0;
 
             return userAppCurrent.AppID;
+        }
+
+        public static string GetAppUrlCurrent()
+        {
+            return HttpContext.Current.GetAppUrlCurrent();
         }
 
         public static string ExtractUrlFromUserApp(string userAppUrl)

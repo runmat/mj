@@ -1,213 +1,103 @@
 using System;
-using CKG.Base.Common;
-using CKG.Base.Business;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib.Logbuch
 {
 	public class Eingang : LogbuchEntry
 	{
-		private string VON;
-
-		public string Verfasser 
-        {
-			get { return VON; }
-		}
+        public string Verfasser { get; private set; }
 
         public Eingang(string vorgid, string lfdnr, DateTime erfassungszeit, string von, string vertr, string betreff, string ltxnr, string antw_lfdnr,
-            EntryStatus objstatus, EmpfängerStatus statuse, string vgart, string zerldat, string an, ref CKG.Base.Kernel.Security.User objUser,
-            CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
-            : base(vorgid, lfdnr, erfassungszeit, vertr, betreff, ltxnr, antw_lfdnr, objstatus, statuse, vgart, zerldat, an, ref objUser,
-            objApp, strAppID, strSessionID, strFilename)
+            EntryStatus objstatus, EmpfängerStatus statuse, string vgart, string zerldat, string an)
+            : base(vorgid, lfdnr, erfassungszeit, vertr, betreff, ltxnr, antw_lfdnr, objstatus, statuse, vgart, zerldat, an)
 		{
-			this.VON = von;
+            Verfasser = von;
 		}
 
-        public void EintragBeantworten(string strAppID, string strSessionID, System.Web.UI.Page page, string betr, string Text)
+        public void EintragBeantworten(string betr, string Text, string userName)
 		{
-            m_strClassAndMethod = "Eingang.EintragBeantworten";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
+            LongStringToSap lsts = new LongStringToSap();
+            var ltxnr = "";
+            if (Text.Trim().Length != 0)
             {
-                m_blnGestartet = true;
-
-                LongStringToSap lsts = new LongStringToSap(m_objUser, m_objApp, page);
-                string ltxnr = "";
-                if (Text.Trim().Length != 0)
+                ltxnr = lsts.InsertString(Text, "MC");
+                if (lsts.ErrorOccured)
                 {
-                    ltxnr = lsts.InsertString(Text, "MC");
-                    if (lsts.E_SUBRC != "0")
-                    {
-                        int lstsStatus;
-                        Int32.TryParse(lsts.E_SUBRC, out lstsStatus);
-                        m_intStatus = lstsStatus;
-                        m_strMessage = lsts.E_MESSAGE;
-                        return;
-                    }
+                    RaiseError(lsts.ErrorCode, lsts.Message);
+                    return;
                 }
+            }
 
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_MC_SAVE_ANSWER", ref m_objApp, ref m_objUser, ref page);
+                    Z_MC_SAVE_ANSWER.Init(SAP);
 
-                    myProxy.setImportParameter("I_VORGID", VORGID);
-                    myProxy.setImportParameter("I_LFDNR", LFDNR);
-                    myProxy.setImportParameter("I_AN", Verfasser);
-                    myProxy.setImportParameter("I_VON", Empfänger);
-                    myProxy.setImportParameter("I_BD_NR", m_objUser.UserName.ToUpper());
-                    myProxy.setImportParameter("I_LTXNR", ltxnr);
+                    SAP.SetImportParameter("I_VORGID", VORGID);
+                    SAP.SetImportParameter("I_LFDNR", LFDNR);
+                    SAP.SetImportParameter("I_AN", Verfasser);
+                    SAP.SetImportParameter("I_VON", Empfänger);
+                    SAP.SetImportParameter("I_BD_NR", userName.ToUpper());
+                    SAP.SetImportParameter("I_LTXNR", ltxnr);
 
-                    myProxy.callBapi();
+                    CallBapi();
+                });
 
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                    if (!string.IsNullOrEmpty(ltxnr))
-                    {
-                        lsts.DeleteString(ltxnr);
-                    }
-                }
-                finally { m_blnGestartet = false; }
+            if (ErrorOccured && !String.IsNullOrEmpty(ltxnr))
+            {
+                lsts.DeleteString(ltxnr);
             }
 		}
 
-        public void Rückfrage(string strAppID, string strSessionID, System.Web.UI.Page page, string betr, string Text)
+        public void Rückfrage(string betr, string Text, string userName, string kostenstelle)
 		{
-            m_strClassAndMethod = "Eingang.Rückfrage";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
+            LongStringToSap lsts = new LongStringToSap();
+            var ltxnr = "";
+            if (Text.Trim().Length != 0)
             {
-                m_blnGestartet = true;
-
-                LongStringToSap lsts = new LongStringToSap(m_objUser, m_objApp, page);
-                string ltxnr = "";
-                if (Text.Trim().Length != 0)
+                ltxnr = lsts.InsertString(Text, "MC");
+                if (lsts.ErrorOccured)
                 {
-                    ltxnr = lsts.InsertString(Text, "MC");
-                    if (lsts.E_SUBRC != "0")
-                    {
-                        int lstsStatus;
-                        Int32.TryParse(lsts.E_SUBRC, out lstsStatus);
-                        m_intStatus = lstsStatus;
-                        m_strMessage = lsts.E_MESSAGE;
-                        return;
-                    }
+                    RaiseError(lsts.ErrorCode, lsts.Message);
+                    return;
                 }
+            }
 
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_MC_NEW_VORGANG", ref m_objApp, ref m_objUser, ref page);
+                    Z_MC_NEW_VORGANG.Init(SAP);
 
-                    myProxy.setImportParameter("I_UNAME", AN);
-                    myProxy.setImportParameter("I_BD_NR", m_objUser.UserName.ToUpper());
-                    myProxy.setImportParameter("I_AN", Verfasser);
-                    myProxy.setImportParameter("I_LTXNR", ltxnr);
-                    myProxy.setImportParameter("I_BETREFF", betr);
-                    myProxy.setImportParameter("I_VGART", "FILL");
-                    myProxy.setImportParameter("I_ZERLDAT", "");
-                    myProxy.setImportParameter("I_VKBUR", m_objUser.Kostenstelle);
+                    SAP.SetImportParameter("I_UNAME", AN);
+                    SAP.SetImportParameter("I_BD_NR", userName.ToUpper());
+                    SAP.SetImportParameter("I_AN", Verfasser);
+                    SAP.SetImportParameter("I_LTXNR", ltxnr);
+                    SAP.SetImportParameter("I_BETREFF", betr);
+                    SAP.SetImportParameter("I_VGART", "FILL");
+                    SAP.SetImportParameter("I_ZERLDAT", "");
+                    SAP.SetImportParameter("I_VKBUR", kostenstelle);
 
-                    myProxy.callBapi();
+                    CallBapi();
+                });
 
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                    if (!string.IsNullOrEmpty(ltxnr))
-                    {
-                        lsts.DeleteString(ltxnr);
-                    }
-                }
-                finally { m_blnGestartet = false; }
+            if (ErrorOccured && !String.IsNullOrEmpty(ltxnr))
+            {
+                lsts.DeleteString(ltxnr);
             }
 		}
 
-        public void EintragBeantworten(string strAppID, string strSessionID, System.Web.UI.Page page, EmpfängerStatus status)
+        public void EintragBeantworten(EmpfängerStatus status, string userName)
 		{
-            m_strClassAndMethod = "Eingang.EintragBeantworten";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_MC_SAVE_STATUS_IN", ref m_objApp, ref m_objUser, ref page);
+                    Z_MC_SAVE_STATUS_IN.Init(SAP);
 
-                    myProxy.setImportParameter("I_VORGID", VORGID);
-                    myProxy.setImportParameter("I_LFDNR", LFDNR);
-                    myProxy.setImportParameter("I_AN", Empfänger);
-                    myProxy.setImportParameter("I_BD_NR", m_objUser.UserName.ToUpper());
-                    myProxy.setImportParameter("I_STATUSE", TranslateEmpfängerStatus(status));
+                    SAP.SetImportParameter("I_VORGID", VORGID);
+                    SAP.SetImportParameter("I_LFDNR", LFDNR);
+                    SAP.SetImportParameter("I_AN", Empfänger);
+                    SAP.SetImportParameter("I_BD_NR", userName.ToUpper());
+                    SAP.SetImportParameter("I_STATUSE", TranslateEmpfängerStatus(status));
 
-                    myProxy.callBapi();
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    CallBapi();
+                });
 		}
 	}
 }
