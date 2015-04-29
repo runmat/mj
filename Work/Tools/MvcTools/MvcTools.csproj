@@ -102,6 +102,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Attributes\IGridColumnsAutoPersistProvider.cs" />
+    <Compile Include="Models\GridSettings.cs" />
     <Compile Include="Web\AreaAutoRegistration.cs" />
     <Compile Include="Web\ModelBinders\AnnotationsAndConventionsBasedModelMetaDataProvider.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -193,10 +195,8 @@
     <EmbeddedResource Include="Images\edit.png" />
     <EmbeddedResource Include="Images\down.png" />
     <EmbeddedResource Include="Images\up.png" />
-    <EmbeddedResource Include="Scripts\TelerikExtensions.js" />
     <EmbeddedResource Include="Images\excel.png" />
     <EmbeddedResource Include="Images\pdf.png" />
-    <EmbeddedResource Include="Styles\TelerikExtensions.css" />
     <Content Include="Views\Shared\EditableContent_Once.cshtml">
       <Generator>MvcRazorClassGenerator</Generator>
       <LastGenOutput>EditableContent_Once.cs</LastGenOutput>

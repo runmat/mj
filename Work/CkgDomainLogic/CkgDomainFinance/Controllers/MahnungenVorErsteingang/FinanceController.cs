@@ -63,7 +63,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportMahnungenVorErsteingangFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = MahnungenVorErsteingangViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnungenVorErsteingangViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Mahnungen", dt);
 
             return new EmptyResult();
@@ -71,7 +71,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportMahnungenVorErsteingangFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = MahnungenVorErsteingangViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = MahnungenVorErsteingangViewModel.MahnungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Mahnungen", dt, landscapeOrientation: true);
 
             return new EmptyResult();

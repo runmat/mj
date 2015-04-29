@@ -471,13 +471,38 @@
     <Compile Include="forms\WareneingangDetails.aspx.designer.cs">
       <DependentUpon>WareneingangDetails.aspx</DependentUpon>
     </Compile>
+    <Compile Include="lib\clsPreisanlage.cs" />
+    <Compile Include="lib\Models\DataModels\GruppeTour.cs" />
+    <Compile Include="lib\Models\DataModels\Barabhebung.cs" />
+    <Compile Include="lib\Models\DataModels\AmtDispos.cs" />
+    <Compile Include="lib\Models\DataModels\Userdaten.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDFehler.cs" />
+    <Compile Include="lib\Models\DataModels\Kundenname.cs" />
+    <Compile Include="lib\Models\UIModels\ZLDVorgangUIKompletterfassung.cs" />
+    <Compile Include="lib\Models\UIModels\ZLDVorgangUINacherfassung.cs" />
+    <Compile Include="lib\Models\UIModels\ZLDVorgangUIVorerfassung.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDVorgangVorerfassung.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDVorgang.cs" />
+    <Compile Include="lib\Models\DataModels\MobileUser.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDBankdaten.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDAdressdaten.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDPositionVorerfassung.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDPosition.cs" />
+    <Compile Include="lib\Models\DataModels\ZLDKopfdaten.cs" />
+    <Compile Include="lib\Models\DataModels\Kundenadresse.cs" />
+    <Compile Include="lib\clsNickname.cs" />
+    <Compile Include="lib\Models\AppModelMappings.cs" />
     <Compile Include="lib\clsWareneingang.cs" />
-    <Compile Include="lib\ErrorHandlingClass.cs" />
     <Compile Include="lib\Kassenabrechnung.cs" />
     <Compile Include="lib\KomplettZLD.cs" />
     <Compile Include="lib\Barabhebung.cs" />
     <Compile Include="lib\clsDisposition.cs" />
     <Compile Include="lib\MeldungDAD.cs" />
+    <Compile Include="lib\Models\DataModels\Filialadresse.cs" />
+    <Compile Include="lib\Models\DataModels\SonderStva.cs" />
+    <Compile Include="lib\Models\DataModels\Stva.cs" />
+    <Compile Include="lib\Models\DataModels\Materialstammdaten.cs" />
+    <Compile Include="lib\Models\DataModels\Kundenstammdaten.cs" />
     <Compile Include="lib\StatusaenderungVorgang.cs" />
     <Compile Include="lib\NachbearbeitungAuftrag.cs" />
     <Compile Include="lib\Listen.cs" />
@@ -503,7 +528,7 @@
     <Compile Include="lib\Report99.cs" />
     <Compile Include="lib\ResponseHelper.cs" />
     <Compile Include="lib\Umlagerung.cs" />
-    <Compile Include="lib\VoerfZLD.cs" />
+    <Compile Include="lib\VorerfZLD.cs" />
     <Compile Include="lib\VorVersand.cs" />
     <Compile Include="lib\ZLDCommon.cs" />
     <Compile Include="lib\ZLDTableClasses.cs">
@@ -515,13 +540,6 @@
       <AutoGen>True</AutoGen>
     </Compile>
     <Compile Include="lib\ZLD_Suche.cs" />
-    <Compile Include="MasterPage\AH.Master.cs">
-      <DependentUpon>AH.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="MasterPage\AH.Master.designer.cs">
-      <DependentUpon>AH.Master</DependentUpon>
-    </Compile>
     <Compile Include="MasterPage\App.Master.cs">
       <DependentUpon>App.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -574,7 +592,6 @@
     <Content Include="forms\Report99ZLD_2.aspx" />
     <Content Include="forms\AHVersandSelect.aspx" />
     <Content Include="forms\Touren.aspx" />
-    <Content Include="JavaScript\GridViewHelper.js" />
     <Content Include="MasterPage\App.Master" />
   </ItemGroup>
   <ItemGroup>
@@ -627,7 +644,6 @@
     <Content Include="JavaScript\Helper.js" />
     <Content Include="MasterPage\Big.Master" />
     <Content Include="forms\Preisanlage.aspx" />
-    <Content Include="MasterPage\AH.Master" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -636,6 +652,14 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\Work\SapORM\contracts\SapORM.Contracts.csproj">
+      <Project>{B24C32C4-9B13-48C5-9AA9-021A8D870650}</Project>
+      <Name>SapORM.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>

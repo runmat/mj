@@ -14,6 +14,8 @@ namespace AppZulassungsdienst.forms
         private App m_App;
         private KVP mObjKVP;
 
+        #region Events
+
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
@@ -25,7 +27,7 @@ namespace AppZulassungsdienst.forms
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
             lblError.Text = "";
 
-            if ((this.Session["mObjKVP"] != null))
+            if ((Session["mObjKVP"] != null))
             {
                 mObjKVP = (KVP)Session["mObjKVP"];
             }
@@ -41,6 +43,46 @@ namespace AppZulassungsdienst.forms
 
             Session["LastPage"] = this;
         }
+
+        protected void btnParken_Click(object sender, EventArgs e)
+        {
+            if (SaveKVP(true))
+            {
+                Session["mObjKVP"] = null;
+                Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+            }
+        }
+
+        protected void btnVerwerfen_Click(object sender, EventArgs e)
+        {
+            mpeConfirmDelete.Show();
+        }
+
+        protected void btnSenden_Click(object sender, EventArgs e)
+        {
+            SaveKVP();
+        }
+
+        protected void btnPanelConfirmDeleteOK_Click(object sender, EventArgs e)
+        {
+            mpeConfirmDelete.Hide();
+            DeleteKVP();
+        }
+
+        protected void btnPanelConfirmDeleteCancel_Click(object sender, EventArgs e)
+        {
+            mpeConfirmDelete.Hide();
+        }
+
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            Session["mObjKVP"] = null;
+            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        #endregion
+
+        #region Methods
 
         private void LoginKVPUser()
         {
@@ -82,25 +124,6 @@ namespace AppZulassungsdienst.forms
             {
                 lblError.Text = ex.Message;
             }
-        }
-
-        protected void btnParken_Click(object sender, EventArgs e)
-        {
-            if (SaveKVP(true))
-            {
-                Session["mObjKVP"] = null;
-                Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
-            }
-        }
-
-        protected void btnVerwerfen_Click(object sender, EventArgs e)
-        {
-            mpeConfirmDelete.Show();
-        }
-
-        protected void btnSenden_Click(object sender, EventArgs e)
-        {
-            SaveKVP();
         }
 
         private bool SaveKVP(bool nurParken = false)
@@ -164,7 +187,7 @@ namespace AppZulassungsdienst.forms
                 else
                 {
                     lblError.Text = "Fehler beim KVP-Senden: " + ex.Message;
-                }       
+                }
                 return false;
             }
         }
@@ -201,22 +224,6 @@ namespace AppZulassungsdienst.forms
             txtVorteil.Text = "";
         }
 
-        protected void btnPanelConfirmDeleteOK_Click(object sender, EventArgs e)
-        {
-            mpeConfirmDelete.Hide();
-            DeleteKVP();
-        }
-
-        protected void btnPanelConfirmDeleteCancel_Click(object sender, EventArgs e)
-        {
-            mpeConfirmDelete.Hide();
-        }
-
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            Session["mObjKVP"] = null;
-            Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
-        }
-
+        #endregion
     }
 }

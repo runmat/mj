@@ -15,9 +15,9 @@ namespace AppZulassungsdienst.forms
     public partial class ReportLieferschein : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
-        private Listen objListe; 
         private ZLDCommon objCommon;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Stammdaten laden.
@@ -27,15 +27,11 @@ namespace AppZulassungsdienst.forms
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
-
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
-
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
@@ -43,32 +39,25 @@ namespace AppZulassungsdienst.forms
 
             if (Session["objCommon"] == null)
             {
-
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
-                objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this,"K");
-                objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
+                objCommon.GetGruppen_Touren("K");
+                objCommon.GetGruppen_Touren("T");
                 Session["objCommon"] = objCommon;
             }
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
-                if (objCommon.tblKdGruppeforSelection == null) 
-                { 
-                    objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "K");
-                }
-                if (objCommon.tblTourenforSelection == null)
-                {
-                    objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
-                }
-                
+                if (objCommon.Kundengruppen == null)
+                    objCommon.GetGruppen_Touren("K");
+
+                if (objCommon.Touren == null)
+                    objCommon.GetGruppen_Touren("T");
             }
 
-            if (IsPostBack == false)
+            if (!IsPostBack)
             {
                 FillDropDowns();
             }
@@ -76,9 +65,23 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Funktionsaufruf DoSubmit().
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void cmdCreate_Click(object sender, EventArgs e)
+        {
+            DoSubmit();
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         /// Javascript-Funktionen an Controls binden.
         /// </summary>
-        private void SetAttributes() 
+        private void SetAttributes()
         {
             txtStVavon.Attributes.Add("onkeyup", "FilterKennz(this,event)");
             txtStVaBis.Attributes.Add("onkeyup", "FilterKennz(this,event)");
@@ -95,64 +98,44 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void FillDropDowns()
         {
-
-            
-            ddlGruppe.DataSource = objCommon.tblKdGruppeforSelection;
-            ddlGruppe.DataValueField = "GRUPPE";
-            ddlGruppe.DataTextField = "BEZEI";
+            ddlGruppe.DataSource = objCommon.Kundengruppen;
+            ddlGruppe.DataValueField = "Gruppe";
+            ddlGruppe.DataTextField = "GruppenName";
             ddlGruppe.DataBind();
-            ddlGruppe.SelectedValue = "0";          
+            ddlGruppe.SelectedValue = "0";
 
-            ddlTour.DataSource = objCommon.tblTourenforSelection;
-            ddlTour.DataValueField = "GRUPPE";
-            ddlTour.DataTextField = "BEZEI";
+            ddlTour.DataSource = objCommon.Touren;
+            ddlTour.DataValueField = "Gruppe";
+            ddlTour.DataTextField = "GruppenName";
             ddlTour.DataBind();
             ddlTour.SelectedValue = "0";
-
         }
 
         /// <summary>
-        /// Funktionsaufruf DoSubmit().
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void cmdCreate_Click(object sender, EventArgs e)
-        {
-            DoSubmit();
-        }
-
-        /// <summary>
-        /// Selektionsdaten sammeln, validieren und an SAP übergeben(Z_ZLD_EXPORT_LS).
+        /// Selektionsdaten sammeln, validieren und an SAP übergeben.
         /// </summary>
         private void DoSubmit()
         {
-
             lblError.Text = "";
-            objListe = new Listen(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
-            objListe.KennzeichenVon = "";
-            objListe.KennzeichenBis = "";
-            objListe.KundeVon = "";
-            objListe.KundeBis = "";
-            objListe.Zuldat = "";
-            objListe.ZuldatBis = "";
-            objListe.SelGroupTourID = "";
+
+            Listen objListe = new Listen(m_User.Reference);
 
             objListe.KennzeichenVon = txtStVavon.Text.Trim(' ');
             objListe.KennzeichenBis = txtStVaBis.Text.Trim(' ');
 
-            if (txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length == 0 && ddlTour.SelectedValue == "0" && ddlGruppe.SelectedValue =="0")
+            if (String.IsNullOrEmpty(txtKunnr.Text) && String.IsNullOrEmpty(txtKunnrBis.Text) && ddlTour.SelectedValue == "0" && ddlGruppe.SelectedValue == "0")
             {
                 lblError.Text = "Bitte geben Sie min. eine Kundenummer ein!";
                 return;
             }
 
-            if ((txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length > 0 && ddlGruppe.SelectedValue != "0"))
+            if ((!String.IsNullOrEmpty(txtKunnr.Text) || !String.IsNullOrEmpty(txtKunnrBis.Text)) && ddlGruppe.SelectedValue != "0")
             {
                 lblError.Text = "Bitte wählen Sie entweder Gruppe oder Kunde aus!";
                 return;
             }
 
-            if ((txtKunnr.Text.Trim(' ').Length + txtKunnrBis.Text.Trim(' ').Length > 0 && ddlTour.SelectedValue != "0"))
+            if ((!String.IsNullOrEmpty(txtKunnr.Text) || !String.IsNullOrEmpty(txtKunnrBis.Text)) && ddlTour.SelectedValue != "0")
             {
                 lblError.Text = "Bitte wählen Sie entweder Tour oder Kunde aus!";
                 return;
@@ -168,7 +151,7 @@ namespace AppZulassungsdienst.forms
             {
                 objListe.SelGroupTourID = ddlGruppe.SelectedValue;
             }
-            else if (ddlTour.SelectedValue != "0" )
+            else if (ddlTour.SelectedValue != "0")
             {
                 objListe.SelGroupTourID = ddlTour.SelectedValue;
             }
@@ -176,7 +159,7 @@ namespace AppZulassungsdienst.forms
             objListe.KundeVon = txtKunnr.Text.Trim(' ');
             objListe.KundeBis = txtKunnrBis.Text.Trim(' ');
 
-            if (txtZulDate.Text.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(txtZulDate.Text))
             {
                 lblError.Text = "Bitte geben Sie ein Zulassungsdatum ein!";
                 return;
@@ -188,17 +171,17 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            if (txtZulDateBis.Text.Trim(' ').Length > 0 && txtZulDateBis.Text.Trim(' ').Length < 6)
+            if (!String.IsNullOrEmpty(txtZulDateBis.Text) && txtZulDateBis.Text.Trim(' ').Length < 6)
             {
                 lblError.Text = "Bitte geben Sie das Zulassungsdatum bis 6-stellig ein!";
                 return;
             }
 
-            if (txtZulDateBis.Text.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(txtZulDateBis.Text))
             {
                 objListe.ZuldatBis = "";
             }
-            else 
+            else
             {
                 objListe.ZuldatBis = ZLDCommon.toShortDateStr(txtZulDateBis.Text);
             }
@@ -210,11 +193,9 @@ namespace AppZulassungsdienst.forms
             if (rbmitGebHoch.Checked) { Liefart = "3"; }
             if (rbmitGebQuer.Checked) { Liefart = "2"; }
 
-            objListe.VKBUR = m_User.Reference.Substring(4, 4);
-            objListe.VKORG = m_User.Reference.Substring(0, 4);
-            objListe.FillLieferschein(Session["AppID"].ToString(), Session.SessionID, this, Liefart);
+            objListe.FillLieferschein(Liefart);
 
-            if (objListe.Status != 0)
+            if (objListe.ErrorOccured)
             {
                 lblError.Text = "Fehler: " + objListe.Message;
             }
@@ -226,33 +207,23 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    Session["objListe"] = objListe;
-                    MergePDFs();
+                    MergePDFs(objListe);
                     GetPDF();
                 }
             }
-
         }
 
         /// <summary>
         /// Einzeilne Lieferscheine zusammenfügen.
         /// </summary>
-        private void MergePDFs()
+        private void MergePDFs(Listen objListe)
         {
             try
             {
                 List<String> files = new List<String>();
                 List<byte[]> filesByte = new List<byte[]>();
-                string sPath;
 
-                if (m_User.IsTestUser)
-                {
-                    sPath = "\\\\192.168.10.96\\test\\portal\\zld\\lieferscheine\\";
-                }
-                else
-                {
-                    sPath = "\\\\192.168.10.96\\prod\\portal\\zld\\lieferscheine\\";
-                }
+                var sPath = ZLDCommon.GetDocRootPath(m_User.IsTestUser) + "zld\\lieferscheine\\";
 
                 foreach (DataRow item in objListe.Lieferscheine.Rows)
                 {
@@ -262,7 +233,6 @@ namespace AppZulassungsdienst.forms
                     {
                         files.Add(dateiPfad);
                     }
-
                 }
 
                 foreach (string sFile in files)
@@ -279,15 +249,13 @@ namespace AppZulassungsdienst.forms
 
                 foreach (string sFile in files)
                 {
-                   File.Delete(sFile) ;
+                    File.Delete(sFile);
                 }
-
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                lblError.Text = "Generierung des Dokumentes fehlgeschlagen: " + Ex.Message;
+                lblError.Text = "Generierung des Dokumentes fehlgeschlagen: " + ex.Message;
             }
-
         }
 
         /// <summary>
@@ -295,7 +263,6 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void GetPDF()
         {
-
             try
             {
                 string sPath = Session["App_Filepath"].ToString();
@@ -304,13 +271,13 @@ namespace AppZulassungsdienst.forms
                 Session["App_FileDelete"] = "X";
 
                 ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-
             }
-            catch (Exception Ex)
+            catch (Exception ex)
             {
-                lblError.Text = "Generierung des Dokumentes fehlgeschlagen: " + Ex.Message;
+                lblError.Text = "Generierung des Dokumentes fehlgeschlagen: " + ex.Message;
             }
-
         }
+
+        #endregion
     }
 }

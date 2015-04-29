@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Models;
@@ -166,13 +167,13 @@ namespace PortalMvcTools.Web
 
         public static MvcHtmlString FormValidationSummary(this HtmlHelper html, bool excludePropertyErrors = true)
         {
-            return html.ValidationSummary(excludePropertyErrors, Localize.PleaseCheckYourInputs);
-        }
+            var persistenceModeErros = html.ViewData.ModelState.FirstOrDefault(ms => ms.Value.Errors != null && ms.Value.Errors.Any(error => error.ErrorMessage.ToLower().StartsWith(MvcTag.FormPersistenceModeErrorPrefix.ToLower())));
+            var validationSummaryHeader = Localize.PleaseCheckYourInputs;
+            if (persistenceModeErros.Key != null && persistenceModeErros.Value != null)
+                validationSummaryHeader = MvcTag.FormPersistenceModeErrorPrefix;
 
-        //public static MvcHtmlString FormValidationSummaryBlankGeneralMessage(this HtmlHelper html, bool excludePropertyErrors = true)
-        //{
-        //    return html.ValidationSummary(excludePropertyErrors);
-        //}
+            return html.ValidationSummary(excludePropertyErrors, validationSummaryHeader);
+        }
 
         public static MvcHtmlString FormWizard(this HtmlHelper html, string headerIconCssClass, string header, IEnumerable<string> stepTitles, IEnumerable<string> stepKeys = null, bool stepTitlesInNewLine = false)
         {
@@ -224,6 +225,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = html.DisplayNameFor(expression),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
@@ -321,14 +323,15 @@ namespace PortalMvcTools.Web
             return TypeMerger.MergeTypes(controlHtmlAttributes, new { maxlength = maxLengthAttribute.Length });
         }
 
-        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null)
+        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
+                PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = html.TextBlockFor(expression, controlHtmlAttributesDict),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributesDict,
@@ -337,7 +340,7 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
-        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
+        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
             controlHtmlAttributes = GetMaxLengthAttributes(expression, controlHtmlAttributes);
@@ -345,8 +348,9 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -364,6 +368,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = labelHtml.IsNotNullOrEmpty() ? new MvcHtmlString(labelHtml) : html.DisplayName(propertyName),
                 RequiredIndicatorHtml = labelHtml.IsNotNullOrEmpty() ? MvcHtmlString.Empty : html.RequiredIndicator(propertyName),
+                PerstistenceIndicatorHtml = html.PersistenceIndicator(propertyName),
                 ControlHtml = html.TextBox(propertyName, null, controlHtmlAttributes),
                 ValidationMessageHtml = html.ValidationMessage(propertyName),
                 IconCssClass = null,
@@ -373,7 +378,7 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
-        public static MvcHtmlString FormPlaceholderTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null)
+        public static MvcHtmlString FormPlaceholderTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
             controlHtmlAttributes = TypeMerger.MergeTypes(controlHtmlAttributes, new { placeholder = html.DisplayNameFor(expression).ToString() });
@@ -381,8 +386,9 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextBoxFor(expression, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -392,14 +398,15 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/ControlWithPlaceholder", model);
         }
 
-        public static MvcHtmlString FormTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, int columns = 40, int rows = 4)
+        public static MvcHtmlString FormTextAreaFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, int columns = 40, int rows = 4, string labelText = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.TextAreaFor(expression, rows, columns, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -415,6 +422,7 @@ namespace PortalMvcTools.Web
             {
                 DisplayNameHtml = new MvcHtmlString(label),
                 RequiredIndicatorHtml = MvcHtmlString.Empty,
+                PerstistenceIndicatorHtml = MvcHtmlString.Empty,
                 ControlHtml = new MvcHtmlString(templateControlHtml.Invoke(null).ToString()),
                 ValidationMessageHtml = null,
                 IconCssClass = null,
@@ -441,7 +449,7 @@ namespace PortalMvcTools.Web
             return FormDatePickerForInner(html, expression, htmlAttributes);
         }
 
-        private static MvcHtmlString FormDatePickerForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributes = null, string iconCssClass = null)
+        private static MvcHtmlString FormDatePickerForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
             var formatString = "{0:d}";
             var datePickerFor = html.TextBoxFor(expression, formatString, controlHtmlAttributes)
@@ -450,8 +458,9 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = datePickerFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -481,14 +490,15 @@ namespace PortalMvcTools.Web
             return html.FormDropDownListFor(expression, selectList.ToSelectList(), controlHtmlAttributes, preControlHtml, postControlHtml);
         }
 
-        private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
+        private static MvcHtmlString FormDropDownListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "dropdown");
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.DropDownListFor(expression, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
@@ -512,7 +522,7 @@ namespace PortalMvcTools.Web
             return html.FormMultiSelectListForInner(expression, selectList.ToMultiSelectList(), controlHtmlAttributes);
         }
 
-        private static MvcHtmlString FormMultiSelectListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null)
+        private static MvcHtmlString FormMultiSelectListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string labelText = null)
         {
             var controlHtmlAttributesDict = controlHtmlAttributes.MergePropertiesStrictly(new { multiple = "multiple", @class = "hide" });
             controlHtmlAttributesDict.Add("data-placeholder", "..."); // because of the hyphen it is necessary to add this attribute here and not right above
@@ -520,8 +530,9 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.ListBoxFor(expression, selectList, controlHtmlAttributesDict),
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
@@ -545,14 +556,15 @@ namespace PortalMvcTools.Web
             return html.FormRadioButtonListFor(expression, new SelectList(selectList, "Key", "Text"), controlHtmlAttributes);
         }
 
-        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string iconCssClass = null)
+        public static MvcHtmlString FormRadioButtonListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
             var radioButtonsFor = MvcHtmlString.Empty.Concat(selectList.Select(item => html.FormRadioButtonForInner(expression, item)).ToArray());
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = radioButtonsFor,
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -562,10 +574,7 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
-        private static MvcHtmlString FormRadioButtonForInner<TModel, TValue>(this HtmlHelper<TModel> html,
-                                                                        Expression<Func<TModel, TValue>> expression,
-                                                                        SelectListItem item,
-                                                                        string radioLabelCssClass = "radio")
+        private static MvcHtmlString FormRadioButtonForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, SelectListItem item, string radioLabelCssClass = "radio")
         {
             var radio = html.RadioButtonFor(expression, item.Value, new { style = "opacity:0;" })
                             .Concat(new MvcHtmlString(" " + item.Text));  // leading html space is necessary in bootstrap for checkboxes and radiobuttons
@@ -577,7 +586,7 @@ namespace PortalMvcTools.Web
 
         #region CheckBox, CheckBoxList
 
-        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false)
+        public static MvcHtmlString FormCheckBoxFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, bool labelHidden = false, string labelText = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "checkbox");
 
@@ -585,8 +594,9 @@ namespace PortalMvcTools.Web
             {
                 IsCheckBox = true,
                 LabelHidden = labelHidden,
-                DisplayNameHtml = html.DisplayNameFor(expression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(expression),
                 ControlHtml = html.CheckBoxFor(expression, controlHtmlAttributesDict), // MJE, deactivated this explicitely for knockout bindings:  .MergePropertiesStrictly(new { @class = "hide" })), 
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
@@ -608,9 +618,7 @@ namespace PortalMvcTools.Web
             return html.FormCheckBoxListForInner(expressionArray.ToList(), new MvcHtmlString(labelText));
         }
 
-        private static MvcHtmlString FormCheckBoxListForInner<TModel>(this HtmlHelper<TModel> html,
-                                                                List<Expression<Func<TModel, bool>>> expressionList,
-                                                                MvcHtmlString labelText)
+        private static MvcHtmlString FormCheckBoxListForInner<TModel>(this HtmlHelper<TModel> html, List<Expression<Func<TModel, bool>>> expressionList, MvcHtmlString labelText)
         {
             var checkBoxesFor = MvcHtmlString.Empty.Concat(expressionList.Select(expression => html.FormCheckBoxForInner(expression)).ToArray());
 
@@ -621,6 +629,7 @@ namespace PortalMvcTools.Web
                 IsCheckBox = true,
                 DisplayNameHtml = labelText,
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(firstExpression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(firstExpression),
                 ControlHtml = checkBoxesFor,
                 ValidationMessageHtml = validationMessageHtml,
                 IconCssClass = null,
@@ -629,9 +638,7 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
-        private static MvcHtmlString FormCheckBoxForInner<TModel>(this HtmlHelper<TModel> html,
-                                                                        Expression<Func<TModel, bool>> expression,
-                                                                        string checkBoxCssClass = "checkbox")
+        private static MvcHtmlString FormCheckBoxForInner<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, bool>> expression, string checkBoxCssClass = "checkbox")
         {
             var radio = html.CheckBoxFor(expression, new { style = "opacity:0;" })
                             .Concat(new MvcHtmlString(" " + html.GetDisplayName(expression))); // leading html space is necessary in bootstrap for checkboxes and radiobuttons
@@ -639,9 +646,7 @@ namespace PortalMvcTools.Web
             return FormControlForGetSurroundingDiv(radio, checkBoxCssClass, "label");
         }
 
-        public static MvcHtmlString FormDateRangePickerFor<TModel>(this HtmlHelper<TModel> html,
-                                                                Expression<Func<TModel, DateRange>> dateRangeExpression,
-                                                                object controlHtmlAttributes = null, string[] dateRangeGroupsToExclude = null)
+        public static MvcHtmlString FormDateRangePickerFor<TModel>(this HtmlHelper<TModel> html, Expression<Func<TModel, DateRange>> dateRangeExpression, object controlHtmlAttributes = null, string[] dateRangeGroupsToExclude = null, string labelText = null)
         {
             //var dateRangeValue = (bool)GetPropertyValue(typeof(TModel), html.ViewData.Model, dateRangeExpression);
             var dateRangePropertyName = dateRangeExpression.GetPropertyName();
@@ -662,8 +667,9 @@ namespace PortalMvcTools.Web
 
             var model = new FormControlModel
             {
-                DisplayNameHtml = html.DisplayNameFor(dateRangeExpression),
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(dateRangeExpression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(dateRangeExpression),
+                PerstistenceIndicatorHtml = html.PersistenceIndicatorFor(dateRangeExpression),
                 ControlHtml = innerHtml,
                 ValidationMessageHtml = html.ValidationMessageFor(dateRangeExpression),
                 IconCssClass = null,

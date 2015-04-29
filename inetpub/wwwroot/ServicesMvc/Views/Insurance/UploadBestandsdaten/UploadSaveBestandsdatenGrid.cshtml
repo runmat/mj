@@ -19,7 +19,6 @@
 @(Html.Telerik()
     .Grid<UploadBestandsdatenModel>()
     .Name(gridName)
-    .XGroup("GridUploadSaveBestandsdaten")
     .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
     .XAjaxDataBinding("UploadSaveBestandsdatenAjaxBinding", "Insurance")
     .Columns(columns =>

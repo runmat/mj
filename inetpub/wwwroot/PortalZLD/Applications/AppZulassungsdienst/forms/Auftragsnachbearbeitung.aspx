@@ -180,32 +180,32 @@
                                                     <AlternatingItemStyle CssClass="ItemStyle" />
                                                     <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="False">
                                                         <SortExpressions>
-                                                            <telerik:GridSortExpression FieldName="ZULPOSNR" SortOrder="Ascending" />
+                                                            <telerik:GridSortExpression FieldName="PositionsNr" SortOrder="Ascending" />
                                                         </SortExpressions>
                                                         <HeaderStyle ForeColor="#595959" />
                                                         <Columns>
-                                                            <telerik:GridBoundColumn DataField="ZULPOSNR" Visible="False"/>
-                                                            <telerik:GridBoundColumn DataField="MATNR" Visible="False"/>
-                                                            <telerik:GridBoundColumn DataField="MAKTX" HeaderText="Dienstleistung" HeaderStyle-Width="40%"/>
+                                                            <telerik:GridBoundColumn DataField="PositionsNr" Visible="False"/>
+                                                            <telerik:GridBoundColumn DataField="MaterialNr" Visible="False"/>
+                                                            <telerik:GridBoundColumn DataField="MaterialName" HeaderText="Dienstleistung" HeaderStyle-Width="40%"/>
                                                             <telerik:GridTemplateColumn HeaderText="Preis" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:Label runat="server" Text='<%# Eval("WEBMTART").ToString() == "D" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:Label runat="server" Text='<%# Eval("WebMaterialart").ToString() == "D" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                             <telerik:GridTemplateColumn HeaderText="Gebühr" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:Label runat="server" Text='<%# Eval("WEBMTART").ToString() == "G" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:Label runat="server" Text='<%# Eval("WebMaterialart").ToString() == "G" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
-                                                            <telerik:GridBoundColumn DataField="GEB_AMT_C" HeaderText="Gebühr Amt" HeaderStyle-Width="12%"/>
+                                                            <telerik:GridBoundColumn DataField="GebuehrAmt" HeaderText="Gebühr Amt" HeaderStyle-Width="12%"/>
                                                             <telerik:GridTemplateColumn HeaderText="Steuer" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:Label runat="server" Text='<%# Eval("WEBMTART").ToString() == "S" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:Label runat="server" Text='<%# Eval("WebMaterialart").ToString() == "S" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                             <telerik:GridTemplateColumn HeaderText="Preis Kennz." HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:Label runat="server" Text='<%# Eval("WEBMTART").ToString() == "K" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:Label runat="server" Text='<%# Eval("WebMaterialart").ToString() == "K" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                         </Columns>
@@ -278,41 +278,41 @@
                                                     <AlternatingItemStyle CssClass="ItemStyle" />
                                                     <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="False">
                                                         <SortExpressions>
-                                                            <telerik:GridSortExpression FieldName="ZULPOSNR" SortOrder="Ascending" />
+                                                            <telerik:GridSortExpression FieldName="PositionsNr" SortOrder="Ascending" />
                                                         </SortExpressions>
                                                         <HeaderStyle ForeColor="#595959" />
                                                         <Columns>
-                                                            <telerik:GridBoundColumn DataField="ZULPOSNR" Visible="False"/>
-                                                            <telerik:GridBoundColumn DataField="MATNR" Visible="False"/>
-                                                            <telerik:GridBoundColumn DataField="MAKTX" HeaderText="Dienstleistung" HeaderStyle-Width="40%"/>
+                                                            <telerik:GridBoundColumn DataField="PositionsNr" Visible="False"/>
+                                                            <telerik:GridBoundColumn DataField="MaterialNr" Visible="False"/>
+                                                            <telerik:GridBoundColumn DataField="MaterialName" HeaderText="Dienstleistung" HeaderStyle-Width="40%"/>
                                                             <telerik:GridTemplateColumn HeaderText="Preis" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtPreis" runat="server" Enabled='<%# Eval("WEBMTART").ToString() == "D" %>' CssClass="TextBoxNormal"
-														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WEBMTART").ToString() == "D" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:TextBox ID="txtPreis" runat="server" Enabled='<%# Eval("WebMaterialart").ToString() == "D" %>' CssClass="TextBoxNormal"
+														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WebMaterialart").ToString() == "D" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                             <telerik:GridTemplateColumn HeaderText="Gebühr" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtGebuehr" runat="server" Enabled='<%# Eval("WEBMTART").ToString() == "G" %>' CssClass="TextBoxNormal"
-														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WEBMTART").ToString() == "G" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:TextBox ID="txtGebuehr" runat="server" Enabled='<%# Eval("WebMaterialart").ToString() == "G" %>' CssClass="TextBoxNormal"
+														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WebMaterialart").ToString() == "G" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                             <telerik:GridTemplateColumn HeaderText="Gebühr Amt" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtGebuehrAmt" runat="server" CssClass="TextBoxNormal"
-														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("GEB_AMT_C", "{0:F}") %>' Enabled='<%# Eval("WEBMTART").ToString() != "D" %>'/>
+														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("GebuehrAmt", "{0:F}") %>' Enabled='<%# Eval("WebMaterialart").ToString() != "D" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                             <telerik:GridTemplateColumn HeaderText="Steuer" HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtSteuer" runat="server" Enabled='<%# Eval("WEBMTART").ToString() == "S" %>' CssClass="TextBoxNormal"
-														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WEBMTART").ToString() == "S" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:TextBox ID="txtSteuer" runat="server" Enabled='<%# Eval("WebMaterialart").ToString() == "S" %>' CssClass="TextBoxNormal"
+														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WebMaterialart").ToString() == "S" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                             <telerik:GridTemplateColumn HeaderText="Preis Kennz." HeaderStyle-Width="12%">
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtPreisKennz" runat="server" Enabled='<%# Eval("WEBMTART").ToString() == "K" %>' CssClass="TextBoxNormal"
-														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WEBMTART").ToString() == "K" ? Eval("PREIS_C", "{0:F}") : "" %>'/>
+                                                                    <asp:TextBox ID="txtPreisKennz" runat="server" Enabled='<%# Eval("WebMaterialart").ToString() == "K" %>' CssClass="TextBoxNormal"
+														                onKeyPress="return numbersonly(event, true)" Width="45" Font-Size="8pt" Text='<%# Eval("WebMaterialart").ToString() == "K" ? Eval("Preis", "{0:F}") : "" %>'/>
                                                                 </ItemTemplate>
                                                             </telerik:GridTemplateColumn>
                                                         </Columns>
@@ -383,7 +383,7 @@
                                         <Columns>
                                             <asp:TemplateField HeaderText="Quittung">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblFileName" runat="server" Text='<%# Eval("Filename") %>'></asp:Label>
+                                                    <asp:Label ID="lblFileName" runat="server" Text='<%# Eval("Filename") %>'/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Aufrufen">

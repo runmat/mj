@@ -18,23 +18,6 @@ namespace Telerik.Web.Mvc.UI
     {
         #region Filtered Data
 
-        //
-        // (depends on "/Scripts/TelerikExtensions.js")
-        // (depends on "/Styles/TelerikExtensions.css")
-        //
-
-        /// <summary>
-        /// usage, controller action: 
-        /// public ActionResult FilteredDataAction(int page, string orderBy, string filterBy, string jsonColumns)
-        /// </summary>
-        /// <param name="html"></param>
-        /// <returns>EmptyResult()</returns>
-        public static MvcHtmlString FilteredDataTelerikScriptsAndStyles(this HtmlHelper html)
-        {
-            return html.Style("~/Shared/Styles/TelerikExtensions.css")
-              .Concat(html.Script("~/Shared/Scripts/TelerikExtensions.js"));
-        }
-
         public static GridToolBarCustomCommandBuilder<T> FilteredDataExcelCommand<T>(this GridToolBarCommandFactory<T> builder, string commandTitle, string action, string controller) where T : class
         {
             return builder.FilteredDataImageButtonCommand(commandTitle, action, controller, "excel");
@@ -56,7 +39,7 @@ namespace Telerik.Web.Mvc.UI
         {
             return builder.Custom()
                 .HtmlAttributes(new { id = string.Format("{0}_FilterCommand", action), @class = "hide" })
-                .Action(action, controller, new { page = 1, orderBy = "~", filterBy = "~" })
+                .Action(action, controller, new { page = 1, orderBy = "~", filterBy = "~", groupBy = "~" })
                 .Text(commandTitle);
         }
 
@@ -175,11 +158,86 @@ namespace Telerik.Web.Mvc.UI
 
         public static GridBuilder<T> XAutoColumnConfiguration<T>(this GridBuilder<T> builder) where T : class
         {
+            CheckForProperGridPersistenceConfigurationAndRaiseError(typeof(T));
+
             return builder.Groupable(g => g.Enabled(true))
                           .Reorderable(r => r.Columns(true))
                           .Resizable(r => r.Columns(true))
                           .ColumnContextMenu()
                           .Filterable(filter => filter.Enabled(true));
+        }
+
+        private static void CheckForProperGridPersistenceConfigurationAndRaiseError(Type type)
+        {
+            var sessionSavedGrid = (IGrid)SessionHelper.GetSessionObject(string.Format("Telerik_Grid_{0}", type.Name));
+
+            // 1.
+            // Validate grid configuration / declaration 
+            // => for mode "AutoColumnsPersisting"
+            //
+            if (type.GetCustomAttributes(true).OfType<GridColumnsAutoPersistAttribute>().Any() &&
+                (type != (SessionHelper.GetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns") as Type) ||
+                 sessionSavedGrid == null))
+            {
+                throw new NotSupportedException(
+                    "Grids mit Models, die mit Attribut 'GridColumnsAutoPersist' dekoriert sind, müssen zwingend die X-Präfix Notation nutzen, " + 
+                    "==> müssen also wie folgt deklariert werden: " +
+                    "Html.XTelerik().XGrid<TModel>()..."
+                );
+            }
+
+            // 2.
+            // Validate grid configuration / declaration 
+            // => for mode "FormSelectorPersisting / ReportGenerator"
+            //
+            if (SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent").IsNotNullOrEmpty() &&
+                sessionSavedGrid == null)
+            {
+                throw new NotSupportedException(
+                    "Grids die im Kontext 'FormSelectorPersisting / ReportGenerator' verwendet werden, " +
+                    "==> müssen zwingend die X-Präfix Notation nutzen, müssen also wie folgt deklariert werden: " +
+                    "Html.XTelerik().XGrid<TModel>()..."
+                );
+            }
+
+            //
+            // 1 + 2, both modes (AutoColumnsPersisting + FormSelectorPersisting)
+            //
+            if (type.GetCustomAttributes(true).OfType<GridColumnsAutoPersistAttribute>().Any() ||
+                SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent").IsNotNullOrEmpty())
+            {
+                var gridColumns = sessionSavedGrid.Columns.Cast<IGridBoundColumn>();
+
+                var columnsWithoutTitle = gridColumns.Where(c => c.Title.IsNullOrEmpty() && c.Visible);
+                if (columnsWithoutTitle.Any())
+                {
+                    throw new NotSupportedException(
+                        "Grids die in irgendeiner Weise peristierbar sein sollen, " +
+                        "==> müssen für alle Spalten einen 'Title' haben!    " +
+                        "Spalten ohne Titel: " + string.Join(", ", gridColumns.Select(dc => dc.Member))
+                        );
+                }
+
+                var duplicateColumns = gridColumns
+                                        .Where(c => c.Visible)
+                                        .GroupBy(c => c.Member)
+                                        .Select(g => new { ColumnName = g.Key, Count = g.Count()})
+                                        .Where(column => column.Count > 1);
+                if (duplicateColumns.Any())
+                {
+                    throw new NotSupportedException(
+                        "Grids die in irgendeiner Weise peristierbar sein sollen, " +
+                        "==> dürfen keine doppelten Spalten deklarieren!    " +
+                        "Doppelte Spalten: " + string.Join(", ", duplicateColumns.Select(dc => dc.ColumnName))
+                        );
+                }
+            }
+        }
+
+        [Obsolete]
+        public static TBuilder XGroup<TBuilder>(this TBuilder builder, string gridGroup)
+        {
+            return builder;
         }
 
         public static GridBuilder<T> XPageSize<T>(this GridBuilder<T> builder, int pageSize) where T : class
@@ -207,21 +265,6 @@ namespace Telerik.Web.Mvc.UI
 
 
         #region Auto Grid Column Translation Configuration
-
-        private static string GridGroup
-        {
-            // ReSharper disable UnusedMember.Local
-            get { return SessionHelper.GetSessionString("GridGroup"); }
-            // ReSharper restore UnusedMember.Local
-            set { SessionHelper.SetSessionValue("GridGroup", value); }
-        }
-
-        public static TBuilder XGroup<TBuilder>(this TBuilder builder, string gridGroup)
-        {
-            GridGroup = gridGroup;
-
-            return builder;
-        }
 
         public static GridBoundColumnBuilder<TModel> XBound<TModel>(this GridColumnFactory<TModel> builder, string propertyName, bool columnVisibleOnStart = true)
             where TModel : class
@@ -285,10 +328,10 @@ namespace Telerik.Web.Mvc.UI
             return column.Format(columnFormat);
         }
 
-        public static GridBoundColumnBuilder<TModel> XBound<TModel, TValue>(this GridColumnFactory<TModel> builder, Expression<Func<TModel, TValue>> expression)
+        public static GridBoundColumnBuilder<TModel> XBound<TModel, TValue>(this GridColumnFactory<TModel> builder, Expression<Func<TModel, TValue>> expression, bool columnVisibleOnStart = true)
             where TModel : class
         {
-            return builder.XBound(expression.GetPropertyName());
+            return builder.XBound(expression.GetPropertyName(), columnVisibleOnStart);
         }
 
         public static GridBuilder<TModel> XToolBar<TModel>(this GridBuilder<TModel> builder, string controller)
@@ -315,6 +358,8 @@ namespace Telerik.Web.Mvc.UI
 
         public static XViewComponentFactory<TModel> XTelerik<TModel>(this HtmlHelper<TModel> helper) where TModel : class
         {
+            helper.ViewContext.Writer.Write(helper.FormPersistenceGridMenu());
+           
             var componentFactory = helper.Telerik();
             var myComponentFactory = new XViewComponentFactory<TModel>(helper,
                                             componentFactory.ClientSideObjectWriterFactory,
@@ -335,6 +380,9 @@ namespace Telerik.Web.Mvc.UI
 
         private static void SaveGridToSession(IGrid grid, Type type)
         {
+            if (type.GetCustomAttributes(true).OfType<GridColumnsAutoPersistAttribute>().Any())
+                SessionHelper.SetSessionObject("Telerik_Grid_CurrentModelTypeForAutoPersistColumns", type);
+
             SessionHelper.SetSessionObject(string.Format("Telerik_Grid_{0}", type.Name), grid);
         }
 
@@ -349,6 +397,8 @@ namespace Telerik.Web.Mvc.UI
 
                     SaveGridToSession(grid, typeof (T));
 
+                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns(typeof(T)));
+                    
                     return grid;
                 }));
 
