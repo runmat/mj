@@ -16,8 +16,6 @@ namespace CkgDomainLogic.General.Services
     /// </summary>
     public class LogonContextDataServiceAutohaus : LogonContextDataServiceBase, ILogonContextDataServiceAutohaus
     {
-        public string CurrentGridColumns { get; set; }
-
         public override List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return null; } }
 
         public string VkOrg

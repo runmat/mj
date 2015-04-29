@@ -4,6 +4,7 @@ using AppZulassungsdienst.lib;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using System.Data;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {
@@ -13,9 +14,10 @@ namespace AppZulassungsdienst.forms
     public partial class Neukundenanlage : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private Neukunde objNeukunde;
         private ZLDCommon objCommon;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
@@ -26,35 +28,32 @@ namespace AppZulassungsdienst.forms
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
             lblError.Text = "";
 
-            if (m_User.Reference.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
-                objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
+                objCommon.GetGruppen_Touren("T");
                 Session["objCommon"] = objCommon;
             }
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
-                if (objCommon.tblGruppeTouren == null) 
+                if (objCommon.Touren == null)
                 {
-                    objCommon.GetGruppen_Touren(Session["AppID"].ToString(), Session.SessionID, this, "T");
-                    if (objCommon.Message.Length > 0)
+                    objCommon.GetGruppen_Touren("T");
+                    if (objCommon.ErrorOccured)
                     {
                         lblError.Text = objCommon.Message;
                         return;
@@ -67,314 +66,11 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                objNeukunde = new Neukunde(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
-                objNeukunde.VKBUR = m_User.Reference.Substring(4, 4);
-                objNeukunde.VKORG = m_User.Reference.Substring(0, 4);
-                objNeukunde.Fill(Session["AppID"].ToString(), Session.SessionID, this);
+                objNeukunde = new Neukunde(m_User.Reference);
+                objNeukunde.Fill();
                 fillDropDowns();
                 Session["objNeukunde"] = objNeukunde;
             }
-        }
-
-        /// <summary>
-        /// Füllen der Auswahldropdowns. Branche, Funktion des Ansprechpartners und Touren.
-        /// </summary>
-        private void fillDropDowns()
-        { 
-            ListItem tmpItem;
-            Int32 i  = 0;
-            ddlBranche.Items.Clear();
-            do 
-            {
-                tmpItem = new ListItem(objNeukunde.tblBranchen.Rows[i]["BRTXT"].ToString(), objNeukunde.tblBranchen.Rows[i]["BRSCH"].ToString());
-                ddlBranche.Items.Add(tmpItem);
-                i += 1; 
-            } while (i < objNeukunde.tblBranchen.Rows.Count);
-
-            ddLand.Items.Clear();
-            DataView tmpDataview  = objNeukunde.tblLaender.DefaultView;
-            tmpDataview.Sort = "LANDX";
-            i = 0;
-            do
-            {
-                tmpItem = new ListItem(tmpDataview[i]["LANDX"].ToString(), tmpDataview[i]["LAND1"].ToString());
-                if (tmpItem.Value.ToString() == "DE")
-                {
-                    tmpItem.Selected = true;
-                }
-                ddLand.Items.Add(tmpItem);
-                i += 1;
-            } while (i < tmpDataview.Count);
-
-            ddlFunktion.Items.Clear();
-            i = 0;
-            tmpItem = new ListItem("- Bitte wählen -", "00");
-            ddlFunktion.Items.Add(tmpItem);
-            do
-            {
-                tmpItem = new ListItem(objNeukunde.tblFunktion.Rows[i]["VTEXT"].ToString(), objNeukunde.tblFunktion.Rows[i]["PAFKT"].ToString());
-                ddlFunktion.Items.Add(tmpItem);
-                i += 1;
-            } while (i < objNeukunde.tblFunktion.Rows.Count);
-
-            ddlTour.DataSource = objCommon.tblTourenforSelection;
-            ddlTour.DataValueField = "GRUPPE";
-            ddlTour.DataTextField = "BEZEI";
-            ddlTour.DataBind();
-            ddlTour.SelectedValue = "0";
-
-        }
-
-        /// <summary>
-        /// Sammeln der Eingabedaten und in den Klasseneigenschaften speichern.
-        /// </summary>
-        private void GetMaskData()
-        {
-            objNeukunde.BrancheFreitext = txtBrancheFrei.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Name1 = txtName1.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Name2 = txtName2.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Strasse = txtStrasse.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.HausNr = txtHausnr.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Ort = txtOrt.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.PLZ = txtPlz.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.UIDNummer = txtUIDNummer.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Telefon = txtTelefon.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Mobil = txtMobil.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Mail = txtMail.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Fax = txtFax.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Land = ddLand.SelectedValue;
-            if (rbBarkunde.Checked)
-            { objNeukunde.Abruftyp = "3"; }
-            else { objNeukunde.Abruftyp = "2"; }
-            if (rbEinzugJa.Checked)
-            { objNeukunde.EinzugEr = "X"; }
-            else { objNeukunde.EinzugEr = ""; }
-
-            if (rbFirma.Checked)
-            { objNeukunde.Anrede = "0003"; }
-            else if (rbHerr.Checked)
-            { objNeukunde.Anrede = "0002"; }
-            else if (rbFrau.Checked)
-            { objNeukunde.Anrede = "0001"; }
-            objNeukunde.Branche = ddlBranche.SelectedValue;
-            if (ddlFunktion.SelectedValue != "00")
-            { objNeukunde.Funktion = ddlFunktion.SelectedValue; }
-
-            objNeukunde.ASPName = txtNameAnPartner.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.ASPVorname = txtVornameAnPartner.Text.TrimStart(' ').TrimEnd(' ');
-            objNeukunde.Einzug = rbJa.Checked;
-            objNeukunde.Auskunft = rbAuskunftJa.Checked;
-            objNeukunde.Kreditvers = rbKreditJa.Checked;
-            objNeukunde.UmSteuer = rbSteuerJa.Checked;
-            objNeukunde.Bemerkung = txtBemerkung.Text;
-            objNeukunde.UmStErwartung = txtUmsatz.Text;
-            objNeukunde.TourID = ddlTour.SelectedValue;
-            if (ddlTour.SelectedValue == "0")
-            {
-                objNeukunde.TourID = "";
-            }
-
-        }
-
-        /// <summary>
-        /// Funktion zum Sperren und Entsperren von Controls(nach erfolgreicher Neuanlage).
-        /// </summary>
-        /// <param name="enabled">Boolean</param>
-        private void EnableDisableControls(Boolean enabled)
-        { 
-            txtBrancheFrei.Enabled = enabled;
-            txtName1.Enabled = enabled;
-            txtName2.Enabled = enabled;
-            txtStrasse.Enabled = enabled;
-            txtHausnr.Enabled = enabled;
-            txtOrt.Enabled = enabled;
-            txtPlz.Enabled = enabled;
-            txtUIDNummer.Enabled = enabled;
-            ddLand.Enabled = enabled;
-            rbBarkunde.Enabled = enabled;
-            rbLieferscheinKunde.Enabled = enabled;
-            rbEinzugJa.Enabled = enabled;
-            rbEinzugNein.Enabled = enabled;
-            rbHerr.Enabled = enabled;
-            rbFirma.Enabled = enabled;
-            rbFrau.Enabled = enabled;
-            ddlBranche.Enabled = enabled;
-            ddlFunktion.Enabled = enabled;
-            txtNameAnPartner.Enabled = enabled;
-            txtVornameAnPartner.Enabled = enabled;
-            txtTelefon.Enabled = enabled;
-            txtFax.Enabled = enabled;
-            txtMail.Enabled = enabled;
-            txtMobil.Enabled = enabled;
-            lbAbsenden.Enabled = enabled;
-            rbSteuerJa.Enabled = enabled;
-            rbSteuerNein.Enabled = enabled;
-            rbKreditJa.Enabled = enabled;
-            rbKreditNein.Enabled = enabled;
-            rbAuskunftJa.Enabled = enabled;
-            rbAuskunftNein.Enabled = enabled;
-            rbEinzugJa.Enabled = enabled;
-            rbEinzugNein.Enabled = enabled;
-            txtUmsatz.Enabled = enabled;
-            txtIBAN.Enabled = enabled;
-            txtBemerkung.Enabled = enabled;
-            ddlTour.Enabled = enabled;
-            lb_Neu.Visible = !enabled;
-            lblNoData.ForeColor = System.Drawing.Color.Green;
-            lblNoData.Text = "Klicken Sie auf \nNeuer Kunde\n um einen weiteren Kunden zu erfassen!";
-        }
-
-        /// <summary>
-        /// Errorstyles der Controls entfernen.
-        /// </summary>
-        private void ClearErrors()
-        {
-            txtBrancheFrei.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtHausnr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtUIDNummer.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            ddLand.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            rbBarkunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            rbLieferscheinKunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            rbEinzugJa.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            rbEinzugNein.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            rbHerr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            rbFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            rbFrau.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            ddlBranche.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            txtUmsatz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
-            lblError.Text = "";
-        }
-
-        /// <summary>
-        /// Validieren der eingebenen Daten.
-        /// </summary>
-        /// <returns>true bei Fehler</returns>
-        private Boolean ValidateInput()
-        {
-            Boolean bReturn = false;
-
-            if (rbBarkunde.Checked == false && rbLieferscheinKunde.Checked==false)
-            {
-                rbBarkunde.BorderStyle = BorderStyle.Solid;
-                rbBarkunde.BorderWidth = 1;
-                rbBarkunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                rbLieferscheinKunde.BorderStyle = BorderStyle.Solid;
-                rbLieferscheinKunde.BorderWidth = 1;
-                rbLieferscheinKunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            if (rbLieferscheinKunde.Checked)
-            {
-                if (rbEinzugJa.Checked == false && rbEinzugNein.Checked == false)
-                {
-                    rbEinzugJa.BorderStyle = BorderStyle.Solid;
-                    rbEinzugJa.BorderWidth = 1;
-                    rbEinzugJa.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    rbEinzugNein.BorderStyle = BorderStyle.Solid;
-                    rbEinzugNein.BorderWidth = 1;
-                    rbEinzugNein.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bReturn = true; 
-                }
-            }
-            if (rbFirma.Checked == false && rbHerr.Checked == false && rbFrau.Checked == false)
-            {
-                rbFirma.BorderStyle = BorderStyle.Solid;
-                rbFirma.BorderWidth = 1;
-                rbFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                rbHerr.BorderStyle = BorderStyle.Solid;
-                rbHerr.BorderWidth = 1;
-                rbHerr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                rbFrau.BorderStyle = BorderStyle.Solid;
-                rbFrau.BorderWidth = 1;
-                rbFrau.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            if (ddlBranche.SelectedIndex == -1)
-            {
-                ddlBranche.BorderStyle = BorderStyle.Solid;
-                ddlBranche.BorderWidth = 1;
-                ddlBranche.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            else if (ddlBranche.SelectedValue == "0004" && txtBrancheFrei.Text.Length == 0)
-            {
-                txtBrancheFrei.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            if (txtName1.Text.Trim().Length == 0)
-            {
-                txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-
-            if (txtName1.Text.Trim().Length == 0)
-            {
-                txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-
-            if (txtStrasse.Text.Trim().Length == 0)
-            {
-                txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-
-            if (txtHausnr.Text.Trim().Length == 0)
-            {
-                txtHausnr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            if (txtOrt.Text.Trim().Length == 0)
-            {
-                txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            if (txtPlz.Text.Trim().Length == 0)
-            {
-                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            else if (ddLand.SelectedValue == "DE" && txtPlz.Text.Trim().Length != 5)
-            {
-                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            if (ddLand.SelectedIndex == -1)
-            {
-                ddLand.BorderStyle = BorderStyle.Solid;
-                ddLand.BorderWidth = 1;
-                ddLand.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            else if (ddLand.SelectedValue != "DE")
-            {
-                if (txtUIDNummer.Text.Trim().Length == 0)
-                {
-                    txtUIDNummer.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    bReturn = true; 
-                }
-            }
-
-            if ((rbJa.Checked) && (txtIBAN.Text.Trim(' ').Length == 0))
-            {
-                txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;                       
-            }
-
-
-            if (txtUmsatz.Text.Trim().Length == 0)
-            {
-                txtUmsatz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                bReturn = true;
-            }
-            return bReturn;
         }
 
         /// <summary>
@@ -421,7 +117,7 @@ namespace AppZulassungsdienst.forms
         protected void rbBarkunde_CheckedChanged(object sender, EventArgs e)
         {
             if (rbBarkunde.Checked)
-            { 
+            {
                 rbEinzugJa.Checked = false;
                 rbEinzugNein.Checked = false;
             }
@@ -506,7 +202,7 @@ namespace AppZulassungsdienst.forms
             rbNein.Checked = true;
             txtBankname.Text = "Wird automatisch gefüllt!";
             txtSWIFT.Text = "";
-            txtIBAN.Text="";
+            txtIBAN.Text = "";
             rbSteuerNein.Checked = true;
             rbSteuerJa.Checked = false;
             ddlTour.SelectedValue = "0";
@@ -550,70 +246,12 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    
                     GetMaskData();
                     if (ProofBank())
                     {
                         DoSubmit();
                     }
-                    
                 }
-            }
-        }
-
-        /// <summary>
-        /// Bankverbindung prüfen.
-        /// </summary>
-        /// <returns>ok?</returns>
-        private Boolean ProofBank() 
-        {
-            bool blnOk = true;
-            if (rbJa.Checked && txtIBAN.Text.Trim(' ').Length > 0)
-            {
-                objNeukunde.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.Trim(' ').ToUpper());
-                objNeukunde.ProofIBAN(Session["AppID"].ToString(), Session.SessionID, this);
-                if (objNeukunde.Message != String.Empty)
-                {
-                    blnOk = false;
-                    lblError.Text = objNeukunde.Message;
-                    lblNeukundeResultatMeldung.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                    lblNeukundeResultatMeldung.Text = objNeukunde.Message;
-                }
-                else
-                {
-                    txtSWIFT.Text = objNeukunde.SWIFT;
-                    txtBankname.Text = objNeukunde.Bankname;
-                }
-            }
-            else
-            {
-                objNeukunde.SWIFT = "";
-                objNeukunde.Bankkey = "";
-                objNeukunde.BLZ = "";
-                objNeukunde.Kontonr = "";
-            }
-
-            return blnOk;    
-        }
-
-        /// <summary>
-        /// Funktion Daten an SAP übermitteln
-        /// </summary>
-        private void DoSubmit()
-        {
-            objNeukunde.Change(Session["AppID"].ToString(), Session.SessionID, this);
-            if (objNeukunde.Message != String.Empty)
-            {
-                lblError.Text = objNeukunde.Message;
-                lblNeukundeResultatMeldung.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
-                lblNeukundeResultatMeldung.Text = objNeukunde.Message;
-            }
-            else
-            {
-                lblNeukundeResultatMeldung.ForeColor = System.Drawing.Color.Green;
-                lblNeukundeResultatMeldung.Text = "Neue Kundenstammdaten erfolgreich angelegt!";
-                MPENeukundeResultat.Show();
-                EnableDisableControls(false);
             }
         }
 
@@ -626,12 +264,11 @@ namespace AppZulassungsdienst.forms
         protected void rbEinzugJa_CheckedChanged(object sender, EventArgs e)
         {
             rbJa.Checked = rbEinzugJa.Checked;
-            rbNein.Checked= !rbEinzugJa.Checked;
-            if (rbLieferscheinKunde.Checked && rbEinzugJa.Checked) 
+            rbNein.Checked = !rbEinzugJa.Checked;
+            if (rbLieferscheinKunde.Checked && rbEinzugJa.Checked)
             {
                 ResponseHelper.Redirect("/PortalZLD/Applications/AppZulassungsdienst/Documents/Einzugsermächtigung_SEPA.pdf", "Einzugsermächtigung", "left=0,top=0,resizable=YES,scrollbars=YES");
             }
-            
         }
 
         /// <summary>
@@ -653,7 +290,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void rbJa_CheckedChanged(object sender, EventArgs e)
         {
-            rbEinzugJa.Checked =rbJa.Checked;
+            rbEinzugJa.Checked = rbJa.Checked;
             rbEinzugNein.Checked = !rbJa.Checked;
             if (rbLieferscheinKunde.Checked && rbEinzugJa.Checked)
             {
@@ -672,5 +309,363 @@ namespace AppZulassungsdienst.forms
             rbEinzugNein.Checked = rbNein.Checked;
         }
 
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Füllen der Auswahldropdowns. Branche, Funktion des Ansprechpartners und Touren.
+        /// </summary>
+        private void fillDropDowns()
+        {
+            ListItem tmpItem;
+            Int32 i = 0;
+            ddlBranche.Items.Clear();
+            do
+            {
+                tmpItem = new ListItem(objNeukunde.tblBranchen.Rows[i]["BRTXT"].ToString(), objNeukunde.tblBranchen.Rows[i]["BRSCH"].ToString());
+                ddlBranche.Items.Add(tmpItem);
+                i += 1;
+            } while (i < objNeukunde.tblBranchen.Rows.Count);
+
+            ddLand.Items.Clear();
+            DataView tmpDataview = new DataView(objNeukunde.tblLaender);
+            tmpDataview.Sort = "LANDX";
+            i = 0;
+            do
+            {
+                tmpItem = new ListItem(tmpDataview[i]["LANDX"].ToString(), tmpDataview[i]["LAND1"].ToString());
+                if (tmpItem.Value.ToString() == "DE")
+                {
+                    tmpItem.Selected = true;
+                }
+                ddLand.Items.Add(tmpItem);
+                i += 1;
+            } while (i < tmpDataview.Count);
+
+            ddlFunktion.Items.Clear();
+            i = 0;
+            tmpItem = new ListItem("- Bitte wählen -", "00");
+            ddlFunktion.Items.Add(tmpItem);
+            do
+            {
+                tmpItem = new ListItem(objNeukunde.tblFunktion.Rows[i]["VTEXT"].ToString(), objNeukunde.tblFunktion.Rows[i]["PAFKT"].ToString());
+                ddlFunktion.Items.Add(tmpItem);
+                i += 1;
+            } while (i < objNeukunde.tblFunktion.Rows.Count);
+
+            ddlTour.DataSource = objCommon.Touren;
+            ddlTour.DataValueField = "Gruppe";
+            ddlTour.DataTextField = "GruppenName";
+            ddlTour.DataBind();
+            ddlTour.SelectedValue = "0";
+        }
+
+        /// <summary>
+        /// Sammeln der Eingabedaten und in den Klasseneigenschaften speichern.
+        /// </summary>
+        private void GetMaskData()
+        {
+            objNeukunde.BrancheFreitext = txtBrancheFrei.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Name1 = txtName1.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Name2 = txtName2.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Strasse = txtStrasse.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.HausNr = txtHausnr.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Ort = txtOrt.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.PLZ = txtPlz.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.UIDNummer = txtUIDNummer.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Telefon = txtTelefon.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Mobil = txtMobil.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Mail = txtMail.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Fax = txtFax.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Land = ddLand.SelectedValue;
+            if (rbBarkunde.Checked)
+            { objNeukunde.Abruftyp = "3"; }
+            else { objNeukunde.Abruftyp = "2"; }
+            if (rbEinzugJa.Checked)
+            { objNeukunde.EinzugEr = "X"; }
+            else { objNeukunde.EinzugEr = ""; }
+
+            if (rbFirma.Checked)
+            { objNeukunde.Anrede = "0003"; }
+            else if (rbHerr.Checked)
+            { objNeukunde.Anrede = "0002"; }
+            else if (rbFrau.Checked)
+            { objNeukunde.Anrede = "0001"; }
+            objNeukunde.Branche = ddlBranche.SelectedValue;
+            if (ddlFunktion.SelectedValue != "00")
+            { objNeukunde.Funktion = ddlFunktion.SelectedValue; }
+
+            objNeukunde.ASPName = txtNameAnPartner.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.ASPVorname = txtVornameAnPartner.Text.TrimStart(' ').TrimEnd(' ');
+            objNeukunde.Einzug = rbJa.Checked;
+            objNeukunde.Auskunft = rbAuskunftJa.Checked;
+            objNeukunde.Kreditvers = rbKreditJa.Checked;
+            objNeukunde.UmSteuer = rbSteuerJa.Checked;
+            objNeukunde.Bemerkung = txtBemerkung.Text;
+            objNeukunde.UmStErwartung = txtUmsatz.Text;
+            objNeukunde.TourID = ddlTour.SelectedValue;
+            if (ddlTour.SelectedValue == "0")
+            {
+                objNeukunde.TourID = "";
+            }
+        }
+
+        /// <summary>
+        /// Funktion zum Sperren und Entsperren von Controls(nach erfolgreicher Neuanlage).
+        /// </summary>
+        /// <param name="enabled">Boolean</param>
+        private void EnableDisableControls(Boolean enabled)
+        {
+            txtBrancheFrei.Enabled = enabled;
+            txtName1.Enabled = enabled;
+            txtName2.Enabled = enabled;
+            txtStrasse.Enabled = enabled;
+            txtHausnr.Enabled = enabled;
+            txtOrt.Enabled = enabled;
+            txtPlz.Enabled = enabled;
+            txtUIDNummer.Enabled = enabled;
+            ddLand.Enabled = enabled;
+            rbBarkunde.Enabled = enabled;
+            rbLieferscheinKunde.Enabled = enabled;
+            rbEinzugJa.Enabled = enabled;
+            rbEinzugNein.Enabled = enabled;
+            rbHerr.Enabled = enabled;
+            rbFirma.Enabled = enabled;
+            rbFrau.Enabled = enabled;
+            ddlBranche.Enabled = enabled;
+            ddlFunktion.Enabled = enabled;
+            txtNameAnPartner.Enabled = enabled;
+            txtVornameAnPartner.Enabled = enabled;
+            txtTelefon.Enabled = enabled;
+            txtFax.Enabled = enabled;
+            txtMail.Enabled = enabled;
+            txtMobil.Enabled = enabled;
+            lbAbsenden.Enabled = enabled;
+            rbSteuerJa.Enabled = enabled;
+            rbSteuerNein.Enabled = enabled;
+            rbKreditJa.Enabled = enabled;
+            rbKreditNein.Enabled = enabled;
+            rbAuskunftJa.Enabled = enabled;
+            rbAuskunftNein.Enabled = enabled;
+            rbEinzugJa.Enabled = enabled;
+            rbEinzugNein.Enabled = enabled;
+            txtUmsatz.Enabled = enabled;
+            txtIBAN.Enabled = enabled;
+            txtBemerkung.Enabled = enabled;
+            ddlTour.Enabled = enabled;
+            lb_Neu.Visible = !enabled;
+            lblNoData.ForeColor = System.Drawing.Color.Green;
+            lblNoData.Text = "Klicken Sie auf \nNeuer Kunde\n um einen weiteren Kunden zu erfassen!";
+        }
+
+        /// <summary>
+        /// Errorstyles der Controls entfernen.
+        /// </summary>
+        private void ClearErrors()
+        {
+            txtBrancheFrei.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtHausnr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtUIDNummer.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            ddLand.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            rbBarkunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            rbLieferscheinKunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            rbEinzugJa.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            rbEinzugNein.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            rbHerr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            rbFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            rbFrau.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            ddlBranche.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            txtUmsatz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#dfdfdf");
+            lblError.Text = "";
+        }
+
+        /// <summary>
+        /// Validieren der eingebenen Daten.
+        /// </summary>
+        /// <returns>true bei Fehler</returns>
+        private Boolean ValidateInput()
+        {
+            Boolean bReturn = false;
+
+            if (!rbBarkunde.Checked && !rbLieferscheinKunde.Checked)
+            {
+                rbBarkunde.BorderStyle = BorderStyle.Solid;
+                rbBarkunde.BorderWidth = 1;
+                rbBarkunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbLieferscheinKunde.BorderStyle = BorderStyle.Solid;
+                rbLieferscheinKunde.BorderWidth = 1;
+                rbLieferscheinKunde.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            if (rbLieferscheinKunde.Checked)
+            {
+                if (!rbEinzugJa.Checked && !rbEinzugNein.Checked)
+                {
+                    rbEinzugJa.BorderStyle = BorderStyle.Solid;
+                    rbEinzugJa.BorderWidth = 1;
+                    rbEinzugJa.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    rbEinzugNein.BorderStyle = BorderStyle.Solid;
+                    rbEinzugNein.BorderWidth = 1;
+                    rbEinzugNein.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    bReturn = true;
+                }
+            }
+            if (!rbFirma.Checked && !rbHerr.Checked && !rbFrau.Checked)
+            {
+                rbFirma.BorderStyle = BorderStyle.Solid;
+                rbFirma.BorderWidth = 1;
+                rbFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbHerr.BorderStyle = BorderStyle.Solid;
+                rbHerr.BorderWidth = 1;
+                rbHerr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                rbFrau.BorderStyle = BorderStyle.Solid;
+                rbFrau.BorderWidth = 1;
+                rbFrau.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            if (ddlBranche.SelectedIndex == -1)
+            {
+                ddlBranche.BorderStyle = BorderStyle.Solid;
+                ddlBranche.BorderWidth = 1;
+                ddlBranche.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            else if (ddlBranche.SelectedValue == "0004" && String.IsNullOrEmpty(txtBrancheFrei.Text))
+            {
+                txtBrancheFrei.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            if (String.IsNullOrEmpty(txtName1.Text))
+            {
+                txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+
+            if (String.IsNullOrEmpty(txtName1.Text))
+            {
+                txtName1.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+
+            if (String.IsNullOrEmpty(txtStrasse.Text))
+            {
+                txtStrasse.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+
+            if (String.IsNullOrEmpty(txtHausnr.Text))
+            {
+                txtHausnr.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            if (String.IsNullOrEmpty(txtOrt.Text))
+            {
+                txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            if (String.IsNullOrEmpty(txtPlz.Text))
+            {
+                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            else if (ddLand.SelectedValue == "DE" && txtPlz.Text.Trim().Length != 5)
+            {
+                txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            if (ddLand.SelectedIndex == -1)
+            {
+                ddLand.BorderStyle = BorderStyle.Solid;
+                ddLand.BorderWidth = 1;
+                ddLand.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            else if (ddLand.SelectedValue != "DE")
+            {
+                if (String.IsNullOrEmpty(txtUIDNummer.Text))
+                {
+                    txtUIDNummer.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    bReturn = true;
+                }
+            }
+
+            if (rbJa.Checked && String.IsNullOrEmpty(txtIBAN.Text))
+            {
+                txtIBAN.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                txtSWIFT.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+
+            if (String.IsNullOrEmpty(txtUmsatz.Text))
+            {
+                txtUmsatz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                bReturn = true;
+            }
+            return bReturn;
+        }
+
+        /// <summary>
+        /// Bankverbindung prüfen.
+        /// </summary>
+        /// <returns>ok?</returns>
+        private Boolean ProofBank()
+        {
+            if (!String.IsNullOrEmpty(txtIBAN.Text))
+            {
+                objNeukunde.IBAN = txtIBAN.Text.NotNullOrEmpty().Trim().ToUpper();
+                objNeukunde.ProofIBAN();
+
+                if (objNeukunde.ErrorOccured)
+                {
+                    lblError.Text = objNeukunde.Message;
+                    lblNeukundeResultatMeldung.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                    lblNeukundeResultatMeldung.Text = objNeukunde.Message;
+                    return false;
+                }
+
+                txtSWIFT.Text = objNeukunde.SWIFT;
+                txtBankname.Text = objNeukunde.Bankname;
+            }
+            else
+            {
+                objNeukunde.SWIFT = "";
+                objNeukunde.Bankkey = "";
+                objNeukunde.BLZ = "";
+                objNeukunde.Kontonr = "";
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Funktion Daten an SAP übermitteln
+        /// </summary>
+        private void DoSubmit()
+        {
+            objNeukunde.Change(m_User.UserName);
+
+            if (objNeukunde.ErrorOccured)
+            {
+                lblError.Text = objNeukunde.Message;
+                lblNeukundeResultatMeldung.ForeColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
+                lblNeukundeResultatMeldung.Text = objNeukunde.Message;
+            }
+            else
+            {
+                lblNeukundeResultatMeldung.ForeColor = System.Drawing.Color.Green;
+                lblNeukundeResultatMeldung.Text = "Neue Kundenstammdaten erfolgreich angelegt!";
+                MPENeukundeResultat.Show();
+                EnableDisableControls(false);
+            }
+        }
+
+        #endregion
     }
 }

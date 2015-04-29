@@ -27,7 +27,7 @@ namespace SapORM.Contracts
 
         DateTime? CallBapiForBapi(ref DataTable mExportTabelle, ref DataTable mImportTabelle, string bapiName, ISapConnection sapConnection);
 
-        bool CallBapi(ILogService logService = null, ILogonContext logonContext = null);
+        bool CallBapi(ILogService logService = null, ILogonContext logonContext = null, bool modelGenerationMode = false);
 
 
         DataTable Import { get; set; }

@@ -54,82 +54,6 @@ namespace CkgDomainLogic.General.Controllers
         {
             CaptchaService.GetAndSetSessionCaptchaText(5);
         }
-
-        [HttpPost]
-        public ActionResult LoginForm(LoginModel model)
-        {
-            if (model.ModeCaptchaReset)
-            {
-                CaptchaGenerate();
-
-                ModelState.Clear();
-                ViewModel.LoginModel.ModeCaptchaReset = model.ModeCaptchaReset;
-                return PartialView(model);
-            }
-
-            if (ViewModel.LoginModel.ModePasswordReset != model.ModePasswordReset)
-            {
-                // only switch between "login mode <=> password reset mode" here, don't perform any validation
-                ModelState.Clear();
-                ViewModel.LoginModel.ModePasswordReset = model.ModePasswordReset;
-                return PartialView(model);
-            }
-
-            var userEmail = "";
-            if (ModelState.IsValid)
-                if (!model.ModePasswordReset)
-                    ViewModel.TryLogonUser(model, ModelState.AddModelError);
-                else
-                    userEmail = ViewModel.TryGetEmailAddressFromUsername(model, ModelState.AddModelError);
-
-            if (ModelState.IsValid)
-            {
-                model.MaintenanceInfo = ViewModel.MaintenanceInfo;
-
-                if (!model.ModePasswordReset)
-                    // Login successfull:
-                    LogonContext = ViewModel.LogonContext;
-                else
-                {
-                    ViewModel.CheckIfPasswordResetAllowed(model, ModelState.AddModelError);
-
-                    if (ModelState.IsValid)
-                    {
-                        if (CaptchaService.GetSessionCaptchaText() != model.CaptchaText)
-                        {
-                            ModelState.AddModelError<LoginModel>(m => m.CaptchaText, Localize.CaptchaResponseInvalid);
-                            model.IsValid = ModelState.IsValid;
-                            return PartialView(model);
-                        }
-
-                        var storedUserName = model.UserName;
-
-                        if (Request.Url == null)
-                            return new EmptyResult();
-
-                        // send e-mail with password reset link
-                        var passwordResetCustomerAdminInfo =
-                            ViewModel.TryGetPasswordResetCustomerAdminInfo(storedUserName);
-                        var mailSendValid = passwordResetCustomerAdminInfo.IsNullOrEmpty();
-                        if (userEmail.IsNotNullOrEmpty() && mailSendValid)
-                            ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(),
-                                                                ModelState.AddModelError);
-
-                        if (ModelState.IsValid)
-                        {
-                            model.PasswordResetCustomerAdminInfo = passwordResetCustomerAdminInfo;
-                            model.EmailForPasswordReset = userEmail;
-                            SetViewModel<LoginViewModel>(null);
-                        }
-                    }
-                }
-            }
-
-            model.IsValid = ModelState.IsValid;
-
-            return PartialView(model);
-        }
-
         public ActionResult ChangePassword(string confirmation)
         {
             ViewModel.ChangePasswordModel = new ChangePasswordModel { ModePasswordReset = true, PasswordCurrent = "dummy" };
@@ -208,6 +132,81 @@ namespace CkgDomainLogic.General.Controllers
             LogonContext.MaintenanceMessageConfirmAndDontShowAgain();
 
             return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult LoginForm(LoginModel model)
+        {
+            if (model.ModeCaptchaReset)
+            {
+                CaptchaGenerate();
+
+                ModelState.Clear();
+                ViewModel.LoginModel.ModeCaptchaReset = model.ModeCaptchaReset;
+                return PartialView(model);
+            }
+
+            if (ViewModel.LoginModel.ModePasswordReset != model.ModePasswordReset)
+            {
+                // only switch between "login mode <=> password reset mode" here, don't perform any validation
+                ModelState.Clear();
+                ViewModel.LoginModel.ModePasswordReset = model.ModePasswordReset;
+                return PartialView(model);
+            }
+
+            var userEmail = "";
+            if (ModelState.IsValid)
+                if (!model.ModePasswordReset)
+                    ViewModel.TryLogonUser(model, ModelState.AddModelError);
+                else
+                    userEmail = ViewModel.TryGetEmailAddressFromUsername(model, ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                model.MaintenanceInfo = ViewModel.MaintenanceInfo;
+
+                if (!model.ModePasswordReset)
+                    // Login successfull:
+                    LogonContext = ViewModel.LogonContext;
+                else
+                {
+                    ViewModel.CheckIfPasswordResetAllowed(model, ModelState.AddModelError);
+
+                    if (ModelState.IsValid)
+                    {
+                        if (CaptchaService.GetSessionCaptchaText() != model.CaptchaText)
+                        {
+                            ModelState.AddModelError<LoginModel>(m => m.CaptchaText, Localize.CaptchaResponseInvalid);
+                            model.IsValid = ModelState.IsValid;
+                            return PartialView(model);
+                        }
+
+                        var storedUserName = model.UserName;
+
+                        if (Request.Url == null)
+                            return new EmptyResult();
+
+                        // send e-mail with password reset link
+                        var passwordResetCustomerAdminInfo =
+                            ViewModel.TryGetPasswordResetCustomerAdminInfo(storedUserName);
+                        var mailSendValid = passwordResetCustomerAdminInfo.IsNullOrEmpty();
+                        if (userEmail.IsNotNullOrEmpty() && mailSendValid)
+                            ViewModel.TrySendPasswordResetEmail(storedUserName, userEmail, Request.Url.ToString(),
+                                                                ModelState.AddModelError);
+
+                        if (ModelState.IsValid)
+                        {
+                            model.PasswordResetCustomerAdminInfo = passwordResetCustomerAdminInfo;
+                            model.EmailForPasswordReset = userEmail;
+                            SetViewModel<LoginViewModel>(null);
+                        }
+                    }
+                }
+            }
+
+            model.IsValid = ModelState.IsValid;
+
+            return PartialView(model);
         }
     }
 }

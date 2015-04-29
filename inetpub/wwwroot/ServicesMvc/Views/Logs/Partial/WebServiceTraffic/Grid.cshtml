@@ -7,7 +7,6 @@
 @(Html.Telerik()
     .Grid<WebServiceTrafficLogItemUI>()
     .Name(gridName)
-    .XGroup("GridLogsWebServiceTrafficModel")
     .XAjaxDataBinding("LogsWebServiceTrafficAjaxBinding", "Logs")
     .Columns(columns =>
     {

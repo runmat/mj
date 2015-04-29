@@ -16,8 +16,9 @@ namespace AppZulassungsdienst.forms
     public partial class Change99ZLD : Page
     {
         private User m_User;
-        private App m_App;
         private Report99 ChangeAnforderungen;
+
+        #region Events
 
         /// <summary>
         /// Page_Load-Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. 
@@ -27,11 +28,7 @@ namespace AppZulassungsdienst.forms
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
-
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
-
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
@@ -40,6 +37,17 @@ namespace AppZulassungsdienst.forms
             {
                 Session["AppID"] = Request.QueryString["AppID"];
             }
+
+            if (!IsPostBack)
+            {
+                ChangeAnforderungen = new Report99();
+                Session["ChangeAnforderungen"] = ChangeAnforderungen;
+            }
+            else if (Session["ChangeAnforderungen"] != null)
+            {
+                ChangeAnforderungen = (Report99)Session["ChangeAnforderungen"];
+            }
+
             txtKennzeichen.Attributes.Add("onkeyup", "FilterKennz(this,event)");
         }
 
@@ -64,7 +72,8 @@ namespace AppZulassungsdienst.forms
             lblMessage.Text = "";
             ClearForm();
             txtKennzeichen.Text = txtKennzeichen.Text.Replace(" ", "");
-            if (txtKennzeichen.Text != "")
+
+            if (!String.IsNullOrEmpty(txtKennzeichen.Text))
             {
                 DoSubmit();
             }
@@ -74,200 +83,6 @@ namespace AppZulassungsdienst.forms
             }
         }
 
-        private void ClearForm()
-        {
-            foreach (HtmlTableRow TableRow in tblData.Rows)
-            {
-                foreach (HtmlTableCell TableCell in TableRow.Cells)
-                {
-                    foreach (Control item in TableCell.Controls)
-                    {
-                        if (item.GetType() == typeof(TextBox))
-                        {
-                            TextBox txt = (TextBox)item;
-                            txt.Text = "";
-                        }
-                    }         
-                }        
-            }
-
-            cmdSave.Visible = false;
-
-
-        }
-
-        /// <summary>
-        /// Vorhandene Daten aus SAP selektieren.
-        /// </summary>
-        private void DoSubmit()
-        {
-
-            lblError.Text = "";
-            ChangeAnforderungen = new Report99(ref m_User, m_App, "");
-            ChangeAnforderungen.PKennzeichen = txtKennzeichen.Text;
-
-
-            ChangeAnforderungen.Fill(Session["AppID"].ToString(), Session.SessionID, this);
-
-            Session["ChangeAnforderungen"] = ChangeAnforderungen;
-
-
-            if (ChangeAnforderungen.Status != 0)
-            {
-                lblError.Text = "Fehler: " + ChangeAnforderungen.Message;
-            }
-            else
-            {
-                if (ChangeAnforderungen.Result.Rows.Count == 0)
-                {
-                    lblError.Text = "Keine Ergebnisse für die gewählten Kriterien.";
-                    txtKennzeichen.Text = "";
-                }
-                else
-                {
-                    lblKennz.Text = txtKennzeichen.Text.Trim();
-                    FillForm();
-                    lblError.Visible = false;
-                    //lblEingabe.Visible = false;
-                }
-            }
-
-        }
-
-        /// <summary>
-        /// Controls mit selektierten Daten füllen. 
-        /// </summary>
-        private void FillForm()
-        {
-            ChangeAnforderungen = (Report99)(Session["ChangeAnforderungen"]);
-
-            DataRow resultRow;
-
-            if (ChangeAnforderungen.Result.Rows.Count == 1)
-            {
-                resultRow = ChangeAnforderungen.Result.Rows[0];
-            }
-            else
-            {
-                DataRow[]  SelectRow = ChangeAnforderungen.Result.Select("Zkba2='00'");
-                if (SelectRow.Length > 0)
-                {
-                    resultRow = SelectRow[0];
-                }
-                else
-                {
-                    lblError.Text = "Keine Ergebnisse für die gewählten Kriterien.";
-                    return;
-                }
-            }
-
-
-            Result.Visible = true;
-            cmdSave.Visible = true;
-            //Privat Zulassung
-            txtPZUL_BRIEF.Text = resultRow["PZUL_BRIEF"].ToString();
-            txtPZUL_SCHEIN.Text = resultRow["PZUL_SCHEIN"].ToString();
-            txtPZUL_COC.Text = resultRow["PZUL_COC"].ToString();
-            txtPZUL_DECK.Text = resultRow["PZUL_DECK"].ToString();
-            txtPZUL_VOLLM.Text = resultRow["PZUL_VOLLM"].ToString();
-            txtPZUL_AUSW.Text = resultRow["PZUL_AUSW"].ToString();
-            txtPZUL_GEWERB.Text = resultRow["PZUL_GEWERB"].ToString();
-            txtPZUL_HANDEL.Text = resultRow["PZUL_HANDEL"].ToString();
-            txtPZUL_LAST.Text = resultRow["PZUL_LAST"].ToString();
-            txtPZUL_BEM.Text = resultRow["PZUL_BEM"].ToString();
-
-            //Privat Umschreibung
-
-            txtPUMSCHR_SCHEIN.Text = resultRow["PUMSCHR_SCHEIN"].ToString();
-            txtPUMSCHR_BRIEF.Text = resultRow["PUMSCHR_BRIEF"].ToString();
-            txtPUMSCHR_COC.Text = resultRow["PUMSCHR_COC"].ToString();
-            txtPUMSCHR_DECK.Text = resultRow["PUMSCHR_DECK"].ToString();
-            txtPUMSCHR_VOLLM.Text = resultRow["PUMSCHR_VOLLM"].ToString();
-            txtPUMSCHR_AUSW.Text = resultRow["PUMSCHR_AUSW"].ToString();
-            txtPUMSCHR_GEWERB.Text = resultRow["PUMSCHR_GEWERB"].ToString();
-            txtPUMSCHR_HANDEL.Text = resultRow["PUMSCHR_HANDEL"].ToString();
-            txtPUMSCHR_LAST.Text = resultRow["PUMSCHR_LAST"].ToString();
-            txtPUMSCHR_BEM.Text = resultRow["PUMSCHR_BEM"].ToString();
-
-            //Privat Umkennzeichnung
-            txtPUMK_BRIEF.Text = resultRow["PUMK_BRIEF"].ToString();
-            txtPUMK_SCHEIN.Text = resultRow["PUMK_SCHEIN"].ToString();
-            txtPUMK_COC.Text = resultRow["PUMK_COC"].ToString();
-            txtPUMK_DECK.Text = resultRow["PUMK_DECK"].ToString();
-            txtPUMK_VOLLM.Text = resultRow["PUMK_VOLLM"].ToString();
-            txtPUMK_AUSW.Text = resultRow["PUMK_AUSW"].ToString();
-            txtPUMK_GEWERB.Text = resultRow["PUMK_GEWERB"].ToString();
-            txtPUMK_HANDEL.Text = resultRow["PUMK_HANDEL"].ToString();
-            txtPUMK_LAST.Text = resultRow["PUMK_LAST"].ToString();
-            txtPUMK_BEM.Text = resultRow["PUMK_BEM"].ToString();
-
-            //Privat Ersatzfahrzeugschein
-            txtPERS_BRIEF.Text = resultRow["PERS_BRIEF"].ToString();
-            txtPERS_SCHEIN.Text = resultRow["PERS_SCHEIN"].ToString();
-            txtPERS_COC.Text = resultRow["PERS_COC"].ToString();
-            txtPERS_DECK.Text = resultRow["PERS_DECK"].ToString();
-            txtPERS_VOLLM.Text = resultRow["PERS_VOLLM"].ToString();
-            txtPERS_AUSW.Text = resultRow["PERS_AUSW"].ToString();
-            txtPERS_GEWERB.Text = resultRow["PERS_GEWERB"].ToString();
-            txtPERS_HANDEL.Text = resultRow["PERS_HANDEL"].ToString();
-            txtPERS_LAST.Text = resultRow["PERS_LAST"].ToString();
-            txtPERS_BEM.Text = resultRow["PERS_BEM"].ToString();
-
-            //Unternehmen Zulassung
-            txtUZUL_BRIEF.Text = resultRow["UZUL_BRIEF"].ToString();
-            txtUZUL_SCHEIN.Text = resultRow["UZUL_SCHEIN"].ToString();
-            txtUZUL_COC.Text = resultRow["UZUL_COC"].ToString();
-            txtUZUL_DECK.Text = resultRow["UZUL_DECK"].ToString();
-            txtUZUL_VOLLM.Text = resultRow["UZUL_VOLLM"].ToString();
-            txtUZUL_AUSW.Text = resultRow["UZUL_AUSW"].ToString();
-            txtUZUL_GEWERB.Text = resultRow["UZUL_GEWERB"].ToString();
-            txtUZUL_HANDEL.Text = resultRow["UZUL_HANDEL"].ToString();
-            txtUZUL_LAST.Text = resultRow["UZUL_LAST"].ToString();
-            txtUZUL_BEM.Text = resultRow["UZUL_BEM"].ToString();
-
-            //Unternehmen Umschreibung
-            txtUUMSCHR_BRIEF.Text = resultRow["UUMSCHR_BRIEF"].ToString();
-            txtUUMSCHR_SCHEIN.Text = resultRow["UUMSCHR_SCHEIN"].ToString();
-            txtUUMSCHR_COC.Text = resultRow["UUMSCHR_COC"].ToString();
-            txtUUMSCHR_DECK.Text = resultRow["UUMSCHR_DECK"].ToString();
-            txtUUMSCHR_VOLLM.Text = resultRow["UUMSCHR_VOLLM"].ToString();
-            txtUUMSCHR_AUSW.Text = resultRow["UUMSCHR_AUSW"].ToString();
-            txtUUMSCHR_GEWERB.Text = resultRow["UUMSCHR_GEWERB"].ToString();
-            txtUUMSCHR_HANDEL.Text = resultRow["UUMSCHR_HANDEL"].ToString();
-            txtUUMSCHR_LAST.Text = resultRow["UUMSCHR_LAST"].ToString();
-            txtUUMSCHR_BEM.Text = resultRow["UUMSCHR_BEM"].ToString();
-            //Unternehmen Umkennzeichnung
-            txtUUMK_BRIEF.Text = resultRow["UUMK_BRIEF"].ToString();
-            txtUUMK_SCHEIN.Text = resultRow["UUMK_SCHEIN"].ToString();
-            txtUUMK_COC.Text = resultRow["UUMK_COC"].ToString();
-            txtUUMK_DECK.Text = resultRow["UUMK_DECK"].ToString();
-            txtUUMK_VOLLM.Text = resultRow["UUMK_VOLLM"].ToString();
-            txtUUMK_AUSW.Text = resultRow["UUMK_AUSW"].ToString();
-            txtUUMK_GEWERB.Text = resultRow["UUMK_GEWERB"].ToString();
-            txtUUMK_HANDEL.Text = resultRow["UUMK_HANDEL"].ToString();
-            txtUUMK_LAST.Text = resultRow["UUMK_LAST"].ToString();
-            txtUUMK_BEM.Text = resultRow["UUMK_BEM"].ToString();
-
-            //Unternehmen Ersatzfahrzeugschein
-            txtUERS_BRIEF.Text = resultRow["UERS_BRIEF"].ToString();
-            txtUERS_SCHEIN.Text = resultRow["UERS_SCHEIN"].ToString();
-            txtUERS_COC.Text = resultRow["UERS_COC"].ToString();
-            txtUERS_DECK.Text = resultRow["UERS_DECK"].ToString();
-            txtUERS_VOLLM.Text = resultRow["UERS_VOLLM"].ToString();
-            txtUERS_AUSW.Text = resultRow["UERS_AUSW"].ToString();
-            txtUERS_GEWERB.Text = resultRow["UERS_GEWERB"].ToString();
-            txtUERS_HANDEL.Text = resultRow["UERS_HANDEL"].ToString();
-            txtUERS_LAST.Text = resultRow["UERS_LAST"].ToString();
-            txtUERS_BEM.Text = resultRow["UERS_BEM"].ToString();
-
-
-            txtAmt.Text = resultRow["STVALN"].ToString();
-            txtWunsch.Text = resultRow["URL"].ToString();
-            txtFormular.Text = resultRow["STVALNFORM"].ToString();
-            txtGeb.Text = resultRow["STVALNGEB"].ToString();
-
-        }
-
         /// <summary>
         /// Daten sammeln und in SAP speichern.
         /// </summary>
@@ -275,29 +90,24 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void cmdSave_Click(object sender, EventArgs e)
         {
-            ChangeAnforderungen = (Report99)(Session["ChangeAnforderungen"]);
-
-
             lblMessage.Text = "";
             lblError.Text = "";
 
-
-            if (lblKennz.Text.Trim().Length > 0)
+            if (!String.IsNullOrEmpty(lblKennz.Text))
             {
-                DataTable tblTemp = new DataTable();
-                CreateTable(ref tblTemp);
+                DataTable tblTemp = CreateTable();
 
                 DataRow resultRow = tblTemp.NewRow();
 
                 DataRow OldRow;
 
-                if (ChangeAnforderungen.Result.Rows.Count == 1)
+                if (ChangeAnforderungen.tblResult.Rows.Count == 1)
                 {
-                    OldRow = ChangeAnforderungen.Result.Rows[0];
+                    OldRow = ChangeAnforderungen.tblResult.Rows[0];
                 }
                 else
                 {
-                    DataRow[] SelectRow = ChangeAnforderungen.Result.Select("Zkba2='00'");
+                    DataRow[] SelectRow = ChangeAnforderungen.tblResult.Select("Zkba2='00'");
                     OldRow = SelectRow[0];
                 }
                 resultRow["MANDT"] = OldRow["MANDT"];
@@ -307,7 +117,6 @@ namespace AppZulassungsdienst.forms
                 resultRow["AEDAT"] = DateTime.Now.ToShortDateString();
 
                 //Privat Zulassung
-
                 resultRow["PZUL_BRIEF"] = txtPZUL_BRIEF.Text;
                 resultRow["PZUL_SCHEIN"] = txtPZUL_SCHEIN.Text;
                 resultRow["PZUL_COC"] = txtPZUL_COC.Text;
@@ -320,7 +129,6 @@ namespace AppZulassungsdienst.forms
                 resultRow["PZUL_BEM"] = txtPZUL_BEM.Text;
 
                 //Privat Umschreibung
-
                 resultRow["PUMSCHR_SCHEIN"] = txtPUMSCHR_SCHEIN.Text;
                 resultRow["PUMSCHR_BRIEF"] = txtPUMSCHR_BRIEF.Text;
                 resultRow["PUMSCHR_COC"] = txtPUMSCHR_COC.Text;
@@ -411,9 +219,9 @@ namespace AppZulassungsdienst.forms
 
                 tblTemp.Rows.Add(resultRow);
 
-                ChangeAnforderungen.Change(Session["AppID"].ToString(), Session.SessionID, this, tblTemp);
+                ChangeAnforderungen.Change(tblTemp);
 
-                if (ChangeAnforderungen.Status != 0)
+                if (ChangeAnforderungen.ErrorOccured)
                 {
                     lblError.Text = "Fehler: " + ChangeAnforderungen.Message;
                 }
@@ -421,12 +229,12 @@ namespace AppZulassungsdienst.forms
                 {
                     lblMessage.Text = "Daten erfolgreich gespeichert!";
                     ClearForm();
-                    Result.Visible =false;
+                    Result.Visible = false;
                     cmdSave.Visible = false;
                     lblKennz.Text = "";
                 }
             }
-            else 
+            else
             {
                 lblError.Text = "Fehler: " + ChangeAnforderungen.Message;
             }
@@ -439,7 +247,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">ImageClickEventArgs</param>
         protected void ibtnAmt_Click(object sender, ImageClickEventArgs e)
         {
-            String sUrl=txtAmt.Text.Trim();
+            String sUrl = txtAmt.Text.Trim();
             ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
         }
 
@@ -474,15 +282,202 @@ namespace AppZulassungsdienst.forms
         {
             String sUrl = txtGeb.Text.Trim();
             ResponseHelper.Redirect(sUrl, "_blank", "left=0,top=0,resizable=YES,scrollbars=YES,menubar=YES,resizable=yes,scrollbars=YES,status=YES,toolbar=YES");
+        }
 
+        #endregion
+
+        #region Methods
+
+        private void ClearForm()
+        {
+            foreach (HtmlTableRow TableRow in tblData.Rows)
+            {
+                foreach (HtmlTableCell TableCell in TableRow.Cells)
+                {
+                    foreach (Control item in TableCell.Controls)
+                    {
+                        if (item.GetType() == typeof(TextBox))
+                        {
+                            TextBox txt = (TextBox)item;
+                            txt.Text = "";
+                        }
+                    }
+                }
+            }
+
+            cmdSave.Visible = false;
+        }
+
+        /// <summary>
+        /// Vorhandene Daten aus SAP selektieren.
+        /// </summary>
+        private void DoSubmit()
+        {
+            lblError.Text = "";
+
+            ChangeAnforderungen.PKennzeichen = txtKennzeichen.Text;
+
+            ChangeAnforderungen.Fill();
+
+            Session["ChangeAnforderungen"] = ChangeAnforderungen;
+
+            if (ChangeAnforderungen.ErrorOccured)
+            {
+                lblError.Text = "Fehler: " + ChangeAnforderungen.Message;
+            }
+            else
+            {
+                if (ChangeAnforderungen.tblResult.Rows.Count == 0)
+                {
+                    lblError.Text = "Keine Ergebnisse für die gewählten Kriterien.";
+                    txtKennzeichen.Text = "";
+                }
+                else
+                {
+                    lblKennz.Text = txtKennzeichen.Text.Trim();
+                    FillForm();
+                    lblError.Visible = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Controls mit selektierten Daten füllen. 
+        /// </summary>
+        private void FillForm()
+        {
+            DataRow resultRow;
+
+            if (ChangeAnforderungen.tblResult.Rows.Count == 1)
+            {
+                resultRow = ChangeAnforderungen.tblResult.Rows[0];
+            }
+            else
+            {
+                DataRow[] SelectRow = ChangeAnforderungen.tblResult.Select("Zkba2='00'");
+                if (SelectRow.Length > 0)
+                {
+                    resultRow = SelectRow[0];
+                }
+                else
+                {
+                    lblError.Text = "Keine Ergebnisse für die gewählten Kriterien.";
+                    return;
+                }
+            }
+
+            Result.Visible = true;
+            cmdSave.Visible = true;
+
+            //Privat Zulassung
+            txtPZUL_BRIEF.Text = resultRow["PZUL_BRIEF"].ToString();
+            txtPZUL_SCHEIN.Text = resultRow["PZUL_SCHEIN"].ToString();
+            txtPZUL_COC.Text = resultRow["PZUL_COC"].ToString();
+            txtPZUL_DECK.Text = resultRow["PZUL_DECK"].ToString();
+            txtPZUL_VOLLM.Text = resultRow["PZUL_VOLLM"].ToString();
+            txtPZUL_AUSW.Text = resultRow["PZUL_AUSW"].ToString();
+            txtPZUL_GEWERB.Text = resultRow["PZUL_GEWERB"].ToString();
+            txtPZUL_HANDEL.Text = resultRow["PZUL_HANDEL"].ToString();
+            txtPZUL_LAST.Text = resultRow["PZUL_LAST"].ToString();
+            txtPZUL_BEM.Text = resultRow["PZUL_BEM"].ToString();
+
+            //Privat Umschreibung
+            txtPUMSCHR_SCHEIN.Text = resultRow["PUMSCHR_SCHEIN"].ToString();
+            txtPUMSCHR_BRIEF.Text = resultRow["PUMSCHR_BRIEF"].ToString();
+            txtPUMSCHR_COC.Text = resultRow["PUMSCHR_COC"].ToString();
+            txtPUMSCHR_DECK.Text = resultRow["PUMSCHR_DECK"].ToString();
+            txtPUMSCHR_VOLLM.Text = resultRow["PUMSCHR_VOLLM"].ToString();
+            txtPUMSCHR_AUSW.Text = resultRow["PUMSCHR_AUSW"].ToString();
+            txtPUMSCHR_GEWERB.Text = resultRow["PUMSCHR_GEWERB"].ToString();
+            txtPUMSCHR_HANDEL.Text = resultRow["PUMSCHR_HANDEL"].ToString();
+            txtPUMSCHR_LAST.Text = resultRow["PUMSCHR_LAST"].ToString();
+            txtPUMSCHR_BEM.Text = resultRow["PUMSCHR_BEM"].ToString();
+
+            //Privat Umkennzeichnung
+            txtPUMK_BRIEF.Text = resultRow["PUMK_BRIEF"].ToString();
+            txtPUMK_SCHEIN.Text = resultRow["PUMK_SCHEIN"].ToString();
+            txtPUMK_COC.Text = resultRow["PUMK_COC"].ToString();
+            txtPUMK_DECK.Text = resultRow["PUMK_DECK"].ToString();
+            txtPUMK_VOLLM.Text = resultRow["PUMK_VOLLM"].ToString();
+            txtPUMK_AUSW.Text = resultRow["PUMK_AUSW"].ToString();
+            txtPUMK_GEWERB.Text = resultRow["PUMK_GEWERB"].ToString();
+            txtPUMK_HANDEL.Text = resultRow["PUMK_HANDEL"].ToString();
+            txtPUMK_LAST.Text = resultRow["PUMK_LAST"].ToString();
+            txtPUMK_BEM.Text = resultRow["PUMK_BEM"].ToString();
+
+            //Privat Ersatzfahrzeugschein
+            txtPERS_BRIEF.Text = resultRow["PERS_BRIEF"].ToString();
+            txtPERS_SCHEIN.Text = resultRow["PERS_SCHEIN"].ToString();
+            txtPERS_COC.Text = resultRow["PERS_COC"].ToString();
+            txtPERS_DECK.Text = resultRow["PERS_DECK"].ToString();
+            txtPERS_VOLLM.Text = resultRow["PERS_VOLLM"].ToString();
+            txtPERS_AUSW.Text = resultRow["PERS_AUSW"].ToString();
+            txtPERS_GEWERB.Text = resultRow["PERS_GEWERB"].ToString();
+            txtPERS_HANDEL.Text = resultRow["PERS_HANDEL"].ToString();
+            txtPERS_LAST.Text = resultRow["PERS_LAST"].ToString();
+            txtPERS_BEM.Text = resultRow["PERS_BEM"].ToString();
+
+            //Unternehmen Zulassung
+            txtUZUL_BRIEF.Text = resultRow["UZUL_BRIEF"].ToString();
+            txtUZUL_SCHEIN.Text = resultRow["UZUL_SCHEIN"].ToString();
+            txtUZUL_COC.Text = resultRow["UZUL_COC"].ToString();
+            txtUZUL_DECK.Text = resultRow["UZUL_DECK"].ToString();
+            txtUZUL_VOLLM.Text = resultRow["UZUL_VOLLM"].ToString();
+            txtUZUL_AUSW.Text = resultRow["UZUL_AUSW"].ToString();
+            txtUZUL_GEWERB.Text = resultRow["UZUL_GEWERB"].ToString();
+            txtUZUL_HANDEL.Text = resultRow["UZUL_HANDEL"].ToString();
+            txtUZUL_LAST.Text = resultRow["UZUL_LAST"].ToString();
+            txtUZUL_BEM.Text = resultRow["UZUL_BEM"].ToString();
+
+            //Unternehmen Umschreibung
+            txtUUMSCHR_BRIEF.Text = resultRow["UUMSCHR_BRIEF"].ToString();
+            txtUUMSCHR_SCHEIN.Text = resultRow["UUMSCHR_SCHEIN"].ToString();
+            txtUUMSCHR_COC.Text = resultRow["UUMSCHR_COC"].ToString();
+            txtUUMSCHR_DECK.Text = resultRow["UUMSCHR_DECK"].ToString();
+            txtUUMSCHR_VOLLM.Text = resultRow["UUMSCHR_VOLLM"].ToString();
+            txtUUMSCHR_AUSW.Text = resultRow["UUMSCHR_AUSW"].ToString();
+            txtUUMSCHR_GEWERB.Text = resultRow["UUMSCHR_GEWERB"].ToString();
+            txtUUMSCHR_HANDEL.Text = resultRow["UUMSCHR_HANDEL"].ToString();
+            txtUUMSCHR_LAST.Text = resultRow["UUMSCHR_LAST"].ToString();
+            txtUUMSCHR_BEM.Text = resultRow["UUMSCHR_BEM"].ToString();
+
+            //Unternehmen Umkennzeichnung
+            txtUUMK_BRIEF.Text = resultRow["UUMK_BRIEF"].ToString();
+            txtUUMK_SCHEIN.Text = resultRow["UUMK_SCHEIN"].ToString();
+            txtUUMK_COC.Text = resultRow["UUMK_COC"].ToString();
+            txtUUMK_DECK.Text = resultRow["UUMK_DECK"].ToString();
+            txtUUMK_VOLLM.Text = resultRow["UUMK_VOLLM"].ToString();
+            txtUUMK_AUSW.Text = resultRow["UUMK_AUSW"].ToString();
+            txtUUMK_GEWERB.Text = resultRow["UUMK_GEWERB"].ToString();
+            txtUUMK_HANDEL.Text = resultRow["UUMK_HANDEL"].ToString();
+            txtUUMK_LAST.Text = resultRow["UUMK_LAST"].ToString();
+            txtUUMK_BEM.Text = resultRow["UUMK_BEM"].ToString();
+
+            //Unternehmen Ersatzfahrzeugschein
+            txtUERS_BRIEF.Text = resultRow["UERS_BRIEF"].ToString();
+            txtUERS_SCHEIN.Text = resultRow["UERS_SCHEIN"].ToString();
+            txtUERS_COC.Text = resultRow["UERS_COC"].ToString();
+            txtUERS_DECK.Text = resultRow["UERS_DECK"].ToString();
+            txtUERS_VOLLM.Text = resultRow["UERS_VOLLM"].ToString();
+            txtUERS_AUSW.Text = resultRow["UERS_AUSW"].ToString();
+            txtUERS_GEWERB.Text = resultRow["UERS_GEWERB"].ToString();
+            txtUERS_HANDEL.Text = resultRow["UERS_HANDEL"].ToString();
+            txtUERS_LAST.Text = resultRow["UERS_LAST"].ToString();
+            txtUERS_BEM.Text = resultRow["UERS_BEM"].ToString();
+
+            txtAmt.Text = resultRow["STVALN"].ToString();
+            txtWunsch.Text = resultRow["URL"].ToString();
+            txtFormular.Text = resultRow["STVALNFORM"].ToString();
+            txtGeb.Text = resultRow["STVALNGEB"].ToString();
         }
 
         /// <summary>
         /// Tabelle für die Speicherung erstellen.
         /// </summary>
-        /// <param name="table">Tabelle Dokumente</param>
-        private void CreateTable(ref DataTable table)
+        private DataTable CreateTable()
         {
+            DataTable table = new DataTable();
+
             table.Columns.Add("MANDT", typeof(String));
             table.Columns.Add("ZKBA1", typeof(String));
             table.Columns.Add("ZKBA2", typeof(String));
@@ -572,7 +567,11 @@ namespace AppZulassungsdienst.forms
             table.Columns.Add("STVALN", typeof(String));
             table.Columns.Add("STVALNFORM", typeof(String));
             table.Columns.Add("STVALNGEB", typeof(String));
-            table.Columns.Add("URL", typeof(String));           
+            table.Columns.Add("URL", typeof(String));
+
+            return table;
         }
+
+        #endregion
     }
 }
