@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
-using System.Web.Routing;
 using System.Web.WebPages;
+using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using MvcTools.Contracts;
 using MvcTools.Models;
 
 namespace MvcTools.Web
@@ -98,6 +97,93 @@ namespace MvcTools.Web
             var requiredSpan = asteriskTag.ToString(TagRenderMode.Normal);
 
             return MvcHtmlString.Create(requiredSpan);
+        }
+
+
+        public static MvcHtmlString PersistenceIndicator(this HtmlHelper html, string htmlFieldName)
+        {
+            var metadata = ModelMetadata.FromStringExpression(htmlFieldName, html.ViewData);
+
+            return html.PersistenceIndicatorInner(metadata, html.ViewData.Model);
+        }
+
+        public static MvcHtmlString PersistenceIndicatorFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            var metadata = ModelMetadata.FromLambdaExpression(expression, html.ViewData);
+
+            return html.PersistenceIndicatorInner(metadata, html.ViewData.Model);
+        }
+
+        private static MvcHtmlString PersistenceIndicatorInner(this HtmlHelper html, ModelMetadata metadata, object parentModel)
+        {
+            if (metadata.PropertyName == null) return MvcHtmlString.Empty;
+
+            var isPersistable = false;
+            if (metadata.ContainerType != null)
+                isPersistable = metadata.ContainerType.GetProperty(metadata.PropertyName).GetCustomAttributes(typeof(FormPersistableAttribute), false).Any();
+
+            var isPersistMode = false;
+            var persistableModel = (parentModel as IPersistableObject);
+            if (persistableModel != null)
+                isPersistMode = (persistableModel.ObjectKey.IsNotNullOrEmpty());
+
+            if (isPersistable && isPersistMode)
+                return html.Partial("Partial/FormPersistence/FieldIndicator");
+
+            return MvcHtmlString.Empty;
+        }
+
+        public static MvcHtmlString FormPersistenceMenu<T>(this HtmlHelper html, T model) where T : class, new()
+        {
+            var controller = (html.ViewContext.Controller as IPersistableSelectorProvider);
+            if (controller != null)
+                controller.PersistableSelectorsLoad<T>();
+
+            return html.Partial("Partial/FormPersistence/Menu", model);
+        }
+
+        public static MvcHtmlString FormPersistenceGridMenu(this HtmlHelper html)
+        {
+            var viewGridMenuReset = "Partial/FormPersistence/GridMenuReset";
+
+            var controller = (html.ViewContext.Controller as IPersistableSelectorProvider);
+            if (controller == null)
+                return html.Partial(viewGridMenuReset);
+
+            var persistableSelectorObjectKeyCurrent = SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent");
+            if (persistableSelectorObjectKeyCurrent == null)
+                return html.Partial(viewGridMenuReset);
+
+            controller.PersistableSelectorsLoad();
+            var selectors = controller.PersistableSelectors;
+            if (selectors == null || selectors.None())
+                return html.Partial(viewGridMenuReset);
+
+            var selectorCurrent = selectors.FirstOrDefault(s => s.ObjectKey == persistableSelectorObjectKeyCurrent);
+            if (selectorCurrent == null)
+                return html.Partial(viewGridMenuReset);
+
+            return html.Partial("Partial/FormPersistence/GridMenu", selectorCurrent);
+        }
+
+        public static MvcHtmlString FormGridCurrentLoadAutoPersistColumns(this HtmlHelper html, Type type)
+        {
+            if (type.GetCustomAttributes(true).OfType<GridColumnsAutoPersistAttribute>().None())
+                return MvcHtmlString.Empty;
+
+            var gridCurrentGetAutoPersistColumnsKey = SessionHelper.GridCurrentGetAutoPersistColumnsKey();
+            if (gridCurrentGetAutoPersistColumnsKey.IsNullOrEmpty())
+                return MvcHtmlString.Empty;
+
+            var controller = (html.ViewContext.Controller as IGridColumnsAutoPersistProvider);
+            if (controller == null)
+                return MvcHtmlString.Empty;
+
+            var gridCurrentGetAutoPersistColumns = controller.GridCurrentSettingsAutoPersist;
+            if (gridCurrentGetAutoPersistColumns == null || gridCurrentGetAutoPersistColumns.Columns.IsNullOrEmpty())
+                return MvcHtmlString.Empty;
+
+            return html.Partial("Partial/FormGridCurrent/SetAutoPersistColumns", gridCurrentGetAutoPersistColumns);
         }
 
         #endregion
@@ -365,5 +451,33 @@ namespace MvcTools.Web
         }
 
         #endregion
+
+
+        #region UrlHelper
+
+        public static string ContentArea(this UrlHelper url, string path)
+        {
+            var modulName = url.RequestContext.RouteData.DataTokens["area"];
+            var modulContentLoad = "";
+
+            if (modulName == null)
+                return string.Empty;
+
+            if (!string.IsNullOrEmpty(modulName.ToString()))
+                modulContentLoad = "Areas/" + modulName;
+
+            if (path.StartsWith("~/"))
+                path = path.Remove(0, 2);
+
+            if (path.StartsWith("/"))
+                path = path.Remove(0, 1);
+
+            path = path.Replace("../", string.Empty);
+
+            return VirtualPathUtility.ToAbsolute("~/" + modulContentLoad + "/" + path);
+        }
+
+        #endregion
+
     }
 }

@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Equi.Models.AppModelMappings;
@@ -17,7 +19,7 @@ namespace CkgDomainLogic.Equi.Services
         {
         }
 
-        public List<EquiGrunddaten> GetEquis(GrunddatenEquiSuchparameter suchparameter)
+        public List<EquiGrunddaten> GetEquis(EquiGrunddatenSelektor suchparameter)
         {
             List<EquiGrunddaten> liste;
 
@@ -86,6 +88,8 @@ namespace CkgDomainLogic.Equi.Services
             var webItemsEquis = AppModelMappings.Z_DPM_CD_READ_GRUEQUIDAT_02_GT_OUT_To_GrunddatenEqui.Copy(sapItemsEquis).OrderBy(w => w.Fahrgestellnummer).ToList();
 
             liste = webItemsEquis;
+
+            //XmlService.XmlSerializeToFile(liste, Path.Combine(AppSettings.DataPath, @"GrunddatenEquis_02.xml"));
 
             return liste;
         }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using MvcTools.Data;
 using Telerik.Web.Mvc.Extensions;
 using Newtonsoft.Json.Linq;
+using GeneralTools.Models;
 
 namespace Telerik.Web.Mvc
 {
@@ -14,6 +15,9 @@ namespace Telerik.Web.Mvc
 
         public static IEnumerable<dynamic> GetGridColumns(this string columnJsonArray)
         {
+            if (columnJsonArray.IsNullOrEmpty())
+                return null;
+
             // this is very very COOL:
             return JArray.Parse(columnJsonArray);
         }
@@ -43,12 +47,14 @@ namespace Telerik.Web.Mvc
             var dtColumns = dt.Columns.OfType<DataColumn>();
 
             // remove unused DataColumns in our DataTable (if they don't occur in our columnJsonArray)
-            dtColumns.ToList()
-                .ForEach(c =>
-                {
-                    if (jCols.All(cm => cm.member.Value.ToLower() != c.ColumnName.ToLower()))
-                        dt.Columns.Remove(c);
-                });
+            if (jCols != null)
+                dtColumns.ToList()
+                    .ForEach(c =>
+                    {
+                        if (jCols.All(cm => cm.member.Value.ToLower() != c.ColumnName.ToLower()))
+                            dt.Columns.Remove(c);
+                    });
+
             var arr = dtColumns.ToArray();
             var arrLength = arr.Length;
 

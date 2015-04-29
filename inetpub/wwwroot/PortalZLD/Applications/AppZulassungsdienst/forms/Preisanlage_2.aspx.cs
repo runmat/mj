@@ -15,9 +15,10 @@ namespace AppZulassungsdienst.forms
     public partial class Preisanlage_2 : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
-        private VoerfZLD objVorerf;
+        private clsPreisanlage objPreisanlage;
         private ZLDCommon objCommon;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
@@ -28,12 +29,12 @@ namespace AppZulassungsdienst.forms
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (Session["objVorerf"] != null)
+
+            if (Session["objPreisanlage"] != null)
             {
-                objVorerf = (VoerfZLD)Session["objVorerf"];
+                objPreisanlage = (clsPreisanlage)Session["objPreisanlage"];
             }
             else
             {
@@ -41,11 +42,9 @@ namespace AppZulassungsdienst.forms
             }
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -54,7 +53,7 @@ namespace AppZulassungsdienst.forms
                 objCommon = (ZLDCommon)Session["objCommon"];
 
             }
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
                 fillForm();
             }
@@ -68,7 +67,6 @@ namespace AppZulassungsdienst.forms
         private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
-
         }
 
         /// <summary>
@@ -82,19 +80,66 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Daten auslesen und in Excel-Vorlage schreiben und an den Innendienst senden.
+        /// </summary>
+        /// <param name="sender">object</param>
+        /// <param name="e">EventArgs</param>
+        protected void cmdCreate_Click(object sender, EventArgs e)
+        {
+            lblMessage.Text = "";
+            ExcelDocumentFactory excel = new ExcelDocumentFactory();
+            String Filename = "Zugriff1_" + objPreisanlage.NeueKundenNr + "_" + m_User.UserName + "_" + String.Format("{0:yyyyMMdd_HHmmss}", DateTime.Now) + ".xls";
+            DataTable tblHEAD = new DataTable();
+            tblHEAD.Columns.Add("Kunnr", typeof(String));
+            tblHEAD.Columns.Add("vkbur", typeof(String));
+            tblHEAD.Columns.Add("vkorg", typeof(String));
+            tblHEAD.Columns.Add("Zugriff", typeof(String));
+            tblHEAD.TableName = "Head";
+            DataRow tblRowT = tblHEAD.NewRow();
+            tblRowT["Kunnr"] = objPreisanlage.NeueKundenNr;
+            tblRowT["vkbur"] = objPreisanlage.VKBUR;
+            tblRowT["vkorg"] = objPreisanlage.VKORG;
+            tblRowT["Zugriff"] = "Zugriff1";
+
+            tblHEAD.Rows.Add(tblRowT);
+            DataTable tblData = CreateTableFromGridView();
+            DataSet OutputSet = new DataSet();
+            OutputSet.Tables.Add(tblData);
+            OutputSet.Tables.Add(tblHEAD);
+
+            excel.CreateDocumentAndWriteToFilesystemTemplate(Filename, OutputSet, this, true, "C:\\inetpub\\wwwroot\\PortalZLD\\Applications\\AppZulassungsdienst\\Documents\\Mappe1.xlt", 0, 2);
+            if (Sendmail(ConfigurationManager.AppSettings["ExcelPath"] + Filename))
+            {
+                lblMessage.Text = "Preise gesendet!";
+            }
+        }
+
+        /// <summary>
+        /// Zurück zur Preisanlage Seite1.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("Preisanlage.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
         /// Daten aufbereiten und Gridview füllen.
         /// </summary>
         private void fillForm()
         {
+            lblKunnr.Text = objPreisanlage.NeueKundenNr;
+            lblKunnname.Text = objPreisanlage.NeueKundenName;
 
-
-            lblKunnr.Text = objVorerf.NeueKundenNr;
-            lblKunnname.Text = objVorerf.NeueKundenName;
-
-            Session["objVorerf"] = objVorerf;
-            if (objVorerf.Status > 0)
+            Session["objPreisanlage"] = objPreisanlage;
+            if (objPreisanlage.ErrorOccured)
             {
-                lblError.Text = objVorerf.Message;
+                lblError.Text = objPreisanlage.Message;
                 return;
             }
 
@@ -106,9 +151,8 @@ namespace AppZulassungsdienst.forms
                 tblData.Columns.Add("Stva" + i.ToString(), typeof(String));
             }
             int iCount = 1;
-            foreach (DataRow item in objCommon.tblMaterialtextohneMatNr.Rows)
+            foreach (var mat in objCommon.MaterialStamm)
             {
-
                 DataRow tblRow = tblData.NewRow();
 
                 if (iCount == 1)
@@ -118,8 +162,8 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    tblRow["Matnr"] = item["Matnr"].ToString().TrimStart('0');
-                    tblRow["Maktx"] = item["Maktx"].ToString();
+                    tblRow["Matnr"] = mat.MaterialNr;
+                    tblRow["Maktx"] = mat.MaterialName;
                 }
 
                 for (int i = 1; i < 31; i++)
@@ -162,41 +206,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Daten auslesen und in Excel-Vorlage schreiben und an den Innendienst senden.
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="e">EventArgs</param>
-        protected void cmdCreate_Click(object sender, EventArgs e)
-        {
-            lblMessage.Text = "";
-            ExcelDocumentFactory excel = new ExcelDocumentFactory();
-            String Filename = "Zugriff1_" + objVorerf.NeueKundenNr + "_" + m_User.UserName + "_" + String.Format("{0:yyyyMMdd_HHmmss}", DateTime.Now) + ".xls";
-            DataTable tblHEAD = new DataTable();
-            tblHEAD.Columns.Add("Kunnr", typeof(String));
-            tblHEAD.Columns.Add("vkbur", typeof(String));
-            tblHEAD.Columns.Add("vkorg", typeof(String));
-            tblHEAD.Columns.Add("Zugriff", typeof(String));
-            tblHEAD.TableName = "Head";
-            DataRow tblRowT = tblHEAD.NewRow();
-            tblRowT["Kunnr"] = objVorerf.NeueKundenNr;
-            tblRowT["vkbur"] = objVorerf.VKBUR;
-            tblRowT["vkorg"] = objVorerf.VKORG;
-            tblRowT["Zugriff"] = "Zugriff1";
-            
-            tblHEAD.Rows.Add(tblRowT);
-            DataTable tblData = CreateTableFromGridView();
-            DataSet OutputSet = new DataSet();
-            OutputSet.Tables.Add(tblData);
-            OutputSet.Tables.Add(tblHEAD);
-
-            excel.CreateDocumentAndWriteToFilesystemTemplate(Filename, OutputSet, this, true, "C:\\inetpub\\wwwroot\\PortalZLD\\Applications\\AppZulassungsdienst\\Documents\\Mappe1.xlt", 0, 2);
-            if(  Sendmail(ConfigurationManager.AppSettings["ExcelPath"] + Filename))
-            {
-                lblMessage.Text = "Preise gesendet!";
-            }
-        }
-
-        /// <summary>
         /// Mail mit Anhang an Innendienst senden.
         /// </summary>
         /// <param name="Filenname">Datei</param>
@@ -206,16 +215,16 @@ namespace AppZulassungsdienst.forms
             try
             {
                 System.Net.Mail.MailMessage Mail;
-                ZLD_Suche objZLDSuche = new ZLD_Suche(ref m_User, m_App, "");
+                ZLD_Suche objZLDSuche = new ZLD_Suche();
 
-                objZLDSuche.LeseMailTexte("2");
+                objZLDSuche.LeseMailTexte(m_User.Customer.CustomerId, "2");
 
                 String smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
                 String smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
 
-                String MailText = "Kundennr.: " + objVorerf.NeueKundenNr + "<br />";
-                MailText += "Kunde: " + objVorerf.NeueKundenName + "<br />";
-                MailText += "Filiale: " + objVorerf.VKBUR + "<br /><br />";
+                String MailText = "Kundennr.: " + objPreisanlage.NeueKundenNr + "<br />";
+                MailText += "Kunde: " + objPreisanlage.NeueKundenName + "<br />";
+                MailText += "Filiale: " + objPreisanlage.VKBUR + "<br /><br />";
                 MailText += "Datum: " + DateTime.Now.ToShortDateString() + "<br />";
                 MailText += "Uhrzeit: " + DateTime.Now.ToShortDateString() + "<br />";
                 MailText += "Web-Benutzer: " + m_User.UserName + "<br />";
@@ -230,17 +239,16 @@ namespace AppZulassungsdienst.forms
                     Mail.Body = MailText;
 
 
-                    Mail.Subject = "Preisanlage Neukunden(" + objVorerf.NeueKundenNr + ") Filiale: " + m_User.Reference.Substring(4, 4);
+                    Mail.Subject = "Preisanlage Neukunden(" + objPreisanlage.NeueKundenNr + ") Filiale: " + m_User.Reference.Substring(4, 4);
                     Adressen = objZLDSuche.MailAdress.Trim().Split(';');
                     foreach (String tmpStr in Adressen)
                     {
                         Mail.To.Add(tmpStr);
                     }
-
                 }
                 else
                 {
-                    Mail = new System.Net.Mail.MailMessage(smtpMailSender, objZLDSuche.MailAdress.Trim(), "Preisanlage Neukunden(" + objVorerf.NeueKundenNr + ") Filiale: " + m_User.Reference.Substring(4, 4), MailText);
+                    Mail = new System.Net.Mail.MailMessage(smtpMailSender, objZLDSuche.MailAdress.Trim(), "Preisanlage Neukunden(" + objPreisanlage.NeueKundenNr + ") Filiale: " + m_User.Reference.Substring(4, 4), MailText);
                 }
                 if (objZLDSuche.MailAdressCC.Trim().Split(';').Length > 1)
                 {
@@ -250,7 +258,7 @@ namespace AppZulassungsdienst.forms
                         Mail.CC.Add(tmpStr);
                     }
                 }
-                else if (objZLDSuche.MailAdressCC.Length > 0)
+                else if (!String.IsNullOrEmpty(objZLDSuche.MailAdressCC))
                 {
                     Mail.CC.Add(objZLDSuche.MailAdressCC);
                 }
@@ -269,7 +277,6 @@ namespace AppZulassungsdienst.forms
             {
                 lblError.Text = "Fehler beim Senden! " + ex.Message;
                 return false;
-
             }
         }
 
@@ -277,7 +284,7 @@ namespace AppZulassungsdienst.forms
         /// Daten aus dem Gridview in eine Tabelle schreiben.
         /// </summary>
         /// <returns>Datentabelle</returns>
-        private DataTable CreateTableFromGridView()       
+        private DataTable CreateTableFromGridView()
         {
             DataTable test = new DataTable();
             test.Columns.Add("Material", typeof(String));
@@ -285,7 +292,7 @@ namespace AppZulassungsdienst.forms
             for (int i = 2; i < GridView1.Rows[0].Cells.Count; i++)
             {
                 TableCell gridCell = GridView1.Rows[0].Cells[i];
-                TextBox txtInput = (TextBox)gridCell.FindControl("txtInput" + (i-1).ToString());
+                TextBox txtInput = (TextBox)gridCell.FindControl("txtInput" + (i - 1).ToString());
                 if (txtInput.Text != "")
                 {
                     test.Columns.Add(txtInput.Text, typeof(String));
@@ -319,22 +326,14 @@ namespace AppZulassungsdienst.forms
                         }
                     }
 
-                    test.Rows.Add(NewRow); 
+                    test.Rows.Add(NewRow);
                 }
                 iCount++;
             }
             return test;
-                
-       }
 
-        /// <summary>
-        /// Zurück zur Preisanlage Seite1.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("Preisanlage.aspx?AppID=" + Session["AppID"].ToString());
         }
+
+        #endregion
     }
 }

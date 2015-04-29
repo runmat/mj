@@ -1,11 +1,9 @@
 ﻿@using CkgDomainLogic.Equi.Models
 @{ var gridName = "GridGrunddatenEquiItems"; }
 
-@(Html.Telerik()
-    .Grid<EquiGrunddaten>()
+@(Html.XTelerik()
+    .XGrid<EquiGrunddaten>()
     .Name(gridName)
-
-    .XGroup("GridGrunddatenEquiItems")
     .XAjaxDataBinding("GrunddatenEquiItemsAjaxBinding", "Equi")
     .Columns(columns =>
     {
@@ -28,6 +26,7 @@
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Erfassungsdatum).Descending())
+    //.Filterable(f => f.Filters(filters => filters.Add(m => m.Abmeldedatum).IsEqualTo(DateTime.Today)))
     .XToolBar("Equi")
 )
 

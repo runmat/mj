@@ -9,7 +9,6 @@
 @(Html.Telerik()
     .Grid<VertragsverlaengerungModel>()
     .Name(gridName)
-    .XGroup("GridVertragsdaten")
     .XAjaxDataBinding("VertragsdatenAjaxBinding", "Insurance")
     .Columns(columns =>
     {

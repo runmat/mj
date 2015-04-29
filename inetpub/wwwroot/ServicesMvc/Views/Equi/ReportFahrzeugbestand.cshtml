@@ -5,7 +5,7 @@
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("Bestand/EquiSuche", Model.Suchparameter)
+    @Html.Partial("Bestand/EquiSuche", Model.Selektor)
 }
 
 @using (Html.FormSearchResultsGrid())
@@ -53,6 +53,12 @@
     function OnColumnReorder_GridGrunddatenEquiItems() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
+
+//    function OnLoad_GridGrunddatenEquiItems() {
+//        var filterBy = "Kennzeichen~startswith~'LB-'";
+//        var grid = $("#GridGrunddatenEquiItems").data("tGrid");
+//        grid.filter(filterBy);
+//    }
 
     function ShowEquiHistorieAjax(fin) {
         LoadingShow();

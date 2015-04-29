@@ -1,0 +1,287 @@
+﻿@using CkgDomainLogic.WFM.ViewModels
+@model WfmViewModel
+
+<h3 class="page-title" id="headerTitle">@Model.Title <small></small></h3>
+
+@Html.SpanAlert("spanAlertAbmeldevorgaenge")
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Abmeldevorgaenge/AuftraegeSuche", Model.Selektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divAuftraegeGrid"></div>
+    <div id="divAuftragDetail"></div>
+}
+
+<style type="text/css">
+    
+    .tbNoteForToDo, #txtNewInformation {
+        background-color: white!important;
+    }
+    
+    .wmf-uebersicht-section-abmeldeart-standard {
+        display: inline-block;
+        margin-left: 20px;
+    }
+    
+</style>
+
+<script type="text/javascript">
+
+    var _ladeHinweis = '@Localize.LoadingData';
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowAuftraegeSearchResult(result) {
+        SearchFormHide(function() {
+            $("#divAuftraegeGrid").html(result);
+
+            GridAllColumnFilterApplyToGrid("GridAuftraege");
+
+            $("#divAuftraegeGrid").slideDown();
+            $("#divAuftragDetail").html('');
+        });
+    }
+
+    function GetAuftraegeGrid() {
+        return $("#GridAuftraege").data("tGrid");
+    }
+
+    function TryAuftraegeGridRefresh() {
+        // Refresh grid only
+        try { FilterGridPreservePage("GridAuftraege"); }
+        catch(e){}
+    }
+
+    function OnDataBound_GridAuftraege() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnLoad_GridAuftraege() {
+        $('.t-no-data td').text(_ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridAuftraege() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAuftraege() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowAuftragsDetailAjax(id) {
+        setTimeout('LoadingShow();', 500);
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetAuftragsDetailPartial",
+            loadingShow: true,
+            data: { vorgangsnr: id },
+            success: function (result) {
+                ShowAuftragsDetail(result);
+            }
+        });
+    }
+
+    function ShowAuftragsDetail(result) {
+        LoadingShow();
+        $("#divAuftragDetail").html(result);
+        GridAllColumnFilterApplyToGrid("GridInformationen");
+        GridAllColumnFilterApplyToGrid("GridDokumente");
+        GridAllColumnFilterApplyToGrid("GridAufgaben");
+        $("#divAuftraegeGrid").slideUp();
+        $("#divAuftragDetail").slideDown();
+        $("#btnBackToResult").show();
+        FormPreparePrivateAjax();
+        setTimeout('LoadingHide()', 1000);
+    }
+
+    function CloseAuftragsDetail() {
+        $("#btnBackToResult").hide();
+        $("#divAuftragDetail").slideUp(function () {
+            $("#divAuftraegeGrid").delay(200).slideDown();
+            TryAuftraegeGridRefresh();
+            window.scrollTo(0, 0);
+        });
+        //$("#divAuftraegeGrid").slideDown();
+    }
+
+    function GetInformationenGrid() {
+        return $("#GridInformationen").data("tGrid");
+    }
+
+    function TryInformationenGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetInformationenGrid()) !== "undefined") {
+            GetInformationenGrid().ajaxRequest();
+        }
+    }
+
+    function OnDataBound_GridInformationen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridInformationen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridInformationen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GetDokumenteGrid() {
+        return $("#GridDokumente").data("tGrid");
+    }
+
+    function TryDokumenteGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetDokumenteGrid()) !== "undefined") {
+            GetDokumenteGrid().ajaxRequest();
+        }
+    }
+
+    function OnDataBound_GridDokumente() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridDokumente() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridDokumente() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GetAufgabenGrid() {
+        return $("#GridAufgaben").data("tGrid");
+    }
+
+    function TryAufgabenGridRefresh() {
+        // Refresh grid only
+        if (typeof (GetAufgabenGrid()) !== "undefined") {
+            GetAufgabenGrid().ajaxRequest();
+        }
+    }
+
+    function OnDataBound_GridAufgaben() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnRowDataBound_GridAufgaben(e) {
+        var isConfirmed = e.dataItem["IsConfirmed"];
+        if (isConfirmed)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-confirmed" : "t-grid-confirmed-alt");
+
+        var isUnConfirmed = e.dataItem["IsUnConfirmed"];
+        if (isUnConfirmed)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-unconfirmed" : "t-grid-unconfirmed-alt");
+    }
+
+    function OnColumnShowHide_GridAufgaben() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAufgaben() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function CancelOrder(vorgangsNr) {
+
+        if (!confirm('@(Localize.CancelOrder.ToJavascriptString() + "?")'))
+            return false;
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "CancelOrder",
+            loadingShow: true,
+            data: { vorgangsNr: vorgangsNr },
+            success: function (result) {
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                    $(".wmf-uebersicht-section-nicht-storniert").hide();
+                    $(".wmf-uebersicht-section-storniert").show();
+                } else {
+                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                }
+            }
+        });
+
+        return false;
+    }
+
+    function SetOrderToKlaerfall(a, vorgangsNr) {
+
+        var remark = a.parent().find(".tbNoteForToDo").val();
+
+        if (remark == null || remark == '') {
+            alert('@(Localize.SetClarificationCase.ToJavascriptString() + ": " + Localize.PleaseProvideRemark.ToJavascriptString())');
+            return false;
+        }
+        if (!confirm('@(Localize.SetClarificationCase.ToJavascriptString() + "?")'))
+            return false;
+
+        
+        $.ajax(
+        {
+            type: "POST",
+            url: "SetOrderToKlaerfall",
+            loadingShow: true,
+            data: { vorgangsNr: vorgangsNr, remark: remark },
+            success: function (result) {
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                    $(".wmf-uebersicht-section-abmeldeart-standard").addClass("hide");
+                    $(".wmf-uebersicht-section-abmeldeart-nicht-standard").removeClass("hide");
+                    try { FilterGridPreservePage("GridAufgaben"); }
+                    catch (e) { }
+                } else {
+                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                }
+            }
+        });
+
+        return false;
+    }
+    
+    function ConfirmToDo(a, lfdNr) {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "ConfirmToDo",
+            loadingShow: true,
+            data: { lfdNr: lfdNr, remark: a.parent().find(".tbNoteForToDo").val() },
+            success: function (result) {
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                    try { FilterGridPreservePage("GridAufgaben"); }
+                    catch (e) { }
+           
+                } else {
+                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                }
+            }
+        });
+        
+        return false;
+    }
+
+</script>

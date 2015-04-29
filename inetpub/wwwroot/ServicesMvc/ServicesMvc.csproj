@@ -435,6 +435,17 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
+    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Pie.txt" />
+    <Content Include="Areas\Common\Content\Dashboard\datatables\jquery.dataTables.js" />
+    <Content Include="Areas\Common\Content\Dashboard\exampleData.js" />
+    <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.ie.min.js" />
+    <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.js" />
+    <Content Include="Areas\Common\Content\Dashboard\gritter\jquery.gritter.js" />
+    <Content Include="Areas\Common\Content\Dashboard\icon-sprite.PNG" />
+    <Content Include="Areas\Common\Content\Dashboard\jquery-sDashboard.js" />
+    <Content Include="Areas\Common\Content\Dashboard\sDashboard.css" />
+    <Content Include="Areas\Common\Content\Dashboard\touchpunch\jquery.ui.touch-punch.js" />
     <Content Include="apple-touch-icon-120x120-precomposed.png" />
     <Content Include="apple-touch-icon-120x120.png" />
     <Content Include="apple-touch-icon-152x152-precomposed.png" />
@@ -2441,6 +2452,16 @@
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
+    <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemUser.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemAnnotator.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
+    <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2480,6 +2501,9 @@
     <Content Include="Views\Leasing\CsvUpload\Receipt.cshtml" />
     <Content Include="Views\CocBeauftragung\SelbstDruck.cshtml" />
     <Content Include="Views\CocBeauftragung\VersandAdresseSelbstDruck.cshtml" />
+    <Content Include="Areas\Common\Content\Web.config" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsScripts.cshtml" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsStyles.cshtml" />
     <Content Include="Views\Shared\_LayoutTest.cshtml" />
     <Content Include="Views\Shared\_LayoutTestPlus.cshtml" />
     <Content Include="Areas\Web.config" />
@@ -2497,6 +2521,9 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\KontoinhaberAdresse.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\KontoinhaberAdresseForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\KontoinhaberAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4269,9 +4296,26 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\Menu.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\Common.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\GridMenu.cshtml" />
     <Content Include="Views\Test\Cerberus.cshtml" />
     <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
     <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeSuche.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\AuftragsDetail.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Uebersicht.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Informationen.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\InformationenGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Dokumente.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\Aufgaben.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\DokumenteGrid.cshtml" />
+    <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
+    <Content Include="Views\Shared\Partial\FormGridCurrent\SetAutoPersistColumns.cshtml" />
+    <Content Include="Views\Shared\Partial\FormPersistence\GridMenuReset.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

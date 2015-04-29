@@ -361,11 +361,13 @@ namespace CkgDomainLogic.Autohaus.Services
             }
             catch (Exception e)
             {
-                addModelError("", e.FormatSapSaveException());
+                if (addModelError != null)
+                    addModelError("", e.FormatSapSaveException());
             }
 
             if (SAP.ResultCode != 0)
-                addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
+                if (addModelError != null)
+                    addModelError("", SAP.ResultMessage.FormatSapSaveResultMessage());
 
             var sapItems = Z_ZLD_AH_ZULLISTE.GT_OUT.GetExportList(SAP);
             var webItems = AppModelMappings.Z_ZLD_AH_ZULLISTE_GT_OUT_To_ZulassungsReportModel.Copy(sapItems).ToList();
