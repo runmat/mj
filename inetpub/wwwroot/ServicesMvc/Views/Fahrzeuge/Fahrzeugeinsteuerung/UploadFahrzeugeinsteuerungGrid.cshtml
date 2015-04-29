@@ -25,7 +25,6 @@ else
 @(Html.Telerik()
     .Grid<FahrzeugeinsteuerungUploadModel>()
     .Name(gridName)
-    .XGroup("GridUploadFahrzeugeinsteuerung")
     .XAjaxDataBinding("UploadFahrzeugeinsteuerungAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {

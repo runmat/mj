@@ -1,0 +1,19 @@
+﻿{
+	"pie": 
+	{
+		"show" : true
+	},
+	"xaxis": 
+	{
+		"showLabels": false
+	},   
+	"yaxis": 
+	{
+		"showLabels": false
+	},
+	"grid" : 
+	{
+		"verticalLines" : false,
+		"horizontalLines" : false
+	}
+}

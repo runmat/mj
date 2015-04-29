@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Web;
+using GeneralTools.Models;
 
 namespace MvcTools.Web
 {
@@ -28,6 +29,15 @@ namespace MvcTools.Web
         public static int GetRequestInt(this HttpContext context, string key)
         {
             return context.GetRequestInt(key, 0);
+        }
+
+        public static string GetAppUrlCurrent(this HttpContext httpContext)
+        {
+            var uri = httpContext.Request.Url;
+            if (httpContext.Request.HttpMethod.NotNullOrEmpty().ToUpper().Contains("POST") && httpContext.Request.UrlReferrer != null)
+                uri = httpContext.Request.UrlReferrer;
+
+            return uri.AbsolutePath;
         }
     }
 

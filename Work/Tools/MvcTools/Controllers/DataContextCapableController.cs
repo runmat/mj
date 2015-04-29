@@ -7,8 +7,6 @@ namespace MvcTools.Controllers
     {
         public abstract string DataContextKey { get; }
 
-        protected string GridGroup { get { return SessionHelper.GetSessionString("GridGroup"); } }
-
         [ValidateInput(false)]
         protected override System.IAsyncResult BeginExecute(System.Web.Routing.RequestContext requestContext, System.AsyncCallback callback, object state)
         {

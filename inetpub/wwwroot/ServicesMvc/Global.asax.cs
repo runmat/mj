@@ -14,7 +14,6 @@ using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Web;
 using PortalMvcTools.Web;
-using ServicesMvc.App_Start;
 
 namespace ServicesMvc
 {
@@ -48,7 +47,7 @@ namespace ServicesMvc
             //
             // Autofac / IoC Integration:
             //
-            IocConfig.RegisterIocContainer();
+            IocConfig.CreateAndRegisterIocContainerToMvc();
 
             //
             // combine our appsettings in our web.config with a "parent" web.config (i. e. of a ASP.NET WebForms Application)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Linq;
 using System.Web.UI;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
@@ -13,27 +14,24 @@ namespace AppZulassungsdienst.forms
     public partial class VorgangStatusaenderung : Page
     {
         private User m_User;
-        private App m_App;
         private StatusaenderungVorgang objStatusaenderung;
         private ZLDCommon objCommon;
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -44,9 +42,9 @@ namespace AppZulassungsdienst.forms
 
             if (!IsPostBack)
             {
-                objStatusaenderung = new StatusaenderungVorgang(ref m_User, m_App, "");
-                objStatusaenderung.LoadStatuswerte(Session["AppID"].ToString(), Session.SessionID, this);
-                objStatusaenderung.LoadBelegtypen(Session["AppID"].ToString(), Session.SessionID, this);
+                objStatusaenderung = new StatusaenderungVorgang(m_User.Reference);
+                objStatusaenderung.LoadStatuswerte();
+                objStatusaenderung.LoadBelegtypen();
                 Session["objStatusaenderung"] = objStatusaenderung;
 
                 Title = lblHead.Text;
@@ -83,6 +81,15 @@ namespace AppZulassungsdienst.forms
             DoSubmit();
         }
 
+        protected void cmdSave_Click(object sender, EventArgs e)
+        {
+            SaveStatus();
+        }
+
+        #endregion
+
+        #region Methods
+
         private void DoSubmit()
         {
             lblError.Text = "";
@@ -95,11 +102,11 @@ namespace AppZulassungsdienst.forms
 
             objStatusaenderung.IDSuche = txtSearchID.Text.Trim();
 
-            objStatusaenderung.LoadVorgang(Session["AppID"].ToString(), Session.SessionID, this);
+            objStatusaenderung.LoadVorgang();
 
             Session["objStatusaenderung"] = objStatusaenderung;
 
-            if (objStatusaenderung.Status != 0)
+            if (objStatusaenderung.ErrorOccured)
             {
                 lblError.Text = "Fehler: " + objStatusaenderung.Message;
             }
@@ -107,7 +114,7 @@ namespace AppZulassungsdienst.forms
             {
                 FillForm();
             }
-        }     
+        }
 
         private void FillForm()
         {
@@ -132,15 +139,11 @@ namespace AppZulassungsdienst.forms
                 lblZulassungsdatumDisplay.Text = "";
             }
             lblKundennummerDisplay.Text = objStatusaenderung.Kundennummer.TrimStart('0');
-            DataRow[] drow = objCommon.tblKundenStamm.Select("KUNNR = '" + objStatusaenderung.Kundennummer.TrimStart('0') + "'");
-            if (drow.Length > 0)
-            {
-                lblKundeDisplay.Text = drow[0]["NAME1"].ToString();
-            }
-            else
-            {
-                lblKundeDisplay.Text = "";
-            }
+
+            var kunde = objCommon.KundenStamm.FirstOrDefault(k => k.KundenNr == objStatusaenderung.Kundennummer.TrimStart('0'));
+
+            lblKundeDisplay.Text = (kunde != null ? kunde.Name1 : "");
+
             lblKreisDisplay.Text = objStatusaenderung.Kreis;
             lblKennzeichenDisplay.Text = objStatusaenderung.Kennzeichen;
             lblBEBStatusDisplay.Text = objStatusaenderung.BEBStatusText;
@@ -150,26 +153,21 @@ namespace AppZulassungsdienst.forms
             cmdSave.Visible = true;
         }
 
-        protected void cmdSave_Click(object sender, EventArgs e)
-        {
-            SaveStatus();
-        }
-
         private void SaveStatus()
         {
             try
             {
                 objStatusaenderung.BEBStatusNeu = ddlBEBStatus.SelectedValue;
 
-                objStatusaenderung.SaveVorgang(Session["AppID"].ToString(), Session.SessionID, this);
+                objStatusaenderung.SaveVorgang();
 
-                if (objStatusaenderung.Status != 0)
+                if (objStatusaenderung.ErrorOccured)
                 {
                     lblError.Text = "Fehler beim Speichern: " + objStatusaenderung.Message;
                 }
                 else
                 {
-                    lblError.Text = "Der neu Vorgangs-Status wurde erfolgreich gespeichert!";
+                    lblError.Text = "Der neue Vorgangs-Status wurde erfolgreich gespeichert!";
                     objStatusaenderung.IDSuche = "";
                     Panel2.Visible = false;
                     cmdSave.Visible = false;
@@ -184,5 +182,7 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Fehler beim Speichern: " + ex.Message;
             }
         }
+
+        #endregion
     }
 }

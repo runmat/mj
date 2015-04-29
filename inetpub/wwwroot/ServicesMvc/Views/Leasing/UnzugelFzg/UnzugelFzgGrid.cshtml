@@ -9,7 +9,6 @@
 @(Html.Telerik()
     .Grid<UnzugelFzg>()
     .Name(gridName)
-    .XGroup("GridUnzugelFzg")
     .Editable(editing => editing.Mode(GridEditMode.InCell))
     .DataKeys(d => d.Add(a => a.EquipmentnummerShow).RouteKey("EquipmentnummerShow"))
     .XAjaxDataBindingWithUpdate("UnzugelFzgAjaxBinding", "UnzugelFzgAjaxSaveChanges", "Leasing")

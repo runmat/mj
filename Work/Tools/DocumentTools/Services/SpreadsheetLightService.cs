@@ -9,8 +9,10 @@ namespace DocumentTools.Services
 {
     public class SpreadsheetLightService
     {
-        public static SLDocument CreateSpreadsheetLightDocument(DataTable dt, string[] subtotalColumnNames)
+        public static SLDocument CreateSpreadsheetLightDocument(DataTable dt, string[] subtotalColumnNames, string groupByFirstColumn)
         {
+            ReorderDataTableToFirstGroupByColumn(dt, groupByFirstColumn);
+
             var sl = new SLDocument();
 
             var subtotalVals = new double[subtotalColumnNames.Length];
@@ -154,6 +156,20 @@ namespace DocumentTools.Services
         static string FormatAnzahl(int count)
         {
             return string.Format("({0} Zeile{1})", count, (count == 1 ? "" : "n"));
+        }
+
+        private static void ReorderDataTableToFirstGroupByColumn(DataTable dt, string groupByFirstColumn)
+        {
+            var dtGroupByFirstColumn = dt.Columns[groupByFirstColumn];
+            dtGroupByFirstColumn.SetOrdinal(0);
+
+            var newColumnIndex = 1;
+            for (var i = 0; i < dt.Columns.Count; i++)
+            {
+                var column = dt.Columns[i];
+                if (column.ColumnName.ToLower() != groupByFirstColumn.ToLower())
+                    column.SetOrdinal(newColumnIndex++);
+            }
         }
     }
 }

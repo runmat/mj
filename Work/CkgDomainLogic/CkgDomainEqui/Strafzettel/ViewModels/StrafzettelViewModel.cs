@@ -1,10 +1,12 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿// ReSharper disable ImplicitlyCapturedClosure
+// ReSharper disable RedundantUsingDirective
 
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
 using CkgDomainLogic.Strafzettel.Contracts;
@@ -17,6 +19,7 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.Strafzettel.ViewModels
 {
+    [DashboardProviderViewModel]
     public class StrafzettelViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
@@ -75,5 +78,32 @@ namespace CkgDomainLogic.Strafzettel.ViewModels
         {
             StrafzettelFiltered = Strafzettel.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+
+        #region Dashboard functionality
+
+        [DashboardItemsLoadMethod("StrafzettelAlleKunden")]
+        public ChartItemsPackage NameNotRelevant07()
+        {
+            var selector = new StrafzettelSelektor
+            {
+                EingangsDatumRange = new DateRange(DateRangeType.Last6Months, true)
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            var items = DataService.GetStrafzettel(selector);
+
+
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
+            Func<StrafzettelModel, DateTime> xAxisKeyModel = (groupKey => groupKey.EingangsDatum.ToFirstDayOfMonth());
+
+            return ChartService.GetBarChartGroupedStackedItemsWithLabels(
+                    items,
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
+                    xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
+                );
+        }
+
+        #endregion
     }
 }
