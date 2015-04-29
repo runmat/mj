@@ -696,6 +696,11 @@ div.t-window {
 {
     padding-left: 15px;
 }
+.t-grid-multi-row-select {
+    cursor: pointer!important;
+    background-color: #fff;
+}
+
 
 .t-grid-selected {
     background-color: #dff0d8!important;
@@ -703,16 +708,29 @@ div.t-window {
 .t-grid-selected-alt {
     background-color: #d0f0c6!important;
 }
+
 .t-grid-error {
     background-color: #ffeeee!important;
 }
 .t-grid-error-alt {
     background-color: #f6e6e6!important;
 }
-.t-grid-multi-row-select {
-    cursor: pointer!important;
-    background-color: #fff;
+
+.t-grid-confirmed {
+    background-color: #E2FBE2!important;
 }
+.t-grid-confirmed-alt {
+    background-color: #D7FCD7!important;
+}
+
+.t-grid-unconfirmed {
+    background-color: #ffffd8!important;
+}
+.t-grid-unconfirmed-alt {
+    background-color: #ffffc6!important;
+}
+
+
 
 .text-box.single-line {
     width: 150px;
@@ -768,7 +786,7 @@ div.t-window {
 
 
 /* <Loading> */
-.loading {
+.loading,.loading2 {
     position: absolute;
     left: 500px;
     top: 300px;
@@ -1199,4 +1217,10 @@ i.dienstleistung-gewaehlt {
 
 div.controls-width-400 .controls {
     width: 400px;
+}
+
+.persistable-field-marker {
+    margin-left: 3px;
+    color: orange;
+    font-size: 0.9em;
 }

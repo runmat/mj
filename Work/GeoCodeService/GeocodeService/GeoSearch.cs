@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Configuration;
-using System.IO;
+using GeneralTools.Services;
 using GeodeService.GeocodeService;
 using ERPConnect;
 using System.Globalization;
@@ -9,12 +8,10 @@ namespace GeodeService
 {
     class GeoSearch
     {
-        public static bool LogDebugData { get { return (String.Compare(ConfigurationManager.AppSettings["LogDebugData"], "true", true) == 0); } }
-
-        public static string LogFilePath { get { return ConfigurationManager.AppSettings["LogPath"] + "GeocodeLog_" + DateTime.Today.ToString("yyyyMMdd") +".txt"; } }
-
         public static void CalculateRouteRequest(ref RFCServerFunction ServerFunc)
         {
+            LogService logService = new LogService(String.Empty, String.Empty);
+
             try
             {
                 double Geo_Start_X = 0;
@@ -74,16 +71,11 @@ namespace GeodeService
                     waypoints[1].Location.Latitude = Geo_Ziel_X;
                     waypoints[1].Location.Longitude = Geo_Ziel_Y;
 
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log request data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("Request(Route): Latitude1={0}, Longitude1={1}, Latitude2={2}, Longitude2={3}",
-                                Geo_Start_X.ToString(), Geo_Start_Y.ToString(), Geo_Ziel_X.ToString(), Geo_Ziel_Y.ToString());
-                            writer.Close();
-                        }
-                    }
+                    logService.LogWebServiceTraffic(
+                        "Route_IN",
+                        String.Format("Latitude1={0}, Longitude1={1}, Latitude2={2}, Longitude2={3}", Geo_Start_X.ToString(), Geo_Start_Y.ToString(), Geo_Ziel_X.ToString(), Geo_Ziel_Y.ToString()),
+                        Common.LogTableName
+                    );
 
                     routeRequest.Waypoints = waypoints;
                     System.Net.ServicePointManager.Expect100Continue = false;
@@ -97,26 +89,29 @@ namespace GeodeService
                     Double dEntf = Math.Round(routeResponse.Result.Summary.Distance, 0);
                     ServerFunc.Exports["E_ENTFERNUNG"].ParamValue = dEntf.ToString();
 
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log response data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("-> Response(Route) : Distance={0}",
-                                             dEntf.ToString());
-                            writer.Close();
-                        }
-                    }
+                    logService.LogWebServiceTraffic(
+                        "Route_OUT",
+                        String.Format("Distance={0}", dEntf.ToString()),
+                        Common.LogTableName
+                    );
                 }
             }
             catch (Exception ex)
             {
-                Console.Write("Ein Fehler ist aufgetreten: " + ex.Message); 
+                logService.LogWebServiceTraffic(
+                    "Route_ERR",
+                    ex.Message,
+                    Common.LogTableName
+                );
+
+                Console.Write("Ein Fehler ist aufgetreten: " + ex.Message);
             }
         }
 
         public static void GeocodeAddress(string Street, string PostalCode, string City, string Hausnr, string sLand, Boolean isStart, ref RFCServerFunction ServerFunc)
         {
+            LogService logService = new LogService(String.Empty, String.Empty);
+
             try
             {
                 GeocodeRequest geocodeRequest = new GeocodeRequest();
@@ -144,16 +139,11 @@ namespace GeodeService
                 geocodeRequest.Options = geocodeOptions;
                 System.Net.ServicePointManager.Expect100Continue = false;
 
-                if (LogDebugData)
-                {
-                    // DEBUG: Log request data to txt
-                    using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                    {
-                        writer.WriteLine("Request(Adresse): AdressLine={0}, PostalCode={1}, Locality={2}, CountryRegion={3}", 
-                            Street + " " + Hausnr, PostalCode, City, sLand);
-                        writer.Close();
-                    }
-                }
+                logService.LogWebServiceTraffic(
+                    "Adrs_IN",
+                    String.Format("AdressLine={0}, PostalCode={1}, Locality={2}, CountryRegion={3}", Street + " " + Hausnr, PostalCode, City, sLand),
+                    Common.LogTableName
+                );
 
                 // Make the geocode request
                 GeocodeServiceClient geocodeService = new GeocodeServiceClient("BasicHttpBinding_IGeocodeService");
@@ -185,16 +175,11 @@ namespace GeodeService
                         String PLZ = geocodeResponse.Results[i].Address.PostalCode;
                         String sRetLand = geocodeResponse.Results[i].Address.CountryRegion;
 
-                        if (LogDebugData)
-                        {
-                            // DEBUG: Log response data to txt
-                            using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                            {
-                                writer.WriteLine("-> Response(Adresse) Line {0}: Latitude={1}, Longitude={2}, AddressLine={3}, PostalCode={4}, Locality={5}, CountryRegion={6}", 
-                                    (i + 1).ToString(), row["GEOX"], row["GEOY"], Strasse, PLZ, Ort, sRetLand);
-                                writer.Close();
-                            }
-                        }
+                        logService.LogWebServiceTraffic(
+                            "Adrs_OUT",
+                            String.Format("Line {0}: Latitude={1}, Longitude={2}, AddressLine={3}, PostalCode={4}, Locality={5}, CountryRegion={6}", (i + 1).ToString(), row["GEOX"], row["GEOY"], Strasse, PLZ, Ort, sRetLand),
+                            Common.LogTableName
+                        );
 
                         if (Strasse.Contains(Hausnr)&& Hausnr.Length > 0 )
                         {
@@ -227,15 +212,11 @@ namespace GeodeService
                 }
                 else
                 {
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log response data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("-> Response(Adresse): NO_DATA");
-                            writer.Close();
-                        }
-                    }
+                    logService.LogWebServiceTraffic(
+                        "Adrs_OUT",
+                        "NO_DATA",
+                        Common.LogTableName
+                    );
 
                     if (isStart)
                     {
@@ -255,13 +236,135 @@ namespace GeodeService
             }
             catch (Exception ex)
             {
+                logService.LogWebServiceTraffic(
+                    "Adrs_ERR",
+                    ex.Message,
+                    Common.LogTableName
+                );
 
                 Console.Write("Ein Fehler ist aufgetreten: " + ex.Message); 
             }
         }
 
+        public static void GeocodeAddressTable(string Street, string PostalCode, string City, string Hausnr, string lfdnr, string sLand, ref RFCServerFunction ServerFunc)
+        {
+            LogService logService = new LogService(String.Empty, String.Empty);
+
+            try
+            {
+                GeocodeRequest geocodeRequest = new GeocodeRequest();
+
+                // Set the credentials using a valid Bing Maps key
+                geocodeRequest.Credentials = new Credentials();
+                geocodeRequest.Credentials.ApplicationId = Common.BingKey;
+
+                // Set the full address query
+                geocodeRequest.Address = new Address();
+                geocodeRequest.Address.Locality = City;
+                geocodeRequest.Address.AddressLine = Street + " " + Hausnr;
+                geocodeRequest.Address.PostalCode = PostalCode;
+                geocodeRequest.Address.CountryRegion = sLand;
+                geocodeRequest.Culture = "de-DE";
+
+                // Set the options to only return high confidence results 
+                ConfidenceFilter[] filters = new ConfidenceFilter[1];
+                filters[0] = new ConfidenceFilter();
+                filters[0].MinimumConfidence = Confidence.Low;
+
+                // Add the filters to the options
+                GeocodeOptions geocodeOptions = new GeocodeOptions();
+                geocodeOptions.Filters = filters;
+                geocodeRequest.Options = geocodeOptions;
+                System.Net.ServicePointManager.Expect100Continue = false;
+
+                logService.LogWebServiceTraffic(
+                    "Adrs_IN",
+                    String.Format("AdressLine={0}, PostalCode={1}, Locality={2}, CountryRegion={3}", Street + " " + Hausnr, PostalCode, City, sLand),
+                    Common.LogTableName
+                );
+
+                // Make the geocode request
+                GeocodeServiceClient geocodeService = new GeocodeServiceClient("BasicHttpBinding_IGeocodeService");
+                geocodeService.Open();
+                geocodeService.Endpoint.Name = "BasicHttpBinding_IGeocodeService";
+                GeocodeResponse geocodeResponse = geocodeService.Geocode(geocodeRequest);
+                RFCTable tblGeo;
+
+                tblGeo = ServerFunc.Tables["GT_ADRS"];
+                RFCStructure row;
+                if (geocodeResponse.Results.Length > 0)
+                {
+                    for (int i = geocodeResponse.Results.Length - 1; i >= 0; i--)
+                    {
+                        row = tblGeo.AddRow();
+                        row["LFDNR"] = lfdnr;
+                        row["GEOX"] = geocodeResponse.Results[i].Locations[0].Latitude;
+                        row["GEOY"] = geocodeResponse.Results[i].Locations[0].Longitude;
+
+                        String Ort = geocodeResponse.Results[i].Address.Locality;
+                        String Strasse = geocodeResponse.Results[i].Address.AddressLine;
+                        String PLZ = geocodeResponse.Results[i].Address.PostalCode;
+                        String sRetLand = geocodeResponse.Results[i].Address.CountryRegion;
+
+                        logService.LogWebServiceTraffic(
+                            "Adrs_OUT",
+                            String.Format("Line {0}: Latitude={1}, Longitude={2}, AddressLine={3}, PostalCode={4}, Locality={5}, CountryRegion={6}", (i + 1).ToString(), row["GEOX"], row["GEOY"], Strasse, PLZ, Ort, sRetLand),
+                            Common.LogTableName
+                        );
+
+                        if (Ort.Length == 0 && row["GEOX"].ToString().Length > 0 && row["GEOY"].ToString().Length > 0)
+                        {
+                            Ort = City;
+                        }
+                        if (Strasse.Contains(Hausnr) && Hausnr.Length > 0)
+                        {
+                            Strasse = Strasse.Replace(Hausnr, "");
+                        }
+                        if (Strasse.Contains(Hausnr.ToUpper()) && Hausnr.Length > 0)
+                        {
+                            Strasse = Strasse.Replace(Hausnr.ToUpper(), "");//kommt vor das 8A statt 8a zurück kommt
+                        }
+
+                        row["COUNTRY"] = sRetLand;
+                        row["POST_CODE1"] = PLZ;
+                        row["CITY1"] = Ort;
+                        row["STREET"] = Strasse;
+                        row["HOUSE_NUM1"] = Hausnr;
+
+                        if (Strasse.Trim().Length == 0) { row["FEHLER"] = "Strasse"; }
+                        if (PLZ.Trim().Length == 0) { row["FEHLER"] = "PLZ"; }
+                        if (Ort.Trim().Length == 0) { row["FEHLER"] = "Ort"; }
+                    }
+                }
+                else
+                {
+                    logService.LogWebServiceTraffic(
+                        "Adrs_OUT",
+                        "NO_DATA",
+                        Common.LogTableName
+                    );
+
+                    row = tblGeo.AddRow();
+                    row["LFDNR"] = lfdnr;
+                    row["FEHLER"] = "NO_DATA";
+                }
+            }
+            catch (Exception ex)
+            {
+                logService.LogWebServiceTraffic(
+                    "Adrs_ERR",
+                    ex.Message,
+                    Common.LogTableName
+                );
+
+                Console.Write("Ein Fehler ist aufgetreten: " + ex.Message);
+            }
+        }
+
         public static void CalculateCordRoute(ref RFCServerFunction ServerFunc)
         {
+            LogService logService = new LogService(String.Empty, String.Empty);
+
             try
             {
                 double Geo_Start_X = 0;
@@ -316,16 +419,11 @@ namespace GeodeService
                     waypoints[1].Location.Latitude = Geo_Ziel_X;
                     waypoints[1].Location.Longitude = Geo_Ziel_Y;
 
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log request data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("Request(RouteCoord): Latitude1={0}, Longitude1={1}, Latitude2={2}, Longitude2={3}",
-                                Geo_Start_X.ToString(), Geo_Start_Y.ToString(), Geo_Ziel_X.ToString(), Geo_Ziel_Y.ToString());
-                            writer.Close();
-                        }
-                    }
+                    logService.LogWebServiceTraffic(
+                        "RouteC_IN",
+                        String.Format("Latitude1={0}, Longitude1={1}, Latitude2={2}, Longitude2={3}", Geo_Start_X.ToString(), Geo_Start_Y.ToString(), Geo_Ziel_X.ToString(), Geo_Ziel_Y.ToString()),
+                        Common.LogTableName
+                    );
 
                     routeRequest.Waypoints = waypoints;
                     System.Net.ServicePointManager.Expect100Continue = false;
@@ -339,26 +437,29 @@ namespace GeodeService
                     Double dEntf = Math.Round(routeResponse.Result.Summary.Distance, 0);
                     ServerFunc.Exports["E_ENTFERNUNG"].ParamValue = dEntf.ToString();
 
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log response data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("-> Response(RouteCoord) : Distance={0}",
-                                             dEntf.ToString());
-                            writer.Close();
-                        }
-                    }
+                    logService.LogWebServiceTraffic(
+                        "RouteC_OUT",
+                        String.Format("Distance={0}", dEntf.ToString()),
+                        Common.LogTableName
+                    );
                 }
             }
             catch (Exception ex)
             {
+                logService.LogWebServiceTraffic(
+                    "RouteC_ERR",
+                    ex.Message,
+                    Common.LogTableName
+                );
+
                 Console.Write("Ein Fehler ist aufgetreten: " + ex.Message); 
             }
         }
 
         public static void CalculateCordRouteTable(string lfdnr, string GEOX_ST, string GEOY_ST, string GEOX_ZI, string GEOY_ZI, ref RFCServerFunction ServerFunc)
         {
+            LogService logService = new LogService(String.Empty, String.Empty);
+
             try
             {
                 double Geo_Start_X = 0;
@@ -414,16 +515,11 @@ namespace GeodeService
                     waypoints[1].Location.Latitude = Geo_Ziel_X;
                     waypoints[1].Location.Longitude = Geo_Ziel_Y;
 
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log request data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("Request(RouteCoord): Latitude1={0}, Longitude1={1}, Latitude2={2}, Longitude2={3}",
-                                Geo_Start_X.ToString(), Geo_Start_Y.ToString(), Geo_Ziel_X.ToString(), Geo_Ziel_Y.ToString());
-                            writer.Close();
-                        }
-                    }
+                    logService.LogWebServiceTraffic(
+                        "RouteC_IN",
+                        String.Format("Latitude1={0}, Longitude1={1}, Latitude2={2}, Longitude2={3}", Geo_Start_X.ToString(), Geo_Start_Y.ToString(), Geo_Ziel_X.ToString(), Geo_Ziel_Y.ToString()),
+                        Common.LogTableName
+                    );
 
                     routeRequest.Waypoints = waypoints;
                     System.Net.ServicePointManager.Expect100Continue = false;
@@ -449,16 +545,11 @@ namespace GeodeService
                     row["GEOX_ZI"] = Geo_Ziel_X.ToString();
                     row["GEOY_ZI"] = Geo_Ziel_Y.ToString();
 
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log response data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("-> Response(RouteCoord) : Distance={0}",
-                                             dEntf.ToString());
-                            writer.Close();
-                        }
-                    }
+                    logService.LogWebServiceTraffic(
+                        "RouteC_OUT",
+                        String.Format("Distance={0}", dEntf.ToString()),
+                        Common.LogTableName
+                    );
                 }
                 else 
                 {
@@ -478,127 +569,12 @@ namespace GeodeService
             }
             catch (Exception ex)
             {
-                Console.Write("Ein Fehler ist aufgetreten: " + ex.Message);
-            }
-        }
+                logService.LogWebServiceTraffic(
+                    "RouteC_ERR",
+                    ex.Message,
+                    Common.LogTableName
+                );
 
-        public static void GeocodeAddressTable(string Street, string PostalCode, string City, string Hausnr, string lfdnr, string sLand, ref RFCServerFunction ServerFunc)
-        {
-            try
-            {
-                GeocodeRequest geocodeRequest = new GeocodeRequest();
-
-                // Set the credentials using a valid Bing Maps key
-                geocodeRequest.Credentials = new Credentials();
-                geocodeRequest.Credentials.ApplicationId = Common.BingKey;
-
-                // Set the full address query
-                geocodeRequest.Address = new Address();
-                geocodeRequest.Address.Locality = City;
-                geocodeRequest.Address.AddressLine = Street + " " + Hausnr;
-                geocodeRequest.Address.PostalCode = PostalCode;
-                geocodeRequest.Address.CountryRegion = sLand; 
-                geocodeRequest.Culture = "de-DE";
-
-                // Set the options to only return high confidence results 
-                ConfidenceFilter[] filters = new ConfidenceFilter[1];
-                filters[0] = new ConfidenceFilter();
-                filters[0].MinimumConfidence = Confidence.Low;
-
-                // Add the filters to the options
-                GeocodeOptions geocodeOptions = new GeocodeOptions();
-                geocodeOptions.Filters = filters;
-                geocodeRequest.Options = geocodeOptions;
-                System.Net.ServicePointManager.Expect100Continue = false;
-
-                if (LogDebugData)
-                {
-                    // DEBUG: Log request data to txt
-                    using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                    {
-                        writer.WriteLine("Request(Adresse): AdressLine={0}, PostalCode={1}, Locality={2}, CountryRegion={3}",
-                            Street + " " + Hausnr, PostalCode, City, sLand);
-                        writer.Close();
-                    }
-                }
-
-                // Make the geocode request
-                GeocodeServiceClient geocodeService = new GeocodeServiceClient("BasicHttpBinding_IGeocodeService");
-                geocodeService.Open();
-                geocodeService.Endpoint.Name = "BasicHttpBinding_IGeocodeService";
-                GeocodeResponse geocodeResponse = geocodeService.Geocode(geocodeRequest);
-                RFCTable tblGeo;
-
-                tblGeo = ServerFunc.Tables["GT_ADRS"];
-                RFCStructure row;
-                if (geocodeResponse.Results.Length > 0)
-                {                   
-                    for (int i = geocodeResponse.Results.Length - 1; i >= 0; i--)
-                    {
-                        row = tblGeo.AddRow();
-                        row["LFDNR"] = lfdnr;
-                        row["GEOX"] = geocodeResponse.Results[i].Locations[0].Latitude;
-                        row["GEOY"] = geocodeResponse.Results[i].Locations[0].Longitude;
-
-                        String Ort = geocodeResponse.Results[i].Address.Locality;
-                        String Strasse = geocodeResponse.Results[i].Address.AddressLine;
-                        String PLZ = geocodeResponse.Results[i].Address.PostalCode;
-                        String sRetLand = geocodeResponse.Results[i].Address.CountryRegion;
-
-                        if (LogDebugData)
-                        {
-                            // DEBUG: Log response data to txt
-                            using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                            {
-                                writer.WriteLine("-> Response(Adresse) Line {0}: Latitude={1}, Longitude={2}, AddressLine={3}, PostalCode={4}, Locality={5}, CountryRegion={6}",
-                                    (i + 1).ToString(), row["GEOX"], row["GEOY"], Strasse, PLZ, Ort, sRetLand);
-                                writer.Close();
-                            }
-                        }
-
-                        if (Ort.Length == 0 && row["GEOX"].ToString().Length > 0 && row["GEOY"].ToString().Length > 0)
-                        {
-                            Ort = City;
-                        }
-                        if (Strasse.Contains(Hausnr) && Hausnr.Length > 0)
-                        {
-                            Strasse = Strasse.Replace(Hausnr, "");    
-                        }
-                        if (Strasse.Contains(Hausnr.ToUpper()) && Hausnr.Length > 0)
-                        {
-                            Strasse = Strasse.Replace(Hausnr.ToUpper(), "");//kommt vor das 8A statt 8a zurück kommt
-                        }
-                        
-                        row["COUNTRY"] = sRetLand;
-                        row["POST_CODE1"] = PLZ;
-                        row["CITY1"] = Ort;
-                        row["STREET"] = Strasse;
-                        row["HOUSE_NUM1"] = Hausnr;
-
-                        if (Strasse.Trim().Length == 0) { row["FEHLER"] = "Strasse"; }
-                        if (PLZ.Trim().Length == 0) { row["FEHLER"] = "PLZ"; }
-                        if (Ort.Trim().Length == 0) { row["FEHLER"] = "Ort"; }
-                    }
-                }
-                else
-                {
-                    if (LogDebugData)
-                    {
-                        // DEBUG: Log response data to txt
-                        using (StreamWriter writer = new StreamWriter(LogFilePath, true))
-                        {
-                            writer.WriteLine("-> Response(Adresse): NO_DATA");
-                            writer.Close();
-                        }
-                    }
-
-                    row = tblGeo.AddRow();
-                    row["LFDNR"] = lfdnr;
-                    row["FEHLER"] = "NO_DATA";
-                }
-            }
-            catch (Exception ex)
-            {
                 Console.Write("Ein Fehler ist aufgetreten: " + ex.Message);
             }
         }

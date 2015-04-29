@@ -111,36 +111,38 @@
                                                     AllowSorting="true" AllowPaging="True" CssClass="GridView" PageSize="20" 
                                                     onrowdatabound="gvZuldienst_RowDataBound" onsorting="gvZuldienst_Sorting">
                                                     <HeaderStyle CssClass="GridTableHead" ForeColor="White"  />
-                                                    <AlternatingRowStyle CssClass="GridTableAlternate"></AlternatingRowStyle>
+                                                    <AlternatingRowStyle CssClass="GridTableAlternate" />
                                                     <PagerSettings Visible="False" />
                                                     <RowStyle CssClass="ItemStyle" />
                                                     <Columns>
-                                                        <asp:TemplateField SortExpression="Name" HeaderText="col_Name">
+                                                        <asp:TemplateField SortExpression="NAME1" HeaderText="col_Name">
                                                             <HeaderTemplate>
-                                                                <asp:LinkButton ID="col_Name" runat="server" CommandName="Sort" CommandArgument="Name">col_Name</asp:LinkButton></HeaderTemplate>
+                                                                <asp:LinkButton ID="col_Name" runat="server" CommandName="Sort" CommandArgument="NAME1">col_Name</asp:LinkButton>
+                                                            </HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblName" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Name") %>'></asp:Label>
+                                                                <asp:Label ID="lblName" runat="server" Text='<%# Eval("NAME1") %>'/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>   
-                                                        <asp:TemplateField SortExpression="Kreisbezeichnung" HeaderText="col_Kreisbezeichnung">
+                                                        <asp:TemplateField SortExpression="ZKREIS" HeaderText="col_Kreisbezeichnung">
                                                             <HeaderTemplate>
-                                                                <asp:LinkButton ID="col_Kreisbezeichnung" runat="server" CommandName="Sort" CommandArgument="Kreisbezeichnung">col_Kreisbezeichnung</asp:LinkButton></HeaderTemplate>
+                                                                <asp:LinkButton ID="col_Kreisbezeichnung" runat="server" CommandName="Sort" CommandArgument="ZKREIS">col_Kreisbezeichnung</asp:LinkButton>
+                                                            </HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblKreisbezeichnung" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Kreisbezeichnung") %>'></asp:Label>
+                                                                <asp:Label ID="lblKreisbezeichnung" runat="server" Text='<%# Eval("ZKREIS") %>'/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>   
-                                                        <asp:TemplateField SortExpression="Kennzeichen" HeaderText="col_Kennzeichen">
+                                                        <asp:TemplateField SortExpression="ZKFZKZ" HeaderText="col_Kennzeichen">
                                                             <HeaderTemplate>
-                                                                <asp:LinkButton ID="col_Kennzeichen" runat="server" CommandName="Sort" CommandArgument="Kennzeichen">col_Kennzeichen</asp:LinkButton></HeaderTemplate>
+                                                                <asp:LinkButton ID="col_Kennzeichen" runat="server" CommandName="Sort" CommandArgument="ZKFZKZ">col_Kennzeichen</asp:LinkButton>
+                                                            </HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblKennzeichen" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Kennzeichen") %>'></asp:Label>
+                                                                <asp:Label ID="lblKennzeichen" runat="server" Text='<%# Eval("ZKFZKZ") %>'/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="Details">
                                                             <ItemTemplate>
-                                                                 <asp:Label ID="lblDetail" runat="server" Visible="false" Text='<%# DataBinder.Eval(Container, "DataItem.Details") %>'></asp:Label>
-                                                                <asp:ImageButton ID="ibtnDetail" ToolTip="Detailansicht (in neuem Fenster öffnen)" ImageUrl="../../../images/Lupe_16x16.gif"
-                                                                 runat="server"     />                                                                 
+                                                                <asp:Label ID="lblDetail" runat="server" Visible="false" Text='<%# Eval("Details") %>'/>
+                                                                <asp:ImageButton ID="ibtnDetail" ToolTip="Detailansicht (in neuem Fenster öffnen)" ImageUrl="../../../images/Lupe_16x16.gif" runat="server" />
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>

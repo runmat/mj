@@ -10,14 +10,14 @@ namespace AppZulassungsdienst.forms
     public partial class NachGekaufteKennzeichen : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private NacherfassungGekaufteKennzeichen NGK;
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
@@ -25,23 +25,23 @@ namespace AppZulassungsdienst.forms
             lblMessage.Text = "";
             lblErrorInfotext.Text = "";
 
-            if(Session["NGK"] == null)
+            if (Session["NGK"] == null)
             {
-                NGK = new NacherfassungGekaufteKennzeichen(ref m_User, m_App, Session["AppID"].ToString(),Session.SessionID,this);
-            }else{
+                NGK = new NacherfassungGekaufteKennzeichen(m_User.Reference, m_User.CustomerName.Contains("ZLD"));
+            }
+            else
+            {
                 NGK = (NacherfassungGekaufteKennzeichen)Session["NGK"];
             }
-                
+
             if (!IsPostBack)
             {
                 FillLieferanten();
                 FillArtikel();
                 RefreshBuchungen();
-                CheckPreisShow();                
+                CheckPreisShow();
             }
         }
-
-        #region "Events"
 
         protected void ddlLiefer_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -51,18 +51,19 @@ namespace AppZulassungsdienst.forms
 
         protected void cmdCreate_Click(object sender, EventArgs e)
         {
-            NGK.SendToSap();
-            if (NGK.Message == string.Empty)
+            NGK.SendToSap(m_User.UserName);
+
+            if (NGK.ErrorOccured)
+            {
+                lblError.Text = "Beim Speichern ist ein Fehler aufgetreten.";
+            }
+            else
             {
                 lblMessage.Text = "Buchung erfolgreich";
             }
-            else 
-            {
-                lblError.Text = "Beim Speichern ist ein Fehler aufgetreten."; // Es konnten 
-            }
 
-            txtLieferscheinnummer.Text = string.Empty;
-            FillGrid(0, "");
+            txtLieferscheinnummer.Text = "";
+            FillGrid();
         }
 
         protected void lbNewLine_Click(object sender, EventArgs e)
@@ -71,7 +72,7 @@ namespace AppZulassungsdienst.forms
             int iMenge;
             double dPreis = 0;
 
-            if(txtDatum.Text.Trim().Length == 0 || !DateTime.TryParse(txtDatum.Text,out Date))
+            if(String.IsNullOrEmpty(txtDatum.Text) || !DateTime.TryParse(txtDatum.Text,out Date))
             {
                 lblError.Text = "Geben Sie ein gültiges Datum an!";
                 return;
@@ -88,15 +89,14 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            if(txtLieferscheinnummer.Text.Trim().Length == 0)
+            if(String.IsNullOrEmpty(txtLieferscheinnummer.Text))
             {
                 lblError.Text = "Geben Sie eine gültige Lieferscheinnummer an!";
                 return;
             }
             
-            if (txtMenge.Text.Trim().Length == 0 || !int.TryParse(txtMenge.Text,out iMenge))
+            if (String.IsNullOrEmpty(txtMenge.Text) || !int.TryParse(txtMenge.Text,out iMenge))
             {
-                
                 lblError.Text = "Geben Sie eine gültige Stückzahl an!";
                 return;
             }
@@ -115,7 +115,7 @@ namespace AppZulassungsdienst.forms
             
             if (txtPreis.Visible)
             {
-                if (txtPreis.Text.Trim().Length == 0)
+                if (String.IsNullOrEmpty(txtPreis.Text))
                 {
                     lblError.Text = "Geben Sie einen gültigen Preis an!";
                     return;
@@ -171,18 +171,12 @@ namespace AppZulassungsdienst.forms
             }
 
             ClearInput();
-            FillGrid(0,"");
-        }
-
-        private void ClearInput()
-        {
-            txtPreis.Text = string.Empty;
-            txtMenge.Text = string.Empty;
+            FillGrid();
         }
 
         protected void gvArtikel_SelectedIndexChanged(object sender, EventArgs e)
         {
-            FillGrid(0, "");
+            FillGrid();
         }
 
         protected void gvArtikel_RowCommand(object sender, GridViewCommandEventArgs e)
@@ -195,8 +189,9 @@ namespace AppZulassungsdienst.forms
                     {
                         NGK.tblKennzeichen.Rows.Clear();                        
                     }
-                    FillGrid(0, "");
+                    FillGrid();
                     break;
+
                 case "bearbeiten":
                     DataRow TRow = NGK.tblKennzeichen.Select("ArtikelID='" + e.CommandArgument + "'")[0];
                    
@@ -252,6 +247,7 @@ namespace AppZulassungsdienst.forms
                     OpenInfotext(e.CommandArgument.ToString(),strDatum, strMenge, strLText, strLTextNr, strArtikel, strLieferantID,strLieferscheinnummer ,bPflichtText, strPreis);
                     
                     break;
+
                 case "minusMenge":
                     DataRow[] rows = NGK.tblKennzeichen.Select("ArtikelID=" + e.CommandArgument);
                     if (rows.GetLength(0) > 0)
@@ -262,9 +258,10 @@ namespace AppZulassungsdienst.forms
                         {
                             rows[0]["Menge"] = iMenge - 1;
                         }
-                        FillGrid(0, "");
+                        FillGrid();
                     }
                     break;
+
                 case "plusMenge":
                     DataRow[] rows2 = NGK.tblKennzeichen.Select("ArtikelID=" + e.CommandArgument);
                     if (rows2.GetLength(0) > 0)
@@ -275,7 +272,7 @@ namespace AppZulassungsdienst.forms
                         {
                             rows2[0]["Menge"] = iMenge + 1;
                         }
-                        FillGrid(0, "");
+                        FillGrid();
                     }
                     break;
             }
@@ -283,7 +280,6 @@ namespace AppZulassungsdienst.forms
 
         protected void lbInfotextSave_Click(object sender, EventArgs e)
         {
-            
             lblErrorInfotext.Text = "";
             if (lblPflicht.Text == "true")
             {
@@ -317,7 +313,6 @@ namespace AppZulassungsdienst.forms
             }
 
             CloseInfotext();
-
         }
 
         protected void lbInfotextClose_Click(object sender, EventArgs e)
@@ -335,9 +330,20 @@ namespace AppZulassungsdienst.forms
 
         }
 
+        protected void lbToggleBuchungen_Click(object sender, EventArgs e)
+        {
+            ShowBuchungen(!ibHideBuchungen.Visible);
+        }
+
         #endregion
 
-        #region "Methods and Functions"
+        #region Methods
+
+        private void ClearInput()
+        {
+            txtPreis.Text = "";
+            txtMenge.Text = "";
+        }
 
         private void OpenInfotext(string ArtikelID,
                                     string Datum,
@@ -369,9 +375,9 @@ namespace AppZulassungsdienst.forms
                 lblPflicht.Text = "false";
             }
 
-            
             MPEInfotext.Show();
         }
+
         private void CloseInfotext()
         {
             txtInfotext.Text = "";
@@ -387,15 +393,13 @@ namespace AppZulassungsdienst.forms
             Session["LastInfoText"] = null;
 
             MPEInfotext.Hide();
-            FillGrid(0, "");
-
+            FillGrid();
         }
 
-        private void FillGrid(Int32 intPageIndex, String strSort)
+        private void FillGrid()
         {
-            DataView tmpDataView = NGK.tblKennzeichen.DefaultView;
+            DataView tmpDataView = new DataView(NGK.tblKennzeichen);
             String strFilter = "";
-
 
             tmpDataView.RowFilter = strFilter;
 
@@ -419,52 +423,9 @@ namespace AppZulassungsdienst.forms
                 gvArtikel.Visible = true;
                 lblNoData.Visible = false;
 
-                Int32 intTempPageIndex = intPageIndex;
-                String strTempSort = "";
-                String strDirection = null;
-
-                if (strSort.Trim(' ').Length > 0)
-                {
-                    intTempPageIndex = 0;
-                    strTempSort = strSort.Trim(' ');
-                    if ((this.ViewState["Sort"] == null) || ((String)this.ViewState["Sort"] == strTempSort))
-                    {
-                        if (this.ViewState["Direction"] == null)
-                        {
-                            strDirection = "desc";
-                        }
-                        else
-                        {
-                            strDirection = (String)this.ViewState["Direction"];
-                        }
-                    }
-                    else
-                    {
-                        strDirection = "desc";
-                    }
-
-                    if (strDirection == "asc")
-                    {
-                        strDirection = "desc";
-                    }
-                    else
-                    {
-                        strDirection = "asc";
-                    }
-
-                    this.ViewState["Sort"] = strTempSort;
-                    this.ViewState["Direction"] = strDirection;
-                }
-
-                if (strTempSort.Length != 0)
-                {
-                    tmpDataView.Sort = strTempSort + " " + strDirection;
-                }
-
-                gvArtikel.PageIndex = intTempPageIndex;
+                gvArtikel.PageIndex = 0;
                 gvArtikel.DataSource = tmpDataView;
                 gvArtikel.DataBind();
-
             }
         }
 
@@ -487,7 +448,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    DataView dv = NGK.tblArtikel.DefaultView;
+                    DataView dv = new DataView(NGK.tblArtikel);
                     dv.Sort = "Pos asc";
                     ddlArtikel.DataSource = dv;
                     ddlArtikel.DataValueField = "ARTLIF";
@@ -505,7 +466,6 @@ namespace AppZulassungsdienst.forms
 
         private void FillLieferanten()
         {
-           
             if (NGK.tblLieferanten.Rows.Count == 0)
             {
                 lblError.Text = "Für Ihre Kostenstelle konnten keine Lieferanten ermittelt werden!";
@@ -515,7 +475,7 @@ namespace AppZulassungsdienst.forms
             }
             else 
             {
-                DataView dv = NGK.tblLieferanten.DefaultView;
+                DataView dv = new DataView(NGK.tblLieferanten);
                 dv.Sort = "NAME1 asc";
                 ddlLiefer.DataSource = dv;
                 ddlLiefer.DataTextField = "NAME1";
@@ -532,19 +492,12 @@ namespace AppZulassungsdienst.forms
             lblPreis.Visible = show;
         }
 
-        #endregion
-
-        protected void lbToggleBuchungen_Click(object sender, EventArgs e)
-        {
-            ShowBuchungen(!ibHideBuchungen.Visible);
-        }
-
-        void RefreshBuchungen()
+        private void RefreshBuchungen()
         {
             ShowBuchungen(ibHideBuchungen.Visible);
         }
 
-        void ShowBuchungen(bool show)
+        private void ShowBuchungen(bool show)
         {
             lbShowBuchungen.Text = (!show ? "erfasste Käufe..." : "erfasste Käufe schließen!");
 
@@ -554,7 +507,7 @@ namespace AppZulassungsdienst.forms
             ShowIframeBuchungen(show);
         }
 
-        void ShowIframeBuchungen(bool show)
+        private void ShowIframeBuchungen(bool show)
         {
             if (!show)
             {
@@ -567,5 +520,7 @@ namespace AppZulassungsdienst.forms
                 ifrBuchungen.Attributes["src"] = string.Format("/PortalZLD_AppZulassungsdienst/NachGekaufteKennzeichen/Index/{0}_{1}", m_User.UserID, ddlLiefer.SelectedValue);
             }
         }
+
+        #endregion
     }
 }

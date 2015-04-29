@@ -3,11 +3,10 @@
     var gridName = "GridStrafzettel";
 }
 
-@(Html.Telerik()
-    .Grid<StrafzettelModel>()
+@(Html.XTelerik()
+    .XGrid<StrafzettelModel>()
     .Name(gridName)
 
-    .XGroup("GridStrafzettelModel")
     .XAjaxDataBinding("StrafzettelAjaxBinding", "Strafzettel")
     .Columns(columns => columns.XBoundAll())
     .XAutoColumnConfiguration()

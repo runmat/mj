@@ -1,91 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using CKG.Base.Common;
 using CKG.Base.Business;
+using SapORM.Contracts;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib
 {
-    /// <summary>
-    /// Klasse für Umlagerungen der Filiale.
-    /// </summary>
-    public class clsUmlagerung : BankBase
+    public class clsUmlagerung : SapOrmBusinessBase
     {
-        /// <summary>
-        /// Tabelle erfasster Umlagerungen.
-        /// </summary>
-        public DataTable tblUmlagerung
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Stammdatentabelle Artikel, die umgelagert werden können. 
-        /// </summary>
-        public DataTable tblArtikel
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Stammdatentabelle Kennzeichenform.
-        /// </summary>
-        public DataTable tblKennzForm
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Kostenstelle an die umgelagert werden soll.
-        /// </summary>
-        public String KostStelleNeu
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Name der Kostenstelle an die umgelagert werden soll.
-        /// </summary>
-        public String KostText
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Belegnummer der Umlagerung.
-        /// </summary>
-        public String BelegNR
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Verkaufsorganisation
-        /// </summary>
-        public String VKORG
-        {
-            get;
-            set;
-        }
-        /// <summary>
-        /// Verkaufsbüro
-        /// </summary>
-        public String VKBUR
-        {
-            get;
-            set;
-        }
+        public DataTable tblUmlagerung { get; set; }
+        public DataTable tblArtikel { get; set; }
+        public DataTable tblKennzForm { get; set; }
+        public String KostStelleNeu { get; set; }
+        public String KostText { get; set; }
+        public String BelegNR { get; set; }
 
-        /// <summary>
-        /// Konstruktor clsUmlagerung.
-        /// </summary>
-        /// <param name="objUser">Webuserobjekt</param>
-        /// <param name="objApp">Applikationsobjekt</param>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="strFilename">Filename</param>
-        public clsUmlagerung(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, String strAppID, String strSessionID, string strFilename)
-            : base(ref objUser,ref objApp, strAppID,  strSessionID, strFilename )
+        public clsUmlagerung(string userReferenz)
         {
+            VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
+            VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
+
             tblUmlagerung = new DataTable();
 
             tblUmlagerung.Columns.Add("MATNR", typeof(String));
@@ -99,158 +34,71 @@ namespace AppZulassungsdienst.lib
             KostStelleNeu = "";
         }
 
-        /// <summary>
-        /// Overrides Change() BankBase
-        /// </summary>
-        public override void Change()
-        {}
-
-        /// <summary>
-        /// Overrides Show() BankBase
-        /// </summary>
-        public override void Show()
-        {}
-
-        /// <summary>
-        /// Laden der Umlagerungsartikel aus SAP. Bapi: Z_FIL_EFA_UML_MAT
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Umlagerung.aspx</param>
-        public void Show(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void Show()
         {
-            m_strClassAndMethod = "Umlagerung.Show";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
+           ExecuteSapZugriff(() =>
+               {
+                   Z_FIL_EFA_UML_MAT.Init(SAP, "I_KOSTL", VKBUR);
 
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_FIL_EFA_UML_MAT", ref m_objApp, ref m_objUser, ref page);
+                   CallBapi();
 
-
-                    myProxy.setImportParameter("I_KOSTL", VKBUR);
-
-                    myProxy.callBapi();
-
-                    tblArtikel = myProxy.getExportTable("GT_MAT");
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden zum Barcode gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                   tblArtikel = SAP.GetExportTable("GT_MAT");
+               });
         }
 
-        /// <summary>
-        /// Überprüfen der Kostenstellen ob eine Umlagerung möglich ist. Bapi: Z_FIL_EFA_GET_KOSTL
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Umlagerung.aspx</param>
-        /// <param name="NeuKost">Kostenstelle and umgelagert werden soll</param>
-        public void CheckKostStelle (String strAppID, String strSessionID, System.Web.UI.Page page, String NeuKost )
+        public void CheckKostStelle (string NeuKost)
         {
-            m_strClassAndMethod = "Umlagerung.CheckKostStelle";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_FIL_EFA_GET_KOSTL", ref m_objApp, ref m_objUser, ref page);
+                    Z_FIL_EFA_GET_KOSTL.Init(SAP, "I_KOSTL_SEND, I_KOSTL_RECEIVE", VKBUR.PadLeft0(10), NeuKost.PadLeft0(10));
 
+                    CallBapi();
 
-                    myProxy.setImportParameter("I_KOSTL_SEND", VKBUR.PadLeft(10, '0'));
-                    myProxy.setImportParameter("I_KOSTL_RECEIVE", NeuKost.PadLeft(10, '0'));
+                    KostText = SAP.GetExportParameter("E_KTEXT");
 
-                    myProxy.callBapi();
-
-                    KostText = myProxy.getExportParameter("E_KTEXT").ToString();
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-
-                    switch (subrc)
+                    switch (SAP.ResultCode)
                     {
                         case 102:
-                            m_strMessage = "KST " + NeuKost + " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben.";
+                            RaiseError(SAP.ResultCode, "KST " + NeuKost + " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben.");
                             break;
                         case 104:
-                            m_strMessage = "KST nicht zulässig! Bitte richtige KST eingeben.";
-                            break;
-                        default:
-                            m_strMessage = sapMessage;
+                            RaiseError(SAP.ResultCode, "KST nicht zulässig! Bitte richtige KST eingeben.");
                             break;
                     }
-
-
-
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                });
         }
 
-        /// <summary>
-        /// Übergeben der erfassten Umlagerungen an SAP. 
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Umlagerung.aspx</param>
-        public void Change(String strAppID, String strSessionID, System.Web.UI.Page page) 
+        public void Change()
         {
-            m_strClassAndMethod = "Umlagerung.Change";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
+            // Langtext-IDs vor dem Aufruf des Speicher-Bapis ermitteln, weil verschachtelte SAP-Aufrufe nicht möglich sind
+            var langtextIds = new Dictionary<string, string>();
 
-            if (m_blnGestartet == false)
+            foreach (DataRow tmpRow in tblUmlagerung.Rows)
             {
-                m_blnGestartet = true;
-                try
+                LongStringToSap LSTS = new LongStringToSap();
+
+                var ltextId = "";
+
+                if (tmpRow["LTEXT_NR"].ToString() == "")
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_FIL_EFA_UML_STEP1", ref m_objApp, ref m_objUser, ref page);
+                    if (tmpRow["LTEXT"].ToString() != "")
+                    {
+                        ltextId = LSTS.InsertString(tmpRow["LTEXT"].ToString(), VKBUR);
+                    }
+                }
+                else
+                {
+                    ltextId = tmpRow["LTEXT"].ToString();
+                }
 
+                langtextIds.Add(tmpRow["MATNR"].ToString() + ";" + tmpRow["KENNZFORM"].ToString(), ltextId);
+            }
 
-                    myProxy.setImportParameter("I_KOSTL_IN", KostStelleNeu);
-                    myProxy.setImportParameter("I_KOSTL_OUT", VKBUR);
-                    DataTable tblSAP = myProxy.getImportTable("GT_MAT");
+            ExecuteSapZugriff(() =>
+                {
+                    Z_FIL_EFA_UML_STEP1.Init(SAP, "I_KOSTL_IN, I_KOSTL_OUT", KostStelleNeu, VKBUR);
+
+                    DataTable tblSAP = SAP.GetImportTable("GT_MAT");
 
                     foreach (DataRow tmpRow in tblUmlagerung.Rows)
                     {
@@ -258,64 +106,25 @@ namespace AppZulassungsdienst.lib
                         tmpSAPRow["MATNR"] = tmpRow["MATNR"].ToString();
                         tmpSAPRow["MENGE"] = tmpRow["MENGE"].ToString();
                         tmpSAPRow["EAN11"] = tmpRow["EAN11"].ToString();
-                        LongStringToSap LSTS = new LongStringToSap(m_objUser, m_objApp, page);
-                        if (tmpRow["LTEXT_NR"].ToString() == "")
-                        {
-                            if (tmpRow["LTEXT"].ToString() != "")
-                            {
-                                tmpSAPRow["LTEXT_NR"] = LSTS.InsertString( tmpRow["LTEXT"].ToString(), VKBUR);
-                            }
-                        }
-                        else
-                        {
-                            tmpSAPRow["LTEXT_NR"] = tmpRow["LTEXT"].ToString();
-                        }
+                        tmpSAPRow["LTEXT_NR"] = langtextIds[tmpRow["MATNR"].ToString() + ";" + tmpRow["KENNZFORM"].ToString()];
                         tmpSAPRow["KENNZFORM"] = tmpRow["KENNZFORM"].ToString();
                         tblSAP.Rows.Add(tmpSAPRow);
                     }
 
-                    myProxy.callBapi();
+                    CallBapi();
 
-                    DataTable BelegTable = myProxy.getExportTable("GT_BELNR");
+                    DataTable BelegTable = SAP.GetExportTable("GT_BELNR");
 
-                    if (BelegTable.Rows.Count > 0) 
+                    if (BelegTable.Rows.Count > 0)
                     {
                         for (int i = 0; i < BelegTable.Rows.Count; i++)
                         {
-                            BelegNR += BelegTable.Rows[i]["BELNR"].ToString() + Environment.NewLine;               
-                        }   
+                            BelegNR += BelegTable.Rows[i]["BELNR"].ToString() + Environment.NewLine;
+                        }
                     }
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                });
         }
 
-        /// <summary>
-        /// Einfügen der Umlagerungsdaten in die Webtabelle.
-        /// </summary>
-        /// <param name="Artikelnr">Artikelnr.</param>
-        /// <param name="Menge">Menge</param>
-        /// <param name="Artikelbezeichnung">Artikelbezeichnung</param>
-        /// <param name="EAN">EAN</param>
-        /// <param name="LTextNR">Langtextnummer</param>
-        /// <param name="LText">Langtext</param>
-        /// <param name="Kennzform">Kennzeichenform</param>
         public void insertIntoBestellungen(String Artikelnr, String Menge, String Artikelbezeichnung, String EAN, String LTextNR, String LText, String Kennzform)
         {
             DataRow[] Rows;
@@ -357,55 +166,16 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        /// <summary>
-        /// Ermitteln der möglichen Kennzeichengrössen zum Umlagerungsartikel. Bapi: Z_FIL_EFA_UML_MAT_GROESSE
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Umlagerung.aspx</param>
-        /// <param name="MATNR">Materialnummer</param>
-        public void GetKennzForm(String strAppID, String strSessionID, System.Web.UI.Page page, String MATNR)
+        public void GetKennzForm(string MATNR)
         {
-            m_strClassAndMethod = "Umlagerung.GetKennzForm";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_FIL_EFA_UML_MAT_GROESSE", ref m_objApp, ref m_objUser, ref page);
+                    Z_FIL_EFA_UML_MAT_GROESSE.Init(SAP, "I_MATNR", MATNR);
 
+                    CallBapi();
 
-                    myProxy.setImportParameter("I_MATNR", MATNR);
-
-                    myProxy.callBapi();
-
-                    tblKennzForm = myProxy.getExportTable("GT_MAT");
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc); m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString(); m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden zum Barcode gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    tblKennzForm = SAP.GetExportTable("GT_MAT");
+                });
         }
     }
 }

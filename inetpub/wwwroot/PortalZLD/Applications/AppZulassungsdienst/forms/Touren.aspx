@@ -36,18 +36,18 @@
                                                     <Columns>
                                                         <asp:TemplateField ItemStyle-Width="5%">
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblTour" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.GRUPPE") %>'> </asp:Label>
+                                                                <asp:Label ID="lblTour" runat="server" Text='<%# Eval("Gruppe") %>'/> 
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:BoundField DataField="BEZEI" SortExpression="BEZEI"></asp:BoundField>
+                                                        <asp:BoundField DataField="GruppenName" SortExpression="GruppenName"></asp:BoundField>
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
-                                                                <asp:ImageButton ID="ibtnedt" ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.GRUPPE") %>'
+                                                                <asp:ImageButton ID="ibtnedt" ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# Eval("Gruppe") %>'
                                                                     runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16px" Height="16px" />
-                                                                <asp:ImageButton ID="ibtnInsert" ImageUrl="/PortalZLD/images/Rein01_04.jpg" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.GRUPPE") %>'
+                                                                <asp:ImageButton ID="ibtnInsert" ImageUrl="/PortalZLD/images/Rein01_04.jpg" CommandArgument='<%# Eval("Gruppe") %>'
                                                                     runat="server" CommandName="Insert" ToolTip="Kunden hinzufügen/bearbeiten" Width="16px"
                                                                     Height="16px" />
-                                                                <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.GRUPPE") %>'
+                                                                <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# Eval("Gruppe") %>'
                                                                     runat="server" CommandName="Del" ToolTip="Löschen" />
                                                             </ItemTemplate>
                                                             <HeaderStyle CssClass="TablePadding" Width="60px" />
@@ -161,14 +161,14 @@
                                                         <Columns>
                                                             <asp:TemplateField Visible="False">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblTempID" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.KUNNR") %>'> </asp:Label>
+                                                                    <asp:Label ID="lblTempID" runat="server" Text='<%# Eval("KundenNr") %>'> </asp:Label>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
-                                                            <asp:BoundField DataField="NAME1" ItemStyle-Width="100%" SortExpression="NAME1" HeaderText="Kunde">
+                                                            <asp:BoundField DataField="Name1" ItemStyle-Width="100%" SortExpression="Name1" HeaderText="Kunde">
                                                             </asp:BoundField>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.KUNNR") %>'
+                                                                    <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# Eval("KundenNr") %>'
                                                                         runat="server" CommandName="Del" ToolTip="Löschen" />
                                                                 </ItemTemplate>
                                                                 <HeaderStyle CssClass="TablePadding" Width="60px" />
