@@ -41,6 +41,7 @@ namespace AppZulassungsdienst.forms
             {
                 //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
                 Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+                return;
             }
 
             objNacherf = (NacherfZLD)Session["objNacherf"];
@@ -68,13 +69,21 @@ namespace AppZulassungsdienst.forms
             }
             if (!IsPostBack)
             {
-                if (objNacherf != null)
+                if (objNacherf.DataFilterActive)
                 {
-                    objNacherf.DataFilterActive = false;
-                    Session["objNacherf"] = objNacherf;
+                    ddlSuche.SelectedValue = objNacherf.DataFilterProperty;
+                    txtSuche.Text = objNacherf.DataFilterValue;
+                    ibtnNoFilter.Visible = true;
                 }
 
-                Fillgrid();
+                // ggf. letzte Seitengröße/-nummer wiederherstellen
+                if (objNacherf.LastPageSize > 0)
+                {
+                    GridView1.PageSize = objNacherf.LastPageSize;
+                    GridNavigation1.PagerSize = objNacherf.LastPageSize;
+                }
+
+                Fillgrid(objNacherf.LastPageIndex);
             }
             else
             {
@@ -97,6 +106,7 @@ namespace AppZulassungsdienst.forms
         {
             CheckGrid(GridCheckMode.CheckNone);
             Fillgrid(pageindex);
+            objNacherf.LastPageIndex = pageindex;
             Session["objNacherf"] = objNacherf;
         }
 
@@ -107,6 +117,7 @@ namespace AppZulassungsdienst.forms
         {
             CheckGrid(GridCheckMode.CheckNone);
             Fillgrid();
+            objNacherf.LastPageSize = GridView1.PageSize;
             Session["objNacherf"] = objNacherf;
         }
 
@@ -542,6 +553,10 @@ namespace AppZulassungsdienst.forms
             objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
             objNacherf.DataFilterActive = false;
+            ddlSuche.SelectedIndex = 0;
+            txtSuche.Text = "";
+            ibtnSearch.Visible = true;
+            ibtnNoFilter.Visible = false;
 
             if (objNacherf.Vorgangsliste.Count == 0)
             {
@@ -568,8 +583,6 @@ namespace AppZulassungsdienst.forms
                 cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
                 trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
                 tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-                ddlSuche.SelectedIndex = 0;
-                txtSuche.Text = "";
                 Fillgrid();
                 calculateGebuehr();
             }

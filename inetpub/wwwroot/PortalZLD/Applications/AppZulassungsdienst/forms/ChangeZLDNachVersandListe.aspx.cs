@@ -30,6 +30,7 @@ namespace AppZulassungsdienst.forms
             {
                 //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
                 Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+                return;
             }
 
             objNacherf = (NacherfZLD)Session["objNacherf"];
@@ -55,8 +56,12 @@ namespace AppZulassungsdienst.forms
             {
                 if (objNacherf != null)
                 {
-                    objNacherf.DataFilterActive = false;
-                    Session["objNacherf"] = objNacherf;
+                    if (objNacherf.DataFilterActive)
+                    {
+                        ddlSuche.SelectedValue = objNacherf.DataFilterProperty;
+                        txtSuche.Text = objNacherf.DataFilterValue;
+                        ibtnNoFilter.Visible = true;
+                    }
 
                     if (objNacherf.MatError != 0)
                         lblError.Text = objNacherf.MatErrorText;
@@ -339,6 +344,10 @@ namespace AppZulassungsdienst.forms
             objNacherf.DeleteVorgaengeOkAndDelFromLists();
 
             objNacherf.DataFilterActive = false;
+            ddlSuche.SelectedIndex = 0;
+            txtSuche.Text = "";
+            ibtnSearch.Visible = true;
+            ibtnNoFilter.Visible = false;
 
             if (objNacherf.Vorgangsliste.Count == 0)
             {
@@ -356,10 +365,6 @@ namespace AppZulassungsdienst.forms
                 cmdSave.Enabled = true;
                 trSuche.Visible = true;
                 tab1.Visible = true;
-                ddlSuche.SelectedIndex = 0;
-                txtSuche.Text = "";
-                ibtnSearch.Visible = true;
-                ibtnNoFilter.Visible = false;
                 Fillgrid();
             }
 

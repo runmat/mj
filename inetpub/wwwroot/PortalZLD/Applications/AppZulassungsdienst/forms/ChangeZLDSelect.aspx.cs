@@ -62,30 +62,22 @@ namespace AppZulassungsdienst.forms
             bool ModusNeueAHVorgaenge = (Request.QueryString["A"] != null);
             bool ModusSofortabrechnung = (Request.QueryString["S"] != null);
             bool BackfromList = (Request.QueryString["B"] != null);
+            var strZulDatOld = "";
 
             if (!IsPostBack)
             {
-                if (Session["objNacherf"] != null && BackfromList)
-                {
-                    objNacherf = (NacherfZLD)Session["objNacherf"];
+                if (BackfromList && Session["objNacherf"] != null)
+                    strZulDatOld = ((NacherfZLD)Session["objNacherf"]).SelDatum;
 
-                    if (objNacherf.SelDatum.IsDate())
-                    {
-                        DateTime dDate;
-                        DateTime.TryParse(objNacherf.SelDatum, out dDate);
-                        txtZulDate.Text = dDate.Day.ToString().PadLeft(2, '0') + dDate.Month.ToString().PadLeft(2, '0') + dDate.Year.ToString().Substring(2, 2);
-                    }
+                objNacherf = new NacherfZLD(m_User.Reference) { SelDatum = strZulDatOld };
 
-                    objNacherf.SelID = "";
-                    objNacherf.SelKunde = "";
-                    objNacherf.SelKreis = "";
-                    objNacherf.SelMatnr = "";
-                    objNacherf.SelLief = "0";
-                }
-                else
+                if (objNacherf.SelDatum.IsDate())
                 {
-                    objNacherf = new NacherfZLD(m_User.Reference);
+                    DateTime dDate;
+                    DateTime.TryParse(objNacherf.SelDatum, out dDate);
+                    txtZulDate.Text = dDate.Day.ToString().PadLeft(2, '0') + dDate.Month.ToString().PadLeft(2, '0') + dDate.Year.ToString().Substring(2, 2);
                 }
+
                 Session["Sort"] = null;
                 Session["Direction"] = null;
                 Session["SucheValue"] = null;

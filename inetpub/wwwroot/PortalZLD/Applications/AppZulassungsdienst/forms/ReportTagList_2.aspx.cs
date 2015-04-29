@@ -38,6 +38,7 @@ namespace AppZulassungsdienst.forms
             {
                 //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zur 1. Seite
                 Response.Redirect("ReportTagList.aspx?AppID=" + Session["AppID"].ToString());
+                return;
             }
 
             objListe = (Listen)Session["objListe"];
