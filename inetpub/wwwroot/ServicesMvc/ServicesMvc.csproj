@@ -88,6 +88,7 @@
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MySQL.Data, Version=6.7.5.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\MySQL.Data.dll</HintPath>
@@ -4293,6 +4294,9 @@
     <Content Include="Views\Zanf\Zulassungsunterlagen\Suche.cshtml" />
     <Content Include="Views\Zanf\Zulassungsunterlagen\Edit.cshtml" />
     <Content Include="Views\DomainCommon\Partial\AdressenGruppeKennungSelect.cshtml" />
+    <Content Include="Views\Test\Cerberus.cshtml" />
+    <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
+    <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\Menu.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\Common.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\FieldIndicator.cshtml" />
@@ -4313,6 +4317,10 @@
     <Content Include="Views\Wfm\Abmeldevorgaenge\Partial\AufgabenGrid.cshtml" />
     <Content Include="Views\Shared\Partial\FormGridCurrent\SetAutoPersistColumns.cshtml" />
     <Content Include="Views\Shared\Partial\FormPersistence\GridMenuReset.cshtml" />
+    <Content Include="Views\ModellId\Verwaltung.cshtml" />
+    <Content Include="Views\ModellId\Partial\Common.cshtml" />
+    <Content Include="Views\ModellId\Partial\Grid.cshtml" />
+    <Content Include="Views\ModellId\Partial\DetailsForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

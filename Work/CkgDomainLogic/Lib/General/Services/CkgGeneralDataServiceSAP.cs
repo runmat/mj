@@ -139,6 +139,17 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
+        public List<Hersteller> Hersteller
+        {
+            get
+            {
+                return PropertyCacheGet(() =>
+                    AppModelMappings.Z_M_HERSTELLERGROUP_T_HERST_To_Hersteller.Copy(GetSapHersteller())
+                        .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionNotSpecified } })
+                            .OrderBy(w => w.Name).ToList());
+            }
+        }
+
         #endregion
 
 
@@ -200,6 +211,15 @@ namespace CkgDomainLogic.General.Services
             SAP.Execute();
 
             return Z_DPM_READ_LV_001.GT_OUT_DL.GetExportList(SAP).Where(filter).ToList();
+        }
+
+        public List<Z_M_HERSTELLERGROUP.T_HERST> GetSapHersteller()
+        {
+            Z_M_HERSTELLERGROUP.Init(SAP);
+
+            SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            return Z_M_HERSTELLERGROUP.T_HERST.GetExportListWithExecute(SAP).OrderBy(k => k.HERST_T).Where(k => k.HERST_GROUP.IsNotNullOrEmpty()).ToList();
         }
 
         public string ToDataStoreKundenNr(string kundenNr)

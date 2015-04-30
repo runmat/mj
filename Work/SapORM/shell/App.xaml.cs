@@ -1,9 +1,7 @@
-﻿// ReSharper disable InconsistentNaming
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using ERPConnect;
@@ -11,6 +9,7 @@ using SapORM.Services;
 using SapORM.Models;
 using SapORM.Contracts;
 using GeneralTools.Models;
+using WebTools.Services;
 
 namespace SapORM
 {
@@ -271,17 +270,10 @@ namespace SapORM
 
             //new FunctionReflector("Z_M_EXPORTAENDERUNG_01").WriteOrmForExportTableStructures("I_KUNNR, I_ZZREFERENZ1, I_DATUM_VON, I_DATUM_BIS", "10050817", "20", "01.03.2015", "03.03.2015");
 
-            //new FunctionReflector("Z_WFM_READ_AUFTRAEGE_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
-            //new FunctionReflector("Z_WFM_READ_KONVERTER_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
+            //new FunctionReflector("Z_DPM_CHANGE_MODELID").WriteOrmForExportTableStructures("I_KUNNR", "0000322489");
 
-            //new FunctionReflector("Z_WFM_READ_INFO_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0000000001");
-            //new FunctionReflector("Z_WFM_WRITE_INFO_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
-            //new FunctionReflector("Z_WFM_LIST_DOKU_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0000000001");
-            //new FunctionReflector("Z_WFM_READ_DOKU_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0000000001");
-            //new FunctionReflector("Z_WFM_WRITE_DOKU_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0000000001");
-            //new FunctionReflector("Z_WFM_STORNO_AUFTRAG_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0000000001");
-            //new FunctionReflector("Z_WFM_READ_TODO_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
-            //new FunctionReflector("Z_WFM_SET_STATUS_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
 
             //ZLD-Portal
             //new FunctionReflector("Z_ALL_DEBI_CHECK_TABLES").WriteOrmForExportTableStructures();
@@ -448,7 +440,7 @@ namespace SapORM
 
             //AhpZullisteTest();
 
-            Z_WFM_READ_WRITE_DOKU_01_Test();
+            ModellIdTest();
 
             Shutdown();
         }
@@ -1545,6 +1537,34 @@ namespace SapORM
             //var listCount = list.Count;
         }
 
+        const string ModellIdKunnr = "0000219853";
+
+        static void ModellIdTest()
+        {
+            ModellIdSave();
+        }
+
+        static void ModellIdLoad()
+        {
+            var list2 = Z_DPM_READ_MODELID_TAB.GT_OUT.GetExportListWithInitExecute(Sap, "I_KUNNR", ModellIdKunnr);
+        }
+        
+        static void ModellIdSave()
+        {
+            Z_DPM_CHANGE_MODELID.Init(Sap, "I_KUNNR", ModellIdKunnr);
+
+            Sap.SetImportParameter("I_VERKZ", "N");
+            Sap.SetImportParameter("I_MODELID", "BMW 327I");
+            Sap.SetImportParameter("I_ZZBEZEI", "Dies ist ein Test");
+            Sap.SetImportParameter("I_ZSIPP_CODE", "4711");
+            Sap.SetImportParameter("I_HERST", "BMW");
+            Sap.Execute();
+
+            var resultCode = Sap.ResultCode;
+            var resultMessage = Sap.ResultMessage;
+        }
+
+
         #region Chart Table Export
 
         private static void ErpBulkCopySqlTest_Autovermieter()
@@ -1663,61 +1683,6 @@ namespace SapORM
         }
 
         #endregion
-
-        private static readonly string kunnrWfl = "0000340725";
-
-        static void Z_WFM_READ_WRITE_DOKU_01_Test()
-        {
-            //Z_WFM_WRITE_DOKU_01_Test();
-            Z_WFM_READ_DOKU_01_Test();
-        }
-
-        static void Z_WFM_WRITE_DOKU_01_Test()
-        {
-            var fileName = @"C:\Users\JenzenM\Downloads\0001607941_SEPA_Mandat.pdf";
-            var fs = new FileStream(fileName, FileMode.Open, FileAccess.Read);
-            var numBytes = new FileInfo(fileName).Length;
-            byte[] fileBytes = null;
-
-            using (var binReader = new BinaryReader(fs))
-                fileBytes = binReader.ReadBytes((int)numBytes);
-
-            Z_WFM_WRITE_DOKU_01.Init(Sap, "I_AG", kunnrWfl.ToSapKunnr());
-
-            Sap.SetImportParameter("I_VORG_NR_ABM_AUF", "0000000001");
-            Sap.SetImportParameter("I_SET_TODO", "X");
-
-            Sap.SetImportParameter("E_DOC", fileBytes);
-
-            var impList = Z_WFM_WRITE_DOKU_01.GS_DOKUMENT.GetImportList(Sap);
-            impList.Add(new Z_WFM_WRITE_DOKU_01.GS_DOKUMENT
-                {
-                    AR_OBJECT = "DOK",
-                    DATEINAME = "Test_MJE.PDF"
-                });
-            Sap.ApplyImport(impList);
-
-            Sap.Execute();
-
-            var retCode = Sap.ResultCode;
-            var retMessage = Sap.ResultMessage;
-        }
-
-        static void Z_WFM_READ_DOKU_01_Test()
-        {
-            Z_WFM_READ_DOKU_01.Init(Sap, "I_AG", kunnrWfl.ToSapKunnr());
-
-            Sap.SetImportParameter("I_VORG_NR_ABM_AUF", "0000000001");
-            Sap.SetImportParameter("I_AR_OBJECT", "DOK");
-            Sap.SetImportParameter("I_OBJECT_ID", "005056B327B01EE4B5D8F6F518415878");
-
-            Sap.Execute();
-
-            var retCode = Sap.ResultCode;
-            var retMessage = Sap.ResultMessage;
-
-            var pdfString = Sap.GetExportParameterByte("E_DOC");
-        }
     }
 }
     
