@@ -44,7 +44,6 @@ Partial Public Class AppManagement
 
             End If
 
-
         Catch ex As Exception
             lblError.Text = ex.ToString
             m_App.WriteErrorText(1, m_User.UserName, "AppManagement", "PageLoad", lblError.Text)
@@ -157,7 +156,6 @@ Partial Public Class AppManagement
 
     Private Sub lnkMvcReportSolution_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lnkMvcReportSolution.Click
         Dim strAppID As String
-        Dim strRetAppID As String = txtAppID.Text
         If CInt(ddlAppParent.SelectedItem.Value) < 1 Then
             strAppID = txtAppID.Text
         Else
@@ -360,6 +358,22 @@ Partial Public Class AppManagement
         End With
     End Sub
 
+    Private Sub InitReportSolutionToolSettings(intAppID As Integer)
+        _lnkMvcReportSolution.Visible = False
+
+        Dim dtAppConfiguration As New Kernel.AppConfigurationList(intAppID, 1, 0, m_User.App.Connectionstring)
+        Dim dvAppConfiguration As DataView = dtAppConfiguration.DefaultView
+        dvAppConfiguration.RowFilter = "ConfigKey = 'ReportSolutionTool'"
+        If (dvAppConfiguration.Count = 0) Then
+            Return
+        End If
+
+        Dim sConfigValue As String = dvAppConfiguration(0)("ConfigValue")
+        If (Not sConfigValue Is Nothing And sConfigValue.ToLower() = "true") Then
+            _lnkMvcReportSolution.Visible = True
+        End If
+    End Sub
+
     Private Sub FillAppParent(ByVal cn As SqlClient.SqlConnection)
         Dim dvAppParent As DataView
         Dim dtApplication As New ApplicationList(cn)
@@ -427,6 +441,8 @@ Partial Public Class AppManagement
             txtAppParam.Text = _App.AppParam
             txtMaxLevel.Text = _App.MaxLevel.ToString
             txtMaxLevelsPerGroup.Text = _App.MaxLevelsPerGroup.ToString
+
+            InitReportSolutionToolSettings(_App.AppId)
 
             Return True
         Finally
