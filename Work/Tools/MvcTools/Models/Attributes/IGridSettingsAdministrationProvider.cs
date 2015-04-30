@@ -2,6 +2,6 @@
 {
     public interface IGridSettingsAdministrationProvider
     {
-        bool GridSettingsAdminMode { get; }
+        bool GridSettingsAdminMode { get; set; }
     }
 }

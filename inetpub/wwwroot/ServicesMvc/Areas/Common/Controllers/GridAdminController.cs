@@ -123,7 +123,8 @@ namespace ServicesMvc.Common.Controllers
         {
             TryUserLogoff();
 
-            ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un));
+            if (!ViewModel.TrySetReportSettings(CryptoMd5.Decrypt(un)))
+                LogonContext.MvcEnforceRawLayout = true;
             
             return View(ViewModel);
         }
@@ -136,6 +137,7 @@ namespace ServicesMvc.Common.Controllers
         private void TryUserLogon(string userName)
         {
             TryUserLogonLogoffInner(() => UrlLogOn(userName, null, null));
+            GridSettingsAdminMode = true;
         }
 
         void TryUserLogonLogoffInner(Action func)

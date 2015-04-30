@@ -41,7 +41,11 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionStore.SetModel("MainViewModel", value); }
         }
 
-        public bool GridSettingsAdminMode { get { return ConfigurationManager.AppSettings["AdminModeGridSettings"].NotNullOrEmpty().ToLower() == "true"; } }
+        public bool GridSettingsAdminMode
+        {
+            get { return SessionHelper.GetSessionValue("GridSettingsAdminMode", false); }
+            set { SessionHelper.SetSessionValue("GridSettingsAdminMode", value); }
+        }
 
         protected GridSettings GridCurrentSettings
         {
@@ -64,10 +68,24 @@ namespace CkgDomainLogic.General.Controllers
                     return null;
 
                 var gridCurrentAutoPersistColumnsItems = PersistanceGetObjects<GridSettings>(gridCurrentGetAutoPersistColumnsKey);
-                if (gridCurrentAutoPersistColumnsItems.None())
-                    return null;
+                var gridCurrentAutoPersistColumnsItem = (gridCurrentAutoPersistColumnsItems == null ? null : gridCurrentAutoPersistColumnsItems.FirstOrDefault());
 
-                var gridCurrentAutoPersistColumnsItem = gridCurrentAutoPersistColumnsItems.FirstOrDefault();
+                if (gridCurrentAutoPersistColumnsItem == null)
+                {
+                    // Try loading from customer administrated grid settings (customer presets)
+                    gridCurrentAutoPersistColumnsItems = PersistanceGetObjects<GridSettings>(gridCurrentGetAutoPersistColumnsKey, CustomerAdminPersistanceOwnerKey);
+                    gridCurrentAutoPersistColumnsItem = (gridCurrentAutoPersistColumnsItems == null ? null : gridCurrentAutoPersistColumnsItems.FirstOrDefault());
+
+                    if (gridCurrentAutoPersistColumnsItem != null)
+                    {
+                        // copy customer presets to user individual settings
+                        var gridSettings = ModelMapping.Copy(gridCurrentAutoPersistColumnsItem);
+                        gridSettings.ObjectKey = "";
+                        gridSettings.ObjectName = "GridCurrentAutoPersistColumns";
+                        PersistanceSaveObject(gridCurrentGetAutoPersistColumnsKey, gridSettings.ObjectKey, gridSettings);
+                    }
+                }
+
                 if (gridCurrentAutoPersistColumnsItem == null)
                     return null;
 
@@ -414,34 +432,39 @@ namespace CkgDomainLogic.General.Controllers
             return LogonContext.UserName;
         }
 
+        private string CustomerAdminPersistanceOwnerKey
+        {
+            get { return string.Format("ADMIN_for_customer_{0}", LogonContext.KundenNr); }
+        }
+
         protected string GetRealPersistanceOwnerKey()
         {
             if (GridSettingsAdminMode)
-                return string.Format("ADMIN_for_customer_{0}", LogonContext.KundenNr);
+                return CustomerAdminPersistanceOwnerKey;
 
             return GetPersistanceOwnerKey();
         }
 
 
-        private IEnumerable<IPersistableObjectContainer> PersistanceGetObjectContainers(string groupKey)
+        private IEnumerable<IPersistableObjectContainer> PersistanceGetObjectContainers(string groupKey, string ownerKey = null)
         {
             var pService = LogonContext.PersistanceService;
             if (pService == null)
                 return new List<IPersistableObjectContainer>();
 
-            return pService.GetObjectContainers(GetRealPersistanceOwnerKey(), groupKey);
+            return pService.GetObjectContainers(ownerKey ?? GetRealPersistanceOwnerKey(), groupKey);
         }
 
-        protected List<T> PersistanceGetObjects<T>(string groupKey)
+        protected List<T> PersistanceGetObjects<T>(string groupKey, string ownerKey = null)
         {
-            return PersistanceGetObjectContainers(groupKey)
+            return PersistanceGetObjectContainers(groupKey, ownerKey)
                     .Select(pContainer => (T)pContainer.Object)
                         .ToListOrEmptyList();
         }
 
-        protected List<T> PersistanceGetObjects2<T>(string groupKey)
+        protected List<T> PersistanceGetObjects2<T>(string groupKey, string ownerKey = null)
         {
-            return PersistanceGetObjectContainers(groupKey)
+            return PersistanceGetObjectContainers(groupKey, ownerKey)
                     .Select(pContainer => (T)pContainer.Object2)
                         .ToListOrEmptyList();
         }
