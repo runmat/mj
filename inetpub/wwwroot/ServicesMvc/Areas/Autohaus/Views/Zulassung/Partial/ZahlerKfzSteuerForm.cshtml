@@ -1,0 +1,70 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.DomainCommon.Models
+@model BankAdressdaten
+
+<div id="DivZahlerKfzSteuer" class="margin-top-20">
+    @using (Ajax.BeginForm("ZahlerKfzSteuerForm", "Zulassung", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivZahlerKfzSteuer", OnComplete = "AjaxFormZahlerKfzSteuerComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormZahlerKfzSteuer" }))
+    {
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.ID)
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.IsValid)
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.KundenNr)
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.Kennung)
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.Typ)
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.TmpSelectionKey)
+        @Html.HiddenFor(m => m.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
+        
+        @Html.FormValidationSummary()
+        
+
+        <div class="row-fluid">
+            
+            <div class="span6">
+                
+                @using (Html.PortletBox(Localize.Address, "icon-home"))
+                {
+                    @Html.HiddenFor(m => m.Cpdkunde)
+                    @Html.HiddenFor(m => m.CpdMitEinzugsermaechtigung)
+
+                    @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium" })
+                    @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
+                    @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+
+                    @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
+                    @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
+                    @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+
+                    @Html.FormRadioButtonListFor(m => m.Bankdaten.Zahlungsart, Bankdaten.Zahlungsarten.ToSelectList())
+                }
+
+            </div>
+
+            <div class="span6">
+                
+                @using (Html.PortletBox(Localize.BankData, "icon-book"))
+                {
+                    @Html.PartialFor(m => m.Bankdaten, "Partial/BankdatenForm")
+                }
+
+            </div>
+
+        </div>
+        
+
+        @Html.FormRequiredFieldsSummary()
+
+        
+        <script type="text/javascript">      
+            _modelIsValid = @Model.Adressdaten.Adresse.IsValid.ToString().ToLower();
+
+            function AjaxFormZahlerKfzSteuerInit() {
+                AjaxFormAdressePrepareAutoComplete($("#Name1"), "ZahlerKfzSteuerAdresseGetAutoCompleteItems");
+                AjaxFormAdressePrepareAutoCompleteReset("AjaxFormZahlerKfzSteuer");
+            }
+            
+            DocumentReadyBind(AjaxFormZahlerKfzSteuerInit);
+            AjaxFormZahlerKfzSteuerInit();
+        </script>
+    }
+</div>

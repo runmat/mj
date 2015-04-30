@@ -43,15 +43,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.Holder)]
-        public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
-
-        [XmlIgnore]
-        [LocalizedDisplay(LocalizeConstants.AccountHolder)]
-        public string KontoinhaberDatenAsString { get { return KontoinhaberAdresse.GetAutoSelectString(); } }
+        public string HalterDatenAsString { get { return Zulassung.Halter.Adresse.GetAutoSelectString(); } }
 
         public static string PfadAuftragszettel { get { return GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel"); } }
-        public bool ModusAbmeldung { get; set; }
 
+        public bool ModusAbmeldung { get; set; }
 
         [XmlIgnore, ScriptIgnore]
         public IDictionary<string, string> Steps
@@ -118,7 +114,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 FahrgestellNr = ParamFahrzeugAkte.FIN,
                 Zb2Nr = ParamFahrzeugAkte.Briefnummer,
             });
-            HalterAdresse = HalterAdressen
+            Zulassung.Halter.Adresse = HalterAdressen
                 .FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == ParamFahrzeugAkte.Halter.NotNullOrEmpty().ToSapKunnr()) 
                 ?? new Adresse { Typ = "Halter"};
         }
@@ -128,7 +124,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (halterNr.IsNullOrEmpty())
                 return;
 
-            HalterAdresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == halterNr.NotNullOrEmpty().ToSapKunnr());
+            Zulassung.Halter.Adresse = HalterAdressen.FirstOrDefault(a => a.KundenNr.NotNullOrEmpty().ToSapKunnr() == halterNr.NotNullOrEmpty().ToSapKunnr());
         }
 
         public void SetParamAbmeldung(string abmeldung)
@@ -136,101 +132,35 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ModusAbmeldung = abmeldung.IsNotNullOrEmpty();
         }
 
-
+ 
         #region Rechnungsdaten
 
         [XmlIgnore, ScriptIgnore]
         public List<Kunde> Kunden { get { return ZulassungDataService.Kunden; } }
 
-
         public void SetRechnungsdaten(Rechnungsdaten model)
         {
             if (Zulassung.Rechnungsdaten.KundenNr != model.KundenNr)
-                Zulassung.BankAdressdaten.Zahlungsart = null;
+                Zulassung.BankAdressdaten.Bankdaten.Zahlungsart = null;
 
             Zulassung.Rechnungsdaten.KundenNr = model.KundenNr;
 
             Zulassung.BankAdressdaten.Cpdkunde = Zulassung.Rechnungsdaten.GetKunde(Kunden).Cpdkunde;
             Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung = Zulassung.Rechnungsdaten.GetKunde(Kunden).CpdMitEinzugsermaechtigung;
 
-            if (Zulassung.BankAdressdaten.Zahlungsart.IsNullOrEmpty())
-                Zulassung.BankAdressdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
+            if (Zulassung.BankAdressdaten.Bankdaten.Zahlungsart.IsNullOrEmpty())
+                Zulassung.BankAdressdaten.Bankdaten.Zahlungsart = (Zulassung.BankAdressdaten.CpdMitEinzugsermaechtigung ? "E" : "");
+
+            SkipBankAdressdaten = (!Zulassung.BankAdressdaten.Cpdkunde);
         }
 
         #endregion
 
 
-        #region Bank-/Adressdaten
-
-        public bool SkipBankAdressdaten { get; set; }
-
-        public void CheckCpd()
-        {
-            SkipBankAdressdaten = !Zulassung.Rechnungsdaten.GetKunde(Kunden).Cpdkunde;
-        }
-
-        public void SetBankAdressdaten(ref BankAdressdaten model)
-        {
-            Zulassung.BankAdressdaten.Rechnungsempfaenger = model.Rechnungsempfaenger;
-            Zulassung.BankAdressdaten.Zahlungsart = model.Zahlungsart;
-            Zulassung.BankAdressdaten.Kontoinhaber = model.Kontoinhaber;
-            Zulassung.BankAdressdaten.Iban = model.Iban.NotNullOrEmpty().ToUpper();
-
-            if (model.Swift.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
-                Zulassung.BankAdressdaten.Swift = "";
-            else
-                Zulassung.BankAdressdaten.Swift = model.Swift.NotNullOrEmpty().ToUpper();
-
-            Zulassung.BankAdressdaten.KontoNr = model.KontoNr;
-            Zulassung.BankAdressdaten.Bankleitzahl = model.Bankleitzahl;
-
-            if (model.Geldinstitut.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
-                Zulassung.BankAdressdaten.Geldinstitut = "";
-            else
-                Zulassung.BankAdressdaten.Geldinstitut = model.Geldinstitut;
-        }
-
-        public Bankdaten LoadBankdatenAusIban(string iban)
-        {
-            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper());
-        }
-
-        #endregion
-
-
-        #region Fahrzeugdaten
-
-        [XmlIgnore, ScriptIgnore]
-        public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten; } }
-
-        public void SetFahrzeugdaten(Fahrzeugdaten model)
-        {
-            Zulassung.Fahrzeugdaten.AuftragsNr = model.AuftragsNr;
-            Zulassung.Fahrzeugdaten.FahrgestellNr = model.FahrgestellNr.NotNullOrEmpty().ToUpper();
-            Zulassung.Fahrzeugdaten.Zb2Nr = model.Zb2Nr.NotNullOrEmpty().ToUpper();
-            Zulassung.Fahrzeugdaten.FahrzeugartId = model.FahrzeugartId;
-            Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
-            Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
-            Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
-
-            if (Zulassung.Fahrzeugdaten.IstAnhaenger || Zulassung.Fahrzeugdaten.IstMotorrad)
-                Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
-        }
-
-        #endregion
-
-
-        #region HalterAdresse
+        #region Halter
 
         [XmlIgnore, ScriptIgnore]
         public List<Land> LaenderList { get { return ZulassungDataService.Laender; } }
-
-        [XmlIgnore, ScriptIgnore]
-        public Adresse HalterAdresse
-        {
-            get { return Zulassung.Halterdaten; }
-            set { Zulassung.Halterdaten = value; }
-        }
 
         [XmlIgnore, ScriptIgnore]
         public List<Adresse> HalterAdressen
@@ -277,7 +207,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void SetHalterAdresse(Adresse model)
         {
-            HalterAdresse = model;
+            Zulassung.Halter.Adresse = model;
+
+            Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
+
+            if (Zulassung.BankAdressdaten.Cpdkunde)
+                Zulassung.BankAdressdaten.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
+            else
+                Zulassung.BankAdressdaten.Adressdaten = new Adressdaten("") { Partnerrolle = "RE" };
 
             string zulassungsKreis;
             string zulassungsKennzeichen;
@@ -292,11 +229,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
-
-            var tmpAdr = ModelMapping.Copy(model);
-            tmpAdr.Kennung = "KONTOINHABER";
-            tmpAdr.Typ = "Kontoinhaber";
-            KontoinhaberAdresse = tmpAdr;
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
@@ -319,7 +251,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             kreis = "";
             kennzeichen = "";
-            if (HalterAdresse == null)
+            if (Zulassung.Halter == null)
                 return;
 
             ZulassungDataService.GetZulassungskreisUndKennzeichen(Zulassung, out kreis, out kennzeichen);
@@ -333,67 +265,140 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #endregion
 
 
-        #region KontoinhaberAdresse
+        #region Zahler Kfz-Steuer
 
         [XmlIgnore, ScriptIgnore]
-        public Adresse KontoinhaberAdresse
-        {
-            get { return Zulassung.Kontoinhaberdaten; }
-            set { Zulassung.Kontoinhaberdaten = value; }
-        }
-
-        [XmlIgnore, ScriptIgnore]
-        public List<Adresse> KontoinhaberAdressen
+        public List<Adresse> ZahlerKfzSteuerAdressen
         {
             // ReSharper disable ConvertClosureToMethodGroup
-            get { return PropertyCacheGet(() => GetKontoinhaberAdressen()); }
+            get { return PropertyCacheGet(() => GetZahlerKfzSteuerAdressen()); }
             // ReSharper restore ConvertClosureToMethodGroup
         }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Adresse> KontoinhaberAdressenFiltered
+        public List<Adresse> ZahlerKfzSteuerAdressenFiltered
         {
-            get { return PropertyCacheGet(() => KontoinhaberAdressen); }
+            get { return PropertyCacheGet(() => ZahlerKfzSteuerAdressen); }
             private set { PropertyCacheSet(value); }
         }
 
-        public void FilterKontoinhaberAdressen(string filterValue, string filterProperties)
+        public void FilterZahlerKfzSteuerAdressen(string filterValue, string filterProperties)
         {
-            KontoinhaberAdressenFiltered = KontoinhaberAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            ZahlerKfzSteuerAdressenFiltered = ZahlerKfzSteuerAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        List<Adresse> GetKontoinhaberAdressen()
+        List<Adresse> GetZahlerKfzSteuerAdressen()
         {
-            PartnerDataService.AdressenKennung = "KONTOINHABER";
+            PartnerDataService.AdressenKennung = "ZAHLERKFZSTEUER";
             PartnerDataService.MarkForRefreshAdressen();
             var list = PartnerDataService.Adressen;
-            list.ForEach(a => a.Typ = "Kontoinhaber");
+            list.ForEach(a => a.Typ = "ZahlerKfzSteuer");
             return list;
         }
 
-        public List<string> GetKontoinhaberAdressenAsAutoCompleteItems()
+        public List<string> GetZahlerKfzSteuerAdressenAsAutoCompleteItems()
         {
-            return KontoinhaberAdressen.Select(a => a.GetAutoSelectString()).ToList();
+            return ZahlerKfzSteuerAdressen.Select(a => a.GetAutoSelectString()).ToList();
         }
 
-        public Adresse GetKontoinhaberadresse(string key)
+        public Adresse GetZahlerKfzSteueradresse(string key)
         {
             int id;
             if (Int32.TryParse(key, out id))
-                return KontoinhaberAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+                return ZahlerKfzSteuerAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
 
-            return KontoinhaberAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+            return ZahlerKfzSteuerAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
         }
 
-        public void SetKontoinhaberAdresse(Adresse model)
+        public void SetZahlerKfzSteuerAdresse(Adresse model)
         {
-            KontoinhaberAdresse = model;
+            Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = model;
         }
 
-        public void DataMarkForRefreshKontoinhaberAdressen()
+        public void SetZahlerKfzSteuerBankdaten(BankAdressdaten model)
         {
-            PropertyCacheClear(this, m => m.KontoinhaberAdressen);
-            PropertyCacheClear(this, m => m.KontoinhaberAdressenFiltered);
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Zahlungsart = model.Bankdaten.Zahlungsart;
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = model.Bankdaten.Kontoinhaber;
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Iban = model.Bankdaten.Iban.NotNullOrEmpty().ToUpper();
+
+            if (model.Bankdaten.Swift.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
+                Zulassung.ZahlerKfzSteuer.Bankdaten.Swift = "";
+            else
+                Zulassung.ZahlerKfzSteuer.Bankdaten.Swift = model.Bankdaten.Swift.NotNullOrEmpty().ToUpper();
+
+            Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr = model.Bankdaten.KontoNr;
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl = model.Bankdaten.Bankleitzahl;
+
+            if (model.Bankdaten.Geldinstitut.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
+                Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = "";
+            else
+                Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
+
+            if (Zulassung.BankAdressdaten.Cpdkunde)
+                Zulassung.BankAdressdaten.Bankdaten = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer.Bankdaten);
+            else
+                Zulassung.BankAdressdaten.Bankdaten = new Bankdaten { Partnerrolle = "RE" };
+        }
+
+        public void DataMarkForRefreshZahlerKfzSteuerAdressen()
+        {
+            PropertyCacheClear(this, m => m.ZahlerKfzSteuerAdressen);
+            PropertyCacheClear(this, m => m.ZahlerKfzSteuerAdressenFiltered);
+        }
+
+        #endregion
+
+
+        #region Bank-/Adressdaten
+
+        public bool SkipBankAdressdaten { get; set; }
+
+        public void SetBankAdressdaten(BankAdressdaten model)
+        {
+            Zulassung.BankAdressdaten.Adressdaten = model.Adressdaten;
+            Zulassung.BankAdressdaten.Bankdaten.Zahlungsart = model.Bankdaten.Zahlungsart;
+            Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = model.Bankdaten.Kontoinhaber;
+            Zulassung.BankAdressdaten.Bankdaten.Iban = model.Bankdaten.Iban.NotNullOrEmpty().ToUpper();
+
+            if (model.Bankdaten.Swift.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
+                Zulassung.BankAdressdaten.Bankdaten.Swift = "";
+            else
+                Zulassung.BankAdressdaten.Bankdaten.Swift = model.Bankdaten.Swift.NotNullOrEmpty().ToUpper();
+
+            Zulassung.BankAdressdaten.Bankdaten.KontoNr = model.Bankdaten.KontoNr;
+            Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = model.Bankdaten.Bankleitzahl;
+
+            if (model.Bankdaten.Geldinstitut.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
+                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = "";
+            else
+                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
+        }
+
+        public Bankdaten LoadBankdatenAusIban(string iban)
+        {
+            return ZulassungDataService.GetBankdaten(iban.NotNullOrEmpty().ToUpper());
+        }
+
+        #endregion
+
+
+        #region Fahrzeugdaten
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Domaenenfestwert> Fahrzeugarten { get { return ZulassungDataService.Fahrzeugarten; } }
+
+        public void SetFahrzeugdaten(Fahrzeugdaten model)
+        {
+            Zulassung.Fahrzeugdaten.AuftragsNr = model.AuftragsNr;
+            Zulassung.Fahrzeugdaten.FahrgestellNr = model.FahrgestellNr.NotNullOrEmpty().ToUpper();
+            Zulassung.Fahrzeugdaten.Zb2Nr = model.Zb2Nr.NotNullOrEmpty().ToUpper();
+            Zulassung.Fahrzeugdaten.FahrzeugartId = model.FahrzeugartId;
+            Zulassung.Fahrzeugdaten.VerkaeuferKuerzel = model.VerkaeuferKuerzel;
+            Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
+            Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
+
+            if (Zulassung.Fahrzeugdaten.IstAnhaenger || Zulassung.Fahrzeugdaten.IstMotorrad)
+                Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
         }
 
         #endregion

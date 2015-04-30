@@ -33,7 +33,7 @@ namespace CkgDomainLogic.Partner.Services
                 {
                     { "ZO01", "HALTER" },
                     { "ZO02", "KAEUFER" },
-                    { "ZO03", "KONTOINHABER" },
+                    { "ZO03", "ZAHLERKFZSTEUER" },
                 };
             }
         }

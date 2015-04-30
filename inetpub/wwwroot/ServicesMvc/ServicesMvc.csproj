@@ -2518,12 +2518,13 @@
     <Content Include="Areas\Autohaus\Views\Formulare\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Suche.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\KontoinhaberAdresse.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\KontoinhaberAdresseForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\KontoinhaberAdressenAuswahlGrid.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuer.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

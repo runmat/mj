@@ -120,7 +120,7 @@
     <Compile Include="Zulassung\Models\PdfFormular.cs" />
     <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportModel.cs" />
     <Compile Include="Zulassung\Models\ReportModels\ZulassungsReportSelektor.cs" />
-    <Compile Include="Zulassung\Models\UIModels\Bankdaten.cs" />
+    <Compile Include="Zulassung\Models\DataModels\Bankdaten.cs" />
     <Compile Include="Zulassung\Models\UIModels\FormulareSelektor.cs" />
     <Compile Include="Zulassung\Models\Vorgang.cs" />
     <Compile Include="Zulassung\Models\OptionenDienstleistungen.cs" />

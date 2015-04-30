@@ -259,9 +259,9 @@
 
     function PickPartnerAddress(partnerKennung) {
 
-        var dropdownThis = $("#" + partnerKennung.substr(0, 2) + "-" + "dropdown");
+        var dropdownThis = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown");
         _dropdownCurrent = dropdownThis;
-        _dropdownGridCurrent = $("#" + partnerKennung.substr(0, 2) + "-" + "dropdown-grid");
+        _dropdownGridCurrent = $("#" + partnerKennung.substr(0, 1) + "-" + "dropdown-grid");
 
         $.ajax(
         {
@@ -290,14 +290,14 @@
             success: function (result) {
                 //console.log(result.partnerKennung);
                 //console.log(result.partnerName);
-                var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 2) + "-dropdown-text");
+                var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-dropdown-text");
                 console.log(dropdownTextSpan);
                 dropdownTextSpan.html(result.partnerName);
                 var hiddenFieldName = "Halter";
-                if (result.partnerKennung.toLowerCase().substr(0, 2) == "ka")
+                if (result.partnerKennung.toLowerCase().substr(0, 1) == "k")
                     hiddenFieldName = "Kaeufer";
-                else if (result.partnerKennung.toLowerCase().substr(0, 2) == "ko")
-                    hiddenFieldName = "Kontoinhaber";
+                else if (result.partnerKennung.toLowerCase().substr(0, 1) == "z")
+                    hiddenFieldName = "ZahlerKfzSteuer";
                 $("#fahrzeug-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
 
                 ClosePartnerAddressGrid();

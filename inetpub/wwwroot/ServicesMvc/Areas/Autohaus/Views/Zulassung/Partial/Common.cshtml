@@ -57,7 +57,7 @@
         FormWizard.OnPrev(function (step, maxSteps) {
             FormWizardShowHideSaveButton(step == 7, 500);
 
-            if (step == 2 && _skipBankAddressData) {
+            if (step == 4 && _skipBankAddressData) {
                 FormWizard.ButtonPrevInvoke();
             }
 
@@ -155,79 +155,6 @@
         }
     }
 
-    function TrySkipBankAddressData() {
-        if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
-            $("#AjaxFormBankAdressdaten").submit();
-        }
-    }
-
-    // BankAdressdaten
-    function AjaxFormBankAdressdatenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
-
-    var _ibanPrev = null;
-    function TryLoadBankdatenAusIban(textbox) {
-
-        if (_ibanPrev == $(textbox).val())
-            return;
-        _ibanPrev = $(textbox).val();
-        
-        if ($(textbox).val().length < 22)
-            return;
-
-        LoadBankdatenAusIban();
-    }
-
-    function LoadBankdatenAusIban() {
-
-        var iban = $("#Iban").val();
-
-        $.ajax(
-            {
-                type: "POST",
-                url: "LoadBankdatenAusIban",
-                data: { iban: iban },
-                loadingShow: true,
-                success: function (result) {
-                    if (result.Swift == null || result.Swift == '') {
-                        $("#Swift").attr("readonly", false);
-                        $("#Swift").attr("placeholder", "");
-                        $("#Swift").val("");
-                        $("#Geldinstitut").attr("readonly", false);
-                        $("#Geldinstitut").attr("placeholder", "");
-                        $("#Geldinstitut").val("");
-                        return;
-                    }
-
-                    $("#Swift").val(result.Swift);
-                    $("#Swift").attr("readonly", true);
-                    $("#KontoNr").val(result.KontoNr);
-                    $("#Bankleitzahl").val(result.Bankleitzahl);
-                    $("#Geldinstitut").val(result.Geldinstitut);
-                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
-                }
-            });
-
-        return false;
-
-    }
-
-    // Fahrzeugdaten
-    function AjaxFormFahrzeugdatenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
-
     // HalterAdresse
     function AjaxFormHalterAdresseComplete() {
         FormPrepareAjax();
@@ -259,35 +186,108 @@
         $("#AjaxFormHalterAdresse").submit();
     }
 
-    // KontoinhaberAdresse
-    function AjaxFormKontoinhaberAdresseComplete() {
+    // ZahlerKfzSteuer
+    function AjaxFormZahlerKfzSteuerComplete() {
+        FormPrepareAjax();
+
+        var detailWindow = $("#Adressen").data("tWindow");
+        detailWindow.center().close();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    function OnDataBound_ZahlerKfzSteuerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_ZahlerKfzSteuerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_ZahlerKfzSteuerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GridZahlerKfzSteuerAdresseOnSelect(id) {
+        $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
+        $("#AjaxFormZahlerKfzSteuer").submit();
+    }
+
+    // BankAdressdaten
+    function AjaxFormBankAdressdatenComplete() {
         FormPrepareAjax();
 
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
         }
-
-        var detailWindow = $("#Adressen").data("tWindow");
-        detailWindow.center().close();
     }
 
-    function OnDataBound_KontoinhaberAdressenAuswahlGrid() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
+    var _ibanPrev = null;
+    function TryLoadBankdatenAusIban(textbox) {
+
+        if (_ibanPrev == $(textbox).val())
+            return;
+        _ibanPrev = $(textbox).val();
+        
+        if ($(textbox).val().length < 22)
+            return;
+
+        LoadBankdatenAusIban();
     }
 
-    function OnColumnShowHide_KontoinhaberAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnShowHide($(this));
+    function LoadBankdatenAusIban() {
+
+        var iban = $("#Bankdaten_Iban").val();
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "LoadBankdatenAusIban",
+                data: { iban: iban },
+                loadingShow: true,
+                success: function (result) {
+                    if (result.Swift == null || result.Swift == '') {
+                        $("#Bankdaten_Swift").attr("readonly", false);
+                        $("#Bankdaten_Swift").attr("placeholder", "");
+                        $("#Bankdaten_Swift").val("");
+                        $("#Bankdaten_Geldinstitut").attr("readonly", false);
+                        $("#Bankdaten_Geldinstitut").attr("placeholder", "");
+                        $("#Bankdaten_Geldinstitut").val("");
+                        return;
+                    }
+
+                    $("#Bankdaten_Swift").val(result.Swift);
+                    $("#Bankdaten_Swift").attr("readonly", true);
+                    $("#Bankdaten_KontoNr").val(result.KontoNr);
+                    $("#Bankdaten_Bankleitzahl").val(result.Bankleitzahl);
+                    $("#Bankdaten_Geldinstitut").val(result.Geldinstitut);
+                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
+                }
+            });
+
+        return false;
+
     }
 
-    function OnColumnReorder_KontoinhaberAdressenAuswahlGrid() {
-        FilteredData_Grid_OnColumnReorder($(this));
+    function TrySkipBankAddressData() {
+        if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
+            $("#AjaxFormBankAdressdaten").submit();
+        }
     }
 
-    function GridKontoinhaberAdresseOnSelect(id) {
-        $("#TmpSelectionKey").val(id);
-        $("#AjaxFormKontoinhaberAdresse").submit();
+    // Fahrzeugdaten
+    function AjaxFormFahrzeugdatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
     }
 
     // Zulassungsdaten

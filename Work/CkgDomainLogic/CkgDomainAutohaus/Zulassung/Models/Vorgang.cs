@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -30,29 +29,29 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public Fahrzeugdaten Fahrzeugdaten { get; set; }
 
-        public Adresse Halterdaten { get; set; }
+        public Adressdaten Halter { get; set; }
 
-        public Adresse Kontoinhaberdaten { get; set; }
+        public BankAdressdaten ZahlerKfzSteuer { get; set; }
 
         public List<Kunde> Kunden { get; set; }
 
-        public string Halter
+        public string HalterName
         {
             get
             {
-                if (Halterdaten != null)
-                    return String.Format("{0} {1}", Halterdaten.Name1, Halterdaten.Name2);
+                if (Halter != null)
+                    return Halter.Name;
 
                 return "";
             }
         }
 
-        public string Kontoinhaber
+        public string ZahlerKfzSteuerName
         {
             get
             {
-                if (Kontoinhaberdaten != null)
-                    return String.Format("{0} {1}", Kontoinhaberdaten.Name1, Kontoinhaberdaten.Name2);
+                if (ZahlerKfzSteuer != null)
+                    return ZahlerKfzSteuer.Adressdaten.Name;
 
                 return "";
             }
@@ -75,13 +74,10 @@ namespace CkgDomainLogic.Autohaus.Models
         public Vorgang()
         {
             Rechnungsdaten = new Rechnungsdaten();
-            BankAdressdaten = new BankAdressdaten();
-            Fahrzeugdaten = new Fahrzeugdaten
-                {
-                    FahrzeugartId = "1",
-                };
-            Halterdaten = new Adresse { Land = "DE", Kennung = "HALTER" };
-            Kontoinhaberdaten = new Adresse { Land = "DE", Kennung = "KONTOINHABER" };
+            BankAdressdaten = new BankAdressdaten("RE");
+            Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
+            Halter = new Adressdaten("HALTER") { Partnerrolle = "ZH"};
+            ZahlerKfzSteuer = new BankAdressdaten("Z6", "ZAHLERKFZSTEUER");
             OptionenDienstleistungen = new OptionenDienstleistungen();
         }
 
@@ -95,7 +91,7 @@ namespace CkgDomainLogic.Autohaus.Models
                     Fahrzeugdaten.AuftragsNr,
                     Rechnungsdaten.GetKunde(Kunden).KundenNameNr,
                     Zulassungsdaten.Zulassungsart.MaterialText,
-                    Halter,
+                    HalterName,
                     Zulassungsdaten.Kennzeichen);
             }
         }
@@ -157,13 +153,13 @@ namespace CkgDomainLogic.Autohaus.Models
                             new GeneralEntity
                             {
                                 Title = Localize.Holder,
-                                Body = Halterdaten.GetPostLabelString(),
+                                Body = Halter.Adresse.GetPostLabelString(),
                             },
 
                             new GeneralEntity
                             {
-                                Title = Localize.AccountHolder,
-                                Body = Kontoinhaberdaten.GetPostLabelString(),
+                                Title = Localize.CarTaxPayer,
+                                Body = ZahlerKfzSteuer.Adressdaten.Adresse.GetPostLabelString(),
                             },
 
                             new GeneralEntity

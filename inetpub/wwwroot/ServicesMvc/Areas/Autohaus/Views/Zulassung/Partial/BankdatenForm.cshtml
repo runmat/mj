@@ -1,0 +1,21 @@
+﻿@model CkgDomainLogic.Autohaus.Models.Bankdaten
+
+@Html.HiddenFor(m => m.KontoNr)
+@Html.HiddenFor(m => m.Bankleitzahl)
+        
+@Html.FormTextBoxFor(m => m.Kontoinhaber, new { @class = "m-wrap" })
+
+@Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap uppercase", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
+                        postControlHtml: @<text>
+                                        </text>)
+
+@Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap uppercase", @readonly = "readonly" },
+                        postControlHtml: @<text>
+                                            <div>@Localize.WillBeFilledAutomatically</div>
+                                        </text>)
+
+@Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap", @readonly = "readonly" },
+                        postControlHtml: @<text>
+                                            <div>@Localize.WillBeFilledAutomatically</div>
+                                            @Html.SpanAlert("bankDataHint")
+                                        </text>)
