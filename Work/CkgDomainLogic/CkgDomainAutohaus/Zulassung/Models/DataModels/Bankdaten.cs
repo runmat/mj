@@ -47,6 +47,8 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.CreditInstitution)]
         public string Geldinstitut { get; set; }
 
-        public bool BankdatenVollstaendig { get { return (Iban.IsNotNullOrEmpty() && Swift.IsNotNullOrEmpty() && Kontoinhaber.IsNotNullOrEmpty()); } }
+        public bool KontoinhaberErforderlich { get; set; }
+
+        public bool BankdatenVollstaendig { get { return (Iban.IsNotNullOrEmpty() && Swift.IsNotNullOrEmpty() && (Kontoinhaber.IsNotNullOrEmpty() || !KontoinhaberErforderlich)); } }
     }
 }

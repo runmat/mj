@@ -29,6 +29,8 @@
                 
                 @using (Html.PortletBox(Localize.BankData, "icon-book"))
                 {
+                    @Html.FormTextBoxFor(m => m.Bankdaten.Kontoinhaber, new { @class = "m-wrap" })
+                    
                     @Html.PartialFor(m => m.Bankdaten, "Partial/BankdatenForm")
                 }
 

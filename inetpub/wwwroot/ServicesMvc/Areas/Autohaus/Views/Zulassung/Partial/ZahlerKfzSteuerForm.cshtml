@@ -34,8 +34,6 @@
                     @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
                     @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
                     @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
-
-                    @Html.FormRadioButtonListFor(m => m.Bankdaten.Zahlungsart, Bankdaten.Zahlungsarten.ToSelectList())
                 }
 
             </div>

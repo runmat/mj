@@ -74,10 +74,10 @@ namespace CkgDomainLogic.Autohaus.Models
         public Vorgang()
         {
             Rechnungsdaten = new Rechnungsdaten();
-            BankAdressdaten = new BankAdressdaten("RE");
+            BankAdressdaten = new BankAdressdaten("RE", true);
             Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
             Halter = new Adressdaten("HALTER") { Partnerrolle = "ZH"};
-            ZahlerKfzSteuer = new BankAdressdaten("Z6", "ZAHLERKFZSTEUER");
+            ZahlerKfzSteuer = new BankAdressdaten("Z6", false, "ZAHLERKFZSTEUER");
             OptionenDienstleistungen = new OptionenDienstleistungen();
         }
 
@@ -159,7 +159,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             new GeneralEntity
                             {
                                 Title = Localize.CarTaxPayer,
-                                Body = ZahlerKfzSteuer.Adressdaten.Adresse.GetPostLabelString(),
+                                Body = ZahlerKfzSteuer.GetSummaryString(),
                             },
 
                             new GeneralEntity
