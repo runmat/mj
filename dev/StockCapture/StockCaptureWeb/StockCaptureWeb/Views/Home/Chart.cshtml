@@ -62,6 +62,10 @@
                 SetChartData(result.chartData);
 
                 ResizeChart();
+
+                setTimeout(function () {
+                    ReloadChart();
+                }, 5000);
             }
         });
     }
