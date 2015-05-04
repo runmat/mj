@@ -110,8 +110,8 @@ namespace ServicesMvc.Common.Controllers
                 {
                     AdminIsAuthorized = true,
                     AdminUserName = "JenzenM",
-                    AppID = 1731,
-                    AppFriendlyName = "Strafzettel-Report"
+                    AppID = 1805, // 1731
+                    AppFriendlyName = "Überführungs-Report"
                 };
 
             return View(ViewModel);

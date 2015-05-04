@@ -248,7 +248,7 @@
                                                                         </tr>
                                                                         <tr class="formquery">
                                                                             <td class="firstLeft active">
-                                                                                <asp:LinkButton ID="lnkMvcReportSolution" runat="server" CssClass="LinksVerwaltung">Metronic Report Solution Tool&nbsp;» </asp:LinkButton>
+                                                                                <asp:LinkButton ID="lnkMvcReportSolution" runat="server" CssClass="LinksVerwaltung">MVC Report Solution Tool&nbsp;» </asp:LinkButton>
                                                                             </td>
                                                                             <td class="active">
                                                                                 &nbsp;

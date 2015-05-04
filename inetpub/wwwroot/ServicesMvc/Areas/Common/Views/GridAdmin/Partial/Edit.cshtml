@@ -49,7 +49,7 @@
             @Html.FormTextBoxFor(m => m.CurrentTranslatedResourceCustomer.fr_kurz, new { @class = "m-wrap small", col = "right" })
             
 
-            @Html.FormRequiredFieldsSummary()
+            @Html.FormRequiredFieldsSummary() <span class="margin-left-25">Translation-Key: <strong>@Model.CurrentTranslatedResource.Resource</strong></span>
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-save margin-right-5'></i>@Localize.Save</button>
