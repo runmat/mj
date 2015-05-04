@@ -38,7 +38,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                lblError.Text = "Feher beim Laden der Artikel!";
+                lblError.Text = "Fehler beim Laden der Artikel!";
                 lbAbsenden.Visible = false;
                 return;
             }
@@ -47,7 +47,8 @@ namespace AppZulassungsdienst.forms
             {
                 lblBestellnummerLieferant.Text = objWareneingang.Lieferant;
                 Fillgrid(0, "");
-                GridView1.Columns[9].Visible = false;
+                TrLiefernr.Visible = (!objWareneingang.IstUmlagerung);
+                GridView1.Columns[9].Visible = (!objWareneingang.IstUmlagerung);
             }
         }
 
@@ -145,6 +146,12 @@ namespace AppZulassungsdienst.forms
                 }
             }
 
+            if (!objWareneingang.IstUmlagerung && String.IsNullOrEmpty(txtLieferscheinnummer.Text))
+            {
+                tmpValid = false;
+                txtLieferscheinnummer.BorderColor = System.Drawing.Color.Red;
+            }
+
             if (!txtBelegdatum.Text.IsDate())
             {
                 tmpValid = false;
@@ -182,6 +189,18 @@ namespace AppZulassungsdienst.forms
                     else
                     {
                         tmpRow.BorderColor = System.Drawing.Color.Empty;
+                    }
+
+                    if (objWareneingang.IstUmlagerung)
+                    {
+                        if (tmpPosition["PositionVollstaendig"].ToString() == "0" && tmpPosition["PositionLieferMenge"] == DBNull.Value)
+                        {
+                            tmpRow.BackColor = System.Drawing.Color.Red;
+                        }
+                        else
+                        {
+                            tmpRow.BorderColor = System.Drawing.Color.Empty;
+                        }
                     }
                 }
                 lblError.Text = "Bitte prüfen Sie rot markierte Positionen";
@@ -435,7 +454,11 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void doSubmit()
         {
-            objWareneingang.sendUmlToSAP(txtBelegdatum.Text);
+            if (objWareneingang.IstUmlagerung)
+                objWareneingang.sendUmlToSAP(txtBelegdatum.Text);
+            else
+                objWareneingang.sendOrderCheckToSAP(txtLieferscheinnummer.Text, txtBelegdatum.Text);
+
             MPEWareneingangsbuchungResultat.Show();
 
             if (objWareneingang.ErrorOccured)

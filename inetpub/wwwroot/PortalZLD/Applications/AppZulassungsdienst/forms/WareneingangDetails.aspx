@@ -33,6 +33,14 @@
                                         <asp:Label ID="lblBelegnummer" runat="server" Visible="false"></asp:Label>
                                     </td>
                                 </tr>
+                                <tr id="TrLiefernr" runat="server">
+                                    <td>
+                                        Lieferscheinnummer:
+                                    </td>
+                                    <td width="100%">
+                                        <asp:TextBox ID="txtLieferscheinnummer" CssClass="TextBoxNormal" runat="server" MaxLength="16"></asp:TextBox>
+                                    </td>
+                                </tr>
                                 <tr id="TrBelegdatum" runat="server">
                                     <td>
                                         Wareneingangsdatum:
