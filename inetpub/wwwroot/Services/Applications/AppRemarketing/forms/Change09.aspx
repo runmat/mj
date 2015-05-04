@@ -142,6 +142,14 @@
                                             ErrorMessage="Eingabe erforderlich."></asp:RequiredFieldValidator>
                                     </td>
                                 </tr>
+                                <tr id="tr_Repariert" runat="server" class="formquery" visible="false">
+                                    <td class="firstLeft active" nowrap="nowrap" style="vertical-align:top">
+                                        Repariert
+                                    </td>
+                                    <td class="active" nowrap="nowrap" style="vertical-align:top">
+                                        <asp:CheckBox ID="cbxRepariert" runat="server"/>
+                                    </td>
+                                </tr>
                                 <tr class="formquery">
                                     <td colspan="2">
                                         &nbsp;
@@ -228,6 +236,9 @@
                                                             </asp:TextBox>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
+                                                    <telerik:GridBoundColumn DataField="Repariert" SortExpression="Repariert" >
+                                                        <HeaderStyle Width="80px" />
+                                                    </telerik:GridBoundColumn>
                                                     <telerik:GridBoundColumn DataField="ZBEM" SortExpression="ZBEM" Visible="false" UniqueName="Bemerkung" >
                                                         <HeaderStyle Width="100px" />
                                                         <ItemStyle Wrap="false" />

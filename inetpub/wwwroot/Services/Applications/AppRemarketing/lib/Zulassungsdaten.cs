@@ -415,6 +415,8 @@ namespace AppRemarketing.lib
                         newRow["PREIS"] = dr[3];
                         newRow["SCHAD_DAT"] = dr[4];
                         newRow["BESCHREIBUNG"] = dr[2];
+                        var blnRepariert = (dr[5] != null && dr[5].ToString().ToUpper() == "YES");
+                        newRow["FLAGLAST"] = (blnRepariert ? "X" : "");
 
                         tblTmp.Rows.Add(newRow);
                     }
@@ -432,6 +434,7 @@ namespace AppRemarketing.lib
                         newRow["PREIS"] = dr["Betrag"];
                         newRow["SCHAD_DAT"] = dr["Schadensdatum"];
                         newRow["BESCHREIBUNG"] = dr["Beschreibung"];
+                        newRow["FLAGLAST"] = dr["Repariert"];
 
                         tblTmp.Rows.Add(newRow);
                     }
@@ -447,6 +450,7 @@ namespace AppRemarketing.lib
                     m_tblError.Columns["KENNZ"].ColumnName = "Kennzeichen";
                     m_tblError.Columns["PREIS"].ColumnName = "Betrag";
                     m_tblError.Columns["BESCHREIBUNG"].ColumnName = "Beschreibung";
+                    m_tblError.Columns["FLAGLAST"].ColumnName = "Repariert";
                     m_tblError.Columns.Add("ID", typeof(int));
                     m_tblError.Columns.Add("Schadensdatum", typeof(string));
                     m_tblError.AcceptChanges();
@@ -485,33 +489,3 @@ namespace AppRemarketing.lib
         #endregion
     }
 }
-// ************************************************
-// $History: Zulassungsdaten.cs $
-//
-//*****************  Version 6  *****************
-//User: Fassbenders  Date: 29.03.11   Time: 10:37
-//Updated in $/CKAG2/Applications/AppRemarketing/lib
-//
-//*****************  Version 5  *****************
-//User: Fassbenders  Date: 4.03.11    Time: 10:59
-//Updated in $/CKAG2/Applications/AppRemarketing/lib
-//
-//*****************  Version 4  *****************
-//User: Fassbenders  Date: 3.03.11    Time: 21:08
-//Updated in $/CKAG2/Applications/AppRemarketing/lib
-//
-//*****************  Version 3  *****************
-//User: Fassbenders  Date: 29.09.10   Time: 11:00
-//Updated in $/CKAG2/Applications/AppRemarketing/lib
-//
-//*****************  Version 2  *****************
-//User: Jungj        Date: 24.09.10   Time: 18:45
-//Updated in $/CKAG2/Applications/AppRemarketing/lib
-//ITA 4129 testfertig
-//
-//*****************  Version 1  *****************
-//User: Jungj        Date: 24.09.10   Time: 16:48
-//Created in $/CKAG2/Applications/AppRemarketing/lib
-//ITA 4129 Torso
-//
-// ************************************************ 
