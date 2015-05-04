@@ -415,7 +415,7 @@ namespace AppRemarketing.lib
                         newRow["PREIS"] = dr[3];
                         newRow["SCHAD_DAT"] = dr[4];
                         newRow["BESCHREIBUNG"] = dr[2];
-                        var blnRepariert = (dr[5] != null && dr[5].ToString().ToUpper() == "YES");
+                        var blnRepariert = (dr[5] != null && (dr[5].ToString().ToUpper() == "YES" || dr[5].ToString().ToUpper() == "X"));
                         newRow["FLAGLAST"] = (blnRepariert ? "X" : "");
 
                         tblTmp.Rows.Add(newRow);
@@ -434,7 +434,8 @@ namespace AppRemarketing.lib
                         newRow["PREIS"] = dr["Betrag"];
                         newRow["SCHAD_DAT"] = dr["Schadensdatum"];
                         newRow["BESCHREIBUNG"] = dr["Beschreibung"];
-                        newRow["FLAGLAST"] = dr["Repariert"];
+                        var blnRepariert = (dr["Repariert"] != null && (dr["Repariert"].ToString().ToUpper() == "YES" || dr["Repariert"].ToString().ToUpper() == "X"));
+                        newRow["FLAGLAST"] = (blnRepariert ? "X" : "");
 
                         tblTmp.Rows.Add(newRow);
                     }
