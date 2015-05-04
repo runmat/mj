@@ -5,7 +5,7 @@
 
     var _gridColumnNameList = [];
     var _gridColumnNameListIsValid = false;
-    var _gridColumnNameListMode = '';
+    var _gridReportGeneratorMode = false;
     var _gridGroupBy = '';
 
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
@@ -26,12 +26,15 @@
             GridCaptionHintShowAsWait(grid);
         }
 
+
         setTimeout(function () {
             if (typeof (autoPersistColumns) == 'undefined') {
-                try {
-                    GridPrepareFromSelectorPersistedState(grid.data("tGrid"));
-                } catch (e) {
+
+                if (!_gridReportGeneratorMode)
                     GridPrepareFromAutoColumnsPersistedState(grid.data("tGrid"));
+                else {
+                    try { GridPrepareFromSelectorPersistedState(grid.data("tGrid")); } 
+                    catch(e) {}
                 }
             }
 
@@ -42,7 +45,7 @@
                 GridCaptionHintHide(grid);
                 grid.animate({ opacity: "1.0" }, 300);
             }
-        }, 500);
+        }, 1000);
     }
 
     function FilteredData_Grid_OnColumnReorder(grid) {
@@ -112,28 +115,43 @@
                     },
                     loadingShow: false,
                     success: function (result) {
-                        //alert(result.message);
                     }
                 });
-        } catch (e) {
-            //alert(e);
+        } catch(e) {
         }
     }
 
     function GridColumnResetOrderAndVisibility() {
         _gridColumnNameList = [];
         _gridColumnNameListIsValid = false;
-        _gridColumnNameListMode = '';
         _gridGroupBy = '';
     }
 
-    function GridPrepareFromAutoColumnsPersistedState(grid) {
+    function GridEnsureValidColums(grid, settingsColumns) {
+        
+        console.log(settingsColumns);
 
+        var validSettingsColumns = new Array();
+        $.each(settingsColumns, function (index, columnName) {
+            if (1 <= $.grep(grid.columns, function (col, j) { return (columnName == col.member); }).length)
+                validSettingsColumns.push(columnName);
+        });
+        settingsColumns = validSettingsColumns;
+
+        console.log(settingsColumns);
+
+        return settingsColumns;
+    }
+    
+    function GridPrepareFromAutoColumnsPersistedState(grid) {
+        
+        //alert(_gridColumnNameListIsValid + " - " + _gridColumnNameList.length);
         if (!_gridColumnNameListIsValid || _gridColumnNameList.length == 0)
             return;
 
-        var settingsColumns = _gridColumnNameList;
-
+        var settingsColumns = GridEnsureValidColums(grid, _gridColumnNameList);
+        //alert(settingsColumns.length);
+        
         //
         // 1. hide columns
         //
@@ -143,7 +161,6 @@
         for (var i = 0; i < hiddenColumns.length; i++) {
             grid.hideColumn(hiddenColumns[i].member);
         }
-
 
         //
         // 2. reorder columns
@@ -166,6 +183,35 @@
         GridColumnResetOrderAndVisibility();
     }
 
+    function GridSettingsAdminEditColumnHeader(gridName, columnMember) {
+
+        var gridEl = $("#" + gridName);
+
+        var adminEditDiv = gridEl.parent().find(".grid-t-column-header-admin-edit-div");
+        adminEditDiv.hide();
+
+        $.ajax(
+                {
+                    type: "POST",
+                    url: "/ServicesMvc/Common/GridAdmin/Edit",
+                    data: {
+                        columnMember: columnMember
+                    },
+                    loadingShow: true,
+                    success: function (result) {
+                        adminEditDiv.html(result);
+                        adminEditDiv.slideDown(300);
+
+                        adminEditDiv.css("background-color", "ivory");
+                        adminEditDiv.closest(".portlet-body").css("background-color", "ivory");
+                    }
+                });
+
+        //$("#FormSearchBox form .form-actions button[type='submit']").trigger("click");
+        
+        return false;
+    }
+    
     function GetJsonColumns(grid) {
         // Update the 'columns' parameter 
         var columnsFiltered = $.grep(grid.columns, function (column, j) {

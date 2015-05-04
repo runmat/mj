@@ -19,7 +19,7 @@
 
     _gridColumnNameList = @Html.Raw(gridColumnNameList ?? "[]");
     _gridColumnNameListIsValid = true;
-    _gridColumnNameListMode = 'AutoPersistColumns';
+    _gridReportGeneratorMode = (@SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent").IsNotNullOrEmpty().ToString().ToLower());
     _gridGroupBy = '@gridGrouping';
 
 </script>
