@@ -41,7 +41,7 @@ namespace Telerik.Web.Mvc.UI
 
             GridBoundColumnBuilder<TModel> column = null;
 
-            var modelColumnList = GetUserGridColumnNames(modelType);
+            var modelColumnList = modelType.GetScaffoldPropertyNames().ToListOrEmptyList(); 
             var userSlaveColumnsToHide = new List<string>();
             var propertyNameList =  modelColumnList.Where(slave => modelType.GetScaffoldPropertyLowerNames().Contains(slave.ToLower())).ToList();
             propertyNameList.ForEach(propertyName =>
@@ -51,18 +51,6 @@ namespace Telerik.Web.Mvc.UI
                         });
 
             return column;
-        }
-
-        static IEnumerable<string> GetUserGridColumnNames(Type modelType)
-        {
-            var gridSettings = (SessionHelper.GetSessionObject("GridCurrentSettings") as GridSettings);
-            if (gridSettings == null || gridSettings.Columns.IsNullOrEmpty())
-                return modelType.GetScaffoldPropertyNames().ToListOrEmptyList();
-
-            var jCols = gridSettings.Columns.GetGridColumns();
-            var columnNameList = jCols.Select(jc => (string)jc.member.Value).ToList();
-
-            return columnNameList;
         }
     }
 }
