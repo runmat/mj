@@ -33,29 +33,15 @@ namespace CkgDomainLogic.Equi.Services
         {
             get
             {
-                var ref1 = DatenFilter.SelektionsfilterReferenz1;
-
                 if (DatenFilter.SelektionsfilterLagerbestand && DatenFilter.SelektionsfilterTempVersendete)
-                {
-                    if (!String.IsNullOrEmpty(ref1))
-                        return FahrzeugbriefeGesamt.Where(b => b.Referenz1 == ref1).ToList();
-
                     return FahrzeugbriefeGesamt;
-                }
+
                 if (DatenFilter.SelektionsfilterLagerbestand)
-                {
-                    if (!String.IsNullOrEmpty(ref1))
-                        return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen != "1" && b.Referenz1 == ref1).ToList();
-
                     return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen != "1").ToList();
-                }
-                if (DatenFilter.SelektionsfilterTempVersendete)
-                {
-                    if (!String.IsNullOrEmpty(ref1))
-                        return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen == "1" && b.Referenz1 == ref1).ToList();
 
+                if (DatenFilter.SelektionsfilterTempVersendete)
                     return FahrzeugbriefeGesamt.Where(b => b.AbcKennzeichen == "1").ToList();
-                }
+
                 return new List<Fahrzeugbrief>();
             }
         }
@@ -81,6 +67,10 @@ namespace CkgDomainLogic.Equi.Services
 
             if (mitTempVers)
                 SAP.SetImportParameter("I_TEMPVERS", "X");
+
+            var ref1 = GetUserReferenceValueByReferenceType(Referenzfeldtyp.ZZREFERENZ1);
+            if (!String.IsNullOrEmpty(ref1))
+                SAP.SetImportParameter("I_ZZREFERENZ1", ref1);
 
             string sapVersandKennzeichen = null;
             if (versandModus == BriefversandModus.Brief || versandModus == BriefversandModus.BriefMitSchluessel)

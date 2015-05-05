@@ -519,12 +519,28 @@
                                                                     <asp:TextBox ID="txtLastName" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery">
+                                                            <tr id="trReference" runat="server" class="formquery">
                                                                 <td class="firstLeft active">
-                                                                    Kundenreferenz:
+                                                                    <asp:Label ID="lblReferenceType" runat="server" Font-Bold="True" />
                                                                 </td>
                                                                 <td class="active">
                                                                     <asp:TextBox ID="txtReference" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="trReference2" runat="server" class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    <asp:Label ID="lblReferenceType2" runat="server" Font-Bold="True" />
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:TextBox ID="txtReference2" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr id="trReference3" runat="server" class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    <asp:Label ID="lblReferenceType3" runat="server" Font-Bold="True" />
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:TextBox ID="txtReference3" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery">

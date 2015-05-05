@@ -26,7 +26,7 @@ namespace CkgDomainLogic.General.Services
 
         public IAppSettings AppSettings { get; protected set; }
 
-        public ILogonContext LogonContext { get; protected set; }
+        public ILogonContextDataService LogonContext { get; protected set; }
 
         #endregion
 
@@ -230,7 +230,7 @@ namespace CkgDomainLogic.General.Services
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             AppSettings = appSettings;
-            LogonContext = logonContext;
+            LogonContext = (ILogonContextDataService)logonContext;
         }
 
         public string GetZulassungskreisFromPostcodeAndCity(string postCode, string city)
@@ -251,6 +251,20 @@ namespace CkgDomainLogic.General.Services
         static protected string FormatSapErrorMessage(string sapError)
         {
             return string.Format("Es ist ein Fehler aufgetreten, SAP-Fehler Meldung: {0}", sapError);
+        }
+
+        public string GetUserReferenceValueByReferenceType(Referenzfeldtyp referenceType)
+        {
+            if (LogonContext.Customer.Userreferenzfeld1 == referenceType.ToString())
+                return LogonContext.User.Reference;
+
+            if (LogonContext.Customer.Userreferenzfeld2 == referenceType.ToString())
+                return LogonContext.User.Reference2;
+
+            if (LogonContext.Customer.Userreferenzfeld3 == referenceType.ToString())
+                return LogonContext.User.Reference3;
+
+            return "";
         }
     }
 }

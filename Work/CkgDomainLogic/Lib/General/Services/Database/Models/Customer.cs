@@ -33,6 +33,9 @@ namespace CkgDomainLogic.General.Database.Models
         public string SelfAdministrationInfo { get; set; }
         public string SelfAdministrationContact { get; set; }
 
+        public string Userreferenzfeld1 { get; set; }
+        public string Userreferenzfeld2 { get; set; }
+        public string Userreferenzfeld3 { get; set; }
 
         #region Password Settings
 
