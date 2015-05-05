@@ -54,7 +54,6 @@ namespace AppRemarketing.forms
                     if (!IsAV())
                     {
                         tr_Vermieter.Visible = true;
-                        tr_Freibetrag.Visible = false;
                     }
                 }
             }
@@ -81,7 +80,7 @@ namespace AppRemarketing.forms
 
         private void DoSubmit()
         {
-            if ((txtKennzeichen.Text.Length == 0) && (txtFahrgestellnummer.Text.Length == 0) && (txtInventarnummer.Text.Length == 0) && (txtRechnungsnummer.Text.Length == 0))
+            if ((txtKennzeichen.Text.Length == 0) && (txtFahrgestellnummer.Text.Length == 0))
             {
                 if (txtVertragsjahr.Text.Length < 4)
                 {
@@ -119,8 +118,6 @@ namespace AppRemarketing.forms
             m_Report.CarportNr = ddlHC.SelectedValue;
             m_Report.Kennzeichen = txtKennzeichen.Text;
             m_Report.Fahrgestellnummer = txtFahrgestellnummer.Text;
-            m_Report.Inventarnummer = txtInventarnummer.Text;
-            m_Report.Rechnungsnummer = txtRechnungsnummer.Text;
             m_Report.Vertragsjahr = txtVertragsjahr.Text;
 
             if (ddlStatus.SelectedValue != "00")
@@ -146,15 +143,6 @@ namespace AppRemarketing.forms
             else
             {
                 m_Report.AVNR = m_User.Groups[0].GroupName.ToString();
-
-                if (chkFreibetrag.Checked)
-                {
-                    m_Report.Freibetrag = "X";
-                }
-                else
-                {
-                    m_Report.Freibetrag = "";
-                }
             }
 
             m_Report.DatumVon = txtDatumVon.Text;

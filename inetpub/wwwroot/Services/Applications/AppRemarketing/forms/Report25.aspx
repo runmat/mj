@@ -88,24 +88,6 @@
                                             Width="200px"></asp:TextBox>
                                     </td>
                                 </tr>
-                                <tr class="formquery" id="tr_Inventarnummer" runat="server" >
-                                    <td class="firstLeft active">
-                                        Inventarnummer:
-                                    </td>
-                                    <td class="firstLeft active">
-                                        <asp:TextBox ID="txtInventarnummer" runat="server" CssClass="TextBoxNormal" MaxLength="10"
-                                            Width="200px"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr class="formquery" id="tr_Rechnungsnummer" runat="server" >
-                                    <td class="firstLeft active">
-                                        Rechnungsnummer:
-                                    </td>
-                                    <td class="firstLeft active">
-                                        <asp:TextBox ID="txtRechnungsnummer" runat="server" CssClass="TextBoxNormal" MaxLength="8"
-                                            Width="200px"></asp:TextBox>
-                                    </td>
-                                </tr>
                                 <tr visible="false" class="formquery" id="tr_Vermieter" runat="server" >
                                     <td class="firstLeft active">
                                         Autovermieter:
@@ -168,14 +150,6 @@
                                     <td class="firstLeft active">
                                         <asp:TextBox ID="txtVertragsjahr" runat="server" CssClass="TextBoxNormal" MaxLength="4"
                                             Width="200px"></asp:TextBox>
-                                    </td>
-                                </tr>
-                                <tr class="formquery" id="tr_Freibetrag" runat="server" >
-                                    <td class="firstLeft active">
-                                        Freibetrag:
-                                    </td>
-                                    <td class="firstLeft active">
-                                        <asp:CheckBox ID="chkFreibetrag" runat="server" />
                                     </td>
                                 </tr>
                                 <tr class="formquery">

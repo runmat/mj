@@ -23,13 +23,10 @@ namespace AppRemarketing.lib
         public DataTable Gutachten { set; get; }
         public String Reklamationstext { set; get; }
         public DataTable TableReklamation { set; get; }
-        public String Rechnungsnummer { set; get; }
-        public String Inventarnummer { set; get; }
         public String Sachbearbeiter { set; get; }
         public String Telefon { set; get; }
         public String Mail { set; get; }
         public String Vertragsjahr { set; get; }
-        public String Freibetrag { set; get; }
 
         #endregion
 
@@ -63,9 +60,6 @@ namespace AppRemarketing.lib
                 myProxy.setImportParameter("I_KUNNR", m_objUser.KUNNR.PadLeft(10, '0'));
                 myProxy.setImportParameter("I_KFZKZ", Kennzeichen);
                 myProxy.setImportParameter("I_FIN", Fahrgestellnummer);
-                myProxy.setImportParameter("I_INVENTAR", Inventarnummer);
-                myProxy.setImportParameter("I_RENNR", Rechnungsnummer);
-                myProxy.setImportParameter("I_NO_NULL", Freibetrag);
                 if (Vertragsjahr != null) { myProxy.setImportParameter("I_VJAHR", Vertragsjahr); }
                 if (AVNR != "00") { myProxy.setImportParameter("I_AVNR", AVNR); }
                 if (CarportNr != "00") { myProxy.setImportParameter("I_HC", CarportNr); }
