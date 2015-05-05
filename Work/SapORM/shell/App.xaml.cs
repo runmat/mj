@@ -369,6 +369,7 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_STO_STORNO_ORDER").WriteOrmForExportTableStructures("I_ZULBELN, I_STORNOGRUND, I_ERNAM", "0", "0", "test");
             //new FunctionReflector("Z_ZLD_STO_STORNOGRUENDE").WriteOrmForExportTableStructures();
 
+            //new FunctionReflector("Z_FIL_CHECK_OPEN_002").WriteOrmForExportTableStructures("I_KREISKZ, I_VKORG, I_VKBUR, I_DATUM", "B", "1010", "4837", "04.05.2015");
 
             //CoCTest();
             //TeslaTest();
