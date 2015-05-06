@@ -3,6 +3,7 @@ using AppZulassungsdienst.lib;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using System.Configuration;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {   
@@ -12,9 +13,10 @@ namespace AppZulassungsdienst.forms
     public partial class Barabhebung : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private ZLD_Suche objZLDSuche;
-        private clsBarabhebung objBarabhebung;     
+        private clsBarabhebung objBarabhebung;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist. Evtl. Stammdaten laden.
@@ -25,8 +27,6 @@ namespace AppZulassungsdienst.forms
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
@@ -38,13 +38,13 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                objBarabhebung = new clsBarabhebung(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
+                objBarabhebung = new clsBarabhebung(m_User.Reference);
                 Session["objBarabhebung"] = objBarabhebung;
             }
 
-            if (!IsPostBack) 
+            if (!IsPostBack)
             {
-                txtKst.Text = m_User.Reference.Substring(4, 4);             
+                txtKst.Text = m_User.Reference.Substring(4, 4);
             }
         }
 
@@ -97,9 +97,9 @@ namespace AppZulassungsdienst.forms
 
                 if (Sendmail())
                 {
-                    objBarabhebung.Change(Session["AppID"].ToString(), Session.SessionID, this);
+                    objBarabhebung.Save();
 
-                    if (objBarabhebung.Status != 0)
+                    if (objBarabhebung.ErrorOccured)
                     {
                         lblError.Text = "Fehler: " + objBarabhebung.Message;
                     }
@@ -125,18 +125,22 @@ namespace AppZulassungsdienst.forms
             }
         }
 
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Speichert die eingegebenen Daten im Barabhebungs-Objekt
         /// </summary>
         private void FillBarabhebung()
         {
-            objBarabhebung.Name = txtName.Text;
-            objBarabhebung.Kostenstelle = txtKst.Text;
-            objBarabhebung.ECNr = txtNummerEC.Text;
-            objBarabhebung.Datum = txtDatum.Text;
-            objBarabhebung.Uhrzeit = txtUhrzeit.Text;
-            objBarabhebung.Ort = txtOrt.Text;
-            objBarabhebung.Betrag = txtBetrag.Text;
+            objBarabhebung.Barabhebung.Name = txtName.Text;
+            objBarabhebung.Barabhebung.VkBur = txtKst.Text;
+            objBarabhebung.Barabhebung.EcKarteNr = txtNummerEC.Text;
+            objBarabhebung.Barabhebung.Datum = txtDatum.Text.ToNullableDateTime();
+            objBarabhebung.Barabhebung.Uhrzeit = txtUhrzeit.Text;
+            objBarabhebung.Barabhebung.Ort = txtOrt.Text;
+            objBarabhebung.Barabhebung.Betrag = txtBetrag.Text;
             Session["objBarabhebung"] = objBarabhebung;
         }
 
@@ -165,25 +169,25 @@ namespace AppZulassungsdienst.forms
         ///  Mail versenden.
         /// </summary>
         /// <returns>false im Fehlerfall</returns>
-        private Boolean Sendmail() 
+        private Boolean Sendmail()
         {
             try
             {
                 System.Net.Mail.MailMessage Mail;
-                objZLDSuche = new ZLD_Suche(ref m_User, m_App, "");
+                objZLDSuche = new ZLD_Suche();
 
-                objZLDSuche.LeseMailTexte("1");
+                objZLDSuche.LeseMailTexte(m_User.Customer.CustomerId, "1");
 
                 String smtpMailSender = ConfigurationManager.AppSettings["SmtpMailSender"];
                 String smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
 
-                String MailText = "Name: " + objBarabhebung.Name + "<br />";
-                MailText += "KSt: " + objBarabhebung.Kostenstelle + "<br />";
-                MailText += "Nr. der EC-Karte: " + objBarabhebung.ECNr + "<br /><br />";
-                MailText += "Datum: " + objBarabhebung.Datum + "<br />";
-                MailText += "Uhrzeit: " + objBarabhebung.Uhrzeit + "<br />";
-                MailText += "Ort der Barabhebung: " + objBarabhebung.Ort + "<br />";
-                MailText += "Betrag: " + objBarabhebung.Betrag + "€";
+                String MailText = "Name: " + objBarabhebung.Barabhebung.Name + "<br />";
+                MailText += "KSt: " + objBarabhebung.Barabhebung.VkBur + "<br />";
+                MailText += "Nr. der EC-Karte: " + objBarabhebung.Barabhebung.EcKarteNr + "<br /><br />";
+                MailText += "Datum: " + objBarabhebung.Barabhebung.Datum + "<br />";
+                MailText += "Uhrzeit: " + objBarabhebung.Barabhebung.Uhrzeit + "<br />";
+                MailText += "Ort der Barabhebung: " + objBarabhebung.Barabhebung.Ort + "<br />";
+                MailText += "Betrag: " + objBarabhebung.Barabhebung.Betrag + "€";
 
                 String[] Adressen;
                 if (objZLDSuche.MailAdress.Trim().Split(';').Length > 1)
@@ -230,5 +234,7 @@ namespace AppZulassungsdienst.forms
                 return false;
             }
         }
+
+        #endregion
     }
 }

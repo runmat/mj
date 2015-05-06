@@ -1,6 +1,4 @@
 ﻿using System;
-using CKG.Base.Kernel.Common;
-using CKG.Base.Kernel.Security;
 using System.Data;
 
 namespace AppZulassungsdienst.forms
@@ -10,9 +8,6 @@ namespace AppZulassungsdienst.forms
     /// </summary>
     public partial class Report30ZLD_2 : System.Web.UI.Page
     {
-        private User m_User;
-        private App m_App;
-        
         /// <summary>
         /// Daten aus der Session ziehen und anzeigen
         /// </summary>
@@ -20,10 +15,6 @@ namespace AppZulassungsdienst.forms
         /// <param name="e"></param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            m_User = Common.GetUser(this);
-
-            m_App = new App(m_User); //erzeugt ein App_objekt 
-
             DataTable tblResultTableRaw = new DataTable();
             try
             {
@@ -37,7 +28,7 @@ namespace AppZulassungsdienst.forms
                 }
                 if (tblResultTableRaw != null) 
                 {
-                    if ((Request.QueryString["ID"] == null) || (Request.QueryString["ID"].Length == 0))
+                    if (String.IsNullOrEmpty(Request.QueryString["ID"]))
                     {
                         lblError.Text = "Feher: Die Seite wurde ohne Angaben zum Zulassungsdienst aufgerufen.";
                     }
@@ -68,7 +59,6 @@ namespace AppZulassungsdienst.forms
             {
                 lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" + ex.Message + ")";
             }
-
         }
     }
 }
