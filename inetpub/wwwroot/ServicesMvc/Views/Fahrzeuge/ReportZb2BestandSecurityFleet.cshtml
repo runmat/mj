@@ -1,0 +1,54 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model Zb2BestandSecurityFleetViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Report_ZBIIStockSecurityFleet</h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Zb2BestandSecurityFleet/Zb2BestandSecurityFleetSuche", Model.Zb2BestandSecurityFleetSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>  
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function FormPreparePrivate() {}
+
+    function ShowZb2BestandSecurityFleetSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridZb2BestandSecurityFleet");
+        //alert('1');
+        $("#divGrid").slideDown();      
+        //alert('2');
+    }
+
+
+    function OnDataBound_GridZb2BestandSecurityFleet() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridZb2BestandSecurityFleet() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridZb2BestandSecurityFleet() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+   
+
+</script>

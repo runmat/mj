@@ -1,0 +1,168 @@
+﻿@using CkgDomainLogic.Finance.ViewModels
+@model FinanceCarporteingaengeOhneEHViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.ReportCarporteingaengeOhneEH</h3>
+
+<style type="text/css">
+    
+</style>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("CarporteingaengeOhneEH/CarporteingaengeOhneEHSuche", null)
+    }
+</div>
+
+@Html.SpanAlert("spanAlertAbmelden")
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divCarporteingaengeOhneEHGrid"></div>
+}
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        $("#CarporteingaengeOhneEHForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        $("#divCarporteingaengeOhneEHSuche").css("hide");
+        FormPrepareAjax();
+    }
+
+    function ShowCarporteingaengeOhneEH() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowCarporteingaengeOhneEH",
+            loadingShow: false,
+            success: function (result) {
+                //SearchResultsTryHide();
+                ShowCarporteingaengeOhneEHSearchResult(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function OnDataBound_CarporteingaengeOhneEHGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("CarporteingaengeOhneEHGrid");
+    }
+
+    function OnLoad_CarporteingaengeOhneEHGrid() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_CarporteingaengeOhneEHGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_CarporteingaengeOhneEHGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowCarporteingaengeOhneEHSearchResult(result) {
+        SearchFormHide();
+        $("#divCarporteingaengeOhneEHGrid").html(result);
+
+        GridAllColumnFilterApplyToGrid("CarporteingaengeOhneEHGrid");
+        $("#divCarporteingaengeOhneEHGrid").slideDown();
+    }
+
+    function DeleteCarporteingaengeOhneEH() {
+        var answer = confirm("Haltefrist ignorieren und abmelden?")
+        if (answer) {                
+            $.ajax(
+            {
+                type: "POST",
+                url: "DeleteCarporteingaengeOhneEH",
+                loadingShow: false,
+
+                success: function (result) {
+                    ShowCarporteingaengeOhneEH();
+                    var successMessage = '@Localize.DeRegistrationSuccessful.ToJavascriptString()';
+                    SpanAlertSuccess("spanAlertAbmelden", successMessage, 1800);
+                    FormPreparePrivateAjax();
+                },
+                error: function (result) {
+                    SpanAlertWarning("spanAlertAbmelden", result.data, 5000);
+                }
+            });
+        }
+        return false;
+    }
+
+    function CarporteingaengeOhneEHGrid_OnSelectionChange(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlCoEHSelectionChanged",
+            data: { fin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                CarporteingaengeOhneEHGrid_MultiSelectUpdate(result.allSelectionCount);
+                //FormWizard.ActionsShow(count > 0);
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    $("#DeleteButton").addClass('hide');
+                    return;
+                }
+
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+                $("#DeleteButton").removeClass('hide');
+            }
+        });
+    }
+
+    function CarporteingaengeOhneEHGrid_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlCoEHSelectionChanged",
+            data: { fin: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                CarporteingaengeOhneEHGrid_MultiSelectUpdate(result.allSelectionCount);
+
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("CarporteingaengeOhneEHGrid");
+            }
+        });
+    }
+
+    function CarporteingaengeOhneEHGrid_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            $("#DeleteButton").addClass('hide');
+            return;
+        }
+
+        $("#DeleteButton").removeClass('hide');
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+   
+</script>

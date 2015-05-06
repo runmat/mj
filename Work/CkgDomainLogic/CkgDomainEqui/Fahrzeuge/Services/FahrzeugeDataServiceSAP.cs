@@ -78,7 +78,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         public List<AbmeldeHistorie> GetAbmeldeHistorien(string fin)
         {
             Z_DPM_CD_ABM_HIST.Init(SAP, "I_FIN", fin);
-
+           
             SAP.Execute();
 
             var sapItemsEquis = Z_DPM_CD_ABM_HIST.ET_ABM_HIST.GetExportList(SAP);
@@ -86,5 +86,91 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return webItemsEquis;
         }
+
+
+        public List<Zb2BestandSecurityFleet> GetZb2BestandSecurityFleet(Zb2BestandSecurityFleetSelektor selector)
+        {
+            Z_M_ECA_TAB_BESTAND.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            if (selector.Herstellerkennung.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_HERST", selector.Herstellerkennung);
+
+            SAP.Execute();
+
+            var sapItemsEquis = Z_M_ECA_TAB_BESTAND.GT_WEB.GetExportList(SAP);
+            var webItemsEquis = AppModelMappings.Z_M_ECA_TAB_BESTAND_To_Zb2BestandSecurityFleet.Copy(sapItemsEquis).ToList();
+
+            return webItemsEquis;
+        }
+
+        public List<Fahrzeughersteller> GetFahrzeugHersteller()
+        {
+            Z_M_HERSTELLERGROUP.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+          
+            SAP.Execute();
+
+            var sapItemsEquis = Z_M_HERSTELLERGROUP.T_HERST.GetExportList(SAP);
+            var webItemsEquis = AppModelMappings.Z_M_HERSTELLERGROUP_To_Fahrzeughersteller.Copy(sapItemsEquis).ToList();
+
+            return webItemsEquis;
+        }
+        
+        public List<AbgemeldetesFahrzeug> GetAbgemeldeteFahrzeuge2(AbgemeldeteFahrzeugeSelektor selector)
+        {                                  
+            Z_M_Abm_Abgemeldete_Kfz.Init(SAP, "KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            if (selector.AbmeldeDatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("PICKDATAB", selector.AbmeldeDatumRange.StartDate);
+                SAP.SetImportParameter("PICKDATBI", selector.AbmeldeDatumRange.EndDate);
+            }
+
+            SAP.Execute();
+
+            var sapItemsEquis = Z_M_Abm_Abgemeldete_Kfz.AUSGABE.GetExportList(SAP); 
+            var webItemsEquis = AppModelMappings.Z_M_Abm_Abgemeldete_Kfz_AUSGABE_ToAbgemeldetesFahrzeug.Copy(sapItemsEquis).ToList();
+
+            return webItemsEquis;
+        }
+
+        public List<Treuhandbestand> GetTreuhandbestandFromSap()
+        {                      
+            Z_M_TH_BESTAND.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_EQTYP", "B");
+            SAP.Execute();
+
+            var sapItemsEquis = Z_M_TH_BESTAND.GT_BESTAND.GetExportList(SAP);
+            var webItemsEquis = AppModelMappings.Z_M_TH_BESTAND__GET_BESTAND_LIST_To_Treuhandbestand.Copy(sapItemsEquis).ToList();
+
+            return webItemsEquis;
+        }   
+
+
+        public List<Unfallmeldung> GetUnfallmeldungen(UnfallmeldungenSelektor selector)
+        {
+            Z_DPM_UF_MELDUNGS_SUCHE.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_MIT_ABM", "X");
+
+            if (selector.MeldeDatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("I_ABMDT_VON", selector.MeldeDatumRange.StartDate);
+                SAP.SetImportParameter("I_ABMDT_BIS", selector.MeldeDatumRange.EndDate);
+            }
+
+            if (selector.StillegungsDatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("I_ERDAT_VON", selector.StillegungsDatumRange.StartDate);
+                SAP.SetImportParameter("I_ERDAT_BIS", selector.StillegungsDatumRange.EndDate);
+            }
+
+            SAP.Execute();
+
+            var sapItemsEquis = Z_DPM_UF_MELDUNGS_SUCHE.GT_UF.GetExportList(SAP);
+            var webItemsEquis = AppModelMappings.Z_DPM_UF_MELDUNGS_SUCHE_To_Unfallmeldungen.Copy(sapItemsEquis).ToList();
+            return webItemsEquis;
+
+
+        }
+
     }
 }
