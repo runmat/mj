@@ -245,6 +245,11 @@ namespace Telerik.Web.Mvc.UI
             return builder.Pageable(paging => paging.PageSize(pageSize));
         }
 
+        public static GridBuilder<T> XSort<T>(this GridBuilder<T> builder) where T : class
+        {
+            return builder.Sortable(s => s.Enabled(true));
+        }
+
         public static GridBuilder<T> XSort<T>(this GridBuilder<T> builder, Action<GridSortDescriptorFactory<T>> sortConfigurator) where T : class
         {
             return builder.Sortable(s => s.Enabled(true).OrderBy(sortConfigurator));

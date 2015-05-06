@@ -370,6 +370,9 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_FAHRZEUGHISTORIE_AVM").WriteOrmForExportTableStructures("I_KUNNR_AG, I_LICENSE_NUM", "219853", "HH-SZ7766");
             //new FunctionReflector("Z_DPM_DRUCK_FZG_HISTORIE_AVM").WriteOrmForExportTableStructures("I_KUNNR_AG, I_LICENSE_NUM", "219853", "HH-SZ7766");
 
+            //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_EC_AVM_ZULAUF").WriteOrmForExportTableStructures("ZUL_DAT, ZUL_BIS, I_HERSTNR", "01.04.2015", "10.04.2015", "0");
+            
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();

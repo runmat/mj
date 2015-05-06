@@ -92,6 +92,7 @@
     <Compile Include="Controllers\EquiController.cs" />
     <Compile Include="Controllers\ErweiterterBriefbestand\EquiController.cs" />
     <Compile Include="Controllers\Fahrzeugeinsteuerung\FahrzeugeController.cs" />
+    <Compile Include="Controllers\Fahrzeugzulaeufe\FahrzeugeController.cs" />
     <Compile Include="Controllers\Fehlteiletiketten\FahrzeugeController.cs" />
     <Compile Include="Controllers\Halterabweichungen\EquiController.cs" />
     <Compile Include="Controllers\Historie\EquiController.cs" />
@@ -186,13 +187,18 @@
     <Compile Include="Equi\ViewModels\HalterAbweichungenViewModel.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IUploadFahrzeugeinsteuerungDataService.cs" />
+    <Compile Include="Fahrzeuge\Contracts\IFahrzeugzulaeufeDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\FehlteilEtikett.cs" />
     <Compile Include="Fahrzeuge\Models\FehlteilEtikettSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugeinsteuerungUploadModel.cs" />
+    <Compile Include="Fahrzeuge\Models\Fahrzeugzulauf.cs" />
+    <Compile Include="Fahrzeuge\Models\FahrzeugzulaeufeSelektor.cs" />
     <Compile Include="Fahrzeuge\Services\FehlteilEtikettenDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\FahrzeugzulaeufeDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FehlteilEtikettenViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\FahrzeugzulaeufeViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\UploadFahrzeugeinsteuerungViewModel.cs" />
     <Compile Include="General\Models\Fahrgestellnummer.cs" />
     <Compile Include="General\Models\Fahrgestellnummer10.cs" />
@@ -227,6 +233,7 @@
     <Compile Include="ModellId\Services\ModellIdDataServiceSQL.cs" />
     <Compile Include="ModellId\Services\ModellIdDataServiceSAP.cs" />
     <Compile Include="ModellId\ViewModels\ModellIdViewModel.cs" />
+    <Compile Include="Fahrzeuge\Models\Hersteller.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strafzettel\Contracts\IStrafzettelDataService.cs" />
     <Compile Include="Strafzettel\Models\StrafzettelSelektor.cs" />
