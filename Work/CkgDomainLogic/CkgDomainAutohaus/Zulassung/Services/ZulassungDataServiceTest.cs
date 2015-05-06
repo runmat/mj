@@ -39,6 +39,8 @@ namespace CkgDomainLogic.Autohaus.Services
         {
         }
 
+        public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
+
         #endregion
 
         #region Dokumentencenter Formulare

@@ -1,0 +1,18 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model Treuhandbestand
+
+<div id="">
+    @using (Ajax.BeginForm("ModifyTreuhandverwaltungFreigabenGesperrte", "Fahrzeuge", null, new MvcAjaxOptions { OnComplete = " GridItemDetailsFormPreparePrivateAjax();" }, htmlAttributes: new { @class = "form-horizontal", id = "ajaxForm" }))
+    {
+        @Html.HiddenFor(m => m.Fahrgestellnummer)       
+      
+        @Html.FormValidationSummary()
+                      
+        @Html.FormTextAreaFor(m => m.Ablehnungsgrund)
+                    
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i>@Localize.Save</button>          
+        </div>
+           
+    }
+</div>

@@ -1,0 +1,170 @@
+﻿@using CkgDomainLogic.Finance.ViewModels
+@model FinanceFehlendeSchluesseltueteViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.ReportMissingKeyBags</h3>
+
+<style type="text/css">
+    
+</style>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("FehlendeSchluesseltuete/FehlendeSchluesseltueteSuche", null)
+    }
+</div>
+
+@Html.SpanAlert("spanAlertLoeschen")
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divFehlendeSchluesseltueteGrid"></div>
+}
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        $("#FehlendeSchluesseltueteForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        $("#divFehlendeSchluesseltueteSuche").css("hide");
+        FormPrepareAjax();
+    }
+
+    function ShowFehlendeSchluesseltuete() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowFehlendeSchluesseltuete",
+            loadingShow: false,
+            success: function (result) {
+                //SearchResultsTryHide();
+                ShowFehlendeSchluesseltueteSearchResult(result);
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function OnDataBound_FehlendeSchluesseltueteGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("FehlendeSchluesseltueteGrid");
+    }
+
+    function OnLoad_FehlendeSchluesseltueteGrid() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_FehlendeSchluesseltueteGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_FehlendeSchluesseltueteGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowFehlendeSchluesseltueteSearchResult(result) {
+        SearchFormHide();
+        $("#divFehlendeSchluesseltueteGrid").html(result);
+
+        GridAllColumnFilterApplyToGrid("FehlendeSchluesseltueteGrid");
+        $("#divFehlendeSchluesseltueteGrid").slideDown();
+    }
+
+    function DeleteFehlendeSchluesseltueten() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "DeleteFehlendeSchluesseltuete",
+            loadingShow: false,
+
+            success: function (result) {
+                ShowFehlendeSchluesseltuete();
+                var successMessage = '@Localize.DeleteSuccessful.ToJavascriptString()';
+                SpanAlertSuccess("spanAlertLoeschen", successMessage, 1800);
+                FormPreparePrivateAjax();
+            },
+            error: function (result) {
+                SpanAlertWarning("spanAlertLoeschen", result.data, 5000);
+            }
+        });
+
+        return false;
+    }
+
+     
+    function FehlendeSchluesseltueteGrid_OnSelectionChange(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlFSSelectionChanged",
+            data: { fin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                FehlendeSchluesseltueteGrid_MultiSelectUpdate(result.allSelectionCount);
+                //FormWizard.ActionsShow(count > 0);
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    $("#DeleteButton").addClass('hide');
+                    return;
+                }
+
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+                $("#DeleteButton").removeClass('hide');
+            }
+        });
+    }
+
+    function FehlendeSchluesseltueteGrid_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlFSSelectionChanged",
+            data: { fin: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                FehlendeSchluesseltueteGrid_MultiSelectUpdate(result.allSelectionCount);
+
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("FehlendeSchluesseltueteGrid");
+            }
+        });
+    }
+
+    function FehlendeSchluesseltueteGrid_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            $("#DeleteButton").addClass('hide');
+            return;
+        }
+
+        $("#DeleteButton").removeClass('hide');
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }     
+
+
+   
+
+</script>

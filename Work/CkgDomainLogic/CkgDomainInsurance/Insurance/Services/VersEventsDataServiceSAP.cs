@@ -34,6 +34,14 @@ namespace CkgDomainLogic.Insurance.Services
             return AppModelMappings.Z_DPM_TAB_ZEVENT_TERMIN_01_GT_TERMIN_To_TerminSchadenfall.Copy(sapList).Where(item => item.LoeschDatum == null).ToList();
         }
 
+        public List<TerminSchadenfall> TermineAllGet()
+        {
+            var sapList = Z_DPM_TAB_ZEVENT_TERMIN_02.GT_TERMIN.GetExportListWithInitExecute(SAP,
+                        "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            return AppModelMappings.Z_DPM_TAB_ZEVENT_TERMIN_02_GT_TERMIN_To_TerminSchadenfall.Copy(sapList).Where(item => item.LoeschDatum == null).ToList();
+        }
+
         public TerminSchadenfall TerminAdd(TerminSchadenfall item, Action<string, string> addModelError)
         {
             var sapList = Z_DPM_TAB_ZEVENT_TERMIN_01.GT_TERMIN.GetImportListWithInit(SAP,

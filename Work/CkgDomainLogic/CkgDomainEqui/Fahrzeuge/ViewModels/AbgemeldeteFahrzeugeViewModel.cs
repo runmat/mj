@@ -40,14 +40,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public List<AbgemeldetesFahrzeug> Fahrzeuge
         {
             get { return PropertyCacheGet(() => new List<AbgemeldetesFahrzeug>()); }
-            private set { PropertyCacheSet(value); }
+            protected set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
         public List<AbgemeldetesFahrzeug> FahrzeugeFiltered
         {
             get { return PropertyCacheGet(() => Fahrzeuge); }
-            private set { PropertyCacheSet(value); }
+            protected set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
@@ -63,8 +63,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void DataInit()
         {
             AbgemeldeteFahrzeugeSelektor.AlleFahrzeugStatusWerteStatic = DataService.FahrzeugStatusWerte;
-
             DataMarkForRefresh();
+        }
+
+        public void DataInit(bool preSelection)
+        {
+            DataInit();
+            AbgemeldeteFahrzeugeSelektor.AbmeldeDatumRange.IsSelected = preSelection;
         }
 
         public void DataMarkForRefresh()
@@ -89,6 +94,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             DataMarkForRefresh();
 
             //XmlService.XmlSerializeToFile(Fahrzeuge, Path.Combine(AppSettings.DataPath, @"Fahrzeuge.xml"));
+        }
+
+        public new void LoadAbgemeldeteFahrzeuge2()
+        {
+            Fahrzeuge = DataService.GetAbgemeldeteFahrzeuge2(AbgemeldeteFahrzeugeSelektor);
+            DataMarkForRefresh();
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)

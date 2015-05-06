@@ -18,6 +18,8 @@ using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Services;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Services;
+using CkgDomainLogic.FzgModelle.Contracts;
+using CkgDomainLogic.FzgModelle.Services;
 using CkgDomainLogic.Insurance.Contracts;
 using CkgDomainLogic.Insurance.Services;
 using CkgDomainLogic.General.Contracts;
@@ -185,8 +187,22 @@ namespace ServicesMvc
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
             builder.RegisterType<NichtDurchfuehrbZulDataServiceSAP>().As<INichtDurchfuehrbZulDataService>().InstancePerHttpRequest();
+            builder.RegisterType<EquiHistorieVermieterDataServiceSAP>().As<IEquiHistorieVermieterDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FahrzeugzulaeufeDataServiceSAP>().As<IFahrzeugzulaeufeDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<WfmDataServiceSAP>().As<IWfmDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<ModellIdDataServiceSAP>().As<IModellIdDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<FinanceTempZb2VersandDataServiceSAP>().As<IFinanceTempZb2VersandDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceTempVersandZweitschluesselDataServiceSAP>().As<IFinanceTempZb2VersandZweitschluesselDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceFehlendeSchluesseltueteDataServiceSAP>().As<IFinanceFehlendeSchluesseltueteDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceCarporteingaengeOhneEHDataServiceSAP>().As<IFinanceCarporteingaengeOhneEHDataService>().InstancePerHttpRequest();
+            builder.RegisterType<TreuhandDataServiceSAP>().As<ITreuhandDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FahrzeugvoravisierungDataServiceSAP>().As<IFahrzeugvoravisierungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<DispositionslisteDataServiceSAP>().As<IDispositionslisteDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ZulaufEinsteuerungDataServiceSAP>().As<IZulaufEinsteuerungDataService>().InstancePerHttpRequest();           
+            builder.RegisterType<FahrzeuguebersichtDataServiceSAP>().As<IFahrzeuguebersichtDataService>().InstancePerHttpRequest(); 
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
