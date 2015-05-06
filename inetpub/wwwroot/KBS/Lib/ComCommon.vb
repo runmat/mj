@@ -1,10 +1,11 @@
-﻿
+﻿Imports SapORM.Contracts
+Imports KBSBase
+
 Public Class ComCommon
+    Inherits ErrorHandlingClass
 
 #Region "Declarations"
 
-    Private mE_SUBRC As Integer
-    Private mE_MESSAGE As String
     Private m_Laender As DataTable
     Private m_Funktion As DataTable
     Private m_Branchen As DataTable
@@ -41,10 +42,6 @@ Public Class ComCommon
 
     Private mListeAusparken As DataTable
 
-    Protected m_intStatus As Int32
-    Protected m_strMessage As String
-    Dim SAPExc As SAPExecutor.SAPExecutor
-
 #End Region
 
 #Region "Properties"
@@ -65,24 +62,6 @@ Public Class ComCommon
         Get
             Return m_Branchen
         End Get
-    End Property
-
-    Public Property E_SUBRC() As Integer
-        Get
-            Return mE_SUBRC
-        End Get
-        Set(ByVal Value As Integer)
-            mE_SUBRC = Value
-        End Set
-    End Property
-
-    Public Property E_MESSAGE() As String
-        Get
-            Return mE_MESSAGE
-        End Get
-        Set(ByVal Value As String)
-            mE_MESSAGE = Value
-        End Set
     End Property
 
     Public Property MitarbeiterNr() As String
@@ -323,12 +302,6 @@ Public Class ComCommon
         End Set
     End Property
 
-    Public ReadOnly Property Status() As Int32
-        Get
-            Return m_intStatus
-        End Get
-    End Property
-
     Public ReadOnly Property ListeAusparken() As DataTable
         Get
             Return mListeAusparken
@@ -340,50 +313,7 @@ Public Class ComCommon
 
 #End Region
 
-    Private Function Create_FillInputTab() As DataTable
-        Dim tblSAP As New DataTable()
-        tblSAP.Columns.Add("BEDIEN", String.Empty.GetType)
-        tblSAP.Columns.Add("BUKRS", String.Empty.GetType)
-        tblSAP.Columns.Add("VKORG", String.Empty.GetType)
-        tblSAP.Columns.Add("VKBUR", String.Empty.GetType)
-        tblSAP.Columns.Add("KALKS", String.Empty.GetType)
-        tblSAP.Columns.Add("EZERM", String.Empty.GetType)
-        tblSAP.Columns.Add("TITLE", String.Empty.GetType)
-        tblSAP.Columns.Add("BRSCH", String.Empty.GetType)
-        tblSAP.Columns.Add("BRSCH_FREITXT", String.Empty.GetType)
-        tblSAP.Columns.Add("NAME1", String.Empty.GetType)
-        tblSAP.Columns.Add("NAME2", String.Empty.GetType)
-        tblSAP.Columns.Add("NAME3", String.Empty.GetType)
-        tblSAP.Columns.Add("NAME4", String.Empty.GetType)
-        tblSAP.Columns.Add("STREET", String.Empty.GetType)
-        tblSAP.Columns.Add("HOUSE_NUM1", String.Empty.GetType)
-        tblSAP.Columns.Add("CITY1", String.Empty.GetType)
-        tblSAP.Columns.Add("POST_CODE1", String.Empty.GetType)
-        tblSAP.Columns.Add("LAND1", String.Empty.GetType)
-        tblSAP.Columns.Add("STCEG", String.Empty.GetType)
-        tblSAP.Columns.Add("AP_NAMEV", String.Empty.GetType)
-        tblSAP.Columns.Add("AP_NAME1", String.Empty.GetType)
-        tblSAP.Columns.Add("AP_PAFKT", String.Empty.GetType)
-        tblSAP.Columns.Add("AP_TEL_NUMBER", String.Empty.GetType)
-        tblSAP.Columns.Add("AP_MOB_NUMBER", String.Empty.GetType)
-        tblSAP.Columns.Add("AP_FAX_NUMBER", String.Empty.GetType)
-        tblSAP.Columns.Add("AP_SMTP_ADDR", String.Empty.GetType)
-        tblSAP.Columns.Add("QUELLE", String.Empty.GetType)
-        tblSAP.Columns.Add("ERNAM", String.Empty.GetType)
-
-        tblSAP.Columns.Add("BANKS", String.Empty.GetType)
-        tblSAP.Columns.Add("BANKL", String.Empty.GetType)
-        tblSAP.Columns.Add("BNKLZ", String.Empty.GetType)
-        tblSAP.Columns.Add("BANKN", String.Empty.GetType)
-        tblSAP.Columns.Add("IBAN", String.Empty.GetType)
-        tblSAP.Columns.Add("SWIFT", String.Empty.GetType)
-        tblSAP.Columns.Add("GRUPPE_T", String.Empty.GetType)
-        tblSAP.Columns.Add("UMS_P_MON", String.Empty.GetType)
-        tblSAP.Columns.Add("GEB_M_UST", String.Empty.GetType)
-        tblSAP.Columns.Add("KREDITVS", String.Empty.GetType)
-        tblSAP.Columns.Add("AUSKUNFT", String.Empty.GetType)
-        tblSAP.Columns.Add("BEMERKUNG", String.Empty.GetType)
-
+    Private Sub FillInputTab(ByRef tblSAP As DataTable)
         Dim SapRow As DataRow = tblSAP.NewRow
 
         SapRow("BEDIEN") = m_MitarbeiterNr
@@ -415,15 +345,11 @@ Public Class ComCommon
         SapRow("QUELLE") = "EFA-Neu"
 
         tblSAP.Rows.Add(SapRow)
-        Return tblSAP
-    End Function
+    End Sub
 
     Public Sub LeseMailTexte(ByVal InputVorgang As String)
+        ClearErrorState()
 
-        Dim strTempVorgang As String = InputVorgang
-
-        m_intStatus = 0
-        m_strMessage = ""
         mtblMailings = New DataTable
 
         Try
@@ -435,7 +361,7 @@ Public Class ComCommon
                                                                                 "AND Aktiv=1", cn)
 
             da.SelectCommand.Parameters.AddWithValue("@KundenID", mMyKasse.CustomerID)
-            da.SelectCommand.Parameters.AddWithValue("@Vorgangsnummer", strTempVorgang)
+            da.SelectCommand.Parameters.AddWithValue("@Vorgangsnummer", InputVorgang)
 
             da.Fill(mtblMailings)
 
@@ -458,283 +384,189 @@ Public Class ComCommon
                     End If
                 Next
             Else
-                m_intStatus = -9999
+                RaiseError("9999", "Keine Mailvorlagen für diesen Kunden")
             End If
 
             cn.Close()
+
         Catch ex As Exception
-            m_strMessage = "Keine Mailvorlagen für diesen Kunden <br>(" & ex.Message & ")."
-            m_intStatus = -9999
+            RaiseError("9999", "Keine Mailvorlagen für diesen Kunden <br>(" & ex.Message & ").")
         End Try
     End Sub
 
     Public Sub LeseMailAdressCC(ByVal InputVorgang As String)
-
-        Dim strTempVorgang As String = InputVorgang
-
-        Dim intReturn As Int32
+        ClearErrorState()
 
         Try
-            Dim cn As New SqlClient.SqlConnection(KBS_BASE.SAPConnectionString)
+            Dim cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
             cn.Open()
 
             Dim da As New SqlClient.SqlDataAdapter("SELECT * FROM vwGetMailTexte WHERE KundenID=@KundenID " & _
                                                                                 "AND Vorgangsnummer=@Vorgangsnummer " & _
                                                                                 "AND CC=0", cn)
             da.SelectCommand.Parameters.AddWithValue("@KundenID", mMyKasse.CustomerID)
-            da.SelectCommand.Parameters.AddWithValue("@Vorgangsnummer", strTempVorgang)
+            da.SelectCommand.Parameters.AddWithValue("@Vorgangsnummer", InputVorgang)
             da.Fill(mtblMailings)
 
-            If mtblMailings.Rows.Count > 0 Then
-                Dim dRow As DataRow
-
-                For Each dRow In mtblMailings.Rows
-
-                Next
-
-            End If
-
             cn.Close()
-            intReturn = mtblMailings.Rows.Count
+
         Catch ex As Exception
-            m_strMessage = "Keine Filialen für diesen Kunden <br>(" & ex.Message & ")."
-            intReturn = 0
+            RaiseError("9999", "Keine Filialen für diesen Kunden <br>(" & ex.Message & ").")
         End Try
     End Sub
 
     Public Sub FillERP()
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            dt.Rows.Add(New Object() {"GT_T005", True})
-            dt.Rows.Add(New Object() {"GT_T016", True})
-            dt.Rows.Add(New Object() {"GT_TPFK", True})
+            S.AP.Init("Z_ALL_DEBI_CHECK_TABLES")
 
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_ALL_DEBI_CHECK_TABLES", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode = 0 Then
+                m_Laender = S.AP.GetExportTable("GT_T005")
+                m_Branchen = S.AP.GetExportTable("GT_T016")
+                m_Funktion = S.AP.GetExportTable("GT_TPFK")
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='GT_T005'")(0)
-                If Not retRows Is Nothing Then
-                    m_Laender = DirectCast(retRows("Data"), DataTable)
-                End If
-                retRows = dt.Select("Fieldname='GT_T016'")(0)
-                If Not retRows Is Nothing Then
-                    m_Branchen = DirectCast(retRows("Data"), DataTable)
-                End If
-                retRows = dt.Select("Fieldname='GT_TPFK'")(0)
-                If Not retRows Is Nothing Then
-                    m_Funktion = DirectCast(retRows("Data"), DataTable)
-                End If
-
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub ChangeERP()
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_ALL_DEBI_VORERFASSUNG_WEB")
 
-            'befüllen der Importparameter
-            Dim tblSAP As DataTable = Create_FillInputTab()
-            dt.Rows.Add(New Object() {"GS_IN", False, tblSAP})
-            dt.Rows.Add(New Object() {"E_VKUNNR", True})
+            Dim tblSAP As DataTable = S.AP.GetImportTable("GS_IN")
+            FillInputTab(tblSAP)
 
-            SAPExc.ExecuteERP("Z_ALL_DEBI_VORERFASSUNG_WEB", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode = 0 Then
+                m_NeueKUNNR = S.AP.GetExportParameter("E_VKUNNR")
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_VKUNNR'")(0)
-                If Not retRows Is Nothing Then
-                    m_NeueKUNNR = retRows("Data").ToString()
-                End If
-
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            m_strMessage = ex.Message
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
     End Sub
 
     Public Function GetListeAusparkenERP() As DataTable
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
+
+        mListeAusparken = New DataTable
 
         Try
+            S.AP.Init("Z_ALL_DEBI_PARK_LIST", "I_VKBUR", mMyKasse.Lagerort.PadLeft(4, "0"c))
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            mListeAusparken = New DataTable
-            dt.Rows.Add(New Object() {"I_VKBUR", False, Right("0000" & mMyKasse.Lagerort, 4), 4})
-            dt.Rows.Add(New Object() {"GT_LISTE", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_ALL_DEBI_PARK_LIST", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-
-                Select Case E_SUBRC
-                    Case 101
-                        E_MESSAGE = ""
-                    Case Else
-                        E_MESSAGE = SAPExc.E_MESSAGE
-                End Select
-
-            End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_LISTE'")(0)
-            If Not retRows Is Nothing Then
-                mListeAusparken = DirectCast(retRows("Data"), DataTable)
+            If S.AP.ResultCode = 0 OrElse S.AP.ResultCode = 101 Then
+                mListeAusparken = S.AP.GetExportTable("GT_LISTE")
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-
+            RaiseError("9999", ex.Message)
         End Try
 
         Return mListeAusparken
-
     End Function
 
     Public Sub ParkenERP()
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
+            S.AP.Init("Z_ALL_DEBI_PARK_SAVE")
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            Dim tblNewKunde As DataTable = S.AP.GetImportTable("GS_IN")
+            FillInputTab(tblNewKunde)
 
-            Dim tblNewKunde As DataTable = Create_FillInputTab()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"GS_IN", False, tblNewKunde})
-            dt.Rows.Add(New Object() {"E_VKUNNR", True})
-
-            SAPExc.ExecuteERP("Z_ALL_DEBI_PARK_SAVE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode = 0 Then
+                m_NeueKUNNR = S.AP.GetExportParameter("E_VKUNNR")
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_VKUNNR'")(0)
-                If Not retRows Is Nothing Then
-                    m_NeueKUNNR = retRows("Data").ToString()
-                End If
-
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            m_strMessage = ex.Message
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub AusparkenERP(ByVal VKunNr As String)
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_ALL_DEBI_PARK_READ", "I_VKUNNR", VKunNr.ToSapKunnr())
 
-            dt.Rows.Add(New Object() {"I_VKUNNR", False, Right("0000000000" & VKunNr, 10), 10})
-            dt.Rows.Add(New Object() {"GS_OUT", True})
-            SAPExc.ExecuteERP("Z_ALL_DEBI_PARK_READ", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
-            Else
-                Dim retRows As DataRow = dt.Select("Fieldname='GS_OUT'")(0)
-                If Not retRows Is Nothing Then
-                    Dim tblTemp As DataTable = DirectCast(retRows("Data"), DataTable)
-                    If tblTemp.Rows.Count > 0 Then
-                        Dim SapRow As DataRow = tblTemp.Rows(0)
+            If S.AP.ResultCode = 0 Then
+                Dim tblTemp As DataTable = S.AP.GetExportTable("GS_OUT")
+                If tblTemp.Rows.Count > 0 Then
+                    Dim SapRow As DataRow = tblTemp.Rows(0)
 
-                        m_MitarbeiterNr = SapRow("BEDIEN").ToString
-                        m_Abruftyp = SapRow("KALKS").ToString
-                        m_EinzugEr = SapRow("EZERM").ToString
-                        m_Anrede = SapRow("TITLE").ToString
-                        m_Branche = SapRow("BRSCH").ToString
-                        m_BrancheFreitext = SapRow("BRSCH_FREITXT").ToString
-                        Name1 = SapRow("NAME1").ToString
-                        Name2 = SapRow("NAME2").ToString
-                        m_Strasse = SapRow("STREET").ToString
-                        m_Ort = SapRow("CITY1").ToString
-                        m_HausNr = SapRow("HOUSE_NUM1").ToString
-                        m_PLZ = SapRow("POST_CODE1").ToString
-                        m_Land = SapRow("LAND1").ToString
-                        m_UIDNummer = SapRow("STCEG").ToString
-                        m_ASPVorname = SapRow("AP_NAMEV").ToString
-                        m_ASPName = SapRow("AP_NAME1").ToString
+                    m_MitarbeiterNr = SapRow("BEDIEN").ToString
+                    m_Abruftyp = SapRow("KALKS").ToString
+                    m_EinzugEr = SapRow("EZERM").ToString
+                    m_Anrede = SapRow("TITLE").ToString
+                    m_Branche = SapRow("BRSCH").ToString
+                    m_BrancheFreitext = SapRow("BRSCH_FREITXT").ToString
+                    Name1 = SapRow("NAME1").ToString
+                    Name2 = SapRow("NAME2").ToString
+                    m_Strasse = SapRow("STREET").ToString
+                    m_Ort = SapRow("CITY1").ToString
+                    m_HausNr = SapRow("HOUSE_NUM1").ToString
+                    m_PLZ = SapRow("POST_CODE1").ToString
+                    m_Land = SapRow("LAND1").ToString
+                    m_UIDNummer = SapRow("STCEG").ToString
+                    m_ASPVorname = SapRow("AP_NAMEV").ToString
+                    m_ASPName = SapRow("AP_NAME1").ToString
 
-                        m_strFunktion = SapRow("AP_PAFKT").ToString
-                        m_Telefon = SapRow("AP_TEL_NUMBER").ToString
-                        m_Mobil = SapRow("AP_MOB_NUMBER").ToString
-                        m_Mail = SapRow("AP_SMTP_ADDR").ToString
-                        m_Fax = SapRow("AP_FAX_NUMBER").ToString
+                    m_strFunktion = SapRow("AP_PAFKT").ToString
+                    m_Telefon = SapRow("AP_TEL_NUMBER").ToString
+                    m_Mobil = SapRow("AP_MOB_NUMBER").ToString
+                    m_Mail = SapRow("AP_SMTP_ADDR").ToString
+                    m_Fax = SapRow("AP_FAX_NUMBER").ToString
 
-                    End If
                 End If
+
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            m_strMessage = ex.Message
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub FillDokumenteERP()
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_M_ZGBS_BEN_ZULASSUNGSUNT", "I_ZKFZKZ", PKennzeichen)
 
-            dt.Rows.Add(New Object() {"I_ZKBA1", False, "", 5})
-            dt.Rows.Add(New Object() {"I_ZKBA2", False, "", 5})
-            dt.Rows.Add(New Object() {"I_ZKFZKZ", False, PKennzeichen})
-            dt.Rows.Add(New Object() {"I_AUSWAHL", False, "", 1})
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"GT_WEB", True})
-            SAPExc.ExecuteERP("Z_M_ZGBS_BEN_ZULASSUNGSUNT", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode = 0 Then
+                Dokumente = S.AP.GetExportTable("GT_WEB")
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='GT_WEB'")(0)
-                If Not retRows Is Nothing Then
-                    Dokumente = DirectCast(retRows("Data"), DataTable)
-                End If
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            m_strMessage = ex.Message
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
 End Class

@@ -723,6 +723,8 @@ Partial Public Class UserUnlock
                 _User = New User(CInt(txtUserID.Text), _
                                                   txtUserName.Text, _
                                                   txtReference.Text, _
+                                                  "", _
+                                                  "", _
                                                   cbxTestUser.Checked, _
                                                   CInt(ddlCustomer.SelectedItem.Value), _
                                                   cbxCustomerAdmin.Checked, _
@@ -741,6 +743,8 @@ Partial Public Class UserUnlock
                 _User = New User(CInt(txtUserID.Text), _
                                                   txtUserName.Text, _
                                                   txtReference.Text, _
+                                                  "", _
+                                                  "", _
                                                   cbxTestUser.Checked, _
                                                   CInt(ddlCustomer.SelectedItem.Value), _
                                                   cbxCustomerAdmin.Checked, _

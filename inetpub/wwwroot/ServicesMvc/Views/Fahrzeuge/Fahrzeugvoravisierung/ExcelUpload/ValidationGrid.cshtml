@@ -1,0 +1,60 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeugvoravisierungViewModel 
+
+<h5>
+    <span>Ihre Datei <span class="bold">@Model.CsvUploadFileName</span>, bitte prüfen Sie jetzt noch den Inhalt:</span>
+</h5>
+
+<script type="text/javascript"> _formWizardForceHideSubmitButton = false; </script>
+@if (Model.UploadItemsErrorsOccurred)
+{
+    <script type="text/javascript"> _formWizardForceHideSubmitButton = true; </script>
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsErrorsOccurred)</span>
+            <span class="margin-left-10"></span>
+            @Html.CheckBoxFor(m => m.UploadItemsShowErrorsOnly, new {onchange = "UploadItemsShowErrorsOnlyChanged($(this));"}) 
+            @Html.DisplayNameFor(m => m.UploadItemsShowErrorsOnly)
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+
+@* C:\dev\inetpub\wwwroot\ServicesMvc\Views\Equi\Briefversand\FahrzeugAuswahl.cshtml *@
+
+@{ var gridname = "FahrzeugvoravisierungGrid";}
+
+@(Html.Telerik()
+    .Grid<FahrzeugvoravisierungUploadModel>()
+        .Name(gridname)      
+        .XAjaxDataBinding("FahrzeugvoravisierungAjaxBinding", "Fahrzeuge")    
+        .Columns(columns =>
+                {
+                    //columns.XBound("")
+                    //.ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='FahrzeugvoravisierungGrid_OnSelectionChange($(this))' />")
+                    //.HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='FahrzeugvoravisierungGrid_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                    //.Filterable(false).Width(30);
+                                                                                                             
+                    columns.XBound(c => c.Fahrgestellnummer).Width(150);
+                    columns.XBound(c => c.Auftragsnummer).Width(130);
+                    columns.XBound(c => c.AuftragsnummerEqui).Width(130);
+                    columns.XBound(c => c.DatumZulassung).Format("{0:dd.MM.yyyy}").Width(100);
+                    columns.XBound(c => c.ModelID).Width(80); 
+                    columns.XBound(c => c.UnitNr).Width(80);
+                    columns.XBound(c => c.ModelID2UnitNr).Width(130);
+                    columns.XBound(c => c.Kennzeichen).Width(100);
+                    columns.XBound(c => c.Status).Width(130);
+                    columns.XBound(c => c.ValidationErrors).Width(200);               
+            })
+             .XAutoColumnConfiguration()
+            .ClientEvents(events => events.XAutoClientEvents(gridname).OnRowDataBound("OnRowDataBound_FahrzeugvoravisierungGrid"))
+            .XPageSize(10)
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportFahrzeugvoravisierungFilteredExcel", "Fahrzeuge");
+            commands.FilteredDataCommand("ExportFahrzeugvoravisierungFilteredPDF", "Fahrzeuge");
+        })
+)
+
+<div class="margin-top-10"></div>

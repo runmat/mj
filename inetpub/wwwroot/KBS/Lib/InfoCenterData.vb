@@ -252,10 +252,10 @@ Public Class InfoCenterData
 
     End Sub
 
-    Public Sub SaveDocumentRights(ByVal documentId As Integer, ByVal customer As List(Of Integer))
+    Public Sub SaveDocumentRights(ByVal documentId As Integer, ByVal customerList As List(Of Integer))
         Dim tablerow As DataRow
 
-        If customer IsNot Nothing AndAlso customer.Count > 0 Then
+        If customerList IsNot Nothing AndAlso customerList.Count > 0 Then
             Using cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
                 With cn
                     .Open()
@@ -266,7 +266,7 @@ Public Class InfoCenterData
 
                     cmd.CommandText = "INSERT INTO DocumentRights (documentId,customerId) VALUES (@documentId,@customerId);"
 
-                    For Each kunde As Integer In customer
+                    For Each kunde As Integer In customerList
                         cmd.Parameters.Clear()
                         cmd.Parameters.AddWithValue("@documentId", documentId)
                         cmd.Parameters.AddWithValue("@customerId", kunde)
@@ -354,10 +354,10 @@ Public Class InfoCenterData
 
     End Sub
 
-    Public Sub DeleteDocumentRights(ByVal documentId As Integer, ByVal customer As List(Of Integer))
+    Public Sub DeleteDocumentRights(ByVal documentId As Integer, ByVal customerList As List(Of Integer))
         Dim tablerow As DataRow
 
-        If customer IsNot Nothing AndAlso customer.Count > 0 Then
+        If customerList IsNot Nothing AndAlso customerList.Count > 0 Then
             Using cn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
                 With cn
                     .Open()
@@ -368,7 +368,7 @@ Public Class InfoCenterData
 
                     cmd.CommandText = "DELETE FROM DocumentRights WHERE documentId = @documentId AND customerId = @customerId;"
 
-                    For Each kunde As Integer In customer
+                    For Each kunde As Integer In customerList
                         cmd.Parameters.Clear()
                         cmd.Parameters.AddWithValue("@documentId", documentId)
                         cmd.Parameters.AddWithValue("@customerId", kunde)
