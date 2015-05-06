@@ -98,24 +98,6 @@ namespace ServicesMvc.Common.Controllers
 
             return Json(new { url = ViewModel.GetRelativeAppUrl() });
         }
-        
-
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult Test()
-        {
-            TryUserLogoff();
-
-            ViewModel.ReportSettings = new ReportSolution
-                {
-                    AdminIsAuthorized = true,
-                    AdminUserName = "JenzenM",
-                    AppID = 1805, // 1731
-                    AppFriendlyName = "Überführungs-Report"
-                };
-
-            return View(ViewModel);
-        }
 
         [HttpGet]
         [AllowAnonymous]
@@ -156,5 +138,25 @@ namespace ServicesMvc.Common.Controllers
 
             InitViewModel(ViewModel, orgAppSettings, LogonContext, orgDataService);
         }
+        
+#if __TEST
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult Test()
+        {
+            TryUserLogoff();
+
+            ViewModel.ReportSettings = new ReportSolution
+                {
+                    AdminIsAuthorized = true,
+                    AdminUserName = "JenzenM",
+                    AppID = 1805, // 1731
+                    AppFriendlyName = "Überführungs-Report"
+                };
+
+            return View(ViewModel);
+        }
+#endif    
+
     }
 }
