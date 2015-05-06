@@ -1,0 +1,82 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulaufEinsteuerungViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeug_ZulaufEinsteuerung</h3>
+
+<style type="text/css">  
+</style>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("ZulaufEinsteuerung/ZulaufEinsteuerungSuche", null)
+    }
+</div>
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divZulaufEinsteuerungGrid"></div>
+}
+
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        $("#ZulaufEinsteuerungForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        $("#divZulaufEinsteuerungSuche").css("hide");
+        FormPrepareAjax();
+    }
+
+    function ShowZulaufEinsteuerung() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowZulaufEinsteuerung",
+            loadingShow: false,
+            success: function (result) {
+                //SearchResultsTryHide();
+                ShowZulaufEinsteuerungSearchResult(result);
+                LoadingHide();
+            }
+        });
+        //alert("1")
+    }
+
+    function OnDataBound_GridZulaufEinsteuerung() {
+        //alert("Entry_OnDataBound_GridZulaufEinsteuerung");
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        //alert("OnDataBound_GridZulaufEinsteuerung");
+    }
+
+    function OnLoad_GridZulaufEinsteuerung() {
+        //alert("1");
+        //$('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridZulaufEinsteuerung() {       
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridZulaufEinsteuerung() {        
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowZulaufEinsteuerungSearchResult(result) {
+        SearchFormHide();
+        $("#divZulaufEinsteuerungGrid").html(result);        
+        GridAllColumnFilterApplyToGrid("GridZulaufEinsteuerung");
+        $("#divZulaufEinsteuerungGrid").slideDown();        
+    }
+
+    
+</script>

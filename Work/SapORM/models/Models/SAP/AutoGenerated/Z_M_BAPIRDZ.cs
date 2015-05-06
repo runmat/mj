@@ -81,6 +81,22 @@ namespace SapORM.Models
 
 			public string BEMERKUNG { get; set; }
 
+			public string Z48H_NAME1 { get; set; }
+
+			public string Z48H_NAME2 { get; set; }
+
+			public string Z48H_STREET { get; set; }
+
+			public string Z48H_POST_CODE1 { get; set; }
+
+			public string Z48H_CITY1 { get; set; }
+
+			public string LIFUHRBIS { get; set; }
+
+			public string NACHREICH { get; set; }
+
+			public string Z48H { get; set; }
+
 			public static ITAB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new ITAB
@@ -110,6 +126,14 @@ namespace SapORM.Models
 					FAX_NUMBER = (string)row["FAX_NUMBER"],
 					ANSPRECHPARTNER = (string)row["ANSPRECHPARTNER"],
 					BEMERKUNG = (string)row["BEMERKUNG"],
+					Z48H_NAME1 = (string)row["Z48H_NAME1"],
+					Z48H_NAME2 = (string)row["Z48H_NAME2"],
+					Z48H_STREET = (string)row["Z48H_STREET"],
+					Z48H_POST_CODE1 = (string)row["Z48H_POST_CODE1"],
+					Z48H_CITY1 = (string)row["Z48H_CITY1"],
+					LIFUHRBIS = (string)row["LIFUHRBIS"],
+					NACHREICH = (string)row["NACHREICH"],
+					Z48H = (string)row["Z48H"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

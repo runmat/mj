@@ -8,6 +8,7 @@ Namespace Beauftragung2
         Inherits Page
 
 #Region "Declarations"
+
         Private m_App As App
         Private m_User As User
         Private mBeauftragung As Beauftragung2
@@ -83,7 +84,7 @@ Namespace Beauftragung2
                 .Verkaufsorganisation = Left(m_User.Reference, 4)
 
                 'Stammdaten laden
-                .Fill(Session("AppID").ToString, Session.SessionID.ToString, Me)
+                .Fill(Me)
             End With
         End Sub
 
@@ -140,7 +141,7 @@ Namespace Beauftragung2
             mBeauftragung.SelZuldatVon = txtZulDatumVon.Text
             mBeauftragung.SelZuldatBis = txtZulDatumBis.Text
 
-            mBeauftragung.FillUebersicht2(Session("AppID").ToString, Session.SessionID.ToString, Page)
+            mBeauftragung.FillUebersicht2(Me)
             Session("ResultTable") = mBeauftragung.Result
 
             If Not mBeauftragung.Status = 0 Then
@@ -166,12 +167,6 @@ Namespace Beauftragung2
         Private Function ValidateError() As Boolean
             Dim booError = False
 
-            'Kunde prüfen (Pflichtfeld)
-            If ddlKunde.SelectedValue = "0" Then
-                SetErrBehavior(txtKunnr, lblKundeInfo, "Ungültige Kundenauswahl.")
-                booError = True
-            End If
-
             'Zulassungsdatum prüfen
             If txtZulDatumVon.Text.Length > 0 Then
                 If IsDate(txtZulDatumVon.Text) = False Then
@@ -181,6 +176,10 @@ Namespace Beauftragung2
                     SetErrBehavior(txtZulDatumBis, lblZulDatumBisInfo, "Datum nicht gesetzt.")
                     booError = True
                 End If
+            ElseIf ddlKunde.SelectedValue = "0" Then
+                SetErrBehavior(txtKunnr, lblKundeInfo, "Bitte Kunde oder Zeitraum wählen.")
+                SetErrBehavior(txtZulDatumVon, lblZulDatumVonInfo, "Bitte Kunde oder Zeitraum wählen.")
+                booError = True
             End If
 
             If txtZulDatumBis.Text.Length > 0 Then

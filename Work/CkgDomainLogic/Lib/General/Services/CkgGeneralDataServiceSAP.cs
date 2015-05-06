@@ -26,7 +26,7 @@ namespace CkgDomainLogic.General.Services
 
         public IAppSettings AppSettings { get; protected set; }
 
-        public ILogonContext LogonContext { get; protected set; }
+        public ILogonContextDataService LogonContext { get; protected set; }
 
         #endregion
 
@@ -139,6 +139,17 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
+        public List<Hersteller> Hersteller
+        {
+            get
+            {
+                return PropertyCacheGet(() =>
+                    AppModelMappings.Z_M_HERSTELLERGROUP_T_HERST_To_Hersteller.Copy(GetSapHersteller())
+                        .Concat(new List<Hersteller> { new Hersteller { Code = "", Name = Localize.DropdownDefaultOptionNotSpecified } })
+                            .OrderBy(w => w.Name).ToList());
+            }
+        }
+
         #endregion
 
 
@@ -202,6 +213,15 @@ namespace CkgDomainLogic.General.Services
             return Z_DPM_READ_LV_001.GT_OUT_DL.GetExportList(SAP).Where(filter).ToList();
         }
 
+        public List<Z_M_HERSTELLERGROUP.T_HERST> GetSapHersteller()
+        {
+            Z_M_HERSTELLERGROUP.Init(SAP);
+
+            SAP.SetImportParameter("I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            return Z_M_HERSTELLERGROUP.T_HERST.GetExportListWithExecute(SAP).OrderBy(k => k.HERST_T).Where(k => k.HERST_GROUP.IsNotNullOrEmpty()).ToList();
+        }
+
         public string ToDataStoreKundenNr(string kundenNr)
         {
             return kundenNr.ToSapKunnr();
@@ -210,7 +230,7 @@ namespace CkgDomainLogic.General.Services
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             AppSettings = appSettings;
-            LogonContext = logonContext;
+            LogonContext = (ILogonContextDataService)logonContext;
         }
 
         public string GetZulassungskreisFromPostcodeAndCity(string postCode, string city)
@@ -231,6 +251,20 @@ namespace CkgDomainLogic.General.Services
         static protected string FormatSapErrorMessage(string sapError)
         {
             return string.Format("Es ist ein Fehler aufgetreten, SAP-Fehler Meldung: {0}", sapError);
+        }
+
+        public string GetUserReferenceValueByReferenceType(Referenzfeldtyp referenceType)
+        {
+            if (LogonContext.Customer.Userreferenzfeld1 == referenceType.ToString())
+                return LogonContext.User.Reference;
+
+            if (LogonContext.Customer.Userreferenzfeld2 == referenceType.ToString())
+                return LogonContext.User.Reference2;
+
+            if (LogonContext.Customer.Userreferenzfeld3 == referenceType.ToString())
+                return LogonContext.User.Reference3;
+
+            return "";
         }
     }
 }

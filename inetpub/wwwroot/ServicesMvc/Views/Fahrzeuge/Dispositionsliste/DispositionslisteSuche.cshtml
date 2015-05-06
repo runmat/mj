@@ -1,0 +1,23 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model DispositionslisteSelektor
+
+<div id="divDispositionslisteSuche">
+    @using (Ajax.BeginForm("LoadDispositionsliste", "Fahrzeuge", null,
+        new MvcAjaxOptions("divDispositionslisteSuche") { OnComplete = "ShowDispositionsliste();" }, new { id = "DispositionslisteSearchForm" }))
+    {    
+        <div class="form-horizontal">
+            
+            @Html.FormValidationSummary()
+
+            @Html.FormTextBoxFor(m => m.PDINummer, new { @class = "m-wrap uppercase" })
+            @Html.FormDateRangePickerFor(m => m.ZulassungsdatumRange, new { @class = "m-wrap uppercase" })
+                        
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+                
+    }
+</div>
+
+
