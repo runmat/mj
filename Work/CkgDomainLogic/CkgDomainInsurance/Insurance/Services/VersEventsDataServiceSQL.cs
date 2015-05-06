@@ -115,6 +115,11 @@ namespace CkgDomainLogic.Insurance.Services
 
         #region Termine
 
+        public List<TerminSchadenfall> TermineAllGet()
+        {
+            return TermineGet();
+        }
+
         public List<TerminSchadenfall> TermineGet(Schadenfall schadenfall = null, int boxID = -1)
         {
             var ct = CreateDbContext();

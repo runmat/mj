@@ -485,7 +485,7 @@
                                                     <Columns>
                                                         <asp:BoundField DataField="LGORT_EMPF" HeaderText="KST" />
                                                         <asp:BoundField DataField="LTEXT" HeaderText="Beschreibung" Visible="false" />
-                                                        <asp:BoundField DataField="ERDAT" HeaderText="erfasst" />
+                                                        <asp:BoundField DataField="ERDAT" HeaderText="erfasst" DataFormatString="{0:dd.MM.yyyy}" />
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="ibAusparkenTable" runat="server" Text="Ausparken" Height="16px"
@@ -562,7 +562,7 @@
                                                     <RowStyle CssClass="ItemStyle" />
                                                     <Columns>
                                                         <asp:BoundField DataField="EmpfangendeKst" HeaderText="Empf. Kst" HeaderStyle-Wrap="False" />
-                                                        <asp:BoundField DataField="Datum" HeaderText="Datum" ItemStyle-Wrap="False" />
+                                                        <asp:BoundField DataField="Datum" HeaderText="Datum" ItemStyle-Wrap="False" DataFormatString="{0:dd.MM.yyyy}" />
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="ibNachdruckTable" runat="server" Text="Drucken" Height="16px"

@@ -245,6 +245,11 @@ namespace Telerik.Web.Mvc.UI
             return builder.Pageable(paging => paging.PageSize(pageSize));
         }
 
+        public static GridBuilder<T> XSort<T>(this GridBuilder<T> builder) where T : class
+        {
+            return builder.Sortable(s => s.Enabled(true));
+        }
+
         public static GridBuilder<T> XSort<T>(this GridBuilder<T> builder, Action<GridSortDescriptorFactory<T>> sortConfigurator) where T : class
         {
             return builder.Sortable(s => s.Enabled(true).OrderBy(sortConfigurator));
@@ -307,7 +312,10 @@ namespace Telerik.Web.Mvc.UI
                 columnFormat = displayFormatAttribute.DataFormatString;
 
             if (!columnVisibleOnStart)
-                columnFormat = "X~" + columnFormat;
+            {
+                //columnFormat = "X~" + columnFormat;
+                column.Hidden(true);
+            }
 
             var gridResponsiveVisibleAttribute = typeof(TModel).GetAttributeFrom<GridResponsiveVisibleAttribute>(propertyName);
             if (gridResponsiveVisibleAttribute != null)

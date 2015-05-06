@@ -28,8 +28,9 @@ Partial Public Class Change05
     Public Sub fillDropdown()
 
         mObjVersicherungen.ShowERP()
-        If mObjVersicherungen.E_MESSAGE = "" Then
-
+        If mObjVersicherungen.ErrorOccured Then
+            lblError.Text = "Es konnten keine Artikel geladen werden!"
+        Else
             With mObjVersicherungen
 
                 Dim tmpItem As ListItem
@@ -47,8 +48,6 @@ Partial Public Class Change05
 
             FillGrid()
             Session("mObjVersicherungen") = mObjVersicherungen
-        Else
-            lblError.Text = "Es konnten keine Artikel geladen werden!"
         End If
     End Sub
 
@@ -202,9 +201,9 @@ Partial Public Class Change05
     Private Sub doSubmit()
         mObjVersicherungen.KostStelle = mObjKasse.Lagerort
         mObjVersicherungen.ChangeERP()
-        If mObjVersicherungen.E_MESSAGE <> "" Then
+        If mObjVersicherungen.ErrorOccured Then
             lblBestellMeldung.ForeColor = Drawing.Color.Red
-            lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjVersicherungen.E_MESSAGE
+            lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjVersicherungen.ErrorMessage
             MPEBestellResultat.Show()
         Else
             lblBestellMeldung.ForeColor = Drawing.Color.Green

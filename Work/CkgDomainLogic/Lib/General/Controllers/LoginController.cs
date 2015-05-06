@@ -15,7 +15,7 @@ namespace CkgDomainLogic.General.Controllers
     {
         public override sealed string DataContextKey { get { return GetDataContextKey<LoginViewModel>(); } }
 
-        public LoginViewModel ViewModel { get { return GetViewModel<LoginViewModel>(); }  }
+        public LoginViewModel ViewModel { get { return GetViewModel<LoginViewModel>(); } }
 
         protected override bool NeedsAuhentification { get { return false; } }
 
@@ -30,7 +30,7 @@ namespace CkgDomainLogic.General.Controllers
         {
             if (!string.IsNullOrEmpty(LogonContext.UserName))
                 LogonContext.LogoutUser();
-                
+
             LogonContext.MvcEnforceRawLayout = false;
 
             CaptchaGenerate();
@@ -57,7 +57,7 @@ namespace CkgDomainLogic.General.Controllers
         public ActionResult ChangePassword(string confirmation)
         {
             ViewModel.ChangePasswordModel = new ChangePasswordModel { ModePasswordReset = true, PasswordCurrent = "dummy" };
-            
+
             if (!ViewModel.CacheUserAndCustomerFromConfirmationToken(confirmation))
                 return View("ChangePasswordError", ViewModel);
 
@@ -96,7 +96,7 @@ namespace CkgDomainLogic.General.Controllers
             {
                 // change password successful!
                 var encryptedPassword = LogonContext.SecurityService.EncryptPassword(model.Password);
-                    
+
                 LogonContext.StorePasswordToUser(model.UserName, encryptedPassword);
                 if (LogonContext.User != null)
                     LogonContext.User.Password = encryptedPassword;
@@ -105,8 +105,8 @@ namespace CkgDomainLogic.General.Controllers
             }
 
 
-            model.IsValid = ModelState.IsValid; 
-            
+            model.IsValid = ModelState.IsValid;
+
             return PartialView(model);
         }
 
@@ -210,3 +210,5 @@ namespace CkgDomainLogic.General.Controllers
         }
     }
 }
+
+

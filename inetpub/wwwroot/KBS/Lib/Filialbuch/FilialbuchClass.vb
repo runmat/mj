@@ -1,4 +1,6 @@
 ﻿
+Imports KBSBase
+
 Namespace DigitalesFilialbuch
 
     ''' <summary>
@@ -36,8 +38,6 @@ Namespace DigitalesFilialbuch
 #End Region
 
 #Region "Globale Objekte"
-
-        Private SapExc As SAPExecutor.SAPExecutor
 
         Private dtIn As DataTable
         Private dtOut As DataTable
@@ -81,11 +81,8 @@ Namespace DigitalesFilialbuch
 
 #End Region
 
-        Public Sub New()
-            SapExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        End Sub
-
 #Region "Shared Functions"
+
         ''' <summary>
         ''' Übersetzt Rollenwerte für SAP
         ''' </summary>
@@ -191,6 +188,7 @@ Namespace DigitalesFilialbuch
                     Return StatusFilter.Alle
             End Select
         End Function
+
 #End Region
 
         Public Function GetGroups() As DataTable
@@ -198,52 +196,31 @@ Namespace DigitalesFilialbuch
         End Function
 
         Public Function LoginUser(ByVal VkBur As String, ByVal LoginValue As String) As FilialbuchUser
-            ' FehlerStatus zurücksetzen
             ClearErrorState()
 
-            ' SAPKomunikationstabelle holen
-            Dim dtValues As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            Try
+                S.AP.Init("Z_MC_CONNECT", "I_VKBUR, I_BD_NR", VkBur, LoginValue)
 
-            'Import-Parameter
-            dtValues.Rows.Add(New Object() {"I_VKBUR", False, VkBur})
-            dtValues.Rows.Add(New Object() {"I_BD_NR", False, LoginValue})
+                S.AP.Execute()
 
-            'Export-Parameter
-            dtValues.Rows.Add(New Object() {"E_UNAME", True})
-            dtValues.Rows.Add(New Object() {"E_BD_NAME", True})
-            dtValues.Rows.Add(New Object() {"E_ROLLE", True})
-            dtValues.Rows.Add(New Object() {"E_BEZEI", True})
-            dtValues.Rows.Add(New Object() {"E_ROLLE_PA", True})
-            dtValues.Rows.Add(New Object() {"E_UNAME_PA", True})
-            dtValues.Rows.Add(New Object() {"E_SUBRC", True})
-            dtValues.Rows.Add(New Object() {"E_MESSAGE", True})
+                If S.AP.ResultCode = 0 Then
+                    ' User auswerten
+                    If String.IsNullOrEmpty(S.AP.GetExportParameter("E_UNAME")) Then
+                        RaiseError("9999", "Es konnte kein Benutzer ermittelt werden.")
+                    ElseIf String.IsNullOrEmpty(S.AP.GetExportParameter("E_ROLLE")) Then
+                        RaiseError("9998", "Es konnte keine Rolle ermittelt werden.")
+                    Else
+                        UserLoggedIn = New FilialbuchUser(S.AP.GetExportParameter("E_UNAME").Trim(), _
+                                                          S.AP.GetExportParameter("E_BD_NAME").Trim(), _
+                                                          S.AP.GetExportParameter("E_ROLLE").Trim(), _
+                                                          S.AP.GetExportParameter("E_BEZEI").Trim(), _
+                                                          S.AP.GetExportParameter("E_ROLLE_PA").Trim(), _
+                                                          S.AP.GetExportParameter("E_UNAME_PA").Trim(), _
+                                                          VkBur)
+                    End If
 
-            dtValues.Rows.Add(New Object() {"GT_VORGART", True})
-            dtValues.Rows.Add(New Object() {"GT_ROLLE_VGART", True})
-
-            SapExc.ExecuteERP("Z_MC_CONNECT", dtValues)
-
-            If SapExc.ErrorOccured Then
-                RaiseError(SapExc.E_SUBRC, SapExc.E_MESSAGE)
-            Else
-                ' User auswerten
-                If dtValues.Rows(1)(2) Is Nothing Then
-                    RaiseError("9999", "Es konnte kein Benutzer ermittelt werden.")
-                ElseIf dtValues.Rows(2)(2) Is Nothing Then
-                    RaiseError("9998", "Es konnte keine Rolle ermittelt werden.")
-                Else
-                    UserLoggedIn = New FilialbuchUser(CStr(dtValues.Rows(2)(2)).Trim(), _
-                                                      CStr(dtValues.Rows(3)(2)).Trim(), _
-                                                      CStr(dtValues.Rows(4)(2)).Trim(), _
-                                                      CStr(dtValues.Rows(5)(2)).Trim(), _
-                                                      CStr(dtValues.Rows(6)(2)).Trim(), _
-                                                      CStr(dtValues.Rows(7)(2)).Trim(), _
-                                                      VkBur)
-                End If
-
-                ' Vorgangsarten auslesen
-                If Not dtValues.Rows(10)(2) Is Nothing Then
-                    Dim dtVorgangsarten As DataTable = CType(dtValues.Rows(10)(2), DataTable)
+                    ' Vorgangsarten auslesen
+                    Dim dtVorgangsarten As DataTable = S.AP.GetExportTable("GT_VORGART")
 
                     lstVorgangsarten.Clear()
 
@@ -259,11 +236,9 @@ Namespace DigitalesFilialbuch
                         End If
                         lstVorgangsarten.Add(New VorgangsartDetails(vgart, bezeichnung, antwortart, filialbuchvorgang))
                     Next
-                End If
 
-                ' Vorgangsarten zur Rolle auslesen
-                If Not dtValues.Rows(11)(2) Is Nothing Then
-                    Dim dtVorgangRollen As DataTable = CType(dtValues.Rows(11)(2), DataTable)
+                    ' Vorgangsarten zur Rolle auslesen
+                    Dim dtVorgangRollen As DataTable = S.AP.GetExportTable("GT_ROLLE_VGART")
 
                     lstVorgangsartenRolle.Clear()
 
@@ -279,15 +254,19 @@ Namespace DigitalesFilialbuch
                         End If
                         lstVorgangsartenRolle.Add(New VorgangsartRolleDetails(rolle, vgart, stufe, close))
                     Next
+
+                Else
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
                 End If
-            End If
+
+            Catch ex As Exception
+                RaiseError("9999", ex.Message)
+            End Try
 
             Return UserLoggedIn
         End Function
 
         Public Sub GetEinträge(ByRef FilBuUser As FilialbuchUser, ByVal Status As StatusFilter, Optional ByVal an_kst As String = Nothing, Optional ByVal datVon As Date = Nothing, Optional ByVal datBis As Date = Nothing)
-
-            ' FehlerStatus zurücksetzen
             ClearErrorState()
 
             Von = datVon
@@ -299,86 +278,77 @@ Namespace DigitalesFilialbuch
 
             If Status = StatusFilter.Alle Then
                 If datVon.CompareTo(Nothing) = 0 Then
-                    RaiseError("9999", "Es wurde kein gültiges Von-Datum für die Auswal mitgegeben!")
-                    Return
+                    RaiseError("9999", "Es wurde kein gültiges Von-Datum für die Auswahl mitgegeben!")
+                    Exit Sub
                 ElseIf datBis.CompareTo(Nothing) = 0 Then
-                    RaiseError("9999", "Es wurde kein gültiges Bis-Datum für die Auswal mitgegeben!")
-                    Return
+                    RaiseError("9999", "Es wurde kein gültiges Bis-Datum für die Auswahl mitgegeben!")
+                    Exit Sub
                 Else
                     strVon = datVon.ToShortDateString()
                     strBis = datBis.ToShortDateString()
                 End If
             End If
 
-            ' SAPKomunikationstabelle holen
-            Dim dtValues As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            Try
+                S.AP.Init("Z_MC_GET_IN_OUT")
 
-            'Import-Parameter
-            dtValues.Rows.Add(New Object() {"I_UNAME", False, FilBuUser.UsernameSAP})
-            dtValues.Rows.Add(New Object() {"I_STATUS", False, TranslateStatus(Status)})
-            dtValues.Rows.Add(New Object() {"I_VON", False, strVon})
-            dtValues.Rows.Add(New Object() {"I_BIS", False, strBis})
+                S.AP.SetImportParameter("I_UNAME", FilBuUser.UsernameSAP)
+                S.AP.SetImportParameter("I_STATUS", TranslateStatus(Status))
+                S.AP.SetImportParameter("I_VON", strVon)
+                S.AP.SetImportParameter("I_BIS", strBis)
 
-            'Export-Parameter          
-            dtValues.Rows.Add(New Object() {"E_SUBRC", True})
-            dtValues.Rows.Add(New Object() {"E_MESSAGE", True})
+                S.AP.Execute()
 
-            dtValues.Rows.Add(New Object() {"GT_IN", True})
-            dtValues.Rows.Add(New Object() {"GT_OUT", True})
+                If S.AP.ResultCode = 0 Then
+                    Protokoll = New Protokoll(lstVorgangsarten)
 
-            SapExc.ExecuteERP("Z_MC_GET_IN_OUT", dtValues)
-
-            If SapExc.ErrorOccured Then
-                RaiseError(SapExc.E_SUBRC, SapExc.E_MESSAGE)
-            Else
-                Protokoll = New Protokoll(SapExc, lstVorgangsarten)
-
-                ' Eingang auswerten
-                If Not dtValues.Rows(6)(2) Is Nothing Then
-                    dtIn = CType(dtValues.Rows(6)(2), DataTable)
+                    ' Eingang auswerten
+                    dtIn = S.AP.GetExportTable("GT_IN")
                     For Each row In dtIn.Rows
                         If Not an_kst Is Nothing Then
                             If row("VON") = an_kst Or row("VON") = UserLoggedIn.UsernameSAP Then 'Filter auf Kostenstelle und User
-                                Protokoll.addEntry(Protokoll.Side.Input, New Eingang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), UserLoggedIn.UsernameSAP))
+                                Protokoll.addEntry(Protokoll.Side.Input, New Eingang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), UserLoggedIn.UsernameSAP))
                             End If
                         Else
-                            Protokoll.addEntry(Protokoll.Side.Input, New Eingang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), UserLoggedIn.UsernameSAP))
+                            Protokoll.addEntry(Protokoll.Side.Input, New Eingang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), UserLoggedIn.UsernameSAP))
                         End If
                     Next
-                End If
 
-                ' Ausgang auswerten
-                If Not dtValues.Rows(7)(2) Is Nothing Then
-                    dtOut = CType(dtValues.Rows(7)(2), DataTable)
+                    ' Ausgang auswerten
+                    dtOut = S.AP.GetExportTable("GT_OUT")
                     For Each row In dtOut.Rows
                         If Not an_kst Is Nothing Then
                             If row("ZAN") = an_kst Or row("ZAN") = UserLoggedIn.UsernameSAP Then 'Filter auf Kostenstelle und User
-                                Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), CStr(row(13))))
+                                Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), row(13).ToString()))
                             End If
                         Else
-                            Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(CStr(row(0)), CStr(row(1)), CStr(row(2)), CStr(row(3)), CStr(row(4)), _
-                                                                                        CStr(row(5)), CStr(row(6)), CStr(row(7)), CStr(row(8)), _
-                                                                                        FilialbuchEntry.TranslateEntryStatus(CStr(row(9))), _
-                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(CStr(row(10))), _
-                                                                                        CStr(row(11)), CStr(row(12)), CStr(row(13))))
+                            Protokoll.addEntry(Protokoll.Side.Output, New Ausgang(row(0).ToString(), row(1).ToString(), Left(row(2).ToString(), 10), row(3).ToString(), row(4).ToString(), _
+                                                                                        row(5).ToString(), row(6).ToString(), row(7).ToString(), row(8).ToString(), _
+                                                                                        FilialbuchEntry.TranslateEntryStatus(row(9).ToString()), _
+                                                                                        FilialbuchEntry.TranslateEmpfängerStatus(row(10).ToString()), _
+                                                                                        row(11).ToString(), row(12).ToString(), row(13).ToString()))
                         End If
                     Next
+
+                Else
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
                 End If
 
-            End If
-
+            Catch ex As Exception
+                RaiseError("9999", ex.Message)
+            End Try
         End Sub
 
         ''' <summary>
@@ -393,7 +363,6 @@ Namespace DigitalesFilialbuch
         ''' <remarks></remarks>
         Public Sub NeuerEintrag(ByVal Betreff As String, ByVal Text As String, ByVal an As String, ByVal BedienernummerAbs As String, _
                                 ByVal vorgangsart As String, ByVal zuerledigenBis As String)
-            ' FehlerStatus zurücksetzen
             ClearErrorState()
 
             Dim lsts As New LongStringToSap()
@@ -406,33 +375,32 @@ Namespace DigitalesFilialbuch
                 End If
             End If
 
-            ' SAPKomunikationstabelle holen
-            Dim dtValues As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            Try
+                S.AP.Init("Z_MC_NEW_VORGANG")
 
-            'Import-Parameter
-            dtValues.Rows.Add(New Object() {"I_UNAME", False, UserLoggedIn.UsernameSAP})
-            dtValues.Rows.Add(New Object() {"I_BD_NR", False, BedienernummerAbs})
-            dtValues.Rows.Add(New Object() {"I_AN", False, an})
-            dtValues.Rows.Add(New Object() {"I_LTXNR", False, ltxnr})
-            dtValues.Rows.Add(New Object() {"I_BETREFF", False, Betreff})
-            dtValues.Rows.Add(New Object() {"I_VGART", False, vorgangsart})
-            dtValues.Rows.Add(New Object() {"I_ZERLDAT", False, zuerledigenBis})
-            dtValues.Rows.Add(New Object() {"I_VKBUR", False, UserLoggedIn.Kostenstelle})
+                S.AP.SetImportParameter("I_UNAME", UserLoggedIn.UsernameSAP)
+                S.AP.SetImportParameter("I_BD_NR", BedienernummerAbs)
+                S.AP.SetImportParameter("I_AN", an)
+                S.AP.SetImportParameter("I_LTXNR", ltxnr)
+                S.AP.SetImportParameter("I_BETREFF", Betreff)
+                S.AP.SetImportParameter("I_VGART", vorgangsart)
+                S.AP.SetImportParameter("I_ZERLDAT", zuerledigenBis)
+                S.AP.SetImportParameter("I_VKBUR", UserLoggedIn.Kostenstelle)
 
-            'Export-Parameter          
-            dtValues.Rows.Add(New Object() {"E_SUBRC", True})
-            dtValues.Rows.Add(New Object() {"E_MESSAGE", True})
+                S.AP.Execute()
 
-            SapExc.ExecuteERP("Z_MC_NEW_VORGANG", dtValues)
-
-            If SapExc.ErrorOccured Then
-                RaiseError(SapExc.E_SUBRC, SapExc.E_MESSAGE)
-                If ltxnr <> "" Then
-                    lsts.DeleteStringERP(ltxnr)
+                If S.AP.ResultCode <> 0 Then
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+                    If ltxnr <> "" Then
+                        lsts.DeleteStringERP(ltxnr)
+                    End If
                 End If
-            End If
 
-            GetEinträge(UserLoggedIn, letzterStatus, an, Von, Bis)
+                GetEinträge(UserLoggedIn, letzterStatus, an, Von, Bis)
+
+            Catch ex As Exception
+                RaiseError("9999", ex.Message)
+            End Try
         End Sub
 
         Public Function GetAntwortToVorgangsart(ByVal vgart As String) As String

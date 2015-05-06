@@ -1,0 +1,47 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{
+    var gridName = "GridFahrzeuguebersicht";  
+}
+
+@(Html.XTelerik()
+        .XGrid<Fahrzeuguebersicht>()
+    .Name(gridName)
+   
+    .XAjaxDataBinding("FahrzeuguebersichtAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Carport);
+        columns.XBound(c => c.Carportname);
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Zulassungsdatum);
+        columns.XBound(c => c.Unitnummer);
+        columns.XBound(c => c.ModelID);
+        columns.XBound(c => c.Modell);
+        columns.XBound(c => c.Status);
+        // Export
+        //columns.XBound(c => c.EingangZb2Datum).Hidden(true);
+        //columns.XBound(c => c.EingangFahrzeugDatum).Hidden(true);
+        //columns.XBound(c => c.BereitmeldungDatum).Hidden(true);
+        //columns.XBound(c => c.SIPPCode).Hidden(true);
+        //columns.XBound(c => c.BatchId).Hidden(true);
+        //columns.XBound(c => c.Auftragsnummer).Hidden(true);
+        //columns.XBound(c => c.Zb2Nummer).Hidden(true); 
+        
+        
+        
+        
+        // columns.XBoundAll();   
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen).Descending())
+    .XToolBar("Fahrzeuge")
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportFahrzeuguebersichtFilteredExcel", "Fahrzeuge");
+            commands.FilteredDataCommand("ExportFahrzeuguebersichtFilteredPDF", "Fahrzeuge");
+        })
+)
+

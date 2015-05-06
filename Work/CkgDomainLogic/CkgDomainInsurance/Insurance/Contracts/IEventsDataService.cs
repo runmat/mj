@@ -7,6 +7,8 @@ namespace CkgDomainLogic.Insurance.Contracts
 {
     public interface IVersEventsDataService : ICkgGeneralDataService 
     {
+        List<TerminSchadenfall> TermineAllGet();
+
         List<TerminSchadenfall> TermineGet(Schadenfall selector = null, int boxID = 0);
 
         TerminSchadenfall TerminAdd(TerminSchadenfall item, Action<string, string> addModelError);

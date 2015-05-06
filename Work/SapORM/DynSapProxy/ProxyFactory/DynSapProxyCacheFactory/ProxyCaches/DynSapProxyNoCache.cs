@@ -39,7 +39,7 @@ namespace SapORM.Services
 
                 if (tmpProxyObj == null)
                 {
-                    tmpProxyObj = GenerateNewProxy(BapiName.ToUpper().ToLower(), SapConnection);
+                    tmpProxyObj = GenerateNewProxy(BapiName.ToUpper(), SapConnection);
                     if ((tmpProxyObj != null))
                     {
                         //WriteStrukturIntoSQLDB(tmpProxyObj.Import, tmpProxyObj.Export, tmpProxyObj.BapiDate, tmpProxyObj.BapiName, SapConnection);
