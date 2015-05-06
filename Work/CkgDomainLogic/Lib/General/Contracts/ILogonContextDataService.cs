@@ -21,6 +21,8 @@ namespace CkgDomainLogic.General.Contracts
 
         User User { get; set; }
 
+        string UserNameForDisplay { get; set; }
+
         WebUserInfo UserInfo { get; set; }
 
         LogonLevel UserLogonLevel { get; set; }

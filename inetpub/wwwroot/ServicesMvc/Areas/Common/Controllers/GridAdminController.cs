@@ -133,7 +133,7 @@ namespace ServicesMvc.Common.Controllers
 
             ViewModel = vmOrg;
 
-            LogonContext.UserName = "Report-Solution";
+            LogonContext.UserNameForDisplay = "Report-Solution";
             LogonContext.MvcEnforceRawLayout = false;
 
             InitViewModel(ViewModel, orgAppSettings, LogonContext, orgDataService);

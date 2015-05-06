@@ -41,6 +41,9 @@ namespace CkgDomainLogic.General.Services
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserName { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.UserName)]
+        public string UserNameForDisplay { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.FirstName)]
         public string FirstName { get; set; }
 
