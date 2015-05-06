@@ -53,6 +53,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         public List<ZulassungsOption> ZulassungsOptionen { get; private set; }
         public List<ZulassungsDienstleistung> ZulassungsDienstleistungen { get; private set; }
         public List<FahrzeugStatus> FahrzeugStatusWerte { get; private set; }
+        public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
         public string ToDataStoreKundenNr(string kundenNr)
         {
             throw new NotImplementedException();

@@ -1435,9 +1435,6 @@ Link.MainmenuItemSide:hover {
 
 .ExcelDiv
 {
-
- 
-
    background-image: url(../Images/overflow.png);
 	color: #ffffff;
 	font-weight: bold;
@@ -1445,7 +1442,7 @@ Link.MainmenuItemSide:hover {
 	height: 22px;
 	line-height: 22px;
 	width: 100%;
-	background-color: #F84814;
+	background-color: #2B4C91;
 	float:right;
     }
     

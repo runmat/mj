@@ -172,7 +172,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.ID = s.EVENT_TERMIN.ToInt();
                         d.VersBoxID = s.EVENT_ORTBOX.ToInt();
                         d.VersOrtID = s.EVENT_ORT.ToInt();
-                        
+
                         d.VersSchadenfallID = s.EVENT_SCHADEN.ToInt();
 
                         d.Datum = s.DATUM_VON.GetValueOrDefault();
@@ -190,7 +190,7 @@ namespace CkgDomainLogic.Insurance.Models
                         d.EVENT_TERMIN = s.ID.ToString().PadLeft0(10);
                         d.EVENT_ORTBOX = s.VersBoxID.ToString().PadLeft0(10);
                         d.EVENT_ORT = s.VersOrtID.ToString().PadLeft0(10);
-                        
+
                         d.EVENT_SCHADEN = s.VersSchadenfallID.ToString().PadLeft0(10);
 
                         d.DATUM_VON = s.Datum;
@@ -202,6 +202,41 @@ namespace CkgDomainLogic.Insurance.Models
                         d.ANLAGEUSER = s.AnlageUser;
                         d.LOESCHDATUM = s.LoeschDatum;
                         d.LOESCHUSER = s.LoeschUser;
+                    }
+                ));
+            }
+        }
+
+        /// <summary>
+        /// Termine pro Schadenfall
+        /// </summary>
+        static public ModelMapping<Z_DPM_TAB_ZEVENT_TERMIN_02.GT_TERMIN, TerminSchadenfall> Z_DPM_TAB_ZEVENT_TERMIN_02_GT_TERMIN_To_TerminSchadenfall
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_TAB_ZEVENT_TERMIN_02.GT_TERMIN, TerminSchadenfall>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.ID = s.EVENT_TERMIN.ToInt();
+                        d.VersBoxID = s.EVENT_ORTBOX.ToInt();
+                        d.VersOrtID = s.EVENT_ORT.ToInt();
+
+                        d.VersSchadenfallID = s.EVENT_SCHADEN.ToInt();
+
+                        d.Datum = s.DATUM_VON.GetValueOrDefault();
+                        d.ZeitVon = HhMmFromSap(s.ZEIT_VON);
+                        d.ZeitBis = HhMmFromSap(s.ZEIT_BIS);
+                        d.Bemerkung = s.TEXT;
+
+                        d.AnlageDatum = s.ANLAGEDATUM.GetValueOrDefault();
+                        d.AnlageUser = s.ANLAGEUSER;
+                        d.LoeschDatum = s.LOESCHDATUM;
+                        d.LoeschUser = s.LOESCHUSER;
+
+                        d.EventAsTextTmp = s.EVENT_NAME;
+                        d.OrtAsTextTmp = s.NAME1;
+                        d.BoxAsTextTmp = s.BOXNAME;
                     }
                 ));
             }

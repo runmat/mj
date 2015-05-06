@@ -28,9 +28,9 @@ Partial Public Class Change06
         mObjEinzahlungsbelege.KostStelle = mObjKasse.Lagerort
         mObjEinzahlungsbelege.Menge = txtMenge.Text
         mObjEinzahlungsbelege.ChangeERP()
-        If mObjEinzahlungsbelege.E_MESSAGE <> "" Then
+        If mObjEinzahlungsbelege.ErrorOccured Then
             lblBestellMeldung.ForeColor = Drawing.Color.Red
-            lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjEinzahlungsbelege.E_MESSAGE
+            lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjEinzahlungsbelege.ErrorMessage
             MPEBestellResultat.Show()
         Else
             lblBestellMeldung.ForeColor = Drawing.Color.Green

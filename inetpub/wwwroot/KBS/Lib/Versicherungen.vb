@@ -1,30 +1,12 @@
-﻿
+﻿Imports KBSBase
+
 Public Class Versicherungen
-    Private mE_SUBRC As Integer
-    Private mE_MESSAGE As String
+    Inherits ErrorHandlingClass
+
     Private mBestellungen As DataTable
     Private mVersicherungen As DataTable
     Private mtblErgebnis As DataTable
     Private mstrKostStelle As String
-    Dim SAPExc As SAPExecutor.SAPExecutor
-
-    Public Property E_SUBRC() As Integer
-        Get
-            Return mE_SUBRC
-        End Get
-        Set(ByVal Value As Integer)
-            mE_SUBRC = Value
-        End Set
-    End Property
-
-    Public Property E_MESSAGE() As String
-        Get
-            Return mE_MESSAGE
-        End Get
-        Set(ByVal Value As String)
-            mE_MESSAGE = Value
-        End Set
-    End Property
 
     Public Property Bestellungen() As DataTable
         Get
@@ -65,13 +47,9 @@ Public Class Versicherungen
             mBestellungen.Columns.Add("MENGE", Type.GetType("System.Int32"))
             mBestellungen.Columns.Add("VKP", Type.GetType("System.Double"))
         End If
-
     End Sub
 
-    Public Sub insertIntoBestellungen(ByVal Artikelnr As String, ByVal Menge As Integer, _
-                                       ByVal Artikelbezeichnung As String, ByVal Preis As Double)
-
-
+    Public Sub insertIntoBestellungen(ByVal Artikelnr As String, ByVal Menge As Integer, ByVal Artikelbezeichnung As String, ByVal Preis As Double)
         Dim NewKey As Integer = 1
         For Each dRow As DataRow In mBestellungen.Rows
             dRow("KEY") = NewKey
@@ -88,82 +66,55 @@ Public Class Versicherungen
     End Sub
 
     Public Sub ShowERP()
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_VERSICHERUNGSTAMM")
 
-            dt.Rows.Add(New Object() {"GT_VERSSTAMM", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_VERSICHERUNGSTAMM", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_VERSSTAMM'")(0)
-            If Not retRows Is Nothing Then
-                mVersicherungen = DirectCast(retRows("Data"), DataTable)
-            End If
+
+            mVersicherungen = S.AP.GetExportTable("GT_VERSSTAMM")
 
         Catch ex As Exception
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub ChangeERP()
-
-        E_MESSAGE = ""
-        E_SUBRC = 0
-
-        Dim tblSAP As New DataTable()
-        tblSAP.Columns.Add("MATNR", String.Empty.GetType)
-        tblSAP.Columns.Add("MENGE", String.Empty.GetType)
-        tblSAP.Columns.Add("VKP", String.Empty.GetType)
-        tblSAP.Columns.Add("BSTNR", String.Empty.GetType)
-
-        Dim tmpSAPRow As DataRow
-
-        If Bestellungen.Rows.Count = 0 Then
-            E_MESSAGE = "Ausgewählte Versicherungen konnten nicht gefunden werden!"
-            Exit Sub
-        End If
-        'mit select filter, da sonst auch deletet rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
-        For Each tmprow As DataRow In Bestellungen.Rows
-            tmpSAPRow = tblSAP.NewRow
-            tmpSAPRow("MATNR") = tmprow("MATNR").ToString
-            tmpSAPRow("MENGE") = tmprow("MENGE").ToString
-            tmpSAPRow("VKP") = tmprow("VKP").ToString
-            tblSAP.Rows.Add(tmpSAPRow)
-        Next
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle, 10})
-            dt.Rows.Add(New Object() {"GT_BEST", False, tblSAP})
-            dt.Rows.Add(New Object() {"GT_BEST", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_PO_VERSICHERUNG", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If Bestellungen.Rows.Count = 0 Then
+                RaiseError("9999", "Ausgewählte Versicherungen konnten nicht gefunden werden!")
+                Exit Sub
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_BEST' AND OutputField = 1 ")(0)
-            If Not retRows Is Nothing Then
-                mtblErgebnis = DirectCast(retRows("Data"), DataTable)
+
+            S.AP.Init("Z_FIL_EFA_PO_VERSICHERUNG", "I_KOSTL", mstrKostStelle)
+
+            Dim tblSAP As DataTable = S.AP.GetImportTable("GT_BEST")
+            'mit select filter, da sonst auch deleted rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
+            For Each tmprow As DataRow In Bestellungen.Rows
+                Dim tmpSAPRow As DataRow = tblSAP.NewRow
+                tmpSAPRow("MATNR") = tmprow("MATNR").ToString
+                tmpSAPRow("MENGE") = tmprow("MENGE").ToString
+                tmpSAPRow("VKP") = tmprow("VKP").ToString
+                tblSAP.Rows.Add(tmpSAPRow)
+            Next
+
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
+
+            mtblErgebnis = S.AP.GetExportTable("GT_BEST")
 
         Catch ex As Exception
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
     End Sub
 

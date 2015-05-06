@@ -40,8 +40,9 @@ Partial Public Class Change04
     Public Sub fillDropdown()
         mObjZentrallager.KostStelle = mObjKasse.Lagerort
         mObjZentrallager.ShowERP()
-        If mObjZentrallager.E_MESSAGE = "" Then
-
+        If mObjZentrallager.ErrorOccured Then
+            lblError.Text = "Es konnten keine Artikel geladen werden!"
+        Else
             With mObjZentrallager
 
                 Dim tmpItem As ListItem
@@ -60,8 +61,6 @@ Partial Public Class Change04
             lblVerpEinheit.Text = sVEinheit
             Session("mObjZentrallager") = mObjZentrallager
             FillGrid()
-        Else
-            lblError.Text = "Es konnten keine Artikel geladen werden!"
         End If
     End Sub
 
@@ -183,9 +182,9 @@ Partial Public Class Change04
         mObjZentrallager.KostStelle = mObjKasse.Lagerort
         mObjZentrallager.SendToKost = txtKST.Text
         mObjZentrallager.ChangeERP(mObjKasse.Master)
-        If mObjZentrallager.E_MESSAGE <> "" Then
+        If mObjZentrallager.ErrorOccured Then
             lblBestellMeldung.ForeColor = Drawing.Color.Red
-            lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjZentrallager.E_MESSAGE
+            lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjZentrallager.ErrorMessage
             MPEBestellResultat.Show()
         Else
             lblBestellMeldung.ForeColor = Drawing.Color.Green
@@ -249,9 +248,9 @@ Partial Public Class Change04
             mObjZentrallager.Freitext = txtFreitext.Text
             mObjZentrallager.KostStelle = mObjKasse.Lagerort
             mObjZentrallager.ChangeERP(mObjKasse.Master, "X")
-            If mObjZentrallager.E_MESSAGE <> "" Then
+            If mObjZentrallager.ErrorOccured Then
                 lblMessage.ForeColor = Drawing.Color.Red
-                lblMessage.Text = "Die Anfrage konnte nicht gesendet werden: <br><br> " & mObjZentrallager.E_MESSAGE
+                lblMessage.Text = "Die Anfrage konnte nicht gesendet werden: <br><br> " & mObjZentrallager.ErrorMessage
             Else
                 lblMessage.ForeColor = Drawing.Color.Green
                 lblMessage.Text = "Die Anfrage wurde erfolgreich gesendet!"
@@ -271,8 +270,8 @@ Partial Public Class Change04
             If Not String.IsNullOrEmpty(txtKST.Text) Then
                 With mObjZentrallager
                     .CheckKostStelleERP(txtKST.Text.Trim)
-                    If .E_MESSAGE <> "" Then
-                        lblError.Text = .E_MESSAGE
+                    If .ErrorOccured Then
+                        lblError.Text = .ErrorMessage
                         SetFocus(txtKST)
                         lblKSTText.Visible = False
                         lblKSTText.Text = ""
@@ -318,8 +317,8 @@ Partial Public Class Change04
     Private Sub ShowLetzteBestellungen()
         divLetzteBestellungen.Visible = True
         mObjZentrallager.FillLetzteBestellungen(txtKST.Text)
-        If mObjZentrallager.E_MESSAGE <> "" AndAlso Not mObjZentrallager.E_SUBRC = "141" Then
-            lblError.Text = "Fehler beim Abrufen der letzten Bestellungen: " & mObjZentrallager.E_MESSAGE
+        If mObjZentrallager.ErrorOccured AndAlso Not mObjZentrallager.ErrorCode = "141" Then
+            lblError.Text = "Fehler beim Abrufen der letzten Bestellungen: " & mObjZentrallager.ErrorMessage
         Else
             FillGridLetzteBestellungen()
         End If

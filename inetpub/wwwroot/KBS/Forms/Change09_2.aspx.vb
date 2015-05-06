@@ -46,8 +46,8 @@ Partial Public Class Change09_2
 
     Private Sub txtEAN_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtEAN.TextChanged
         If Not mObjInventur.getArtikel(txtEAN.Text, txtMaterialnummer.Text, lblArtikelbezeichnung.Text) Then
-            If mObjInventur.E_MESSAGE.Length > 0 Then
-                lblError.Text = mObjInventur.E_MESSAGE
+            If mObjInventur.ErrorOccured Then
+                lblError.Text = mObjInventur.ErrorMessage
             Else
                 lblError.Text = "Artikel nicht vorhanden"
             End If
@@ -227,21 +227,15 @@ Partial Public Class Change09_2
 
         mObjInventur.SetMengeMaterialERP()
 
-        Select Case mObjInventur.E_SUBRC
-            Case 0
-                'ok
-                lblError.ForeColor = Drawing.Color.Green
-                lblError.Text = "Ihre Zählung wurde gespeichert. "
-                lblError.Visible = True
-            Case -1
-                lblError.ForeColor = Drawing.Color.Red
-                lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.E_MESSAGE
-                lblError.Visible = True
-            Case Else
-                lblError.ForeColor = Drawing.Color.Red
-                lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.E_MESSAGE
-                lblError.Visible = True
-        End Select
+        If mObjInventur.ErrorOccured Then
+            lblError.ForeColor = Drawing.Color.Red
+            lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.ErrorMessage
+            lblError.Visible = True
+        Else
+            lblError.ForeColor = Drawing.Color.Green
+            lblError.Text = "Ihre Zählung wurde gespeichert. "
+            lblError.Visible = True
+        End If
 
     End Sub
 
