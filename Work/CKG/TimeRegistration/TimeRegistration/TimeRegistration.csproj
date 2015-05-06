@@ -54,6 +54,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="SapORM.Contracts">
+      <HintPath>..\..\..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services">
+      <HintPath>..\..\..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -63,20 +69,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Zeitnachweis.cs" />
     <Compile Include="KW_Berechnung.cs" />
     <Compile Include="PDFPrintObj.cs" />
     <Compile Include="RuestzeitList.cs" />
     <Compile Include="RuestzeitObj.cs" />
-    <Compile Include="TimeDayPositions.cs" />
     <Compile Include="TimeOverview.cs" />
     <Compile Include="TimeRegistration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TimeRegUser.cs" />
     <Compile Include="ZeitnachweisListe.cs" />
     <Compile Include="ZeitnachweisObj.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="TimeRegistration.cd" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -96,9 +99,9 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\inetpub\wwwroot\KBS\SapExecutor\SapExecutor.csproj">
-      <Project>{C209B8CE-195A-4C9D-9397-C3B63BE585F6}</Project>
-      <Name>SapExecutor</Name>
+    <ProjectReference Include="..\..\..\KBSBase\KBSBase.vbproj">
+      <Project>{61754467-E566-43DC-A8D4-1684994DF069}</Project>
+      <Name>KBSBase</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

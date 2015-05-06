@@ -1,0 +1,55 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.TreuhandverwaltungViewModel 
+
+<h5>
+    <span>Ihre Datei <span class="bold">@Model.CsvUploadFileName</span>, bitte prüfen Sie jetzt noch den Inhalt:</span>
+</h5>
+
+<script type="text/javascript"> _formWizardForceHideSubmitButton = false; </script>
+@if (Model.UploadItemsErrorsOccurred)
+{
+    <script type="text/javascript"> _formWizardForceHideSubmitButton = true; </script>
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsErrorsOccurred)</span>
+            <span class="margin-left-10"></span>
+            @Html.CheckBoxFor(m => m.UploadItemsShowErrorsOnly, new {onchange = "UploadItemsShowErrorsOnlyChanged($(this));"}) 
+            @Html.DisplayNameFor(m => m.UploadItemsShowErrorsOnly)
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+
+@* C:\dev\inetpub\wwwroot\ServicesMvc\Views\Equi\Briefversand\FahrzeugAuswahl.cshtml *@
+
+@{ var gridname = "TreuhandverwaltungGrid";}
+
+@(Html.Telerik()
+    .Grid<TreuhandverwaltungCsvUpload>()
+        .Name(gridname)
+        .XGroup(gridname)
+             .XAjaxDataBinding("TreuhandServicesAjaxBinding", "Fahrzeuge")    
+       // .BindTo(Model.UploadItemsFiltered)
+        .Columns(columns =>
+                {
+                    columns.XBound("")
+                    .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='TreuhandverwaltungGrid_OnSelectionChange($(this))' />")
+                    //.HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='TreuhandverwaltungGrid_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                    .Filterable(false).Width(30);
+                                                                                                             
+                    columns.XBound(c => c.Fahrgestellnummer).Width(130);
+                    columns.XBound(c => c.Referenznummer).Width(70);
+                    columns.XBound(c => c.Sachbearbeiter).Width(130);
+                    columns.XBound(c => c.Datum).Format("{0:dd.MM.yyyy}").Width(130);
+                    columns.XBound(c => c.Sperrdatum).Format("{0:dd.MM.yyyy}").Width(130);
+                    columns.XBound(c => c.Aktion).Width(80);
+                    columns.XBound(c => c.Status).Width(80);
+                    columns.XBound(c => c.ValidationErrors).Width(200);               
+            })
+        .Scrollable(scroll => scroll.Enabled(true).Height(200)).TableHtmlAttributes(new { @class = "table-no-paging" })
+             .XAutoColumnConfiguration()
+            .ClientEvents(events => events.XAutoClientEvents(gridname).OnRowDataBound("OnRowDataBound_TreuhandverwaltungGrid"))
+)
+
+<div class="margin-top-10"></div>

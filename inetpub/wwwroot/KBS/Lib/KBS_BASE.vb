@@ -3,7 +3,7 @@ Option Strict On
 
 Public Class KBS_BASE
     Private Shared mIPtoKassen As DataTable
-    Private Shared connectedKassen As New Generic.List(Of Kasse)
+    Private Shared connectedKassen As New List(Of Kasse)
     Public Const CHANGE01_GLOBALOBJHANDLING As Boolean = True
     Public Const CHANGE02_GLOBALOBJHANDLING As Boolean = True
     Public Const CHANGE03_GLOBALOBJHANDLING As Boolean = True
@@ -19,32 +19,6 @@ Public Class KBS_BASE
     Private Shared m_intUserId As Int32 = -1
 
 #Region "Properties"
-
-    Protected Friend Shared ReadOnly Property SAPConnectionString() As String
-        Get
-            Dim conStr As String = ""
-
-            If KBSBase.Common.ProdSAP Then
-                'prod
-                conStr = "ASHOST=" & ConfigurationManager.AppSettings("SAPAppServerHost") & _
-                                        ";CLIENT=" & CShort(ConfigurationManager.AppSettings("SAPClient")) & _
-                                        ";SYSNR=" & CShort(ConfigurationManager.AppSettings("SAPSystemNumber")) & _
-                                        ";USER=" & ConfigurationManager.AppSettings("SAPUsername") & _
-                                        ";PASSWD=" & ConfigurationManager.AppSettings("SAPPassword") & _
-                                        ";LANG=DE"
-            Else
-                'vm,test,entwicklung
-                conStr = "ASHOST=" & ConfigurationManager.AppSettings("TESTSAPAppServerHost") & _
-                                    ";CLIENT=" & CShort(ConfigurationManager.AppSettings("TESTSAPClient")) & _
-                                    ";SYSNR=" & CShort(ConfigurationManager.AppSettings("TESTSAPSystemNumber")) & _
-                                    ";USER=" & ConfigurationManager.AppSettings("TESTSAPUsername") & _
-                                    ";PASSWD=" & ConfigurationManager.AppSettings("TESTSAPPassword") & _
-                                    ";LANG=DE"
-            End If
-
-            Return conStr
-        End Get
-    End Property
 
     Public Shared ReadOnly Property IPtoKassen() As DataTable
         Get
@@ -156,8 +130,7 @@ Public Class KBS_BASE
                                     connectedKassen.Remove(tmpkasseObj)
                                     Exit For
                                 Else
-                                    Dim StdUser As String = ""
-                                    StdUser = GiveIpStandardUser(CInt(tmpkasseObj.KUNNR), tmpkasseObj.Firma)
+                                    Dim StdUser As String = GiveIpStandardUser(CInt(tmpkasseObj.KUNNR), tmpkasseObj.Firma)
                                     GiveUserIDByUsername(StdUser)
                                     tmpkasseObj.SetApps(GetApplications)
                                     Return tmpkasseObj
@@ -170,8 +143,7 @@ Public Class KBS_BASE
                 Next
 
                 Dim tmpKasse As DataRow = IPtoKassen.Select("IP='" & page.Request.UserHostAddress & "'")(0)
-                Dim StandardUser As String = ""
-                StandardUser = GiveIpStandardUser(CInt(tmpKasse("Kunnr")), tmpKasse("Firma").ToString)
+                Dim StandardUser As String = GiveIpStandardUser(CInt(tmpKasse("Kunnr")), tmpKasse("Firma").ToString)
                 GiveUserIDByUsername(StandardUser)
                 Dim tblApps As DataTable
                 tblApps = GetApplications()
@@ -286,7 +258,6 @@ Public Class KBS_BASE
     End Sub
 
     Private Shared Function GetApplications() As DataTable
-        Dim blnReturn As Boolean
         Dim tmpTable As DataTable
 
         Try
@@ -302,7 +273,6 @@ Public Class KBS_BASE
             tmpTable = New DataTable
             adApplication.Fill(tmpTable)
 
-            blnReturn = True
         Catch ex As Exception
             Return Nothing
         End Try
@@ -317,6 +287,7 @@ Public Class KBS_BASE
                 page.Response.Redirect("/KBS/Login.aspx")
             Else
                 page.Session("mKasse") = tmpKassenObj
+                SetLoggingInfos(page, tmpKassenObj)
             End If
         End If
     End Sub
@@ -328,10 +299,19 @@ Public Class KBS_BASE
                 Return False
             Else
                 page.Session("mKasse") = tmpKassenObj
+                SetLoggingInfos(page, tmpKassenObj)
                 Return True
             End If
         End If
     End Function
+
+    Private Shared Sub SetLoggingInfos(ByVal page As Page, ByVal tmpKassenObj As Kasse)
+        page.Session("LastAppID") = 0
+        page.Session("LastUserID") = 0
+        page.Session("LastCustomerID") = tmpKassenObj.CustomerID
+        page.Session("LastKunnr") = tmpKassenObj.KUNNR
+        page.Session("LastPortalType") = 4
+    End Sub
 
     Public Shared Function CastSapBizTalkErrorMessage(ByVal errorMessage As String) As String
         If errorMessage.Contains("SapErrorMessage") = True Then
@@ -392,114 +372,3 @@ Public Class KBS_BASE
 #End Region
 
 End Class
-
-
-' ************************************************
-' $History: KBS_BASE.vb $
-' 
-' *****************  Version 28  *****************
-' User: Dittbernerc  Date: 18.03.11   Time: 13:22
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 27  *****************
-' User: Rudolpho     Date: 1.12.10    Time: 11:30
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 26  *****************
-' User: Rudolpho     Date: 17.11.10   Time: 10:04
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 25  *****************
-' User: Rudolpho     Date: 11.11.10   Time: 10:00
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 24  *****************
-' User: Rudolpho     Date: 1.11.10    Time: 16:16
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 23  *****************
-' User: Rudolpho     Date: 30.04.10   Time: 12:41
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 22  *****************
-' User: Rudolpho     Date: 20.04.10   Time: 18:09
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 21  *****************
-' User: Rudolpho     Date: 7.04.10    Time: 14:28
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 20  *****************
-' User: Rudolpho     Date: 6.04.10    Time: 17:15
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 19  *****************
-' User: Rudolpho     Date: 22.03.10   Time: 17:13
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 18  *****************
-' User: Rudolpho     Date: 22.03.10   Time: 14:30
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 17  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 9:49
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 16  *****************
-' User: Rudolpho     Date: 16.02.10   Time: 17:28
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 15  *****************
-' User: Rudolpho     Date: 12.02.10   Time: 16:29
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 14  *****************
-' User: Rudolpho     Date: 12.02.10   Time: 13:47
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 13  *****************
-' User: Rudolpho     Date: 10.02.10   Time: 17:53
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 12  *****************
-' User: Jungj        Date: 3.06.09    Time: 15:43
-' Updated in $/CKAG2/KBS/Lib
-' nachbesserungen
-' 
-' *****************  Version 11  *****************
-' User: Jungj        Date: 12.05.09   Time: 16:17
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2808
-' 
-' *****************  Version 10  *****************
-' User: Jungj        Date: 7.05.09    Time: 13:51
-' Updated in $/CKAG2/KBS/Lib
-' Basisgeschichten
-' 
-' *****************  Version 9  *****************
-' User: Jungj        Date: 7.05.09    Time: 13:08
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2808 
-' 
-' *****************  Version 8  *****************
-' User: Jungj        Date: 30.04.09   Time: 11:44
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2838 unfertig
-' 
-' *****************  Version 7  *****************
-' User: Jungj        Date: 24.04.09   Time: 15:48
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2808
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 24.04.09   Time: 10:35
-' Updated in $/CKAG2/KBS/Lib
-' from server.transfer back wegen js
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 23.04.09   Time: 17:50
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2808
-' 
-'
-' ************************************************

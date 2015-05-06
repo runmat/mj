@@ -236,11 +236,11 @@ Partial Public Class Change08
 
     Private Sub DoSubmit()
         mObjCommon.ChangeERP()
-        If mObjCommon.E_SUBRC <> 0 Then
+        If mObjCommon.ErrorOccured Then
             lblError.Visible = True
-            lblError.Text = mObjCommon.E_MESSAGE
+            lblError.Text = mObjCommon.ErrorMessage
             lblNeukundeResultatMeldung.ForeColor = Drawing.ColorTranslator.FromHtml("#BC2B2B")
-            lblNeukundeResultatMeldung.Text = mObjCommon.E_MESSAGE
+            lblNeukundeResultatMeldung.Text = mObjCommon.ErrorMessage
         Else
             lblNeukundeResultatMeldung.ForeColor = Drawing.Color.Green
             lblNeukundeResultatMeldung.Text = "Neue Kundenstammdaten erfolgreich angelegt!"
@@ -506,8 +506,8 @@ Partial Public Class Change08
     Protected Sub lbParken_Click(sender As Object, e As EventArgs) Handles lbParken.Click
         GetMaskData()
         mObjCommon.ParkenERP()
-        If mObjCommon.E_MESSAGE.Length > 0 Then
-            lblError.Text = "Fehler beim Parken der Kundendaten: " + mObjCommon.E_MESSAGE
+        If mObjCommon.ErrorOccured Then
+            lblError.Text = "Fehler beim Parken der Kundendaten: " + mObjCommon.ErrorMessage
         End If
     End Sub
 
@@ -530,14 +530,14 @@ Partial Public Class Change08
         Select Case e.CommandName
             Case "ausparken"
                 mObjCommon.AusparkenERP(e.CommandArgument)
-                If mObjCommon.E_MESSAGE.Length > 0 Then
-                    lblError.Text = "Fehler beim Ausparken der Kundendaten: " + mObjCommon.E_MESSAGE
+                If mObjCommon.ErrorOccured Then
+                    lblError.Text = "Fehler beim Ausparken der Kundendaten: " + mObjCommon.ErrorMessage
                 End If
                 SetMaskData()
             Case "löschen"
                 mObjCommon.AusparkenERP(e.CommandArgument)
-                If mObjCommon.E_MESSAGE.Length > 0 Then
-                    lblError.Text = "Fehler beim Löschen der geparkten Kundendaten: " + mObjCommon.E_MESSAGE
+                If mObjCommon.ErrorOccured Then
+                    lblError.Text = "Fehler beim Löschen der geparkten Kundendaten: " + mObjCommon.ErrorMessage
                 End If
         End Select
     End Sub

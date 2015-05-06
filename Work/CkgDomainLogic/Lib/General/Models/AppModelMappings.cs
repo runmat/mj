@@ -137,6 +137,22 @@ namespace CkgDomainLogic.General.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Hersteller> Z_M_HERSTELLERGROUP_T_HERST_To_Hersteller
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Hersteller>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                        {
+                            d.Code = s.HERST_GROUP;
+                            d.Name = s.HERST_T;
+                        }));
+            }
+        }
+
         #endregion
     }
 }

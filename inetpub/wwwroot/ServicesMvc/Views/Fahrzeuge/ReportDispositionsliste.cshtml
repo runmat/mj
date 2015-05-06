@@ -1,0 +1,79 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model DispositionslisteViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeug_Dispositionsliste</h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Dispositionsliste/DispositionslisteSuche", Model.DispositionslisteSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>  
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function FormPreparePrivate() {}
+
+  
+    function ShowDispositionsliste() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDispositionsliste",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowDispositionslisteSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+
+
+    function ShowDispositionslisteSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("DispositionslisteGrid");
+        //alert('1');
+        $("#divGrid").slideDown();      
+        //alert('2');
+    }
+
+
+    function OnDataBound_DispositionslisteGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_DispositionslisteGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_DispositionslisteGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+   
+
+</script>
