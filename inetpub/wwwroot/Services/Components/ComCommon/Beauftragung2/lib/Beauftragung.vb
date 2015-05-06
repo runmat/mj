@@ -1191,13 +1191,18 @@ Namespace Beauftragung2
         Public Overloads Sub FillUebersicht2(ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.FillUebersicht"
 
+            m_intStatus = 0
+            m_strMessage = ""
+
             If Not m_blnGestartet Then
                 m_blnGestartet = True
 
                 Try
                     Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_ZLD_ZULASSUNGSDATEN_ONL", m_objApp, m_objUser, page)
 
+                    If Not String.IsNullOrEmpty(SelKundennr) AndAlso SelKundennr.TrimStart("0"c).Length > 0 Then
                     myProxy.setImportParameter("KUNNR", SelKundennr.PadLeft(10, "0"c))
+                    End If
                     myProxy.setImportParameter("ZZREFNR", SelReferenz)
                     myProxy.setImportParameter("ZZKENN", SelKennzeichen)
                     myProxy.setImportParameter("ZZZLDAT_VON", SelZuldatVon)
@@ -1216,9 +1221,8 @@ Namespace Beauftragung2
                         If dr("ZZSTATUSDATUM").ToString.Length = 0 Then
                             dr("ZZSTATUSUHRZEIT") = ""
                         End If
-
-                        tempTable.AcceptChanges()
                     Next
+                        tempTable.AcceptChanges()
 
                     CreateOutPut(tempTable, appId)
 
