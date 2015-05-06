@@ -19,7 +19,7 @@
         </Border.BitmapEffect>
         <StackPanel Orientation="Horizontal">
 
-            <ItemsControl Visibility="Collapsed" ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="0,0,15,0">
+            <ItemsControl Visibility="{Binding StockItemsVisible, Converter={StaticResource BooleanVisibilityConverter}}" ItemsSource="{Binding StockItems}" Style="{StaticResource ItemsControlHorizontal}" Margin="0,0,15,0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <userControls:StockItem />
@@ -28,10 +28,10 @@
             </ItemsControl>
 
             <Button Visibility="Collapsed" Command="{Binding GetStockDataCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/refresh}" ToolTip="Watchlist aktualisieren" />
-            <Button Command="{Binding WatchlistShowCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/OK}" ToolTip="Watchlist anzeigen" />
-            <Button Command="{Binding WatchlistHideCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/deactivate}" ToolTip="Watchlist ausblenden"  />
+            <Button Visibility="Collapsed" Command="{Binding WatchlistShowCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/OK}" ToolTip="Watchlist anzeigen" />
+            <Button Visibility="Collapsed" Command="{Binding WatchlistHideCommand}" Margin="5,0,0,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/deactivate}" ToolTip="Watchlist ausblenden"  />
 
-            <Button Command="{Binding QuitCommand}" Margin="20,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete}" ToolTip="Applikation beenden!"  />
+            <Button Command="{Binding QuitCommand}" Margin="20,0,5,0" Style="{StaticResource HyperLinkSmallImage}" Content="{StaticResource image/16x16/delete_black}" ToolTip="Applikation beenden!"  />
 
         </StackPanel>
     </Border>

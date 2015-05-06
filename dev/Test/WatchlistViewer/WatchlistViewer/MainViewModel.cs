@@ -15,6 +15,7 @@ namespace WatchlistViewer
     public class MainViewModel : ViewModelBase
     {
         private List<Stock> _stockItems;
+        private bool _stockItemsVisible;
 
         public List<Stock> StockItems
         {
@@ -22,8 +23,15 @@ namespace WatchlistViewer
             set { _stockItems = value; SendPropertyChanged("StockItems"); }
         }
 
-        public ICommand WatchlistShowCommand { get; private set; }
-        public ICommand WatchlistHideCommand { get; private set; }
+        public bool StockItemsVisible
+        {
+            get { return _stockItemsVisible; }
+            set { _stockItemsVisible = value; SendPropertyChanged("StockItemsVisible"); }
+        }
+        
+
+        //public ICommand WatchlistShowCommand { get; private set; }
+        //public ICommand WatchlistHideCommand { get; private set; }
         public ICommand GetStockDataCommand { get; private set; }
 
         public ICommand QuitCommand { get; private set; }
@@ -33,43 +41,53 @@ namespace WatchlistViewer
 
         public MainViewModel()
         {
-            WatchlistShowCommand = new DelegateCommand(e => WatchlistShow(), e => true);
-            WatchlistHideCommand = new DelegateCommand(e => WatchlistHide(), e => true);
+            //WatchlistShowCommand = new DelegateCommand(e => WatchlistShow(), e => true);
+            //WatchlistHideCommand = new DelegateCommand(e => WatchlistHide(), e => true);
             GetStockDataCommand = new DelegateCommand(e => GetStockData(), e => true);
             QuitCommand = new DelegateCommand(e => Quit(), e => true);
 
-#if TEST
-            _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 20 };
-#else
-            FirefoxWebDriver.InvokeEurUsd();
-            //_initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 2000 };
-#endif
-            //_initialDelayTimer.Tick += InitialDelayTimerTick;
+            //FirefoxWebDriver.InvokeEurUsd();
+            StockItems = new List<Stock> { new Stock { Name = "Euro / US", Parent = this } };
+            _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
+            _initialDelayTimer.Tick += InitialDelayTimerTick;
         }
 
-        //void InitialDelayTimerTick(object sender, EventArgs e)
-        //{
-        //    _initialDelayTimer.Stop();
-        //    _initialDelayTimer.Dispose();
-
-        //    WatchlistHide();
-        //    _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
-        //    _workTimer.Tick += WorkTimerTick;
-        //}
-
-        //void WorkTimerTick(object sender, EventArgs e)
-        //{
-        //    TaskService.StartLongRunningTask(GetStockData);
-        //}
-
-        private static void WatchlistShow()
+        void InitialDelayTimerTick(object sender, EventArgs e)
         {
-            FirefoxWebDriver.ShowBrowser();
+            _initialDelayTimer.Stop();
+            _initialDelayTimer.Dispose();
+
+            //WatchlistHide();
+            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
+            _workTimer.Tick += WorkTimerTick;
         }
 
-        private static void WatchlistHide()
+        void WorkTimerTick(object sender, EventArgs e)
         {
-            FirefoxWebDriver.HideBrowser();
+            TaskService.StartLongRunningTask(GetStockDataFromStockCaptureStockService);
+        }
+
+        //private static void WatchlistShow()
+        //{
+        //    FirefoxWebDriver.ShowBrowser();
+        //}
+
+        //private static void WatchlistHide()
+        //{
+        //    FirefoxWebDriver.HideBrowser();
+        //}
+
+        private void GetStockDataFromStockCaptureStockService()
+        {
+            double price; 
+            DateTime dateTime;
+
+            StockCapture.StockService.CaptureStockQuote(out price, out dateTime);
+
+            var stock = StockItems.First();
+            stock.DateTime = DateTime.Now;
+            stock.Value = price;
+            StockItemsVisible = true;
         }
 
         private void GetStockData()

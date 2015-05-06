@@ -64,7 +64,7 @@ namespace WatchlistViewer
 
         public Brush ForeColor
         {
-            get { return (Change < 0 ? Brushes.Red : Brushes.Green); }
+            get { return (Change < 0 ? Brushes.Red : Brushes.Black); }
         }
 
         public string ToolTip { get { return string.Format("Zeit {0:HH:mm:ss} vom {0:dd.MM.yyyy}", DateTime); } }
