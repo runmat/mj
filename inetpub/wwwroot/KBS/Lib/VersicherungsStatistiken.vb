@@ -1,8 +1,8 @@
-﻿
+﻿Imports KBSBase
+
 Public Class VersicherungsStatistiken
     Inherits ErrorHandlingClass
 
-    Private SapExc As SAPExecutor.SAPExecutor
     Private lstFilter As List(Of VersicherungsArtikel)
 
 #Region "Strukturen"
@@ -53,10 +53,6 @@ Public Class VersicherungsStatistiken
 
 #End Region
 
-    Public Sub New()
-        SapExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-    End Sub
-
     ''' <summary>
     ''' Liefert die Versicherungen zu den gewählten Filtern
     ''' </summary>
@@ -71,46 +67,36 @@ Public Class VersicherungsStatistiken
     Public Function GetVersicherungen(ByVal VkBur As String, ByVal VkOrg As String, Optional ByVal DatumVon As String = "",
                                       Optional ByVal DatumBis As String = "", Optional ByVal VkBlArt As String = "0", Optional ByVal MatNr As String = "",
                                       Optional ByVal EVB As String = "") As DataTable
+        ClearErrorState()
 
         Dim dtVersicherung As DataTable = Nothing
 
-        ' FehlerStatus zurücksetzen
-        ClearErrorState()
+        Try
+            S.AP.Init("Z_F_CK_KASSE_STAT_INSURRANCE")
 
-        ' SAPKomunikationstabelle holen
-        Dim dtValues As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.SetImportParameter("I_VKORG", VkOrg)
+            S.AP.SetImportParameter("I_VKBUR", VkBur)
+            S.AP.SetImportParameter("I_DATUM_VON", DatumVon)
+            S.AP.SetImportParameter("I_DATUM_BIS", DatumBis)
+            S.AP.SetImportParameter("I_VKBLART", VkBlArt)
+            S.AP.SetImportParameter("I_MATNR", MatNr)
+            S.AP.SetImportParameter("I_EVB", EVB)
 
-        'Import-Parameter
-        dtValues.Rows.Add(New Object() {"I_VKORG", False, VkOrg})
-        dtValues.Rows.Add(New Object() {"I_VKBUR", False, VkBur})
-        dtValues.Rows.Add(New Object() {"I_DATUM_VON", False, DatumVon})
-        dtValues.Rows.Add(New Object() {"I_DATUM_BIS", False, DatumBis})
-        dtValues.Rows.Add(New Object() {"I_VKBLART", False, VkBlArt})
-        dtValues.Rows.Add(New Object() {"I_MATNR", False, MatNr})
-        dtValues.Rows.Add(New Object() {"I_EVB", False, EVB})
+            S.AP.Execute()
 
-        'Export-Parameter
-        dtValues.Rows.Add(New Object() {"E_SUBRC", True})
-        dtValues.Rows.Add(New Object() {"E_MESSAGE", True})
-
-        dtValues.Rows.Add(New Object() {"GT_WEB", True})
-
-        SapExc.ExecuteERP("Z_F_CK_KASSE_STAT_INSURRANCE", dtValues)
-
-        If SapExc.ErrorOccured Then
-            If SapExc.E_SUBRC = "101" Then
-                RaiseError(SapExc.E_SUBRC, "Keine Daten zu den Suchkriterien vorhanden.")
+            If S.AP.ResultCode = 0 Then
+                ' Versicherungen auslesen           
+                dtVersicherung = S.AP.GetExportTable("GT_WEB")
+                CreateFilterlist(dtVersicherung)
             Else
-                RaiseError(SapExc.E_SUBRC, SapExc.E_MESSAGE)
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-        Else
-            ' Versicherungen auslesen           
-            dtVersicherung = CType(dtValues.Rows(9)(2), DataTable)
-            CreateFilterlist(dtVersicherung)
-        End If
+
+        Catch ex As Exception
+            RaiseError("9999", ex.Message)
+        End Try
 
         Return dtVersicherung
-
     End Function
 
     ''' <summary>

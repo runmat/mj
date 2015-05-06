@@ -37,8 +37,8 @@ Public Class Report99
 
         Session("objSuche") = objSuche
 
-        If Not objSuche.Status = 0 Then
-            lblError.Text = "Fehler: " & objSuche.E_MESSAGE
+        If objSuche.ErrorOccured Then
+            lblError.Text = "Fehler: " & objSuche.ErrorMessage
         Else
             If objSuche.Dokumente.Rows.Count = 0 Then
                 lblError.Text = "Keine Ergebnisse für die gewählten Kriterien."

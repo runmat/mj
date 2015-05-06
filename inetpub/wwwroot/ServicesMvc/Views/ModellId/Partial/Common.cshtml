@@ -1,0 +1,127 @@
+﻿@using DomainCommonModels = CkgDomainLogic.DomainCommon.Models
+
+<script type="text/javascript">
+
+    var _modelStateValid = false;
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridModellId");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridModellId").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridModellId .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function TryModellIdGridRefresh() {
+        FilterGrid("GridModellId");
+    }
+
+    function TryGridPageTo1() {
+        // Refresh grid and goto grid page 1
+        if (typeof (GetGrid()) !== "undefined") {
+            GetGrid().pageTo(1);
+        }
+    }
+
+    function OnDataBound_GridModellId() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridModellId() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridModellId() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function ItemEdit(id) {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "EditModellId",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                ShowItemDetails(result);
+                try { BreadcrumbsMoveNext('@Localize.ItemEdit'); } catch (e) { }
+            },
+            error: function (result) {
+                alert(result.data);
+            }
+        });
+    }
+
+    function ItemNew(idToDuplicate) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "NewModellId",
+            data: { idToDuplicate: idToDuplicate },
+            loadingShow: true,
+            success: function (result) {
+                ShowItemDetails(result);
+                try { BreadcrumbsMoveNext('@Localize.ItemAdd'); } catch (e) { }
+            }
+        });
+    }
+
+    function ShowItemDetails(result, showCloseButton) {
+        $("#divGridItemDetails").html(result);
+        GridItemDetailsFormPreparePrivateAjax();
+        $("#divGridEditStart").slideUp(function () {
+            $("#divGridItemDetails").show();
+        });
+        scrollToTop();
+    }
+
+    function CloseItemDetailsInner() {
+        $("#divGridItemDetails").slideUp(function() {
+            $("#divGridEditStart").delay(200).show();
+            window.scrollTo(0, 0);
+        });
+    }
+
+    function CloseItemDetails() {
+        CloseItemDetailsInner();
+        try { BreadcrumbsMovePrev(); } catch (e) { }
+        TryModellIdGridRefresh();
+    }
+
+    function ModellIdAjaxFormComplete() {
+        FormPrepareAjax();
+        if (_modelIsValid)
+            CloseItemDetails();
+    }
+
+    var _modelIsValid = false;
+    var _modelIsInsertMode = false;
+
+    function GridItemDetailsFormPreparePrivateAjax() {
+        FormPrepareAjax();
+
+        LoadingHide();
+        GridLoadingHide();
+
+        $("button[type='submit']").click(function() {
+            LoadingShow();
+        });
+
+        if (_modelIsValid)
+            CloseItemDetails();
+    }
+
+</script>
+

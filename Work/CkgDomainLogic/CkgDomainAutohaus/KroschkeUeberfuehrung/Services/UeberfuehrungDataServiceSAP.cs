@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Web;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Ueberfuehrung.Contracts;
 using CkgDomainLogic.Ueberfuehrung.Models;
@@ -214,7 +215,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
 
         public void OnInit(ILogonContext logonContext, IAppSettings appSettings)
         {
-            LogonContext = logonContext;
+            LogonContext = (ILogonContextDataService)logonContext;
             AppSettings = appSettings;
 
         }

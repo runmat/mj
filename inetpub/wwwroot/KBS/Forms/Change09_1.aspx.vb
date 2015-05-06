@@ -141,22 +141,16 @@ Partial Public Class Change09_1
 
             mObjInventur.SetMengeMaterialERP()
 
-            Select Case mObjInventur.E_SUBRC
-                Case 0
-                    'ok
-                    lblError.ForeColor = Drawing.Color.Green
-                    lblError.Text = "Ihre Zählung wurde gespeichert. "
-                    lblError.Visible = True
-                    Session("mObjInventur") = mObjInventur
-                Case -1
-                    lblError.ForeColor = Drawing.Color.Red
-                    lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.E_MESSAGE
-                    lblError.Visible = True
-                Case Else
-                    lblError.ForeColor = Drawing.Color.Red
-                    lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.E_MESSAGE
-                    lblError.Visible = True
-            End Select
+            If mObjInventur.ErrorOccured Then
+                lblError.ForeColor = Drawing.Color.Red
+                lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.ErrorMessage
+                lblError.Visible = True
+            Else
+                lblError.ForeColor = Drawing.Color.Green
+                lblError.Text = "Ihre Zählung wurde gespeichert. "
+                lblError.Visible = True
+                Session("mObjInventur") = mObjInventur
+            End If
         Else
             lblErrorMenge.Text = "Überprüfen Sie Ihre Eingaben! Die Gesamtsumme ist ungewöhnlich hoch!<br/>Sollen die Daten trotzdem gespeichert werden?"
             mpeBestellungsCheck.Show()
@@ -189,22 +183,16 @@ Partial Public Class Change09_1
 
         mObjInventur.SetMengeMaterialERP()
 
-        Select Case mObjInventur.E_SUBRC
-            Case 0
-                'ok
-                lblError.ForeColor = Drawing.Color.Green
-                lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  war erfolgreich. "
-                lblError.Visible = True
-                Session("mObjInventur") = mObjInventur
-            Case -1
-                lblError.ForeColor = Drawing.Color.Red
-                lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.E_MESSAGE
-                lblError.Visible = True
-            Case Else
-                lblError.ForeColor = Drawing.Color.Red
-                lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.E_MESSAGE
-                lblError.Visible = True
-        End Select
+        If mObjInventur.ErrorOccured Then
+            lblError.ForeColor = Drawing.Color.Red
+            lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  ist fehlgeschlagen. <br><br> " & mObjInventur.ErrorMessage
+            lblError.Visible = True
+        Else
+            lblError.ForeColor = Drawing.Color.Green
+            lblError.Text = "Ihre Inventur für " & mObjInventur.ProdHBezeichnung & "  war erfolgreich. "
+            lblError.Visible = True
+            Session("mObjInventur") = mObjInventur
+        End If
 
     End Sub
 

@@ -69,6 +69,8 @@ namespace CkgDomainLogic.General.Services
 
         public List<FahrzeugStatus> FahrzeugStatusWerte { get; private set; }
 
+        public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
+
         #endregion
 
         public string ToDataStoreKundenNr(string kundenNr)

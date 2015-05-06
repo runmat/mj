@@ -464,6 +464,33 @@ Partial Public Class CustomerManagement
     Protected WithEvents txtCName As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''ddlReferenzTyp1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlReferenzTyp1 As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''ddlReferenzTyp2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlReferenzTyp2 As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''ddlReferenzTyp3-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlReferenzTyp3 As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
     '''EditCAddress-Steuerelement
     '''</summary>
     '''<remarks>
