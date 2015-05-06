@@ -1,6 +1,8 @@
 ﻿Option Explicit On
 Option Strict On
 
+Imports KBSBase
+
 Public NotInheritable Class LongStringToSap
     Inherits ErrorHandlingClass
 
@@ -8,7 +10,6 @@ Public NotInheritable Class LongStringToSap
     Dim mLTextID As String = ""
     Dim mLTextNr As String = ""
     Dim mUName As String = ""
-    Dim SAPExc As SAPExecutor.SAPExecutor
 
 #Region "Properties"
 
@@ -58,19 +59,17 @@ Public NotInheritable Class LongStringToSap
         mLText = Text
         mLTextNr = ltnr
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_LTEXT_NR", False, mLTextNr})
-            dt.Rows.Add(New Object() {"I_STRING", False, mLText})
-            dt.Rows.Add(New Object() {"I_UNAME", False, username})
+            S.AP.Init("Z_BC_LTEXT_UPDATE")
 
-            SAPExc.ExecuteERP("Z_BC_LTEXT_UPDATE", dt)
+            S.AP.SetImportParameter("I_LTEXT_NR", mLTextNr)
+            S.AP.SetImportParameter("I_STRING", mLText)
+            S.AP.SetImportParameter("I_UNAME", username)
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -82,16 +81,14 @@ Public NotInheritable Class LongStringToSap
         ClearErrorState()
 
         mLTextNr = ltnr
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_LTEXT_NR", False, mLTextNr})
-            SAPExc.ExecuteERP("Z_BC_LTEXT_DELETE", dt)
+            S.AP.Init("Z_BC_LTEXT_DELETE", "I_LTEXT_NR", mLTextNr)
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -108,29 +105,19 @@ Public NotInheritable Class LongStringToSap
 
         mLTextNr = ltnr
         mLText = ""
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_LTEXT_NR", False, mLTextNr})
-            'ExportParameter
-            dt.Rows.Add(New Object() {"E_STRING"})
-            dt.Rows.Add(New Object() {"E_LTEXT_ID"})
+            S.AP.Init("Z_BC_LTEXT_READ", "I_LTEXT_NR", mLTextNr)
 
-            SAPExc.ExecuteERP("Z_BC_LTEXT_READ", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows = dt.Select("Fieldname='E_STRING'")(0)
-            If Not retRows Is Nothing Then
-                mLText = retRows("Data").ToString
-            End If
-            retRows = dt.Select("Fieldname='E_LTEXT_ID'")(0)
-            If Not retRows Is Nothing Then
-                mLTextID = retRows("Data").ToString
-            End If
+
+            mLText = S.AP.GetExportParameter("E_STRING")
+            mLTextID = S.AP.GetExportParameter("E_LTEXT_ID")
+
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
@@ -142,25 +129,21 @@ Public NotInheritable Class LongStringToSap
         ClearErrorState()
 
         mLText = Text
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_STRING", False, mLText})
-            dt.Rows.Add(New Object() {"I_LTEXT_ID", False, TextID}) '"UMLT"
-            dt.Rows.Add(New Object() {"I_UNAME", False, username})
+            S.AP.Init("Z_BC_LTEXT_INSERT")
 
-            dt.Rows.Add(New Object() {"E_LTEXT_NR", True})
-            SAPExc.ExecuteERP("Z_BC_LTEXT_INSERT", dt)
+            S.AP.SetImportParameter("I_STRING", mLText)
+            S.AP.SetImportParameter("I_LTEXT_ID", TextID)
+            S.AP.SetImportParameter("I_UNAME", username)
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows = dt.Select("Fieldname='E_LTEXT_NR'")(0)
-            If Not retRows Is Nothing Then
-                mLTextNr = retRows("Data").ToString
-            End If
+
+            mLTextNr = S.AP.GetExportParameter("E_LTEXT_NR")
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)

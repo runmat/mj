@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 
 namespace TimeRegistration
 {
@@ -7,7 +8,6 @@ namespace TimeRegistration
     {
         private string _sVon;
         private string _sBis;
-        private bool _bOffen;
         private DataTable _dtKopf;
         private DataTable _dtPos;
         private DataTable _dtPosIn;
@@ -17,11 +17,8 @@ namespace TimeRegistration
         private readonly string _strRuestAbrechnung = TimeRegistrator.TranslateRuestzeiten(TimeRegistrator.TimeRuest.Abrechnung);
         private readonly string _strRuestEinzahlung = TimeRegistrator.TranslateRuestzeiten(TimeRegistrator.TimeRuest.Einzahlung);
         private readonly string _strRuestAbrechnungEinzahlung = TimeRegistrator.TranslateRuestzeiten(TimeRegistrator.TimeRuest.Abrechnung_Einzahlung);
-        //private string strÖffnungszeit = TimeRegistrator.TranslateRuestzeiten(TimeRegistrator.TimeRuest.Öffnungszeit);
-        //private string strÖffnungszeitOhneRuest = TimeRegistrator.TranslateRuestzeiten(TimeRegistrator.TimeRuest.ÖffnungszeitOhneRüstzeit);
 
         private DataRow _rLastRow;
-
 
         #region Properties
         
@@ -35,11 +32,6 @@ namespace TimeRegistration
             get { return _sBis; }
         }
 
-        public bool OffenePositionen
-        {
-            get { return _bOffen; }
-        }
-
         public DataTable Kopftabelle
         {
             get {return _dtKopf ;}
@@ -50,11 +42,6 @@ namespace TimeRegistration
             get { return _dtPos; }
         }
 
-        //public TimeRegistrator.TimeAction LastAction
-        //{
-        //    get { return m_LastAction; }
-        //}
-
         #endregion
 
         #region Constructors
@@ -64,7 +51,6 @@ namespace TimeRegistration
         /// </summary>
         /// <param name="kopftabelle"></param>
         /// <param name="positionstabelle"></param>
-        /// <param name="bOffen"></param>
         public TimeOverview(DataTable kopftabelle,DataTable positionstabelle)
         {
            initTimeOverview(kopftabelle, positionstabelle);
@@ -77,7 +63,6 @@ namespace TimeRegistration
         /// <param name="positionstabelle"></param>
         /// <param name="vdate">Von</param>
         /// <param name="bdate">Bis</param>
-        /// <param name="bOffen"></param>
         public TimeOverview(DataTable kopftabelle, DataTable positionstabelle,string vdate, string bdate)
         {
             _sVon = vdate;
@@ -86,7 +71,6 @@ namespace TimeRegistration
         }
 
         #endregion
-
 
         #region "Öffentliche Funktionen"
 
@@ -126,7 +110,7 @@ namespace TimeRegistration
         /// <returns>Liefert null falls noch kein Eintrag vorliegt</returns>
         public DataRow getLastActionRow(string bedienernummer)
         {
-            DataRow[] rows = _dtPosIn.Select("BD_NR='" + bedienernummer + "' AND BUDATE='" + SAPExecutor.SAPExecutor.MakeSAPDate(DateTime.Today) + "'");
+            DataRow[] rows = _dtPosIn.Select("BD_NR='" + bedienernummer + "' AND BUDATE='" + DateTime.Today.ToString("yyyyMMdd") + "'");
             
             if (rows.Length == 0)
             {
@@ -181,25 +165,16 @@ namespace TimeRegistration
             _dtPos = positionstabelle.Copy();
             _dtPosIn = positionstabelle;
 
-            //// # Positionsnummern für Sortierung aufarbeiten
-            //m_dtPos.Columns.Add("Position");
-            //foreach (DataRow row in m_dtPos.Rows)
-            //{
-            //    row["Position"] = int.Parse(row["POSNR"].ToString());
-            //}
-            //m_dtPos.AcceptChanges();
-            //// #
-
             // Web-Tabellenstruktur anlegen
             _dtWeb = new DataTable();
-            _dtWeb.Columns.Add("BD_NR", Type.GetType("System.String"));
-            _dtWeb.Columns.Add("Tag", Type.GetType("System.DateTime"));
-            _dtWeb.Columns.Add("Kommen", Type.GetType("System.String"));
-            _dtWeb.Columns.Add("Gehen", Type.GetType("System.String"));
-            _dtWeb.Columns.Add("Arbeitszeit", Type.GetType("System.String"));
-            _dtWeb.Columns.Add("RÖffnung", Type.GetType("System.Boolean"));
-            _dtWeb.Columns.Add("RAbrechnung", Type.GetType("System.Boolean"));
-            _dtWeb.Columns.Add("REinzahlung", Type.GetType("System.Boolean"));
+            _dtWeb.Columns.Add("BD_NR", typeof(String));
+            _dtWeb.Columns.Add("Tag", typeof(DateTime));
+            _dtWeb.Columns.Add("Kommen", typeof(String));
+            _dtWeb.Columns.Add("Gehen", typeof(String));
+            _dtWeb.Columns.Add("Arbeitszeit", typeof(String));
+            _dtWeb.Columns.Add("RÖffnung", typeof(bool));
+            _dtWeb.Columns.Add("RAbrechnung", typeof(bool));
+            _dtWeb.Columns.Add("REinzahlung", typeof(bool));
 
             getWebTabelle();
         }
@@ -230,16 +205,12 @@ namespace TimeRegistration
         private void getPositionenZuKopf(string kopfsatzDatum,string bedienernummer)
         {
             var sapDat = kopfsatzDatum.Replace(".","");
-            DataRow[] drPos = _dtPos.Select("BUDATE='" + sapDat + "' AND BD_NR='" + bedienernummer + "'"); //, "Position asc" || "BUZEIT asc"
+            DataRow[] drPos = _dtPos.Select("BUDATE='" + sapDat + "' AND BD_NR='" + bedienernummer + "'");
 
             var strKommenKey = TimeRegistrator.TranslateAction(TimeRegistrator.TimeAction.Kommen);
             var strGehenKey = TimeRegistrator.TranslateAction(TimeRegistrator.TimeAction.Gehen);
 
-            //var iKopfYear = int.Parse(kopfsatzDatum.Substring(0, 4));
-            //var iKopfMonth = int.Parse(kopfsatzDatum.Substring(4, 2));
-            //var iKopfDay = int.Parse(kopfsatzDatum.Substring(6, 2));
-
-            var datBudat = SAPExecutor.SAPExecutor.MakeDateTime(kopfsatzDatum);
+            var datBudat = DateTime.ParseExact(kopfsatzDatum, "yyyyMMdd", CultureInfo.CurrentCulture);
 
             for (int i=0;i<drPos.GetLength(0);i++)
             {
@@ -285,7 +256,7 @@ namespace TimeRegistration
                     if (rowNext != null && rowNext["SATZART"].ToString().Trim() != strGehenKey)
                     {
                         // Gehen der aktuellen WebRow mit Dummy-Wert füllen
-                        webRow["Gehen"] = "00:00";  //new DateTime(iKopfYear, iKopfMonth, iKopfDay, 0, 0, 0);
+                        webRow["Gehen"] = "00:00";
                         // Rüstzeiten füllen
                         webRow["RAbrechnung"] = false;
                         webRow["REinzahlung"] = false;
@@ -297,7 +268,6 @@ namespace TimeRegistration
                         webRow["RAbrechnung"] = CheckRüstzeitAbrechnung(ref rowNext);
                         webRow["REinzahlung"] = CheckRüstzeitEinzahlung(ref rowNext);
                         //Arbeitszeit berechnen
-                        //decimal Arbeitszeit = decimal.Parse(WebRow["Gehen"].ToString().Replace(':', ',')) - decimal.Parse(WebRow["Kommen"].ToString().Replace(':', ','));
                         TimeSpan tsArbeitszeit = DateTime.Parse(webRow["Gehen"].ToString()) - DateTime.Parse(webRow["Kommen"].ToString());
                         if (tsArbeitszeit.Hours < 0)
                         {
@@ -307,7 +277,7 @@ namespace TimeRegistration
                         {
                             string sStunden = tsArbeitszeit.Hours.ToString().PadLeft(2,'0');
                             string sMinuten = tsArbeitszeit.Minutes.ToString().PadLeft(2, '0');
-                            webRow["Arbeitszeit"] = sStunden + ":" + sMinuten;//.ToString().Insert(Arbeitszeit.ToString().Length-2,",");
+                            webRow["Arbeitszeit"] = sStunden + ":" + sMinuten;
                         }
                         // nächste Row überspringen da bereits geparst
                         i++;
@@ -326,7 +296,7 @@ namespace TimeRegistration
                     if (rowBefore == null || rowBefore["SATZART"].ToString().Trim() != strKommenKey)
                     {
                         // Kommen der aktuellen WebRow mit Dummy-Wert füllen
-                        webRow["Kommen"] = "00:00";  //new DateTime(iKopfYear, iKopfMonth, iKopfDay, 0, 0, 0);
+                        webRow["Kommen"] = "00:00";
                         // Rüstzeiten füllen
                         webRow["RÖffnung"] = false;
                     }                   
@@ -373,7 +343,7 @@ namespace TimeRegistration
             {
                 string strRuestKey = row["RUEST"].ToString().Trim();
 
-                if (strRuestKey == _strRuestÖffnung )//|| strRuestKey == strÖffnungszeit || strRuestKey == strÖffnungszeitOhneRuest
+                if (strRuestKey == _strRuestÖffnung )
                 {
                     return true;
                 }
@@ -422,11 +392,6 @@ namespace TimeRegistration
             return false;
         }
         
-        //private object getFirstKommen(ref DataRow[] PosRows)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
 #endregion
     }
 }

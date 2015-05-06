@@ -2,16 +2,10 @@
 {
     public struct PDFPrintObj
     {
-        string _SAPConnectionString;
         string _Kartennummer;
         string _VDate;
         string _BDate;
 
-        public string SAPConnectionString
-        {
-            get{return _SAPConnectionString;}
-        }
-        
         public string Kartennummer 
         {
             get { return _Kartennummer; }
@@ -27,9 +21,8 @@
             get { return _BDate; }
         }
 
-        public PDFPrintObj(string sapconnectionstring,string kartennummer,string vdate, string bdate )
+        public PDFPrintObj(string kartennummer, string vdate, string bdate)
         {
-            _SAPConnectionString = sapconnectionstring;
             _Kartennummer = kartennummer;
             _VDate = vdate;
             _BDate = bdate;

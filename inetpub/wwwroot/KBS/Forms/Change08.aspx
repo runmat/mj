@@ -466,7 +466,7 @@
                                                     <Columns>
                                                         <asp:BoundField DataField="NAME1" HeaderText="Kundenname" />
                                                         <asp:BoundField DataField="CITY1" HeaderText="Ort" />
-                                                        <asp:BoundField DataField="ERDAT" HeaderText="erfasst" />
+                                                        <asp:BoundField DataField="ERDAT" HeaderText="erfasst" DataFormatString="{0:dd.MM.yyyy}" />
                                                         <asp:TemplateField>
                                                             <ItemTemplate>
                                                                 <asp:LinkButton ID="ibAusparkenTable" runat="server" Text="Ausparken" Height="16px"

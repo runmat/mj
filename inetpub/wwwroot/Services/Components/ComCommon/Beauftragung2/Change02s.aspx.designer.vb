@@ -384,6 +384,15 @@ Namespace Beauftragung2
         Protected WithEvents divHalter As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
         '''<summary>
+        '''trAnrede-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trAnrede As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
         '''lblAnrede-Steuerelement
         '''</summary>
         '''<remarks>
@@ -418,6 +427,15 @@ Namespace Beauftragung2
         '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         '''</remarks>
         Protected WithEvents lblAnredeInfo As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''trName-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trName As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
         '''<summary>
         '''lblName-Steuerelement
@@ -463,6 +481,15 @@ Namespace Beauftragung2
         '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         '''</remarks>
         Protected WithEvents lblNameInfo As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''trName2-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trName2 As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
         '''<summary>
         '''lblName2-Steuerelement
@@ -591,6 +618,15 @@ Namespace Beauftragung2
         Protected WithEvents imgGeburtsortNpa As Global.System.Web.UI.WebControls.Image
 
         '''<summary>
+        '''trStrasse-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trStrasse As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
         '''lblStrasse-Steuerelement
         '''</summary>
         '''<remarks>
@@ -661,6 +697,15 @@ Namespace Beauftragung2
         '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         '''</remarks>
         Protected WithEvents lblStrasseInfo As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''trOrt-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trOrt As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
         '''<summary>
         '''lblOrt-Steuerelement

@@ -5,7 +5,6 @@ using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
-using GeneralTools.Services;
 
 namespace CkgDomainLogic.Equi.ViewModels
 {
@@ -45,9 +44,6 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             SelektionsfilterLagerbestand = selfilterLagerbestand;
             SelektionsfilterTempVersendete = selfilterTempVersendete;
-
-            DataService.DatenFilter.SelektionsfilterReferenz1 = ApplicationConfiguration.GetApplicationConfigValue("FilterReferenz1", 
-                CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
         }
 
         public void MarkForRefreshFahrzeugbriefeFiltered()
