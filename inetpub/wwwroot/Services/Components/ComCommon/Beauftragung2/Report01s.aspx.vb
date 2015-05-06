@@ -166,12 +166,6 @@ Namespace Beauftragung2
         Private Function ValidateError() As Boolean
             Dim booError = False
 
-            'Kunde prüfen (Pflichtfeld)
-            If ddlKunde.SelectedValue = "0" Then
-                SetErrBehavior(txtKunnr, lblKundeInfo, "Ungültige Kundenauswahl.")
-                booError = True
-            End If
-
             'Zulassungsdatum prüfen
             If txtZulDatumVon.Text.Length > 0 Then
                 If IsDate(txtZulDatumVon.Text) = False Then
@@ -181,6 +175,10 @@ Namespace Beauftragung2
                     SetErrBehavior(txtZulDatumBis, lblZulDatumBisInfo, "Datum nicht gesetzt.")
                     booError = True
                 End If
+            ElseIf ddlKunde.SelectedValue = "0" Then
+                SetErrBehavior(txtKunnr, lblKundeInfo, "Bitte Kunde oder Zeitraum wählen.")
+                SetErrBehavior(txtZulDatumVon, lblZulDatumVonInfo, "Bitte Kunde oder Zeitraum wählen.")
+                booError = True
             End If
 
             If txtZulDatumBis.Text.Length > 0 Then
