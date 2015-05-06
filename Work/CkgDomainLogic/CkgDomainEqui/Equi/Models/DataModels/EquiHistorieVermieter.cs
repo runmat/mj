@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using GeneralTools.Models;
+using GeneralTools.Resources;
+
+namespace CkgDomainLogic.Equi.Models
+{
+    public class EquiHistorieVermieter
+    {
+        [LocalizedDisplay(LocalizeConstants.Manufacturer)]
+        public string Hersteller { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Model)]
+        public string Modell { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ColorCode)]
+        public string Farbcode { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string FarbeText
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(Farbcode))
+                    return Farbe;
+
+                return String.Format("{0} ({1})", Farbe, Farbcode);
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.ZB2No)]
+        public string BriefNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FirstRegistration)]
+        public DateTime? Erstzulassungsdatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Cancellation)]
+        public DateTime? Abmeldedatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ContractNo)]
+        public string VertragsNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        public string Referenz1 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        public string Referenz2 { get; set; }
+
+        public EquiHistorieInfoVermieter HistorieInfo { get; set; }
+
+        public EquiEinsteuerung Einsteuerungsdaten { get; set; }
+
+        public EquiAussteuerung Aussteuerungsdaten { get; set; }
+
+        public EquiTypdaten Typdaten { get; set; }
+
+        public List<EquiMeldungsdaten> LebenslaufZb2 { get; set; }
+
+        public List<EquiMeldungsdaten> LebenslaufFsm { get; set; }
+
+        public List<EquiTueteninhalt> InhalteFsm { get; set; } 
+    }
+}

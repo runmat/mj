@@ -29,14 +29,14 @@ namespace ServicesMvc.Controllers
 
             EquiGrunddatenViewModel.CheckInput(ModelState.AddModelError);
 
-            if (ModelState.IsValid && !PersistableMode)
+            if (ModelState.IsValid)
             {
                 EquiGrunddatenViewModel.LoadEquis();
                 if (EquiGrunddatenViewModel.GrunddatenEquis.None())
                     ModelState.AddModelError(String.Empty, Localize.NoDataFound);
             }
 
-            return PersistablePartialView("Bestand/EquiSuche", EquiGrunddatenViewModel.Selektor);
+            return PartialView("Bestand/EquiSuche", EquiGrunddatenViewModel.Selektor);
         }
 
         [HttpPost]

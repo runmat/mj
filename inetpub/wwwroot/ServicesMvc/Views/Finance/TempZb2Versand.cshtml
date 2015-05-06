@@ -1,0 +1,83 @@
+﻿@using CkgDomainLogic.Finance.ViewModels
+@model TempZb2VersandViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Finance_TempZb2Versand <small></small></h3>
+
+<style type="text/css">
+    
+</style>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("MahnwesenTempZb2Versand/TempZb2VersandSuche", null)
+    }
+</div>
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divTempZb2VersandGrid"></div>
+}
+
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        $("#TempZb2VersandForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        $("#divTempZb2VersandSuche").css("hide");
+        FormPrepareAjax();
+    }
+
+    function ShowTempZb2Versand() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowTempZb2Versand",
+            loadingShow: false,
+            success: function (result) {
+                //SearchResultsTryHide();
+                ShowTempZb2VersandSearchResult(result);                
+                LoadingHide();
+            }
+        });
+    }
+
+    function OnDataBound_TempZb2VersandGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnLoad_TempZb2VersandGrid() {        
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_TempZb2VersandGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_TempZb2VersandGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowTempZb2VersandSearchResult(result) {
+        SearchFormHide();
+        $("#divTempZb2VersandGrid").html(result);
+
+        GridAllColumnFilterApplyToGrid("TempZb2VersandGrid");
+        $("#divTempZb2VersandGrid").slideDown();
+    }
+
+    
+
+   
+
+</script>
