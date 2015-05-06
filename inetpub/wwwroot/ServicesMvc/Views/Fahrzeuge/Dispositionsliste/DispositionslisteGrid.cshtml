@@ -1,0 +1,42 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+
+@{  
+    var gridName = "DispositionslisteGrid";
+    var gridGroupFooterTemplate = "<strong>∑ <#= $.telerik.formatString('{0}', Sum) #></strong>";    
+ }
+
+@(Html.Telerik()
+    .Grid<Dispositionsliste>()
+    .Name(gridName)   
+    .XAjaxDataBinding("DispositionslisteAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+
+        columns.XBound(c => c.Zulassungsdatum);
+        columns.XBound(c => c.PDINummer);
+        columns.XBound(c => c.PDIBezeichnung);
+        columns.XBound(c => c.ModellCode);
+        columns.XBound(c => c.Modellbezeichnung);
+        columns.XBound(c => c.Hersteller);
+                        
+        columns.XBound(c => c.Anzahl).Format("{0}")
+               .Aggregate(aggreages => aggreages.Sum())
+               .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+
+        columns.XBound(c => c.KennzeichenVon);
+        columns.XBound(c => c.KennzeichenBis);
+        
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Zulassungsdatum).Descending())
+    .XToolBar("Fahrzeuge")
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportDispositionslisteFilteredExcel", "Fahrzeuge");
+            commands.FilteredDataCommand("ExportDispositionslisteFilteredPDF", "Fahrzeuge");
+        })
+        .Groupable(g => g.Groups(gr => gr.Add(gp => gp.Zulassungsdatum)))
+)
+

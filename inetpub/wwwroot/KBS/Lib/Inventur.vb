@@ -1,10 +1,11 @@
-﻿
+﻿Imports KBSBase
+Imports GeneralTools.Models
+
 Public Class Inventur
+    Inherits ErrorHandlingClass
 
 #Region "Declarations"
 
-    Protected mE_SUBRC As Integer
-    Protected mE_MESSAGE As String
     Protected mProduktierarchie As DataTable
     Protected mInvMaterialien As DataTable
     Protected mMatEAN As DataTable
@@ -21,7 +22,6 @@ Public Class Inventur
     Protected mstrKunnrUtschFiliale As String
     Dim mHistorie As DataTable
     Dim mHistorieLength As Integer
-    Dim SAPExc As SAPExecutor.SAPExecutor
 
 #End Region
 
@@ -33,24 +33,6 @@ Public Class Inventur
         End Get
         Set(ByVal value As String)
             mstrKunnrUtschFiliale = value
-        End Set
-    End Property
-
-    Public Property E_SUBRC() As Integer
-        Get
-            Return mE_SUBRC
-        End Get
-        Set(ByVal Value As Integer)
-            mE_SUBRC = Value
-        End Set
-    End Property
-
-    Public Property E_MESSAGE() As String
-        Get
-            Return mE_MESSAGE
-        End Get
-        Set(ByVal Value As String)
-            mE_MESSAGE = Value
         End Set
     End Property
 
@@ -222,12 +204,7 @@ Public Class Inventur
             Return True
         Else
             If getEANFromSAPERP(EAN, Materialnummer, Artikelbezeichnung) Then
-                If E_MESSAGE.Length > 0 Then
-                    Return False
-                Else
-                    Return True
-                End If
-
+                Return Not ErrorOccured
             Else
                 Return False
             End If
@@ -242,283 +219,211 @@ Public Class Inventur
     End Function
 
     Public Sub FillProdukthierarchieERP()
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
+
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_VKORG", False, mMyKasse.Werk})
-            dt.Rows.Add(New Object() {"I_VKBUR", False, mMyKasse.Lagerort})
-            dt.Rows.Add(New Object() {"I_INVDAT", False, Now.ToShortDateString})
-            dt.Rows.Add(New Object() {"I_COCKPIT", False, ""})
-            'Exportparameter
-            dt.Rows.Add(New Object() {"E_INVBELNR", True})
-            dt.Rows.Add(New Object() {"E_INVTYP", True})
-            dt.Rows.Add(New Object() {"E_INVDAT", True})
-            dt.Rows.Add(New Object() {"GT_PRODH", True})
+            S.AP.Init("Z_FIL_EFA_INV_GET_PRODH")
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_INV_GET_PRODH", dt)
+            S.AP.SetImportParameter("I_VKORG", mMyKasse.Werk)
+            S.AP.SetImportParameter("I_VKBUR", mMyKasse.Lagerort)
+            S.AP.SetImportParameter("I_INVDAT", DateTime.Now.ToShortDateString())
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_PRODH'")(0)
-            If Not retRows Is Nothing Then
-                mProduktierarchie = DirectCast(retRows("Data"), DataTable)
-            End If
-            retRows = dt.Select("Fieldname='E_INVTYP'")(0)
-            If Not retRows Is Nothing Then
-                mInvTyp = retRows("Data").ToString
-            End If
-            retRows = dt.Select("Fieldname='E_INVBELNR'")(0)
-            If Not retRows Is Nothing Then
-                mInvBelegNr = retRows("Data").ToString
-            End If
-            retRows = dt.Select("Fieldname='E_INVDAT'")(0)
-            If Not retRows Is Nothing Then
-                mInvDat = retRows("Data").ToString
-            End If
+
+            mProduktierarchie = S.AP.GetExportTable("GT_PRODH")
+            mInvTyp = S.AP.GetExportParameter("E_INVTYP")
+            mInvBelegNr = S.AP.GetExportParameter("E_INVBELNR")
+            mInvDat = S.AP.GetExportParameter("E_INVDAT")
+
         Catch ex As Exception
-            mE_SUBRC = -9999
-            mE_MESSAGE = "Es ist ein Fehler aufgetreten: " & ex.Message
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
     End Sub
 
     Public Sub FillInventurMaterialienERP()
+        ClearErrorState()
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_VKORG", False, mMyKasse.Werk})
-            dt.Rows.Add(New Object() {"I_VKBUR", False, mMyKasse.Lagerort})
-            dt.Rows.Add(New Object() {"I_PRODH", False, mProdHNr})
-            dt.Rows.Add(New Object() {"I_INVBELNR", False, mInvBelegNr})
-            'Exportparameter
-            dt.Rows.Add(New Object() {"E_KUNNR", True})
-            dt.Rows.Add(New Object() {"GT_MAT", True})
+            S.AP.Init("Z_FIL_EFA_INV_GET_MATERIAL")
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_INV_GET_MATERIAL", dt)
+            S.AP.SetImportParameter("I_VKORG", mMyKasse.Werk)
+            S.AP.SetImportParameter("I_VKBUR", mMyKasse.Lagerort)
+            S.AP.SetImportParameter("I_PRODH", mProdHNr)
+            S.AP.SetImportParameter("I_INVBELNR", mInvBelegNr)
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_MAT'")(0)
-            If Not retRows Is Nothing Then
-                mInvMaterialien = DirectCast(retRows("Data"), DataTable)
-                mInvMaterialien.Columns.Add("Delete")
-                For Each drow As DataRow In mInvMaterialien.Rows
-                    drow("MATNR") = drow("MATNR").ToString.TrimStart("0"c)
-                    If IsNumeric(drow("ERFMG").ToString) Then
-                        drow("ERFMG") = CInt(drow("ERFMG")).ToString
-                    Else
-                        drow("ERFMG") = "0"
-                    End If
-                    drow("Delete") = False
-                Next
-            End If
-            mstrKunnrUtschFiliale = ""
-            retRows = dt.Select("Fieldname='E_KUNNR'")(0)
-            If Not retRows Is Nothing Then
-                mstrKunnrUtschFiliale = retRows("Data").ToString
-            End If
+
+            mInvMaterialien = S.AP.GetExportTable("GT_MAT")
+            mInvMaterialien.Columns.Add("Delete")
+            For Each drow As DataRow In mInvMaterialien.Rows
+                drow("MATNR") = drow("MATNR").ToString.TrimStart("0"c)
+                If IsNumeric(drow("ERFMG").ToString) Then
+                    drow("ERFMG") = CInt(drow("ERFMG")).ToString
+                Else
+                    drow("ERFMG") = "0"
+                End If
+                drow("Delete") = False
+            Next
+
+            mstrKunnrUtschFiliale = S.AP.GetExportParameter("E_KUNNR")
 
         Catch ex As Exception
-            mE_SUBRC = -9999
-            mE_MESSAGE = "Es ist ein Fehler aufgetreten: " & ex.Message
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub SetMengeMaterialERP()
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
+
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_VKORG", False, mMyKasse.Werk})
-            dt.Rows.Add(New Object() {"I_VKBUR", False, mMyKasse.Lagerort})
-            dt.Rows.Add(New Object() {"I_INVBELNR", False, mInvBelegNr})
-            dt.Rows.Add(New Object() {"GT_ZAEHLUNG", False, mZaehlung})
+            S.AP.Init("Z_FIL_EFA_INV_SET_MNG")
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_INV_SET_MNG", dt)
+            S.AP.SetImportParameter("I_VKORG", mMyKasse.Werk)
+            S.AP.SetImportParameter("I_VKBUR", mMyKasse.Lagerort)
+            S.AP.SetImportParameter("I_INVBELNR", mInvBelegNr)
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            Dim tblSap As DataTable = S.AP.GetImportTable("GT_ZAEHLUNG")
+
+            For Each dRow As DataRow In mZaehlung.Rows
+                Dim newRow As DataRow = tblSap.NewRow()
+                newRow("MATNR") = dRow("MATNR")
+                newRow("ERFMG") = dRow("ERFMG")
+                tblSap.Rows.Add(newRow)
+            Next
+
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            mE_SUBRC = -9999
-            mE_MESSAGE = "Es ist ein Fehler aufgetreten: " & ex.Message
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
     End Sub
 
     Private Function getEANFromSAPERP(ByVal EAN As String, ByRef Materialnummer As String, ByRef Artikelbezeichnung As String) As Boolean
+        ClearErrorState()
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_EAN11", False, Left(EAN, 13)})
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mMyKasse.Lagerort})
-            dt.Rows.Add(New Object() {"I_PRODH", False, ProdHNr})
-            'Exportparameter
-            dt.Rows.Add(New Object() {"E_MATNR", True})
-            dt.Rows.Add(New Object() {"E_MAKTX", True})
+            S.AP.Init("Z_FIL_READ_MATNR_001")
 
-            SAPExc.ExecuteERP("Z_FIL_READ_MATNR_001", dt)
+            S.AP.SetImportParameter("I_EAN11", Left(EAN, 13))
+            S.AP.SetImportParameter("I_KOSTL", mMyKasse.Lagerort)
+            S.AP.SetImportParameter("I_PRODH", ProdHNr)
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            If E_SUBRC = 103 Then
-                E_MESSAGE = "Artikel kann nicht hinzugefügt werden, da er für Ihre Filiale gelöscht oder nicht angelegt ist. " & _
-                            "Bitte wenden Sie sich an die Firmenzentrale, Abteilung Einkauf."
+
+            If ErrorCode = "103" Then
+                RaiseError("103", "Artikel kann nicht hinzugefügt werden, da er für Ihre Filiale gelöscht oder nicht angelegt ist. " & _
+                            "Bitte wenden Sie sich an die Firmenzentrale, Abteilung Einkauf.")
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='E_MATNR'")(0)
-            If Not retRows Is Nothing Then
-                Materialnummer = retRows("Data").ToString
-                If Not Materialnummer.Trim(" ") = String.Empty Then
-                    retRows = dt.Select("Fieldname='E_MAKTX'")(0)
-                    Artikelbezeichnung = retRows("Data").ToString
-                    Return True
-                Else
-                    Return False
-                End If
+
+            Materialnummer = S.AP.GetExportParameter("E_MATNR")
+            If Not String.IsNullOrEmpty(Materialnummer) Then
+                Artikelbezeichnung = S.AP.GetExportParameter("E_MAKTX")
+                Return True
+            Else
+                Return False
             End If
 
         Catch ex As Exception
-            mE_SUBRC = -9999
-            mE_MESSAGE = "Es ist ein Fehler aufgetreten: " & ex.Message
+            RaiseError("9999", ex.Message)
             Return False
-        Finally
-
         End Try
     End Function
 
     Public Sub SetInventurEndERP()
+        ClearErrorState()
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_INVBELNR", False, mInvBelegNr})
-            dt.Rows.Add(New Object() {"I_VKORG", False, mMyKasse.Werk})
-            dt.Rows.Add(New Object() {"I_VKBUR", False, mMyKasse.Lagerort})
-            dt.Rows.Add(New Object() {"I_INVDAT", False, Now.ToShortDateString})
+            S.AP.Init("Z_FIL_EFA_INV_SET_INV")
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_INV_SET_INV", dt)
+            S.AP.SetImportParameter("I_INVBELNR", mInvBelegNr)
+            S.AP.SetImportParameter("I_VKORG", mMyKasse.Werk)
+            S.AP.SetImportParameter("I_VKBUR", mMyKasse.Lagerort)
+            S.AP.SetImportParameter("I_INVDAT", DateTime.Now.ToShortDateString())
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            mE_SUBRC = -9999
-            mE_MESSAGE = "Es ist ein Fehler aufgetreten: " & ex.Message
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
     End Sub
 
     Public Shadows Sub SetMengeMaterialKBSERP(ByVal MATNR As String, ByVal Menge As Integer, ByVal ADD As String)
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_VKORG", False, mMyKasse.Werk})
-            dt.Rows.Add(New Object() {"I_VKBUR", False, mMyKasse.Lagerort})
-            dt.Rows.Add(New Object() {"I_INVBELNR", False, mInvBelegNr})
-            dt.Rows.Add(New Object() {"I_MATNR", False, MATNR})
-            dt.Rows.Add(New Object() {"I_ERFMG", False, Menge})
-            dt.Rows.Add(New Object() {"I_ADD", False, ADD})
+            S.AP.Init("Z_FIL_EFA_INV_SET_MNG_KBS")
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_INV_SET_MNG_KBS", dt)
+            S.AP.SetImportParameter("I_VKORG", mMyKasse.Werk)
+            S.AP.SetImportParameter("I_VKBUR", mMyKasse.Lagerort)
+            S.AP.SetImportParameter("I_INVBELNR", mInvBelegNr)
+            S.AP.SetImportParameter("I_MATNR", MATNR)
+            S.AP.SetImportParameter("I_ERFMG", Menge)
+            S.AP.SetImportParameter("I_ADD", ADD)
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            mE_SUBRC = -9999
-            mE_MESSAGE = "Es ist ein Fehler aufgetreten: " & ex.Message
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Shadows Function getEANFromSAPKBSERP(ByVal EAN As String, ByRef Materialnummer As String, ByRef Artikelbezeichnung As String, ByRef Menge As String) As Boolean
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_EAN11", False, EAN.TrimStart("0"c)})
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mMyKasse.Lagerort})
-            dt.Rows.Add(New Object() {"I_PRODH", False, ProdHNr})
-            dt.Rows.Add(New Object() {"I_INVBELNR", False, mInvBelegNr})
-            'Exportparameter
-            dt.Rows.Add(New Object() {"E_MATNR", True})
-            dt.Rows.Add(New Object() {"E_MAKTX", True})
-            dt.Rows.Add(New Object() {"E_ERFMG", True})
+            S.AP.Init("Z_FIL_READ_MATNR_KBS")
 
-            SAPExc.ExecuteERP("Z_FIL_READ_MATNR_KBS", dt)
+            S.AP.SetImportParameter("I_EAN11", EAN.TrimStart("0"c))
+            S.AP.SetImportParameter("I_KOSTL", mMyKasse.Lagerort)
+            S.AP.SetImportParameter("I_PRODH", ProdHNr)
+            S.AP.SetImportParameter("I_INVBELNR", mInvBelegNr)
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            S.AP.Execute()
+
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim retRows As DataRow = dt.Select("Fieldname='E_MATNR'")(0)
-
-            If Not retRows Is Nothing Then
-                Materialnummer = retRows("Data").ToString
-                If Not Materialnummer.Trim(" ") = String.Empty Then
-                    retRows = dt.Select("Fieldname='E_MAKTX'")(0)
-                    Artikelbezeichnung = retRows("Data").ToString
-                    retRows = dt.Select("Fieldname='E_ERFMG'")(0)
-                    If IsNumeric(retRows("Data").ToString) Then
-                        Menge = retRows("Data").ToString
-                    Else
-                        Menge = "0"
-                    End If
-                    Return True
-                Else
-                    Return False
+            Materialnummer = S.AP.GetExportParameter("E_MATNR")
+            If Not String.IsNullOrEmpty(Materialnummer) Then
+                Artikelbezeichnung = S.AP.GetExportParameter("E_MAKTX")
+                Menge = S.AP.GetExportParameter("E_ERFMG")
+                If Not Menge.IsNumeric Then
+                    Menge = "0"
                 End If
+                Return True
+            Else
+                Return False
             End If
-        Catch ex As Exception
-            mE_MESSAGE = "Fehler in der Funktion getEANFromSAPKBS!"
-            Return False
-        Finally
-        End Try
 
+        Catch ex As Exception
+            RaiseError("9999", ex.Message)
+            Return False
+        End Try
     End Function
 
 End Class

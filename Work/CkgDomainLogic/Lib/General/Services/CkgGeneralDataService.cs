@@ -36,6 +36,8 @@ namespace CkgDomainLogic.General.Services
 
         public List<FahrzeugStatus> FahrzeugStatusWerte { get { return null; } }
 
+        public List<Hersteller> Hersteller { get { return new List<Hersteller>();} }
+
         #endregion
 
 

@@ -27,7 +27,12 @@ namespace ServicesMvc.Controllers
             IFinanceMahnstopDataService mahnstopDataService,
             IFinanceAnzeigePruefpunkteDataService anzeigePruefpunkteDataService, 
             IFinancePruefschritteDataService pruefschritteDataService,
-            IFinanceMahnungenVorErsteingangDataService mahnungenVorErsteingangDataService)
+            IFinanceMahnungenVorErsteingangDataService mahnungenVorErsteingangDataService,
+            IFinanceTempZb2VersandDataService tempZb2VersandDataService,
+            IFinanceTempZb2VersandZweitschluesselDataService tempZb2VersandZweitschluesselService,
+            IFinanceFehlendeSchluesseltueteDataService tempFehlendeSchluesseltueteDataService,
+            IFinanceCarporteingaengeOhneEHDataService tempCarporteingaengeOhneEHDataService
+            )
             : base(appSettings, logonContext)
         {
             InitViewModel(AktivcheckViewModel, appSettings, logonContext, aktivcheckDataService);
@@ -41,6 +46,10 @@ namespace ServicesMvc.Controllers
             InitViewModel(AnzeigePruefpunkteViewModel, appSettings, logonContext, anzeigePruefpunkteDataService);
             InitViewModel(PruefschritteViewModel, appSettings, logonContext, pruefschritteDataService);
             InitViewModel(MahnungenVorErsteingangViewModel, appSettings, logonContext, mahnungenVorErsteingangDataService);
+            InitViewModel(TempZb2VersandViewModel, appSettings, logonContext, tempZb2VersandDataService);
+            InitViewModel(TempVersandZweitschluesselViewModel, appSettings, logonContext, tempZb2VersandZweitschluesselService);
+            InitViewModel(FehlendeSchluesseltueteViewModel, appSettings, logonContext, tempFehlendeSchluesseltueteDataService);
+            InitViewModel(CarporteingaengeOhneEHViewModel, appSettings, logonContext, tempCarporteingaengeOhneEHDataService);                 
         }
 
         public ActionResult Index(string un, string appID)

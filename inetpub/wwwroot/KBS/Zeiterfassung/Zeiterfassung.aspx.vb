@@ -19,8 +19,6 @@ Public Class Zeiterfassung
     End Enum
 
     Private Enum PopUpDialog
-        Fehler
-        Hinweis
         Ruestzeit_Kommen
         Ruestzeit_Gehen
     End Enum
@@ -53,13 +51,12 @@ Public Class Zeiterfassung
         Title = lblHead.Text
 
         ' SAP Zeit holen
-        lblServerzeit.Text = TimeRegistrator.getServerzeit(SAPConnectionString)
+        lblServerzeit.Text = TimeRegistrator.getServerzeit()
 
         If Not IsPostBack Then
             If TypeOf (Session("LastPage")) Is ÜbersichtZeiten Then
                 If Not Session("TimeReg") Is Nothing Then
                     TimeReg = Session("TimeReg")
-                    lblServerzeit.Text = TimeReg.getServerzeit()
                     ViewControl(ViewStatus.Zeiterfassung)
                 End If
             Else
@@ -73,9 +70,6 @@ Public Class Zeiterfassung
 
             If Not Session("TimeReg") Is Nothing Then
                 TimeReg = Session("TimeReg")
-
-                ' Serverzeit abgleichen
-                lblServerzeit.Text = TimeReg.getServerzeit()
                 ViewControl(ViewStatus.Zeiterfassung)
             Else
                 ViewControl(ViewStatus.Bedienerkarte)
@@ -135,7 +129,7 @@ Public Class Zeiterfassung
         If CheckBedienerKarte() Then
             Dim tru As TimeRegUser
             Try
-                tru = New TimeRegUser(strBedienernummer, SAPConnectionString)
+                tru = New TimeRegUser(strBedienernummer)
             Catch ex As Exception
                 ShowPopUp("Fehler!", "TimRegUser-Objekt konnte nicht erzeugt werden.", MessageType.ErrorText)
                 Exit Sub
@@ -209,7 +203,7 @@ Public Class Zeiterfassung
                     TimeReg = New TimeRegistrator(CType(Session("TimeRegUser"), TimeRegUser), mObjKasse.Lagerort)
                 Else
                     If strBedienernummer IsNot Nothing Or strBedienernummer <> "" Then
-                        Dim TiReUs As New TimeRegUser(strBedienernummer, SAPConnectionString)
+                        Dim TiReUs As New TimeRegUser(strBedienernummer)
                         TimeReg = New TimeRegistrator(TiReUs, mObjKasse.Lagerort)
                         Session("TimeReg") = TimeReg
                         Session("TimeRegUser") = TiReUs
@@ -227,7 +221,7 @@ Public Class Zeiterfassung
         If TimeReg.GetLastAction = timeAction Then
             Dim row As DataRow = TimeReg.GetLastActionRow()
 
-            If CInt(row("BUZEIT")) + 1000 > CInt(TimeReg.getServerzeitAsBUZEIT()) Then
+            If CInt(row("BUZEIT")) + 1000 > CInt(TimeRegistrator.getServerzeit(True)) Then
                 If timeAction = TimeRegistrator.TimeAction.Kommen Then
                     ShowPopUp("Kommen-Zeit kann nicht gebucht werden!", "Für den heutigen Tag wurde bereits eine Kommen-Zeit erfasst,<br/>" &
                                 "diese finden Sie in der Übersicht Stempelzeiten.<br/><br/>" &
@@ -409,7 +403,7 @@ Public Class Zeiterfassung
                     Dim strStampTime As String = TimeReg.doStampTime(TimeRegistrator.TimeAction.Kommen, CheckRuestzeitSelected())
                     If TimeReg.ErrorOccured Then
                         LastCheckpoint = "TimeReg.ErrorOccured Kommen"
-                        Dim ErrorText As String = ""
+                        Dim ErrorText As String
 
                         If Not TimeReg.ErrorTable Is Nothing Then
                             Dim highestErrorState As MessageType = MessageType.FlatText
@@ -460,7 +454,7 @@ Public Class Zeiterfassung
                     Dim strStampTime As String = TimeReg.doStampTime(TimeRegistrator.TimeAction.Gehen, CheckRuestzeitSelected())
                     If TimeReg.ErrorOccured Then
                         LastCheckpoint = "TimeReg.ErrorOccured Gehen"
-                        Dim ErrorText As String = ""
+                        Dim ErrorText As String
                         If Not TimeReg.ErrorTable Is Nothing Then
                             Dim SB As StringBuilder = New StringBuilder()
                             For Each row As DataRow In TimeReg.ErrorTable.Rows
@@ -491,7 +485,7 @@ Public Class Zeiterfassung
     End Sub
 
     Protected Sub timServerzeit_Tick(sender As Object, e As EventArgs) Handles timServerzeit.Tick
-        lblServerzeit.Text = TimeRegistrator.getServerzeit(SAPConnectionString)
+        lblServerzeit.Text = TimeRegistrator.getServerzeit()
     End Sub
 
     Protected Sub btnÜbersicht_Click(sender As Object, e As EventArgs) Handles btnÜbersicht.Click
@@ -518,7 +512,7 @@ Public Class Zeiterfassung
                 Dim Bdate As String = split(0) + split(1).PadLeft(2, "0"c) + "30"
 
                 Try
-                    Session("PDFPrintObj") = New PDFPrintObj(TimeReg.SAPConnectionString, TimeReg.User.Kartennummer, Vdate, Bdate)
+                    Session("PDFPrintObj") = New PDFPrintObj(TimeReg.User.Kartennummer, Vdate, Bdate)
                     Response.Redirect("PDFZeitnachweise.aspx", False)
                 Catch ex As Exception
                     Session("PDFPrintObj") = Nothing

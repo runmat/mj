@@ -21,6 +21,8 @@ namespace CkgDomainLogic.General.Contracts
 
         List<FahrzeugStatus> FahrzeugStatusWerte { get; }
 
+        List<Hersteller> Hersteller { get; }
+
         string ToDataStoreKundenNr(string kundenNr);
 
         string GetZulassungskreisFromPostcodeAndCity(string postCode, string city);

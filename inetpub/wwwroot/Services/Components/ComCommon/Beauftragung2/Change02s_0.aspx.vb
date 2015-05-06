@@ -46,7 +46,7 @@ Namespace Beauftragung2
             End Try
         End Sub
 
-        Private Sub btnDummy_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles btnDummy.Click
+        Private Sub btnDummy_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnDummy.Click
             LadeVorgaenge()
         End Sub
 
@@ -74,7 +74,7 @@ Namespace Beauftragung2
             Select Case e.CommandName
 
                 Case "Bearbeiten"
-                    mBeauftragung.LoadAutohausVorgangDetails(e.CommandArgument, Me.Page)
+                    mBeauftragung.LoadAutohausVorgangDetails(e.CommandArgument, Me)
                     If mBeauftragung.Status = 0 Then
                         Session("mBeauftragung2") = mBeauftragung
                         Response.Redirect("/Services/(S(" & Session.SessionID & "))/Components/ComCommon/Beauftragung2/Change02s.aspx?AppID=" & Session("AppID").ToString)
@@ -83,7 +83,7 @@ Namespace Beauftragung2
                     End If
 
                 Case "Zuruecksetzen"
-                    mBeauftragung.ResetAutohausVorgang(e.CommandArgument, Me.Page)
+                    mBeauftragung.ResetAutohausVorgang(e.CommandArgument, Me)
                     If mBeauftragung.Status = 0 Then
                         LadeVorgaenge()
                     Else
@@ -104,13 +104,13 @@ Namespace Beauftragung2
                 .Verkaufsorganisation = Left(m_User.Reference, 4)
 
                 'Stammdaten laden
-                .Fill(Session("AppID").ToString, Session.SessionID.ToString, Me)
+                .Fill(Me)
                 .FillFarben(Me)
             End With
         End Sub
 
         Private Sub LadeVorgaenge()
-            mBeauftragung.LoadAutohausVorgangListe(txtID.Text, Me.Page)
+            mBeauftragung.LoadAutohausVorgangListe(txtID.Text, Me)
 
             If mBeauftragung.Status = 0 Then
                 FillGrid(0, "")

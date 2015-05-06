@@ -1,0 +1,170 @@
+﻿@using CkgDomainLogic.Finance.ViewModels
+@model FinanceTempVersandZweitschluesselViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Report_TempDuplicateKeyShipping</h3>
+
+<style type="text/css">
+    
+</style>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("VersandZweitschluessel/TempVersandZweitschluesselSuche", null)
+    }
+</div>
+
+@Html.SpanAlert("spanAlertMahnsperre")
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divTempVersandZweitschluesselGrid"></div>
+}
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        $("#TempVersandZweitschluesselForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        $("#divTempVersandZweitschluesselSuche").css("hide");
+        FormPrepareAjax();
+    }
+   
+    function ShowTempVersandZweitschluessel() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowTempVersandZweitschluessel",
+            loadingShow: false,
+            success: function (result) {
+                //SearchResultsTryHide();
+                ShowTempVersandZweitschluesselSearchResult(result);
+               
+                LoadingHide();
+            }
+        });
+    }
+
+    function OnDataBound_TempVersandZweitschluesselGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("TempVersandZweitschluesselGrid");
+    }
+
+    function OnLoad_TempVersandZweitschluesselGrid() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_TempVersandZweitschluesselGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_TempVersandZweitschluesselGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowTempVersandZweitschluesselSearchResult(result) {
+        SearchFormHide();
+        $("#divTempVersandZweitschluesselGrid").html(result);
+
+        GridAllColumnFilterApplyToGrid("TempVersandZweitschluesselGrid");
+        $("#divTempVersandZweitschluesselGrid").slideDown();
+    }
+
+    function SaveMahnsperren() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "SetMahnsperre",
+            loadingShow: false,
+            
+            success: function (result) {
+                ShowTempVersandZweitschluessel();               
+                var successMessage = '@Localize.DeleteSuccessful.ToJavascriptString()';
+                SpanAlertSuccess("spanAlertMahnsperre", successMessage, 1800);
+                FormPreparePrivateAjax();
+            },
+            error: function (result) {
+                SpanAlertWarning("spanAlertMahnsperre", result.data, 5000);
+            }
+        });
+
+        return false;                                    
+    }
+
+
+    function TempVersandZweitschluesselGrid_OnSelectionChange(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { fin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                TempVersandZweitschluesselGrid_MultiSelectUpdate(result.allSelectionCount);
+                //FormWizard.ActionsShow(count > 0);
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    $("#SaveMahnsperren").addClass('hide');               
+                    return;
+                }
+
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');                                                     
+                $("#SaveMahnsperren").removeClass('hide');               
+            }
+        });
+    }
+
+    function TempVersandZweitschluesselGrid_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { fin: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                TempVersandZweitschluesselGrid_MultiSelectUpdate(result.allSelectionCount);
+
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("TempVersandZweitschluesselGrid");
+            }
+        });
+    }
+
+    function TempVersandZweitschluesselGrid_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            $("#SaveMahnsperren").addClass('hide');    
+            return;
+        }
+
+        $("#SaveMahnsperren").removeClass('hide'); 
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }     
+
+
+   
+
+</script>

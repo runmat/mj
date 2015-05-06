@@ -1,0 +1,20 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model FahrzeugvoravisierungSelektor
+    
+<div id="divFahrzeugvoravisierungSuche">    
+      @using (Ajax.BeginForm("ShowFahrzeugvoravisierungSuche", "Fahrzeuge", null,
+        new MvcAjaxOptions("divFahrzeugvoravisierungSuche") { OnComplete = "FormPreparePrivateAjax();" }, new { id = "searchForm" }))
+    {                                                                                            
+        @Html.FormValidationSummary()                       
+                   
+        <div class="form-horizontal">                                                         
+              @Html.FormRadioButtonListFor(m => m.Option, FahrzeugvoravisierungSelektor.Optionen.ToSelectList())                                                                                                                                                                                                                  
+        </div>                                                         
+    }
+</div>
+
+<script type="text/javascript">
+    
+   $(":radio").click(function () { $("#searchForm").submit(); });
+             
+</script>
