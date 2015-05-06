@@ -1,44 +1,35 @@
 ﻿using System;
 using System.Data;
 using System.Web.Configuration;
+using KBSBase;
 
 namespace TimeRegistration
 {
-    public class TimeRegistrator
+    public class TimeRegistrator : ErrorHandlingClass
     {
         #region "global Declarations"
 
-        public enum TimeAction { Kommen, Gehen, NoAction }; //, PauseStart, PauseEnde
-        public enum TimeRuest { Kommen, Abrechnung, Einzahlung, Abrechnung_Einzahlung, KeinSchlüssel } //Öffnungszeit, ÖffnungszeitOhneRüstzeit
+        public enum TimeAction { Kommen, Gehen, NoAction };
+        public enum TimeRuest { Kommen, Abrechnung, Einzahlung, Abrechnung_Einzahlung, KeinSchlüssel }
         public enum TimePlus { Abrechnung, Einzahlung};
         public enum TimeMode { Zeiterfassung,Tagesübersicht,Wochenübersicht,Monatsübersicht};
 
         private TimeRegUser oUser;
         private string strVkBur;
-        private string E_MESSAGE = "";
-        private string E_SUBRC = "0";
-        private DataTable GT_MESSAGE;
-        private bool bError;
-        private  string sConStr;
         private DataTable dtRuest;
         private RuestzeitList lstRuest = new RuestzeitList();
         private bool m_CanDoEinzahlung;
         private bool m_CanDoAbrechnung;
         private bool m_CanDoÖffnung;
-
-        SAPExecutor.SAPExecutor SAPExc;
         
         #endregion
 
-
         #region "Constructors"
 
-        public TimeRegistrator(TimeRegUser user,string verkaufsbüro)
+        public TimeRegistrator(TimeRegUser user, string verkaufsbüro)
         {
             oUser = user;
             strVkBur = verkaufsbüro;
-            sConStr = user.SAPConnectionString;
-            SAPExc = new SAPExecutor.SAPExecutor(sConStr);
 
             // Gebuchte Rüstzeiten neu laden
             getRuestzeiten(strVkBur);
@@ -46,38 +37,11 @@ namespace TimeRegistration
 
         #endregion
 
-
         #region "Properties"
 
         public TimeRegUser User 
         {
-            get {return oUser ;}
-        }
-
-        public string ErrorMessage
-        {
-            get { return E_MESSAGE; }
-        }
-
-        public string ErrorCode
-        {
-            get { return E_SUBRC; }
-        }
-
-        public DataTable ErrorTable
-        {
-            get { return GT_MESSAGE; }
-        }
-
-        public bool ErrorOccured
-        {
-            get { return bError; }
-        }
-
-        public string SAPConnectionString
-        {
-            get { return sConStr; }
-            set { sConStr = value; }
+            get { return oUser; }
         }
 
         public DataTable Ruestzeiten
@@ -107,7 +71,6 @@ namespace TimeRegistration
 
         #endregion
 
-
         #region "Methods"
         
         /// <summary>
@@ -115,71 +78,47 @@ namespace TimeRegistration
         /// </summary>
         /// <param name="action">Die Aktion welche gestempelt werden soll.</param>
         /// <param name="ruestZeitSchluessel">Rüstzeitschlüssel</param>
-        /// <returns>Gibt die in SAP gestempelte Zeit zurück</returns>
-        
+        /// <returns>Gibt die in SAP gestempelte Zeit zurück</returns>   
         public string doStampTime(TimeAction action, TimeRuest ruestZeitSchluessel)
         {
-            ResetError();
+            ClearErrorState();
 
             if (action == TimeAction.NoAction)
             {
-                bError = true;
-                E_SUBRC = "w999";
-                E_MESSAGE = "Es wurde keine gültige Aktion gewählt und daher keine Zeit gebucht!";
+                RaiseError("9999", "Es wurde keine gültige Aktion gewählt und daher keine Zeit gebucht!");
                 return string.Empty;
             }
-            else
+
+            try
             {
-                DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
+                S.AP.Init("Z_HR_ZE_SAVE_POSTING_AUT", "BD_NR, VKBUR", oUser.Kartennummer, strVkBur);
 
-                // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-                //Import-Parameter
-                dt.Rows.Add(new object[] { "BD_NR", false, oUser.Kartennummer, 4 });
-                dt.Rows.Add(new object[] { "VKBUR", false, strVkBur });
-                dt.Rows.Add(new object[] { "SATZART", false, TranslateAction(action) });
-                dt.Rows.Add(new object[] { "RUEST", false, TranslateRuestzeiten(ruestZeitSchluessel) });
+                S.AP.SetImportParameter("SATZART", TranslateAction(action));
+                S.AP.SetImportParameter("RUEST", TranslateRuestzeiten(ruestZeitSchluessel));
+                S.AP.SetImportParameter("ERNAM", (String.IsNullOrEmpty(oUser.Username) ? "Zeiterf" : oUser.Username.Substring(0, Math.Min(12, oUser.Username.Length))));
 
-               
+                S.AP.Execute();
 
-                if (oUser.Username == string.Empty)
-                { dt.Rows.Add(new object[] { "ERNAM", false, "Zeiterf" }); }
-                else
+                if (S.AP.ResultCode != 0)
                 {
-                    String sUserName = oUser.Username;
-                    if (sUserName.Length > 12) sUserName = oUser.Username.Remove(12);
-
-                    dt.Rows.Add(new object[] { "ERNAM", false, sUserName }); 
-                }
-
-                //Export-Parameter
-                dt.Rows.Add(new object[] { "E_BUZEIT", true });
-                dt.Rows.Add(new object[] { "GT_MESSAGE", true });
-               
-                SAPExc.ExecuteERP("Z_HR_ZE_SAVE_POSTING_AUT", ref dt);
-
-                if (SAPExc.ErrorOccured)
-                {
-                    bError = true;
-                    E_SUBRC = SAPExc.E_SUBRC;
-                    E_MESSAGE = SAPExc.E_MESSAGE;
-                    DataRow retRows = dt.Select("Fieldname='GT_MESSAGE'")[0];
-                    if (retRows != null) 
-                    {
-                        GT_MESSAGE = (DataTable)retRows["Data"];
-                    }
-                    
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage, S.AP.GetExportTable("GT_MESSAGE"));
                     return string.Empty;
                 }
+
+                //Auswertung der Export-Parameter
+                var strBuZeit = S.AP.GetExportParameter("E_BUZEIT");
+                strBuZeit = strBuZeit.Insert(2, ":");
+                strBuZeit = strBuZeit.Insert(5, ":");
 
                 // Gebuchte Rüstzeiten neu laden
                 getRuestzeiten(strVkBur);
 
-                //Auswertung der Export-Parameter
-                var strBuZeit = (string)dt.Rows[5]["Data"];
-                strBuZeit = strBuZeit.Insert(2, ":");
-                strBuZeit = strBuZeit.Insert(5, ":");
-
                 return strBuZeit;
+            }
+            catch (Exception ex)
+            {
+                RaiseError("9999", ex.Message);
+                return string.Empty;
             }
         }
 
@@ -198,10 +137,6 @@ namespace TimeRegistration
                     return "01";
                 case TimeAction.Gehen:
                     return "02";
-                /*case TimeAction.PauseStart:
-                   return "P15";
-                case TimeAction.PauseEnde:
-                    return "P25";*/
                 default:
                     return string.Empty;
             }
@@ -220,10 +155,6 @@ namespace TimeRegistration
                     return TimeAction.Kommen;
                 case "02":
                     return TimeAction.Gehen;
-                /*case "P15":
-                    return TimeAction.PauseStart;
-                case "P25":
-                    return TimeAction.PauseEnde;*/
                 default:
                     return TimeAction.NoAction;
             }
@@ -245,11 +176,7 @@ namespace TimeRegistration
                     case TimeRuest.Einzahlung:
                     return "2";                    
                     case TimeRuest.Abrechnung_Einzahlung:
-                    return "3";                    
-                    // case TimeRuest.Öffnungszeit:
-                    //return "4";
-                    // case TimeRuest.ÖffnungszeitOhneRüstzeit:
-                    //return "5";                    
+                    return "3";                                       
                 default:
                     return string.Empty;                       
             }
@@ -272,10 +199,6 @@ namespace TimeRegistration
                     return TimeRuest.Einzahlung;
                 case "3":
                     return TimeRuest.Abrechnung_Einzahlung;
-                //case "4":
-                //    return TimeRuest.Öffnungszeit;
-                //case "5":
-                //    return TimeRuest.ÖffnungszeitOhneRüstzeit;
                 default:
                     return TimeRuest.KeinSchlüssel;
             }
@@ -336,59 +259,52 @@ namespace TimeRegistration
         /// </param>
         public DataTable getRuestzeiten(string vkBur)
         {
-            ResetError();
+            ClearErrorState();
+
             lstRuest.Clear();
 
-            DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
-
-            // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-            dt.Rows.Add(new object[] { "VKBUR", false, vkBur });
-            dt.Rows.Add(new object[] { "GT_RUEST", true });
-           
-            SAPExc.ExecuteERP("Z_HR_ZE_RUESTZ", ref dt);
-
-            if (SAPExc.ErrorOccured)
+            try
             {
-                bError = true;
-                E_SUBRC = SAPExc.E_SUBRC;
-                E_MESSAGE = SAPExc.E_MESSAGE;
-            }
-            else
-            {
-                dtRuest = (DataTable)dt.Rows[1]["Data"];
-                if (dtRuest.Rows.Count > 0)
+                S.AP.Init("Z_HR_ZE_RUESTZ", "VKBUR", vkBur);
+
+                S.AP.Execute();
+
+                if (S.AP.ResultCode == 0)
                 {
-                    string Ruestkey = " ";
-                    string RuestBezeichnung = string.Empty;
-                    string Ruestzeit = string.Empty;
-                    bool RuestMulti = false;
+                    dtRuest = S.AP.GetExportTable("GT_RUEST");
 
-                    foreach (DataRow row in dtRuest.Rows)
+                    if (dtRuest.Rows.Count > 0)
                     {
-                        Ruestkey = row["RUEST"].ToString();
-                        RuestBezeichnung = row["BEZEI"].ToString();
-                        Ruestzeit = row["RZEIT"].ToString();
-                        if (Ruestzeit == "000" || Ruestzeit == string.Empty)
+                        foreach (DataRow row in dtRuest.Rows)
                         {
-                            Ruestzeit = "0";
+                            string Ruestkey = row["RUEST"].ToString();
+                            string RuestBezeichnung = row["BEZEI"].ToString();
+                            string Ruestzeit = row["RZEIT"].ToString();
+
+                            if (String.IsNullOrEmpty(Ruestzeit) || Ruestzeit == "000")
+                                Ruestzeit = "0";
+
+                            string mehrfknz = row["MEHRF"].ToString();
+                            bool RuestMulti = (mehrfknz.ToUpper() == "X");
+
+                            lstRuest.Add(new RuestzeitObj(Ruestkey, RuestBezeichnung, RuestMulti, Ruestzeit));
                         }
-                        
-                        string mehrfknz = row["MEHRF"].ToString();
-                        if (mehrfknz.ToUpper() == "X")
-                        { RuestMulti = true; }
-                        else { RuestMulti = false; }
 
-                        lstRuest.Add(new RuestzeitObj(Ruestkey, RuestBezeichnung, RuestMulti, Ruestzeit));                                               
+                        CheckRuestzeiten();
                     }
-
-                    CheckRuestzeiten();
+                    else
+                    {
+                        RaiseError("9999", "Es konnten keine Rüstzeiten ermittelt werden!");
+                    }
                 }
-                else 
+                else
                 {
-                    bError = true;
-                    E_SUBRC = "w999";
-                    E_MESSAGE = "Es konnten keine Rüstzeiten ermittelt werden!";
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage);
                 }
+            }
+            catch (Exception ex)
+            {
+                RaiseError("9999", ex.Message);
             }
 
             return dtRuest;
@@ -403,31 +319,29 @@ namespace TimeRegistration
         /// <returns>Gibt <c>True</c> zurück, falls bereits Zeiten gebucht sind.</returns>
         private bool CheckRuestzeitenGebucht(string vkBur, string ruestzeitschluessel, DateTime date)
         {
-            DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
+            ClearErrorState();
 
-            // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-            dt.Rows.Add(new object[] { "VKBUR", false, vkBur });
-            dt.Rows.Add(new object[] { "RUEST", false, ruestzeitschluessel });
-            dt.Rows.Add(new object[] { "BUDATE", false, SAPExecutor.SAPExecutor.MakeSAPDate(date) });
-                      
-            SAPExc.ExecuteERP("Z_HR_ZE_CHECK_REUST_FOR_FIL",ref dt);
-
-            if (SAPExc.ErrorOccured)
+            try
             {
-                if(SAPExc.E_SUBRC == "105")
-                {
-                    return true;
-                }
-                else
-                {
-                    bError = true;
-                    E_SUBRC = SAPExc.E_SUBRC;
-                    E_MESSAGE = SAPExc.E_MESSAGE;
+                S.AP.Init("Z_HR_ZE_CHECK_REUST_FOR_FIL", "VKBUR", vkBur);
+
+                S.AP.SetImportParameter("RUEST", ruestzeitschluessel);
+                S.AP.SetImportParameter("BUDATE", date.ToString("yyyyMMdd"));
+
+                S.AP.Execute();
+
+                if (S.AP.ResultCode == 0)
                     return false;
-                }
+
+                if (S.AP.ResultCode == 105)
+                    return true;
+
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage);
+                return false;
             }
-            else
+            catch (Exception ex)
             {
+                RaiseError("9999", ex.Message);
                 return false;
             }
         }
@@ -457,7 +371,7 @@ namespace TimeRegistration
                     m_CanDoÖffnung = false;
                 }
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 m_CanDoÖffnung = false;
             }
@@ -482,7 +396,7 @@ namespace TimeRegistration
                    m_CanDoAbrechnung = false;
                }
             }
-            catch(NullReferenceException ex)
+            catch(NullReferenceException)
             {
                 m_CanDoAbrechnung = false;
             }
@@ -507,23 +421,11 @@ namespace TimeRegistration
                     m_CanDoEinzahlung = false;
                 }
             }
-            catch (NullReferenceException ex)
+            catch (NullReferenceException)
             {
                 m_CanDoEinzahlung = false;
             }
         }
-
-        /// <summary>
-        /// Setzt den Fehlerstatus zurück
-        /// </summary>
-        private void ResetError()
-        {
-            bError = false;
-            E_SUBRC = "0";
-            E_MESSAGE = string.Empty;
-            GT_MESSAGE = null;
-        }
-        
         
         /// <summary>
         /// Erstellt ein Objekt vom Typ TimeOverview, dass alle benötigten Kopf und Positionsdaten enthält.
@@ -532,52 +434,37 @@ namespace TimeRegistration
         /// <returns>Zeitübersicht als TimeOverview-Objekt</returns>
         public TimeOverview getZeitübersicht(ref System.Web.UI.Page page)
         {
-            ResetError();
+            ClearErrorState();
 
-            string vdate;
-            if (DateTime.Today.Day < 10) vdate = SAPExecutor.SAPExecutor.MakeSAPDate(DateTime.Today.AddDays(-10));
-            else
+            try
             {
-                var date = new DateTime(DateTime.Today.Year,DateTime.Today.Month, 1);
-                vdate = SAPExecutor.SAPExecutor.MakeSAPDate(date);
+                var vdate = (DateTime.Today.Day < 10 ? DateTime.Today.AddDays(-10).ToString("yyyyMMdd") : new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1).ToString("yyyyMMdd"));
+                var bdate = DateTime.Today.ToString("yyyyMMdd");
+
+                S.AP.Init("Z_HR_ZE_GET_POSTINGS_OF_PERIOD", "BD_NR", oUser.Kartennummer);
+
+                S.AP.SetImportParameter("VDATE", vdate);
+                S.AP.SetImportParameter("BDATE", bdate);
+                S.AP.SetImportParameter("MODUS", TranslateMode(TimeMode.Monatsübersicht).ToString());
+
+                S.AP.Execute();
+
+                if (S.AP.ResultCode != 0)
+                {
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage);
+                    return null;
+                }
+
+                DataTable gtKopf = S.AP.GetExportTable("GT_KOPF");
+                DataTable gtPos = S.AP.GetExportTable("GT_POS");
+
+                if (gtKopf != null && gtPos != null)
+                    return new TimeOverview(gtKopf, gtPos, vdate, bdate);
             }
-
-            string bdate=SAPExecutor.SAPExecutor.MakeSAPDate(DateTime.Today);
-
-            DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
-
-            // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-            dt.Rows.Add(new object[] { "BD_NR", false, oUser.Kartennummer });
-            dt.Rows.Add(new object[] { "VDATE", false, vdate });            
-            dt.Rows.Add(new object[] { "BDATE", false, bdate });
-            dt.Rows.Add(new object[] { "MODUS", false, TranslateMode(TimeMode.Monatsübersicht).ToString()});
-            dt.Rows.Add(new object[] { "NAME", true });
-            dt.Rows.Add(new object[] { "OFFEN", true });
-            dt.Rows.Add(new object[] { "GT_KOPF", true });
-            dt.Rows.Add(new object[] { "GT_POS", true });
-
-            SAPExc.ExecuteERP("Z_HR_ZE_GET_POSTINGS_OF_PERIOD", ref dt);
-
-            if (SAPExc.ErrorOccured)
+            catch (Exception ex)
             {
-                bError = true;
-                E_SUBRC = SAPExc.E_SUBRC;
-                E_MESSAGE = SAPExc.E_MESSAGE;
-
-                return null;
+                RaiseError("9999", ex.Message);
             }
-
-            DataTable gtKopf = null;
-            DataTable gtPos = null;
-            DataRow retRows = dt.Select("Fieldname='GT_Kopf'")[0];
-
-            if (retRows != null) gtKopf = (DataTable)retRows["Data"];
-                
-            retRows = dt.Select("Fieldname='GT_POS'")[0];
-
-            if (retRows != null) gtPos = (DataTable)retRows["Data"];
-                
-            if (gtKopf != null && gtPos != null) return new TimeOverview(gtKopf, gtPos,vdate,bdate);
 
             return null;
         }
@@ -588,33 +475,34 @@ namespace TimeRegistration
         /// <returns>Letzte Aktion als TimeAction</returns>
         public TimeAction GetLastAction()
         {
-            ResetError();
-            DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
+            ClearErrorState();
 
-            // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-            dt.Rows.Add(new object[] { "BD_NR", false, oUser.Kartennummer });
-            dt.Rows.Add(new object[] { "VDATE", false, SAPExecutor.SAPExecutor.MakeSAPDate(DateTime.Today) });
-            dt.Rows.Add(new object[] { "BDATE", false, SAPExecutor.SAPExecutor.MakeSAPDate(DateTime.Today) });
-            dt.Rows.Add(new object[] { "MODUS", false, TranslateMode(TimeMode.Zeiterfassung).ToString() });
-            dt.Rows.Add(new object[] { "NAME", true });
-            dt.Rows.Add(new object[] { "OFFEN", true });
-            dt.Rows.Add(new object[] { "GT_KOPF", true });
-            dt.Rows.Add(new object[] { "GT_POS", true });
-
-            SAPExc.ExecuteERP("Z_HR_ZE_GET_POSTINGS_OF_PERIOD", ref dt);
-
-            if (SAPExc.ErrorOccured)
+            try
             {
-                bError = true;
-                E_SUBRC = SAPExc.E_SUBRC;
-                E_MESSAGE = SAPExc.E_MESSAGE;
+                S.AP.Init("Z_HR_ZE_GET_POSTINGS_OF_PERIOD", "BD_NR", oUser.Kartennummer);
 
-                return TimeAction.NoAction;
+                S.AP.SetImportParameter("VDATE", DateTime.Today.ToString("yyyyMMdd"));
+                S.AP.SetImportParameter("BDATE", DateTime.Today.ToString("yyyyMMdd"));
+                S.AP.SetImportParameter("MODUS", TranslateMode(TimeMode.Zeiterfassung).ToString());
+
+                S.AP.Execute();
+
+                if (S.AP.ResultCode != 0)
+                {
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage);
+                    return TimeAction.NoAction;
+                }
+
+                var gtKopf = S.AP.GetExportTable("GT_KOPF");
+                var gtPos = S.AP.GetExportTable("GT_POS");
+
+                TimeOverview TO = new TimeOverview(gtKopf, gtPos);
+                return TO.getLastAction(oUser.Kartennummer); 
             }
-            else
+            catch (Exception ex)
             {
-                TimeOverview TO = new TimeOverview((DataTable)dt.Rows[6]["Data"], (DataTable)dt.Rows[7]["Data"]);
-                return TO.getLastAction(oUser.Kartennummer);        
+                RaiseError("9999", ex.Message);
+                return TimeAction.NoAction;
             }
         }
 
@@ -624,32 +512,35 @@ namespace TimeRegistration
         /// <returns>Letzte Aktion als DataRow</returns>
         public DataRow GetLastActionRow()
         {
-            ResetError();
-            DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
+            ClearErrorState();
 
-            // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-            dt.Rows.Add(new object[] { "BD_NR", false, oUser.Kartennummer });
-            dt.Rows.Add(new object[] { "VDATE", false, SAPExecutor.SAPExecutor.MakeSAPDate(DateTime.Today) });
-            dt.Rows.Add(new object[] { "BDATE", false, SAPExecutor.SAPExecutor.MakeSAPDate(DateTime.Today) });
-            dt.Rows.Add(new object[] { "MODUS", false, TranslateMode(TimeMode.Zeiterfassung).ToString() });
-            dt.Rows.Add(new object[] { "NAME", true });
-            dt.Rows.Add(new object[] { "OFFEN", true });
-            dt.Rows.Add(new object[] { "GT_KOPF", true });
-            dt.Rows.Add(new object[] { "GT_POS", true });
-
-            SAPExc.ExecuteERP("Z_HR_ZE_GET_POSTINGS_OF_PERIOD", ref dt);
-
-            if (SAPExc.ErrorOccured)
+            try
             {
-                bError = true;
-                E_SUBRC = SAPExc.E_SUBRC;
-                E_MESSAGE = SAPExc.E_MESSAGE;
+                S.AP.Init("Z_HR_ZE_GET_POSTINGS_OF_PERIOD", "BD_NR", oUser.Kartennummer);
 
+                S.AP.SetImportParameter("VDATE", DateTime.Today.ToString("yyyyMMdd"));
+                S.AP.SetImportParameter("BDATE", DateTime.Today.ToString("yyyyMMdd"));
+                S.AP.SetImportParameter("MODUS", TranslateMode(TimeMode.Zeiterfassung).ToString());
+
+                S.AP.Execute();
+
+                if (S.AP.ResultCode != 0)
+                {
+                    RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage);
+                    return null;
+                }
+
+                var gtKopf = S.AP.GetExportTable("GT_KOPF");
+                var gtPos = S.AP.GetExportTable("GT_POS");
+
+                var to = new TimeOverview(gtKopf, gtPos);
+                return to.getLastActionRow(oUser.Kartennummer);
+            }
+            catch (Exception ex)
+            {
+                RaiseError("9999", ex.Message);
                 return null;
             }
-
-            var to = new TimeOverview((DataTable)dt.Rows[6]["Data"], (DataTable)dt.Rows[7]["Data"]);
-            return to.getLastActionRow(oUser.Kartennummer);
         }
 
         /// <summary>
@@ -658,11 +549,7 @@ namespace TimeRegistration
         /// <returns>True = Letzte Zeit ist eine Kommen-Zeit</returns>
         public bool IsLastTimeKommen()
         {
-            if (GetLastAction() == TimeAction.Kommen)
-            {
-                return true;
-            }
-            return false;
+            return (GetLastAction() == TimeAction.Kommen);
         }
 
         /// <summary>
@@ -671,98 +558,28 @@ namespace TimeRegistration
         /// <returns>True = Letzte Zeit ist eine Gehen-Zeit</returns>
         public bool IsLastTimeGehen()
         {
-            if (GetLastAction() == TimeAction.Gehen)
-            {
-                return true;
-            }
-            return false;
+            return (GetLastAction() == TimeAction.Gehen);
         }
 
         /// <summary>
         /// Liefert die aktuelle SAP-Serverzeit
         /// </summary>
-        /// <returns>Serverzeit als Date-Objekt</returns>
-        public string getServerzeit()
-        {
-            ResetError();
-            
-            try
-            {
-                DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
-
-                // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-                dt.Rows.Add(new object[] { "TIME", true });
-
-                SAPExc.ExecuteERP("Z_HR_ZE_GET_SAP_TIME", ref dt);
-
-                if (SAPExc.ErrorOccured)
-                {
-                    bError = true;
-                    E_SUBRC = SAPExc.E_SUBRC;
-                    E_MESSAGE = SAPExc.E_MESSAGE;
-
-                    return DateTime.Now.TimeOfDay.ToString().Remove(5);
-                }
-                return ParseTimeFromBuzeit(dt.Rows[0]["Data"].ToString());
-            }
-            catch (Exception ex)
-            {
-                return DateTime.Now.TimeOfDay.ToString().Remove(5);
-            }
-        }
-
-        public string getServerzeitAsBUZEIT()
-        {
-            ResetError();
-
-            try
-            {
-                DataTable dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
-
-                // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-                dt.Rows.Add(new object[] { "TIME", true });
-
-                SAPExc.ExecuteERP("Z_HR_ZE_GET_SAP_TIME", ref dt);
-
-                if (SAPExc.ErrorOccured)
-                {
-                    bError = true;
-                    E_SUBRC = SAPExc.E_SUBRC;
-                    E_MESSAGE = SAPExc.E_MESSAGE;
-
-                    return DateTime.Now.TimeOfDay.ToString().Remove(5);
-                }
-                return dt.Rows[0]["Data"].ToString();
-            }
-            catch (Exception ex)
-            {
-                return DateTime.Now.TimeOfDay.ToString().Remove(7);
-            }
-        }
-
-        /// <summary>
-        /// Liefert die aktuelle SAP-Serverzeit
-        /// </summary>
-        /// <returns>Serverzeit als Date-Objekt</returns>
-        public static string getServerzeit(string ConStr)
+        /// <returns>Serverzeit</returns>
+        public static string getServerzeit(bool asBuZeit = false)
         {
             try
             {
-                var sExc = new SAPExecutor.SAPExecutor(ConStr);
-                var dt = SAPExecutor.SAPExecutor.getSAPExecutorTable();
+                S.AP.Init("Z_HR_ZE_GET_SAP_TIME");
 
-                // Tabellenschema {Feldname, ParameterDirection(0=Input,1=Output), (optional) Feldinhalt als Object, Feldlänge (0=unbestimmt)}
-                dt.Rows.Add(new object[] { "TIME", true });
-                
-                sExc.ExecuteERP("Z_HR_ZE_GET_SAP_TIME", ref dt);
+                S.AP.Execute();
 
-                if (sExc.ErrorOccured)
-                {
+                if (S.AP.ResultCode != 0)
                     return DateTime.Now.TimeOfDay.ToString().Remove(5);
-                }
-                return ParseTimeFromBuzeit(dt.Rows[0]["Data"].ToString());
+
+                var zeit = S.AP.GetExportParameter("TIME");
+                return (asBuZeit ? zeit : ParseTimeFromBuzeit(zeit));
             }
-            catch(Exception ex)
+            catch (Exception)
             {
                 return DateTime.Now.TimeOfDay.ToString().Remove(5);
             }
@@ -792,13 +609,13 @@ namespace TimeRegistration
         {
             var dtHead = new DataTable();
 
-            dtHead.Columns.Add("BD_NR", Type.GetType("System.String"));
-            dtHead.Columns.Add("BUDATE", Type.GetType("System.String"));
-            dtHead.Columns.Add("KSTATUS", Type.GetType("System.String"));
-            dtHead.Columns.Add("ESTATUS", Type.GetType("System.String"));
-            dtHead.Columns.Add("LFBSTATUS", Type.GetType("System.String"));
-            dtHead.Columns.Add("ZAOE", Type.GetType("System.String"));
-            dtHead.Columns.Add("AZUE", Type.GetType("System.String"));
+            dtHead.Columns.Add("BD_NR", typeof(String));
+            dtHead.Columns.Add("BUDATE", typeof(String));
+            dtHead.Columns.Add("KSTATUS", typeof(String));
+            dtHead.Columns.Add("ESTATUS", typeof(String));
+            dtHead.Columns.Add("LFBSTATUS", typeof(String));
+            dtHead.Columns.Add("ZAOE", typeof(String));
+            dtHead.Columns.Add("AZUE", typeof(String));
 
             dtHead.AcceptChanges();
 
@@ -813,17 +630,17 @@ namespace TimeRegistration
         {
             var dtPos = new DataTable();
 
-            dtPos.Columns.Add("BD_NR", Type.GetType("System.String"));
-            dtPos.Columns.Add("BUDATE", Type.GetType("System.String"));
-            dtPos.Columns.Add("POSNR", Type.GetType("System.String"));
-            dtPos.Columns.Add("VKBUR", Type.GetType("System.String"));
-            dtPos.Columns.Add("LFBSTATUS", Type.GetType("System.String"));
-            dtPos.Columns.Add("SATZART", Type.GetType("System.String"));
-            dtPos.Columns.Add("BUZEIT", Type.GetType("System.String"));
-            dtPos.Columns.Add("RUEST", Type.GetType("System.String"));
-            dtPos.Columns.Add("RZEIT", Type.GetType("System.String"));
-            dtPos.Columns.Add("ARZEIT", Type.GetType("System.String"));
-            dtPos.Columns.Add("ZAOE", Type.GetType("System.String"));
+            dtPos.Columns.Add("BD_NR", typeof(String));
+            dtPos.Columns.Add("BUDATE", typeof(String));
+            dtPos.Columns.Add("POSNR", typeof(String));
+            dtPos.Columns.Add("VKBUR", typeof(String));
+            dtPos.Columns.Add("LFBSTATUS", typeof(String));
+            dtPos.Columns.Add("SATZART", typeof(String));
+            dtPos.Columns.Add("BUZEIT", typeof(String));
+            dtPos.Columns.Add("RUEST", typeof(String));
+            dtPos.Columns.Add("RZEIT", typeof(String));
+            dtPos.Columns.Add("ARZEIT", typeof(String));
+            dtPos.Columns.Add("ZAOE", typeof(String));
 
             dtPos.AcceptChanges();
 
@@ -840,6 +657,5 @@ namespace TimeRegistration
         }
 
         #endregion
-    }
-        
+    }    
 }

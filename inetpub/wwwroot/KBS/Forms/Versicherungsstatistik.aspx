@@ -107,7 +107,7 @@
                                             <asp:BoundField DataField="EVB" HeaderText="Versicherungsnummer" />
                                             <asp:BoundField DataField="PREIS" HeaderText="Preis in &#8364;" ItemStyle-HorizontalAlign="Right" />
                                             <asp:BoundField DataField="STORNO" HeaderText="Storno" />
-                                            <asp:BoundField DataField="DATUM" HeaderText="Datum" />
+                                            <asp:BoundField DataField="DATUM" HeaderText="Datum" DataFormatString="{0:dd.MM.yyyy}" />
                                         </Columns>
                                     </asp:GridView>
                                     <div>

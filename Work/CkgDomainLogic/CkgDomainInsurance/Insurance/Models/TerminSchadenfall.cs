@@ -306,7 +306,9 @@ namespace CkgDomainLogic.Insurance.Models
                 // oder bei Edit Modus (nicht Insert) => auch alle Boxen zulassen
                 return GetValidBoxen().ToList();
 
-            return GetValidBoxen().Where(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID).Where(t => t.DatumZeitVon == this.DatumZeitVon).None()).ToList();
+            Predicate<TerminSchadenfall> terminSelector = (t => t.DatumZeitVon == this.DatumZeitVon);
+
+            return GetValidBoxen().Where(box => GetViewModel().GetTermineEinerBoxAllerSchadenFaelle(box.ID, terminSelector).Where(t => terminSelector(t)).None()).ToList();
         }
 
         public List<VersEventOrtBox> GetValidBoxen()

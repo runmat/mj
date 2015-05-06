@@ -1,17 +1,17 @@
-﻿
+﻿Imports KBSBase
+Imports GeneralTools.Models
+
 Public Class Retoure
+    Inherits ErrorHandlingClass
+
     Private mRetoure As DataTable
     Private mLieferanten As DataTable
     Private mArtikel As DataTable
     Private mGrund As DataTable
-    Private mMyKasse As Kasse
     Private WithEvents mTimer As New Timers.Timer
-    Private mSAPMessage As String
     Private mLieferscheinnummer As String
     Private mKostenstelle As String
     Private mVerkaeufer As String
-    Private mE_SUBRC As Integer
-    Private mE_MESSAGE As String
     Private mE_BSTNR As String
     Private mE_BELNR As String
     Private mCommited As Boolean = False
@@ -23,7 +23,8 @@ Public Class Retoure
     Private mstrSendToKost As String = ""
     Private mstrKostText As String = ""
     Private mstrKostStelle As String
-    Dim SAPExc As SAPExecutor.SAPExecutor
+
+#Region "Properties"
 
     Public Property Filepath() As String
         Get
@@ -133,24 +134,6 @@ Public Class Retoure
         End Set
     End Property
 
-    Public Property E_SUBRC() As Integer
-        Get
-            Return mE_SUBRC
-        End Get
-        Set(ByVal Value As Integer)
-            mE_SUBRC = Value
-        End Set
-    End Property
-
-    Public Property E_MESSAGE() As String
-        Get
-            Return mE_MESSAGE
-        End Get
-        Set(ByVal Value As String)
-            mE_MESSAGE = Value
-        End Set
-    End Property
-
     Public Property SendToKost() As String
         Get
             Return mstrSendToKost
@@ -206,8 +189,9 @@ Public Class Retoure
         End Get
     End Property
 
-    Public Sub New(ByVal mKasse As Kasse)
-        mMyKasse = mKasse
+#End Region
+
+    Public Sub New()
         Retouren.AcceptChanges()
         mTimer.Interval = 1200000 '20 Minuten
         mTimer.AutoReset = False
@@ -219,267 +203,174 @@ Public Class Retoure
     End Sub
 
     Public Function getLieferantenERP(Optional ByVal Customername As String = "") As DataTable
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_PLATSTAMM")
 
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mKostenstelle, 10})
-            dt.Rows.Add(New Object() {"I_SUPER_USER", False, "X", 1})
-            Dim IsFil As String = ""
-            Dim IsZLD As String = ""
+            S.AP.SetImportParameter("I_KOSTL", mKostenstelle)
+            S.AP.SetImportParameter("I_SUPER_USER", "X")
 
             If Customername.Contains("ZLD") Then
-                IsZLD = "X"
+                S.AP.SetImportParameter("I_ZLD", "X")
             ElseIf Customername.Contains("Kroschke") Then
-                IsFil = "X"
+                S.AP.SetImportParameter("I_FIL", "X")
             End If
-            dt.Rows.Add(New Object() {"I_FIL", False, IsFil, 1})
-            dt.Rows.Add(New Object() {"I_ZLD", False, IsZLD, 1})
-            dt.Rows.Add(New Object() {"GT_PLATSTAMM", True})
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_PLATSTAMM", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_PLATSTAMM'")(0)
-            If Not retRows Is Nothing Then
-                mLieferanten = DirectCast(retRows("Data"), DataTable)
-            End If
+
+            mLieferanten = S.AP.GetExportTable("GT_PLATSTAMM")
 
         Catch ex As Exception
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
+
         Return mLieferanten
     End Function
 
     Public Sub getArtikelReiterERP(ByVal sLifnr As String)
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-            'befüllen der Importparameter
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mKostenstelle, 4})
+            S.AP.Init("Z_FIL_EFA_PLATARTIKEL")
 
-            dt.Rows.Add(New Object() {"I_LIFNR", False, sLifnr, 10})
-            dt.Rows.Add(New Object() {"I_RUECKS", False, "X", 1})
-            dt.Rows.Add(New Object() {"GT_PLATART", True})
+            S.AP.SetImportParameter("I_KOSTL", mKostenstelle)
+            S.AP.SetImportParameter("I_LIFNR", sLifnr)
+            S.AP.SetImportParameter("I_RUECKS", "X")
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_PLATARTIKEL", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows = dt.Select("Fieldname='GT_PLATART'")(0)
-            If Not retRows Is Nothing Then
-                mArtikel = DirectCast(retRows("Data"), DataTable)
-                mArtikel.Columns.Add("Menge", Type.GetType("System.Int32"))
-                mArtikel.Columns.Add("Beschreibung", Type.GetType("System.String"))
-            End If
+
+            mArtikel = S.AP.GetExportTable("GT_PLATART")
+            mArtikel.Columns.Add("Menge", Type.GetType("System.Int32"))
+            mArtikel.Columns.Add("Beschreibung", Type.GetType("System.String"))
 
         Catch ex As Exception
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
-    Public Function getRetoureGruendeERP() As DataTable 'ByVal sLifnr As String
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+    Public Function getRetoureGruendeERP() As DataTable
+        ClearErrorState()
 
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_RUECK_GRUND")
 
-            dt.Rows.Add(New Object() {"GT_GRUND", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_RUECK_GRUND", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_GRUND'")(0)
-            If Not retRows Is Nothing Then
-                mGrund = DirectCast(retRows("Data"), DataTable)
-            End If
+
+            mGrund = S.AP.GetExportTable("GT_GRUND")
 
         Catch ex As Exception
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
-        Return mGrund
 
+        Return mGrund
     End Function
 
     Public Sub sendRetoureToSAPERP(ByVal mLieferant As String, ByVal bMaster As Boolean)
-
-        Dim tblSAP As New DataTable()
-        tblSAP.Columns.Add("ARTLIF", String.Empty.GetType)
-        tblSAP.Columns.Add("MENGE", String.Empty.GetType)
-        tblSAP.Columns.Add("GRUND", String.Empty.GetType)
-
-        Dim tmpSAPRow As DataRow
-        'mit select filter, da sonst auch deletet rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
-        For Each tmprow As DataRow In Retouren.Select("", "", DataViewRowState.CurrentRows)
-            tmpSAPRow = tblSAP.NewRow
-            tmpSAPRow("ARTLIF") = tmprow("ARTLIF").ToString
-            tmpSAPRow("MENGE") = tmprow("Menge").ToString
-            tmpSAPRow("GRUND") = tmprow("GRUND").ToString
-
-            tblSAP.Rows.Add(tmpSAPRow)
-        Next
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
+            S.AP.Init("Z_FIL_EFA_RUECKGABE")
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.SetImportParameter("I_KOSTL", IIf(bMaster, mstrSendToKost, mstrKostStelle))
+            S.AP.SetImportParameter("I_LIFNR", mLieferant)
+            S.AP.SetImportParameter("I_VERKAEUFER", Verkaeufer)
+            S.AP.SetImportParameter("I_LIEFERSNR", Lieferscheinnummer.NotNullOrEmpty().PadLeft(20, "0"c))
 
-            'befüllen der Importparameter
-            If bMaster = True Then
-                dt.Rows.Add(New Object() {"I_KOSTL", False, mstrSendToKost, 4})
+            Dim tblSAP As DataTable = S.AP.GetImportTable("GT_RUECK")
+            'mit select filter, da sonst auch deleted rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
+            For Each tmprow As DataRow In Retouren.Select("", "", DataViewRowState.CurrentRows)
+                Dim tmpSAPRow As DataRow = tblSAP.NewRow
+                tmpSAPRow("ARTLIF") = tmprow("ARTLIF").ToString
+                tmpSAPRow("MENGE") = tmprow("Menge").ToString
+                tmpSAPRow("GRUND") = tmprow("GRUND").ToString
+                tblSAP.Rows.Add(tmpSAPRow)
+            Next
+
+            S.AP.Execute()
+
+            If S.AP.ResultCode = 0 Then
+                mE_BELNR = S.AP.GetExportParameter("E_BELNR").TrimStart(" ")
+                mE_BSTNR = S.AP.GetExportParameter("E_BSTNR").TrimStart(" ")
+                mCommited = True
             Else
-                dt.Rows.Add(New Object() {"I_KOSTL", False, mstrKostStelle, 4})
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+                mCommited = False
             End If
-            dt.Rows.Add(New Object() {"I_LIFNR", False, mLieferant, 10})
-            dt.Rows.Add(New Object() {"I_VERKAEUFER", False, Verkaeufer, 4})
-            dt.Rows.Add(New Object() {"I_LIEFERSNR", False, Right("00000000000000000000" & Lieferscheinnummer, 20), 20})
-            dt.Rows.Add(New Object() {"GT_RUECK", False, tblSAP})
-            dt.Rows.Add(New Object() {"E_BSTNR", True})
-            dt.Rows.Add(New Object() {"E_BELNR", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_RUECKGABE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
-                If (E_SUBRC <> 0) Then
-                    Throw New Exception(E_SUBRC & ": " & E_MESSAGE)
-                End If
-            Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_BELNR'")(0)
-                If Not retRows Is Nothing Then
-                    mE_BELNR = retRows("Data").ToString.TrimStart(" ")
-                End If
-                retRows = dt.Select("Fieldname='E_BSTNR'")(0)
-                If Not retRows Is Nothing Then
-                    mE_BSTNR = retRows("Data").ToString.TrimStart(" ")
-                End If
-            End If
-            mCommited = True
 
         Catch ex As Exception
-            If (mE_SUBRC = "0") Then
-                mE_SUBRC = -11
-            End If
-            mE_MESSAGE = ex.Message
+            RaiseError("9999", ex.Message)
             mCommited = False
-        Finally
-
         End Try
     End Sub
 
     Public Function KostStelleNameERP(ByVal NeuKost As String) As String
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
-        Dim mKostStellName As String = String.Empty
+        ClearErrorState()
+
+        Dim mKostStellName As String = ""
 
         Try
+            S.AP.Init("Z_FIL_EFA_GET_KOSTL", "I_KOSTL_SEND, I_KOSTL_RECEIVE", KostStelle.PadLeft(10, "0"c), KostStelle.PadLeft(10, "0"c))
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"I_KOSTL_SEND", False, Right("0000000000" & KostStelle, 10), 10})
-            dt.Rows.Add(New Object() {"I_KOSTL_RECEIVE", False, Right("0000000000" & KostStelle, 10), 10})
-            dt.Rows.Add(New Object() {"E_KOSTL", True})
-            dt.Rows.Add(New Object() {"E_KTEXT", True})
-            dt.Rows.Add(New Object() {"E_LTEXT", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_GET_KOSTL", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode = 0 Then
+                mKostStellName = S.AP.GetExportParameter("E_KTEXT")
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_KTEXT'")(0)
-                If Not retRows Is Nothing Then
-                    mKostStellName = retRows("Data").ToString
-                End If
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+
+                Select Case ErrorCode
+                    Case "102"
+                        RaiseError("102", "KST " & NeuKost & " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben.")
+                    Case "104"
+                        RaiseError("104", "KST nicht zulässig! Bitte richtige KST eingeben.")
+                End Select
             End If
 
-            Select Case E_SUBRC
-                Case 102
-                    E_MESSAGE = "KST " & NeuKost & " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben."
-                Case 104
-                    E_MESSAGE = "KST nicht zulässig! Bitte richtige KST eingeben."
-
-            End Select
-
         Catch ex As Exception
-
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
+
         Return mKostStellName
     End Function
 
     Public Sub CheckKostStelleERP(ByVal NeuKost As String)
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-        E_MESSAGE = ""
-        E_SUBRC = 0
+        ClearErrorState()
 
         Try
+            S.AP.Init("Z_FIL_EFA_GET_KOSTL", "I_KOSTL_SEND, I_KOSTL_RECEIVE", NeuKost.PadLeft(10, "0"c), NeuKost.PadLeft(10, "0"c))
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"I_KOSTL_SEND", False, Right("0000000000" & NeuKost, 10), 10})
-            dt.Rows.Add(New Object() {"I_KOSTL_RECEIVE", False, Right("0000000000" & NeuKost, 10), 10})
-            dt.Rows.Add(New Object() {"E_KOSTL", True})
-            dt.Rows.Add(New Object() {"E_KTEXT", True})
-            dt.Rows.Add(New Object() {"E_LTEXT", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_GET_KOSTL", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode = 0 Then
+                mstrKostText = S.AP.GetExportParameter("E_KTEXT")
+                mstrSendToKost = NeuKost
             Else
-                Dim retRows As DataRow = dt.Select("Fieldname='E_KTEXT'")(0)
-                If Not retRows Is Nothing Then
-                    mstrKostText = retRows("Data").ToString
-                    mstrSendToKost = NeuKost
-                End If
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+
+                Select Case ErrorCode
+                    Case "102"
+                        RaiseError("102", "KST " & NeuKost & " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben.")
+                    Case "104"
+                        RaiseError("104", "KST nicht zulässig! Bitte richtige KST eingeben.")
+                End Select
             End If
 
-            Select Case E_SUBRC
-                Case 102
-                    E_MESSAGE = "KST " & NeuKost & " ist nicht zulässig! Bitte einen Lieferscheinverkauf eingeben."
-                Case 104
-                    E_MESSAGE = "KST nicht zulässig! Bitte richtige KST eingeben."
-
-            End Select
-
         Catch ex As Exception
-
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub Clear()
@@ -489,9 +380,6 @@ Public Class Retoure
         mE_BELNR = Nothing
         mE_BSTNR = Nothing
         mFilepath = Nothing
-        mSAPMessage = Nothing
-        mE_MESSAGE = Nothing
-        mE_SUBRC = Nothing
     End Sub
 
 End Class

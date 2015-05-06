@@ -51,14 +51,11 @@
                             <tr class="formquery">
                                 <td class="firstLeft active" colspan="2" style="width: 100%">
                                     <asp:Label ID="lblError" runat="server" ForeColor="#FF3300" textcolor="red"></asp:Label>
-                                    <div>
-                                        * = Pflichteingabe / ** = Zeitraum von - bis nicht größer als 60 Tage.
-                                    </div>
                                 </td>
                             </tr>
                             <tr class="formquery">
                                 <td class="firstLeft active" nowrap="nowrap" style="width: 130px">
-                                    <asp:Label ID="lblKunde" runat="server" Text="Kunde*"></asp:Label>
+                                    <asp:Label ID="lblKunde" runat="server" Text="Kunde"></asp:Label>
                                 </td>
                                 <td class="active" align="left" nowrap="nowrap" style="width: 103%">
                                     <asp:TextBox ID="txtKunnr" runat="server" Width="75px" CssClass="InputSolid" TabIndex="1"></asp:TextBox>
@@ -108,7 +105,14 @@
                             </tr>
                             <tr class="formquery">
                                 <td class="firstLeft active" nowrap="nowrap">
-                                    <asp:Label ID="lblZulDatumVon" runat="server" Text="Datum Zulassung von**"></asp:Label>
+                                    <div>
+                                        * = Zeitraum von - bis nicht größer als 60 Tage.
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="formquery">
+                                <td class="firstLeft active" nowrap="nowrap">
+                                    <asp:Label ID="lblZulDatumVon" runat="server" Text="Datum Zulassung von*"></asp:Label>
                                 </td>
                                 <td class="active">
                                     <asp:TextBox ID="txtZulDatumVon" runat="server" Width="80px" TabIndex="5"></asp:TextBox>
@@ -123,7 +127,7 @@
                             </tr>
                             <tr class="formquery">
                                 <td class="firstLeft active" nowrap="nowrap">
-                                    <asp:Label ID="lblZulDatumBis" runat="server" Text="Datum Zulassung bis**"></asp:Label>
+                                    <asp:Label ID="lblZulDatumBis" runat="server" Text="Datum Zulassung bis*"></asp:Label>
                                 </td>
                                 <td class="active">
                                     <asp:TextBox ID="txtZulDatumBis" runat="server" Width="80px" TabIndex="6"></asp:TextBox>

@@ -1,4 +1,5 @@
-﻿
+﻿Imports KBSBase
+
 Public Class offBestellungen
     Inherits ErrorHandlingClass
 
@@ -14,7 +15,6 @@ Public Class offBestellungen
     Private mCurrentApplikationPage As Page
     Private mUmlNummer As String = ""
     Private mBANF As String = ""
-    Dim SAPExc As SAPExecutor.SAPExecutor
 
 #Region "Properties"
 
@@ -143,146 +143,102 @@ Public Class offBestellungen
 #End Region
 
     Public Sub getLieferungsPositionenFromSAPERP(ByVal bestnr As String)
+        ClearErrorState()
+
         Try
-            ' Felder bereinigen
-            ClearErrorState()
             Bestellpositionen.Clear()
 
             mBestellnummer = bestnr
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_READ_OFF_BEST_POS_001", "I_EBELN", bestnr)
 
-            dt.Rows.Add(New Object() {"I_EBELN", False, bestnr, 10})
-            dt.Rows.Add(New Object() {"GT_WEB", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_READ_OFF_BEST_POS_001", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim SapTable As DataTable
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_WEB'")(0)
-
-            If Not retRows Is Nothing Then
-                SapTable = DirectCast(retRows("Data"), DataTable)
-                Dim tmprow As DataRow
-                If SapTable.Rows.Count > 0 Then
-                    For Each row As DataRow In SapTable.Rows
-
-                        tmprow = Bestellpositionen.NewRow
-                        tmprow("Bestellposition") = CInt(row("EBELP"))
-                        tmprow("Materialnummer") = row("MATNR").ToString
-                        tmprow("Artikelbezeichnung") = row("TXZ01").ToString
-                        tmprow("MaterialnummerLieferant") = row("IDNLF").ToString
-                        tmprow("BestellteMenge") = CInt(row("BSTMG"))
-                        tmprow("Mengeneinheit") = row("MEINS").ToString
-                        tmprow("EAN") = row("EAN11").ToString
-                        tmprow("PositionLieferMenge") = DBNull.Value
-                        tmprow("PositionAbgeschlossen") = ""
-                        tmprow("PositionVollstaendig") = ""
-
-                        Bestellpositionen.Rows.Add(tmprow)
-                    Next
-                Else
-                    RaiseError("-1", "Keine Positionen vorhanden.")
-                End If
-
+            Dim SapTable As DataTable = S.AP.GetExportTable("GT_WEB")
+            If SapTable.Rows.Count > 0 Then
+                For Each row As DataRow In SapTable.Rows
+                    Dim tmprow As DataRow = Bestellpositionen.NewRow
+                    tmprow("Bestellposition") = CInt(row("EBELP"))
+                    tmprow("Materialnummer") = row("MATNR").ToString
+                    tmprow("Artikelbezeichnung") = row("TXZ01").ToString
+                    tmprow("MaterialnummerLieferant") = row("IDNLF").ToString
+                    tmprow("BestellteMenge") = CInt(row("BSTMG"))
+                    tmprow("Mengeneinheit") = row("MEINS").ToString
+                    tmprow("EAN") = row("EAN11").ToString
+                    tmprow("PositionLieferMenge") = DBNull.Value
+                    tmprow("PositionAbgeschlossen") = ""
+                    tmprow("PositionVollstaendig") = ""
+                    Bestellpositionen.Rows.Add(tmprow)
+                Next
+            Else
+                RaiseError("-1", "Keine Positionen vorhanden.")
             End If
 
         Catch ex As Exception
-            RaiseError("-11", ex.Message)
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub getUmlPositionenFromSAPERP(ByVal bestnr As String)
+        ClearErrorState()
 
         Try
-            ' Felder bereinigen
-            ClearErrorState()
             mBestellPostitionen.Clear()
 
-
             mBestellnummer = bestnr
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_FIL_EFA_UML_OFF_POS", "I_BELNR", bestnr)
 
-            dt.Rows.Add(New Object() {"I_BELNR", False, bestnr, 10})
-            dt.Rows.Add(New Object() {"GT_OFF_UML_POS", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_FIL_EFA_UML_OFF_POS", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim SapTable As DataTable
-            Dim retRows As DataRow = dt.Select("Fieldname='GT_OFF_UML_POS'")(0)
-
-            If Not retRows Is Nothing Then
-                SapTable = DirectCast(retRows("Data"), DataTable)
-                Dim tmprow As DataRow
-                If SapTable.Rows.Count > 0 Then
-                    For Each row As DataRow In SapTable.Rows
-                        tmprow = Bestellpositionen.NewRow
-                        tmprow("Bestellposition") = CInt(row("POSNR"))
-                        tmprow("Materialnummer") = row("MATNR").ToString
-                        tmprow("Artikelbezeichnung") = row("MAKTX").ToString
-                        tmprow("MaterialnummerLieferant") = row("MATNR").ToString
-                        tmprow("BestellteMenge") = CInt(row("MENGE"))
-                        tmprow("Mengeneinheit") = ""
-                        tmprow("EAN") = ""
-                        tmprow("PositionLieferMenge") = DBNull.Value
-                        tmprow("PositionAbgeschlossen") = ""
-                        tmprow("PositionVollstaendig") = ""
-                        Bestellpositionen.Rows.Add(tmprow)
-                    Next
-                Else
-                    RaiseError("-1", "Keine Positionen vorhanden")
-                End If
-
+            Dim SapTable As DataTable = S.AP.GetExportTable("GT_OFF_UML_POS")
+            If SapTable.Rows.Count > 0 Then
+                For Each row As DataRow In SapTable.Rows
+                    Dim tmprow As DataRow = Bestellpositionen.NewRow
+                    tmprow("Bestellposition") = CInt(row("POSNR"))
+                    tmprow("Materialnummer") = row("MATNR").ToString
+                    tmprow("Artikelbezeichnung") = row("MAKTX").ToString
+                    tmprow("MaterialnummerLieferant") = row("MATNR").ToString
+                    tmprow("BestellteMenge") = CInt(row("MENGE"))
+                    tmprow("Mengeneinheit") = ""
+                    tmprow("EAN") = ""
+                    tmprow("PositionLieferMenge") = DBNull.Value
+                    tmprow("PositionAbgeschlossen") = ""
+                    tmprow("PositionVollstaendig") = ""
+                    Bestellpositionen.Rows.Add(tmprow)
+                Next
+            Else
+                RaiseError("-1", "Keine Positionen vorhanden")
             End If
+
         Catch ex As Exception
-            RaiseError("-11", ex.Message)
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Public Sub getErwarteteLieferungenFromSAPERP()
-        
+        ClearErrorState()
+
         Try
-            'Felder bereinigen
-            ClearErrorState()
+            S.AP.Init("Z_FIL_READ_OFF_BEST_001", "I_LGORT", mstrKostStelle)
 
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+            S.AP.Execute()
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-
-            dt.Rows.Add(New Object() {"I_LGORT", False, mstrKostStelle, 4})
-            dt.Rows.Add(New Object() {"I_LIFNR", False, "", 10})
-            dt.Rows.Add(New Object() {"GT_WEB", True})
-            dt.Rows.Add(New Object() {"GT_OFF_UML", True})
-            dt.Rows.Add(New Object() {"GT_OFF_BANF", True})
-
-            SAPExc.ExecuteERP("Z_FIL_READ_OFF_BEST_001", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim SapTableWEB As DataTable = Nothing
-            Dim SapTableUML As DataTable = Nothing
-            Dim SapTableBANF As DataTable = Nothing
-            Dim retRowsWEB As DataRow = dt.Select("Fieldname='GT_WEB'")(0)
-            Dim retRowsUML As DataRow = dt.Select("Fieldname='GT_OFF_UML'")(0)
-            Dim retRowsBANF As DataRow = dt.Select("Fieldname='GT_OFF_BANF'")(0)
-
-            If Not retRowsWEB Is Nothing Then SapTableWEB = DirectCast(retRowsWEB("Data"), DataTable)
-            If Not retRowsUML Is Nothing Then SapTableUML = DirectCast(retRowsUML("Data"), DataTable)
-            If Not retRowsBANF Is Nothing Then SapTableBANF = DirectCast(retRowsBANF("Data"), DataTable)
+            Dim SapTableWEB As DataTable = S.AP.GetExportTable("GT_WEB")
+            Dim SapTableUML As DataTable = S.AP.GetExportTable("GT_OFF_UML")
+            Dim SapTableBANF As DataTable = S.AP.GetExportTable("GT_OFF_BANF")
 
             Dim tmprow As DataRow
             If SapTableWEB.Rows.Count > 0 Then
@@ -298,7 +254,7 @@ Public Class offBestellungen
             ElseIf SapTableBANF.Rows.Count = 0 Then
                 RaiseError("-1", "Keine Bestellungen vorhanden")
             End If
-          
+
             If SapTableBANF.Rows.Count > 0 Then
                 For Each row As DataRow In SapTableBANF.Rows
                     tmprow = ErwarteteLieferungen.NewRow
@@ -311,39 +267,25 @@ Public Class offBestellungen
             ElseIf SapTableWEB.Rows.Count = 0 Then
                 RaiseError("-1", "Keine Bestellungen vorhanden")
             End If
+
         Catch ex As Exception
-            Select Case KBS_BASE.CastSapBizTalkErrorMessage(ex.Message)
-                Case "NO_DATA"
-                     RaiseError("-1", "Keine Bestellungen vorhanden")
-                Case Else
-                    RaiseError("-11", ex.Message)
-            End Select
+            RaiseError("9999", ex.Message)
         End Try
     End Sub
 
     Public Sub getBANFPositionenFromSAPERP()
+        ClearErrorState()
 
         Try
-            ClearErrorState()
-            mBestellnummer = Bestellnummer
+            S.AP.Init("Z_FIL_EFA_BANF_OFF_POS", "I_BANFN", BANF)
 
-            SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+            S.AP.Execute()
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
-
-            dt.Rows.Add(New Object() {"I_BANFN", False, BANF, 10})
-            dt.Rows.Add(New Object() {"GT_BANF", True})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_BANF_OFF_POS", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Dim SapTableBANF As DataTable = Nothing
-            Dim retRowsBANF As DataRow = dt.Select("Fieldname='GT_BANF'")(0)
-
-            If Not retRowsBANF Is Nothing Then SapTableBANF = DirectCast(retRowsBANF("Data"), DataTable)
+            Dim SapTableBANF As DataTable = S.AP.GetExportTable("GT_BANF")
             If SapTableBANF.Rows.Count > 0 Then
                 Dim tmprow As DataRow
                 For Each row As DataRow In SapTableBANF.Rows
@@ -367,18 +309,8 @@ Public Class offBestellungen
             End If
 
         Catch ex As Exception
-            RaiseError("-11", ex.Message)
+            RaiseError("9999", ex.Message)
         End Try
     End Sub
-
-    Public Shared Function MakeDateStandard(ByVal strInput As String) As Date
-        REM § Formt String-Input im SAP-Format in Standard-Date um. Gibt "01.01.1900" zurück, wenn Umwandlung nicht möglich ist.
-        Dim strTemp As String = Right(strInput, 2) & "." & Mid(strInput, 5, 2) & "." & Left(strInput, 4)
-        If IsDate(strTemp) Then
-            Return CDate(strTemp)
-        Else
-            Return CDate("01.01.1900")
-        End If
-    End Function
 
 End Class

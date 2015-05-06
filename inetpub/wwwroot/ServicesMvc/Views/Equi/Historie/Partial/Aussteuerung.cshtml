@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiAussteuerung
+
+<style type="text/css">   
+    .form-horizontal .control-group {
+        margin-bottom: 5px;
+    }
+</style>
+
+<form action="#" class="form-horizontal label-width-175">
+    
+    @Html.FormTextBlockFor(m => m.Mindesthaltedatum, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Abmeldebeauftragung, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Abmeldedurchfuehrung, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Abmeldedatum, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormCheckBoxFor(m => m.Unfallfahrzeug, new { @class = "m-wrap", col = "left", @disabled = "disabled" })
+    @Html.FormTextBlockFor(m => m.CarportEingang, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Carport, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.AnzahlKennzeichenVorhanden, new { @class = "m-wrap", col = "right" })
+
+    @Html.FormCheckBoxFor(m => m.Zb1Vorhanden, new { @class = "m-wrap", @disabled = "disabled" })
+
+</form>

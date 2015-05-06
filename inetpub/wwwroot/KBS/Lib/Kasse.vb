@@ -194,12 +194,12 @@ Public Class Kasse
         Get
             If CHANGE12_GLOBALOBJHANDLING Then
                 If mObjRetoure Is Nothing Then
-                    mObjRetoure = New Retoure(Me)
+                    mObjRetoure = New Retoure()
                 End If
                 Return mObjRetoure
             Else 'wenn kein globales ObjHandling, dann ins Session
                 If page.Session("mObjRetoure") Is Nothing Then
-                    page.Session.Add("mObjRetoure", New Retoure(Me))
+                    page.Session.Add("mObjRetoure", New Retoure())
                 End If
                 Return CType(page.Session("mObjRetoure"), Retoure)
             End If
@@ -308,84 +308,3 @@ Public Class Kasse
     End Sub
 
 End Class
-
-
-' ************************************************
-' $History: Kasse.vb $
-' 
-' *****************  Version 19  *****************
-' User: Dittbernerc  Date: 12.05.11   Time: 15:38
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 18  *****************
-' User: Dittbernerc  Date: 18.03.11   Time: 13:22
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 17  *****************
-' User: Rudolpho     Date: 11.11.10   Time: 10:00
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 16  *****************
-' User: Rudolpho     Date: 16.09.10   Time: 11:53
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 15  *****************
-' User: Rudolpho     Date: 20.04.10   Time: 18:09
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 14  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 9:49
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 13  *****************
-' User: Rudolpho     Date: 16.02.10   Time: 17:28
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 12  *****************
-' User: Rudolpho     Date: 12.02.10   Time: 16:29
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 12.02.10   Time: 13:47
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 10.02.10   Time: 17:53
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 9  *****************
-' User: Jungj        Date: 3.06.09    Time: 11:38
-' Updated in $/CKAG2/KBS/Lib
-' 
-' *****************  Version 8  *****************
-' User: Jungj        Date: 7.05.09    Time: 13:08
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2808 
-' 
-' *****************  Version 7  *****************
-' User: Jungj        Date: 5.05.09    Time: 12:37
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2838 testfertig
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 4.05.09    Time: 11:44
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2838 unfertig
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 30.04.09   Time: 13:39
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2838 unfertig
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 30.04.09   Time: 11:44
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2838 unfertig
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 23.04.09   Time: 17:50
-' Updated in $/CKAG2/KBS/Lib
-' ITA 2808
-' 
-'
-' ************************************************

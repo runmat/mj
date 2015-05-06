@@ -1,0 +1,21 @@
+﻿<div id="divCarporteingaengeOhneEHSuche">
+    @using (Ajax.BeginForm("LoadCarporteingaengeOhneEH", "Finance", null,
+        new MvcAjaxOptions("divCarporteingaengeOhneEHSuche") { OnComplete = "ShowCarporteingaengeOhneEH();" }, new { id = "CarporteingaengeOhneEHForm" } ))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            @Html.ValidationSummary()
+                                
+            <div class="space20"></div>
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+

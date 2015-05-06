@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{
+    var gridName = "GridZb2BestandSecurityFleet";  
+}
+
+
+@(Html.Telerik()
+        .Grid<Zb2BestandSecurityFleet>()
+    .Name(gridName)
+   
+    .XAjaxDataBinding("Zb2BestandSecurityFleetAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {        
+        columns.XBoundAll();   
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen).Descending())
+    .XToolBar("Fahrzeuge")
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportZb2BestandSecurityFleetFilteredExcel", "Fahrzeuge");
+            commands.FilteredDataCommand("ExportZb2BestandSecurityFleetFilteredPDF", "Fahrzeuge");
+        })
+)
+

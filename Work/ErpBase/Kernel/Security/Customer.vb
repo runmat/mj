@@ -3,6 +3,7 @@ Imports System.IO
 Imports System.Drawing
 Imports System.Drawing.Imaging
 Imports System.Configuration
+Imports GeneralTools.Models
 
 Namespace Kernel.Security
     <Serializable()> Public Class Customer
@@ -50,6 +51,12 @@ Namespace Kernel.Security
         Private m_PortalType As String
         Private m_MvcSelectionUrl As String
         Private m_MvcSelectionType As String
+        Private m_ReferenceType1 As String
+        Private m_ReferenceType2 As String
+        Private m_ReferenceType3 As String
+        Private m_ReferenceType1Name As String
+        Private m_ReferenceType2Name As String
+        Private m_ReferenceType3Name As String
 
 #End Region
 
@@ -105,6 +112,9 @@ Namespace Kernel.Security
                                ByVal blnUsernameDontSendEmail As Boolean, _
                                ByVal intLoginLinkID As Integer, _
                                ByVal strPortalType As String, _
+                               ByVal strReferenzTyp1 As String, _
+                               ByVal strReferenzTyp2 As String, _
+                               ByVal strReferenzTyp3 As String, _
                                Optional ByVal intDaysUntilLock As Integer = 90, _
                                Optional ByVal intDaysUntilDelete As Integer = 9999, _
                                Optional ByVal strSDCustomerNumber As String = "", _
@@ -151,6 +161,9 @@ Namespace Kernel.Security
             m_intLoginLinkID = intLoginLinkID
             m_DcDatCredentials = New DatCredentials(strSDCustomerNumber, strSDUserName, strSDPassword, strSDUserLogin, strSDSignatur, strSDSignatur2)
             m_PortalType = strPortalType
+            m_ReferenceType1 = strReferenzTyp1
+            m_ReferenceType2 = strReferenzTyp2
+            m_ReferenceType3 = strReferenzTyp3
             m_MvcSelectionUrl = strMvcSelectionUrl
             m_MvcSelectionType = strMvcSelectionType
         End Sub
@@ -507,6 +520,42 @@ Namespace Kernel.Security
             End Get
         End Property
 
+        Public ReadOnly Property ReferenceType1 As String
+            Get
+                Return m_ReferenceType1
+            End Get
+        End Property
+
+        Public ReadOnly Property ReferenceType2 As String
+            Get
+                Return m_ReferenceType2
+            End Get
+        End Property
+
+        Public ReadOnly Property ReferenceType3 As String
+            Get
+                Return m_ReferenceType3
+            End Get
+        End Property
+
+        Public ReadOnly Property ReferenceType1Name As String
+            Get
+                Return m_ReferenceType1Name
+            End Get
+        End Property
+
+        Public ReadOnly Property ReferenceType2Name As String
+            Get
+                Return m_ReferenceType2Name
+            End Get
+        End Property
+
+        Public ReadOnly Property ReferenceType3Name As String
+            Get
+                Return m_ReferenceType3Name
+            End Get
+        End Property
+
 #End Region
 
 #Region " Functions "
@@ -543,6 +592,15 @@ Namespace Kernel.Security
                         m_PortalType = dr("PortalType").ToString
                     Catch
                         m_PortalType = ""
+                    End Try
+                    Try
+                        m_ReferenceType1 = dr("Userreferenzfeld1").ToString()
+                        m_ReferenceType2 = dr("Userreferenzfeld2").ToString()
+                        m_ReferenceType3 = dr("Userreferenzfeld3").ToString()
+                    Catch
+                        m_ReferenceType1 = ""
+                        m_ReferenceType2 = ""
+                        m_ReferenceType3 = ""
                     End Try
                     Try
                         m_MvcSelectionUrl = dr("MvcSelectionUrl").ToString
@@ -674,6 +732,7 @@ Namespace Kernel.Security
 
             GetIpAddresses(cn)
             GetSDCredentials(cn)
+            GetReferenceTypeNames(cn)
         End Sub
 
         Public Sub GetIpAddresses(ByVal cn As SqlClient.SqlConnection)
@@ -706,6 +765,32 @@ Namespace Kernel.Security
                     m_DcDatCredentials = New DatCredentials("", "", "", "", "", "")
                 End If
             End Using
+        End Sub
+
+        Public Sub GetReferenceTypeNames(ByVal cn As SqlClient.SqlConnection)
+            Dim tmpTable As New DataTable()
+
+            Dim daReferenceTypeNames As SqlClient.SqlDataAdapter = New SqlClient.SqlDataAdapter("SELECT * FROM ReferenzTypen", cn)
+            daReferenceTypeNames.Fill(tmpTable)
+
+            If Not String.IsNullOrEmpty(m_ReferenceType1) Then
+                m_ReferenceType1Name = tmpTable.Select("ReferenzTyp = '" & ReferenceType1 & "'")(0)("ReferenzTypName").ToString()
+                If String.IsNullOrEmpty(m_ReferenceType1Name) Then
+                    m_ReferenceType1Name = m_ReferenceType1
+                End If
+            End If
+            If Not String.IsNullOrEmpty(m_ReferenceType2) Then
+                m_ReferenceType2Name = tmpTable.Select("ReferenzTyp = '" & ReferenceType2 & "'")(0)("ReferenzTypName").ToString()
+                If String.IsNullOrEmpty(m_ReferenceType2Name) Then
+                    m_ReferenceType2Name = m_ReferenceType2
+                End If
+            End If
+            If Not String.IsNullOrEmpty(m_ReferenceType3) Then
+                m_ReferenceType3Name = tmpTable.Select("ReferenzTyp = '" & ReferenceType3 & "'")(0)("ReferenzTypName").ToString()
+                If String.IsNullOrEmpty(m_ReferenceType3Name) Then
+                    m_ReferenceType3Name = m_ReferenceType3
+                End If
+            End If
         End Sub
 
         Public Sub Delete(ByVal strConnectionString As String)
@@ -847,6 +932,9 @@ Namespace Kernel.Security
                                                "UserDontSendEmail, " & _
                                                "LoginLinkID, " & _
                                                "PortalType, " & _
+                                               "Userreferenzfeld1, " & _
+                                               "Userreferenzfeld2, " & _
+                                               "Userreferenzfeld3, " & _
                                                "MvcSelectionUrl, " & _
                                                "MvcSelectionType)" & _
                           "VALUES(@Customername, " & _
@@ -895,6 +983,9 @@ Namespace Kernel.Security
                                  "@UserDontSendEmail, " & _
                                  "@LoginLinkID, " & _
                                  "@PortalType, " & _
+                                 "@Userreferenzfeld1, " & _
+                                 "@Userreferenzfeld2, " & _
+                                 "@Userreferenzfeld3, " & _
                                  "@MvcSelectionUrl, " & _
                                  "@MvcSelectionType); " & _
                           "SELECT SCOPE_IDENTITY()"
@@ -947,6 +1038,9 @@ Namespace Kernel.Security
                                               "UserDontSendEmail=@UserDontSendEmail, " & _
                                               "LoginLinkID=@LoginLinkID, " & _
                                               "PortalType=@PortalType, " & _
+                                              "Userreferenzfeld1=@Userreferenzfeld1, " & _
+                                              "Userreferenzfeld2=@Userreferenzfeld2, " & _
+                                              "Userreferenzfeld3=@Userreferenzfeld3, " & _
                                               "MvcSelectionUrl=@MvcSelectionUrl, " & _
                                               "MvcSelectionType=@MvcSelectionType " & _
                                           "WHERE CustomerID=@CustomerID"
@@ -1040,6 +1134,9 @@ Namespace Kernel.Security
                     .AddWithValue("@UserDontSendEmail", m_UrCustomerUsernameRules.DontSendEmail)
                     .AddWithValue("@LoginLinkID", m_intLoginLinkID)
                     .AddWithValue("@PortalType", m_PortalType)
+                    .AddWithValue("@Userreferenzfeld1", m_ReferenceType1)
+                    .AddWithValue("@Userreferenzfeld2", m_ReferenceType2)
+                    .AddWithValue("@Userreferenzfeld3", m_ReferenceType3)
                     .AddWithValue("@MvcSelectionUrl", m_MvcSelectionUrl)
                     .AddWithValue("@MvcSelectionType", m_MvcSelectionType)
 
