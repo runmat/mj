@@ -4304,6 +4304,16 @@
     <Content Include="Views\Test\Cerberus.cshtml" />
     <Content Include="Views\Leasing\NichtDurchfuehrbareZulassungen\Grid.cshtml" />
     <Content Include="Views\Leasing\ReportNichtDurchfuehrbareZulassungen.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieVermieterGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieVermieterDetail.cshtml" />
+    <Content Include="Views\Equi\FahrzeugHistorieVermieter.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\UebersichtVermieter.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\Einsteuerung.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\Aussteuerung.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\TueteninhaltFsmGrid.cshtml" />
+    <Content Include="Views\Equi\Historie\HistorieVermieterSuche.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\LebenslaufZb2Grid.cshtml" />
+    <Content Include="Views\Equi\Historie\Partial\LebenslaufFsmGrid.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeGrid.cshtml" />
     <Content Include="Views\Wfm\Abmeldevorgaenge\AuftraegeSuche.cshtml" />

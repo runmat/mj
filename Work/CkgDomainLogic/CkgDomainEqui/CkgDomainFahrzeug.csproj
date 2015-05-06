@@ -99,6 +99,7 @@
     <Compile Include="Controllers\KlaerfaelleVhc\EquiController.cs" />
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
+    <Compile Include="Controllers\HistorieVermieter\EquiController.cs" />
     <Compile Include="Controllers\WfmController.cs" />
     <Compile Include="Controllers\WFM\WfmController.cs" />
     <Compile Include="Controllers\ModellIdController.cs" />
@@ -120,6 +121,7 @@
     <Compile Include="Equi\Contracts\IMahnsperreDataService.cs" />
     <Compile Include="Equi\Contracts\IBriefbestandVhcDataService.cs" />
     <Compile Include="Equi\Contracts\IKlaerfaelleVhcDataService.cs" />
+    <Compile Include="Equi\Contracts\IEquiHistorieVermieterDataService.cs" />
     <Compile Include="Equi\Models\AppModelMappings.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorie.cs" />
     <Compile Include="Equi\Models\DataModels\EquiMahnsperre.cs" />
@@ -134,6 +136,11 @@
     <Compile Include="Equi\Models\DataModels\EquiAktionsdaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHaendlerdaten.cs" />
     <Compile Include="Equi\Models\DataModels\EquiHistorieInfo.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiHistorieInfoVermieter.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiHistorieVermieter.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiEinsteuerung.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiAussteuerung.cs" />
+    <Compile Include="Equi\Models\DataModels\EquiTueteninhalt.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragung.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragungSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\VersandAbweichungSelektor.cs" />
@@ -157,6 +164,7 @@
     <Compile Include="Equi\Services\DokumenteOhneDatenDataServiceSAP.cs" />
     <Compile Include="Equi\Services\BriefbestandVhcDataServiceSAP.cs" />
     <Compile Include="Equi\Services\KlaerfaelleVhcDataServiceSAP.cs" />
+    <Compile Include="Equi\Services\EquiHistorieVermieterDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnsperreDataServiceSAP.cs" />
     <Compile Include="Equi\Services\MahnreportDataServiceSAP.cs" />
     <Compile Include="Equi\Services\DatenOhneDokumenteDataServiceSAP.cs" />
@@ -167,6 +175,7 @@
     <Compile Include="Equi\ViewModels\DokumenteOhneDatenViewModel.cs" />
     <Compile Include="Equi\ViewModels\BriefbestandVhcViewModel.cs" />
     <Compile Include="Equi\ViewModels\KlaerfaelleVhcViewModel.cs" />
+    <Compile Include="Equi\ViewModels\EquiHistorieVermieterViewModel.cs" />
     <Compile Include="Equi\ViewModels\MahnsperreViewModel.cs" />
     <Compile Include="Equi\ViewModels\EinAusgaengeViewModel.cs" />
     <Compile Include="Equi\ViewModels\VersandBeauftragungenViewModel.cs" />

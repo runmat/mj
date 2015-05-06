@@ -1,0 +1,34 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiEinsteuerung
+
+<style type="text/css">   
+    .form-horizontal .control-group {
+        margin-bottom: 5px;
+    }
+</style>
+
+<form action="#" class="form-horizontal label-width-175">
+    
+    @Html.FormTextBlockFor(m => m.Zb2Eingang, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextAreaFor(m => m.AbsenderZb2, new { @class = "m-wrap medium", col = "right", @readonly = "readonly" })
+    
+    @Html.FormTextBlockFor(m => m.Pdi, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.PdiEingang, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.PdiBereit, new { @class = "m-wrap" })
+    
+    @Html.FormTextBlockFor(m => m.ModellId, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.ModellName, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.BeauftragungZulassung, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Zulassungsdatum, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextAreaFor(m => m.Halter, new { @class = "m-wrap medium", col = "left", @readonly = "readonly" })
+    @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormCheckBoxFor(m => m.Zulassungssperre, new { @class = "m-wrap", col = "left", @disabled = "disabled" })
+    @Html.FormTextBlockFor(m => m.SchluesselEingang, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Bemerkung, new { @class = "m-wrap" })
+
+</form>
