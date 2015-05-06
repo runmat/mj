@@ -83,6 +83,7 @@ Partial Public Class CustomerManagement
 
         FillLoginLinks()
         FillPortalTypes()
+        FillReferenceTypes()
         FillMvcSelectionTypes()
 
         If m_User.HighestAdminLevel = AdminLevel.Master Then
@@ -174,6 +175,9 @@ Partial Public Class CustomerManagement
             chkTeamviewer.Checked = _Customer.ShowsTeamViewer
             ddlPortalLink.SelectedValue = _Customer.LoginLinkID
             ddlPortalType.SelectedValue = _Customer.PortalType
+            ddlReferenzTyp1.SelectedValue = _Customer.ReferenceType1
+            ddlReferenzTyp2.SelectedValue = _Customer.ReferenceType2
+            ddlReferenzTyp3.SelectedValue = _Customer.ReferenceType3
             txtMvcSelectionUrl.Text = _Customer.MvcSelectionUrl
             'txtMvcSelectionType.Text = _Customer.MvcSelectionType
             ddlMvcSelectionType.SelectedValue = _Customer.MvcSelectionType
@@ -725,6 +729,10 @@ Partial Public Class CustomerManagement
         ddlPortalLink.Enabled = Not blnLock
         ddlPortalType.Enabled = Not blnLock
 
+        ddlReferenzTyp1.Enabled = Not blnLock
+        ddlReferenzTyp2.Enabled = Not blnLock
+        ddlReferenzTyp3.Enabled = Not blnLock
+
         ddlMvcSelectionType.Enabled = Not blnLock
         txtMvcSelectionUrl.Enabled = Not blnLock
     End Sub
@@ -1097,6 +1105,40 @@ Partial Public Class CustomerManagement
         ddlPortalType.Items.Add(New ListItem(""))
         For Each row As DataRow In TempTable.Rows
             ddlPortalType.Items.Add(New ListItem(row("PortalType").ToString()))
+        Next
+
+    End Sub
+
+    ''' <summary>
+    ''' Füllt die DropdownListen mit den Referenzfeldtypen
+    ''' </summary>
+    ''' <remarks></remarks>
+    Private Sub FillReferenceTypes()
+
+        Dim TempTable As New DataTable
+        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
+        cn.Open()
+
+        Dim daPortalType As SqlClient.SqlDataAdapter = New SqlClient.SqlDataAdapter("SELECT * FROM ReferenzTypen", cn)
+        daPortalType.Fill(TempTable)
+
+        cn.Close()
+        cn.Dispose()
+
+        ddlReferenzTyp1.Items.Add(New ListItem("", ""))
+        ddlReferenzTyp2.Items.Add(New ListItem("", ""))
+        ddlReferenzTyp3.Items.Add(New ListItem("", ""))
+
+        For Each row As DataRow In TempTable.Rows
+            Dim strTyp As String = row("ReferenzTyp").ToString()
+            Dim strName As String = row("ReferenzTypName").ToString()
+            If String.IsNullOrEmpty(strName) Then
+                strName = strTyp
+            End If
+
+            ddlReferenzTyp1.Items.Add(New ListItem(strName, strTyp))
+            ddlReferenzTyp2.Items.Add(New ListItem(strName, strTyp))
+            ddlReferenzTyp3.Items.Add(New ListItem(strName, strTyp))
         Next
 
     End Sub
@@ -1529,6 +1571,9 @@ Partial Public Class CustomerManagement
         ddlAccountingArea.SelectedIndex = 0
         ddlPortalLink.SelectedIndex = 0
         ddlPortalType.SelectedValue = ""
+        ddlReferenzTyp1.SelectedValue = ""
+        ddlReferenzTyp2.SelectedValue = ""
+        ddlReferenzTyp3.SelectedValue = ""
         txtMvcSelectionUrl.Text = String.Empty
         ddlMvcSelectionType.SelectedValue = ""
         chkKundenSperre.Checked = False
@@ -1722,6 +1767,9 @@ Partial Public Class CustomerManagement
                                                 cbxUsernameSendEmail.Checked, _
                                                 CInt(ddlPortalLink.SelectedValue), _
                                                 ddlPortalType.SelectedValue, _
+                                                ddlReferenzTyp1.SelectedValue, _
+                                                ddlReferenzTyp2.SelectedValue, _
+                                                ddlReferenzTyp3.SelectedValue, _
                                                 strSDCustomerNumber:=txtSDCustomerNumber.Text, _
                                                 strSDUserName:=txtSDUserName.Text, _
                                                 strSDPassword:=txtSDPassword.Text, strSDUserLogin:=txtSDLoginName.Text, _

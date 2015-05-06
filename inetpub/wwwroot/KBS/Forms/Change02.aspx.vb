@@ -28,16 +28,9 @@ Partial Public Class Change02
         If Not IsPostBack Then
             mObjWareneingangspruefung.currentApplikationPage = Me
             mObjWareneingangspruefung.getErwarteteLieferungenFromSAPERP()
-            If Not mObjWareneingangspruefung.SAPStatus = 0 Then
-
-                Select Case mObjWareneingangspruefung.SAPStatus
-                    Case -1
-                        lblError.Text = mObjWareneingangspruefung.SAPStatusText
-                    Case Else
-                        lblError.Text = "Es ist ein Fehler aufgetreten <br> " & mObjWareneingangspruefung.SAPStatusText
-                End Select
+            If mObjWareneingangspruefung.ErrorOccured Then
+                lblError.Text = mObjWareneingangspruefung.ErrorMessage
                 lbWeiter.Visible = False
-
             Else
                 lbWeiter.Visible = True
                 lbxBestellungen.DataSource = New DataView(mObjWareneingangspruefung.ErwarteteLieferungen)
@@ -91,18 +84,14 @@ Partial Public Class Change02
                 lblError.Text = "Fehler beim lesen der Bestellungdetails!"
             End If
 
-            Select Case mObjWareneingangspruefung.SAPStatus
-                Case 0
-                    mObjWareneingangspruefung.LiefantAnzeige = lbxBestellungen.SelectedItem.Text
+            If mObjWareneingangspruefung.ErrorOccured Then
+                lblError.Text = mObjWareneingangspruefung.ErrorMessage
+            Else
+                mObjWareneingangspruefung.LiefantAnzeige = lbxBestellungen.SelectedItem.Text
 
-                    mObjWareneingangspruefung.currentApplikationPage = Nothing
-                    Response.Redirect("Change02_1.aspx")
-
-                Case -1
-                    lblError.Text = mObjWareneingangspruefung.SAPStatusText
-                Case Else
-                    lblError.Text = "Es ist ein Fehler aufgetreten: <br>" & mObjWareneingangspruefung.SAPStatusText
-            End Select
+                mObjWareneingangspruefung.currentApplikationPage = Nothing
+                Response.Redirect("Change02_1.aspx")
+            End If
         Else
             lblError.Text = "Wählen Sie bitte eine Bestellung aus"
         End If
@@ -113,48 +102,3 @@ Partial Public Class Change02
     End Sub
 
 End Class
-
-' ************************************************
-' $History: Change02.aspx.vb $
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 3.08.10    Time: 16:46
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 9:49
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 9  *****************
-' User: Rudolpho     Date: 24.02.10   Time: 17:59
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 18.02.10   Time: 9:18
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 7  *****************
-' User: Jungj        Date: 3.06.09    Time: 16:53
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 5.05.09    Time: 10:12
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 kommentare 
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 4.05.09    Time: 17:35
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 4.05.09    Time: 11:44
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 unfertig
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 30.04.09   Time: 16:56
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 unfertig
-'
-' ************************************************

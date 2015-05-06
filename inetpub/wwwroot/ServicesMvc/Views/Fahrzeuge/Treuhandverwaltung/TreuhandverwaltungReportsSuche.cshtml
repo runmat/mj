@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model TreuhandverwaltungSelektor
+    
+<div id="divTreuhandverwaltungSuche">    
+      @using (Ajax.BeginForm("LoadTreuhandverwaltungBestand", "Fahrzeuge", null,
+        new MvcAjaxOptions("divTreuhandbestandSuche") { OnComplete = "ShowTreuhandverwaltungBestand();" }, new { id = "TreuhandbestandForm" }))
+    {                                                                                            
+        @Html.FormValidationSummary()                       
+                   
+        <div class="form-horizontal" id="divReports">
+                                                         
+            @if (@Model.Reporttype == ReportType.TG)
+            {  @Html.FormDropDownListFor(m => m.Kundenkennung, TreuhandverwaltungSelektor.TreuhandGeberAlle, new { @class = "m-wrap" }) }
+            else
+            {  @Html.FormDropDownListFor(m => m.Kundenkennung, TreuhandverwaltungSelektor.AuftraggeberAlle, new { @class = "m-wrap" }) }
+            
+                   
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.Fahrgestellnummer, new { @class = "m-wrap uppercase" })
+            @Html.FormTextBoxFor(m => m.Darlehensnummer, new { @class = "m-wrap uppercase" })                         
+            
+            @Html.HiddenFor(m => m.Reporttype, new { @Value = @Model.Reporttype })
+                                                                                                                      
+            <div class="form-actions">
+                <button type="submit" class='btn blue'>@Localize.Search</button>
+            </div>                                                              
+        </div>                                                         
+    }
+</div>
+
+

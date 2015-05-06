@@ -1,0 +1,24 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+
+
+@{ var gridName = "GridZulaufEinsteuerung"; }
+
+
+@(Html.Telerik()
+            .Grid<ZulaufEinsteuerung>()
+    .Name(gridName)   
+        .XAjaxDataBinding("ZulaufEinsteuerungAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+       columns.XBoundAll();           
+    })
+    .XAutoColumnConfiguration()
+                    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridZulaufEinsteuerung"))
+    .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.Hersteller))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportZulaufEinsteuerungFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportZulaufEinsteuerungFilteredPDF", "Fahrzeuge");
+    })
+)

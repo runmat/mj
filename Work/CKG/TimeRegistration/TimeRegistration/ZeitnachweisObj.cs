@@ -11,7 +11,7 @@ namespace TimeRegistration
         int _jahr; 
         string _basispfad;
         string _bedienernummer;
-        bool _fileexist = false;
+        bool _fileexist;
         string _monatsbezeichnung;
        
         #region Properties
@@ -55,14 +55,14 @@ namespace TimeRegistration
         }
                
 #endregion
+
         /// <summary>
         /// Zeitnachweis-Datei Objekt
         /// </summary>
         /// <param name="bedienernummer"></param>
         /// <param name="monat"></param>
         /// <param name="jahr"></param>
-        /// <param name="basispfad"></param>
-        
+        /// <param name="basispfad"></param>  
         public ZeitnachweisObj(string bedienernummer, int monat, int jahr,string basispfad) {
 
             _bedienernummer = bedienernummer;
@@ -79,7 +79,7 @@ namespace TimeRegistration
                 FileInfo fi = new FileInfo(_pfad);
                 _fileexist = fi.Exists;
             }
-            catch (IOException ex)
+            catch (IOException)
             { 
                 
             }

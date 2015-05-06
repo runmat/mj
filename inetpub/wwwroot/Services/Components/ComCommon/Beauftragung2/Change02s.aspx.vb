@@ -187,11 +187,9 @@ Namespace Beauftragung2
                 'ggf. Daten vom Autohaus-Vorgang übernehmen
                 If mBeauftragung.Autohausvorgang Then
                     RestoreAutohausVorgang()
-                ElseIf mBeauftragung.MaterialnummerAlt = ddlDienstleistung.SelectedValue AndAlso mBeauftragung.StVANrAlt = ddlStva.SelectedValue Then
+                ElseIf mBeauftragung.MaterialnummerAlt = ddlDienstleistung.SelectedValue AndAlso mBeauftragung.StVANrAlt = ddlStva.SelectedValue AndAlso mBeauftragung.HalterMerken Then
                     'Wenn Dienstleistung und Amt unverändert, ggf. Halterdaten merken/wiederherstellen
-                    If mBeauftragung.HalterNeeded = "JM" OrElse mBeauftragung.HalterNeeded = "M" OrElse mBeauftragung.HalterNeeded = "M1" OrElse mBeauftragung.HalterNeeded = "M2" Then
-                        RestoreHalterdaten()
-                    End If
+                    RestoreHalterdaten()
                 Else
                     'Bei geänderter Dienstleistung bzw. Amt keine Halterdaten merken/wiederherstellen
                     ResetBeauftragungHalterdaten()
@@ -248,15 +246,20 @@ Namespace Beauftragung2
                     ClearHalter()
                     divHalter.Visible = False
                     'divNpa.Visible = False
-                    trGrossKunde.Visible = (mBeauftragung.HalterNeeded <> "N")
+                    trGrossKunde.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
                     txtGrosskundennummer.Focus()
 
                 Case "Halter"
                     trGrossKunde.Visible = False
                     txtGrosskundennummer.Text = ""
                     divHalter.Visible = True
-                    trGeburtsort.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G2" Or mBeauftragung.HalterNeeded = "M2")
-                    trGeburtstag.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G" Or mBeauftragung.HalterNeeded = "M")
+                    trAnrede.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trName.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
+                    trName2.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trGeburtsort.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum)
+                    trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
+                    trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
                     txtName.Focus()
 
             End Select
@@ -272,7 +275,7 @@ Namespace Beauftragung2
 
         Protected Sub lbCreate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbCreate.Click
 
-            If mBeauftragung.HalterNeeded <> "N" AndAlso ValidateGrunddaten() Then
+            If mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein AndAlso ValidateGrunddaten() Then
                 mNextTab = NextTab.Halterdaten
                 SelectNextTab()
                 Return
@@ -371,7 +374,7 @@ Namespace Beauftragung2
 
             Dim dt As DataTable
 
-            dt = mBeauftragung.FillTypdaten(txtHersteller.Text.ToUpper(), txtTyp.Text.ToUpper(), txtVarianteVersion.Text.ToUpper(), txtTypPruef.Text.ToUpper(), Page)
+            dt = mBeauftragung.FillTypdaten(txtHersteller.Text.ToUpper(), txtTyp.Text.ToUpper(), txtVarianteVersion.Text.ToUpper(), txtTypPruef.Text.ToUpper(), Me)
 
             If dt.Rows.Count > 0 Then
                 Dim dtRow As DataRow = dt.Rows(0)
@@ -583,7 +586,41 @@ Namespace Beauftragung2
                     mBeauftragung.BankdatenNeeded = CChar(dRow("BANK_ERF"))
                     mBeauftragung.SEPA = (Not String.IsNullOrEmpty(dRow("SEPA").ToString()))
                     mBeauftragung.EvBNeeded = CChar(dRow("EVB_ERF"))
-                    mBeauftragung.HalterNeeded = dRow("HALTER_ERF").ToString()
+                    Select Case dRow("HALTER_ERF").ToString()
+                        Case "J"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.Ja
+                            mBeauftragung.HalterMerken = False
+                        Case "JM"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.Ja
+                            mBeauftragung.HalterMerken = True
+                        Case "G"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort
+                            mBeauftragung.HalterMerken = False
+                        Case "M"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort
+                            mBeauftragung.HalterMerken = True
+                        Case "G1"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsortUndGeburtsdatum
+                            mBeauftragung.HalterMerken = False
+                        Case "M1"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsortUndGeburtsdatum
+                            mBeauftragung.HalterMerken = True
+                        Case "G2"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum
+                            mBeauftragung.HalterMerken = False
+                        Case "M2"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum
+                            mBeauftragung.HalterMerken = True
+                        Case "H1"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaNurName1
+                            mBeauftragung.HalterMerken = False
+                        Case "H2"
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.JaNurName1
+                            mBeauftragung.HalterMerken = True
+                        Case Else
+                            mBeauftragung.HalterNeeded = HalterErfOptionen.Nein
+                            mBeauftragung.HalterMerken = False
+                    End Select
                     mBeauftragung.TypDatenNeeded = CChar(dRow("TYPD_ERF"))
                     mBeauftragung.AltKennzeichenNeeded = CChar(dRow("ALTKENZ_ERF"))
                     mBeauftragung.BarcodeNeeded = CChar(dRow("BARCODE_ERF"))
@@ -821,7 +858,7 @@ Namespace Beauftragung2
                 'Kunde, Stva und Dienstleistung sollen erhalten bleiben
 
                 'Halterdaten nur clearen, wenn sie nicht gemerkt werden sollen
-                If mBeauftragung.HalterNeeded <> "JM" AndAlso mBeauftragung.HalterNeeded <> "M" AndAlso mBeauftragung.HalterNeeded <> "M1" AndAlso mBeauftragung.HalterNeeded <> "M2" Then
+                If Not mBeauftragung.HalterMerken Then
                     ResetBeauftragungHalterdaten()
                 End If
 
@@ -874,7 +911,8 @@ Namespace Beauftragung2
                 .ErrorText = ""
                 .SapId = ""
                 .Autohausvorgang = False
-                .HalterNeeded = ""
+                .HalterNeeded = HalterErfOptionen.Nein
+                .HalterMerken = False
                 .TypDatenNeeded = ""
                 .NaechsteHU = ""
                 .ArtGenehmigung = ""
@@ -963,7 +1001,7 @@ Namespace Beauftragung2
             mBeauftragung.ReferenzCode = txtBarcode.Text
             Session("mBeauftragung2") = mBeauftragung
 
-            If mBeauftragung.Save2(Session("AppID").ToString, Session.SessionID.ToString, Page) Then
+            If mBeauftragung.Save2(Me) Then
                 pnlDiv3.Visible = False
 
                 btnOK.Text = "Schließen"
@@ -1011,7 +1049,7 @@ Namespace Beauftragung2
         Private Function FormValidation() As Boolean
 
             'User kommt aus Grunddaten(Grunddaten prüfen)
-            If Grunddaten.Visible And mBeauftragung.HalterNeeded <> "N" Then
+            If Grunddaten.Visible And mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein Then
                 If ValidateGrunddaten() Then
                     Return False
                 End If
@@ -1213,7 +1251,7 @@ Namespace Beauftragung2
                 .Verkaufsorganisation = Left(m_User.Reference, 4)
 
                 'Stammdaten laden
-                .Fill(Session("AppID").ToString, Session.SessionID.ToString, Me)
+                .Fill(Me)
                 .FillFarben(Me)
             End With
         End Sub
@@ -1284,23 +1322,6 @@ Namespace Beauftragung2
 
         End Sub
 
-        Private Sub SetDefaultStva()
-
-            'Stva Default-Wert setzen
-            Dim defaultStva As String = "0"
-            For Each dRow As DataRow In mBeauftragung.Kreise.Rows
-                If dRow("ZDEFAULT").ToString() = "X" Then
-                    defaultStva = dRow("ZKFZKZ").ToString()
-                    txtStva.Text = defaultStva
-                    ddlStva.SelectedValue = defaultStva
-                    Exit For
-                End If
-            Next
-
-            ApplyNewStva()
-
-        End Sub
-
         Private Sub InitZusatzDLCheckboxlist()
             cblZusatzDL.Items.Clear()
             For Each dRow As DataRow In mBeauftragung.Zusatzdienstleistungen.Rows
@@ -1350,9 +1371,11 @@ Namespace Beauftragung2
 
                     Select Case ddlAnrede.SelectedValue
                         Case "-1"
-                            ddlAnrede.BorderColor = Drawing.Color.Red
-                            lblAnredeInfo.Text = "Anrede fehlt"
-                            booError = True
+                            If mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1 Then
+                                ddlAnrede.BorderColor = Drawing.Color.Red
+                                lblAnredeInfo.Text = "Anrede fehlt"
+                                booError = True
+                            End If
                             name = "Name1"
                         Case "1", "2" 'Herr, Frau
                             name = "Vorname"
@@ -1370,38 +1393,32 @@ Namespace Beauftragung2
                                     End If
                                 End If
 
-                                If mBeauftragung.HalterNeeded = "J" OrElse mBeauftragung.HalterNeeded = "JM" OrElse mBeauftragung.HalterNeeded = "G" OrElse mBeauftragung.HalterNeeded = "M" Then
-
-                                    'Bei "J"/"JM" sind Datum und Ort Pflicht, bei "G"/"M" nur das Datum
+                                If mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort Then
                                     If txtGeburtstag.Text.Length = 0 Then
                                         SetErrBehavior(txtGeburtstag, lblGeburtstagInfo, "Geburtsdatum fehlt")
                                         booError = True
                                     End If
-
                                 End If
 
-                                If mBeauftragung.HalterNeeded = "J" OrElse mBeauftragung.HalterNeeded = "JM" OrElse mBeauftragung.HalterNeeded = "G2" OrElse mBeauftragung.HalterNeeded = "M2" Then
-
-                                    'Bei "J"/"JM" sind Datum und Ort Pflicht, bei "G2"/"M2" nur der Ort
+                                If mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum Then
                                     If txtGeburtsort.Text.Length = 0 Then
                                         SetErrBehavior(txtGeburtsort, lblGeburtsortInfo, "Geburtsort fehlt.")
                                         booError = True
                                     End If
-
                                 End If
                             End If
                         Case Else 'Firma
                             name = "Name1"
                     End Select
 
-                    If txtName.Text.Length = 0 Then
+                    If mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1 And String.IsNullOrEmpty(txtName.Text) Then
                         SetErrBehavior(txtName, lblNameInfo, name & " fehlt.")
                         booError = True
                     Else
                         imgHaltername.Visible = True
                     End If
 
-                    If txtStrasse.Text.Length = 0 Then
+                    If mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1 And String.IsNullOrEmpty(txtStrasse.Text) Then
                         SetErrBehavior(txtStrasse, lblStrasseInfo, "Strasse fehlt.")
                         booError = True
                     Else
@@ -1420,16 +1437,18 @@ Namespace Beauftragung2
 
                     End If
 
-                    If String.IsNullOrEmpty(txtPLZ.Text) Then
-                        If txtOrt.Visible AndAlso String.IsNullOrEmpty(txtOrt.Text) Then
-                            SetErrBehavior(txtPLZ, lblOrtInfo, "PLZ und Ort fehlen.")
-                        Else
-                            SetErrBehavior(txtPLZ, lblOrtInfo, "PLZ fehlt.")
+                    If mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1 Then
+                        If String.IsNullOrEmpty(txtPLZ.Text) Then
+                            If txtOrt.Visible AndAlso String.IsNullOrEmpty(txtOrt.Text) Then
+                                SetErrBehavior(txtPLZ, lblOrtInfo, "PLZ und Ort fehlen.")
+                            Else
+                                SetErrBehavior(txtPLZ, lblOrtInfo, "PLZ fehlt.")
+                            End If
+                            booError = True
+                        ElseIf txtOrt.Visible AndAlso String.IsNullOrEmpty(txtOrt.Text) Then
+                            SetErrBehavior(txtPLZ, lblOrtInfo, "Ort fehlt.")
+                            booError = True
                         End If
-                        booError = True
-                    ElseIf txtOrt.Visible AndAlso String.IsNullOrEmpty(txtOrt.Text) Then
-                        SetErrBehavior(txtPLZ, lblOrtInfo, "Ort fehlt.")
-                        booError = True
                     End If
 
                     If Not String.IsNullOrEmpty(txtPLZ.Text) AndAlso Not (txtOrt.Visible And String.IsNullOrEmpty(txtOrt.Text)) Then
@@ -1438,9 +1457,9 @@ Namespace Beauftragung2
 
                 End If
 
-            End If
+                End If
 
-            Return booError
+                Return booError
 
         End Function
 
@@ -1628,7 +1647,7 @@ Namespace Beauftragung2
                     booError = True
                 Else
                     'SWIFT ermitteln
-                    Dim strSwift As String = mBeauftragung.GetSWIFT(txtIBAN.Text, Page)
+                    Dim strSwift As String = mBeauftragung.GetSWIFT(txtIBAN.Text, Me)
 
                     If Not String.IsNullOrEmpty(mBeauftragung.Message) Then
                         'Fehler bei der IBAN-Prüfung
@@ -1941,7 +1960,7 @@ Namespace Beauftragung2
 
             divHalter.Visible = False
             'divNpa.Visible = False
-            trGrossKunde.Visible = (mBeauftragung.HalterNeeded <> "N")
+            trGrossKunde.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
 
             ddlGrosskunde.SelectedValue = "0"
             ddlGrosskunde.Enabled = True
@@ -2079,8 +2098,13 @@ Namespace Beauftragung2
                     lblName.Text = "Vorname*"
                     lblName2.Text = "Nachname*"
                     'divNpa.Visible = True
-                    trGeburtsort.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G2" Or mBeauftragung.HalterNeeded = "M2")
-                    trGeburtstag.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G" Or mBeauftragung.HalterNeeded = "M")
+                    trAnrede.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trName.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
+                    trName2.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trGeburtsort.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum)
+                    trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
+                    trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
             End Select
         End Sub
 
@@ -2107,8 +2131,13 @@ Namespace Beauftragung2
                 trGrossKunde.Visible = False
                 txtGrosskundennummer.Text = ""
                 divHalter.Visible = True
-                trGeburtsort.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G2" Or mBeauftragung.HalterNeeded = "M2")
-                trGeburtstag.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G" Or mBeauftragung.HalterNeeded = "M")
+                trAnrede.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                trName.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
+                trName2.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                trGeburtsort.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum)
+                trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
+                trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
                 txtName.Focus()
                 Select Case .HalterAnrede
                     Case "Firma"
@@ -2196,8 +2225,13 @@ Namespace Beauftragung2
                     rblHalterauswahl.SelectedValue = "Halter"
                     trGrossKunde.Visible = False
                     divHalter.Visible = True
-                    trGeburtsort.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G2" Or mBeauftragung.HalterNeeded = "M2")
-                    trGeburtstag.Visible = (mBeauftragung.HalterNeeded = "J" Or mBeauftragung.HalterNeeded = "JM" Or mBeauftragung.HalterNeeded = "G" Or mBeauftragung.HalterNeeded = "M")
+                    trAnrede.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trName.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
+                    trName2.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trGeburtsort.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum)
+                    trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
+                    trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                    trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
                     ddlAnrede.SelectedValue = .HalterAnrede
                     txtName.Text = .Haltername1
                     txtName2.Text = .Haltername2
@@ -2232,14 +2266,14 @@ Namespace Beauftragung2
             txtGrosskundennummer.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlGrosskunde.ClientID + ")")
             txtGrosskundennummer.Attributes.Add("onblur", "SetItemText(" + ddlGrosskunde.ClientID + ",this)")
             ddlGrosskunde.Attributes.Add("onchange", "SetItemText(" + ddlGrosskunde.ClientID + "," + txtGrosskundennummer.ClientID + ")")
-            txtHersteller.Attributes("onkeyup") = "autotab(" & Me.txtHersteller.ClientID & ", " & Me.txtTyp.ClientID & ")"
-            txtTyp.Attributes("onkeyup") = "autotab(" & Me.txtTyp.ClientID & ", " & Me.txtVarianteVersion.ClientID & ")"
-            txtVarianteVersion.Attributes("onkeyup") = "autotab(" & Me.txtVarianteVersion.ClientID & ", " & Me.txtTypPruef.ClientID & ")"
+            txtHersteller.Attributes("onkeyup") = "autotab(" & txtHersteller.ClientID & ", " & txtTyp.ClientID & ")"
+            txtTyp.Attributes("onkeyup") = "autotab(" & txtTyp.ClientID & ", " & txtVarianteVersion.ClientID & ")"
+            txtVarianteVersion.Attributes("onkeyup") = "autotab(" & txtVarianteVersion.ClientID & ", " & txtTypPruef.ClientID & ")"
             txtFahrzeugklasse.Attributes("onkeyup") = "autotab(" & txtFahrzeugklasse.ClientID & ", " & txtAufbauArt.ClientID & ")"
             txtAufbauArt.Attributes("onkeyup") = "autotab(" & txtAufbauArt.ClientID & ", " & txtFahrgestellnummer.ClientID & ")"
-            txtTypPruef.Attributes("onkeyup") = "autotab(" & Me.txtTypPruef.ClientID & ", " & Me.txtFahrgestellnummer.ClientID & ")"
-            txtFahrgestellnummer.Attributes("onkeyup") = "autotab(" & Me.txtFahrgestellnummer.ClientID & ", " & Me.txtFinPruef.ClientID & ")"
-            txtFinPruef.Attributes("onkeyup") = "autotab(" & Me.txtFinPruef.ClientID & ", " & Me.txtBriefnummer.ClientID & ")"
+            txtTypPruef.Attributes("onkeyup") = "autotab(" & txtTypPruef.ClientID & ", " & txtFahrgestellnummer.ClientID & ")"
+            txtFahrgestellnummer.Attributes("onkeyup") = "autotab(" & txtFahrgestellnummer.ClientID & ", " & txtFinPruef.ClientID & ")"
+            txtFinPruef.Attributes("onkeyup") = "autotab(" & txtFinPruef.ClientID & ", " & txtBriefnummer.ClientID & ")"
             txtNummerZB1_1.Attributes("onkeyup") = "autotab(" & txtNummerZB1_1.ClientID & ", " & txtNummerZB1_2.ClientID & ")"
             txtNummerZB1_2.Attributes("onkeyup") = "autotab(" & txtNummerZB1_2.ClientID & ", " & txtNummerZB1_3.ClientID & ")"
             txtNummerZB1_3.Attributes("onkeyup") = "autotab(" & txtNummerZB1_3.ClientID & ", " & txtNummerZB1_4.ClientID & ")"
@@ -2275,7 +2309,7 @@ Namespace Beauftragung2
                     lbtZusatzdienstleistungen.CssClass = "TabButton"
                     Zusammenfassung.Visible = False
                     lbtZusammenfassung.CssClass = "TabButton"
-                    trSelectGrosskundeHalter.Visible = (mBeauftragung.HalterNeeded <> "N")
+                    trSelectGrosskundeHalter.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
                     EnableHalterdaten()
 
                 Case NextTab.Typdaten
@@ -2408,7 +2442,7 @@ Namespace Beauftragung2
             If CBool(Session("AfterNPAUse")) Then
                 doEnable = True
                 AfterNpa = True
-            ElseIf Not mBeauftragung.HalterNeeded = "N" Then
+            ElseIf mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein Then
                 doEnable = True
             End If
 
@@ -2445,7 +2479,7 @@ Namespace Beauftragung2
             txtOrt.BackColor = farbe
             ddlOrt.BackColor = farbe
 
-            If CBool(Session("AfterNPAUse")) OrElse Not mBeauftragung.HalterNeeded = "N" Then
+            If CBool(Session("AfterNPAUse")) OrElse mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein Then
                 rblHalterauswahl.Focus()
             Else
                 txtReferenz.Focus()
