@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model FinanceFehlendeSchluesseltueteViewModel 
+
+@{ var gridName = "FehlendeSchluesseltueteGrid"; }
+
+<a class="a_btn_mini new"></a>
+<h4>
+    @Localize.PleaseChooseOneOrMoreVehicles: 
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+
+@(Html.Telerik()
+        .Grid<FehlendeSchluesseltuete>()
+    .Name(gridName)   
+        .XAjaxDataBinding("FehlendeSchluesseltueteAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+
+        columns.XBound("")
+        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='FehlendeSchluesseltueteGrid_OnSelectionChange($(this))' />")
+        .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='FehlendeSchluesseltueteGrid_OnAllSelectionChange($(this).is(\":checked\"))' />")
+        .Filterable(false);
+        
+        columns.XBound(c => c.Kennzeichen);       
+        columns.XBound(c => c.Fahrgestellnummer);      
+        columns.XBound(c => c.Briefnummer);
+        columns.XBound(c => c.Erstzulassung).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.PDINummer);
+        columns.XBound(c => c.Hersteller);
+        columns.XBound(c => c.Status);
+    })
+    .XAutoColumnConfiguration()
+                .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_FehlendeSchluesseltueteGrid"))
+    .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFehlendeSchluesseltueteFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportFehlendeSchluesseltueteFilteredPDF", "Finance");
+    })
+)
+
+
+<div class="form-horizontal">
+    <div class="form-actions">       
+            <button type="button" id="DeleteButton" class="btn green hide" onclick="DeleteFehlendeSchluesseltueten(); ">@Localize.Delete <i class="m-icon-swapright m-icon-white"></i></button>       
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+</script>

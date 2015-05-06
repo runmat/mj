@@ -239,6 +239,8 @@ Partial Public Class AutUserUpload
             _User = New User(-1, _
                               TempRow(UploadExcelColumns.Username), _
                               TempRow(UploadExcelColumns.Reference), _
+                              "", _
+                              "", _
                               blnTestUser, _
                               CInt(ddlFilterCustomer.SelectedItem.Value), _
                               False, _

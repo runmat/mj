@@ -44,7 +44,7 @@ Public Class ÜbersichtZeiten
 
         'Druckvorbereitung
         Try
-            Session("PDFPrintObj") = New PDFPrintObj(TimeReg.SAPConnectionString, TimeReg.User.Kartennummer, tov.Von, tov.Bis)
+            Session("PDFPrintObj") = New PDFPrintObj(TimeReg.User.Kartennummer, tov.Von, tov.Bis)
         Catch ex As Exception
             Session("PDFPrintObj") = Nothing
         End Try

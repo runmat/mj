@@ -1,4 +1,5 @@
 ﻿Imports System.Globalization
+Imports KBSBase
 
 Public Class KVP
     Inherits ErrorHandlingClass
@@ -27,8 +28,6 @@ Public Class KVP
     Private mGeparkteKVPId As String
 
     Private mVorschlagsliste As DataTable
-
-    Private SAPExc As SAPExecutor.SAPExecutor
 
 #End Region
 
@@ -174,30 +173,23 @@ Public Class KVP
         mKostenstelle = kst
         mBenutzer = user
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_KVP_ANMELDUNG")
 
-            dt.Rows.Add(New Object() {"I_KOSTL", False, mKostenstelle, 10})
-            dt.Rows.Add(New Object() {"I_UNAME", False, mBenutzer, 50})
-            dt.Rows.Add(New Object() {"I_ABTEILUNG", False, mAbteilung, 3})
-            dt.Rows.Add(New Object() {"E_NAME", True})
-            dt.Rows.Add(New Object() {"E_STANDORT", True})
-            dt.Rows.Add(New Object() {"E_VORGESETZTER", True})
-            dt.Rows.Add(New Object() {"E_ANZ_KVP_BW", True})
-            dt.Rows.Add(New Object() {"E_KVPID", True})
+            S.AP.SetImportParameter("I_KOSTL", mKostenstelle)
+            S.AP.SetImportParameter("I_UNAME", mBenutzer)
+            S.AP.SetImportParameter("I_ABTEILUNG", mAbteilung)
 
-            SAPExc.ExecuteERP("Z_KVP_ANMELDUNG", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode = 0 Then
+                mBenutzername = S.AP.GetExportParameter("E_NAME")
+                mStandort = S.AP.GetExportParameter("E_STANDORT")
+                mVorgesetzter = S.AP.GetExportParameter("E_VORGESETZTER")
+                mZuBewertendeKVPs = S.AP.GetExportParameter("E_ANZ_KVP_BW")
+                mGeparkteKVPId = S.AP.GetExportParameter("E_KVPID")
             Else
-                mBenutzername = dt.Select("Fieldname='E_NAME'")(0)("Data").ToString()
-                mStandort = dt.Select("Fieldname='E_STANDORT'")(0)("Data").ToString()
-                mVorgesetzter = dt.Select("Fieldname='E_VORGESETZTER'")(0)("Data").ToString()
-                mZuBewertendeKVPs = dt.Select("Fieldname='E_ANZ_KVP_BW'")(0)("Data").ToString()
-                mGeparkteKVPId = dt.Select("Fieldname='E_KVPID'")(0)("Data").ToString()
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -211,37 +203,23 @@ Public Class KVP
 
         mAktuelleKVPId = kvpId
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_KVP_READ", "I_KVPID", mAktuelleKVPId)
 
-            dt.Rows.Add(New Object() {"I_KVPID", False, mAktuelleKVPId, 10})
-            dt.Rows.Add(New Object() {"ES_VORGANG", True})
-            dt.Rows.Add(New Object() {"E_LTEXT_WIE", True})
-            dt.Rows.Add(New Object() {"E_LTEXT_WAS", True})
-            dt.Rows.Add(New Object() {"E_LTEXT_WEM", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_KVP_READ", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-            Else
-
-                Dim retRows As DataRow = dt.Select("Fieldname='ES_VORGANG'")(0)
-
-                If Not retRows Is Nothing Then
-                    Dim SapTable As DataTable = DirectCast(retRows("Data"), DataTable)
-
-                    If SapTable.Rows.Count > 0 Then
-                        mKurzbeschreibung = SapTable.Rows(0)("KTEXT").ToString()
-                        mStatus = CInt(SapTable.Rows(0)("STATUS"))
-                    End If
+            If S.AP.ResultCode = 0 Then
+                Dim SapTable As DataTable = S.AP.GetExportTable("ES_VORGANG")
+                If SapTable.Rows.Count > 0 Then
+                    mKurzbeschreibung = SapTable.Rows(0)("KTEXT").ToString()
+                    mStatus = CInt(SapTable.Rows(0)("STATUS"))
                 End If
 
-                mSituationText = dt.Select("Fieldname='E_LTEXT_WIE'")(0)("Data").ToString()
-                mVeraenderungText = dt.Select("Fieldname='E_LTEXT_WAS'")(0)("Data").ToString()
-                mVorteilText = dt.Select("Fieldname='E_LTEXT_WEM'")(0)("Data").ToString()
+                mSituationText = S.AP.GetExportParameter("E_LTEXT_WIE")
+                mVeraenderungText = S.AP.GetExportParameter("E_LTEXT_WAS")
+                mVorteilText = S.AP.GetExportParameter("E_LTEXT_WEM")
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -252,10 +230,14 @@ Public Class KVP
     Public Sub SaveKVP(Optional ByVal nurParken As Boolean = False)
         ClearErrorState()
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
-            Dim SapTable As DataTable = InitSapTable()
+            S.AP.Init("Z_KVP_SAVE")
+
+            S.AP.SetImportParameter("I_LTEXT_WIE", mSituationText)
+            S.AP.SetImportParameter("I_LTEXT_WAS", mVeraenderungText)
+            S.AP.SetImportParameter("I_LTEXT_WEM", mVorteilText)
+
+            Dim SapTable As DataTable = S.AP.GetImportTable("IS_VORGANG")
             Dim newRow As DataRow = SapTable.NewRow()
             newRow("KVPID") = mAktuelleKVPId
             newRow("KOSTL") = mKostenstelle
@@ -273,23 +255,15 @@ Public Class KVP
             End If
             SapTable.Rows.Add(newRow)
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"IS_VORGANG", False, SapTable})
-            dt.Rows.Add(New Object() {"I_LTEXT_WIE", False, mSituationText, 400})
-            dt.Rows.Add(New Object() {"I_LTEXT_WAS", False, mVeraenderungText, 400})
-            dt.Rows.Add(New Object() {"I_LTEXT_WEM", False, mVorteilText, 400})
-            dt.Rows.Add(New Object() {"E_KVPID", True})
-
-            SAPExc.ExecuteERP("Z_KVP_SAVE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-            Else
-                mAktuelleKVPId = dt.Select("Fieldname='E_KVPID'")(0)("Data").ToString()
+            If S.AP.ResultCode = 0 Then
+                mAktuelleKVPId = S.AP.GetExportParameter("E_KVPID")
                 If Not nurParken Then
                     ClearKVP()
                 End If
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -300,25 +274,20 @@ Public Class KVP
     Public Sub DeleteKVP()
         ClearErrorState()
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_KVP_DELETE", "I_KVPID", mAktuelleKVPId)
 
-            dt.Rows.Add(New Object() {"I_KVPID", False, mAktuelleKVPId, 10})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_KVP_DELETE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-            Else
+            If S.AP.ResultCode = 0 Then
                 ClearKVP()
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 
     Private Sub ClearKVP(Optional ByVal preserveBewertungsfrist As Boolean = False)
@@ -346,33 +315,22 @@ Public Class KVP
             Exit Sub
         End If
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_KVP_GET_BEWERT", "I_UNAME, I_ABTEILUNG", mBenutzer, mAbteilung)
 
-            dt.Rows.Add(New Object() {"I_UNAME", False, mBenutzer, 50})
-            dt.Rows.Add(New Object() {"I_ABTEILUNG", False, mAbteilung, 3})
-            dt.Rows.Add(New Object() {"ET_BW_VORGANG", True})
+            S.AP.Execute()
 
-            SAPExc.ExecuteERP("Z_KVP_GET_BEWERT", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
+            If S.AP.ResultCode = 0 Then
+                mVorschlagsliste = S.AP.GetExportTable("ET_BW_VORGANG")
+                mVorschlagsliste.Columns.Add("RESTTAGE", GetType(Integer))
+                For Each dRow As DataRow In mVorschlagsliste.Rows
+                    Dim fristende As DateTime
+                    If DateTime.TryParseExact(dRow("BW_FRIST").ToString(), "dd.MM.yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, fristende) Then
+                        dRow("RESTTAGE") = CInt((fristende - DateTime.Now).TotalDays)
+                    End If
+                Next
             Else
-
-                Dim retRows As DataRow = dt.Select("Fieldname='ET_BW_VORGANG'")(0)
-
-                If Not retRows Is Nothing Then
-                    mVorschlagsliste = DirectCast(retRows("Data"), DataTable)
-                    mVorschlagsliste.Columns.Add("RESTTAGE", GetType(Integer))
-                    For Each dRow As DataRow In mVorschlagsliste.Rows
-                        Dim fristende As DateTime
-                        If DateTime.TryParseExact(dRow("BW_FRIST").ToString(), "dd.MM.yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, fristende) Then
-                            dRow("RESTTAGE") = CInt((fristende - DateTime.Now).TotalDays)
-                        End If
-                    Next
-                End If
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -383,8 +341,6 @@ Public Class KVP
     Public Sub SaveBewertung()
         ClearErrorState()
 
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
-
         Try
             Dim bewertung As String = ""
             If mBewertungPositiv Then
@@ -393,19 +349,19 @@ Public Class KVP
                 bewertung = "N"
             End If
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Init("Z_KVP_SAVE_BEWERT")
 
-            dt.Rows.Add(New Object() {"I_KVPID", False, mAktuelleKVPId, 10})
-            dt.Rows.Add(New Object() {"I_UNAME", False, mBenutzer, 50})
-            dt.Rows.Add(New Object() {"I_BEWERT", False, bewertung, 1})
+            S.AP.SetImportParameter("I_KVPID", mAktuelleKVPId)
+            S.AP.SetImportParameter("I_UNAME", mBenutzer)
+            S.AP.SetImportParameter("I_BEWERT", bewertung)
 
-            SAPExc.ExecuteERP("Z_KVP_SAVE_BEWERT", dt)
+            S.AP.Execute()
 
-            If (SAPExc.ErrorOccured) Then
-                RaiseError(SAPExc.E_SUBRC, SAPExc.E_MESSAGE)
-            Else
+            If S.AP.ResultCode = 0 Then
                 mZuBewertendeKVPs -= 1
                 ClearKVP()
+            Else
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
@@ -421,23 +377,6 @@ Public Class KVP
             mBewertungsfrist = rows(0)("BW_FRIST").ToString()
         End If
     End Sub
-
-    Private Function InitSapTable() As DataTable
-        Dim tmpTable As New DataTable
-
-        tmpTable.Columns.Add("KVPID", GetType(String))
-        tmpTable.Columns.Add("KOSTL", GetType(String))
-        tmpTable.Columns.Add("KTEXT", GetType(String))
-        tmpTable.Columns.Add("UNAME", GetType(String))
-        tmpTable.Columns.Add("NAME", GetType(String))
-        tmpTable.Columns.Add("ABTEILUNG", GetType(String))
-        tmpTable.Columns.Add("STANDORT", GetType(String))
-        tmpTable.Columns.Add("FUNKTION", GetType(String))
-        tmpTable.Columns.Add("VORGESETZTER", GetType(String))
-        tmpTable.Columns.Add("STATUS", GetType(Integer))
-
-        Return tmpTable
-    End Function
 
 End Class
 

@@ -1,0 +1,21 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridEquiLebenslaufZb2"; }
+
+@(Html.Telerik()
+    .Grid<EquiMeldungsdaten>()
+    .Name(gridName)
+    .XAjaxDataBinding("EquiHistorieVermieterLebenslaufZb2AjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Vorgang);
+        columns.XBound(c => c.Durchfuehrungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versandadresse);
+        columns.XBound(c => c.Erfassungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versandart);
+        columns.XBound(c => c.BeauftragtDurch);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Durchfuehrungsdatum).Ascending())
+)

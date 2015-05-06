@@ -83,7 +83,9 @@ Partial Public Class Change12
         End If
         mObjRetoure.getLieferantenERP(mObjKasse.Firma)
 
-        If mObjRetoure.E_MESSAGE = "" Then
+        If mObjRetoure.ErrorOccured Then
+            lblError.Text = mObjRetoure.ErrorMessage
+        Else
             With mObjRetoure
 
                 Dim tmpItem As ListItem
@@ -105,8 +107,6 @@ Partial Public Class Change12
 
             End With
             Session("mObjRetoure") = mObjRetoure
-        Else
-            lblError.Text = mObjRetoure.E_MESSAGE '"Es konnten keine Lieferanten geladen werden!"
         End If
     End Sub
 
@@ -131,11 +131,11 @@ Partial Public Class Change12
     End Sub
 
     Private Sub CreateDataDisplay()
-        If mObjRetoure.E_MESSAGE = "" Then
-            FillGrid("Artikelbezeichnung")
-        Else
+        If mObjRetoure.ErrorOccured Then
             GridView3.Visible = False
             lblError.Text = "Es konnten keine Artikel zum ausgewählten Lieferanten geladen werden!"
+        Else
+            FillGrid("Artikelbezeichnung")
         End If
     End Sub
 
@@ -165,19 +165,18 @@ Partial Public Class Change12
             MPE_ChangeLieferant.Show()
             Hidden1.Value = ""
         Else
-            With mObjRetoure
-                If .E_SUBRC = 0 AndAlso .E_MESSAGE = "" Then
-                    If .Retouren.Rows.Count > 0 Then
-                        lblError.Text = "Sie können den Lieferanten erst wechseln, wenn die Retoureartikelliste keine Positionen mehr enthält.<br>" & _
-                                        "Schließen Sie die aktuelle Retoure ab oder löschen Sie alle Positionen!"
-                        ddlLieferant.SelectedIndex = mObjRetoure.SelLief
-                    Else
-                        FillDropdownArtikel(ddlLieferant.SelectedValue)
-                    End If
+            If mObjRetoure.ErrorOccured Then
+                lblError.Text = mObjRetoure.ErrorMessage
+            Else
+                If mObjRetoure.Retouren.Rows.Count > 0 Then
+                    lblError.Text = "Sie können den Lieferanten erst wechseln, wenn die Retoureartikelliste keine Positionen mehr enthält.<br>" & _
+                                    "Schließen Sie die aktuelle Retoure ab oder löschen Sie alle Positionen!"
+                    ddlLieferant.SelectedIndex = mObjRetoure.SelLief
                 Else
-                    lblError.Text = .E_MESSAGE
+                    FillDropdownArtikel(ddlLieferant.SelectedValue)
                 End If
-            End With
+            End If
+
             mObjRetoure.SelLief = ddlLieferant.SelectedIndex
             CreateDataDisplay()
             lblMessage.Text = ""
@@ -339,7 +338,7 @@ Partial Public Class Change12
                 Abschliessen()
             Else
                 lblRetoureMeldung.ForeColor = Drawing.Color.Red
-                lblRetoureMeldung.Text = "Ihre Retoure ist fehlgeschlagen: <br><br> " & mObjRetoure.E_MESSAGE
+                lblRetoureMeldung.Text = "Ihre Retoure ist fehlgeschlagen: <br><br> " & mObjRetoure.ErrorMessage
 
             End If
         Else
@@ -606,8 +605,8 @@ Partial Public Class Change12
             If txtKST.Text.Length > 0 Then
                 With mObjRetoure
                     .CheckKostStelleERP(txtKST.Text.Trim)
-                    If .E_MESSAGE <> "" Then
-                        lblError.Text = .E_MESSAGE
+                    If .ErrorOccured Then
+                        lblError.Text = .ErrorMessage
                         SetFocus(txtKST)
                         lblKSTText.Visible = False
                         lblKSTText.Text = ""
