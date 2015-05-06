@@ -31,11 +31,11 @@ Partial Public Class Change09
             Session("mObjInventur") = mObjInventur
         End If
 
-        If mObjInventur.E_SUBRC <> 0 Then
-            lblNoData.Text = mObjInventur.E_MESSAGE
+        If mObjInventur.ErrorOccured Then
+            lblNoData.Text = mObjInventur.ErrorMessage
             lblNoData.Visible = True
             lbAbsenden.Visible = False
-            If mObjInventur.E_SUBRC = 102 Then
+            If mObjInventur.ErrorCode = "102" Then
                 If File.Exists(ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf") Then
                     mObjInventur.Filepath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Inventur\" & mObjKasse.Lagerort & "\Inventur.pdf"
                     lbNachdruck.Visible = True
@@ -44,7 +44,7 @@ Partial Public Class Change09
         End If
 
         If Not IsPostBack Then
-            If mObjInventur.E_SUBRC = 102 Then
+            If mObjInventur.ErrorCode = "102" Then
                 Exit Sub
             Else
                 fillRepeater()
@@ -84,12 +84,12 @@ Partial Public Class Change09
             mObjInventur.ProdHBezeichnung = tmpProdBezeich
             mObjInventur.FillInventurMaterialienERP()
 
-            If mObjInventur.E_SUBRC <> 0 Then
-                If mObjInventur.E_SUBRC = 104 Then
+            If mObjInventur.ErrorOccured Then
+                If mObjInventur.ErrorCode = "104" Then
                     dRow("ZAEHLVH") = "X"
                     fillRepeater()
                 End If
-                lblNoData.Text = mObjInventur.E_MESSAGE
+                lblNoData.Text = mObjInventur.ErrorMessage
                 lblNoData.Visible = True
                 Session("mObjInventur") = mObjInventur
                 Exit Sub
@@ -339,9 +339,9 @@ Partial Public Class Change09
     Private Sub InventurAbschliessen()
         Try
             mObjInventur.SetInventurEndERP()
-            If mObjInventur.E_SUBRC > 0 Then
+            If mObjInventur.ErrorOccured Then
                 lblNoData.Visible = True
-                lblNoData.Text = "Fehler beim Abschließen der Inventur: " + mObjInventur.E_MESSAGE
+                lblNoData.Text = "Fehler beim Abschließen der Inventur: " + mObjInventur.ErrorMessage
                 Session("mObjInventur") = mObjInventur
                 Exit Sub
             Else

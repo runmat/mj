@@ -120,7 +120,7 @@ Partial Public Class Change01
                         lbtnInsert.Visible = False
                         FillGrid()
                     Else
-                        lblError.Text = "Hinzufügen nicht möglich: " & mObjBestellung.E_MESSAGE
+                        lblError.Text = "Hinzufügen nicht möglich: " & mObjBestellung.ErrorMessage
                     End If
                 Else
                     lblError.Text = "Artikel ist in der aktuellen Bestellung schon enthalten"
@@ -178,8 +178,8 @@ Partial Public Class Change01
 
     Private Sub txtEAN_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtEAN.TextChanged
         If Not mObjBestellung.getArtikelInfo(txtEAN.Text, False, txtMaterialnummer.Text, lblArtikelbezeichnung.Text) Then
-            If mObjBestellung.E_MESSAGE.Length > 0 Then
-                lblError.Text = mObjBestellung.E_MESSAGE
+            If mObjBestellung.ErrorOccured Then
+                lblError.Text = mObjBestellung.ErrorMessage
             Else
                 lblError.Text = "Artikel nicht vorhanden"
             End If
@@ -208,25 +208,18 @@ Partial Public Class Change01
 
         mObjBestellung.sendOrderToSAPERP()
         Session("objBestellung") = mObjBestellung
-        Select Case mObjBestellung.SAPStatus
-            Case 0
-                'ok
-                lblBestellMeldung.ForeColor = Drawing.Color.Green
-                lblBestellMeldung.Text = "Ihre Bestellung war erfolgreich."
-                MPEBestellResultat.Show()
-                mObjBestellung.endOrder()
-                mObjBestellung = Nothing
-            Case -1
-                'teils ok
-                lblBestellMeldung.ForeColor = Drawing.Color.Red
-                lblBestellMeldung.Text = "Ihre Bestellung konnte nicht vollständig durchgeführt werden: <br><br> " & mObjBestellung.SAPStatusText & _
-                "<br><br> Fehlerhafte Artikel bleiben bestehen."
-                MPEBestellResultat.Show()
-            Case Else
-                lblBestellMeldung.ForeColor = Drawing.Color.Red
-                lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjBestellung.SAPStatusText
-                MPEBestellResultat.Show()
-        End Select
+
+        If mObjBestellung.ErrorOccured Then
+            lblBestellMeldung.ForeColor = Drawing.Color.Red
+            lblBestellMeldung.Text = "Ihre Bestellung ist fehlgeschlagen: <br><br> " & mObjBestellung.ErrorMessage
+            MPEBestellResultat.Show()
+        Else
+            lblBestellMeldung.ForeColor = Drawing.Color.Green
+            lblBestellMeldung.Text = "Ihre Bestellung war erfolgreich."
+            MPEBestellResultat.Show()
+            mObjBestellung.endOrder()
+            mObjBestellung = Nothing
+        End If
 
     End Sub
 
@@ -320,103 +313,3 @@ Partial Public Class Change01
     End Function
 
 End Class
-
-' ************************************************
-' $History: Change01.aspx.vb $
-' 
-' *****************  Version 21  *****************
-' User: Rudolpho     Date: 1.11.10    Time: 16:16
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 20  *****************
-' User: Rudolpho     Date: 3.08.10    Time: 16:46
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 19  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 13:36
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 18  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 9:49
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 17  *****************
-' User: Rudolpho     Date: 24.02.10   Time: 17:59
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 16  *****************
-' User: Rudolpho     Date: 10.02.10   Time: 17:53
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 15  *****************
-' User: Jungj        Date: 26.05.09   Time: 10:13
-' Updated in $/CKAG2/KBS/Forms
-' Nachbesserungen
-' 
-' *****************  Version 14  *****************
-' User: Jungj        Date: 11.05.09   Time: 10:35
-' Updated in $/CKAG2/KBS/Forms
-' nderungen Nach test ITA 2808
-' 
-' *****************  Version 13  *****************
-' User: Jungj        Date: 7.05.09    Time: 17:07
-' Updated in $/CKAG2/KBS/Forms
-' Letzter Versuch beim Enterdrcken in Menge gescheitert
-' 
-' *****************  Version 12  *****************
-' User: Jungj        Date: 6.05.09    Time: 10:21
-' Updated in $/CKAG2/KBS/Forms
-' Nachbesserungen InputScanner
-' 
-' *****************  Version 11  *****************
-' User: Jungj        Date: 5.05.09    Time: 10:12
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 kommentare 
-' 
-' *****************  Version 10  *****************
-' User: Jungj        Date: 29.04.09   Time: 17:38
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808
-' 
-' *****************  Version 9  *****************
-' User: Jungj        Date: 29.04.09   Time: 9:31
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808 testfertig
-' 
-' *****************  Version 8  *****************
-' User: Jungj        Date: 28.04.09   Time: 17:56
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808
-' 
-' *****************  Version 7  *****************
-' User: Jungj        Date: 27.04.09   Time: 17:24
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 27.04.09   Time: 9:17
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 24.04.09   Time: 15:48
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 24.04.09   Time: 10:35
-' Updated in $/CKAG2/KBS/Forms
-' from server.transfer back wegen js
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 24.04.09   Time: 9:59
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808
-' 
-' *****************  Version 2  *****************
-' User: Jungj        Date: 23.04.09   Time: 17:50
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2808
-' 
-'
-' ************************************************

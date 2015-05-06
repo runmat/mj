@@ -97,7 +97,7 @@ namespace GeneralTools.Models
         {
             var item = source.FirstOrDefault();
             return (item ?? defaultValue);
-        }
+    }
 
         public static T FirstOrDefault<T>(this IEnumerable<T> source, Func<T, bool> predicate, T defaultValue) where T : class
         {
@@ -554,6 +554,14 @@ namespace GeneralTools.Models
             return Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp);
         }
 
+        public static double ToDouble(this string stringValue, double defaultValue = -1)
+        {
+            double tmp;
+            if (!double.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return defaultValue;
+            return tmp;
+        }
+
         public static bool IsDecimal(this string stringValue)
         {
             decimal tmp;
@@ -704,10 +712,10 @@ namespace GeneralTools.Models
             return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(property => property.GetCustomAttributes(true)
                     .Any(p => p.GetType() == attributeType));
-        }
+    }
 
         public static PropertyInfo GetPropertyWithAttribute(this Type type, Type attributeType)
-        {
+    {
             return type.GetPropertiesWithAttribute(attributeType).FirstOrDefault();
         }
 
@@ -869,7 +877,7 @@ namespace GeneralTools.Models
         public static string BoolToX(this bool? boolValue)
         {
             return (boolValue == true).ToCustomString("X", "");
-        }
+}
 
         public static bool IsTrue(this bool? boolValue)
         {
