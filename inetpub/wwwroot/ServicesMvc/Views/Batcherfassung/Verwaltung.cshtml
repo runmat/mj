@@ -1,0 +1,38 @@
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.BatcherfassungViewModel
+
+@section LayoutScript { _controlGroupValidationType = "default"; }
+
+<h3 class="page-title">Batcherfassung<small> Pflege</small></h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Suche", Model.BatcherfassungSelektor)
+}
+
+@Html.Partial("Partial/Common")
+
+
+@*
+<div class="portlet">
+    <div id="divGridEditStart">
+        @Html.Partial("Partial/Grid")
+    </div>
+</div>
+*@
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div class="portlet">
+        <div id="divGridEditStart">
+            @Html.Partial("Partial/Grid")
+        </div>
+    </div>
+}
+
+<div id="divGridItemDetails"></div>
+
+
+
+
+
+

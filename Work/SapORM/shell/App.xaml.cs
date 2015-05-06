@@ -44,7 +44,11 @@ namespace SapORM
                 myProxy.setImportParameter("I_TREU", m_objUser.KUNNR.PadLeft(10, "0"c))
                 myProxy.setImportParameter("I_EQTYP", "B")                                        
              */
-           
+
+		    //new FunctionReflector("Z_M_EC_AVM_BATCH_INSERT").WriteOrmForExportTableStructures();             
+            //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); 
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_SELECT").WriteOrmForExportTableStructures(); 
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_UNIT_SELECT").WriteOrmForExportTableStructures("I_KUNNR_AG, I_BATCH_ID", new object[] { "0000219853", "1234" }); 
             //new FunctionReflector("Z_DPM_LIST_POOLS_001").WriteOrmForExportTableStructures("I_KUNNR_AG, I_ZZDAT_BER_VON, I_ZZDAT_BER_BIS", new object[] { "0000219853", "01.02.2015", "02.02.2015" }); 
             //new FunctionReflector("Z_DPM_READ_AUFTR_006").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;  
             //new FunctionReflector("Z_DPM_LIST_PDI_001").WriteOrmForExportTableStructures("I_KUNNR_AG", new object[] { "0000219853" }); ;  

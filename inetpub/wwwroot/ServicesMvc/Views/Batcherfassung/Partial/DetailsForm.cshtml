@@ -1,0 +1,86 @@
+﻿@using CkgDomainLogic.FzgModelle.Models
+@using System.Collections.Generic
+@model Batcherfassung
+
+<div id="DivBatcherfassung">
+    @using (Ajax.BeginForm("BatcherfassungDetailsFormSave", "Batcherfassung", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivBatcherfassung", OnComplete = "BatcherfassungAjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "BatcherfassungAjaxForm" }))
+    {
+
+        @Html.FormValidationSummary()
+
+      
+        @Html.HiddenFor(m => m.ObjectKey)
+        @Html.HiddenFor(m => m.InsertModeTmp)       
+        @Html.HiddenFor(m => m.LiefermonatBAPIFormat)
+
+
+        if (Model.InsertModeTmp)
+        {
+            @Html.FormTextBoxFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
+        }
+        else
+        {           
+            @Html.HiddenFor(m => m.ID)
+            @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
+        }
+                     
+        @Html.FormTextBoxFor(m => m.ModellId, new { @class = "m-wrap large", col = "right", @onkeyup = "return TryLoadDataByModelId(this)", @onpaste = "return TryLoadDataByModelId(this)" })
+
+        @Html.FormTextBoxFor(m => m.Modellbezeichnung, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap large", col = "right" })
+
+        if (Model.InsertModeTmp)
+        {
+          @*  @Html.HiddenFor(m => m.HerstellerName)*@
+            @Html.FormDropDownListFor(m => m.HerstellerCode, Model.HerstellerList, new { @class = "m-wrap large", col = "left" })
+        }
+        else
+        {           
+            @Html.FormTextBoxFor(m => m.HerstellerName, new { @class = "m-wrap medium", col = "left" })
+        }
+        @Html.FormTextBoxFor(m => m.Anzahl, new { @class = "m-wrap large", col = "right" })
+        
+        
+        @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right" })
+        
+        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large", col = "left" })
+        @Html.FormWizard("", "Upload", new List<string>() { "Datei hochladen", "Fertig" })
+                        
+        @Html.FormTextBoxFor(m => m.Laufzeit, new { @class = "m-wrap large", col = "left" })
+        @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+        
+        @Html.FormTextBoxFor(m => m.AuftragsnummerVon, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.AuftragsnummerBis, new { @class = "m-wrap large", col = "right" })
+             
+        @Html.FormDropDownListFor(m => m.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap large", col = "right" })
+
+        @Html.FormCheckBoxFor(m => m.Winterreifen, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.AnhaengerKupplung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.NaviVorhanden, new { @class = "m-wrap large", col = "left" }, labelHidden: true)        
+        @Html.FormCheckBoxFor(m => m.Bluetooth, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+            
+        @Html.FormCheckBoxFor(m => m.KennzeichenLeasingFahrzeug, new { @class = "m-wrap large", col = "left" }, labelHidden: true)       
+        @Html.FormCheckBoxFor(m => m.SecurityFleet, new { @class = "m-wrap large", col = "right" }, labelHidden: true)    
+        
+        @Html.FormRequiredFieldsSummary()
+
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="CloseItemDetails();">@Localize.Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+</script>
