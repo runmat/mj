@@ -1,0 +1,50 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model Zb2BestandSecurityFleetSelektor
+
+<div id="divZb2BestandSecurityFleetSuche">
+    @using (Ajax.BeginForm("LoadZb2BestandSecurityFleet", "Fahrzeuge", null,
+        new MvcAjaxOptions("divZb2BestandSecurityFleetSuche") { OnComplete = "ShowZb2BestandSecurityFleet();" }, new { id = "Zb2BestandSecurityFleetSearchForm" }))
+    {    
+        <div class="form-horizontal">
+            
+            @Html.FormValidationSummary()
+
+            @Html.FormDropDownListFor(m => m.Herstellerkennung, Zb2BestandSecurityFleetSelektor.FahrzeugHersteller, new { @class = "m-wrap" })
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowZb2BestandSecurityFleet() {
+
+        //FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowZb2BestandSecurityFleet",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowZb2BestandSecurityFleetSearchResult(result);
+                    //return;
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

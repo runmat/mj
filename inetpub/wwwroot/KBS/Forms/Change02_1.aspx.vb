@@ -423,22 +423,14 @@ Partial Public Class Change02_1
 
         MPEWareneingangsbuchungResultat.Show()
 
-        Select Case mObjWareneingangspruefung.SAPStatus
-            Case 0
-                'ok
-                lblWareneingangsbuchungMeldung.ForeColor = Drawing.Color.Green
-                lblWareneingangsbuchungMeldung.Text = "Ihre Wareneingangsbuchung war erfolgreich. "
-                mObjKasse.Wareneingangspruefung(Me) = Nothing
-            Case -1
-                lblWareneingangsbuchungMeldung.ForeColor = Drawing.Color.Red
-                lblWareneingangsbuchungMeldung.Text = "Ihre Wareneingangsbuchung konnte nicht durchgeführt werden: <br><br> " & mObjWareneingangspruefung.SAPStatusText
-            Case 134
-                lblWareneingangsbuchungMeldung.ForeColor = Drawing.Color.Red
-                lblWareneingangsbuchungMeldung.Text = mObjWareneingangspruefung.SAPStatusText
-            Case Else
-                lblWareneingangsbuchungMeldung.ForeColor = Drawing.Color.Red
-                lblWareneingangsbuchungMeldung.Text = "Bei der Wareneingangsprüfung ist ein Fehler aufgetreten: <br><br> " & mObjWareneingangspruefung.SAPStatusText
-        End Select
+        If mObjWareneingangspruefung.ErrorOccured Then
+            lblWareneingangsbuchungMeldung.ForeColor = Drawing.Color.Red
+            lblWareneingangsbuchungMeldung.Text = mObjWareneingangspruefung.ErrorMessage
+        Else
+            lblWareneingangsbuchungMeldung.ForeColor = Drawing.Color.Green
+            lblWareneingangsbuchungMeldung.Text = "Ihre Wareneingangsbuchung war erfolgreich. "
+            mObjKasse.Wareneingangspruefung(Me) = Nothing
+        End If
 
     End Sub
 
@@ -454,101 +446,3 @@ Partial Public Class Change02_1
     End Sub
 
 End Class
-
-' ************************************************
-' $History: Change02_1.aspx.vb $
-' 
-' *****************  Version 23  *****************
-' User: Rudolpho     Date: 5.10.10    Time: 13:24
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 22  *****************
-' User: Rudolpho     Date: 5.10.10    Time: 9:44
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 21  *****************
-' User: Rudolpho     Date: 27.09.10   Time: 15:24
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 20  *****************
-' User: Rudolpho     Date: 16.09.10   Time: 17:48
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 19  *****************
-' User: Rudolpho     Date: 11.08.10   Time: 10:46
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 18  *****************
-' User: Rudolpho     Date: 10.08.10   Time: 13:01
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 17  *****************
-' User: Rudolpho     Date: 6.08.10    Time: 13:40
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 16  *****************
-' User: Rudolpho     Date: 5.08.10    Time: 11:21
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 15  *****************
-' User: Rudolpho     Date: 3.08.10    Time: 16:46
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 14  *****************
-' User: Rudolpho     Date: 22.03.10   Time: 14:30
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 13  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 16:40
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 12  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 13:36
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 11  *****************
-' User: Rudolpho     Date: 12.03.10   Time: 9:49
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 10  *****************
-' User: Rudolpho     Date: 9.03.10    Time: 17:44
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 9  *****************
-' User: Rudolpho     Date: 24.02.10   Time: 17:59
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 8  *****************
-' User: Rudolpho     Date: 19.02.10   Time: 8:59
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 7  *****************
-' User: Rudolpho     Date: 18.02.10   Time: 9:18
-' Updated in $/CKAG2/KBS/Forms
-' 
-' *****************  Version 6  *****************
-' User: Jungj        Date: 5.05.09    Time: 12:37
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 testfertig
-' 
-' *****************  Version 5  *****************
-' User: Jungj        Date: 5.05.09    Time: 10:12
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 kommentare 
-' 
-' *****************  Version 4  *****************
-' User: Jungj        Date: 4.05.09    Time: 17:35
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 4.05.09    Time: 11:44
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 unfertig
-' 
-' *****************  Version 2  *****************
-' User: Jungj        Date: 30.04.09   Time: 16:56
-' Updated in $/CKAG2/KBS/Forms
-' ITA 2838 unfertig
-'
-' ************************************************

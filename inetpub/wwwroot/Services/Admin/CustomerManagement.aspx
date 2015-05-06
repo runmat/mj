@@ -202,185 +202,248 @@
                                         <ContentTemplate>
                                             <table id="tblKunDaten" style="border-color: #FFFFFF; font-size: 10px;" cellspacing="0"
                                                 cellpadding="0" width="100%" border="0">
-                                                <tr class="formquery">
-                                                    <td class="firstLeft active">
-                                                        Firmenname:
-                                                       <%-- <asp:TextBox ID="txtCustomerID" runat="server" Visible="False" Width="0px"
-                                                            Height="0px" BorderStyle="None" BorderWidth="0px">-1</asp:TextBox>--%>
-                                                        <input type="hidden" id="ihCustomerID" runat="server" value="-1" />
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <table id="tblLeft" style="padding-right: 50px; border-color: #FFFFFF;">
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Firmenname:
+                                                                    <input type="hidden" id="ihCustomerID" runat="server" value="-1" />
+                                                                </td>
+                                                                <td class="active" width="100%">
+                                                                    <asp:TextBox ID="txtCustomerName" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    KUNNR
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:TextBox ID="txtKUNNR" runat="server" CssClass="InputTextbox">0</asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trMaster" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Master
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span>
+                                                                        <asp:CheckBox ID="cbxMaster" runat="server"></asp:CheckBox></span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trAccountingArea" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Buchungskreis
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlAccountingArea" runat="server">
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="tr1" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Portallink:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span>
+                                                                        <asp:DropDownList ID="ddlPortalLink" runat="server" />
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trPortalType" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Portal-Typ:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span>
+                                                                        <asp:DropDownList ID="ddlPortalType" runat="server" />
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trMvcSelectionUrl" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Selection Typ (nur MVC):
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span>
+                                                                        <asp:DropDownList ID="ddlMvcSelectionType" runat="server" />
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="tr2" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Selection URL (nur MVC):
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:TextBox ID="txtMvcSelectionUrl" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trKundeSperr" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Kunde sperren:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span>
+                                                                        <asp:CheckBox ID="chkKundenSperre" runat="server" Enabled="false" />
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trTeamViewer" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    TeamViewer verwenden:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span>
+                                                                        <asp:CheckBox ID="chkTeamviewer" runat="server" />
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Kontakt-Name:
+                                                                </td>
+                                                                <td align="left" class="active">
+                                                                    <asp:TextBox ID="txtCName" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
-                                                    <td class="active" width="100%">
-                                                        <asp:TextBox ID="txtCustomerName" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                    <td colspan="2">
+                                                        <table id="tblRight" style="border-color: #FFFFFF;">
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Referenz 1:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlReferenzTyp1" runat="server" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Referenz 2:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlReferenzTyp2" runat="server" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Referenz 3:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlReferenzTyp3" runat="server" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
+                                                                <td colspan="2">
+                                                                </td>
+                                                            </tr>
+                                                        </table>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td class="firstLeft active">
-                                                        KUNNR
-                                                    </td>
-                                                    <td class="active">
-                                                        <asp:TextBox ID="txtKUNNR" runat="server" CssClass="InputTextbox">0</asp:TextBox>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="trMaster" runat="server">
-                                                    <td class="firstLeft active">
-                                                        Master
-                                                    </td>
-                                                    <td class="active">
-                                                        <span>
-                                                            <asp:CheckBox ID="cbxMaster" runat="server"></asp:CheckBox></span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="trAccountingArea" runat="server">
-                                                    <td class="firstLeft active">
-                                                        Buchungskreis
-                                                    </td>
-                                                    <td class="active">
-                                                        <asp:DropDownList ID="ddlAccountingArea" runat="server">
-                                                        </asp:DropDownList>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="tr1" runat="server">
-                                                    <td class="firstLeft active">
-                                                        Portallink:
-                                                    </td>
-                                                    <td class="active">
-                                                        <span>
-                                                            <asp:DropDownList ID="ddlPortalLink" runat="server" />
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="trPortalType" runat="server">
-                                                    <td class="firstLeft active">
-                                                        Portal-Typ:
-                                                    </td>
-                                                    <td class="active">
-                                                        <span>
-                                                            <asp:DropDownList ID="ddlPortalType" runat="server" />
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="trMvcSelectionUrl" runat="server">
-                                                    <td class="firstLeft active">
-                                                        Selection Typ (nur MVC):
-                                                    </td>
-                                                    <td class="active">
-                                                        <span>
-                                                            <asp:DropDownList ID="ddlMvcSelectionType" runat="server" />
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="tr2" runat="server">
-                                                    <td class="firstLeft active">
-                                                        Selection URL (nur MVC):
-                                                    </td>
-                                                    <td class="active">
-                                                        <asp:TextBox ID="txtMvcSelectionUrl" runat="server" CssClass="InputTextbox"></asp:TextBox>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="trKundeSperr" runat="server">
-                                                    <td class="firstLeft active">
-                                                        Kunde sperren:
-                                                    </td>
-                                                    <td class="active">
-                                                        <span>
-                                                            <asp:CheckBox ID="chkKundenSperre" runat="server" Enabled="false" />
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery" id="trTeamViewer" runat="server">
-                                                    <td class="firstLeft active">
-                                                        TeamViewer verwenden:
-                                                    </td>
-                                                    <td class="active">
-                                                        <span>
-                                                            <asp:CheckBox ID="chkTeamviewer" runat="server" />
-                                                        </span>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery">
-                                                    <td class="firstLeft active">
-                                                        Kontakt-Name:
-                                                    </td>
-                                                    <td align="left" class="active">
-                                                        <asp:TextBox ID="txtCName" runat="server" CssClass="InputTextbox"></asp:TextBox>
-                                                    </td>
-                                                </tr>
-                                                <tr class="formquery">
-                                                    <td class="firstLeft active" style="vertical-align: top">
+                                                    <td class="firstLeft active" style="vertical-align: top; width: 175px">
                                                         Kontakt-Adresse:
                                                     </td>
-                                                    <td class="active">
-                                                        <%--<asp:TextBox ID="txtCAddress" runat="server" TextMode="MultiLine" CssClass="InputTextbox"></asp:TextBox>--%>
+                                                    <td class="active" colspan="3">
                                                         <atkHtmlEdit:Editor ID="EditCAddress" runat="server" Width="680px"></atkHtmlEdit:Editor>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td class="firstLeft active">
+                                                    <td class="firstLeft active" style="width: 175px">
                                                         Mailadresse Anzeigetext:
                                                     </td>
-                                                    <td class="active">
+                                                    <td class="active" colspan="3">
                                                         <asp:TextBox ID="txtCMailDisplay" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td class="firstLeft active">
+                                                    <td class="firstLeft active" style="width: 175px">
                                                         Mailadresse:
                                                     </td>
-                                                    <td class=" active">
+                                                    <td class=" active" colspan="3">
                                                         <asp:TextBox ID="txtCMail" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td nowrap="nowrap" class="firstLeft active">
+                                                    <td nowrap="nowrap" class="firstLeft active" style="width: 175px">
                                                         Web-Adresse Anzeigetext:
                                                     </td>
-                                                    <td align="left" class="active">
+                                                    <td align="left" class="active" colspan="3">
                                                         <asp:TextBox ID="txtCWebDisplay" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td height="22" class="firstLeft active">
+                                                    <td height="22" class="firstLeft active" style="width: 175px">
                                                         Web-Adresse:
                                                     </td>
-                                                    <td align="left" class=" active">
+                                                    <td align="left" class=" active" colspan="3">
                                                         <asp:TextBox ID="txtCWeb" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr>
-                                                    <td>
+                                                    <td colspan="4">
                                                         &nbsp;
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td nowrap="nowrap" colspan="2" class="firstLeft active" style="border-left: solid 1px #595959;
+                                                    <td nowrap="nowrap" colspan="4" class="firstLeft active" style="border-left: solid 1px #595959;
                                                         border-right: solid 1px #595959; border-top: solid 1px #595959; background-color: #bbbbbb;
                                                         color: White; padding-bottom: 5px;">
                                                         Kundenkontakt
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td nowrap="nowrap" class="firstLeft active" style="border-left: solid 1px #595959;">
+                                                    <td nowrap="nowrap" class="firstLeft active" style="border-left: solid 1px #595959; width: 175px">
                                                         Kundenpostfach:
                                                     </td>
-                                                    <td align="left" class="active" style="border-right: solid 1px #595959;">
+                                                    <td align="left" class="active" style="border-right: solid 1px #595959;" colspan="3">
                                                         <asp:TextBox ID="txtKundepostfach" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
-                                                    <td nowrap="nowrap" class="firstLeft active" style="border-left: solid 1px #595959;">
+                                                    <td nowrap="nowrap" class="firstLeft active" style="border-left: solid 1px #595959; width: 175px">
                                                         Kundenhotline:
                                                     </td>
-                                                    <td align="left" class="active" style="border-right: solid 1px #595959;">
+                                                    <td align="left" class="active" style="border-right: solid 1px #595959;" colspan="3">
                                                         <asp:TextBox ID="txtKundenhotline" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
                                                 <tr class="formquery">
                                                     <td nowrap="nowrap" class="firstLeft active" style="border-left: solid 1px #595959;
-                                                        border-bottom: solid 1px #595959;">
+                                                        border-bottom: solid 1px #595959; width: 175px">
                                                         Kundenfax:
                                                     </td>
                                                     <td align="left" class="active" style="border-right: solid 1px #595959; border-bottom: solid 1px #595959;
-                                                        padding-bottom: 5px;">
+                                                        padding-bottom: 5px;" colspan="3">
                                                         <asp:TextBox ID="txtKundenfax" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                     </td>
                                                 </tr>
