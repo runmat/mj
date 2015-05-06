@@ -12,7 +12,7 @@
 
             @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap" })
             
-            @Html.FormDropDownListFor(m => m.HerstellerSchluessel, (ViewBag.HerstellerListe as List<Hersteller>).ToSelectList(true), new { @class = "m-wrap" })
+            @Html.FormDropDownListFor(m => m.HerstellerSchluessel, (ViewBag.HerstellerListe as List<CkgDomainLogic.Fahrzeuge.Models.Hersteller>).ToSelectList(true), new { @class = "m-wrap" })
 
             @Html.FormRequiredFieldsSummary()
 

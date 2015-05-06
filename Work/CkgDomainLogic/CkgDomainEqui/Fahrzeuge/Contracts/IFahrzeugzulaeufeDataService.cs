@@ -7,7 +7,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
     {
         FahrzeugzulaeufeSelektor Suchparameter { get; set; }
 
-        List<Hersteller> HerstellerListe { get; }
+        List<Fahrzeuge.Models.Hersteller> HerstellerListe { get; }
 
         List<Fahrzeugzulauf> Fahrzeugzulaeufe { get; }
 
