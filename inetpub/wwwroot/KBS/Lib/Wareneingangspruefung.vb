@@ -248,7 +248,8 @@ Public Class Wareneingangspruefung
                     tmprow("IstUmlagerung") = ""
                     ErwarteteLieferungen.Rows.Add(tmprow)
                 Next
-            ElseIf SapTableUML.Rows.Count > 0 Then
+            End If
+            If SapTableUML.Rows.Count > 0 Then
                 For Each row As DataRow In SapTableUML.Rows
                     tmprow = ErwarteteLieferungen.NewRow
                     tmprow("Bestellnummer") = row("BELNR").ToString
@@ -257,7 +258,9 @@ Public Class Wareneingangspruefung
                     tmprow("IstUmlagerung") = "X"
                     ErwarteteLieferungen.Rows.Add(tmprow)
                 Next
-            Else
+            End If
+
+            If ErwarteteLieferungen.Rows.Count = 0 Then
                 RaiseError("-1", "Keine Positionen vorhanden")
             End If
 
