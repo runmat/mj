@@ -87,10 +87,7 @@ namespace ServicesMvc.Controllers
         {
             return PartialView("Partial/DetailsForm", ViewModel.ModifyItemWithModelData(modelId));
         }
-
-        //LoadDataByModelId
-      
-
+              
         [HttpPost]
         public ActionResult EditBatcherfassung(string id)
         {

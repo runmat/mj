@@ -45,11 +45,11 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         public string SaveBatches(Batcherfassung batcherfassung)
         {
-            //var error = SAP.ExecuteAndCatchErrors(
+            var error = SAP.ExecuteAndCatchErrors(
                 
-            //    // exception safe SAP action:
-            //    () =>
-            //    {                    
+                // exception safe SAP action:
+                () =>
+                {                    
                     Z_M_EC_AVM_BATCH_INSERT.Init(SAP);
                     var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_ZBATCH_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
                     SAP.ApplyImport(vgList);
@@ -58,22 +58,22 @@ namespace CkgDomainLogic.FzgModelle.Services
 
                     var outList = Z_M_EC_AVM_BATCH_INSERT.GT_IN.GetExportList(SAP);
 
-                    // batcherfassung.ForEach(x => { outList. x.ZUNIT_NR = 
+                    // TODO -> wie geht das mit den Unitnummern??
+                    //batcherfassung.ForEach(x => { outList.Where(x => x.ZUNIT_NR = 
 
+                },
 
-                //},
+                // SAP custom error handling:
+                () =>
+                {
+                    var sapResult = SAP.ResultMessage;
+                    if (SAP.ResultMessage.IsNotNullOrEmpty())
+                        return sapResult;
 
-                //// SAP custom error handling:
-                //() =>
-                //{
-                //    var sapResult = SAP.ResultMessage;
-                //    if (SAP.ResultMessage.IsNotNullOrEmpty())
-                //        return sapResult;
+                    return "";
+                });
 
-                //    return "";
-                //});
-
-                    return ""; // error;
+            return error;    
         }
 
 

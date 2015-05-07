@@ -12,7 +12,7 @@
       
         @Html.HiddenFor(m => m.ObjectKey)
         @Html.HiddenFor(m => m.InsertModeTmp)       
-        @Html.HiddenFor(m => m.LiefermonatBAPIFormat)
+       @* @Html.HiddenFor(m => m.LiefermonatBAPIFormat)*@
 
 
         if (Model.InsertModeTmp)
@@ -31,9 +31,8 @@
         @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap large", col = "right" })
 
         if (Model.InsertModeTmp)
-        {
-          @*  @Html.HiddenFor(m => m.HerstellerName)*@
-            @Html.FormDropDownListFor(m => m.HerstellerCode, Model.HerstellerList, new { @class = "m-wrap large", col = "left" })
+        {           
+            @Html.FormDropDownListFor(m => m.HerstellerName, Model.HerstellerList, new { @class = "m-wrap large", col = "left" })
         }
         else
         {           
@@ -45,18 +44,19 @@
         @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left" })
         @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right" })
         
-        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large", col = "left" })
-        @Html.FormWizard("", "Upload", new List<string>() { "Datei hochladen", "Fertig" })
+    @*    @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large", col = "left" })
+        @Html.FormWizard("", "Upload", new List<string>() { "Datei hochladen", "Fertig" })*@
                         
         @Html.FormTextBoxFor(m => m.Laufzeit, new { @class = "m-wrap large", col = "left" })
         @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
         
+        @Html.FormTextBoxFor(m => m.LiefermonatBAPIFormat, new { @class = "m-wrap large", col = "left" })
+        @Html.FormDropDownListFor(m => m.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
+       
+        
         @Html.FormTextBoxFor(m => m.AuftragsnummerVon, new { @class = "m-wrap large", col = "left" })
         @Html.FormTextBoxFor(m => m.AuftragsnummerBis, new { @class = "m-wrap large", col = "right" })
-             
-        @Html.FormDropDownListFor(m => m.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBoxFor(m => m.Bemerkung, new { @class = "m-wrap large", col = "right" })
-
+                     
         @Html.FormCheckBoxFor(m => m.Winterreifen, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
         @Html.FormCheckBoxFor(m => m.AnhaengerKupplung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
 

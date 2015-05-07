@@ -141,23 +141,34 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             var modelFoundById = ModelHersteller.FirstOrDefault(m => m.ModelID == id) ?? new ModelHersteller();
                        
             SelectedItem.ModellId = id;
-            SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
-            SelectedItem.HerstellerCode = modelFoundById.HerstellerCode;
-            SelectedItem.HerstellerName = modelFoundById.HerstellerName;
-            SelectedItem.SippCode = modelFoundById.SippCode;
-            
+            if (InsertMode)
+            {
+                SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
+                SelectedItem.HerstellerCode = modelFoundById.HerstellerName;
+                SelectedItem.HerstellerName = modelFoundById.HerstellerName;
+                SelectedItem.SippCode = modelFoundById.SippCode;
+                SelectedItem.Antrieb = modelFoundById.Antrieb;
+                SelectedItem.Laufzeit = modelFoundById.Laufzeit;
+                SelectedItem.Laufzeitbindung = modelFoundById.Laufzeitbindung;
+                SelectedItem.SecurityFleet = modelFoundById.SecurityFleet;
+                SelectedItem.Bluetooth = modelFoundById.Bluetooth;
+                SelectedItem.NaviVorhanden = modelFoundById.NaviVorhanden;
+                SelectedItem.KennzeichenLeasingFahrzeug = modelFoundById.KennzeichenLeasingFahrzeug;
+            }
             return SelectedItem;
         }
 
         public void AddItem(Batcherfassung newItem)
-        {
+        {          
             Batcherfassungs.Add(newItem);
         }
 
         public Batcherfassung NewItem(string idToDuplicate)
         {
+            Batcherfassung newItem = null;
+
             if (idToDuplicate.IsNullOrEmpty())
-                return new Batcherfassung
+                newItem = new Batcherfassung
                 {
                     ID = "",
                     HerstellerList = Batcherfassungs.Select(x => x.HerstellerList).FirstOrDefault(),
@@ -166,15 +177,13 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             var itemToDuplicate = Batcherfassungs.FirstOrDefault(m => m.ID == idToDuplicate);
             if (itemToDuplicate != null)
             {
-                var newItem = ModelMapping.Copy(itemToDuplicate);
+                newItem = ModelMapping.Copy(itemToDuplicate);
 
                 newItem.ID = "";
-                newItem.ObjectKey = null;
-
-                return newItem;
+                newItem.ObjectKey = null;                
             }
-
-            return null;
+            SelectedItem = newItem;
+            return newItem;
         }
 
         public void SaveItem(Batcherfassung item, Action<string, string> addModelError)

@@ -106,7 +106,13 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.HerstellerCode = source.HERST;                           
                             destination.HerstellerName = source.HERST_T;
                             destination.SippCode = source.SIPP1 + source.SIPP2 + source.SIPP3 + source.SIPP4;
+                            destination.Laufzeit = source.ZLAUFZEIT;
+                            destination.Laufzeitbindung = (source.ZLZBINDUNG.ToUpper() == "X");
                             destination.Antrieb = source.ANTR;
+                            destination.NaviVorhanden = (source.NAVI_VORH.ToUpper() == "X");  
+                            destination.Winterreifen = (source.WINTERREIFEN.ToUpper() == "X");  
+                            destination.SecurityFleet = (source.SECU_FLEET.ToUpper() == "X");
+                            destination.KennzeichenLeasingFahrzeug = (source.LEASING.ToUpper() == "X"); 
                             destination.Bluetooth = (source.BLUETOOTH.ToUpper() == "X");                            
                             destination.AnhaengerKupplung = (source.AHK.ToUpper() == "X");
                         }

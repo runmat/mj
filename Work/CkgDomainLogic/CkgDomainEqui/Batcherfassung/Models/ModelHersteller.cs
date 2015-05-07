@@ -30,11 +30,29 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.SippCode)]        
         public string SippCode { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.PeriodOfValidityDays)]
+        public string Laufzeit { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.PeriodOfValidityBinding)]
+        public bool Laufzeitbindung { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Bluetooth)]
         public bool Bluetooth { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.EngineType)]
         public string Antrieb { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.WinterTires)]
+        public bool Winterreifen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.NaviAvailable)]
+        public bool NaviVorhanden { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.SecurityFleet)]
+        public bool SecurityFleet { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LicensePlateLeaseCar)]
+        public bool KennzeichenLeasingFahrzeug { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Towbar)]
         public bool AnhaengerKupplung { get; set; }
