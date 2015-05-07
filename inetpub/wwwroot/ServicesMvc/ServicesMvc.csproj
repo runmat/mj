@@ -4389,6 +4389,7 @@
     <Content Include="Views\Batcherfassung\Partial\DetailsForm.cshtml" />
     <Content Include="Views\Batcherfassung\Partial\Grid.cshtml" />
     <Content Include="Views\Batcherfassung\Partial\Suche.cshtml" />
+    <Content Include="Views\Batcherfassung\ExcelUpload\FileUpload.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

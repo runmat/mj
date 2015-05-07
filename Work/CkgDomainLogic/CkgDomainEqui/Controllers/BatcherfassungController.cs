@@ -1,5 +1,8 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Web.Mvc;
+using System.Web;
+using System.Linq;
 using CkgDomainLogic.FzgModelle.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -141,6 +144,46 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
-        
+
+
+        #region Excel Upload
+      
+        [HttpPost]
+        public ActionResult ExcelUploadStart(IEnumerable<HttpPostedFileBase> uploadFiles)
+        {
+            // Step 1:  Upload the CSV file
+
+            if (uploadFiles == null || uploadFiles.None())
+                return Json(new { success = false, message = "Fehler: Keine Datei angegeben!" }, "text/plain");
+
+            // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+            var file = uploadFiles.ToArray()[0];
+
+            if (!ViewModel.CsvUploadFileSave(file.FileName, file.SavePostedFile))
+                return Json(new { success = false, message = "Fehler: CSV Datei konnte nicht gespeichert werden!" }, "text/plain");
+
+            return Json(new
+            {
+                success = true,
+                message = "ok",
+                uploadFileName = file.FileName,
+            }, "text/plain");
+        }
+
+        [HttpPost]
+        public ActionResult ExcelUploadShowGrid(bool showErrorsOnly)
+        {
+            // Step 2:  Show CSV data in a grid for user validation
+
+            ViewModel.UploadItemsShowErrorsOnly = showErrorsOnly;
+
+            ViewModel.SaveUploadItems();
+
+            return PartialView("Partial/DetailsForm", ViewModel);
+        }
+
+       
+
+        #endregion
     }
 }

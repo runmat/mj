@@ -13,9 +13,10 @@ using CkgDomainLogic.FzgModelle.Models;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 using System.IO;
 using GeneralTools.Services;
-// ReSharper restore RedundantUsingDirective
+using DocumentTools.Services;
 
 namespace CkgDomainLogic.FzgModelle.ViewModels
 {
@@ -144,7 +145,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             if (InsertMode)
             {
                 SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
-                SelectedItem.HerstellerCode = modelFoundById.HerstellerName;
+                // SelectedItem.HerstellerCode = modelFoundById.HerstellerName; // TODO -> entf. falls n.n.
                 SelectedItem.HerstellerName = modelFoundById.HerstellerName;
                 SelectedItem.SippCode = modelFoundById.SippCode;
                 SelectedItem.Antrieb = modelFoundById.Antrieb;
@@ -208,5 +209,79 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             BatcherfassungsFiltered = Batcherfassungs.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+
+        #region CSV Upload ##########################################################################################
+
+        public List<Batcherfassung> UploadItems { get; private set; }
+
+        public string CsvUploadFileName { get; private set; }
+        public string CsvUploadServerFileName { get; private set; }
+
+        public bool UploadItemsSuccessfullyStored { get; set; }
+
+        public string UploadSAPErrortext { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ListItemsWithErrorsOnly)]
+        public bool UploadItemsShowErrorsOnly { get; set; }
+             
+        public bool CsvUploadFileSave(string fileName, Func<string, bool> fileSaveAction)
+        {
+            CsvUploadFileName = fileName;
+            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, Guid.NewGuid() + ".xls");
+
+            if (!fileSaveAction(CsvUploadServerFileName))
+                return false;
+
+            IEnumerable<Batcherfassung> list = null;
+            try
+            {              
+                list = new ExcelDocumentFactory().ReadToDataTable<Batcherfassung>(CsvUploadServerFileName, true, "", CreateInstanceFromDatarow, ',', false, false).ToList();
+            }
+            catch { return false; } // falsches Dateiformat
+
+            FileService.TryFileDelete(CsvUploadServerFileName);
+            if (list.None())
+                return false;
+
+            UploadItems = list.ToList();
+            //ValidateUploadItems();
+            foreach (var item in list)
+                SelectedItem.Unitnummern += item.Unitnummern;
+
+
+            return true;
+        }
+
+        //void ValidateUploadItems()
+        //{
+        //    // vorab validierung
+        //    foreach (var item in UploadItems)
+        //    {
+        //        item.IsSelected = true;
+        //    }
+        //}
+
+        public void SaveUploadItems()
+        {
+
+            // TODO -> was soll nach dem Upload passieren??
+
+            //string sapError = DataService.SaveUploadItems(UploadItems);
+           
+        }
+
+        static Batcherfassung CreateInstanceFromDatarow(System.Data.DataRow row)
+        {
+            var item = new Batcherfassung
+            {                                
+                Unitnummern = row[0].ToString(),              
+            };
+            return item;
+        }
+
+
+        #endregion
+
     }
 }

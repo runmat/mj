@@ -12,8 +12,7 @@
       
         @Html.HiddenFor(m => m.ObjectKey)
         @Html.HiddenFor(m => m.InsertModeTmp)       
-       @* @Html.HiddenFor(m => m.LiefermonatBAPIFormat)*@
-
+    
 
         if (Model.InsertModeTmp)
         {
@@ -39,13 +38,19 @@
             @Html.FormTextBoxFor(m => m.HerstellerName, new { @class = "m-wrap medium", col = "left" })
         }
         @Html.FormTextBoxFor(m => m.Anzahl, new { @class = "m-wrap large", col = "right" })
-        
-        
+                
         @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left" })
         @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right" })
-        
-    @*    @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large", col = "left" })
-        @Html.FormWizard("", "Upload", new List<string>() { "Datei hochladen", "Fertig" })*@
+                        
+        <div id="divExcelUpload" class="portlet app-view">       
+            @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })
+
+            <div id="formWizardTab1" >      
+                @Html.Partial("ExcelUpload/FileUpload")                                                                                   
+            </div>
+        </div>        
+        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large" })
+      
                         
         @Html.FormTextBoxFor(m => m.Laufzeit, new { @class = "m-wrap large", col = "left" })
         @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)

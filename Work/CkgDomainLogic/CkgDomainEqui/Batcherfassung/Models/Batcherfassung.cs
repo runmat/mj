@@ -16,12 +16,14 @@ namespace CkgDomainLogic.FzgModelle.Models
 {
     public class Batcherfassung : Store
     {
+        // TODO -> entf. falls n.n
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         public string HerstellerCode { get; set; }
 
         public List<SelectItem> HerstellerList { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
+        [Required]
         public string HerstellerName { get; set; }
         
         [LocalizedDisplay(LocalizeConstants.BatchID)]
@@ -55,7 +57,7 @@ namespace CkgDomainLogic.FzgModelle.Models
         public string UnitnummerBis { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Unitnumbers)]
-        public List<string> Unitnummern { get; set; }
+        public string Unitnummern { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Quantity)]
         [Required]

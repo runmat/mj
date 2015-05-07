@@ -4,13 +4,20 @@
 
     var _modelStateValid = false;
 
+//    $("#ModellID").onblur(function () {
+//        alert('fired');
+//        TryLoadDataByModelId(this);
+//    });
+
     function FormPreparePrivate() {
         $("#BatcherfassungSearchForm button[type=submit]").trigger("click");
         GridAllColumnFilterApplyToGrid("GridBatcherfassung");
+        FormWizardInitPrivate();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+        //$(".t-status").hide();
     }
 
     function GetGrid() {
@@ -159,12 +166,13 @@
     var _modelId = null;
     function TryLoadDataByModelId(textbox) {
 
-        if (_modelId == $(textbox).val())
-            return;
-        _modelId = $(textbox).val();
+    // wg. blur keine weitere validiereng
+    //        if (_modelId == $(textbox).val())
+    //            return;
+    //        _modelId = $(textbox).val();
 
-        if ($(textbox).val().length < 3)
-            return;
+    //        if ($(textbox).val().length < 3)
+    //            return;
 
         LoadDataByModelId();
     }
@@ -188,6 +196,106 @@
 
     }
 
+
+    ///////////////  Excel Upload /////////////////////////////////////////////////////////////////////
+    //////////////                /////////////////////////////////////////////////////////////////////
+      
+    var _formWizardForceHideSubmitButton = false;
+
+  
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsShow(false);
+        });
+
+        //        FormWizard.OnNext(function (step, maxSteps) {
+        //            alert(_formWizardForceHideSubmitButton);
+        //            if (step == 2 && _formWizardForceHideSubmitButton)
+        //                FormWizard.ButtonSubmitShow(false);
+        //            return true;
+        //        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            if (step == 1)
+                FormWizard.ActionsShow(false);
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+            SubmitUpload();
+        });
+
+        FormWizard.OnRestart(function () {
+            //alert('Ok, let´s restart! :)');
+            LocationReloadWithoutQueryString();
+        });
+    }
+
+
+    function UploadStart(e) {
+
+        //$("#FahrzeugvorAuswahlForm").submit();
+        // clear only the UI of our Upload Control:
+        //$(this).children(".t-upload-files").remove();
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.xls') <= 0) {
+            alert('Bitte nur XLS-Dateien hochladen!');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        ShowGrid(false);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei! Bitte prüfen Sie die Herstelleroption');
+    }
+
+
+    //function ShowGrid() { }
+
+    function ShowGrid() {
+        alert("ShowGrid");
+        $.ajax({
+            type: "POST",
+            url: "ExcelUploadShowGrid",
+            data: { showErrorsOnly: false },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(2, result);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+
+                $("#DivBatcherfassung").html(result);
+
+//                if (_formWizardForceHideSubmitButton)
+//                    FormWizard.ButtonSubmitShow(false);
+            }
+        });
+    }
+   
 
 </script>
 
