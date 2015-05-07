@@ -102,8 +102,10 @@ namespace CkgDomainLogic.FzgModelle.Models
                         , (source, destination) =>
                         {
                             destination.ModelID = source.ZZMODELL;
+                            destination.Modellbezeichnung = source.ZZBEZEI;
                             destination.HerstellerCode = source.HERST;                           
                             destination.HerstellerName = source.HERST_T;
+                            destination.SippCode = source.SIPP1 + source.SIPP2 + source.SIPP3 + source.SIPP4;
                             destination.Antrieb = source.ANTR;
                             destination.Bluetooth = (source.BLUETOOTH.ToUpper() == "X");                            
                             destination.AnhaengerKupplung = (source.AHK.ToUpper() == "X");

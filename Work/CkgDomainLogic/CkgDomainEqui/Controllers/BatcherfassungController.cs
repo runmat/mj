@@ -85,7 +85,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadDataByModelId(string modelId)
         {
-            return PartialView("Partial/DetailsForm", ViewModel.GetItemWithModelData(modelId));
+            return PartialView("Partial/DetailsForm", ViewModel.ModifyItemWithModelData(modelId));
         }
 
         //LoadDataByModelId

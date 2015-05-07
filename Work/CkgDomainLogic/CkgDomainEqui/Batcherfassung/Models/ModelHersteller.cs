@@ -16,13 +16,19 @@ namespace CkgDomainLogic.FzgModelle.Models
     public class ModelHersteller : Store
     {
         [LocalizedDisplay(LocalizeConstants.ModelID)]
-        public string ModelID { get; set; }     
+        public string ModelID { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Model)]        
+        public string Modellbezeichnung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]       
         public string HerstellerCode { get; set; }
          
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         public string HerstellerName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.SippCode)]        
+        public string SippCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Bluetooth)]
         public bool Bluetooth { get; set; }

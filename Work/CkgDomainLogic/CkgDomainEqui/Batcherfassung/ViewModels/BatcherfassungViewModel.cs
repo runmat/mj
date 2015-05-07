@@ -86,7 +86,9 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                     });
             }
         }
- 
+
+        public Batcherfassung SelectedItem { get; set; }
+
         public void Init()
         {
             BatcherfassungSelektor.AnalageDatumRange.IsSelected = true;            
@@ -126,21 +128,25 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
         }
 
+      
         public Batcherfassung GetItem(string id)
         {
-            var model = Batcherfassungs.FirstOrDefault(m => m.ID == id) ?? new Batcherfassung();
-           
-            return model;
+            SelectedItem = Batcherfassungs.FirstOrDefault(m => m.ID == id) ?? new Batcherfassung();
+
+            return SelectedItem;
         }
 
-        public Batcherfassung GetItemWithModelData(string id)
-        {
-            var model = Batcherfassungs.FirstOrDefault(m => m.ID == id) ?? new Batcherfassung();
-
-            // TODO -> ergänzen
-            model.Modellbezeichnung = "test test";
-
-            return model;
+        public Batcherfassung ModifyItemWithModelData(string id)
+        {           
+            var modelFoundById = ModelHersteller.FirstOrDefault(m => m.ModelID == id) ?? new ModelHersteller();
+                       
+            SelectedItem.ModellId = id;
+            SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
+            SelectedItem.HerstellerCode = modelFoundById.HerstellerCode;
+            SelectedItem.HerstellerName = modelFoundById.HerstellerName;
+            SelectedItem.SippCode = modelFoundById.SippCode;
+            
+            return SelectedItem;
         }
 
         public void AddItem(Batcherfassung newItem)

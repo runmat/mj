@@ -163,7 +163,7 @@
             return;
         _modelId = $(textbox).val();
 
-        if ($(textbox).val().length < 5)
+        if ($(textbox).val().length < 3)
             return;
 
         LoadDataByModelId();
@@ -172,7 +172,7 @@
     function LoadDataByModelId() {
 
         var modellId = $("#ModellId").val();
-        alert(modellId);
+        //alert(modellId);
         $.ajax(
             {
                 type: "POST",
@@ -180,7 +180,7 @@
                 data: { modelId : modellId },
                 loadingShow: true,
                 success: function (result) {
-                    ShowItemDetails(result);
+                    $("#DivBatcherfassung").html(result);
                 }                        
             });
 
