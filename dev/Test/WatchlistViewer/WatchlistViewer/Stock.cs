@@ -23,7 +23,7 @@ namespace WatchlistViewer
         {
             //{ "Dow Jones", "Dow" },
             //{ "National Bank", "NGR" },
-            //{ "Goldpreis", "Gold~1326189" },
+            { "Goldpreis", "Gold~1326189" },
             //{ "Siemens", "SIE" },
             //{ "OSRAM", "Osr" },
             { "Euro / US", "€/US~1390634~0.0000" },

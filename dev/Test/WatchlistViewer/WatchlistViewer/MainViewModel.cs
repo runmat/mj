@@ -47,7 +47,11 @@ namespace WatchlistViewer
             QuitCommand = new DelegateCommand(e => Quit(), e => true);
 
             //FirefoxWebDriver.InvokeEurUsd();
-            StockItems = new List<Stock> { new Stock { Name = "Euro / US", Parent = this } };
+            StockItems = new List<Stock>
+            {
+                new Stock { Name = "Goldpreis", Parent = this },
+                new Stock { Name = "Euro / US", Parent = this },
+            };
             _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
             _initialDelayTimer.Tick += InitialDelayTimerTick;
         }
@@ -58,7 +62,7 @@ namespace WatchlistViewer
             _initialDelayTimer.Dispose();
 
             //WatchlistHide();
-            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
+            _workTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 3000 };
             _workTimer.Tick += WorkTimerTick;
         }
 
@@ -77,17 +81,22 @@ namespace WatchlistViewer
         //    FirefoxWebDriver.HideBrowser();
         //}
 
+        private int _index;
+
         private void GetStockDataFromStockCaptureStockService()
         {
             double price; 
             DateTime dateTime;
 
-            StockCapture.StockService.CaptureStockQuote(out price, out dateTime);
+            var stock = StockItems.ToArray()[_index];
 
-            var stock = StockItems.First();
+            StockCapture.StockService.CaptureStockQuote(stock.ShortName, out price, out dateTime);
+
             stock.DateTime = DateTime.Now;
             stock.Value = price;
             StockItemsVisible = true;
+
+            _index = (++_index % StockItems.Count);
         }
 
         private void GetStockData()
