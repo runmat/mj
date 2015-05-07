@@ -6,6 +6,11 @@
 <asp:Content ID="Content2" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
     <script src="../JScript/Jquery/jquery-1.8.0.min.js" type="text/javascript"></script>
     <script src="../JScript/Jquery/jquery-ui-1.8.23.custom.min.js" type="text/javascript"></script>
+    <style type="text/css">
+        .report-solution-video-div {
+            padding: 3px;
+        }
+    </style>
     <div>
         <div id="site">
             <div id="content">
@@ -43,15 +48,31 @@
                                 <table id="tableSearch" runat="server" cellspacing="0" cellpadding="0">
                                     <tbody>
                                         <tr class="formquery">
-                                            <td class="firstLeft active">
+                                            <td class="firstLeft active" width="10%">
                                                 &nbsp;
+                                            </td>
+                                            <td class="" width="33%">
+                                                &nbsp;
+                                            </td>
+                                            <td class="" rowspan="7">
+                                                <div class="report-solution-video-div">
+                                                    <video src="../Images/mvc-report-solution-tool/mvc-report-solution-tool.mp4" 
+                                                        type="video/mp4"
+                                                        width="450" height="220" 
+                                                        poster="../Images/mvc-report-solution-tool/mvc-report-solution-tool.png" 
+                                                        controls="controls" loop="loop" preload="preload">
+
+                                                        <div> Schade, hier käme ein Video, wenn Ihr Browser den HTML 5 Standard unterstützen würde...</div>
+
+                                                    </video>                                                                                
+                                                </div>                                                
                                             </td>
                                         </tr>
                                         <tr class="formquery">
                                             <td class="firstLeft active">
                                                 Anwendung:
                                             </td>
-                                            <td class="firstLeft active" nowrap="nowrap" width="100%">
+                                            <td class="firstLeft active" nowrap="nowrap">
                                                 <asp:TextBox ID="txtFilterAppName" runat="server" CssClass="InputTextbox">*</asp:TextBox>
                                             </td>
                                         </tr>
@@ -96,7 +117,7 @@
                                             </td>
                                         </tr>
                                         <tr style="background-color: #dfdfdf; height: 22px">
-                                            <td colspan="2">
+                                            <td colspan="3">
                                                 &nbsp;
                                             </td>
                                         </tr>
