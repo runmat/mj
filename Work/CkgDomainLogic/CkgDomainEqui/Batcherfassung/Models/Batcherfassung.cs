@@ -2,15 +2,12 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.FzgModelle.ViewModels;
-using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
-using CkgDomainLogic.Fahrzeuge.Models;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
@@ -122,6 +119,9 @@ namespace CkgDomainLogic.FzgModelle.Models
 
         [XmlIgnore, GridHidden, NotMapped]
         public List<SelectItem> AntriebeList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().AntriebeList; } }
+
+        [XmlIgnore, GridHidden, NotMapped]
+        public List<SelectItem> AuftragsnummrList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().Auftragsnummern; } }
 
         [LocalizedDisplay(LocalizeConstants.Bluetooth)]
         public bool Bluetooth { get; set; }

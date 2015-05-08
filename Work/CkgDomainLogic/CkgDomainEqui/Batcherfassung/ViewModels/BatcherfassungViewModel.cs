@@ -73,6 +73,23 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             }
         }
 
+        [XmlIgnore]
+        public List<SelectItem> Auftragsnummern
+        {
+            get
+            {                             
+                var numbers = DataService.GetAuftragsnummern().Concat(new List<Auftragsnummer>
+                {
+                    new Auftragsnummer {  Nummer = String.Empty,  AuftragsNrText = Localize.DropdownDefaultOptionNotSpecified}
+                                        }).OrderBy(w => w.Nummer).ToList();
+                
+                var selectItems = new List<SelectItem>();
+                foreach (var num in numbers)
+                    selectItems.Add(new SelectItem(num.Nummer, num.Nummer + " " + num.AuftragsNrText));
+
+                return selectItems;
+            }
+        }
 
         public List<SelectItem> AntriebeList
         {

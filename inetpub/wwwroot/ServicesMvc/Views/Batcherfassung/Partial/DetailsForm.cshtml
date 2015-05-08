@@ -59,10 +59,9 @@
         
         @Html.FormTextBoxFor(m => m.LiefermonatBAPIFormat, new { @class = "m-wrap large", col = "left" })
         @Html.FormDropDownListFor(m => m.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
-       
-        
-        @Html.FormTextBoxFor(m => m.AuftragsnummerVon, new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBoxFor(m => m.AuftragsnummerBis, new { @class = "m-wrap large", col = "right" })
+               
+        @Html.FormDropDownListFor(m => m.AuftragsnummerVon, Model.AuftragsnummrList, new { @class = "m-wrap large", col = "left" })
+        @Html.FormDropDownListFor(m => m.AuftragsnummerBis, Model.AuftragsnummrList, new { @class = "m-wrap large", col = "right" })
                      
         @Html.FormCheckBoxFor(m => m.Winterreifen, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
         @Html.FormCheckBoxFor(m => m.AnhaengerKupplung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)

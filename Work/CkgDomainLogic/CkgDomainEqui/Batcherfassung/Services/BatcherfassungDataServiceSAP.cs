@@ -43,6 +43,37 @@ namespace CkgDomainLogic.FzgModelle.Services
             return weblist;
         }
 
+        public List<FzgByUnitnummer> GetUnitnummern(string batchId)
+        {
+            Z_M_EC_AVM_BATCH_UNIT_SELECT.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_BATCH_ID", batchId);
+            var outList = Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_M_EC_AVM_BATCH_UNIT_SELECT_GT_OUT_To_Unitnummer.Copy(outList).ToList();
+        }
+
+        public List<Auftragsnummer> GetAuftragsnummern()
+        {
+            Z_DPM_READ_AUFTR_006.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_KENNUNG", "AUFTRAGSNUMMER");            
+            var outList = Z_DPM_READ_AUFTR_006.GT_OUT.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_DPM_READ_AUFTR_006_GT_OUT_To_Auftragsnummer.Copy(outList).ToList();
+        }
+
+        public List<ModelHersteller> GetModelHersteller()
+        {
+            Z_DPM_READ_MODELID_TAB.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            SAP.Execute();
+
+            var sapItems = Z_DPM_READ_MODELID_TAB.GT_OUT.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_DPM_READ_MODELID_TAB_GT_OUT_To_ModelHersteller.Copy(sapItems).ToList();
+
+            return webItems;
+
+        }
+        
         public string SaveBatches(Batcherfassung batcherfassung)
         {
             var error = SAP.ExecuteAndCatchErrors(
@@ -78,17 +109,6 @@ namespace CkgDomainLogic.FzgModelle.Services
 
 
         
-        public List<ModelHersteller> GetModelHersteller()
-        {
-            Z_DPM_READ_MODELID_TAB.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
-
-            SAP.Execute();
-
-            var sapItems = Z_DPM_READ_MODELID_TAB.GT_OUT.GetExportList(SAP);
-            var webItems = AppModelMappings.Z_DPM_READ_MODELID_TAB_GT_OUT_To_ModelHersteller.Copy(sapItems).ToList();
-
-            return webItems;
-
-        }
+        
     }
 }

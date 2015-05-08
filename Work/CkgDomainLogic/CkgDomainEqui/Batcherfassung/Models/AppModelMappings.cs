@@ -62,9 +62,9 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.UnitnummerVon = source.ZUNIT_NR_VON;
                             destination.UnitnummerBis = source.ZUNIT_NR_BIS;
                             destination.Laufzeit = source.ZLAUFZEIT;
-                            destination.Laufzeitbindung = (source.ZLZBINDUNG.ToUpper() == "X");                                
-                            destination.AuftragsnummerVon = source.ZAUFNR_VON;
-                            destination.AuftragsnummerBis = source.ZAUFNR_BIS;
+                            destination.Laufzeitbindung = (source.ZLZBINDUNG.ToUpper() == "X");
+                            destination.AuftragsnummerVon = source.ZAUFNR_VON.TrimStart(new Char[] { '0' }); 
+                            destination.AuftragsnummerBis = source.ZAUFNR_BIS.TrimStart(new Char[] { '0' }); 
                             destination.Bemerkung = source.ZBEMERKUNG;
                             
                             int i = 0; // TODO -> Type?
@@ -157,7 +157,37 @@ namespace CkgDomainLogic.FzgModelle.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, Auftragsnummer> Z_DPM_READ_AUFTR_006_GT_OUT_To_Auftragsnummer
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, Auftragsnummer>(
+                        new Dictionary<string, string>()
+                        , (source, destination) =>
+                        {
+                            destination.Nummer = source.POS_KURZTEXT;
+                            destination.AuftragsNrText = source.POS_TEXT;                            
+                        }
+                    ));
+            }
+        }
 
+        static public ModelMapping<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT, FzgByUnitnummer> Z_M_EC_AVM_BATCH_UNIT_SELECT_GT_OUT_To_Unitnummer
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT, FzgByUnitnummer>(
+                        new Dictionary<string, string>()
+                        , (source, destination) =>
+                        {
+                            destination.Unitnummer = source.CHASSIS_NUM;                            
+                            destination.Fahrgestellnummer = source.CHASSIS_NUM;
+                            destination.Kennzeichen = source.LICENSE_NUM;
+                            destination.Sperrvermerk = (source.ZLOEVM.ToUpper() == "X"); 
+                        }
+                    ));
+            }
+        }
 
     }
 }

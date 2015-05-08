@@ -8,8 +8,12 @@ namespace CkgDomainLogic.FzgModelle.Contracts
     {
         List<Batcherfassung> GetBatches(BatcherfassungSelektor selector);
 
-        List<ModelHersteller> GetModelHersteller();
+        List<FzgByUnitnummer> GetUnitnummern(string batchId);
 
+        List<ModelHersteller> GetModelHersteller();        
+
+        List<Auftragsnummer> GetAuftragsnummern();
+        
         string SaveBatches(Batcherfassung batcherfassung);
     }
 }
