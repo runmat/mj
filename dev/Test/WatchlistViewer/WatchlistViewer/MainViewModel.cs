@@ -51,6 +51,7 @@ namespace WatchlistViewer
             {
                 new Stock { Name = "Goldpreis", Parent = this },
                 new Stock { Name = "Euro / US", Parent = this },
+                new Stock { Name = "Bund", Parent = this },
             };
             _initialDelayTimer = new System.Windows.Forms.Timer { Enabled = true, Interval = 1000 };
             _initialDelayTimer.Tick += InitialDelayTimerTick;
@@ -90,7 +91,7 @@ namespace WatchlistViewer
 
             var stock = StockItems.ToArray()[_index];
 
-            StockCapture.StockService.CaptureStockQuote(stock.ShortName, out price, out dateTime);
+            StockCapture.StockService.CaptureStockQuote(stock.YahooSymbol, out price, out dateTime);
 
             stock.DateTime = DateTime.Now;
             stock.Value = price;

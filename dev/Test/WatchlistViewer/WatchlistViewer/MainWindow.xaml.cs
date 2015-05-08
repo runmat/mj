@@ -20,7 +20,6 @@ namespace WatchlistViewer
 
             var desktopWorkingArea = SystemParameters.WorkArea;
             this.Left = desktopWorkingArea.Width - e.NewSize.Width - 150; //- marginRight + 350;
-            ;
         }
     }
 }

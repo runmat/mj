@@ -21,15 +21,9 @@ namespace WatchlistViewer
 
         private readonly Dictionary<string, string> _nameTranslateDict = new Dictionary<string, string>
         {
-            //{ "Dow Jones", "Dow" },
-            //{ "National Bank", "NGR" },
-            { "Goldpreis", "Gold~1326189" },
-            //{ "Siemens", "SIE" },
-            //{ "OSRAM", "Osr" },
-            { "Euro / US", "€/US~1390634~0.0000" },
-            //{ "Euro / Schwei", "€/CHF~8362186~0.0000" },
-            //{ "Ölpreis Brent", "Öl~31117610" },
-            //{ "Put", "Put"}
+            { "Goldpreis", "Gold~1326189~XAUUSD=X" },
+            { "Euro / US", "€/US~1390634~EURUSD=X~0.0000" },
+            { "Bund", "Bund~988006~FGBLM5.EX~0.00" },
         };
 
         public string Name
@@ -73,7 +67,9 @@ namespace WatchlistViewer
 
         public string IdNotation { get { return GetPartOfValue(1, ""); } }
 
-        public string ValueFormatted { get { return Value.ToString(GetPartOfValue(2, "#,##0.00")); } }
+        public string YahooSymbol { get { return GetPartOfValue(2, ""); } }
+
+        public string ValueFormatted { get { return Value.ToString(GetPartOfValue(3, "#,##0.00")); } }
 
         private string GetPartOfValue(int index, string defaultValue)
         {
