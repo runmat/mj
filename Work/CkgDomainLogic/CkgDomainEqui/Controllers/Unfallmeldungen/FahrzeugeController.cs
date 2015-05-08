@@ -23,6 +23,15 @@ namespace ServicesMvc.Controllers
             return View(UnfallmeldungenViewModel);
         }
 
+        [CkgApplication]
+        public ActionResult Unfallmeldungen()
+        {
+            _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
+            UnfallmeldungenViewModel.DataInit();
+
+            return View(UnfallmeldungenViewModel);
+        }
+
         [HttpPost]
         public ActionResult LoadUnfallmeldungen(UnfallmeldungenSelektor model)
         {

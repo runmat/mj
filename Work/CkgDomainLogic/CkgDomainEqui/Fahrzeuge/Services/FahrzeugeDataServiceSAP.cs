@@ -168,9 +168,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             var sapItemsEquis = Z_DPM_UF_MELDUNGS_SUCHE.GT_UF.GetExportList(SAP);
             var webItemsEquis = AppModelMappings.Z_DPM_UF_MELDUNGS_SUCHE_To_Unfallmeldungen.Copy(sapItemsEquis).ToList();
             return webItemsEquis;
-
-
         }
-
     }
 }

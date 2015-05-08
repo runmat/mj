@@ -32,9 +32,5 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.DunningLevel)]
         public string Mahnstufe { get; set; }
-
-
-
-
     }
 }
