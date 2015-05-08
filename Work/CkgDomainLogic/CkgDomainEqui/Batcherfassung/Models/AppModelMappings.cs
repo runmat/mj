@@ -81,8 +81,9 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.Winterreifen = (source.ZMS_REIFEN.ToUpper() == "X");
                             destination.SecurityFleet = (source.ZSECU_FLEET.ToUpper() == "X");
                             destination.KennzeichenLeasingFahrzeug = (source.ZLEASING.ToUpper() == "X");
-                            destination.NaviVorhanden = (source.ZNAVI.ToUpper() == "X");    
-
+                            destination.NaviVorhanden = (source.ZNAVI.ToUpper() == "X");
+                            destination.AnhaengerKupplung = (source.ZAHK.ToUpper() == "X");
+                            
                             if(source.ZLEASING.Length > 0 || source.ZSECU_FLEET.Length > 0)
                                 destination.Vertragsart = source.ZLEASING.ToUpper() == "X" ? "Leasing" :
                                                                                              "Securiti Fleet";
@@ -115,6 +116,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.KennzeichenLeasingFahrzeug = (source.LEASING.ToUpper() == "X"); 
                             destination.Bluetooth = (source.BLUETOOTH.ToUpper() == "X");                            
                             destination.AnhaengerKupplung = (source.AHK.ToUpper() == "X");
+                            destination.Fahrzeuggruppe = (source.LKW.ToUpper() == "X") ? "LKW" : "PKW";
                         }
                     ));
             }
@@ -138,7 +140,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.ZANZAHL = source.Anzahl;
                             destination.ZUNIT_NR_VON = source.UnitnummerVon;
                             destination.ZUNIT_NR_BIS = source.UnitnummerBis;
-                            destination.ZFZG_GROUP = "PKW";
+                            destination.ZFZG_GROUP = source.Fahrzeuggruppe;
                             destination.ZLAUFZEIT = source.Laufzeit;
                             destination.ZLZBINDUNG = source.Laufzeitbindung ? "X" : "";
                             destination.ZAUFNR_VON = source.AuftragsnummerVon;
@@ -148,7 +150,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.ZLEASING = source.KennzeichenLeasingFahrzeug ? "X" : "";
                             destination.ZNAVI = source.NaviVorhanden ? "X" : "";
                             destination.ZAHK = source.AnhaengerKupplung ? "X" : "";
-                            // destination.ZBEMERKUNG = source.Bemerkung;
+                            destination.ZBEMERKUNG = source.Bemerkung;
 
                         }
                     ));

@@ -140,8 +140,11 @@
 
     function BatcherfassungAjaxFormComplete() {
         FormPrepareAjax();
-        if (_modelIsValid)
+        if (_modelIsValid) {
+            var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
+            SpanAlertSuccess("spanAlertBatcherfassung", successMessage, 1800);
             CloseItemDetails();
+        }       
     }
 
     var _modelIsValid = false;
@@ -266,17 +269,16 @@
 
     function UploadError(e) {
         e.preventDefault();
-        alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei! Bitte prüfen Sie die Herstelleroption');
+        alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei!');
     }
 
 
     //function ShowGrid() { }
 
-    function ShowGrid() {
-        alert("ShowGrid");
+    function ShowGrid() {      
         $.ajax({
             type: "POST",
-            url: "ExcelUploadShowGrid",
+            url: "ExcelUploadShowData",
             data: { showErrorsOnly: false },
             loadingShow: true,
             success: function (result) {

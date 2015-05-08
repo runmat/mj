@@ -56,5 +56,7 @@ namespace CkgDomainLogic.FzgModelle.Models
 
         [LocalizedDisplay(LocalizeConstants.Towbar)]
         public bool AnhaengerKupplung { get; set; }
+
+        public string Fahrzeuggruppe { get; set; }
     }
 }

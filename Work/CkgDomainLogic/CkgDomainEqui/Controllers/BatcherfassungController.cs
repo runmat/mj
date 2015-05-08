@@ -171,15 +171,15 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ExcelUploadShowGrid(bool showErrorsOnly)
+        public ActionResult ExcelUploadShowData(bool showErrorsOnly)
         {
-            // Step 2:  Show CSV data in a grid for user validation
+            // Step 2:  Prepare data for user validation
 
             ViewModel.UploadItemsShowErrorsOnly = showErrorsOnly;
 
-            ViewModel.SaveUploadItems();
+            ViewModel.PrepareUploadItems();
 
-            return PartialView("Partial/DetailsForm", ViewModel);
+            return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
         }
 
        

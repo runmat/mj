@@ -97,6 +97,8 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
 
+        public string Fahrzeuggruppe { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ContractType)]
         public string Vertragsart { get; set; }
        

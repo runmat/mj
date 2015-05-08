@@ -112,6 +112,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                             x.Bluetooth = model.Bluetooth;
                             x.AnhaengerKupplung = model.AnhaengerKupplung;
                             x.Antrieb = model.Antrieb;
+                            x.Fahrzeuggruppe = model.Fahrzeuggruppe;
                         }
             });
 
@@ -245,29 +246,26 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 return false;
 
             UploadItems = list.ToList();
-            //ValidateUploadItems();
-            foreach (var item in list)
-                SelectedItem.Unitnummern += item.Unitnummern;
-
-
+            ValidateUploadItems();
+           
             return true;
         }
 
-        //void ValidateUploadItems()
-        //{
-        //    // vorab validierung
-        //    foreach (var item in UploadItems)
-        //    {
-        //        item.IsSelected = true;
-        //    }
-        //}
+        void ValidateUploadItems()
+        {
+            // -> Duplikate etc...            
+        }
 
-        public void SaveUploadItems()
+        public void PrepareUploadItems()
         {
 
             // TODO -> was soll nach dem Upload passieren??
 
             //string sapError = DataService.SaveUploadItems(UploadItems);
+            SelectedItem.Unitnummern = "";
+            foreach (var item in UploadItems)
+                SelectedItem.Unitnummern += "\"" + item.Unitnummern + "\"\n" ;
+
            
         }
 
