@@ -824,6 +824,14 @@
                                                         <asp:Label ID="lblZusKundeData" runat="server"></asp:Label>
                                                     </td>
                                                 </tr>
+                                                <tr ID="trZusHalter" runat="server" class="formquery">
+                                                    <td class="firstLeft active">
+                                                        <asp:Label ID="lblZusHalter" runat="server" Text="Halter"></asp:Label>
+                                                    </td>
+                                                    <td class="active">
+                                                        <asp:Label ID="lblZusHalterData" runat="server"></asp:Label>
+                                                    </td>
+                                                </tr>
                                                 <tr class="formquery">
                                                     <td class="firstLeft active">
                                                         <asp:Label ID="lblZusStva" runat="server" Text="StVA"></asp:Label>
