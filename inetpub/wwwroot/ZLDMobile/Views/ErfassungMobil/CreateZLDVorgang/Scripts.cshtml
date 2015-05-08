@@ -1,0 +1,181 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+        ChangeAnzeigemodus("VkBur");
+    });
+
+    // Macht in Abhängigkeit vom gewählten Modus (VkBur/Create) bestimmte Seitenbereich/-controls (un-)sichtbar
+    function ChangeAnzeigemodus(neuerModus, createPartialHtml) {
+        switch (neuerModus) {
+            case "VkBur":
+                $("#divCreateVorgang").html("");
+                $("#divAuswahlVkbur").show();
+                jsZLDMobile.LoadVkBurListe();
+                break;
+            case "Create":
+                $("#divAuswahlVkbur").hide();
+                $("#divCreateVorgang").html(createPartialHtml);
+                // UI-Refresh für eingebettete Controls
+                RefreshNestedControlsUI("divCreateVorgang");
+                jsZLDMobile.UpdateConnectivityStatus();
+                break;
+        }
+    }
+
+    // Seitenfunktionalität je nach Verbindungsstatus einschränken/erweitern
+    function ApplyConnectivityStatusPrivate(verbunden) {
+        if (verbunden == true) {
+            EnableButton("btnApplyVkbur");
+            EnableButton("btnSave");
+        } else {
+            DisableButton("btnApplyVkbur");
+            DisableButton("btnSave");
+        }
+    }
+
+    // Initialisiert die Einträge in der Auswahlliste der VkBueros
+    function FillVkBurAuswahl(vkBueros) {
+        // VkBur-Liste füllen
+        $("#lstVkbur").empty();
+        $("#lstVkbur").append($('<li>').attr('data-role', "list-divider").addClass("CenterAlignedText").text("Bitte wählen Sie eine Kostenstelle"));
+        if (vkBueros != null) {
+            if (vkBueros.length == 1) {
+                SelectVkBur(vkBueros[0]);
+            } else {
+                for (var i = 0; i < vkBueros.length; i++) {
+                    var vkBur = vkBueros[i];
+
+                    $("#lstVkbur")
+                    .append($('<li>').attr('title', vkBur)
+                        .append($('<a>').attr('href', '#').text(vkBur))
+                    );
+                }
+
+                // Eventhandler initialisieren
+                $("#lstVkbur li").click(function () {
+                    SelectVkBur($(this).attr("title"));
+                });
+
+                // UI-Refresh
+                RefreshListUI("lstVkbur");
+            }
+        }
+    }
+
+    // Gewähltes VkBur wird übernommen
+    function SelectVkBur(vkBur) {
+        jsZLDMobile.SelectVkBur(vkBur);
+    }
+
+    // Neuen Vorgang speichern
+    function SaveVorgang() {
+        var vorg = {};
+
+        var zulDat = $("#txtZulDat").val().replace(" ", "");
+        if (CheckFormatDatum(zulDat) == false) {
+            ShowMessage("Das Zulassungsdatum hat das falsche Format", true);
+            $("#divZulDat").addClass("DivFieldError");
+            return;
+        }
+        var zulDatFormatiert = zulDat.substr(0, 2) + zulDat.substr(3, 2) + zulDat.substr(8, 2);
+        if (nurWerktage(zulDatFormatiert)[0] == false) {
+            ShowMessage("Das Zulassungsdatum darf nicht auf einem Wochenende oder Feiertag liegen", true);
+            $("#divZulDat").addClass("DivFieldError");
+            return;
+        }
+        $("#divZulDat").removeClass("DivFieldError");
+        vorg.ZulDatTextEdit = zulDat;
+
+        vorg.Kunnr = GetDropdownValue("ddlKunde");
+        vorg.Referenz1 = $("#txtReferenz1").val();
+        vorg.Referenz2 = $("#txtReferenz2").val();
+        vorg.AmtEdit = GetDropdownValue("ddlAmt");
+        vorg.Wunschkennzeichen = GetCheckboxValue("chkWunschkennzeichen");
+        vorg.Reserviert = GetCheckboxValue("chkReserviert");
+        vorg.NurEinKennzeichen = GetCheckboxValue("chkNurEinKennzeichen");
+
+        vorg.Positionen = [];
+
+        // Hauptdienstleistung
+        var hauptDl = GetDropdownValue("ddlHauptDl");
+        if (hauptDl == "") {
+            ShowMessage("Bitte w\u00e4hlen Sie eine Haupt-Dienstleistung", true);
+            $("#ddlHauptDl").addClass("DivFieldError");
+            return;
+        }
+        $("#ddlHauptDl").removeClass("DivFieldError");
+        vorg.Positionen[0] = { KopfId: vorg.Id, PosNr: "", DienstleistungId: hauptDl };
+
+        // Zusatzdienstleistungen
+        for (var lfdNr = vorg.Positionen.length + 1; lfdNr < 100; lfdNr++) {
+            if (ControlExists("ddlDL" + lfdNr) == true) {
+                var neueDL = GetDropdownValue("ddlDL" + lfdNr);
+                if (neueDL == "") {
+                    ShowMessage("Bitte w\u00e4hlen Sie eine Dienstleistung f\u00fcr die erg\u00e4nzte Position", true);
+                    $("#divDL" + lfdNr).addClass("DivFieldError");
+                    return;
+                }
+                $("#divDL" + lfdNr).removeClass("DivFieldError");
+                vorg.Positionen[vorg.Positionen.length] = { KopfId: vorg.Id, PosNr: "", DienstleistungId: neueDL };
+            } else {
+                break;
+            }
+        }
+
+        jsZLDMobile.SaveNewVorgang(vorg);
+    }
+
+    function ClearVorgangCreate() {
+        SetDropdownValue("ddlKunde", "", true);
+        $("#txtReferenz1").val("");
+        $("#txtReferenz2").val("");
+        SetDropdownValue("ddlAmt", "", true);
+        SetCheckboxValue("chkWunschkennzeichen", false, true);
+        SetCheckboxValue("chkReserviert", false, true);
+        $("#txtZulDat").val("");
+        SetCheckboxValue("chkNurEinKennzeichen", false, true);
+        SetDropdownValue("ddlHauptDl", "", true);
+        $("#tblZusatzpositionen tbody tr").remove();
+    }
+
+    // Bei Auswahl bestimmter Haupt-DL auszuführende Aktionen
+    function CheckHauptDl() {
+        var hauptDl = GetDropdownValue("ddlHauptDl");
+        if (RemoveLeadingZeroes(hauptDl) == "8") {
+            SetCheckboxValue("chkNurEinKennzeichen", true, true);
+        }
+    }
+
+    // Fügt am Ende der Liste eine neue Dienstleistungsposition hinzu
+    function AddVorgangPosition() {
+        // Nächste lfd. Nr. ermitteln
+        var naechsteNr;
+        for (naechsteNr = 1; naechsteNr < 100; naechsteNr++) {
+            if (ControlExists("ddlDL" + naechsteNr) == false) {
+                break;
+            }
+        }
+
+        // Dienstleistungs-Zeile hinzufügen
+        $("#tblZusatzpositionen tbody")
+            .append($('<tr>')
+                .append($('<td>').addClass("TableGridCellNarrow").text("neu"))
+                .append($('<td>').addClass("TableGridCellNarrow")
+                .append($('<div>').attr('id', "divDL" + naechsteNr)
+                    .append($('<label>').attr('for', "ddlDL" + naechsteNr).text(""))
+                    .append($('<select>').attr('id', "ddlDL" + naechsteNr).attr('name', "ddlDL" + naechsteNr))
+                )
+                )
+            );
+
+        // Dienstleistungs-Dropdown füllen
+        $("#ddlHauptDl option").clone().appendTo("#ddlDL" + naechsteNr);
+
+        // UI-Refresh für eingebettete Controls
+        RefreshNestedControlsUI("divDL" + naechsteNr);
+
+        // UI-Refresh für Table
+        RefreshTableUI("tblZusatzpositionen");
+    }
+
+ </script>

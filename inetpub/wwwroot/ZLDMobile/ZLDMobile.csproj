@@ -256,8 +256,6 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\_references.js" />
     <Content Include="Views\_ViewStart.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Selection.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\Partial\_LoginPartial.cshtml" />
@@ -278,7 +276,7 @@
     <Content Include="Views\Login\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\ErfassungMobil\Partial\_EditZLDVorgaengeScripts.cshtml" />
+    <Content Include="Views\ErfassungMobil\EditZLDVorgaenge\Scripts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainCommon\CkgDomainCommon.csproj">
@@ -312,9 +310,6 @@
     <Content Include="Views\Shared\Partial\_OptionsMenuPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\Partial\_LayoutScripts.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Login\ChangePassword.cshtml">
       <SubType>Code</SubType>
     </Content>
@@ -324,6 +319,18 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Shared\Partial\_ImpressumPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ErfassungMobil\CreateZLDVorgang.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ErfassungMobil\CreateZLDVorgang\Scripts.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\Partial\_GlobalScripts.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\ErfassungMobil\CreateZLDVorgang\CreateVorgangPartial.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

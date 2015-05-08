@@ -29,7 +29,7 @@
             <col />
             <col class="TableColumn150"/>
             <col class="TableColumn110"/>
-            <col class="TableColumn140"/>
+            <col class="TableColumn190"/>
             <col class="TableColumn215"/>
         </colgroup>
         <thead>
@@ -63,7 +63,6 @@
             </tr>
         </tbody>
     </table>
-
 </div>
 
 <div id="popupEditVorgang" class="ui-content PopupWindow" data-role="popup">
@@ -125,10 +124,10 @@
             </tr>
             <tr>
                 <td>
-                    @Model.PropertyDisplayNames["Bemerkung"]
+                    @Model.PropertyDisplayNames["Infotext"]
                 </td>
                 <td colspan="2">
-                    <textarea id="txtBemerkung" maxlength="40"></textarea>
+                    <textarea id="txtInfotext" maxlength="40"></textarea>
                 </td>
             </tr>
             <tr>
@@ -163,4 +162,4 @@
     </div>
 </div>
 
-@Html.Partial("Partial/_EditZLDVorgaengeScripts")
+@Html.Partial("EditZLDVorgaenge/Scripts")

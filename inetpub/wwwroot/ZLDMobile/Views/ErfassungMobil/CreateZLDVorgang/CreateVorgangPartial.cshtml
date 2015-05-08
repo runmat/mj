@@ -1,0 +1,159 @@
+﻿@using CkgDomainLogic.Zulassung.MobileErfassung.Models
+@model CkgDomainLogic.Zulassung.MobileErfassung.ViewModels.ZulMobileErfassungViewModel
+  
+<div class="VerticalSpacer10">&nbsp;</div>
+<table width="100%">
+    <colgroup>
+        <col class="TableColumn90"/>
+        <col class="TableColumn110"/>
+        <col class="TableColumnAuto"/>
+    </colgroup>
+    <thead> 
+    </thead>  
+    <tbody>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["VkBuero"]
+            </td>
+            <td colspan="2">
+                <label id="lblVkBur">@Model.VkBurNeuanlage</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Kunde"]
+            </td>
+            <td colspan="2">
+                <select id="ddlKunde" name="ddlKunde">
+                    @if (Model.StammdatenNeuanlage.Kunden.Count > 0)
+                    {
+                        foreach (Kunde k in Model.StammdatenNeuanlage.Kunden)
+                        {
+                            <option value="@k.KundenNr">@k.Name</option>
+                        }
+                    }
+                    else
+                    {
+                        <option></option>
+                    }       
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Referenz1"]
+            </td>
+            <td colspan="2">
+                <input type="text" id="txtReferenz1" maxlength="20"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Referenz2"]
+            </td>
+            <td colspan="2">
+                <input type="text" id="txtReferenz2" maxlength="20"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Haupt-DL
+            </td>
+            <td colspan="2">
+                <select id="ddlHauptDl" name="ddlHauptDl" onchange="CheckHauptDl();">
+                    @if (Model.StammdatenNeuanlage.Dienstleistungen.Count > 0)
+                    {
+                        foreach (Dienstleistung d in Model.StammdatenNeuanlage.Dienstleistungen)
+                        {
+                            <option value="@d.Id">@d.Bezeichnung</option>
+                        }
+                    }
+                    else
+                    {
+                        <option></option>
+                    }       
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <table id="tblZusatzpositionen" class="table-positionen-responsive table-stroke" data-role="table" data-mode="reflow">
+                    <colgroup>
+                        <col class="TableColumn80"/>
+                        <col class="TableColumnAuto"/>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["PosNr"]</th>      
+                            <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["DienstleistungBez"]</th>      
+                        </tr>  
+                    </thead>  
+                    <tbody>
+                    </tbody>
+                </table>
+                <div>
+                    <input id="btnAddPos" type="button" value="Dienstleistung ergänzen" onclick="ClearMessage(); AddVorgangPosition();" /> 
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Amt"]
+            </td>
+            <td colspan="2">
+                <select id="ddlAmt" name="ddlAmt">
+                    @if (Model.StammdatenNeuanlage.Aemter.Count > 0)
+                    {
+                        foreach (Amt a in Model.StammdatenNeuanlage.Aemter)
+                        {
+                            <option value="@a.KurzBez">@a.AmtBez</option>
+                        }
+                    }
+                    else
+                    {
+                        <option></option>
+                    }       
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="2">
+                <input type="checkbox" id="chkWunschkennzeichen" name="chkWunschkennzeichen" data-mini="true"/>
+                <label for="chkWunschkennzeichen">@Model.PropertyDisplayNames["Wunschkennzeichen"]</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="2">
+                <input type="checkbox" id="chkReserviert" name="chkReserviert" data-mini="true"/>
+                <label for="chkReserviert">@Model.PropertyDisplayNames["Reserviert"]</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["ZulDatTextEdit"]
+            </td>
+            <td>
+                <div id="divZulDat">
+                    <input type="text" id="txtZulDat" maxlength="10"/>
+                </div>
+            </td>
+            <td>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td colspan="2">
+                <input type="checkbox" id="chkNurEinKennzeichen" name="chkNurEinKennzeichen" data-mini="true"/>
+                <label for="chkNurEinKennzeichen">@Model.PropertyDisplayNames["NurEinKennzeichen"]</label>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <input id="btnSave" type="button" value="Speichern" onclick="ClearMessage(); SaveVorgang();" />
+</div>

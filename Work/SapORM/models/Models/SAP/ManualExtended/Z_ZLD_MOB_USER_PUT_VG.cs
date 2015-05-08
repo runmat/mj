@@ -15,7 +15,7 @@ namespace SapORM.Models
 
             partial void OnInitFromExtern()
             {
-                MATNR = MATNR.PadLeft(18, '0');
+               // MATNR = MATNR.PadLeft(18, '0');
             }
 
 		}

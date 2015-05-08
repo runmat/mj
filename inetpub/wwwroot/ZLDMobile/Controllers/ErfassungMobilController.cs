@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Newtonsoft.Json;
 using MvcTools.Controllers;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Zulassung.MobileErfassung.ViewModels;
@@ -47,6 +48,20 @@ namespace ZLDMobile.Controllers
         /// </summary>
         /// <returns></returns>
         public ActionResult EditZLDVorgaenge()
+        {
+            // Wenn nicht angemeldet, Login erzwingen
+            var logonAction = UrlGetLogonAction("", "", "", "");
+            if (logonAction != null)
+                return logonAction;
+
+            return View(ViewModel);
+        }
+
+        /// <summary>
+        /// Seite zur Vorgangserstellung anzeigen
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult CreateZLDVorgang()
         {
             // Wenn nicht angemeldet, Login erzwingen
             var logonAction = UrlGetLogonAction("", "", "", "");
@@ -108,12 +123,8 @@ namespace ZLDMobile.Controllers
                 vg.AmtEdit = vg.Amt;
                 vg.ZulDatText = vg.ZulDat.ToString("dd.MM.yyyy");
                 vg.ZulDatTextEdit = vg.ZulDatText;
-                vg.ZahlartECBool = (vg.ZahlartEC == "X");
-                vg.ZahlartBarBool = (vg.ZahlartBar == "X");
-                vg.ZahlartREBool = (vg.ZahlartRE == "X");
                 vg.StatusDurchgefuehrt = (vg.Status == "2");
                 vg.StatusFehlgeschlagen = (vg.Status == "F");
-                vg.NachbearbeitenBool = (vg.Nachbearbeiten == "X");
             }
             return Json(JsonConvert.SerializeObject(vorgaenge));
         }
@@ -146,9 +157,6 @@ namespace ZLDMobile.Controllers
                     }
                 }
 
-                vorg.ZahlartEC = (vorg.ZahlartECBool ? "X" : "");
-                vorg.ZahlartBar = (vorg.ZahlartBarBool ? "X" : "");
-                vorg.ZahlartRE = (vorg.ZahlartREBool ? "X" : "");
                 if (vorg.StatusDurchgefuehrt)
                 {
                     vorg.Status = "2";
@@ -157,12 +165,11 @@ namespace ZLDMobile.Controllers
                 {
                     vorg.Status = "F";
                 }
-                // ggf. Kommentartext abschneiden, falls zu lang
-                if ((!String.IsNullOrEmpty(vorg.Bemerkung)) && (vorg.Bemerkung.Length > 40))
+                // ggf. Infotext abschneiden, falls zu lang
+                if ((!String.IsNullOrEmpty(vorg.Infotext)) && (vorg.Infotext.Length > 40))
                 {
-                    vorg.Bemerkung = vorg.Bemerkung.Substring(0, 40);
+                    vorg.Infotext = vorg.Infotext.Substring(0, 40);
                 }
-                vorg.Nachbearbeiten = (vorg.NachbearbeitenBool ? "X" : "");
 
                 string speicherResult = ViewModel.SaveVorgang(vorg);
 
@@ -219,9 +226,7 @@ namespace ZLDMobile.Controllers
         /// <param name="vorgangIds"></param>
         /// <returns></returns>
         [HttpPost]
-        // ReSharper disable InconsistentNaming
         public ActionResult GetBEBStatusVorgaenge(string vorgangIds)
-        // ReSharper restore InconsistentNaming
         {
             // Wenn nicht angemeldet, Login erzwingen
             if (UrlGetLogonAction("", "", "", "") != null)
@@ -231,5 +236,88 @@ namespace ZLDMobile.Controllers
             return Json(JsonConvert.SerializeObject(ViewModel.GetVorgangBEBStatus(vorgIds)));
         }
 
+        /// <summary>
+        /// Lädt die selektierbaren VkBueros für den angemeldeten User
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult LoadVkBurListe()
+        {
+            // Wenn nicht angemeldet, Login erzwingen
+            if (UrlGetLogonAction("", "", "", "") != null)
+                return Json(JsonConvert.SerializeObject("unauthenticated"));
+
+            List<string> vkBueros = ViewModel.GetVkBueros();
+
+            return Json(JsonConvert.SerializeObject(vkBueros));
+        }
+
+        /// <summary>
+        /// Lädt die Stammdaten zum gewählten VkBur und gibt eine entsprechend initialisierte Eingabemaske zurück
+        /// </summary>
+        /// <param name="vkBur"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult ApplyVkBur(string vkBur)
+        {
+            // Wenn nicht angemeldet, Login erzwingen
+            if (UrlGetLogonAction("", "", "", "") != null)
+                return Json(JsonConvert.SerializeObject("unauthenticated"));
+
+            ViewModel.ApplyVkBur(vkBur);
+
+            return PartialView("CreateZLDVorgang/CreateVorgangPartial", ViewModel);
+        }
+
+        /// <summary>
+        /// Speichert einen neu angelegten Vorgang und sendet das Resultat als Antwort
+        /// </summary>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult SaveNewVorgang(string vorgang)
+        {
+            // Wenn nicht angemeldet, Login erzwingen
+            if (UrlGetLogonAction("", "", "", "") != null)
+                return Json(JsonConvert.SerializeObject("unauthenticated"));
+
+            VorgangTransaktionsErgebnis erg;
+
+            try
+            {
+                Vorgang vorg = JsonConvert.DeserializeObject<Vorgang>(vorgang);
+                // Daten nach JSON-Übergabe übernehmen
+                vorg.Amt = vorg.AmtEdit;
+
+                DateTime tmpDat;
+                if (DateTime.TryParseExact(vorg.ZulDatTextEdit, "dd.MM.yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
+                {
+                    if (tmpDat > DateTime.MinValue)
+                    {
+                        vorg.ZulDat = tmpDat;
+                    }
+                }
+
+                vorg.VkOrg = LogonContext.VkOrg;
+                vorg.VkBuero = ViewModel.VkBurNeuanlage;
+
+                string speicherResult = ViewModel.SaveVorgang(vorg);
+
+                if (String.IsNullOrEmpty(speicherResult))
+                {
+                    erg = new VorgangTransaktionsErgebnis(vorg.Id, "OK", "");
+                }
+                else
+                {
+                    erg = new VorgangTransaktionsErgebnis(vorg.Id, "ERROR", speicherResult);
+                }
+            }
+            catch (Exception ex)
+            {
+                erg = new VorgangTransaktionsErgebnis("0", "APPERROR", "Fehler beim Speichern: " + ex.Message);
+                Services.ErrorLogging.WriteErrorToLogFile("Fehler beim Speichern (SaveVorgang): " + ex.Message, ex.ToString());
+            }
+
+            return Json(JsonConvert.SerializeObject(erg));
+        }
     }
 }

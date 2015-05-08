@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -38,6 +39,8 @@ namespace SapORM.Models
 
 			public string VKBUR { get; set; }
 
+			public string VZD_VKBUR { get; set; }
+
 			public string KUNNR { get; set; }
 
 			public string KUNDENNAME { get; set; }
@@ -64,6 +67,24 @@ namespace SapORM.Models
 
 			public string NACHBEARBEITEN { get; set; }
 
+			public string WUNSCHKENN_JN { get; set; }
+
+			public string RESERVKENN_JN { get; set; }
+
+			public string EINKENN_JN { get; set; }
+
+			public string KENNZFORM { get; set; }
+
+			public string KENNZANZ { get; set; }
+
+			public string BEMERKUNG { get; set; }
+
+			public string TEL_NUMBER { get; set; }
+
+			public string TEL_EXTENS { get; set; }
+
+			public string VE_ERNAM { get; set; }
+
 			public static GT_VG_KOPF Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_VG_KOPF
@@ -72,6 +93,7 @@ namespace SapORM.Models
 					ZULBELN = (string)row["ZULBELN"],
 					VKORG = (string)row["VKORG"],
 					VKBUR = (string)row["VKBUR"],
+					VZD_VKBUR = (string)row["VZD_VKBUR"],
 					KUNNR = (string)row["KUNNR"],
 					KUNDENNAME = (string)row["KUNDENNAME"],
 					REFERENZ1 = (string)row["REFERENZ1"],
@@ -85,6 +107,15 @@ namespace SapORM.Models
 					RE_JN = (string)row["RE_JN"],
 					INFO_TEXT = (string)row["INFO_TEXT"],
 					NACHBEARBEITEN = (string)row["NACHBEARBEITEN"],
+					WUNSCHKENN_JN = (string)row["WUNSCHKENN_JN"],
+					RESERVKENN_JN = (string)row["RESERVKENN_JN"],
+					EINKENN_JN = (string)row["EINKENN_JN"],
+					KENNZFORM = (string)row["KENNZFORM"],
+					KENNZANZ = (string)row["KENNZANZ"],
+					BEMERKUNG = (string)row["BEMERKUNG"],
+					TEL_NUMBER = (string)row["TEL_NUMBER"],
+					TEL_EXTENS = (string)row["TEL_EXTENS"],
+					VE_ERNAM = (string)row["VE_ERNAM"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -109,7 +140,7 @@ namespace SapORM.Models
 
 			public static List<GT_VG_KOPF> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_VG_KOPF> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -123,7 +154,7 @@ namespace SapORM.Models
 
 			public static List<GT_VG_KOPF> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_KOPF> ToList(ISapDataService sapDataService)
@@ -138,7 +169,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_MOB_USER_PUT_VG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_KOPF> GetExportListWithExecute(ISapDataService sapDataService)
@@ -148,7 +179,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_KOPF> GetExportList(ISapDataService sapDataService)
@@ -158,7 +189,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_KOPF> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -168,7 +199,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_MOB_USER_PUT_VG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_KOPF> GetImportList(ISapDataService sapDataService)
@@ -178,7 +209,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -235,7 +266,7 @@ namespace SapORM.Models
 
 			public static List<GT_VG_POS> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_VG_POS> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -249,7 +280,7 @@ namespace SapORM.Models
 
 			public static List<GT_VG_POS> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_POS> ToList(ISapDataService sapDataService)
@@ -264,7 +295,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_MOB_USER_PUT_VG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_POS> GetExportListWithExecute(ISapDataService sapDataService)
@@ -274,7 +305,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_POS> GetExportList(ISapDataService sapDataService)
@@ -284,7 +315,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_POS> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -294,7 +325,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_MOB_USER_PUT_VG", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_VG_POS> GetImportList(ISapDataService sapDataService)
@@ -304,7 +335,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}

@@ -366,8 +366,20 @@
     width: 90px;
 }
 
+.TableColumn100 {
+    width: 100px;
+}
+
 .TableColumn110 {
     width: 110px;
+}
+
+.TableColumn120 {
+    width: 120px;
+}
+
+.TableColumn130 {
+    width: 130px;
 }
 
 .TableColumn140 {
@@ -376,6 +388,26 @@
 
 .TableColumn150 {
     width: 150px;
+}
+
+.TableColumn160 {
+    width: 160px;
+}
+
+.TableColumn170 {
+    width: 170px;
+}
+
+.TableColumn180 {
+    width: 180px;
+}
+
+.TableColumn190 {
+    width: 190px;
+}
+
+.TableColumn200 {
+    width: 200px;
 }
 
 .TableColumn215 {

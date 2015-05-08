@@ -3,9 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
 {
-    /// <summary>
-    /// Dienstleistungs-Infoobjekt (für Dropdown-Auswahl)
-    /// </summary>
     public class Dienstleistung
     {
         [Display(Name = "Dienstleistungs-ID")]
@@ -27,20 +24,6 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public bool Gebuehrenrelevant
         {
             get { return (!String.IsNullOrEmpty(GebuehrenMaterial)); }
-        }
-
-        public Dienstleistung()
-        {
-            this.Id = "";
-            this.Bezeichnung = "";
-            this.GebuehrenMaterial = "";
-        }
-
-        public Dienstleistung(string id, string bez, string gebMat)
-        {
-            this.Id = id;
-            this.Bezeichnung = bez;
-            this.GebuehrenMaterial = gebMat;
         }
     }
 }

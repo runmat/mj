@@ -26,6 +26,10 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
 
         public Datencontainer ZLDMobileData { get; set; }
 
+        public string VkBurNeuanlage { get; private set; }
+
+        public StammdatenNeuanlage StammdatenNeuanlage { get; private set; }
+
         /// <summary>
         /// Leerer Konstruktor
         /// </summary>
@@ -160,26 +164,30 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
         }
 
         /// <summary>
-        /// Ermittelt den BEB-Status zum angegebenen Vorgang
+        /// Aktuelle Vorgangsliste zurückgeben
         /// </summary>
-        /// <param name="vorgId"></param>
         /// <returns></returns>
-        // ReSharper disable InconsistentNaming
-        public string GetVorgangBEBStatus(string vorgId)
-        // ReSharper restore InconsistentNaming
+        public List<string> GetVkBueros()
         {
-            string erg = "";
+            return DataService.GetVkBueros();
+        }
 
-            List<string> vorgIds = new List<string> { vorgId };
+        /// <summary>
+        /// Gewähltes VkBur übernehmen und entsprechende Stammdaten laden
+        /// </summary>
+        public void ApplyVkBur(string vkBur)
+        {
+            VkBurNeuanlage = vkBur;
 
-            var ergListe = DataService.GetVorgangBebStatus(vorgIds);
+            if (StammdatenNeuanlage == null)
+                StammdatenNeuanlage = new StammdatenNeuanlage { Aemter = DataService.GetStammdatenAemter()};
 
-            if (ergListe.Count > 0)
-            {
-                erg = ergListe[0].Status;
-            }
+            List<Kunde> kundenList;
+            List<Dienstleistung> dienstleistungenList;
+            DataService.GetStammdatenKundenUndHauptdienstleistungen(VkBurNeuanlage, out kundenList, out dienstleistungenList);
 
-            return erg;
+            StammdatenNeuanlage.Kunden = kundenList;
+            StammdatenNeuanlage.Dienstleistungen = dienstleistungenList;
         }
     }
 }

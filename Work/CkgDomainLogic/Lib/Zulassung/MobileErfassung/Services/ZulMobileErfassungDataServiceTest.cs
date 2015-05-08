@@ -51,5 +51,20 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
         {
             throw new NotImplementedException();
         }
+
+        public List<string> GetVkBueros()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetStammdatenKundenUndHauptdienstleistungen(string vkBur, out List<Kunde> kunden, out List<Dienstleistung> dienstleistungen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<Amt> GetStammdatenAemter()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

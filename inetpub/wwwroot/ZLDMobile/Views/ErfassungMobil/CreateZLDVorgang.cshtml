@@ -1,0 +1,20 @@
+﻿@using CkgDomainLogic.Zulassung.MobileErfassung.Models
+@model CkgDomainLogic.Zulassung.MobileErfassung.ViewModels.ZulMobileErfassungViewModel
+
+@{
+    ViewBag.Title = "Neuen Vorgang erstellen";
+}
+
+<label id="lblError" class="MessageLabel"></label>
+
+<div id="divAuswahlVkbur">
+    <ul id="lstVkbur" data-role="listview" data-inset="true">
+    </ul>
+</div>
+
+<div class="VerticalSpacer10">&nbsp;</div>
+
+<div id="divCreateVorgang">
+</div>
+
+@Html.Partial("CreateZLDVorgang/Scripts")
