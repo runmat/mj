@@ -32,7 +32,7 @@ namespace WatchlistViewer
                     Wkn = (subItemsIndex > 0 ? subItems[0] : ""),
                     DateTime = DateTime.ParseExact(DateTime.Today.ToString("dd.MM.yyyy") + " " + subItems[subItemsIndex], "dd.MM.yyyy HH:mm:ss", CultureInfo.CurrentCulture),
                     Value = Double.Parse(subItems[subItemsIndex + 2]),
-                    Change = Double.Parse(subItems[subItemsIndex + 4]),
+                    //Change = Double.Parse(subItems[subItemsIndex + 4]),
                 };
 
                 stockList.Add(stockItem);

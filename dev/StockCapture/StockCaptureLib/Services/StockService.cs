@@ -15,7 +15,7 @@ namespace StockCapture
 
         public static int QueryCallsPerMinute { get { return 12; } }
 
-        public static void CaptureStockQuote(string yahooSymbol, out double price, out DateTime dateTime)
+        public static void CaptureStockQuote(string yahooSymbol, out double price, out double openPrice, out DateTime dateTime)
         {
             var testStockQuery = (GetAppSettingsVal("TestStockQuery") == "true");
             var xml = testStockQuery
@@ -30,20 +30,23 @@ namespace StockCapture
             var priceText = myXmlDocument.SelectSingleNode("query/results/quote/LastTradePriceOnly", nsmgr).InnerText;
             var date = myXmlDocument.SelectSingleNode("query/results/quote/LastTradeDate", nsmgr).InnerText;
             var time = myXmlDocument.SelectSingleNode("query/results/quote/LastTradeTime", nsmgr).InnerText;
+            var openText = myXmlDocument.SelectSingleNode("query/results/quote/Open", nsmgr).InnerText;
 
             dateTime = DateTime.Parse(string.Format("{0} {1}", date, time), new CultureInfo("en-US"));
             dateTime = dateTime.AddHours(1);
             price = double.Parse(priceText.Replace('.', ','));
+            openPrice = double.Parse(openText.Replace('.', ','));
         }
 
         public static void CaptureAndSaveStockQuote()
         {
             var timeStart = DateTime.Now;
 
-            double price; 
+            double price;
+            double openPrice;
             DateTime dateTime;
 
-            CaptureStockQuote("EURUSD", out price, out dateTime);
+            CaptureStockQuote("EURUSD", out price, out openPrice, out dateTime);
 
             var timeEnd = DateTime.Now;
             var queryDuration = (timeEnd - timeStart).TotalSeconds;

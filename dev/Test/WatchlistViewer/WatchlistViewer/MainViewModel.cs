@@ -86,14 +86,16 @@ namespace WatchlistViewer
 
         private void GetStockDataFromStockCaptureStockService()
         {
-            double price; 
+            double price;
+            double openPrice;
             DateTime dateTime;
 
             var stock = StockItems.ToArray()[_index];
 
-            StockCapture.StockService.CaptureStockQuote(stock.YahooSymbol, out price, out dateTime);
+            StockCapture.StockService.CaptureStockQuote(stock.YahooSymbol, out price, out openPrice, out dateTime);
 
             stock.DateTime = DateTime.Now;
+            stock.OpenValue = openPrice;
             stock.Value = price;
             StockItemsVisible = true;
 
