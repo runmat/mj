@@ -36,7 +36,7 @@
         function SetHalterName(txtName, ddlStva, txtReferenz) {
             var amt = ddlStva.options[ddlStva.selectedIndex].value;
             if (amt == "DN") {
-                txtReferenz.value = txtName.value;
+                txtReferenz.value = txtName.value.toUpperCase();
             }
         }
     </script>
