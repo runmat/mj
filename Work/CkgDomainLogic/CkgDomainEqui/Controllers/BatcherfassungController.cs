@@ -41,7 +41,7 @@ namespace ServicesMvc.Controllers
 
         void InitModelStatics()
         {
-            Batcherfassung.GetViewModel = GetViewModel<BatcherfassungViewModel>; // TODO -> entf., wenn nicht nötig
+            Batcherfassung.GetViewModel = GetViewModel<BatcherfassungViewModel>; 
             BatcherfassungSelektor.GetViewModel = GetViewModel<BatcherfassungViewModel>;
         }
 
@@ -76,7 +76,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ShowBatcherfassung()
         {
-            return PartialView("Partial/Grid", ViewModel);
+            return PartialView("Partial/GridBatcherfassung", ViewModel);
         }
 
         [GridAction]
@@ -144,8 +144,6 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
-
-
         #region Excel Upload
       
         [HttpPost]
@@ -185,5 +183,19 @@ namespace ServicesMvc.Controllers
        
 
         #endregion
+
+
+
+        #region Unitnummern
+
+        [HttpPost]
+        public ActionResult ShowGridUnitNumbers(string batchId)
+        {
+            return PartialView("Partial/GridUnitNumbers", ViewModel.LoadUnitnummerByBatchId(batchId));
+        }
+
+        #endregion
+
+
     }
 }

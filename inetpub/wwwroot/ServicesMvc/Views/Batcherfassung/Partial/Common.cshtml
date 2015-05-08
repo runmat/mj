@@ -199,6 +199,26 @@
 
     }
 
+    function ShowGridUnitNumbers(batchId) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "ShowGridUnitNumbers",
+            data: { batchId: batchId },
+            loadingShow: true,
+            success: function (result) {
+                ShowUnitNumberGrid(result);
+            }
+        });
+    }
+
+    function ShowUnitNumberGrid(result) {
+        alert(result);
+    }
+
+    function UpdateUnitnumber(unitNumber) {
+        alert("UnitNr: " + unitNumber);
+    }
 
     ///////////////  Excel Upload /////////////////////////////////////////////////////////////////////
     //////////////                /////////////////////////////////////////////////////////////////////

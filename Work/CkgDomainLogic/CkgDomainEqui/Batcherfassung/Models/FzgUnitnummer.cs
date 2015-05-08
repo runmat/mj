@@ -4,7 +4,7 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
-    public class FzgByUnitnummer : Store
+    public class FzgUnitnummer : Store
     {            
         [LocalizedDisplay(LocalizeConstants.UnitNumber)]
         public string Unitnummer { get; set; }

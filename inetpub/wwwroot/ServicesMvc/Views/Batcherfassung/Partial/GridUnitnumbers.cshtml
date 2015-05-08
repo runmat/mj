@@ -1,0 +1,36 @@
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.BatcherfassungViewModel 
+@using CkgDomainLogic.FzgModelle.Models
+@{
+    var gridName = "GridUnitnumbers";
+}
+
+@(Html.XTelerik()
+    .XGrid<FzgUnitnummer>()
+    .Name(gridName)
+    .XAjaxDataBinding("UnitnummerAjaxBinding", "Batcherfassung")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.Batch.ID).Filterable(false).Sortable(false)
+                    .ClientTemplate(
+                        "<textbox onblur='UpdateUnitnumber(\"<#= data.Unitnummer #>\");' </textbox>"
+                        + "&nbsp;"
+                );         
+            columns.XBound(c => c.Unitnummer);
+            columns.XBound(c => c.Fahrgestellnummer);                      
+            columns.XBound(c => c.Batch.ModellId);
+            columns.XBound(c => c.Batch.Modellbezeichnung);
+            columns.XBound(c => c.Batch.AuftragsnummerVon + " " + c.Batch.AuftragsnummerBis);
+            columns.XBound(c => c.Batch.Anzahl);                        
+            columns.XBound(c => c.Einsteuerung);
+            columns.XBound(c => c.Batch.KennzeichenLeasingFahrzeug);
+                                
+           
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.Unitnummer).Ascending())
+    .XToolBar("Batcherfassung")
+)
+
+

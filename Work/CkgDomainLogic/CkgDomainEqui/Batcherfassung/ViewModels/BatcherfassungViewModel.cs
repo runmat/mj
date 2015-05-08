@@ -215,6 +215,16 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 LoadBatches();
         }
 
+        public List<FzgUnitnummer> LoadUnitnummerByBatchId(string batchId)
+        {
+            var list = DataService.GetUnitnummerByBatchId(batchId);
+
+            SelectedItem = Batcherfassungs.FirstOrDefault(m => m.ID == batchId) ?? new Batcherfassung();
+            list.ForEach(x => x.Batch = SelectedItem);
+
+            return list;
+        }
+
         public void ValidateModel(Batcherfassung model, bool insertMode, Action<Expression<Func<Batcherfassung, object>>, string> addModelError)
         {
             if (!insertMode)                

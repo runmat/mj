@@ -43,7 +43,7 @@ namespace CkgDomainLogic.FzgModelle.Services
             return weblist;
         }
 
-        public List<FzgByUnitnummer> GetUnitnummern(string batchId)
+        public List<FzgUnitnummer> GetUnitnummerByBatchId(string batchId)
         {
             Z_M_EC_AVM_BATCH_UNIT_SELECT.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
             SAP.SetImportParameter("I_BATCH_ID", batchId);

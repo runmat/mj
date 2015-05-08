@@ -172,15 +172,15 @@ namespace CkgDomainLogic.FzgModelle.Models
             }
         }
 
-        static public ModelMapping<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT, FzgByUnitnummer> Z_M_EC_AVM_BATCH_UNIT_SELECT_GT_OUT_To_Unitnummer
+        static public ModelMapping<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT, FzgUnitnummer> Z_M_EC_AVM_BATCH_UNIT_SELECT_GT_OUT_To_Unitnummer
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT, FzgByUnitnummer>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_BATCH_UNIT_SELECT.GT_OUT, FzgUnitnummer>(
                         new Dictionary<string, string>()
                         , (source, destination) =>
                         {
-                            destination.Unitnummer = source.CHASSIS_NUM;                            
+                            destination.Unitnummer = source.ZUNIT_NR;                            
                             destination.Fahrgestellnummer = source.CHASSIS_NUM;
                             destination.Kennzeichen = source.LICENSE_NUM;
                             destination.Sperrvermerk = (source.ZLOEVM.ToUpper() == "X"); 
