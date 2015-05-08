@@ -2268,18 +2268,19 @@ Namespace Beauftragung2
         End Sub
 
         Private Sub InitJava()
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunde.ClientID + ")")
-            txtKunnr.Attributes.Add("onblur", "SetItemText(" + ddlKunde.ClientID + ",this)")
-            ddlKunde.Attributes.Add("onchange", "SetItemText(" + ddlKunde.ClientID + "," + txtKunnr.ClientID + ")")
-            txtStva.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlStva.ClientID + ")")
-            txtStva.Attributes.Add("onblur", "SetItemText(" + ddlStva.ClientID + ",this)")
-            ddlStva.Attributes.Add("onchange", "SetItemText(" + ddlStva.ClientID + "," + txtStva.ClientID + ")")
-            txtDienstleistung.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienstleistung.ClientID + ")")
-            txtDienstleistung.Attributes.Add("onblur", "SetItemText(" + ddlDienstleistung.ClientID + ",this)")
-            ddlDienstleistung.Attributes.Add("onchange", "SetItemText(" + ddlDienstleistung.ClientID + "," + txtDienstleistung.ClientID + ")")
-            txtGrosskundennummer.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlGrosskunde.ClientID + ")")
-            txtGrosskundennummer.Attributes.Add("onblur", "SetItemText(" + ddlGrosskunde.ClientID + ",this)")
-            ddlGrosskunde.Attributes.Add("onchange", "SetItemText(" + ddlGrosskunde.ClientID + "," + txtGrosskundennummer.ClientID + ")")
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlKunde.ClientID & ")")
+            txtKunnr.Attributes.Add("onblur", "SetItemText(" & ddlKunde.ClientID & ",this)")
+            ddlKunde.Attributes.Add("onchange", "SetItemText(" & ddlKunde.ClientID & "," & txtKunnr.ClientID & ")")
+            txtStva.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlStva.ClientID & ")")
+            txtStva.Attributes.Add("onblur", "SetItemText(" & ddlStva.ClientID & ",this)")
+            ddlStva.Attributes.Add("onchange", "SetItemText(" & ddlStva.ClientID & "," & txtStva.ClientID & ")")
+            txtDienstleistung.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlDienstleistung.ClientID & ")")
+            txtDienstleistung.Attributes.Add("onblur", "SetItemText(" & ddlDienstleistung.ClientID & ",this)")
+            ddlDienstleistung.Attributes.Add("onchange", "SetItemText(" & ddlDienstleistung.ClientID & "," & txtDienstleistung.ClientID & ")")
+            txtGrosskundennummer.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlGrosskunde.ClientID & ")")
+            txtGrosskundennummer.Attributes.Add("onblur", "SetItemText(" & ddlGrosskunde.ClientID & ",this)")
+            ddlGrosskunde.Attributes.Add("onchange", "SetItemText(" & ddlGrosskunde.ClientID & "," & txtGrosskundennummer.ClientID & ")")
+            txtName.Attributes.Add("onblur", "SetHalterName(this," & ddlStva.ClientID & "," & txtReferenz.ClientID & ")")
             txtHersteller.Attributes("onkeyup") = "autotab(" & txtHersteller.ClientID & ", " & txtTyp.ClientID & ")"
             txtTyp.Attributes("onkeyup") = "autotab(" & txtTyp.ClientID & ", " & txtVarianteVersion.ClientID & ")"
             txtVarianteVersion.Attributes("onkeyup") = "autotab(" & txtVarianteVersion.ClientID & ", " & txtTypPruef.ClientID & ")"
@@ -2327,10 +2328,6 @@ Namespace Beauftragung2
                     EnableHalterdaten()
 
                 Case NextTab.Typdaten
-                    'Specials für Düren
-                    If ddlStva.SelectedValue = "DN" Then
-                        txtReferenz.Text = txtName.Text.ToUpper()
-                    End If
                     Grunddaten.Visible = False
                     lbtGrunddaten.CssClass = "TabButton"
                     Fahrzeugdaten.Visible = True

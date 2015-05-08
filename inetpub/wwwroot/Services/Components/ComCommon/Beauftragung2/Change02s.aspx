@@ -33,6 +33,12 @@
             }     
             __doPostBack(ddlClientID.id, '');
         }
+        function SetHalterName(txtName, ddlStva, txtReferenz) {
+            var amt = ddlStva.options[ddlStva.selectedIndex].value;
+            if (amt == "DN") {
+                txtReferenz.value = txtName.value;
+            }
+        }
     </script>
     <div id="site">
         <div id="content">
