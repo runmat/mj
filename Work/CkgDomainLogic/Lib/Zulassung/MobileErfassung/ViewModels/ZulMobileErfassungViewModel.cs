@@ -167,9 +167,9 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
         /// Aktuelle Vorgangsliste zurückgeben
         /// </summary>
         /// <returns></returns>
-        public List<string> GetVkBueros()
+        public List<string> GetVkBurs()
         {
-            return DataService.GetVkBueros();
+            return DataService.GetVkBurs();
         }
 
         /// <summary>

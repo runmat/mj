@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.Zulassung.MobileErfassung.Contracts;
 using CkgDomainLogic.Zulassung.MobileErfassung.Models;
 using GeneralTools.Contracts;
@@ -61,10 +63,21 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
 
             var positionen = AppModelMappings.Z_ZLD_MOB_USER_GET_VG_GT_VG_POS_To_VorgangPosition.Copy(Z_ZLD_MOB_USER_GET_VG.GT_VG_POS.GetExportList(SAP)).OrderBy(w => w.KopfId).ThenBy(w => w.PosNr).ToList();
             
-            // Positionen den Kopfsätzen zuordnen
+            var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName);
+
             vorgaenge.ForEach(item =>
                 {
+                    // Positionen den Kopfsätzen zuordnen
                     item.Positionen = positionen.Where(w => w.KopfId == item.Id).ToList();
+
+                    // User-Infos aus SQL lesen
+                    var vorerfUser = dbContext.GetUser(item.Vorerfasser);
+                    if (vorerfUser != null)
+                    {
+                        item.VorerfasserAnrede = vorerfUser.UserSalutation;
+                        item.VorerfasserName1 = vorerfUser.FirstName;
+                        item.VorerfasserName2 = vorerfUser.LastName;
+                    }
                 }
             );
         }
@@ -120,7 +133,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
             return AppModelMappings.Z_ZLD_MOB_CHECK_BEB_STATUS_GT_BEB_STATUS_To_VorgangStatus.Copy(Z_ZLD_MOB_CHECK_BEB_STATUS.GT_BEB_STATUS.GetExportList(SAP)).OrderBy(w => w.Id).ToList();
         }
 
-        public List<string> GetVkBueros()
+        public List<string> GetVkBurs()
         {
             Z_ZLD_MOB_GET_USER_AEMTER.Init(SAP, "I_VKORG, I_MOBUSER", LogonContext.VkOrg, LogonContext.UserName.ToUpper());
 

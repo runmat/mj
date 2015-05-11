@@ -472,6 +472,10 @@
     text-transform: uppercase;
 }
 
+.TextUnderline {
+    text-decoration: underline;
+}
+
 .DivFieldError div
 {
     border-width: 2px;
@@ -530,4 +534,20 @@
 
 .FontSize12 {
     font-size: 12px
+}
+
+.Margin-Left-20 {
+    margin-left: 20px;
+}
+
+.Min-Width-275 {
+    min-width: 275px;
+}
+
+.Float-Left {
+    float: left;
+}
+
+.Float-Right {
+    float: right;
 }

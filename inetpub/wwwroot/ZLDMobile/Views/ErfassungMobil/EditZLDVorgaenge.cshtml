@@ -17,8 +17,12 @@
 </div>
 
 <div id="divVorgangsliste" class="NotDisplayed">
-    <div class="VerticalSpacer10">&nbsp;</div>
-    <a id="lnkSelAmt" href="#"></a>    
+    <div class="VerticalSpacer10">&nbsp;</div>  
+    <a id="lnkSelAmt" href="#"></a>
+    <b class="Margin-Left-20">
+        <label for="lblGebuehrGesamt" class="TextUnderline">Gesamtgebühr:&nbsp;</label>
+        <label id="lblGebuehrGesamt"></label>
+    </b> 
     <div class="VerticalSpacer10">&nbsp;</div>
     <input type="search" name="suche" id="txtSuche" value="" placeholder="Suchen..." />
     <div class="VerticalSpacer5">&nbsp;</div>
@@ -40,6 +44,10 @@
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>      
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Status"]</th>  
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Zahlart"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenGroesse"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenAnzahl"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Bemerkung"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["VersandzulVkBur"]</th>
             </tr>  
         </thead>  
         <tbody>
@@ -88,6 +96,22 @@
                 </td>
                 <td colspan="2">
                     <input type="text" id="txtKunde" disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["TelefonNr"]
+                </td>
+                <td colspan="2">
+                    <input type="text" id="txtTelefonNr" disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["Vorerfasser"]
+                </td>
+                <td colspan="2">
+                    <input type="text" id="txtVorerfasser" disabled="disabled"/>
                 </td>
             </tr>
             <tr>

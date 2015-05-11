@@ -14,7 +14,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "Detail-Bezeichnung")]
         public string DetailBez
         {
-            get { return Id + ".." + Bezeichnung; }
+            get { return String.Format("{0} ~ {1}", Bezeichnung, Id); }
         }
 
         [Display(Name = "Gebührenmaterial")]

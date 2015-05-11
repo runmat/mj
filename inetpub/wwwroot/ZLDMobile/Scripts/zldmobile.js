@@ -577,7 +577,7 @@ ZLDMobileJS.prototype.UpdateConnectivityStatus = function () {
     });
 };
 
-// Liste der zur Auswahl stehenden VkBueros vom Server laden
+// Liste der zur Auswahl stehenden VkBurs vom Server laden
 ZLDMobileJS.prototype.LoadVkBurListe = function () {
     $.ajax({
         type: "POST",
@@ -588,11 +588,11 @@ ZLDMobileJS.prototype.LoadVkBurListe = function () {
         beforeSend: function () { ShowBusyIndicator(); },
         complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            var vkBueros = JSON.parse(result);
-            if (vkBueros == "unauthenticated") {
+            var vkBurs = JSON.parse(result);
+            if (vkBurs == "unauthenticated") {
                 this.RedirectToLoginPage();
             }
-            FillVkBurAuswahl(vkBueros);
+            FillVkBurAuswahl(vkBurs);
         },
         error: function (req, status, error) {
             ShowMessage("Laden der Kostenstelle(n) fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung. (" + error + ")", true);

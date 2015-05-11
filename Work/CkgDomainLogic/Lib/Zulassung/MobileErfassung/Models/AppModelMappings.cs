@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using GeneralTools.Models;
+using SapORM.Contracts;
 using SapORM.Models;
 
 namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
@@ -36,8 +37,8 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                     (s, d) =>
                     {
                         d.Bezeichnung = s.MAKTX;
-                        d.GebuehrenMaterial = s.GEBMAT;
-                        d.Id = s.MATNR;
+                        d.GebuehrenMaterial = s.GEBMAT.TrimStart('0');
+                        d.Id = s.MATNR.TrimStart('0');
                     }
                 ));
             }
@@ -74,14 +75,14 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                         d.Amt = s.KREISKZ;
                         d.Bemerkung = s.BEMERKUNG;
                         d.BlTyp = s.BLTYP;
-                        d.DurchfVkBuero = s.VZD_VKBUR;
-                        d.Id = s.ZULBELN;
+                        d.DurchfVkBur = s.VZD_VKBUR;
+                        d.Id = s.ZULBELN.TrimStart('0');
                         d.Infotext = s.INFO_TEXT;
                         d.Kennzeichen = s.ZZKENN;
-                        d.KennzeichenAnzahl = s.KENNZANZ;
+                        d.KennzeichenAnzahl = s.KENNZANZ.TrimStart('0');
                         d.KennzeichenGroesse = s.KENNZFORM;
                         d.Kunname = s.KUNDENNAME;
-                        d.Kunnr = s.KUNNR;
+                        d.Kunnr = s.KUNNR.TrimStart('0');
                         d.Nachbearbeiten = s.NACHBEARBEITEN.XToBool();
                         d.NurEinKennzeichen = s.EINKENN_JN.XToBool();
                         d.Referenz1 = s.REFERENZ1;
@@ -90,9 +91,9 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                         d.Status = s.BEB_STATUS;
                         d.TelefonNrDurchwahl = s.TEL_EXTENS;
                         d.TelefonNrVorwahl = s.TEL_NUMBER;
-                        d.VkBuero = s.VKBUR;
+                        d.VkBur = s.VKBUR;
                         d.VkOrg = s.VKORG;
-                        d.VorerfasserName = s.VE_ERNAM;
+                        d.VorerfasserUser = s.VE_ERNAM;
                         d.Wunschkennzeichen = s.WUNSCHKENN_JN.XToBool();
                         d.ZahlartBar = s.BAR_JN.XToBool();
                         d.ZahlartEC = s.EC_JN.XToBool();
@@ -114,10 +115,10 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                     (s, d) =>
                     {
                         d.DienstleistungBez = s.MAKTX;
-                        d.DienstleistungId = s.MATNR;
+                        d.DienstleistungId = s.MATNR.TrimStart('0');
                         d.Gebuehr = s.GEB_AMT;
-                        d.KopfId = s.ZULBELN;
-                        d.PosNr = s.ZULPOSNR;
+                        d.KopfId = s.ZULBELN.TrimStart('0');
+                        d.PosNr = s.ZULPOSNR.TrimStart('0');
                     }
                 ));
             }
@@ -133,7 +134,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                     new Dictionary<string, string>(),
                     (s, d) =>
                     {
-                        d.Id = s.ZULBELN;
+                        d.Id = s.ZULBELN.TrimStart('0');
                         d.Status = s.BEB_STATUS;
                     }
                 ));
@@ -150,7 +151,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                     new Dictionary<string, string>(),
                     (s, d) =>
                     {
-                        d.KundenNr = s.KUNNR;
+                        d.KundenNr = s.KUNNR.TrimStart('0');
                         d.Name1 = s.NAME1;
                         d.Namenserweiterung = s.EXTENSION1;
                     }
@@ -169,8 +170,8 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                     (s, d) =>
                     {
                         d.Bezeichnung = s.MAKTX;
-                        d.GebuehrenMaterial = s.GEBMAT;
-                        d.Id = s.MATNR;
+                        d.GebuehrenMaterial = s.GEBMAT.TrimStart('0');
+                        d.Id = s.MATNR.TrimStart('0');
                     }
                 ));
             }
@@ -216,11 +217,11 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                         d.EC_JN = s.ZahlartEC.BoolToX();
                         d.EINKENN_JN = s.NurEinKennzeichen.BoolToX();
                         d.INFO_TEXT = s.Infotext;
-                        d.KENNZANZ = s.KennzeichenAnzahl;
+                        d.KENNZANZ = s.KennzeichenAnzahl.PadLeft0(3);
                         d.KENNZFORM = s.KennzeichenGroesse;
                         d.KREISKZ = s.Amt;
                         d.KUNDENNAME = s.Kunname;
-                        d.KUNNR = s.Kunnr;
+                        d.KUNNR = s.Kunnr.ToSapKunnr();
                         d.NACHBEARBEITEN = s.Nachbearbeiten.BoolToX();
                         d.REFERENZ1 = s.Referenz1;
                         d.REFERENZ2 = s.Referenz2;
@@ -228,12 +229,12 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                         d.RE_JN = s.ZahlartRE.BoolToX();
                         d.TEL_EXTENS = s.TelefonNrDurchwahl;
                         d.TEL_NUMBER = s.TelefonNrVorwahl;
-                        d.VE_ERNAM = s.VorerfasserName;
-                        d.VKBUR = s.VkBuero;
+                        d.VE_ERNAM = s.VorerfasserUser;
+                        d.VKBUR = s.VkBur;
                         d.VKORG = s.VkOrg;
-                        d.VZD_VKBUR = s.DurchfVkBuero;
+                        d.VZD_VKBUR = s.DurchfVkBur;
                         d.WUNSCHKENN_JN = s.Wunschkennzeichen.BoolToX();
-                        d.ZULBELN = s.Id;
+                        d.ZULBELN = s.Id.PadLeft0(10);
                         d.ZZKENN = s.Kennzeichen;
                         d.ZZZLDAT = s.ZulDat;
                     }
@@ -254,9 +255,9 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                     {
                         d.GEB_AMT = s.Gebuehr;
                         d.MAKTX = s.DienstleistungBez;
-                        d.MATNR = s.DienstleistungId;
-                        d.ZULBELN = s.KopfId;
-                        d.ZULPOSNR = s.PosNr;
+                        d.MATNR = s.DienstleistungId.PadLeft0(18);
+                        d.ZULBELN = s.KopfId.PadLeft0(10);
+                        d.ZULPOSNR = s.PosNr.PadLeft0(6);
                     }
                 ));
             }
@@ -273,7 +274,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                     null,
                     (s, d) =>
                     {
-                        d.ZULBELN = s.Id;
+                        d.ZULBELN = s.Id.PadLeft0(10);
                     }
                 ));
             }

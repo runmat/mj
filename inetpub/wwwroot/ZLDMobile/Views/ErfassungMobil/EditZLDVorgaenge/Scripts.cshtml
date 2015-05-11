@@ -133,7 +133,7 @@
             }
 
             // Eventhandler initialisieren
-            $("#lstZulassungskreis li").click(function () {
+            $("#lstZulassungskreis li").on('click', function () {
                 SelectKreis($(this).attr("title"), $(this).text());
             });
         }
@@ -243,7 +243,7 @@
                             .append($('<td>').addClass("TableGridCell")
                                 .append($('<b>')
                                     .append($('<a>').text(RemoveLeadingZeroes(vorg.Id)).attr('href', "#popupEditVorgang?Id=" + vorg.Id).attr('data-rel', "popup").attr('data-position-to', "window")
-                                        .on('click', function () {
+                                        .click(function () {
                                             // Daten zum aktuellen Vorgang im Popup anzeigen
                                             var url = this.toString();
                                             if (url.indexOf("?") >= 0) {
@@ -270,7 +270,11 @@
                             )
                             .append($('<td>').addClass("TableGridCell")
                                 .append($('<div>').attr('id', "divGebuehr" + vorg.Id)
-                                    .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id).attr('maxlength', "11").addClass("RightAlignedText").val(gebuehr))
+                                    .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id).attr('maxlength', "11").addClass("RightAlignedText").val(gebuehr)
+                                        .blur(function () {
+                                            CalculateGebuehrGesamt();
+                                        })
+                                    )
                                 )
                             )
                             .append($('<td>').addClass("TableGridCell NoVerticalPadding")
@@ -294,6 +298,18 @@
                                         .append($('<label>').attr('for', "rbZahlartRE" + vorg.Id).text("RE"))
                                     )
                                 )
+                            )
+                            .append($('<td>').addClass("TableGridCell")
+                                .append($('<span>').text(vorg.KennzeichenGroesse))
+                            )
+                            .append($('<td>').addClass("TableGridCell")
+                                .append($('<span>').addClass("Float-Right").text(vorg.KennzeichenAnzahl))
+                            )
+                            .append($('<td>').addClass("TableGridCell")
+                                .append($('<span>').text(vorg.Bemerkung))
+                            )
+                            .append($('<td>').addClass("TableGridCell")
+                                .append($('<span>').text(vorg.VersandzulVkBur))
                             )
                         );
 
@@ -330,7 +346,27 @@
         // UI-Refresh für Table
         RefreshTableUI("tblVorgaenge");
 
-        //$("#txtSuche").focus();
+        CalculateGebuehrGesamt();
+    }
+
+    function CalculateGebuehrGesamt() {
+        var gebGesamt = 0.0;
+
+        if (jsZLDMobile.datenstruktur != null && jsZLDMobile.datenstruktur.Vorgaenge != null) {
+            for (var i = 0; i < jsZLDMobile.datenstruktur.Vorgaenge.length; i++) {
+                var vorg = jsZLDMobile.datenstruktur.Vorgaenge[i];
+                if (vorg.IsShown) {
+                    var strGeb = $("#txtGebuehr" + vorg.Id).val().replace(",", ".").replace(" ", "");
+                    var geb = parseFloat(strGeb);
+                    
+                    if (!isNaN(geb)) {
+                        gebGesamt += geb;
+                    }
+                }
+            }
+        }
+
+        $("#lblGebuehrGesamt").text(FormatGebuehr(gebGesamt.toString()));
     }
 
     // Speichert alle Vorgänge zum aktuellen Amt
@@ -398,6 +434,8 @@
                 $("#lblPopupID").text(RemoveLeadingZeroes(vorg.Id));
                 $("#lblPopupReferenz1").text(vorg.Referenz1);
                 $("#txtKunde").val(vorg.Kunde);
+                $("#txtTelefonNr").val(vorg.TelefonNr);
+                $("#txtVorerfasser").val(vorg.Vorerfasser);
                 SetDropdownValue("ddlAmt", vorg.AmtEdit, true);
                 $("#txtZulDat").val(vorg.ZulDatTextEdit);
                 $("#divZulDat").removeClass("DivFieldError");
@@ -413,22 +451,22 @@
 
                     // Table-Row hinzufügen
                     $("#tblPopupPositionen tbody")
-                .append($('<tr>')
-                    .append($('<td>').addClass("TableGridCellNarrow").text(vorgPos.PosNr))
-                    .append($('<td>').addClass("TableGridCellNarrow").text(vorgPos.DienstleistungBez))
-                    .append($('<td>').addClass("TableGridCellNarrow")
-                        .append($('<div>').attr('id', "divGebuehr" + lfdNr)
-                            .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + lfdNr).attr('maxlength', "11").addClass("RightAlignedText").val(FormatGebuehr(vorgPos.Gebuehr.toString()))
-                                .on('click', function () {
-                                    // Text markieren
-                                    if ($(this).val() == "0" || $(this).val() == "0,00") {
-                                        $(this).select();
-                                    }
-                                })
+                    .append($('<tr>')
+                        .append($('<td>').addClass("TableGridCellNarrow").text(vorgPos.PosNr))
+                        .append($('<td>').addClass("TableGridCellNarrow").text(vorgPos.DienstleistungBez))
+                        .append($('<td>').addClass("TableGridCellNarrow")
+                            .append($('<div>').attr('id', "divGebuehr" + lfdNr)
+                                .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + lfdNr).attr('maxlength', "11").addClass("RightAlignedText").val(FormatGebuehr(vorgPos.Gebuehr.toString()))
+                                    .click(function () {
+                                        // Text markieren
+                                        if ($(this).val() == "0" || $(this).val() == "0,00") {
+                                            $(this).select();
+                                        }
+                                    })
+                                )
                             )
                         )
-                    )
-                );
+                    );
 
                     // Gebühr der Hauptposition aus Liste übernehmen
                     if (RemoveLeadingZeroes(vorgPos.PosNr) == "10") {
@@ -475,7 +513,7 @@
                 .append($('<td>').addClass("TableGridCellNarrow")
                 .append($('<div>').attr('id', "divGebuehr" + naechsteNr).addClass("NotDisplayed")
                     .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + naechsteNr).addClass("RightAlignedText").val("0")
-                        .on('click', function () {
+                        .click(function () {
                             // Text markieren
                             if ($(this).val() == "0" || $(this).val() == "0,00") {
                                 $(this).select();
@@ -490,7 +528,7 @@
         $("#ddlDL" + naechsteNr).append($('<option>').val("").text(""));
         for (var j = 0; j < jsZLDMobile.datenstruktur.Stammdaten.Dienstleistungen.length; j++) {
             var dlOption = jsZLDMobile.datenstruktur.Stammdaten.Dienstleistungen[j];
-            $("#ddlDL" + naechsteNr).append($('<option>').val(dlOption.Id).text(dlOption.Bezeichnung));
+            $("#ddlDL" + naechsteNr).append($('<option>').val(dlOption.Id).text(dlOption.DetailBez));
         }
 
         // Auf Dropdown-Auswahl reagieren und ggf. Gebührenfeld ein-/ausblenden

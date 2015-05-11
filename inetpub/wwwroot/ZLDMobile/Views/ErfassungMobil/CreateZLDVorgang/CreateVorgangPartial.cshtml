@@ -13,7 +13,7 @@
     <tbody>
         <tr>
             <td>
-                @Model.PropertyDisplayNames["VkBuero"]
+                @Model.PropertyDisplayNames["VkBur"]
             </td>
             <td colspan="2">
                 <label id="lblVkBur">@Model.VkBurNeuanlage</label>
@@ -65,7 +65,7 @@
                     {
                         foreach (Dienstleistung d in Model.StammdatenNeuanlage.Dienstleistungen)
                         {
-                            <option value="@d.Id">@d.Bezeichnung</option>
+                            <option value="@d.Id">@d.DetailBez</option>
                         }
                     }
                     else

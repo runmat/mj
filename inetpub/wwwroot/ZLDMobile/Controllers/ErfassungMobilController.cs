@@ -125,6 +125,7 @@ namespace ZLDMobile.Controllers
                 vg.ZulDatTextEdit = vg.ZulDatText;
                 vg.StatusDurchgefuehrt = (vg.Status == "2");
                 vg.StatusFehlgeschlagen = (vg.Status == "F");
+                vg.VersandzulVkBur = ((vg.BlTyp == "VZ" || vg.BlTyp == "AV") && vg.DurchfVkBur == LogonContext.VkBur ? vg.VkBur : "");
             }
             return Json(JsonConvert.SerializeObject(vorgaenge));
         }
@@ -237,7 +238,7 @@ namespace ZLDMobile.Controllers
         }
 
         /// <summary>
-        /// Lädt die selektierbaren VkBueros für den angemeldeten User
+        /// Lädt die selektierbaren VkBurs für den angemeldeten User
         /// </summary>
         /// <returns></returns>
         [HttpPost]
@@ -247,9 +248,9 @@ namespace ZLDMobile.Controllers
             if (UrlGetLogonAction("", "", "", "") != null)
                 return Json(JsonConvert.SerializeObject("unauthenticated"));
 
-            List<string> vkBueros = ViewModel.GetVkBueros();
+            List<string> vkBurs = ViewModel.GetVkBurs();
 
-            return Json(JsonConvert.SerializeObject(vkBueros));
+            return Json(JsonConvert.SerializeObject(vkBurs));
         }
 
         /// <summary>
@@ -298,7 +299,7 @@ namespace ZLDMobile.Controllers
                 }
 
                 vorg.VkOrg = LogonContext.VkOrg;
-                vorg.VkBuero = ViewModel.VkBurNeuanlage;
+                vorg.VkBur = ViewModel.VkBurNeuanlage;
 
                 string speicherResult = ViewModel.SaveVorgang(vorg);
 

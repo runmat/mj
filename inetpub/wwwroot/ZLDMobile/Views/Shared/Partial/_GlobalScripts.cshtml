@@ -21,7 +21,7 @@
             jsZLDMobile.UpdateConnectivityStatus();
         });
 
-        $("#popupOptionsMenu li").click(function () {
+        $("#popupOptionsMenu li").on('click', function () {
             ClearMessage();
             SelectOption($(this).attr("title"));
         });

@@ -384,7 +384,6 @@
     <Compile Include="Models\SAP\ManualExtended\Z_ZLD_IMP_KOMPER2.cs" />
     <Compile Include="Models\SAP\ManualExtended\Z_ZLD_IMP_NACHERF2.cs" />
     <Compile Include="Models\SAP\ManualExtended\Z_ZLD_IMP_NACHERF_DZLD2.cs" />
-    <Compile Include="Models\SAP\ManualExtended\Z_ZLD_MOB_USER_PUT_VG.cs" />
     <Compile Include="Models\SAP\ManualExtended\Z_ZLD_PREISFINDUNG2.cs" />
     <Compile Include="Models\SAP\ManualExtended\Z_ZLD_SAVE_DATA2.cs" />
     <Compile Include="Models\SAP\ManualExtended\Z_ZLD_STO_GET_ORDER2.cs" />

@@ -33,17 +33,17 @@
         }
     }
 
-    // Initialisiert die Einträge in der Auswahlliste der VkBueros
-    function FillVkBurAuswahl(vkBueros) {
+    // Initialisiert die Einträge in der Auswahlliste der VkBurs
+    function FillVkBurAuswahl(vkBurs) {
         // VkBur-Liste füllen
         $("#lstVkbur").empty();
         $("#lstVkbur").append($('<li>').attr('data-role', "list-divider").addClass("CenterAlignedText").text("Bitte wählen Sie eine Kostenstelle"));
-        if (vkBueros != null) {
-            if (vkBueros.length == 1) {
-                SelectVkBur(vkBueros[0]);
+        if (vkBurs != null) {
+            if (vkBurs.length == 1) {
+                SelectVkBur(vkBurs[0]);
             } else {
-                for (var i = 0; i < vkBueros.length; i++) {
-                    var vkBur = vkBueros[i];
+                for (var i = 0; i < vkBurs.length; i++) {
+                    var vkBur = vkBurs[i];
 
                     $("#lstVkbur")
                     .append($('<li>').attr('title', vkBur)
@@ -52,7 +52,7 @@
                 }
 
                 // Eventhandler initialisieren
-                $("#lstVkbur li").click(function () {
+                $("#lstVkbur li").on('click', function () {
                     SelectVkBur($(this).attr("title"));
                 });
 

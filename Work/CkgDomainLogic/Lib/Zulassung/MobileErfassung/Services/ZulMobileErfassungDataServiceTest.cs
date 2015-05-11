@@ -52,7 +52,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
             throw new NotImplementedException();
         }
 
-        public List<string> GetVkBueros()
+        public List<string> GetVkBurs()
         {
             throw new NotImplementedException();
         }

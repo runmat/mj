@@ -19,7 +19,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public string VkOrg { get; set; }
 
         [Display(Name = "VkBur")]
-        public string VkBuero { get; set; }
+        public string VkBur { get; set; }
 
         [Display(Name = "Kundennummer")]
         public string Kunnr { get; set; }
@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "Kunde")]
         public string Kunde
         {
-            get { return Kunnr.TrimStart('0') + " " + Kunname; }
+            get { return Kunnr + " " + Kunname; }
         }
 
         [Display(Name = "Referenz 1")]
@@ -123,10 +123,10 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "NurEinKennzeichen")]
         public bool NurEinKennzeichen { get; set; }
 
-        [Display(Name = "Kennzeichengröße")]
+        [Display(Name = "Kennz.-Größe")]
         public string KennzeichenGroesse { get; set; }
 
-        [Display(Name = "Kennzeichenanzahl")]
+        [Display(Name = "Kennz.-Anzahl")]
         public string KennzeichenAnzahl { get; set; }
 
         [Display(Name = "Bemerkung")]
@@ -136,13 +136,35 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
 
         public string TelefonNrDurchwahl { get; set; }
 
+        [Display(Name = "Telefon-Nr.")]
         public string TelefonNr { get { return String.Format("{0} {1}", TelefonNrVorwahl, TelefonNrDurchwahl); } }
 
+        public string VorerfasserUser { get; set; }
+
+        public string VorerfasserAnrede { get; set; }
+
+        public string VorerfasserName1 { get; set; }
+
+        public string VorerfasserName2 { get; set; }
+
         [Display(Name = "Erfasser")]
-        public string VorerfasserName { get; set; }
+        public string Vorerfasser
+        {
+            get
+            {
+                return String.Format("{0}{1}{2}",
+                    (String.IsNullOrEmpty(VorerfasserAnrede) ? "" : VorerfasserAnrede + " "),
+                    VorerfasserName1,
+                    (String.IsNullOrEmpty(VorerfasserName2) ? "" : " " + VorerfasserName2)
+                );
+            }
+        }
 
         [Display(Name = "Durchführendes VkBur")]
-        public string DurchfVkBuero { get; set; }
+        public string DurchfVkBur { get; set; }
+
+        [Display(Name = "Versandzul. von")]
+        public string VersandzulVkBur { get; set; }
 
         [Display(Name = "Positionen")]
         public List<VorgangPosition> Positionen { get; set; }
