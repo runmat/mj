@@ -28,6 +28,7 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
             UnfallmeldungenViewModel.DataInit();
+            UnfallmeldungenViewModel.LoadAllUnfallmeldungen();
 
             return View(UnfallmeldungenViewModel);
         }
@@ -67,6 +68,18 @@ namespace ServicesMvc.Controllers
             UnfallmeldungenViewModel.FilterUnfallmeldungen(filterValue, filterColumns);
 
             return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult UnfallmeldungenSelectionChanged(string vin, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0, allFoundCount = 0;
+            if (vin.IsNullOrEmpty())
+                UnfallmeldungenViewModel.SelectUnfallmeldungen(isChecked, f => f.IsValidForCancellation, out allSelectionCount, out allCount, out allFoundCount);
+            else
+                UnfallmeldungenViewModel.SelectUnfallmeldung(vin, isChecked, out allSelectionCount);
+
+            return Json(new { allSelectionCount, allCount, allFoundCount });
         }
 
        

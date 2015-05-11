@@ -1,24 +1,22 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
 @model UnfallmeldungenViewModel
 
-<h3 class="page-title" id="headerTitle">ZBII-Bestand Unfallmeldungen</h3>
-
-@using (Html.FormSearchBox())
-{
-    @Html.Partial("Unfallmeldungen/UnfallmeldungenSuche", Model.UnfallmeldungenSelektor)
-}
+<h3 class="page-title" id="headerTitle">Unfallmeldungen</h3>
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divGrid"></div>
-    <div id="divHistorie"></div>
+    <div id="divGrid">
+        @Html.Partial("Unfallmeldungen/UnfallmeldungenAlleGrid")
+    </div>
 }
 
 <script type="text/javascript">
 
     var _modelStateValid = 'false';
 
-    function FormPreparePrivate() {        
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridUnfallmeldungen");
+        $("#FormSearchResults").show();
     }
 
     function FormPreparePrivateAjax() {
@@ -26,21 +24,13 @@
     }
 
 
-    function ShowUnfallmeldungenSearchResult(result) {
-        SearchFormHide();
-        $("#divGrid").html(result);
-
-        // move our grid filter form into grid's toolbar:
-        GridAllColumnFilterApplyToGrid("GridUnfallmeldungen");
-        //alert('1');
-        $("#divGrid").slideDown();       
-        //alert('2');
-    }
-
-
     function OnDataBound_GridUnfallmeldungen() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
+
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridUnfallmeldungen");
+
         LoadingHide();
     }
 
@@ -51,6 +41,66 @@
     function OnColumnReorder_GridUnfallmeldungen() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
+    
+    function OnSelectionChange_GridUnfallmeldungen(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "UnfallmeldungenSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                GridUnfallmeldungen_MultiSelectUpdate(result.allSelectionCount);
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
+
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function OnRowDataBound_GridUnfallmeldungen(e) {
+        var isValidForCancellation = e.dataItem["IsValidForCancellation"];
+
+        if (!isValidForCancellation)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
+    
+    function GridUnfallmeldungen_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "UnfallmeldungenSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                GridUnfallmeldungen_MultiSelectUpdate(result.allSelectionCount);
+
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("GridUnfallmeldungen");
+            }
+        });
+    }
+
+    function GridUnfallmeldungen_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }    
        
     
 </script>

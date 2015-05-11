@@ -3,12 +3,28 @@
     var gridName = "GridUnfallmeldungen"; 
 }
 
+
+<h4>
+    @Localize.PleaseChooseOneOrMoreVehicles: 
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+@Html.SpanAlert("Message")
+
+
 @(Html.Telerik()
     .Grid<Unfallmeldung>()
     .Name(gridName)      
         .XAjaxDataBinding("UnfallmeldungenAjaxBinding", "Fahrzeuge")
-        .Columns(columns =>
+            .Columns(columns =>
             {
+                columns.XBound("")
+                    .ClientTemplate("<# if (!data.IsValidForCancellation) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridUnfallmeldungen($(this))' /> <# } #>")
+                    .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridUnfallmeldungen_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                    .Filterable(false);
+
                 columns.XBound(m => m.Anlagedatum);
                 columns.XBound(m => m.WebUser);
                 columns.XBound(m => m.Kennzeichen);
@@ -19,8 +35,8 @@
                 columns.XBound(m => m.StationsCode);
                 columns.XBound(m => m.Mahnstufe);
             })
-    .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XAutoColumnConfiguration()
+            .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridUnfallmeldungen"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Abmeldung).Descending())
     .XToolBar("Fahrzeuge")

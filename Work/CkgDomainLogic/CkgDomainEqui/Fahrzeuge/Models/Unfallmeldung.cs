@@ -32,5 +32,20 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.DunningLevel)]
         public string Mahnstufe { get; set; }
+
+
+        [ModelMappingCompareIgnore]
+        public bool IsSelected { get; set; }
+
+        [ModelMappingCompareIgnore]
+        public bool IsValidForCancellation
+        {
+            get
+            {
+                // ToDo: remove test code:
+                return (Kennzeicheneingang.GetValueOrDefault() < new DateTime(2015, 01, 28));
+                //return (Kennzeicheneingang == null);
+            }
+        }
     }
 }

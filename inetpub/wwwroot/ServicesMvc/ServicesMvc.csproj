@@ -4385,6 +4385,7 @@
     <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen.cshtml" />
+    <Content Include="Views\Fahrzeuge\Unfallmeldungen\UnfallmeldungenAlleGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
