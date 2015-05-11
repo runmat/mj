@@ -89,6 +89,8 @@ namespace SapORM.Models
 
 			public string BEMERKUNG_EXTERN { get; set; }
 
+			public string ZBEMERKUNG { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -122,6 +124,7 @@ namespace SapORM.Models
 					FIN_ART = (string)row["FIN_ART"],
 					BEMERKUNG_INTERN = (string)row["BEMERKUNG_INTERN"],
 					BEMERKUNG_EXTERN = (string)row["BEMERKUNG_EXTERN"],
+					ZBEMERKUNG = (string)row["ZBEMERKUNG"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
