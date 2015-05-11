@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Web.Mvc;
 using System.Web;
 using System.Linq;
@@ -11,6 +11,9 @@ using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
+using CkgDomainLogic.Equi.Models;
+using CkgDomainLogic.Equi.ViewModels;
+
 
 namespace ServicesMvc.Controllers
 {
@@ -18,6 +21,9 @@ namespace ServicesMvc.Controllers
     {
         public FahrzeuguebersichtViewModel FahrzeuguebersichtViewModel { get { return GetViewModel<FahrzeuguebersichtViewModel>(); } }
 
+        public EquiHistorieVermieterViewModel EquipmentHistorieVermieterViewModel { get { return GetViewModel<EquiHistorieVermieterViewModel>(); } }
+
+      
         [CkgApplication]
         public ActionResult ReportFahrzeuguebersicht()
         {
@@ -50,6 +56,7 @@ namespace ServicesMvc.Controllers
         {
             return PartialView("Fahrzeuguebersicht/FahrzeuguebersichtGrid", FahrzeuguebersichtViewModel);
         }
+
 
         [GridAction]
         public ActionResult FahrzeuguebersichtAjaxBinding()
@@ -113,5 +120,99 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
-    }
-}
+
+
+        #region History
+
+
+        [HttpPost]
+        public ActionResult ShowHistory(string fin)
+        {                           
+            EquiHistorieSuchparameter model = new EquiHistorieSuchparameter();
+            model.FahrgestellNr = fin;
+            EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
+
+            if (EquipmentHistorieVermieterViewModel.HistorieInfos != null)
+                EquipmentHistorieVermieterViewModel.LoadHistorie(EquipmentHistorieVermieterViewModel.HistorieInfos[0].EquipmentNr, null);
+            else
+                ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+
+            return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);            
+        }
+
+
+         [HttpPost]
+        public ActionResult GetFahrzeugHistorieVermieterPartial(string equiNr, string meldungsNr)
+        {
+            EquipmentHistorieVermieterViewModel.LoadHistorie(equiNr, meldungsNr);
+
+            return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);
+        }
+
+       
+        [HttpPost]
+        public ActionResult ShowHistorieVermieterEquis()
+        {
+            return PartialView("Historie/HistorieVermieterGrid", EquipmentHistorieVermieterViewModel);
+        }
+
+        [GridAction]
+        public ActionResult EquiHistorieInfosVermieterAjaxBinding()
+        {
+            return View(new GridModel(EquipmentHistorieVermieterViewModel.HistorieInfosFiltered));
+        }
+
+        [GridAction]
+        public ActionResult EquiHistorieVermieterLebenslaufZb2AjaxBinding()
+        {
+            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.LebenslaufZb2));
+        }
+
+        [GridAction]
+        public ActionResult EquiHistorieVermieterLebenslaufFsmAjaxBinding()
+        {
+            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.LebenslaufFsm));
+        }
+
+        [GridAction]
+        public ActionResult EquiHistorieVermieterTueteninhaltFsmAjaxBinding()
+        {
+            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.InhalteFsm));
+        }
+
+        public FileContentResult FahrzeughistorieVermieterPdf()
+        {
+            var formularPdfBytes = EquipmentHistorieVermieterViewModel.GetHistorieAsPdf();
+
+            return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}_{1}.pdf", Localize.VehicleHistory, EquipmentHistorieVermieterViewModel.EquipmentHistorie.HistorieInfo.FahrgestellNr) };
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridEquiHistorieInfosVermieter(string filterValue, string filterColumns)
+        {
+            EquipmentHistorieVermieterViewModel.FilterHistorieInfos(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportEquiHistorieInfosVermieterFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = EquipmentHistorieVermieterViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.VehicleHistory, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportEquiHistorieInfosVermieterFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = EquipmentHistorieVermieterViewModel.HistorieInfosFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.VehicleHistory, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+    } // class
+            
+} // ns

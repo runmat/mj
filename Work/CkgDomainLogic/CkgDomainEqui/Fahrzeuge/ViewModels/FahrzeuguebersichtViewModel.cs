@@ -107,6 +107,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             
             Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor);
 
+            // workaround, solange keine Schlüssel aus SAP kommen
+            foreach (var item in Fahrzeuguebersichts)
+            {
+                var i = 0;
+                if(Int32.TryParse(FahrzeugStatus.Where(s => s.StatusText == item.Status).FirstOrDefault().StatusKey, out i))
+                    item.StatusKey = i;
+            }
+                                                                                                                                                                                      
             #region custom selector post load filter
 
             if (FahrzeuguebersichtSelektor.Akion == "manuell")
@@ -147,7 +155,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     customList = customList.Where(x => x.Carport == FahrzeuguebersichtSelektor.PDIkennung).ToList();
 
                 if (FahrzeuguebersichtSelektor.Statuskennung.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Status == FahrzeuguebersichtSelektor.Statuskennung).ToList();
+                    if (FahrzeuguebersichtSelektor.Statuskennung != "700")
+                        customList = customList.Where(x => x.StatusKey.ToString() == FahrzeuguebersichtSelektor.Statuskennung).ToList();
+                    else
+                    { 
+                        int i = 0;
+                        if(Int32.TryParse(FahrzeuguebersichtSelektor.Statuskennung, out i))
+                             customList = customList.Where(x => x.StatusKey >= 700).ToList();
+
+
+                    }
 
                 Fahrzeuguebersichts = customList;
             }

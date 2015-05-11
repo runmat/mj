@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model IEnumerable<EquiMeldungsdaten>
+
+@(Html.Telerik()
+    .Grid<EquiMeldungsdaten>()
+    .Name("GridEquiMeldungsdaten")
+    .BindTo(Model)
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Vorgang);
+        columns.XBound(c => c.Durchfuehrungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versandadresse);
+        columns.XBound(c => c.Erfassungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versandart);
+        columns.XBound(c => c.BeauftragtDurch);
+    })
+    .Reorderable(r => r.Columns(false))
+    .Resizable(r => r.Columns(false))
+    .XPageSize(10)
+    .Filterable(f => f.Enabled(false))
+    .Sortable(s => s.Enabled(false).OrderBy(sortOrder => sortOrder.Add(c => c.Durchfuehrungsdatum).Ascending()))
+    .ClientEvents(events => events.OnDataBound("LoadingHide"))
+)
+
+

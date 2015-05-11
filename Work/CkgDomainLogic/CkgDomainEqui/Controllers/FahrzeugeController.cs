@@ -2,6 +2,8 @@
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
+using CkgDomainLogic.Equi.Contracts;
+using CkgDomainLogic.Equi.ViewModels;
 using GeneralTools.Contracts;
 
 namespace ServicesMvc.Controllers
@@ -24,7 +26,9 @@ namespace ServicesMvc.Controllers
             IDispositionslisteDataService dispositionslisteDataService,
             IZulaufEinsteuerungDataService zulaufEinsteuerungDataService,
             IFahrzeuguebersichtDataService fahrzeuguebersichtDataService,
-            IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService
+            IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService,
+            IEquiHistorieVermieterDataService equiHistorieVermieterDataService,
+            IEquiHistorieDataService equiHistorieDataService
             )
             : base(appSettings, logonContext)
         {
@@ -44,6 +48,8 @@ namespace ServicesMvc.Controllers
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeuguebersichtDataService);
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeugeDataService);           
             InitViewModel(FahrzeugzulaeufeViewModel, appSettings, logonContext, fahrzeugzulaeufeDataService);
+            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
+            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieDataService);
         }
 
         private void InitModelStatics()

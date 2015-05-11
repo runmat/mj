@@ -353,7 +353,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {
-                        business.StatusKey = sap.POS_TEXT;
+                        business.StatusKey = sap.POS_KURZTEXT;
                         business.StatusText = sap.POS_TEXT;                        
                     }));
             }

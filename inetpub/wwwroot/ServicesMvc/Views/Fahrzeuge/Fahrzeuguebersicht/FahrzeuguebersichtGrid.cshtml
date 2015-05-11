@@ -10,6 +10,10 @@
     .XAjaxDataBinding("FahrzeuguebersichtAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
+        columns.XBound(c => c.StatusKey).Filterable(false).Sortable(false)
+                   .ClientTemplate(
+                      "<button onclick='ShowHistory(\"<#= data.Fahrgestellnummer #>\");' class='btn copy mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='icon-copy'></i></button>"
+               );        
         columns.XBound(c => c.Carport);
         columns.XBound(c => c.Carportname);
         columns.XBound(c => c.Fahrgestellnummer);
@@ -18,19 +22,16 @@
         columns.XBound(c => c.Unitnummer);
         columns.XBound(c => c.ModelID);
         columns.XBound(c => c.Modell);
-        columns.XBound(c => c.Status);
-        // Export
-        //columns.XBound(c => c.EingangZb2Datum).Hidden(true);
-        //columns.XBound(c => c.EingangFahrzeugDatum).Hidden(true);
-        //columns.XBound(c => c.BereitmeldungDatum).Hidden(true);
-        //columns.XBound(c => c.SIPPCode).Hidden(true);
-        //columns.XBound(c => c.BatchId).Hidden(true);
-        //columns.XBound(c => c.Auftragsnummer).Hidden(true);
-        //columns.XBound(c => c.Zb2Nummer).Hidden(true); 
+        columns.XBound(c => c.Status);     
+        columns.XBound(c => c.EingangZb2Datum);
+        columns.XBound(c => c.EingangFahrzeugDatum);
+        columns.XBound(c => c.BereitmeldungDatum);
+        columns.XBound(c => c.SIPPCode);
+        columns.XBound(c => c.BatchId);
+        columns.XBound(c => c.Auftragsnummer);
+        columns.XBound(c => c.Zb2Nummer); 
         
-        
-        
-        
+                        
         // columns.XBoundAll();   
     })
     .XAutoColumnConfiguration()

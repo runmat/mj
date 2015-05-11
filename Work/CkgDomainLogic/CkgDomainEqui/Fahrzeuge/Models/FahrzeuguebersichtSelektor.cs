@@ -110,11 +110,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static SelectItem WrapStatus(FahrzeuguebersichtStatus status)
-        {
-            if (status.StatusKey.IsNullOrEmpty())
-                return new SelectItem(String.Empty, status.StatusText);
-            else                
-                return new SelectItem(status.StatusText, status.StatusText);
+        {            
+            return new SelectItem(status.StatusKey, status.StatusText);
         }
 
         static SelectItem WrapPDI(FahrzeuguebersichtPDI pdi)
