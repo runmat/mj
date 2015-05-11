@@ -496,6 +496,10 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_STO_STORNO_ORDER").WriteOrmForExportTableStructures("I_ZULBELN, I_STORNOGRUND, I_ERNAM", "0", "0", "test");
             //new FunctionReflector("Z_ZLD_STO_STORNOGRUENDE").WriteOrmForExportTableStructures();
 
+            //new FunctionReflector("Z_DPM_ZULASSUNGSSPERRE_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_ACTION", "219853", "E");
+            //new FunctionReflector("Z_DPM_SET_BEM_FZGPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
+            //new FunctionReflector("Z_M_EC_AVM_PDIWECHSEL").WriteOrmForExportTableStructures("ZZKUNNR, ZZQMNUM, ZZCARPORT, I_ZZCARPORT", "0000219853", "0", "0", "0");
+
 
             //CoCTest();
             //TeslaTest();
