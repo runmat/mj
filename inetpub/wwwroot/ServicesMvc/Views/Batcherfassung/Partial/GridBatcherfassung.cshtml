@@ -13,8 +13,8 @@
             columns.XBound(c => c.Aktion).Filterable(false).Sortable(false).Groupable(false)
                     .ClientTemplate(
                         "<button onclick='ItemEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-                        + "&nbsp;"                     
-                        + "<button onclick='ShowGridUnitNumbers(\"<#= data.ID #>\");' class='btn copy mini gray tooltips' data-original-title='" + Localize.UnitNumber + "' data-placement='right'><i class='icon-copy'></i></button>"
+                        + "&nbsp;"
+                        + "<button onclick='ShowGridUnitNumbers(\"<#= data.ID #>\");' class='btn copy mini gray tooltips' data-original-title='" + Localize.UnitNumber + "' data-placement='right'><i class='halflings-icon list alt'></i></button>"
                 ).HeaderTemplate(
                     "<button onclick='ItemNew(\"\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
                 );

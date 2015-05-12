@@ -240,14 +240,7 @@
     function UpdateUnitnumber(unitNumber) {
         alert("UnitNr: " + unitNumber);
     }
-
-    function CloseUnitNumbers() {
-        $("#btnBackToResult").hide();
-        $("#divGridUnitnumbers").slideUp(function () { $("#divGridBatcherfassung").delay(200).slideDown(); window.scrollTo(0, 0); });
-        $("#divGridBatcherfassung").slideDown();
-        $("#divGridUnitnumbers").html('');
-    }
-
+    
     function GridUnitnumbers_OnSelectionChange(cb) {
        
         $.ajax({
@@ -262,6 +255,14 @@
         });
     }
 
+    function CloseUnitNumbers() {
+        $("#btnBackToResult").hide();
+        $("#divGridUnitnumbers").slideUp(function () { $("#divGridBatcherfassung").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divGridBatcherfassung").slideDown();
+        $("#divGridUnitnumbers").html('');
+    }
+
+   
   
     ///////////////  Excel Upload /////////////////////////////////////////////////////////////////////
     //////////////                /////////////////////////////////////////////////////////////////////
