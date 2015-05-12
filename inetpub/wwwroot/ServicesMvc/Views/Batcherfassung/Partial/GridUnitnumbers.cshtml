@@ -1,5 +1,6 @@
 ﻿@model CkgDomainLogic.FzgModelle.ViewModels.BatcherfassungViewModel 
 @using CkgDomainLogic.FzgModelle.Models
+
 @{
     var gridName = "GridUnitnumbers";
 }
@@ -10,21 +11,25 @@
     .XAjaxDataBinding("UnitnummerAjaxBinding", "Batcherfassung")
     .Columns(columns =>
         {
-            columns.XBound(c => c.Batch.ID).Filterable(false).Sortable(false)
+            columns.XBound(c => c.Unitnummer);
+            columns.XBound(c => c.IstGesperrt)
+                  .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='GridUnitnumbers_OnSelectionChange($(this))' />")
+                  .Filterable(false).Sortable(false).Groupable(false).Width(20);
+            
+            columns.XBound(c => c.Sperrvermerk).Filterable(false).Sortable(false).Groupable(false)
                     .ClientTemplate(
-                        "<textbox onblur='UpdateUnitnumber(\"<#= data.Unitnummer #>\");' </textbox>"
+                        "<input onblur='UpdateUnitnumber(\"<#= data.Unitnummer #>\");' </input>"
                         + "&nbsp;"
                 );         
-            columns.XBound(c => c.Unitnummer);
-            columns.XBound(c => c.Fahrgestellnummer);                      
-            columns.XBound(c => c.Batch.ModellId);
-            columns.XBound(c => c.Batch.Modellbezeichnung);
-            columns.XBound(c => c.Batch.AuftragsnummerVon + " " + c.Batch.AuftragsnummerBis);
-            columns.XBound(c => c.Batch.Anzahl);                        
+                                          
+            columns.XBound(c => c.ModellId);
+            columns.XBound(c => c.Modellbezeichnung);
+            columns.XBound(c => c.AuftragsnummerVon);
+            columns.XBound(c => c.AuftragsnummerBis);
+            columns.XBound(c => c.Anzahl);                        
             columns.XBound(c => c.Einsteuerung);
-            columns.XBound(c => c.Batch.KennzeichenLeasingFahrzeug);
-                                
-           
+            columns.XBound(c => c.KennzeichenLeasingFahrzeug);
+            columns.XBound(c => c.Fahrgestellnummer).Hidden(true);    
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
@@ -32,5 +37,8 @@
         .XSort(sortOrder => sortOrder.Add(c => c.Unitnummer).Ascending())
     .XToolBar("Batcherfassung")
 )
+
+<button type="button" id="btnBackToResult" class="btn blue pull-right margin-left-10 hide" onclick="CloseUnitNumbers();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
+
 
 

@@ -45,6 +45,8 @@ namespace SapORM
                 myProxy.setImportParameter("I_EQTYP", "B")                                        
              */
 
+
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_UPDATE").WriteOrmForExportTableStructures();             
 		    //new FunctionReflector("Z_M_EC_AVM_BATCH_INSERT").WriteOrmForExportTableStructures();             
             //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); 
             //new FunctionReflector("Z_M_EC_AVM_BATCH_SELECT").WriteOrmForExportTableStructures(); 

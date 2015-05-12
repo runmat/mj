@@ -62,6 +62,9 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         }
 
         [XmlIgnore]
+        public List<FzgUnitnummer> Unitnummern  { get; set; }
+
+        [XmlIgnore]
         public List<Fahrzeughersteller> FahrzeugHersteller
         {
             get
@@ -215,14 +218,20 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 LoadBatches();
         }
 
-        public List<FzgUnitnummer> LoadUnitnummerByBatchId(string batchId)
+        public void LoadUnitnummerByBatchId(string batchId)
         {
-            var list = DataService.GetUnitnummerByBatchId(batchId);
+            Unitnummern = DataService.GetUnitnummerByBatchId(batchId);
 
             SelectedItem = Batcherfassungs.FirstOrDefault(m => m.ID == batchId) ?? new Batcherfassung();
-            list.ForEach(x => x.Batch = SelectedItem);
 
-            return list;
+            Unitnummern.ForEach(x => {  x.ID = SelectedItem.ID;
+                                        x.ModellId = SelectedItem.ModellId;
+                                        x.Modellbezeichnung = SelectedItem.Modellbezeichnung;
+                                        x.AuftragsnummerVon = SelectedItem.AuftragsnummerVon;
+                                        x.AuftragsnummerBis = SelectedItem.AuftragsnummerBis;
+                                        x.Anzahl = SelectedItem.Anzahl;
+                                        x.KennzeichenLeasingFahrzeug = SelectedItem.KennzeichenLeasingFahrzeug;
+                                });           
         }
 
         public void ValidateModel(Batcherfassung model, bool insertMode, Action<Expression<Func<Batcherfassung, object>>, string> addModelError)

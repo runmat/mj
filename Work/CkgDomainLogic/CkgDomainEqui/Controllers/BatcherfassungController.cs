@@ -137,6 +137,12 @@ namespace ServicesMvc.Controllers
 
         #region Export
 
+        /*
+         
+         *   commands.FilteredDataCommand("ExportBatcherfassungFilteredExcel", "Equi");
+             commands.FilteredDataCommand("ExportBatcherfassungFilteredPDF", "Equi");
+         */
+
         protected override IEnumerable GetGridExportData()
         {
             return ViewModel.BatcherfassungsFiltered;
@@ -187,12 +193,37 @@ namespace ServicesMvc.Controllers
 
 
         #region Unitnummern
+      
+        [HttpPost]
+        public JsonResult UnitnumberSelectionChanged(string fin, bool isChecked)
+        {
+            int allSelectionCount = 0, allCount = 0, allFoundCount = 0, itemsWithoutErrorOnly = 0;
+            //bool ret = false;
+            //if (String.IsNullOrEmpty(fin))
+            //    ret = TreuhandverwaltungViewModel.SelectFahrzeuge(isChecked, out allSelectionCount, out allCount, out allFoundCount);
+            //else
+            //    ret = TreuhandverwaltungViewModel.SelectFahrzeug(fin, isChecked, out allSelectionCount);
+
+            //itemsWithoutErrorOnly = ret == true ? 0 : 1;
+            return Json(new { allSelectionCount, allCount, allFoundCount, itemsWithoutErrorOnly });
+        }
 
         [HttpPost]
         public ActionResult ShowGridUnitNumbers(string batchId)
         {
-            return PartialView("Partial/GridUnitNumbers", ViewModel.LoadUnitnummerByBatchId(batchId));
+            ViewModel.LoadUnitnummerByBatchId(batchId);
+            return PartialView("Partial/GridUnitNumbers", ViewModel);
         }
+
+        [GridAction]
+        public ActionResult UnitnummerAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.Unitnummern));
+        }
+
+       
+         
+
 
         #endregion
 

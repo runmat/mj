@@ -74,12 +74,12 @@
 
     function ShowBatcherfassungSearchResult(result) {
         SearchFormHide();
-        $("#divGridEditStart").html(result);
+        $("#divGridBatcherfassung").html(result);
 
         // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridBatcherfassung");
         //alert('1');
-        $("#divGridEditStart").slideDown();
+        $("#divGridBatcherfassung").slideDown();
         //alert('2');
     }
 
@@ -119,7 +119,7 @@
     function ShowItemDetails(result, showCloseButton) {
         $("#divGridItemDetails").html(result);
         GridItemDetailsFormPreparePrivateAjax();
-        $("#divGridEditStart").slideUp(function () {
+        $("#divGridBatcherfassung").slideUp(function () {
             $("#divGridItemDetails").show();
         });
         scrollToTop();
@@ -127,7 +127,7 @@
 
     function CloseItemDetailsInner() {
         $("#divGridItemDetails").slideUp(function () {
-            $("#divGridEditStart").delay(200).show();
+            $("#divGridBatcherfassung").delay(200).show();
             window.scrollTo(0, 0);
         });
     }
@@ -191,7 +191,7 @@
                 data: { modelId : modellId },
                 loadingShow: true,
                 success: function (result) {
-                    $("#DivBatcherfassung").html(result);
+                    $("#divBatcherfassungDetailsForm").html(result);
                 }                        
             });
 
@@ -200,6 +200,7 @@
     }
 
     function ShowGridUnitNumbers(batchId) {
+        //alert();
         $.ajax(
         {
             type: "POST",
@@ -207,19 +208,61 @@
             data: { batchId: batchId },
             loadingShow: true,
             success: function (result) {
-                ShowUnitNumberGrid(result);
+                ShowUnitNumbers(result);
             }
         });
     }
 
-    function ShowUnitNumberGrid(result) {
-        alert(result);
+    function ShowUnitNumbers(result) {
+        //alert(result);
+        $("#divGridUnitnumbers").html(result);
+        $("#divGridBatcherfassung").slideUp();
+        $("#divGridUnitnumbers").slideDown();
+        $("#btnBackToResult").show();
+        setTimeout('LoadingHide()', 1000);
+        FormPreparePrivateAjax();
+
+    }
+
+    function OnDataBound_GridUnitnumbers() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridUnitnumbers() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUnitnumbers() {
+        FilteredData_Grid_OnColumnReorder($(this));
     }
 
     function UpdateUnitnumber(unitNumber) {
         alert("UnitNr: " + unitNumber);
     }
 
+    function CloseUnitNumbers() {
+        $("#btnBackToResult").hide();
+        $("#divGridUnitnumbers").slideUp(function () { $("#divGridBatcherfassung").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divGridBatcherfassung").slideDown();
+        $("#divGridUnitnumbers").html('');
+    }
+
+    function GridUnitnumbers_OnSelectionChange(cb) {
+       
+        $.ajax({
+            type: "POST",
+            url: "UnitnumberSelectionChanged",
+            data: { fin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                // submit-button einblenden
+            }
+        });
+    }
+
+  
     ///////////////  Excel Upload /////////////////////////////////////////////////////////////////////
     //////////////                /////////////////////////////////////////////////////////////////////
       
@@ -310,7 +353,7 @@
                 FormPreparePrivateAjax();
                 FormWizard.ButtonNextInvoke();
 
-                $("#DivBatcherfassung").html(result);
+                $("#divBatcherfassungDetailsForm").html(result);
 
 //                if (_formWizardForceHideSubmitButton)
 //                    FormWizard.ButtonSubmitShow(false);

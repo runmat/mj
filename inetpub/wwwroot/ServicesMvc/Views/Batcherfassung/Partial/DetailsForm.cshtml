@@ -2,9 +2,9 @@
 @using System.Collections.Generic
 @model Batcherfassung
 
-<div id="DivBatcherfassung">
+<div id="divBatcherfassungDetailsForm">
     @using (Ajax.BeginForm("BatcherfassungDetailsFormSave", "Batcherfassung", null,
-                new MvcAjaxOptions { UpdateTargetId = "DivBatcherfassung", OnComplete = "BatcherfassungAjaxFormComplete();" },
+                new MvcAjaxOptions { UpdateTargetId = "divBatcherfassungDetailsForm", OnComplete = "BatcherfassungAjaxFormComplete();" },
                     htmlAttributes: new { @class = "form-horizontal", id = "BatcherfassungAjaxForm" }))
     {
 
