@@ -139,11 +139,6 @@ namespace AppZulassungsdienst.forms
                 {
                     tmpValid = false;
                 }
-                else
-                {
-                    tmpPosition["PositionAbgeschlossen"] = "J";
-                    tmpValid = true;
-                }
             }
 
             if (!objWareneingang.IstUmlagerung && String.IsNullOrEmpty(txtLieferscheinnummer.Text))
@@ -441,9 +436,17 @@ namespace AppZulassungsdienst.forms
                 else
                     tmpPosition["PositionLieferMenge"] = DBNull.Value;
 
-                CheckBox tmpChkBox = (CheckBox)tmprow.FindControl("chkVollstaendig");
+                var sVollAll = (((CheckBox) tmprow.FindControl("chkVollstaendig")).Checked ? "X" : "0");
+                var sVollRowJa = (((RadioButton) tmprow.FindControl("rbPositionAbgeschlossenJA")).Checked ? "J" : "");
+                if (String.IsNullOrEmpty(sVollRowJa))
+                    sVollRowJa = (((RadioButton)tmprow.FindControl("rbPositionAbgeschlossenNEIN")).Checked ? "N" : "");
 
-                tmpPosition["PositionVollstaendig"] = (tmpChkBox.Checked ? "X" : "0");
+                tmpPosition["PositionVollstaendig"] = sVollAll;
+
+                if (sVollAll == "X")
+                    sVollRowJa = "J";
+
+                tmpPosition["PositionAbgeschlossen"] = sVollRowJa;
 
                 objWareneingang.Bestellpositionen.AcceptChanges();
             }

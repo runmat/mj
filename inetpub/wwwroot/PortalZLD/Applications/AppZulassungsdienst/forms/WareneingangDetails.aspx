@@ -160,10 +160,10 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:RadioButton GroupName="Abgeschlossen" ID="rbPositionAbgeschlossenJA" runat="server"
-                                                                Text="Ja" Checked='<%# (Eval("PositionAbgeschlossen")=="J") %>' />
+                                                                Text="Ja" Checked='<%# (Eval("PositionAbgeschlossen").ToString() == "J") %>' />
                                                             &nbsp;
                                                             <asp:RadioButton ID="rbPositionAbgeschlossenNEIN" GroupName="Abgeschlossen" runat="server"
-                                                                Text="Nein" Checked='<%# (Eval("PositionAbgeschlossen")=="N") %>' />
+                                                                Text="Nein" Checked='<%# (Eval("PositionAbgeschlossen").ToString() == "N") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
