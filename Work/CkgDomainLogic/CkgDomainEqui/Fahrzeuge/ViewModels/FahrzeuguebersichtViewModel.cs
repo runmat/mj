@@ -101,20 +101,22 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             PropertyCacheClear(this, m => m.FahrzeuguebersichtsFiltered);
         }
 
-       
+    
         public void LoadFahrzeuguebersicht()
         {
-            
+           
             Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor);
-
+           
             // workaround, solange keine Schlüssel aus SAP kommen
-            foreach (var item in Fahrzeuguebersichts)
-            {
-                var i = 0;
-                if(Int32.TryParse(FahrzeugStatus.Where(s => s.StatusText == item.Status).FirstOrDefault().StatusKey, out i))
-                    item.StatusKey = i;
-            }
-                                                                                                                                                                                      
+            // zu langsam
+            //foreach (var item in Fahrzeuguebersichts)
+            //{
+            //    var i = 0;
+            //    if(Int32.TryParse(FahrzeugStatus.Where(s => s.StatusText == item.Status).FirstOrDefault().StatusKey, out i))
+            //        item.StatusKey = i;
+            //}
+            Fahrzeuguebersichts.ForEach(x => x.StatusKey = x.Status); 
+                                                                                                                                                                         
             #region custom selector post load filter
 
             if (FahrzeuguebersichtSelektor.Akion == "manuell")
@@ -155,16 +157,18 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     customList = customList.Where(x => x.Carport == FahrzeuguebersichtSelektor.PDIkennung).ToList();
 
                 if (FahrzeuguebersichtSelektor.Statuskennung.IsNotNullOrEmpty())
-                    if (FahrzeuguebersichtSelektor.Statuskennung != "700")
-                        customList = customList.Where(x => x.StatusKey.ToString() == FahrzeuguebersichtSelektor.Statuskennung).ToList();
-                    else
-                    { 
-                        int i = 0;
-                        if(Int32.TryParse(FahrzeuguebersichtSelektor.Statuskennung, out i))
-                             customList = customList.Where(x => x.StatusKey >= 700).ToList();
+                {
+                    //if (FahrzeuguebersichtSelektor.Statuskennung != "700")
+                    customList = customList.Where(x => x.StatusKey.ToString() == FahrzeuguebersichtSelektor.Statuskennung).ToList();
+                    //else
+                    //{ 
+                    //    int i = 0;
+                    //    if(Int32.TryParse(FahrzeuguebersichtSelektor.Statuskennung, out i))
+                    //         customList = customList.Where(x => x.StatusKey <= 700).ToList();
 
 
-                    }
+                    //}
+                }
 
                 Fahrzeuguebersichts = customList;
             }
