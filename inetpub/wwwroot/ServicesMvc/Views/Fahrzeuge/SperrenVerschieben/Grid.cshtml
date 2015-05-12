@@ -1,0 +1,32 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{ var gridName = "GridFzgSperrenVerschieben"; }
+
+@(Html.Telerik()
+    .Grid<Fahrzeuguebersicht>()
+    .Name(gridName)
+    .XAjaxDataBinding("FzgSperrenVerschiebenAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Status);
+        columns.XBound(c => c.Farbe);
+        columns.XBound(c => c.Carport);
+        columns.XBound(c => c.Carportname);
+        columns.XBound(c => c.ModelID);
+        columns.XBound(c => c.Unitnummer);
+        columns.XBound(c => c.Hersteller);
+        columns.XBound(c => c.Modell);
+        columns.XBound(c => c.BemerkungSperre);
+        columns.XBound(c => c.BemerkungExtern);
+        columns.XBound(c => c.BemerkungIntern);
+    })
+    .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFzgSperrenVerschieben"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFzgSperrenVerschiebenFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportFzgSperrenVerschiebenFilteredPDF", "Fahrzeuge");
+    })
+)

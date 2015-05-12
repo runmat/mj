@@ -24,7 +24,8 @@ namespace ServicesMvc.Controllers
             IDispositionslisteDataService dispositionslisteDataService,
             IZulaufEinsteuerungDataService zulaufEinsteuerungDataService,
             IFahrzeuguebersichtDataService fahrzeuguebersichtDataService,
-            IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService
+            IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService,
+            IFahrzeugSperrenVerschiebenDataService sperrenVerschiebenDataService
             )
             : base(appSettings, logonContext)
         {
@@ -44,6 +45,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeuguebersichtDataService);
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeugeDataService);           
             InitViewModel(FahrzeugzulaeufeViewModel, appSettings, logonContext, fahrzeugzulaeufeDataService);
+            InitViewModel(SperrenVerschiebenViewModel, appSettings, logonContext, sperrenVerschiebenDataService);
         }
 
         private void InitModelStatics()

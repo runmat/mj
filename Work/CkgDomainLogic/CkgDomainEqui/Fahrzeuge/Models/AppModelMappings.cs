@@ -341,6 +341,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
                         business.BereitmeldungDatum = sap.ZZDAT_BER;
                         business.Hersteller = sap.ZZHERST_TEXT;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.BemerkungSperre = sap.ZBEMERKUNG;
+                        business.Gesperrt = sap.ZZAKTSPERRE.XToBool();
                     }));
             }
         }
