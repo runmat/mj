@@ -421,7 +421,7 @@ namespace AppZulassungsdienst.lib
 
                 decimal tmpDec;
 
-                if (Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                if (Decimal.TryParse(filterValue.NotNullOrEmpty().Replace('.', ','), out tmpDec))
                 {
                     blnResult = (itemValue == tmpDec);
                 }
@@ -432,7 +432,7 @@ namespace AppZulassungsdienst.lib
 
                 decimal tmpDec;
 
-                if (itemValue.HasValue && Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                if (itemValue.HasValue && Decimal.TryParse(filterValue.NotNullOrEmpty().Replace('.', ','), out tmpDec))
                 {
                     blnResult = (itemValue == tmpDec);
                 }

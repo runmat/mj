@@ -1,5 +1,6 @@
 ﻿Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Kernel.Security
+Imports GeneralTools.Services
 
 Namespace Beauftragung2
 
@@ -187,12 +188,25 @@ Namespace Beauftragung2
                 'ggf. Daten vom Autohaus-Vorgang übernehmen
                 If mBeauftragung.Autohausvorgang Then
                     RestoreAutohausVorgang()
-                ElseIf mBeauftragung.MaterialnummerAlt = ddlDienstleistung.SelectedValue AndAlso mBeauftragung.StVANrAlt = ddlStva.SelectedValue AndAlso mBeauftragung.HalterMerken Then
-                    'Wenn Dienstleistung und Amt unverändert, ggf. Halterdaten merken/wiederherstellen
-                    RestoreHalterdaten()
                 Else
-                    'Bei geänderter Dienstleistung bzw. Amt keine Halterdaten merken/wiederherstellen
-                    ResetBeauftragungHalterdaten()
+                    If mBeauftragung.MaterialnummerAlt = ddlDienstleistung.SelectedValue AndAlso mBeauftragung.StVANrAlt = ddlStva.SelectedValue AndAlso mBeauftragung.HalterMerken Then
+                        'Wenn Dienstleistung und Amt unverändert, ggf. Halterdaten merken/wiederherstellen
+                        RestoreHalterdaten()
+                    Else
+                        'Bei geänderter Dienstleistung bzw. Amt keine Halterdaten merken/wiederherstellen
+                        ResetBeauftragungHalterdaten()
+                    End If
+
+                    'Specials für Düren
+                    If ddlStva.SelectedValue = "DN" Then
+                        Dim nextZulDat As DateTime = DateTime.Today.AddDays(1)
+                        While nextZulDat.DayOfWeek = DayOfWeek.Saturday OrElse nextZulDat.DayOfWeek = DayOfWeek.Sunday OrElse DateService.IstFeiertag(nextZulDat)
+                            nextZulDat = nextZulDat.AddDays(1)
+                        End While
+                        txtZulDatum.Text = nextZulDat.ToShortDateString()
+
+                        txtKennz1.Text = ""
+                    End If
                 End If
 
                 mBeauftragung.MaterialnummerAlt = mBeauftragung.Materialnummer
@@ -2254,18 +2268,19 @@ Namespace Beauftragung2
         End Sub
 
         Private Sub InitJava()
-            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlKunde.ClientID + ")")
-            txtKunnr.Attributes.Add("onblur", "SetItemText(" + ddlKunde.ClientID + ",this)")
-            ddlKunde.Attributes.Add("onchange", "SetItemText(" + ddlKunde.ClientID + "," + txtKunnr.ClientID + ")")
-            txtStva.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlStva.ClientID + ")")
-            txtStva.Attributes.Add("onblur", "SetItemText(" + ddlStva.ClientID + ",this)")
-            ddlStva.Attributes.Add("onchange", "SetItemText(" + ddlStva.ClientID + "," + txtStva.ClientID + ")")
-            txtDienstleistung.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlDienstleistung.ClientID + ")")
-            txtDienstleistung.Attributes.Add("onblur", "SetItemText(" + ddlDienstleistung.ClientID + ",this)")
-            ddlDienstleistung.Attributes.Add("onchange", "SetItemText(" + ddlDienstleistung.ClientID + "," + txtDienstleistung.ClientID + ")")
-            txtGrosskundennummer.Attributes.Add("onkeyup", "FilterItems(this.value," + ddlGrosskunde.ClientID + ")")
-            txtGrosskundennummer.Attributes.Add("onblur", "SetItemText(" + ddlGrosskunde.ClientID + ",this)")
-            ddlGrosskunde.Attributes.Add("onchange", "SetItemText(" + ddlGrosskunde.ClientID + "," + txtGrosskundennummer.ClientID + ")")
+            txtKunnr.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlKunde.ClientID & ")")
+            txtKunnr.Attributes.Add("onblur", "SetItemText(" & ddlKunde.ClientID & ",this)")
+            ddlKunde.Attributes.Add("onchange", "SetItemText(" & ddlKunde.ClientID & "," & txtKunnr.ClientID & ")")
+            txtStva.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlStva.ClientID & ")")
+            txtStva.Attributes.Add("onblur", "SetItemText(" & ddlStva.ClientID & ",this)")
+            ddlStva.Attributes.Add("onchange", "SetItemText(" & ddlStva.ClientID & "," & txtStva.ClientID & ")")
+            txtDienstleistung.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlDienstleistung.ClientID & ")")
+            txtDienstleistung.Attributes.Add("onblur", "SetItemText(" & ddlDienstleistung.ClientID & ",this)")
+            ddlDienstleistung.Attributes.Add("onchange", "SetItemText(" & ddlDienstleistung.ClientID & "," & txtDienstleistung.ClientID & ")")
+            txtGrosskundennummer.Attributes.Add("onkeyup", "FilterItems(this.value," & ddlGrosskunde.ClientID & ")")
+            txtGrosskundennummer.Attributes.Add("onblur", "SetItemText(" & ddlGrosskunde.ClientID & ",this)")
+            ddlGrosskunde.Attributes.Add("onchange", "SetItemText(" & ddlGrosskunde.ClientID & "," & txtGrosskundennummer.ClientID & ")")
+            txtName.Attributes.Add("onblur", "SetHalterName(this," & ddlStva.ClientID & "," & txtReferenz.ClientID & ")")
             txtHersteller.Attributes("onkeyup") = "autotab(" & txtHersteller.ClientID & ", " & txtTyp.ClientID & ")"
             txtTyp.Attributes("onkeyup") = "autotab(" & txtTyp.ClientID & ", " & txtVarianteVersion.ClientID & ")"
             txtVarianteVersion.Attributes("onkeyup") = "autotab(" & txtVarianteVersion.ClientID & ", " & txtTypPruef.ClientID & ")"
@@ -2409,6 +2424,15 @@ Namespace Beauftragung2
         Private Sub ShowZusammenfassung()
             Try
                 lblZusKundeData.Text = mBeauftragung.Kunden.Select("KUNNR='" & mBeauftragung.Kundennr.PadLeft(10, "0"c) & "'")(0)("NAME1").ToString()
+
+                'Specials für Düren
+                If ddlStva.SelectedValue = "DN" Then
+                    trZusHalter.Visible = True
+                    lblZusHalterData.Text = txtReferenz.Text
+                Else
+                    trZusHalter.Visible = False
+                End If
+
                 lblZusStvaData.Text = mBeauftragung.Kreise.Select("ZKFZKZ='" & mBeauftragung.StVANr & "'")(0)("KREISBEZ").ToString()
                 lblZusDLData.Text = mBeauftragung.Dienstleistungen.Select("MATNR='" & mBeauftragung.Materialnummer.PadLeft(18, "0"c) & "'")(0)("MAKTX").ToString()
                 lblZusZuldatData.Text = mBeauftragung.Zulassungsdatum

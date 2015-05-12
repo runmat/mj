@@ -58,6 +58,24 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.Label lblBelegnummer;
         
         /// <summary>
+        /// TrLiefernr-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow TrLiefernr;
+        
+        /// <summary>
+        /// txtLieferscheinnummer-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtLieferscheinnummer;
+        
+        /// <summary>
         /// TrBelegdatum-Steuerelement
         /// </summary>
         /// <remarks>
