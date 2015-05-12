@@ -1,3 +1,4 @@
+Imports CKG.Base.Business
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Portal.PageElements
 Imports System.Data.OleDb
@@ -8,7 +9,7 @@ Public Class Change01
 #Region " Vom Web Form Designer generierter Code "
 
     'Dieser Aufruf ist für den Web Form-Designer erforderlich.
-    <System.Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
+    <Diagnostics.DebuggerStepThrough()> Private Sub InitializeComponent()
 
     End Sub
 
@@ -25,67 +26,88 @@ Public Class Change01
     Private m_User As Base.Kernel.Security.User
     Private m_App As Base.Kernel.Security.App
 
+    Private objBatch As ec_01
+
+    Private Const patternNumeric As String = "[^0-9]"
+    Private Const patternAlphaNumeric As String = "[^a-zA-Z0-9]"
+    Private Const patternDate As String = "^(01|02|03|04|05|06|07|08|09|10|11|12)\.[1-9][0-9][0-9][0-9]"
+
+    Protected WithEvents ucStyles As Styles
     Protected WithEvents ucHeader As Header
     Protected WithEvents lblHead As Label
+    Protected WithEvents lblTask As Label
+    Protected WithEvents trBack As HtmlTableRow
+    Protected WithEvents cmdBack As LinkButton
+    Protected WithEvents trActionSelection As HtmlTableRow
+    Protected WithEvents cmdNeuanlage As LinkButton
+    Protected WithEvents cmdDatenpflege As LinkButton
+    Protected WithEvents trSearchFilter As HtmlTableRow
+    Protected WithEvents CalAnlDatVon As Calendar
+    Protected WithEvents CalAnlDatBis As Calendar
+    Protected WithEvents txtFilterBatchIdVon As TextBox
+    Protected WithEvents txtFilterBatchIdBis As TextBox
+    Protected WithEvents txtFilterUnitVon As TextBox
+    Protected WithEvents txtFilterUnitBis As TextBox
+    Protected WithEvents txtFilterModelIdVon As TextBox
+    Protected WithEvents txtFilterModelIdBis As TextBox
+    Protected WithEvents txtFilterEinstMonatVon As TextBox
+    Protected WithEvents txtFilterEinstMonatBis As TextBox
+    Protected WithEvents txtFilterErfasser As TextBox
+    Protected WithEvents txtFilterAnlagedatumVon As TextBox
+    Protected WithEvents btnKalenderAnlagedatumVon As LinkButton
+    Protected WithEvents txtFilterAnlagedatumBis As TextBox
+    Protected WithEvents btnKalenderAnlagedatumBis As LinkButton
+    Protected WithEvents cmdSearch As LinkButton
+    Protected WithEvents trSearchResult As HtmlTableRow
+    Protected WithEvents dgBatches As DataGrid
+    Protected WithEvents trEditBatch As HtmlTableRow
+    Protected WithEvents lblError As Label
     Protected WithEvents lblSuccess As Label
     Protected WithEvents txtModelId As TextBox
-    Protected WithEvents Image1 As Image
+    Protected WithEvents txtModell As TextBox
     Protected WithEvents txtSippcode As TextBox
-    Protected WithEvents Image2 As Image
     Protected WithEvents ddlHersteller As DropDownList
     Protected WithEvents txtBatchId As TextBox
-    Protected WithEvents Image4 As Image
-    Protected WithEvents Label1 As Label
-    Protected WithEvents txtModell As TextBox
     Protected WithEvents txtDatEinsteuerung As TextBox
-    Protected WithEvents Image6 As Image
     Protected WithEvents txtAnzahlFahrzeuge As TextBox
-    Protected WithEvents Image7 As Image
     Protected WithEvents txtUnitNrVon As TextBox
     Protected WithEvents txtUnitNrBis As TextBox
-    Protected WithEvents Image8 As Image
+    Protected WithEvents trUnitNrUpload As HtmlTableRow
+    Protected WithEvents upFileUnitNr As HtmlInputFile
     Protected WithEvents txtLaufzeit As TextBox
-    Protected WithEvents Image9 As Image
     Protected WithEvents cbxLaufz As CheckBox
     Protected WithEvents txtBemerkung As TextBox
-    Protected WithEvents Image12 As Image
     Protected WithEvents txtAuftragsnummerVon As TextBox
-    Protected WithEvents Image3 As Image
+    Protected WithEvents txtAuftragsnummerBis As TextBox
     Protected WithEvents ddlVerwendung As DropDownList
+    Protected WithEvents ddlKennzeichenserie1 As DropDownList
     Protected WithEvents rbLKW As RadioButton
     Protected WithEvents rbPKW As RadioButton
     Protected WithEvents rbJ1 As RadioButton
     Protected WithEvents rbN1 As RadioButton
-    Protected WithEvents rbJ2 As RadioButton
-    Protected WithEvents rbN2 As RadioButton
-    Protected WithEvents cmdCreate As LinkButton
-    Protected WithEvents cmdReset As LinkButton
-    Protected WithEvents lblError As Label
-    Protected WithEvents txtAuftragsnummerBis As TextBox
-    Protected WithEvents txtHerstellerHidden As HtmlInputHidden
-    Protected WithEvents ucStyles As Styles
-    Protected WithEvents Image5 As Image
-    Protected WithEvents ddlModellHidden As DropDownList
-    Protected WithEvents btnFinished As LinkButton
-    Protected WithEvents txtHerstellerBezeichnungHidden As HtmlInputHidden
     Protected WithEvents ddlModellZuHersteller As DropDownList
     Protected WithEvents ddlModellZuSipp As DropDownList
     Protected WithEvents ddlModellZuLaufzeit As DropDownList
     Protected WithEvents ddlModellZuLaufzeitbindung As DropDownList
-    Protected WithEvents txtTest As TextBox
-    Protected WithEvents rbLeasingNein As RadioButton
-    Protected WithEvents rbLeasingJa As RadioButton
     Protected WithEvents rbJAnhaenger As RadioButton
     Protected WithEvents rbNAnhaenger As RadioButton
-    Protected WithEvents ddlKennzeichenserie1 As DropDownList
-    Protected WithEvents upFileUnitNr As HtmlInputFile
-    Private objBatch As ec_01
     Protected WithEvents rb_NaviJa As RadioButton
     Protected WithEvents rb_NaviNein As RadioButton
-    Private objChange As change_01
+    Protected WithEvents rbJ2 As RadioButton
+    Protected WithEvents rbN2 As RadioButton
+    Protected WithEvents rbLeasingJa As RadioButton
+    Protected WithEvents rbLeasingNein As RadioButton
     Protected WithEvents cbxKeepData As CheckBox
+    Protected WithEvents trKeepData As HtmlTableRow
+    Protected WithEvents ddlModellHidden As DropDownList
+    Protected WithEvents cmdSave As LinkButton
+    Protected WithEvents cmdReset As LinkButton
+    Protected WithEvents txtHerstellerHidden As HtmlInputHidden
+    Protected WithEvents txtHerstellerBezeichnungHidden As HtmlInputHidden
 
 #End Region
+
+#Region " Events "
 
     Private Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Load
         Session("ShowLink") = "False"
@@ -105,7 +127,13 @@ Public Class Change01
             m_App = New Base.Kernel.Security.App(m_User)
 
             If Not IsPostBack Then
+                objBatch = New ec_01(m_User, m_App, "")
+                Session("objBatch") = objBatch
                 InitialLoad()
+            Else
+                If Session("objBatch") IsNot Nothing Then
+                    objBatch = CType(Session("objBatch"), ec_01)
+                End If
             End If
 
         Catch ex As Exception
@@ -113,290 +141,623 @@ Public Class Change01
         End Try
     End Sub
 
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
+        SetEndASPXAccess(Me)
+    End Sub
+
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
+        SetEndASPXAccess(Me)
+    End Sub
+
+    Private Sub cmdNeuanlage_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdNeuanlage.Click
+        trActionSelection.Visible = False
+        trEditBatch.Visible = True
+    End Sub
+
+    Private Sub cmdDatenpflege_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdDatenpflege.Click
+        trActionSelection.Visible = False
+        trSearchFilter.Visible = True
+    End Sub
+
+    Protected Sub btnKalenderAnlagedatumVon_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnKalenderAnlagedatumVon.Click
+        CalAnlDatVon.Visible = True
+        CalAnlDatBis.Visible = False
+    End Sub
+
+    Protected Sub btnKalenderAnlagedatumBis_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnKalenderAnlagedatumBis.Click
+        CalAnlDatVon.Visible = False
+        CalAnlDatBis.Visible = True
+    End Sub
+
+    Protected Sub CalAnlDatVon_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CalAnlDatVon.SelectionChanged
+        txtFilterAnlagedatumVon.Text = CalAnlDatVon.SelectedDate.ToShortDateString
+        CalAnlDatVon.Visible = False
+    End Sub
+
+    Protected Sub CalAnlDatBis_SelectionChanged(ByVal sender As Object, ByVal e As EventArgs) Handles CalAnlDatBis.SelectionChanged
+        txtFilterAnlagedatumBis.Text = CalAnlDatBis.SelectedDate.ToShortDateString
+        CalAnlDatBis.Visible = False
+    End Sub
+
+    Private Sub cmdSearch_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdSearch.Click
+        If CheckFilterInputOk() Then
+            Suchen()
+        End If
+    End Sub
+
+    Private Sub dgBatches_SortCommand(ByVal source As Object, ByVal e As DataGridSortCommandEventArgs) Handles dgBatches.SortCommand
+        FillGrid(dgBatches.CurrentPageIndex, e.SortExpression)
+    End Sub
+
+    Private Sub dgBatches_PageIndexChanged(ByVal source As Object, ByVal e As DataGridPageChangedEventArgs) Handles dgBatches.PageIndexChanged
+        FillGrid(e.NewPageIndex)
+    End Sub
+
+    Private Sub dgBatches_ItemCommand(ByVal source As Object, ByVal e As DataGridCommandEventArgs) Handles dgBatches.ItemCommand
+        If e.CommandName = "Bearbeiten" Then
+            ShowBatch(e.CommandArgument.ToString())
+        End If
+    End Sub
+
+    Private Sub cmdSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdSave.Click
+        Dim uploadUnitnummern As Boolean
+        If CheckEditInputOk(uploadUnitnummern) Then
+            Speichern(uploadUnitnummern)
+        End If
+    End Sub
+
+    Private Sub cmdReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdReset.Click
+        clearControls()
+    End Sub
+
+    Protected Sub cmdBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdBack.Click
+        If trSearchResult.Visible Then
+            trBack.Visible = False
+            trSearchResult.Visible = False
+            trSearchFilter.Visible = True
+        ElseIf trEditBatch.Visible Then
+            trEditBatch.Visible = False
+            trSearchResult.Visible = True
+        End If
+    End Sub
+
+#End Region
+
+#Region " Methods "
+
     Private Sub InitialLoad()
-        Dim objSuche As ec_01 ' New ec_01(m_User, m_App, "")
         Dim vwHersteller As DataView
         Dim vwVerwendung As DataView
         Dim vwModell As DataView
         Dim item As ListItem
 
-        objSuche = New ec_01(m_User, m_App, "")
-
-        objSuche.getData(Session("AppID").ToString, Session.SessionID, Me)
-        If objSuche.Message <> String.Empty Then
-            lblError.Text = objSuche.Message
-            Exit Sub
-        Else
-            'Dropdownlisten befüllen
-            '1. Hersteller
-            vwHersteller = objSuche.HerstellerAuswahl.DefaultView
-            vwHersteller.Sort = "ZHERST asc"
-
-            With ddlHersteller
-                .DataSource = vwHersteller
-                .DataTextField = "ZHERST"
-                .DataValueField = "VALPOS"
-                .DataBind()
-            End With
-
-            txtHerstellerHidden.Value = ddlHersteller.Items(0).Value
-            txtHerstellerBezeichnungHidden.Value = ddlHersteller.Items(0).Text
-
-            '2. Verwendungszweck
-            vwVerwendung = objSuche.VerwendungszweckAuswahl.DefaultView
-            vwVerwendung.Sort = "ZVERWENDUNG asc"
-
-            With ddlVerwendung
-                .DataSource = vwVerwendung
-                .DataTextField = "ZVERWENDUNG"
-                .DataValueField = "DOMVALUE_L"
-                .DataBind()
-            End With
-
-            item = ddlVerwendung.Items.FindByValue("SELBSTFAHR")
-            If Not (item Is Nothing) Then
-                item.Selected = True
-            End If
-
-            '3. Modellbezeichnung
-            vwModell = objSuche.ModellAuswahl.DefaultView
-
-            With ddlModellHidden
-                .DataSource = vwModell
-                .DataTextField = "BEZEI"
-                .DataValueField = "CODE"
-                .DataBind()
-            End With
-
-            '4.Zuordnung Modell zu Hersteller
-            vwModell = objSuche.ModellAuswahl.DefaultView
-
-            With ddlModellZuHersteller
-                .DataSource = vwModell
-                .DataTextField = "HERST"
-                .DataValueField = "CODE"
-                .DataBind()
-            End With
-
-            '5.Zuordnung Modell zu Sippcode
-            vwModell = objSuche.ModellAuswahl.DefaultView
-
-            With ddlModellZuSipp
-                .DataSource = vwModell
-                .DataTextField = "Sipp"
-                .DataValueField = "CODE"
-                .DataBind()
-            End With
-
-            '6.Zuordnung Modell zur Laufzeit
-            With ddlModellZuLaufzeit
-                .DataSource = vwModell
-                .DataTextField = "ZLAUFZEIT"
-                .DataValueField = "CODE"
-                .DataBind()
-            End With
-
-            '7.Zuordnung Modell zur Laufzeitbindung
-            With ddlModellZuLaufzeitbindung
-                .DataSource = vwModell
-                .DataTextField = "ZLZBINDUNG"
-                .DataValueField = "CODE"
-                .DataBind()
-            End With
-
-
-
-            'füllen der Kennzeichen DropDownListe
-            fillKennzeichenserie()
-
-        End If
-        Session.Add("objSuche", objSuche)
-    End Sub
-
-    Private Sub cmdCreate_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdCreate.Click
-        Dim status As Boolean
-        Dim uploadUnitnummern As Boolean
-        CheckInput(status, uploadUnitnummern)
-        If status Then
-            DoSubmit(uploadUnitnummern)
-        End If
-    End Sub
-
-    Private Sub CheckInput(ByRef status As Boolean, ByRef uploadUnitnummern As Boolean)
-        Dim patternNumeric As String = "[^0-9]"
-        Dim patternAlphaNumeric As String = "[^a-zA-Z0-9]"
-        Dim patternDate As String = "^(01|02|03|04|05|06|07|08|09|10|11|12)\.[1-9][0-9][0-9][0-9]"
-
-        Dim regEx As Text.RegularExpressions.Regex
-        Dim strModelId As String
-        Dim strModellBezeichnung As String
-        Dim strSippcode As String
-        Dim strBatchId As String
-        Dim strDatEinsteuerung As String
-        Dim strAnzahl As String
-        Dim strUnitVon As String
-        Dim strUnitBis As String
-        Dim lngUnitVon As Long
-        Dim lngUnitBis As Long
-        Dim strLaufzeit As String
-
-        status = True
-        uploadUnitnummern = False
-
-        'Eingabewerte prüfen
-        lblError.Text = String.Empty
-
-        'Model-Id
-        strModelId = txtModelId.Text.ToUpper.Trim
-
-        If strModelId = String.Empty Then
-            lblError.Text = "Bitte eine Model-Id eingeben."
-            status = False
-            Exit Sub
-        End If
-        regEx = New Text.RegularExpressions.Regex(patternAlphaNumeric)
-        If (regEx.IsMatch(strModelId)) Then
-            lblError.Text = "Model-Id ungültig."
-            status = False
-            Exit Sub
-        End If
-
-        'Modellbezeichnung
-        strModellBezeichnung = txtModell.Text
-        If (strModellBezeichnung = String.Empty) Then
-            lblError.Text = "Model-Id ungültig (Keine Modellbezeichnung gefunden)."
-            status = False
-            Exit Sub
-        End If
-
-        'Sipp-Code
-        strSippcode = txtSippcode.Text.ToUpper.Trim
-
-        If strSippcode = String.Empty Then
-            lblError.Text = "Bitte einen SIPP-Code eingeben."
-            status = False
-            Exit Sub
-        End If
-        regEx = New Text.RegularExpressions.Regex(patternAlphaNumeric)
-        If (regEx.IsMatch(strSippcode)) Then
-            lblError.Text = "SIPP-Code ungültig."
-            status = False
-            Exit Sub
-        End If
-
-        'Batch-Id
-        strBatchId = txtBatchId.Text.ToUpper.Trim
-
-        If strBatchId = String.Empty Then
-            lblError.Text = "Bitte eine Batch-Id eingeben."
-            status = False
-            Exit Sub
-        End If
-        regEx = New Text.RegularExpressions.Regex(patternNumeric)
-        If (regEx.IsMatch(strBatchId)) Then
-            lblError.Text = "Batch-Id ungültig."
-            status = False
-            Exit Sub
-        End If
-
-        'Einsteuerung
-        strDatEinsteuerung = txtDatEinsteuerung.Text.Trim
-
-        If strDatEinsteuerung = String.Empty Then
-            lblError.Text = "Bitte eine Datum Einsteuerung eingeben."
-            status = False
-            Exit Sub
-        End If
-
-        regEx = New Text.RegularExpressions.Regex(patternDate)
-        If Not (regEx.IsMatch(strDatEinsteuerung)) Then
-            lblError.Text = "Datum Einsteuerung ungültig."
-            status = False
-            Exit Sub
-        End If
-
-        'Anzahl Fahrzeuge
-        strAnzahl = txtAnzahlFahrzeuge.Text.Trim
-
-        If strAnzahl = String.Empty Then
-            lblError.Text = "Bitte die Anzahl Fahrzeuge eingeben."
-            status = False
-            Exit Sub
-        End If
-
-        regEx = New Text.RegularExpressions.Regex(patternNumeric)
-        If regEx.IsMatch(strAnzahl) Then
-            lblError.Text = "Anzahl Fahrzeuge ungültig."
-            status = False
-            Exit Sub
-        End If
-
-        'Laufzeit
-        strLaufzeit = txtLaufzeit.Text.Trim
-
-        If strLaufzeit = String.Empty Then
-            lblError.Text = "Bitte Laufzeit eingeben."
-            status = False
-            Exit Sub
-        End If
-
-        regEx = New Text.RegularExpressions.Regex(patternNumeric)
-
-        If regEx.IsMatch(strLaufzeit) Then
-            lblError.Text = "Laufzeit ungültig."
-            status = False
-            Exit Sub
-        End If
-
-        'Unit-Nummer (entweder von,bis oder per Upload-File)
-        strUnitVon = txtUnitNrVon.Text.Trim
-        strUnitBis = txtUnitNrBis.Text.Trim
-
-        If strUnitVon = String.Empty And strUnitBis = String.Empty Then
-            uploadUnitnummern = True
-            If (Not upFileUnitNr.PostedFile Is Nothing) AndAlso (Not (upFileUnitNr.PostedFile.FileName = String.Empty)) Then
-                If Right(upFileUnitNr.PostedFile.FileName.ToUpper, 4) <> ".XLS" AndAlso Right(upFileUnitNr.PostedFile.FileName.ToUpper, 5) <> ".XLSX" Then
-                    lblError.Text = "Es können nur Dateien im .XLS oder .XLSX-Format verarbeitet werden."
-                    status = False
-                    Exit Sub
-                End If
+        With objBatch
+            .getStammdaten(Session("AppID").ToString, Session.SessionID)
+            If Not String.IsNullOrEmpty(.Message) Then
+                lblError.Text = .Message
+                Exit Sub
             Else
-                lblError.Text = "Bitte entweder Unit-Nr. (von - bis) oder eine Upload-Datei mit Unit-Nummern angeben"
-                status = False
-                Exit Sub
+                'Dropdownlisten befüllen
+                '1. Hersteller
+                vwHersteller = .HerstellerAuswahl.DefaultView
+                vwHersteller.Sort = "ZHERST asc"
+
+                With ddlHersteller
+                    .DataSource = vwHersteller
+                    .DataTextField = "ZHERST"
+                    .DataValueField = "VALPOS"
+                    .DataBind()
+                End With
+
+                txtHerstellerHidden.Value = ddlHersteller.Items(0).Value
+                txtHerstellerBezeichnungHidden.Value = ddlHersteller.Items(0).Text
+
+                '2. Verwendungszweck
+                vwVerwendung = .VerwendungszweckAuswahl.DefaultView
+                vwVerwendung.Sort = "ZVERWENDUNG asc"
+
+                With ddlVerwendung
+                    .DataSource = vwVerwendung
+                    .DataTextField = "ZVERWENDUNG"
+                    .DataValueField = "DOMVALUE_L"
+                    .DataBind()
+                End With
+
+                item = ddlVerwendung.Items.FindByValue("SELBSTFAHR")
+                If Not (item Is Nothing) Then
+                    item.Selected = True
+                End If
+
+                '3. Modellbezeichnung
+                vwModell = .ModellAuswahl.DefaultView
+
+                With ddlModellHidden
+                    .DataSource = vwModell
+                    .DataTextField = "BEZEI"
+                    .DataValueField = "CODE"
+                    .DataBind()
+                End With
+
+                '4. Zuordnung Modell zu Hersteller
+                With ddlModellZuHersteller
+                    .DataSource = vwModell
+                    .DataTextField = "HERST"
+                    .DataValueField = "CODE"
+                    .DataBind()
+                End With
+
+                '5. Zuordnung Modell zu Sippcode
+                With ddlModellZuSipp
+                    .DataSource = vwModell
+                    .DataTextField = "Sipp"
+                    .DataValueField = "CODE"
+                    .DataBind()
+                End With
+
+                '6. Zuordnung Modell zur Laufzeit
+                With ddlModellZuLaufzeit
+                    .DataSource = vwModell
+                    .DataTextField = "ZLAUFZEIT"
+                    .DataValueField = "CODE"
+                    .DataBind()
+                End With
+
+                '7. Zuordnung Modell zur Laufzeitbindung
+                With ddlModellZuLaufzeitbindung
+                    .DataSource = vwModell
+                    .DataTextField = "ZLZBINDUNG"
+                    .DataValueField = "CODE"
+                    .DataBind()
+                End With
+
+                '8. Kennzeichenserie
+                Dim objChange As New change_01(m_User, m_App, Session("AppID").ToString, Session.SessionID, "")
+                With ddlKennzeichenserie1
+                    .DataSource = objChange.PKennzeichenSerie.DefaultView
+                    .DataTextField = "Serie"
+                    .DataValueField = "SONDERSERIE"
+                    .DataBind()
+                End With
+
             End If
+        End With
+        
+        Session("objBatch") = objBatch
+    End Sub
+
+    Private Function CheckFilterInputOk() As Boolean
+        Try
+            Dim regEx As Text.RegularExpressions.Regex
+
+            'Eingabewerte prüfen
+            lblError.Text = String.Empty
+
+            'Batch-Id
+            Dim strBatchIdVon As String = txtFilterBatchIdVon.Text.ToUpper.Trim
+            Dim strBatchIdBis As String = txtFilterBatchIdBis.Text.ToUpper.Trim
+
+            If (Not String.IsNullOrEmpty(strBatchIdVon) OrElse Not String.IsNullOrEmpty(strBatchIdBis)) Then
+                regEx = New Text.RegularExpressions.Regex(patternNumeric)
+
+                If regEx.IsMatch(strBatchIdVon) Then
+                    lblError.Text = "Batch-ID (von) ungültig."
+                    Return False
+                End If
+
+                If Not String.IsNullOrEmpty(strBatchIdBis) Then
+                    If regEx.IsMatch(strBatchIdBis) Then
+                        lblError.Text = "Batch-ID (bis) ungültig."
+                        Return False
+                    End If
+
+                    Dim lngBatchVon As Long = CType(strBatchIdVon, Long)
+                    Dim lngBatchBis As Long = CType(strBatchIdBis, Long)
+
+                    If (lngBatchBis < lngBatchVon) Then
+                        lblError.Text = "Batch-ID (von-bis) ungültig."
+                        Return False
+                    End If
+                End If
+            End If
+
+            'Unit-Nummer
+            Dim strUnitVon As String = txtFilterUnitVon.Text.Trim
+            Dim strUnitBis As String = txtFilterUnitBis.Text.Trim
+
+            If (Not String.IsNullOrEmpty(strUnitVon) OrElse Not String.IsNullOrEmpty(strUnitBis)) Then
+                regEx = New Text.RegularExpressions.Regex(patternNumeric)
+
+                If regEx.IsMatch(strUnitVon) Then
+                    lblError.Text = "Unit-Nr. (von) ungültig."
+                    Return False
+                End If
+
+                If Not String.IsNullOrEmpty(strUnitBis) Then
+                    If regEx.IsMatch(strUnitBis) Then
+                        lblError.Text = "Unit-Nr. (bis) ungültig."
+                        Return False
+                    End If
+
+                    Dim lngUnitVon As Long = CType(strUnitVon, Long)
+                    Dim lngUnitBis As Long = CType(strUnitBis, Long)
+
+                    If (lngUnitBis < lngUnitVon) Then
+                        lblError.Text = "Unit-Nr. (von-bis) ungültig."
+                        Return False
+                    End If
+                End If
+            End If
+
+            'Model-Id
+            Dim strModelIdVon As String = txtFilterModelIdVon.Text.ToUpper.Trim
+            Dim strModelIdBis As String = txtFilterModelIdBis.Text.ToUpper.Trim
+
+            If (Not String.IsNullOrEmpty(strModelIdVon) OrElse Not String.IsNullOrEmpty(strModelIdBis)) Then
+                regEx = New Text.RegularExpressions.Regex(patternAlphaNumeric)
+
+                If regEx.IsMatch(strModelIdVon) Then
+                    lblError.Text = "Model-ID (von) ungültig."
+                    Return False
+                End If
+                If Not String.IsNullOrEmpty(strModelIdBis) AndAlso regEx.IsMatch(strModelIdBis) Then
+                    lblError.Text = "Model-ID (bis) ungültig."
+                    Return False
+                End If
+            End If
+
+            'Einsteuerung
+            Dim strDatEinsteuerungVon As String = txtFilterEinstMonatVon.Text.Trim
+            Dim strDatEinsteuerungBis As String = txtFilterEinstMonatBis.Text.Trim
+
+            If (Not String.IsNullOrEmpty(strDatEinsteuerungVon) OrElse Not String.IsNullOrEmpty(strDatEinsteuerungBis)) Then
+                regEx = New Text.RegularExpressions.Regex(patternDate)
+
+                If Not (regEx.IsMatch(strDatEinsteuerungVon)) Then
+                    lblError.Text = "Datum Einsteuerung (von) ungültig."
+                    Return False
+                End If
+                If Not String.IsNullOrEmpty(strDatEinsteuerungBis) AndAlso Not (regEx.IsMatch(strDatEinsteuerungBis)) Then
+                    lblError.Text = "Datum Einsteuerung (bis) ungültig."
+                    Return False
+                End If
+            End If
+
+            'Anlagedatum
+            Dim errorText As String
+            If Not HelpProcedures.checkDate(txtFilterAnlagedatumVon, txtFilterAnlagedatumBis, errorText, True) Then
+                lblError.Text = errorText
+                Return False
+            End If
+
+            Return True
+
+        Catch ex As Exception
+            lblError.Text = "Fehler bei der Prüfung der eingegebenen Daten: " & ex.Message
+            Return False
+        End Try
+
+    End Function
+
+    Private Sub collectFilterData()
+
+        With objBatch
+            .FilterBatchIdVon = txtFilterBatchIdVon.Text
+            .FilterBatchIdBis = txtFilterBatchIdBis.Text
+            .FilterUnitnrVon = txtFilterUnitVon.Text
+            .FilterUnitnrBis = txtFilterUnitBis.Text
+            .FilterModelIdVon = txtFilterModelIdVon.Text
+            .FilterModelIdBis = txtFilterModelIdBis.Text
+            .FilterEinsteuerungVon = txtFilterEinstMonatVon.Text
+            .FilterEinsteuerungBis = txtFilterEinstMonatBis.Text
+            .FilterErfasser = txtFilterErfasser.Text
+            .FilterAnlagedatumVon = txtFilterAnlagedatumVon.Text
+            .FilterAnlagedatumBis = txtFilterAnlagedatumBis.Text
+        End With
+
+        Session("objBatch") = objBatch
+    End Sub
+
+    Private Sub Suchen(Optional ByVal keepFilterValues As Boolean = False)
+
+        If Not keepFilterValues Then
+            collectFilterData()
+        End If
+
+        objBatch.loadData(Session("AppID").ToString, Session.SessionID)
+
+        Session("objBatch") = objBatch
+
+        If objBatch.Status = 0 Then
+            FillGrid(0)
         Else
-            If strUnitVon = String.Empty Or strUnitBis = String.Empty Then
-                lblError.Text = "Bitte Unit-Nr. (von - bis) eingeben."
-                status = False
-                Exit Sub
+            lblError.Text = "Fehler beim Laden der Daten: " & objBatch.Message
+        End If
+
+    End Sub
+
+    Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
+        If objBatch.Batche.Rows.Count = 0 Then
+            trSearchFilter.Visible = True
+            lblError.Text = "Keine Ergebnisse für die gewählten Kriterien."
+        Else
+            trBack.Visible = True
+            trSearchFilter.Visible = False
+            trSearchResult.Visible = True
+
+            Dim tmpDataView As New DataView(objBatch.Batche)
+
+            Dim intTempPageIndex As Int32 = intPageIndex
+            Dim strTempSort As String = ""
+            Dim strDirection As String = ""
+
+            If strSort.Trim(" "c).Length > 0 Then
+                intTempPageIndex = 0
+                strTempSort = strSort.Trim(" "c)
+                If (ViewState("Sort") Is Nothing) OrElse (ViewState("Sort").ToString = strTempSort) Then
+                    If ViewState("Direction") Is Nothing Then
+                        strDirection = "desc"
+                    Else
+                        strDirection = ViewState("Direction").ToString
+                    End If
+                Else
+                    strDirection = "desc"
+                End If
+
+                If strDirection = "asc" Then
+                    strDirection = "desc"
+                Else
+                    strDirection = "asc"
+                End If
+
+                ViewState("Sort") = strTempSort
+                ViewState("Direction") = strDirection
+            Else
+                If Not ViewState("Sort") Is Nothing Then
+                    strTempSort = ViewState("Sort").ToString
+                    If ViewState("Direction") Is Nothing Then
+                        strDirection = "asc"
+                        ViewState("Direction") = strDirection
+                    Else
+                        strDirection = ViewState("Direction").ToString
+                    End If
+                End If
+            End If
+
+            If Not strTempSort.Length = 0 Then
+                tmpDataView.Sort = strTempSort & " " & strDirection
+            End If
+
+            dgBatches.CurrentPageIndex = intTempPageIndex
+
+            dgBatches.DataSource = tmpDataView
+            dgBatches.DataBind()
+
+            If dgBatches.PageCount > 1 Then
+                dgBatches.PagerStyle.Visible = True
+                dgBatches.PagerStyle.CssClass = "PagerStyle"
+                If dgBatches.CurrentPageIndex = dgBatches.PageCount - 1 Then
+                    dgBatches.PagerStyle.NextPageText = "<img border=""0"" src=""/Portal/Images/empty.gif"" width=""12"" height=""11"">"
+                Else
+                    dgBatches.PagerStyle.NextPageText = "<img border=""0"" src=""/Portal/Images/arrow_right.gif"" width=""12"" height=""11"">"
+                End If
+
+                If dgBatches.CurrentPageIndex = 0 Then
+                    dgBatches.PagerStyle.PrevPageText = "<img border=""0"" src=""/Portal/Images/empty.gif"" width=""12"" height=""11"">"
+                Else
+                    dgBatches.PagerStyle.PrevPageText = "<img border=""0"" src=""/Portal/Images/arrow_left.gif"" width=""12"" height=""11"">"
+                End If
+                dgBatches.DataBind()
+            Else
+                dgBatches.PagerStyle.Visible = False
+            End If
+        End If
+    End Sub
+
+    Private Sub ShowBatch(ByVal batchid As String)
+        With objBatch
+            Dim rows() As DataRow = .Batche.Select("ZBATCH_ID = '" & batchid & "'")
+            If rows.Length > 0 Then
+                Dim row As DataRow = rows(0)
+
+                trSearchResult.Visible = False
+                trEditBatch.Visible = True
+                trKeepData.Visible = False
+                txtBatchId.Enabled = False
+                cmdReset.Visible = False
+
+                txtModelId.Text = row("ZMODEL_ID").ToString()
+                txtModell.Text = row("ZMOD_DESCR").ToString()
+                txtSippcode.Text = row("ZSIPP_CODE").ToString()
+                ddlHersteller.SelectedValue = ddlHersteller.Items.FindByText(row("ZMAKE").ToString()).Value
+                txtBatchId.Text = row("ZBATCH_ID").ToString()
+                txtDatEinsteuerung.Text = row("ZPURCH_MTH").ToString()
+                txtAnzahlFahrzeuge.Text = row("ZANZAHL").ToString()
+                txtLaufzeit.Text = row("ZLAUFZEIT").ToString()
+                ddlKennzeichenserie1.SelectedValue = row("ZSONDERSERIE").ToString()
+                cbxLaufz.Checked = (row("ZLZBINDUNG").ToString() = "X")
+                txtBemerkung.Text = row("ZBEMERKUNG").ToString()
+                txtAuftragsnummerVon.Text = row("ZAUFNR_VON").ToString()
+                txtAuftragsnummerBis.Text = row("ZAUFNR_BIS").ToString()
+                ddlVerwendung.SelectedValue = row("ZVERWENDUNG").ToString()
+                
+                rbPKW.Checked = row("ZFZG_GROUP").ToString() = "X"
+                rbLKW.Checked = row("ZFZG_GROUP").ToString() <> "X"
+
+                rbJ1.Checked = row("ZMS_REIFEN").ToString() = "X"
+                rbN1.Checked = row("ZMS_REIFEN").ToString() <> "X"
+
+                rbJAnhaenger.Checked = row("ZAHK").ToString() = "X"
+                rbNAnhaenger.Checked = row("ZAHK").ToString() <> "X"
+
+                rbJ2.Checked = row("ZSECU_FLEET").ToString() = "X"
+                rbN2.Checked = row("ZSECU_FLEET").ToString() <> "X"
+
+                rbLeasingJa.Checked = row("ZLEASING").ToString() = "X"
+                rbLeasingNein.Checked = row("ZLEASING").ToString() <> "X"
+
+                rb_NaviJa.Checked = row("ZNAVI").ToString() = "X"
+                rb_NaviNein.Checked = row("ZNAVI").ToString() <> "X"
+
+                txtUnitNrVon.Text = row("ZUNIT_NR_VON").ToString()
+                txtUnitNrBis.Text = row("ZUNIT_NR_BIS").ToString()
+
+            Else
+                lblError.Text = "Fehler beim Anzeigen des Batches"
+
+            End If
+        End With
+
+        Session("objBatch") = objBatch
+    End Sub
+
+    Private Function CheckEditInputOk(ByRef uploadUnitnummern As Boolean) As Boolean
+        Try
+            Dim regEx As Text.RegularExpressions.Regex
+
+            'Eingabewerte prüfen
+            lblError.Text = String.Empty
+
+            'Model-Id
+            Dim strModelId As String = txtModelId.Text.ToUpper.Trim
+
+            If strModelId = String.Empty Then
+                lblError.Text = "Bitte eine Model-Id eingeben."
+                Return False
+            End If
+            regEx = New Text.RegularExpressions.Regex(patternAlphaNumeric)
+            If (regEx.IsMatch(strModelId)) Then
+                lblError.Text = "Model-Id ungültig."
+                Return False
+            End If
+
+            'Modellbezeichnung
+            Dim strModellBezeichnung As String = txtModell.Text
+
+            If (strModellBezeichnung = String.Empty) Then
+                lblError.Text = "Model-Id ungültig (Keine Modellbezeichnung gefunden)."
+                Return False
+            End If
+
+            'Sipp-Code
+            Dim strSippcode As String = txtSippcode.Text.ToUpper.Trim
+
+            If strSippcode = String.Empty Then
+                lblError.Text = "Bitte einen SIPP-Code eingeben."
+                Return False
+            End If
+            regEx = New Text.RegularExpressions.Regex(patternAlphaNumeric)
+            If (regEx.IsMatch(strSippcode)) Then
+                lblError.Text = "SIPP-Code ungültig."
+                Return False
+            End If
+
+            'Batch-Id
+            Dim strBatchId As String = txtBatchId.Text.ToUpper.Trim
+
+            If strBatchId = String.Empty Then
+                lblError.Text = "Bitte eine Batch-Id eingeben."
+                Return False
+            End If
+            regEx = New Text.RegularExpressions.Regex(patternNumeric)
+            If (regEx.IsMatch(strBatchId)) Then
+                lblError.Text = "Batch-Id ungültig."
+                Return False
+            End If
+
+            'Einsteuerung
+            Dim strDatEinsteuerung As String = txtDatEinsteuerung.Text.Trim
+
+            If strDatEinsteuerung = String.Empty Then
+                lblError.Text = "Bitte eine Datum Einsteuerung eingeben."
+                Return False
+            End If
+
+            regEx = New Text.RegularExpressions.Regex(patternDate)
+            If Not (regEx.IsMatch(strDatEinsteuerung)) Then
+                lblError.Text = "Datum Einsteuerung ungültig."
+                Return False
+            End If
+
+            'Anzahl Fahrzeuge
+            Dim strAnzahl As String = txtAnzahlFahrzeuge.Text.Trim
+
+            If strAnzahl = String.Empty Then
+                lblError.Text = "Bitte die Anzahl Fahrzeuge eingeben."
+                Return False
+            End If
+
+            regEx = New Text.RegularExpressions.Regex(patternNumeric)
+            If regEx.IsMatch(strAnzahl) Then
+                lblError.Text = "Anzahl Fahrzeuge ungültig."
+                Return False
+            End If
+
+            'Laufzeit
+            Dim strLaufzeit As String = txtLaufzeit.Text.Trim
+
+            If strLaufzeit = String.Empty Then
+                lblError.Text = "Bitte Laufzeit eingeben."
+                Return False
             End If
 
             regEx = New Text.RegularExpressions.Regex(patternNumeric)
 
-            If regEx.IsMatch(strUnitVon) Then
-                lblError.Text = "Unit-Nr. (von) ungültig."
-                status = False
-                Exit Sub
+            If regEx.IsMatch(strLaufzeit) Then
+                lblError.Text = "Laufzeit ungültig."
+                Return False
             End If
 
-            If regEx.IsMatch(strUnitBis) Then
-                lblError.Text = "Unit-Nr. (bis) ungültig."
-                status = False
-                Exit Sub
+            'Unit-Nummer (entweder von,bis oder per Upload-File)
+            Dim strUnitVon As String = txtUnitNrVon.Text.Trim
+            Dim strUnitBis As String = txtUnitNrBis.Text.Trim
+
+            If strUnitVon = String.Empty And strUnitBis = String.Empty Then
+                uploadUnitnummern = True
+                If (Not upFileUnitNr.PostedFile Is Nothing) AndAlso (Not (upFileUnitNr.PostedFile.FileName = String.Empty)) Then
+                    If Right(upFileUnitNr.PostedFile.FileName.ToUpper, 4) <> ".XLS" AndAlso Right(upFileUnitNr.PostedFile.FileName.ToUpper, 5) <> ".XLSX" Then
+                        lblError.Text = "Es können nur Dateien im .XLS oder .XLSX-Format verarbeitet werden."
+                        Return False
+                    End If
+                Else
+                    lblError.Text = "Bitte entweder Unit-Nr. (von - bis) oder eine Upload-Datei mit Unit-Nummern angeben"
+                    Return False
+                End If
+            Else
+                uploadUnitnummern = False
+                If strUnitVon = String.Empty Or strUnitBis = String.Empty Then
+                    lblError.Text = "Bitte Unit-Nr. (von - bis) eingeben."
+                    Return False
+                End If
+
+                regEx = New Text.RegularExpressions.Regex(patternNumeric)
+
+                If regEx.IsMatch(strUnitVon) Then
+                    lblError.Text = "Unit-Nr. (von) ungültig."
+                    Return False
+                End If
+
+                If regEx.IsMatch(strUnitBis) Then
+                    lblError.Text = "Unit-Nr. (bis) ungültig."
+                    Return False
+                End If
+
+                Dim lngUnitVon As Long = CType(strUnitVon, Long)
+                Dim lngUnitBis As Long = CType(strUnitBis, Long)
+
+                If Not ((lngUnitBis - lngUnitVon) = (CType(strAnzahl, Long) - 1)) Then
+                    lblError.Text = "Unit-Nr. (von-bis) ungültig."
+                    Return False
+                End If
             End If
 
-            lngUnitVon = CType(strUnitVon, Long)
-            lngUnitBis = CType(strUnitBis, Long)
+            Return True
 
-            If Not ((lngUnitBis - lngUnitVon) = (CType(strAnzahl, Long) - 1)) Then
-                lblError.Text = "Unit-Nr. (von-bis) ungültig."
-                status = False
-                Exit Sub
-            End If
-        End If
+        Catch ex As Exception
+            lblError.Text = "Fehler bei der Prüfung der eingegebenen Daten: " & ex.Message
+            Return False
+        End Try
 
-    End Sub
+    End Function
 
     Private Sub upload(ByVal uFile As HttpPostedFile)
 
@@ -432,7 +793,6 @@ Public Class Change01
                     ";Extended Properties=""Excel 12.0 Xml;HDR=No"""
                 End If
 
-
                 Dim objConn As New OleDbConnection(sConnectionString)
                 objConn.Open()
                 Dim objDataset1 As New DataSet()
@@ -449,7 +809,6 @@ Public Class Change01
                 Next
                 Dim TempTable As DataTable = objDataset1.Tables(0)
                 objConn.Close()
-
 
                 objBatch.Unitnummern = New DataTable
                 objBatch.Unitnummern.Columns.Add("ZUNIT_NR")
@@ -475,14 +834,69 @@ Public Class Change01
 
     End Sub
 
-    Private Sub fillKennzeichenserie()
+    Private Sub collectEditData(uploadUnitnummern As Boolean)
 
-        objChange = New change_01(m_User, m_App, Session("AppID").ToString, Session.SessionID, "")
+        With objBatch
+            .ModelID = txtModelId.Text
+            .ModellBezeichnung = txtModell.Text
+            .SippCode = txtSippcode.Text
+            .Hersteller = txtHerstellerHidden.Value
+            .HerstellerBezeichnung = txtHerstellerBezeichnungHidden.Value
+            .BatchId = txtBatchId.Text
+            .DatumEinsteuerung = txtDatEinsteuerung.Text
+            .AnzahlFahrzeuge = txtAnzahlFahrzeuge.Text
+            .Laufzeit = txtLaufzeit.Text
+            .KennzeichenSerie = ddlKennzeichenserie1.SelectedItem.Text
+            .LaufzeitBindung = cbxLaufz.Checked
+            .Bemerkungen = txtBemerkung.Text
+            .AuftragsNrVon = txtAuftragsnummerVon.Text
+            .AuftragsNrBis = txtAuftragsnummerBis.Text
+            .Verwendungszweck = ddlVerwendung.SelectedItem.Value
+            .VerwendungszweckBezeichnung = ddlVerwendung.SelectedItem.Text
+            .Fahrzeuggruppe = rbPKW.Checked
+            .WinterBereifung = rbJ1.Checked
+            .Anhaengerkupplung = rbJAnhaenger.Checked
+            .SecurFleet = rbJ2.Checked
+            .Leasing = rbLeasingJa.Checked
+            .Navi = rb_NaviJa.Checked
 
-        For Each row As DataRow In objChange.PKennzeichenSerie.Rows
-            Dim item As New ListItem(row.Item("Serie"), row.Item("ID"))
-            ddlKennzeichenserie1.Items.Add(item)
-        Next
+            If uploadUnitnummern Then
+                .UnitNrVon = "0"
+                .UnitNrBis = "0"
+                'Unitnummern aus Excel-Uploadfile übernehmen
+                upload(upFileUnitNr.PostedFile)
+            Else
+                .UnitNrVon = txtUnitNrVon.Text
+                .UnitNrBis = txtUnitNrBis.Text
+            End If
+
+        End With
+
+        Session("objBatch") = objBatch
+    End Sub
+
+    Private Sub Speichern(uploadUnitnummern As Boolean)
+
+        collectEditData(uploadUnitnummern)
+
+        objBatch.saveData(Session("AppID").ToString, Session.SessionID)
+
+        Session("objBatch") = objBatch
+
+        If objBatch.Status = 0 Then
+            lblSuccess.Text = "Daten gesichert."
+
+            If txtBatchId.Enabled Then
+                'nach Neuanlage
+                clearControls(Not cbxKeepData.Checked)
+            Else
+                'nach Bearbeitung
+                trEditBatch.Visible = False
+                Suchen(True)
+            End If
+        Else
+            lblError.Text = "Die Daten konnten nicht gespeichert werden. Bitte überprüfen Sie Ihre Eingaben. (" & objBatch.Message & ")"
+        End If
 
     End Sub
 
@@ -509,141 +923,6 @@ Public Class Change01
         End If
     End Sub
 
-    Private Sub collectData(uploadUnitnummern As Boolean)
+#End Region
 
-        With objBatch
-            .ModelID = txtModelId.Text
-            .ModellBezeichnung = txtModell.Text
-            .SippCode = txtSippcode.Text
-            .Hersteller = txtHerstellerHidden.Value
-            .HerstellerBezeichnung = txtHerstellerBezeichnungHidden.Value
-            .BarchId = txtBatchId.Text
-            .DatumEinsteuerung = txtDatEinsteuerung.Text
-            .AnzahlFahrzeuge = txtAnzahlFahrzeuge.Text
-
-            .Laufzeit = txtLaufzeit.Text
-            .KennzeichenSerie = ddlKennzeichenserie1.SelectedItem.Text
-
-            If cbxLaufz.Checked Then
-                .LaufzeitBindung = True
-            Else
-                .LaufzeitBindung = False
-            End If
-
-            .Bemerkungen = txtBemerkung.Text
-            .AuftragsNrVon = txtAuftragsnummerVon.Text
-            .AuftragsNrBis = txtAuftragsnummerBis.Text
-            .Verwendungszweck = ddlVerwendung.SelectedItem.Value
-            .VerwendungszweckBezeichnung = ddlVerwendung.SelectedItem.Text
-
-            If rbPKW.Checked Then
-                .Fahrzeuggruppe = True
-            Else
-                .Fahrzeuggruppe = False
-            End If
-
-            If rbJ1.Checked Then
-                .WinterBereifung = True
-            Else
-                .WinterBereifung = False
-            End If
-
-            If rbJAnhaenger.Checked Then
-                .Anhaengerkupplung = True
-            Else
-                .Anhaengerkupplung = False
-            End If
-
-            If rbJ2.Checked Then
-                .SecurFleet = True
-            Else
-                .SecurFleet = False
-            End If
-
-            If rbLeasingNein.Checked Then
-                .Leasing = False
-            Else
-                .Leasing = True
-            End If
-
-            If rb_NaviJa.Checked Then
-                .Navi = True
-            Else
-                .Navi = False
-            End If
-
-            If uploadUnitnummern Then
-                .UnitNrVon = "0"
-                .UnitNrBis = "0"
-                'Unitnummern aus Excel-Uploadfile übernehmen
-                upload(upFileUnitNr.PostedFile)
-            Else
-                .UnitNrVon = txtUnitNrVon.Text
-                .UnitNrBis = txtUnitNrBis.Text
-            End If
-
-        End With
-
-        Session("objSuche") = objBatch
-    End Sub
-
-    Private Sub DoSubmit(uploadUnitnummern As Boolean)
-        Dim status As String = ""
-
-        objBatch = New ec_01(m_User, m_App, "")
-
-        collectData(uploadUnitnummern)
-
-        If objBatch.Selection < 0 Then  'Neuer Datensatz
-            objBatch.addNewRow()
-            clearControls(Not cbxKeepData.Checked)
-        Else                            'Vorhandener Datensatz, nur aktualisieren
-            objBatch.updateExistingRow(status)
-            If (status <> String.Empty) Then
-                lblError.Text = status
-            End If
-        End If
-
-        Session("objSuche") = objBatch
-
-
-        Dim row As DataRow
-
-        For Each row In objBatch.ResultTable.Rows
-            If (TypeOf (row("Status")) Is DBNull) OrElse (CType(row("Status"), String) <> "Gespeichert.") Then  'Nur die noch nicht abgesendeten Vorgänge...
-                objBatch.saveData(Session("AppID").ToString, Session.SessionID, row, Me)
-                If (objBatch.Status = 0) Then
-                    row("Status") = "Gespeichert."
-                    lblSuccess.Text = "Daten gesichert."
-                Else
-                    row("Status") = objBatch.Message
-                    lblError.Text = "Die Daten konnten nicht gespeichert werden. Bitte überprüfen Sie Ihre Eingaben. (" & objBatch.Message & ")"
-                End If
-            End If
-            Exit For
-        Next
-
-        objBatch = Nothing
-
-    End Sub
-
-    Private Sub btnFinished_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnFinished.Click
-        If objBatch.ResultTable.Rows.Count = 0 Then
-            lblError.Text = "Es wurden noch keine Daten erfasst."
-            Exit Sub
-        End If
-        Response.Redirect("Change01_2.aspx?AppID=" & Session("AppID").ToString)
-    End Sub
-
-    Private Sub cmdReset_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdReset.Click
-        clearControls()
-    End Sub
-
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
-        SetEndASPXAccess(Me)
-    End Sub
-
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
-        SetEndASPXAccess(Me)
-    End Sub
 End Class
