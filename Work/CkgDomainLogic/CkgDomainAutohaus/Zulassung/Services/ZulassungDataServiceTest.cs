@@ -55,19 +55,42 @@ namespace CkgDomainLogic.Autohaus.Services
 
         #endregion
 
-        public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKunden().ToList()); } }
+        #region Zulassungen
 
-        public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
+        public List<Kunde> Kunden
+        {
+            get { return PropertyCacheGet(() => LoadKunden().ToList()); }
+        }
 
-        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => !m.IstAbmeldung).ToList()); } }
+        public List<Domaenenfestwert> Fahrzeugarten
+        {
+            get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); }
+        }
 
-        public List<Material> Abmeldearten { get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => m.IstAbmeldung).ToList()); } }
+        public List<Material> Zulassungsarten
+        {
+            get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => !m.IstAbmeldung).ToList()); }
+        }
 
-        public List<Zusatzdienstleistung> Zusatzdienstleistungen { get { return PropertyCacheGet(() => LoadZusatzdienstleistungenFromSap().ToList()); } }
+        public List<Material> Abmeldearten
+        {
+            get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => m.IstAbmeldung).ToList()); }
+        }
 
-        public List<Kennzeichengroesse> Kennzeichengroessen { get { return PropertyCacheGet(() => LoadKennzeichengroessenFromSql().ToList()); } }
+        public List<Zusatzdienstleistung> Zusatzdienstleistungen
+        {
+            get { return PropertyCacheGet(() => LoadZusatzdienstleistungenFromSap().ToList()); }
+        }
 
-        public List<Zulassungskreis> Zulassungskreise { get { return PropertyCacheGet(() => LoadZulassungskreiseFromSap().ToList()); } }
+        public List<Kennzeichengroesse> Kennzeichengroessen
+        {
+            get { return PropertyCacheGet(() => LoadKennzeichengroessenFromSql().ToList()); }
+        }
+
+        public List<Zulassungskreis> Zulassungskreise
+        {
+            get { return PropertyCacheGet(() => LoadZulassungskreiseFromSap().ToList()); }
+        }
 
         private static ZulassungSqlDbContext CreateDbContext()
         {
@@ -89,10 +112,10 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             return new List<Kunde>
                 {
-                    new Kunde { KundenNr = "Avis", Name1 = "Avis Autovermietung GmbH" },
-                    new Kunde { KundenNr = "CSI", Name1 = "CSI Catastrophe International Inc." },
-                    new Kunde { KundenNr = "Tesla", Name1 = "Tesla Motors" },
-                    new Kunde { KundenNr = "Sixt", Name1 = "Sixt Leasing GmbH" },
+                    new Kunde {KundenNr = "Avis", Name1 = "Avis Autovermietung GmbH"},
+                    new Kunde {KundenNr = "CSI", Name1 = "CSI Catastrophe International Inc."},
+                    new Kunde {KundenNr = "Tesla", Name1 = "Tesla Motors"},
+                    new Kunde {KundenNr = "Sixt", Name1 = "Sixt Leasing GmbH"},
                 };
         }
 
@@ -116,7 +139,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return null;
         }
 
-        private IEnumerable<Zusatzdienstleistung> LoadZusatzdienstleistungenFromSap()
+        private static IEnumerable<Zusatzdienstleistung> LoadZusatzdienstleistungenFromSap()
         {
             return null;
         }
@@ -132,6 +155,8 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             return "";
         }
+
+        #endregion
 
 
         #region Zulassungs Report
@@ -165,6 +190,18 @@ namespace CkgDomainLogic.Autohaus.Services
             for (var i = 0; i < 1500; i++)
             {
                 var kundenIndex = random.Next(1, 10000) % Kunden.Count;
+                
+                if (Kunden.Count >= 4)
+                {
+                    kundenIndex = 0;
+                    if (i % 15 == 0)
+                        kundenIndex = 1;
+                    else if (i % 5 == 0)
+                        kundenIndex = 2;
+                    else if (i % 3 == 0)
+                        kundenIndex = 3;
+                }
+
                 var kunde = Kunden.GetRange(kundenIndex, 1).First();
                 
                 var erfDatum = DateTime.Today.AddDays(-1*random.Next(20, 365));
@@ -181,6 +218,8 @@ namespace CkgDomainLogic.Autohaus.Services
                         Preis = (decimal)random.Next(0, 1000) / (zulDatum.Year == 2015 ? 5 : 25)
                     });
             }
+
+            var groupedList = list.GroupBy(item => item.KundenNr).Select(g => new { Kunde = g.Key, Anzahl = g.Count() }).ToList();
 
             return list;
         }

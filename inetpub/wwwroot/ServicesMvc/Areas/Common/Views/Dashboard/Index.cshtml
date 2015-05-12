@@ -104,8 +104,20 @@
                 success: function (result) {
 
                     _dashboardData.data = result.data.data;
-                    console.log(result.data.labels);
+                    //console.log(result.data.labels);
                     _dashboardData.options = jQuery.parseJSON(result.options);
+
+                    if (typeof (_dashboardData.options.pie) !== 'undefined') {
+                        //console.log(_dashboardData.options);
+//                        console.log(_dashboardData.data);
+//                        _dashboardData.data =
+//                        [
+//                            { data: [[0,250]], label: "CSI" },
+//                            { data: [[1, 150]], label: "Tesla" },
+//                            { data: [[2, 50]], label: "Avis" }
+//                        ];
+//                        console.log(_dashboardData.data);
+                    }
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
