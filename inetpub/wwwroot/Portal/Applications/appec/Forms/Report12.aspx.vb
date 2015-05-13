@@ -40,7 +40,6 @@ Public Class Report12
     Protected WithEvents lblInfo As System.Web.UI.WebControls.Label
     Protected WithEvents ucStyles As Styles
     Protected WithEvents lblError As System.Web.UI.WebControls.Label
-    Private m_Hersteller As ec_01
 
     Private Sub Page_Load(ByVal sender As System.Object, ByVal e As System.EventArgs) Handles MyBase.Load
         Session("ShowLink") = "False"

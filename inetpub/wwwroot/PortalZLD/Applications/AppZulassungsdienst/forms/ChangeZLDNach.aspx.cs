@@ -285,7 +285,7 @@ namespace AppZulassungsdienst.forms
                     else
                     {
                         if (objNacherf.AktuellerVorgang.Positionen.Any(p => p.PositionsNr == idpos))
-                            objNacherf.AktuellerVorgang.Positionen.Where(p => p.PositionsNr == idpos || p.UebergeordnetePosition == idpos).ToList().ForEach(p => p.Loeschkennzeichen = "L");
+                            objNacherf.AktuellerVorgang.Positionen.Where(p => p.PositionsNr == idpos || p.UebergeordnetePosition == idpos).ToList().ForEach(p => p.WebBearbeitungsStatus = "L");
 
                         tblRows[0]["PosLoesch"] = "L";
                     }
@@ -796,7 +796,7 @@ namespace AppZulassungsdienst.forms
                 tblRow["NewPos"] = false;
                 tblRow["Menge"] = item.Menge.ToString("F0");
                 tblRow["Preis"] = item.Preis.GetValueOrDefault(0);
-                tblRow["PosLoesch"] = item.Loeschkennzeichen;
+                tblRow["PosLoesch"] = (item.Loeschkennzeichen == "L" ? "L" : item.WebBearbeitungsStatus);
 
                 var gebuehrenPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "G");
 
@@ -1257,7 +1257,7 @@ namespace AppZulassungsdienst.forms
                     }
                     else
                     {
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.Loeschkennzeichen == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
                     }
                 }
 
@@ -1984,7 +1984,7 @@ namespace AppZulassungsdienst.forms
                                 {
                                     foreach (var delPos in positionen.Where(p => neueHpPos.None(np => np.PositionsNr == p.PositionsNr)))
                                     {
-                                        delPos.Loeschkennzeichen = "L";
+                                        delPos.WebBearbeitungsStatus = "L";
                                     }
                                 }
                             }
@@ -1997,11 +1997,11 @@ namespace AppZulassungsdienst.forms
                             else if (selPos.MaterialNr != dRow["Value"].ToString() && dRow["ID_POS"].ToString() != "10")
                             {
                                 // alle zur alten Hauptposition gehörenden Unterpositionen wenn sie unterschiedlich sind löschen
-                                selPos.Loeschkennzeichen = "L";
+                                selPos.WebBearbeitungsStatus = "L";
 
                                 foreach (var delPos in positionen.Where(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString()))
                                 {
-                                    delPos.Loeschkennzeichen = "L";
+                                    delPos.WebBearbeitungsStatus = "L";
                                 }
 
                                 // und die neue Unterposition einfügen ohne Geb.-Positionen, wird später in der Preisfindung aufgebaut
@@ -2078,7 +2078,7 @@ namespace AppZulassungsdienst.forms
                         pos.MaterialName = matbez;
                         pos.Preis = dRow["Preis"].ToString().ToDecimal(0);
                         pos.Menge = dRow["Menge"].ToString().ToDecimal(1);
-                        pos.Loeschkennzeichen = dRow["PosLoesch"].ToString();
+                        pos.WebBearbeitungsStatus = dRow["PosLoesch"].ToString();
 
                         var gebuehrenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "G");
                         if (gebuehrenPos != null && mat != null)
@@ -2213,7 +2213,7 @@ namespace AppZulassungsdienst.forms
                         tblRow["Value"] = pos.MaterialNr;
                         tblRow["OldValue"] = pos.MaterialNr;
                         tblRow["Text"] = pos.MaterialName;
-                        tblRow["PosLoesch"] = pos.Loeschkennzeichen;
+                        tblRow["PosLoesch"] = (pos.Loeschkennzeichen == "L" ? "L" : pos.WebBearbeitungsStatus);
                         tblRow["Preis"] = pos.Preis.GetValueOrDefault(0);
 
                         var gebuehrPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");
