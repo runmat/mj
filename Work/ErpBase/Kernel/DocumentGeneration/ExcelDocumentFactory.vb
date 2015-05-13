@@ -4,6 +4,7 @@ Option Strict On
 Imports System.Configuration
 Imports System.IO
 Imports System.Text
+Imports Aspose.Cells
 
 Namespace Kernel.DocumentGeneration
 
@@ -199,6 +200,48 @@ Namespace Kernel.DocumentGeneration
                 excelTemplatePath = page.Request.PhysicalApplicationPath + excelTemplatePath
             End If
             Dim xlsDoc As Aspose.Cells.WorkbookDesigner = Me.CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet)
+
+            'xlsDoc.Workbook.Save(reportName + ".xls", Aspose.Cells.FileFormatType.Excel2000, Aspose.Cells.SaveType.OpenInExcel, page.Response)
+
+            ' # PDF Tempor‰r Zwischenspeichern und anschlieﬂend FileTransfer
+
+            Dim TempPDFPath As String = ConfigurationManager.AppSettings("TempPDFPath")
+            Dim dir As New System.IO.DirectoryInfo(TempPDFPath)
+
+            If Not dir.Exists Then
+                dir.Create()
+            End If
+
+            Dim fi As New System.IO.FileInfo(TempPDFPath & reportName & ".xls")
+            Dim counter As Integer = 0
+
+            Do While (fi.Exists)
+                fi = New System.IO.FileInfo(TempPDFPath & reportName & counter & ".xls")
+                counter += 1
+            Loop
+
+            xlsDoc.Save(fi.FullName, Aspose.Cells.FileFormatType.Excel2000)
+
+            TransmitFileToClient(page, fi.FullName, Dateitypen.xls)
+
+            ' #
+        End Sub
+
+        Public Sub CreateDocumentAndSendAsResponse(ByVal reportName As String, ByVal data As System.Data.DataTable, ByVal page As System.Web.UI.Page, ByVal pageOrientationLandscape As Boolean, ByVal fitPagesizeHorizontally As Boolean, ByVal fitPagesizeVertically As Boolean, ByVal zoomPercent As Integer, ByVal marginLeftCm As Double, ByVal marginRightCm As Double, ByVal marginTopCm As Double, ByVal marginBottomCm As Double, Optional ByVal useSmartMarker As Boolean = False, Optional ByVal excelTemplatePath As String = Nothing, Optional ByVal colOffSet As Integer = 0, Optional ByVal rowOffSet As Integer = 0)
+
+            If Not excelTemplatePath Is Nothing Then
+                excelTemplatePath = page.Request.PhysicalApplicationPath + excelTemplatePath
+            End If
+            Dim xlsDoc As Aspose.Cells.WorkbookDesigner = Me.CreateDocument(data, useSmartMarker, excelTemplatePath, colOffSet, rowOffSet)
+
+            xlsDoc.Workbook.Worksheets(0).PageSetup.Orientation = CType(IIf(pageOrientationLandscape, PageOrientationType.Landscape, PageOrientationType.Portrait), PageOrientationType)
+            xlsDoc.Workbook.Worksheets(0).PageSetup.Zoom = zoomPercent
+            xlsDoc.Workbook.Worksheets(0).PageSetup.FitToPagesWide = CInt(IIf(fitPagesizeHorizontally, 1, 0))
+            xlsDoc.Workbook.Worksheets(0).PageSetup.FitToPagesTall = CInt(IIf(fitPagesizeVertically, 1, 0))
+            xlsDoc.Workbook.Worksheets(0).PageSetup.LeftMargin = marginLeftCm
+            xlsDoc.Workbook.Worksheets(0).PageSetup.RightMargin = marginRightCm
+            xlsDoc.Workbook.Worksheets(0).PageSetup.TopMargin = marginTopCm
+            xlsDoc.Workbook.Worksheets(0).PageSetup.BottomMargin = marginBottomCm
 
             'xlsDoc.Workbook.Save(reportName + ".xls", Aspose.Cells.FileFormatType.Excel2000, Aspose.Cells.SaveType.OpenInExcel, page.Response)
 
