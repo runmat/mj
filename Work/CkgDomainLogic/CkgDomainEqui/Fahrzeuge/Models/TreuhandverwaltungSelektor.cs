@@ -48,8 +48,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string Fahrgestellnummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.LoanNumber)]
-        public string Darlehensnummer { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ContractNo)]
+        public string Vertragsnummer { get; set; }
 
         #endregion
 

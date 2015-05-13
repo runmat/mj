@@ -244,8 +244,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (selector.Fahrgestellnummer.IsNotNullOrEmpty())
                 filterList = filterList.Where(x => x.Fahrgestellnummer == selector.Fahrgestellnummer).ToList();
 
-            if (selector.Darlehensnummer.IsNotNullOrEmpty())
-                filterList = filterList.Where(x => x.Vertragsnummer == selector.Darlehensnummer).ToList();           
+            if (selector.Vertragsnummer.IsNotNullOrEmpty())
+                filterList = filterList.Where(x => x.Vertragsnummer == selector.Vertragsnummer).ToList();           
 
             DataMarkForRefresh();
 
