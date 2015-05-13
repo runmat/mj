@@ -404,6 +404,9 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_STO_STORNOGRUENDE").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_FIL_CHECK_OPEN_002").WriteOrmForExportTableStructures("I_KREISKZ, I_VKORG, I_VKBUR, I_DATUM", "B", "1010", "4837", "04.05.2015");
+            //new FunctionReflector("Z_FIL_READ_OFF_BEST_POS_001").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_FIL_WE_ZUR_BEST_POS_001").WriteOrmForExportTableStructures("I_LGORT, I_EBELN", "4837", "0");
+
 
             //new FunctionReflector("Z_DPM_FAHRZEUGHISTORIE_AVM").WriteOrmForExportTableStructures("I_KUNNR_AG, I_LICENSE_NUM", "219853", "HH-SZ7766");
             //new FunctionReflector("Z_DPM_DRUCK_FZG_HISTORIE_AVM").WriteOrmForExportTableStructures("I_KUNNR_AG, I_LICENSE_NUM", "219853", "HH-SZ7766");

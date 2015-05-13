@@ -5,8 +5,8 @@
 
 <a class="a_btn_mini new"></a>
 
-@(Html.Telerik()
-    .Grid<AbgemeldetesFahrzeug>()
+@(Html.XTelerik()
+    .XGrid<AbgemeldetesFahrzeug>()
     .Name(gridName)   
     .XAjaxDataBinding("AbgemeldeteFahrzeugeAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
