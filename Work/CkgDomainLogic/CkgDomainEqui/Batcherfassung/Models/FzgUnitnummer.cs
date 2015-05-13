@@ -46,7 +46,7 @@ namespace CkgDomainLogic.FzgModelle.Models
         public bool IstGesperrt { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.BlockRemark)]
-        public bool Sperrvermerk { get; set; }
+        public string Sperrvermerk { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicensePlateLeaseCar)]
         public bool KennzeichenLeasingFahrzeug { get; set; }      

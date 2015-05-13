@@ -210,7 +210,14 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public void SaveItem(Batcherfassung item, Action<string, string> addModelError)
         {
-            var errorMessage = DataService.SaveBatches(item);
+            string items = item.Unitnummern.Replace("\"", "");
+            var unitnummerList = new List<FzgUnitnummer>();
+            string[] lines = items.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+            foreach (var line in lines)
+                unitnummerList.Add(new FzgUnitnummer(){ Unitnummer = line });
+
+            var errorMessage = DataService.SaveBatches(item, unitnummerList);
 
             if (errorMessage.IsNotNullOrEmpty())
                 addModelError("", errorMessage);
@@ -237,10 +244,38 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         public void ValidateModel(Batcherfassung model, bool insertMode, Action<Expression<Func<Batcherfassung, object>>, string> addModelError)
         {
             if (!insertMode)                
+                return;          
+        }
+
+        public void CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
+        {
+            int from, until, cnt;
+            string result = string.Empty;
+            if (!Int32.TryParse(unitnumberFrom, out from))
+                result = "invalid from";
+
+            // TODO -> js validierung
+
+            if (!Int32.TryParse(unitnumberUntil, out until))
+                result += "invalid until";
+
+            if (!Int32.TryParse(count, out cnt))
+                result += "invalid cnt";
+            
+            if((until - from + 1) != cnt)
+                result += "invalid Count";
+
+            SelectedItem.ValidationError = result;
+
+            if (result.IsNotNullOrEmpty())
                 return;
 
-          
+            SelectedItem.Unitnummern = "";
+            for (var i = from; i < until; i++)
+                SelectedItem.Unitnummern += "\"" + i.ToString() + "\"\n";
+            
         }
+
 
         public void FilterBatcherfassungs(string filterValue, string filterProperties)
         {
@@ -259,8 +294,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public string UploadSAPErrortext { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ListItemsWithErrorsOnly)]
-        public bool UploadItemsShowErrorsOnly { get; set; }
+       
              
         public bool CsvUploadFileSave(string fileName, Func<string, bool> fileSaveAction)
         {
@@ -289,14 +323,17 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         void ValidateUploadItems()
         {
-            // -> Duplikate etc...            
+            // -> Duplikate etc... 
+
+            if (SelectedItem.Unitnummern.IsNotNullOrEmpty())
+            {
+                SelectedItem.UnitnummerVon = "";
+                SelectedItem.UnitnummerBis = "";
+            }
         }
 
         public void PrepareUploadItems()
-        {
-
-            // TODO -> was soll nach dem Upload passieren??
-
+        {         
             //string sapError = DataService.SaveUploadItems(UploadItems);
             SelectedItem.Unitnummern = "";
             foreach (var item in UploadItems)

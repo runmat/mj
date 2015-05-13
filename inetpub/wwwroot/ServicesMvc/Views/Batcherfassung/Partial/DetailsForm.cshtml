@@ -40,20 +40,7 @@
             @Html.FormTextBoxFor(m => m.HerstellerName, new { @class = "m-wrap medium", col = "left" })
         }
         @Html.FormTextBoxFor(m => m.Anzahl, new { @class = "m-wrap large", col = "right" })
-                
-        @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right" })
-                        
-        <div id="divExcelUpload" class="portlet app-view">       
-            @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })
-
-            <div id="formWizardTab1" >      
-                @Html.Partial("ExcelUpload/FileUpload")                                                                                   
-            </div>
-        </div>        
-        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large" })
-      
-                        
+                                                     
         @Html.FormTextBoxFor(m => m.Laufzeit, new { @class = "m-wrap large", col = "left" })
         @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
         
@@ -71,6 +58,21 @@
             
         @Html.FormCheckBoxFor(m => m.KennzeichenLeasingFahrzeug, new { @class = "m-wrap large", col = "left" }, labelHidden: true)       
         @Html.FormCheckBoxFor(m => m.SecurityFleet, new { @class = "m-wrap large", col = "right" }, labelHidden: true)    
+        
+        // -> TODO Deko, Abgrenzung, 
+                
+        @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left", @onblur = "return TryCalculateUnitNumbers(this)" })
+        @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right", @onblur = "return TryCalculateUnitNumbers(this)" })
+                        
+        <div id="divExcelUpload" class="portlet app-view">       
+            @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })
+
+            <div id="formWizardTab1" >      
+                @Html.Partial("ExcelUpload/FileUpload")                                                                                   
+            </div>
+        </div>        
+        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large" })
+        
         
         @Html.FormRequiredFieldsSummary()
 

@@ -151,7 +151,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.ZNAVI = source.NaviVorhanden ? "X" : "";
                             destination.ZAHK = source.AnhaengerKupplung ? "X" : "";
                             destination.ZBEMERKUNG = source.Bemerkung;
-
+                            destination.ZERNAM = source.WebUser;
                         }
                     ));
             }
@@ -183,7 +183,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.Unitnummer = source.ZUNIT_NR;                            
                             destination.Fahrgestellnummer = source.CHASSIS_NUM;
                             destination.Kennzeichen = source.LICENSE_NUM;
-                            destination.Sperrvermerk = (source.ZLOEVM.ToUpper() == "X"); 
+                            destination.IstGesperrt = (source.ZLOEVM.ToUpper() == "X");                            
                         }
                     ));
             }
@@ -219,11 +219,27 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.ZNAVI = source.NaviVorhanden ? "X" : "";
                             destination.ZAHK = source.AnhaengerKupplung ? "X" : "";
                             destination.ZBEMERKUNG = source.Bemerkung;
-
+                            //destination.ZLOEVM = source.i
 
                         }
                     ));
             }
         }
+
+        static public ModelMapping<Z_M_EC_AVM_BATCH_INSERT.GT_IN, FzgUnitnummer> Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_BatcherfassungUnitnummerVon
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_BATCH_INSERT.GT_IN, FzgUnitnummer>(
+                        new Dictionary<string, string>()
+                        , null
+                        , (source, destination) =>
+                        {
+                            destination.ZUNIT_NR = source.Unitnummer;                           
+                        }
+                    ));
+            }
+        }
+
     }
 }

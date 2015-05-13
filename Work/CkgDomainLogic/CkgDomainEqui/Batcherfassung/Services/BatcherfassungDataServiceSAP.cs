@@ -77,7 +77,7 @@ namespace CkgDomainLogic.FzgModelle.Services
         }
 
 
-        public string SaveBatches(Batcherfassung batcherfassung)
+        public string SaveBatches(Batcherfassung batcherfassung, List<FzgUnitnummer> unitnummerList)
         {
             var error = SAP.ExecuteAndCatchErrors(
                 
@@ -85,15 +85,13 @@ namespace CkgDomainLogic.FzgModelle.Services
                 () =>
                 {                    
                     Z_M_EC_AVM_BATCH_INSERT.Init(SAP);
-                    var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_ZBATCH_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
-                    SAP.ApplyImport(vgList);
-
-                    SAP.Execute();
-
-                    var outList = Z_M_EC_AVM_BATCH_INSERT.GT_IN.GetExportList(SAP);
-
-                    
-
+                    batcherfassung.WebUser = LogonContext.UserName;
+                    var batchList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_ZBATCH_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
+                    SAP.ApplyImport(batchList);
+                   
+                    var unitList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_BatcherfassungUnitnummerVon.CopyBack(unitnummerList);
+                    SAP.ApplyImport(unitList);
+                    SAP.Execute();                                        
                 },
 
                 // SAP custom error handling:

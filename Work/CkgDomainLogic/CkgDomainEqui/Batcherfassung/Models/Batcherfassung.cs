@@ -43,13 +43,11 @@ namespace CkgDomainLogic.FzgModelle.Models
         [Length(4)]
         public string SippCode { get; set; }
        
-        [LocalizedDisplay(LocalizeConstants.UnitnumberFrom)]
-        [Required]
+        [LocalizedDisplay(LocalizeConstants.UnitnumberFrom)]      
         [Length(8)]
         public string UnitnummerVon { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.UnitnumberUntil)]
-        [Required]
+        [LocalizedDisplay(LocalizeConstants.UnitnumberUntil)]        
         [Length(8)]
         public string UnitnummerBis { get; set; }
 
@@ -126,6 +124,14 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.Bluetooth)]
         public bool Bluetooth { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Blocked)]
+        public bool IstGesperrt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.BlockRemark)]
+        public string Sperrvermerk { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.WebUser)]
+        public string WebUser { get; set; }
 
         [GridHidden, NotMapped]
         public bool InsertModeTmp { get; set; }
@@ -136,7 +142,8 @@ namespace CkgDomainLogic.FzgModelle.Models
             return this;
         }
 
-
+        [LocalizedDisplay(LocalizeConstants.Error)]
+        public string ValidationError { get; set; }
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<BatcherfassungViewModel> GetViewModel { get; set; }

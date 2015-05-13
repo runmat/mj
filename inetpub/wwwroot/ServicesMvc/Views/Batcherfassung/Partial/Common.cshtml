@@ -262,7 +262,26 @@
         $("#divGridUnitnumbers").html('');
     }
 
-   
+    function TryCalculateUnitNumbers() {
+
+        var unitnumberFrom = $("#UnitnummerVon").val();
+        var unitnumberUntil = $("#UnitnummerBis").val();
+        var count = $("#Anzahl").val();
+
+        if (unitnumberFrom == null || unitnumberUntil == null || count == null)
+            return;
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "CalculateUnitNumbers",
+                data: { unitnumberFrom: unitnumberFrom, unitnumberUntil: unitnumberUntil, count: count },
+                loadingShow: true,
+                success: function (result) {
+                    $("#divBatcherfassungDetailsForm").html(result);
+                }
+            });
+    }
   
     ///////////////  Excel Upload /////////////////////////////////////////////////////////////////////
     //////////////                /////////////////////////////////////////////////////////////////////

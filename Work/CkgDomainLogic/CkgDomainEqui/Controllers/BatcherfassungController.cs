@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web.Mvc;
 using System.Web;
 using System.Linq;
@@ -14,6 +13,7 @@ using GeneralTools.Models;
 using GeneralTools.Contracts;
 using Telerik.Web.Mvc;
 using MvcTools.Web;
+using DocumentTools.Services;
 
 namespace ServicesMvc.Controllers
 {
@@ -136,17 +136,23 @@ namespace ServicesMvc.Controllers
         }
 
         #region Export
-
-        /*
-         
-         *   commands.FilteredDataCommand("ExportBatcherfassungFilteredExcel", "Equi");
-             commands.FilteredDataCommand("ExportBatcherfassungFilteredPDF", "Equi");
-         */
-
-        protected override IEnumerable GetGridExportData()
+       
+        public ActionResult ExportBatcherfassungFilteredExcel(int page, string orderBy, string filterBy)
         {
-            return ViewModel.BatcherfassungsFiltered;
+            var dt = ViewModel.BatcherfassungsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Batcherfassung", dt);
+
+            return new EmptyResult();
         }
+
+        public ActionResult ExportBatcherfassungFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.BatcherfassungsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Batcherfassung", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
 
         #endregion
 
@@ -178,9 +184,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ExcelUploadShowData(bool showErrorsOnly)
         {
             // Step 2:  Prepare data for user validation
-
-            ViewModel.UploadItemsShowErrorsOnly = showErrorsOnly;
-
+         
             ViewModel.PrepareUploadItems();
 
             return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
@@ -190,10 +194,18 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
-
-
         #region Unitnummern
       
+        
+        [HttpPost]
+        public ActionResult CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
+        {
+            ViewModel.CalculateUnitNumbers(unitnumberFrom, unitnumberUntil, count);
+
+            return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
+        }
+
+
         [HttpPost]
         public JsonResult UnitnumberSelectionChanged(string fin, bool isChecked)
         {

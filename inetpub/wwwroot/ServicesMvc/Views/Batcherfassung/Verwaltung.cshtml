@@ -4,10 +4,12 @@
 
 <h3 class="page-title">@Localize.BatcherfassungReporting</h3>
 
+<div  class="hide">
 @using (Html.FormSearchBox())
 {
     @Html.Partial("Partial/Suche", Model.BatcherfassungSelektor)
 }
+</div>
 
 @Html.Partial("Partial/Common")
 
