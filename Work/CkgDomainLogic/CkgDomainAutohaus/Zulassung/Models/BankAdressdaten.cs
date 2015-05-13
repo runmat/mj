@@ -46,9 +46,6 @@ namespace CkgDomainLogic.Autohaus.Models
             {
                 if (!Adressdaten.AdresseVollstaendig)
                     yield return new ValidationResult(Localize.CompleteAddressRequired);
-
-                if (!Bankdaten.BankdatenVollstaendig)
-                    yield return new ValidationResult(Localize.CompleteBankDataRequired);
             }
         }
 

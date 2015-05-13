@@ -73,6 +73,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             if (entry.Key == "OptionenDienstleistungen")
                                 return;
 
+                            if (entry.Key == "ZahlerKfzSteuer")
+                                return;
+
                             abmeldungsDict.Add(entry.Key, entry.Value);
                         });
 
@@ -212,9 +215,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
 
             if (Zulassung.BankAdressdaten.Cpdkunde)
+            {
                 Zulassung.BankAdressdaten.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
-            else
-                Zulassung.BankAdressdaten.Adressdaten = new Adressdaten("") { Partnerrolle = "RE" };
+                Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = String.Format("{0}{1}", Zulassung.Halter.Adresse.Name1,
+                    (Zulassung.Halter.Adresse.Name2.IsNullOrEmpty() ? "" : " " + Zulassung.Halter.Adresse.Name2));
+            }
 
             string zulassungsKreis;
             string zulassungsKennzeichen;
@@ -335,9 +340,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
 
             if (Zulassung.BankAdressdaten.Cpdkunde)
-                Zulassung.BankAdressdaten.Bankdaten = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer.Bankdaten);
-            else
-                Zulassung.BankAdressdaten.Bankdaten = new Bankdaten { Partnerrolle = "RE" };
+            {
+                Zulassung.BankAdressdaten.Bankdaten.KontoNr = Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr;
+                Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl;
+                Zulassung.BankAdressdaten.Bankdaten.Iban = Zulassung.ZahlerKfzSteuer.Bankdaten.Iban;
+                Zulassung.BankAdressdaten.Bankdaten.Swift = Zulassung.ZahlerKfzSteuer.Bankdaten.Swift;
+                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut;
+            }
         }
 
         public void DataMarkForRefreshZahlerKfzSteuerAdressen()
