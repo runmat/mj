@@ -11,5 +11,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.DeRegistrationDate)]
         public DateRange StillegungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
+
+        public bool NurMitAbmeldungen { get; set; }
+
+        public bool NurOhneAbmeldungen { get; set; }
     }
 }

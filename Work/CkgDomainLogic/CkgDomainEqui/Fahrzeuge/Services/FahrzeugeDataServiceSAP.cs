@@ -145,11 +145,17 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItemsEquis;
         }   
 
-
         public List<Unfallmeldung> GetUnfallmeldungen(UnfallmeldungenSelektor selector)
         {
             Z_DPM_UF_MELDUNGS_SUCHE.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
-            SAP.SetImportParameter("I_MIT_ABM", "X");
+
+            if (selector.NurMitAbmeldungen)
+                SAP.SetImportParameter("I_MIT_ABM", "X");
+
+            if (selector.NurOhneAbmeldungen)
+                SAP.SetImportParameter("I_OHNE_ABM", "X");
+
+            SAP.SetImportParameter("I_STORNO", "");
 
             if (selector.MeldeDatumRange.IsSelected)
             {
@@ -168,6 +174,111 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             var sapItemsEquis = Z_DPM_UF_MELDUNGS_SUCHE.GT_UF.GetExportList(SAP);
             var webItemsEquis = AppModelMappings.Z_DPM_UF_MELDUNGS_SUCHE_To_Unfallmeldungen.Copy(sapItemsEquis).ToList();
             return webItemsEquis;
+        }
+
+        public void UnfallmeldungenCancel(List<Unfallmeldung> list, string cancelText, out int cancelCount, out string errorMessage)
+        {
+            cancelCount = 0;
+            errorMessage = "";
+
+            foreach (var item in list)
+            {
+                var unfallmeldung = item;
+                var errorMessageOneItem = SAP.ExecuteAndCatchErrors(
+
+                    // exception safe SAP action:
+                    () =>
+                    {
+                        Z_DPM_UF_STORNO.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+                        SAP.SetImportParameter("I_UNFALL_NR", unfallmeldung.UnfallNr);
+                        SAP.SetImportParameter("I_STORNONAM", LogonContext.UserName);
+                        SAP.SetImportParameter("I_STORNOBEM", cancelText);
+                        SAP.Execute();
+                    },
+
+                    // SAP custom error handling:
+                    () =>
+                    {
+                        var sapResult = SAP.ResultMessage;
+                        if (SAP.ResultCode != 0 && SAP.ResultMessage.IsNotNullOrEmpty())
+                            return sapResult;
+
+                        return "";
+                    }
+                );
+
+                if (errorMessageOneItem.IsNullOrEmpty())
+                    cancelCount++;
+                else
+                    errorMessage += (errorMessage.IsNullOrEmpty() ? "" : "; ") + string.Format("{0} {1}: {2}", Localize.VIN, unfallmeldung.Fahrgestellnummer, errorMessageOneItem);
+            }
+        }
+
+        public void MeldungCreateTryLoadEqui(ref Unfallmeldung model, out string errorMessage)
+        {
+            var unfallmeldung = model;
+
+            errorMessage = SAP.ExecuteAndCatchErrors(
+                // exception safe SAP action:
+                () =>
+                {
+                    Z_DPM_UF_EQUI_SUCHE.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+                    SAP.SetImportParameter("I_LICENSE_NUM", unfallmeldung.Kennzeichen);
+                    SAP.SetImportParameter("I_CHASSIS_NUM", unfallmeldung.Fahrgestellnummer);
+                    SAP.SetImportParameter("I_TIDNR", unfallmeldung.BriefNummer);
+                    SAP.SetImportParameter("I_ZZREFERENZ1", unfallmeldung.UnitNummer);
+                    SAP.SetImportParameter("I_VORG_ART", unfallmeldung.MeldungTyp);
+                    SAP.Execute();
+                },
+
+                // SAP custom error handling:
+                () =>
+                {
+                    var sapResult = SAP.ResultMessage;
+                    if (SAP.ResultCode != 0 && SAP.ResultMessage.IsNotNullOrEmpty())
+                        return sapResult;
+
+                    return "";
+                }
+            );
+
+            if (!errorMessage.IsNullOrEmpty())
+                return;
+
+            var sapItemsEquis = Z_DPM_UF_EQUI_SUCHE.GT_EQUIS.GetExportList(SAP);
+            if (sapItemsEquis.None())
+                return;
+
+            var meldungTyp = model.MeldungTyp;
+            model = AppModelMappings.Z_DPM_UF_EQUI_SUCHE_To_Unfallmeldungen.Copy(sapItemsEquis).First();
+            model.MeldungTyp = meldungTyp;
+        }
+
+        public void MeldungCreate(Unfallmeldung unfallmeldung, out string errorMessage)
+        {
+            errorMessage = SAP.ExecuteAndCatchErrors(
+                // exception safe SAP action:
+                () =>
+                {
+                    Z_DPM_UF_CREATE.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+                    SAP.SetImportParameter("I_ERNAM", LogonContext.UserName);
+                    SAP.SetImportParameter("I_EQUNR", unfallmeldung.EquiNr);
+                    SAP.SetImportParameter("I_STATION", unfallmeldung.StationsCode);
+                    SAP.SetImportParameter("I_STANDORT", unfallmeldung.Standort);
+                    SAP.SetImportParameter("I_VORG_ART", unfallmeldung.MeldungTyp);
+                    SAP.Execute();
+                },
+
+                // SAP custom error handling:
+                () =>
+                {
+                    var sapResult = SAP.ResultMessage;
+                    if (SAP.ResultCode != 0 && SAP.ResultMessage.IsNotNullOrEmpty())
+                        return sapResult;
+
+                    return "";
+                }
+            );
         }
     }
 }

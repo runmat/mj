@@ -8,7 +8,15 @@
     <div id="divGrid">
         @Html.Partial("Unfallmeldungen/UnfallmeldungenAlleGrid")
     </div>
+    <div id="divMeldungCreateSearch" class="hide"></div>
+    <div id="divMeldungCreateEdit" class="hide"></div>
 }
+
+<style type="text/css">
+    #txtCancellation {
+        background-color: white!important;
+    }
+</style>
 
 <script type="text/javascript">
 
@@ -49,7 +57,7 @@
         $.ajax({
             type: "POST",
             url: "UnfallmeldungenSelectionChanged",
-            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            data: { unfallNr: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
             success: function (result) {
                 var count = result.allSelectionCount;
@@ -89,6 +97,12 @@
     }
 
     function GridUnfallmeldungen_MultiSelectUpdate(count) {
+
+        if (count == 0)
+            $("#div-cancellation").slideUp(300);
+        else
+            $("#div-cancellation").slideDown(300);
+        
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
@@ -100,7 +114,80 @@
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
+    }
+
+    function SaveCancellation() {
+        $.ajax({
+            type: "POST",
+            url: "UnfallmeldungenCancel",
+            data: { cancelText: $("#txtCancellation").text() },
+            loadingShow: true,
+            success: function(result) {
+                GridUnfallmeldungen_MultiSelectUpdate(0);
+
+                if (result.cancelCountMessage != "")
+                    SpanAlertSuccess("Message", result.cancelCountMessage, 2000);
+
+                if (result.errorMessage != "")
+                    SpanAlertError("ErrorMessage", result.errorMessage, 15000);
+
+                FilterGrid("GridUnfallmeldungen");
+            }
+        });
+    }
+
+    function MeldungCreateSearch() {
+        $.ajax({
+            type: "POST",
+            url: "MeldungCreateSearch",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                $("#divMeldungCreateSearch").html(result);
+                FormPreparePrivateAjax();
+                $("#divGrid").slideUp(200, function () {
+                    $("#divMeldungCreateSearch").slideDown(200);
+                });
+            }
+        });
+    }
+
+    function MeldungCreateSearchComplete() {
+
+        FormPreparePrivateAjax();
+
+        if (!_modelStateValid)
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "MeldungCreateInit",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                $("#divMeldungCreateEdit").html(result);
+                FormPreparePrivateAjax();
+                $("#divMeldungCreateSearch").slideUp(200, function () {
+                    $("#divMeldungCreateEdit").slideDown(200);
+                });
+            }
+        });
+    }
+
+    function MeldungCreateEditComplete() {
+
+        FormPreparePrivateAjax();
+
+        if (!_modelStateValid)
+            return;
+
+        SpanAlertSuccess("Message", "@Localize.AccidentNotificationSuccessfullyCreated.ToJavascriptString()", 2000);
+        setTimeout(function() {
+            $("#divMeldungCreateEdit").slideUp(200, function() {
+                $("#divGrid").slideDown(200);
+                FilterGrid("GridUnfallmeldungen");
+            });
+        });
     }    
-       
     
 </script>

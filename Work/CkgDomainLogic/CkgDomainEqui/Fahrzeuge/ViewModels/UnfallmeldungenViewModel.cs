@@ -28,9 +28,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public UnfallmeldungenSelektor UnfallmeldungenSelektor
         {
-            get { return PropertyCacheGet(() => new UnfallmeldungenSelektor()); }
+            get { return PropertyCacheGet(() => new UnfallmeldungenSelektor { NurMitAbmeldungen = true }); }
             set { PropertyCacheSet(value); }
         }
+
+        public Unfallmeldung MeldungForCreate { get; set; }
 
         [XmlIgnore]
         public List<Unfallmeldung> Unfallmeldungen
@@ -76,15 +78,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void LoadAllUnfallmeldungen()
         {
-            Unfallmeldungen = DataService.GetUnfallmeldungen(new UnfallmeldungenSelektor());
+            // ToDo: Remove "NurOhneAbmeldungen = true"
+            Unfallmeldungen = DataService.GetUnfallmeldungen(new UnfallmeldungenSelektor { NurOhneAbmeldungen = false });
 
             DataMarkForRefresh();
         }
 
-        public void SelectUnfallmeldung(string vin, bool select, out int allSelectionCount)
+        public void SelectUnfallmeldung(string unfallNr, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = Unfallmeldungen.FirstOrDefault(f => f.Fahrgestellnummer == vin);
+            var fzg = Unfallmeldungen.FirstOrDefault(f => f.UnfallNr == unfallNr);
             if (fzg == null)
                 return;
 
@@ -104,6 +107,61 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void FilterUnfallmeldungen(string filterValue, string filterProperties)
         {
             UnfallmeldungenFiltered = Unfallmeldungen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void UnfallmeldungenCancel(string cancelText, out int cancelCount, out string errorMessage)
+        {
+            var list = Unfallmeldungen.Where(c => c.IsSelected).ToListOrEmptyList();
+
+            DataService.UnfallmeldungenCancel(list, cancelText, out cancelCount, out errorMessage);
+
+            LoadAllUnfallmeldungen();
+        }
+
+        public void ValidateMeldungCreationSearch(Action<string, string> addModelError)
+        {
+            if (MeldungForCreate.Kennzeichen.IsNullOrEmpty() &&
+                MeldungForCreate.Fahrgestellnummer.IsNullOrEmpty() &&
+                MeldungForCreate.BriefNummer.IsNullOrEmpty() &&
+                MeldungForCreate.UnitNummer.IsNullOrEmpty())
+            {
+                addModelError("", Localize.ProvideAtLeastOneOption);
+            }
+        }
+
+        public void MeldungCreateTryLoadEqui(Action<string, string> addModelError)
+        {
+            string errorMessage;
+            var model = MeldungForCreate;
+
+            DataService.MeldungCreateTryLoadEqui(ref model, out errorMessage);
+            
+            if (errorMessage.IsNotNullOrEmpty())
+                addModelError("", errorMessage);
+            else
+                MeldungForCreate = model;
+        }
+
+        public void ValidateMeldungCreationEdit(Action<string, string> addModelError, Unfallmeldung model)
+        {
+            if (model.StationsCode.IsNullOrEmpty())
+                addModelError("StationsCode", Localize.Required);
+        }
+
+        public void MeldungCreate(Action<string, string> addModelError, Unfallmeldung model)
+        {
+            string errorMessage;
+
+            MeldungForCreate.MeldungTyp = model.MeldungTyp;
+            MeldungForCreate.StationsCode = model.StationsCode;
+            MeldungForCreate.Standort = model.Standort;
+
+            DataService.MeldungCreate(MeldungForCreate, out errorMessage);
+
+            if (errorMessage.IsNotNullOrEmpty())
+                addModelError("", errorMessage);
+            else
+                LoadAllUnfallmeldungen();
         }
     }
 }

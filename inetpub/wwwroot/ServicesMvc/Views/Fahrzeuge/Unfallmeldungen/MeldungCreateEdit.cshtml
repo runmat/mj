@@ -1,0 +1,36 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model Unfallmeldung
+
+<div id="divMeldungCreateEdit">
+    @using (Ajax.BeginForm("MeldungCreateEdit", "Fahrzeuge", null,
+        new MvcAjaxOptions("divMeldungCreateEdit") { OnComplete = "MeldungCreateEditComplete();" }, new { id = "formMeldungCreateEdit" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+         
+            @Html.FormTextBlockFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", col = "left" })
+            @Html.FormTextBlockFor(m => m.Fahrgestellnummer, new { @class = "m-wrap medium uppercase", col = "right" })
+            
+            @Html.FormTextBlockFor(m => m.BriefNummer, new { @class = "m-wrap medium uppercase", col = "left" })
+            @Html.FormTextBlockFor(m => m.UnitNummer, new { @class = "m-wrap medium uppercase", col = "right" })
+                       
+
+            @Html.FormRadioButtonListFor(m => m.MeldungTyp, Unfallmeldung.MeldungTypen.ToSelectList())
+            @Html.FormTextBoxFor(m => m.StationsCode, new { @class = "m-wrap xsmall uppercase" })
+            @Html.FormTextBoxFor(m => m.Standort, new { @class = "m-wrap large" })
+
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.Create</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+

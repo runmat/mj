@@ -496,6 +496,8 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_STO_STORNO_ORDER").WriteOrmForExportTableStructures("I_ZULBELN, I_STORNOGRUND, I_ERNAM", "0", "0", "test");
             //new FunctionReflector("Z_ZLD_STO_STORNOGRUENDE").WriteOrmForExportTableStructures();
 
+            new FunctionReflector("Z_DPM_UF_CREATE").WriteOrmForExportTableStructures();
+
 
             //CoCTest();
             //TeslaTest();

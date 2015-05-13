@@ -165,17 +165,38 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung>(
-                     new Dictionary<string, string> ()
-                    ,(sap, business) => {
-                        business.Anlagedatum = sap.ERDAT;
+                     new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.AnlageDatum = sap.ERDAT;
                         business.WebUser = sap.ERNAM;
                         business.Kennzeichen = sap.LICENSE_NUM;
                         business.Fahrgestellnummer = sap.CHASSIS_NUM;
-                        business.Erstzulassung = sap.ERSTZULDAT;
-                        business.Kennzeicheneingang = sap.EG_KENNZ;
-                        business.Abmeldung = sap.ABMDT;
+                        business.ErstzulassungDatum = sap.ERSTZULDAT;
+                        business.KennzeicheneingangsDatum = sap.EG_KENNZ;
+                        business.AbmeldeDatum = sap.ABMDT;
                         business.StationsCode = sap.STATION;
-                        business.Mahnstufe = sap.MAHNSTUFE;                        
+                        business.Mahnstufe = sap.MAHNSTUFE;
+                        business.UnfallNr = sap.UNFALL_NR;
+                        business.StornoDatum = sap.STORNODAT;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS, Unfallmeldung> Z_DPM_UF_EQUI_SUCHE_To_Unfallmeldungen
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS, Unfallmeldung>(
+                     new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.BriefNummer = sap.TIDNR;
+                        business.UnitNummer = sap.ZZREFERENZ1;
+                        business.EquiNr = sap.EQUNR;
                     }));
             }
         }
