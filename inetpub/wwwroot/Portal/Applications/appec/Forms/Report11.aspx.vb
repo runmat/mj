@@ -83,7 +83,7 @@ Public Class Report11
         tblHerstellerOutput.Columns.Add("VALPOS", GetType(System.String))
         tblHerstellerOutput.Columns.Add("ZHERST", GetType(System.String))
 
-        m_Hersteller.getData(Session("AppID"), Session.SessionID, Me)
+        m_Hersteller.getStammdaten(Session("AppID"), Session.SessionID)
 
         If (m_Hersteller.Status = 0) Then
             tblHersteller = m_Hersteller.HerstellerAuswahl

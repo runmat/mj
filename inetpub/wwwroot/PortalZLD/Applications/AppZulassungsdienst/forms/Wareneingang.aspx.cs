@@ -79,8 +79,13 @@ namespace AppZulassungsdienst.forms
                 DataRow[] drow = objWareneingang.ErwarteteLieferungen.Select("Bestellnummer='" + lbxBestellungen.SelectedValue + "'");
                 if (drow.Length > 0)
                 {
+                    objWareneingang.IstUmlagerung = (drow[0]["IstUmlagerung"].ToString() == "X");
                     objWareneingang.BELNR = lbxBestellungen.SelectedValue;
-                    objWareneingang.getUmlPositionenFromSAP();
+
+                    if (objWareneingang.IstUmlagerung)
+                        objWareneingang.getUmlPositionenFromSAP();
+                    else
+                        objWareneingang.getBestPositionenFromSAP();
 
                     if (objWareneingang.ErrorOccured)
                     {

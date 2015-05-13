@@ -2094,6 +2094,33 @@ Namespace Beauftragung2
         Protected WithEvents lblZusKundeData As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''trZusHalter-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trZusHalter As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
+        '''lblZusHalter-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents lblZusHalter As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''lblZusHalterData-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents lblZusHalterData As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''lblZusStva-Steuerelement
         '''</summary>
         '''<remarks>
