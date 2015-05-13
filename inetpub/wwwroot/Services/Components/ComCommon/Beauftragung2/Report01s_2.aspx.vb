@@ -205,7 +205,7 @@ Namespace Beauftragung2
                 Dim excelFactory As New Base.Kernel.DocumentGeneration.ExcelDocumentFactory()
                 Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
 
-                excelFactory.CreateDocumentAndSendAsResponse(strFileName, m_objExcel, Page)
+                excelFactory.CreateDocumentAndSendAsResponse(strFileName, m_objExcel, Page, True, True, False, 90, 0.4, 0.4, 0.6, 0.6)
 
             Catch ex As Exception
                 lblError.Text = "Fehler beim Erstellen der Excel-Datei: " + ex.Message

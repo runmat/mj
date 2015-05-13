@@ -367,10 +367,11 @@
                                             </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
-                                                    <asp:ImageButton ID="ibtnedt" ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
+                                                    <asp:ImageButton ID="ibtnedt" Visible='<%# Eval("WebBearbeitungsStatus").ToString() != "L" %>' ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
                                                         runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16" Height="16" />
                                                     <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
-                                                        runat="server" CommandName="Del" ToolTip="Löschen" OnClientClick='if (!confirm("Wollen Sie die Position bzw. den Vorgang wirklich löschen?")) return false;' />
+                                                        runat="server" CommandName="Del" ToolTip="Löschen" 
+                                                        OnClientClick='<%# Eval("PositionsNr").ToString() == "10" ? "" : "if (!confirm(\"Wollen Sie die Position bzw. den Vorgang wirklich löschen?\")) return false;" %>' />
                                                     <asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
                                                         runat="server" CommandName="OK" ToolTip="OK" />
                                                 </ItemTemplate>
