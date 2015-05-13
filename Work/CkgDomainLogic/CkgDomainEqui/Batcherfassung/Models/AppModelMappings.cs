@@ -189,5 +189,41 @@ namespace CkgDomainLogic.FzgModelle.Models
             }
         }
 
+
+        static public ModelMapping<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB, Batcherfassung> Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_Batcherfassung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB, Batcherfassung>(
+                        new Dictionary<string, string>()
+                        , null
+                        , (source, destination) =>
+                        {
+                            destination.ZBATCH_ID = source.ID;
+                            destination.ZMODEL_ID = source.ModellId;
+                            destination.ZSIPP_CODE = source.SippCode;
+                            destination.ZMAKE = source.HerstellerName;
+                            destination.ZMOD_DESCR = source.Modellbezeichnung;
+                            destination.ZPURCH_MTH = source.LiefermonatBAPIFormat;
+                            destination.ZANZAHL = source.Anzahl;
+                            destination.ZUNIT_NR_VON = source.UnitnummerVon;
+                            destination.ZUNIT_NR_BIS = source.UnitnummerBis;
+                            destination.ZFZG_GROUP = source.Fahrzeuggruppe;
+                            destination.ZLAUFZEIT = source.Laufzeit;
+                            destination.ZLZBINDUNG = source.Laufzeitbindung ? "X" : "";
+                            destination.ZAUFNR_VON = source.AuftragsnummerVon;
+                            destination.ZAUFNR_BIS = source.AuftragsnummerBis;
+                            destination.ZMS_REIFEN = source.Winterreifen ? "X" : "";
+                            destination.ZSECU_FLEET = source.SecurityFleet ? "X" : "";
+                            destination.ZLEASING = source.KennzeichenLeasingFahrzeug ? "X" : "";
+                            destination.ZNAVI = source.NaviVorhanden ? "X" : "";
+                            destination.ZAHK = source.AnhaengerKupplung ? "X" : "";
+                            destination.ZBEMERKUNG = source.Bemerkung;
+
+
+                        }
+                    ));
+            }
+        }
     }
 }

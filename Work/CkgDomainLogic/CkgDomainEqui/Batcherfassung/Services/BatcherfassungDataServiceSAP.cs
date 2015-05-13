@@ -1,20 +1,9 @@
-﻿// ReSharper disable RedundantUsingDirective
-
-using System;
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.General.Contracts;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.Fahrzeuge.Contracts;
-using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.FzgModelle.Contracts;
 using CkgDomainLogic.FzgModelle.Models;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.FzgModelle.Models.BatchModelMappings;
@@ -73,7 +62,21 @@ namespace CkgDomainLogic.FzgModelle.Services
             return webItems;
 
         }
-        
+
+        public string UpdateBatch(Batcherfassung batcherfassung)
+        {
+
+            // TODO -> Web User
+
+            Z_M_EC_AVM_BATCH_UPDATE.Init(SAP);
+
+            var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
+            SAP.ApplyImport(vgList);
+
+            return "";
+        }
+
+
         public string SaveBatches(Batcherfassung batcherfassung)
         {
             var error = SAP.ExecuteAndCatchErrors(
@@ -89,8 +92,7 @@ namespace CkgDomainLogic.FzgModelle.Services
 
                     var outList = Z_M_EC_AVM_BATCH_INSERT.GT_IN.GetExportList(SAP);
 
-                    // TODO -> wie geht das mit den Unitnummern??
-                    //batcherfassung.ForEach(x => { outList.Where(x => x.ZUNIT_NR = 
+                    
 
                 },
 
