@@ -11,6 +11,8 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
+    public enum BatchStatusEnum { Neu, ImZulauf, Geschlossen }
+
     public class Batcherfassung : Store
     {
         // TODO -> entf. falls n.n
@@ -135,6 +137,9 @@ namespace CkgDomainLogic.FzgModelle.Models
 
         [GridHidden, NotMapped]
         public bool InsertModeTmp { get; set; }
+
+        [GridHidden, NotMapped]
+        public BatchStatusEnum BatchStatus { get; set; }
 
         public Batcherfassung SetInsertMode(bool insertMode)
         {

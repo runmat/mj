@@ -66,7 +66,8 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.AuftragsnummerVon = source.ZAUFNR_VON.TrimStart(new Char[] { '0' }); 
                             destination.AuftragsnummerBis = source.ZAUFNR_BIS.TrimStart(new Char[] { '0' }); 
                             destination.Bemerkung = source.ZBEMERKUNG;
-                            
+                            destination.Fahrzeuggruppe = source.ZFZG_GROUP;
+
                             int i = 0; // TODO -> Type?
                             int.TryParse(source.ZANZAHL, out i);
                             destination.Anzahl = i.ToString();

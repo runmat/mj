@@ -20,6 +20,7 @@ using DocumentTools.Services;
 
 namespace CkgDomainLogic.FzgModelle.ViewModels
 {
+  
     public class BatcherfassungViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
@@ -37,6 +38,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             set { PropertyCacheSet(value); }
         }
 
+       
 
         public bool InsertMode { get; set; }
 
@@ -155,6 +157,15 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             SelectedItem = Batcherfassungs.FirstOrDefault(m => m.ID == id) ?? new Batcherfassung();
 
+            if (SelectedItem.Status.ToUpper() == "NEU")
+                SelectedItem.BatchStatus = BatchStatusEnum.Neu;
+
+            if (SelectedItem.Status.ToUpper() == "IM ZULAUF")
+                SelectedItem.BatchStatus = BatchStatusEnum.ImZulauf;
+
+            if (SelectedItem.Status.ToUpper() == "GESCHLOSSEN")
+                SelectedItem.BatchStatus = BatchStatusEnum.Geschlossen;
+         
             return SelectedItem;
         }
 
@@ -194,6 +205,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 {
                     ID = "",
                     HerstellerList = Batcherfassungs.Select(x => x.HerstellerList).FirstOrDefault(),
+                    BatchStatus = BatchStatusEnum.Neu
                 };
 
             var itemToDuplicate = Batcherfassungs.FirstOrDefault(m => m.ID == idToDuplicate);
@@ -210,12 +222,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public void SaveItem(Batcherfassung item, Action<string, string> addModelError)
         {
-            string items = item.Unitnummern.Replace("\"", "");
-            var unitnummerList = new List<FzgUnitnummer>();
-            string[] lines = items.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
-
-            foreach (var line in lines)
-                unitnummerList.Add(new FzgUnitnummer(){ Unitnummer = line });
+            var unitnummerList = PrepareUnitnumbers(item);
 
             var errorMessage = DataService.SaveBatches(item, unitnummerList);
 
@@ -223,6 +230,22 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 addModelError("", errorMessage);
             else
                 LoadBatches();
+        }
+
+        private List<FzgUnitnummer> PrepareUnitnumbers(Batcherfassung item)
+        {
+            if (item.Unitnummern.IsNotNullOrEmpty())
+            {
+                string items = item.Unitnummern.Replace("\"", "");
+                var unitnummerList = new List<FzgUnitnummer>();
+                string[] lines = items.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+
+                foreach (var line in lines)
+                    unitnummerList.Add(new FzgUnitnummer() { Unitnummer = line });
+                return unitnummerList;
+            }
+            else
+                return null;
         }
 
         public void LoadUnitnummerByBatchId(string batchId)
@@ -252,18 +275,16 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             int from, until, cnt;
             string result = string.Empty;
             if (!Int32.TryParse(unitnumberFrom, out from))
-                result = "invalid from";
-
-            // TODO -> js validierung
-
+                result = " invalid from ";
+            
             if (!Int32.TryParse(unitnumberUntil, out until))
-                result += "invalid until";
+                result += " invalid until ";
 
             if (!Int32.TryParse(count, out cnt))
-                result += "invalid cnt";
+                result += " invalid cnt ";
             
             if((until - from + 1) != cnt)
-                result += "invalid Count";
+                result += " invalid Count ";
 
             SelectedItem.ValidationError = result;
 

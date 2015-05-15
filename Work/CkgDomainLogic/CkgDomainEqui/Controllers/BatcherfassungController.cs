@@ -94,9 +94,16 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult EditBatcherfassung(string id)
         {
-            ViewModel.InsertMode = false;
-            ModelState.Clear();
-            return PartialView("Partial/DetailsForm", ViewModel.GetItem(id).SetInsertMode(ViewModel.InsertMode));
+            var item = ViewModel.GetItem(id).SetInsertMode(ViewModel.InsertMode);
+
+            if(item.BatchStatus != BatchStatusEnum.Neu)
+                return PartialView("Partial/DetailsFormReadOnly", item);
+            else
+            {
+                ViewModel.InsertMode = false;
+                ModelState.Clear();                         
+                return PartialView("Partial/DetailsForm", item);
+            }
         }
 
         [HttpPost]

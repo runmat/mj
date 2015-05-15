@@ -88,9 +88,12 @@ namespace CkgDomainLogic.FzgModelle.Services
                     batcherfassung.WebUser = LogonContext.UserName;
                     var batchList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_ZBATCH_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
                     SAP.ApplyImport(batchList);
-                   
-                    var unitList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_BatcherfassungUnitnummerVon.CopyBack(unitnummerList);
-                    SAP.ApplyImport(unitList);
+
+                    if (unitnummerList != null)
+                    {
+                        var unitList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_BatcherfassungUnitnummerVon.CopyBack(unitnummerList);
+                        SAP.ApplyImport(unitList);
+                    }
                     SAP.Execute();                                        
                 },
 

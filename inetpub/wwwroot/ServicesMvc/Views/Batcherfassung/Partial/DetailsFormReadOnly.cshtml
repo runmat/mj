@@ -1,0 +1,51 @@
+﻿@using CkgDomainLogic.FzgModelle.Models
+@using System.Collections.Generic
+@model Batcherfassung
+
+<div id="divBatcherfassungDetailsFormReadOnly">
+    @using (Ajax.BeginForm("BatcherfassungDetailsFormSave", "Batcherfassung", null,
+                new MvcAjaxOptions { UpdateTargetId = "divBatcherfassungDetailsForm" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "BatcherfassungAjaxForm" }))
+    {
+
+             
+        @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })                             
+        @Html.FormTextBlockFor(m => m.ModellId, new { @class = "m-wrap large", col = "right" })
+
+        @Html.FormTextBlockFor(m => m.Modellbezeichnung, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBlockFor(m => m.SippCode, new { @class = "m-wrap large", col = "right" })
+        
+        @Html.FormTextBlockFor(m => m.HerstellerName, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBlockFor(m => m.Anzahl, new { @class = "m-wrap large", col = "right" })
+                                                     
+        @Html.FormTextBlockFor(m => m.Laufzeit, new { @class = "m-wrap large", col = "left", disabled = "disabled" })
+        @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+        
+        @Html.FormTextBlockFor(m => m.LiefermonatBAPIFormat, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBlockFor(m => m.Antrieb, new { @class = "m-wrap large", col = "right" })
+               
+        @Html.FormTextBlockFor(m => m.AuftragsnummerVon, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBlockFor(m => m.AuftragsnummerBis, new { @class = "m-wrap large", col = "right" })
+                     
+        @Html.FormCheckBoxFor(m => m.Winterreifen, new { @class = "m-wrap large", col = "left", disabled = "disabled" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.AnhaengerKupplung, new { @class = "m-wrap large", col = "right", disabled = "disabled" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.NaviVorhanden, new { @class = "m-wrap large", col = "left", disabled = "disabled"  }, labelHidden: true)        
+        @Html.FormCheckBoxFor(m => m.Bluetooth, new { @class = "m-wrap large", col = "right", disabled = "disabled" }, labelHidden: true)
+            
+        @Html.FormCheckBoxFor(m => m.KennzeichenLeasingFahrzeug, new { @class = "m-wrap large", col = "left", disabled = "disabled" }, labelHidden: true)       
+        @Html.FormCheckBoxFor(m => m.SecurityFleet, new { @class = "m-wrap large", col = "right", disabled = "disabled" }, labelHidden: true)    
+        
+        // -> TODO Deko, Abgrenzung, 
+                
+        @Html.FormTextBlockFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBlockFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right" })
+                                    
+        if (!String.IsNullOrEmpty(Model.Unitnummern))
+            { @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large", disabled = "disabled" }) }
+        
+        <div class="form-actions">            
+            <button type="button" class="btn" onclick="CloseItemDetails();">@Localize.Close</button>
+        </div>                          
+    }
+</div>

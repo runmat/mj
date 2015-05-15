@@ -4391,6 +4391,7 @@
     <Content Include="Views\Batcherfassung\Partial\Suche.cshtml" />
     <Content Include="Views\Batcherfassung\ExcelUpload\FileUpload.cshtml" />
     <Content Include="Views\Batcherfassung\Partial\GridUnitnumbers.cshtml" />
+    <Content Include="Views\Batcherfassung\Partial\DetailsFormReadOnly.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
