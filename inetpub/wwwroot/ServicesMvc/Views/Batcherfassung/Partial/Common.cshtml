@@ -200,7 +200,7 @@
     }
 
     function ShowGridUnitNumbers(batchId) {
-        //alert();
+       
         $.ajax(
         {
             type: "POST",
@@ -237,22 +237,60 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function UpdateUnitnumber(unitNumber) {
-        alert("UnitNr: " + unitNumber);
+    function UpdateSperrvermerk(unitnummer) {
+        sperrvermerk = $("#" + unitnummer).val();
+        //alert("UnitNr: " + unitnummer + sperrvermerk);
+
+         $.ajax({
+            type: "POST",
+            url: "UpdateSperrvermerk",
+            data: { unitnummer: unitnummer, sperrvermerk: sperrvermerk },
+            loadingShow: false,
+            success: function (result) {
+                          
+            }
+        });
+
     }
     
     function GridUnitnumbers_OnSelectionChange(cb) {
-       
+
+        Grid_FormatMultiRowSelected(cb);
+
         $.ajax({
             type: "POST",
             url: "UnitnumberSelectionChanged",
-            data: { fin: cb.val(), isChecked: cb.is(':checked') },
+            data: { unitnummer: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
             success: function (result) {
                 var count = result.allSelectionCount;
-                // submit-button einblenden
+                if(count > 0)
+                    $("#savebutton").removeClass('hide');
+                else
+                    $("#savebutton").addClass('hide');
+                //GridUnitnumbers_MultiSelectUpdate(result.allSelectionCount);                
             }
         });
+    }
+
+   
+    function SaveUnitNumberState(batchId) {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "UnitnummerFreigebenSperren",
+            loadingShow: false,
+            success: function (result) {
+                //ShowBatcherfassung();
+                ShowGridUnitNumbers(batchId);
+                FormPreparePrivateAjax();
+            },
+            error: function (result) {
+            }
+        });
+
+        return false;
     }
 
     function CloseUnitNumbers() {

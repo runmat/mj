@@ -67,6 +67,9 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         public List<FzgUnitnummer> Unitnummern  { get; set; }
 
         [XmlIgnore]
+        public List<FzgUnitnummer> UnitnummernFiltered { get; set; }
+
+        [XmlIgnore]
         public List<Fahrzeughersteller> FahrzeugHersteller
         {
             get
@@ -216,6 +219,10 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 newItem.ID = "";
                 newItem.ObjectKey = null;                
             }
+
+            Unitnummern = new List<FzgUnitnummer>();
+            UnitnummernFiltered = Unitnummern;
+
             SelectedItem = newItem;
             return newItem;
         }
@@ -261,6 +268,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                                         x.AuftragsnummerBis = SelectedItem.AuftragsnummerBis;
                                         x.Anzahl = SelectedItem.Anzahl;
                                         x.KennzeichenLeasingFahrzeug = SelectedItem.KennzeichenLeasingFahrzeug;
+                                        x.BatchStatus = SelectedItem.BatchStatus;
                                 });           
         }
 
@@ -297,10 +305,55 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             
         }
 
+        public void SelectUnitnummer(string unitNummer, bool select, out int allSelectionCount)
+        {            
+            allSelectionCount = 0;
+            var fzg = Unitnummern.FirstOrDefault(f => f.Unitnummer == unitNummer);
+            if (fzg == null)
+                return;
+
+            fzg.IsSelected = select;
+            allSelectionCount = Unitnummern.Count(c => c.IsSelected);            
+        }
+
+        public void SelectUnitnummern(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
+        {           
+            Unitnummern.ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = Unitnummern.Count(c => c.IsSelected);
+            allCount = Unitnummern.Count();
+            allFoundCount = UnitnummernFiltered.Count();            
+        }
+
+        public void UpdateSperrvermerk(string unitnummer, string sperrvermerk)
+        {
+            var item = Unitnummern.Where(x => x.Unitnummer == unitnummer).FirstOrDefault();
+
+            if (item != null)
+                item.Sperrvermerk = sperrvermerk;        
+        }
+
+        public void FreigebenSperren(Action<string, string> addModelError)
+        {         
+            var items =  Unitnummern.Where(x => x.IsSelected).ToList();
+
+            foreach (var item in items)
+            {
+               var errorMessage = DataService.UpdateBatch(SelectedItem, item.Unitnummer);
+              
+               if (errorMessage.IsNotNullOrEmpty())
+                   addModelError("", errorMessage);
+            }                    
+        }
 
         public void FilterBatcherfassungs(string filterValue, string filterProperties)
         {
             BatcherfassungsFiltered = Batcherfassungs.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterUnitnummern(string filterValue, string filterProperties)
+        {
+            UnitnummernFiltered = Unitnummern.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
 

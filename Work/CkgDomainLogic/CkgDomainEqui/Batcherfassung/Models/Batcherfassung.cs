@@ -56,6 +56,8 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.Unitnumbers)]
         public string Unitnummern { get; set; }
 
+        public string UnitnummerUpdate { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Quantity)]
         [Required]
         [Length(5)]
@@ -132,15 +134,18 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.BlockRemark)]
         public string Sperrvermerk { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Usage)]
+        public string Verwendung { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.WebUser)]
         public string WebUser { get; set; }
 
         [GridHidden, NotMapped]
-        public bool InsertModeTmp { get; set; }
-
-        [GridHidden, NotMapped]
         public BatchStatusEnum BatchStatus { get; set; }
 
+        [GridHidden, NotMapped]
+        public bool InsertModeTmp { get; set; }
+      
         public Batcherfassung SetInsertMode(bool insertMode)
         {
             InsertModeTmp = insertMode;

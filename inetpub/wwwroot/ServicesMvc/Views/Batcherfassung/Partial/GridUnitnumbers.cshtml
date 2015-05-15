@@ -13,12 +13,12 @@
         {
             columns.XBound(c => c.Unitnummer);
             columns.XBound(c => c.IstGesperrt)
-                  .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='GridUnitnumbers_OnSelectionChange($(this))' />")
+                  .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Unitnummer #>' onchange='GridUnitnumbers_OnSelectionChange($(this))' />")
                   .Filterable(false).Sortable(false).Groupable(false).Width(20);
             
             columns.XBound(c => c.Sperrvermerk).Filterable(false).Sortable(false).Groupable(false)
                     .ClientTemplate(
-                        "<input onblur='UpdateUnitnumber(\"<#= data.Unitnummer #>\");' </input>"
+                        "<input onblur='UpdateSperrvermerk(\"<#= data.Unitnummer #>\");' value='<#= data.Sperrvermerk #>' id='<#= data.Unitnummer #>' </input>"
                         + "&nbsp;"
                 );         
                                           
@@ -35,10 +35,19 @@
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
         .XSort(sortOrder => sortOrder.Add(c => c.Unitnummer).Ascending())
-    .XToolBar("Batcherfassung")
+    .ToolBar(commands =>
+         {
+             commands.FilteredDataCommand("ExportUnitnummerFilteredExcel", "Batcherfassung");
+             commands.FilteredDataCommand("ExportUnitnummerFilteredPDF", "Batcherfassung");
+         })
 )
 
-<button type="button" id="btnBackToResult" class="btn blue pull-right margin-left-10 hide" onclick="CloseUnitNumbers();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
+<div class="form-horizontal">
+    <div id="formActions" class="form-actions">                  
+        <button type="button" id="backbutton" class="btn green" onclick="CloseUnitNumbers(); "> @Localize.Back<i class="m-icon-swapright m-icon-white"></i></button>                   
+        <button type="button" id="savebutton" class="btn green hide" onclick="SaveUnitNumberState(@Model.SelectedItem.ID); "> @Localize.Send<i class="m-icon-swapright m-icon-white"></i></button>       
+    </div>
+</div>
 
 
 

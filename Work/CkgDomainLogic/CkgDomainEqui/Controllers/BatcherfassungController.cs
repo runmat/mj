@@ -214,17 +214,16 @@ namespace ServicesMvc.Controllers
 
 
         [HttpPost]
-        public JsonResult UnitnumberSelectionChanged(string fin, bool isChecked)
+        public JsonResult UnitnumberSelectionChanged(string unitnummer, bool isChecked)
         {
-            int allSelectionCount = 0, allCount = 0, allFoundCount = 0, itemsWithoutErrorOnly = 0;
-            //bool ret = false;
-            //if (String.IsNullOrEmpty(fin))
-            //    ret = TreuhandverwaltungViewModel.SelectFahrzeuge(isChecked, out allSelectionCount, out allCount, out allFoundCount);
-            //else
-            //    ret = TreuhandverwaltungViewModel.SelectFahrzeug(fin, isChecked, out allSelectionCount);
-
-            //itemsWithoutErrorOnly = ret == true ? 0 : 1;
-            return Json(new { allSelectionCount, allCount, allFoundCount, itemsWithoutErrorOnly });
+            int allSelectionCount = 0, allCount = 0, allFoundCount = 0;
+            
+            if (unitnummer.IsNullOrEmpty())
+                ViewModel.SelectUnitnummern(isChecked, out allSelectionCount, out allCount, out allFoundCount);
+            else
+                ViewModel.SelectUnitnummer(unitnummer, isChecked, out allSelectionCount);
+            
+            return Json(new { allSelectionCount, allCount, allFoundCount });
         }
 
         [HttpPost]
@@ -234,6 +233,22 @@ namespace ServicesMvc.Controllers
             return PartialView("Partial/GridUnitNumbers", ViewModel);
         }
 
+        [HttpPost]
+        public ActionResult UnitnummerFreigebenSperren()
+        {            
+            ViewModel.FreigebenSperren(ModelState.AddModelError);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult UpdateSperrvermerk(string unitnummer, string sperrvermerk)
+        {
+            ViewModel.UpdateSperrvermerk(unitnummer, sperrvermerk);
+            
+            return new EmptyResult();
+        }
+
         [GridAction]
         public ActionResult UnitnummerAjaxBinding()
         {
@@ -241,9 +256,22 @@ namespace ServicesMvc.Controllers
         }
 
        
+        public ActionResult ExportUnitnummerFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.UnitnummernFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Batcherfassung", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportUnitnummerFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.UnitnummernFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Batcherfassung", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
          
-
-
         #endregion
 
 

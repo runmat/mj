@@ -24,17 +24,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             source.UnitNummerVon = source.UnitNummerVon.IsNullOrEmpty() ? String.Empty : source.UnitNummerVon;
                             source.UnitNummerBis = source.UnitNummerBis.IsNullOrEmpty() ? String.Empty : source.UnitNummerBis;
                             destination.ZUNIT_NR_VON = source.UnitNummerVon.PadLeft(8, '0');
-                            destination.ZUNIT_NR_BIS = source.UnitNummerBis.PadLeft(8, '0');
-
-                            //destination.ZMODEL_ID_VON
-                            //destination.ZMODEL_ID_BIS
-
-                            //destination.ZPURCH_MTH_VON
-                            //destination.ZPURCH_MTH_BIS
-
-                            //destination.ZBATCH_ID_VON
-                            //destination.ZBATCH_ID_BIS
-
+                            destination.ZUNIT_NR_BIS = source.UnitNummerBis.PadLeft(8, '0');                                                        
                             source.Auftragnummer = source.Auftragnummer.IsNullOrEmpty() ? String.Empty : source.Auftragnummer;
                             destination.ZAUFNR = source.Auftragnummer.PadLeft(12, '0');
 
@@ -67,10 +57,8 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.AuftragsnummerBis = source.ZAUFNR_BIS.TrimStart(new Char[] { '0' }); 
                             destination.Bemerkung = source.ZBEMERKUNG;
                             destination.Fahrzeuggruppe = source.ZFZG_GROUP;
-
-                            int i = 0; // TODO -> Type?
-                            int.TryParse(source.ZANZAHL, out i);
-                            destination.Anzahl = i.ToString();
+                            destination.Verwendung = source.ZVERWENDUNG;                          
+                            destination.Anzahl = source.ZANZAHL;
                             
                             string[] dat = source.ZPURCH_MTH.Split('.');
                             destination.Liefermonat = dat.Length == 2 ? dat[0] : "";
@@ -184,7 +172,8 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.Unitnummer = source.ZUNIT_NR;                            
                             destination.Fahrgestellnummer = source.CHASSIS_NUM;
                             destination.Kennzeichen = source.LICENSE_NUM;
-                            destination.IstGesperrt = (source.ZLOEVM.ToUpper() == "X");                            
+                            destination.IstGesperrt = (source.ZLOEVM.ToUpper() == "X");
+                            destination.Einsteuerung = source.REPLA_DATE;
                         }
                     ));
             }
@@ -200,18 +189,17 @@ namespace CkgDomainLogic.FzgModelle.Models
                         , null
                         , (source, destination) =>
                         {
-                            destination.ZBATCH_ID = source.ID;
+                            // TODO -> brauchen wir diese?
+                            /*
                             destination.ZMODEL_ID = source.ModellId;
                             destination.ZSIPP_CODE = source.SippCode;
                             destination.ZMAKE = source.HerstellerName;
                             destination.ZMOD_DESCR = source.Modellbezeichnung;
                             destination.ZPURCH_MTH = source.LiefermonatBAPIFormat;
-                            destination.ZANZAHL = source.Anzahl;
-                            destination.ZUNIT_NR_VON = source.UnitnummerVon;
-                            destination.ZUNIT_NR_BIS = source.UnitnummerBis;
+                            destination.ZANZAHL = source.Anzahl;                           
                             destination.ZFZG_GROUP = source.Fahrzeuggruppe;
                             destination.ZLAUFZEIT = source.Laufzeit;
-                            destination.ZLZBINDUNG = source.Laufzeitbindung ? "X" : "";
+                            
                             destination.ZAUFNR_VON = source.AuftragsnummerVon;
                             destination.ZAUFNR_BIS = source.AuftragsnummerBis;
                             destination.ZMS_REIFEN = source.Winterreifen ? "X" : "";
@@ -219,8 +207,16 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.ZLEASING = source.KennzeichenLeasingFahrzeug ? "X" : "";
                             destination.ZNAVI = source.NaviVorhanden ? "X" : "";
                             destination.ZAHK = source.AnhaengerKupplung ? "X" : "";
+                            */
+                              
+                            destination.ZBATCH_ID = source.ID;
+                            destination.ZUNIT_NR = source.UnitnummerUpdate;
+                            destination.ZLZBINDUNG = source.Laufzeitbindung ? "X" : "";
+                            destination.ZLOEVM = source.IstGesperrt ? "X" : "";
+                            destination.ZDAT_SPERR = DateTime.Now;
+                            destination.ZBEM_SPERR = source.Sperrvermerk;
+                            destination.ZUSER_SPERR = source.WebUser;
                             destination.ZBEMERKUNG = source.Bemerkung;
-                            //destination.ZLOEVM = source.i
 
                         }
                     ));

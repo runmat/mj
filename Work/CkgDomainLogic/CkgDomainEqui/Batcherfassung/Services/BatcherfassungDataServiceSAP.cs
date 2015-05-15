@@ -63,16 +63,16 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         }
 
-        public string UpdateBatch(Batcherfassung batcherfassung)
-        {
-
-            // TODO -> Web User
-
+        public string UpdateBatch(Batcherfassung batcherfassung, string unitnummer)
+        {            
             Z_M_EC_AVM_BATCH_UPDATE.Init(SAP);
+            batcherfassung.WebUser = LogonContext.UserName;
+            batcherfassung.UnitnummerUpdate = unitnummer;
 
             var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
             SAP.ApplyImport(vgList);
-
+            
+            SAP.Execute(); 
             return "";
         }
 

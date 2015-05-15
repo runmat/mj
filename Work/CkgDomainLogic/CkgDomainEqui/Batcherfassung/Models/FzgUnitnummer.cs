@@ -1,6 +1,7 @@
 ﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using System;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
@@ -40,7 +41,7 @@ namespace CkgDomainLogic.FzgModelle.Models
         public string Anzahl { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.IntroductionOfVehicles)]
-        public string Einsteuerung { get; set; }
+        public DateTime? Einsteuerung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Blocked)]
         public bool IstGesperrt { get; set; }
@@ -49,6 +50,8 @@ namespace CkgDomainLogic.FzgModelle.Models
         public string Sperrvermerk { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicensePlateLeaseCar)]
-        public bool KennzeichenLeasingFahrzeug { get; set; }      
+        public bool KennzeichenLeasingFahrzeug { get; set; }
+      
+        public BatchStatusEnum BatchStatus { get; set; }
     }
 }
