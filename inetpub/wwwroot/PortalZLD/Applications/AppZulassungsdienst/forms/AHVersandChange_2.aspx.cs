@@ -66,6 +66,7 @@ namespace AppZulassungsdienst.forms
             {
                 FillZulUnterlagen();
                 fillForm();
+                TryRestorePageData();
             }
         }
 
@@ -120,51 +121,29 @@ namespace AppZulassungsdienst.forms
             if (kopfdaten.LieferantenNr.NotNullOrEmpty().Length >= 2 && kopfdaten.LieferantenNr.TrimStart('0').Substring(0, 2) == "56")
                 objNacherf.CheckLieferant();
 
-            //Daten senden.
-            objNacherf.SaveAHVersandVorgangToSap(m_User.UserName);
+            // bisherige Eingaben merken
+            SavePrintTableData();
+            Session["objNacherf"] = objNacherf;
 
-            if (objNacherf.ErrorOccured)
-            {
-                lblError.Text = "Daten konnten nicht in SAP gespeichert werden!" + objNacherf.Message;
+            if (!Check48hVersandMoeglich())
                 return;
-            }
 
-            Hashtable imageHt = new Hashtable();
-            DataTable tblWordData = CreatePrintTable();
-            imageHt.Add("Logo", m_User.Customer.LogoImage);
-            String sFilePath = "C:\\inetpub\\wwwroot\\Portalzld\\temp\\Excel\\" + m_User.UserName + String.Format("{0:ddMMyyhhmmss}", DateTime.Now);
-            WordDocumentFactory docFactory = new WordDocumentFactory(tblWordData, imageHt);
-            if (!String.IsNullOrEmpty(objNacherf.DocRueck1))
+            if (objCommon.Ist48hZulassung)
             {
-                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungAbwAdresse.doc");
+                SetAbwLieferadresse();
+                Fill48hDialog();
+                MPE48h.Show();
             }
             else
             {
-                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungDEZ.doc");
+                SaveVorgang();
             }
+        }
 
-            Session["App_ContentType"] = "Application/pdf";
-            Session["App_Filepath"] = sFilePath + ".pdf";
-
-            ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
-
-            String sZULBELN = Request.QueryString["id"];
-            DataRow[] DelRow = objNacherf.AHVersandListe.Select("ZULBELN='" + sZULBELN + "'");
-            if (DelRow.Length > 0)
-            {
-                foreach (DataRow rToDel in DelRow)
-                {
-                    objNacherf.AHVersandListe.Rows.Remove(rToDel);
-                }
-            }
-
-            lblMessage.Visible = true;
-            lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
-            lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
-            lbtnErfassen.Visible = true;
-            cmdCreate.Visible = false;
-            lb_zurueck.Visible = false;
-            Sendmail();
+        protected void lb48hContinue_Click(object sender, EventArgs e)
+        {
+            MPE48h.Hide();
+            SaveVorgang();
         }
 
         /// <summary>
@@ -597,11 +576,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lbtnAdresseHin_Click(object sender, EventArgs e)
         {
-            ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsopenkDialog",
-                        "openDialogAndBlock('AdresseHin');", true);
-            ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsUnblockDialog",
-                                    "unblockDialog('AdresseHin');", true);
-
+            MPEAdrHin.Show();
         }
 
         /// <summary>
@@ -619,9 +594,9 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        protected void cmdCloseDialog_Click(object sender, EventArgs e)
+        protected void cmdCloseDialogHin_Click(object sender, EventArgs e)
         {
-            ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('AdresseHin');", true);
+            MPEAdrHin.Hide();
         }
 
         /// <summary>
@@ -647,7 +622,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('');", true);
+                MPEAdrRueck.Hide();
             }
         }
 
@@ -658,11 +633,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void lbtnAdresseRueck_Click(object sender, EventArgs e)
         {
-            ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsopenkDialog",
-               "openDialogAndBlock('');", true);
-            ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsUnblockDialog",
-                                    "unblockDialog('');", true);
-
+            MPEAdrRueck.Show();
         }
 
         /// <summary>
@@ -688,7 +659,7 @@ namespace AppZulassungsdienst.forms
             txtPlz.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             txtOrt.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             Session["objNacherf"] = objNacherf;
-            ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('AdresseHin');", true);
+            MPEAdrHin.Hide();
         }
 
         /// <summary>
@@ -696,7 +667,7 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
-        protected void LinkButton2_Click(object sender, EventArgs e)
+        protected void cmdSaveAdrRueck_Click(object sender, EventArgs e)
         {
             lblAdrRueckError.Text = "";
             if (CheckAdr1Rueck())
@@ -736,7 +707,7 @@ namespace AppZulassungsdienst.forms
             txtPLZ2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             txtOrt2Rueck.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             Session["objNacherf"] = objNacherf;
-            ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog('');", true);
+            MPEAdrRueck.Hide();
         }
 
         /// <summary>
@@ -810,6 +781,81 @@ namespace AppZulassungsdienst.forms
         #endregion
 
         #region Methods
+
+        private void SetAbwLieferadresse()
+        {
+            txtNameHin1.Text = objCommon.AbwName1;
+            txtNameHin2.Text = objCommon.AbwName2;
+            txtStrasseHin.Text = objCommon.AbwStrasse;
+            txtPlz.Text = objCommon.AbwPlz;
+            txtOrt.Text = objCommon.AbwOrt;
+            objNacherf.Name1Hin = txtNameHin1.Text;
+            objNacherf.Name2Hin = txtNameHin2.Text;
+            objNacherf.StrasseHin = txtStrasseHin.Text;
+            objNacherf.PLZHin = txtPlz.Text;
+            objNacherf.OrtHin = txtOrt.Text;
+        }
+
+        private void Fill48hDialog()
+        {
+            var liefUhrzeit = objCommon.LieferUhrzeitBis;
+            if (!String.IsNullOrEmpty(liefUhrzeit) && liefUhrzeit.Length > 5)
+                liefUhrzeit = String.Format("{0}:{1} Uhr", liefUhrzeit.Substring(0, 2), liefUhrzeit.Substring(2, 2));
+            lblLieferuhrzeit.Text = liefUhrzeit;
+            lblAbwName.Text = String.Format("{0} {1}", objCommon.AbwName1, objCommon.AbwName2);
+            lblAbwStrasse.Text = objCommon.AbwStrasse;
+            lblAbwOrt.Text = String.Format("{0} {1}", objCommon.AbwPlz, objCommon.AbwOrt);
+        }
+
+        private void SaveVorgang()
+        {
+            objNacherf.SaveAHVersandVorgangToSap(m_User.UserName);
+
+            if (objNacherf.ErrorOccured)
+            {
+                lblError.Text = "Daten konnten nicht in SAP gespeichert werden!" + objNacherf.Message;
+                return;
+            }
+
+            Hashtable imageHt = new Hashtable();
+            imageHt.Add("Logo", m_User.Customer.LogoImage);
+            String sFilePath = "C:\\inetpub\\wwwroot\\Portalzld\\temp\\Excel\\" + m_User.UserName + String.Format("{0:ddMMyyhhmmss}", DateTime.Now);
+            WordDocumentFactory docFactory = new WordDocumentFactory(objNacherf.tblPrintDataForPdf, imageHt);
+            if (!String.IsNullOrEmpty(objNacherf.DocRueck1))
+            {
+                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungAbwAdresse.doc");
+            }
+            else
+            {
+                docFactory.CreateDocumentAndSave(sFilePath, this.Page, "Applications\\AppZulassungsdienst\\Documents\\ZulassungDEZ.doc");
+            }
+
+            Session["App_ContentType"] = "Application/pdf";
+            Session["App_Filepath"] = sFilePath + ".pdf";
+
+            ResponseHelper.Redirect("Printpdf.aspx", "_blank", "left=0,top=0,resizable=YES,scrollbars=YES");
+
+            String sZULBELN = Request.QueryString["id"];
+            DataRow[] DelRow = objNacherf.AHVersandListe.Select("ZULBELN='" + sZULBELN + "'");
+            if (DelRow.Length > 0)
+            {
+                foreach (DataRow rToDel in DelRow)
+                {
+                    objNacherf.AHVersandListe.Rows.Remove(rToDel);
+                }
+            }
+
+            lblMessage.Visible = true;
+            lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
+            lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
+            lbtnErfassen.Visible = true;
+            cmdCreate.Visible = false;
+            lb_zurueck.Visible = false;
+            Sendmail();
+
+            objNacherf.tblPrintDataForPdf.Clear();
+            Session["objNacherf"] = objNacherf;
+        }
 
         /// <summary>
         /// Geforderte Zulassungsunterlagen des Amtes selektieren und checkboxes füllen.
@@ -1004,126 +1050,13 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Tabellenspalten für die PDF-Generierung erstellen.
+        /// Tabellenwerte für die PDF-Generierung übernehmen.
         /// </summary>
-        /// <param name="tblWordData">Tabelle PDF</param>
-        private void CreateColumsPrintTable(ref DataTable tblWordData)
-        {
-            tblWordData.Columns.Add("KreisKennz", typeof(String));
-            tblWordData.Columns.Add("Kunnr", typeof(String));
-            tblWordData.Columns.Add("Name1", typeof(String));
-            tblWordData.Columns.Add("KreisBez", typeof(String));
-            tblWordData.Columns.Add("Reserviert", typeof(Boolean));
-            tblWordData.Columns.Add("Feinstaub", typeof(String));
-            tblWordData.Columns.Add("Kennzeichen", typeof(String));
-            tblWordData.Columns.Add("RNr", typeof(String));
-            tblWordData.Columns.Add("WunschKennz", typeof(Boolean));
-            tblWordData.Columns.Add("EinKennz", typeof(Boolean));
-            tblWordData.Columns.Add("HandRegistOrg", typeof(Boolean));
-            tblWordData.Columns.Add("HandRegistKopie", typeof(Boolean));
-            tblWordData.Columns.Add("GewerbeOrg", typeof(Boolean));
-            tblWordData.Columns.Add("GewerbeKopie", typeof(Boolean));
-            tblWordData.Columns.Add("PersoOrg", typeof(Boolean));
-            tblWordData.Columns.Add("PersoKopie", typeof(Boolean));
-            tblWordData.Columns.Add("Anzahl", typeof(String));
-            tblWordData.Columns.Add("ReisepassOrg", typeof(Boolean));
-            tblWordData.Columns.Add("ReisepassKopie", typeof(Boolean));
-            tblWordData.Columns.Add("ZulVollOrg", typeof(Boolean));
-            tblWordData.Columns.Add("ZulVollKopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("EinzugOrg", typeof(Boolean));
-            tblWordData.Columns.Add("EinzugKopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("eVBOrg", typeof(Boolean));
-            tblWordData.Columns.Add("eVBKopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("ZulBeschein1Org", typeof(Boolean));
-            tblWordData.Columns.Add("ZulBeschein1Kopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("ZulBeschein2Org", typeof(Boolean));
-            tblWordData.Columns.Add("ZulBeschein2Kopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("CoCOrg", typeof(Boolean));
-            tblWordData.Columns.Add("CoCKopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("HUOrg", typeof(Boolean));
-            tblWordData.Columns.Add("HUKopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("AUOrg", typeof(Boolean));
-            tblWordData.Columns.Add("AUKopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("Frei1Org", typeof(Boolean));
-            tblWordData.Columns.Add("Frei1Kopie", typeof(Boolean));
-
-            tblWordData.Columns.Add("Frei2Org", typeof(Boolean));
-            tblWordData.Columns.Add("Frei2Kopie", typeof(Boolean));
-            tblWordData.Columns.Add("Frei1Text", typeof(String));
-            tblWordData.Columns.Add("Frei2Text", typeof(String));
-            tblWordData.Columns.Add("Frei3Text", typeof(String));
-            tblWordData.Columns.Add("KennzJa_Nein", typeof(Boolean));
-            tblWordData.Columns.Add("KopieGebuehr", typeof(Boolean));
-            tblWordData.Columns.Add("Postexpress", typeof(Boolean));
-            tblWordData.Columns.Add("normPostweg", typeof(Boolean));
-            tblWordData.Columns.Add("FrachtBack", typeof(String));
-            tblWordData.Columns.Add("FrachtHin", typeof(String));
-
-            tblWordData.Columns.Add("HandelsregFa", typeof(String));
-            tblWordData.Columns.Add("Gewerb", typeof(String));
-            tblWordData.Columns.Add("PersoName", typeof(String));
-            tblWordData.Columns.Add("Reisepass", typeof(String));
-            tblWordData.Columns.Add("EVB", typeof(String));
-
-            tblWordData.Columns.Add("KstLief", typeof(String));
-            tblWordData.Columns.Add("Name1Lief", typeof(String));
-            tblWordData.Columns.Add("Name2Lief", typeof(String));
-            tblWordData.Columns.Add("StrasseLief", typeof(String));
-            tblWordData.Columns.Add("OrtLief", typeof(String));
-            tblWordData.Columns.Add("TelLief", typeof(String));
-            tblWordData.Columns.Add("FaxLief", typeof(String));
-
-            tblWordData.Columns.Add("KstFil", typeof(String));
-            tblWordData.Columns.Add("Name1Fil", typeof(String));
-            tblWordData.Columns.Add("Name2Fil", typeof(String));
-            tblWordData.Columns.Add("StrasseFil", typeof(String));
-            tblWordData.Columns.Add("OrtFil", typeof(String));
-            tblWordData.Columns.Add("TelFil", typeof(String));
-            tblWordData.Columns.Add("FaxFil", typeof(String));
-
-            tblWordData.Columns.Add("Frei3", typeof(Boolean));
-            tblWordData.Columns.Add("ID", typeof(String));
-            tblWordData.Columns.Add("KennzSonder", typeof(String));
-            tblWordData.Columns.Add("Referenz1", typeof(String));
-            tblWordData.Columns.Add("Referenz2", typeof(String));
-            tblWordData.Columns.Add("ErfDatum", typeof(String));
-            tblWordData.Columns.Add("Zuldat", typeof(String));
-            tblWordData.Columns.Add("Bemerkung", typeof(String));
-
-            // Adressen für Rücksendung
-
-            tblWordData.Columns.Add("DocRueck", typeof(String));
-            tblWordData.Columns.Add("RueckName1", typeof(String));
-            tblWordData.Columns.Add("RueckName2", typeof(String));
-            tblWordData.Columns.Add("RueckStrasse", typeof(String));
-            tblWordData.Columns.Add("RueckOrtPLZ", typeof(String));
-
-            tblWordData.Columns.Add("DocRueck2", typeof(String));
-            tblWordData.Columns.Add("Rueck2Name1", typeof(String));
-            tblWordData.Columns.Add("Rueck2Name2", typeof(String));
-            tblWordData.Columns.Add("Rueck2Strasse", typeof(String));
-            tblWordData.Columns.Add("Rueck2OrtPLZ", typeof(String));
-        }
-
-        /// <summary>
-        /// Tabellenwerte für die PDF-Generierung einfügen.
-        /// </summary>
-        /// <returns>Tabelle PDF</returns>
-        private DataTable CreatePrintTable()
+        private void SavePrintTableData()
         {
             var kopfdaten = objNacherf.AktuellerVorgang.Kopfdaten;
 
-            DataTable tblWordData = new DataTable();
-            CreateColumsPrintTable(ref tblWordData);
-            DataRow dRow = tblWordData.NewRow();
+            DataRow dRow = objNacherf.tblPrintDataForPdf.NewRow();
 
             dRow["KreisKennz"] = kopfdaten.Landkreis;
             dRow["Kunnr"] = kopfdaten.KundenNr;
@@ -1200,6 +1133,8 @@ namespace AppZulassungsdienst.forms
             DataRow[] SelRow = objNacherf.BestLieferanten.Select("LIFNR = '" + ddlLief.SelectedValue + "'");
             if (SelRow.Length > 0)
             {
+                dRow["Lief"] = ddlLief.SelectedValue;
+
                 if (ddlLief.SelectedValue.TrimStart('0').Substring(0, 2) == "56")
                 {
                     dRow["KstLief"] = "Kst. " + ddlLief.SelectedValue.TrimStart('0').Substring(2, 4);
@@ -1258,10 +1193,73 @@ namespace AppZulassungsdienst.forms
                     dRow["Rueck2OrtPLZ"] = objNacherf.PLZ2Rueck + " " + objNacherf.Ort2Rueck;
                 }
 
-                tblWordData.Rows.Add(dRow);
-
+                objNacherf.tblPrintDataForPdf.Rows.Add(dRow);
             }
-            return tblWordData;
+        }
+
+        /// <summary>
+        /// Eingabefelder wiederherstellen, wenn zwischendurch auf Seite 1 gewechselt
+        /// </summary>
+        private void TryRestorePageData()
+        {
+            if (objNacherf.tblPrintDataForPdf.Rows.Count == 0)
+                return;
+
+            var dRow = objNacherf.tblPrintDataForPdf.Rows[0];
+
+            chkHandRegist.Items[0].Selected = (bool)dRow["HandRegistOrg"];
+            chkHandRegist.Items[1].Selected = (bool)dRow["HandRegistKopie"];
+            Gewerbe.Items[0].Selected = (bool)dRow["GewerbeOrg"];
+            Gewerbe.Items[1].Selected = (bool)dRow["GewerbeKopie"];
+            chkPerso.Items[0].Selected = (bool)dRow["PersoOrg"];
+            chkPerso.Items[1].Selected = (bool)dRow["PersoKopie"];
+            chkReisepass.Items[0].Selected = (bool)dRow["ReisepassOrg"];
+            chkReisepass.Items[1].Selected = (bool)dRow["ReisepassKopie"];
+            chkZulVoll.Items[0].Selected = (bool)dRow["ZulVollOrg"];
+            chkZulVoll.Items[1].Selected = (bool)dRow["ZulVollKopie"];
+            chkEinzug.Items[0].Selected = (bool)dRow["EinzugOrg"];
+            chkEinzug.Items[1].Selected = (bool)dRow["EinzugKopie"];
+            chkevB.Items[0].Selected = (bool)dRow["eVBOrg"];
+            chkevB.Items[1].Selected = (bool)dRow["eVBKopie"];
+            chkZulBeschein1.Items[0].Selected = (bool)dRow["ZulBeschein1Org"];
+            chkZulBeschein1.Items[1].Selected = (bool)dRow["ZulBeschein1Kopie"];
+            chkZulBeschein2.Items[0].Selected = (bool)dRow["ZulBeschein2Org"];
+            chkZulBeschein2.Items[1].Selected = (bool)dRow["ZulBeschein2Kopie"];
+            chkCoC.Items[0].Selected = (bool)dRow["CoCOrg"];
+            chkCoC.Items[1].Selected = (bool)dRow["CoCKopie"];
+            chkHU.Items[0].Selected = (bool)dRow["HUOrg"];
+            chkHU.Items[1].Selected = (bool)dRow["HUKopie"];
+            chkAU.Items[0].Selected = (bool)dRow["AUOrg"];
+            chkAU.Items[1].Selected = (bool)dRow["AUKopie"];
+
+            chkFrei1.Items[0].Selected = (bool)dRow["Frei1Org"];
+            chkFrei1.Items[1].Selected = (bool)dRow["Frei1Kopie"];
+            chkFrei2.Items[0].Selected = (bool)dRow["Frei2Org"];
+            chkFrei2.Items[1].Selected = (bool)dRow["Frei2Kopie"];
+            chkFrei3.Checked = (bool)dRow["Frei3"];
+            txtFrei1.Text = dRow["Frei1Text"].ToString();
+            txtFrei2.Text = dRow["Frei2Text"].ToString();
+            txtFrei3.Text = dRow["Frei3Text"].ToString();
+            chkKennzeichen.Checked = (bool)dRow["KennzJa_Nein"];
+            chkkopie.Checked = (bool)dRow["KopieGebuehr"];
+            rbPostexpress.Checked = (bool)dRow["Postexpress"];
+            rbNormPost.Checked = (bool)dRow["normPostweg"];
+            txtFrachtBack.Text = dRow["FrachtBack"].ToString();
+            txtFrachtHin.Text = dRow["FrachtHin"].ToString();
+
+            txtHandelsregFa.Text = dRow["HandelsregFa"].ToString();
+            txtGewerb.Text = dRow["Gewerb"].ToString();
+            txtPersoName.Text = dRow["PersoName"].ToString();
+            txtReisepass.Text = dRow["Reisepass"].ToString();
+            txtEVB.Text = dRow["EVB"].ToString();
+
+            var lief = dRow["Lief"].ToString();
+            if (!String.IsNullOrEmpty(lief))
+            {
+                var selItem = ddlLief.Items.FindByValue(lief);
+                if (selItem != null)
+                    ddlLief.SelectedValue = lief;
+            }
         }
 
         /// <summary>
@@ -1468,6 +1466,22 @@ namespace AppZulassungsdienst.forms
                 }
             }
             return bError;
+        }
+
+        private bool Check48hVersandMoeglich()
+        {
+            var kopfdaten = objNacherf.AktuellerVorgang.Kopfdaten;
+
+            var errMsg = objCommon.Check48hMoeglich(kopfdaten.Landkreis, kopfdaten.Zulassungsdatum.ToString("dd.MM.yyyy"), ddlLief.SelectedValue);
+            Session["objCommon"] = objCommon;
+
+            if (!String.IsNullOrEmpty(errMsg))
+            {
+                lblError.Text = String.Format("Bitte wählen Sie ein gültiges Zulassungsdatum! ({0})", errMsg);
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

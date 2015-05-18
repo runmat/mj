@@ -1090,7 +1090,23 @@ namespace AppZulassungsdienst.forms
                 }
             }
 
-            return checkDate();
+            if (!checkDate())
+                return false;
+
+            return CheckZulstOffen();
+        }
+
+        private bool CheckZulstOffen()
+        {
+            var errMsg = objCommon.CheckZulstGeoeffnet(txtStVa.Text, ZLDCommon.toShortDateStr(txtZulDate.Text));
+
+            if (!String.IsNullOrEmpty(errMsg))
+            {
+                lblError.Text = String.Format("Bitte wählen Sie ein gültiges Zulassungsdatum! ({0})", errMsg);
+                return false;
+            }
+
+            return true;
         }
 
         /// <summary>

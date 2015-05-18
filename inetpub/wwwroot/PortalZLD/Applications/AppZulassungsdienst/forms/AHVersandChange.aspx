@@ -353,6 +353,11 @@
                                                         Width="465px"></asp:TextBox>
                                                 </td>
                                             </tr>
+                                            <tr class="formquery">
+                                                <td colspan="4">
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                     <div id="Queryfooter" runat="server" style="background-color: #dfdfdf; height: 22px;">
