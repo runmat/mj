@@ -63,8 +63,13 @@
                 
         @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left", @onblur = "return TryCalculateUnitNumbers(this)" })
         @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right", @onblur = "return TryCalculateUnitNumbers(this)" })
-                        
-        <div id="divExcelUpload" class="left">">       
+        
+       @*  if(!String.IsNullOrEmpty(Model.ValidationError))
+            {@Html.FormTextBlockFor(m => m.ValidationError, new { @class = "m-wrap medium error" })}*@
+        
+        <div id="divValidationError"></div>       
+                                
+        <div id="divExcelUpload" class="left">       
             @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })
 
             <div id="formWizardTab1" >      
@@ -72,10 +77,7 @@
             </div>
         </div>        
         @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large right" })
-        
-        if(!String.IsNullOrEmpty(Model.ValidationError))
-            {@Html.FormTextBlockFor(m => m.ValidationError, new { @class = "m-wrap medium red"})}
-        
+               
         @Html.FormRequiredFieldsSummary()
 
         

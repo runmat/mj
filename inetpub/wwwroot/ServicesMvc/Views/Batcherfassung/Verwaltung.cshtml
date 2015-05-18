@@ -15,14 +15,20 @@
 
 @Html.SpanAlert("spanAlertBatcherfassung")
 
+@*
 @using (Html.FormSearchResultsGrid())
 {
     <div class="portlet">
-        <div id="divGridBatcherfassung">
+        @*<div id="divGridBatcherfassung">
             @Html.Partial("Partial/GridBatcherfassung")
         </div>
     </div>
 }
+*@
+
+<div id="divGridBatcherfassung">
+            @Html.Partial("Partial/GridBatcherfassung")
+</div>
 
 <div id="divGridItemDetails"></div>
 <div id="divGridUnitnumbers"></div>

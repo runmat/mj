@@ -12,11 +12,11 @@
         {
             columns.XBound(c => c.Aktion).Filterable(false).Sortable(false).Groupable(false)
                     .ClientTemplate(
-                        "<button onclick='ItemEdit(\"<#= data.ID #>\");' class='btn mini white tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                        "<button onclick='ItemEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                         + "&nbsp;"
-                        + "<button onclick='ShowGridUnitNumbers(\"<#= data.ID #>\");' class='btn copy mini white tooltips' data-original-title='" + Localize.UnitNumber + "' data-placement='right'><i class='halflings-icon list alt white'></i></button>"
+                        + "<button onclick='ShowGridUnitNumbers(\"<#= data.ID #>\");' class='btn copy mini gray tooltips' data-original-title='" + Localize.UnitNumber + "' data-placement='right'><i class='halflings-icon list white'></i></button>"
                 ).HeaderTemplate(
-                    "<button onclick='ItemNew(\"\");' class='btn mini white tooltips' data-original-title='" + Localize.ItemAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                    "<button onclick='ItemNew(\"\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
                 );
          
             columns.XBound(c => c.ID);

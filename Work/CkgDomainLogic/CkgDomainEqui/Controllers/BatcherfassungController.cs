@@ -205,11 +205,12 @@ namespace ServicesMvc.Controllers
       
         
         [HttpPost]
-        public ActionResult CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
+        public JsonResult CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
         {
             ViewModel.CalculateUnitNumbers(unitnumberFrom, unitnumberUntil, count);
 
-            return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
+            return Json(new { ViewModel.SelectedItem.Unitnummern,  ViewModel.SelectedItem.ValidationError });
+            //return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
         }
 
 
@@ -252,10 +253,18 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult UnitnummerAjaxBinding()
         {
-            return View(new GridModel(ViewModel.Unitnummern));
+            return View(new GridModel(ViewModel.UnitnummernFiltered));
+        }
+     
+        [HttpPost]
+        public ActionResult FilterGridUnitnumbers(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterUnitnummern(filterValue, filterColumns);
+
+            return new EmptyResult();
         }
 
-       
+
         public ActionResult ExportUnitnummerFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = ViewModel.UnitnummernFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);

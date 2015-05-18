@@ -200,7 +200,7 @@
     }
 
     function ShowGridUnitNumbers(batchId) {
-       
+
         $.ajax(
         {
             type: "POST",
@@ -208,7 +208,7 @@
             data: { batchId: batchId },
             loadingShow: true,
             success: function (result) {
-                ShowUnitNumbers(result);
+                ShowUnitNumbers(result);                
             }
         });
     }
@@ -216,12 +216,12 @@
     function ShowUnitNumbers(result) {
         //alert(result);
         $("#divGridUnitnumbers").html(result);
+        GridAllColumnFilterApplyToGrid("GridUnitnumbers");
         $("#divGridBatcherfassung").slideUp();
         $("#divGridUnitnumbers").slideDown();
         $("#btnBackToResult").show();
-        setTimeout('LoadingHide()', 1000);
+        setTimeout('LoadingHide()', 1000);        
         FormPreparePrivateAjax();
-
     }
 
     function OnDataBound_GridUnitnumbers() {
@@ -316,7 +316,13 @@
                 data: { unitnumberFrom: unitnumberFrom, unitnumberUntil: unitnumberUntil, count: count },
                 loadingShow: true,
                 success: function (result) {
-                    $("#divBatcherfassungDetailsForm").html(result);
+                    // $("#divBatcherfassungDetailsForm").html(result);
+                    if (result.ValidationError != '') {
+                        $("#divValidationError").html(result.ValidationError);
+                    }
+                    else { 
+                    
+                    }
                 }
             });
     }

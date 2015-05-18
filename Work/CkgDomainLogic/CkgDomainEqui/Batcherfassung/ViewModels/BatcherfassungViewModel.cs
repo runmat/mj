@@ -259,6 +259,8 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             Unitnummern = DataService.GetUnitnummerByBatchId(batchId);
 
+            UnitnummernFiltered = Unitnummern;
+
             SelectedItem = Batcherfassungs.FirstOrDefault(m => m.ID == batchId) ?? new Batcherfassung();
 
             Unitnummern.ForEach(x => {  x.ID = SelectedItem.ID;
