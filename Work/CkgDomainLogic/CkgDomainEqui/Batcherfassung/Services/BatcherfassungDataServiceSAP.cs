@@ -63,17 +63,31 @@ namespace CkgDomainLogic.FzgModelle.Services
 
         }
 
-        public string UpdateBatch(Batcherfassung batcherfassung, string unitnummer)
+        public string UpdateBatch(FzgUnitnummer batcherfassung)
         {            
-            Z_M_EC_AVM_BATCH_UPDATE.Init(SAP);
-            batcherfassung.WebUser = LogonContext.UserName;
-            batcherfassung.UnitnummerUpdate = unitnummer;
+             var error = SAP.ExecuteAndCatchErrors(
+                                
+                () =>
+                {        
+                    Z_M_EC_AVM_BATCH_UPDATE.Init(SAP);         
 
-            var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
-            SAP.ApplyImport(vgList);
+                    var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_FzgUnitnummer.CopyBack(new List<FzgUnitnummer>() { batcherfassung });
+                    SAP.ApplyImport(vgList);
             
-            SAP.Execute(); 
-            return "";
+                    SAP.Execute();
+                },
+
+                // SAP custom error handling:
+                () =>
+                {
+                    var sapResult = SAP.ResultMessage;
+                    if (SAP.ResultMessage.IsNotNullOrEmpty())
+                        return sapResult;
+
+                    return "";
+                });
+
+             return error;
         }
 
 
@@ -91,7 +105,7 @@ namespace CkgDomainLogic.FzgModelle.Services
 
                     if (unitnummerList != null)
                     {
-                        var unitList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_BatcherfassungUnitnummerVon.CopyBack(unitnummerList);
+                        var unitList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_FzgUnitnummer.CopyBack(unitnummerList);
                         SAP.ApplyImport(unitList);
                     }
                     SAP.Execute();                                        

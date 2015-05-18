@@ -16,6 +16,6 @@ namespace CkgDomainLogic.FzgModelle.Contracts
         
         string SaveBatches(Batcherfassung batcherfassung, List<FzgUnitnummer> unitnummern);
 
-        string UpdateBatch(Batcherfassung batcherfassung, string unitnummer);
+        string UpdateBatch(FzgUnitnummer batcherfassung);
     }
 }

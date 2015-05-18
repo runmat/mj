@@ -19,7 +19,7 @@
         @Html.FormTextBlockFor(m => m.Anzahl, new { @class = "m-wrap large", col = "right" })
                                                      
         @Html.FormTextBlockFor(m => m.Laufzeit, new { @class = "m-wrap large", col = "left", disabled = "disabled" })
-        @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right", disabled = "disabled" }, labelHidden: true)
         
         @Html.FormTextBlockFor(m => m.LiefermonatBAPIFormat, new { @class = "m-wrap large", col = "left" })
         @Html.FormTextBlockFor(m => m.Antrieb, new { @class = "m-wrap large", col = "right" })

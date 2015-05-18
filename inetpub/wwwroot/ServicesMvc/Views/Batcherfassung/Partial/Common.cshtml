@@ -306,7 +306,7 @@
         var unitnumberUntil = $("#UnitnummerBis").val();
         var count = $("#Anzahl").val();
 
-        if (unitnumberFrom == null || unitnumberUntil == null || count == null)
+        if (unitnumberFrom == '' || unitnumberUntil == '' || count == '')
             return;
 
         $.ajax(

@@ -173,18 +173,19 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.Fahrgestellnummer = source.CHASSIS_NUM;
                             destination.Kennzeichen = source.LICENSE_NUM;
                             destination.IstGesperrt = (source.ZLOEVM.ToUpper() == "X");
-                            destination.Einsteuerung = source.REPLA_DATE;
+                            destination.IsSelected = destination.IstGesperrt;
+                            destination.Einsteuerung = source.REPLA_DATE;                            
                         }
                     ));
             }
         }
 
 
-        static public ModelMapping<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB, Batcherfassung> Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_Batcherfassung
+        static public ModelMapping<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB, FzgUnitnummer> Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_FzgUnitnummer
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB, Batcherfassung>(
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_BATCH_UPDATE.GT_WEB, FzgUnitnummer>(
                         new Dictionary<string, string>()
                         , null
                         , (source, destination) =>
@@ -207,23 +208,22 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.ZLEASING = source.KennzeichenLeasingFahrzeug ? "X" : "";
                             destination.ZNAVI = source.NaviVorhanden ? "X" : "";
                             destination.ZAHK = source.AnhaengerKupplung ? "X" : "";
-                            */
-                              
-                            destination.ZBATCH_ID = source.ID;
-                            destination.ZUNIT_NR = source.UnitnummerUpdate;
                             destination.ZLZBINDUNG = source.Laufzeitbindung ? "X" : "";
+                            destination.ZBEMERKUNG = source.Bemerkung;
+                            */
+
+                            destination.ZBATCH_ID = source.ID;
+                            destination.ZUNIT_NR = source.Unitnummer;                         
                             destination.ZLOEVM = source.IstGesperrt ? "X" : "";
                             destination.ZDAT_SPERR = DateTime.Now;
                             destination.ZBEM_SPERR = source.Sperrvermerk;
-                            destination.ZUSER_SPERR = source.WebUser;
-                            destination.ZBEMERKUNG = source.Bemerkung;
-
+                            destination.ZUSER_SPERR = source.WebUser;                            
                         }
                     ));
             }
         }
 
-        static public ModelMapping<Z_M_EC_AVM_BATCH_INSERT.GT_IN, FzgUnitnummer> Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_BatcherfassungUnitnummerVon
+        static public ModelMapping<Z_M_EC_AVM_BATCH_INSERT.GT_IN, FzgUnitnummer> Z_M_EC_AVM_BATCH_INSERT_GT_IN_From_FzgUnitnummer
         {
             get
             {

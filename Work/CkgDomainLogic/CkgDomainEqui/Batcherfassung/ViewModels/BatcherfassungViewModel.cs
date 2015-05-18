@@ -280,6 +280,8 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public void CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
         {
+            SelectedItem.ValidationError = "";
+
             int from, until, cnt;
             string result = string.Empty;
             if (!Int32.TryParse(unitnumberFrom, out from))
@@ -290,9 +292,11 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
             if (!Int32.TryParse(count, out cnt))
                 result += " invalid cnt ";
-            
-            if((until - from + 1) != cnt)
-                result += " invalid Count ";
+
+            if (result.IsNotNullOrEmpty())
+                result = Localize.UnitnumbersInvalidFormat;
+            else if ((until - from + 1) != cnt)
+                result = Localize.UnitnumbersInvalidRange;
 
             SelectedItem.ValidationError = result;
 
@@ -300,7 +304,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 return;
 
             SelectedItem.Unitnummern = "";
-            for (var i = from; i < until; i++)
+            for (var i = from; i < until + 1; i++)
                 SelectedItem.Unitnummern += "\"" + i.ToString() + "\"\n";
             
         }
@@ -334,12 +338,16 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         }
 
         public void FreigebenSperren(Action<string, string> addModelError)
-        {         
+        {
+                      
             var items =  Unitnummern.Where(x => x.IsSelected).ToList();
 
             foreach (var item in items)
             {
-               var errorMessage = DataService.UpdateBatch(SelectedItem, item.Unitnummer);
+                item.WebUser = LogonContext.UserName;
+                item.IstGesperrt = true;
+                
+                var errorMessage = DataService.UpdateBatch(item);
               
                if (errorMessage.IsNotNullOrEmpty())
                    addModelError("", errorMessage);
@@ -397,13 +405,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         void ValidateUploadItems()
         {
-            // -> Duplikate etc... 
-
-            if (SelectedItem.Unitnummern.IsNotNullOrEmpty())
-            {
-                SelectedItem.UnitnummerVon = "";
-                SelectedItem.UnitnummerBis = "";
-            }
+            // -> Duplikate etc -> was prüfen            
         }
 
         public void PrepareUploadItems()
@@ -413,7 +415,9 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             foreach (var item in UploadItems)
                 SelectedItem.Unitnummern += "\"" + item.Unitnummern + "\"\n" ;
 
-           
+            SelectedItem.UnitnummerVon = "";
+            SelectedItem.UnitnummerBis = "";
+
         }
 
         static Batcherfassung CreateInstanceFromDatarow(System.Data.DataRow row)

@@ -35,6 +35,7 @@
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
         .XSort(sortOrder => sortOrder.Add(c => c.Unitnummer).Ascending())
+            .XToolBar("Batcherfassung")
     .ToolBar(commands =>
          {
              commands.FilteredDataCommand("ExportUnitnummerFilteredExcel", "Batcherfassung");

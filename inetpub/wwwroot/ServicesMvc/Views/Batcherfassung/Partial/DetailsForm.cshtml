@@ -28,8 +28,8 @@
                      
         @Html.FormTextBoxFor(m => m.ModellId, new { @class = "m-wrap large", col = "right", @onblur = "return TryLoadDataByModelId(this)", @onpaste = "return TryLoadDataByModelId(this)" })
 
-        @Html.FormTextBoxFor(m => m.Modellbezeichnung, new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Modellbezeichnung, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap ", col = "right" })
 
         if (Model.InsertModeTmp)
         {           
@@ -64,15 +64,17 @@
         @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left", @onblur = "return TryCalculateUnitNumbers(this)" })
         @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right", @onblur = "return TryCalculateUnitNumbers(this)" })
                         
-        <div id="divExcelUpload" class="portlet app-view">       
+        <div id="divExcelUpload" class="left">">       
             @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })
 
             <div id="formWizardTab1" >      
                 @Html.Partial("ExcelUpload/FileUpload")                                                                                   
             </div>
         </div>        
-        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large" })
+        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large right" })
         
+        if(!String.IsNullOrEmpty(Model.ValidationError))
+            {@Html.FormTextBlockFor(m => m.ValidationError, new { @class = "m-wrap medium red"})}
         
         @Html.FormRequiredFieldsSummary()
 
