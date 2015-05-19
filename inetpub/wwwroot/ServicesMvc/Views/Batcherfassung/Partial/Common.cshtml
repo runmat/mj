@@ -318,10 +318,13 @@
                 success: function (result) {
                     // $("#divBatcherfassungDetailsForm").html(result);
                     if (result.ValidationError != '') {
-                        $("#divValidationError").html(result.ValidationError);
+                        alert(result.ValidationError);
+                        $("#ValidationError").html(result.ValidationError);
+                        $("#divValidationError").remmoveClass('hide');
                     }
-                    else { 
-                    
+                    else {
+                        $("#divValidationError").addClass('hide');
+                        $("#Unitnummern").html(result.Unitnummern);
                     }
                 }
             });

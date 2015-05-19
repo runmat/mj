@@ -63,11 +63,10 @@
                 
         @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left", @onblur = "return TryCalculateUnitNumbers(this)" })
         @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right", @onblur = "return TryCalculateUnitNumbers(this)" })
-        
-       @*  if(!String.IsNullOrEmpty(Model.ValidationError))
-            {@Html.FormTextBlockFor(m => m.ValidationError, new { @class = "m-wrap medium error" })}*@
-        
-        <div id="divValidationError"></div>       
+             
+        <div id="divValidationError" class="hide" >
+            {@Html.FormTextBlockFor(m => m.ValidationError, new { @class = "m-wrap medium error" })}        
+        </div>       
                                 
         <div id="divExcelUpload" class="left">       
             @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })

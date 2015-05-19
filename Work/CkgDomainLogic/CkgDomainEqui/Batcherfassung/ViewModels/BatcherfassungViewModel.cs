@@ -180,6 +180,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             if (InsertMode)
             {
                 SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
+                SelectedItem.Fahrzeuggruppe = modelFoundById.Fahrzeuggruppe;
                 // SelectedItem.HerstellerCode = modelFoundById.HerstellerName; // TODO -> entf. falls n.n.
                 SelectedItem.HerstellerName = modelFoundById.HerstellerName;
                 SelectedItem.SippCode = modelFoundById.SippCode;
