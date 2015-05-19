@@ -3,6 +3,15 @@
 
 <h3 class="page-title" id="headerTitle">Unfallmeldungen</h3>
 
+<ul class="breadcrumbs event-breadcrumbs margin-bottom-20">
+	<li><a href=""></a></li>
+	<li class="hide"><a href="" class="current">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+</ul>	
+
 @using (Html.FormSearchResultsGrid())
 {
     <div id="divGrid">
@@ -23,6 +32,9 @@
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
+
+        BreadcrumbsMoveFirst("@Localize.Vehicles.ToJavascriptString()");
+        
         GridAllColumnFilterApplyToGrid("GridUnfallmeldungen");
         $("#FormSearchResults").show();
     }
@@ -147,6 +159,8 @@
                 FormPreparePrivateAjax();
                 $("#divGrid").slideUp(200, function () {
                     $("#divMeldungCreateSearch").slideDown(200);
+                    BreadcrumbsMoveNext("@Localize.AccidentNotificationCreate.ToJavascriptString()");
+                    BreadcrumbsMoveNext("@Localize.Search.ToJavascriptString()");
                 });
             }
         });
@@ -169,9 +183,33 @@
                 FormPreparePrivateAjax();
                 $("#divMeldungCreateSearch").slideUp(200, function () {
                     $("#divMeldungCreateEdit").slideDown(200);
+                    BreadcrumbsMoveNext("@Localize.Create.ToJavascriptString()");
                 });
             }
         });
+    }
+
+    function MeldungCreateSearchClose() {
+        $("#divMeldungCreateSearch").slideUp(200, function () {
+            $("#divGrid").slideDown(200);
+            BreadcrumbsMovePrev();
+            BreadcrumbsMovePrev();
+        });
+
+        return false;
+    }
+    
+    function MeldungCreateEditClose(postFunction) {
+        $("#divMeldungCreateEdit").slideUp(200, function () {
+            $("#divGrid").slideDown(200);
+            BreadcrumbsMovePrev();
+            BreadcrumbsMovePrev();
+            BreadcrumbsMovePrev();
+            if (typeof (postFunction) != 'undefined')
+                postFunction();
+        });
+
+        return false;
     }
 
     function MeldungCreateEditComplete() {
@@ -182,11 +220,8 @@
             return;
 
         SpanAlertSuccess("Message", "@Localize.AccidentNotificationSuccessfullyCreated.ToJavascriptString()", 2000);
-        setTimeout(function() {
-            $("#divMeldungCreateEdit").slideUp(200, function() {
-                $("#divGrid").slideDown(200);
-                FilterGrid("GridUnfallmeldungen");
-            });
+        setTimeout(function () {
+            MeldungCreateEditClose(function () { FilterGrid("GridUnfallmeldungen"); });
         });
     }    
     
