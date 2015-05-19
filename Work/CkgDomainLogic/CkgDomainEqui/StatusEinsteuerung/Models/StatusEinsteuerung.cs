@@ -6,15 +6,18 @@ namespace CkgDomainLogic.FzgModelle.Models
 {
     public class StatusEinsteuerung
     {
-                        
-        [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateTime? Zulassungsdatum { get; set; }
-
+                            
         [LocalizedDisplay(LocalizeConstants.PDINumber)]
         public string PDINummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string PDIBezeichnung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.SippCode)]
+        public string Sipp { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
+        public string Hersteller { get; set; }
         
         [LocalizedDisplay(LocalizeConstants.CarModel)]
         public string ModellCode { get; set; }
@@ -22,17 +25,42 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.CarModel)]
         public string Modellbezeichnung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
-        public string Hersteller { get; set; }
+        [LocalizedDisplay(LocalizeConstants.CarModel)]
+        public string Fahrzeuggruppe { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.NumberOfVehicles)]
-        public int? Anzahl { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int Bestand { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.LicenceNoFrom)]
-        public string KennzeichenVon { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int EingangGesamt { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.LicenceNoUntil)]
-        public string KennzeichenBis { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int AusVorjahr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int ZulassungVormonat { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int ZulassungLfdMonat { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int ZulassungGesamtMonat { get; set; }
+               
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int Ausgerüstet { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int MitBrief { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int Zulassungsbereit { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int OhneUnitnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Stock)]
+        public int Gesperrt { get; set; }
+
 
     }
 }
