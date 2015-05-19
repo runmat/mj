@@ -1,7 +1,9 @@
 ﻿using System.Web.Mvc;
+using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
+using GeneralTools.Models;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
 
@@ -41,6 +43,67 @@ namespace ServicesMvc.Controllers
             SperrenVerschiebenViewModel.FilterFahrzeuge(filterValue, filterColumns);
 
             return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult FzgSperrenVerschiebenSelectionChanged(string vin, bool isChecked)
+        {
+            int allSelectionCount;
+            if (vin.IsNullOrEmpty())
+                SperrenVerschiebenViewModel.SelectFahrzeuge(isChecked, out allSelectionCount);
+            else
+                SperrenVerschiebenViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+
+            return Json(new { allSelectionCount });
+        }
+
+        [HttpPost]
+        public ActionResult FzgSperren(bool sperren)
+        {
+            if (!SperrenVerschiebenViewModel.SperrenMoeglich(sperren))
+                return Json(new { message = Localize.ActionNotPossibleForFewOfSelectedItems });
+
+            return PartialView("SperrenVerschieben/SperrenForm", SperrenVerschiebenViewModel.GetUiModelSperrenVerschieben(sperren));
+        }
+
+        [HttpPost]
+        public ActionResult FzgSperrenForm(FahrzeugSperrenVerschieben model)
+        {
+            SperrenVerschiebenViewModel.FahrzeugeSperren(ref model, ModelState);
+
+            return PartialView("SperrenVerschieben/SperrenForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult FzgVerschieben()
+        {
+            ViewBag.AllePdis = SperrenVerschiebenViewModel.Pdis;
+
+            return PartialView("SperrenVerschieben/VerschiebenForm", SperrenVerschiebenViewModel.GetUiModelSperrenVerschieben());
+        }
+
+        [HttpPost]
+        public ActionResult FzgVerschiebenForm(FahrzeugSperrenVerschieben model)
+        {
+            SperrenVerschiebenViewModel.FahrzeugeVerschieben(ref model);
+
+            ViewBag.AllePdis = SperrenVerschiebenViewModel.Pdis;
+
+            return PartialView("SperrenVerschieben/VerschiebenForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult FzgTextErfassen()
+        {
+            return PartialView("SperrenVerschieben/TextErfassenForm", SperrenVerschiebenViewModel.GetUiModelSperrenVerschieben());
+        }
+
+        [HttpPost]
+        public ActionResult FzgTextErfassenForm(FahrzeugSperrenVerschieben model)
+        {
+            SperrenVerschiebenViewModel.FahrzeugeTexteErfassen(ref model);
+
+            return PartialView("SperrenVerschieben/TextErfassenForm", model);
         }
 
         #region Export

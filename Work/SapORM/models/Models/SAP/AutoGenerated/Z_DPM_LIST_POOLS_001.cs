@@ -91,6 +91,14 @@ namespace SapORM.Models
 
 			public string ZBEMERKUNG { get; set; }
 
+			public string STATUS { get; set; }
+
+			public string FARBE_TEXT { get; set; }
+
+			public string QMNUM { get; set; }
+
+			public string ZZCARPORT { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -125,6 +133,10 @@ namespace SapORM.Models
 					BEMERKUNG_INTERN = (string)row["BEMERKUNG_INTERN"],
 					BEMERKUNG_EXTERN = (string)row["BEMERKUNG_EXTERN"],
 					ZBEMERKUNG = (string)row["ZBEMERKUNG"],
+					STATUS = (string)row["STATUS"],
+					FARBE_TEXT = (string)row["FARBE_TEXT"],
+					QMNUM = (string)row["QMNUM"],
+					ZZCARPORT = (string)row["ZZCARPORT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

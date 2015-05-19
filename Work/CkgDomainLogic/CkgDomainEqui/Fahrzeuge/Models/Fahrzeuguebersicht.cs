@@ -88,5 +88,15 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.Disabled)]
         public bool Gesperrt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.MessageNo)]
+        public string MeldungsNr { get; set; }
+
+        public string DadPdi { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string Bearbeitungsstatus { get; set; }
     }
 }

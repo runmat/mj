@@ -220,6 +220,7 @@
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtStatus.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtPDI.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschiebenSelektor.cs" />
+    <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
     <Compile Include="Fahrzeuge\Models\Treuhandberechtigung.cs" />
     <Compile Include="Fahrzeuge\Models\TreuhandverwaltungCsvUpload.cs" />

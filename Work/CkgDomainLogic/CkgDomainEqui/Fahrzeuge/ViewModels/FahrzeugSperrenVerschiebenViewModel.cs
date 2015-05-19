@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
@@ -15,11 +18,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public IFahrzeugSperrenVerschiebenDataService DataService { get { return CacheGet<IFahrzeugSperrenVerschiebenDataService>(); } }
 
         [XmlIgnore]
-        public List<Domaenenfestwert> Farben
-        {
-            get { return PropertyCacheGet(() => new List<Domaenenfestwert>()); }
-            private set { PropertyCacheSet(value); }
-        }
+        public List<Domaenenfestwert> Farben { get { return PropertyCacheGet(() => DataService.GetFarben()); } }
+
+        [XmlIgnore]
+        public List<FahrzeuguebersichtPDI> Pdis { get { return PropertyCacheGet(() => DataService.GetPDIStandorte()); } }
 
         [XmlIgnore]
         public List<Fahrzeuguebersicht> FahrzeugeGesamt
@@ -78,7 +80,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void LoadFahrzeuge()
         {
-            Farben = DataService.GetFarben();
             FahrzeugeGesamt = DataService.GetFahrzeuge();
 
             FahrzeugeGesamt.ForEach(f => f.Farbname = GetFarbName(f.Farbcode));
@@ -99,6 +100,88 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void FilterFahrzeuge(string filterValue, string filterProperties)
         {
             FahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
+            if (fzg == null)
+                return;
+
+            fzg.IsSelected = select;
+            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+        }
+
+        public void SelectFahrzeuge(bool select, out int allSelectionCount)
+        {
+            FahrzeugeFiltered.ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+        }
+
+        public FahrzeugSperrenVerschieben GetUiModelSperrenVerschieben(bool sperren = true)
+        {
+            var item = Fahrzeuge.FirstOrDefault(f => f.IsSelected);
+
+            return new FahrzeugSperrenVerschieben { Sperren = sperren, Sperrtext = (item != null ? item.BemerkungSperre : "") };
+        }
+
+        public bool SperrenMoeglich(bool sperren)
+        {
+            return Fahrzeuge.None(f => f.IsSelected && f.Gesperrt == sperren);
+        }
+
+        public void FahrzeugeSperren(ref FahrzeugSperrenVerschieben model, ModelStateDictionary state)
+        {
+            var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
+
+            var anzOk = DataService.FahrzeugeSperren(model.Sperren, model.Sperrtext, ref fzge);
+
+            var neuGesperrt = model.Sperren;
+            var neuText = model.Sperrtext;
+            fzge.Where(f => f.Bearbeitungsstatus == Localize.OK).ToList().ForEach(f =>
+            {
+                f.Gesperrt = neuGesperrt;
+                f.BemerkungSperre = neuText;
+            });
+
+            model.Message = String.Format((model.Sperren ? Localize.NVehiclesLockedSuccessfully : Localize.NVehiclesUnlockedSuccessfully), anzOk);
+        }
+
+        public void FahrzeugeVerschieben(ref FahrzeugSperrenVerschieben model)
+        {
+            var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
+
+            var anzOk = DataService.FahrzeugeVerschieben(model.ZielPdi, ref fzge);
+
+            var neuPdi = model.ZielPdi;
+            fzge.Where(f => f.Bearbeitungsstatus == Localize.OK).ToList().ForEach(f =>
+            {
+                f.Carport = neuPdi;
+                var pdi = Pdis.FirstOrDefault(p => p.PDIKey == f.Carport);
+                f.DadPdi = (pdi != null ? pdi.DadPdi : "");
+                f.Carportname = (pdi != null ? pdi.PDIText : "");
+            });
+
+            model.Message = String.Format(Localize.NVehiclesRelocatedSuccessfully, anzOk);
+        }
+
+        public void FahrzeugeTexteErfassen(ref FahrzeugSperrenVerschieben model)
+        {
+            var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
+
+            var anzOk = DataService.FahrzeugeTexteErfassen(model.BemerkungIntern, model.BemerkungExtern, ref fzge);
+
+            var neuBemIntern = model.BemerkungIntern;
+            var neuBemExtern = model.BemerkungExtern;
+            fzge.Where(f => f.Bearbeitungsstatus == Localize.OK).ToList().ForEach(f =>
+            {
+                f.BemerkungIntern = neuBemIntern;
+                f.BemerkungExtern = neuBemExtern;
+            });
+
+            model.Message = String.Format(Localize.TextsForNVehiclesChangedSuccessfully, anzOk);
         }
     }
 }

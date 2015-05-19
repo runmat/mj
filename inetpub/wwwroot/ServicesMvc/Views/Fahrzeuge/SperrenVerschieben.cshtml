@@ -3,6 +3,15 @@
 
 <h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_SperrenVerschieben<small></small></h3>
 
+<h4 class="margin-bottom-20">
+    @Localize.PleaseChooseOneOrMoreVehicles: 
+    <span id="FzgSperrenVerschiebenCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+@Html.SpanAlert("Message")
+
 <div id="divFzgSperrenVerschiebenFilter" class="form-horizontal label-width-150">
     @Html.FormRadioButtonListFor(m => m.FahrzeugSelektor.Auswahl, Model.FahrzeugSelektor.AuswahlOptionen.ToSelectList())
 
@@ -11,6 +20,13 @@
 
 <div id="divFzgSperrenVerschiebenGrid">
     @Html.Partial("SperrenVerschieben/Grid", Model)
+</div>
+
+<div class="form-actions">
+    <button type="button" id="btnFzgSperren" class="btn blue hide" onclick="FzgSperren(true);">@Localize.Lock</button>
+    <button type="button" id="btnFzgEntsperren" class="btn blue hide" onclick="FzgSperren(false);">@Localize.Unlock</button>
+    <button type="button" id="btnFzgVerschieben" class="btn blue hide" onclick="FzgVerschieben();">@Localize.Relocate</button>
+    <button type="button" id="btnFzgTextErfassen" class="btn blue hide" onclick="FzgTextErfassen();">@Localize.EnterText</button>
 </div>
 
 <script type="text/javascript">
@@ -48,6 +64,10 @@
     function OnDataBound_GridFzgSperrenVerschieben() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridFzgSperrenVerschieben");
     }
 
     function OnLoad_GridFzgSperrenVerschieben() {
@@ -63,18 +83,243 @@
     }
 
     function FilterFzgSperrenVerschiebenData() {
-//        $.ajax({
-//            type: "POST",
-//            url: "FilterFzgSperrenVerschiebenData",
-//            data: { SelektionsfilterLagerbestand: $("#SelektionsfilterLagerbestand").is(':checked'), nurMitBemerkung: $("#SelektionsfilterTempVersendete").is(':checked') },
-//            success: function (result) {
-//                FormPreparePrivateAjax();
-//                GridRefresh();
-//                setTimeout(function () {
-//                    GetGrid().pageTo(1);
-//                }, 500);
-//            }
-//        });
+        var auswahl = $("input[name='FahrzeugSelektor.Auswahl']:checked").val();
+        var nurMitBem = $("input[name='FahrzeugSelektor.NurMitBemerkung']").is(':checked');
+
+        $.ajax({
+            type: "POST",
+            url: "FilterFzgSperrenVerschiebenData",
+            data: { auswahl: auswahl, nurMitBemerkung: nurMitBem },
+            success: function (result) {
+                FormPreparePrivateAjax();
+                GridRefresh();
+                setTimeout(function () {
+                    GetGrid().pageTo(1);
+                }, 500);
+            }
+        });
+    }
+    
+    function ShowHideButtons(show) {
+        if (show == true) {
+            $("#btnFzgSperren").show();
+            $("#btnFzgEntsperren").show();
+            $("#btnFzgVerschieben").show();
+            $("#btnFzgTextErfassen").show();
+        } else {
+            $("#btnFzgSperren").hide();
+            $("#btnFzgEntsperren").hide();
+            $("#btnFzgVerschieben").hide();
+            $("#btnFzgTextErfassen").hide();
+        }
+    }
+
+    // Overwrite für globale Funktion, da dort Probleme mit mehreren Checkbox-Spalten im Grid bestehen
+    function Grid_PrepareMultiRowSelected(gridName, rowBackgroundSelectionDisabled) {
+
+        $("#" + gridName + " table tbody tr").each(function () {
+            var tr = $(this);
+            tr.addClass('t-grid-multi-row-select');
+            tr.find("td input[type='checkbox'][name='checkedRecords']").each(function () {
+                Grid_FormatMultiRowSelected(tr, this.checked);
+                $(this).change(function () { Grid_FormatMultiRowSelected(tr, this.checked); });
+            });
+        });
+
+        if (typeof (rowBackgroundSelectionDisabled) == 'undefined' || !rowBackgroundSelectionDisabled)
+            $("#" + gridName + " table tbody tr").click(function (e) {
+                var clickedElement = e.target;
+                var tr = $(this);
+                tr.find("td input[type='checkbox'][name='checkedRecords']").each(function () {
+                    if (this == clickedElement)
+                        return false;
+
+                    this.checked = !($(this).is(':checked'));
+                    $.uniform.update($(this));
+                    //Grid_FormatMultiRowSelected(tr, this.checked);
+                    $(this).trigger('change');
+                    return true;
+                });
+            });
+    }
+
+    function OnSelectionChange_GridFzgSperrenVerschieben(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "FzgSperrenVerschiebenSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                GridFzgSperrenVerschieben_MultiSelectUpdate(result.allSelectionCount);
+            }
+        });
+    }
+
+    function GridFzgSperrenVerschieben_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FzgSperrenVerschiebenSelectionChanged",
+            data: { vin: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                GridFzgSperrenVerschieben_MultiSelectUpdate(result.allSelectionCount);
+                GridRefresh();
+            }
+        });
+    }
+
+    function GridFzgSperrenVerschieben_MultiSelectUpdate(count) {
+        ShowHideButtons(count > 0);
+        if (count == 0) {
+            $("#FzgSperrenVerschiebenCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FzgSperrenVerschiebenCount").removeClass('hide');
+        $("#FzgSperrenVerschiebenCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+    
+    function FzgSperren(sperren) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FzgSperren",
+            loadingShow: true,
+            data: { sperren: sperren },
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                var detailWindow = $("#FzgSperrenDialog").data("tWindow");
+                if (sperren == true) {
+                    detailWindow.title('@Localize.Lock');
+                } else {
+                    detailWindow.title('@Localize.Unlock');
+                }
+                $("#InnerFzgSperrenDialog").html(result);
+                detailWindow.center().open();
+            }
+        });
+
+        return false;
+    }
+
+    function AjaxFormFzgSperrenClose() {
+        $("#FzgSperrenDialog").data("tWindow").close();
+    }
+
+    function AjaxFormFzgSperrenComplete() {
+        if (_modelIsValid) {
+            $("#FzgSperrenDialog").data("tWindow").close();
+            GridRefresh();
+            SpanAlertSuccess("Message", _sperrenVerschiebenResult, 5000);
+        }
+    }
+
+    function FzgVerschieben() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FzgVerschieben",
+            loadingShow: true,
+            data: {},
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                var detailWindow = $("#FzgVerschiebenDialog").data("tWindow");
+                detailWindow.title('@Localize.Relocate');
+                $("#InnerFzgVerschiebenDialog").html(result);
+                detailWindow.center().open();
+            }
+        });
+
+        return false;
+    }
+
+    function AjaxFormFzgVerschiebenClose() {
+        $("#FzgVerschiebenDialog").data("tWindow").close();
+    }
+
+    function AjaxFormFzgVerschiebenComplete() {
+        if (_modelIsValid) {
+            $("#FzgVerschiebenDialog").data("tWindow").close();
+            GridRefresh();
+            SpanAlertSuccess("Message", _sperrenVerschiebenResult, 5000);
+        }
+    }
+
+    function FzgTextErfassen() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FzgTextErfassen",
+            loadingShow: true,
+            data: {},
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                var detailWindow = $("#FzgTextErfassenDialog").data("tWindow");
+                detailWindow.title('@Localize.EnterText');
+                $("#InnerFzgTextErfassenDialog").html(result);
+                detailWindow.center().open();
+            }
+        });
+
+        return false;
+    }
+
+    function AjaxFormFzgTextErfassenClose() {
+        $("#FzgTextErfassenDialog").data("tWindow").close();
+    }
+
+    function AjaxFormFzgTextErfassenComplete() {
+        if (_modelIsValid) {
+            $("#FzgTextErfassenDialog").data("tWindow").close();
+            GridRefresh();
+            SpanAlertSuccess("Message", _sperrenVerschiebenResult, 5000);
+        }
     }
 
 </script>
+
+@(Html.Telerik().Window()
+    .Name("FzgSperrenDialog")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(540)
+    .Content(@<text><div id="InnerFzgSperrenDialog"></div></text>))
+    
+@(Html.Telerik().Window()
+    .Name("FzgVerschiebenDialog")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(500)
+    .Content(@<text><div id="InnerFzgVerschiebenDialog"></div></text>))
+      
+@(Html.Telerik().Window()
+    .Name("FzgTextErfassenDialog")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(540)
+    .Content(@<text><div id="InnerFzgTextErfassenDialog"></div></text>))

@@ -9,6 +9,14 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
     {
         List<Domaenenfestwert> GetFarben();
 
-        List<Fahrzeuguebersicht> GetFahrzeuge();             
+        List<FahrzeuguebersichtPDI> GetPDIStandorte();
+
+        List<Fahrzeuguebersicht> GetFahrzeuge();
+
+        int FahrzeugeSperren(bool sperren, string sperrText, ref List<Fahrzeuguebersicht> fahrzeuge);
+
+        int FahrzeugeVerschieben(string zielPdi, ref List<Fahrzeuguebersicht> fahrzeuge);
+
+        int FahrzeugeTexteErfassen(string bemerkungIntern, string bemerkungExtern, ref List<Fahrzeuguebersicht> fahrzeuge);
     }
 }

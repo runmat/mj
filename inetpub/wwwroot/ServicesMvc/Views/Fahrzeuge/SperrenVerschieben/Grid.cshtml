@@ -7,8 +7,13 @@
     .XAjaxDataBinding("FzgSperrenVerschiebenAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
+        columns.XBound("")
+            .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenVerschieben($(this))' />")
+            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFzgSperrenVerschieben_OnAllSelectionChange($(this).is(\":checked\"))' />")
+            .Filterable(false);
+        
         columns.XBound(c => c.Fahrgestellnummer);
-        columns.XBound(c => c.Status);
+        columns.XBound(c => c.Gesperrt);
         columns.XBound(c => c.Farbe);
         columns.XBound(c => c.Carport);
         columns.XBound(c => c.Carportname);
@@ -19,9 +24,10 @@
         columns.XBound(c => c.BemerkungSperre);
         columns.XBound(c => c.BemerkungExtern);
         columns.XBound(c => c.BemerkungIntern);
+        columns.XBound(c => c.Bearbeitungsstatus);
     })
     .XAutoColumnConfiguration()
-        .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFzgSperrenVerschieben"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFzgSperrenVerschieben"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
     .ToolBar(commands =>

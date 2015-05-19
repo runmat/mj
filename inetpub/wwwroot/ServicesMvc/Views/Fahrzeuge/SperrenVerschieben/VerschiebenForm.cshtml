@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models;
+@model FahrzeugSperrenVerschieben
+
+<div id="DivFzgVerschieben" class="margin-top-20">
+    @using (Ajax.BeginForm("FzgVerschiebenForm", "Fahrzeuge", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivFzgVerschieben", OnComplete = "AjaxFormFzgVerschiebenComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "FzgVerschiebenAjaxForm" }))
+    {
+        @Html.FormValidationSummary()
+        
+        @Html.HiddenFor(m => m.Message)
+        
+        @Html.FormDropDownListFor(m => m.ZielPdi, (ViewBag.AllePdis as List<FahrzeuguebersichtPDI>).ToSelectList("PDIKey", "PDIText"), new { @class = "m-wrap" })
+        
+        <div class="space20"></div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.OK</button>
+            <button type="button" class="btn" onclick="AjaxFormFzgVerschiebenClose();">@Localize.Cancel</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _sperrenVerschiebenResult = '@Model.Message';
+        </script>
+    }
+</div>

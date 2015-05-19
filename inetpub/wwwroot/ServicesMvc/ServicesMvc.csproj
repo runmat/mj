@@ -4386,6 +4386,9 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\Grid.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\SperrenForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\VerschiebenForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\TextErfassenForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

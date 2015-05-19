@@ -10,7 +10,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Selection)]
         public string Auswahl { get; set; }
 
-        public string AuswahlOptionen { get { return string.Format("GESP,{0};NGESP,{1};ALLE,{2}", Localize.Disabled, Localize.NotDisabled, Localize.All); } }
+        public string AuswahlOptionen { get { return string.Format("GESP,{0};NGESP,{1};ALLE,{2}", Localize.Locked, Localize.NotLocked, Localize.All); } }
 
         [LocalizedDisplay(LocalizeConstants.WithComment)]
         public bool NurMitBemerkung { get; set; }
