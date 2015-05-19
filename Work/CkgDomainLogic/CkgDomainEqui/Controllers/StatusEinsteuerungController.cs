@@ -56,13 +56,13 @@ namespace CkgDomainLogic.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("StatusEinsteuerung/StatusEinsteuerungGrid", StatusEinsteuerungViewModel);
+            return PartialView("Partial/Grid", StatusEinsteuerungViewModel);
         }
 
         [HttpPost]
         public ActionResult ShowStatusEinsteuerung()
         {
-            return PartialView("StatusEinsteuerung/StatusEinsteuerungGrid", StatusEinsteuerungViewModel);
+            return PartialView("Partial/Grid", StatusEinsteuerungViewModel);
         }
 
         [GridAction]
@@ -72,7 +72,7 @@ namespace CkgDomainLogic.Controllers
         }
 
         [HttpPost]
-        public ActionResult FilterStatusEinsteuerungGrid(string filterValue, string filterColumns)
+        public ActionResult FilterGridStatusEinsteuerung(string filterValue, string filterColumns)
         {
             StatusEinsteuerungViewModel.FilterStatusEinsteuerung(filterValue, filterColumns);
 

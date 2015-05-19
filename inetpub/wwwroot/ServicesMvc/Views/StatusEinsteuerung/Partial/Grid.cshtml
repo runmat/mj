@@ -1,0 +1,23 @@
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.StatusEinsteuerungViewModel 
+@using CkgDomainLogic.FzgModelle.Models
+@{
+    var gridName = "GridStatusEinsteuerung";
+}
+
+
+@(Html.XTelerik()
+    .XGrid<StatusEinsteuerung>()
+    .Name(gridName)
+            .XAjaxDataBinding("StatusEinsteuerungAjaxBinding", "StatusEinsteuerung")
+    .Columns(columns =>
+        {                        
+            columns.XBoundAll();
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Modellbezeichnung).Ascending())
+        .XToolBar("StatusEinsteuerung")
+)
+
+
