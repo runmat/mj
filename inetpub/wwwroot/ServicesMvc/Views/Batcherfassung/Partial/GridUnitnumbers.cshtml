@@ -1,7 +1,18 @@
 ﻿@model CkgDomainLogic.FzgModelle.ViewModels.BatcherfassungViewModel 
 @using CkgDomainLogic.FzgModelle.Models
 
+@Html.FormTextBlockFor(m => Model.SelectedItem.ID, new { @class = "m-wrap medium" })
 
+@Html.FormTextBlockFor(m => Model.SelectedItem.ModellId, new { @class = "m-wrap medium", col = "left" })
+@Html.FormTextBlockFor(m => Model.SelectedItem.Modellbezeichnung, new { @class = "m-wrap medium", col = "right" })
+
+@Html.FormTextBlockFor(m => Model.SelectedItem.AuftragsnummerVon, new { @class = "m-wrap medium", col = "left" })
+@Html.FormTextBlockFor(m => Model.SelectedItem.AuftragsnummerBis, new { @class = "m-wrap medium", col = "right" })
+
+@Html.FormTextBlockFor(m => Model.SelectedItem.Anzahl, new { @class = "m-wrap medium", col = "left" })
+@Html.FormTextBlockFor(m => Model.SelectedItem.KennzeichenLeasingFahrzeug, new { @class = "m-wrap medium", col = "right" })
+
+          
 @{ var gridName = "GridUnitnumbers"; }
 
 @(Html.XTelerik()
@@ -19,16 +30,10 @@
                     .ClientTemplate(
                         "<input onblur='UpdateSperrvermerk(\"<#= data.Unitnummer #>\");' value='<#= data.Sperrvermerk #>' id='<#= data.Unitnummer #>' </input>"
                         + "&nbsp;"
-                );         
-                                          
-            columns.XBound(c => c.ModellId);
-            columns.XBound(c => c.Modellbezeichnung);
-            columns.XBound(c => c.AuftragsnummerVon);
-            columns.XBound(c => c.AuftragsnummerBis);
-            columns.XBound(c => c.Anzahl);                        
-            columns.XBound(c => c.Einsteuerung);
-            columns.XBound(c => c.KennzeichenLeasingFahrzeug);
-            columns.XBound(c => c.Fahrgestellnummer).Hidden(true);    
+                );
+            columns.XBound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.Kennzeichen);                                                         
+            columns.XBound(c => c.Einsteuerung);                     
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
