@@ -4387,6 +4387,7 @@
     <Content Include="Views\StatusEinsteuerung\Partial\Grid.cshtml" />
     <Content Include="Views\StatusEinsteuerung\Partial\Common.cshtml" />
     <Content Include="Views\StatusEinsteuerung\ReportStatusEinsteuerung.cshtml" />
+    <Content Include="Views\StatusEinsteuerung\Partial\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

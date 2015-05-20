@@ -59,6 +59,7 @@ namespace CkgDomainLogic.Controllers
             return PartialView("Partial/Grid", StatusEinsteuerungViewModel);
         }
 
+        // TODO -> zweiter report -> grid
         [HttpPost]
         public ActionResult ShowStatusEinsteuerung()
         {
@@ -84,7 +85,7 @@ namespace CkgDomainLogic.Controllers
         public ActionResult ExportStatusEinsteuerungFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = StatusEinsteuerungViewModel.StatusEinsteuerungsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationDocuments, dt);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Report_StatusEinsteuerung, dt);
 
             return new EmptyResult();
         }
@@ -92,7 +93,7 @@ namespace CkgDomainLogic.Controllers
         public ActionResult ExportStatusEinsteuerungFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = StatusEinsteuerungViewModel.StatusEinsteuerungsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationDocuments, dt, landscapeOrientation: true);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Report_StatusEinsteuerung, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

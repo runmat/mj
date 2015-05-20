@@ -3,14 +3,43 @@
 <script type="text/javascript">
 
     var _modelStateValid = false;
-
-    function FormPreparePrivate() {
+             
+    function FormPreparePrivate() {       
         GridAllColumnFilterApplyToGrid("GridStatusEinsteuerung");
     }
 
     function FormPreparePrivateAjax() {
+        $("#divStatusEinsteuerungSuche").css("hide");
         FormPrepareAjax();
     }
+
+
+    function ShowStatusEinsteuerung() {
+
+//        FormPreparePrivateAjax();
+
+//        $.ajax({
+//            type: "POST",
+//            url: "ShowStatusEinsteuerung",
+//            loadingShow: false,
+//            success: function (result) {
+//                ShowStatusEinsteuerungSearchResult(result);
+//                //LoadingHide();
+//                alert(result);
+//            }
+//        });
+        //alert("1")
+    }
+
+//    function ShowStatusEinsteuerungSearchResult(result) {
+//        SearchFormHide();
+//        $("#divGrid").html(result);
+//        //alert("4");
+//        GridAllColumnFilterApplyToGrid("GridStatusEinsteuerung");
+//        $("#divGrid").slideDown();
+//        //alert("5");
+//    }
+
 
     function GetGrid() {
         return $("#GridStatusEinsteuerung").data("tGrid");
@@ -21,7 +50,7 @@
         setTimeout('$("#GridStatusEinsteuerung .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
     }
 
-    function TryModellIdGridRefresh() {
+    function TryStatusEinsteuerungGridRefresh() {
         FilterGrid("GridStatusEinsteuerung");
     }
 

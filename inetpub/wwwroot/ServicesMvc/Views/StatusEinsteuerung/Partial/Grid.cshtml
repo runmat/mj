@@ -1,7 +1,13 @@
 ﻿@model CkgDomainLogic.FzgModelle.ViewModels.StatusEinsteuerungViewModel 
 @using CkgDomainLogic.FzgModelle.Models
+
+
+
+@Html.FormRadioButtonListFor(m => m.Akion, Model.Akionen.ToSelectList())
+
 @{
     var gridName = "GridStatusEinsteuerung";
+    var gridGroupFooterTemplate = "<strong>∑ <#= $.telerik.formatString('{0}', Sum) #></strong>";    
 }
 
 
@@ -10,14 +16,31 @@
     .Name(gridName)
             .XAjaxDataBinding("StatusEinsteuerungAjaxBinding", "StatusEinsteuerung")
     .Columns(columns =>
-        {                        
+        {
+            columns.XBound(c => c.Bestand).Format("{0}")
+               .Aggregate(aggreages => aggreages.Sum())
+               .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+
+            columns.XBound(c => c.EingangGesamt).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate); 
+            
+            
             columns.XBoundAll();
+            
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Modellbezeichnung).Ascending())
         .XToolBar("StatusEinsteuerung")
+             .ToolBar(commands =>
+             {
+                 commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredExcel", "StatusEinsteuerung");
+                 commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredPDF", "StatusEinsteuerung");
+             })
+            .Groupable(g => g.Groups(gr => gr.Add(gp => gp.PDINummer)))
+            .Groupable(g => g.Groups(gr => gr.Add(gp => gp.Fahrzeuggruppe)))
 )
 
 

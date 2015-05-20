@@ -4,7 +4,16 @@
 
 @Html.Partial("Partial/Common")
 
-<h3 class="page-title">Status Einsteuerung</h3>
+<h3 class="page-title">@Localize.Report_StatusEinsteuerung</h3>
+
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/Suche", null)
+    }
+</div>
+
 
 <div class="portlet">
     <div id="divGrid">
