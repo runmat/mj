@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
 
@@ -25,5 +26,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         void MeldungCreateTryLoadEqui(ref Unfallmeldung model, out string errorMessage);
         void MeldungCreate(Unfallmeldung model, out string errorMessage);
+
+        List<Adresse> GetStationCodes();
     }
 }

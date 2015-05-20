@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -33,6 +34,17 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         public Unfallmeldung MeldungForCreate { get; set; }
+
+        public List<Adresse> StationsCodes
+        {
+            get
+            {
+                return PropertyCacheGet(() => DataService.GetStationCodes()
+                            .Concat(new List<Adresse> { new Adresse { KundenNr = "", Name1 = Localize.DropdownDefaultOptionPleaseChoose }})
+                                .OrderBy(s => s.Kennung)
+                                    .ToListOrEmptyList());
+            }
+        }
 
         [XmlIgnore]
         public List<Unfallmeldung> Unfallmeldungen

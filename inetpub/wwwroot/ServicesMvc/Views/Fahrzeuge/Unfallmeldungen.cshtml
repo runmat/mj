@@ -1,6 +1,10 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
 @model UnfallmeldungenViewModel
 
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+
 <h3 class="page-title" id="headerTitle">Unfallmeldungen</h3>
 
 <ul class="breadcrumbs event-breadcrumbs margin-bottom-20">
@@ -181,6 +185,7 @@
             success: function (result) {
                 $("#divMeldungCreateEdit").html(result);
                 FormPreparePrivateAjax();
+                MeldungCreateEditInitDropdown();
                 $("#divMeldungCreateSearch").slideUp(200, function () {
                     $("#divMeldungCreateEdit").slideDown(200);
                     BreadcrumbsMoveNext("@Localize.Create.ToJavascriptString()");
@@ -216,13 +221,30 @@
 
         FormPreparePrivateAjax();
 
-        if (!_modelStateValid)
+        if (!_modelStateValid) {
+            MeldungCreateEditInitDropdown();
             return;
+        }
 
         SpanAlertSuccess("Message", "@Localize.AccidentNotificationSuccessfullyCreated.ToJavascriptString()", 2000);
         setTimeout(function () {
             MeldungCreateEditClose(function () { FilterGrid("GridUnfallmeldungen"); });
         });
-    }    
+    }
+
+    function MeldungCreateEditInitDropdown() {
+        
+        setTimeout(function () {
+            $('#StationsCode').select2({
+                allowClear: true
+            }).off("change").on("change", function (e) {
+                OnCustomerChanged(e.val);
+            });
+
+            setTimeout(function () {
+                $('#StationsCode').data('select2').open();
+            }, 100);
+        }, 100);
+    }
     
 </script>

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.Contracts;
@@ -279,6 +280,20 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                     return "";
                 }
             );
+        }
+
+        public List<Adresse> GetStationCodes()
+        {
+            Z_DPM_CHANGE_ADDR002_001.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_WEBUSER", LogonContext.UserName);
+            SAP.SetImportParameter("I_TYPE", "1");
+            SAP.SetImportParameter("I_ADDRTYP", "ZSTO");
+            SAP.Execute();
+
+            var sapItemsEquis = Z_DPM_CHANGE_ADDR002_001.GT_OUT.GetExportList(SAP);
+            var webItemsEquis = AppModelMappings.Z_DPM_CHANGE_ADDR002_001_To_Adresse.Copy(sapItemsEquis).ToList();
+
+            return webItemsEquis;
         }
     }
 }

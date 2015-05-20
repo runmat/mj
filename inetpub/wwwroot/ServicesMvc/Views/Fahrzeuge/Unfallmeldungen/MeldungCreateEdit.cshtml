@@ -17,8 +17,10 @@
                        
 
             @Html.FormRadioButtonListFor(m => m.MeldungTyp, Unfallmeldung.MeldungTypen.ToSelectList())
-            @Html.FormTextBoxFor(m => m.StationsCode, new { @class = "m-wrap xsmall uppercase" })
-            @Html.FormTextBoxFor(m => m.Standort, new { @class = "m-wrap large" })
+            
+            @Html.FormDropDownListFor(m => m.StationsCode, Model.StationsCodes.ToSelectList(), new { @class = "m-wrap x-large" })
+            
+            @Html.FormTextBoxFor(m => m.Standort, new { @class = "m-wrap x-large" })
 
 
             @Html.FormRequiredFieldsSummary()

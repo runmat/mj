@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -101,5 +105,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
         [GridHidden, NotMapped, XmlIgnore]
         public string EquiNr { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<UnfallmeldungenViewModel> GetViewModel { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public List<Adresse> StationsCodes { get { return GetViewModel == null ? new List<Adresse>() : GetViewModel().StationsCodes; } }
     }
 }
