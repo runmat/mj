@@ -31,6 +31,7 @@
         <colgroup>
             <col class="TableColumn80"/>
             <col />
+            <col />
             <col class="TableColumn150"/>
             <col class="TableColumn110"/>
             <col class="TableColumn190"/>
@@ -38,10 +39,11 @@
         </colgroup>
         <thead>
             <tr>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Id"]</th>      
-                <th class="TableGridCell">Referenz</th>      
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Id"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["DienstleistungBez"]</th>
+                <th class="TableGridCell">Referenz</th>
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Kennzeichen"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>      
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Status"]</th>  
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Zahlart"]</th>
                 <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenGroesse"]</th>

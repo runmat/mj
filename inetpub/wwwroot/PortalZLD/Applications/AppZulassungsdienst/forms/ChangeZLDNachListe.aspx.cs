@@ -144,6 +144,10 @@ namespace AppZulassungsdienst.forms
             {
                 Response.Redirect("ChangeZLDSelect.aspx?AppID=" + Session["AppID"].ToString() + "&B=true&A=true");
             }
+            else if (objNacherf.SelAenderungAngenommene)
+            {
+                Response.Redirect("ChangeZLDSelect.aspx?AppID=" + Session["AppID"].ToString() + "&B=true&E=true");
+            }
             else if (objNacherf.SelSofortabrechnung)
             {
                 Response.Redirect("ChangeZLDSelect.aspx?AppID=" + Session["AppID"].ToString() + "&B=true&S=true");
@@ -767,7 +771,7 @@ namespace AppZulassungsdienst.forms
             {
                 Result.Visible = true;
                 GridView1.Visible = true;
-                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
                 Int32 intTempPageIndex = (intPageIndex > -1 ? intPageIndex : GridView1.PageIndex);
                 String strTempSort = "";
                 String strDirection = null;
@@ -944,10 +948,10 @@ namespace AppZulassungsdienst.forms
             }
 
             // Je nach Modus angezeigte Gridspalten und Controls anpassen
-            tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-            cmdalleEC.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-            cmdalleBar.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-            cmdalleRE.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
+            cmdalleEC.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
+            cmdalleBar.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
+            cmdalleRE.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
 
             if (objNacherf.SelAnnahmeAH)
             {
@@ -1282,7 +1286,7 @@ namespace AppZulassungsdienst.forms
                 if (pos != null)
                 {
                     // immer nur die Felder ändern, die man auch im Grid bearbeiten kann
-                    if (objNacherf.SelAnnahmeAH)
+                    if (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene)
                     {
                         if (txtAmt.Visible)
                             pos.Landkreis = txtAmt.Text.NotNullOrEmpty().ToUpper();
@@ -1343,7 +1347,7 @@ namespace AppZulassungsdienst.forms
                             else if (ZulDate.Visible)
                                 item.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("dd.MM.yyyy");
 
-                            if (objNacherf.SelAnnahmeAH && txtAmt.Visible)
+                            if ((objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene) && txtAmt.Visible)
                                 item.Landkreis = txtAmt.Text.NotNullOrEmpty().ToUpper();
                         }
                     }
@@ -1528,8 +1532,8 @@ namespace AppZulassungsdienst.forms
             tblTemp.Columns.Add("Kennz.", typeof(String));
             tblTemp.Columns.Add("R/W", typeof(String));
 
-            // Für "Neue AH-Vorgänge" Excel-Layout anpassen
-            if (objNacherf.SelAnnahmeAH)
+            // Für "Neue AH-Vorgänge" und "Änderung angenommene Vorgänge" Excel-Layout anpassen
+            if (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene)
             {
                 tblTemp.Columns.Add("Referenz2", typeof(String));
                 tblTemp.Columns.Add("Amt", typeof(String));
@@ -1586,7 +1590,7 @@ namespace AppZulassungsdienst.forms
                 if (item.Wunschkennzeichen.IsTrue())
                     NewRow["R/W"] = "W";
 
-                if (objNacherf.SelAnnahmeAH)
+                if (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene)
                 {
                     NewRow["Referenz2"] = item.Referenz2;
                     NewRow["Amt"] = item.KennzeichenTeil1;
@@ -1614,7 +1618,7 @@ namespace AppZulassungsdienst.forms
                 tblTemp.Rows.Add(NewRow);
             }
 
-            if (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung)
+            if (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung)
             {
                 DataRow GesRow = tblTemp.NewRow();
                 calculateGebuehr();
@@ -1781,7 +1785,7 @@ namespace AppZulassungsdienst.forms
 
             if (PosID == "10")
             {
-                if (!objNacherf.SelAnnahmeAH)
+                if (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene)
                 {
                     switch (belegart)
                     {
@@ -1823,7 +1827,7 @@ namespace AppZulassungsdienst.forms
 
             if (PosID == "10")
             {
-                if (!objNacherf.SelAnnahmeAH)
+                if (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene)
                 {
                     switch (belegart)
                     {
@@ -1903,14 +1907,14 @@ namespace AppZulassungsdienst.forms
             else
             {
                 Result.Visible = true;
-                cmdSend.Enabled = true;
+                cmdSend.Enabled = !objNacherf.SelAenderungAngenommene;
                 cmdSave.Enabled = true;
-                cmdOK.Enabled = true;
-                cmdalleEC.Enabled = !objNacherf.SelAnnahmeAH;
-                cmdalleBar.Enabled = !objNacherf.SelAnnahmeAH;
-                cmdalleRE.Enabled = !objNacherf.SelAnnahmeAH;
-                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-                tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+                cmdOK.Enabled = !objNacherf.SelAenderungAngenommene;
+                cmdalleEC.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
+                cmdalleBar.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
+                cmdalleRE.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
+                trSuche.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
+                tblGebuehr.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
             }
         }
 
@@ -1924,16 +1928,16 @@ namespace AppZulassungsdienst.forms
             GridView1.Columns[2].Visible = !modusSenden;
 
             // Gebühr
-            GridView1.Columns[9].Visible = (!modusSenden && !objNacherf.SelAnnahmeAH);
+            GridView1.Columns[9].Visible = (!modusSenden && !objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
             // Gebühr Amt
-            GridView1.Columns[10].Visible = (!modusSenden && !objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            GridView1.Columns[10].Visible = (!modusSenden && !objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
             // Steuer
-            GridView1.Columns[11].Visible = (!modusSenden && !objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
+            GridView1.Columns[11].Visible = (!modusSenden && !objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
 
             // Aktions-Buttons
             GridView1.Columns[22].Visible = !modusSenden;
 
-            var showZahlart = (!modusSenden && !objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung
+            var showZahlart = (!modusSenden && !objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung
                 && objNacherf.SelVorgang != "VZ" && objNacherf.SelVorgang != "VE" && objNacherf.SelVorgang != "AV" && objNacherf.SelVorgang != "AX");
 
             // EC
@@ -1946,17 +1950,17 @@ namespace AppZulassungsdienst.forms
             if (!nurSenderelevanteSpalten)
             {
                 // Preis
-                GridView1.Columns[8].Visible = !objNacherf.SelAnnahmeAH;
+                GridView1.Columns[8].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
                 // Preis KZ
-                GridView1.Columns[12].Visible = !objNacherf.SelAnnahmeAH;
+                GridView1.Columns[12].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
                 // Referenz2
-                GridView1.Columns[15].Visible = objNacherf.SelAnnahmeAH;
+                GridView1.Columns[15].Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
                 // KreisKZ
-                GridView1.Columns[16].Visible = objNacherf.SelAnnahmeAH;
+                GridView1.Columns[16].Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
                 // Bemerkung
-                GridView1.Columns[19].Visible = !objNacherf.SelAnnahmeAH;
+                GridView1.Columns[19].Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
                 // Bemerkung AH
-                GridView1.Columns[20].Visible = objNacherf.SelAnnahmeAH;
+                GridView1.Columns[20].Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
                 // Vorerf-Datum
                 GridView1.Columns[21].Visible = objNacherf.SelAnnahmeAH;
                 // Adresse

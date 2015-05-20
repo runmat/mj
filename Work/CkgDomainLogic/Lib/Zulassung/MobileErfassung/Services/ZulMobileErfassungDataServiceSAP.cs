@@ -68,7 +68,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
             vorgaenge.ForEach(item =>
                 {
                     // Positionen den Kopfsätzen zuordnen
-                    item.Positionen = positionen.Where(w => w.KopfId == item.Id).ToList();
+                    item.Positionen = positionen.Where(p => p.KopfId == item.Id).OrderBy(p => p.PosNr).ToList();
 
                     // User-Infos aus SQL lesen
                     var vorerfUser = dbContext.GetUser(item.Vorerfasser);

@@ -141,7 +141,7 @@
     // Bei Auswahl bestimmter Haupt-DL auszuführende Aktionen
     function CheckHauptDl() {
         var hauptDl = GetDropdownValue("ddlHauptDl");
-        if (RemoveLeadingZeroes(hauptDl) == "8") {
+        if (hauptDl == "8") {
             SetCheckboxValue("chkNurEinKennzeichen", true, true);
         }
     }

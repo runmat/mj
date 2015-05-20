@@ -1248,9 +1248,9 @@ namespace AppZulassungsdienst.forms
 
                 if (!kopfdaten.Flieger.IsTrue())
                 {
-                    if (kopfdaten.Bearbeitungsstatus == "F")
+                    if (kopfdaten.Bearbeitungsstatus == "F" && objNacherf.AktuellerVorgang.Positionen.None(p => p.PositionsNr == "10" && p.MaterialNr == "656"))
                     {
-                        // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
+                        // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist, außer es wurde Dl. 656 gewählt
                         kopfdaten.Bearbeitungsstatus = "A";
                         kopfdaten.MobilUser = "";
                         objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = "");

@@ -204,9 +204,9 @@
     // Filtert die Vorgangsliste nach dem angegebenen Filtertext
     function FilterVorgaenge(filterText) {
         if (filterVorgaenge != filterText) {
-        filterVorgaenge = filterText;
-        FillVorgangGrid();
-    }
+            filterVorgaenge = filterText;
+            FillVorgangGrid();
+        }
     }
 
     // Vorgangsliste anzeigen/aktualisieren
@@ -224,121 +224,161 @@
                     } else {
                         vorg.IsShown = true;
                     }
-
-                    if (vorg.IsShown == true) {
-                        // Gebühr der Hauptposition ermitteln
-                        var gebuehr = "";
-                        for (var k = 0; k < vorg.Positionen.length; k++ ) {
-                            var position = vorg.Positionen[k];
-
-                            if (RemoveLeadingZeroes(position.PosNr) == "10") {
-                                gebuehr = FormatGebuehr(position.Gebuehr.toString());
-                                break;
-                            }
-                        }
-
-                        // Table-Row hinzufügen
-                        $("#tblVorgaenge tbody")
-                        .append($('<tr>')
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<b>')
-                                    .append($('<a>').text(RemoveLeadingZeroes(vorg.Id)).attr('href', "#popupEditVorgang?Id=" + vorg.Id).attr('data-rel', "popup").attr('data-position-to', "window")
-                                        .click(function () {
-                                            // Daten zum aktuellen Vorgang im Popup anzeigen
-                                            var url = this.toString();
-                                            if (url.indexOf("?") >= 0) {
-                                                var teile = url.split("?");
-                                                for (var y = 0; y < teile.length; y++) {
-                                                    if (teile[y].substr(0, 2) == "Id") {
-                                                        ShowVorgangDetail(teile[y].substr(3));
-                                                    }
-                                                }
-                                            }
-                                        })
-                                    )
-                                )
-                            )
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<span>').text(vorg.Referenz1))
-                                .append($('<br>'))
-                                .append($('<span>').text(vorg.Referenz2))
-                            )
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<div>').attr('id', "divKennzeichen" + vorg.Id)
-                                    .append($('<input>').attr('type', "text").attr('id', "txtKennzeichen" + vorg.Id).attr('maxlength', "20").addClass("TextUpperCase").val(vorg.Kennzeichen))
-                                )
-                            )
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<div>').attr('id', "divGebuehr" + vorg.Id)
-                                    .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id).attr('maxlength', "11").addClass("RightAlignedText").val(gebuehr)
-                                        .blur(function () {
-                                            CalculateGebuehrGesamt();
-                                        })
-                                    )
-                                )
-                            )
-                            .append($('<td>').addClass("TableGridCell NoVerticalPadding")
-                                .append($('<div>').attr('id', "divStatus" + vorg.Id)
-                                    .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal")
-                                        .append($('<input>').attr('id', "rbStatusDurchgefuehrt" + vorg.Id).attr('type', "radio").attr('name', "Status" + vorg.Id).val("OK"))
-                                        .append($('<label>').attr('for', "rbStatusDurchgefuehrt" + vorg.Id).text("OK"))
-                                        .append($('<input>').attr('id', "rbStatusFehlgeschlagen" + vorg.Id).attr('type', "radio").attr('name', "Status" + vorg.Id).val("FEHL"))
-                                        .append($('<label>').attr('for', "rbStatusFehlgeschlagen" + vorg.Id).text("F"))
-                                    )
-                                )
-                            )
-                            .append($('<td>').addClass("TableGridCell NoVerticalPadding")
-                                .append($('<div>').attr('id', "divZahlart" + vorg.Id)
-                                    .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal")
-                                        .append($('<input>').attr('id', "rbZahlartEC" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("EC"))
-                                        .append($('<label>').attr('for', "rbZahlartEC" + vorg.Id).text("EC"))
-                                        .append($('<input>').attr('id', "rbZahlartBar" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("Bar"))
-                                        .append($('<label>').attr('for', "rbZahlartBar" + vorg.Id).text("Bar"))
-                                        .append($('<input>').attr('id', "rbZahlartRE" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("RE"))
-                                        .append($('<label>').attr('for', "rbZahlartRE" + vorg.Id).text("RE"))
-                                    )
-                                )
-                            )
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<span>').text(vorg.KennzeichenGroesse))
-                            )
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<span>').addClass("Float-Right").text(vorg.KennzeichenAnzahl))
-                            )
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<span>').text(vorg.Bemerkung))
-                            )
-                            .append($('<td>').addClass("TableGridCell")
-                                .append($('<span>').text(vorg.VersandzulVkBur))
-                            )
-                        );
-
-                        // Radiobutton-Werte setzen
-                        // Status
-                        if (vorg.StatusDurchgefuehrt == true) {
-                            SetRadiobuttonValue("Status" + vorg.Id, "OK", false);
-                        } else if (vorg.StatusFehlgeschlagen == true) {
-                            SetRadiobuttonValue("Status" + vorg.Id, "FEHL", false);
-                        } else {
-                            SetRadiobuttonValue("Status" + vorg.Id, "", false);
-                        }
-                        // Zahlart (default: EC)
-                        if (vorg.ZahlartBar == true) {
-                            SetRadiobuttonValue("Zahlart" + vorg.Id, "Bar", false);
-                        } else if (vorg.ZahlartRE == true) {
-                            SetRadiobuttonValue("Zahlart" + vorg.Id, "RE", false);
-                        } else {
-                            SetRadiobuttonValue("Zahlart" + vorg.Id, "EC", false);
-                        }
-
-                        // UI-Refresh für eingebettete Controls
-                        RefreshNestedControlsUI("divKennzeichen" + vorg.Id);
-                        RefreshNestedControlsUI("divGebuehr" + vorg.Id);
-                        RefreshNestedControlsUI("divStatus" + vorg.Id);
-                        RefreshNestedControlsUI("divZahlart" + vorg.Id);
-                    }
                 } else {
                     vorg.IsShown = false;
+                }
+
+                if (vorg.IsShown == true) {
+                    for (var k = 0; k < vorg.Positionen.length; k++) {
+                        var position = vorg.Positionen[k];
+
+                        // Table-Row hinzufügen
+                        if (position.PosNr == "10") {
+                            // Hauptposition
+                            $("#tblVorgaenge tbody")
+                                .append($('<tr>')
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<b>')
+                                            .append($('<a>').text(vorg.Id).attr('href', "#popupEditVorgang?Id=" + vorg.Id).attr('data-rel', "popup").attr('data-position-to', "window")
+                                                .click(function () {
+                                                    // Daten zum aktuellen Vorgang im Popup anzeigen
+                                                    var url = this.toString();
+                                                    if (url.indexOf("?") >= 0) {
+                                                        var teile = url.split("?");
+                                                        for (var y = 0; y < teile.length; y++) {
+                                                            if (teile[y].substr(0, 2) == "Id") {
+                                                                ShowVorgangDetail(teile[y].substr(3));
+                                                            }
+                                                        }
+                                                    }
+                                                })
+                                            )
+                                        )
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').text(position.DienstleistungBez))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').text(vorg.Referenz1))
+                                        .append($('<br>'))
+                                        .append($('<span>').text(vorg.Referenz2))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<div>').attr('id', "divKennzeichen" + vorg.Id)
+                                            .append($('<input>').attr('type', "text").attr('id', "txtKennzeichen" + vorg.Id).attr('maxlength', "20").addClass("TextUpperCase").val(vorg.Kennzeichen))
+                                        )
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<div>').attr('id', "divGebuehr" + vorg.Id)
+                                            .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id).attr('maxlength', "11").addClass("RightAlignedText").val(FormatGebuehr(position.Gebuehr.toString()))
+                                                .blur(function () {
+                                                    CalculateGebuehrGesamt();
+                                                })
+                                            )
+                                        )
+                                    )
+                                    .append($('<td>').addClass("TableGridCell NoVerticalPadding")
+                                        .append($('<div>').attr('id', "divStatus" + vorg.Id)
+                                            .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal")
+                                                .append($('<input>').attr('id', "rbStatusDurchgefuehrt" + vorg.Id).attr('type', "radio").attr('name', "Status" + vorg.Id).val("OK"))
+                                                .append($('<label>').attr('for', "rbStatusDurchgefuehrt" + vorg.Id).text("OK"))
+                                                .append($('<input>').attr('id', "rbStatusUndefiniert" + vorg.Id).attr('type', "radio").attr('name', "Status" + vorg.Id).val("UNDEF"))
+                                                .append($('<label>').attr('for', "rbStatusUndefiniert" + vorg.Id).text("-"))
+                                                .append($('<input>').attr('id', "rbStatusFehlgeschlagen" + vorg.Id).attr('type', "radio").attr('name', "Status" + vorg.Id).val("FEHL"))
+                                                .append($('<label>').attr('for', "rbStatusFehlgeschlagen" + vorg.Id).text("F"))
+                                            )
+                                        )
+                                    )
+                                    .append($('<td>').addClass("TableGridCell NoVerticalPadding")
+                                        .append($('<div>').attr('id', "divZahlart" + vorg.Id)
+                                            .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal")
+                                                .append($('<input>').attr('id', "rbZahlartEC" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("EC"))
+                                                .append($('<label>').attr('for', "rbZahlartEC" + vorg.Id).text("EC"))
+                                                .append($('<input>').attr('id', "rbZahlartBar" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("Bar"))
+                                                .append($('<label>').attr('for', "rbZahlartBar" + vorg.Id).text("Bar"))
+                                                .append($('<input>').attr('id', "rbZahlartRE" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("RE"))
+                                                .append($('<label>').attr('for', "rbZahlartRE" + vorg.Id).text("RE"))
+                                            )
+                                        )
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').text(vorg.KennzeichenGroesse))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').addClass("Float-Right").text(vorg.KennzeichenAnzahl))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').text(vorg.Bemerkung))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').text(vorg.VersandzulVkBur))
+                                    )
+                                );
+
+                            // Radiobutton-Werte setzen
+                            // Status
+                            if (vorg.StatusDurchgefuehrt == true) {
+                                SetRadiobuttonValue("Status" + vorg.Id, "OK", false);
+                            } else if (vorg.StatusFehlgeschlagen == true) {
+                                SetRadiobuttonValue("Status" + vorg.Id, "FEHL", false);
+                            } else {
+                                SetRadiobuttonValue("Status" + vorg.Id, "UNDEF", false);
+                            }
+                            // Zahlart (default: EC)
+                            if (vorg.ZahlartBar == true) {
+                                SetRadiobuttonValue("Zahlart" + vorg.Id, "Bar", false);
+                            } else if (vorg.ZahlartRE == true) {
+                                SetRadiobuttonValue("Zahlart" + vorg.Id, "RE", false);
+                            } else {
+                                SetRadiobuttonValue("Zahlart" + vorg.Id, "EC", false);
+                            }
+
+                            // UI-Refresh für eingebettete Controls
+                            RefreshNestedControlsUI("divKennzeichen" + vorg.Id);
+                            RefreshNestedControlsUI("divGebuehr" + vorg.Id);
+                            RefreshNestedControlsUI("divStatus" + vorg.Id);
+                            RefreshNestedControlsUI("divZahlart" + vorg.Id);
+                        } else {
+                            // Unterposition
+                            $("#tblVorgaenge tbody")
+                                .append($('<tr>')
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').text(vorg.Id))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<span>').text(position.DienstleistungBez))
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                        .append($('<div>').attr('id', "divGebuehr" + vorg.Id + "_" + k.toString())
+                                            .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id + "_" + k.toString()).attr('maxlength', "11").addClass("RightAlignedText").val(FormatGebuehr(position.Gebuehr.toString()))
+                                                .blur(function () {
+                                                    CalculateGebuehrGesamt();
+                                                })
+                                            )
+                                        )
+                                    )
+                                    .append($('<td>').addClass("TableGridCell NoVerticalPadding")
+                                    )
+                                    .append($('<td>').addClass("TableGridCell NoVerticalPadding")
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                    )
+                                    .append($('<td>').addClass("TableGridCell")
+                                    )
+                                );
+
+                            // UI-Refresh für eingebettete Controls
+                            RefreshNestedControlsUI("divGebuehr" + vorg.Id + "_" + k.toString());
+                        }
+                    }
                 }
             }
         }
@@ -356,11 +396,24 @@
             for (var i = 0; i < jsZLDMobile.datenstruktur.Vorgaenge.length; i++) {
                 var vorg = jsZLDMobile.datenstruktur.Vorgaenge[i];
                 if (vorg.IsShown) {
+                    // Gebühr Hauptposition
                     var strGeb = $("#txtGebuehr" + vorg.Id).val().replace(",", ".").replace(" ", "");
                     var geb = parseFloat(strGeb);
                     
                     if (!isNaN(geb)) {
                         gebGesamt += geb;
+                    }
+
+                    // Unterpositionen
+                    if (vorg.Positionen.length > 1) {
+                        for (var j = 1; j < vorg.Positionen.length; j++) {
+                            var strGebUnterpos = $("#txtGebuehr" + vorg.Id + "_" + j.toString()).val().replace(",", ".").replace(" ", "");
+                            var gebUnterpos = parseFloat(strGebUnterpos);
+
+                            if (!isNaN(gebUnterpos)) {
+                                gebGesamt += gebUnterpos;
+                            }
+                        }
                     }
                 }
             }
@@ -378,19 +431,22 @@
                 var vorg = jsZLDMobile.datenstruktur.Vorgaenge[i];
                 if (vorg.IsShown) {
                     vorg.Kennzeichen = $("#txtKennzeichen" + vorg.Id).val().toUpperCase().replace(" ", "");
-                    var geb = $("#txtGebuehr" + vorg.Id).val().replace(",", ".").replace(" ", "");
+                    var geb = "";
                     var dienstleistungHauptposition = "";
                     for (var j = 0; j < vorg.Positionen.length; j++) {
                         var position = vorg.Positionen[j];
 
-                        if (RemoveLeadingZeroes(position.PosNr) == "10") {
-                            dienstleistungHauptposition = RemoveLeadingZeroes(position.DienstleistungId);
-                            if (geb == null || geb.length == 0) {
-                                geb = "0";
-                            }
-                            position.Gebuehr = geb;
-                            break;
+                        if (position.PosNr == "10") {
+                            geb = $("#txtGebuehr" + vorg.Id).val().replace(",", ".").replace(" ", "");
+                            dienstleistungHauptposition = position.DienstleistungId;
+                        } else {
+                            geb = $("#txtGebuehr" + vorg.Id + "_" + j.toString()).val().replace(",", ".").replace(" ", "");
                         }
+
+                        if (geb == null || geb.length == 0) {
+                            geb = "0";
+                        }
+                        position.Gebuehr = geb;
                     }
                     var selStatus = GetRadiobuttonValue("Status" + vorg.Id);
                     vorg.StatusDurchgefuehrt = (selStatus == "OK");
@@ -431,7 +487,7 @@
         for (var i = 0; i < jsZLDMobile.datenstruktur.Vorgaenge.length; i++) {
             var vorg = jsZLDMobile.datenstruktur.Vorgaenge[i];
             if (vorg.Id == vorgId) {
-                $("#lblPopupID").text(RemoveLeadingZeroes(vorg.Id));
+                $("#lblPopupID").text(vorg.Id);
                 $("#lblPopupReferenz1").text(vorg.Referenz1);
                 $("#txtKunde").val(vorg.Kunde);
                 $("#txtTelefonNr").val(vorg.TelefonNr);
@@ -468,9 +524,11 @@
                         )
                     );
 
-                    // Gebühr der Hauptposition aus Liste übernehmen
-                    if (RemoveLeadingZeroes(vorgPos.PosNr) == "10") {
+                    // Gebühr aus Liste übernehmen
+                    if (vorgPos.PosNr == "10") {
                         $("#txtGebuehr" + lfdNr).val($("#txtGebuehr" + vorg.Id).val());
+                    } else {
+                        $("#txtGebuehr" + lfdNr).val($("#txtGebuehr" + vorg.Id + "_" + j.toString()).val());
                     }
 
                     // UI-Refresh für eingebettete Controls
@@ -503,7 +561,7 @@
         // Dienstleistungs-Zeile hinzufügen
         $("#tblPopupPositionen tbody")
             .append($('<tr>')
-                .append($('<td>').addClass("TableGridCellNarrow").text("neu"))
+                .append($('<td>').addClass("TableGridCellNarrow").text(naechsteNr + " (neu)"))
                 .append($('<td>').addClass("TableGridCellNarrow")
                 .append($('<div>').attr('id', "divDL" + naechsteNr)
                     .append($('<label>').attr('for', "ddlDL" + naechsteNr).text(""))
@@ -561,7 +619,7 @@
          
         for (var i = 0; i < jsZLDMobile.datenstruktur.Vorgaenge.length; i++) {
             var vorg = jsZLDMobile.datenstruktur.Vorgaenge[i];
-            if (RemoveLeadingZeroes(vorg.Id) == lbl.text()) {
+            if (vorg.Id == lbl.text()) {
                 // Vorgangsbezogene Daten übernehmen
                 vorg.AmtEdit = GetDropdownValue("ddlAmt");
                 var zulDat = $("#txtZulDat").val().replace(" ", "");
@@ -589,8 +647,7 @@
                 // ggf. neue DL ergänzen, wenn noch nicht in Positionsliste vorhanden
                 var naechsteNr;
                 for (naechsteNr = vorg.Positionen.length + 1; naechsteNr < 100; naechsteNr++) {
-                    if (ControlExists("txtGebuehr" + naechsteNr) == true) {
-                        var dlId = GetDropdownValue("ddlDL" + naechsteNr);
+                    if (ControlExists("ddlDL" + naechsteNr) == true) {
                         vorg.Positionen[vorg.Positionen.length] = { KopfId: vorg.Id, PosNr: "" };
                     } else {
                         break;
@@ -621,18 +678,15 @@
                         geb = "0";
                     }
                     vgPos.Gebuehr = geb;
-
-                    // Gebühr der Hauptposition in der Liste aktualisieren
-                    if (RemoveLeadingZeroes(vgPos.PosNr) == "10") {
-                        $("#txtGebuehr" + vorg.Id).val(FormatGebuehr(vgPos.Gebuehr));
-                        RefreshNestedControlsUI("divGebuehr" + vorg.Id);
-                    }
                 }
                 break;
             }
         }
         // Popup schließen
         $("#popupEditVorgang").popup('close');
+
+        // UI-Liste aktualisieren
+        FillVorgangGrid();
     }
 
     // Dienstleistungsbezeichnung zur gegebenen ID ermitteln
