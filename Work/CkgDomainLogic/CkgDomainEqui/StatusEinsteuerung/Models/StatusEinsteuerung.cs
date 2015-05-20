@@ -28,48 +28,45 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.CarModel)]
         public string Modellbezeichnung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CarModel)]
+        [LocalizedDisplay(LocalizeConstants.VehicleGroup)]
         public string Fahrzeuggruppe { get; set; }
+       
+        [LocalizedDisplay(LocalizeConstants.FeedEnTotal)]
+        public int EingangGesamt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DateFromPreviousYear)]
+        public int AusVorjahr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationPrevMonth)]
+        public int ZulassungVormonat { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationCurrentMonth)]
+        public int ZulassungLfdMonat { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationFullMonth)]
+        public int ZulassungGesamtMonat { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationPercCurrentMonth)]
+        public int ZulassungProzLfdMonat { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationPercNextMonth)]
+        public int ZulassungProzFolgeMonat { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Stock)]
         public int Bestand { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
-        public int EingangGesamt { get; set; }
-
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
-        public int AusVorjahr { get; set; }
-
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
-        public int ZulassungVormonat { get; set; }
-
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
-        public int ZulassungLfdMonat { get; set; }
-
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
-        public int ZulassungGesamtMonat { get; set; }
-
-        public int Zul_PZ_LFD_M { get; set; }
-
-        public int ZUL_PZ_FM { get; set; }
-
-        public int FZG_BEST { get; set; }
-
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
+        [LocalizedDisplay(LocalizeConstants.Equipped)]
         public int Ausgerüstet { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.zb2)]
+        [LocalizedDisplay(LocalizeConstants.ZbIIAvailable)]
         public int MitBrief { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
+        [LocalizedDisplay(LocalizeConstants.Prepared4Registration)]
         public int Zulassungsbereit { get; set; }
 
-        //[LocalizedDisplay(LocalizeConstants.Stock)]
+        [LocalizedDisplay(LocalizeConstants.UnitnumberNotApplied)]
         public int OhneUnitnummer { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.VehicleGroup)]
-        public string FzgGruppe { get; set; }
-
+      
         [LocalizedDisplay(LocalizeConstants.Blocked)]
         public bool Gesperrt { get; set; }        
     }

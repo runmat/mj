@@ -20,6 +20,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                                                      {
                                                          d.PDINummer = s.ZZCARPORT;
                                                          d.PDIBezeichnung = s.ZNAME1;
+                                                         d.Fahrzeuggruppe = s.ZFZG_GROUP;
                                                          d.HerstellerCode = s.ZZHERST;
                                                          d.Hersteller = s.ZKLTXT;
                                                          d.ModellCode = s.ZZMODELL;
@@ -29,14 +30,13 @@ namespace CkgDomainLogic.FzgModelle.Models
                                                          d.ZulassungVormonat = s.ZUL_VM.ToInt();
                                                          d.ZulassungLfdMonat = s.ZUL_LFD_M.ToInt();
                                                          d.ZulassungGesamtMonat = s.ZUL_GES_M.ToInt();
-                                                         d.Zul_PZ_LFD_M = s.ZUL_PZ_LFD_M.ToInt();
-                                                         d.ZUL_PZ_FM = s.ZUL_PZ_FM.ToInt();
-                                                         d.FZG_BEST = s.FZG_BEST.ToInt();
+                                                         d.ZulassungProzLfdMonat = s.ZUL_PZ_LFD_M.ToInt();
+                                                         d.ZulassungProzFolgeMonat = s.ZUL_PZ_FM.ToInt();
+                                                         d.Bestand = s.FZG_BEST.ToInt();
                                                          d.Ausgerüstet = s.FZG_AUSGER.ToInt();
                                                          d.MitBrief = s.FZG_M_BRIEF.ToInt();
                                                          d.Zulassungsbereit = s.FZG_ZUL_BER.ToInt();
-                                                         d.OhneUnitnummer = s.FZG_OHNE_UNIT.ToInt();
-                                                         d.Fahrzeuggruppe = s.ZFZG_GROUP;
+                                                         d.OhneUnitnummer = s.FZG_OHNE_UNIT.ToInt();                                                        
                                                          d.Sipp = s.ZSIPP_CODE;
                                                          d.Gesperrt = s.FZG_GESP.ToBool();
                                                      }));

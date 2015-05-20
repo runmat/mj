@@ -20,8 +20,7 @@ namespace CkgDomainLogic.FzgModelle.Services
         }
       
         public List<StatusEinsteuerung> GetStatusEinsteuerung()
-        {                          	    
-            //  Z_M_EC_AVM_NUR_BRIEF_VORH 
+        {                          	                 
 	        //  Z_M_EC_AVM_STATUS_BESTAND
 
             Z_M_EC_AVM_STATUS_EINSTEUERUNG.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
@@ -33,5 +32,16 @@ namespace CkgDomainLogic.FzgModelle.Services
 
             return webItemsEquis;            
         }
+
+
+        public int GetZbIIOhneFzgCount()
+        {
+            Z_M_EC_AVM_NUR_BRIEF_VORH.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            SAP.Execute();
+
+            return Z_M_EC_AVM_NUR_BRIEF_VORH.GT_WEB.GetExportList(SAP).Count();
+        }
+
     }
 }

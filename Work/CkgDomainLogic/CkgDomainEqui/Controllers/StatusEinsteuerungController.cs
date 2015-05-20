@@ -22,7 +22,7 @@ namespace CkgDomainLogic.Controllers
             get { return _dataContextKey; }
         }
 
-        public StatusEinsteuerungViewModel StatusEinsteuerungViewModel { get { return GetViewModel<StatusEinsteuerungViewModel>(); } }
+        public StatusEinsteuerungViewModel StatusEinsteuerungViewModel { get { return GetViewModel<StatusEinsteuerungViewModel>(); } }   
 
         public StatusEinsteuerungController(IAppSettings appSettings, ILogonContextDataService logonContext, IStatusEinsteuerungDataService statusEinsteuerungDataService)
             : base(appSettings, logonContext)
@@ -59,10 +59,17 @@ namespace CkgDomainLogic.Controllers
             return PartialView("Partial/Grid", StatusEinsteuerungViewModel);
         }
 
-        // TODO -> zweiter report -> grid
         [HttpPost]
-        public ActionResult ShowStatusEinsteuerung()
+        public ActionResult LoadStatusbericht()
         {
+
+            if (ModelState.IsValid)
+            {
+                StatusEinsteuerungViewModel.LoadStatusEinsteuerung();
+                if (StatusEinsteuerungViewModel.StatusEinsteuerungs.None())
+                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
             return PartialView("Partial/Grid", StatusEinsteuerungViewModel);
         }
 

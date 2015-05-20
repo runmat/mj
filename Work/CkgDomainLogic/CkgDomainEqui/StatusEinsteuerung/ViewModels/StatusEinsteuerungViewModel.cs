@@ -35,15 +35,14 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
-
-        public string Akion { get; set; }
-
-        public string Akionen { get { return string.Format("report1,{0};report2,{1}", "Report 1", "Report 2"); } } 
+        public int ZB2OhneFahrzeugCount {
+            get { return PropertyCacheGet(() => DataService.GetZbIIOhneFzgCount()); }
+        }
 
 
         public void Init()
         {
-           Akion = "report1"; 
+        
         }
 
         public void DataInit()
