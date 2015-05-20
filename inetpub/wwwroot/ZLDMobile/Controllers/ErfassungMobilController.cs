@@ -298,8 +298,11 @@ namespace ZLDMobile.Controllers
                     }
                 }
 
+                vorg.Id = "Z000000001";
                 vorg.VkOrg = LogonContext.VkOrg;
                 vorg.VkBur = ViewModel.VkBurNeuanlage;
+
+                vorg.Positionen.ForEach(p => p.KopfId = vorg.Id);
 
                 string speicherResult = ViewModel.SaveVorgang(vorg);
 
