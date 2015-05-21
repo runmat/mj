@@ -2,19 +2,19 @@
 
 @section LayoutScript { _controlGroupValidationType = "default"; }
 
-<h3 class="page-title">@Localize.Report_StatusEinsteuerung</h3>
+<h3 class="page-title">@Localize.Report_Statusbericht</h3>
 
 <div class="hide">
     @using (Html.FormSearchBox())
     {
-        @Html.Partial("Partial/SucheEinsteuerung", null)
+        @Html.Partial("Partial/Suche", null)
     }
 </div>
 
 @Html.Partial("Partial/Common")
 
 <div class="portlet">   
-    @Html.Partial("Partial/GridEinsteuerung")   
+    @Html.Partial("Partial/Grid")   
 </div>
 
 

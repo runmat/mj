@@ -6,7 +6,7 @@ namespace CkgDomainLogic.FzgModelle.Contracts
 {
     public interface IStatusEinsteuerungDataService : ICkgGeneralDataService 
     {
-        List<StatusEinsteuerung> GetStatusEinsteuerung();
+        List<StatusEinsteuerung> GetStatusbericht();
 
         int GetZbIIOhneFzgCount();
     }

@@ -15,22 +15,23 @@
         {
             columns.XBound(c => c.PDINummer);
             columns.XBound(c => c.PDIBezeichnung);
+            columns.XBound(c => c.Fahrzeuggruppe);
             columns.XBound(c => c.ModellCode);
             columns.XBound(c => c.Modellbezeichnung);
             columns.XBound(c => c.HerstellerCode);
-            columns.XBound(c => c.Hersteller);                        
+            columns.XBound(c => c.Hersteller);
+            columns.XBound(c => c.Gesperrt); 
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Modellbezeichnung).Ascending())
+    .XSort(sortOrder => sortOrder.Add(c => c.PDINummer).Ascending())
         .XToolBar("StatusEinsteuerung")
              .ToolBar(commands =>
              {
                  commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredExcel", "StatusEinsteuerung");
                  commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredPDF", "StatusEinsteuerung");
              })
-            .Groupable(g => g.Groups(gr => gr.Add(gp => gp.PDINummer)))
-            .Groupable(g => g.Groups(gr => gr.Add(gp => gp.Fahrzeuggruppe)))
+            
 )
 

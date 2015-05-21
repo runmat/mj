@@ -40,6 +40,17 @@ namespace CkgDomainLogic.Controllers
         [CkgApplication]
         public ActionResult ReportStatusEinsteuerung()
         {
+            return ReportStatus();
+        }
+
+        [CkgApplication]
+        public ActionResult ReportStatusbericht()
+        {
+            return ReportStatus();
+        }
+
+        private ActionResult ReportStatus()
+        {
             StatusEinsteuerungViewModel.DataInit();
             StatusEinsteuerungViewModel.Init();
             return View(StatusEinsteuerungViewModel);
@@ -56,7 +67,7 @@ namespace CkgDomainLogic.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("Partial/Grid", StatusEinsteuerungViewModel);
+            return PartialView("Partial/GridEinsteuerung", StatusEinsteuerungViewModel);
         }
 
         [HttpPost]
@@ -65,7 +76,7 @@ namespace CkgDomainLogic.Controllers
 
             if (ModelState.IsValid)
             {
-                StatusEinsteuerungViewModel.LoadStatusEinsteuerung();
+                StatusEinsteuerungViewModel.LoadStatusbericht();
                 if (StatusEinsteuerungViewModel.StatusEinsteuerungs.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }

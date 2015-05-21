@@ -19,7 +19,7 @@ namespace CkgDomainLogic.FzgModelle.Services
         {
         }
       
-        public List<StatusEinsteuerung> GetStatusEinsteuerung()
+        public List<StatusEinsteuerung> GetStatusbericht()
         {                          	                 
 	        //  Z_M_EC_AVM_STATUS_BESTAND
 

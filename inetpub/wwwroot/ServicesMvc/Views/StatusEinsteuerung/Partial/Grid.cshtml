@@ -48,29 +48,29 @@
               .Aggregate(aggreages => aggreages.Sum())
               .ClientGroupFooterTemplate(gridGroupFooterTemplate);
 
-            //columns.XBound(c => c.ZulassungGesamtMonat).Format("{0}")
-            //  .Aggregate(aggreages => aggreages.Sum())
-            //  .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.ZulassungGesamtMonat).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
 
-            //columns.XBound(c => c.Bestand).Format("{0}")
-            //  .Aggregate(aggreages => aggreages.Sum())
-            //  .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.Bestand).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
 
-            //columns.XBound(c => c.Ausgerüstet).Format("{0}")
-            //  .Aggregate(aggreages => aggreages.Sum())
-            //  .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.Ausgerüstet).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
 
-            //columns.XBound(c => c.MitBrief).Format("{0}")
-            //  .Aggregate(aggreages => aggreages.Sum())
-            //  .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.MitBrief).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
 
-            //columns.XBound(c => c.Zulassungsbereit).Format("{0}")
-            //  .Aggregate(aggreages => aggreages.Sum())
-            //  .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.Zulassungsbereit).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
 
-            //columns.XBound(c => c.OhneUnitnummer).Format("{0}")
-            //  .Aggregate(aggreages => aggreages.Sum())
-            //  .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            columns.XBound(c => c.OhneUnitnummer).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
                         
             //columns.XBoundAll();
 
@@ -80,13 +80,14 @@
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.PDINummer).Ascending())
         .XToolBar("StatusEinsteuerung")
-             .ToolBar(commands =>
-             {
-                 commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredExcel", "StatusEinsteuerung");
-                 commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredPDF", "StatusEinsteuerung");
-             })
+                 .ToolBar(commands =>
+                 {
+                     commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredExcel", "StatusEinsteuerung");
+                     commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredPDF", "StatusEinsteuerung");
+                 })
             .Groupable(g => g.Groups(gr => gr.Add(gp => gp.PDINummer)))
             .Groupable(g => g.Groups(gr => gr.Add(gp => gp.Fahrzeuggruppe)))
 )
 
-@Html.FormTextAreaFor(c => c.ZB2OhneFahrzeugCount)
+@Html.FormTextBlockFor(c => c.ZB2OhneFahrzeugCount, new { @class = "m-wrap medium" })
+@Html.FormTextBlockFor(c => c.AnzahlGesperrte, new { @class = "m-wrap medium" })

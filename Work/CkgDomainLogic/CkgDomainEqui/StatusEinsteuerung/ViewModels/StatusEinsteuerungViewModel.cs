@@ -7,6 +7,7 @@ using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using System.Web.Mvc;
+using GeneralTools.Resources;
 using CkgDomainLogic.FzgModelle.Contracts;
 using CkgDomainLogic.FzgModelle.Models;
 using GeneralTools.Models;
@@ -35,10 +36,15 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [LocalizedDisplay(LocalizeConstants.VehiclesWithoutZb2)]
         public int ZB2OhneFahrzeugCount {
             get { return PropertyCacheGet(() => DataService.GetZbIIOhneFzgCount()); }
         }
 
+        [LocalizedDisplay(LocalizeConstants.VehiclesBlocked)]
+        public int AnzahlGesperrte {
+            get { return StatusEinsteuerungsFiltered.Count(s => s.Gesperrt); }
+        }
 
         public void Init()
         {
@@ -55,10 +61,16 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             PropertyCacheClear(this, m => m.StatusEinsteuerungsFiltered);
         }
 
-       
+
         public void LoadStatusEinsteuerung()
+        {
+            StatusEinsteuerungs = DataService.GetStatusbericht().Where(s => s.Bestand > 0).ToList();
+            DataMarkForRefresh();        
+        }
+
+        public void LoadStatusbericht()
         {            
-            StatusEinsteuerungs = DataService.GetStatusEinsteuerung(); 
+            StatusEinsteuerungs = DataService.GetStatusbericht(); 
             DataMarkForRefresh();
 
             //XmlService.XmlSerializeToFile(StatusEinsteuerungs, Path.Combine(AppSettings.DataPath, @"StatusEinsteuerungs.xml"));
