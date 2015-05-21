@@ -4147,6 +4147,15 @@
     </Content>
     <Content Include="Views\Logs\PageVisitsDetail.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\Grid.cshtml" />
+    <Content Include="Views\StatusEinsteuerung\Partial\GridEinsteuerung.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\StatusEinsteuerung\Partial\SucheEinsteuerung.cshtml">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="Views\StatusEinsteuerung\ReportStatusEinsteuerung.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="Views\Uebfuehrg\Fzg.cshtml" />
     <Content Include="Views\Uebfuehrg\Partial\Common.cshtml" />
     <Content Include="Views\Logs\Partial\PageVisit\SuchePageVisitLogItems.cshtml" />
@@ -4386,11 +4395,8 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
     <Content Include="Views\StatusEinsteuerung\Partial\Grid.cshtml" />
     <Content Include="Views\StatusEinsteuerung\Partial\Common.cshtml" />
-    <Content Include="Views\StatusEinsteuerung\ReportStatusEinsteuerung.cshtml" />
     <Content Include="Views\StatusEinsteuerung\Partial\Suche.cshtml" />
-    <Content Include="Views\StatusEinsteuerung\Partial\GridEinsteuerung.cshtml" />
     <Content Include="Views\StatusEinsteuerung\ReportStatusbericht.cshtml" />
-    <Content Include="Views\StatusEinsteuerung\Partial\SucheEinsteuerung.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -1,9 +1,8 @@
 ﻿@model CkgDomainLogic.FzgModelle.ViewModels.StatusEinsteuerungViewModel 
 @using CkgDomainLogic.FzgModelle.Models
 
-
 @{
-    var gridName = "GridStatusEinsteuerung";
+    var gridName = "GridStatus";
     var gridGroupFooterTemplate = "<strong>∑ <#= $.telerik.formatString('{0}', Sum) #></strong>";    
 }
 
@@ -14,8 +13,6 @@
     .XAjaxDataBinding("StatusEinsteuerungAjaxBinding", "StatusEinsteuerung")
     .Columns(columns =>
         {
-            
-            
             columns.XBound(c => c.PDINummer);
             columns.XBound(c => c.PDIBezeichnung);
             columns.XBound(c => c.Fahrzeuggruppe);

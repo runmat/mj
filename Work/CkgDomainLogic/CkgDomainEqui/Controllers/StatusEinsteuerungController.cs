@@ -29,27 +29,20 @@ namespace CkgDomainLogic.Controllers
         {
             InitViewModel(StatusEinsteuerungViewModel, appSettings, logonContext, statusEinsteuerungDataService);            
         }
-
-             
-        void InitModelStatics()
-        {
-           
-        }
-
-
+                    
         [CkgApplication]
         public ActionResult ReportStatusEinsteuerung()
         {
-            return ReportStatus();
+            return Init();
         }
 
         [CkgApplication]
         public ActionResult ReportStatusbericht()
         {
-            return ReportStatus();
+            return Init();
         }
 
-        private ActionResult ReportStatus()
+        private ActionResult Init()
         {
             StatusEinsteuerungViewModel.DataInit();
             StatusEinsteuerungViewModel.Init();
@@ -91,7 +84,7 @@ namespace CkgDomainLogic.Controllers
         }
 
         [HttpPost]
-        public ActionResult FilterGridStatusEinsteuerung(string filterValue, string filterColumns)
+        public ActionResult FilterGridStatus(string filterValue, string filterColumns)
         {
             StatusEinsteuerungViewModel.FilterStatusEinsteuerung(filterValue, filterColumns);
 
