@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Models;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
 using GeneralTools.Resources;
 using CkgDomainLogic.FzgModelle.Contracts;
 using CkgDomainLogic.FzgModelle.Models;
 using GeneralTools.Models;
-using System.IO;
 
 namespace CkgDomainLogic.FzgModelle.ViewModels
 {
