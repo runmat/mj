@@ -47,6 +47,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void Init()
         {
             DispositionslisteSelektor.ZulassungsdatumRange.IsSelected = true;
+            DispositionslisteSelektor.ZulassungsdatumRange.EndDate = DateTime.Now.AddDays(1);
         }
 
         public void DataInit()
