@@ -2,8 +2,45 @@
 
 <script type="text/javascript">
 
+    $("#StatusEinsteuerungForm button[type=submit]").trigger("click");
+
+    function ShowStatusReport() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowStatusReport",
+            loadingShow: false,
+            success: function (result) {
+                $("#GridStatus").html(result);
+                GridAllColumnFilterApplyToGrid("GridStatus");
+                LoadingHide();
+            }
+        });
+
+    }
+
+
+    function ShowStatusEinsteuerung() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowStatusEinsteuerung",
+            loadingShow: false,
+            success: function (result) {
+                $("#GridStatus").html(result);
+                GridAllColumnFilterApplyToGrid("GridStatus");
+                LoadingHide();
+            }
+        });
+    }
+
+
     function FormPreparePrivateAjax() {
-        //$("#divStatusEinsteuerungSuche").css("hide");
+        //$("#divStatusEinsteuerungSuche").css("hide");       
         FormPrepareAjax();
     }
 

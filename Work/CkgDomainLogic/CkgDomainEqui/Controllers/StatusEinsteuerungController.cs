@@ -57,7 +57,7 @@ namespace CkgDomainLogic.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
-            return PartialView("Partial/GridEinsteuerung", StatusEinsteuerungViewModel);
+            return PartialView("Partial/SucheEinsteuerung", StatusEinsteuerungViewModel);
         }
 
         [HttpPost]
@@ -71,8 +71,23 @@ namespace CkgDomainLogic.Controllers
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
+            return PartialView("Partial/Suche", StatusEinsteuerungViewModel);
+        }
+
+         
+        [HttpPost]
+        public ActionResult ShowStatusReport()
+        {
             return PartialView("Partial/Grid", StatusEinsteuerungViewModel);
         }
+
+        [HttpPost]
+        public ActionResult ShowStatusEinsteuerung()
+        {
+            return PartialView("Partial/GridEinsteuerung", StatusEinsteuerungViewModel);
+        }
+
+
 
         [GridAction]
         public ActionResult StatusEinsteuerungAjaxBinding()

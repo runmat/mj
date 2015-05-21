@@ -1,6 +1,6 @@
 ﻿<div id="divStatusEinsteuerungSuche">
     @using (Ajax.BeginForm("LoadStatusEinsteuerung", "StatusEinsteuerung", null,
-        new MvcAjaxOptions("divStatusEinsteuerungSuche"), new { id = "StatusEinsteuerungForm" } ))
+        new MvcAjaxOptions("divStatusEinsteuerungSuche") { OnComplete = "ShowStatusEinsteuerung();" }, new { id = "StatusEinsteuerungForm" }))
     {    
         <div class="form-horizontal label-width-200" id="searchForm">
             @Html.ValidationSummary()
