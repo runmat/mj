@@ -1300,6 +1300,8 @@ namespace AppZulassungsdienst.forms
                 Label lblID_POS = (Label)gvRow.FindControl("lblID_POS");
                 Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
 
+                var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
+
                 DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS =" + lblID_POS.Text);
 
                 DataRow targetRow;
@@ -1311,7 +1313,7 @@ namespace AppZulassungsdienst.forms
                 targetRow["Search"] = txtBox.Text;
                 targetRow["Value"] = ddl.SelectedValue;
                 targetRow["Text"] = ddl.SelectedItem.Text;
-                targetRow["Menge"] = txtMenge.Text;
+                targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "");
 
                 txtBox = (TextBox)gvRow.FindControl("txtPreis");
                 targetRow["Preis"] = txtBox.Text.ToDecimal(0);
