@@ -876,6 +876,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
             {
                 txtGeldinstitut.Text = bankdaten.Geldinstitut;
@@ -1730,6 +1732,8 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+                hfBankleitzahl.Value = objCommon.Bankschluessel;
+                hfKontonummer.Value = objCommon.Kontonr;
             }
             else if (cpdMitEinzug)
             {
@@ -2171,8 +2175,8 @@ namespace AppZulassungsdienst.forms
             bankdaten.SapId = objNacherf.AktuellerVorgang.Kopfdaten.SapId;
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
-            bankdaten.Bankleitzahl = objCommon.Bankschluessel;
-            bankdaten.KontoNr = objCommon.Kontonr;
+            bankdaten.Bankleitzahl = hfBankleitzahl.Value;
+            bankdaten.KontoNr = hfKontonummer.Value;
             bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
@@ -2193,6 +2197,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             txtGeldinstitut.Text = (String.IsNullOrEmpty(bankdaten.Geldinstitut) ? "Wird automatisch gefüllt!" : bankdaten.Geldinstitut);
             txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             chkEinzug.Checked = bankdaten.Einzug.IsTrue();
