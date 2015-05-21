@@ -145,7 +145,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItemsEquis;
         }   
 
-
         public List<Unfallmeldung> GetUnfallmeldungen(UnfallmeldungenSelektor selector)
         {
             Z_DPM_UF_MELDUNGS_SUCHE.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
@@ -168,9 +167,8 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             var sapItemsEquis = Z_DPM_UF_MELDUNGS_SUCHE.GT_UF.GetExportList(SAP);
             var webItemsEquis = AppModelMappings.Z_DPM_UF_MELDUNGS_SUCHE_To_Unfallmeldungen.Copy(sapItemsEquis).ToList();
             return webItemsEquis;
-
-
         }
+
 
     }
 }
