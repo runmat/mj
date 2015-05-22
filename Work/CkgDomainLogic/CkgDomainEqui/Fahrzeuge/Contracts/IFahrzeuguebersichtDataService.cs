@@ -6,7 +6,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
     public interface IFahrzeuguebersichtDataService : ICkgGeneralDataService 
     {
-        List<Fahrzeuguebersicht> GetFahrzeuguebersicht(FahrzeuguebersichtSelektor selector);
+        List<Fahrzeug> GetFahrzeuguebersicht(FahrzeuguebersichtSelektor selector);
 
         List<FahrzeuguebersichtPDI> GetPDIStandorte();
 

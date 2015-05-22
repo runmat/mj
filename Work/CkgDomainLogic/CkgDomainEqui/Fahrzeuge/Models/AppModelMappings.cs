@@ -320,11 +320,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht> Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht
+        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeug> Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht>(
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeug>(
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {

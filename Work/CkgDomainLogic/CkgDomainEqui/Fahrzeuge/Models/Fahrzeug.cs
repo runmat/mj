@@ -4,7 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
-    public class Fahrzeuguebersicht
+    public class Fahrzeug
     {
         public bool IsFilteredByExcelUpload;
 
