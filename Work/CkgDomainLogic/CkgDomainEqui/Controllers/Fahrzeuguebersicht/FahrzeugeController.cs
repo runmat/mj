@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using System.Web;
 using System.Linq;
+using System.Web.Routing;
 using MvcTools.Web;
 using System.Collections.Generic;
 using CkgDomainLogic.General.Controllers;
@@ -127,17 +128,9 @@ namespace ServicesMvc.Controllers
 
         [HttpPost]
         public ActionResult ShowHistory(string fin)
-        {                           
-            EquiHistorieSuchparameter model = new EquiHistorieSuchparameter();
-            model.FahrgestellNr = fin;
-            EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
-
-            if (EquipmentHistorieVermieterViewModel.HistorieInfos != null)
-                EquipmentHistorieVermieterViewModel.LoadHistorie(EquipmentHistorieVermieterViewModel.HistorieInfos[0].EquipmentNr, null);
-            else
-                ModelState.AddModelError(string.Empty, Localize.NoDataFound);
-
-            return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);            
+        {                                       
+            return RedirectToAction("GetHistorieVermieterByFinPartial",
+                new RouteValueDictionary(new { controller = "Equi", action = "GetHistorieVermieterByFinPartial", fahrgestellnummer = fin }));            
         }
              
         public FileContentResult FahrzeughistorieVermieterPdf()

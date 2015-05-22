@@ -1,8 +1,8 @@
 ﻿@using CkgDomainLogic.Equi.Models
 @{ var gridName = "GridEquiHistorieInfosVermieter"; }
 
-@(Html.Telerik()
-    .Grid<EquiHistorieInfoVermieter>()
+@(Html.XTelerik()
+    .XGrid<EquiHistorieInfoVermieter>()
     .Name(gridName)
     .XAjaxDataBinding("EquiHistorieInfosVermieterAjaxBinding", "Equi")
     .Columns(columns =>

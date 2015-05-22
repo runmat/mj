@@ -1,8 +1,8 @@
 ﻿@using CkgDomainLogic.Equi.Models
 @model IEnumerable<EquiMeldungsdaten>
 
-@(Html.Telerik()
-    .Grid<EquiMeldungsdaten>()
+@(Html.XTelerik()
+    .XGrid<EquiMeldungsdaten>()
     .Name("GridEquiMeldungsdaten")
     .BindTo(Model)
     .Columns(columns =>

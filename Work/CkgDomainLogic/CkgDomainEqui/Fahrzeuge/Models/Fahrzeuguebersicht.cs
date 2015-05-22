@@ -38,7 +38,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
 
-        public string StatusKey { get; set; }
+        public int StatusKey { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
         public string Zb2Nummer { get; set; }
