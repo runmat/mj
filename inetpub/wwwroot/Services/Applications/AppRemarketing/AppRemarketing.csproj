@@ -494,6 +494,10 @@
       <Project>{B10B1992-6D06-42B3-97C6-18CBB9D0725A}</Project>
       <Name>Base</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Services.vbproj">
       <Project>{F19383BF-CD5E-4431-A35D-FD09FE100D89}</Project>
       <Name>Services</Name>
