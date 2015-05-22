@@ -102,7 +102,7 @@ namespace AppRemarketing.lib
                         Gutachten.Rows.Cast<DataRow>().Select(r => r["GUTA"].ToString()).ToArray(), 
                         rechngRow != null ? rechngRow["RENNR"].ToString() : string.Empty,
                         belas.Rows.Count > 0,
-                        Belastungsanzeige.Date);
+                        Belastungsanzeige != null ? Belastungsanzeige.Date : null);
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }
