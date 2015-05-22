@@ -23,19 +23,37 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public IFahrzeugeDataService DataService { get { return CacheGet<IFahrzeugeDataService>(); } }
 
         [XmlIgnore]
-        public List<AbgemeldetesFahrzeug> Fahrzeuge
+        public IDictionary<string, string> Steps
         {
-            get { return PropertyCacheGet(() => new List<AbgemeldetesFahrzeug>
+            get
             {
-                new AbgemeldetesFahrzeug { Briefnummer = "4711" },
-                new AbgemeldetesFahrzeug { Briefnummer = "4712" },
-            });
+                return PropertyCacheGet(() => new Dictionary<string, string>
+                {
+                    { "FahrzeugAuswahl", Localize.Vehicle },
+                    { "Zulassen", Localize.Registration },
+                    { "Summary", Localize.Summary },
+                });
             }
+        }
+
+        public string[] StepKeys { get { return PropertyCacheGet(() => Steps.Select(s => s.Key).ToArray()); } }
+
+        public string[] StepFriendlyNames { get { return PropertyCacheGet(() => Steps.Select(s => s.Value).ToArray()); } }
+
+        public string FirstStepPartialViewName
+        {
+            get { return string.Format("{0}", StepKeys[0]); }
+        }
+
+        [XmlIgnore]
+        public List<Fahrzeug> Fahrzeuge
+        {
+            get { return PropertyCacheGet(() => DataService.GetFahrzeugeForZulassung()); }
             protected set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
-        public List<AbgemeldetesFahrzeug> FahrzeugeFiltered
+        public List<Fahrzeug> FahrzeugeFiltered
         {
             get { return PropertyCacheGet(() => Fahrzeuge); }
             protected set { PropertyCacheSet(value); }
@@ -50,7 +68,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void DataInit()
         {
-            AbgemeldeteFahrzeugeSelektor.AlleFahrzeugStatusWerteStatic = DataService.FahrzeugStatusWerte;
             DataMarkForRefresh();
         }
 
@@ -64,13 +81,29 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
         }
 
-        public void Validate(Action<Expression<Func<AbgemeldeteFahrzeugeSelektor, object>>, string> addModelError)
-        {
-        }
-
         public void FilterFahrzeuge(string filterValue, string filterProperties)
         {
             FahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
+            if (fzg == null)
+                return;
+
+            fzg.IsSelected = select;
+            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+        }
+
+        public void SelectFahrzeuge(bool select, Predicate<Fahrzeug> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
+        {
+            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+            allCount = Fahrzeuge.Count();
+            allFoundCount = Fahrzeuge.Count();
         }
     }
 }

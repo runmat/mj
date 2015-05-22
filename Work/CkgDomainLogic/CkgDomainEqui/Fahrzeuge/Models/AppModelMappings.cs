@@ -320,7 +320,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeug> Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht
+        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeug> Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeug
         {
             get
             {
@@ -369,6 +369,29 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     {
                         business.PDIKey = sap.KUNPDI;
                         business.PDIText = sap.PDIWEB;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fahrzeug> Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeug
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fahrzeug>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Pdi = sap.DADPDI;
+                        business.Fahrgestellnummer = sap.ZZFAHRG;
+                        business.Zb2Nummer = sap.ZZBRIEF;
+                        business.Zulassungsdatum = sap.REPLA_DATE;
+                        business.ModelID = sap.ZZMODELL;
+                        business.Modell = sap.ZZBEZEI;
+                        business.Hersteller = sap.HERST_T;
+                        business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
+                        business.Farbe = sap.ZZFARBE;
+                        business.Reifen = sap.ZZREIFEN;
+                        business.Navi = sap.ZZNAVI;
                     }));
             }
         }

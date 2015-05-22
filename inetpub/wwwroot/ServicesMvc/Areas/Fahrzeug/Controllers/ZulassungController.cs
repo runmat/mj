@@ -1,9 +1,12 @@
-﻿using System.Web.Mvc;
+﻿using System.Collections;
+using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
+using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Fahrzeug.Controllers
 {
@@ -34,5 +37,48 @@ namespace ServicesMvc.Fahrzeug.Controllers
         static void InitModelStatics()
         {
         }
+
+
+        #region Fahrzeug Auswahl
+
+        [GridAction]
+        public ActionResult FahrzeugAuswahlAjaxBinding()
+        {
+            var items = ViewModel.FahrzeugeFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterFahrzeuge(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0, allFoundCount = 0;
+            if (vin.IsNullOrEmpty())
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount, out allFoundCount);
+            else
+                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+
+            return Json(new { allSelectionCount, allCount, allFoundCount });
+        }
+
+        #endregion    
+
+
+        #region Export
+
+        protected override IEnumerable GetGridExportData()
+        {
+            return ViewModel.FahrzeugeFiltered;
+        }
+
+        #endregion
     }
 }

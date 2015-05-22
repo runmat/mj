@@ -169,6 +169,16 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItemsEquis;
         }
 
+        public List<Fahrzeug> GetFahrzeugeForZulassung()
+        {
+            Z_M_EC_AVM_MELDUNGEN_PDI1.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_VKORG", "1510");
+            SAP.Execute();
 
+            var sapItemsEquis = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB.GetExportList(SAP);
+            var webItemsEquis = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeug.Copy(sapItemsEquis).ToList();
+
+            return webItemsEquis;
+        }
     }
 }

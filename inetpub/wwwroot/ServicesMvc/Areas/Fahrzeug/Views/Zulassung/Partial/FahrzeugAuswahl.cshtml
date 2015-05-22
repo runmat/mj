@@ -1,0 +1,46 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
+@using CkgDomainLogic.Fahrzeuge.Models
+@{ var gridName = "GridFahrzeugAuswahl"; }
+
+<h4>
+    <span>@Localize.PleaseChooseOneOrMoreVehicles</span>
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+@Html.SpanAlert("Message")
+
+@(Html.Telerik()
+    .Grid<Fahrzeug>()
+    .Name(gridName)
+    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
+    .Columns(columns =>
+        {
+            columns.XBound("")
+                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                .Filterable(false);
+
+            columns.XBound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.Zb2Nummer);
+            columns.XBound(c => c.Zulassungsdatum);
+            columns.XBound(c => c.EingangFahrzeugDatum);
+            columns.XBound(c => c.KennzeichenSerie);
+            columns.XBound(c => c.Farbe);
+            columns.XBound(c => c.Reifen);
+            columns.XBound(c => c.Navi);
+            columns.XBound(c => c.Bemerkung);
+        })
+
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl").OnRowDataBound("OnRowDataBound_GridFahrzeugAuswahl"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+
+    .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredExcel", "Zulassung").HtmlAttributes(new { @class = "hide btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
+            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredPDF", "Zulassung").HtmlAttributes(new { @class = "hide btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
+        })
+)

@@ -406,7 +406,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
             allCount = Fahrzeuge.Count();
-            allFoundCount = Fahrzeuge.Count(c => !c.IsMissing);
+            allFoundCount = Fahrzeuge.Count(c => filter(c));
         }
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode, bool briefVersand, bool schluesselVersand, bool schluesselKombiVersand)

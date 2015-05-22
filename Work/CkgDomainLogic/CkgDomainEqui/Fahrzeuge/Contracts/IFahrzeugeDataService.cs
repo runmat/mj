@@ -20,5 +20,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         List<Treuhandbestand> GetTreuhandbestandFromSap();
 
         List<Unfallmeldung> GetUnfallmeldungen(UnfallmeldungenSelektor selektor);
+
+        List<Fahrzeug> GetFahrzeugeForZulassung();
     }
 }

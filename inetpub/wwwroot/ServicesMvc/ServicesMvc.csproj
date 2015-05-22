@@ -2524,7 +2524,10 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\SummaryPdf.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahl.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

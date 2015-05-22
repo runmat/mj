@@ -1,9 +1,16 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
 
-<div>
-    @foreach (var fzg in Model.Fahrzeuge)
-    {
-        <div>@fzg.Briefnummer</div>
-    }
+<h3 class="page-title">@Localize.Registration <small>@Localize.Vehicles</small></h3>
+
+<div class="portlet app-view beauftragung">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Partial/FahrzeugAuswahl")
+    </div>
 </div>
+
+@Html.Partial("Partial/Common")
+
 

@@ -20,6 +20,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
+        public string KennzeichenSerie { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
 
@@ -59,8 +62,21 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
         public string Hersteller { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
+        public string Pdi { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Remark)]
+        public string Bemerkung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Tires)]
+        public string Reifen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.NaviAvailable)]
+        public string Navi { get; set; }
+
+        public bool IsSelected { get; set; }
     }
-
-
-
 }
