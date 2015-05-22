@@ -7,8 +7,12 @@
     {                                                                                            
         @Html.FormValidationSummary()                       
                    
-        <div class="form-horizontal">                                                         
-              @Html.FormRadioButtonListFor(m => m.Option, FahrzeugvoravisierungSelektor.Optionen.ToSelectList())                                                                                                                                                                                                                  
+        <div class="form-horizontal">
+             <h4>
+                 <a href="DownloadCsvTemplateVW" class="btn white tooltips" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate (Volkswagen) <i class="icon-chevron-right"></i></a>
+                 <a href="DownloadCsvTemplateOthers" class="btn white tooltips" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate &nbsp;(@Localize.Others) <i class="icon-chevron-right"></i></a>
+            </h4>                                                         
+            @Html.FormRadioButtonListFor(m => m.Option, FahrzeugvoravisierungSelektor.Optionen.ToSelectList())                                                                                                                                                                                                                  
         </div>                                                         
     }
 </div>
