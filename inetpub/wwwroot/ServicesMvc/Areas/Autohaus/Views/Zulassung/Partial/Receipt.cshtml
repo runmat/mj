@@ -74,6 +74,15 @@ else
 
             </div>
         }
+        
+        @if (Model.ZulassungenForReceipt.Count > 1)
+        {
+            <div class="receipt-row">
+                <div class="receipt-download-buttons">
+                    <a href="AllDocumentsAsPdf?id=111&typ=testTyp" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='Titel' data-placement="top"> Alle PDF <i class="icon-download-alt"></i></a>
+                </div>
+            </div>
+        }
 
     </div>
 }

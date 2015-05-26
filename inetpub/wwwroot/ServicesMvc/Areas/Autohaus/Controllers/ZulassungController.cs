@@ -374,6 +374,21 @@ namespace ServicesMvc.Autohaus.Controllers
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderList) };
         }
 
+        /// <summary>
+        /// MaihoferM Generate one PDF file with all downloadable documents
+        /// </summary>
+        /// <returns></returns>
+        public FileContentResult AllDocumentsAsPdf(string id, string typ)
+        {
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
+            //var formularPdfBytes = zulassung.KundenformularPdf;
+            //return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
+
+            return null;
+        }
+
         #endregion   
 
 
