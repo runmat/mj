@@ -40,29 +40,29 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function ShowEquiHistorieVermieterSearchResult(result) {
-        SearchFormHide();
-        $("#divGrid").html(result);
+//    function ShowEquiHistorieVermieterSearchResult(result) {
+//        SearchFormHide();
+//        $("#divGrid").html(result);
 
-        GridAllColumnFilterApplyToGrid("GridEquiHistorieInfosVermieter");
+//        GridAllColumnFilterApplyToGrid("GridEquiHistorieInfosVermieter");
 
-        $("#divGrid").slideDown();
-        $("#divHistorieVermieterDetail").html('');
-    }
+//        $("#divGrid").slideDown();
+//        $("#divHistorieVermieterDetail").html('');
+//    }
 
-    function ShowEquiHistorieVermieterAjax(equiNr, meldungsNr) {
-        LoadingShow();
-        $.ajax(
-        {
-            type: "POST",
-            url: "GetFahrzeugHistorieVermieterPartial",
-            loadingShow: true,
-            data: { equiNr: equiNr, meldungsNr: meldungsNr },
-            success: function (result) {
-                ShowEquiHistorieVermieterDetail(result);
-            }
-        });
-    }
+//    function ShowEquiHistorieVermieterAjax(equiNr, meldungsNr) {
+//        LoadingShow();
+//        $.ajax(
+//        {
+//            type: "POST",
+//            url: "GetFahrzeugHistorieVermieterPartial",
+//            loadingShow: true,
+//            data: { equiNr: equiNr, meldungsNr: meldungsNr },
+//            success: function (result) {
+//                ShowEquiHistorieVermieterDetail(result);
+//            }
+//        });
+//    }
 
     function ShowEquiHistorieVermieterDetail(result) {      
         $("#divHistorieVermieterDetail").html(result);
