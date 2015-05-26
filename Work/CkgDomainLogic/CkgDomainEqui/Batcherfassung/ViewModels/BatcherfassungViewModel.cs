@@ -181,7 +181,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             {
                 SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
                 SelectedItem.Fahrzeuggruppe = modelFoundById.Fahrzeuggruppe;
-                // SelectedItem.HerstellerCode = modelFoundById.HerstellerName; // TODO -> entf. falls n.n.
+                SelectedItem.Antrieb = modelFoundById.Antrieb;
                 SelectedItem.HerstellerName = modelFoundById.HerstellerName;
                 SelectedItem.SippCode = modelFoundById.SippCode;
                 SelectedItem.Antrieb = modelFoundById.Antrieb;
@@ -278,7 +278,10 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         public void ValidateModel(Batcherfassung model, bool insertMode, Action<Expression<Func<Batcherfassung, object>>, string> addModelError)
         {
             if (!insertMode)                
-                return;          
+                return;
+
+            model.HerstellerList = BatcherfassungSelektor.FahrzeugHersteller;
+            // ...->
         }
 
         public void CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
