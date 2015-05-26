@@ -1,6 +1,8 @@
 ﻿<script type="text/javascript">
 
     $(document).ready(function () {
+        InitPage();
+
         ChangeAnzeigemodus("VkBur");
     });
 
@@ -107,7 +109,7 @@
         vorg.Positionen[0] = { KopfId: vorg.Id, PosNr: "", DienstleistungId: hauptDl };
 
         // Zusatzdienstleistungen
-        for (var lfdNr = vorg.Positionen.length + 1; lfdNr < 100; lfdNr++) {
+        for (var lfdNr = 1; lfdNr < 100; lfdNr++) {
             if (ControlExists("ddlDL" + lfdNr) == true) {
                 var neueDL = GetDropdownValue("ddlDL" + lfdNr);
                 if (neueDL == "") {

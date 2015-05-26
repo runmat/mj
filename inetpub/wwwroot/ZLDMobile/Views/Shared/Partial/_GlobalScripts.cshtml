@@ -2,7 +2,7 @@
 
     var jsZLDMobile = new ZLDMobileJS();
 
-    $(document).ready(function () {
+    function InitPage() {
         // Prüfen, ob LocalStorage verfügbar
         if (BrowserSupportsLocalStorage() == false) {
             alert("Ihr Browser unterstützt leider keine Offline-Anwendungen. Bitte aktualisieren Sie ihn oder verwenden Sie einen anderen Browser.");
@@ -34,7 +34,7 @@
         }
 
         jsZLDMobile.selUsername = $("#ihSelUsername").val();
-    });
+    }
 
     // Entfernt die Meldung im Error- bzw. Meldungs-Label
     function ClearMessage() {

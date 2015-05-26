@@ -152,6 +152,9 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         {
             get
             {
+                if (String.IsNullOrEmpty(VorerfasserName1))
+                    return VorerfasserUser;
+
                 return String.Format("{0}{1}{2}",
                     (String.IsNullOrEmpty(VorerfasserAnrede) ? "" : VorerfasserAnrede + " "),
                     VorerfasserName1,

@@ -71,10 +71,10 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
                     item.Positionen = positionen.Where(p => p.KopfId == item.Id).OrderBy(p => p.PosNr).ToList();
 
                     // User-Infos aus SQL lesen
-                    var vorerfUser = dbContext.GetUser(item.Vorerfasser);
+                    var vorerfUser = dbContext.GetUser(item.VorerfasserUser);
                     if (vorerfUser != null)
                     {
-                        item.VorerfasserAnrede = vorerfUser.UserSalutation;
+                        item.VorerfasserAnrede = vorerfUser.Title;
                         item.VorerfasserName1 = vorerfUser.FirstName;
                         item.VorerfasserName2 = vorerfUser.LastName;
                     }
@@ -88,7 +88,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
 
             try
             {
-                Z_ZLD_MOB_USER_PUT_VG.Init(SAP);
+                Z_ZLD_MOB_USER_PUT_VG.Init(SAP, "I_VKORG, I_VKBUR, I_MOBUSER", LogonContext.VkOrg, LogonContext.VkBur, LogonContext.UserName.ToUpper());
 
                 List<VorgangPosition> positionen = new List<VorgangPosition>();
                 foreach (Vorgang vg in vorgaenge)

@@ -3,6 +3,8 @@
     var filterVorgaenge = "";
 
     $(document).ready(function () {
+        InitPage();
+
         // Eventhandler
         $("#btnRefresh").click(function () {
             ClearMessage();
@@ -399,7 +401,7 @@
                     // Gebühr Hauptposition
                     var strGeb = $("#txtGebuehr" + vorg.Id).val().replace(",", ".").replace(" ", "");
                     var geb = parseFloat(strGeb);
-                    
+
                     if (!isNaN(geb)) {
                         gebGesamt += geb;
                     }
@@ -419,7 +421,7 @@
             }
         }
 
-        $("#lblGebuehrGesamt").text(FormatGebuehr(gebGesamt.toString()));
+        $("#lblGebuehrGesamt").text(FormatGebuehr(gebGesamt.toFixed(2)));
     }
 
     // Speichert alle Vorgänge zum aktuellen Amt

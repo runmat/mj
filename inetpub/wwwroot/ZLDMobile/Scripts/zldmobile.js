@@ -637,7 +637,7 @@ ZLDMobileJS.prototype.SaveNewVorgang = function (vg) {
                 this.RedirectToLoginPage();
             } else {
                 if (saveErg.Ergebniscode == "OK") {
-                    ShowMessage(saveErg.Meldungstext, false);
+                    ShowMessage("Vorgang erfolgreich gespeichert", false);
                     ClearVorgangCreate();
                 } else {
                     ShowMessage("Fehler beim Speichern: " + saveErg.Meldungstext, true);
