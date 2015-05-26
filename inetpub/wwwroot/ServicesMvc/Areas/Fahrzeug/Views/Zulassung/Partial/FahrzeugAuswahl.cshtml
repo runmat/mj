@@ -24,13 +24,18 @@
 
             columns.XBound(c => c.Fahrgestellnummer);
             columns.XBound(c => c.Zb2Nummer);
+            columns.XBound(c => c.Pdi);
+            columns.XBound(c => c.Hersteller);
+            columns.XBound(c => c.Modell);
+            columns.XBound(c => c.ModelID);
             columns.XBound(c => c.Zulassungsdatum);
-            columns.XBound(c => c.EingangFahrzeugDatum);
             columns.XBound(c => c.KennzeichenSerie);
-            columns.XBound(c => c.Farbe);
-            columns.XBound(c => c.Reifen);
-            columns.XBound(c => c.Navi);
             columns.XBound(c => c.Bemerkung);
+            columns.XBound(c => c.EingangFahrzeugDatum);
+            columns.XBound(c => c.Farbe);
+            columns.XBound(c => c.Navi).Hidden();
+            columns.XBound(c => c.Reifen).Hidden();
+            columns.XBound(c => c.Ahk).Hidden();
         })
 
     .XAutoColumnConfiguration()

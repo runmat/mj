@@ -381,7 +381,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {
-                        business.Pdi = sap.DADPDI;
+                        business.Pdi = sap.KUNPDI;
                         business.Fahrgestellnummer = sap.ZZFAHRG;
                         business.Zb2Nummer = sap.ZZBRIEF;
                         business.Zulassungsdatum = sap.REPLA_DATE;
@@ -392,6 +392,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Farbe = sap.ZZFARBE;
                         business.Reifen = sap.ZZREIFEN;
                         business.Navi = sap.ZZNAVI;
+                        business.Ahk = sap.ZAHK;
                     }));
             }
         }

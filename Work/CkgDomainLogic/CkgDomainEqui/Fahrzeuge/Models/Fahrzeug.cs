@@ -77,6 +77,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.NaviAvailable)]
         public string Navi { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Towbar)]
+        public string Ahk { get; set; }
+
         public bool IsSelected { get; set; }
     }
 }
