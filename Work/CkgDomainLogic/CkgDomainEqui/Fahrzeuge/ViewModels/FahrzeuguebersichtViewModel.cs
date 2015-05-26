@@ -132,7 +132,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     customList = customList.Where(x => x.BatchId == FahrzeuguebersichtSelektor.BatchId).ToList();
 
                 if (FahrzeuguebersichtSelektor.SIPPCode.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.SIPPCode == FahrzeuguebersichtSelektor.SIPPCode).ToList();
+                    customList = customList.Where(x => x.SippCode == FahrzeuguebersichtSelektor.SIPPCode).ToList();
 
                 if (FahrzeuguebersichtSelektor.ModelID.IsNotNullOrEmpty())
                     customList = customList.Where(x => x.ModelID == FahrzeuguebersichtSelektor.ModelID).ToList();
@@ -184,8 +184,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     if (UploadItems.Where(x => x.BatchId.IsNotNullOrEmpty()).Count() > 0)
                         exclusionList.Add(UploadItems.Where(x => x.BatchId == item.BatchId).Count() == 0);
 
-                    if (UploadItems.Where(x => x.SIPPCode.IsNotNullOrEmpty()).Count() > 0)
-                        exclusionList.Add(UploadItems.Where(x => x.SIPPCode == item.SIPPCode).Count() == 0);
+                    if (UploadItems.Where(x => x.SippCode.IsNotNullOrEmpty()).Count() > 0)
+                        exclusionList.Add(UploadItems.Where(x => x.SippCode == item.SippCode).Count() == 0);
               
                     item.IsFilteredByExcelUpload = exclusionList.Where(x => x == true).Count() > 0;                              
                 }
@@ -245,7 +245,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 Unitnummer = row[4].ToString(),                
                 Auftragsnummer = row[5].ToString(),
                 BatchId = row[6].ToString(),
-                SIPPCode = row[7].ToString(),
+                SippCode = row[7].ToString(),
             };
             return item;
         }

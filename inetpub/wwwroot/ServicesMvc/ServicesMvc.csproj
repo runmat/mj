@@ -2528,6 +2528,7 @@
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\SummaryPdf.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahl.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahlPresets.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

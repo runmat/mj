@@ -176,10 +176,25 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             SAP.SetImportParameter("I_PHASE", "B");
             SAP.Execute();
 
-            var sapItemsEquis = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB.GetExportList(SAP);
-            var webItemsEquis = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeug.Copy(sapItemsEquis).ToList();
+            var sapItemsData = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeug.Copy(sapItemsData).ToList();
 
-            return webItemsEquis;
+            var sapItemsText = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT.GetExportList(SAP);
+            AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFahrzeug(sapItemsText, webItems);
+
+            return webItems;
+        }
+
+        public List<KennzeichenSerie> GetKennzeichenSerie()
+        {
+            Z_M_EC_AVM_KENNZ_SERIE.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_ART", "0");
+            SAP.Execute();
+
+            var sapItemsData = Z_M_EC_AVM_KENNZ_SERIE.GT_WEB.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_M_EC_AVM_KENNZ_SERIE_GT_WEB_ToKennzeichenSerie.Copy(sapItemsData.OrderBy(s => s.SONDERSERIE)).ToList();
+
+            return webItems;
         }
     }
 }

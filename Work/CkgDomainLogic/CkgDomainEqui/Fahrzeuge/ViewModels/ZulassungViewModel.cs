@@ -1,4 +1,7 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System.ComponentModel.DataAnnotations;
+using GeneralTools.Resources;
+using NUnit.Framework;
+// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,11 +63,54 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         [XmlIgnore]
-        public List<FahrzeugStatus> FahrzeugStatusWerte
+        public List<KennzeichenSerie> KennzeichenSerien
         {
-            get { return PropertyCacheGet(() => DataService.FahrzeugStatusWerte); }
+            get { return PropertyCacheGet(() => 
+                            DataService.GetKennzeichenSerie()
+                                .CopyAndInsertAtTop(new KennzeichenSerie { ID = "-", Name = Localize.DropdownDefaultOptionPleaseChoose})); }
         }
 
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
+        [Required]
+        public DateTime? SelectedZulassungsDatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
+        [Required]
+        public string SelectedKennzeichenSerie { get; set; }
+
+
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
+        public string SelectedPdi { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Model)]
+        public string SelectedModel { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ModelID)]
+        public string SelectedModelId { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<string> FahrzeugeGroupByModel
+        {
+            get { return PropertyCacheGet(() => GetFahrzeugeGroupedByKey(g => g.Modell)); }
+        }
+
+        [XmlIgnore]
+        public IEnumerable<string> FahrzeugeGroupByModelId
+        {
+            get { return PropertyCacheGet(() => GetFahrzeugeGroupedByKey(g => g.ModelID)); }
+        }
+
+        [XmlIgnore]
+        public IEnumerable<string> FahrzeugeGroupByPdi
+        {
+            get { return PropertyCacheGet(() => GetFahrzeugeGroupedByKey(g => g.Pdi)); }
+        }
+
+        IEnumerable<string> GetFahrzeugeGroupedByKey(Func<Fahrzeug, string> groupKey)
+        {
+            return new List<string> { Localize.DropdownDefaultOptionAll }.Concat(Fahrzeuge.GroupBy(groupKey).OrderBy(g => g.Key).Select(g => g.Key).ToList());
+        }
 
         public void DataInit()
         {
@@ -79,6 +125,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+            PropertyCacheClear(this, m => m.FahrzeugeGroupByModel);
+            PropertyCacheClear(this, m => m.FahrzeugeGroupByModelId);
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)

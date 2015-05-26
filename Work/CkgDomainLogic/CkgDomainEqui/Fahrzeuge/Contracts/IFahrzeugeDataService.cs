@@ -22,5 +22,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         List<Unfallmeldung> GetUnfallmeldungen(UnfallmeldungenSelektor selektor);
 
         List<Fahrzeug> GetFahrzeugeForZulassung();
+
+        List<KennzeichenSerie> GetKennzeichenSerie();
     }
 }

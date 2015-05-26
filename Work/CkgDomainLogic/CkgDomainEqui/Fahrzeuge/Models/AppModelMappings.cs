@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using SapORM.Models;
@@ -11,7 +12,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_ABM_LIST.ET_ABM_LIST, AbgemeldetesFahrzeug> Z_DPM_CD_ABM_LIST__ET_ABM_LIST_To_AbgemeldetesFahrzeug
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -42,7 +42,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_ABM_HIST.ET_ABM_HIST, AbmeldeHistorie> Z_DPM_CD_ABM_HIST__ET_ABM_HIST_To_AbmeldeHistorie
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -100,7 +99,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         // Z_M_ECA_TAB_BESTAND
         static public ModelMapping<Z_M_ECA_TAB_BESTAND.GT_WEB, Zb2BestandSecurityFleet> Z_M_ECA_TAB_BESTAND_To_Zb2BestandSecurityFleet
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -121,7 +119,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static public ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller> Z_M_HERSTELLERGROUP_To_Fahrzeughersteller
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -137,7 +134,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         static public ModelMapping<Z_M_TH_BESTAND.GT_BESTAND, Treuhandbestand> Z_M_TH_BESTAND__GET_BESTAND_LIST_To_Treuhandbestand
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -160,7 +156,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         static public ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung> Z_DPM_UF_MELDUNGS_SUCHE_To_Unfallmeldungen
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -183,7 +178,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         static public ModelMapping<Z_M_Abm_Abgemeldete_Kfz.AUSGABE, AbgemeldetesFahrzeug> Z_M_Abm_Abgemeldete_Kfz_AUSGABE_ToAbgemeldetesFahrzeug
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -202,7 +196,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKunden
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -220,7 +213,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAG
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -261,7 +253,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAGServices
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -381,6 +372,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {
+                        business.InternalID = sap.QMNUM;
+
                         business.Pdi = sap.KUNPDI;
                         business.Fahrgestellnummer = sap.ZZFAHRG;
                         business.Zb2Nummer = sap.ZZBRIEF;
@@ -393,9 +386,47 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Reifen = sap.ZZREIFEN;
                         business.Navi = sap.ZZNAVI;
                         business.Ahk = sap.ZAHK;
+                        business.SippCode = sap.ZZSIPP1.NotNullOrEmpty() + sap.ZZSIPP2.NotNullOrEmpty() +
+                                            sap.ZZSIPP3.NotNullOrEmpty() + sap.ZZSIPP4.NotNullOrEmpty();
                     }));
             }
         }
+
+        static public ModelMapping<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB, KennzeichenSerie> Z_M_EC_AVM_KENNZ_SERIE_GT_WEB_ToKennzeichenSerie
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB, KennzeichenSerie>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.ID = sap.SONDERSERIE.NotNullOrEmpty();
+
+                        business.Name = string.Format("{0}-{1}{2}", sap.ORTKENNZ, sap.MINLETTER, sap.SONDERSERIE.FormatIfNotNull(" ({this})"));
+
+                        business.Art = sap.ART;
+                        business.OrtsKennzeichen = sap.ORTKENNZ;
+                        business.BuchstabenTeilMin = sap.MINLETTER;
+                        business.BuchstabenTeilMax = sap.MAXLETTER;
+                        business.NummernTeilMin = sap.MINNUMBER;
+                        business.NummernTeilMax = sap.MAXNUMBER;
+                        business.SonderSerie = sap.SONDERSERIE;
+                    }));
+            }
+        }
+
+        static public void Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFahrzeug(IEnumerable<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT> sapItems, IEnumerable<Fahrzeug> businessItems)
+        {
+            foreach (var businessItem in businessItems)
+            {
+                var business = businessItem;
+                var sap = sapItems.FirstOrDefault(s => s.QMNUM == business.InternalID);
+                if (sap == null)
+                    continue;
+
+                business.Bemerkung = sap.TDLINE;
+            }
+       }
 
         #endregion
 

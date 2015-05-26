@@ -474,6 +474,16 @@ namespace PortalMvcTools.Web
 
         #region DropDownList
 
+        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, string columnModeAsText)
+        {
+            var model = new FormControlModel
+            {
+                ColumnMode = (FormMultiColumnMode)Enum.Parse(typeof(FormMultiColumnMode), columnModeAsText.ToLowerFirstUpper())
+            };
+
+            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+        }
+
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             return html.FormDropDownListForInner(expression, selectList, controlHtmlAttributes, preControlHtml, postControlHtml);

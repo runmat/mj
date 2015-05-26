@@ -1,0 +1,48 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
+
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+<div class="presets-and-filter">
+    <h4>
+        <span>@Localize.PresetsAndFilter</span>
+        <span class="margin-left-30 reqired-fields">
+            @Html.FormRequiredFieldsSummary()                
+        </span>
+    </h4> 
+
+    <div id="divGridFahrzeugAuswahlFilter">
+        <div class="form-horizontal" id="GridFahrzeugAuswahlFilter">
+            
+            @Html.FormDatePickerFor(m => m.SelectedZulassungsDatum, new { @class = "m-wrap small", col = "left3" })
+            @Html.FormDropDownListFor(m => m.SelectedKennzeichenSerie, Model.KennzeichenSerien.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
+            @Html.FormPlaceHolder("right3")
+
+            @Html.FormDropDownListFor(m => m.SelectedPdi, Model.FahrzeugeGroupByPdi.ToSelectList(), new { @class = "m-wrap small", col = "left3" })
+            @Html.FormDropDownListFor(m => m.SelectedModel, Model.FahrzeugeGroupByModel.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
+            @Html.FormDropDownListFor(m => m.SelectedModelId, Model.FahrzeugeGroupByModelId.ToSelectList(), new { @class = "m-wrap small", col = "right3" })
+        </div>  
+        
+        <script type="text/javascript">
+
+            function InitSearchableAndEditableDropdowns() {
+                setTimeout(function () {
+                    InitSearchableAndEditableDropdown("SelectedKennzeichenSerie");
+                    InitSearchableAndEditableDropdown("SelectedPdi");
+                    InitSearchableAndEditableDropdown("SelectedModel");
+                    InitSearchableAndEditableDropdown("SelectedModelId");
+                }, 100);
+            }
+
+            function InitSearchableAndEditableDropdown(dropdownID) {
+
+                $('#' + dropdownID).select2({
+                    allowClear: true
+                }).off("change").on("change", function (e) {
+                    eval('OnDropdownChanged_' + dropdownID + '("' + e.val + '")');
+                });
+            }
+
+        </script>
+    </div>
+</div>

@@ -1,4 +1,22 @@
-﻿<script type="text/javascript">
+﻿<style type="text/css">
+    
+    span.reqired-fields {
+        font-size: 0.8em !important;
+    }
+    
+    div.presets-and-filter {
+        background-color: #fcfcfc;
+        padding: 5px 0 0 0;
+        border: 1px solid #fafafa;
+        margin: 0 0 20px 0;
+    }
+    div.presets-and-filter input[type='text'] {
+        background-color: white!important;
+    }
+    
+</style>
+
+<script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
     var _modelIsValid = false;
@@ -11,6 +29,8 @@
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
 
         try { MultiSelectPreparePrivate(); } catch (e) { }
+
+        InitSearchableAndEditableDropdowns();
     };
 
     function FormPreparePrivateAjax() {
@@ -165,7 +185,23 @@
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
-    }    
+    }
+
+    function OnDropdownChanged_SelectedKennzeichenSerie(val) {
+        alert(val);
+    }
+
+    function OnDropdownChanged_SelectedPdi(val) {
+        alert(val);
+    }
+
+    function OnDropdownChanged_SelectedModel(val) {
+        alert(val);
+    }
+
+    function OnDropdownChanged_SelectedModelId(val) {
+        alert(val);
+    }
 
 </script>
 

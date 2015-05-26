@@ -48,7 +48,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string BatchId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
-        public string SIPPCode { get; set; }
+        public string SippCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
         public DateTime? EingangZb2Datum { get; set; }
@@ -81,5 +81,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Ahk { get; set; }
 
         public bool IsSelected { get; set; }
+
+        public string InternalID { get; set; }
     }
 }
