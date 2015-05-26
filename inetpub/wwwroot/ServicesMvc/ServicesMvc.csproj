@@ -4384,21 +4384,7 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\AktionsdatenGrid.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\Aussteuerung.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\Einsteuerung.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\Haendlerdaten.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\LebenslaufFsmGrid.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\LebenslaufZb2Grid.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\MeldungsdatenGrid.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\Pdf.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\TueteninhaltFsmGrid.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\Typdaten.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\Uebersicht.cshtml" />
-    <Content Include="Views\Shared\Historie\Partial\UebersichtVermieter.cshtml" />
-    <Content Include="Views\Shared\Historie\HistorieVermieterDetail.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\Common.cshtml" />
-    <Content Include="Views\Shared\Historie\HistorieVermieterGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
