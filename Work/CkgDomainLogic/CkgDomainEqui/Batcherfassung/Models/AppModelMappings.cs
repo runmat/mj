@@ -189,29 +189,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                         new Dictionary<string, string>()
                         , null
                         , (source, destination) =>
-                        {
-                            // TODO -> brauchen wir diese?
-                            /*
-                            destination.ZMODEL_ID = source.ModellId;
-                            destination.ZSIPP_CODE = source.SippCode;
-                            destination.ZMAKE = source.HerstellerName;
-                            destination.ZMOD_DESCR = source.Modellbezeichnung;
-                            destination.ZPURCH_MTH = source.LiefermonatBAPIFormat;
-                            destination.ZANZAHL = source.Anzahl;                           
-                            destination.ZFZG_GROUP = source.Fahrzeuggruppe;
-                            destination.ZLAUFZEIT = source.Laufzeit;
-                            
-                            destination.ZAUFNR_VON = source.AuftragsnummerVon;
-                            destination.ZAUFNR_BIS = source.AuftragsnummerBis;
-                            destination.ZMS_REIFEN = source.Winterreifen ? "X" : "";
-                            destination.ZSECU_FLEET = source.SecurityFleet ? "X" : "";
-                            destination.ZLEASING = source.KennzeichenLeasingFahrzeug ? "X" : "";
-                            destination.ZNAVI = source.NaviVorhanden ? "X" : "";
-                            destination.ZAHK = source.AnhaengerKupplung ? "X" : "";
-                            destination.ZLZBINDUNG = source.Laufzeitbindung ? "X" : "";
-                            destination.ZBEMERKUNG = source.Bemerkung;
-                            */
-
+                        {                           
                             destination.ZBATCH_ID = source.ID;
                             destination.ZUNIT_NR = source.Unitnummer;                         
                             destination.ZLOEVM = source.IstGesperrt ? "X" : "";
