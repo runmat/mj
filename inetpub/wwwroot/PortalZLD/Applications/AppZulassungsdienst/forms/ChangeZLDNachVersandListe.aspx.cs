@@ -292,6 +292,7 @@ namespace AppZulassungsdienst.forms
                     lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
                 }
 
+                cmdSave.Enabled = false;
                 cmdSend.Enabled = false;
                 cmdContinue.Visible = true;
 
