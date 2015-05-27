@@ -47,7 +47,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void Init()
         {
             DispositionslisteSelektor.ZulassungsdatumRange.IsSelected = true;
-            DispositionslisteSelektor.ZulassungsdatumRange.EndDate = DateTime.Now.AddDays(1);
+            DispositionslisteSelektor.ZulassungsdatumRange.EndDate = DateTime.Now.AddThreeBusinessDays();
         }
 
         public void DataInit()
@@ -75,11 +75,29 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void FilterDispositionsliste(string filterValue, string filterProperties)
         {
             DispositionslistesFiltered = Dispositionslistes.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
-
-       
-
-
-
+        }       
     }
+
+
+    public static class DateTimeExtensions
+    {        
+        // ad hoc weekend remover
+        public static DateTime AddThreeBusinessDays(this DateTime self)
+        {            
+            if (self.DayOfWeek == DayOfWeek.Friday)
+            {
+                self = self.AddDays(5);
+                return self;
+            }
+           
+            self = self.AddDays(3);            
+            while (self.DayOfWeek == DayOfWeek.Saturday || self.DayOfWeek == DayOfWeek.Sunday)
+            {
+                self = self.AddDays(1);
+            }
+
+            return self;
+        }
+    }
+
 }
