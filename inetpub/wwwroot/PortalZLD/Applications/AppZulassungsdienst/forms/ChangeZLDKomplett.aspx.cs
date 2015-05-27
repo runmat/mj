@@ -990,6 +990,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
             {
                 txtGeldinstitut.Text = bankdaten.Geldinstitut;
@@ -1221,6 +1223,8 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+                hfBankleitzahl.Value = objCommon.Bankschluessel;
+                hfKontonummer.Value = objCommon.Kontonr;
             }
             else if (cpdMitEinzug)
             {
@@ -1692,6 +1696,8 @@ namespace AppZulassungsdienst.forms
                 Label lblID_POS = (Label)gvRow.FindControl("lblID_POS");
                 Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
 
+                var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
+
                 DataRow[] dRows = tblData.Select("ID_POS =" + lblID_POS.Text);
 
                 DataRow targetRow;
@@ -1703,7 +1709,7 @@ namespace AppZulassungsdienst.forms
                 targetRow["Search"] = txtBox.Text;
                 targetRow["Value"] = ddl.SelectedValue;
                 targetRow["Text"] = ddl.SelectedItem.Text;
-                targetRow["Menge"] = txtMenge.Text;
+                targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "");
 
                 txtBox = (TextBox)gvRow.FindControl("txtPreis");
                 targetRow["Preis"] = txtBox.Text.ToDecimal(0);
@@ -2254,8 +2260,8 @@ namespace AppZulassungsdienst.forms
             bankdaten.SapId = objKompletterf.AktuellerVorgang.Kopfdaten.SapId;
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
-            bankdaten.Bankleitzahl = objCommon.Bankschluessel;
-            bankdaten.KontoNr = objCommon.Kontonr;
+            bankdaten.Bankleitzahl = hfBankleitzahl.Value;
+            bankdaten.KontoNr = hfKontonummer.Value;
             bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
@@ -2276,6 +2282,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             txtGeldinstitut.Text = (String.IsNullOrEmpty(bankdaten.Geldinstitut) ? "Wird automatisch gefüllt!" : bankdaten.Geldinstitut);
             txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             chkEinzug.Checked = bankdaten.Einzug.IsTrue();

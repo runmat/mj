@@ -1200,6 +1200,8 @@ Namespace Beauftragung2
                 Try
                     Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_ZLD_ZULASSUNGSDATEN_ONL", m_objApp, m_objUser, page)
 
+                    myProxy.setImportParameter("VKORG", Verkaufsorganisation)
+                    myProxy.setImportParameter("VKBUR", Verkaufsbuero)
                     If Not String.IsNullOrEmpty(SelKundennr) AndAlso SelKundennr.TrimStart("0"c).Length > 0 Then
                     myProxy.setImportParameter("KUNNR", SelKundennr.PadLeft(10, "0"c))
                     End If

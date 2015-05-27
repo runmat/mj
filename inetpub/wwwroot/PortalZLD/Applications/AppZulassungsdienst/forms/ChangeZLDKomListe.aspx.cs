@@ -181,6 +181,7 @@ namespace AppZulassungsdienst.forms
                 Int32 Index;
                 Label lblID;
                 Label lblIDPos;
+                Label lblLoeschKZ;
 
                 switch (e.CommandName)
                 {
@@ -220,6 +221,10 @@ namespace AppZulassungsdienst.forms
 
                         lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
                         lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
+                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+
+                        if (lblLoeschKZ.Text == "L")
+                            throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
 
                         var newLoeschkz = "O";
 
@@ -236,7 +241,7 @@ namespace AppZulassungsdienst.forms
                             if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
                             {
                                 Label IDPos = (Label)row.FindControl("lblid_pos");
-                                Label lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
                                 lblLoeschKZ.Text = newLoeschkz;
                                 if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
                                 {

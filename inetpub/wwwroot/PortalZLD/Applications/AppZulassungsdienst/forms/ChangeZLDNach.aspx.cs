@@ -285,7 +285,7 @@ namespace AppZulassungsdienst.forms
                     else
                     {
                         if (objNacherf.AktuellerVorgang.Positionen.Any(p => p.PositionsNr == idpos))
-                            objNacherf.AktuellerVorgang.Positionen.Where(p => p.PositionsNr == idpos || p.UebergeordnetePosition == idpos).ToList().ForEach(p => p.Loeschkennzeichen = "L");
+                            objNacherf.AktuellerVorgang.Positionen.Where(p => p.PositionsNr == idpos || p.UebergeordnetePosition == idpos).ToList().ForEach(p => p.WebBearbeitungsStatus = "L");
 
                         tblRows[0]["PosLoesch"] = "L";
                     }
@@ -796,7 +796,7 @@ namespace AppZulassungsdienst.forms
                 tblRow["NewPos"] = false;
                 tblRow["Menge"] = item.Menge.ToString("F0");
                 tblRow["Preis"] = item.Preis.GetValueOrDefault(0);
-                tblRow["PosLoesch"] = item.Loeschkennzeichen;
+                tblRow["PosLoesch"] = (item.Loeschkennzeichen == "L" ? "L" : item.WebBearbeitungsStatus);
 
                 var gebuehrenPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "G");
 
@@ -876,6 +876,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
             {
                 txtGeldinstitut.Text = bankdaten.Geldinstitut;
@@ -1257,7 +1259,7 @@ namespace AppZulassungsdienst.forms
                     }
                     else
                     {
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.Loeschkennzeichen == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
                     }
                 }
 
@@ -1300,6 +1302,8 @@ namespace AppZulassungsdienst.forms
                 Label lblID_POS = (Label)gvRow.FindControl("lblID_POS");
                 Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
 
+                var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
+
                 DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS =" + lblID_POS.Text);
 
                 DataRow targetRow;
@@ -1311,7 +1315,7 @@ namespace AppZulassungsdienst.forms
                 targetRow["Search"] = txtBox.Text;
                 targetRow["Value"] = ddl.SelectedValue;
                 targetRow["Text"] = ddl.SelectedItem.Text;
-                targetRow["Menge"] = txtMenge.Text;
+                targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "");
 
                 txtBox = (TextBox)gvRow.FindControl("txtPreis");
                 targetRow["Preis"] = txtBox.Text.ToDecimal(0);
@@ -1728,6 +1732,8 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+                hfBankleitzahl.Value = objCommon.Bankschluessel;
+                hfKontonummer.Value = objCommon.Kontonr;
             }
             else if (cpdMitEinzug)
             {
@@ -1984,7 +1990,7 @@ namespace AppZulassungsdienst.forms
                                 {
                                     foreach (var delPos in positionen.Where(p => neueHpPos.None(np => np.PositionsNr == p.PositionsNr)))
                                     {
-                                        delPos.Loeschkennzeichen = "L";
+                                        delPos.WebBearbeitungsStatus = "L";
                                     }
                                 }
                             }
@@ -1997,11 +2003,11 @@ namespace AppZulassungsdienst.forms
                             else if (selPos.MaterialNr != dRow["Value"].ToString() && dRow["ID_POS"].ToString() != "10")
                             {
                                 // alle zur alten Hauptposition gehörenden Unterpositionen wenn sie unterschiedlich sind löschen
-                                selPos.Loeschkennzeichen = "L";
+                                selPos.WebBearbeitungsStatus = "L";
 
                                 foreach (var delPos in positionen.Where(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString()))
                                 {
-                                    delPos.Loeschkennzeichen = "L";
+                                    delPos.WebBearbeitungsStatus = "L";
                                 }
 
                                 // und die neue Unterposition einfügen ohne Geb.-Positionen, wird später in der Preisfindung aufgebaut
@@ -2078,7 +2084,7 @@ namespace AppZulassungsdienst.forms
                         pos.MaterialName = matbez;
                         pos.Preis = dRow["Preis"].ToString().ToDecimal(0);
                         pos.Menge = dRow["Menge"].ToString().ToDecimal(1);
-                        pos.Loeschkennzeichen = dRow["PosLoesch"].ToString();
+                        pos.WebBearbeitungsStatus = dRow["PosLoesch"].ToString();
 
                         var gebuehrenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "G");
                         if (gebuehrenPos != null && mat != null)
@@ -2169,8 +2175,8 @@ namespace AppZulassungsdienst.forms
             bankdaten.SapId = objNacherf.AktuellerVorgang.Kopfdaten.SapId;
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
-            bankdaten.Bankleitzahl = objCommon.Bankschluessel;
-            bankdaten.KontoNr = objCommon.Kontonr;
+            bankdaten.Bankleitzahl = hfBankleitzahl.Value;
+            bankdaten.KontoNr = hfKontonummer.Value;
             bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
@@ -2191,6 +2197,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             txtGeldinstitut.Text = (String.IsNullOrEmpty(bankdaten.Geldinstitut) ? "Wird automatisch gefüllt!" : bankdaten.Geldinstitut);
             txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             chkEinzug.Checked = bankdaten.Einzug.IsTrue();
@@ -2213,7 +2221,7 @@ namespace AppZulassungsdienst.forms
                         tblRow["Value"] = pos.MaterialNr;
                         tblRow["OldValue"] = pos.MaterialNr;
                         tblRow["Text"] = pos.MaterialName;
-                        tblRow["PosLoesch"] = pos.Loeschkennzeichen;
+                        tblRow["PosLoesch"] = (pos.Loeschkennzeichen == "L" ? "L" : pos.WebBearbeitungsStatus);
                         tblRow["Preis"] = pos.Preis.GetValueOrDefault(0);
 
                         var gebuehrPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");

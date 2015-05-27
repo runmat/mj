@@ -261,7 +261,11 @@ namespace AppZulassungsdienst.lib
 
                     CallBapi();
 
-                    Bankname = SAP.GetExportParameter("E_BANKA");
+                    var bName = SAP.GetExportParameter("E_BANKA");
+                    if (bName.IsNotNullOrEmpty() && bName.Length > 40)
+                        bName = bName.Substring(0, 40);
+
+                    Bankname = bName;
                     Bankschluessel = SAP.GetExportParameter("E_BANK_NUMBER");
                     SWIFT = SAP.GetExportParameter("E_SWIFT");
                     Kontonr = SAP.GetExportParameter("E_BANK_ACCOUNT");
@@ -421,7 +425,7 @@ namespace AppZulassungsdienst.lib
 
                 decimal tmpDec;
 
-                if (Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                if (Decimal.TryParse(filterValue.NotNullOrEmpty().Replace('.', ','), out tmpDec))
                 {
                     blnResult = (itemValue == tmpDec);
                 }
@@ -432,7 +436,7 @@ namespace AppZulassungsdienst.lib
 
                 decimal tmpDec;
 
-                if (itemValue.HasValue && Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                if (itemValue.HasValue && Decimal.TryParse(filterValue.NotNullOrEmpty().Replace('.', ','), out tmpDec))
                 {
                     blnResult = (itemValue == tmpDec);
                 }
