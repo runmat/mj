@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web.UI;
 using CKG.Base.Business;
@@ -41,7 +40,6 @@ namespace AppRemarketing.lib
         public DataTable TableBemerkungen { set; get; }
 
         #endregion
-
 
         public Belastungsanzeigen(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
             : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename)
@@ -89,7 +87,6 @@ namespace AppRemarketing.lib
 
                 Result = tblTemp;
                 Result.Columns.Add("Auswahl", typeof(String));
-                //Result.Columns.Add("Reklamationstext", typeof(String));
 
                 if (Result.Rows.Count == 0)
                 {
@@ -103,10 +100,6 @@ namespace AppRemarketing.lib
                         MakeShortDate(Row, "HCEINGDAT", "GUTAUFTRAGDAT", "GUTADAT");
                        
                         Row["Auswahl"] = "0";
-                        //if (Row["DDTEXT"] == "Widersprochen")
-                        //{
-                        //    Row["Reklamationstext"] = GetReklamationstext(m_strAppID, m_strSessionID, page: page, FIN: Row["FAHRGNR"].ToString());
-                        //}
                     }
                 }
 
@@ -123,9 +116,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void Change(String strAppID, String strSessionID, Page page, string newStatus, string blockText = null) 
@@ -157,8 +148,6 @@ namespace AppRemarketing.lib
                 }
                 
                 myProxy.callBapi();
-
-                var tblError = myProxy.getExportTable("GT_ERR");
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }
@@ -212,9 +201,7 @@ namespace AppRemarketing.lib
                     m_strMessage = "Keine Rechnungen zur Anzeige gefunden.";
                 }
                
-
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
-
             }
             catch (Exception ex)
             {
@@ -227,9 +214,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void ShowRechnungMietfahrzeuge(String strAppID, String strSessionID, Page page)
@@ -267,9 +252,7 @@ namespace AppRemarketing.lib
                     m_strMessage = "Keine Rechnungen zur Anzeige gefunden.";
                 }
 
-
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
-
             }
             catch (Exception ex)
             {
@@ -282,9 +265,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void ShowBelastungsanzeigen(String strAppID, String strSessionID, Page page)
@@ -308,10 +289,7 @@ namespace AppRemarketing.lib
 
                 foreach (DataRow drow in tblTemp.Rows)
                 {
-
                     drow["REDAT"] = drow["REDAT"].ToString().Substring(0, 10);
-
-
                 }
 
                 Belastungen = tblTemp;
@@ -322,9 +300,7 @@ namespace AppRemarketing.lib
                     m_strMessage = "Keine Belastungsanzeigen zur Anzeige gefunden.";
                 }
 
-
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
-
             }
             catch (Exception ex)
             {
@@ -337,9 +313,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void ShowNachbelastung(String strAppID, String strSessionID, Page page)
@@ -358,7 +332,6 @@ namespace AppRemarketing.lib
                 myProxy.setImportParameter("I_KENNZEICHEN", Kennzeichen);
                 myProxy.setImportParameter("I_FIN", Fahrgestellnummer);
                 myProxy.setImportParameter("I_INVENTAR", Inventarnummer);
-
 
                 if (AVNR != "00")
                 {
@@ -381,11 +354,7 @@ namespace AppRemarketing.lib
 
                 myProxy.callBapi();
 
-                DataTable tblTemp = myProxy.getExportTable("GT_OUT");
-
-                Result = tblTemp;
-
-                //Result = CreateOutPut(tblTemp, m_strAppID);
+                Result = myProxy.getExportTable("GT_OUT");
 
                 if (Result.Rows.Count == 0)
                 {
@@ -407,9 +376,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void SetGutschrift(String strAppID, String strSessionID, Page page)
@@ -438,9 +405,7 @@ namespace AppRemarketing.lib
                 m_intStatus = Convert.ToInt16(myProxy.getExportParameter("E_SUBRC"));
                 m_strMessage = myProxy.getExportParameter("E_MESSAGE");
 
-
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
-
             }
             catch (Exception ex)
             {
@@ -453,12 +418,10 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
-        private void MakeShortDate(DataRow row, params string[] columns)
+        internal static void MakeShortDate(DataRow row, params string[] columns)
         {
             foreach (var col in columns)
             {
@@ -496,9 +459,7 @@ namespace AppRemarketing.lib
 
                 myProxy.callBapi();
 
-                DataTable tblTemp = myProxy.getExportTable("GT_OUT");
-
-                Gutachten = tblTemp;
+                Gutachten = myProxy.getExportTable("GT_OUT");
 
                 if (Gutachten.Rows.Count == 0)
                 {
@@ -524,9 +485,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void setReklamation(String strAppID, String strSessionID, Page page)
@@ -550,19 +509,13 @@ namespace AppRemarketing.lib
 
                 myProxy.callBapi();
 
-                DataTable tblTemp = myProxy.getExportTable("GT_OUT");
-
-                TableReklamation = tblTemp;
+                TableReklamation = myProxy.getExportTable("GT_OUT");
 
                 if (TableReklamation.Rows.Count == 0)
                 {
                     m_intStatus = -9999;
-                    //m_strMessage = "Fehler beim Anlegen der Reklamation.";
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
-
-
-
             }
             catch (Exception ex)
             {
@@ -575,9 +528,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public void ShowBemerkung(String strAppID, String strSessionID, Page page)
@@ -599,11 +550,7 @@ namespace AppRemarketing.lib
 
                 TableBemerkungen = myProxy.getExportTable("GT_OUT");
 
-                
-
-
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
-
             }
             catch (Exception ex)
             {
@@ -616,15 +563,11 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
 
         public string ReadReklamationstext(String strAppID, String strSessionID, Page page, string FIN)
-        {
-            var bapiName = "Z_DPM_REM_READ_REKLATEXT";
-            
+        { 
             m_strClassAndMethod = "Belastungsanzeigen.GetReklamationstext";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
@@ -637,7 +580,7 @@ namespace AppRemarketing.lib
             var result = string.Empty;
             try
             {
-                var myProxy = DynSapProxy.getProxy(bapiName, ref m_objApp, ref m_objUser, ref page);
+                var myProxy = DynSapProxy.getProxy("Z_DPM_REM_READ_REKLATEXT", ref m_objApp, ref m_objUser, ref page);
 
                 myProxy.setImportParameter("I_KUNNR", m_objUser.KUNNR.PadLeft(10, '0'));
                 myProxy.setImportParameter("I_FIN", FIN);
@@ -645,7 +588,7 @@ namespace AppRemarketing.lib
                 myProxy.callBapi();
 
                 var gtOut = myProxy.getExportTable("GT_OUT");
-                var reklms = gtOut.Rows.Cast<DataRow>().Select(row => row["REKLM"] as string).ToArray(); ;
+                var reklms = gtOut.Rows.Cast<DataRow>().Select(row => row["REKLM"] as string).ToArray();
                 result = string.Join(" ", reklms);
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref gtOut);
@@ -661,7 +604,6 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
 
             return result;
@@ -669,8 +611,6 @@ namespace AppRemarketing.lib
 
         public string ReadBlockadetext(string strAppID, string strSessionID, Page page, string FIN)
         {
-            var bapiName = "Z_DPM_REM_READ_BLOCKADETEXT";
-
             m_strClassAndMethod = "Belastungsanzeigen.ReadBlockadeText";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
@@ -682,7 +622,7 @@ namespace AppRemarketing.lib
 
             try
             {
-                DynSapProxyObj myProxy = DynSapProxy.getProxy(bapiName, ref m_objApp, ref m_objUser, ref page);
+                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_READ_BLOCKADETEXT", ref m_objApp, ref m_objUser, ref page);
 
                 myProxy.setImportParameter("I_KUNNR", m_objUser.KUNNR.PadLeft(10, '0'));
                 myProxy.setImportParameter("I_FIN", FIN);
@@ -757,7 +697,6 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
-
             }
             catch (Exception ex)
             {
@@ -770,9 +709,7 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
-
         }
     }
 }
