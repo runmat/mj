@@ -94,6 +94,7 @@ namespace AppRemarketing.forms
             m_Report.tblUpload.Columns.Add("Beschreibung", typeof(string));
             m_Report.tblUpload.Columns.Add("Betrag", typeof(string));
             m_Report.tblUpload.Columns.Add("Schadensdatum", typeof(string));
+            m_Report.tblUpload.Columns.Add("Repariert", typeof(string));
             m_Report.tblUpload.Columns.Add("ID", typeof(int));
 
             m_Report.tblUpload.AcceptChanges();
@@ -132,6 +133,9 @@ namespace AppRemarketing.forms
                 {
                     newRow["Schadensdatum"] = dr[4];
                 }
+
+                if (tmpTable.Columns.Count > 5)
+                    newRow["Repariert"] = dr[5];
 
                 m_Report.tblUpload.Rows.Add(newRow);
             }
@@ -224,9 +228,14 @@ namespace AppRemarketing.forms
         {
             foreach (GridDataItem gdi in rgGrid1.Items)
             {
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["Fahrgestellnummer"] = ((TextBox)gdi.FindControl("txtFin")).Text;
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["Kennzeichen"] = ((TextBox)gdi.FindControl("txtKennzeichen")).Text;
-                m_Report.tblError.Select("ID = " + gdi["ID"].Text)[0]["Schadensdatum"] = ((TextBox)gdi.FindControl("txtSchadensdatum")).Text;
+                var id = gdi["ID"].Text;
+
+                if (id != "&nbsp;")
+                {
+                    m_Report.tblError.Select("ID = " + id)[0]["Fahrgestellnummer"] = ((TextBox)gdi.FindControl("txtFin")).Text;
+                    m_Report.tblError.Select("ID = " + id)[0]["Kennzeichen"] = ((TextBox)gdi.FindControl("txtKennzeichen")).Text;
+                    m_Report.tblError.Select("ID = " + id)[0]["Schadensdatum"] = ((TextBox)gdi.FindControl("txtSchadensdatum")).Text;
+                }
             }
 
             Session["Vorschaeden"] = m_Report;
@@ -251,9 +260,8 @@ namespace AppRemarketing.forms
         private DataTable LoadUploadFile(System.Web.UI.HtmlControls.HtmlInputFile upFile)
         {
             //Prüfe Fehlerbedingung
-            if (((upFile.PostedFile != null)) && (!(upFile.PostedFile.FileName == string.Empty)))
+            if (((upFile.PostedFile != null)) && (!String.IsNullOrEmpty(upFile.PostedFile.FileName)))
             {
-
                 if (upFile.PostedFile.FileName.ToUpper().Substring(upFile.PostedFile.FileName.Length - 4) != ".XLS" && upFile.PostedFile.FileName.ToUpper().Substring(upFile.PostedFile.FileName.Length - 5) != ".XLSX")
                 {
                     lblError.Text = "Es können nur Dateien im .XLS - Format verarbeitet werden.";
@@ -388,6 +396,7 @@ namespace AppRemarketing.forms
                 m_Report.tblUpload.Columns.Add("Beschreibung", typeof(string));
                 m_Report.tblUpload.Columns.Add("Betrag", typeof(string));
                 m_Report.tblUpload.Columns.Add("Schadensdatum", typeof(string));
+                m_Report.tblUpload.Columns.Add("Repariert", typeof(string));
                 m_Report.tblUpload.Columns.Add("ID", typeof(int));
 
                 m_Report.tblUpload.AcceptChanges();
@@ -406,6 +415,7 @@ namespace AppRemarketing.forms
                 newRow["Beschreibung"] = txtBeschreibung.Text;
                 newRow["Betrag"] = txtPreis.Text;
                 newRow["Schadensdatum"] = txtDatum.Text;
+                newRow["Repariert"] = (cbxRepariert.Checked ? "YES" : "NO");
 
                 m_Report.tblUpload.Rows.Add(newRow);
             }
@@ -457,6 +467,7 @@ namespace AppRemarketing.forms
             tr_Preis.Visible = rbEinzelerfassung.Checked;
             tr_Schadensdatum.Visible = rbEinzelerfassung.Checked;
             tr_Beschreibung.Visible = rbEinzelerfassung.Checked;
+            tr_Repariert.Visible = rbEinzelerfassung.Checked;
         }
 
         private void ClearEinzelauswahl()
@@ -466,6 +477,7 @@ namespace AppRemarketing.forms
             txtFin.Text = "";
             txtKennzeichen.Text = "";
             txtPreis.Text = "";
+            cbxRepariert.Checked = false;
         }
 
         private void StoreGridSettings(RadGrid grid, GridSettingsType settingsType)
@@ -538,6 +550,5 @@ namespace AppRemarketing.forms
         {
             Helper.radGridExcelMLExportStylesCreated(ref e);
         }
-
     }
 }
