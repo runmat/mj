@@ -382,47 +382,44 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             var foo = PdfDocumentFactory.HtmlToPdf("test");
 
-            // Merge multiple PDF files into one single PDF 
-            // http://stackoverflow.com/questions/6029142/merging-multiple-pdfs-using-itextsharp-in-c-net
+            // SummaryAsPdf(string id)
 
-            // step 1: creation of a document-object
-            iTextSharp document = new Document();
+            var result = SummaryAsPdf(id);
 
-            // step 2: we create a writer that listens to the document
-            PdfCopy writer = new PdfCopy(document, new FileStream(outFile, FileMode.Create));
-            if (writer == null)
-            {
-                return;
-            }
 
-            // step 3: we open the document
-            document.Open();
-
-            foreach (string fileName in fileNames)
-            {
-                // we create a reader for a certain document
-                PdfReader reader = new PdfReader(fileName);
-                reader.ConsolidateNamedDestinations();
-
-                // step 4: we add content
-                for (int i = 1; i <= reader.NumberOfPages; i++)
-                {
-                    PdfImportedPage page = writer.GetImportedPage(reader, i);
-                    writer.AddPage(page);
-                }
-
-                PRAcroForm form = reader.AcroForm;
-                if (form != null)
-                {
-                    writer.CopyAcroForm(reader);
-                }
-
-                reader.Close();
-            }
-
-            // step 5: we close the document and writer
-            writer.Close();
-            document.Close();
+            //// Merge multiple PDF files into one single PDF 
+            //// http://stackoverflow.com/questions/6029142/merging-multiple-pdfs-using-itextsharp-in-c-net
+            //// step 1: creation of a document-object
+            //iTextSharp document = new Document();
+            //// step 2: we create a writer that listens to the document
+            //PdfCopy writer = new PdfCopy(document, new FileStream(outFile, FileMode.Create));
+            //if (writer == null)
+            //{
+            //    return;
+            //}
+            //// step 3: we open the document
+            //document.Open();
+            //foreach (string fileName in fileNames)
+            //{
+            //    // we create a reader for a certain document
+            //    PdfReader reader = new PdfReader(fileName);
+            //    reader.ConsolidateNamedDestinations();
+            //    // step 4: we add content
+            //    for (int i = 1; i <= reader.NumberOfPages; i++)
+            //    {
+            //        PdfImportedPage page = writer.GetImportedPage(reader, i);
+            //        writer.AddPage(page);
+            //    }
+            //    PRAcroForm form = reader.AcroForm;
+            //    if (form != null)
+            //    {
+            //        writer.CopyAcroForm(reader);
+            //    }
+            //    reader.Close();
+            //}
+            //// step 5: we close the document and writer
+            //writer.Close();
+            //document.Close();
 
 
             return null;
