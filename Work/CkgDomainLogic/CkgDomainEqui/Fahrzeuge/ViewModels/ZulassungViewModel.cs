@@ -1,12 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿// ReSharper disable RedundantUsingDirective
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using GeneralTools.Resources;
-using NUnit.Framework;
-// ReSharper disable RedundantUsingDirective
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
@@ -68,7 +66,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get { return PropertyCacheGet(() => 
                             DataService.GetKennzeichenSerie()
-                                .CopyAndInsertAtTop(new KennzeichenSerie { ID = "-", Name = Localize.DropdownDefaultOptionPleaseChoose})); }
+                                .CopyAndInsertAtTop(new KennzeichenSerie { ID = "-", Name = Localize.DropdownDefaultOptionNotSpecified})); }
         }
 
 
@@ -77,7 +75,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public DateTime? SelectedZulassungsDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
-        [Required]
         public string SelectedKennzeichenSerie { get; set; }
 
 
@@ -89,6 +86,21 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         public string SelectedModelId { get; set; }
+
+        public List<Fahrzeug> ZulassungenForPdiAndDate { get; set; }
+
+        int ZulassungenAnzahlPdiStored { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == SelectedPdi).Sum(z => z.Amount); } }
+
+        int ZulassungenAnzahlGesamtStored { get { return SelectedZulassungsDatum == null ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == "Gesamt").Sum(z => z.Amount); } }
+
+        int ZulassungenAnzahlPdiSelected { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : Fahrzeuge.Count(z => z.Pdi == SelectedPdi && z.IsSelected); } }
+
+        int ZulassungenAnzahlGesamtSelected { get { return SelectedZulassungsDatum == null ? 0 : Fahrzeuge.Count(z => z.IsSelected); } }
+
+        public int ZulassungenAnzahlPdiTotal { get { return ZulassungenAnzahlPdiStored + ZulassungenAnzahlPdiSelected; } }
+
+        public int ZulassungenAnzahlGesamtTotal { get { return ZulassungenAnzahlGesamtStored + ZulassungenAnzahlGesamtSelected; } }
+
 
         [XmlIgnore]
         public IEnumerable<string> FahrzeugeGroupByModel
@@ -134,17 +146,17 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             DataMarkForRefresh();
         }
 
-        public void DataInit(bool preSelection)
-        {
-            DataInit();
-        }
-
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.Fahrzeuge);
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModel);
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModelId);
+
+            SelectedPdi = null;
+            SelectedModel = null;
+            SelectedModelId = null;
+            ZulassungenForPdiAndDate = new List<Fahrzeug>();
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)
@@ -174,13 +186,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
 
-        public void SelectFahrzeuge(bool select, Predicate<Fahrzeug> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
+        public void SelectFahrzeuge(bool select, Predicate<Fahrzeug> filter, out int allSelectionCount, out int allCount)
         {
             Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
             allCount = Fahrzeuge.Count();
-            allFoundCount = Fahrzeuge.Count();
         }
 
         public void OnChangeFilterValues(string type, string value)
@@ -189,6 +200,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {
                 case "SelectedPdi":
                     SelectedPdi = value;
+                    GetZulassungenAnzahlForPdiAndDate();
                     break;
 
                 case "SelectedModel":
@@ -212,6 +224,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     errorMessage = CheckZulassungsDatum(zulassungsDatum);
 
                     SelectedZulassungsDatum = (errorMessage.IsNotNullOrEmpty() ? null : (DateTime?)zulassungsDatum);
+                    GetZulassungenAnzahlForPdiAndDate();
 
                     value = SelectedZulassungsDatum.ToString("dd.MM.yyyy");
                     break;
@@ -241,6 +254,32 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             }
 
             return errorMessage;
+        }
+
+        void GetZulassungenAnzahlForPdiAndDate()
+        {
+            ZulassungenForPdiAndDate = new List<Fahrzeug>();
+            if (SelectedZulassungsDatum == null)
+                return;
+
+            // ToDo: remove test code
+            //string errorMessage;
+            //ZulassungenForPdiAndDate = DataService.GetZulassungenAnzahlForPdiAndDate(SelectedZulassungsDatum.GetValueOrDefault(), out errorMessage);
+            if (SelectedZulassungsDatum == new DateTime(2015, 05, 27))
+                ZulassungenForPdiAndDate = new List<Fahrzeug>
+                {
+                    new Fahrzeug { Amount = 5, Pdi = "Gesamt", },
+                    new Fahrzeug { Amount = 3, Pdi = "PDI2", },
+                    new Fahrzeug { Amount = 2, Pdi = "PDI6", },
+                };
+            if (SelectedZulassungsDatum == new DateTime(2015, 05, 28))
+                ZulassungenForPdiAndDate = new List<Fahrzeug>
+                {
+                    new Fahrzeug { Amount = 14, Pdi = "Gesamt", },
+                    new Fahrzeug { Amount = 7, Pdi = "PDI1", },
+                    new Fahrzeug { Amount = 4, Pdi = "PDI6", },
+                    new Fahrzeug { Amount = 3, Pdi = "PDI7", },
+                };
         }
     }
 }

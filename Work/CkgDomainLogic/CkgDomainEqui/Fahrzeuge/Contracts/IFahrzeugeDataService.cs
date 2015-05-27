@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
 
@@ -24,5 +25,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         List<Fahrzeug> GetFahrzeugeForZulassung();
 
         List<KennzeichenSerie> GetKennzeichenSerie();
+
+        List<Fahrzeug> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
     }
 }

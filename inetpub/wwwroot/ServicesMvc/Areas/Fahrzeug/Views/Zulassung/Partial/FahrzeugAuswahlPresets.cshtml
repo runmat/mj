@@ -11,12 +11,18 @@
     <div id="divGridFahrzeugAuswahlFilter">
         <div class="form-horizontal" id="GridFahrzeugAuswahlFilter">
             
-            @Html.FormDatePickerFor(m => m.SelectedZulassungsDatum, new { @class = "m-wrap small", col = "left3" })
+            @Html.FormDatePickerFor(m => m.SelectedZulassungsDatum, new { @class = "m-wrap small", col = "left3" },
+                    postControlHtml: @<text><div id="zulassungenAnzahlGesamtTotal" class="zulassungen-count hide"></div></text>)
+
             @Html.FormDropDownListFor(m => m.SelectedKennzeichenSerie, Model.KennzeichenSerien.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
+            
             @Html.FormPlaceHolder(@<text><span class="reqired-fields">@Html.FormRequiredFieldsSummary()</span></text>, new { col = "right3" })
 
-            @Html.FormDropDownListFor(m => m.SelectedPdi, Model.FahrzeugeGroupByPdi.ToSelectList(), new { @class = "m-wrap small", col = "left3" })
+            @Html.FormDropDownListFor(m => m.SelectedPdi, Model.FahrzeugeGroupByPdi.ToSelectList(), new { @class = "m-wrap small", col = "left3" }, 
+                    postControlHtml: @<text><div id="zulassungenAnzahlPdiTotal" class="zulassungen-count hide"></div></text>)
+
             @Html.FormDropDownListFor(m => m.SelectedModel, Model.FahrzeugeGroupByModel.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
+            
             @Html.FormDropDownListFor(m => m.SelectedModelId, Model.FahrzeugeGroupByModelId.ToSelectList(), new { @class = "m-wrap small", col = "right3" })
         </div>  
         

@@ -17,6 +17,12 @@
     .span4 a {
         text-align: left!important;   
     }
+    
+    div.zulassungen-count {
+        color: blue;
+        font-weight: bold;
+        margin-left: 5px;
+    }
 </style>
 
 <script type="text/javascript">
@@ -156,6 +162,7 @@
             success: function (result) {
                 _selectedItemsCount = result.allSelectionCount;
                 GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ShowHideNextButton();
                 if (count == 0) {
                     $("#FahrzeugAuswahlCount").addClass('hide');
@@ -177,6 +184,7 @@
             success: function (result) {
                 _selectedItemsCount = result.allSelectionCount;
                 GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ShowHideNextButton();
                 
                 FilterGrid("GridFahrzeugAuswahl");
@@ -207,8 +215,13 @@
                 loadingShow: false,
                 success: function (result) {
                     _validationError = (result.errorMessage != "");
-                    if (_validationError)
+                    if (_validationError){
                         SpanAlertError("MessageFahrzeugAuswahl", result.errorMessage, 2500);
+                        RefreshZulassungenCountForDateAndPdi(0, 0);
+                    }
+                    else
+                        RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+
                     ShowHideNextButton();
                 }
             });
@@ -246,16 +259,33 @@
             data: { value: value, type: type },
             loadingShow: false,
             success: function (result) {
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ReFilterGrid();
             }
         });
+    }
+
+    function RefreshZulassungenCountForDateAndPdi(zulassungenAnzahlGesamtTotal, zulassungenAnzahlPdiTotal) {
+        if (zulassungenAnzahlGesamtTotal == 0)
+            $("#zulassungenAnzahlGesamtTotal").addClass("hide");
+        else {
+            $("#zulassungenAnzahlGesamtTotal").html("@Localize.RegistrationAmountForThisDay: " + zulassungenAnzahlGesamtTotal);
+            $("#zulassungenAnzahlGesamtTotal").removeClass("hide");
+        }
+
+        if (zulassungenAnzahlPdiTotal == 0)
+            $("#zulassungenAnzahlPdiTotal").addClass("hide");
+        else {
+            $("#zulassungenAnzahlPdiTotal").html("@Localize.RegistrationAmountForThisDayAndPdi: " + zulassungenAnzahlPdiTotal);
+            $("#zulassungenAnzahlPdiTotal").removeClass("hide");
+        }
     }
 
     function ShowHideNextButton() {
         
         var nextButtonValid = 
             $('#SelectedZulassungsDatum').val() != '' && $('#SelectedZulassungsDatum').val() != null && 
-            $('#SelectedKennzeichenSerie').val() != '-' && 
+            //$('#SelectedKennzeichenSerie').val() != '-' && 
             _selectedItemsCount > 0 && !_validationError;
 
         FormWizard.ActionsShow(nextButtonValid);

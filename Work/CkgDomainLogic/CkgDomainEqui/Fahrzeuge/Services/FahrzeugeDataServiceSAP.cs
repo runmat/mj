@@ -196,5 +196,36 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return webItems;
         }
+
+        public List<Fahrzeug> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage)
+        {
+            var webItems = new List<Fahrzeug>();
+
+            errorMessage = SAP.ExecuteAndCatchErrors(
+
+                // exception safe SAP action:
+                () =>
+                {
+                    Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+                    SAP.SetImportParameter("I_ZULDAT", date);
+                    SAP.Execute();
+
+                    var sapItemsData = Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB.GetExportList(SAP);
+                    webItems = AppModelMappings.Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFahrzeug.Copy(sapItemsData).ToList();
+                }
+                ,
+
+                // SAP custom error handling:
+                () =>
+                {
+                    var sapResult = SAP.ResultMessage;
+                    if (SAP.ResultMessage.IsNotNullOrEmpty())
+                        return sapResult;
+
+                    return "";
+                });
+
+            return webItems;
+        }
     }
 }

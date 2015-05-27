@@ -392,6 +392,20 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+        static public ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fahrzeug> Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFahrzeug
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fahrzeug>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Pdi = sap.ZZCARPORT;
+                        business.Amount = sap.ZANZAHL.ToInt(0);
+                    }));
+            }
+        }
+
         static public ModelMapping<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB, KennzeichenSerie> Z_M_EC_AVM_KENNZ_SERIE_GT_WEB_ToKennzeichenSerie
         {
             get

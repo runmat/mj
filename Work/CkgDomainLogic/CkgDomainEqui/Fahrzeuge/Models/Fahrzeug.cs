@@ -83,5 +83,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public bool IsSelected { get; set; }
 
         public string InternalID { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Amount)]
+        public int Amount { get; set; }
     }
 }

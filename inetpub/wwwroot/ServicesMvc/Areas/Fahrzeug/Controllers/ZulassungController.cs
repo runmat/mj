@@ -62,13 +62,18 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
-            int allSelectionCount, allCount = 0, allFoundCount = 0;
+            int allSelectionCount, allCount = 0;
             if (vin.IsNullOrEmpty())
-                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount, out allFoundCount);
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
             else
                 ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
 
-            return Json(new { allSelectionCount, allCount, allFoundCount });
+            return Json(new
+            {
+                allSelectionCount, allCount,
+                zulassungenAnzahlPdiTotal = ViewModel.ZulassungenAnzahlPdiTotal,
+                zulassungenAnzahlGesamtTotal = ViewModel.ZulassungenAnzahlGesamtTotal,
+            });
         }
 
         [HttpPost]
@@ -76,7 +81,11 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {
             ViewModel.OnChangeFilterValues(type, value);
 
-            return Json(new { });
+            return Json(new
+            {
+                zulassungenAnzahlPdiTotal = ViewModel.ZulassungenAnzahlPdiTotal,
+                zulassungenAnzahlGesamtTotal = ViewModel.ZulassungenAnzahlGesamtTotal,
+            });
         }
 
         [HttpPost]
@@ -84,7 +93,12 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {
             var errorMessage = ViewModel.OnChangePresetValues(type, ref value);
 
-            return Json(new { value, errorMessage });
+            return Json(new
+            {
+                value, errorMessage,
+                zulassungenAnzahlPdiTotal = ViewModel.ZulassungenAnzahlPdiTotal,
+                zulassungenAnzahlGesamtTotal = ViewModel.ZulassungenAnzahlGesamtTotal,
+            });
         }
 
         #endregion    
