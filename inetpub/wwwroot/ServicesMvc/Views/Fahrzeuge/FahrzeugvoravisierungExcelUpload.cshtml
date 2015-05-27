@@ -37,6 +37,18 @@
             $(".t-status").hide();
         }
 
+        function OnSubmitComplete() {
+            if ($(":radio[value=volkswagen]").is(':checked')) {
+                $("#DownloadCsvTemplateVW").removeClass('hide');
+                $("#DownloadCsvTemplateOthers").addClass('hide');
+            } else {
+                $("#DownloadCsvTemplateVW").addClass('hide');
+                $("#DownloadCsvTemplateOthers").removeClass('hide');
+            }
+           
+            FormPreparePrivateAjax();
+        }
+
         function FormWizardInitPrivate() {
             FormWizard.Init(function () {
                 FormWizard.ActionsShow(false);
