@@ -239,6 +239,10 @@ namespace SapORM.Services
                                                             item[col.Name] = dr[col.Name].ToString();
                                                             break;
                                                         case RFCTYPE.BCD:
+                                                        case RFCTYPE.FLOAT:
+                                                        case RFCTYPE.INT:
+                                                        case RFCTYPE.INT1:
+                                                        case RFCTYPE.INT2:
                                                             if ((!ReferenceEquals(dr[col.Name], DBNull.Value)))
                                                             {
                                                                 if (Information.IsNumeric(dr[col.Name].ToString()))
@@ -302,11 +306,15 @@ namespace SapORM.Services
                                                 item[col.Name] = dr[col.Name].ToString();
                                                 break;
                                             case RFCTYPE.BCD:
+                                            case RFCTYPE.FLOAT:
+                                            case RFCTYPE.INT:
+                                            case RFCTYPE.INT1:
+                                            case RFCTYPE.INT2:
                                                 if ((!ReferenceEquals(dr[col.Name], DBNull.Value)))
                                                 {
                                                     if (Information.IsNumeric(dr[col.Name].ToString()))
                                                     {
-                                                        item[col.Name] = Convert.ToDecimal(dr[col.Name].ToString());
+                                                        item[col.Name] = dr[col.Name].ToString();
                                                     }
                                                 }
                                                 break;
@@ -400,9 +408,17 @@ namespace SapORM.Services
                                             row[col.Name] = item[col.Name].ToString();
                                             break;
                                         case RFCTYPE.BCD:
+                                        case RFCTYPE.FLOAT:
+                                        case RFCTYPE.INT:
+                                        case RFCTYPE.INT1:
+                                        case RFCTYPE.INT2:
                                             if (ReferenceEquals(item[col.Name], DBNull.Value))
                                             {
-                                                row[col.Name] = "";
+                                                row[col.Name] = 0;
+                                            }
+                                            else
+                                            {
+                                                row[col.Name] = item[col.Name];
                                             }
                                             break;
                                         case RFCTYPE.DATE:
@@ -459,9 +475,13 @@ namespace SapORM.Services
                                                     row[col.Name] = row[col.Name].ToString();
                                                     break;
                                                 case RFCTYPE.BCD:
+                                                case RFCTYPE.FLOAT:
+                                                case RFCTYPE.INT:
+                                                case RFCTYPE.INT1:
+                                                case RFCTYPE.INT2:
                                                     if (ReferenceEquals(row[col.Name], DBNull.Value))
                                                     {
-                                                        row[col.Name] = "";
+                                                        row[col.Name] = 0;
                                                     }
                                                     break;
                                                 case RFCTYPE.DATE:
