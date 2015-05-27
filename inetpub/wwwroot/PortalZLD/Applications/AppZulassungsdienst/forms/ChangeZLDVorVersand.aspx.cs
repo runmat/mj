@@ -996,6 +996,8 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+                hfBankleitzahl.Value = objCommon.Bankschluessel;
+                hfKontonummer.Value = objCommon.Kontonr;
             }
             else if (cpdMitEinzug)
             {
@@ -1184,10 +1186,12 @@ namespace AppZulassungsdienst.forms
                 txtMenge = (TextBox)gvRow.FindControl("txtMenge");
                 lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
 
+                var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
+
                 tblData.Rows[i]["Search"] = txtBox.Text;
                 tblData.Rows[i]["Value"] = ddl.SelectedValue;
                 tblData.Rows[i]["Text"] = ddl.SelectedItem.Text;
-                tblData.Rows[i]["Menge"] = txtMenge.Text;
+                tblData.Rows[i]["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "");
                 if (ddl.SelectedValue == ZLDCommon.CONST_IDSONSTIGEDL)
                 {
                     tblData.Rows[i]["DLBezeichnung"] = lblDLBezeichnung.Text;
@@ -1354,8 +1358,8 @@ namespace AppZulassungsdienst.forms
             bankdaten.SapId = objVorVersand.AktuellerVorgang.Kopfdaten.SapId;
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
-            bankdaten.Bankleitzahl = objCommon.Bankschluessel;
-            bankdaten.KontoNr = objCommon.Kontonr;
+            bankdaten.Bankleitzahl = hfBankleitzahl.Value;
+            bankdaten.KontoNr = hfKontonummer.Value;
             bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
@@ -1376,6 +1380,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             txtGeldinstitut.Text = (String.IsNullOrEmpty(bankdaten.Geldinstitut) ? "Wird automatisch gefüllt!" : bankdaten.Geldinstitut);
             txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             chkEinzug.Checked = bankdaten.Einzug.IsTrue();
