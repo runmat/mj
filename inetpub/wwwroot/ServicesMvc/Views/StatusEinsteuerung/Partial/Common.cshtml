@@ -4,8 +4,10 @@
 
     $("#StatusEinsteuerungForm button[type=submit]").trigger("click");
 
-    function ShowStatusReport() {
+    LoadingShow(true);
 
+    function ShowStatusReport() {
+       
         FormPreparePrivateAjax();
 
         $.ajax({
@@ -23,9 +25,9 @@
 
 
     function ShowStatusEinsteuerung() {
-
+       
         FormPreparePrivateAjax();
-
+                
         $.ajax({
             type: "POST",
             url: "ShowStatusEinsteuerung",
