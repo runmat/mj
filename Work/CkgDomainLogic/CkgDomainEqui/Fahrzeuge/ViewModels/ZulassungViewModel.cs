@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using GeneralTools.Resources;
 using NUnit.Framework;
 // ReSharper disable RedundantUsingDirective
@@ -104,12 +105,28 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [XmlIgnore]
         public IEnumerable<string> FahrzeugeGroupByPdi
         {
-            get { return PropertyCacheGet(() => GetFahrzeugeGroupedByKey(g => g.Pdi)); }
+            get { return PropertyCacheGet(() => GetFahrzeugeGroupedByKey(g => g.Pdi, SortPdi)); }
         }
 
-        IEnumerable<string> GetFahrzeugeGroupedByKey(Func<Fahrzeug, string> groupKey)
+        IEnumerable<string> GetFahrzeugeGroupedByKey(Func<Fahrzeug, string> groupKey, Func<string, string> sortExpression = null)
         {
-            return new List<string> { Localize.DropdownDefaultOptionAll }.Concat(Fahrzeuge.GroupBy(groupKey).OrderBy(g => g.Key).Select(g => g.Key).ToList());
+            return new List<string> { Localize.DropdownDefaultOptionAll }
+                        .Concat(Fahrzeuge.GroupBy(groupKey)
+                        .OrderBy(g => sortExpression != null ? sortExpression(g.Key) : g.Key)
+                        .Select(g => g.Key).ToList());
+        }
+
+        static string SortPdi(string pdi)
+        {
+            if (pdi.IsNullOrEmpty())
+                return pdi;
+
+            var pdiSvalue = pdi.ToLower().Replace("pdi", "");
+            int pdiValue;
+            if (!Int32.TryParse(pdiSvalue, out pdiValue))
+                return pdi;
+
+            return string.Format("{0:00000}", pdiValue);
         }
 
         public void DataInit()
@@ -124,6 +141,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void DataMarkForRefresh()
         {
+            PropertyCacheClear(this, m => m.Fahrzeuge);
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModel);
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModelId);
@@ -131,7 +149,18 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)
         {
-            FahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            var fahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties).AsQueryable();
+
+            if (SelectedModel.IsNotNullOrEmpty() && SelectedModel != Localize.DropdownDefaultOptionAll)
+                fahrzeugeFiltered = fahrzeugeFiltered.Where(f => f.Modell == SelectedModel);
+
+            if (SelectedModelId.IsNotNullOrEmpty() && SelectedModelId != Localize.DropdownDefaultOptionAll)
+                fahrzeugeFiltered = fahrzeugeFiltered.Where(f => f.ModelID == SelectedModelId);
+
+            if (SelectedPdi.IsNotNullOrEmpty() && SelectedPdi != Localize.DropdownDefaultOptionAll)
+                fahrzeugeFiltered = fahrzeugeFiltered.Where(f => f.Pdi == SelectedPdi);
+
+            FahrzeugeFiltered = fahrzeugeFiltered.ToListOrEmptyList();
         }
 
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
@@ -152,6 +181,35 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
             allCount = Fahrzeuge.Count();
             allFoundCount = Fahrzeuge.Count();
+        }
+
+        public void OnChangeFilterValues(string type, string value)
+        {
+            switch (type)
+            {
+                case "SelectedPdi":
+                    SelectedPdi = value;
+                    break;
+                case "SelectedModel":
+                    SelectedModel = value;
+                    break;
+                case "SelectedModelId":
+                    SelectedModelId = value;
+                    break;
+            }
+        }
+
+        public void OnChangePresetValues(string type, string value)
+        {
+            switch (type)
+            {
+                case "SelectedZulassungsDatum":
+                    SelectedZulassungsDatum = DateTime.ParseExact(value, "dd.MM.yyyy", CultureInfo.CurrentCulture);
+                    break;
+                case "SelectedKennzeichenSerie":
+                    SelectedKennzeichenSerie = value;
+                    break;
+            }
         }
     }
 }

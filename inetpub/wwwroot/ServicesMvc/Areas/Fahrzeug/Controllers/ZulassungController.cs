@@ -31,6 +31,8 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
+            ViewModel.DataInit();
+
             return View(ViewModel);
         }
 
@@ -67,6 +69,22 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
 
             return Json(new { allSelectionCount, allCount, allFoundCount });
+        }
+
+        [HttpPost]
+        public JsonResult OnChangeFilterValues(string type, string value)
+        {
+            ViewModel.OnChangeFilterValues(type, value);
+
+            return Json(new { });
+        }
+
+        [HttpPost]
+        public JsonResult OnChangePresetValues(string type, string value)
+        {
+            ViewModel.OnChangePresetValues(type, value);
+
+            return Json(new { });
         }
 
         #endregion    

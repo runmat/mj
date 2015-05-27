@@ -5,21 +5,24 @@
     }
     
     div.presets-and-filter {
-        background-color: #fcfcfc;
+        background-color: #f9fff9;
         padding: 5px 0 0 0;
-        border: 1px solid #fafafa;
+        border: 1px solid #f0fcf0;
         margin: 0 0 20px 0;
     }
     div.presets-and-filter input[type='text'] {
         background-color: white!important;
     }
-    
+    .span4 a {
+        text-align: left!important;   
+    }
 </style>
 
 <script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
     var _modelIsValid = false;
+    var _selectedItemsCount = 0;
 
     function FormPreparePrivate() {
 
@@ -31,6 +34,12 @@
         try { MultiSelectPreparePrivate(); } catch (e) { }
 
         InitSearchableAndEditableDropdowns();
+
+        InitDatePicker();
+        
+        setTimeout(function() {
+            ReFilterGrid();
+        }, 800);
     };
 
     function FormPreparePrivateAjax() {
@@ -143,9 +152,9 @@
             data: { vin: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
             success: function (result) {
-                var count = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
-                FormWizard.ActionsShow(count > 0);
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                ShowHideNextButton();
                 if (count == 0) {
                     $("#FahrzeugAuswahlCount").addClass('hide');
                     return;
@@ -164,9 +173,9 @@
             data: { id: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
-                var count = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
-                FormWizard.ActionsShow(count > 0);
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                ShowHideNextButton();
                 
                 FilterGrid("GridFahrzeugAuswahl");
             }
@@ -187,20 +196,68 @@
         $.uniform.update($("#uncheckAllRecords"));
     }
 
-    function OnDropdownChanged_SelectedKennzeichenSerie(val) {
-        alert(val);
+    function InitDatePicker() {
+        $('#SelectedZulassungsDatum').datepicker().on('change', function (ev) {
+            $.ajax({
+                type: "POST",
+                url: "OnChangePresetValues",
+                data: { value: $('#SelectedZulassungsDatum').val(), type: "SelectedZulassungsDatum" },
+                loadingShow: false,
+                success: function (result) {
+                    ShowHideNextButton();
+                }
+            });
+        });
+    }
+
+    function OnDropdownChanged_SelectedKennzeichenSerie(value) {
+        $.ajax({
+            type: "POST",
+            url: "OnChangePresetValues",
+            data: { value: value, type: "SelectedKennzeichenSerie" },
+            loadingShow: false,
+            success: function (result) {
+                ShowHideNextButton();
+            }
+        });
     }
 
     function OnDropdownChanged_SelectedPdi(val) {
-        alert(val);
+        OnChangeFilterValues("SelectedPdi", val);
     }
 
     function OnDropdownChanged_SelectedModel(val) {
-        alert(val);
+        OnChangeFilterValues("SelectedModel", val);
     }
 
     function OnDropdownChanged_SelectedModelId(val) {
-        alert(val);
+        OnChangeFilterValues("SelectedModelId", val);
+    }
+
+    function OnChangeFilterValues(type, value) {
+        $.ajax({
+            type: "POST",
+            url: "OnChangeFilterValues",
+            data: { value: value, type: type },
+            loadingShow: false,
+            success: function (result) {
+                ReFilterGrid();
+            }
+        });
+    }
+
+    function ShowHideNextButton() {
+        
+        var nextButtonValid = 
+            $('#SelectedZulassungsDatum').val() != '' && $('#SelectedZulassungsDatum').val() != null && 
+            $('#SelectedKennzeichenSerie').val() != '-' && 
+            _selectedItemsCount > 0;
+
+        FormWizard.ActionsShow(nextButtonValid);
+    }
+
+    function ReFilterGrid() {
+        FilterGrid("GridFahrzeugAuswahl");
     }
 
 </script>
