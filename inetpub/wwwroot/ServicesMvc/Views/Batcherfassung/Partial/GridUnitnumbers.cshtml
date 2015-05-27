@@ -23,12 +23,12 @@
         {
             columns.XBound(c => c.Unitnummer);
             columns.XBound(c => c.IstGesperrt)
-                  .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Unitnummer #>' onchange='GridUnitnumbers_OnSelectionChange($(this))' />")
+                  .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked readonly <# } #> value='<#= data.Unitnummer #>' onchange='GridUnitnumbers_OnSelectionChange($(this))' />")
                   .Filterable(false).Sortable(false).Groupable(false).Width(20);
             
             columns.XBound(c => c.Sperrvermerk).Filterable(false).Sortable(false).Groupable(false)
                     .ClientTemplate(
-                        "<input onblur='UpdateSperrvermerk(\"<#= data.Unitnummer #>\");' value='<#= data.Sperrvermerk #>' id='<#= data.Unitnummer #>' </input>"
+                        "<input onblur='UpdateSperrvermerk(\"<#= data.Unitnummer #>\");' value='<#= data.Sperrvermerk #>' id='<#= data.Unitnummer #>' <# if (!data.IsSelected) { #> readonly <# } #> </input>"
                         + "&nbsp;"
                 );
             columns.XBound(c => c.Fahrgestellnummer);

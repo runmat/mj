@@ -247,7 +247,7 @@
             data: { unitnummer: unitnummer, sperrvermerk: sperrvermerk },
             loadingShow: false,
             success: function (result) {
-                          
+                $("#savebutton").removeClass('hide');          
             }
         });
 
@@ -263,11 +263,12 @@
             data: { unitnummer: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
             success: function (result) {
-                var count = result.allSelectionCount;
-                if(count > 0)
-                    $("#savebutton").removeClass('hide');
-                else
-                    $("#savebutton").addClass('hide');
+                $("#savebutton").removeClass('hide');
+                if (cb.is(':checked')) {
+                    $("#" + cb.val()).removeAttr('readonly');
+                } else {
+                    $("#" + cb.val()).attr('readonly', true);
+                }
                 //GridUnitnumbers_MultiSelectUpdate(result.allSelectionCount);                
             }
         });

@@ -173,6 +173,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             destination.Fahrgestellnummer = source.CHASSIS_NUM;
                             destination.Kennzeichen = source.LICENSE_NUM;
                             destination.IstGesperrt = (source.ZLOEVM.ToUpper() == "X");
+                            destination.Sperrvermerk = source.ZBEM_SPERR;
                             destination.IsSelected = destination.IstGesperrt;
                             destination.Einsteuerung = source.REPLA_DATE;                            
                         }

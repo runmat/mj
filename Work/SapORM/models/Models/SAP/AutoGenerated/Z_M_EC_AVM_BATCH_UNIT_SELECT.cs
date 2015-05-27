@@ -55,6 +55,12 @@ namespace SapORM.Models
 
 			public string ZLOEVM { get; set; }
 
+			public string BLUETOOTH { get; set; }
+
+			public string ANTR { get; set; }
+
+			public string ZBEM_SPERR { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -71,6 +77,9 @@ namespace SapORM.Models
 					LICENSE_NUM = (string)row["LICENSE_NUM"],
 					REPLA_DATE = (string.IsNullOrEmpty(row["REPLA_DATE"].ToString())) ? null : (DateTime?)row["REPLA_DATE"],
 					ZLOEVM = (string)row["ZLOEVM"],
+					BLUETOOTH = (string)row["BLUETOOTH"],
+					ANTR = (string)row["ANTR"],
+					ZBEM_SPERR = (string)row["ZBEM_SPERR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
