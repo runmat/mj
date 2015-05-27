@@ -5,7 +5,6 @@ Public Class Bestellung
 
     Private mBestellungen As DataTable
     Private mMyKasse As Kasse
-    Private mBestellnummer As String
 
     Public ReadOnly Property Bestellungen() As DataTable
         Get
@@ -13,24 +12,46 @@ Public Class Bestellung
         End Get
     End Property
 
-    Public ReadOnly Property Bestellnummer() As String
-        Get
-            Return mBestellnummer
-        End Get
-    End Property
-
     Public Sub New(ByRef Kasse As Kasse)
         mMyKasse = Kasse
-        S.AP.Init("Z_FIL_PO_CREATE_001")
-        mBestellungen = S.AP.GetImportTable("GT_WEB")
+        mBestellungen = createArtikelTabelle()
         checkForSavedOrders()
-        Bestellungen.AcceptChanges()
+        mBestellungen.AcceptChanges()
     End Sub
 
+    Private Function createArtikelTabelle() As DataTable
+        Dim tbl As New DataTable()
+
+        tbl.Columns.Add("EKORG", GetType(String))  'Einkaufsorganisation
+        tbl.Columns.Add("KOSTL", GetType(String))  'Kostenstelle
+        tbl.Columns.Add("WERKS", GetType(String))  'Werk
+        tbl.Columns.Add("LIFNR", GetType(String))  'Kontonummer Lieferant
+        tbl.Columns.Add("MATNR", GetType(String))  'Materialnummer
+        tbl.Columns.Add("BSTMG", GetType(Integer))  'Bestellmenge
+        tbl.Columns.Add("EAN11", GetType(String))  'EAN
+        tbl.Columns.Add("LGORT", GetType(String))  'Lagerort
+        tbl.Columns.Add("MAKTX", GetType(String))  'Materialbezeichnung
+        tbl.Columns.Add("NAME1", GetType(String))  'Lieferantenname
+        tbl.Columns.Add("IDNLF", GetType(String))  'Materialnummer (Lieferant)
+        tbl.Columns.Add("RELIF", GetType(String))  'Regellieferant
+        tbl.Columns.Add("ESOKZ", GetType(String))  'Einkaufsinfosatz-Typ
+        tbl.Columns.Add("KBETR", GetType(Double))  'Konditionsbetrag
+        tbl.Columns.Add("KONWA", GetType(String))  'Konditionseinheit
+        tbl.Columns.Add("KPEIN", GetType(Integer))   'Konditionspreiseinheit
+        tbl.Columns.Add("BPRME", GetType(String))  'Bestellpreismengeneinheit
+        tbl.Columns.Add("MEINS", GetType(String))  'Basismengeneinheit
+        tbl.Columns.Add("UMRECH", GetType(Integer))  'Umrechnung Bestellmenge -> Lagermengeneinheit
+        tbl.Columns.Add("MINBM", GetType(Integer))  'Mindestbestellmenge
+        tbl.Columns.Add("MINBW", GetType(Double))  'Mindestbestellwert
+
+        Return tbl
+    End Function
+
+
     Public Sub CheckForSavedBestellungen()
-        Bestellungen.Rows.Clear()
+        mBestellungen.Rows.Clear()
         checkForSavedOrders()
-        Bestellungen.AcceptChanges()
+        mBestellungen.AcceptChanges()
     End Sub
 
     Public Sub SaveToSQLDB()
@@ -55,7 +76,7 @@ Public Class Bestellung
             Dim myDataReader As SqlClient.SqlDataReader = cmd.ExecuteReader
             Dim tmpRow As DataRow
             While myDataReader.Read
-                tmpRow = Bestellungen.NewRow
+                tmpRow = mBestellungen.NewRow
 
                 tmpRow("EKORG") = myDataReader.GetString(myDataReader.GetOrdinal("EKORG")) 'Einkaufsorganisation
                 tmpRow("KOSTL") = myDataReader.GetString(myDataReader.GetOrdinal("KOSTL")) 'Kostenstelle
@@ -79,7 +100,7 @@ Public Class Bestellung
                 tmpRow("MINBM") = CInt(myDataReader.GetDecimal(myDataReader.GetOrdinal("MINBM"))) 'Mindestbestellmenge
                 tmpRow("MINBW") = CDbl(myDataReader.GetDecimal(myDataReader.GetOrdinal("MINBW"))) 'Mindestbestellwert
 
-                Bestellungen.Rows.Add(tmpRow)
+                mBestellungen.Rows.Add(tmpRow)
             End While
         Catch ex As Exception
             Throw
@@ -130,7 +151,7 @@ Public Class Bestellung
                 .Parameters.Add("@MINBW", SqlDbType.Decimal)
             End With
             cmd.CommandText = SqlQuery
-            For Each tmpRow As DataRow In Bestellungen.Rows
+            For Each tmpRow As DataRow In mBestellungen.Rows
                 With cmd
                     .Parameters("@EKORG").Value = tmpRow("EKORG")
                     .Parameters("@KOSTL").Value = tmpRow("KOSTL")
@@ -197,9 +218,31 @@ Public Class Bestellung
             If ErrorOccured Then
                 Return False
             Else
+                Dim row As DataRow = tmpTable.Rows(0)
                 Dim newRow As DataRow = mBestellungen.NewRow()
-                newRow.ItemArray = tmpTable(0).ItemArray
+                newRow.ItemArray = row.ItemArray
                 newRow("BSTMG") = menge
+                'newRow("EKORG") = row("EKORG").ToString()
+                'newRow("KOSTL") = row("KOSTL").ToString()
+                'newRow("WERKS") = row("WERKS").ToString()
+                'newRow("LIFNR") = row("LIFNR").ToString()
+                'newRow("MATNR") = row("MATNR").ToString()
+                'newRow("BSTMG") = menge
+                'newRow("EAN11") = row("EAN11").ToString()
+                'newRow("LGORT") = row("LGORT").ToString()
+                'newRow("MAKTX") = row("MAKTX").ToString()
+                'newRow("NAME1") = row("NAME1").ToString()
+                'newRow("IDNLF") = row("IDNLF").ToString()
+                'newRow("RELIF") = row("RELIF").ToString()
+                'newRow("ESOKZ") = row("ESOKZ").ToString()
+                'newRow("KBETR") = row("KBETR").ToString().ToDouble(0)
+                'newRow("KONWA") = row("KONWA").ToString()
+                'newRow("KPEIN") = row("KPEIN").ToString().ToInt(0)
+                'newRow("BPRME") = row("BPRME").ToString()
+                'newRow("MEINS") = row("MEINS").ToString()
+                'newRow("UMRECH") = row("UMRECH").ToString().ToInt(0)
+                'newRow("MINBM") = row("MINBM").ToString().ToInt(0)
+                'newRow("MINBW") = row("MINBW").ToString().ToDouble(0)
                 mBestellungen.Rows.Add(newRow)
                 Return True
             End If
@@ -275,15 +318,13 @@ Public Class Bestellung
     Public Sub sendOrderToSAPERP()
         ClearErrorState()
 
-        mBestellnummer = ""
-
         Try
             S.AP.Init("Z_FIL_PO_CREATE_001")
 
             Dim tblSAP As DataTable = S.AP.GetImportTable("GT_WEB")
 
             'mit select filter, da sonst auch deleted rows mitgenommen werden, die dann auf einen fehler laufen JJU20090511
-            For Each tmprow As DataRow In Bestellungen.Select("", "", DataViewRowState.CurrentRows)
+            For Each tmprow As DataRow In mBestellungen.Select("", "", DataViewRowState.CurrentRows)
                 Dim newRow As DataRow = tblSAP.NewRow()
                 newRow.ItemArray = tmprow.ItemArray
                 tblSAP.Rows.Add(newRow)
@@ -291,13 +332,11 @@ Public Class Bestellung
 
             S.AP.Execute()
 
-            If S.AP.ResultCode = 0 Then
-                mBestellnummer = S.AP.GetExportParameter("E_BANFN")
-            Else
+            If S.AP.ResultCode <> 0 Then
                 RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
-            Bestellungen.Rows.Clear()
+            mBestellungen.Rows.Clear()
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
