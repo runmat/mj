@@ -10,7 +10,7 @@ namespace CkgDomainLogic.AppUserOverview.Models
         /// <summary>
         /// Default value = Nur aktive anzeigen ("Active")
         /// </summary>
-        [LocalizedDisplay("Nur aktive")]    //[LocalizedDisplay(LocalizeConstants.VIN17)]
+        [LocalizedDisplay(LocalizeConstants.ActiveOnly)] 
         public string ShowActiveOnly { get { return PropertyCacheGet(() => "Active"); } set { PropertyCacheSet(value); } }  
 
         /// <summary>
@@ -21,8 +21,8 @@ namespace CkgDomainLogic.AppUserOverview.Models
             get
             {
                 return string.Format("{0},{1};{2},{3}",
-                    "Active", "Ja",    // Localize.VehiclesAll,
-                    "All", "Nein");    // Localize.VehiclesOnlyWithoutFirstRegistration);
+                    "Active", Localize.Yes,
+                    "All", Localize.No);
             }
         }
 

@@ -3,29 +3,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using GeneralTools.Models;
+using GeneralTools.Resources;
 
 namespace ServicesMvc.AppUserOverview.Models
 {
     public class AppUserOverviewResults
     {
 
-        [LocalizedDisplay("Anwendungsname 1")]      //[LocalizedDisplay(LocalizeConstants.ContractNo)]
+        [LocalizedDisplay(LocalizeConstants.Applicationname1)]      
         public string AppName { get; set; }
 
-        [LocalizedDisplay("Anwendungsname 2")]
+        [LocalizedDisplay(LocalizeConstants.Applicationname2)]
         public string AppFriendlyName { get; set; }
 
-        [LocalizedDisplay("Kunde")]
+        [LocalizedDisplay(LocalizeConstants.Url)]
+        public string AppUrl { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Customer)]
         public string Customername { get; set; }
 
-        [LocalizedDisplay("Gruppe")]
+        [LocalizedDisplay(LocalizeConstants.Group)]
         public string GroupName { get; set; }
 
-        [LocalizedDisplay("Benutzeranzahl")]
-        public int WebUserCount { get; set; }
+        [LocalizedDisplay(LocalizeConstants.UserCount)]
+        public int WebUserCount { get; set; }              
 
-        [LocalizedDisplay("Benutzer aktiv")]
-        public string HasActiveWebUsers { get; set; }
+        [LocalizedDisplay(LocalizeConstants.UserActive)]
+        public string HasActiveWebUsers { get; set; }      
 
     }
 }

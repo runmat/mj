@@ -22,7 +22,8 @@ namespace CkgDomainLogic.AppUserOverview.Services
 
             using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], logonContext.UserName))
             {
-                const string sql = "SELECT AppID, CustomerID, AppName, AppFriendlyName, Customername, GroupName, WebUserCount, HasActiveWebUsers FROM vwAppUserOverview;";
+                // const string sql = "SELECT AppID, CustomerID, AppName, AppFriendlyName, Customername, GroupName, WebUserCount, HasActiveWebUsers FROM vwAppUserOverview;";
+                const string sql = "SELECT AppID, CustomerID, AppName, AppFriendlyName, AppUrl, Customername, GroupName, WebUserCount, HasActiveWebUsers FROM vwAppUserOverview;";  // MaihoferM Weitere Spalte "AppUrl" eingebunden
 
                 appUserOverviewList = dbContext.Database.SqlQuery<AppUserOverviewResults>(sql).ToListOrEmptyList();
 
