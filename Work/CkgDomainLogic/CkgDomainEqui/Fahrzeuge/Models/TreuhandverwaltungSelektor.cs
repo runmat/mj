@@ -14,19 +14,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public enum ReportType { AG, TG, Services }
 
-    public enum SperrAktion { Freigeben, Sperren, Entsperren } 
+    public enum SperrAktion { Freigeben = 0, Sperren = 1, Entsperren = 2 } 
 
     public class TreuhandverwaltungSelektor : Store 
     {
-        public SperrAktion Sperraktion { get; set; }
-
         public ReportType Reporttype { get; set; }
-
-        public bool HasAction { get; set; }
-
-        public bool IsActionShowGesperrte { get; set; }
-
-        public bool IsActionFreigeben { get; set; }
 
         public string TGNummer { get { return Kundenkennung.IsNotNullOrEmpty() ? GetKunde(Kundenkennung).TGNummer : "" ; } }
 
@@ -34,11 +26,66 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         public Treuhandberechtigung Treuhandberechtigung { get; set; }
 
+        public bool HatBerechtigungen
+        {
+            get
+            {
+                if (Treuhandberechtigung == null)
+                    return false;
+
+                return (Treuhandberechtigung.Freigeben || Treuhandberechtigung.Sperren || Treuhandberechtigung.Entsperren);
+            }
+        }
+
         public List<TreuhandverwaltungCsvUpload> UploadItems { get; set; }
       
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string Kundenkennung { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Aktion { get; set; }
+
+        public string Aktionen
+        {
+            get
+            {
+                var liste = new List<string>();
+
+                if (Treuhandberechtigung.Freigeben)
+                    liste.Add(string.Format("0,{0}", Localize.Approve));
+
+                if (Treuhandberechtigung.Sperren)
+                    liste.Add(string.Format("1,{0}", Localize.Lock));
+
+                if (Treuhandberechtigung.Entsperren)
+                    liste.Add(string.Format("2,{0}", Localize.Unlock));
+
+                return string.Join(";", liste);
+            }
+        }
+
+        public SperrAktion Sperraktion
+        {
+            get
+            {
+                switch (Aktion)
+                {
+                    case "0":
+                        return SperrAktion.Freigeben;
+                    case "1":
+                        return SperrAktion.Sperren;
+                    case "2":
+                        return SperrAktion.Entsperren;
+                    default:
+                        return SperrAktion.Freigeben;
+                }
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.Processes)]
+        public string Selektion { get; set; }
+
+        public static string Selektionen { get { return string.Format("G,{0};A,{1}", Localize.Disabled, Localize.Refused); } } 
        
         #region Report filter
 
@@ -53,129 +100,50 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         #endregion
 
-        public string Berechtigung { get; set; }
-       
-        public string Treuhandberechtigungen { get { return MapBerechtigungen(); } }
-
-        public string Akion { get; set; }
-
-        public string Akionen { get { return string.Format("gesperrte,{0};abgelehnte,{1}", Localize.Disabled, Localize.Refused); } } 
-
-        string MapBerechtigungen()
-        {
-            SperrAktion result; // aus dem View via PB
-            Enum.TryParse(Berechtigung, out result);
-            Sperraktion = result;
-
-            HasAction = false;
-            
-            string ret = String.Empty;
-
-            if(Treuhandberechtigung != null)
-            {
-                if (!String.IsNullOrEmpty(Treuhandberechtigung.Freigeben))
-                {
-                    ret = "0,Freigeben";
-                    HasAction = true;
-                    Akion = "gesperrte";
-                }
-                if (!String.IsNullOrEmpty(Treuhandberechtigung.Sperren))
-                {
-                    ret = ret.IsNotNullOrEmpty() ? ret + ";" : "";
-                    ret += "1,Sperren";                   
-                }
-                if (!String.IsNullOrEmpty(Treuhandberechtigung.Entsperren))
-                {
-                    ret = ret.IsNotNullOrEmpty() ? ret + ";" : "";
-                    ret += "2,Entsperren";                    
-                }
-
-                if (Berechtigung.IsNullOrEmpty())
-                {
-                    if (ret.Contains("0"))
-                        Berechtigung = "0";
-                    else if (ret.Contains("1"))
-                        Berechtigung = "1";
-                    else if (ret.Contains("2"))
-                        Berechtigung = "2";
-                }
-            }           
-            return ret;
-        }
-
         TreuhandKunde GetKunde(string kundennummer)
         {
-            var kunden = GetViewModel().TreuhandKunden;           
-            return kunden.Where(x => x.AGNummer == kundennummer).FirstOrDefault();
+            var kunden = GetViewModel().TreuhandKunden;
+            return kunden.FirstOrDefault(x => (x.Selection == "TG" && x.AGNummer == kundennummer) || (x.Selection == "AG" && x.TGNummer == kundennummer));
         }
-
 
         #region Customer data
 
-        public bool GetAGViewServicesMode
-        {
-            get
-            {
-                var kunden = GetViewModel().TreuhandKunden.Where(x => x.IsServicesAGMapping);
-                return (kunden.Count() > 0); 
-            }
-
-        
-        }
-
-        public static List<SelectItem> TreuhandGeber
+        public static List<SelectItem> TreuhandKunden
         {
             get
             {
                 var kunden = GetViewModel().TreuhandKunden;
-                return kunden.ConvertAll(new Converter<TreuhandKunde, SelectItem>(Wrap));
+                return kunden.ConvertAll(Wrap);
             }
         }
 
-        public static List<SelectItem> Auftraggeber
+        public static List<SelectItem> TreuhandKundenAlle
         {
             get
             {
-                var kunden = GetViewModel().Auftraggeber;
-                return kunden.ConvertAll(new Converter<TreuhandKunde, SelectItem>(Wrap));
+                return TreuhandKunden.Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionAll) }).OrderBy(x => x.Key).ToList();
             }
         }
 
-        public static List<SelectItem> AuftraggeberAlle
+        public static List<SelectItem> TreuhandKundenEmpty
         {
             get
             {
-                return Auftraggeber.Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionAll) }).OrderBy(x => x.Key).ToList();            
-            }
-        }
-      
-        public static List<SelectItem> TreuhandGeberAlle
-        {
-            get
-            {                
-                return TreuhandGeber.Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionAll) }).OrderBy(x => x.Key).ToList();
-            }
-        }
-
-        public static List<SelectItem> TreuhandGeberEmpty
-        {
-            get
-            {
-                return TreuhandGeber.Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose) }).OrderBy(x => x.Key).ToList();
+                return TreuhandKunden.Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose) }).OrderBy(x => x.Key).ToList();
             }
         }
 
         private static SelectItem Wrap(TreuhandKunde treuhandkunde)
-        {            
-            return new SelectItem(treuhandkunde.AGNummer, treuhandkunde.AGName);
+        {
+            return new SelectItem(
+                (treuhandkunde.Selection == "TG" ? treuhandkunde.AGNummer : treuhandkunde.TGNummer),
+                (treuhandkunde.Selection == "TG" ? treuhandkunde.AGName : treuhandkunde.TGName)
+            );
         }
-
-      
 
         #endregion
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<TreuhandverwaltungViewModel> GetViewModel { get; set; }
-
     }
 }
