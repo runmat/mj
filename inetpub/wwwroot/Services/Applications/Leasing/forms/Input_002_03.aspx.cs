@@ -364,14 +364,17 @@ namespace Leasing.forms
 
         protected void sendMail(ref String status)
         {
-            System.Net.Mail.MailMessage mail;
-            String strMailAdresse;
-            String strMailBody;
             status = "";
             try
             {
-                strMailAdresse = ConfigurationManager.AppSettings["SmtpMailAddress"];
-                strMailBody = "Benutzername: " + m_User.UserName + "\r\n";
+                String strMailAdresse = Common.GetGeneralConfigValue("SicherungsscheinKlaerfaelle", "MailEmpfaenger");
+                if (String.IsNullOrEmpty(strMailAdresse))
+                {
+                    // Fallback, falls keine Einstellung gepflegt
+                    strMailAdresse = ConfigurationManager.AppSettings["SmtpMailAddress"];
+                }
+
+                String strMailBody = "Benutzername: " + m_User.UserName + "\r\n";
 
                 strMailBody += "LV-Nr.: " + lblLVNr.Text + "\r\n";
                 strMailBody += "LV beendet zum: " + txtDatum.Text + "\r\n";
@@ -419,7 +422,7 @@ namespace Leasing.forms
 
                 strMailBody += "Sonstiges: " + txtBemerkung.Text + "\r\n";
 
-                mail = new System.Net.Mail.MailMessage(ConfigurationManager.AppSettings["SmtpMailSender"], strMailAdresse,  //
+                System.Net.Mail.MailMessage mail = new System.Net.Mail.MailMessage(ConfigurationManager.AppSettings["SmtpMailSender"], strMailAdresse,  //
                                                     "Klärfallmail Leaseplan", strMailBody);
 
                 System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient(ConfigurationManager.AppSettings["SmtpMailServer"]);
