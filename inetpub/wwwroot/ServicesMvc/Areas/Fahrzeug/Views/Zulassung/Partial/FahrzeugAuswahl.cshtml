@@ -2,6 +2,8 @@
 @using CkgDomainLogic.Fahrzeuge.Models
 @{ var gridName = "GridFahrzeugAuswahl"; }
 
+@Html.SpanAlert("MessageFahrzeugAuswahl")
+
 @Html.Partial("Partial/FahrzeugAuswahlPresets")
 
 <h4>
@@ -10,8 +12,6 @@
         <i class="icon-check"></i><span class="padding-left-5 bold"></span>
     </span>
 </h4> 
-
-@Html.SpanAlert("Message")
 
 @(Html.Telerik()
     .Grid<Fahrzeug>()

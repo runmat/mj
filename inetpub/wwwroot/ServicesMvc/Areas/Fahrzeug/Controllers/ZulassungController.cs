@@ -82,9 +82,9 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public JsonResult OnChangePresetValues(string type, string value)
         {
-            ViewModel.OnChangePresetValues(type, value);
+            var errorMessage = ViewModel.OnChangePresetValues(type, ref value);
 
-            return Json(new { });
+            return Json(new { value, errorMessage });
         }
 
         #endregion    

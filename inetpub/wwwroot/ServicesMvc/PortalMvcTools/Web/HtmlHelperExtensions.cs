@@ -474,11 +474,12 @@ namespace PortalMvcTools.Web
 
         #region DropDownList
 
-        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, string columnModeAsText)
+        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
         {
             var model = new FormControlModel
             {
-                ColumnMode = (FormMultiColumnMode)Enum.Parse(typeof(FormMultiColumnMode), columnModeAsText.ToLowerFirstUpper())
+                PostControlHtml = controlHtml == null ? null : controlHtml.Invoke(null),
+                ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);

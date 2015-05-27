@@ -1,7 +1,8 @@
 ﻿<style type="text/css">
     
     span.reqired-fields {
-        font-size: 0.8em !important;
+        margin-left: -90px !important;
+        white-space: nowrap !important;
     }
     
     div.presets-and-filter {
@@ -23,6 +24,7 @@
     var ladeHinweis = '@Localize.LoadingData';
     var _modelIsValid = false;
     var _selectedItemsCount = 0;
+    var _validationError = false;
 
     function FormPreparePrivate() {
 
@@ -204,6 +206,9 @@
                 data: { value: $('#SelectedZulassungsDatum').val(), type: "SelectedZulassungsDatum" },
                 loadingShow: false,
                 success: function (result) {
+                    _validationError = (result.errorMessage != "");
+                    if (_validationError)
+                        SpanAlertError("MessageFahrzeugAuswahl", result.errorMessage, 2500);
                     ShowHideNextButton();
                 }
             });
@@ -251,7 +256,7 @@
         var nextButtonValid = 
             $('#SelectedZulassungsDatum').val() != '' && $('#SelectedZulassungsDatum').val() != null && 
             $('#SelectedKennzeichenSerie').val() != '-' && 
-            _selectedItemsCount > 0;
+            _selectedItemsCount > 0 && !_validationError;
 
         FormWizard.ActionsShow(nextButtonValid);
     }

@@ -190,26 +190,57 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 case "SelectedPdi":
                     SelectedPdi = value;
                     break;
+
                 case "SelectedModel":
                     SelectedModel = value;
                     break;
+
                 case "SelectedModelId":
                     SelectedModelId = value;
                     break;
             }
         }
 
-        public void OnChangePresetValues(string type, string value)
+        public string OnChangePresetValues(string type, ref string value)
         {
+            var errorMessage = "";
+
             switch (type)
             {
                 case "SelectedZulassungsDatum":
-                    SelectedZulassungsDatum = DateTime.ParseExact(value, "dd.MM.yyyy", CultureInfo.CurrentCulture);
+                    var zulassungsDatum = DateTime.ParseExact(value, "dd.MM.yyyy", CultureInfo.CurrentCulture);
+                    errorMessage = CheckZulassungsDatum(zulassungsDatum);
+
+                    SelectedZulassungsDatum = (errorMessage.IsNotNullOrEmpty() ? null : (DateTime?)zulassungsDatum);
+
+                    value = SelectedZulassungsDatum.ToString("dd.MM.yyyy");
                     break;
+
                 case "SelectedKennzeichenSerie":
                     SelectedKennzeichenSerie = value;
                     break;
             }
+
+            return errorMessage;
+        }
+
+        static string CheckZulassungsDatum(DateTime datum)
+        {
+            var errorMessage = "";
+
+            if (datum < DateTime.Today)
+                errorMessage = "Bitte geben Sie für das Zulassungsdatum ein Datum ab heute an";
+            else
+                if (datum.DayOfWeek == DayOfWeek.Sunday || datum.DayOfWeek == DayOfWeek.Saturday)
+                    errorMessage = "Bitte vermeiden Sie Wochenenden für das Zulassungsdatum ";
+            else
+            {
+                var feiertag = DateService.GetFeiertag(datum);
+                if (feiertag != null)
+                    errorMessage = string.Format("Der {0} ist ein Feiertag, '{1}'. Bitte vermeiden Sie Feiertage für das Zulassungsdatum.", datum.ToString("dd.MM.yy"), feiertag.Name);
+            }
+
+            return errorMessage;
         }
     }
 }
