@@ -235,6 +235,13 @@
     <Compile Include="forms\Change17.aspx.designer.cs">
       <DependentUpon>Change17.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\Change18.aspx.cs">
+      <DependentUpon>Change18.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change18.aspx.designer.cs">
+      <DependentUpon>Change18.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\Report23.aspx.cs">
       <DependentUpon>Report23.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -464,6 +471,7 @@
     <Compile Include="lib\HistorieUebersicht.cs" />
     <Compile Include="lib\UebergabeTUEV.cs" />
     <Compile Include="lib\Reifenversand.cs" />
+    <Compile Include="lib\Rechnungsdaten.cs" />
     <Compile Include="lib\Schadensgutachten.cs" />
     <Compile Include="lib\UeberfHaltedauer.cs" />
     <Compile Include="lib\Mahnungen.cs" />
@@ -539,6 +547,8 @@
     <Content Include="forms\InfoReifenversand.htm" />
     <Content Include="forms\InfoUebergabeTUEV.htm" />
     <Content Include="forms\Change17.aspx" />
+    <Content Include="forms\InfoRechnungsdaten.htm" />
+    <Content Include="forms\Change18.aspx" />
     <Content Include="forms\Report23.aspx" />
     <Content Include="forms\Report01.aspx" />
     <Content Include="forms\Report01_2.aspx" />
