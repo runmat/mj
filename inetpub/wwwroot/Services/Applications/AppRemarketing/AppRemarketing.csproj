@@ -221,6 +221,20 @@
     <Compile Include="forms\Change15.aspx.designer.cs">
       <DependentUpon>Change15.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\Change16.aspx.cs">
+      <DependentUpon>Change16.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change16.aspx.designer.cs">
+      <DependentUpon>Change16.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="forms\Change17.aspx.cs">
+      <DependentUpon>Change17.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\Change17.aspx.designer.cs">
+      <DependentUpon>Change17.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\Report23.aspx.cs">
       <DependentUpon>Report23.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -448,6 +462,8 @@
     <Compile Include="lib\HistorieEintrag.cs" />
     <Compile Include="lib\HistorieLinks.cs" />
     <Compile Include="lib\HistorieUebersicht.cs" />
+    <Compile Include="lib\UebergabeTUEV.cs" />
+    <Compile Include="lib\Reifenversand.cs" />
     <Compile Include="lib\Schadensgutachten.cs" />
     <Compile Include="lib\UeberfHaltedauer.cs" />
     <Compile Include="lib\Mahnungen.cs" />
@@ -519,6 +535,10 @@
     <Content Include="forms\InfoUpload3.htm" />
     <Content Include="forms\InfoHC.htm" />
     <Content Include="forms\Change15.aspx" />
+    <Content Include="forms\Change16.aspx" />
+    <Content Include="forms\InfoReifenversand.htm" />
+    <Content Include="forms\InfoUebergabeTUEV.htm" />
+    <Content Include="forms\Change17.aspx" />
     <Content Include="forms\Report23.aspx" />
     <Content Include="forms\Report01.aspx" />
     <Content Include="forms\Report01_2.aspx" />
