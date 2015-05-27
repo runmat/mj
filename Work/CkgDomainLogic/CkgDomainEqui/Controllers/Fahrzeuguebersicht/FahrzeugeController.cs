@@ -76,6 +76,15 @@ namespace ServicesMvc.Controllers
 
         #region Excel Upload
 
+
+        public FileResult DownloadExcelFilterTemplate()
+        {
+            var pfad = System.IO.Path.Combine(Server.MapPath(Url.Content("~/Documents/Templates/")), FahrzeuguebersichtViewModel.ExcelTemplateFileName);
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, FahrzeuguebersichtViewModel.ExcelTemplateFileName);
+        }
+
+
+
        
         [HttpPost]
         public ActionResult ExcelUploadFahrzeuguebersichtStart(IEnumerable<HttpPostedFileBase> uploadFiles)

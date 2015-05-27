@@ -215,6 +215,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
 
+        #region Excel Upload
+
+        public string ExcelTemplateFileName
+        {
+            get { return "UploadFzgUebersichtFilter.xls"; }
+        }
+
         public List<Fahrzeuguebersicht> UploadItems { get; private set; }
 
         public string CsvUploadFileName { get; private set; }
@@ -259,7 +266,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return item;
         }
 
+        #endregion
+
     }
+
 
     class KeyEqualityComparer<T> : IEqualityComparer<T>
     {

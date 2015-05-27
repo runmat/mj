@@ -2534,6 +2534,7 @@
     </Content>
     <None Include="Documents\Templates\UploadBriefversand.csv" />
     <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
+    <Content Include="Documents\Templates\UploadFzgUebersichtFilter.xls" />
     <None Include="Documents\Templates\UploadSchluesselversand.csv" />
     <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
     <None Include="Images\fahrer\fahrer.psd" />
