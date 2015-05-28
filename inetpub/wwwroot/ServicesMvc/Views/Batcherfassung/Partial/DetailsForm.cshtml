@@ -25,7 +25,7 @@
             @Html.HiddenFor(m => m.ID)
             @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
         }                         
-        @Html.FormDropDownListFor(m => m.ModellId, Model.ModelList, new { @class = "m-wrap large", col = "right", @onchange = "return TryLoadDataByModelId(this)" })
+        @Html.FormDropDownListFor(m => m.ModellId, Model.ModelList, new { @class = "m-wrap X-large", col = "right", @onchange = "return TryLoadDataByModelId(this)" })
         
         @Html.FormTextBoxFor(m => m.Modellbezeichnung, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap ", col = "right" })

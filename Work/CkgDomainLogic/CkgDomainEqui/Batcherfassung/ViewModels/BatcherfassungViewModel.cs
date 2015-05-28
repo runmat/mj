@@ -105,7 +105,11 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             get
             {
-                return ModelHersteller.Select(model => new SelectItem(model.ModelID, model.ModelID + " " + model.HerstellerName + " " + model.Modellbezeichnung)).ToList();
+                return ModelHersteller.Select(model => new SelectItem(model.ModelID, model.ModelID + " " + model.HerstellerName + " " + model.Modellbezeichnung)).ToList()
+                     .Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose )})
+                                .OrderBy(s => s.Key)
+                                    .ToListOrEmptyList();
+
             }
         }
 
