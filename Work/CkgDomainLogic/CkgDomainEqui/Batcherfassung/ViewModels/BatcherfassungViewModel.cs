@@ -244,13 +244,10 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             if (item.Unitnummern.IsNotNullOrEmpty())
             {
-                string items = item.Unitnummern.Replace("\"", "");
-                var unitnummerList = new List<FzgUnitnummer>();
-                string[] lines = items.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+                var items = item.Unitnummern.Replace("\"", "");
+                var lines = items.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
 
-                foreach (var line in lines)
-                    unitnummerList.Add(new FzgUnitnummer() { Unitnummer = line });
-                return unitnummerList;
+                return lines.Where(x => x.IsNotNullOrEmpty()).Select(line => new FzgUnitnummer() {Unitnummer = line}).ToList();
             }
             else
                 return null;

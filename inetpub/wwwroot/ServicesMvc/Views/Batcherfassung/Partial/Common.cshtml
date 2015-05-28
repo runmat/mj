@@ -316,15 +316,14 @@
                 url: "CalculateUnitNumbers",
                 data: { unitnumberFrom: unitnumberFrom, unitnumberUntil: unitnumberUntil, count: count },
                 loadingShow: true,
-                success: function (result) {
-                    // $("#divBatcherfassungDetailsForm").html(result);
+                success: function (result) {                    
                     if (result.ValidationError != '') {
                         alert(result.ValidationError);
-                        $("#ValidationError").html(result.ValidationError);
-                        $("#divValidationError").remmoveClass('hide');
+                        //$("#ValidationError").html(result.ValidationError);
+                        //$("#divValidationError").remmoveClass('hide');
                     }
                     else {
-                        $("#divValidationError").addClass('hide');
+                        //$("#divValidationError").addClass('hide');
                         $("#Unitnummern").html(result.Unitnummern);
                     }
                 }
