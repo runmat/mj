@@ -37,7 +37,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         [LocalizedDisplay(LocalizeConstants.VehiclesBlocked)]
         public int AnzahlGesperrte {
-            get { return StatusEinsteuerungsFiltered.Count(s => s.Gesperrt); }
+            get { return StatusEinsteuerungsFiltered.Count(s => s.Gesperrt == 1); }
         }
 
         public void Init()

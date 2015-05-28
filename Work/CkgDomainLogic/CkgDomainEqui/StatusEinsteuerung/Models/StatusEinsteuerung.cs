@@ -68,6 +68,6 @@ namespace CkgDomainLogic.FzgModelle.Models
         public int OhneUnitnummer { get; set; }
       
         [LocalizedDisplay(LocalizeConstants.Blocked)]
-        public bool Gesperrt { get; set; }        
+        public int Gesperrt { get; set; }        
     }
 }

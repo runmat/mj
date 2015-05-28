@@ -40,7 +40,13 @@
             columns.XBound(c => c.OhneUnitnummer).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
               .ClientGroupFooterTemplate(gridGroupFooterTemplate);
-            columns.XBound(c => c.Gesperrt); 
+
+            columns.XBound(c => c.Gesperrt).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            
+            
+            //columns.XBound(c => c.Gesperrt); 
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
