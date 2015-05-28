@@ -174,6 +174,8 @@
                                         <tr class="formquery">
                                             <td class="firstLeft active" colspan="3">
                                                 &nbsp;
+                                                <asp:HiddenField runat="server" ID="hfBankleitzahl"/>
+                                                <asp:HiddenField runat="server" ID="hfKontonummer"/>
                                             </td>
                                         </tr>
                                     </table>
