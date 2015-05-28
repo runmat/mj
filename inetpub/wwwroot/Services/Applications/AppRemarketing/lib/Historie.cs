@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using CKG.Base.Kernel;
 using CKG.Base.Business;
 using CKG.Base.Common;
 using System.Data;
 
 namespace AppRemarketing.lib
 {
-    public class Historie : CKG.Base.Business.DatenimportBase
+    public class Historie : DatenimportBase
     {
         #region "Declarations"
 
@@ -19,6 +17,7 @@ namespace AppRemarketing.lib
         #endregion
 
         #region "Properties"
+
         public String Fahrgestellnummer
         {
             get { return m_Fahrgestellnummer; }
@@ -47,8 +46,6 @@ namespace AppRemarketing.lib
         public Historie(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
             : base(ref objUser, objApp, strFilename)
         {
-
-
         }
 
         public void GetHistData(String strAppID, String strSessionID, System.Web.UI.Page page)
@@ -99,10 +96,13 @@ namespace AppRemarketing.lib
                 var rechngRow = rechng.Rows.Cast<DataRow>().FirstOrDefault(r => ((string)r["Status"]) == "Rechnung");
 
                 Links = new HistorieLinks(
+                        strAppID,
+                        m_objUser.Customer.CustomerId,
                         fahrgestellNr,
                         Gutachten.Rows.Cast<DataRow>().Select(r => r["GUTA"].ToString()).ToArray(), 
-                        rechngRow!=null?rechngRow["RENNR"].ToString():string.Empty,
-                        belas.Rows.Count>0);
+                        rechngRow != null ? rechngRow["RENNR"].ToString() : string.Empty,
+                        belas.Rows.Count > 0,
+                        Belastungsanzeige != null ? Belastungsanzeige.Date : null);
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }

@@ -3,18 +3,26 @@ using System.Linq;
 using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Text;
+using GeneralTools.Services;
 
 namespace AppRemarketing.lib
 {
     public class HistorieLinks
     {
-        public HistorieLinks(string fahrgestellNr, string[] gutas, string rechnungsNr, bool hasBelastungsanzeige)
+        private string _appId;
+        private int _customerId;
+        private DateTime? _datumBelastungsanzeige;
+
+        public HistorieLinks(string appId, int customerId, string fahrgestellNr, string[] gutas, string rechnungsNr, bool hasBelastungsanzeige, DateTime? datumBelastungsanzeige)
         {
+            _appId = appId;
+            _customerId = customerId;
             FahrgestellNr = fahrgestellNr;
             HasTuevGutachten = gutas != null && gutas.Any(guta => guta == "TUEV");
             RechnungsNr = rechnungsNr;
             HasRechnung = !string.IsNullOrEmpty(rechnungsNr);
             HasBelastungsanzeige = hasBelastungsanzeige;
+            _datumBelastungsanzeige = datumBelastungsanzeige;
         }
 
         public string FahrgestellNr { get; private set; }
@@ -29,6 +37,18 @@ namespace AppRemarketing.lib
         {
             if (!HasBelastungsanzeige) return;
 
+            var lagerort = ApplicationConfiguration.GetApplicationConfigValue("ArchivBelastungsanzeigenLagerort", _appId, _customerId);
+            if (String.IsNullOrEmpty(lagerort))
+                return;
+
+            var archiv = ApplicationConfiguration.GetApplicationConfigValue("ArchivBelastungsanzeigenName", _appId, _customerId);
+            if (String.IsNullOrEmpty(archiv))
+                return;
+
+            var mitJahr = ApplicationConfiguration.GetApplicationConfigValue("ArchivBelastungsanzeigenMitJahr", _appId, _customerId);
+            if (String.Compare(mitJahr, "true", true) == 0 && _datumBelastungsanzeige.HasValue)
+                archiv += _datumBelastungsanzeige.Value.ToString("yy");
+
             QuickEasy.Documents qe = new QuickEasy.Documents(".1001=" + FahrgestellNr,
                    ConfigurationManager.AppSettings["EasyRemoteHosts"].ToString(),
                    60, ConfigurationManager.AppSettings["EasySessionId"],
@@ -37,8 +57,8 @@ namespace AppRemarketing.lib
                    "SYSTEM",
                    ConfigurationManager.AppSettings["EasyPwdClear"].ToString(),
                    "C:\\TEMP",
-                   "VWR",
-                   "VWR",
+                   lagerort,
+                   archiv,
                    "SGW");
 
             qe.GetDocument();
@@ -62,12 +82,17 @@ namespace AppRemarketing.lib
 
         public void OpenSchadensgutachten(Literal destLiteral, System.Web.UI.Page page)
         {
-            string archivname = "VWRSG";
+            var lagerort = ApplicationConfiguration.GetApplicationConfigValue("ArchivSchadensgutachtenLagerort", _appId, _customerId);
+            if (String.IsNullOrEmpty(lagerort))
+                return;
 
-            if (UploaddatumSchadensgutachten.Length == 10)
-            {
-                archivname += UploaddatumSchadensgutachten.Substring(8, 2);
-            }
+            var archiv = ApplicationConfiguration.GetApplicationConfigValue("ArchivSchadensgutachtenName", _appId, _customerId);
+            if (String.IsNullOrEmpty(archiv))
+                return;
+
+            var mitJahr = ApplicationConfiguration.GetApplicationConfigValue("ArchivSchadensgutachtenMitJahr", _appId, _customerId);
+            if (String.Compare(mitJahr, "true", true) == 0 && UploaddatumSchadensgutachten.Length == 10)
+                archiv += UploaddatumSchadensgutachten.Substring(8, 2);
 
             QuickEasy.Documents qe = new QuickEasy.Documents(".1001=" + FahrgestellNr,
                    ConfigurationManager.AppSettings["EasyRemoteHosts"].ToString(),
@@ -77,8 +102,8 @@ namespace AppRemarketing.lib
                    "SYSTEM",
                    ConfigurationManager.AppSettings["EasyPwdClear"].ToString(),
                    "C:\\TEMP",
-                   "VWR",
-                   archivname,
+                   lagerort,
+                   archiv,
                    "SGW");
 
             qe.GetDocument();
@@ -107,6 +132,14 @@ namespace AppRemarketing.lib
             var rechnungsnummer = RechnungsNr;
             var status = "S";
 
+            var lagerort = ApplicationConfiguration.GetApplicationConfigValue("ArchivRechnungenLagerort", _appId, _customerId);
+            if (String.IsNullOrEmpty(lagerort))
+                return;
+
+            var archiv = ApplicationConfiguration.GetApplicationConfigValue("ArchivRechnungenName", _appId, _customerId);
+            if (String.IsNullOrEmpty(archiv))
+                return;
+
             QuickEasy.Documents qe = new QuickEasy.Documents(".1001=" + status + "&.1003=" + rechnungsnummer,
             ConfigurationManager.AppSettings["EasyRemoteHosts"],
             60, ConfigurationManager.AppSettings["EasySessionId"],
@@ -115,8 +148,8 @@ namespace AppRemarketing.lib
             "SYSTEM",
             ConfigurationManager.AppSettings["EasyPwdClear"],
             "C:\\TEMP",
-            "VWR",
-            "VWRRG",
+            lagerort,
+            archiv,
             "SGW");
 
             qe.GetDocument();
@@ -140,8 +173,15 @@ namespace AppRemarketing.lib
 
         public string TuevGutachtenUrl
         {
-            get { return "http://vw-ruecknahme.autoplus-portal.de/getDADFile?fin=" + FahrgestellNr; }
-        }
-      
+            get
+            {
+                var link = ApplicationConfiguration.GetApplicationConfigValue("TuevGutachtenUrl", _appId, _customerId);
+
+                if (String.IsNullOrEmpty(link))
+                    return "";
+
+                return String.Format("{0}{1}", link, FahrgestellNr);
+            }
+        }  
     }
 }
