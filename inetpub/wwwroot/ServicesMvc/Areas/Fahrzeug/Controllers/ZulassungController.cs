@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
-using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
@@ -141,21 +139,14 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
         public FileContentResult SummaryAsPdf()
         {
-            var header = GetFahrzeugSummaryHeader();
-            header = header.Replace("</span>", " - ");
-            header = header.ReplaceHtmlTags();
-
-            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ViewModel.CreateSummaryModel(header));
+            var header = this.RenderPartialViewToString("Partial/Summary/SummaryPdfBody", ViewModel.CreateSummaryTitle());
+            var footer = this.RenderPartialViewToString("Partial/Summary/SummaryPdfBody", ViewModel.CreateSummaryOverview());
+            var summaryHtml = this.RenderPartialViewToString("Partial/Summary/SummaryPdf", ViewModel.CreateSummaryDetails(header, footer));
 
             var logoPath = AppSettings.LogoPath.IsNotNullOrEmpty() ? Server.MapPath(AppSettings.LogoPath) : "";
             var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml, logoPath, AppSettings.LogoPdfPosX, AppSettings.LogoPdfPosY);
 
             return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = "Uebersicht.pdf" };
-        }
-
-        string GetFahrzeugSummaryHeader()
-        {
-            return this.RenderPartialViewToString("Partial/GridFahrzeugSummaryHeader", ViewModel);
         }
 
         [HttpPost]

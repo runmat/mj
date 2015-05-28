@@ -314,7 +314,8 @@ namespace CkgDomainLogic.Equi.ViewModels
                     Body = string.Format("{0}<br/>{1} (#{2})<br/>{3}",
                                          DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
                                          LogonContext.UserName,
-                                         LogonContext.Customer.Customername, LogonContext.KundenNr)
+                                         LogonContext.KundenNr,
+                                         LogonContext.Customer.Customername)
                 };
             }
         }

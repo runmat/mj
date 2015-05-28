@@ -374,7 +374,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     {
                         business.InternalID = sap.QMNUM;
 
+                        business.EquiNummer = sap.EQUNR;
                         business.Pdi = sap.KUNPDI;
+                        business.DadPdi = sap.DADPDI;
                         business.Fahrgestellnummer = sap.ZZFAHRG;
                         business.Zb2Nummer = sap.ZZBRIEF;
                         business.Zulassungsdatum = sap.REPLA_DATE;

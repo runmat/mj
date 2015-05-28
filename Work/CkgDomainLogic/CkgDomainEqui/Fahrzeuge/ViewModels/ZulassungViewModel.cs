@@ -85,11 +85,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
         public string SelectedKennzeichenSerie { get; set; }
 
+        bool SelectedKennzeichenSerieIsValid
+        {
+            get { return SelectedKennzeichenSerie.IsNotNullOrEmpty() && SelectedKennzeichenSerie != "-"; }
+        }
+
         [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
         public string SelectedKennzeichenSerieAsText 
         { 
             get
             {
+                if (!SelectedKennzeichenSerieIsValid)
+                    return "";
+
                 return (KennzeichenSerien.FirstOrDefault(k => k.ID == SelectedKennzeichenSerie) ?? new KennzeichenSerie()).Name;
             } 
         }
@@ -108,7 +116,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public int ZulassungenAnzahlPdiStored { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == SelectedPdi).Sum(z => z.Amount); } }
 
-        public int ZulassungenAnzahlGesamtStored { get { return SelectedZulassungsDatum == null ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == "Gesamt").Sum(z => z.Amount); } }
+        public int ZulassungenAnzahlGesamtStored { get { return SelectedZulassungsDatum == null ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi.NotNullOrEmpty().ToUpper() == "GESAMT").Sum(z => z.Amount); } }
 
         public int ZulassungenAnzahlPdiSelected { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : Fahrzeuge.Count(z => z.Pdi == SelectedPdi && z.IsSelected); } }
 
@@ -288,24 +296,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (SelectedZulassungsDatum == null)
                 return;
 
-            // ToDo: remove test code
-            //string errorMessage;
-            //ZulassungenForPdiAndDate = DataService.GetZulassungenAnzahlForPdiAndDate(SelectedZulassungsDatum.GetValueOrDefault(), out errorMessage);
-            if (SelectedZulassungsDatum == new DateTime(2015, 05, 27))
-                ZulassungenForPdiAndDate = new List<Fahrzeug>
-                {
-                    new Fahrzeug { Amount = 5, Pdi = "Gesamt", },
-                    new Fahrzeug { Amount = 3, Pdi = "PDI2", },
-                    new Fahrzeug { Amount = 2, Pdi = "PDI6", },
-                };
-            if (SelectedZulassungsDatum == new DateTime(2015, 05, 28))
-                ZulassungenForPdiAndDate = new List<Fahrzeug>
-                {
-                    new Fahrzeug { Amount = 14, Pdi = "Gesamt", },
-                    new Fahrzeug { Amount = 7, Pdi = "PDI1", },
-                    new Fahrzeug { Amount = 4, Pdi = "PDI6", },
-                    new Fahrzeug { Amount = 3, Pdi = "PDI7", },
-                };
+            string errorMessage;
+            ZulassungenForPdiAndDate = DataService.GetZulassungenAnzahlForPdiAndDate(SelectedZulassungsDatum.GetValueOrDefault(), out errorMessage);
         }
 
 
@@ -339,7 +331,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void Save()
         {
-            SaveErrorMessage = DataService.ZulassungSave(FahrzeugeSummary);
+            SaveErrorMessage = DataService
+                    .ZulassungSave(FahrzeugeSummary, SelectedZulassungsDatum.GetValueOrDefault(), SelectedKennzeichenSerieIsValid ? SelectedKennzeichenSerieAsText : "");
         }
 
         private GeneralEntity SummaryFooterUserInformation
@@ -348,61 +341,91 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {
                 return new GeneralEntity
                 {
-                    Title = "Datum, User, Kunde",
-                    Body = string.Format("{0}<br/>{1} (#{2})<br/>{3}",
+                    Body = string.Format("Datum: {0}, User: {1}, Kunde: (#{2}) {3}",
                                          DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
                                          LogonContext.UserName,
-                                         LogonContext.Customer.Customername, LogonContext.KundenNr)
+                                         LogonContext.KundenNr,
+                                         LogonContext.Customer.Customername)
                 };
             }
         }
 
-        private GeneralEntity SummaryBeauftragungsHeader
+        public GeneralSummary CreateSummaryTitle()
         {
-            get
+            var model = new GeneralSummary
             {
-                return new GeneralEntity
-                {
-                    Title = Localize.Registration,
-                    Body = Localize.Registration,
-                    Tag = "SummaryMainItem"
-                };
-            }
-        }
+                Header = Localize.YourOrder,
 
-        public GeneralSummary CreateSummaryModel(string header)
-        {
-            var summaryModel = new GeneralSummary
-            {
-                Header = header,
                 Items = new ListNotEmpty<GeneralEntity>
                     (
-                    SummaryBeauftragungsHeader,
-
-                    new GeneralEntity
-                    {
-                        Title = Localize.DispatchType,
-                        Body = "",
-                    },
-
-                    new GeneralEntity
-                    {
-                        Title = Localize.ShippingAddress,
-                        Body = "",
-                    },
-
-                    new GeneralEntity
-                    {
-                        Title = Localize.ShippingOptions,
-                        Body = "",
-                    },
-
-                    SummaryFooterUserInformation
+                        new GeneralEntity
+                        {
+                            Title = Localize.RegistrationDate,
+                            Body = SelectedZulassungsDatum.GetValueOrDefault().ToShortDateString(),
+                        },
+                        (SelectedKennzeichenSerieIsValid
+                            ? new GeneralEntity
+                                {
+                                    Title = Localize.LicenseNoSeries,
+                                    Body = SelectedKennzeichenSerieAsText,
+                                } 
+                            : null),
+                        new GeneralEntity
+                        {
+                            Title = Localize.RegistrationsTotal,
+                            Body = ZulassungenAnzahlGesamtTotal.ToString(),
+                        },
+                        new GeneralEntity
+                        {
+                            Title = Localize.RegistrationsOrderedNow,
+                            Body = ZulassungenAnzahlGesamtSelected.ToString(),
+                        }
                     )
             };
 
-            return summaryModel;
+            return model;
         }
+
+        public GeneralSummary CreateSummaryDetails(string header = null, string footer = null)
+        {
+            var model = new GeneralSummary
+            {
+                FullWidthRows = true,
+                Header = header,
+                Footer = footer,
+                Items = new List<GeneralEntity>()
+            };
+
+            var i = 0;
+            FahrzeugeSummary
+                .ForEach(f => model.Items.Add(new GeneralEntity { Body = string.Format("{0}. {1}", ++i, f.FahrzeugAsText) }));
+
+            return model;
+        }
+
+        public GeneralSummary CreateSummaryOverview()
+        {
+            var model = new GeneralSummary
+            {
+                Header = Localize.Overview,
+                FullWidthRows = true,
+                Items = new List<GeneralEntity>()
+            };
+
+            var validItems = FahrzeugeSummary.Where(f => f.IsValid);
+
+            validItems.GroupBy(f => f.ModellAsText).ToList()
+                .ForEach(m => model.Items.Add(new GeneralEntity { Body = string.Format("{0}x {1}", m.Count(), m.Key) }));
+
+            model.Items.Add(new GeneralEntity { Body = "------" });
+            model.Items.Add(new GeneralEntity { Body = string.Format("{0} Fahrzeuge gesamt", validItems.Count()) });
+
+            model.Items.Add(new GeneralEntity());
+            model.Items.Add(SummaryFooterUserInformation);
+
+            return model;
+        }
+
 
         #endregion
 

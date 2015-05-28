@@ -65,6 +65,12 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string Pdi { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
+        public string DadPdi { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
+        public string EquiNummer { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Color)]
         public string Farbe { get; set; }
 
@@ -86,5 +92,31 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.Amount)]
         public int Amount { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Model)]
+        public string ModellAsText
+        {
+            get { return string.Format("{0} / {1}",ModelID, Modell); }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.OrderID)]
+        public string AuftragsNummer { get; set; }
+
+        public string FahrzeugAsText
+        {
+            get
+            {
+                return string.Format("{0} / {1}{2}{3}{4}{5}",
+                        ModelID, Modell, Fahrgestellnummer.PrependIfNotNull(", FIN "), Zb2Nummer.PrependIfNotNull(", ZBII "),
+                        AuftragsNummer.FormatIfNotNull(", <strong>Beleg-Nr {this}</strong>"),
+                        ValidationMessage.PrependIfNotNull("<br/>")
+                    );
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.Message)]
+        public string ValidationMessage { get; set; }
+
+        public bool IsValid { get { return ValidationMessage.IsNullOrEmpty(); } }
     }
 }

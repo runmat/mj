@@ -52,8 +52,13 @@
 
     function FormPreparePrivateAjax(step) {
         FormPrepareAjax();
-        if ('FahrzeugSummary' == FormWizard.GetStepKey(step + 1)) {
+        var stepKey = FormWizard.GetStepKey(step + 1);
+        if ('FahrzeugSummary' == stepKey) {
             GridAllColumnFilterApplyToGrid("GridFahrzeugSummary");
+        }
+        if ('Receipt' == stepKey) {
+            $("#GridFahrzeugSummary .t-grouping-header").hide();
+            $("#GridFahrzeugSummary .t-grid-filter").hide();
         }
 
         $('.tooltips').tooltip();
@@ -65,10 +70,11 @@
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
-            if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step - 1)) {
+            var stepKey = FormWizard.GetStepKey(step - 1);
+            if ('FahrzeugAuswahl' == stepKey) {
                 return FahrzeugAuswahl();
             }
-            if ('FahrzeugSummary' == FormWizard.GetStepKey(step - 1)) {
+            if ('FahrzeugSummary' == stepKey) {
                 return FahrzeugSummary();
             }
 
@@ -104,9 +110,11 @@
 
     function AjaxRequestNextStep() {
 
+        var nextTabKey = FormWizard.GetNextTabKey();
+
         $.ajax({
             type: "POST",
-            url: FormWizard.GetNextTabKey(),
+            url: nextTabKey,
             data: {},
             loadingShow: true,
             success: function (result) {
@@ -114,6 +122,10 @@
                     alert(result.message);
                     return;
                 }
+                if (nextTabKey == "Receipt") {
+                    $("#GridFahrzeugSummaryWrapper").html("");
+                }
+
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
             }
         });    
@@ -140,15 +152,15 @@
         Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
     }
 
-    function OnLoad_GridFahrzeugAuswahl() {
-        $('.t-no-data td').text(ladeHinweis);
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+        var isValid = e.dataItem["IsValid"];
+
+        if (!isValid)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
     }
 
-    function OnRowDataBound_GridFahrzeugAuswahl(e) {
-        var isMissing = e.dataItem["IsMissing"];
-
-        if (isMissing)
-            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    function OnLoad_GridFahrzeugAuswahl() {
+        $('.t-no-data td').text(ladeHinweis);
     }
 
     function OnColumnShowHide_GridFahrzeugAuswahl() {

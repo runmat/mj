@@ -5,34 +5,37 @@
 @Html.SpanAlert("MessageFahrzeugSummary")
 
 <h4 class="margin-bottom-20">
-    @Html.Partial("Partial/GridFahrzeugSummaryHeader")
+    @Html.Partial("Partial/Summary/SummaryAsHeader", Model.CreateSummaryTitle())
 </h4> 
 
-@(Html.XTelerik()
-    .XGrid<Fahrzeug>()
-    .Name(gridName)
-    .XAjaxDataBinding("FahrzeugSummaryAjaxBinding", "Zulassung")
-    .Columns(columns =>
-    {
-        columns.XBound(c => c.ModelID)
-            .Aggregate(aggregates => aggregates.Count())
-            .ClientGroupHeaderTemplate("<strong><#= Count #>x Model-ID: <#= Key #></strong>");
-        columns.XBound(c => c.Modell);
-        columns.XBound(c => c.Hersteller);
-        columns.XBound(c => c.SippCode);
-        columns.XBound(c => c.EingangFahrzeugDatum);
-        columns.XBound(c => c.Fahrgestellnummer);
-        columns.XBound(c => c.Zb2Nummer);
-        columns.XBound(c => c.Farbe);
-    })
-
-    .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName))
-    .XPageSize(5)
-        .ToolBar(commands =>
+<div id="GridFahrzeugSummaryWrapper">
+    @(Html.XTelerik()
+        .XGrid<Fahrzeug>()
+        .Name(gridName)
+        .XAjaxDataBinding("FahrzeugSummaryAjaxBinding", "Zulassung")
+        .Columns(columns =>
         {
-            commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredExcel", "Zulassung");
-            commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredPDF", "Zulassung");
+            columns.XBound(c => c.ModellAsText)
+                .Aggregate(aggregates => aggregates.Count())
+                .ClientGroupHeaderTemplate("<strong><#= Count #>x Model-ID: <#= Key #></strong>");
+            columns.XBound(c => c.ModelID);
+            columns.XBound(c => c.Modell);
+            columns.XBound(c => c.Hersteller);
+            columns.XBound(c => c.SippCode);
+            columns.XBound(c => c.EingangFahrzeugDatum);
+            columns.XBound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.Zb2Nummer);
+            columns.XBound(c => c.Farbe);
         })
-    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.ModelID)))
-)
+
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName))
+        .XPageSize(5)
+            .ToolBar(commands =>
+            {
+                commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredExcel", "Zulassung");
+                commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredPDF", "Zulassung");
+            })
+        .Groupable(g => g.Groups(gr => gr.Add(gp => gp.ModellAsText)))
+    )
+</div>

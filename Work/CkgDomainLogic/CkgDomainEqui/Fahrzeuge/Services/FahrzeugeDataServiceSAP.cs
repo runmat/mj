@@ -1,4 +1,5 @@
 ﻿// ReSharper disable RedundantUsingDirective
+// ReSharper disable AccessToForEachVariableInClosure
 
 using System;
 using System.Collections.Generic;
@@ -228,9 +229,122 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItems;
         }
 
-        public string ZulassungSave(List<Fahrzeug> fahrzeuge)
+        public string ZulassungSave(List<Fahrzeug> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
         {
-            return "";
+            var sperreErrorMessage = ZulassungFahrzeugeSperren(fahrzeuge);
+            if (sperreErrorMessage.IsNotNullOrEmpty())
+                return sperreErrorMessage.PrependIfNotNull("Fehler bei der Fahrzeug-Sperre: ");
+
+            var zulassenErrorMessage = ZulassungFahrzeugeZulassen(fahrzeuge, zulassungsDatum, kennzeichenSerie);
+
+            var invalidItems = fahrzeuge.Where(f => !f.IsValid);
+            if (invalidItems.Any())
+                return string.Format(
+                    "{0}{1} Fahrzeuge konnten nicht zugelassen werden, siehe Details in unten stehender Fahrzeugtabelle.", 
+                        zulassenErrorMessage.FormatIfNotNull("Fehler bei der Fahrzeug-Zulassung: {this}. "),
+                        invalidItems.Count());
+
+            return zulassenErrorMessage;
+        }
+
+        string ZulassungFahrzeugeSperren(List<Fahrzeug> fahrzeuge)
+        {
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                    // exception safe SAP action:
+                    () =>
+                    {
+                        var list = Z_M_Warenkorb_Sperre_001.GT_IN.GetImportList(SAP);
+                        foreach (var f in fahrzeuge)
+                            list.Add(new Z_M_Warenkorb_Sperre_001.GT_IN { EQUNR = f.EquiNummer });
+
+                        Z_M_Warenkorb_Sperre_001.Init(SAP);
+                        SAP.ApplyImport(list);
+                        SAP.Execute();
+                    },
+
+                    // SAP custom error handling:
+                    () =>
+                    {
+                        var sapResult = SAP.ResultMessage;
+                        if (SAP.ResultMessage.IsNotNullOrEmpty())
+                            return sapResult;
+
+                        return "";
+                    });
+
+            return errorMessage;
+        }
+
+        string ZulassungFahrzeugeZulassen(List<Fahrzeug> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
+        {
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                    // exception safe SAP action:
+                    () =>
+                    {
+                        var list = Z_Massenzulassung.INTERNTAB.GetImportList(SAP);
+
+                        foreach (var f in fahrzeuge)
+                            list.Add(new Z_Massenzulassung.INTERNTAB
+                            {
+                                I_KUNNR_AG = LogonContext.KundenNr.ToSapKunnr(),
+                                I_ZZFAHRG = f.Fahrgestellnummer,
+                                I_EDATU = zulassungsDatum.ToString("dd.MM.yyyy"),
+                                I_KUNNR_ZV = "1917".ToSapKunnr(),
+                                I_ZZKENNZ = string.Empty,
+                                I_KUNNR_ZH = "100010607".ToSapKunnr(),
+                                I_KUNNR_ZA = string.Empty,
+                                I_ZZSONDER = FormatKennzeichenSerie(kennzeichenSerie),
+                                I_KBANR = "0200000",
+                                I_ZZCARPORT = f.DadPdi,
+                            });
+
+                        Z_Massenzulassung.Init(SAP);
+                        SAP.ApplyImport(list);
+                        SAP.Execute();
+
+                        var retCode = SAP.GetExportParameter("RETURN");
+                        // ReSharper disable once UnusedVariable
+                        var anzahlZugelassen = SAP.GetExportParameter("ANZAHL");
+                        var exportList = Z_Massenzulassung.OUTPUT.GetExportList(SAP);
+
+                        foreach (var f in fahrzeuge)
+                        {
+                            var savedItem = exportList.FirstOrDefault(e => e.ID == f.Fahrgestellnummer);
+                            if (savedItem == null)
+                                continue;
+                                
+                            if (retCode.NotNullOrEmpty().ToUpper() != "OK")
+                                f.ValidationMessage = savedItem.MESSAGE.PrependIfNotNull("Fehler, ");
+                            else
+                                f.AuftragsNummer = savedItem.MESSAGE;
+                        }
+                    },
+
+                    // SAP custom error handling:
+                    () =>
+                    {
+                        var sapResult = SAP.ResultMessage;
+                        if (SAP.ResultMessage.IsNotNullOrEmpty())
+                            return sapResult;
+
+                        return "";
+                    });
+
+            return errorMessage;
+        }
+
+        static string FormatKennzeichenSerie(string kennzeichenSerie)
+        {
+            if (kennzeichenSerie.IsNullOrEmpty())
+                return "";
+
+            var indexKlammer = kennzeichenSerie.IndexOf("(", StringComparison.InvariantCulture);
+            if (indexKlammer <= 0)
+                return kennzeichenSerie;
+
+            return kennzeichenSerie.Substring(0, indexKlammer).Trim();
         }
     }
 }
