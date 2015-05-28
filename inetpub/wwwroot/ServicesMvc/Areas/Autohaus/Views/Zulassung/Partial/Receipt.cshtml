@@ -1,13 +1,5 @@
 ﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
- @{
-    //var formularId = Model.ZulassungenForReceipt
-
-     var pdfDocs = new List<string>();  // MaihoferM
-     
-     var tmpId = "";
- }
-
 <style type="text/css">
     .restart-with-new-order {
         margin-top: 40px;
@@ -28,6 +20,11 @@
     }
     .receipt-download-buttons {
         display: inline-block;
+    }
+    .receipt-download-all {
+        min-width: 210px;
+        display: inline-block;
+        font-weight: bold;
     }
 </style>
 
@@ -56,61 +53,30 @@ else
         @if (Model.AuftragslisteAvailable)
         {
             <a href="AuftragslisteAsPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='@Localize.OrderListAsPdfFile' data-placement="top"> @Localize.OrderList <i class="icon-download-alt"></i></a>
-                pdfDocs.Add("AuftragslisteAsPdf");  // MaihoferM
         }
         
         @foreach (var zulassung in Model.ZulassungenForReceipt)
         {
             <div class="receipt-row">
-            
                 <div class="receipt-no">@Localize.Receipt #@zulassung.BelegNr</div>
-
                 <div class="receipt-fin">@Localize.VIN @zulassung.Fahrzeugdaten.FahrgestellNr</div>
-
                 <div class="receipt-download-buttons">
                     <a href="SummaryAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.YourOrderAsPdfFile' data-placement="top"> @Localize.PdfDownload <i class="icon-download-alt"></i></a>
-
                     @if (zulassung.KundenformularPdf != null)
                     {
                         <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
-                        pdfDocs.Add(string.Format("KundenformularAsPdf?id={0}", zulassung.BelegNr));  // MaihoferM
-                        tmpId = zulassung.BelegNr;      // MaihoferM
                     }
             
                     @foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
                     {
                         <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
-                        pdfDocs.Add(string.Format("ZusatzformularAsPdf?id={0}&typ={1}", pdfFormular.Belegnummer, pdfFormular.Typ));  // MaihoferM
                     }
                 </div>
-
             </div>
-        }
-        
-        @{
-
-            var allPdfDocs = string.Join(";", pdfDocs);     // MaihoferM
-            // allPdfDocs = AuftragslisteAsPdf;ZusatzformularAsPdf?id=0002114246&typ=;ZusatzformularAsPdf?id=0002114246&typ=VOLLMACHT;ZusatzformularAsPdf?id=0002114246&typ=SEPA;ZusatzformularAsPdf?id=0002114246&typ=AUFTRAG 
-            
-            <text>
-               ### allPdfDocs = @allPdfDocs <br/>
-            </text>
         }
         <div class="receipt-row">
-            <div class="receipt-download-buttons">
-                <a href="AllDocumentsAsPdf?id=@tmpId" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='Titel' data-placement="top"> Alle PDF <i class="icon-download-alt"></i></a>
-            </div>
+            <a href="AllDocumentsAsPdf" class="btn blue tooltips margin-right-50 margin-bottom-5 float-right">@Localize.AllPdf <i class="icon-download-alt"></i></a>
         </div>
-
-@*        @if (Model.ZulassungenForReceipt.Count > 1)
-        {
-            <div class="receipt-row">
-                <div class="receipt-download-buttons">
-                    <a href="AllDocumentsAsPdf?id=111&typ=testTyp" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='Titel' data-placement="top"> Alle PDF <i class="icon-download-alt"></i></a>
-                </div>
-            </div>
-        }*@
-
     </div>
 }
 

@@ -2,7 +2,7 @@
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
-
+using SmartSoft.PdfLibrary;     // 20150527 MMA
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
 using ITextSharpText = iTextSharp.text;
@@ -26,7 +26,7 @@ namespace DocumentTools.Services
                 xgr.DrawImage(img, 0, 0);
                 xgr.Dispose();
             }
-
+            
             pdfDoc.Save(pdfFileName);
             pdfDoc.Close();
         }
@@ -53,5 +53,31 @@ namespace DocumentTools.Services
 
             return output.ToArray();
         }
+        
+        // 
+        /// <summary>
+        /// 20150528 MMA Erstellt aus mehreren PDF-Documenten eine einzige PDF-Datei und gibt diese als byte[] zurück.
+        /// </summary>
+        /// <param name="pdfBytes"></param>
+        /// <returns>PDF-Datei als byte[]</returns>
+        public static byte[] MergePdfDocuments(List<byte[]> pdfBytes)
+        {
+            byte[] mergedPdf = null;
+            mergedPdf = PdfMerger.MergeFiles(pdfBytes, true);
+            return mergedPdf;
+
+            #region Example
+            //var subDoc1 = PdfDocumentFactory.HtmlToPdf("test 1");
+            //var subDoc2 = PdfDocumentFactory.HtmlToPdf("test 22222");
+            //var docList = new List<byte[]>
+            //    {
+            //        subDoc1, subDoc2
+            //    };
+            //// MergePdfDocuments
+            //var foo1 = PdfDocumentFactory.MergePdfDocuments(docList);
+            #endregion
+
+        }
+
     }
 }

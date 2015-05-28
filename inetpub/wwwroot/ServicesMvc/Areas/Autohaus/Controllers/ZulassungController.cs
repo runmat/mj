@@ -320,113 +320,191 @@ namespace ServicesMvc.Autohaus.Controllers
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
 
+        #region SummaryAsPdf
         public FileContentResult SummaryAsPdf(string id)
+        {
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
+
+            //var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
+
+            //var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
+
+            var summaryPdfBytes = SummaryAsPdfGetPdfBytes(id);
+
+            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
+        }
+        /// <summary>
+        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
+        /// </summary>
+        /// <returns></returns>
+        private byte[] SummaryAsPdfGetPdfBytes(string id)
         {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
             if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+                return new byte[1]; // ###mma Prüfen, ob return new FileContentResult(new byte[1], ""); wirklich erforderlich ist, falls keine Daten vorliegen
 
             var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
 
             var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
 
-            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
+            return summaryPdfBytes;
         }
+        #endregion
 
+        #region KundenformularAsPdf
         public FileContentResult KundenformularAsPdf(string id)
         {
-            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
-            if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
 
-            var formularPdfBytes = zulassung.KundenformularPdf;
+            //var formularPdfBytes = zulassung.KundenformularPdf;
+
+            var formularPdfBytes = KundenformularAsPdfGetPdfBytes(id);
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
         }
-
-        public FileContentResult ZusatzformularAsPdf(string id, string typ)
+        /// <summary>
+        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
+        /// </summary>
+        /// <returns></returns>
+        private byte[] KundenformularAsPdfGetPdfBytes(string id)
         {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
             if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+                return new byte[1]; // ###mma Prüfen, ob return new FileContentResult(new byte[1], ""); wirklich erforderlich ist, falls keine Daten vorliegen
+
+            var formularPdfBytes = zulassung.KundenformularPdf;
+
+            return formularPdfBytes;
+        }
+        #endregion
+
+        #region ZusatzformularAsPdf
+        public FileContentResult ZusatzformularAsPdf(string id, string typ)
+        {
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
+
+            //var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
+            //if (zusatzFormular == null)
+            //    return new FileContentResult(new byte[1], ""); 
+
+            //var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
+            // var dateiPfad = "";
+            // var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
+            var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ);
+
+            // return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(zusatzFormular.DateiPfad) };
+            // return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(dateiPfad) };
+            return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = "dummy" };
+        }
+        /// <summary>
+        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
+        /// </summary>
+        /// <returns></returns>
+        private byte[] ZusatzformularAsPdfGetPdfBytes(string id, string typ) // , out string dateiPfad)
+        {
+            // dateiPfad = "";
+
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return new byte[1]; // ###mma Prüfen, ob return new FileContentResult(new byte[1], ""); wirklich erforderlich ist, falls keine Daten vorliegen
 
             var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
             if (zusatzFormular == null)
-                return new FileContentResult(new byte[1], ""); 
+                return new byte[1]; // ###mma Prüfen, ob return new FileContentResult(new byte[1], ""); wirklich erforderlich ist, falls keine Daten vorliegen
 
-            var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
+            var zusatzformularPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
+            
+            // dateiPfad = zusatzFormular.DateiPfad;
 
-            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(zusatzFormular.DateiPfad) };
+            return zusatzformularPdfBytes;
         }
+        #endregion
 
+        #region AuftragslisteAsPdf
         public FileContentResult AuftragslisteAsPdf()
         {
-            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
-            if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
 
-            var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
-            if (auftragslisteFormular == null)
-                return new FileContentResult(new byte[1], "");
+            //var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
+            //if (auftragslisteFormular == null)
+            //    return new FileContentResult(new byte[1], "");
             
-            var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
+            //var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
+
+            var auftragPdfBytes = AuftragslisteGetPdfBytes();
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderList) };
         }
 
         /// <summary>
-        /// MaihoferM Generate one PDF file with all downloadable documents
+        /// 20150528 MMA
         /// </summary>
         /// <returns></returns>
-        public FileContentResult AllDocumentsAsPdf(string id, string typ)
+        private byte[] AuftragslisteGetPdfBytes()
         {
-            var foo = PdfDocumentFactory.HtmlToPdf("test");
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
+            if (zulassung == null)
+                return new byte[1]; // ###mma Prüfen, ob return new FileContentResult(new byte[1], ""); wirklich erforderlich ist, falls keine Daten vorliegen
 
-            // SummaryAsPdf(string id)
+            var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
+            if (auftragslisteFormular == null)
+                return new byte[1]; // ###mma Prüfen, ob return new FileContentResult(new byte[1], ""); wirklich erforderlich ist, falls keine Daten vorliegen
 
-            var result = SummaryAsPdf(id);
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
+            // Der Zugriff auf den Pfad "\\192.168.10.96\test\portal\zld\ah_auftrag\0010071202-20150528-095019\Auftragsliste\Auftragsliste.pdf" wurde verweigert.
 
+            return auftragPdfBytes;
+        }
+        #endregion
 
-            //// Merge multiple PDF files into one single PDF 
-            //// http://stackoverflow.com/questions/6029142/merging-multiple-pdfs-using-itextsharp-in-c-net
-            //// step 1: creation of a document-object
-            //iTextSharp document = new Document();
-            //// step 2: we create a writer that listens to the document
-            //PdfCopy writer = new PdfCopy(document, new FileStream(outFile, FileMode.Create));
-            //if (writer == null)
+        /// <summary>
+        /// 20150527 MMA Generate one PDF file with all downloadable documents
+        /// </summary>
+        /// <returns></returns>
+        // public FileContentResult AllDocumentsAsPdf(string id, string typ)
+        public FileContentResult AllDocumentsAsPdf()
+        {
+            var pdfsToMerge = new List<byte[]>();
+
+            // Anhand des ViewModels ermitteln, welche Dokumente verfügbar sind (analog Buttons-Anzeige in Receipt.cshtml)
+            // Sollten neue Buttons bzw. Berichte im View eingebunden werden, muss dies hier ggfl. berücksichtigt werden.
+
+            // Falls Auftragsliste auch im PDF enthalten sein soll, wieder aktivieren...
+            //if (ViewModel.AuftragslisteAvailable)
             //{
-            //    return;
+            //    // <a href="AuftragslisteAsPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='@Localize.OrderListAsPdfFile' data-placement="top"> @Localize.OrderList <i class="icon-download-alt"></i></a>
+            //    pdfsToMerge.Add(AuftragslisteGetPdfBytes());
             //}
-            //// step 3: we open the document
-            //document.Open();
-            //foreach (string fileName in fileNames)
-            //{
-            //    // we create a reader for a certain document
-            //    PdfReader reader = new PdfReader(fileName);
-            //    reader.ConsolidateNamedDestinations();
-            //    // step 4: we add content
-            //    for (int i = 1; i <= reader.NumberOfPages; i++)
-            //    {
-            //        PdfImportedPage page = writer.GetImportedPage(reader, i);
-            //        writer.AddPage(page);
-            //    }
-            //    PRAcroForm form = reader.AcroForm;
-            //    if (form != null)
-            //    {
-            //        writer.CopyAcroForm(reader);
-            //    }
-            //    reader.Close();
-            //}
-            //// step 5: we close the document and writer
-            //writer.Close();
-            //document.Close();
 
+            foreach (var zulassung in ViewModel.ZulassungenForReceipt)
+            {
+                pdfsToMerge.Add(SummaryAsPdfGetPdfBytes(zulassung.BelegNr));            // <a href="SummaryAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.YourOrderAsPdfFile' data-placement="top"> @Localize.PdfDownload <i class="icon-download-alt"></i></a>
 
-            return null;
+                if (zulassung.KundenformularPdf != null)
+                {
+                    pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr)); // <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
+                }
+
+                foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
+                {
+                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ));  // <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
+                }
+            }
+
+            var mergedPdf = PdfDocumentFactory.MergePdfDocuments(pdfsToMerge);
+
+            return new FileContentResult(mergedPdf, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", "Alle Zulassungsdateien") };
         }
 
         #endregion   
-
 
         #region Shopping Cart 
 
