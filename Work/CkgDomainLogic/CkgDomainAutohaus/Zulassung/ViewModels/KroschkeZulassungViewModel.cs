@@ -335,6 +335,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetZulassungsdaten(Zulassungsdaten model)
         {
             Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ZulassungsartMatNr;
+
+            // 20150528 MMA
+            Zulassung.Zulassungsdaten.Mindesthaltedauer = model.Mindesthaltedauer;
+
             Zulassung.Zulassungsdaten.Zulassungsdatum = model.Zulassungsdatum;
             Zulassung.Zulassungsdaten.Abmeldedatum = model.Abmeldedatum;
             Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
