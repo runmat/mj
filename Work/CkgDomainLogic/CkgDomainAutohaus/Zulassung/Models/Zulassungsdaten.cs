@@ -39,6 +39,11 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        // 20150528 MMA 
+        [LocalizedDisplay("Mindesthaltedauer")]
+        [Range(1 , 360, ErrorMessage = "Nur zwischen 1 und 360")]
+        public string Mindesthaltedauer { get; set; }
+
         [XmlIgnore]
         static List<Material> MaterialList { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Zulassungsarten; } }
 
