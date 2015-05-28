@@ -3,19 +3,19 @@
 
 <div id="divBatcherfassungSuche">
     @using (Ajax.BeginForm("LoadBatcherfassung", "Batcherfassung", null,
-        new MvcAjaxOptions("divBatcherfassungSuche") { OnComplete = "ShowBatcherfassung();" }, new { id = "BatcherfassungSearchForm" }))
+                           new MvcAjaxOptions("divBatcherfassungSuche") { OnComplete = "ShowBatcherfassung();" }, new { id = "BatcherfassungSearchForm" }))
     {    
         <div class="form-horizontal">
             
             @Html.FormValidationSummary()
 
-            @Html.FormDropDownListFor(m => m.Herstellerkennung, BatcherfassungSelektor.FahrzeugHersteller, new { @class = "m-wrap" })
+         @*   @Html.FormDropDownListFor(m => m.Herstellerkennung, BatcherfassungSelektor.FahrzeugHersteller, new { @class = "m-wrap" })
 
             @Html.FormDateRangePickerFor(m => m.AnalageDatumRange)
 
             @Html.FormTextBoxFor(m => m.Auftragnummer)
             @Html.FormTextBoxFor(m => m.UnitNummerVon)
-            @Html.FormTextBoxFor(m => m.UnitNummerBis)
+            @Html.FormTextBoxFor(m => m.UnitNummerBis)*@
 
 
             <div class="form-actions">

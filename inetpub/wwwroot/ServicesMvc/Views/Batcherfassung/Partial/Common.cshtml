@@ -10,9 +10,11 @@
 //    });
 
     function FormPreparePrivate() {
+        $("#divGridBatcherfassung").slideUp();       
         $("#BatcherfassungSearchForm button[type=submit]").trigger("click");
         GridAllColumnFilterApplyToGrid("GridBatcherfassung");
         FormWizardInitPrivate();
+        LoadingShow();
     }
 
     function FormPreparePrivateAjax() {
@@ -55,8 +57,10 @@
 
     function ShowBatcherfassung() {
 
-        FormPreparePrivateAjax();
-      
+        LoadingShow();
+       
+        FormPreparePrivateAjax();        
+
         $.ajax({
             type: "POST",
             url: "ShowBatcherfassung",
@@ -183,12 +187,13 @@
     function LoadDataByModelId() {
 
         var modellId = $("#ModellId").val();
+        var batchId = $("#ID").val();
         //alert(modellId);
         $.ajax(
             {
                 type: "POST",
                 url: "LoadDataByModelId",
-                data: { modelId : modellId },
+                data: { modelId: modellId, batchId: batchId },
                 loadingShow: true,
                 success: function (result) {
                     $("#divBatcherfassungDetailsForm").html(result);

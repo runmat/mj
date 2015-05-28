@@ -172,11 +172,13 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             return SelectedItem;
         }
 
-        public Batcherfassung ModifyItemWithModelData(string id)
-        {           
-            var modelFoundById = ModelHersteller.FirstOrDefault(m => m.ModelID == id) ?? new ModelHersteller();
+        public Batcherfassung ModifyItemWithModelData(string modelId, string batchId)
+        {
+            SelectedItem.ID = batchId;
+
+            var modelFoundById = ModelHersteller.FirstOrDefault(m => m.ModelID == modelId) ?? new ModelHersteller();
                        
-            SelectedItem.ModellId = id;
+            SelectedItem.ModellId = modelId;
             if (InsertMode)
             {
                 SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
