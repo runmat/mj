@@ -43,10 +43,9 @@
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl").OnRowDataBound("OnRowDataBound_GridFahrzeugAuswahl"))
     .XPageSize(5)
     .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
-
     .ToolBar(commands =>
-        {
-            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredExcel", "Zulassung").HtmlAttributes(new { @class = "hide btn mini gray tooltips excel a_btn_mini", data_original_title = "Excel Export", data_placement = "right" });
-            commands.FilteredDataCommand("FahrzeugAuswahlExportFilteredPDF", "Zulassung").HtmlAttributes(new { @class = "hide btn mini gray tooltips pdf a_btn_mini", data_original_title = "PDF Export", data_placement = "right" });
-        })
+    {
+        commands.FilteredDataCommand("ExportFahrzeugeFilteredExcel", "Zulassung");
+        commands.FilteredDataCommand("ExportFahrzeugeFilteredPDF", "Zulassung");
+    })
 )

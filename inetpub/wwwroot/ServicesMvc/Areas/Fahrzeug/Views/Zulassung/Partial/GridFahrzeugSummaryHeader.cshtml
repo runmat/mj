@@ -1,0 +1,9 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
+
+<span class="margin-right-10">@Localize.RegistrationDate: <strong>@Model.SelectedZulassungsDatum.GetValueOrDefault().ToShortDateString()</strong></span>
+@if (Model.SelectedKennzeichenSerie.IsNotNullOrEmpty() && Model.SelectedKennzeichenSerie != "-")
+{
+    <span class="margin-right-10">@Localize.LicenseNoSeries: <strong>@Model.SelectedKennzeichenSerieAsText</strong></span>
+}
+<span class="margin-right-10">@Localize.RegistrationsTotal: <strong>@Model.ZulassungenAnzahlGesamtTotal</strong></span>
+<span class="margin-right-10">@Localize.RegistrationsOrderedNow: <strong>@Model.ZulassungenAnzahlGesamtSelected</strong></span>

@@ -27,5 +27,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         List<KennzeichenSerie> GetKennzeichenSerie();
 
         List<Fahrzeug> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
+        
+        string ZulassungSave(List<Fahrzeug> fahrzeuge);
     }
 }

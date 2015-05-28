@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using GeneralTools.Services;
 
 namespace GeneralTools.Models
@@ -169,6 +170,23 @@ namespace GeneralTools.Models
 
     public static class StringExtensions
     {
+        public static string ReplaceHtmlTags(this string s, bool replaceBrWithCrLf = true)
+        {
+            var brRelevantTags = @"<p>|</p>|<br>|<br />|<br/>";
+
+            if (!replaceBrWithCrLf)
+                s = Regex.Replace(s, brRelevantTags, "@br@", RegexOptions.IgnoreCase);
+            else
+                s = Regex.Replace(s, brRelevantTags, "\r\n", RegexOptions.IgnoreCase);
+
+            s = Regex.Replace(s, @"<.+?>", string.Empty);
+
+            if (!replaceBrWithCrLf)
+                s = s.Replace("@br@", "<br />");
+
+            return s;
+        }
+
         public static string Crop(this string s, int len)
         {
             if (len == 0)

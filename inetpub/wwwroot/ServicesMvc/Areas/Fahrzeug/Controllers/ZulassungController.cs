@@ -1,11 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
+using CkgDomainLogic.General.Services;
+using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using MvcTools.Web;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Fahrzeug.Controllers
@@ -104,11 +108,96 @@ namespace ServicesMvc.Fahrzeug.Controllers
         #endregion    
 
 
+        #region Fahrzeug Summary
+
+        [HttpPost]
+        public ActionResult FahrzeugSummary()
+        {
+            ViewModel.DataMarkForRefreshFahrzeugeSummary();
+
+            return PartialView("Partial/GridFahrzeugSummary", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult FahrzeugSummaryAjaxBinding()
+        {
+            var items = ViewModel.FahrzeugeSummaryFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridFahrzeugSummary(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterFahrzeugeSummary(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+
+        #region Summary + Receipt
+
+        public FileContentResult SummaryAsPdf()
+        {
+            var header = GetFahrzeugSummaryHeader();
+            header = header.Replace("</span>", " - ");
+            header = header.ReplaceHtmlTags();
+
+            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", ViewModel.CreateSummaryModel(header));
+
+            var logoPath = AppSettings.LogoPath.IsNotNullOrEmpty() ? Server.MapPath(AppSettings.LogoPath) : "";
+            var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml, logoPath, AppSettings.LogoPdfPosX, AppSettings.LogoPdfPosY);
+
+            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = "Uebersicht.pdf" };
+        }
+
+        string GetFahrzeugSummaryHeader()
+        {
+            return this.RenderPartialViewToString("Partial/GridFahrzeugSummaryHeader", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Receipt()
+        {
+            ViewModel.Save();
+
+            return PartialView("Partial/Receipt", ViewModel);
+        }
+
+        #endregion
+
+
         #region Export
 
         protected override IEnumerable GetGridExportData()
         {
-            return ViewModel.FahrzeugeFiltered;
+            return ViewModel.FahrzeugeCurrentFiltered;
+        }
+
+        public ActionResult ExportFahrzeugeFilteredExcel(int page, string orderBy, string filterBy, string groupBy)
+        {
+            ViewModel.IsFahrzeugSummary = false;
+            return GridDataExportFilteredExcel(page, orderBy, filterBy, groupBy);
+        }
+
+        public ActionResult ExportFahrzeugeFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            ViewModel.IsFahrzeugSummary = false;
+            return GridDataExportFilteredPDF(page, orderBy, filterBy);
+        }
+
+        public ActionResult ExportFahrzeugeSummaryFilteredExcel(int page, string orderBy, string filterBy, string groupBy)
+        {
+            ViewModel.IsFahrzeugSummary = true;
+            return GridDataExportFilteredExcel(page, orderBy, filterBy, groupBy);
+        }
+
+        public ActionResult ExportFahrzeugeSummaryFilteredPDF(int page, string orderBy, string filterBy, string groupBy)
+        {
+            ViewModel.IsFahrzeugSummary = true;
+            return GridDataExportFilteredPDF(page, orderBy, filterBy);
         }
 
         #endregion

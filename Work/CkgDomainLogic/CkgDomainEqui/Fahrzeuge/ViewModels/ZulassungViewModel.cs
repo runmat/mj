@@ -32,8 +32,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 return PropertyCacheGet(() => new Dictionary<string, string>
                 {
                     { "FahrzeugAuswahl", Localize.Vehicle },
-                    { "Zulassen", Localize.Registration },
-                    { "Summary", Localize.Summary },
+                    { "FahrzeugSummary", Localize.Registration },
+                    { "Receipt", Localize.Ready + "!" },
                 });
             }
         }
@@ -61,6 +61,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             protected set { PropertyCacheSet(value); }
         }
 
+        public bool IsFahrzeugSummary { get; set; }
+
+        [XmlIgnore]
+        public List<Fahrzeug> FahrzeugeCurrentFiltered
+        {
+            get { return IsFahrzeugSummary ? FahrzeugeSummaryFiltered : FahrzeugeFiltered; }
+        }
+
         [XmlIgnore]
         public List<KennzeichenSerie> KennzeichenSerien
         {
@@ -77,6 +85,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
         public string SelectedKennzeichenSerie { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
+        public string SelectedKennzeichenSerieAsText 
+        { 
+            get
+            {
+                return (KennzeichenSerien.FirstOrDefault(k => k.ID == SelectedKennzeichenSerie) ?? new KennzeichenSerie()).Name;
+            } 
+        }
+
 
         [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string SelectedPdi { get; set; }
@@ -89,13 +106,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public List<Fahrzeug> ZulassungenForPdiAndDate { get; set; }
 
-        int ZulassungenAnzahlPdiStored { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == SelectedPdi).Sum(z => z.Amount); } }
+        public int ZulassungenAnzahlPdiStored { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == SelectedPdi).Sum(z => z.Amount); } }
 
-        int ZulassungenAnzahlGesamtStored { get { return SelectedZulassungsDatum == null ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == "Gesamt").Sum(z => z.Amount); } }
+        public int ZulassungenAnzahlGesamtStored { get { return SelectedZulassungsDatum == null ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == "Gesamt").Sum(z => z.Amount); } }
 
-        int ZulassungenAnzahlPdiSelected { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : Fahrzeuge.Count(z => z.Pdi == SelectedPdi && z.IsSelected); } }
+        public int ZulassungenAnzahlPdiSelected { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : Fahrzeuge.Count(z => z.Pdi == SelectedPdi && z.IsSelected); } }
 
-        int ZulassungenAnzahlGesamtSelected { get { return SelectedZulassungsDatum == null ? 0 : Fahrzeuge.Count(z => z.IsSelected); } }
+        public int ZulassungenAnzahlGesamtSelected { get { return SelectedZulassungsDatum == null ? 0 : Fahrzeuge.Count(z => z.IsSelected); } }
 
         public int ZulassungenAnzahlPdiTotal { get { return ZulassungenAnzahlPdiStored + ZulassungenAnzahlPdiSelected; } }
 
@@ -153,10 +170,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModel);
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModelId);
 
+            SelectedZulassungsDatum = null;
+            SelectedKennzeichenSerie = null;
             SelectedPdi = null;
             SelectedModel = null;
             SelectedModelId = null;
             ZulassungenForPdiAndDate = new List<Fahrzeug>();
+
+            DataMarkForRefreshFahrzeugeSummary();
+        }
+
+        public void DataMarkForRefreshFahrzeugeSummary()
+        {
+            PropertyCacheClear(this, m => m.FahrzeugeSummaryFiltered);
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)
@@ -281,5 +307,104 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     new Fahrzeug { Amount = 3, Pdi = "PDI7", },
                 };
         }
+
+
+        #region Fahrzeug Summary
+
+        [XmlIgnore]
+        public List<Fahrzeug> FahrzeugeSummary
+        {
+            get { return Fahrzeuge.Where(f => f.IsSelected).ToListOrEmptyList(); }
+        }
+
+        [XmlIgnore]
+        public List<Fahrzeug> FahrzeugeSummaryFiltered
+        {
+            get { return PropertyCacheGet(() => FahrzeugeSummary); }
+            protected set { PropertyCacheSet(value); }
+        }
+
+        public void FilterFahrzeugeSummary(string filterValue, string filterProperties)
+        {
+            FahrzeugeSummaryFiltered = FahrzeugeSummary.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        #endregion
+
+
+        #region Summary + Receipt
+
+        [XmlIgnore]
+        public string SaveErrorMessage { get; private set; }
+
+        public void Save()
+        {
+            SaveErrorMessage = DataService.ZulassungSave(FahrzeugeSummary);
+        }
+
+        private GeneralEntity SummaryFooterUserInformation
+        {
+            get
+            {
+                return new GeneralEntity
+                {
+                    Title = "Datum, User, Kunde",
+                    Body = string.Format("{0}<br/>{1} (#{2})<br/>{3}",
+                                         DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
+                                         LogonContext.UserName,
+                                         LogonContext.Customer.Customername, LogonContext.KundenNr)
+                };
+            }
+        }
+
+        private GeneralEntity SummaryBeauftragungsHeader
+        {
+            get
+            {
+                return new GeneralEntity
+                {
+                    Title = Localize.Registration,
+                    Body = Localize.Registration,
+                    Tag = "SummaryMainItem"
+                };
+            }
+        }
+
+        public GeneralSummary CreateSummaryModel(string header)
+        {
+            var summaryModel = new GeneralSummary
+            {
+                Header = header,
+                Items = new ListNotEmpty<GeneralEntity>
+                    (
+                    SummaryBeauftragungsHeader,
+
+                    new GeneralEntity
+                    {
+                        Title = Localize.DispatchType,
+                        Body = "",
+                    },
+
+                    new GeneralEntity
+                    {
+                        Title = Localize.ShippingAddress,
+                        Body = "",
+                    },
+
+                    new GeneralEntity
+                    {
+                        Title = Localize.ShippingOptions,
+                        Body = "",
+                    },
+
+                    SummaryFooterUserInformation
+                    )
+            };
+
+            return summaryModel;
+        }
+
+        #endregion
+
     }
 }

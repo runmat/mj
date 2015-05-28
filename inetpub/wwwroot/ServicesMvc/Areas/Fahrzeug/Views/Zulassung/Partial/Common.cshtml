@@ -50,8 +50,12 @@
         }, 800);
     };
 
-    function FormPreparePrivateAjax() {
+    function FormPreparePrivateAjax(step) {
         FormPrepareAjax();
+        if ('FahrzeugSummary' == FormWizard.GetStepKey(step + 1)) {
+            GridAllColumnFilterApplyToGrid("GridFahrzeugSummary");
+        }
+
         $('.tooltips').tooltip();
     }
     
@@ -64,9 +68,8 @@
             if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step - 1)) {
                 return FahrzeugAuswahl();
             }
-            if ('Zulassung' == FormWizard.GetStepKey(step - 1)) {
-                $("#AjaxFormZulassung").submit();
-                return false;
+            if ('FahrzeugSummary' == FormWizard.GetStepKey(step - 1)) {
+                return FahrzeugSummary();
             }
 
             return true;
@@ -79,7 +82,7 @@
         });
 
         FormWizard.OnSubmit(function () {
-            
+
             AjaxRequestNextStep();
 
             return true;
@@ -100,6 +103,7 @@
     }
 
     function AjaxRequestNextStep() {
+
         $.ajax({
             type: "POST",
             url: FormWizard.GetNextTabKey(),
@@ -116,6 +120,11 @@
     }
 
     function FahrzeugAuswahl() {
+        AjaxRequestNextStep();
+        return false;
+    }
+
+    function FahrzeugSummary() {
         AjaxRequestNextStep();
         return false;
     }
@@ -294,6 +303,27 @@
     function ReFilterGrid() {
         FilterGrid("GridFahrzeugAuswahl");
     }
+
+
+
+    // <Fahrzeug Summary>
+
+
+    function OnDataBound_GridFahrzeugSummary() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridFahrzeugSummary() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFahrzeugSummary() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    // </Fahrzeug Summary>
 
 </script>
 

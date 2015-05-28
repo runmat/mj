@@ -2527,8 +2527,11 @@
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\SummaryPdf.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahl.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugAuswahl.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahlPresets.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummary.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Receipt.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummaryHeader.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -227,5 +227,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return webItems;
         }
+
+        public string ZulassungSave(List<Fahrzeug> fahrzeuge)
+        {
+            return "";
+        }
     }
 }
