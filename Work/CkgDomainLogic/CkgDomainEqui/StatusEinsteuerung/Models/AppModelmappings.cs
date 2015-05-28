@@ -38,7 +38,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                                                          d.Zulassungsbereit = s.FZG_ZUL_BER.ToInt();
                                                          d.OhneUnitnummer = s.FZG_OHNE_UNIT.ToInt();                                                        
                                                          d.Sipp = s.ZSIPP_CODE;
-                                                         d.Gesperrt = s.FZG_GESP.ToBool() ? 1 : 0;
+                                                         d.Gesperrt = s.FZG_GESP.ToInt();
                                                      }));
             }
         }
