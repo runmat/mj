@@ -9,8 +9,8 @@ namespace AppRemarketing.forms
 {
     public partial class Report14_2 : System.Web.UI.Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Historie m_report;
         private ABEDaten Typ;
 
@@ -55,7 +55,6 @@ namespace AppRemarketing.forms
             {
                 lblEreignisartShow.Text = (string)m_report.CommonData.Rows[0]["EREIGNIS_TEXT"];
             }
-            //lblLizNrShow.Text = (String)m_report.CommonData.Rows[0]["LIZNR"];
 
             //Brief- und Schlüsseldaten
             lblEingangBriefShow.Text = CheckDate(m_report.CommonData.Rows[0]["EGZB2DAT"].ToString());
@@ -91,13 +90,12 @@ namespace AppRemarketing.forms
                 lblBaLandShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["LAND_BEZ_BANK"]);
             }
 
-
             //Typdaten
             String Space = "";
             String KUNNR = m_User.KUNNR.ToString();
             String ZDAD = "ZDAD";
 
-            Typ = new ABEDaten(ref m_User, ref m_App, (string)Session["AppID"], (string)Session.SessionID, "", ref KUNNR, ref ZDAD, ref Space, ref Space);
+            Typ = new ABEDaten(ref m_User, ref m_App, (string)Session["AppID"], Session.SessionID, "", ref KUNNR, ref ZDAD, ref Space, ref Space);
 
             Typ.FillDatenABE((string)Session["AppID"], Session.SessionID.ToString(), this.Page, m_report.CommonData.Rows[0]["EQUNR"].ToString());
 
@@ -169,46 +167,33 @@ namespace AppRemarketing.forms
             {
                 case "0":
                     lbl_99.Visible = true;
-                    //lbl_199.Visible = true;
                     break;
                 case "1":
                     lbl_98.Visible = true;
-                    //lbl_198.Visible = true;
                     break;
                 case "2":
                     lbl_97.Visible = true;
-                    //lbl_197.Visible = true;
                     break;
                 case "3":
                     lbl_96.Visible = true;
-                    //lbl_196.Visible = true;
                     break;
                 case "4":
                     lbl_95.Visible = true;
-                    //lbl_195.Visible = true;
                     break;
                 case "5":
                     lbl_94.Visible = true;
-                    //lbl_194.Visible = true;
                     break;
                 case "6":
                     lbl_93.Visible = true;
-                    //lbl_193.Visible = true;
                     break;
                 case "7":
                     lbl_92.Visible = true;
-                    //lbl_192.Visible = true;
                     break;
                 case "8":
                     lbl_91.Visible = true;
-                    //lbl_191.Visible = true;
                     break;
                 case "9":
                     lbl_55.Visible = true;
-                    //lbl_155.Visible = true;
-                    break;
-                default:
-
                     break;
             }
 
@@ -220,31 +205,14 @@ namespace AppRemarketing.forms
             Page.DataBind();
         }
 
-
         private String CheckDate(String ConDate)
         {
             if (ConDate.Length > 0)
             {
                 return ConDate.Substring(0, 10);
             }
-            else
-            {
-                return "&nbsp;";
-            }
 
-        }
-
-        private String ChangeTime(String ConTime)
-        {
-            if (ConTime.Length > 0)
-            {
-                ConTime = ConTime.Substring(0, 2) + ":" + ConTime.Substring(2, 2);
-                return ConTime;
-            }
-            else
-            {
-                return "&nbsp;";
-            }
+            return "&nbsp;";
         }
 
         private String FillWithSpace(String ConString)
@@ -253,10 +221,8 @@ namespace AppRemarketing.forms
             {
                 return ConString;
             }
-            else
-            {
-                return "&nbsp;";
-            }
+
+            return "&nbsp;";
         }
 
         protected void lbBack_Click(object sender, EventArgs e)
@@ -273,15 +239,13 @@ namespace AppRemarketing.forms
                     ClientScript.RegisterStartupScript(this.GetType(), "clientScript", strscript);
                 }
 
-
                 return;
             }
-
 
             Response.Redirect("Report14.aspx?AppID=" + (string)Session["AppID"]);
         }
 
-        protected HistorieBelastungsanzeige Belastungsanzeige { get { return m_report==null?null:m_report.Belastungsanzeige; } }
+        protected HistorieBelastungsanzeige Belastungsanzeige { get { return m_report == null ? null : m_report.Belastungsanzeige; } }
         protected HistorieUebersicht Uebersicht { get { return m_report == null ? null : m_report.Uebersicht; } }
         protected HistorieLinks Links { get { return m_report == null ? null : m_report.Links; } }
 

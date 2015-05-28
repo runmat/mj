@@ -274,6 +274,24 @@ namespace AppRemarketing.forms {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvDatum;
         
         /// <summary>
+        /// tr_Repariert-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow tr_Repariert;
+        
+        /// <summary>
+        /// cbxRepariert-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox cbxRepariert;
+        
+        /// <summary>
         /// Queryfooter-Steuerelement
         /// </summary>
         /// <remarks>
