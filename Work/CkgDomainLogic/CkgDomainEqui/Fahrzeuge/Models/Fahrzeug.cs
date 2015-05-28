@@ -109,7 +109,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 return string.Format("{0} / {1}{2}{3}{4}{5}",
                         ModelID, Modell, Fahrgestellnummer.PrependIfNotNull(", FIN "), Zb2Nummer.PrependIfNotNull(", ZBII "),
                         AuftragsNummer.FormatIfNotNull(", <strong>Beleg-Nr {this}</strong>"),
-                        ValidationMessage.PrependIfNotNull("<br/>")
+                        (IsValid ? "" :  ValidationMessage.PrependIfNotNull("<br/>"))
                     );
             }
         }
@@ -117,6 +117,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Message)]
         public string ValidationMessage { get; set; }
 
-        public bool IsValid { get { return ValidationMessage.IsNullOrEmpty(); } }
+        public bool IsValid { get; set; }
     }
 }

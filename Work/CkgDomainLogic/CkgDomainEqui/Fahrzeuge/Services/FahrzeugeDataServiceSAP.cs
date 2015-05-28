@@ -311,14 +311,17 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
                         foreach (var f in fahrzeuge)
                         {
+                            f.IsValid = true;
+                            f.ValidationMessage = "Zulassung durchgeführt!";
+
                             var savedItem = exportList.FirstOrDefault(e => e.ID == f.Fahrgestellnummer);
                             if (savedItem == null)
                                 continue;
-                                
-                            if (retCode.NotNullOrEmpty().ToUpper() != "OK")
+
+                            f.IsValid = (retCode.NotNullOrEmpty().ToUpper() == "OK");
+                            f.ValidationMessage = "";
+                            if (!f.IsValid)
                                 f.ValidationMessage = savedItem.MESSAGE.PrependIfNotNull("Fehler, ");
-                            else
-                                f.AuftragsNummer = savedItem.MESSAGE;
                         }
                     },
 

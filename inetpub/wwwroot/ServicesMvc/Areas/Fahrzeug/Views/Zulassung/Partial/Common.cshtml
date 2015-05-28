@@ -155,9 +155,11 @@
     function OnRowDataBound_GridFahrzeugAuswahl(e) {
         var isValid = e.dataItem["IsValid"];
 
-        if (!isValid)
+        if (isValid)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+        else
             $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
-    }
+        }
 
     function OnLoad_GridFahrzeugAuswahl() {
         $('.t-no-data td').text(ladeHinweis);

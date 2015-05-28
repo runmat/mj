@@ -40,7 +40,7 @@
         })
 
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl").OnRowDataBound("OnRowDataBound_GridFahrzeugAuswahl"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
     .XPageSize(5)
     .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
     .ToolBar(commands =>
