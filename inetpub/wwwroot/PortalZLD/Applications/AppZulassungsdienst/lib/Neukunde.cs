@@ -139,7 +139,11 @@ namespace AppZulassungsdienst.lib
 
                     CallBapi();
 
-                    Bankname = SAP.GetExportParameter("E_BANKA");
+                    var bName = SAP.GetExportParameter("E_BANKA");
+                    if (bName.IsNotNullOrEmpty() && bName.Length > 40)
+                        bName = bName.Substring(0, 40);
+
+                    Bankname = bName;
                     BLZ = SAP.GetExportParameter("E_BANK_NUMBER");
                     Bankkey = BLZ;
                     Kontonr = SAP.GetExportParameter("E_BANK_ACCOUNT");

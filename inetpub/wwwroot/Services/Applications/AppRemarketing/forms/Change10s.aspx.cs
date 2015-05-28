@@ -256,7 +256,7 @@ namespace AppRemarketing.forms
                 }
             }
 
-            Session["Vorschaeden"] = m_Report;
+            Session["HCUpload"] = m_Report;
         }
 
         protected void lbBack_Click(object sender, EventArgs e)
