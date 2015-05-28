@@ -120,6 +120,9 @@ namespace CkgDomainLogic.FzgModelle.Models
         [XmlIgnore, GridHidden, NotMapped]
         public List<SelectItem> AuftragsnummrList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().Auftragsnummern; } }
 
+        [XmlIgnore, GridHidden, NotMapped]
+        public List<SelectItem> ModelList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().ModelList; } }
+
         [LocalizedDisplay(LocalizeConstants.Bluetooth)]
         public bool Bluetooth { get; set; }
   

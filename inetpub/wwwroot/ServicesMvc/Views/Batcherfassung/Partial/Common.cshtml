@@ -13,8 +13,7 @@
         $("#divGridBatcherfassung").slideUp();       
         $("#BatcherfassungSearchForm button[type=submit]").trigger("click");
         GridAllColumnFilterApplyToGrid("GridBatcherfassung");
-        FormWizardInitPrivate();
-        LoadingShow();
+        FormWizardInitPrivate();       
     }
 
     function FormPreparePrivateAjax() {
@@ -173,7 +172,7 @@
     var _modelId = null;
     function TryLoadDataByModelId(textbox) {
 
-    // wg. blur keine weitere validiereng
+    // wg. onchange im Moment keine weitere validiereng
     //        if (_modelId == $(textbox).val())
     //            return;
     //        _modelId = $(textbox).val();

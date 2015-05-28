@@ -99,6 +99,16 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             }
         }
 
+
+        [XmlIgnore]
+        public List<SelectItem> ModelList
+        {
+            get
+            {
+                return ModelHersteller.Select(model => new SelectItem(model.ModelID, model.ModelID + " " + model.HerstellerName + " " + model.Modellbezeichnung)).ToList();
+            }
+        }
+
         public List<SelectItem> AntriebeList
         {
             get
