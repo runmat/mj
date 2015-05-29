@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
 
@@ -20,5 +21,13 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         List<Treuhandbestand> GetTreuhandbestandFromSap();
 
         List<Unfallmeldung> GetUnfallmeldungen(UnfallmeldungenSelektor selektor);
+
+        List<Fzg> GetFahrzeugeForZulassung();
+
+        List<KennzeichenSerie> GetKennzeichenSerie();
+
+        List<Fzg> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
+
+        string ZulassungSave(List<Fzg> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie);
     }
 }
