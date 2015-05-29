@@ -55,7 +55,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             PropertyCacheClear(this, m => m.StatusEinsteuerungsFiltered);
         }
 
-        // TODO -> kann man das so machen?
+        // TODO -> kann man das so machen (Bestand-Regel OK, aber die Summen)?
         public void LoadStatusEinsteuerungOhneSummen()
         {
             StatusEinsteuerungs = DataService.GetStatusbericht().Where(s => s.Bestand > 0 && s.Sipp.IsNotNullOrEmpty() && s.ModellCode.IsNotNullOrEmpty()).ToList();
@@ -68,19 +68,25 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             DataMarkForRefresh();          
         }
 
-        public void LoadStatusEinsteuerung()
+        List<StatusEinsteuerung> LoadStatusEinsteuerung4Export()
         {
-            StatusEinsteuerungs = DataService.GetStatusbericht().Where(s => s.Bestand > 0).ToList();
-            DataMarkForRefresh();        
+            return DataService.GetStatusbericht().Where(s => s.Bestand > 0).ToList();                 
         }
 
-        public void LoadStatusbericht()
-        {            
-            StatusEinsteuerungs = DataService.GetStatusbericht(); 
-            DataMarkForRefresh();
-
-            //XmlService.XmlSerializeToFile(StatusEinsteuerungs, Path.Combine(AppSettings.DataPath, @"StatusEinsteuerungs.xml"));
+        List<StatusEinsteuerung> LoadStatusbericht4Export()
+        {
+            return DataService.GetStatusbericht();                    
         }
+
+
+        private void WriteData2Html()
+        {
+
+
+
+
+        }
+
 
         public void FilterStatusEinsteuerung(string filterValue, string filterProperties)
         {
