@@ -193,7 +193,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             var modelFoundById = ModelHersteller.FirstOrDefault(m => m.ModelID == modelId) ?? new ModelHersteller();
                        
             SelectedItem.ModellId = modelId;
-            if (InsertMode)
+            // if (InsertMode) i.A. ursprünglich mit KGa, macht aber mit neuer Select-Box kenne Sinn mehr
             {
                 SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
                 SelectedItem.Fahrzeuggruppe = modelFoundById.Fahrzeuggruppe;

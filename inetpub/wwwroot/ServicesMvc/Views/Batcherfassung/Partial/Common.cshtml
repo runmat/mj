@@ -96,8 +96,8 @@
             data: { id: id },
             loadingShow: true,
             success: function (result) {
-                ShowItemDetails(result);
-                try { BreadcrumbsMoveNext('@Localize.ItemEdit'); } catch (e) { }
+                ShowItemDetails(result);              
+                ModellIdInitDropdown();                
             },
             error: function (result) {
                 alert(result.data);
@@ -113,8 +113,8 @@
             data: { idToDuplicate: idToDuplicate },
             loadingShow: true,
             success: function (result) {
-                ShowItemDetails(result);
-                try { BreadcrumbsMoveNext('@Localize.ItemAdd'); } catch (e) { }
+                ShowItemDetails(result);                
+                ModellIdInitDropdown();                
             }
         });
     }
@@ -170,7 +170,7 @@
 
 
     var _modelId = null;
-    function TryLoadDataByModelId(textbox) {
+    function TryLoadDataByModelId() {
 
     // wg. onchange im Moment keine weitere validiereng
     //        if (_modelId == $(textbox).val())
@@ -178,8 +178,7 @@
     //        _modelId = $(textbox).val();
 
     //        if ($(textbox).val().length < 3)
-    //            return;
-
+    //            return;       
         LoadDataByModelId();
     }
 
@@ -196,6 +195,7 @@
                 loadingShow: true,
                 success: function (result) {
                     $("#divBatcherfassungDetailsForm").html(result);
+                    ModellIdInitDropdown();
                 }                        
             });
 
@@ -333,7 +333,24 @@
                 }
             });
     }
-  
+
+
+    function ModellIdInitDropdown() {
+
+        setTimeout(function () {
+            $('#ModellId').select2({
+                allowClear: true
+            }).off("change").on("change", function (e) {
+                TryLoadDataByModelId();
+            });
+
+            setTimeout(function () {
+                //$('#ModellId').data('select2').open();
+            }, 100);
+        }, 100);       
+    }
+
+
     ///////////////  Excel Upload /////////////////////////////////////////////////////////////////////
     //////////////                /////////////////////////////////////////////////////////////////////
       
