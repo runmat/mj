@@ -135,17 +135,17 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         }
 
         public void DataInit()
-        {
+        {            
             ModelHersteller = DataService.GetModelHersteller();
         }
        
         public void LoadBatches()
-        {
+        {                       
             Batcherfassungs = DataService.GetBatches(BatcherfassungSelektor);
 
             Batcherfassungs.ForEach(x => { 
                         x.HerstellerList = BatcherfassungSelektor.FahrzeugHersteller;
-                        var model = ModelHersteller.Where(m => m.ModelID == x.ModellId).FirstOrDefault();
+                        var model = ModelHersteller.FirstOrDefault(m => m.ModelID == x.ModellId);
                         if (model != null)
                         {
                             x.Bluetooth = model.Bluetooth;
@@ -156,7 +156,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             });
 
             DataMarkForRefresh();
-
+              
             //XmlService.XmlSerializeToFile(Batcherfassung, Path.Combine(AppSettings.DataPath, @"Batcherfassung.xml"));
         }
 

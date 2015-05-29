@@ -4,13 +4,8 @@
 
     var _modelStateValid = false;
 
-//    $("#ModellID").onblur(function () {
-//        alert('fired');
-//        TryLoadDataByModelId(this);
-//    });
-
     function FormPreparePrivate() {
-        $("#divGridBatcherfassung").slideUp();       
+        //$("#divGridBatcherfassung").slideUp();       
         $("#BatcherfassungSearchForm button[type=submit]").trigger("click");
         GridAllColumnFilterApplyToGrid("GridBatcherfassung");
         FormWizardInitPrivate();       
@@ -21,9 +16,9 @@
         //$(".t-status").hide();
     }
 
-    function GetGrid() {
-        return $("#GridBatcherfassung").data("tGrid");
-    }
+//    function GetGrid() {
+//        return $("#GridBatcherfassung").data("tGrid");
+//    }
 
     function GridLoadingHide() {
         // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
@@ -34,12 +29,12 @@
         FilterGrid("GridBatcherfassung");
     }
 
-    function TryGridPageTo1() {
-        // Refresh grid and goto grid page 1
-        if (typeof (GetGrid()) !== "undefined") {
-            GetGrid().pageTo(1);
-        }
-    }
+//    function TryGridPageTo1() {
+//        // Refresh grid and goto grid page 1
+//        if (typeof (GetGrid()) !== "undefined") {
+//            GetGrid().pageTo(1);
+//        }
+//    }
 
     function OnDataBound_GridBatcherfassung() {
         FilteredData_Grid_OnDataBound($(this));
@@ -55,7 +50,7 @@
     }
 
     function ShowBatcherfassung() {
-
+       
         LoadingShow();
        
         FormPreparePrivateAjax();        
@@ -97,7 +92,7 @@
             loadingShow: true,
             success: function (result) {
                 ShowItemDetails(result);              
-                ModellIdInitDropdown();                
+                //ModellIdInitDropdown();                
             },
             error: function (result) {
                 alert(result.data);
@@ -114,7 +109,7 @@
             loadingShow: true,
             success: function (result) {
                 ShowItemDetails(result);                
-                ModellIdInitDropdown();                
+                //ModellIdInitDropdown();                
             }
         });
     }
@@ -195,7 +190,7 @@
                 loadingShow: true,
                 success: function (result) {
                     $("#divBatcherfassungDetailsForm").html(result);
-                    ModellIdInitDropdown();
+                    //ModellIdInitDropdown();
                 }                        
             });
 
@@ -322,33 +317,31 @@
                 loadingShow: true,
                 success: function (result) {                    
                     if (result.ValidationError != '') {
-                        alert(result.ValidationError);
-                        //$("#ValidationError").html(result.ValidationError);
-                        //$("#divValidationError").remmoveClass('hide');
+                        alert(result.ValidationError);                        
                     }
-                    else {
-                        //$("#divValidationError").addClass('hide');
+                    else {                        
                         $("#Unitnummern").html(result.Unitnummern);
                     }
                 }
             });
     }
 
+    // Bis auf weiteres deaktiviert, da die Liste zu lang und die Suche unperformant ist
 
-    function ModellIdInitDropdown() {
+//    function ModellIdInitDropdown() {
 
-        setTimeout(function () {
-            $('#ModellId').select2({
-                allowClear: true
-            }).off("change").on("change", function (e) {
-                TryLoadDataByModelId();
-            });
+//        setTimeout(function () {
+//            $('#ModellId').select2({
+//                allowClear: true
+//            }).off("change").on("change", function (e) {
+//                TryLoadDataByModelId();
+//            });
 
-            setTimeout(function () {
-                //$('#ModellId').data('select2').open();
-            }, 100);
-        }, 100);       
-    }
+//            setTimeout(function () {
+//                //$('#ModellId').data('select2').open();
+//            }, 100);
+//        }, 100);       
+//    }
 
 
     ///////////////  Excel Upload /////////////////////////////////////////////////////////////////////
