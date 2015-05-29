@@ -52,7 +52,7 @@ namespace CkgDomainLogic.Controllers
                         
             if (ModelState.IsValid)
             {
-                StatusEinsteuerungViewModel.LoadStatusEinsteuerung();
+                StatusEinsteuerungViewModel.LoadStatusEinsteuerungOhneSummen();
                 if (StatusEinsteuerungViewModel.StatusEinsteuerungs.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
@@ -66,7 +66,7 @@ namespace CkgDomainLogic.Controllers
 
             if (ModelState.IsValid)
             {
-                StatusEinsteuerungViewModel.LoadStatusbericht();
+                StatusEinsteuerungViewModel.LoadStatusberichtOhneSummen();
                 if (StatusEinsteuerungViewModel.StatusEinsteuerungs.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }

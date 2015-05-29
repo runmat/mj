@@ -23,51 +23,64 @@
                                  
             columns.XBound(c => c.EingangGesamt).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
 
             columns.XBound(c => c.AusVorjahr).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
-
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+            
             columns.XBound(c => c.ZulassungVormonat).Format("{0}")
             .Aggregate(aggreages => aggreages.Sum())
-            .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+            .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+            .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.ZulassungLfdMonat).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.ZulassungProzLfdMonat).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.ZulassungProzFolgeMonat).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.ZulassungGesamtMonat).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.Bestand).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.Ausgerüstet).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.MitBrief).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.Zulassungsbereit).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.OhneUnitnummer).Format("{0}")
               .Aggregate(aggreages => aggreages.Sum())
-              .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
                         
             //columns.XBoundAll();
 

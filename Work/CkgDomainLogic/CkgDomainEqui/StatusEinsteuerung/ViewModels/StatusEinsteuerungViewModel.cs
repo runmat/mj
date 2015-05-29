@@ -55,6 +55,18 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             PropertyCacheClear(this, m => m.StatusEinsteuerungsFiltered);
         }
 
+        // TODO -> kann man das so machen?
+        public void LoadStatusEinsteuerungOhneSummen()
+        {
+            StatusEinsteuerungs = DataService.GetStatusbericht().Where(s => s.Bestand > 0 && s.Sipp.IsNotNullOrEmpty() && s.ModellCode.IsNotNullOrEmpty()).ToList();
+            DataMarkForRefresh();
+        }
+
+        public void LoadStatusberichtOhneSummen()
+        {
+            StatusEinsteuerungs = DataService.GetStatusbericht().Where(s => s.Sipp.IsNotNullOrEmpty() && s.ModellCode.IsNotNullOrEmpty()).ToList();
+            DataMarkForRefresh();          
+        }
 
         public void LoadStatusEinsteuerung()
         {
