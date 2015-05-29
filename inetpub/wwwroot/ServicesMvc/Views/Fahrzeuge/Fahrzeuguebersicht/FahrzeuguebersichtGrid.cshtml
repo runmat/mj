@@ -4,7 +4,7 @@
 }
 
 @(Html.XTelerik()
-        .XGrid<Fahrzeug>()
+        .XGrid<Fahrzeuguebersicht>()
     .Name(gridName)
    
     .XAjaxDataBinding("FahrzeuguebersichtAjaxBinding", "Fahrzeuge")
@@ -19,19 +19,6 @@
         columns.XBound(c => c.ModelID);
         columns.XBound(c => c.Modell);
         columns.XBound(c => c.Status);
-        // Export
-        //columns.XBound(c => c.EingangZb2Datum).Hidden(true);
-        //columns.XBound(c => c.EingangFahrzeugDatum).Hidden(true);
-        //columns.XBound(c => c.BereitmeldungDatum).Hidden(true);
-        //columns.XBound(c => c.SippCode).Hidden(true);
-        //columns.XBound(c => c.BatchId).Hidden(true);
-        //columns.XBound(c => c.Auftragsnummer).Hidden(true);
-        //columns.XBound(c => c.Zb2Nummer).Hidden(true); 
-        
-        
-        
-        
-        // columns.XBoundAll();   
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
