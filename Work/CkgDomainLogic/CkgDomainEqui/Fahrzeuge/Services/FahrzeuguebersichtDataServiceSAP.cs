@@ -51,7 +51,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             SAP.Execute();
 
             var sapItemsEquis = Z_DPM_LIST_POOLS_001.GT_WEB.GetExportList(SAP);
-            var webItemsEquis = AppModelMappings.Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeug.Copy(sapItemsEquis).ToList();
+            var webItemsEquis = AppModelMappings.Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht.Copy(sapItemsEquis).ToList();
 
             return webItemsEquis;            
         }

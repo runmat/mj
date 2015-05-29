@@ -311,7 +311,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht> Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeug
+        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht> Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht
         {
             get
             {
@@ -364,7 +364,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        static public ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fahrzeuguebersicht> Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeug
+        static public ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fahrzeuguebersicht> Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeuguebersicht
         {
             get
             {
@@ -394,7 +394,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        static public ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fahrzeuguebersicht> Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFahrzeug
+        static public ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fahrzeuguebersicht> Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFahrzeuguebersicht
         {
             get
             {
@@ -431,7 +431,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        static public void Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFahrzeug(IEnumerable<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT> sapItems, IEnumerable<Fahrzeuguebersicht> businessItems)
+        static public void Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFahrzeuguebersicht(IEnumerable<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT> sapItems, IEnumerable<Fahrzeuguebersicht> businessItems)
         {
             foreach (var businessItem in businessItems)
             {

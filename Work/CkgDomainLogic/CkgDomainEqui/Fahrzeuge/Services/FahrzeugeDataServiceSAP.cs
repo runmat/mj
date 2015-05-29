@@ -178,10 +178,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             SAP.Execute();
 
             var sapItemsData = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB.GetExportList(SAP);
-            var webItems = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeug.Copy(sapItemsData).ToList();
+            var webItems = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeuguebersicht.Copy(sapItemsData).ToList();
 
             var sapItemsText = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT.GetExportList(SAP);
-            AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFahrzeug(sapItemsText, webItems);
+            AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFahrzeuguebersicht(sapItemsText, webItems);
 
             return webItems;
         }
@@ -212,7 +212,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                     SAP.Execute();
 
                     var sapItemsData = Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB.GetExportList(SAP);
-                    webItems = AppModelMappings.Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFahrzeug.Copy(sapItemsData).ToList();
+                    webItems = AppModelMappings.Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFahrzeuguebersicht.Copy(sapItemsData).ToList();
                 }
                 ,
 
