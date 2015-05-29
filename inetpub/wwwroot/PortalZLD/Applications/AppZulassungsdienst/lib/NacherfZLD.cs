@@ -713,7 +713,7 @@ namespace AppZulassungsdienst.lib
             });
         }
 
-        public void SendVorgaengeToSap(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, string userName, string userVorname, string userNachname, bool versandZul = false)
+        public void SendVorgaengeToSap(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, string userName, string userVorname, string userNachname, bool versandZulDurchf = false)
         {
             ClearError();
 
@@ -749,7 +749,7 @@ namespace AppZulassungsdienst.lib
                 {
                     var kopf = item;
 
-                    if (!SelSofortabrechnung)
+                    if (!SelSofortabrechnung && !versandZulDurchf)
                     {
                         if (kopf.Belegart == "VZ" || kopf.Belegart == "VE" || kopf.Belegart == "AV" || kopf.Belegart == "AX")
                         {
@@ -806,7 +806,7 @@ namespace AppZulassungsdienst.lib
                     var webUserListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_WEBUSER_DATEN_From_Userdaten.CopyBack(new List<Userdaten> { uDaten });
                     SAP.ApplyImport(webUserListe);
                 }
-                else if (versandZul)
+                else if (versandZulDurchf)
                 {
                     Z_ZLD_IMP_NACHERF_DZLD2.Init(SAP);
 
@@ -839,7 +839,7 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     fehlerListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMPORT_SOFORT_ABRECH2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
-                else if (versandZul)
+                else if (versandZulDurchf)
                     fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF_DZLD2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF_DZLD2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
                 else
                     fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
@@ -858,7 +858,7 @@ namespace AppZulassungsdienst.lib
                 {
                     SofortabrechnungVerzeichnis = SAP.GetExportParameter("G_SA_PFAD");
                 }
-                else if (!versandZul)
+                else if (!versandZulDurchf)
                 {
                     tblBarquittungen = SAP.GetExportTable("GT_BARQ");
                 }

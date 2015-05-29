@@ -2541,10 +2541,18 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Documents\Templates\UploadBriefversand.csv" />
-    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
-    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
+    <None Include="Documents\Templates\UploadBriefversand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\Templates\UploadFahrzeugdaten.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\Templates\UploadSchluesselversand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Images\fahrer\fahrer.psd" />
     <None Include="Scripts\fileupload\jquery.min.map" />
     <Content Include="Views\Shared\Partial\LayoutPage\HtmlTag.cshtml" />
