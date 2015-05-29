@@ -48,14 +48,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         [XmlIgnore]
-        public List<Fahrzeuguebersicht> Fahrzeuge
+        public List<Fzg> Fahrzeuge
         {
             get { return PropertyCacheGet(() => DataService.GetFahrzeugeForZulassung()); }
             protected set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
-        public List<Fahrzeuguebersicht> FahrzeugeFiltered
+        public List<Fzg> FahrzeugeFiltered
         {
             get { return PropertyCacheGet(() => Fahrzeuge); }
             protected set { PropertyCacheSet(value); }
@@ -64,7 +64,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public bool IsFahrzeugSummary { get; set; }
 
         [XmlIgnore]
-        public List<Fahrzeuguebersicht> FahrzeugeCurrentFiltered
+        public List<Fzg> FahrzeugeCurrentFiltered
         {
             get { return IsFahrzeugSummary ? FahrzeugeSummaryFiltered : FahrzeugeFiltered; }
         }
@@ -112,7 +112,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         public string SelectedModelId { get; set; }
 
-        public List<Fahrzeuguebersicht> ZulassungenForPdiAndDate { get; set; }
+        public List<Fzg> ZulassungenForPdiAndDate { get; set; }
 
         public int ZulassungenAnzahlPdiStored { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == SelectedPdi).Sum(z => z.Amount); } }
 
@@ -145,7 +145,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get { return PropertyCacheGet(() => GetFahrzeugeGroupedByKey(g => g.Pdi, SortPdi)); }
         }
 
-        IEnumerable<string> GetFahrzeugeGroupedByKey(Func<Fahrzeuguebersicht, string> groupKey, Func<string, string> sortExpression = null)
+        IEnumerable<string> GetFahrzeugeGroupedByKey(Func<Fzg, string> groupKey, Func<string, string> sortExpression = null)
         {
             return new List<string> { Localize.DropdownDefaultOptionAll }
                         .Concat(Fahrzeuge.GroupBy(groupKey)
@@ -183,7 +183,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             SelectedPdi = null;
             SelectedModel = null;
             SelectedModelId = null;
-            ZulassungenForPdiAndDate = new List<Fahrzeuguebersicht>();
+            ZulassungenForPdiAndDate = new List<Fzg>();
 
             DataMarkForRefreshFahrzeugeSummary();
         }
@@ -220,7 +220,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
 
-        public void SelectFahrzeuge(bool select, Predicate<Fahrzeuguebersicht> filter, out int allSelectionCount, out int allCount)
+        public void SelectFahrzeuge(bool select, Predicate<Fzg> filter, out int allSelectionCount, out int allCount)
         {
             Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
@@ -292,7 +292,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         void GetZulassungenAnzahlForPdiAndDate()
         {
-            ZulassungenForPdiAndDate = new List<Fahrzeuguebersicht>();
+            ZulassungenForPdiAndDate = new List<Fzg>();
             if (SelectedZulassungsDatum == null)
                 return;
 
@@ -304,13 +304,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         #region Fahrzeug Summary
 
         [XmlIgnore]
-        public List<Fahrzeuguebersicht> FahrzeugeSummary
+        public List<Fzg> FahrzeugeSummary
         {
             get { return Fahrzeuge.Where(f => f.IsSelected).ToListOrEmptyList(); }
         }
 
         [XmlIgnore]
-        public List<Fahrzeuguebersicht> FahrzeugeSummaryFiltered
+        public List<Fzg> FahrzeugeSummaryFiltered
         {
             get { return PropertyCacheGet(() => FahrzeugeSummary); }
             protected set { PropertyCacheSet(value); }

@@ -170,7 +170,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItemsEquis;
         }
 
-        public List<Fahrzeuguebersicht> GetFahrzeugeForZulassung()
+        public List<Fzg> GetFahrzeugeForZulassung()
         {
             Z_M_EC_AVM_MELDUNGEN_PDI1.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
             SAP.SetImportParameter("I_VKORG", "1510");
@@ -178,10 +178,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             SAP.Execute();
 
             var sapItemsData = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB.GetExportList(SAP);
-            var webItems = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFahrzeuguebersicht.Copy(sapItemsData).ToList();
+            var webItems = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFzg.Copy(sapItemsData).ToList();
 
             var sapItemsText = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT.GetExportList(SAP);
-            AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFahrzeuguebersicht(sapItemsText, webItems);
+            AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFzg(sapItemsText, webItems);
 
             return webItems;
         }
@@ -198,9 +198,9 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItems;
         }
 
-        public List<Fahrzeuguebersicht> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage)
+        public List<Fzg> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage)
         {
-            var webItems = new List<Fahrzeuguebersicht>();
+            var webItems = new List<Fzg>();
 
             errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -212,7 +212,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                     SAP.Execute();
 
                     var sapItemsData = Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB.GetExportList(SAP);
-                    webItems = AppModelMappings.Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFahrzeuguebersicht.Copy(sapItemsData).ToList();
+                    webItems = AppModelMappings.Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFzg.Copy(sapItemsData).ToList();
                 }
                 ,
 
@@ -229,7 +229,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItems;
         }
 
-        public string ZulassungSave(List<Fahrzeuguebersicht> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
+        public string ZulassungSave(List<Fzg> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
         {
             var sperreErrorMessage = ZulassungFahrzeugeSperren(fahrzeuge);
             if (sperreErrorMessage.IsNotNullOrEmpty())
@@ -247,7 +247,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return zulassenErrorMessage;
         }
 
-        string ZulassungFahrzeugeSperren(List<Fahrzeuguebersicht> fahrzeuge)
+        string ZulassungFahrzeugeSperren(List<Fzg> fahrzeuge)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -276,7 +276,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return errorMessage;
         }
 
-        string ZulassungFahrzeugeZulassen(List<Fahrzeuguebersicht> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
+        string ZulassungFahrzeugeZulassen(List<Fzg> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 

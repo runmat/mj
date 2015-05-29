@@ -8,6 +8,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         public bool IsFilteredByExcelUpload;
 
+        [LocalizedDisplay(LocalizeConstants.VehicleHistory)]
+        public string ShowHistory { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string Carport { get; set; }
 
@@ -19,9 +22,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
-        public string KennzeichenSerie { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
         public DateTime? Zulassungsdatum { get; set; }
@@ -38,9 +38,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
 
+        public int StatusKey { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
         public string Zb2Nummer { get; set; }
-             
+
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string Auftragsnummer { get; set; }
 
@@ -48,7 +50,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string BatchId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
-        public string SippCode { get; set; }
+        public string SIPPCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
         public DateTime? EingangZb2Datum { get; set; }
@@ -62,61 +64,44 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
         public string Hersteller { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Pdi)]
-        public string Pdi { get; set; }
+        [LocalizedDisplay(LocalizeConstants.CommentInternal)]
+        public string BemerkungIntern { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Pdi)]
-        public string DadPdi { get; set; }
+        [LocalizedDisplay(LocalizeConstants.CommentExternal)]
+        public string BemerkungExtern { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
-        public string EquiNummer { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ColorCode)]
+        public string Farbcode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Color)]
-        public string Farbe { get; set; }
+        public string Farbname { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Remark)]
-        public string Bemerkung { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Tires)]
-        public string Reifen { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.NaviAvailable)]
-        public string Navi { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Towbar)]
-        public string Ahk { get; set; }
-
-        public bool IsSelected { get; set; }
-
-        public string InternalID { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Amount)]
-        public int Amount { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Model)]
-        public string ModellAsText
-        {
-            get { return string.Format("{0} / {1}",ModelID, Modell); }
-        }
-
-        [LocalizedDisplay(LocalizeConstants.OrderID)]
-        public string AuftragsNummer { get; set; }
-
-        public string FahrzeugAsText
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe
         {
             get
             {
-                return string.Format("{0} / {1}{2}{3}{4}{5}",
-                        ModelID, Modell, Fahrgestellnummer.PrependIfNotNull(", FIN "), Zb2Nummer.PrependIfNotNull(", ZBII "),
-                        AuftragsNummer.FormatIfNotNull(", <strong>Beleg-Nr {this}</strong>"),
-                        (IsValid ? "" :  ValidationMessage.PrependIfNotNull("<br/>"))
-                    );
+                if (String.IsNullOrEmpty(Farbcode))
+                    return Farbname;
+
+                return String.Format("{0} ({1})", Farbname, Farbcode);
             }
         }
 
-        [LocalizedDisplay(LocalizeConstants.Message)]
-        public string ValidationMessage { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Comment)]
+        public string BemerkungSperre { get; set; }
 
-        public bool IsValid { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Disabled)]
+        public bool Gesperrt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.MessageNo)]
+        public string MeldungsNr { get; set; }
+
+        public string DadPdi { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string Bearbeitungsstatus { get; set; }
     }
 }

@@ -218,6 +218,7 @@
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtStatus.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtPDI.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
+    <Compile Include="Fahrzeuge\Models\Fzg.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
     <Compile Include="Fahrzeuge\Models\Treuhandberechtigung.cs" />
     <Compile Include="Fahrzeuge\Models\TreuhandverwaltungCsvUpload.cs" />
