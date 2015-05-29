@@ -63,14 +63,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
                            
         [XmlIgnore]
-        public List<Fahrzeug> Fahrzeuguebersichts
+        public List<Fahrzeuguebersicht> Fahrzeuguebersichts
         {
-            get { return PropertyCacheGet(() => new List<Fahrzeug>()); }
+            get { return PropertyCacheGet(() => new List<Fahrzeuguebersicht>()); }
             private set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
-        public List<Fahrzeug> FahrzeuguebersichtsFiltered
+        public List<Fahrzeuguebersicht> FahrzeuguebersichtsFiltered
         {
             get { return PropertyCacheGet(() => Fahrzeuguebersichts); }
             private set { PropertyCacheSet(value); }
@@ -160,7 +160,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             {
                                 
                 var filterList = Fahrzeuguebersichts.Intersect(UploadItems.Where(x => x.Fahrgestellnummer.IsNotNullOrEmpty()), 
-                                    new KeyEqualityComparer<Fahrzeug>(s => s.Fahrgestellnummer)).ToList();
+                                    new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Fahrgestellnummer)).ToList();
 
                 foreach (var item in filterList)
                 {
@@ -206,7 +206,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
 
-        public List<Fahrzeug> UploadItems { get; private set; }
+        public List<Fahrzeuguebersicht> UploadItems { get; private set; }
 
         public string CsvUploadFileName { get; private set; }
         public string CsvUploadServerFileName { get; private set; }
@@ -222,7 +222,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            IEnumerable<Fahrzeug> list = new ExcelDocumentFactory().ReadToDataTable<Fahrzeug>(CsvUploadServerFileName,
+            IEnumerable<Fahrzeuguebersicht> list = new ExcelDocumentFactory().ReadToDataTable<Fahrzeuguebersicht>(CsvUploadServerFileName,
                                                                                             true, "", CreateInstanceFromDatarow, ',', false, false).ToList();
             
             FileService.TryFileDelete(CsvUploadServerFileName);
@@ -234,9 +234,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return true;
         }
 
-        static Fahrzeug CreateInstanceFromDatarow(DataRow row)
+        static Fahrzeuguebersicht CreateInstanceFromDatarow(DataRow row)
         {
-            var item = new Fahrzeug
+            var item = new Fahrzeuguebersicht
             {                                
                 Fahrgestellnummer = row[0].ToString(),
                 Kennzeichen = row[1].ToString(),

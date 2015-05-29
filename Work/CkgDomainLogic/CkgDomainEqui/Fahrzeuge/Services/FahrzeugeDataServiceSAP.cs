@@ -170,7 +170,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItemsEquis;
         }
 
-        public List<Fahrzeug> GetFahrzeugeForZulassung()
+        public List<Fahrzeuguebersicht> GetFahrzeugeForZulassung()
         {
             Z_M_EC_AVM_MELDUNGEN_PDI1.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
             SAP.SetImportParameter("I_VKORG", "1510");
@@ -198,9 +198,9 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItems;
         }
 
-        public List<Fahrzeug> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage)
+        public List<Fahrzeuguebersicht> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage)
         {
-            var webItems = new List<Fahrzeug>();
+            var webItems = new List<Fahrzeuguebersicht>();
 
             errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -229,7 +229,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return webItems;
         }
 
-        public string ZulassungSave(List<Fahrzeug> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
+        public string ZulassungSave(List<Fahrzeuguebersicht> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
         {
             var sperreErrorMessage = ZulassungFahrzeugeSperren(fahrzeuge);
             if (sperreErrorMessage.IsNotNullOrEmpty())
@@ -247,7 +247,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return zulassenErrorMessage;
         }
 
-        string ZulassungFahrzeugeSperren(List<Fahrzeug> fahrzeuge)
+        string ZulassungFahrzeugeSperren(List<Fahrzeuguebersicht> fahrzeuge)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -276,7 +276,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return errorMessage;
         }
 
-        string ZulassungFahrzeugeZulassen(List<Fahrzeug> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
+        string ZulassungFahrzeugeZulassen(List<Fahrzeuguebersicht> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 

@@ -20,7 +20,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
         }
               
-        public List<Fahrzeug> GetFahrzeuguebersicht(FahrzeuguebersichtSelektor selector)
+        public List<Fahrzeuguebersicht> GetFahrzeuguebersicht(FahrzeuguebersichtSelektor selector)
         {
             Z_DPM_LIST_POOLS_001.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
                         

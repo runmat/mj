@@ -213,7 +213,7 @@
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\Dispositionsliste.cs" />
     <Compile Include="Fahrzeuge\Models\DispositionslisteSelektor.cs" />
-    <Compile Include="Fahrzeuge\Models\Fahrzeug.cs" />
+    <Compile Include="Fahrzeuge\Models\Fahrzeuguebersicht.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtStatus.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtPDI.cs" />

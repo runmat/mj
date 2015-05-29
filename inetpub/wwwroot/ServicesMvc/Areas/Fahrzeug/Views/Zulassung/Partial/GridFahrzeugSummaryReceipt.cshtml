@@ -4,7 +4,7 @@
 
 <div id="GridFahrzeugSummaryWrapper">
     @(Html.XTelerik()
-        .XGrid<Fahrzeug>()
+        .XGrid<Fahrzeuguebersicht>()
         .Name(gridName)
         .XAjaxDataBinding("FahrzeugSummaryAjaxBinding", "Zulassung")
         .Columns(columns =>

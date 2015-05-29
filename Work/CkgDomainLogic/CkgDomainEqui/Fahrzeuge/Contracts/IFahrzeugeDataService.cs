@@ -22,12 +22,12 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         List<Unfallmeldung> GetUnfallmeldungen(UnfallmeldungenSelektor selektor);
 
-        List<Fahrzeug> GetFahrzeugeForZulassung();
+        List<Fahrzeuguebersicht> GetFahrzeugeForZulassung();
 
         List<KennzeichenSerie> GetKennzeichenSerie();
 
-        List<Fahrzeug> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
+        List<Fahrzeuguebersicht> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
 
-        string ZulassungSave(List<Fahrzeug> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie);
+        string ZulassungSave(List<Fahrzeuguebersicht> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie);
     }
 }
