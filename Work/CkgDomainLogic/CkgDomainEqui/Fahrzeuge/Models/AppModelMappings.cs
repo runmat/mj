@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable InconsistentNaming
+
+using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Models;
 using System.Linq;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
@@ -10,7 +13,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         #region Load from Repository
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_ABM_LIST.ET_ABM_LIST, AbgemeldetesFahrzeug> Z_DPM_CD_ABM_LIST__ET_ABM_LIST_To_AbgemeldetesFahrzeug
         {
             get
@@ -40,7 +42,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_ABM_HIST.ET_ABM_HIST, AbmeldeHistorie> Z_DPM_CD_ABM_HIST__ET_ABM_HIST_To_AbmeldeHistorie
         {
             get
@@ -160,17 +161,37 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung>(
-                     new Dictionary<string, string> ()
-                    ,(sap, business) => {
-                        business.Anlagedatum = sap.ERDAT;
+                     new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.AnlageDatum = sap.ERDAT;
                         business.WebUser = sap.ERNAM;
                         business.Kennzeichen = sap.LICENSE_NUM;
                         business.Fahrgestellnummer = sap.CHASSIS_NUM;
-                        business.Erstzulassung = sap.ERSTZULDAT;
-                        business.Kennzeicheneingang = sap.EG_KENNZ;
-                        business.Abmeldung = sap.ABMDT;
+                        business.ErstzulassungDatum = sap.ERSTZULDAT;
+                        business.KennzeicheneingangsDatum = sap.EG_KENNZ;
+                        business.AbmeldeDatum = sap.ABMDT;
                         business.StationsCode = sap.STATION;
-                        business.Mahnstufe = sap.MAHNSTUFE;                        
+                        business.Mahnstufe = sap.MAHNSTUFE;
+                        business.UnfallNr = sap.UNFALL_NR;
+                        business.StornoDatum = sap.STORNODAT;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS, Unfallmeldung> Z_DPM_UF_EQUI_SUCHE_To_Unfallmeldungen
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS, Unfallmeldung>(
+                     new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.BriefNummer = sap.TIDNR;
+                        business.UnitNummer = sap.ZZREFERENZ1;
+                        business.EquiNr = sap.EQUNR;
                     }));
             }
         }
@@ -360,6 +381,29 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     {
                         business.PDIKey = sap.KUNPDI;
                         business.PDIText = sap.PDIWEB;
+                    }));
+            }
+        }
+
+        // Z_M_ECA_TAB_BESTAND
+        static public ModelMapping<Z_DPM_CHANGE_ADDR002_001.GT_OUT, Adresse> Z_DPM_CHANGE_ADDR002_001_To_Adresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CHANGE_ADDR002_001.GT_OUT, Adresse>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.KundenNr = sap.EX_KUNNR;
+                        business.Name1 = sap.NAME1;
+                        business.Name2 = sap.NAME2;
+                        business.Strasse = sap.STREET;
+                        business.HausNr = sap.HOUSE_NUM1;
+                        business.PLZ = sap.POST_CODE1;
+                        business.Ort = sap.CITY1;
+
+                        business.GetAutoSelectStringCustom = () => string.Format("{0} - {1}, {2} {3}", 
+                            business.KundenNr, business.Name1, business.PLZ, business.Ort);
                     }));
             }
         }
