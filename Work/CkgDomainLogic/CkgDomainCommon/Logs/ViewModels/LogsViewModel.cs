@@ -121,6 +121,31 @@ namespace CkgDomainLogic.Logs.ViewModels
         [XmlIgnore]
         public List<WebServiceTrafficLogTable> AllWebServiceTrafficLogTables { get { return DataService.GetWebServiceTrafficLogTables(); } }
 
+        public ErrorLogItemSelector ErrorLogItemSelector
+        {
+            get
+            {
+                return PropertyCacheGet(() => new ErrorLogItemSelector
+                {
+                    LogsConnection = DataService.LogsDefaultConnectionString,
+                });
+            }
+            set { PropertyCacheSet(value); }
+        }
+
+        public List<ErrorLogItem> ErrorLogItems
+        {
+            get { return PropertyCacheGet(() => new List<ErrorLogItem>()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<ErrorLogItem> ErrorLogItemsFiltered
+        {
+            get { return PropertyCacheGet(() => ErrorLogItems); }
+            private set { PropertyCacheSet(value); }
+        }
+
         public List<MpApplicationTranslated> Applications { get { return PropertyCacheGet(() => DataService.Applications); } }
 
         public List<MpCustomer> Customers { get { return PropertyCacheGet(() => DataService.Customers); } }
@@ -150,6 +175,7 @@ namespace CkgDomainLogic.Logs.ViewModels
             PropertyCacheClear(this, m => m.PageVisitLogItemsFiltered);
             PropertyCacheClear(this, m => m.PageVisitLogItemsDetailFiltered);
             PropertyCacheClear(this, m => m.WebServiceTrafficLogItemsUIFiltered);
+            PropertyCacheClear(this, m => m.ErrorLogItemsFiltered);
 
             PropertyCacheClear(this, m => m.Applications);
             PropertyCacheClear(this, m => m.Customers);
@@ -176,6 +202,11 @@ namespace CkgDomainLogic.Logs.ViewModels
             WebServiceTrafficLogItemsUIFiltered = WebServiceTrafficLogItemsUI.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
+        public void FilterErrorLogItems(string filterValue, string filterProperties)
+        {
+            ErrorLogItemsFiltered = ErrorLogItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
         public SapCallContext LastSapCallContext { get; private set; }
 
         public void GetSapCallContext(int id)
@@ -183,7 +214,7 @@ namespace CkgDomainLogic.Logs.ViewModels
             var sapLogItemDetailed = DataService.GetSapLogItemDetailed(id);
 
             DataTable impParams = null;
-            if (sapLogItemDetailed.ImportParameters != null)
+            if (sapLogItemDetailed.ImportParameters.IsNotNullOrEmpty())
             {
                 try
                 {
@@ -195,8 +226,8 @@ namespace CkgDomainLogic.Logs.ViewModels
                 }                
             }
 
-            List<DataTable> impTables = null;
-            if (sapLogItemDetailed.ImportTables != null)
+            var impTables = new List<DataTable>();
+            if (sapLogItemDetailed.ImportTables.IsNotNullOrEmpty())
             {
                 try
                 {
@@ -209,7 +240,7 @@ namespace CkgDomainLogic.Logs.ViewModels
             }
 
             DataTable expParams = null;
-            if (sapLogItemDetailed.ExportParameters != null)
+            if (sapLogItemDetailed.ExportParameters.IsNotNullOrEmpty())
             {
                 try
                 {
@@ -221,20 +252,22 @@ namespace CkgDomainLogic.Logs.ViewModels
                 }
             }
 
-            string strExpTables;
-
-            // Habe ich einen Base64 encoded String?, sonst nehme ich den Wert aus der DB
-            try
+            var strExpTables = "";
+            if (sapLogItemDetailed.ExportTables.IsNotNullOrEmpty())
             {
-                strExpTables = XmlService.DecompressString(sapLogItemDetailed.ExportTables);
-            }
-            catch (Exception)
-            {
-                strExpTables = sapLogItemDetailed.ExportTables;
-            }
+                // Habe ich einen Base64 encoded String?, sonst nehme ich den Wert aus der DB
+                try
+                {
+                    strExpTables = XmlService.DecompressString(sapLogItemDetailed.ExportTables);
+                }
+                catch (Exception)
+                {
+                    strExpTables = sapLogItemDetailed.ExportTables;
+                }
+            }        
 
             var expTables = new List<ExportTable>();
-            if (strExpTables != null)
+            if (strExpTables.IsNotNullOrEmpty())
             {
                 var teile = strExpTables.Replace('\r', '\n').Split('\n');
                 for (int i = 0; i < teile.Length; i++)
@@ -375,9 +408,33 @@ namespace CkgDomainLogic.Logs.ViewModels
             return true;
         }
 
-        public WebServiceTrafficLogItem GetDetails(int id)
+        public WebServiceTrafficLogItem GetWebServiceTrafficLogItemDetails(int id)
         {
             return WebServiceTrafficLogItems.Find(i => i.Id == id);
+        }
+
+        public bool LoadErrorLogItems(ErrorLogItemSelector newErrorLogItemSelector)
+        {
+            if (ErrorLogItemSelector.LogsConnection != newErrorLogItemSelector.LogsConnection)
+            {
+                // Logs connection changed ==> reset filters that depend on server specifiy keys (app ids, user ids, customer ids, etc)
+
+                DataService.LogsConnectionString = newErrorLogItemSelector.LogsConnection;
+                ErrorLogItemSelector = newErrorLogItemSelector;
+
+                DataInit();
+            }
+
+            ErrorLogItemSelector = newErrorLogItemSelector;
+
+            ErrorLogItems = DataService.GetErrorLogItems(ErrorLogItemSelector);
+            DataMarkForRefresh();
+            return true;
+        }
+
+        public ErrorLogItem GetErrorLogItemDetails(string id)
+        {
+            return ErrorLogItems.Find(i => i.ErrorId == id);
         }
     }
 }

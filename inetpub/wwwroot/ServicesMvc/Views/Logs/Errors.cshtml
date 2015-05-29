@@ -1,0 +1,86 @@
+﻿@model CkgDomainLogic.Logs.ViewModels.LogsViewModel 
+
+@Html.Partial("Partial/Common")
+
+<h3 class="page-title" id="headerTitle">Logs <small>Errors</small> </h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Errors/SucheErrorLogItems", Model.ErrorLogItemSelector)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+}
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+    }
+    
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowErrorLogItemsSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridLogsErrors");
+
+        $("#divGrid").slideDown();
+    }
+
+    function OnDataBound_GridLogsErrors() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridLogsErrors() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridLogsErrors() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnRowDataBound_GridLogsErrors(e) {
+    }
+
+    function ShowErrorLogDetails(id) {
+        $.ajax(
+            {
+                type: "POST",
+                url: "ShowErrorLogDetails",
+                data: { id: id },
+                loadingShow: true,
+                success: function (result) {
+                    var windowElement = $.telerik.window.create({
+                        title: "Details",
+                        html: result,
+                        contentUrl: "",
+                        actions: ["Close"],
+                        modal: true,
+                        width: 800,
+                        height: 600,
+                        resizable: false,
+                        draggable: false,
+                        scrollable: true,
+                        onClose: function () {
+                            $("#popupWindow").data('tWindow').destroy();
+                        }
+                    });
+                    windowElement.attr('id', 'popupWindow');
+                    var window = $(windowElement).data('tWindow');
+                    window.center().open();
+                }
+            });
+
+        return false;
+    }
+    
+</script>

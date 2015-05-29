@@ -4392,6 +4392,10 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
+    <Content Include="Views\Logs\Errors.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\Grid.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\SucheErrorLogItems.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
