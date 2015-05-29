@@ -1,5 +1,23 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeugSperrenVerschiebenViewModel
+
 @{ var gridName = "GridFzgSperrenVerschieben"; }
+
+@if (Model.EditMode)
+{
+    <h4 class="margin-bottom-20">
+        @Localize.PleaseChooseOneOrMoreVehicles: 
+        <span id="FzgSperrenVerschiebenCount" class="alert alert-success margin-left-15 hide">
+            <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+        </span>
+    </h4> 
+    
+    <div id="divFzgSperrenVerschiebenFilter" class="form-horizontal label-width-150">
+        @Html.FormRadioButtonListFor(m => m.FahrzeugSelektor.Auswahl, Model.FahrzeugSelektor.AuswahlOptionen.ToSelectList())
+
+        @Html.FormCheckBoxFor(m => m.FahrzeugSelektor.NurMitBemerkung, labelHidden: true)
+    </div>
+}
 
 @(Html.Telerik()
     .Grid<Fahrzeuguebersicht>()
@@ -8,10 +26,11 @@
     .Columns(columns =>
     {
         columns.XBound("")
-            .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenVerschieben($(this))' />")
-            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFzgSperrenVerschieben_OnAllSelectionChange($(this).is(\":checked\"))' />")
+            .ClientTemplate("<input type='checkbox' " + (Model.EditMode ? "" : "disabled") + " name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenVerschieben($(this))' />")
+            .HeaderTemplate("<input type='checkbox' " + (Model.EditMode ? "" : "disabled") + " id='uncheckAllRecords' onchange='GridFzgSperrenVerschieben_OnAllSelectionChange($(this).is(\":checked\"))' />")
             .Filterable(false);
-        
+
+        columns.XBound(c => c.Bearbeitungsstatus).Visible(!Model.EditMode);
         columns.XBound(c => c.Fahrgestellnummer);
         columns.XBound(c => c.Gesperrt);
         columns.XBound(c => c.Farbe);
@@ -24,7 +43,6 @@
         columns.XBound(c => c.BemerkungSperre);
         columns.XBound(c => c.BemerkungExtern);
         columns.XBound(c => c.BemerkungIntern);
-        columns.XBound(c => c.Bearbeitungsstatus);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFzgSperrenVerschieben"))
@@ -36,3 +54,26 @@
         commands.FilteredDataCommand("ExportFzgSperrenVerschiebenFilteredPDF", "Fahrzeuge");
     })
 )
+
+<div class="form-actions">
+    @if (Model.EditMode)
+    {
+        <button type="button" id="btnFzgSperren" class="btn blue hide" onclick=" FzgSperren(true); ">@Localize.Lock</button>
+        <button type="button" id="btnFzgEntsperren" class="btn blue hide" onclick=" FzgSperren(false); ">@Localize.Unlock</button>
+        <button type="button" id="btnFzgVerschieben" class="btn blue hide" onclick=" FzgVerschieben(); ">@Localize.Relocate</button>
+        <button type="button" id="btnFzgTextErfassen" class="btn blue hide" onclick=" FzgTextErfassen(); ">@Localize.EnterText</button>
+    }
+    else
+    {
+        <button type="button" id="btnRestartSperrenVerschieben" class="btn blue" onclick=" LocationReloadWithoutQueryString(); ">@Localize.Continue</button>
+    }
+</div>
+
+<script type="text/javascript">
+    $('#divFzgSperrenVerschiebenFilter').on('change', ':radio', function (e) {
+        FilterFzgSperrenVerschiebenData();
+    });
+    $('#divFzgSperrenVerschiebenFilter').on('change', ':checkbox', function (e) {
+        FilterFzgSperrenVerschiebenData();
+    });
+</script>

@@ -34,6 +34,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
+                if (!EditMode)
+                    return FahrzeugeGesamt;
+
                 var liste = (FahrzeugSelektor.NurMitBemerkung
                                  ? FahrzeugeGesamt.Where(f =>
                                      f.BemerkungSperre.IsNotNullOrEmpty() || f.BemerkungIntern.IsNotNullOrEmpty() ||
@@ -51,6 +54,26 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     default:
                         return new List<Fahrzeuguebersicht>();
                 }
+            }
+        }
+
+        [XmlIgnore]
+        public List<Fahrzeuguebersicht> SelektierteFahrzeuge
+        {
+            get { return Fahrzeuge.FindAll(e => e.IsSelected); }
+        }
+
+        public bool EditMode { get; set; }
+
+        [XmlIgnore]
+        public List<Fahrzeuguebersicht> GridItems
+        {
+            get
+            {
+                if (EditMode)
+                    return FahrzeugeFiltered;
+
+                return SelektierteFahrzeuge;
             }
         }
 
@@ -80,6 +103,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void LoadFahrzeuge()
         {
+            EditMode = true;
+
             FahrzeugeGesamt = DataService.GetFahrzeuge();
 
             FahrzeugeGesamt.ForEach(f => f.Farbname = GetFarbName(f.Farbcode));
@@ -102,29 +127,35 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             FahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        public void SelectFahrzeug(string vin, bool select)
         {
-            allSelectionCount = 0;
-            var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
-            if (fzg == null)
-                return;
+            if (EditMode)
+            {
+                var fzg = Fahrzeuge.FirstOrDefault(f => f.Fahrgestellnummer == vin);
+                if (fzg == null)
+                    return;
 
-            fzg.IsSelected = select;
-            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+                fzg.IsSelected = select;
+            }
         }
 
-        public void SelectFahrzeuge(bool select, out int allSelectionCount)
+        public void SelectFahrzeuge(bool select)
         {
-            FahrzeugeFiltered.ForEach(f => f.IsSelected = select);
-
-            allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
+            if (EditMode)
+                FahrzeugeFiltered.ForEach(f => f.IsSelected = select);
         }
 
         public FahrzeugSperrenVerschieben GetUiModelSperrenVerschieben(bool sperren = true)
         {
             var item = Fahrzeuge.FirstOrDefault(f => f.IsSelected);
 
-            return new FahrzeugSperrenVerschieben { Sperren = sperren, Sperrtext = (item != null ? item.BemerkungSperre : "") };
+            return new FahrzeugSperrenVerschieben
+                {
+                    Sperren = sperren,
+                    Sperrtext = (item != null ? item.BemerkungSperre : ""),
+                    BemerkungIntern = (item != null ? item.BemerkungIntern : ""),
+                    BemerkungExtern = (item != null ? item.BemerkungExtern : "")
+                };
         }
 
         public bool SperrenMoeglich(bool sperren)
@@ -134,6 +165,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void FahrzeugeSperren(ref FahrzeugSperrenVerschieben model, ModelStateDictionary state)
         {
+            EditMode = false;
+
             var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
 
             var anzOk = DataService.FahrzeugeSperren(model.Sperren, model.Sperrtext, ref fzge);
@@ -151,6 +184,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void FahrzeugeVerschieben(ref FahrzeugSperrenVerschieben model)
         {
+            EditMode = false;
+
             var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
 
             var anzOk = DataService.FahrzeugeVerschieben(model.ZielPdi, ref fzge);
@@ -169,6 +204,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void FahrzeugeTexteErfassen(ref FahrzeugSperrenVerschieben model)
         {
+            EditMode = false;
+
             var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
 
             var anzOk = DataService.FahrzeugeTexteErfassen(model.BemerkungIntern, model.BemerkungExtern, ref fzge);

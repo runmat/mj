@@ -3,30 +3,10 @@
 
 <h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_SperrenVerschieben<small></small></h3>
 
-<h4 class="margin-bottom-20">
-    @Localize.PleaseChooseOneOrMoreVehicles: 
-    <span id="FzgSperrenVerschiebenCount" class="alert alert-success margin-left-15 hide">
-        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
-    </span>
-</h4> 
-
 @Html.SpanAlert("Message")
-
-<div id="divFzgSperrenVerschiebenFilter" class="form-horizontal label-width-150">
-    @Html.FormRadioButtonListFor(m => m.FahrzeugSelektor.Auswahl, Model.FahrzeugSelektor.AuswahlOptionen.ToSelectList())
-
-    @Html.FormCheckBoxFor(m => m.FahrzeugSelektor.NurMitBemerkung, labelHidden: true)
-</div>
 
 <div id="divFzgSperrenVerschiebenGrid">
     @Html.Partial("SperrenVerschieben/Grid", Model)
-</div>
-
-<div class="form-actions">
-    <button type="button" id="btnFzgSperren" class="btn blue hide" onclick="FzgSperren(true);">@Localize.Lock</button>
-    <button type="button" id="btnFzgEntsperren" class="btn blue hide" onclick="FzgSperren(false);">@Localize.Unlock</button>
-    <button type="button" id="btnFzgVerschieben" class="btn blue hide" onclick="FzgVerschieben();">@Localize.Relocate</button>
-    <button type="button" id="btnFzgTextErfassen" class="btn blue hide" onclick="FzgTextErfassen();">@Localize.EnterText</button>
 </div>
 
 <script type="text/javascript">
@@ -35,13 +15,6 @@
 
     function FormPreparePrivate() {
         GridAllColumnFilterApplyToGrid("GridFzgSperrenVerschieben");
-
-        $('#divFzgSperrenVerschiebenFilter').on('change', ':radio', function (e) {
-            FilterFzgSperrenVerschiebenData();
-        });
-        $('#divFzgSperrenVerschiebenFilter').on('change', ':checkbox', function (e) {
-            FilterFzgSperrenVerschiebenData();
-        });
     }
 
     function FormPreparePrivateAjax() {
@@ -92,7 +65,7 @@
             data: { auswahl: auswahl, nurMitBemerkung: nurMitBem },
             success: function (result) {
                 FormPreparePrivateAjax();
-                GridRefresh();
+                GridFzgSperrenVerschieben_OnAllSelectionChange(false);
                 setTimeout(function () {
                     GetGrid().pageTo(1);
                 }, 500);
@@ -220,8 +193,8 @@
     function AjaxFormFzgSperrenComplete() {
         if (_modelIsValid) {
             $("#FzgSperrenDialog").data("tWindow").close();
-            GridRefresh();
             SpanAlertSuccess("Message", _sperrenVerschiebenResult, 5000);
+            UpdateGridAjax();
         }
     }
 
@@ -255,8 +228,8 @@
     function AjaxFormFzgVerschiebenComplete() {
         if (_modelIsValid) {
             $("#FzgVerschiebenDialog").data("tWindow").close();
-            GridRefresh();
             SpanAlertSuccess("Message", _sperrenVerschiebenResult, 5000);
+            UpdateGridAjax();
         }
     }
 
@@ -290,9 +263,22 @@
     function AjaxFormFzgTextErfassenComplete() {
         if (_modelIsValid) {
             $("#FzgTextErfassenDialog").data("tWindow").close();
-            GridRefresh();
             SpanAlertSuccess("Message", _sperrenVerschiebenResult, 5000);
+            UpdateGridAjax();
         }
+    }
+
+    function UpdateGridAjax() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "UpdateGridFahrzeugeSperrenVerschieben",
+            success: function (result) {
+                $("#divFzgSperrenVerschiebenGrid").html(result);
+                GridAllColumnFilterApplyToGrid("GridFzgSperrenVerschieben");
+            }
+        });
     }
 
 </script>

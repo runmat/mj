@@ -95,6 +95,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                     SAP.SetImportParameter("I_ZZCARPORT", fzg.DadPdi);
                     SAP.SetImportParameter("I_ZZDATBEM", jetzt);
 
+                    // Bemerkungen müssen - obwohl vom User nicht änderbar - ans Bapi übergeben werden, gehen sonst verloren!
+                    var bemerkungen = new List<Z_M_EC_AVM_PDIWECHSEL.ZZBEMERKUNG> { new Z_M_EC_AVM_PDIWECHSEL.ZZBEMERKUNG { TDLINE = fzg.BemerkungSperre } };
+                    SAP.ApplyImport(bemerkungen);
+
                     SAP.Execute();
 
                     if (SAP.ResultCode == 0)

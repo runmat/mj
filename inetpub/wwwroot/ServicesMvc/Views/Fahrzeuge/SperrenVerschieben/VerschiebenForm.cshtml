@@ -9,6 +9,7 @@
         @Html.FormValidationSummary()
         
         @Html.HiddenFor(m => m.Message)
+        @Html.HiddenFor(m => m.Sperrtext)
         
         @Html.FormDropDownListFor(m => m.ZielPdi, (ViewBag.AllePdis as List<FahrzeuguebersichtPDI>).ToSelectList("PDIKey", "PDIText"), new { @class = "m-wrap" })
         

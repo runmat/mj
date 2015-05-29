@@ -22,10 +22,16 @@ namespace ServicesMvc.Controllers
             return View(SperrenVerschiebenViewModel);
         }
 
+        [HttpPost]
+        public ActionResult UpdateGridFahrzeugeSperrenVerschieben()
+        {
+            return PartialView("SperrenVerschieben/Grid", SperrenVerschiebenViewModel);
+        }
+
         [GridAction]
         public ActionResult FzgSperrenVerschiebenAjaxBinding()
         {
-            return View(new GridModel(SperrenVerschiebenViewModel.FahrzeugeFiltered));
+            return View(new GridModel(SperrenVerschiebenViewModel.GridItems));
         }
 
         [HttpPost]
@@ -48,13 +54,12 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public JsonResult FzgSperrenVerschiebenSelectionChanged(string vin, bool isChecked)
         {
-            int allSelectionCount;
             if (vin.IsNullOrEmpty())
-                SperrenVerschiebenViewModel.SelectFahrzeuge(isChecked, out allSelectionCount);
+                SperrenVerschiebenViewModel.SelectFahrzeuge(isChecked);
             else
-                SperrenVerschiebenViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                SperrenVerschiebenViewModel.SelectFahrzeug(vin, isChecked);
 
-            return Json(new { allSelectionCount });
+            return Json(new { allSelectionCount = SperrenVerschiebenViewModel.SelektierteFahrzeuge.Count });
         }
 
         [HttpPost]
@@ -110,7 +115,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFzgSperrenVerschiebenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = SperrenVerschiebenViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = SperrenVerschiebenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Fahrzeuge_SperrenVerschieben, dt);
 
             return new EmptyResult();
@@ -118,7 +123,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportFzgSperrenVerschiebenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = SperrenVerschiebenViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = SperrenVerschiebenViewModel.GridItems.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Fahrzeuge_SperrenVerschieben, dt, landscapeOrientation: true);
 
             return new EmptyResult();
