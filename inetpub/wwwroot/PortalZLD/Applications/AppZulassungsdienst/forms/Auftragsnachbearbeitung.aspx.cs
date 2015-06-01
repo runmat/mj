@@ -86,7 +86,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenDisplay.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr).ToList();
+                rgPositionenDisplay.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             }
             else
             {
@@ -156,7 +156,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenEdit.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr).ToList();
+                rgPositionenEdit.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             }
             else
             {

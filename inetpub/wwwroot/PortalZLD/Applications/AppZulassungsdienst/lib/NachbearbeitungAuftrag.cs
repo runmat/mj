@@ -93,7 +93,7 @@ namespace AppZulassungsdienst.lib
                         AktuellerVorgang.Kopfdaten = AppModelMappings.Z_ZLD_STO_GET_ORDER2_ES_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten);
                         AktuellerVorgang.Bankdaten = AppModelMappings.Z_ZLD_STO_GET_ORDER2_ES_BANK_To_ZLDBankdaten.Copy(sapBankdaten);
                         AktuellerVorgang.Adressdaten = AppModelMappings.Z_ZLD_STO_GET_ORDER2_GT_ADRS_To_ZLDAdressdaten.Copy(sapAdresse);
-                        AktuellerVorgang.Positionen = AppModelMappings.Z_ZLD_STO_GET_ORDER2_GT_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.PositionsNr).ToList();
+                        AktuellerVorgang.Positionen = AppModelMappings.Z_ZLD_STO_GET_ORDER2_GT_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
                     }
                 });
         }

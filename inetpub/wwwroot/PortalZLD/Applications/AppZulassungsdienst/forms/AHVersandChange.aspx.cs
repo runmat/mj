@@ -358,7 +358,7 @@ namespace AppZulassungsdienst.forms
             txtBemerk.Text = kopfdaten.Bemerkung;
 
             // Dropdowns und dazugehörige Textboxen füllen
-            GridView1.DataSource = objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr).ToList();
+            GridView1.DataSource = objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             GridView1.DataBind();
 
             DataView tmpDView = new DataView(objCommon.tblKennzGroesse, "Matnr = 598", "Matnr", DataViewRowState.CurrentRows);

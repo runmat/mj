@@ -607,7 +607,7 @@ namespace AppZulassungsdienst.forms
 
             DataTable tblData = CreatePosTable();
 
-            foreach (var item in objVorerf.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr))
+            foreach (var item in objVorerf.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr.ToInt(0)))
             {
                 DataRow tblRow = tblData.NewRow();
 
@@ -1320,7 +1320,7 @@ namespace AppZulassungsdienst.forms
                 ddl.DataTextField = "Name";
                 ddl.DataBind();
 
-                DataRow[] dRows = tblData.Select("ID_POS =" + lblID_POS.Text);
+                DataRow[] dRows = tblData.Select("ID_POS='" + lblID_POS.Text + "'");
                 if (dRows.Length == 0)
                 {
                     txtBox.Text = tblData.Rows[i]["Search"].ToString();

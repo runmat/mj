@@ -227,7 +227,7 @@ namespace AppZulassungsdienst.lib
                     var kopfdaten = item;
                     var bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == kopfdaten.SapId, new ZLDBankdaten());
                     var adresse = _lstAdressen.FirstOrDefault(a => a.SapId == kopfdaten.SapId, new ZLDAdressdaten());
-                    var positionen = _lstPositionen.Where(p => p.SapId == kopfdaten.SapId).OrderBy(p => p.PositionsNr).ToList();
+                    var positionen = _lstPositionen.Where(p => p.SapId == kopfdaten.SapId).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
 
                     AddVorgangToVorgangsliste(kopfdaten, bankdaten, adresse, positionen);
                 }
@@ -312,7 +312,7 @@ namespace AppZulassungsdienst.lib
                 AktuellerVorgang.Kopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == sapId, new ZLDKopfdaten());
                 AktuellerVorgang.Bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == sapId, new ZLDBankdaten());
                 AktuellerVorgang.Adressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == sapId, new ZLDAdressdaten());
-                AktuellerVorgang.Positionen = _lstPositionen.Where(p => p.SapId == sapId).OrderBy(p => p.PositionsNr).ToList();
+                AktuellerVorgang.Positionen = _lstPositionen.Where(p => p.SapId == sapId).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             }
             catch (Exception ex)
             {
@@ -915,7 +915,7 @@ namespace AppZulassungsdienst.lib
                 AktuellerVorgang.Kopfdaten = AppModelMappings.Z_ZLD_GET_ORDER2_GS_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten);
                 AktuellerVorgang.Bankdaten = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten);
                 AktuellerVorgang.Adressdaten = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdresse);
-                AktuellerVorgang.Positionen = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.PositionsNr).ToList();
+                AktuellerVorgang.Positionen = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             });
         }
 
@@ -1110,7 +1110,7 @@ namespace AppZulassungsdienst.lib
             var tmpKopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == AktuellerVorgang.Kopfdaten.SapId);
             var tmpBankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == AktuellerVorgang.Kopfdaten.SapId);
             var tmpAdressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == AktuellerVorgang.Kopfdaten.SapId);
-            var tmpPositionen = _lstPositionen.Where(p => p.SapId == AktuellerVorgang.Kopfdaten.SapId).OrderBy(p => p.PositionsNr).ToList();
+            var tmpPositionen = _lstPositionen.Where(p => p.SapId == AktuellerVorgang.Kopfdaten.SapId).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
 
             if (tmpKopfdaten != null)
                 ModelMapping.Copy(AktuellerVorgang.Kopfdaten, tmpKopfdaten);

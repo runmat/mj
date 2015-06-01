@@ -104,7 +104,7 @@ namespace AppZulassungsdienst.forms
 
             proofdifferentHauptMatnr(ref tblData);
 
-            GetDiensleitungData(ref tblData, false);
+            GetDiensleitungDataforPrice(ref tblData);
 
             kopfdaten.BarzahlungKunde = chkBar.Checked;
 
@@ -140,7 +140,7 @@ namespace AppZulassungsdienst.forms
             hfKunnr.Value = txtKunnr.Text;
 
             UpdateDlTableWithPrizes(ref tblData);
-            
+
             DataView tmpDataView = new DataView(tblData) {RowFilter = "IsNull(PosLoesch,'') <> 'L'"};
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
@@ -502,6 +502,7 @@ namespace AppZulassungsdienst.forms
         protected void cmdNewDLPrice_Click(object sender, EventArgs e)
         {
             lblError.Text = "";
+
             DataTable tblData = (DataTable)Session["tblDienst"];
 
             cmdCreate.Enabled = true;
@@ -784,7 +785,7 @@ namespace AppZulassungsdienst.forms
 
             DataTable tblData = CreatePosTable();
 
-            foreach (var item in objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr))
+            foreach (var item in objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr.ToInt(0)))
             {
                 DataRow tblRow = tblData.NewRow();
 
@@ -928,7 +929,7 @@ namespace AppZulassungsdienst.forms
                     txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + "," + lblID_POS.ClientID + "," + lblOldMatnr.ClientID + ")");
                 }
 
-                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS =" + lblID_POS.Text);
+                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS='" + lblID_POS.Text + "'");
                 if (dRows.Length == 0)
                 {
                     txtBox.Text = tblData.Rows[i]["Search"].ToString();
@@ -1036,6 +1037,14 @@ namespace AppZulassungsdienst.forms
                 return false;
             }
 
+            if (!checkDlGrid(tblData))
+                return false;
+
+            return checkDate();
+        }
+
+        private Boolean checkDlGrid(DataTable tblData)
+        {
             var normalColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             var errorColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
 
@@ -1079,7 +1088,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
 
-            return checkDate();
+            return true;
         }
 
         /// <summary>
@@ -1219,7 +1228,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 DataTable tblData = (DataTable)Session["tblDienst"];
-                if (GetDiensleitungData(ref tblData, true))
+                if (GetDiensleitungData(ref tblData))
                 {
                     lblError.Text = "Dienstleistung geändert! Bitte auf Preis finden gehen!";
                     Session["tblDienst"] = tblData;
@@ -1304,7 +1313,7 @@ namespace AppZulassungsdienst.forms
 
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
 
-                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS =" + lblID_POS.Text);
+                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS='" + lblID_POS.Text + "'");
 
                 DataRow targetRow;
                 if (dRows.Length == 0)
@@ -2049,42 +2058,53 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Dienstleistungsdaten für die Preisfindung sammeln.
+        /// </summary>
+        /// <param name="tblData">interne Dienstleistungstabelle</param>
+        private void GetDiensleitungDataforPrice(ref DataTable tblData)
+        {
+            GetDiensleitungData(ref tblData, false);
+        }
+
+        /// <summary>
         /// Dienstleistungsdaten für die Speicherung sammeln.
         /// </summary>
         /// <param name="tblData">Gridtabelle</param>
-        /// <param name="exitIfHauptdlChanged"></param>
-        private Boolean GetDiensleitungData(ref DataTable tblData, bool exitIfHauptdlChanged)
+        /// <param name="exitIfDlChanged"></param>
+        private Boolean GetDiensleitungData(ref DataTable tblData, bool exitIfDlChanged = true)
         {
             proofDienstGrid(ref tblData);
 
             var positionen = objNacherf.AktuellerVorgang.Positionen;
 
-            foreach (DataRow item in tblData.Rows)
+            for (var i = 0; i < tblData.Rows.Count; i++)
             {
-                var dRow = item;
+                var dRow = tblData.Rows[i];
                 var materialNr = dRow["Value"].ToString();
 
                 if (materialNr != "0")
                 {
                     var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
-                    var pos = positionen.FirstOrDefault(p => p.PositionsNr == dRow["ID_POS"].ToString());
-                    if (pos != null)
+                    var dlPositionen = positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
+                    if (dlPositionen.Count > i)
                     {
-                        if (pos.MaterialNr != materialNr)
-                        {
-                            pos.MaterialNr = materialNr;
+                        var dlPos = dlPositionen[i];
 
-                            if (exitIfHauptdlChanged)
+                        if (dlPos.MaterialNr != materialNr)
+                        {
+                            if (exitIfDlChanged)
                                 return true;
+
+                            dlPos.MaterialNr = materialNr;
                         }
 
-                        var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == pos.MaterialNr);
+                        var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == dlPos.MaterialNr);
 
-                        pos.MaterialName = matbez;
-                        pos.Preis = dRow["Preis"].ToString().ToDecimal(0);
-                        pos.Menge = dRow["Menge"].ToString().ToDecimal(1);
-                        pos.WebBearbeitungsStatus = dRow["PosLoesch"].ToString();
+                        dlPos.MaterialName = matbez;
+                        dlPos.Preis = dRow["Preis"].ToString().ToDecimal(0);
+                        dlPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
+                        dlPos.WebBearbeitungsStatus = dRow["PosLoesch"].ToString();
 
                         var gebuehrenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "G");
                         if (gebuehrenPos != null && mat != null)
@@ -2117,10 +2137,6 @@ namespace AppZulassungsdienst.forms
                         {
                             steuerPos.Preis = txtSteuer.Text.ToDecimal(0);
                         }
-                    }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("grrr");
                     }
                 }
             }
