@@ -36,7 +36,7 @@ namespace AutohausRestService.Controllers
                         Name1 = "Alfons",
                         Name2 = "Ahrens",
                         Ort = "Ahrensburg",
-                        Partnerrolle = "1",
+                        Partnerrolle = "ZO01",
                         Plz = "22926",
                         Referenz1 = "1111",
                         Referenz2 = "2222",
