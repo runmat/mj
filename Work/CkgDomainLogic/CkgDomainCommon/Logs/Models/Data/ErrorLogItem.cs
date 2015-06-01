@@ -41,7 +41,7 @@ namespace CkgDomainLogic.Logs.Models
         [GridExportIgnore]
         public string AllXml { get; set; }
 
-        [GridExportIgnore]
-        public string AllXmlFormatted { get { return AllXml.Replace("&#xD;&#xA;", "\r\n").Replace("&lt;", "<").Replace("&gt;", ">"); } }
+        [NotMapped]
+        public string AllXmlFormatted { get { return AllXml.NotNullOrEmpty().Replace("&#xD;&#xA;", "\r\n").Replace("&lt;", "<").Replace("&gt;", ">"); } }
     }
 }
