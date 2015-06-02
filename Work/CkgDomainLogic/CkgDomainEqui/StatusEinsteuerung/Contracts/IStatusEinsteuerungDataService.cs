@@ -8,6 +8,8 @@ namespace CkgDomainLogic.FzgModelle.Contracts
     {
         List<StatusEinsteuerung> GetStatusbericht();
 
+        List<StatusEinsteuerung> GetStatusEinsteuerung();
+
         int GetZbIIOhneFzgCount();
     }
 }

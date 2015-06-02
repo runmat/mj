@@ -1,17 +1,19 @@
-﻿using System;
-using GeneralTools.Models;
+﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
     public class StatusEinsteuerung
     {
-                            
+        // ACHTUNG: Die Reihenfolge der Properties muss für den DataTable- bzw. Excel-Export GENAU SO bleiben !!!
         [LocalizedDisplay(LocalizeConstants.PDINumber)]
         public string PDINummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string PDIBezeichnung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleGroup)]
+        public string Fahrzeuggruppe { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
         public string Sipp { get; set; }
@@ -27,9 +29,6 @@ namespace CkgDomainLogic.FzgModelle.Models
 
         [LocalizedDisplay(LocalizeConstants.CarModel)]
         public string Modellbezeichnung { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.VehicleGroup)]
-        public string Fahrzeuggruppe { get; set; }
        
         [LocalizedDisplay(LocalizeConstants.FeedEnTotal)]
         public int EingangGesamt { get; set; }

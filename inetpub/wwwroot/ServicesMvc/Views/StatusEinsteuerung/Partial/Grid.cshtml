@@ -101,3 +101,8 @@
 
 @Html.FormTextBlockFor(c => c.ZB2OhneFahrzeugCount, new { @class = "m-wrap medium" })
 @Html.FormTextBlockFor(c => c.AnzahlGesperrte, new { @class = "m-wrap medium" })
+
+<div class="form-actions">
+    <a href="ReportAsExcel" class="btn blue"> @Localize.OutputInExcel <i class="icon-download-alt"></i></a>
+    <a target="blank" href="ReportAsHtml" class="btn blue margin-left-10"> @Localize.PrintOutputInHtml <i class="icon-download-alt"></i></a>
+</div>

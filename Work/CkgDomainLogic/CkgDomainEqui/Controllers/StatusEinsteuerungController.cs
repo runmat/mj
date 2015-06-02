@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Text;
+using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.FzgModelle.Contracts;
@@ -26,47 +27,27 @@ namespace CkgDomainLogic.Controllers
         {
             InitViewModel(StatusEinsteuerungViewModel, appSettings, logonContext, statusEinsteuerungDataService);            
         }
-                    
-        [CkgApplication]
-        public ActionResult ReportStatusEinsteuerung()
-        {
-            return Init();
-        }
 
         [CkgApplication]
         public ActionResult ReportStatusbericht()
         {
-            return Init();
-        }
-
-        private ActionResult Init()
-        {
-            StatusEinsteuerungViewModel.DataInit();
-            StatusEinsteuerungViewModel.Init();
             return View(StatusEinsteuerungViewModel);
         }
-
-        [HttpPost]
-        public ActionResult LoadStatusEinsteuerung()
+ 
+        [CkgApplication]
+        public ActionResult ReportStatusEinsteuerung()
         {
-                        
-            if (ModelState.IsValid)
-            {
-                StatusEinsteuerungViewModel.LoadStatusEinsteuerungOhneSummen();
-                if (StatusEinsteuerungViewModel.StatusEinsteuerungs.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
-            }
-
-            return PartialView("Partial/SucheEinsteuerung", StatusEinsteuerungViewModel);
+            return View(StatusEinsteuerungViewModel);
         }
 
         [HttpPost]
         public ActionResult LoadStatusbericht()
         {
+            StatusEinsteuerungViewModel.ModusStatusReport = true;
 
             if (ModelState.IsValid)
             {
-                StatusEinsteuerungViewModel.LoadStatusberichtOhneSummen();
+                StatusEinsteuerungViewModel.LoadStatusEinsteuerung();
                 if (StatusEinsteuerungViewModel.StatusEinsteuerungs.None())
                     ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
@@ -74,7 +55,21 @@ namespace CkgDomainLogic.Controllers
             return PartialView("Partial/Suche", StatusEinsteuerungViewModel);
         }
 
-         
+        [HttpPost]
+        public ActionResult LoadStatusEinsteuerung()
+        {
+            StatusEinsteuerungViewModel.ModusStatusReport = false;
+
+            if (ModelState.IsValid)
+            {
+                StatusEinsteuerungViewModel.LoadStatusEinsteuerung();
+                if (StatusEinsteuerungViewModel.StatusEinsteuerungs.None())
+                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("Partial/SucheEinsteuerung", StatusEinsteuerungViewModel);
+        }
+
         [HttpPost]
         public ActionResult ShowStatusReport()
         {
@@ -87,12 +82,23 @@ namespace CkgDomainLogic.Controllers
             return PartialView("Partial/GridEinsteuerung", StatusEinsteuerungViewModel);
         }
 
-
-
         [GridAction]
         public ActionResult StatusEinsteuerungAjaxBinding()
         {
             return View(new GridModel(StatusEinsteuerungViewModel.StatusEinsteuerungsFiltered));
+        }
+
+        public ActionResult ReportAsExcel()
+        {
+            var dt = StatusEinsteuerungViewModel.GetReportDataAsDataTable();
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(StatusEinsteuerungViewModel.ReportAsExcelFilename, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ReportAsHtml()
+        {
+            return Content(StatusEinsteuerungViewModel.ReportAsHtml);
         }
 
         [HttpPost]
@@ -122,7 +128,5 @@ namespace CkgDomainLogic.Controllers
         }
 
         #endregion
-
-
     }
 }
