@@ -99,10 +99,12 @@
             .Groupable(g => g.Groups(gr => gr.Add(gp => gp.Fahrzeuggruppe)))
 )
 
-@Html.FormTextBlockFor(c => c.ZB2OhneFahrzeugCount, new { @class = "m-wrap medium" })
-@Html.FormTextBlockFor(c => c.AnzahlGesperrte, new { @class = "m-wrap medium" })
+<div class="form-horizontal reduced-margin">
+    @Html.FormTextBlockFor(c => c.ZB2OhneFahrzeugCount, new { @class = "m-wrap medium", col = "left" })
+    @Html.FormTextBlockFor(c => c.AnzahlGesperrte, new { @class = "m-wrap medium", col = "right" })
+</div>
 
-<div class="form-actions">
+<div class="form-actions margin-top-5">
     <a href="ReportAsExcel" class="btn blue"> @Localize.OutputInExcel <i class="icon-download-alt"></i></a>
     <a target="blank" href="ReportAsHtml" class="btn blue margin-left-10"> @Localize.PrintOutputInHtml <i class="icon-download-alt"></i></a>
 </div>
