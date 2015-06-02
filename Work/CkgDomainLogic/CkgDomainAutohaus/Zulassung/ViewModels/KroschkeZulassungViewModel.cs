@@ -288,6 +288,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
+
+            // 20150602 MMA Gegebenenfalls existierende externe Wunschkennzeichen-Reservierungs-Url
+            Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
@@ -324,10 +327,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// <summary>
         /// 20150602 MMA 
         /// </summary>
-        /// <param name="kreis"></param>
-        public string LoadZulassungsstelleWkzUrl(string kreis)
+        /// <param name="zulassungsKreis"></param>
+        public string LoadZulassungsstelleWkzUrl(string zulassungsKreis)
         {
-            return ZulassungDataService.GetZulassungsstelleWkzUrl(kreis);
+            return ZulassungDataService.GetZulassungsstelleWkzUrl(zulassungsKreis);
         }
 
         #endregion
@@ -378,11 +381,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // 20150602 MMA
             Zulassung.Zulassungsdaten.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
 
+
             // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
-            if (model.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
-                Zulassung.OptionenDienstleistungen.HaltedauerBis = model.Zulassungsdatum.Value.AddDays(model.MindesthaltedauerDays);
+            if (model.MindesthaltedauerDays != null && model.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = model.Zulassungsdatum.Value.AddDays((double)model.MindesthaltedauerDays);
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
+
+            //// 20150602 MMA Gegebenenfalls existierende externe Wunschkennzeichen-Reservierungs-Url
+            //Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(model.Zulassungskreis);
 
         }
 

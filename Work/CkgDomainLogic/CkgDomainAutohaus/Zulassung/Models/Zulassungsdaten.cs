@@ -41,9 +41,11 @@ namespace CkgDomainLogic.Autohaus.Models
 
         // 20150528 MMA 
         [LocalizedDisplay("Mindesthaltedauer")]
-        [Range(1 , 360, ErrorMessage = "Nur zwischen 1 und 360")]
-        public int MindesthaltedauerDays { get; set; }              // number of days
-        //public DateTime Mindesthaltedauer { get; set; }           // calculated date (today + Mindesthaltedauer)
+        [Range(1 , 360, ErrorMessage = "Nur zwischen 1 und 360")]    // Range liefert ValidationError wenn nicht FirmeneigeneZulassung, da sodann im Feld 0 steht
+        public int? MindesthaltedauerDays { get; set; }              // number of days
+
+        [LocalizedDisplay("Wunschkennzeichen")] // LocalizeConstants.PersonalisedLicenseNo2
+        public string WunschkennzeichenReservierenUrl { get; set; }
 
         [XmlIgnore]
         static List<Material> MaterialList { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Zulassungsarten; } }
@@ -62,6 +64,8 @@ namespace CkgDomainLogic.Autohaus.Models
         [StringLength(3)]
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string Zulassungskreis { get; set; }
+
+        
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDistrict)]
         public string ZulassungskreisBezeichnung { get; set; }

@@ -265,16 +265,24 @@ namespace ServicesMvc.Autohaus.Controllers
             string zulassungsKennzeichen;
             ViewModel.LoadKfzKennzeichenFromKreis(zulassungsKreis, out zulassungsKennzeichen);
 
-            return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
-        }
-
-        [HttpPost]
-        public ActionResult GetZulassungsstelleWkzUrl(string zulassungsKreis)
-        {
             var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
-            return Json(new { zulassungsstelleUrl = url });
+            // return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
+
+            // 20150502 MMA Zusätzlich Zulassungsstellen-Url für Wunschkennzeichenreservierung zurückgeben
+            return Json(new
+                {
+                    kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen),
+                    zulassungsstelleUrl = url 
+                });
         }
+
+        //[HttpPost]
+        //public ActionResult GetZulassungsstelleWkzUrl(string zulassungsKreis)
+        //{
+        //    var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
+        //    return Json(new { zulassungsstelleUrl = url });
+        //}
 
         #endregion
 

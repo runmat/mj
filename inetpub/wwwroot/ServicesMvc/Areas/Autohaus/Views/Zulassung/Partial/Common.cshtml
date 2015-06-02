@@ -312,7 +312,7 @@
             resNr.attr('readonly', true);
         }
     }
-    
+
     function ZulassungskreisOnChange() {
         $.ajax(
             {
@@ -324,25 +324,12 @@
                     $("#Kennzeichen").val(result.kennzeichenLinkeSeite);
                     $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
                     $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
+
+                    $('#LinkWunschkennzeichen').attr('href', result.zulassungsstelleUrl);
+                    ShowHideWunschkennzeichenUrl();
                 }
             });
 
-        // 20150602 MMA
-            $.ajax(
-        {
-            type: "POST",
-            url: "GetZulassungsstelleWkzUrl",
-            data: { zulassungsKreis: $("#Zulassungskreis").val() },
-            loadingShow: false,
-            success: function (result) {
-                if (result.zulassungsstelleUrl != null) {
-                    $("#resultUrl").html("Keine Url bekannt.");
-                } else {
-                    $("#resultUrl").html(result.zulassungsstelleUrl);
-                }
-            }
-        });
-        
         return false;
     }
 
