@@ -327,24 +327,24 @@
                 }
             });
 
+        // 20150602 MMA
+            $.ajax(
+        {
+            type: "POST",
+            url: "GetZulassungsstelleWkzUrl",
+            data: { zulassungsKreis: $("#Zulassungskreis").val() },
+            loadingShow: false,
+            success: function (result) {
+                if (result.zulassungsstelleUrl != null) {
+                    $("#resultUrl").html("Keine Url bekannt.");
+                } else {
+                    $("#resultUrl").html(result.zulassungsstelleUrl);
+                }
+            }
+        });
+        
         return false;
     }
-
-//    // MMA ITA8083
-//    function ShowHideMindesthaltedauer() {
-//        // control-group
-//        // var form = tb.closest("form");
-//        // $(this).closest('.list_product').remove().
-//        var tag = $("#Mindesthaltedauer").closest("control-group");
-//        var id = $('#ZulassungsartMatNr').val();
-//        if (id == "000000000000000619") {       // 000000000000000619 = Firmeneigene Zulassung
-//            $("#Mindesthaltedauer").closest("control-group").show();
-//        } else {
-//            $("#Mindesthaltedauer").closest("control-group").hide();
-//        }
-//        alert("ok: " + id);
-//    }
-    
 
     // OptionenDienstleistungen
     function AjaxFormOptionenDienstleistungenComplete() {

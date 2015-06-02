@@ -123,9 +123,7 @@ namespace CkgDomainLogic.Autohaus.Services
             if (kreis == null)
                 return null;
 
-            // Z_ZLD_AH_ZULST_BY_PLZ.Init(SAP, "I_PLZ, I_ORT", zulassung.Halterdaten.PLZ, zulassung.Halterdaten.Ort);
             Z_ZLD_EXPORT_ZULSTEL.Init(SAP);
-            // var sapList = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithExecute(SAP);
             var sapList = Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL.GetExportListWithExecute(SAP);
 
             string url = null;
@@ -133,12 +131,10 @@ namespace CkgDomainLogic.Autohaus.Services
             if (SAP.ResultCode == 0 && sapList.Count > 0)
             {
                 // var sapItem = sapList[0];
-                var sapItem = sapList.FirstOrDefault();
-                // kreis = GetKreis(sapItem.URL);
+                // var sapItem = sapList.FirstOrDefault();
+                var sapItem = sapList.FirstOrDefault(x => x.KREISKZ == kreis);
                 if (sapItem != null)
                 {
-                    kreis = sapItem.URL;
-                    // kennzeichen = sapItem.ZKFZKZ;
                     url = sapItem.URL;
                 }
             }

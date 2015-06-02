@@ -40,6 +40,8 @@
 
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
 
+        <button id="GetUrl">GetUrl</button><div id="resultUrl">--</div>
+
             @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
             @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
         
@@ -69,12 +71,14 @@
                     controlGroup.show();
                 } else {                
                     $("#Mindesthaltedauer").val("");
-                    // alert("clear");
                     controlGroup.hide();
                 }
             }
-    
 
+            $('#GetUrl').click(function() {
+                alert(1);
+            });
+                
         </script>
     }
 </div>

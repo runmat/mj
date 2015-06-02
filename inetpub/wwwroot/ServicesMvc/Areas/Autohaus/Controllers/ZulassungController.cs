@@ -268,6 +268,14 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
         }
 
+        [HttpPost]
+        public ActionResult GetZulassungsstelleWkzUrl(string zulassungsKreis)
+        {
+            var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
+
+            return Json(new { zulassungsstelleUrl = url });
+        }
+
         #endregion
 
         #region OptionenDienstleistungen
