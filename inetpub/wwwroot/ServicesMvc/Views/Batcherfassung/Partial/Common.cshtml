@@ -137,7 +137,7 @@
     }
 
     function BatcherfassungAjaxFormComplete() {
-        FormPrepareAjax();
+        FormPreparePrivateAjax();
         if (_modelIsValid) {
             var successMessage = '@Localize.SaveSuccessful.ToJavascriptString()';
             SpanAlertSuccess("spanAlertBatcherfassung", successMessage, 1800);
@@ -149,7 +149,7 @@
     var _modelIsInsertMode = false;
 
     function GridItemDetailsFormPreparePrivateAjax() {
-        FormPrepareAjax();
+        FormPreparePrivateAjax();
 
         LoadingHide();
         GridLoadingHide();
@@ -191,6 +191,7 @@
                 success: function (result) {
                     $("#divBatcherfassungDetailsForm").html(result);
                     //ModellIdInitDropdown();
+                    FormPreparePrivateAjax();
                 }                        
             });
 
