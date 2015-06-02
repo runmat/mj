@@ -333,6 +333,18 @@
         return false;
     }
 
+
+    // MMA ITA8083
+    function ShowHideWunschkennzeichenUrl() {
+        var url = $('#LinkWunschkennzeichen').attr('href');
+
+        if (url == undefined || url == '') {
+            $('#divWkzLink').hide();
+        } else {
+            $('#divWkzLink').show();
+        }
+    }
+    
     // OptionenDienstleistungen
     function AjaxFormOptionenDienstleistungenComplete() {
         FormPrepareAjax();

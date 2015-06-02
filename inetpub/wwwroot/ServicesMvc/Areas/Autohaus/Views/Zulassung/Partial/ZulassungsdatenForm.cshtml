@@ -46,8 +46,8 @@
 
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
 
-            <div id="divWkzLink" class="">
-                <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline"><i class="margin-right-5"></i> Kennzeichen reservieren?</a>
+            <div id="divWkzLink">
+                <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline"><i class="margin-right-5"></i> @Localize.AssignKennzeichen</a>
             </div>
 
             @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
@@ -73,30 +73,25 @@
 
     ShowHideMindesthaltedauer();    // 20150528 MMA
     ShowHideWunschkennzeichenUrl(); // 20150602 MMA
-            
+
+
     // MMA ITA8083
     function ShowHideMindesthaltedauer() {
         var controlGroup = $("#MindesthaltedauerDays").closest(".control-group");
         var id = $('#ZulassungsartMatNr').val();
-        if (id == "000000000000000619") {           //  Firmeneigene Zulassung
-            $("#MindesthaltedauerDays").val("0");   
+        if (id == "000000000000000619") {                   // Firmeneigene Zulassung
+            if ($("#MindesthaltedauerDays").val() == "") {  // Falls noch kein Wert vorhanden, Default setzen
+                $("#MindesthaltedauerDays").val("0");
+            } else {
+                // Vom User eingegebenen Wert beim Blättern im Wizard nicht überschreiben
+            }
             controlGroup.show();
-        } else {                
-            $("#MindesthaltedauerDays").val("");
+        } else {
+            alert("geleert");
+            $("#MindesthaltedauerDays").val("");    
             controlGroup.hide();
         }
     }
-
-    // MMA ITA8083
-    function ShowHideWunschkennzeichenUrl() {
-        // alert("ShowHide: " + $('#LinkWunschkennzeichen').attr('href'));
-        var url = $('#LinkWunschkennzeichen').attr('href');
-        
-        if (url == undefined || url == '') {
-            $('#divWkzLink').hide();
-        } else {
-            $('#divWkzLink').show();
-        }
-    }
+    
 
 </script>

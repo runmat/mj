@@ -289,7 +289,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
 
-            // 20150602 MMA Gegebenenfalls existierende externe Wunschkennzeichen-Reservierungs-Url
+            // 20150602 MMA Gegebenenfalls verfügbare externe Wunschkennzeichen-Reservierungs-Url ermitteln 
             Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
         }
 
@@ -381,15 +381,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // 20150602 MMA
             Zulassung.Zulassungsdaten.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
 
-
             // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
             if (model.MindesthaltedauerDays != null && model.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = model.Zulassungsdatum.Value.AddDays((double)model.MindesthaltedauerDays);
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
-
-            //// 20150602 MMA Gegebenenfalls existierende externe Wunschkennzeichen-Reservierungs-Url
-            //Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(model.Zulassungskreis);
 
         }
 

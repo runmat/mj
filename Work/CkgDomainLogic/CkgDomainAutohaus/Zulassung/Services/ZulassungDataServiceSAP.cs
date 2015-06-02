@@ -169,11 +169,6 @@ namespace CkgDomainLogic.Autohaus.Services
                 kennzeichen = sapItem.ZKFZKZ;
         }
 
-        //public void GetZulassungsstelleWkzUrl(string kreis, out string kreis)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
         private IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> LoadZulassungskreisKennzeichenFromSap()
         {
             return Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(SAP);
