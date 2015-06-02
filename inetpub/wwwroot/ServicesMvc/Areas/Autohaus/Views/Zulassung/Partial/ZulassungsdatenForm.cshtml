@@ -28,7 +28,7 @@
         {
             @*@Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium" })*@
             @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
-            @Html.FormTextBoxFor(m => m.Mindesthaltedauer, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 }) // 20150528 
+            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 }) // 20150528 
         
             @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
 
@@ -63,13 +63,13 @@
             
             // MMA ITA8083
             function ShowHideMindesthaltedauer() {
-                var controlGroup = $("#Mindesthaltedauer").closest(".control-group");
+                var controlGroup = $("#MindesthaltedauerDays").closest(".control-group");
                 var id = $('#ZulassungsartMatNr').val();
                 if (id == "000000000000000619") {           //  Firmeneigene Zulassung
                     controlGroup.show();
                 } else {                
                     $("#Mindesthaltedauer").val("");
-                    alert("clear");
+                    // alert("clear");
                     controlGroup.hide();
                 }
             }

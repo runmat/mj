@@ -334,11 +334,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void SetZulassungsdaten(Zulassungsdaten model)
         {
-            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ZulassungsartMatNr;
-
-            // 20150528 MMA
-            Zulassung.Zulassungsdaten.Mindesthaltedauer = model.Mindesthaltedauer;
-
+            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ZulassungsartMatNr;            
+            
             Zulassung.Zulassungsdaten.Zulassungsdatum = model.Zulassungsdatum;
             Zulassung.Zulassungsdaten.Abmeldedatum = model.Abmeldedatum;
             Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
@@ -368,6 +365,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var tempKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
             if (tempKg != null)
                 Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
+
+            // 20150602 MMA
+            Zulassung.Zulassungsdaten.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
+
+            // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
+            if (model.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = model.Zulassungsdatum.Value.AddDays(model.MindesthaltedauerDays);
+            else
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
+
         }
 
         #endregion
