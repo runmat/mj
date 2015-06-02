@@ -112,6 +112,40 @@ namespace CkgDomainLogic.Autohaus.Services
             return (sapItem.KREISKZ.IsNotNullOrEmpty() ? sapItem.KREISKZ : sapItem.ZKFZKZ).ToUpper();
         }
 
+        /// <summary>
+        /// 20150602 MMA Gibt URL der Wunschkennzeichen-Seite der Zulassungsstelle zurück, falls von Z_ZLD_EXPORT_ZULSTEL geliefert
+        /// </summary>
+        /// <param name="kreis"></param>
+        /// <returns></returns>
+        public string GetZulassungsstelleWkzUrl(string kreis)
+        {
+
+            if (kreis == null)
+                return null;
+
+            // Z_ZLD_AH_ZULST_BY_PLZ.Init(SAP, "I_PLZ, I_ORT", zulassung.Halterdaten.PLZ, zulassung.Halterdaten.Ort);
+            Z_ZLD_EXPORT_ZULSTEL.Init(SAP);
+            // var sapList = Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithExecute(SAP);
+            var sapList = Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL.GetExportListWithExecute(SAP);
+
+            string url = null;
+
+            if (SAP.ResultCode == 0 && sapList.Count > 0)
+            {
+                // var sapItem = sapList[0];
+                var sapItem = sapList.FirstOrDefault();
+                // kreis = GetKreis(sapItem.URL);
+                if (sapItem != null)
+                {
+                    kreis = sapItem.URL;
+                    // kennzeichen = sapItem.ZKFZKZ;
+                    url = sapItem.URL;
+                }
+            }
+
+            return url;
+        }
+
         public void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen)
         {
             kreis = "";
@@ -141,6 +175,11 @@ namespace CkgDomainLogic.Autohaus.Services
             if (sapItem != null)
                 kennzeichen = sapItem.ZKFZKZ;
         }
+
+        //public void GetZulassungsstelleWkzUrl(string kreis, out string kreis)
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         private IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> LoadZulassungskreisKennzeichenFromSap()
         {

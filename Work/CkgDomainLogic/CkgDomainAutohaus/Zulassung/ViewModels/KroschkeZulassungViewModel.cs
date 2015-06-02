@@ -321,6 +321,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ZulassungDataService.GetZulassungsKennzeichen(kreis, out kennzeichen);
         }
 
+        /// <summary>
+        /// 20150602 MMA 
+        /// </summary>
+        /// <param name="kreis"></param>
+        /// <param name="kennzeichen"></param>
+        public string LoadZulassungsstelleWkzUrl(string kreis)
+        {
+            return ZulassungDataService.GetZulassungsstelleWkzUrl(kreis);
+        }
+
         #endregion
 
 

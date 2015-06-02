@@ -28,6 +28,8 @@ namespace CkgDomainLogic.Autohaus.Contracts
         
         void GetZulassungsKennzeichen(string kreis, out string kennzeichen);
 
+        string GetZulassungsstelleWkzUrl(string kreis);
+
         string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung);
 
 
