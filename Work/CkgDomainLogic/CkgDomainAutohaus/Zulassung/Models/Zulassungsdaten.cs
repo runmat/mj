@@ -41,7 +41,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         // 20150528 MMA 
         [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
-        [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]   // Range 
+        // [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]   // Localization not working
+        [Range(1, 360, ErrorMessage = "Gültig zwischen 1 und 360")]   // Range 
         public int? MindesthaltedauerDays { get; set; }                                 // number of days
 
         // 20150602 MMA
@@ -173,6 +174,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
             foreach (var dateResult in ValidateWochenendeUndFeiertage(Abmeldedatum, "Abmeldedatum").ToList())
                 yield return dateResult;
+
+            // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv
+            if (KennzeichenReserviert == true && ReservierungsName.IsNullOrEmpty())
+                yield return new ValidationResult(string.Format("{0} {1}", Localize.CancellationDate, Localize.Required.ToLower()), new[] { "ReservierungsName" });
         }
 
         static IEnumerable<ValidationResult> ValidateWochenendeUndFeiertage(DateTime? dateValue, string datePropertyName)

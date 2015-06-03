@@ -75,23 +75,5 @@
     ShowHideWunschkennzeichenUrl(); // 20150602 MMA
 
 
-    // MMA ITA8083
-    function ShowHideMindesthaltedauer() {
-        var controlGroup = $("#MindesthaltedauerDays").closest(".control-group");
-        var id = $('#ZulassungsartMatNr').val();
-        if (id == "000000000000000619") {                   // Firmeneigene Zulassung
-            if ($("#MindesthaltedauerDays").val() == "") {  // Falls noch kein Wert vorhanden, Default setzen
-                $("#MindesthaltedauerDays").val("0");
-            } else {
-                // Vom User eingegebenen Wert beim Blättern im Wizard nicht überschreiben
-            }
-            controlGroup.show();
-        } else {
-            alert("geleert");
-            $("#MindesthaltedauerDays").val("");    
-            controlGroup.hide();
-        }
-    }
-    
 
 </script>

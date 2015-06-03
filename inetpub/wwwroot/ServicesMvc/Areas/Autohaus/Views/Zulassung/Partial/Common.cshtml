@@ -325,6 +325,7 @@
                     $("#Wunschkennzeichen2").val(result.kennzeichenLinkeSeite);
                     $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
 
+                    // MMA ITA8083
                     $('#LinkWunschkennzeichen').attr('href', result.zulassungsstelleUrl);
                     ShowHideWunschkennzeichenUrl();
                 }
@@ -332,7 +333,6 @@
 
         return false;
     }
-
 
     // MMA ITA8083
     function ShowHideWunschkennzeichenUrl() {
@@ -342,6 +342,22 @@
             $('#divWkzLink').hide();
         } else {
             $('#divWkzLink').show();
+        }
+    }
+    function ShowHideMindesthaltedauer() {
+        var controlGroup = $("#MindesthaltedauerDays").closest(".control-group");
+        var id = $('#ZulassungsartMatNr').val();
+        var tagHaltedauer = $('#MindesthaltedauerDays');
+        if (id == "000000000000000619") {                   // Firmeneigene Zulassung
+            if (tagHaltedauer.val() == "") {  // Falls noch kein Wert vorhanden, Default setzen
+                tagHaltedauer.val("0");
+            } else {
+                // Vom User eingegebenen Wert beim Blättern im Wizard nicht überschreiben
+            }
+            controlGroup.show();
+        } else {
+            tagHaltedauer.val("");
+            controlGroup.hide();
         }
     }
     
