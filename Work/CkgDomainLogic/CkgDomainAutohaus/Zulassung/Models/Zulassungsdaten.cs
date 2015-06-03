@@ -175,7 +175,7 @@ namespace CkgDomainLogic.Autohaus.Models
             foreach (var dateResult in ValidateWochenendeUndFeiertage(Abmeldedatum, "Abmeldedatum").ToList())
                 yield return dateResult;
 
-            // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv
+            // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv...
             if (KennzeichenReserviert == true && ReservierungsName.IsNullOrEmpty())
                 yield return new ValidationResult(string.Format("{0}", Localize.Required), new[] { "ReservierungsName" });
         }
