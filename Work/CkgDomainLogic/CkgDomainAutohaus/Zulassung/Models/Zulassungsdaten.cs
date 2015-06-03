@@ -177,7 +177,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
             // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv
             if (KennzeichenReserviert == true && ReservierungsName.IsNullOrEmpty())
-                yield return new ValidationResult(string.Format("{0} {1}", Localize.CancellationDate, Localize.Required.ToLower()), new[] { "ReservierungsName" });
+                yield return new ValidationResult(string.Format("{0}", Localize.Required), new[] { "ReservierungsName" });
         }
 
         static IEnumerable<ValidationResult> ValidateWochenendeUndFeiertage(DateTime? dateValue, string datePropertyName)
