@@ -41,9 +41,9 @@ namespace CkgDomainLogic.Autohaus.Models
 
         // 20150528 MMA 
         [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
-        // [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]   // Localization not working
-        [Range(1, 360, ErrorMessage = "Gültig zwischen 1 und 360")]   // Range 
-        public int? MindesthaltedauerDays { get; set; }                                 // number of days
+        // [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]    // Localization not working
+        [Range(1, 360, ErrorMessage = "Gültig zwischen 1 und 360")]                         // Range 
+        public int? MindesthaltedauerDays { get; set; }                                     // number of days
 
         // 20150602 MMA
         public string WunschkennzeichenReservierenUrl { get; set; }

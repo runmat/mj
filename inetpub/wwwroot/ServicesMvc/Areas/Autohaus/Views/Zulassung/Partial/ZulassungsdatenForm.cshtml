@@ -20,6 +20,7 @@
         
         @Html.HiddenFor(m => m.ModusAbmeldung)
         @Html.HiddenFor(m => m.ZulassungskreisBezeichnung)
+        @Html.HiddenFor(m => m.WunschkennzeichenReservierenUrl) 
 
         if (Model.ModusAbmeldung)
         {
@@ -49,7 +50,7 @@
             <div id="divWkzLink">
                 <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline"><i class="margin-right-5"></i> @Localize.AssignKennzeichen</a>
             </div>
-
+        
             @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
             @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
         

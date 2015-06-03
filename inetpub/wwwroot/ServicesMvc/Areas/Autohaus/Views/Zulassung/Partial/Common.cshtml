@@ -326,7 +326,7 @@
                     $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
 
                     // MMA ITA8083
-                    $('#LinkWunschkennzeichen').attr('href', result.zulassungsstelleUrl);
+                    $('#WunschkennzeichenReservierenUrl').val(result.zulassungsstelleUrl);
                     ShowHideWunschkennzeichenUrl();
                 }
             });
@@ -336,8 +336,8 @@
 
     // MMA ITA8083
     function ShowHideWunschkennzeichenUrl() {
-        var url = $('#LinkWunschkennzeichen').attr('href');
-
+        var url = $('#WunschkennzeichenReservierenUrl').val();
+        $('#LinkWunschkennzeichen').attr('href', url);
         if (url == undefined || url == '') {
             $('#divWkzLink').hide();
         } else {
