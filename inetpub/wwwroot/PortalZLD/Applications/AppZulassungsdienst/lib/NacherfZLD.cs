@@ -176,10 +176,10 @@ namespace AppZulassungsdienst.lib
                     var sapPositionen = Z_ZLD_EXPORT_SOFORT_ABRECH2.GT_EX_POS.GetExportList(SAP);
                     var sapKundendaten = Z_ZLD_EXPORT_SOFORT_ABRECH2.GT_EX_KUNDE.GetExportList(SAP);
 
-                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId).ToList();
-                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId).ToList();
-                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId).ToList();
-                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId).ThenBy(p => p.PositionsNr).ToList();
+                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId.ToLong(0)).ToList();
+                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId.ToLong(0)).ToList();
+                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId.ToLong(0)).ToList();
+                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId.ToLong(0)).ThenBy(p => p.PositionsNr.ToInt(0)).ToList();
                     _lstKundendaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
                 }
                 else
@@ -190,10 +190,10 @@ namespace AppZulassungsdienst.lib
                     var sapPositionen = Z_ZLD_EXPORT_NACHERF2.GT_EX_POS.GetExportList(SAP);
                     var sapKundendaten = Z_ZLD_EXPORT_NACHERF2.GT_EX_KUNDE.GetExportList(SAP);
 
-                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId).ToList();
-                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId).ToList();
-                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId).ToList();
-                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId).ThenBy(p => p.PositionsNr).ToList();
+                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId.ToLong(0)).ToList();
+                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId.ToLong(0)).ToList();
+                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId.ToLong(0)).ToList();
+                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId.ToLong(0)).ThenBy(p => p.PositionsNr.ToInt(0)).ToList();
                     _lstKundendaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
                 }
 
