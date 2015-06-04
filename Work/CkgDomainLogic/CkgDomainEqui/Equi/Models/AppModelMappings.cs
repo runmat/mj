@@ -292,8 +292,8 @@ namespace CkgDomainLogic.Equi.Models
                         d.Pickdatum = s.PICKDAT;
                         d.Referenz1 = s.ZZREFERENZ1;
                         d.Referenz2 = s.ZZREFERENZ2;
-                        d.Zulassungsdatum = s.ZZZLDAT;
-                        d.Ummeldedatum = s.REPLA_DATE;
+                        d.Erstzulassungsdatum = s.REPLA_DATE;
+                        d.Ummeldedatum = s.ZZZLDAT;
                     }));
             }
         }

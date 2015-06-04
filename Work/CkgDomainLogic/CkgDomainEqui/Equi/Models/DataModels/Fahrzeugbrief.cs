@@ -100,8 +100,8 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
         public string FahrzeugTyp { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateTime? Zulassungsdatum { get; set; }
+        [LocalizedDisplay(LocalizeConstants.FirstRegistration)]
+        public DateTime? Erstzulassungsdatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ReRegistrationDate)]
         public DateTime? Ummeldedatum { get; set; }
