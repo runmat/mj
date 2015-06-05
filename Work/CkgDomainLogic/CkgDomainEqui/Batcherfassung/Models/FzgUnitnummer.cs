@@ -1,13 +1,11 @@
 ﻿using GeneralTools.Models;
 using GeneralTools.Resources;
-using GeneralTools.Services;
 using System;
 
 namespace CkgDomainLogic.FzgModelle.Models
 {
     public class FzgUnitnummer : Batcherfassung  
-    {
-       
+    {    
         [LocalizedDisplay(LocalizeConstants.UnitNumber)]
         public string Unitnummer { get; set; }
 
@@ -27,7 +25,6 @@ namespace CkgDomainLogic.FzgModelle.Models
         public bool IstGesperrt { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.BlockRemark)]
-        public string Sperrvermerk { get; set; }
-      
+        public string Sperrvermerk { get; set; }  
     }
 }

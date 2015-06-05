@@ -10,7 +10,7 @@
     .XAjaxDataBinding("BatcherfassungAjaxBinding", "Batcherfassung")
     .Columns(columns =>
         {
-            columns.XBound(c => c.Aktion).Filterable(false).Sortable(false).Groupable(false)
+            columns.XBound(c => c.ID).Filterable(false).Sortable(false).Groupable(false)
                     .ClientTemplate(
                         "<button onclick='ItemEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
                         + "&nbsp;"
@@ -20,14 +20,14 @@
                 );
          
             columns.XBound(c => c.ID);
-            columns.XBound(c => c.ModellId);                      
+            columns.XBound(c => c.ModellId);
             columns.XBound(c => c.Modellbezeichnung);
             columns.XBound(c => c.AuftragsnummerVon);
             columns.XBound(c => c.AuftragsnummerBis);
-            columns.XBound(c => c.Anzahl);                        
-            columns.XBound(c => c.Vertragsart);            
-            columns.XBound(c => c.LiefermonatBAPIFormat); 
-            columns.XBound(c => c.Status);                                  
+            columns.XBound(c => c.Anzahl);
+            columns.XBound(c => c.Vertragsart);
+            columns.XBound(c => c.Liefermonat); 
+            columns.XBound(c => c.Status);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
@@ -40,5 +40,3 @@
              commands.FilteredDataCommand("ExportBatcherfassungFilteredPDF", "Batcherfassung");
          })
 )
-
-

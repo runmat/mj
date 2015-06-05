@@ -88,6 +88,7 @@
     <Compile Include="Batcherfassung\Models\BatcherfassungSelektor.cs" />
     <Compile Include="Batcherfassung\Models\Auftragsnummer.cs" />
     <Compile Include="Batcherfassung\Models\FzgUnitnummer.cs" />
+    <Compile Include="Batcherfassung\Models\BatcherfassungEdit.cs" />
     <Compile Include="Batcherfassung\Models\ModelHersteller.cs" />
     <Compile Include="Batcherfassung\Services\BatcherfassungDataServiceSAP.cs" />
     <Compile Include="Batcherfassung\ViewModels\BatcherfassungViewModel.cs" />

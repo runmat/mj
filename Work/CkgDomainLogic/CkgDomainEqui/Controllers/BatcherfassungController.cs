@@ -19,14 +19,9 @@ namespace ServicesMvc.Controllers
 {
     public class BatcherfassungController : CkgDomainController
     {
-
-        public override string DataContextKey
-        {
-            get { return "BatcherfassungDataContext"; }
-        }
+        public override string DataContextKey { get { return "BatcherfassungDataContext"; } }
 
         public BatcherfassungViewModel ViewModel { get { return GetViewModel<BatcherfassungViewModel>(); } }
-
 
         public BatcherfassungController(IAppSettings appSettings, ILogonContextDataService logonContext, IBatcherfassungDataService modellIdDataService
                                         , IFahrzeugeDataService fahrzeugeDataService
@@ -38,19 +33,16 @@ namespace ServicesMvc.Controllers
             InitModelStatics();
         }
 
-
         void InitModelStatics()
         {
-            Batcherfassung.GetViewModel = GetViewModel<BatcherfassungViewModel>; 
+            BatcherfassungEdit.GetViewModel = GetViewModel<BatcherfassungViewModel>; 
             BatcherfassungSelektor.GetViewModel = GetViewModel<BatcherfassungViewModel>;
         }
-
 
         [CkgApplication]
         public ActionResult Verwaltung()
         {
             ViewModel.DataInit();
-            ViewModel.Init();
 
             return View(ViewModel);
         }
@@ -59,8 +51,6 @@ namespace ServicesMvc.Controllers
         public ActionResult LoadBatcherfassung(BatcherfassungSelektor model)
         {
             ViewModel.BatcherfassungSelektor = model;
-
-            //ViewModel.Validate(AddModelError);
 
             if (ModelState.IsValid)
             {
@@ -71,7 +61,6 @@ namespace ServicesMvc.Controllers
 
             return PartialView("Partial/Suche", ViewModel.BatcherfassungSelektor);
         }
-
 
         [HttpPost]
         public ActionResult ShowBatcherfassung()
@@ -88,22 +77,20 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadDataByModelId(string modelId, string batchId)
         {
-            return PartialView("Partial/DetailsForm", ViewModel.ModifyItemWithModelData(modelId, batchId));
+            return PartialView("Partial/DetailsForm", ViewModel.ModifyEditItemWithModelData(modelId, batchId));
         }
               
         [HttpPost]
         public ActionResult EditBatcherfassung(string id)
         {
-            var item = ViewModel.GetItem(id).SetInsertMode(ViewModel.InsertMode);
+            var item = ViewModel.GetEditItem(id).SetInsertMode(ViewModel.InsertMode);
 
-            if(item.BatchStatus != BatchStatusEnum.Neu)
+            if(!item.Batch.StatusNeu)
                 return PartialView("Partial/DetailsFormReadOnly", item);
-            else
-            {
-                ViewModel.InsertMode = false;
-                ModelState.Clear();                         
-                return PartialView("Partial/DetailsForm", item);
-            }
+
+            ViewModel.InsertMode = false;
+            ModelState.Clear();
+            return PartialView("Partial/DetailsForm", item);
         }
 
         [HttpPost]
@@ -111,25 +98,21 @@ namespace ServicesMvc.Controllers
         {
             ViewModel.InsertMode = true;
             ModelState.Clear();
-            return PartialView("Partial/DetailsForm", ViewModel.NewItem(idToDuplicate).SetInsertMode(ViewModel.InsertMode));
+            return PartialView("Partial/DetailsForm", ViewModel.NewEditItem(idToDuplicate).SetInsertMode(ViewModel.InsertMode));
         }
 
         [HttpPost]
-        public ActionResult BatcherfassungDetailsFormSave(Batcherfassung model)
+        public ActionResult BatcherfassungDetailsFormSave(BatcherfassungEdit model)
         {
-            var viewModel = ViewModel;
-
-            viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
-
             if (ModelState.IsValid)
             {
-                if (viewModel.InsertMode)
-                    viewModel.AddItem(model);
+                if (ViewModel.InsertMode)
+                    ViewModel.AddItem(model.Batch);
 
-                viewModel.SaveItem(model, ModelState.AddModelError);
+                ViewModel.SaveEditItem(model, ModelState.AddModelError);
             }
 
-            model.InsertModeTmp = viewModel.InsertMode;
+            model.InsertModeTmp = ViewModel.InsertMode;
 
             return PartialView("Partial/DetailsForm", model);
         }
@@ -159,7 +142,6 @@ namespace ServicesMvc.Controllers
 
             return new EmptyResult();
         }
-
 
         #endregion
 
@@ -197,22 +179,17 @@ namespace ServicesMvc.Controllers
             return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
         }
 
-       
-
         #endregion
 
         #region Unitnummern
-      
-        
+           
         [HttpPost]
         public JsonResult CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
         {
             ViewModel.CalculateUnitNumbers(unitnumberFrom, unitnumberUntil, count);
 
-            return Json(new { ViewModel.SelectedItem.Unitnummern,  ViewModel.SelectedItem.ValidationError });
-            //return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
+            return Json(new { ViewModel.SelectedItem.Batch.Unitnummern,  ViewModel.SelectedItem.ValidationError });
         }
-
 
         [HttpPost]
         public JsonResult UnitnumberSelectionChanged(string unitnummer, bool isChecked)
@@ -231,7 +208,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ShowGridUnitNumbers(string batchId)
         {
             ViewModel.LoadUnitnummerByBatchId(batchId);
-            return PartialView("Partial/GridUnitNumbers", ViewModel);
+            return PartialView("Partial/GridUnitNumbers", ViewModel.SelectedItem);
         }
 
         [HttpPost]
@@ -264,7 +241,6 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-
         public ActionResult ExportUnitnummerFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = ViewModel.UnitnummernFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
@@ -282,7 +258,5 @@ namespace ServicesMvc.Controllers
         }
          
         #endregion
-
-
     }
 }

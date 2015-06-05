@@ -1,19 +1,15 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
 using CkgDomainLogic.FzgModelle.Contracts;
 using CkgDomainLogic.FzgModelle.Models;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 using System.IO;
 using GeneralTools.Services;
 using DocumentTools.Services;
@@ -31,14 +27,9 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public BatcherfassungSelektor BatcherfassungSelektor
         {
-            get
-            {
-                return PropertyCacheGet(() => new BatcherfassungSelektor());
-            }
+            get { return PropertyCacheGet(() => new BatcherfassungSelektor()); }
             set { PropertyCacheSet(value); }
         }
-
-       
 
         public bool InsertMode { get; set; }
 
@@ -46,13 +37,6 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         public List<Batcherfassung> Batcherfassungs
         {
             get { return PropertyCacheGet(() => new List<Batcherfassung>()); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        [XmlIgnore]
-        public List<ModelHersteller> ModelHersteller
-        {
-            get { return PropertyCacheGet(() => new List<ModelHersteller>()); }
             private set { PropertyCacheSet(value); }
         }
 
@@ -74,69 +58,50 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             get
             {
-                return DataServiceHersteller.GetFahrzeugHersteller().Concat(new List<Fahrzeughersteller>
-            {
-                new Fahrzeughersteller { HerstellerKey = String.Empty, HerstellerName = Localize.DropdownDefaultOptionAll, ShowAllToken = true}
-                                        }).OrderBy(w => w.HerstellerName).ToList();
+                return PropertyCacheGet(() => 
+                    DataServiceHersteller.GetFahrzeugHersteller().Concat(
+                        new List<Fahrzeughersteller>
+                            { new Fahrzeughersteller { HerstellerKey = String.Empty, HerstellerName = Localize.DropdownDefaultOptionAll, ShowAllToken = true } }
+                    ).OrderBy(w => w.HerstellerName).ToList()
+                );
             }
         }
 
         [XmlIgnore]
-        public List<SelectItem> Auftragsnummern
+        public List<Auftragsnummer> Auftragsnummern
         {
             get
-            {                             
-                var numbers = DataService.GetAuftragsnummern().Concat(new List<Auftragsnummer>
-                {
-                    new Auftragsnummer {  Nummer = String.Empty,  AuftragsNrText = Localize.DropdownDefaultOptionNotSpecified}
-                                        }).OrderBy(w => w.Nummer).ToList();
-                
-                var selectItems = new List<SelectItem>();
-                foreach (var num in numbers)
-                    selectItems.Add(new SelectItem(num.Nummer, num.Nummer + " " + num.AuftragsNrText));
-
-                return selectItems;
+            {
+                return PropertyCacheGet(() => 
+                    DataService.GetAuftragsnummern().Concat(
+                        new List<Auftragsnummer>
+                            { new Auftragsnummer { Nummer = String.Empty,  AuftragsNrText = Localize.DropdownDefaultOptionNotSpecified } }
+                    ).OrderBy(w => w.Nummer).ToList()
+                );
             }
         }
 
 
         [XmlIgnore]
-        public List<SelectItem> ModelList
+        public List<ModelHersteller> ModelList
         {
             get
             {
-                return ModelHersteller.Select(model => new SelectItem(model.ModelID, model.ModelID + " " + model.HerstellerName + " " + model.Modellbezeichnung)).ToList()
-                     .Concat(new List<SelectItem> { new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose )})
-                                .OrderBy(s => s.Key)
-                                    .ToListOrEmptyList();
-
+                return PropertyCacheGet(() =>
+                    DataService.GetModelHersteller().Concat(
+                        new List<ModelHersteller> { new ModelHersteller { ModelID = String.Empty, HerstellerName = String.Empty, Modellbezeichnung = Localize.DropdownDefaultOptionPleaseChoose } }
+                    ).OrderBy(s => s.ModelID).ToList()
+                );
             }
         }
 
-        public List<SelectItem> AntriebeList
-        {
-            get
-            {
-                return PropertyCacheGet(() => new List<SelectItem>
-                    {
-                        new SelectItem ("", Localize.DropdownDefaultOptionNotSpecified),
-                        new SelectItem ("B", Localize.EngineGasoline),
-                        new SelectItem ("D", Localize.EngineDiesel),
-                        new SelectItem ("K", Localize.EngineCompressor),
-                    });
-            }
-        }
-
-        public Batcherfassung SelectedItem { get; set; }
-
-        public void Init()
-        {
-            BatcherfassungSelektor.AnalageDatumRange.IsSelected = true;            
-        }
+        public BatcherfassungEdit SelectedItem { get; set; }
 
         public void DataInit()
-        {            
-            ModelHersteller = DataService.GetModelHersteller();
+        {
+            PropertyCacheClear(this, m => m.FahrzeugHersteller);
+            PropertyCacheClear(this, m => m.Auftragsnummern);
+            PropertyCacheClear(this, m => m.ModelList);
         }
        
         public void LoadBatches()
@@ -144,8 +109,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             Batcherfassungs = DataService.GetBatches(BatcherfassungSelektor);
 
             Batcherfassungs.ForEach(x => { 
-                        x.HerstellerList = BatcherfassungSelektor.FahrzeugHersteller;
-                        var model = ModelHersteller.FirstOrDefault(m => m.ModelID == x.ModellId);
+                        var model = ModelList.FirstOrDefault(m => m.ModelID == x.ModellId);
                         if (model != null)
                         {
                             x.Bluetooth = model.Bluetooth;
@@ -165,49 +129,35 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             PropertyCacheClear(this, m => m.BatcherfassungsFiltered);
         }
 
-        public void Validate(Action<string, string> addModelError)
+        public BatcherfassungEdit GetEditItem(string id)
         {
-        }
+            var batch = Batcherfassungs.FirstOrDefault(m => m.ID == id) ?? new Batcherfassung();
 
-      
-        public Batcherfassung GetItem(string id)
-        {
-            SelectedItem = Batcherfassungs.FirstOrDefault(m => m.ID == id) ?? new Batcherfassung();
+            SelectedItem = new BatcherfassungEdit { Batch = batch };
 
-            if (SelectedItem.Status.ToUpper() == "NEU")
-                SelectedItem.BatchStatus = BatchStatusEnum.Neu;
-
-            if (SelectedItem.Status.ToUpper() == "IM ZULAUF")
-                SelectedItem.BatchStatus = BatchStatusEnum.ImZulauf;
-
-            if (SelectedItem.Status.ToUpper() == "GESCHLOSSEN")
-                SelectedItem.BatchStatus = BatchStatusEnum.Geschlossen;
-         
             return SelectedItem;
         }
 
-        public Batcherfassung ModifyItemWithModelData(string modelId, string batchId)
+        public BatcherfassungEdit ModifyEditItemWithModelData(string modelId, string batchId)
         {
-            SelectedItem.ID = batchId;
+            SelectedItem.Batch.ID = batchId;
 
-            var modelFoundById = ModelHersteller.FirstOrDefault(m => m.ModelID == modelId) ?? new ModelHersteller();
+            var modelFoundById = ModelList.FirstOrDefault(m => m.ModelID == modelId) ?? new ModelHersteller();
                        
-            SelectedItem.ModellId = modelId;
-            // if (InsertMode) i.A. ursprünglich mit KGa, macht aber mit neuer Select-Box kenne Sinn mehr
-            {
-                SelectedItem.Modellbezeichnung = modelFoundById.Modellbezeichnung;
-                SelectedItem.Fahrzeuggruppe = modelFoundById.Fahrzeuggruppe;
-                SelectedItem.Antrieb = modelFoundById.Antrieb;
-                SelectedItem.HerstellerName = modelFoundById.HerstellerName;
-                SelectedItem.SippCode = modelFoundById.SippCode;
-                SelectedItem.Antrieb = modelFoundById.Antrieb;
-                SelectedItem.Laufzeit = modelFoundById.Laufzeit;
-                SelectedItem.Laufzeitbindung = modelFoundById.Laufzeitbindung;
-                SelectedItem.SecurityFleet = modelFoundById.SecurityFleet;
-                SelectedItem.Bluetooth = modelFoundById.Bluetooth;
-                SelectedItem.NaviVorhanden = modelFoundById.NaviVorhanden;
-                SelectedItem.KennzeichenLeasingFahrzeug = modelFoundById.KennzeichenLeasingFahrzeug;
-            }
+            SelectedItem.Batch.ModellId = modelId;
+            SelectedItem.Batch.Modellbezeichnung = modelFoundById.Modellbezeichnung;
+            SelectedItem.Batch.Fahrzeuggruppe = modelFoundById.Fahrzeuggruppe;
+            SelectedItem.Batch.Antrieb = modelFoundById.Antrieb;
+            SelectedItem.Batch.HerstellerName = modelFoundById.HerstellerName;
+            SelectedItem.Batch.SippCode = modelFoundById.SippCode;
+            SelectedItem.Batch.Antrieb = modelFoundById.Antrieb;
+            SelectedItem.Batch.Laufzeit = modelFoundById.Laufzeit;
+            SelectedItem.Batch.Laufzeitbindung = modelFoundById.Laufzeitbindung;
+            SelectedItem.Batch.SecurityFleet = modelFoundById.SecurityFleet;
+            SelectedItem.Batch.Bluetooth = modelFoundById.Bluetooth;
+            SelectedItem.Batch.NaviVorhanden = modelFoundById.NaviVorhanden;
+            SelectedItem.Batch.KennzeichenLeasingFahrzeug = modelFoundById.KennzeichenLeasingFahrzeug;
+
             return SelectedItem;
         }
 
@@ -216,39 +166,42 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             Batcherfassungs.Add(newItem);
         }
 
-        public Batcherfassung NewItem(string idToDuplicate)
+        public BatcherfassungEdit NewEditItem(string idToDuplicate)
         {
-            Batcherfassung newItem = null;
+            SelectedItem = new BatcherfassungEdit();
 
-            if (idToDuplicate.IsNullOrEmpty())
-                newItem = new Batcherfassung
+            if (idToDuplicate.IsNotNullOrEmpty())
+            {
+                var itemToDuplicate = Batcherfassungs.FirstOrDefault(m => m.ID == idToDuplicate);
+                if (itemToDuplicate != null)
+                {
+                    SelectedItem.Batch = ModelMapping.Copy(itemToDuplicate);
+
+                    SelectedItem.Batch.ID = "";
+                    SelectedItem.ObjectKey = null;
+                }
+            }
+
+            if (SelectedItem.Batch == null)
+            {
+                SelectedItem.Batch = new Batcherfassung
                 {
                     ID = "",
-                    HerstellerList = Batcherfassungs.Select(x => x.HerstellerList).FirstOrDefault(),
-                    BatchStatus = BatchStatusEnum.Neu
+                    Status = "NEU"
                 };
-
-            var itemToDuplicate = Batcherfassungs.FirstOrDefault(m => m.ID == idToDuplicate);
-            if (itemToDuplicate != null)
-            {
-                newItem = ModelMapping.Copy(itemToDuplicate);
-
-                newItem.ID = "";
-                newItem.ObjectKey = null;                
             }
 
             Unitnummern = new List<FzgUnitnummer>();
             UnitnummernFiltered = Unitnummern;
 
-            SelectedItem = newItem;
-            return newItem;
+            return SelectedItem;
         }
 
-        public void SaveItem(Batcherfassung item, Action<string, string> addModelError)
+        public void SaveEditItem(BatcherfassungEdit item, Action<string, string> addModelError)
         {
-            var unitnummerList = PrepareUnitnumbers(item);
+            var unitnummerList = PrepareUnitnumbers(item.Batch);
 
-            var errorMessage = DataService.SaveBatches(item, unitnummerList);
+            var errorMessage = DataService.SaveBatch(item.Batch, unitnummerList);
 
             if (errorMessage.IsNotNullOrEmpty())
                 addModelError("", errorMessage);
@@ -261,12 +214,12 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             if (item.Unitnummern.IsNotNullOrEmpty())
             {
                 var items = item.Unitnummern.Replace("\"", "");
-                var lines = items.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None);
+                var lines = items.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
 
-                return lines.Where(x => x.IsNotNullOrEmpty()).Select(line => new FzgUnitnummer() {Unitnummer = line}).ToList();
+                return lines.Where(x => x.IsNotNullOrEmpty()).Select(line => new FzgUnitnummer { Unitnummer = line }).ToList();
             }
-            else
-                return null;
+
+            return null;
         }
 
         public void LoadUnitnummerByBatchId(string batchId)
@@ -275,26 +228,18 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
             UnitnummernFiltered = Unitnummern;
 
-            SelectedItem = Batcherfassungs.FirstOrDefault(m => m.ID == batchId) ?? new Batcherfassung();
+            SelectedItem = new BatcherfassungEdit { Batch = (Batcherfassungs.FirstOrDefault(m => m.ID == batchId) ?? new Batcherfassung()) };
 
-            Unitnummern.ForEach(x => {  x.ID = SelectedItem.ID;
-                                        x.ModellId = SelectedItem.ModellId;
-                                        x.Modellbezeichnung = SelectedItem.Modellbezeichnung;
-                                        x.AuftragsnummerVon = SelectedItem.AuftragsnummerVon;
-                                        x.AuftragsnummerBis = SelectedItem.AuftragsnummerBis;
-                                        x.Anzahl = SelectedItem.Anzahl;
-                                        x.KennzeichenLeasingFahrzeug = SelectedItem.KennzeichenLeasingFahrzeug;
-                                        x.BatchStatus = SelectedItem.BatchStatus;
-                                });           
-        }
-
-        public void ValidateModel(Batcherfassung model, bool insertMode, Action<Expression<Func<Batcherfassung, object>>, string> addModelError)
-        {
-            if (!insertMode)                
-                return;
-
-            model.HerstellerList = BatcherfassungSelektor.FahrzeugHersteller;
-            // ...->
+            Unitnummern.ForEach(x => {
+                x.ID = SelectedItem.Batch.ID;
+                x.ModellId = SelectedItem.Batch.ModellId;
+                x.Modellbezeichnung = SelectedItem.Batch.Modellbezeichnung;
+                x.AuftragsnummerVon = SelectedItem.Batch.AuftragsnummerVon;
+                x.AuftragsnummerBis = SelectedItem.Batch.AuftragsnummerBis;
+                x.Anzahl = SelectedItem.Batch.Anzahl;
+                x.KennzeichenLeasingFahrzeug = SelectedItem.Batch.KennzeichenLeasingFahrzeug;
+                x.Status = SelectedItem.Batch.Status;
+           });           
         }
 
         public void CalculateUnitNumbers(string unitnumberFrom, string unitnumberUntil, string count)
@@ -322,10 +267,9 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             if (result.IsNotNullOrEmpty())
                 return;
 
-            SelectedItem.Unitnummern = "";
+            SelectedItem.Batch.Unitnummern = "";
             for (var i = from; i < until + 1; i++)
-                SelectedItem.Unitnummern += "\"" + i.ToString() + "\"\n";
-            
+                SelectedItem.Batch.Unitnummern += "\"" + i.ToString() + "\"\n";
         }
 
         public void SelectUnitnummer(string unitNummer, bool select, out int allSelectionCount)
@@ -350,15 +294,14 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public void UpdateSperrvermerk(string unitnummer, string sperrvermerk)
         {
-            var item = Unitnummern.Where(x => x.Unitnummer == unitnummer).FirstOrDefault();
+            var item = Unitnummern.FirstOrDefault(x => x.Unitnummer == unitnummer);
 
             if (item != null)
                 item.Sperrvermerk = sperrvermerk;        
         }
 
         public void FreigebenSperren(Action<string, string> addModelError)
-        {
-                      
+        {         
             var items =  Unitnummern.Where(x => x.IsSelected).ToList();
 
             foreach (var item in items)
@@ -383,8 +326,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             UnitnummernFiltered = Unitnummern.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-
-        #region CSV Upload ##########################################################################################
+        #region CSV Upload
 
         public List<Batcherfassung> UploadItems { get; private set; }
 
@@ -394,9 +336,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         public bool UploadItemsSuccessfullyStored { get; set; }
 
         public string UploadSAPErrortext { get; set; }
-
-       
-             
+   
         public bool CsvUploadFileSave(string fileName, Func<string, bool> fileSaveAction)
         {
             CsvUploadFileName = fileName;
@@ -405,10 +345,10 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            IEnumerable<Batcherfassung> list = null;
+            IEnumerable<Batcherfassung> list;
             try
             {              
-                list = new ExcelDocumentFactory().ReadToDataTable<Batcherfassung>(CsvUploadServerFileName, true, "", CreateInstanceFromDatarow, ',', false, false).ToList();
+                list = new ExcelDocumentFactory().ReadToDataTable<Batcherfassung>(CsvUploadServerFileName, true, "", CreateInstanceFromDatarow, ',').ToList();
             }
             catch { return false; } // falsches Dateiformat
 
@@ -430,13 +370,12 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         public void PrepareUploadItems()
         {         
             //string sapError = DataService.SaveUploadItems(UploadItems);
-            SelectedItem.Unitnummern = "";
+            SelectedItem.Batch.Unitnummern = "";
             foreach (var item in UploadItems)
-                SelectedItem.Unitnummern += "\"" + item.Unitnummern + "\"\n" ;
+                SelectedItem.Batch.Unitnummern += "\"" + item.Unitnummern + "\"\n" ;
 
-            SelectedItem.UnitnummerVon = "";
-            SelectedItem.UnitnummerBis = "";
-
+            SelectedItem.Batch.UnitnummerVon = "";
+            SelectedItem.Batch.UnitnummerBis = "";
         }
 
         static Batcherfassung CreateInstanceFromDatarow(System.Data.DataRow row)
@@ -448,8 +387,6 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             return item;
         }
 
-
         #endregion
-
     }
 }

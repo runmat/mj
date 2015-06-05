@@ -2,44 +2,21 @@
 
 @section LayoutScript { _controlGroupValidationType = "default"; }
 
-@*
-<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
-<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
-*@
-
 <h3 class="page-title">@Localize.BatcherfassungReporting</h3>
 
 <div  class="hide">
-@using (Html.FormSearchBox())
-{
-    @Html.Partial("Partial/Suche", Model.BatcherfassungSelektor)
-}
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/Suche", Model.BatcherfassungSelektor)
+    }
 </div>
 
 @Html.Partial("Partial/Common")
 
 @Html.SpanAlert("spanAlertBatcherfassung")
 
-@*
-@using (Html.FormSearchResultsGrid())
-{
-    <div class="portlet">
-        @*<div id="divGridBatcherfassung">
-            @Html.Partial("Partial/GridBatcherfassung")
-        </div>
-    </div>
-}
-*@
-
 <div id="divGridBatcherfassung">
-          @*  @Html.Partial("Partial/GridBatcherfassung")*@
 </div>
 
 <div id="divGridItemDetails"></div>
 <div id="divGridUnitnumbers"></div>
-
-
-
-
-
-

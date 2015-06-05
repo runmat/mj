@@ -857,7 +857,6 @@ span.m-wrap.font-normal { font-weight: normal!important; }
 .font-bold { font-weight: bold; }
 
 .checker.disabled {
-    display: block;
     padding-top: 7px;
 }
 

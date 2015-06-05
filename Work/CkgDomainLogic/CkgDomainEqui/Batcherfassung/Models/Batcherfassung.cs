@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Web.Script.Serialization;
-using System.Xml.Serialization;
-using CkgDomainLogic.FzgModelle.ViewModels;
+﻿using System.ComponentModel.DataAnnotations;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -15,9 +9,6 @@ namespace CkgDomainLogic.FzgModelle.Models
 
     public class Batcherfassung : Store
     {
-       
-        public List<SelectItem> HerstellerList { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         [Required]
         public string HerstellerName { get; set; }
@@ -58,16 +49,10 @@ namespace CkgDomainLogic.FzgModelle.Models
         [Length(5)]
         public string Anzahl { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.DeliveryDate)]
-        [Required]
-        [Length(8)]
-        public string LiefermonatBAPIFormat { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.DeliveryMonth)]
+        [Required]
+        [Length(7)]
         public string Liefermonat { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.DeliveryYear)]
-        public string Lieferjahr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PeriodOfValidityDays)]
         [Required]
@@ -90,6 +75,8 @@ namespace CkgDomainLogic.FzgModelle.Models
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
+
+        public bool StatusNeu { get { return (Status == "NEU"); } }
 
         public string Fahrzeuggruppe { get; set; }
 
@@ -114,15 +101,6 @@ namespace CkgDomainLogic.FzgModelle.Models
         [GridHidden, GridExportIgnore]
         public string Antrieb { get; set; }
 
-        [XmlIgnore, GridHidden, NotMapped]
-        public List<SelectItem> AntriebeList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().AntriebeList; } }
-
-        [XmlIgnore, GridHidden, NotMapped]
-        public List<SelectItem> AuftragsnummrList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().Auftragsnummern; } }
-
-        [XmlIgnore, GridHidden, NotMapped]
-        public List<SelectItem> ModelList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().ModelList; } }
-
         [LocalizedDisplay(LocalizeConstants.Bluetooth)]
         public bool Bluetooth { get; set; }
   
@@ -130,28 +108,6 @@ namespace CkgDomainLogic.FzgModelle.Models
         public string Verwendung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.WebUser)]
-        public string WebUser { get; set; }
-
-        public BatchStatusEnum BatchStatus { get; set; }        
-         
-        [GridHidden, NotMapped]
-        public bool InsertModeTmp { get; set; }
-      
-        public Batcherfassung SetInsertMode(bool insertMode)
-        {
-            InsertModeTmp = insertMode;
-            return this;
-        }
-
-        [LocalizedDisplay(LocalizeConstants.Error)]
-        public string ValidationError { get; set; }
-
-        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
-        public static Func<BatcherfassungViewModel> GetViewModel { get; set; }
-
-
-        [XmlIgnore, NotMapped, GridExportIgnore]
-        [LocalizedDisplay(LocalizeConstants.Action)]
-        public string Aktion { get; set; }
+        public string WebUser { get; set; }      
     }
 }

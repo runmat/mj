@@ -1,12 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Web.Script.Serialization;
-using System.Xml.Serialization;
-using CkgDomainLogic.FzgModelle.ViewModels;
-using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -58,5 +50,7 @@ namespace CkgDomainLogic.FzgModelle.Models
         public bool AnhaengerKupplung { get; set; }
 
         public string Fahrzeuggruppe { get; set; }
+
+        public string IdNameBezeichnung { get { return String.Format("{0} {1} {2}", ModelID, HerstellerName, Modellbezeichnung); } }
     }
 }

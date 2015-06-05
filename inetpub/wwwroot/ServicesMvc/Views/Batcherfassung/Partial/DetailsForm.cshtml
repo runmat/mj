@@ -1,6 +1,4 @@
-﻿@using CkgDomainLogic.FzgModelle.Models
-@using System.Collections.Generic
-@model Batcherfassung
+﻿@model CkgDomainLogic.FzgModelle.Models.BatcherfassungEdit
 
 <div id="divBatcherfassungDetailsForm">
     @using (Ajax.BeginForm("BatcherfassungDetailsFormSave", "Batcherfassung", null,
@@ -12,57 +10,56 @@
       
         @Html.HiddenFor(m => m.ObjectKey)
         @Html.HiddenFor(m => m.InsertModeTmp)       
-        @Html.HiddenFor(m => m.Fahrzeuggruppe) 
-        @Html.HiddenFor(m => m.Bemerkung) 
+        @Html.HiddenFor(m => m.Batch.Fahrzeuggruppe) 
+        @Html.HiddenFor(m => m.Batch.Bemerkung) 
     
-
         if (Model.InsertModeTmp)
         {
-            @Html.FormTextBoxFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.Batch.ID, new { @class = "m-wrap medium", col = "left" })
         }
         else
         {           
-            @Html.HiddenFor(m => m.ID)
-            @Html.FormTextBlockFor(m => m.ID, new { @class = "m-wrap medium", col = "left" })
+            @Html.HiddenFor(m => m.Batch.ID)
+            @Html.FormTextBlockFor(m => m.Batch.ID, new { @class = "m-wrap medium", col = "left" })
         }                         
-        @Html.FormTextBoxFor(m => m.ModellId, new { @class = "m-wrap ", col = "right", @onchange = "return TryLoadDataByModelId();" })
+        @Html.FormTextBoxFor(m => m.Batch.ModellId, new { @class = "m-wrap ", col = "right", @onchange = "return TryLoadDataByModelId();" })
         @*@Html.FormDropDownListFor(m => m.ModellId, Model.ModelList, new { @class = "m-wrap X-large", col = "right", @onchange = "return false" })*@
         
-        @Html.FormTextBoxFor(m => m.Modellbezeichnung, new { @class = "m-wrap ", col = "left" })
-        @Html.FormTextBoxFor(m => m.SippCode, new { @class = "m-wrap ", col = "right" })
+        @Html.FormTextBoxFor(m => m.Batch.Modellbezeichnung, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.Batch.SippCode, new { @class = "m-wrap ", col = "right" })
 
         if (Model.InsertModeTmp)
         {           
-            @Html.FormDropDownListFor(m => m.HerstellerName, Model.HerstellerList, new { @class = "m-wrap large", col = "left" })
+            @Html.FormDropDownListFor(m => m.Batch.HerstellerName, Model.HerstellerList.ToSelectList("HerstellerName"), new { @class = "m-wrap large", col = "left" })
         }
         else
         {           
-            @Html.FormTextBoxFor(m => m.HerstellerName, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.Batch.HerstellerName, new { @class = "m-wrap medium", col = "left" })
         }
-        @Html.FormTextBoxFor(m => m.Anzahl, new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Batch.Anzahl, new { @class = "m-wrap large", col = "right" })
                                                      
-        @Html.FormTextBoxFor(m => m.Laufzeit, new { @class = "m-wrap large", col = "left" })
-        @Html.FormCheckBoxFor(m => m.Laufzeitbindung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+        @Html.FormTextBoxFor(m => m.Batch.Laufzeit, new { @class = "m-wrap large", col = "left" })
+        @Html.FormCheckBoxFor(m => m.Batch.Laufzeitbindung, new { @class = "m-wrap", col = "right" }, labelHidden: true)
         
-        @Html.FormTextBoxFor(m => m.LiefermonatBAPIFormat, new { @class = "m-wrap large", col = "left" })
-        @Html.FormDropDownListFor(m => m.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Batch.Liefermonat, new { @class = "m-wrap large", col = "left" })
+        @Html.FormDropDownListFor(m => m.Batch.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
                
-        @Html.FormDropDownListFor(m => m.AuftragsnummerVon, Model.AuftragsnummrList, new { @class = "m-wrap large", col = "left" })
-        @Html.FormDropDownListFor(m => m.AuftragsnummerBis, Model.AuftragsnummrList, new { @class = "m-wrap large", col = "right" })
+        @Html.FormDropDownListFor(m => m.Batch.AuftragsnummerVon, Model.AuftragsnummerList.ToSelectList("Nummer", "AuftragsNrUndText"), new { @class = "m-wrap large", col = "left" })
+        @Html.FormDropDownListFor(m => m.Batch.AuftragsnummerBis, Model.AuftragsnummerList.ToSelectList("Nummer", "AuftragsNrUndText"), new { @class = "m-wrap large", col = "right" })
                      
-        @Html.FormCheckBoxFor(m => m.Winterreifen, new { @class = "m-wrap large", col = "left" }, labelHidden: true)
-        @Html.FormCheckBoxFor(m => m.AnhaengerKupplung, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Batch.Winterreifen, new { @class = "m-wrap", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Batch.AnhaengerKupplung, new { @class = "m-wrap", col = "right" }, labelHidden: true)
 
-        @Html.FormCheckBoxFor(m => m.NaviVorhanden, new { @class = "m-wrap large", col = "left" }, labelHidden: true)        
-        @Html.FormCheckBoxFor(m => m.Bluetooth, new { @class = "m-wrap large", col = "right" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Batch.NaviVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true)        
+        @Html.FormCheckBoxFor(m => m.Batch.Bluetooth, new { @class = "m-wrap", col = "right" }, labelHidden: true)
             
-        @Html.FormCheckBoxFor(m => m.KennzeichenLeasingFahrzeug, new { @class = "m-wrap large", col = "left" }, labelHidden: true)       
-        @Html.FormCheckBoxFor(m => m.SecurityFleet, new { @class = "m-wrap large", col = "right" }, labelHidden: true)    
+        @Html.FormCheckBoxFor(m => m.Batch.KennzeichenLeasingFahrzeug, new { @class = "m-wrap", col = "left" }, labelHidden: true)       
+        @Html.FormCheckBoxFor(m => m.Batch.SecurityFleet, new { @class = "m-wrap", col = "right" }, labelHidden: true)    
         
         // -> TODO Deko, Abgrenzung, 
                 
-        @Html.FormTextBoxFor(m => m.UnitnummerVon, new { @class = "m-wrap large", col = "left", @onblur = "return TryCalculateUnitNumbers(this)" })
-        @Html.FormTextBoxFor(m => m.UnitnummerBis, new { @class = "m-wrap large", col = "right", @onblur = "return TryCalculateUnitNumbers(this)" })
+        @Html.FormTextBoxFor(m => m.Batch.UnitnummerVon, new { @class = "m-wrap large", col = "left", @onblur = "return TryCalculateUnitNumbers(this)" })
+        @Html.FormTextBoxFor(m => m.Batch.UnitnummerBis, new { @class = "m-wrap large", col = "right", @onblur = "return TryCalculateUnitNumbers(this)" })
              
         <div id="divValidationError" class="hide" >
             {@Html.FormTextBlockFor(m => m.ValidationError, new { @class = "m-wrap medium error" })}        
@@ -75,7 +72,7 @@
                 @Html.Partial("ExcelUpload/FileUpload")                                                                                   
             </div>
         </div>        
-        @Html.FormTextAreaFor(m => m.Unitnummern, new { @class = "m-wrap large right" })
+        @Html.FormTextAreaFor(m => m.Batch.Unitnummern, new { @class = "m-wrap large right" })
                
         @Html.FormRequiredFieldsSummary()
 
@@ -90,7 +87,3 @@
         </script>
     }
 </div>
-
-<script type="text/javascript">
-
-</script>

@@ -1,16 +1,16 @@
-﻿@model CkgDomainLogic.FzgModelle.ViewModels.BatcherfassungViewModel 
-@using CkgDomainLogic.FzgModelle.Models
+﻿@using CkgDomainLogic.FzgModelle.Models
+@model BatcherfassungEdit
 
-@Html.FormTextBlockFor(m => Model.SelectedItem.ID, new { @class = "m-wrap medium" })
+@Html.FormTextBlockFor(m => m.Batch.ID, new { @class = "m-wrap medium" })
 
-@Html.FormTextBlockFor(m => Model.SelectedItem.ModellId, new { @class = "m-wrap medium", col = "left" })
-@Html.FormTextBlockFor(m => Model.SelectedItem.Modellbezeichnung, new { @class = "m-wrap medium", col = "right" })
+@Html.FormTextBlockFor(m => m.Batch.ModellId, new { @class = "m-wrap medium", col = "left" })
+@Html.FormTextBlockFor(m => m.Batch.Modellbezeichnung, new { @class = "m-wrap medium", col = "right" })
 
-@Html.FormTextBlockFor(m => Model.SelectedItem.AuftragsnummerVon, new { @class = "m-wrap medium", col = "left" })
-@Html.FormTextBlockFor(m => Model.SelectedItem.AuftragsnummerBis, new { @class = "m-wrap medium", col = "right" })
+@Html.FormTextBlockFor(m => m.Batch.AuftragsnummerVon, new { @class = "m-wrap medium", col = "left" })
+@Html.FormTextBlockFor(m => m.Batch.AuftragsnummerBis, new { @class = "m-wrap medium", col = "right" })
 
-@Html.FormTextBlockFor(m => Model.SelectedItem.Anzahl, new { @class = "m-wrap medium", col = "left" })
-@Html.FormTextBlockFor(m => Model.SelectedItem.KennzeichenLeasingFahrzeug, new { @class = "m-wrap medium", col = "right" })
+@Html.FormTextBlockFor(m => m.Batch.Anzahl, new { @class = "m-wrap medium", col = "left" })
+@Html.FormTextBlockFor(m => m.Batch.KennzeichenLeasingFahrzeug, new { @class = "m-wrap medium", col = "right" })
 
           
 @{ var gridName = "GridUnitnumbers"; }
@@ -32,8 +32,8 @@
                         + "&nbsp;"
                 );
             columns.XBound(c => c.Fahrgestellnummer);
-            columns.XBound(c => c.Kennzeichen);                                                         
-            columns.XBound(c => c.Einsteuerung);                     
+            columns.XBound(c => c.Kennzeichen);
+            columns.XBound(c => c.Einsteuerung);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
@@ -49,10 +49,7 @@
 
 <div class="form-horizontal">
     <div id="formActions" class="form-actions">                  
-        <button type="button" id="backbutton" class="btn green" onclick="CloseUnitNumbers(); "> @Localize.Back<i class="m-icon-swapright m-icon-white"></i></button>                   
-        <button type="button" id="savebutton" class="btn green hide" onclick="SaveUnitNumberState(@Model.SelectedItem.ID); "> @Localize.Send<i class="m-icon-swapright m-icon-white"></i></button>       
+        <button type="button" id="backbutton" class="btn green" onclick="CloseUnitNumbers(); "> @Localize.Back <i class="m-icon-swapright m-icon-white"></i></button>                   
+        <button type="button" id="savebutton" class="btn green hide" onclick="SaveUnitNumberState(@Model.Batch.ID); "> @Localize.Send <i class="m-icon-swapright m-icon-white"></i></button>       
     </div>
 </div>
-
-
-

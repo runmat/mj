@@ -21,7 +21,7 @@ namespace CkgDomainLogic.FzgModelle.Services
         {
             Z_M_EC_AVM_BATCH_SELECT.Init(SAP);
                                
-            var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_SELECT_GT_IN_From_Batcherfassung.CopyBack(new List<BatcherfassungSelektor>(){ selector });
+            var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_SELECT_GT_IN_From_Batcherfassung.CopyBack(new List<BatcherfassungSelektor> { selector });
             SAP.ApplyImport(vgList);
 
             SAP.Execute();
@@ -60,7 +60,6 @@ namespace CkgDomainLogic.FzgModelle.Services
             var webItems = AppModelMappings.Z_DPM_READ_MODELID_TAB_GT_OUT_To_ModelHersteller.Copy(sapItems).ToList();
 
             return webItems;
-
         }
 
         public string UpdateBatch(FzgUnitnummer batcherfassung)
@@ -71,7 +70,7 @@ namespace CkgDomainLogic.FzgModelle.Services
                 {        
                     Z_M_EC_AVM_BATCH_UPDATE.Init(SAP);         
 
-                    var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_FzgUnitnummer.CopyBack(new List<FzgUnitnummer>() { batcherfassung });
+                    var vgList = AppModelMappings.Z_M_EC_AVM_BATCH_UPDATE_GT_WEB_IN_From_FzgUnitnummer.CopyBack(new List<FzgUnitnummer> { batcherfassung });
                     SAP.ApplyImport(vgList);
             
                     SAP.Execute();
@@ -91,7 +90,7 @@ namespace CkgDomainLogic.FzgModelle.Services
         }
 
 
-        public string SaveBatches(Batcherfassung batcherfassung, List<FzgUnitnummer> unitnummerList)
+        public string SaveBatch(Batcherfassung batcherfassung, List<FzgUnitnummer> unitnummerList)
         {
             var error = SAP.ExecuteAndCatchErrors(
                 
@@ -100,7 +99,7 @@ namespace CkgDomainLogic.FzgModelle.Services
                 {                    
                     Z_M_EC_AVM_BATCH_INSERT.Init(SAP);
                     batcherfassung.WebUser = LogonContext.UserName;
-                    var batchList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_ZBATCH_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung>() { batcherfassung });
+                    var batchList = AppModelMappings.Z_M_EC_AVM_BATCH_INSERT_ZBATCH_IN_From_Batcherfassung.CopyBack(new List<Batcherfassung> { batcherfassung });
                     SAP.ApplyImport(batchList);
 
                     if (unitnummerList != null)
@@ -123,9 +122,5 @@ namespace CkgDomainLogic.FzgModelle.Services
 
             return error;    
         }
-
-
-        
-        
     }
 }

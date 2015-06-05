@@ -4,8 +4,7 @@
 
     var _modelStateValid = false;
 
-    function FormPreparePrivate() {
-        //$("#divGridBatcherfassung").slideUp();       
+    function FormPreparePrivate() {       
         $("#BatcherfassungSearchForm button[type=submit]").trigger("click");
         GridAllColumnFilterApplyToGrid("GridBatcherfassung");
         FormWizardInitPrivate();       
@@ -13,12 +12,7 @@
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
-        //$(".t-status").hide();
     }
-
-//    function GetGrid() {
-//        return $("#GridBatcherfassung").data("tGrid");
-//    }
 
     function GridLoadingHide() {
         // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
@@ -28,13 +22,6 @@
     function TryBatcherfassungGridRefresh() {
         FilterGrid("GridBatcherfassung");
     }
-
-//    function TryGridPageTo1() {
-//        // Refresh grid and goto grid page 1
-//        if (typeof (GetGrid()) !== "undefined") {
-//            GetGrid().pageTo(1);
-//        }
-//    }
 
     function OnDataBound_GridBatcherfassung() {
         FilteredData_Grid_OnDataBound($(this));
@@ -69,21 +56,16 @@
         });
     }
 
-
     function ShowBatcherfassungSearchResult(result) {
         SearchFormHide();
         $("#divGridBatcherfassung").html(result);
 
         // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridBatcherfassung");
-        //alert('1');
         $("#divGridBatcherfassung").slideDown();
-        //alert('2');
     }
 
-
     function ItemEdit(id) {
-
         $.ajax(
         {
             type: "POST",
@@ -162,26 +144,15 @@
             CloseItemDetails();
     }
 
-
-
     var _modelId = null;
-    function TryLoadDataByModelId() {
-
-    // wg. onchange im Moment keine weitere validiereng
-    //        if (_modelId == $(textbox).val())
-    //            return;
-    //        _modelId = $(textbox).val();
-
-    //        if ($(textbox).val().length < 3)
-    //            return;       
+    function TryLoadDataByModelId() {   
         LoadDataByModelId();
     }
 
     function LoadDataByModelId() {
+        var modellId = $("#Batch_ModellId").val();
+        var batchId = $("#Batch_ID").val();
 
-        var modellId = $("#ModellId").val();
-        var batchId = $("#ID").val();
-        //alert(modellId);
         $.ajax(
             {
                 type: "POST",
@@ -196,11 +167,9 @@
             });
 
         return false;
-
     }
 
     function ShowGridUnitNumbers(batchId) {
-
         $.ajax(
         {
             type: "POST",
@@ -214,7 +183,6 @@
     }
 
     function ShowUnitNumbers(result) {
-        //alert(result);
         $("#divGridUnitnumbers").html(result);
         GridAllColumnFilterApplyToGrid("GridUnitnumbers");
         $("#divGridBatcherfassung").slideUp();
@@ -239,7 +207,6 @@
 
     function UpdateSperrvermerk(unitnummer) {
         sperrvermerk = $("#" + unitnummer).val();
-        //alert("UnitNr: " + unitnummer + sperrvermerk);
 
          $.ajax({
             type: "POST",
@@ -254,7 +221,6 @@
     }
     
     function GridUnitnumbers_OnSelectionChange(cb) {
-
         Grid_FormatMultiRowSelected(cb);
 
         $.ajax({
@@ -268,22 +234,19 @@
                     $("#" + cb.val()).removeAttr('readonly');
                 } else {
                     $("#" + cb.val()).attr('readonly', true);
-                }
-                //GridUnitnumbers_MultiSelectUpdate(result.allSelectionCount);                
+                }               
             }
         });
     }
 
    
     function SaveUnitNumberState(batchId) {
-
         $.ajax(
         {
             type: "POST",
             url: "UnitnummerFreigebenSperren",
             loadingShow: false,
             success: function (result) {
-                //ShowBatcherfassung();
                 ShowGridUnitNumbers(batchId);
                 FormPreparePrivateAjax();
             },
@@ -302,10 +265,9 @@
     }
 
     function TryCalculateUnitNumbers() {
-
-        var unitnumberFrom = $("#UnitnummerVon").val();
-        var unitnumberUntil = $("#UnitnummerBis").val();
-        var count = $("#Anzahl").val();
+        var unitnumberFrom = $("#Batch_UnitnummerVon").val();
+        var unitnumberUntil = $("#Batch_UnitnummerBis").val();
+        var count = $("#Batch_Anzahl").val();
 
         if (unitnumberFrom == '' || unitnumberUntil == '' || count == '')
             return;
@@ -332,14 +294,14 @@
 //    function ModellIdInitDropdown() {
 
 //        setTimeout(function () {
-//            $('#ModellId').select2({
+//            $('#Batch_ModellId').select2({
 //                allowClear: true
 //            }).off("change").on("change", function (e) {
 //                TryLoadDataByModelId();
 //            });
 
 //            setTimeout(function () {
-//                //$('#ModellId').data('select2').open();
+//                //$('#Batch_ModellId').data('select2').open();
 //            }, 100);
 //        }, 100);       
 //    }
@@ -350,18 +312,10 @@
       
     var _formWizardForceHideSubmitButton = false;
 
-  
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
             FormWizard.ActionsShow(false);
         });
-
-        //        FormWizard.OnNext(function (step, maxSteps) {
-        //            alert(_formWizardForceHideSubmitButton);
-        //            if (step == 2 && _formWizardForceHideSubmitButton)
-        //                FormWizard.ButtonSubmitShow(false);
-        //            return true;
-        //        });
 
         FormWizard.OnPrev(function (step, maxSteps) {
             if (step == 1)
@@ -374,18 +328,12 @@
         });
 
         FormWizard.OnRestart(function () {
-            //alert('Ok, let´s restart! :)');
             LocationReloadWithoutQueryString();
         });
     }
 
 
     function UploadStart(e) {
-
-        //$("#FahrzeugvorAuswahlForm").submit();
-        // clear only the UI of our Upload Control:
-        //$(this).children(".t-upload-files").remove();
-
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
         var fileName = e.files[0].name;
 
@@ -417,9 +365,6 @@
         alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei!');
     }
 
-
-    //function ShowGrid() { }
-
     function ShowGrid() {      
         $.ajax({
             type: "POST",
@@ -436,13 +381,9 @@
                 FormWizard.ButtonNextInvoke();
 
                 $("#divBatcherfassungDetailsForm").html(result);
-
-//                if (_formWizardForceHideSubmitButton)
-//                    FormWizard.ButtonSubmitShow(false);
             }
         });
     }
    
-
 </script>
 

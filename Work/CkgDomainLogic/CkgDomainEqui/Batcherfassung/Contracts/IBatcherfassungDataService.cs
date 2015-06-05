@@ -14,7 +14,7 @@ namespace CkgDomainLogic.FzgModelle.Contracts
 
         List<Auftragsnummer> GetAuftragsnummern();
         
-        string SaveBatches(Batcherfassung batcherfassung, List<FzgUnitnummer> unitnummern);
+        string SaveBatch(Batcherfassung batcherfassung, List<FzgUnitnummer> unitnummern);
 
         string UpdateBatch(FzgUnitnummer batcherfassung);
     }

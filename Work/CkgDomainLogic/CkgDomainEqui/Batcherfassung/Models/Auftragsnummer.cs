@@ -12,5 +12,6 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.OrderNumberDescription)]
         public string AuftragsNrText { get; set; }
 
+        public string AuftragsNrUndText { get { return string.Format("{0} {1}", Nummer, AuftragsNrText); } }
     }
 }
