@@ -174,6 +174,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Mahnstufe = sap.MAHNSTUFE;
                         business.UnfallNr = sap.UNFALL_NR;
                         business.StornoDatum = sap.STORNODAT;
+                        business.StornoText = sap.STORNOBEM;
                     }));
             }
         }

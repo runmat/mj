@@ -1,7 +1,7 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.Models
 @model UnfallmeldungenSelektor
 
-<div id="divAbgemeldeteFahrzeugeSuche">
+<div id="divUnfallmeldungenSuche">
     @using (Ajax.BeginForm("LoadUnfallmeldungen", "Fahrzeuge", null,
         new MvcAjaxOptions("divUnfallmeldungenSuche") { OnComplete = "ShowUnfallmeldungen();" }, new { id = "MyForm" }))
     {    

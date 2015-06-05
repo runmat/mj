@@ -136,7 +136,7 @@
         $.ajax({
             type: "POST",
             url: "UnfallmeldungenCancel",
-            data: { cancelText: $("#txtCancellation").text() },
+            data: { cancelText: $("#txtCancellation").val() },
             loadingShow: true,
             success: function(result) {
                 GridUnfallmeldungen_MultiSelectUpdate(0);
