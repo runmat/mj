@@ -15,7 +15,7 @@
             url: "ShowStatusReport",
             loadingShow: false,
             success: function (result) {
-                $("#GridStatus").html(result);
+                $("#divGrid").html(result);
                 GridAllColumnFilterApplyToGrid("GridStatus");
                 LoadingHide();
             }
@@ -33,7 +33,7 @@
             url: "ShowStatusEinsteuerung",
             loadingShow: false,
             success: function (result) {
-                $("#GridStatus").html(result);
+                $("#divGrid").html(result);
                 GridAllColumnFilterApplyToGrid("GridStatus");
                 LoadingHide();
             }
