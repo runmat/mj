@@ -347,6 +347,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Gesperrt = (sap.ZZAKTSPERRE == "JA");
                         business.MeldungsNr = sap.QMNUM;
                         business.DadPdi = sap.ZZCARPORT;
+                        business.Farbcode = sap.ZFARBE;
+                        business.Farbname = sap.FARBE_TEXT;
                     }));
             }
         }

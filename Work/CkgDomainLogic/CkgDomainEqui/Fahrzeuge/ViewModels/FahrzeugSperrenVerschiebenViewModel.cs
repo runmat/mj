@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrzeuge.Contracts;
@@ -16,9 +15,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
     {
         [XmlIgnore]
         public IFahrzeugSperrenVerschiebenDataService DataService { get { return CacheGet<IFahrzeugSperrenVerschiebenDataService>(); } }
-
-        [XmlIgnore]
-        public List<Domaenenfestwert> Farben { get { return PropertyCacheGet(() => DataService.GetFarben()); } }
 
         [XmlIgnore]
         public List<FahrzeuguebersichtPDI> Pdis { get { return PropertyCacheGet(() => DataService.GetPDIStandorte()); } }
@@ -107,19 +103,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             FahrzeugeGesamt = DataService.GetFahrzeuge();
 
-            FahrzeugeGesamt.ForEach(f => f.Farbname = GetFarbName(f.Farbcode));
-
             DataMarkForRefresh();
-        }
-
-        private string GetFarbName(string farbCode)
-        {
-            var farbe = Farben.FirstOrDefault(f => f.Wert == farbCode);
-
-            if (farbe != null)
-                return farbe.Beschreibung;
-
-            return "";
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)

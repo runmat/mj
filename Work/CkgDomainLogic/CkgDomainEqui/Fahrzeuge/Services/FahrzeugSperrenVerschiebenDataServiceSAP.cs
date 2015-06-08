@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
@@ -17,13 +16,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         public FahrzeugSperrenVerschiebenDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-        }
-
-        public List<Domaenenfestwert> GetFarben()
-        {
-            var sapList = Z_DPM_DOMAENENFESTWERTE.GT_WEB.GetExportListWithInitExecute(SAP, "DOMNAME, DDLANGUAGE", "ZFARBE", "DE");
-
-            return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList).ToList();
         }
 
         public List<FahrzeuguebersichtPDI> GetPDIStandorte()

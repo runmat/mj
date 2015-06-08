@@ -76,14 +76,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get
             {
-                if (String.IsNullOrEmpty(Farbcode))
-                    return Farbname;
+                if (String.IsNullOrEmpty(Farbname))
+                    return Farbcode;
 
                 return String.Format("{0} ({1})", Farbname, Farbcode);
             }
         }
 
-        [LocalizedDisplay(LocalizeConstants.Comment)]
+        [LocalizedDisplay(LocalizeConstants.BlockRemark)]
         public string BemerkungSperre { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Disabled)]
