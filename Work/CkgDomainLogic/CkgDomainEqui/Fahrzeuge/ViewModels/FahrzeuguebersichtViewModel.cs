@@ -102,11 +102,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
     
-        public void LoadFahrzeuguebersicht()
+        public void LoadFahrzeuguebersicht(ModelStateDictionary state)
         {
-           
+            if (FahrzeuguebersichtSelektor.Akion == "upload" && (UploadItems == null || UploadItems.Count == 0))
+            {
+                state.AddModelError(string.Empty, Localize.NoVehiclesUploaded);
+                return;
+            }
+
             Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor);
-                                                                                                                                                                                                
+
             #region custom selector post load filter
 
             if (FahrzeuguebersichtSelektor.Akion == "manuell")
@@ -165,11 +170,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             #region custom excel upload filter
 
-            if (FahrzeuguebersichtSelektor.Akion == "upload" && UploadItems != null && UploadItems.Count > 0)
+            if (FahrzeuguebersichtSelektor.Akion == "upload")
             {
-                                
-                var filterList = Fahrzeuguebersichts.Intersect(UploadItems.Where(x => x.Fahrgestellnummer.IsNotNullOrEmpty()), 
-                                    new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Fahrgestellnummer)).ToList();
+                var filterList = Fahrzeuguebersichts.Intersect(UploadItems.Where(x => x.Fahrgestellnummer.IsNotNullOrEmpty()),
+                                new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Fahrgestellnummer)).ToList();
 
                 foreach (var item in filterList)
                 {
@@ -180,8 +184,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                     if (UploadItems.Where(x => x.Zb2Nummer.IsNotNullOrEmpty()).Count() > 0)
                         exclusionList.Add(UploadItems.Where(x => x.Zb2Nummer == item.Zb2Nummer).Count() == 0);
-                  
-                    if (UploadItems.Where(x => x.ModelID.IsNotNullOrEmpty()).Count() > 0)                                           
+
+                    if (UploadItems.Where(x => x.ModelID.IsNotNullOrEmpty()).Count() > 0)
                         exclusionList.Add(UploadItems.Where(x => x.ModelID == item.ModelID).Count() == 0);
 
                     if (UploadItems.Where(x => x.Unitnummer.IsNotNullOrEmpty()).Count() > 0)
@@ -195,15 +199,17 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                     if (UploadItems.Where(x => x.SIPPCode.IsNotNullOrEmpty()).Count() > 0)
                         exclusionList.Add(UploadItems.Where(x => x.SIPPCode == item.SIPPCode).Count() == 0);
-              
-                    item.IsFilteredByExcelUpload = exclusionList.Where(x => x == true).Count() > 0;                              
+
+                    item.IsFilteredByExcelUpload = exclusionList.Where(x => x == true).Count() > 0;
                 }
-              
+
                 Fahrzeuguebersichts = filterList.Where(c => c.IsFilteredByExcelUpload == false).ToList();
-                
             }
             #endregion
-                                  
+
+            if (Fahrzeuguebersichts.None())
+                state.AddModelError(string.Empty, Localize.NoDataFound);
+
             DataMarkForRefresh();
 
             //XmlService.XmlSerializeToFile(Fahrzeuguebersichts, Path.Combine(AppSettings.DataPath, @"Fahrzeuguebersichts.xml"));

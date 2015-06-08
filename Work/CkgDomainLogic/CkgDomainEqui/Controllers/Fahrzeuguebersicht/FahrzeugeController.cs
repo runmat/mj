@@ -44,9 +44,7 @@ namespace ServicesMvc.Controllers
 
             if (ModelState.IsValid && !PersistableMode)
             {
-                FahrzeuguebersichtViewModel.LoadFahrzeuguebersicht();
-                if (FahrzeuguebersichtViewModel.Fahrzeuguebersichts.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+                FahrzeuguebersichtViewModel.LoadFahrzeuguebersicht(ModelState);
             }
 
             return PersistablePartialView("Fahrzeuguebersicht/FahrzeuguebersichtSuche", FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor);
