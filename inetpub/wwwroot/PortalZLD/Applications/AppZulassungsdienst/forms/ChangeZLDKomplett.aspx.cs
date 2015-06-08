@@ -117,7 +117,7 @@ namespace AppZulassungsdienst.forms
             Int32 NewPosID;
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
 
-            var maxPosId = objKompletterf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0));
+            var maxPosId = (objKompletterf.AktuellerVorgang.Positionen.Any() ? objKompletterf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0)) : 0);
 
             NewPosID = Math.Max(NewPosID, maxPosId);
 
@@ -657,7 +657,7 @@ namespace AppZulassungsdienst.forms
             Int32 NewPosID;
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
 
-            var maxPosId = objKompletterf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0));
+            var maxPosId = (objKompletterf.AktuellerVorgang.Positionen.Any() ? objKompletterf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0)) : 0);
 
             NewPosID = Math.Max(NewPosID, maxPosId);
 
@@ -2194,7 +2194,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="neuePositionen"></param>
         private void NewPosOhneGebMat(DataRow dRow, ref List<ZLDPosition> neuePositionen)
         {
-            var NewPosID = (neuePositionen.Any() ? neuePositionen.Max(p => p.PositionsNr.ToInt(0)) : objKompletterf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0)));
+            var NewPosID = (neuePositionen.Any() ? neuePositionen.Max(p => p.PositionsNr.ToInt(0)) : (objKompletterf.AktuellerVorgang.Positionen.Any() ? objKompletterf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0)) : 0));
 
             var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
