@@ -192,7 +192,7 @@ namespace CkgDomainLogic.Autohaus.Models
             var datum = dateValue.GetValueOrDefault();
             if (datum < DateTime.Today)
                 yield return new ValidationResult("Bitte geben Sie ein Datum ab heute an", new[] { datePropertyName });
-            else if (datum.DayOfWeek == DayOfWeek.Sasturday || datum.DayOfWeek == DayOfWeek.Sunday)
+            else if (datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday)
                 yield return new ValidationResult("Bitte vermeiden Sie Wochenendtage", new[] { datePropertyName });
             else
             {
