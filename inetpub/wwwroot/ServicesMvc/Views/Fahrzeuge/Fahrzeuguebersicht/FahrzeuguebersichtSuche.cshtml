@@ -8,12 +8,6 @@
         <div class="form-horizontal">
             
             @Html.FormValidationSummary()
-            
-            <div id="divDwnloadLink" class="hide"> 
-             <h4>
-               <a href="DownloadExcelFilterTemplate" class="btn white tooltips" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate <i class="icon-chevron-right"></i></a>
-             </h4>
-            </div>
 
             @Html.FormRadioButtonListFor(m => m.Akion, Model.Akionen.ToSelectList()) 
             
@@ -73,12 +67,10 @@
     function ShowElements() {       
         if ($(":radio[value='upload']").is(":checked")) {
             $("#divExcelUpload").removeClass('hide');
-            $("#divOptionalSearchparams").addClass('hide');
-            $("#divDwnloadLink").removeClass('hide');            
+            $("#divOptionalSearchparams").addClass('hide');            
         }
         else {
             $("#divExcelUpload").addClass('hide');
-            $("#divDwnloadLink").addClass('hide');
             $("#divOptionalSearchparams").removeClass('hide');
         }
     }

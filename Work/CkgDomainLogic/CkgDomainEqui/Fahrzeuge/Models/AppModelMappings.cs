@@ -343,9 +343,13 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.BereitmeldungDatum = sap.ZZDAT_BER;
                         business.Hersteller = sap.ZZHERST_TEXT;
                         business.SIPPCode = sap.ZZSIPP;
-                        // business.BatchId -> fehlt im BAPI
                         business.Auftragsnummer = sap.LIZNR;
                         business.Zb2Nummer = sap.TIDNR;
+                        business.BatchId = sap.ZBATCH_ID;
+                        business.Winterreifen = sap.ZMS_REIFEN.XToBool();
+                        business.Navi = sap.ZNAVI.XToBool();
+                        business.Anhaengerkupplung = sap.ZAHK.XToBool();
+                        business.Fahrzeugtyp = sap.FZGART;
                     }));
             }
         }

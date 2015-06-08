@@ -64,8 +64,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
         public string Hersteller { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.WinterTires)]
+        public bool Winterreifen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Navi)]
+        public bool Navi { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.TrailerHitch)]
+        public bool Anhaengerkupplung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VehicleType)]
+        public string Fahrzeugtyp { get; set; }
     }
-
-
-
 }
