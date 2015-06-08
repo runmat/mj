@@ -40,9 +40,8 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         // 20150528 MMA 
-        [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
-        // [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]    // Localization not working
-        [Range(1, 360, ErrorMessage = "Gültig zwischen 1 und 360")]                         // Range 
+        // [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
+        // [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]    // Localization per default not working,so implemented in separate validation below
         public int? MindesthaltedauerDays { get; set; }                                     // number of days
 
         // 20150602 MMA
@@ -178,6 +177,11 @@ namespace CkgDomainLogic.Autohaus.Models
             // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv...
             if (KennzeichenReserviert == true && ReservierungsName.IsNullOrEmpty())
                 yield return new ValidationResult(string.Format("{0}", Localize.Required), new[] { "ReservierungsName" });
+
+            // 20150608 MMA 8083 Mindesthaltedauer
+            if (IstFirmeneigeneZulassung(ZulassungsartMatNr) && (MindesthaltedauerDays == null || MindesthaltedauerDays < 1 || MindesthaltedauerDays > 360))
+                yield return new ValidationResult(string.Format("{0}", Localize.MindestHaltedauerRangeError), new[] { "MindesthaltedauerDays" }); 
+
         }
 
         static IEnumerable<ValidationResult> ValidateWochenendeUndFeiertage(DateTime? dateValue, string datePropertyName)
@@ -188,7 +192,7 @@ namespace CkgDomainLogic.Autohaus.Models
             var datum = dateValue.GetValueOrDefault();
             if (datum < DateTime.Today)
                 yield return new ValidationResult("Bitte geben Sie ein Datum ab heute an", new[] { datePropertyName });
-            else if (datum.DayOfWeek == DayOfWeek.Saturday || datum.DayOfWeek == DayOfWeek.Sunday)
+            else if (datum.DayOfWeek == DayOfWeek.Sasturday || datum.DayOfWeek == DayOfWeek.Sunday)
                 yield return new ValidationResult("Bitte vermeiden Sie Wochenendtage", new[] { datePropertyName });
             else
             {
