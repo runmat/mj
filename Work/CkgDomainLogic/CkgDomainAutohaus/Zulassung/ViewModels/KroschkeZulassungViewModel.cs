@@ -213,6 +213,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Halter.Adresse = model;
 
             Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
+            Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Kennung = "ZAHLERKFZSTEUER";
+            Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Typ = "ZahlerKfzSteuer";
 
             if (Zulassung.BankAdressdaten.Cpdkunde)
             {
@@ -318,6 +320,30 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetZahlerKfzSteuerAdresse(Adresse model)
         {
             Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = model;
+
+            // ggf. Bankdaten aus Zahler Kfz-Steuer übernehmen (muss hier passieren, da die Bank- vor den Adressdaten gespeichert werden)
+            if (Zulassung.BankAdressdaten.Cpdkunde
+                && Zulassung.Halter.Adresse.Name1 == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Name1
+                && Zulassung.Halter.Adresse.Name2 == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Name2
+                && Zulassung.Halter.Adresse.StrasseHausNr == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.StrasseHausNr
+                && Zulassung.Halter.Adresse.PLZ == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.PLZ
+                && Zulassung.Halter.Adresse.Ort == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Ort
+                && Zulassung.Halter.Adresse.Land == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Land)
+            {
+                Zulassung.BankAdressdaten.Bankdaten.KontoNr = Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr;
+                Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl;
+                Zulassung.BankAdressdaten.Bankdaten.Iban = Zulassung.ZahlerKfzSteuer.Bankdaten.Iban;
+                Zulassung.BankAdressdaten.Bankdaten.Swift = Zulassung.ZahlerKfzSteuer.Bankdaten.Swift;
+                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut;
+            }
+            else
+            {
+                Zulassung.BankAdressdaten.Bankdaten.KontoNr = "";
+                Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = "";
+                Zulassung.BankAdressdaten.Bankdaten.Iban = "";
+                Zulassung.BankAdressdaten.Bankdaten.Swift = "";
+                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = "";
+            }
         }
 
         public void SetZahlerKfzSteuerBankdaten(BankAdressdaten model)
@@ -338,15 +364,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = "";
             else
                 Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
-
-            if (Zulassung.BankAdressdaten.Cpdkunde)
-            {
-                Zulassung.BankAdressdaten.Bankdaten.KontoNr = Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr;
-                Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl;
-                Zulassung.BankAdressdaten.Bankdaten.Iban = Zulassung.ZahlerKfzSteuer.Bankdaten.Iban;
-                Zulassung.BankAdressdaten.Bankdaten.Swift = Zulassung.ZahlerKfzSteuer.Bankdaten.Swift;
-                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut;
-            }
         }
 
         public void DataMarkForRefreshZahlerKfzSteuerAdressen()

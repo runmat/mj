@@ -156,11 +156,13 @@ namespace CkgDomainLogic.Autohaus.Models
                                 Body = Halter.Adresse.GetPostLabelString(),
                             },
 
-                            new GeneralEntity
-                            {
-                                Title = Localize.CarTaxPayer,
-                                Body = ZahlerKfzSteuer.GetSummaryString(),
-                            },
+                            (Zulassungsdaten.ModusAbmeldung
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.CarTaxPayer,
+                                        Body = ZahlerKfzSteuer.GetSummaryString(),
+                                    }),
 
                             new GeneralEntity
                             {
