@@ -114,10 +114,10 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             return new List<Kunde>
                 {
-                    new Kunde {KundenNr = "Avis", Name1 = "Avis Autovermietung GmbH"},
-                    new Kunde {KundenNr = "CSI", Name1 = "CSI Catastrophe International Inc."},
-                    new Kunde {KundenNr = "Tesla", Name1 = "Tesla Motors"},
-                    new Kunde {KundenNr = "Sixt", Name1 = "Sixt Leasing GmbH"},
+                    new Kunde("Avis", "Avis Autovermietung GmbH"),
+                    new Kunde("CSI", "CSI Catastrophe International Inc."),
+                    new Kunde("Tesla", "Tesla Motors"),
+                    new Kunde("Sixt", "Sixt Leasing GmbH"),
                 };
         }
 
@@ -174,7 +174,6 @@ namespace CkgDomainLogic.Autohaus.Services
         }
 
         #endregion
-
 
         #region Zulassungs Report
 

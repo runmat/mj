@@ -23,7 +23,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public string AdressenKennung { get { return AdressenDataService.AdressenKennung; } }
 
         [LocalizedDisplay(LocalizeConstants.AddressType)]
-        public string AdressenKennungTemp { get; set; } 
+        public string AdressenKennungTemp { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.AddressGroup)]
         public string AdressenKennungGruppe { get { return PropertyCacheGet(() => "VERSAND"); } set { PropertyCacheSet(value); } }
@@ -154,17 +154,13 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataMarkForRefresh();
         }
 
-        public void AddItem(Adresse newItem)
-        {
-            Adressen.Add(newItem);
-        }
-
         public Adresse NewItem()
         {
             return new Adresse
                 {
                     ID = AppModelMappings.CreateNewID(),
                     Kennung = AdressenKennung,
+                    KennungenToInsert = new List<string> { AdressenKennung },
                     Land = "DE",
                 };
         }
@@ -172,9 +168,28 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public Adresse SaveItem(Adresse item, Action<string, string> addModelError)
         {
             AdressenDataService.KundennrOverride = KundennrOverride;
-            var savedItem = AdressenDataService.SaveAdresse(item, addModelError);
+
+            if (item.KennungenToInsert.AnyAndNotNull() && !item.KennungenToInsert.Contains(item.Kennung))
+                item.Kennung = item.KennungenToInsert.First();
+
+            var adrList = new List<Adresse> { item };
+
+            if (item.KennungenToInsert.AnyAndNotNull() && item.KennungenToInsert.Count > 1)
+            {
+                var zusKennungen = item.KennungenToInsert.Where(k => k != item.Kennung).ToList();
+
+                foreach (var zusKennung in zusKennungen)
+                {
+                    var newItem = ModelMapping.Copy(item);
+                    newItem.Kennung = zusKennung;
+                    adrList.Add(newItem);
+                }
+            }
+
+            var savedItems = AdressenDataService.SaveAdressen(adrList, addModelError);        
+
             DataMarkForRefresh();
-            return savedItem;
+            return savedItems.FirstOrDefault(i => i.Kennung == item.Kennung);
         }
 
         public void ValidateModel(Adresse model, bool insertMode, Action<Expression<Func<Adresse, object>>, string> addModelError)

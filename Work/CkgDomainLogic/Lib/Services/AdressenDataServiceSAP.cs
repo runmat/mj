@@ -41,17 +41,20 @@ namespace CkgDomainLogic.DomainCommon.Services
             PropertyCacheClear(this, m => m.AgAdresse);
         }
 
-        public Adresse SaveAdresse(Adresse adresse, Action<string, string> addModelError)
+        public List<Adresse> SaveAdressen(List<Adresse> adressen, Action<string, string> addModelError)
         {
-            var storedItem = StoreToSap(adresse, addModelError, false);
-            ModelMapping.Copy(storedItem, GetAdresseEquals(storedItem));
+            var storedItems = StoreToSap(adressen, addModelError, false);
+            foreach (var item in storedItems)
+            {
+                ModelMapping.Copy(item, GetAdresseEquals(item));
+            }
 
-            return adresse;
+            return adressen;
         }
 
         public void DeleteAdresse(Adresse adresse)
         {
-            StoreToSap(adresse, null, true);
+            StoreToSap(new List<Adresse> { adresse }, null, true);
             Adressen.RemoveAll(a => IsEqual(a, adresse));
         }
 
@@ -145,18 +148,21 @@ namespace CkgDomainLogic.DomainCommon.Services
             return AppModelMappings.MapAdressenFromSAP.Copy(sapList).ToList();
         }
 
-        virtual protected Adresse StoreToSap(Adresse adresse, Action<string, string> addModelError, bool deleteOnly)
+        virtual protected List<Adresse> StoreToSap(List<Adresse> adressen, Action<string, string> addModelError, bool deleteOnly)
         {
-            var insertMode = adresse.InternalKey.IsNullOrEmpty();
-            if (insertMode)
-            {
-                // need to store a web private key here (InternalKey2), 
-                // because we don't know the public key (InternalKey) our data store (SAP) will generate
-                adresse.InternalKey2 = Guid.NewGuid().ToString();
-            }
+            var insertMode = adressen.First().InternalKey.IsNullOrEmpty();
 
-            var sapAdresse = AppModelMappings.MapAdressenToSAP.CopyBack(adresse);
-            sapAdresse.KENNUNG = TranslateFromFriendlyAdressenKennung(sapAdresse.KENNUNG);
+            foreach (var adr in adressen)
+            {
+                adr.Kennung = TranslateFromFriendlyAdressenKennung(adr.Kennung);
+
+                if (insertMode)
+                {
+                    // need to store a web private key here (InternalKey2), 
+                    // because we don't know the public key (InternalKey) our data store (SAP) will generate
+                    adr.InternalKey2 = Guid.NewGuid().ToString();
+                }
+            }
 
             Z_DPM_PFLEGE_ZDAD_AUFTR_006.Init(SAP);
             SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
@@ -165,9 +171,8 @@ namespace CkgDomainLogic.DomainCommon.Services
 
             try
             {
-                var importList = Z_DPM_PFLEGE_ZDAD_AUFTR_006.GT_WEB.GetImportList(SAP);
-                importList.Add(sapAdresse);
-                SAP.ApplyImport(importList);
+                var adressenSap = AppModelMappings.MapAdressenToSAP.CopyBack(adressen);
+                SAP.ApplyImport(adressenSap);
                 SAP.Execute();
             }
             catch (Exception e)
@@ -182,7 +187,7 @@ namespace CkgDomainLogic.DomainCommon.Services
                 }
             }
 
-            return adresse;
+            return adressen;
         }
 
         #endregion
