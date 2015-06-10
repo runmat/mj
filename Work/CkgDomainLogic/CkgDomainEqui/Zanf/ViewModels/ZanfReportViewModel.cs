@@ -41,9 +41,12 @@ namespace CkgDomainLogic.Zanf.ViewModels
                 state.AddModelError(String.Empty, Localize.NoDataFound);
         }
 
-        public ZulassungsAnforderung GetItem(string anforderungsNr, string hauptpositionsNr)
+        public ZulassungsAnforderung GetItem(string anforderungsNr, string hauptpositionsNr, string auftragsNr)
         {
-            return ZulassungsAnforderungen.Find(z => z.AnforderungsNr == anforderungsNr && z.HauptpositionsNr == hauptpositionsNr);
+            if (anforderungsNr.IsNotNullOrEmpty())
+                return ZulassungsAnforderungen.Find(z => z.AnforderungsNr == anforderungsNr && z.HauptpositionsNr == hauptpositionsNr);
+
+            return ZulassungsAnforderungen.Find(z => z.AuftragsNr == auftragsNr);
         }
 
         #region Filter

@@ -40,9 +40,9 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowZanfKlaerfalltext(string anforderungsNr, string hauptpositionsNr)
+        public ActionResult ShowZanfKlaerfalltext(string anforderungsNr, string hauptpositionsNr, string auftragsNr)
         {
-            return PartialView("ZanfReport/ZanfKlaerfalltext", ZanfReportViewModel.GetItem(anforderungsNr, hauptpositionsNr));
+            return PartialView("ZanfReport/ZanfKlaerfalltext", ZanfReportViewModel.GetItem(anforderungsNr, hauptpositionsNr, auftragsNr));
         }
 
         [HttpPost]
