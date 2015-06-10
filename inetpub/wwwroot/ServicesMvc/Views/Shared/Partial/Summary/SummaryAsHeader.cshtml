@@ -1,0 +1,21 @@
+﻿@model GeneralSummary
+
+@if (Model.Header.IsNotNullOrEmpty())
+{
+    <h4>@Model.HeaderAsHtml</h4>
+}
+
+@foreach (var item in Model.Items)
+{
+    if (item.Title.IsNotNullOrEmpty())
+    {
+        <span>@item.TitleAsHtml:&nbsp;</span>
+    }
+    
+    <span><strong>@item.BodyAsHtml</strong>&nbsp;&nbsp;&nbsp;</span>
+}
+
+@if (Model.Footer.IsNotNullOrEmpty())
+{
+    <h4>@Model.FooterAsHtml</h4>
+}
