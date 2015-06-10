@@ -16,16 +16,21 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.Date)]
         public DateTime Time_Stamp { get; set; }
 
+        [GridExportIgnore]
         [LocalizedDisplay(LocalizeConstants.Content)]
         public string AllXml { get; set; }
 
         [NotMapped]
+        public string AllXmlFormatted { get { return AllXml.NotNullOrEmpty().Replace("&#xD;&#xA;", "\r\n").Replace("&lt;", "<").Replace("&gt;", ">"); } }
+
+        [NotMapped]
+        [GridExportIgnore]
         [LocalizedDisplay(LocalizeConstants.Content)]
         public string AllXmlPreview
         {
             get
             {
-                var strTemp = AllXml;
+                var strTemp = AllXmlFormatted;
 
                 if (String.IsNullOrEmpty(strTemp))
                     return "";

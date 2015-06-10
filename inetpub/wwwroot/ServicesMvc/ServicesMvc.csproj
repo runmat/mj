@@ -4419,6 +4419,10 @@
     <Content Include="Views\Shared\Partial\Summary\SummaryPdf.cshtml" />
     <Content Include="Views\Shared\Partial\Summary\SummaryAsHeader.cshtml" />
     <Content Include="Views\Shared\Partial\Summary\SummaryPdfBody.cshtml" />
+    <Content Include="Views\Logs\Errors.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\Grid.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\SucheErrorLogItems.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
