@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
@@ -26,6 +27,8 @@ namespace CkgDomainLogic.Autohaus.Models
         public Rechnungsdaten Rechnungsdaten { get; set; }
 
         public BankAdressdaten BankAdressdaten { get; set; }
+
+        public List<AuslieferAdresse> AuslieferAdressen { get; set; }
 
         public Fahrzeugdaten Fahrzeugdaten { get; set; }
 
@@ -71,10 +74,26 @@ namespace CkgDomainLogic.Autohaus.Models
         [XmlIgnore]
         public byte[] KundenformularPdf { get; set; }
 
+        public static List<SelectItem> AuslieferAdressenPartnerRollen
+        {
+            get
+            {
+                return new List<SelectItem>
+                    {
+                        new SelectItem("Z7", Localize.DeliveryAddress + " 1"),
+                        new SelectItem("Z8", Localize.DeliveryAddress + " 2"),
+                        new SelectItem("Z9", Localize.DeliveryAddress + " 3")
+                    };
+            }
+        } 
+
         public Vorgang()
         {
             Rechnungsdaten = new Rechnungsdaten();
             BankAdressdaten = new BankAdressdaten("RE", true);
+            AuslieferAdressen = new List<AuslieferAdresse>();
+            AuslieferAdressenPartnerRollen.ForEach(p => AuslieferAdressen.Add(new AuslieferAdresse(p.Key)));
+            AuslieferAdressen.ForEach(a => a.Materialien = AuslieferAdresse.AlleMaterialien);
             Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
             Halter = new Adressdaten("HALTER") { Partnerrolle = "ZH"};
             ZahlerKfzSteuer = new BankAdressdaten("Z6", false, "ZAHLERKFZSTEUER");
@@ -93,6 +112,30 @@ namespace CkgDomainLogic.Autohaus.Models
                     Zulassungsdaten.Zulassungsart.MaterialText,
                     HalterName,
                     Zulassungsdaten.Kennzeichen);
+            }
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        string AuslieferAdressenSummaryString
+        {
+            get
+            {
+                var s = "";
+
+                if (AuslieferAdressen.None(a => a.ZugeordneteMaterialien.Any()))
+                    return s;
+
+                foreach (var item in AuslieferAdressen.Where(a => a.ZugeordneteMaterialien.Any()))
+                {
+                    if (s.IsNotNullOrEmpty())
+                        s += "<br/><br/>";
+
+                    s += String.Format("<b>{0}:</b>", String.Join(";", item.ZugeordneteMaterialien));
+
+                    s += "<br/>" + item.Adressdaten.Adresse.GetPostLabelString();
+                }
+
+                return s;
             }
         }
 
@@ -124,6 +167,14 @@ namespace CkgDomainLogic.Autohaus.Models
                     Body = string.Format("{0}", BelegNr),
                     Tag = "SummaryMainItem"
                 };
+            }
+        }
+
+        public void RefreshAuslieferAdressenMaterialAuswahl()
+        {
+            foreach (var item in AuslieferAdressen)
+            {
+                item.Materialien = AuslieferAdresse.AlleMaterialien.Where(m => AuslieferAdressen.None(a => a.Adressdaten.Partnerrolle != item.Adressdaten.Partnerrolle && a.ZugeordneteMaterialien.Contains(m.Key))).ToList();
             }
         }
 
@@ -184,6 +235,14 @@ namespace CkgDomainLogic.Autohaus.Models
                                     {
                                         Title = Localize.DataForEndCustomerInvoice,
                                         Body = BankAdressdaten.GetSummaryString(),
+                                    }),
+
+                            (Zulassungsdaten.ModusAbmeldung || AuslieferAdressenSummaryString.IsNullOrEmpty()
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.DeliveryAddresses,
+                                        Body = AuslieferAdressenSummaryString,
                                     })
                         )
             };

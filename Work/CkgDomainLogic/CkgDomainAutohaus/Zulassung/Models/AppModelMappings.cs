@@ -337,6 +337,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.STREET = s.Adresse.Strasse;
                             d.PLZ = s.Adresse.PLZ;
                             d.CITY1 = s.Adresse.Ort;
+                            d.BEMERKUNG = s.Bemerkung;
                         }));
             }
         }

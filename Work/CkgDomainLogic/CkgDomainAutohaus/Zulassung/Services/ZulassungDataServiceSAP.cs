@@ -233,7 +233,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
                 foreach (var vorgang in zulassungen)
                 {
-                    // Vorgang, Zusatzdienstleistungen (GT_POS)
+                    // Zusatzdienstleistungen (GT_POS_IN)
                     positionen.Add(new Zusatzdienstleistung
                     {
                         BelegNr = vorgang.BelegNr,
@@ -244,20 +244,29 @@ namespace CkgDomainLogic.Autohaus.Services
                     vorgang.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = vorgang.BelegNr);
                     positionen.AddRange(vorgang.OptionenDienstleistungen.GewaehlteDienstleistungen);
 
-                    // Vorgang, Adressen (GT_ADRS)
-                    if (vorgang.BankAdressdaten.Adressdaten.Adresse.Name1.IsNotNullOrEmpty())
-                    {
-                        vorgang.BankAdressdaten.Adressdaten.BelegNr = vorgang.BelegNr;
-                        adressen.Add(vorgang.BankAdressdaten.Adressdaten);
-                    }
+                    // Adressen (GT_ADRS_IN)
+                    vorgang.BankAdressdaten.Adressdaten.BelegNr = vorgang.BelegNr;
+                    adressen.Add(vorgang.BankAdressdaten.Adressdaten);
 
-                    // Halteradresse
                     vorgang.Halter.BelegNr = vorgang.BelegNr;
                     adressen.Add(vorgang.Halter);
 
-                    // Zahler Kfz-Steuer
                     vorgang.ZahlerKfzSteuer.Adressdaten.BelegNr = vorgang.BelegNr;
                     adressen.Add(vorgang.ZahlerKfzSteuer.Adressdaten);
+
+                    vorgang.AuslieferAdressen.ForEach(a =>
+                        {
+                            a.Adressdaten.BelegNr = vorgang.BelegNr;
+                            if (a.ZugeordneteMaterialien.AnyAndNotNull())
+                            {
+                                var tmpBem = a.Adressdaten.Bemerkung;
+                                a.Adressdaten.Bemerkung = String.Join(";", a.ZugeordneteMaterialien);
+                                a.Adressdaten.Bemerkung = a.Adressdaten.Bemerkung.Replace("Sonstiges", String.Format("Sonstiges: {0}", tmpBem));
+                            }
+                            adressen.Add(a.Adressdaten);
+                        });
+
+                    // zus. Bankdaten (GT_BANK_IN)
                     vorgang.ZahlerKfzSteuer.Bankdaten.BelegNr = vorgang.BelegNr;
                     zusBankdaten.Add(vorgang.ZahlerKfzSteuer.Bankdaten);
                 }

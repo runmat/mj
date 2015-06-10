@@ -2526,6 +2526,9 @@
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
