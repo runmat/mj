@@ -2448,6 +2448,12 @@
     <Content Include="assets_v2\scripts\ui-tree.js" />
     <Content Include="Content\multi-select.css" />
     <Content Include="assets\scripts\multi-select.js" />
+    <Compile Include="Areas\Admin\Contracts\IAppUserOverviewDataService.cs" />
+    <Compile Include="Areas\Admin\Controllers\AppUserOverviewController.cs" />
+    <Compile Include="Areas\Admin\Models\AppUserOverviewResults.cs" />
+    <Compile Include="Areas\Admin\Models\AppUserOverviewSelektor.cs" />
+    <Compile Include="Areas\Admin\Services\AppUserOverviewDataService.cs" />
+    <Compile Include="Areas\Admin\ViewModels\AppUserOverviewViewModel.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FormulareController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungsReportController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
@@ -2531,6 +2537,10 @@
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummary.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Receipt.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummaryReceipt.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
+    <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
