@@ -70,7 +70,7 @@ namespace CkgDomainLogic.Insurance.Models
         public string Kennzeichen
         {
             get { return _kennzeichen; }
-            set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+            set { _kennzeichen = value.NotNullOrEmpty().ToUpper().Replace(" ", ""); }
         }
 
         [LocalizedDisplay(LocalizeConstants.FirstName)]
