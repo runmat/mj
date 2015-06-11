@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -11,6 +12,7 @@ namespace CkgDomainLogic.Autohaus.Models
     {
         public Adressdaten Adressdaten { get; set; }
 
+        [XmlIgnore]
         public static List<SelectItem> AlleMaterialien
         {
             get
@@ -25,6 +27,7 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        [XmlIgnore]
         public List<SelectItem> Materialien { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Material)]
