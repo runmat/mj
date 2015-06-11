@@ -73,12 +73,12 @@
         $("#divGrid").slideDown();
     }
     
-    function ShowZanfKlaerfalltext(anforderungsNr, hauptpositionsNr) {
+    function ShowZanfKlaerfalltext(anforderungsNr, hauptpositionsNr, auftragsNr) {
         $.ajax(
             {
                 type: "POST",
                 url: "ShowZanfKlaerfalltext",
-                data: { anforderungsNr: anforderungsNr, hauptpositionsNr: hauptpositionsNr },
+                data: { anforderungsNr: anforderungsNr, hauptpositionsNr: hauptpositionsNr, auftragsNr: auftragsNr },
                 loadingShow: true,
                 success: function (result) {
                     var dialog = $("#Klaerfalltext").data("tWindow");
