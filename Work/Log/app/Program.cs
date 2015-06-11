@@ -31,7 +31,10 @@ namespace LogMaintenance
             success = BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
             if (!success) Environment.Exit(-1);
 
-            success = BusinessDataCopyService.MaintenanceLogsDb(Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
+            success = BusinessDataCopyService.MaintenanceLogsDb("Prod", Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
+            if (!success) Environment.Exit(-1);
+
+            success = BusinessDataCopyService.MaintenanceLogsDb("CkgProd", Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
             if (!success) Environment.Exit(-1);
 
             // Liste der DB Suffixe die wir bearbeiten sollen

@@ -1,0 +1,39 @@
+﻿@model CkgDomainLogic.Logs.ViewModels.LogsViewModel
+@using CkgDomainLogic.Logs.Models
+@{
+    var gridName = "GridLogsErrors";
+}
+
+
+@(Html.Telerik()
+    .Grid<ErrorLogItem>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("LogsErrorsAjaxBinding", "Logs")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.ErrorId).Width(100).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+                "<button onclick='ShowErrorLogDetails(\"<#= data.ErrorId #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='halflings-icon white search'></i></button>"
+            )
+        ;
+        columns.XBound(c => c.TimeUtc).Format("{0:dd.MM.yyyy HH:mm:ss}");
+        columns.XBound(c => c.Application);
+        columns.XBound(c => c.Host);
+        columns.XBound(c => c.UserName);
+        columns.XBound(c => c.Type);
+        columns.XBound(c => c.StatusCode);
+        columns.XBound(c => c.Source);
+        columns.XBound(c => c.Message);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.TimeUtc).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportErrorLogItemsFilteredExcel", "Logs");
+        commands.FilteredDataCommand("ExportErrorLogItemsFilteredPDF", "Logs");
+    })
+    .Groupable(g => g.Enabled(false)))
+
