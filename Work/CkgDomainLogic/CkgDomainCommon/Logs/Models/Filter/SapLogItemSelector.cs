@@ -52,7 +52,7 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.Server)]
         public string LogsConnection { get; set; }
 
-        public string AllLogsConnections { get { return "LogsTest,Test;LogsProd,Prod"; } }
+        public string AllLogsConnections { get { return "LogsTest,Test;LogsProd,Prod;LogsCkgTest,Test CKG;LogsCkgProd,Prod CKG"; } }
 
 
         public bool SubmitWithNoDataQuerying { get; set; }

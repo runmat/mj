@@ -380,8 +380,13 @@ namespace SapORM.Services
                 var customErrorMessage = getCustomErrorMessageFunction();
                 if (customErrorMessage.IsNotNullOrEmpty())
                 {
-                    errorMessage += errorMessage.IsNotNullOrEmpty() ? ";Meldung im Detail: " : "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden: ";
-                    errorMessage += customErrorMessage;
+                    if (!errorMessage.NotNullOrEmpty().ToLower().Contains(customErrorMessage.NotNullOrEmpty().ToLower()))
+                    {
+                        errorMessage += errorMessage.IsNotNullOrEmpty()
+                                            ? ";Meldung im Detail: "
+                                            : "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden: ";
+                        errorMessage += customErrorMessage;
+                    }
                 }
             }
 
