@@ -1,0 +1,60 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{
+    var gridName = "GridUnfallmeldungen"; 
+}
+
+
+<h4>
+    @Localize.PleaseChooseOneOrMoreVehicles: 
+</h4> 
+
+<div id="div-cancellation" class="hide">
+    <span id="FahrzeugAuswahlCount" class="alert alert-success hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+    <input type="text" id="txtCancellation" class="m-wrap medium placeholder-no-fix margin-left-10" placeholder="@Localize.CancelRemark" />
+    <button type="button" class="btn red" onclick='SaveCancellation();'>@Localize.CancelOneOrMoreVehicles <i class="icon-remove margin-left-10"></i></button>
+</div>
+
+@Html.SpanAlert("Message")
+@Html.SpanAlert("ErrorMessage")
+
+
+@(Html.Telerik()
+    .Grid<Unfallmeldung>()
+    .Name(gridName)      
+        .XAjaxDataBinding("UnfallmeldungenAjaxBinding", "Fahrzeuge")
+            .Columns(columns =>
+            {
+                columns.XBound("")
+                    .ClientTemplate("<# if (!data.IsValidForCancellation) { #> <span><i class='icon-bell margin-left-5'></i></span> <# } else { #><input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.UnfallNr #>' onchange='OnSelectionChange_GridUnfallmeldungen($(this))' /> <# } #>")
+                    .HeaderTemplate(
+                        "<input type='checkbox' id='uncheckAllRecords' onchange='GridUnfallmeldungen_OnAllSelectionChange($(this).is(\":checked\"))' />" +
+                        "<button onclick='MeldungCreateSearch();' class='btn mini gray tooltips' data-original-title='" + Localize.AccidentNotificationCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                    )
+                    .Filterable(false);
+
+                columns.XBound(m => m.AnlageDatum);
+                columns.XBound(m => m.WebUser);
+                columns.XBound(m => m.Kennzeichen);
+                columns.XBound(m => m.Fahrgestellnummer);
+                columns.XBound(m => m.UnfallNr);
+                columns.XBound(m => m.ErstzulassungDatum);
+                columns.XBound(m => m.KennzeicheneingangsDatum);
+                columns.XBound(m => m.AbmeldeDatum);
+                columns.XBound(m => m.StationsCode);
+                columns.XBound(m => m.Mahnstufe);
+                columns.XBound(m => m.StornoDatum);
+            })
+        .XAutoColumnConfiguration()
+            .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridUnfallmeldungen"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AnlageDatum).Descending())
+    .XToolBar("Fahrzeuge")
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUnfallmeldungenFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportUnfallmeldungenFilteredPDF", "Fahrzeuge");
+    })
+)
+
