@@ -8,6 +8,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         public bool IsFilteredByExcelUpload;
 
+        [LocalizedDisplay(LocalizeConstants.VehicleHistory)]
+        public string ShowHistory { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string Carport { get; set; }
 
@@ -34,6 +37,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
+
+        public int StatusKey { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
         public string Zb2Nummer { get; set; }

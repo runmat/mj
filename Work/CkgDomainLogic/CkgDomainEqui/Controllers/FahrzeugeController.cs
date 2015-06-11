@@ -1,4 +1,5 @@
-﻿using CkgDomainLogic.General.Contracts;
+﻿using CkgDomainLogic.Fahrzeuge.ViewModels;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
@@ -56,6 +57,8 @@ namespace ServicesMvc.Controllers
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.TreuhandverwaltungViewModel>;
             FahrzeuguebersichtSelektor.GetViewModel =
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeuguebersichtViewModel>;
+        
+            Unfallmeldung.GetViewModel = GetViewModel<UnfallmeldungenViewModel>;
         }
     }
 }

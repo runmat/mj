@@ -221,6 +221,8 @@
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtPDI.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschiebenSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
+    <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
+    <Compile Include="Fahrzeuge\Models\Fzg.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
     <Compile Include="Fahrzeuge\Models\Treuhandberechtigung.cs" />
     <Compile Include="Fahrzeuge\Models\TreuhandverwaltungCsvUpload.cs" />
@@ -246,6 +248,7 @@
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandbestandViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandverwaltungViewModel.cs" />
