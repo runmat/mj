@@ -1331,7 +1331,7 @@ namespace AppZulassungsdienst.forms
             {
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                if (item.Gebuehr.HasValue && mat != null && proofGebMat(mat.MaterialNr))
+                if (item.WebBearbeitungsStatus != "L" && item.Gebuehr.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                 {
                     var valueToAdd = item.Gebuehr.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
@@ -1368,7 +1368,7 @@ namespace AppZulassungsdienst.forms
                 {
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                    if (item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
+                    if (item.WebBearbeitungsStatus != "L" && item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                     {
                         var valueToAdd = item.GebuehrAmt.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
