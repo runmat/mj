@@ -43,7 +43,11 @@ namespace CkgDomainLogic.General.Services
         {
             var returnUrl = HttpUtility.UrlDecode(urlEncodedReturnUrl).NotNullOrEmpty().ToLower();
 
-            if (ReturnUrl.IsNullOrEmpty() && ! returnUrl.Contains(GetSubDomainPath("login")))
+            if (ReturnUrl.IsNullOrEmpty()
+                && !returnUrl.Contains(GetSubDomainPath("login"))
+                && !returnUrl.EndsWith("undefined")
+                && !returnUrl.EndsWith("checklogontimeout")
+                )
                 ReturnUrl = urlEncodedReturnUrl;
 
             if (   ConfigurationManager.AppSettings["ForceResponsiveLayout"].NotNullOrEmpty().ToLower() == "true" 

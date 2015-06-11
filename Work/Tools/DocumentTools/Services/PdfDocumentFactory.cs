@@ -33,6 +33,7 @@ namespace DocumentTools.Services
 
         public static byte[] HtmlToPdf(string html, string logoFileName = null, int logoX = 395, int logoY = 745)
         {
+            html = html.Replace("\r\n", "");
             var document = new ITextSharpText.Document(iTextSharp.text.PageSize.A4, 50, 50, 25, 25);
             var output = new MemoryStream();
             ITextsharpPdf.PdfWriter.GetInstance(document, output);
