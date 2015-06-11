@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
+using System.Linq;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using SapORM.Models;
@@ -407,6 +408,86 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     }));
             }
         }
+
+        static public ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fzg> Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFzg
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fzg>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.InternalID = sap.QMNUM;
+
+                        business.EquiNummer = sap.EQUNR;
+                        business.Pdi = sap.KUNPDI;
+                        business.DadPdi = sap.DADPDI;
+                        business.Fahrgestellnummer = sap.ZZFAHRG;
+                        business.Zb2Nummer = sap.ZZBRIEF;
+                        business.Zulassungsdatum = sap.REPLA_DATE;
+                        business.ModelID = sap.ZZMODELL;
+                        business.Modell = sap.ZZBEZEI;
+                        business.Hersteller = sap.HERST_T;
+                        business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
+                        business.Farbe = sap.ZZFARBE;
+                        business.Reifen = sap.ZZREIFEN;
+                        business.Navi = sap.ZZNAVI;
+                        business.Ahk = sap.ZAHK;
+                        business.SippCode = sap.ZZSIPP1.NotNullOrEmpty() + sap.ZZSIPP2.NotNullOrEmpty() +
+                                            sap.ZZSIPP3.NotNullOrEmpty() + sap.ZZSIPP4.NotNullOrEmpty();
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fzg> Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFzg
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fzg>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Pdi = sap.ZZCARPORT;
+                        business.Amount = sap.ZANZAHL.ToInt(0);
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB, KennzeichenSerie> Z_M_EC_AVM_KENNZ_SERIE_GT_WEB_ToKennzeichenSerie
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB, KennzeichenSerie>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.ID = sap.SONDERSERIE.NotNullOrEmpty();
+
+                        business.Name = string.Format("{0}-{1}{2}", sap.ORTKENNZ, sap.MINLETTER, sap.SONDERSERIE.FormatIfNotNull(" ({this})"));
+
+                        business.Art = sap.ART;
+                        business.OrtsKennzeichen = sap.ORTKENNZ;
+                        business.BuchstabenTeilMin = sap.MINLETTER;
+                        business.BuchstabenTeilMax = sap.MAXLETTER;
+                        business.NummernTeilMin = sap.MINNUMBER;
+                        business.NummernTeilMax = sap.MAXNUMBER;
+                        business.SonderSerie = sap.SONDERSERIE;
+                    }));
+            }
+        }
+
+        static public void Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFzg(IEnumerable<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT> sapItems, IEnumerable<Fzg> businessItems)
+        {
+            foreach (var businessItem in businessItems)
+            {
+                var business = businessItem;
+                var sap = sapItems.FirstOrDefault(s => s.QMNUM == business.InternalID);
+                if (sap == null)
+                    continue;
+
+                business.Bemerkung = sap.TDLINE;
+            }
+       }
 
         #endregion
 

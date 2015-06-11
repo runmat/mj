@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
@@ -28,5 +29,13 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         void MeldungCreate(Unfallmeldung model, out string errorMessage);
 
         List<Adresse> GetStationCodes();
+
+        List<Fzg> GetFahrzeugeForZulassung();
+
+        List<KennzeichenSerie> GetKennzeichenSerie();
+
+        List<Fzg> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
+
+        string ZulassungSave(List<Fzg> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie);
     }
 }

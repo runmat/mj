@@ -2448,6 +2448,12 @@
     <Content Include="assets_v2\scripts\ui-tree.js" />
     <Content Include="Content\multi-select.css" />
     <Content Include="assets\scripts\multi-select.js" />
+    <Compile Include="Areas\Admin\Contracts\IAppUserOverviewDataService.cs" />
+    <Compile Include="Areas\Admin\Controllers\AppUserOverviewController.cs" />
+    <Compile Include="Areas\Admin\Models\AppUserOverviewResults.cs" />
+    <Compile Include="Areas\Admin\Models\AppUserOverviewSelektor.cs" />
+    <Compile Include="Areas\Admin\Services\AppUserOverviewDataService.cs" />
+    <Compile Include="Areas\Admin\ViewModels\AppUserOverviewViewModel.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FormulareController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungsReportController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
@@ -2462,6 +2468,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\ZulassungController.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2522,6 +2529,18 @@
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugAuswahl.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\FahrzeugAuswahlPresets.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummary.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Receipt.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\GridFahrzeugSummaryReceipt.cshtml" />
+    <Content Include="Areas\Admin\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
+    <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
+    <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4396,6 +4415,14 @@
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\UnfallmeldungenAlleGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateSearch.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateEdit.cshtml" />
+    <Content Include="Views\Shared\Partial\Summary\Summary.cshtml" />
+    <Content Include="Views\Shared\Partial\Summary\SummaryPdf.cshtml" />
+    <Content Include="Views\Shared\Partial\Summary\SummaryAsHeader.cshtml" />
+    <Content Include="Views\Shared\Partial\Summary\SummaryPdfBody.cshtml" />
+    <Content Include="Views\Logs\Errors.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\Grid.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\SucheErrorLogItems.cshtml" />
+    <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

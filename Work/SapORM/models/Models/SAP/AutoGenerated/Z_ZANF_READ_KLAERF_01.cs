@@ -174,6 +174,8 @@ namespace SapORM.Models
 
 			public string BEMERKUNG { get; set; }
 
+			public string VBELN { get; set; }
+
 			public static GT_KLAERFALLTEXT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_KLAERFALLTEXT
@@ -182,6 +184,7 @@ namespace SapORM.Models
 					HPPOS = (string)row["HPPOS"],
 					ZEILENNR = (string)row["ZEILENNR"],
 					BEMERKUNG = (string)row["BEMERKUNG"],
+					VBELN = (string)row["VBELN"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
