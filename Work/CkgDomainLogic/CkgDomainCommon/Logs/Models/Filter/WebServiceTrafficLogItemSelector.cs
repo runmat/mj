@@ -12,7 +12,7 @@ namespace CkgDomainLogic.Logs.Models
     public class WebServiceTrafficLogItemSelector : Store, IValidatableObject 
     {
         [LocalizedDisplay(LocalizeConstants.Date)]
-        public DateRange DatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
+        public DateRange DatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last7Days, true)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.Type)]
         public string SelectedType { get; set; }

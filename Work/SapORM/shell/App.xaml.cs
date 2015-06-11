@@ -417,6 +417,14 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_ZULST_OPEN").WriteOrmForExportTableStructures("I_KREISKZ, I_DATUM", "OD", "15.05.2015");
             //new FunctionReflector("Z_ZLD_CHECK_48H").WriteOrmForExportTableStructures("I_KREISKZ, I_LIFNR, I_DATUM_BEAUFTRAGUNG", "OD", "1", "15.05.2015");
 
+            //new FunctionReflector("Z_M_EC_AVM_KENNZ_SERIE").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_Massenzulassung").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_EC_AVM_HERST_VWZWECK_MODID").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_EC_AVM_ANZ_BEAUFTR_ZUL").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_Ec_Avm_Zulassungssperre").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_M_EC_AVM_MELDUNGEN_PDI1").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
+            //new FunctionReflector("Z_M_Ec_Avm_Pdiwechsel").WriteOrmForExportTableStructures("ZZKUNNR", "0000219853");
+
 
             //CoCTest();
             //TeslaTest();

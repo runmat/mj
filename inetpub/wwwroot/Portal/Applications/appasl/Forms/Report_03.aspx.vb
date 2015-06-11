@@ -154,18 +154,19 @@ Public Class Report_03
 
     Private Sub sendMail(ByRef status As String)
         'Mailversand...
-        Dim mail As System.Net.Mail.MailMessage
-        'Dim file As System.Net.Mail.Attachment
-
-        Dim strMailBody As String
-
         status = String.Empty
 
         Try
-            mail = New System.Net.Mail.MailMessage(ConfigurationManager.AppSettings("SmtpMailSender").ToString, _
-                                                   ConfigurationManager.AppSettings("SmtpMailAddress"))
+            Dim strMailAdresse As String = CKG.Base.Kernel.Common.Common.GetGeneralConfigValue("SicherungsscheinKlaerfaelle", "MailEmpfaenger")
+            If String.IsNullOrEmpty(strMailAdresse) Then
+                'Fallback, falls keine Einstellung gepflegt
+                strMailAdresse = ConfigurationManager.AppSettings("SmtpMailAddress")
+            End If
 
-            strMailBody = "Benutzername: " & m_User.UserName & vbCrLf
+            Dim mail As New System.Net.Mail.MailMessage(ConfigurationManager.AppSettings("SmtpMailSender").ToString, _
+                                                   strMailAdresse)
+
+            Dim strMailBody As String = "Benutzername: " & m_User.UserName & vbCrLf
 
             strMailBody &= "LV-Nr.: " & lblLVNr.Text & vbCrLf
             strMailBody &= "LV beendet zum: " & txtDatum.Text & vbCrLf
@@ -205,7 +206,7 @@ Public Class Report_03
             End With
             Dim client As New System.Net.Mail.SmtpClient(ConfigurationManager.AppSettings("SmtpMailServer"))
             client.Send(mail)
-            
+
         Catch ex As Exception
             status = "Fehler beim Versenden der Mail."
         End Try
