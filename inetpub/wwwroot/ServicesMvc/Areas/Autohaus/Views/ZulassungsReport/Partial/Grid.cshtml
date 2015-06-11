@@ -1,11 +1,13 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @{
     var gridName = "GridZulassungen";
-    var gridGroupFooterTemplate = "<strong>∑ <#= $.telerik.formatString('{0:c}', Sum) #></strong>";
+    var gridGroupFooterTemplate = "<span class='td-right'><strong>∑ <#= $.telerik.formatString('{0:c}', Sum) #></strong></span>";
 }
 
+<style type="text/css"> .td-right, tr.t-group-footer td { text-align: right } </style>
+
 @(Html.XTelerik()
-    .XGrid<ZulassungsReportModel>()
+        .XGrid<ZulassungsReportModel>()
     .Name(gridName)
 
     .XAjaxDataBinding("ItemsAjaxBinding", "ZulassungsReport")
@@ -19,22 +21,27 @@
                 ).Title("").Sortable(false).Filterable(false);
             columns.XBound(c => c.KundenNrAndName)
                 .Aggregate(aggregates => aggregates.Count())
-                    .ClientGroupHeaderTemplate("<strong>Kunde: <#= Key #>, Anzahl: <#= Count #></strong>");
+                    .ClientGroupHeaderTemplate("<strong>Kunde: <#= Key #>, Anzahl: <#= Count #></strong>")
+                        .ClientFooterTemplate("<strong>Anzahl gesamt: <#= Count #></strong>");
             columns.XBound(c => c.BelegNummer);
             columns.XBound(c => c.StatusAsText);
 
             columns.XBound(c => c.Preis).Format("{0:c}")
                 .Aggregate(aggreages => aggreages.Sum())
-                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+                   .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                        .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
             columns.XBound(c => c.PreisGebuehr).Format("{0:c}")
                 .Aggregate(aggreages => aggreages.Sum())
-                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+                   .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                        .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
             columns.XBound(c => c.PreisSteuer).Format("{0:c}")
                 .Aggregate(aggreages => aggreages.Sum())
-                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+                    .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                        .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
             columns.XBound(c => c.PreisKz).Format("{0:c}")
                 .Aggregate(aggreages => aggreages.Sum())
-                   .ClientGroupFooterTemplate(gridGroupFooterTemplate);
+                    .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                        .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
 
             columns.XBound(c => c.Referenz1);
             columns.XBound(c => c.Referenz2);
@@ -58,6 +65,7 @@
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.KundenNrAndName).Descending())
     .XToolBar("ZulassungsReport")
+    .Footer(true)
 
     .Groupable(g => g.Groups(gr => gr.Add(gp => gp.KundenNrAndName)))
 )
