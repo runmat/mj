@@ -61,12 +61,12 @@
                         title: "Details",
                         html: result,
                         contentUrl: "",
-                        actions: ["Maximize", "Close"],
+                        actions: ["Close"],
                         modal: true,
                         width: 800,
                         height: 600,
-                        resizable: true,
-                        draggable: true,
+                        resizable: false,
+                        draggable: false,
                         scrollable: true,
                         onClose: function () {
                             $("#popupWindow").data('tWindow').destroy();

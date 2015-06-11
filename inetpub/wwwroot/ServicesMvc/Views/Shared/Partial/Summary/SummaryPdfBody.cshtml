@@ -1,0 +1,43 @@
+﻿@model GeneralSummary
+
+@if (Model.Header.IsNotNullOrEmpty())
+{
+    <h3><strong>@Model.HeaderAsHtml</strong></h3>
+}
+        
+<br/>
+
+@if (!Model.FullWidthRows)
+{
+    <table>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td valign="top"><small>@item.TitleAsHtml</small></td>
+                <td valign="top"><small>@item.BodyAsHtml</small></td>
+            </tr>
+            <tr>
+                <td>&nbsp;</td>
+                <td>&nbsp;</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    foreach (var item in Model.Items)
+    {
+        if (item.Title.IsNotNullOrEmpty())
+        {
+            <br />@item.TitleAsHtml<br />
+        }
+        @item.BodyAsHtml<br />
+    }
+}
+
+<br/>
+
+@if (Model.Footer.IsNotNullOrEmpty())
+{
+    <h3><strong>@Model.FooterAsHtml</strong></h3>
+}

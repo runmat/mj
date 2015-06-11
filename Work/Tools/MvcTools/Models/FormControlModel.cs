@@ -53,10 +53,14 @@ namespace MvcTools.Models
         /// </summary>
         public bool LabelHidden { get; set; }
 
+        private FormMultiColumnMode _columnMode = FormMultiColumnMode.None;
         public FormMultiColumnMode ColumnMode
         {
             get
             {
+                if (_columnMode != FormMultiColumnMode.None)
+                    return _columnMode;
+
                 if (ControlHtmlAttributes == null || !ControlHtmlAttributes.ContainsKey("col"))
                     return FormMultiColumnMode.None;
 
@@ -81,6 +85,7 @@ namespace MvcTools.Models
                         return FormMultiColumnMode.None;
                 }
             }
+            set { _columnMode = value; }
         }
 
         public IHtmlString PreControlHtml { get; set; }
