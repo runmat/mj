@@ -748,9 +748,9 @@ div.t-window {
 /* <Summary> */
 .SummaryItems 
 {
+    margin-left: 2px; 
     padding-bottom: 20px;
 }
-
 .SummaryItem {
     float: left;
     margin-left: 25px;
@@ -767,15 +767,28 @@ div.t-window {
     min-height: 20px!important;
     height: auto!important;
 }
-
 .SummaryItemTitle {
     font-weight: bold;
     margin-bottom: 0;
 }
-
 .SummaryItemBody {
     margin-bottom: 0;
     margin-left: 1px;
+}
+
+.SummaryItemsFullWidth {
+    margin-left: 2px; 
+    margin-top: 10px;
+}
+.SummaryItemFullWidth {
+   margin-top: 2px;
+}
+.SummaryItemTitleFullWidth {
+    margin-top: 2px;
+}
+.SummaryItemBodyFullWidth {
+    margin-top: 1px;
+    min-height: 20px;
 }
 
 .SummaryAddressHint {

@@ -35,6 +35,10 @@ using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Services;
 using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
+
+using CkgDomainLogic.AppUserOverview.Contracts; // MaihoferM
+using CkgDomainLogic.AppUserOverview.Services;  // MaihoferM
+
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
@@ -120,7 +124,11 @@ namespace ServicesMvc
             builder.RegisterType(grunddatenEquiBestandDataService).As<IEquiGrunddatenDataService>().InstancePerLifetimeScope();
             builder.RegisterType<EquiHistorieDataServiceSAP>().As<IEquiHistorieDataService>().InstancePerLifetimeScope();
             builder.RegisterType<FahrzeugeDataServiceSAP>().As<IFahrzeugeDataService>().InstancePerLifetimeScope();
+
             builder.RegisterType<StrafzettelDataServiceSAP>().As<IStrafzettelDataService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<AppUserOverviewDataService>().As<IAppUserOverviewDataService>().InstancePerLifetimeScope(); // MaihoferM
+
             builder.RegisterType<FehlteilEtikettenDataServiceSAP>().As<IFehlteilEtikettenDataService>().InstancePerLifetimeScope();
             
             builder.RegisterType<CocTypenDataServiceSAP>().As<ICocTypenDataService>().InstancePerHttpRequest();

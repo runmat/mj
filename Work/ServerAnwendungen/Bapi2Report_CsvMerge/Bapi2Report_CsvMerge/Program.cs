@@ -20,15 +20,12 @@ namespace Bapi2Report_CsvMerge
             try
             {
                 if (String.IsNullOrEmpty(quellordner))
-                {
                     throw new Exception("Konfigurations-Variable 'CsvSourceDirectory' ist nicht gesetzt!");
-                }
-                if (String.IsNullOrEmpty(zieldatei))
-                {
-                    throw new Exception("Konfigurations-Variable 'CsvDestinationPath' ist nicht gesetzt!");
-                }
 
-                var inhalte = new List<string>();
+                if (String.IsNullOrEmpty(zieldatei))
+                    throw new Exception("Konfigurations-Variable 'CsvDestinationPath' ist nicht gesetzt!");
+
+                var alleZeilen = new List<string>();
 
                 var quelldateien = Directory.GetFiles(quellordner);
 
@@ -36,7 +33,13 @@ namespace Bapi2Report_CsvMerge
                 {
                     using (StreamReader reader = new StreamReader(quelldatei, Encoding.Default))
                     {
-                        inhalte.Add(reader.ReadToEnd());
+                        string inputZeile;
+
+                        while ((inputZeile = reader.ReadLine()) != null)
+                        {
+                            if (!alleZeilen.Contains(inputZeile))
+                                alleZeilen.Add(inputZeile);
+                        }
 
                         reader.Close();
                     }
@@ -45,13 +48,11 @@ namespace Bapi2Report_CsvMerge
                 using (StreamWriter writer = new StreamWriter(zieldatei, false, Encoding.Default))
                 {
                     if (!String.IsNullOrEmpty(kopfzeile))
-                    {
                         writer.WriteLine(kopfzeile);
-                    }
 
-                    foreach (var inhalt in inhalte)
+                    foreach (var outputZeile in alleZeilen)
                     {
-                        writer.Write(inhalt);
+                        writer.WriteLine(outputZeile);
                     }
 
                     writer.Close();

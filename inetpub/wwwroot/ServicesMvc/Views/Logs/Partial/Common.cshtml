@@ -109,7 +109,6 @@
                         if (e.target.tagName.toLowerCase() == "td")
                             return;
                         dialog.close();
-                        $("#SapCallContext").of("click");
                     });
                 }, 1000);
             },
@@ -130,7 +129,6 @@
         setTimeout(function () {
             $("#StackContext").on("click", function () {
                 dialog.close();
-                $("#StackContext").of("click");
             });
         }, 1000);
 

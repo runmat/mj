@@ -314,7 +314,8 @@ namespace CkgDomainLogic.Equi.ViewModels
                     Body = string.Format("{0}<br/>{1} (#{2})<br/>{3}",
                                          DateTime.Now.ToString("dd.MM.yyyy HH:mm"),
                                          LogonContext.UserName,
-                                         LogonContext.Customer.Customername, LogonContext.KundenNr)
+                                         LogonContext.KundenNr,
+                                         LogonContext.Customer.Customername)
                 };
             }
         }
@@ -406,7 +407,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
             allCount = Fahrzeuge.Count();
-            allFoundCount = Fahrzeuge.Count(c => !c.IsMissing);
+            allFoundCount = Fahrzeuge.Count(c => filter(c));
         }
 
         VersandAuftragsAnlage CreateVersandAuftrag(string vin, string stuecklistenCode, bool briefVersand, bool schluesselVersand, bool schluesselKombiVersand)
