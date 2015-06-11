@@ -147,16 +147,16 @@ Public Class Report_03
 
     Private Sub sendMail(ByRef status As String)
         'Mailversand...
-        Dim mail As Net.Mail.MailMessage
-        Dim strMailAdresse As String
-        Dim strMailBody As String
-
         status = String.Empty
 
         Try
+            Dim strMailAdresse As String = CKG.Base.Kernel.Common.Common.GetGeneralConfigValue("SicherungsscheinKlaerfaelle", "MailEmpfaenger")
+            If String.IsNullOrEmpty(strMailAdresse) Then
+                'Fallback, falls keine Einstellung gepflegt
+                strMailAdresse = ConfigurationManager.AppSettings("SmtpMailAddress")
+            End If
 
-            strMailAdresse = ConfigurationManager.AppSettings("SmtpMailAddress")
-            strMailBody = "Benutzername: " & m_User.UserName & vbCrLf
+            Dim strMailBody As String = "Benutzername: " & m_User.UserName & vbCrLf
 
             strMailBody &= "LV-Nr.: " & lblLVNr.Text & vbCrLf
             strMailBody &= "LV beendet zum: " & txtDatum.Text & vbCrLf
@@ -189,7 +189,7 @@ Public Class Report_03
             End If
             strMailBody &= vbCrLf & "Sonstiges: " & txtBemerkung.Text & vbCrLf
 
-            mail = New Net.Mail.MailMessage(ConfigurationManager.AppSettings("SmtpMailSender"), strMailAdresse, _
+            Dim mail As New Net.Mail.MailMessage(ConfigurationManager.AppSettings("SmtpMailSender"), strMailAdresse, _
                                                    "Klärfallmail Arval", strMailBody)
             Dim client As New Net.Mail.SmtpClient(ConfigurationManager.AppSettings("SmtpMailServer"))
             client.Send(mail)

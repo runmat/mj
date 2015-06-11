@@ -435,21 +435,21 @@ namespace PortalMvcTools.Web
 
         #region DatePicker
 
-        public static MvcHtmlString FormDatePickerFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null)
+        public static MvcHtmlString FormDatePickerFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> postControlHtml = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "datepicker");
 
-            return FormDatePickerForInner(html, expression, controlHtmlAttributesDict, iconCssClass);
+            return FormDatePickerForInner(html, expression, controlHtmlAttributesDict, iconCssClass, postControlHtml: postControlHtml);
         }
 
-        public static MvcHtmlString FormDatePickerFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = "m-wrap medium", string labelCssClass = "control-label")
+        public static MvcHtmlString FormDatePickerFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, string cssClass = "m-wrap medium", string labelCssClass = "control-label", Func<object, HelperResult> postControlHtml = null)
         {
             var htmlAttributes = FormTextBoxForGetAttributes(cssClass);
 
-            return FormDatePickerForInner(html, expression, htmlAttributes);
+            return FormDatePickerForInner(html, expression, htmlAttributes, postControlHtml: postControlHtml);
         }
 
-        private static MvcHtmlString FormDatePickerForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
+        private static MvcHtmlString FormDatePickerForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, Func<object, HelperResult> postControlHtml = null)
         {
             var formatString = "{0:d}";
             var datePickerFor = html.TextBoxFor(expression, formatString, controlHtmlAttributes)
@@ -465,6 +465,7 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = iconCssClass,
                 ControlHtmlAttributes = controlHtmlAttributes,
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
@@ -473,6 +474,17 @@ namespace PortalMvcTools.Web
         #endregion
 
         #region DropDownList
+
+        public static MvcHtmlString FormPlaceHolder(this HtmlHelper html, Func<object, HelperResult> controlHtml = null, object controlHtmlAttributes = null)
+        {
+            var model = new FormControlModel
+            {
+                PostControlHtml = controlHtml == null ? null : controlHtml.Invoke(null),
+                ControlHtmlAttributes = controlHtmlAttributes == null ? null : controlHtmlAttributes.ToHtmlDictionary(),
+            };
+
+            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+        }
 
         public static MvcHtmlString FormDropDownListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {

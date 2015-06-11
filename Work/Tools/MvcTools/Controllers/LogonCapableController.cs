@@ -236,8 +236,8 @@ namespace MvcTools.Controllers
                 if (!NeedsAuhentification)
                     return false;
 
-                if (Request.Url != null && Request.Url.ToString().ToLower().StartsWith("http://localhost/"))
-                    return false;
+                //if (Request.Url != null && Request.Url.ToString().ToLower().StartsWith("http://localhost/"))
+                //    return false;
 
                 return LogonTimeoutCheckSeconds > LogonTimeoutSeconds;
             }
@@ -264,6 +264,22 @@ namespace MvcTools.Controllers
                 LogonContext = null;
 
             return Json(new { timeoutOccurred });
+        }
+
+        [HttpGet]
+        public ActionResult CheckLogonTimeOut()
+        {
+            return Undefined();
+        }
+
+        [HttpGet]
+        public ActionResult Undefined()
+        {
+            LogonContext = null;
+
+            HttpContext.Response.Redirect("~/");
+
+            return new EmptyResult();
         }
 
         [HttpPost]

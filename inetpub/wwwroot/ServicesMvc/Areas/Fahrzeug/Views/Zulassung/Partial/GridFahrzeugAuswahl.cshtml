@@ -1,0 +1,51 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
+@using CkgDomainLogic.Fahrzeuge.Models
+@{ var gridName = "GridFahrzeugAuswahl"; }
+
+@Html.SpanAlert("MessageFahrzeugAuswahl")
+
+@Html.Partial("Partial/FahrzeugAuswahlPresets")
+
+<h4>
+    <span>@Localize.PleaseChooseOneOrMoreVehicles</span>
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+@(Html.Telerik()
+    .Grid<Fzg>()
+    .Name(gridName)
+    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
+    .Columns(columns =>
+        {
+            columns.XBound("")
+                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                .Filterable(false);
+
+            columns.XBound(c => c.Pdi);
+            columns.XBound(c => c.Hersteller);
+            columns.XBound(c => c.Modell);
+            columns.XBound(c => c.ModelID);
+            columns.XBound(c => c.SippCode);
+            columns.XBound(c => c.EingangFahrzeugDatum);
+            columns.XBound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.Zb2Nummer);
+            columns.XBound(c => c.Farbe);
+            columns.XBound(c => c.Navi).Hidden();
+            columns.XBound(c => c.Reifen).Hidden();
+            columns.XBound(c => c.Ahk).Hidden();
+            columns.XBound(c => c.Bemerkung);
+        })
+
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
+    .XPageSize(5)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFahrzeugeFilteredExcel", "Zulassung");
+        commands.FilteredDataCommand("ExportFahrzeugeFilteredPDF", "Zulassung");
+    })
+)
