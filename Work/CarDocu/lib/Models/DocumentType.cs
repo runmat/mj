@@ -14,7 +14,7 @@ namespace CarDocu.Models
         static private List<string> _barcodeList;
         static public List<string> BarcodeListProp
         {
-            get { return (_barcodeList ?? (_barcodeList = new List<string> { "", "EAN_8", "EAN_13" })); }
+            get { return (_barcodeList ?? (_barcodeList = new List<string> { "", "EAN_8", "EAN_13", "CODE_39" })); }
         }
 
         private string _code;
