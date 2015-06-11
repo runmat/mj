@@ -66,14 +66,52 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.WinterTires)]
         public bool Winterreifen { get; set; }
+        [LocalizedDisplay(LocalizeConstants.CommentInternal)]
+        public string BemerkungIntern { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CommentExternal)]
+        public string BemerkungExtern { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ColorCode)]
+        public string Farbcode { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbname { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(Farbcode))
+                    return Farbname;
+
+                return String.Format("{0} ({1})", Farbname, Farbcode);
+            }
+        }
 
         [LocalizedDisplay(LocalizeConstants.Navi)]
         public bool Navi { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Comment)]
+        public string BemerkungSperre { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.TrailerHitch)]
         public bool Anhaengerkupplung { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Disabled)]
+        public bool Gesperrt { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
         public string Fahrzeugtyp { get; set; }
+        [LocalizedDisplay(LocalizeConstants.MessageNo)]
+        public string MeldungsNr { get; set; }
+
+        public string DadPdi { get; set; }
+
+        public bool IsSelected { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string Bearbeitungsstatus { get; set; }
     }
 }
