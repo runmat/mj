@@ -108,6 +108,9 @@ namespace CkgDomainLogic.DomainCommon.Models
         [GridHidden]
         public bool IsDefaultPartner { get; set; }
 
+        public string EvbNr { get; set; }                   // MMA ITA 8127
+        public DateTime? Stichtagsabbuchung { get; set; }   // MMA ITA 8127 SEPA_STICHTAG
+
         [GridHidden]
         [LocalizedDisplay(LocalizeConstants.PartnerRolesToCreate)]
         public List<string> KennungenToInsert { get; set; }

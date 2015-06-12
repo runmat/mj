@@ -2459,8 +2459,6 @@
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
-    <Compile Include="Areas\Autohaus\Models\AppModelMappings.cs" />
-    <Compile Include="Areas\Autohaus\Models\PartnerAdresse.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
