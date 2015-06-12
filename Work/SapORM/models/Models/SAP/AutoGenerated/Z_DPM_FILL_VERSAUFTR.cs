@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -128,6 +129,16 @@ namespace SapORM.Models
 
 			public string HAENDLER_NR { get; set; }
 
+			public string USER_AUTOR { get; set; }
+
+			public DateTime? DATUM_AUTOR { get; set; }
+
+			public string UZEIT_AUTOR { get; set; }
+
+			public string ZZNAME3_ZS { get; set; }
+
+			public string ZZNAME4_ZS { get; set; }
+
 			public string COUNTRY_ZS { get; set; }
 
 			public string MENGE { get; set; }
@@ -185,6 +196,11 @@ namespace SapORM.Models
 					KREDITBETRAG = (string)row["KREDITBETRAG"],
 					INKASSO = (string)row["INKASSO"],
 					HAENDLER_NR = (string)row["HAENDLER_NR"],
+					USER_AUTOR = (string)row["USER_AUTOR"],
+					DATUM_AUTOR = (string.IsNullOrEmpty(row["DATUM_AUTOR"].ToString())) ? null : (DateTime?)row["DATUM_AUTOR"],
+					UZEIT_AUTOR = (string)row["UZEIT_AUTOR"],
+					ZZNAME3_ZS = (string)row["ZZNAME3_ZS"],
+					ZZNAME4_ZS = (string)row["ZZNAME4_ZS"],
 					COUNTRY_ZS = (string)row["COUNTRY_ZS"],
 					MENGE = (string)row["MENGE"],
 
@@ -211,7 +227,7 @@ namespace SapORM.Models
 
 			public static List<GT_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -225,7 +241,7 @@ namespace SapORM.Models
 
 			public static List<GT_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> ToList(ISapDataService sapDataService)
@@ -240,7 +256,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetExportListWithExecute(ISapDataService sapDataService)
@@ -250,7 +266,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetExportList(ISapDataService sapDataService)
@@ -260,7 +276,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -270,7 +286,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_IN> GetImportList(ISapDataService sapDataService)
@@ -280,7 +296,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 
@@ -334,7 +350,7 @@ namespace SapORM.Models
 
 			public static List<GT_ERR> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<GT_ERR> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -348,7 +364,7 @@ namespace SapORM.Models
 
 			public static List<GT_ERR> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ERR> ToList(ISapDataService sapDataService)
@@ -363,7 +379,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ERR> GetExportListWithExecute(ISapDataService sapDataService)
@@ -373,7 +389,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ERR> GetExportList(ISapDataService sapDataService)
@@ -383,7 +399,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ERR> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -393,7 +409,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_FILL_VERSAUFTR", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<GT_ERR> GetImportList(ISapDataService sapDataService)
@@ -403,7 +419,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}
