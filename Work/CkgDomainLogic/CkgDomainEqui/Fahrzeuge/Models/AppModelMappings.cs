@@ -434,6 +434,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Ahk = sap.ZAHK;
                         business.BemerkungIntern = sap.BEMERKUNG_INTERN;
                         business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.AuftragsNummer = sap.ZZREF1;
                         business.SippCode = sap.ZZSIPP1.NotNullOrEmpty() + sap.ZZSIPP2.NotNullOrEmpty() +
                                             sap.ZZSIPP3.NotNullOrEmpty() + sap.ZZSIPP4.NotNullOrEmpty();
                     }));

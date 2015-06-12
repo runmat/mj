@@ -40,9 +40,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
         public string Zb2Nummer { get; set; }
-             
-        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
-        public string Auftragsnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.BatchID)]
         public string BatchId { get; set; }
@@ -120,7 +117,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get { return string.Format("{0} / {1}",ModelID, Modell); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.OrderID)]
+        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNummer { get; set; }
 
         public string FahrzeugAsText
