@@ -10,19 +10,27 @@
     </item>
     <item>
         <key>
+            <string>HalterAdresse</string>
+        </key>
+        <value>
+            <string>Halter</string>
+        </value>
+    </item>
+    <item>
+        <key>
+            <string>ZahlerKfzSteuer</string>
+        </key>
+        <value>
+            <string>Zahler&lt;br /&gt;Kfz-Steuer</string>
+        </value>
+    </item>
+    <item>
+        <key>
             <string>BankAdressdaten</string>
         </key>
         <value>
             <string>Adresse</string>
         </value>
-    </item>
-    <item>
-      <key>
-        <string>HalterAdresse</string>
-      </key>
-      <value>
-        <string>Halter</string>
-      </value>
     </item>
     <item>
         <key>

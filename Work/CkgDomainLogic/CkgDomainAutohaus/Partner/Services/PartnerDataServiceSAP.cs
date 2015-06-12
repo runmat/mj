@@ -1,23 +1,13 @@
-﻿// ReSharper disable RedundantUsingDirective
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.Services;
-using CkgDomainLogic.General.Services;
-using CkgDomainLogic.Fahrzeugbestand.Contracts;
-using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.Partner.Contracts;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeugbestand.Models.AppModelMappings;
-
-// ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Partner.Services
 {
@@ -43,6 +33,7 @@ namespace CkgDomainLogic.Partner.Services
                 {
                     { "ZO01", "HALTER" },
                     { "ZO02", "KAEUFER" },
+                    { "ZO03", "ZAHLERKFZSTEUER" },
                 };
             }
         }
@@ -64,33 +55,32 @@ namespace CkgDomainLogic.Partner.Services
             var sapList = Z_AHP_READ_PARTNER.GT_OUT.GetExportListWithExecute(SAP);
 
             return AppModelMappings.Z_AHP_READ_PARTNER_GT_OUT_To_Adresse.Copy(sapList, (s, d) =>
-                {
-                    d.Kennung = AdressenKennung;
-                }).ToList();
+            {
+                d.Kennung = AdressenKennung;
+            }).ToList();
         }
 
-        override protected Adresse StoreToSap(Adresse adresse, Action<string, string> addModelError, bool deleteOnly)
+        override protected List<Adresse> StoreToSap(List<Adresse> adressen, Action<string, string> addModelError, bool deleteOnly)
         {
-            var insertMode = adresse.KundenNr.IsNullOrEmpty();
+            var insertMode = adressen.First().KundenNr.IsNullOrEmpty();
 
-            var sapAdresse = AppModelMappings.Z_AHP_CRE_CHG_PARTNER_GT_WEB_IMP_To_Adresse.CopyBack(adresse);
-            sapAdresse.PARTART = TranslateFromFriendlyAdressenKennung(sapAdresse.PARTART);
+            foreach (var adr in adressen)
+            {
+                adr.Kennung = TranslateFromFriendlyAdressenKennung(adr.Kennung);
+            }
 
             Z_AHP_CRE_CHG_PARTNER.Init(SAP);
             SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
 
             try
             {
-                var importList = Z_AHP_CRE_CHG_PARTNER.GT_WEB_IMP.GetImportList(SAP);
-                importList.Add(sapAdresse);
-                SAP.ApplyImport(importList);
+                var adressenSap = AppModelMappings.Z_AHP_CRE_CHG_PARTNER_GT_WEB_IMP_To_Adresse.CopyBack(adressen);
+                SAP.ApplyImport(adressenSap);
                 SAP.Execute();
 
                 if (insertMode)
                 {
-                    var savedSapItem = Z_AHP_CRE_CHG_PARTNER.GT_OUT.GetExportList(SAP).FirstOrDefault();
-                    if (savedSapItem != null)
-                        adresse.KundenNr = savedSapItem.KUNNR;
+                    adressen = AppModelMappings.Z_AHP_CRE_CHG_PARTNER_GT_OUT_To_Adresse.Copy(Z_AHP_CRE_CHG_PARTNER.GT_OUT.GetExportList(SAP)).ToList();
                 }
             }
             catch (Exception e)
@@ -105,7 +95,7 @@ namespace CkgDomainLogic.Partner.Services
                 }
             }
 
-            return adresse;
+            return adressen;
         }
 
         #endregion
