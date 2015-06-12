@@ -36,7 +36,9 @@
             columns.XBound(c => c.Navi).Hidden();
             columns.XBound(c => c.Reifen).Hidden();
             columns.XBound(c => c.Ahk).Hidden();
-            columns.XBound(c => c.Bemerkung);
+            columns.XBound(c => c.BemerkungSperre);
+            columns.XBound(c => c.BemerkungIntern);
+            columns.XBound(c => c.BemerkungExtern);
         })
 
     .XAutoColumnConfiguration()

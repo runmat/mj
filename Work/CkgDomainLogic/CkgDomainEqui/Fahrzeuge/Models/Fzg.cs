@@ -71,11 +71,32 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
         public string EquiNummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Color)]
-        public string Farbe { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ColorCode)]
+        public string Farbcode { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Remark)]
-        public string Bemerkung { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbname { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(Farbname))
+                    return Farbcode;
+
+                return String.Format("{0} ({1})", Farbname, Farbcode);
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.BlockRemark)]
+        public string BemerkungSperre { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CommentInternal)]
+        public string BemerkungIntern { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CommentExternal)]
+        public string BemerkungExtern { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Tires)]
         public string Reifen { get; set; }

@@ -59,6 +59,7 @@
         if ('Receipt' == stepKey) {
             $("#GridFahrzeugSummary .t-grouping-header").hide();
             $("#GridFahrzeugSummary .t-grid-filter").hide();
+            GridAllColumnFilterApplyToGrid("GridFahrzeugSummary");
         }
 
         $('.tooltips').tooltip();
@@ -127,6 +128,7 @@
                 }
 
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
+                window.scrollTo(0, 0);
             }
         });    
     }
@@ -187,13 +189,6 @@
                 GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
                 RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ShowHideNextButton();
-                if (count == 0) {
-                    $("#FahrzeugAuswahlCount").addClass('hide');
-                    return;
-                }
-
-                $("#FahrzeugAuswahlCount").removeClass('hide');
-                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
             }
         });
     }

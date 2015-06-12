@@ -296,6 +296,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return webItemsEquis;
         }
+
+        public List<Domaenenfestwert> GetFarben()
+        {
+            var sapList = Z_DPM_DOMAENENFESTWERTE.GT_WEB.GetExportListWithInitExecute(SAP, "DOMNAME, DDLANGUAGE", "ZFARBE", "DE");
+
+            return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList).ToList();
+        }
+
         public List<Fzg> GetFahrzeugeForZulassung()
         {
             Z_M_EC_AVM_MELDUNGEN_PDI1.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());

@@ -64,15 +64,15 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
-            int allSelectionCount, allCount = 0;
+            int allSelectionCount = 0;
             if (vin.IsNullOrEmpty())
-                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount);
             else
                 ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
 
             return Json(new
             {
-                allSelectionCount, allCount,
+                allSelectionCount,
                 zulassungenAnzahlPdiTotal = ViewModel.ZulassungenAnzahlPdiTotal,
                 zulassungenAnzahlGesamtTotal = ViewModel.ZulassungenAnzahlGesamtTotal,
             });

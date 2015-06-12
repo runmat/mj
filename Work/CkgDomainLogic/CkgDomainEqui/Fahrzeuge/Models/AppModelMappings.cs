@@ -428,10 +428,12 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Modell = sap.ZZBEZEI;
                         business.Hersteller = sap.HERST_T;
                         business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
-                        business.Farbe = sap.ZZFARBE;
+                        business.Farbcode = sap.ZZFARBE;
                         business.Reifen = sap.ZZREIFEN;
                         business.Navi = sap.ZZNAVI;
                         business.Ahk = sap.ZAHK;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
                         business.SippCode = sap.ZZSIPP1.NotNullOrEmpty() + sap.ZZSIPP2.NotNullOrEmpty() +
                                             sap.ZZSIPP3.NotNullOrEmpty() + sap.ZZSIPP4.NotNullOrEmpty();
                     }));
@@ -484,7 +486,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 if (sap == null)
                     continue;
 
-                business.Bemerkung = sap.TDLINE;
+                business.BemerkungSperre = sap.TDLINE;
             }
        }
 
