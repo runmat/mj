@@ -13,6 +13,5 @@
 
     _gridColumnNameList = @Html.Raw(gridColumnNameList ?? "[]");
     _gridColumnNameListIsValid = true;
-    _gridReportGeneratorMode = (@SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent").IsNotNullOrEmpty().ToString().ToLower());
  
 </script>

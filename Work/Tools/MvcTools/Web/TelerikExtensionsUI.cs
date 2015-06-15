@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using MvcTools.Web;
@@ -401,6 +402,7 @@ namespace Telerik.Web.Mvc.UI
                     SaveGridToSession(grid, typeof (T));
 
                     HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns(typeof(T)));
+                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormReportGeneratorSettings());
                     HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridSettingsAdministration(typeof(T)));
                     
                     return grid;

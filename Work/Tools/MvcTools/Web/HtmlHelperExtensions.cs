@@ -499,6 +499,11 @@ namespace MvcTools.Web
             return html.Partial("Partial/FormGridCurrent/SetAutoPersistColumns", gridCurrentGetAutoPersistColumns);
         }
 
+        public static MvcHtmlString FormReportGeneratorSettings(this HtmlHelper html)
+        {
+            return html.Partial("Partial/FormGridCurrent/ReportGeneratorSettings");
+        }
+
         public static MvcHtmlString FormGridSettingsAdministration(this HtmlHelper html, Type type)
         {
             // based on "GridAutoPersistColumnsProvider" system
