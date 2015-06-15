@@ -2460,6 +2460,7 @@
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
+    <Compile Include="Areas\Common\Controllers\GridAdminController.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemUser.cs" />
@@ -2468,6 +2469,10 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
+    <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
+    <Compile Include="Areas\Common\lib\GridAdmin\Models\ReportSolution.cs" />
+    <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminDataServiceSql.cs" />
+    <Compile Include="Areas\Common\lib\GridAdmin\ViewModels\GridAdminViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\ZulassungController.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
@@ -2529,6 +2534,11 @@
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
+    <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
@@ -4416,6 +4426,7 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
+    <Content Include="Views\Shared\Partial\FormGridCurrent\GridSettingsAdministration.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\Common.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\UnfallmeldungenAlleGrid.cshtml" />

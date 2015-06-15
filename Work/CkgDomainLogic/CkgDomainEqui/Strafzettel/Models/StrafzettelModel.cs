@@ -4,6 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Strafzettel.Models
 {
+    [GridColumnsAutoPersist]
     public class StrafzettelModel
     {
         [LocalizedDisplay(LocalizeConstants.ContractNo)]

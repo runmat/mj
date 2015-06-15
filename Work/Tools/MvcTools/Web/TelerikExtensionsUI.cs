@@ -401,6 +401,7 @@ namespace Telerik.Web.Mvc.UI
                     SaveGridToSession(grid, typeof (T));
 
                     HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns(typeof(T)));
+                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridSettingsAdministration(typeof(T)));
                     
                     return grid;
                 }));
