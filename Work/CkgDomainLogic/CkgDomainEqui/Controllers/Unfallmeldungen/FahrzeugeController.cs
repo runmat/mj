@@ -17,7 +17,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ReportUnfallmeldungen()
         {
             _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
-            UnfallmeldungenViewModel.DataInit();
+            UnfallmeldungenViewModel.DataInit(true);
 
             return View(UnfallmeldungenViewModel);
         }
@@ -26,8 +26,8 @@ namespace ServicesMvc.Controllers
         public ActionResult Unfallmeldungen()
         {
             _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
-            UnfallmeldungenViewModel.DataInit();
-            UnfallmeldungenViewModel.LoadAllUnfallmeldungen();
+            UnfallmeldungenViewModel.DataInit(false);
+            UnfallmeldungenViewModel.LoadUnfallmeldungen();
 
             return View(UnfallmeldungenViewModel);
         }
