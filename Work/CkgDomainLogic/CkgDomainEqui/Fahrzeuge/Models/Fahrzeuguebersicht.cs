@@ -8,8 +8,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         public bool IsFilteredByExcelUpload;
 
-        [LocalizedDisplay(LocalizeConstants.VehicleHistory)]
-        public string ShowHistory { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Action { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string Carport { get; set; }

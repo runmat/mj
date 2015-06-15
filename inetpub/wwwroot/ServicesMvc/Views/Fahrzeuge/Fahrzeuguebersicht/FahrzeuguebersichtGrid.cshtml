@@ -10,7 +10,7 @@
     .XAjaxDataBinding("FahrzeuguebersichtAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
-        columns.XBound(c => c.ShowHistory).Filterable(false).Sortable(false).Title("")
+        columns.XBound(c => c.Action).Filterable(false).Sortable(false)
                    .ClientTemplate(
                       "<button onclick='ShowHistory(\"<#= data.Fahrgestellnummer #>\");' class='btn copy mini gray tooltips' data-original-title='" + Localize.VehicleHistory + "' data-placement='right'><i class='icon-list'></i></button>"
                );        
