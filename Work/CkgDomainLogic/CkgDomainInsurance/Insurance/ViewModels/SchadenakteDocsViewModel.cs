@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.ViewModels;
@@ -14,6 +15,9 @@ namespace CkgDomainLogic.Insurance.ViewModels
     {
         [XmlIgnore]
         public List<SchadenakteDocument> SchadenakteDocuments { get { return MakeSchadenakteDocumentList(DataService.Documents); } }
+
+        [XmlIgnore]
+        public List<CustomerDocumentCategory> CategoriesWithoutZero { get { return DataService.Categories.Where(c => c.ID > 0).ToListOrEmptyList(); } }
 
         public int SchadenfallID { get; private set; }
 
@@ -85,7 +89,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
             {
                 var tempDoc = new CustomerDocument
                 {
-                    AdditionalData = model.AdditionalData,
+                    AdditionalData = model.Dienstleister,
                     ApplicationKey = model.ApplicationKey,
                     CategoryID = model.CategoryID,
                     CustomerID = model.CustomerID,
@@ -149,20 +153,12 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
         public List<CustomerDocumentCategory> GetCategoriesWithoutDocuments()
         {
-            var liste = new List<CustomerDocumentCategory>();
+            var docList = SchadenakteDocuments;
 
-            foreach (var cat in Categories)
-            {
-                if (!SchadenakteDocuments.Exists(d => d.CategoryID == cat.ID))
-                {
-                    liste.Add(cat);
-                }
-            }
-
-            return liste;
+            return CategoriesWithoutZero.Where(c => docList.None(d => d.CategoryID == c.ID)).ToList();
         }
 
-            #region Filter
+        #region Filter
 
         [XmlIgnore]
         public List<SchadenakteDocument> SchadenakteDocumentsFiltered
