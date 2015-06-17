@@ -108,7 +108,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         [GridHidden]
         public bool IsDefaultPartner { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.EVB)]
         public string EvbNr { get; set; }                   // MMA ITA 8127
+
+        [LocalizedDisplay(LocalizeConstants.SEP)]
         public DateTime? Stichtagsabbuchung { get; set; }   // MMA ITA 8127 SEPA_STICHTAG
 
         [GridHidden]
@@ -148,6 +151,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         {
             if (Land.NotNullOrEmpty().ToLower() == "de" && PLZ.NotNullOrEmpty().Length != 5)
                 yield return new ValidationResult(Localize.GermanPlzMustHave5Digits, new[] { "PLZ" });
+
+            if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)      // 20150617 MMA
+                yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });
+
         }
     }
 }

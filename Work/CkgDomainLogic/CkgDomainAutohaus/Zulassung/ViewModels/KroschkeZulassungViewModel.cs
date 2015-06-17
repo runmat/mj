@@ -236,6 +236,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
+
+            Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
+
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
