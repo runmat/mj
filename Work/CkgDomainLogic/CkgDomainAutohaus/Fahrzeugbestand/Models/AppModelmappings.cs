@@ -121,7 +121,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.FZGNR = s.FahrzeugNummer;
                         d.AUFNR = s.AuftragsNummer;
                         d.FAREF1 = s.FirmenReferenz1;
-                        d.FAREF2 = s.FirmenReferenz2;
+                        d.FAREF2 = s.FirmenReferenz2;                        
                     }));
             }
         }
