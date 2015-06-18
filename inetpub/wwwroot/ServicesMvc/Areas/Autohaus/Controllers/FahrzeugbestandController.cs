@@ -174,7 +174,10 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public ActionResult MultiReg()
         {
-            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).Select(x => x.FIN).ToArray();
+            // var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).Select(x => x.FIN).ToArray();
+
+            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).ToList();
+
 
             TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
 

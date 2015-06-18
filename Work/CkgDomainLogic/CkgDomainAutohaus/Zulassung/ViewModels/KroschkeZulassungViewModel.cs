@@ -42,6 +42,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
 
+        public List<FahrzeugAkteBestand> FinList { get; set; }      // MMA 20150618 ITA8096 Massenzulassung. Liste der zuzulassenden Fahrzeuge
+        
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
@@ -212,6 +214,72 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (Zulassung.Fahrzeugdaten.IstAnhaenger || Zulassung.Fahrzeugdaten.IstMotorrad)
                 Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
+        }
+        
+        public void SetFinList(object finList)
+        {
+
+            FinList = (List<FahrzeugAkteBestand>) finList;
+
+            var firstFahrzeug = FinList.FirstOrDefault();
+            //if (firstFahrzeug == null)
+            //{
+            //    return Content("Kein Fahrzeug ausgewählt.");
+            //}
+
+            // Wenn alle Halterdaten zu allen Fahrzeugen identisch, dann 
+
+            var isDifferent = false;
+            foreach (var fahrzeugAkteBestand in FinList)
+            {
+
+                if (ComparePublicInstanceProperties(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter))
+                {
+                    var identisch = 1;
+                }
+                else
+                {
+                    var different = 2;
+                }
+
+            }
+
+            if (isDifferent)
+            {
+                var asdf = 234;
+            }
+        }
+
+        /// <summary>
+        /// Compare the properties of two objects
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="self"></param>
+        /// <param name="to"></param>
+        /// <param name="ignore"></param>
+        /// <returns>True = equal</returns>
+        public static bool ComparePublicInstanceProperties<T>(T self, T to, params string[] ignore) where T : class
+        {
+            if (self != null && to != null)
+            {
+                var type = typeof(T);
+                var ignoreList = new List<string>(ignore);
+                foreach (var pi in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+                {
+                    if (!ignoreList.Contains(pi.Name))
+                    {
+                        var selfValue = type.GetProperty(pi.Name).GetValue(self, null);
+                        var toValue = type.GetProperty(pi.Name).GetValue(to, null);
+
+                        if (selfValue != toValue && (selfValue == null || !selfValue.Equals(toValue)))
+                        {
+                            return false;
+                        }
+                    }
+                }
+                return true;
+            }
+            return self == to;
         }
 
         #endregion

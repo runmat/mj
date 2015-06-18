@@ -62,7 +62,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
 
-            //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");
+            //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
             return View("Index", ViewModel);
         }
@@ -71,23 +71,31 @@ namespace ServicesMvc.Autohaus.Controllers
         [CkgApplication]
         public ActionResult IndexMultiReg()
         {
-            var selectedFahrzeuge =  (string[]) TempData["SelectedFahrzeuge"];
-
-            if (selectedFahrzeuge.Length == 0)
-            {
-                return Content("Kein Fahrzeug ausgewählt.");
-            }
 
             ViewModel.SetParamAbmeldung("x");
             ViewModel.DataInit();
 
-            ViewModel.SetParamFahrzeugAkte(selectedFahrzeuge[0]); 
+            ViewModel.SetFinList(TempData["SelectedFahrzeuge"]); 
+
+            var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+            if (firstFahrzeug == null)
+            {
+                return Content("Kein Fahrzeug ausgewählt.");
+            }
+            
+            ViewModel.SetParamFahrzeugAkte(firstFahrzeug.FIN); 
 
             // Wenn alle Halter der selektierten Fahrzeuge identisch, dann Haltereinträge vorbelegen. Sonst leer 
             // ViewModel.SetParamHalter(halterNr); 
+            ViewModel.SetParamHalter(firstFahrzeug.Halter);
 
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
+
+            //ViewModel.Zulassung.Zulassungsdaten.EvbNr = "evb";
+            //ViewModel.Zulassung.Halterdaten.Name1 = "Name1";
+            //ViewModel.Zulassung.Halterdaten.Name2 = "Name2";
+
 
             return View("Index", ViewModel);
         }
