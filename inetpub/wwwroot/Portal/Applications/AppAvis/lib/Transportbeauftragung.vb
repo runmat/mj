@@ -372,7 +372,7 @@ Public Class Transportbeauftragung
     ''' <param name="emailwebuser">E-Mail-Adresse des Webusers Länge 241 Zeichen</param>
     Sub FilltblWebHead(ByVal stationscode As String, ByVal name1 As String, ByVal name2 As String, ByVal straße As String, ByVal hausnr As String,
                        ByVal plz As String, ByVal ort As String, ByVal freitext As String, ByVal beaufdat As Date?, ByVal uhrzeit As Date?,
-                       ByVal webuser As String, ByVal emailwebuser As String)
+                       ByVal webuser As String)
 
         Dim row = tblWEBHead.NewRow()
 
@@ -386,11 +386,7 @@ Public Class Transportbeauftragung
         row("FREITEXT") = freitext
         row("CARPORT") = strFilterCarport
         row("WEBUSER") = webuser
-        row("EMAIL_WEBUSER") = emailwebuser
-
-#If DEBUG Then
-        row("EMAIL_WEBUSER") = "christian.dittberner@kroschke.de"
-#End If
+        row("EMAIL_WEBUSER") = "" 'wird SAP-seitig gesetzt
 
         tblWEBHead.Rows.Add(row)
         tblWEBHead.AcceptChanges()

@@ -282,7 +282,7 @@ Public Class Change10_Beauftragung_2
             Try
                 _mTransportbeauftragung.strSpediteur = rcbSpediteur.SelectedValue
                 _mTransportbeauftragung.FilltblWebHead(rtbStationscode.Text, rtbStation.Text, rtbStation2.Text, rtbStraße.Text, rtbHausnummer.Text, rtbPlz.Text, rtbOrt.Text, "",
-                                                       rdpTermin.SelectedDate, rtpUhrzeit.SelectedDate, _mUser.UserName, _mUser.Email)
+                                                       rdpTermin.SelectedDate, rtpUhrzeit.SelectedDate, _mUser.UserName)
 
                 _mTransportbeauftragung.FahrzeugeBeauftragen()
 
