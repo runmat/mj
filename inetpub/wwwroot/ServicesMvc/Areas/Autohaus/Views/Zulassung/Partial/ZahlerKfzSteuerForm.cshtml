@@ -57,7 +57,7 @@
             _modelIsValid = @Model.Adressdaten.Adresse.IsValid.ToString().ToLower();
 
             function AjaxFormZahlerKfzSteuerInit() {
-                AjaxFormAdressePrepareAutoComplete($("#Name1"), "ZahlerKfzSteuerAdresseGetAutoCompleteItems");
+                AjaxFormAdressePrepareAutoComplete($("#Adressdaten_Adresse_Name1"), "ZahlerKfzSteuerAdresseGetAutoCompleteItems");
                 AjaxFormAdressePrepareAutoCompleteReset("AjaxFormZahlerKfzSteuer");
             }
             

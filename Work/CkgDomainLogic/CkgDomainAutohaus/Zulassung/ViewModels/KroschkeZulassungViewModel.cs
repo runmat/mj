@@ -201,11 +201,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public Adresse GetHalteradresse(string key)
         {
+            Adresse adr;
+
             int id;
             if (Int32.TryParse(key, out id))
-                return HalterAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+                adr = HalterAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+            else
+                adr = HalterAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
 
-            return HalterAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+            if (adr != null)
+                adr.Strasse = adr.StrasseHausNr;
+
+            return adr;
         }
 
         public void SetHalterAdresse(Adresse model)
@@ -310,11 +317,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public Adresse GetZahlerKfzSteueradresse(string key)
         {
+            Adresse adr;
+
             int id;
             if (Int32.TryParse(key, out id))
-                return ZahlerKfzSteuerAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+                adr = ZahlerKfzSteuerAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+            else
+                adr = ZahlerKfzSteuerAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
 
-            return ZahlerKfzSteuerAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+            if (adr != null)
+                adr.Strasse = adr.StrasseHausNr;
+
+            return adr;
         }
 
         public void SetZahlerKfzSteuerAdresse(Adresse model)
