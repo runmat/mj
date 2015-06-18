@@ -67,7 +67,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
         public List<Adresse> KaeuferForSelection { get { return PropertyCacheGet(() => GetPartnerAdressenForSelection("KAEUFER")); } }
 
-
+        // 20150618 MMA ITA8076 Massenzulassung
+        public int FahrzeugeSelected { get; set; }
+        public int FahrzeugeTotal { get; set; }
+        
         public void DataInit()
         {
             DataMarkForRefresh();
@@ -166,6 +169,24 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             FahrzeugeAkteBestandFiltered = FahrzeugeAkteBestand.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
+        // 20150618 MMA ITA8076 Massenzulassung
+        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
+        {
+            FahrzeugeAkteBestandFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
+            allCount = FahrzeugeAkteBestandFiltered.Count();
+        }
+        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var fzg = FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == vin);
+            if (fzg == null)
+                return;
+
+            fzg.IsSelected = select;
+            allSelectionCount = FahrzeugeAkteBestand.Count(c => c.IsSelected);
+        }
         public Adresse GetPartnerAdresse(string partnerArt, string id)
         {
             if (id.IsNullOrEmpty())

@@ -67,6 +67,32 @@ namespace ServicesMvc.Autohaus.Controllers
             return View("Index", ViewModel);
         }
 
+        // ##MMA##
+        [CkgApplication]
+        public ActionResult IndexMultiReg()
+        {
+            var selectedFahrzeuge =  (string[]) TempData["SelectedFahrzeuge"];
+
+            if (selectedFahrzeuge.Length == 0)
+            {
+                return Content("Kein Fahrzeug ausgewählt.");
+            }
+
+            ViewModel.SetParamAbmeldung("x");
+            ViewModel.DataInit();
+
+            ViewModel.SetParamFahrzeugAkte(selectedFahrzeuge[0]); 
+
+            // Wenn alle Halter der selektierten Fahrzeuge identisch, dann Haltereinträge vorbelegen. Sonst leer 
+            // ViewModel.SetParamHalter(halterNr); 
+
+            ShoppingCartLoadAndCacheItems();
+            ShoppingCartTryEditItemAsViewModel();
+
+            return View("Index", ViewModel);
+        }
+
+
         [CkgApplication]
         public ActionResult Abmeldung(string fin, string halterNr)
         {

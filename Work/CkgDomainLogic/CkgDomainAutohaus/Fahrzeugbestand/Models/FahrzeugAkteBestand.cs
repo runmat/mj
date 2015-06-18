@@ -33,6 +33,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 
+        public bool IsSelected { get; set; }    // ##MMA##
 
         #region Fahrzeug Akte
 

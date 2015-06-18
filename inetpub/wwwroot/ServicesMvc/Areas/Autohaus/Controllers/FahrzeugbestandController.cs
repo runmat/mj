@@ -151,8 +151,47 @@ namespace ServicesMvc.Autohaus.Controllers
             return new EmptyResult();
         }
 
+        [HttpPost]
+        public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)  
+        {
+            int allSelectionCount, allCount = 0;
+            if (vin.IsNullOrEmpty())
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+            else
+                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+
+            return Json(new
+            {
+                allSelectionCount,
+                allCount,
+                zulassungenAnzahlPdiTotal = ViewModel.FahrzeugeSelected,    
+                zulassungenAnzahlGesamtTotal = ViewModel.FahrzeugeTotal,   
+            });
+        }
+
         #endregion
 
+
+        public ActionResult MultiReg()
+        {
+            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).Select(x => x.FIN).ToArray();
+
+            TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
+
+            return RedirectToAction("IndexMultiReg", "Zulassung");
+
+            // return RedirectToAction("IndexMultiReg", "Zulassung", new { vin = selectedFahrzeuge });
+            // vorhanden...
+            // IAppSettings appSettings, 
+            // ILogonContextDataService logonContext, 
+            // IFahrzeugAkteBestandDataService fahrzeugbestandDataService
+            // erwartet...
+            // IAppSettings appSettings, 
+            // ILogonContextDataService logonContext, 
+            // IPartnerDataService partnerDataService, 
+            // IZulassungDataService zulassungDataService, 
+            // IFahrzeugAkteBestandDataService fahrzeugbestandDataService
+        }
 
         #region Export
 
