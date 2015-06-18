@@ -722,7 +722,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.Hoechstgeschwindigkeit = s.ZZHOECHSTGESCHW;
                         d.Hoehe = s.ZZHOEHEMIN.TrimStart('0');
                         d.Hubraum = s.ZZHUBRAUM.TrimStart('0');
-                        d.Kraftstoffart = s.ZZCODE_KRAFTSTOF;
+                        d.Kraftstoffart = s.ZZKRAFTSTOFF_TXT;
                         d.Kraftstoffcode = s.ZZCODE_KRAFTSTOF;
                         d.Laenge = s.ZZLAENGEMIN.TrimStart('0');
                         d.Leistung = s.ZZNENNLEISTUNG.TrimStart('0');
