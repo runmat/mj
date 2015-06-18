@@ -62,7 +62,7 @@ namespace CkgDomainLogic.FzgModelle.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Batch.Unitnummern.IsNullOrEmpty())
+            if (Batch.UnitnummerVon.IsNullOrEmpty() && Batch.UnitnummerBis.IsNullOrEmpty() && Batch.Unitnummern.IsNullOrEmpty())
                 yield return new ValidationResult(Localize.UnitNumbersRequired);
         }
     }

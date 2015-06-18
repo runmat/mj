@@ -182,7 +182,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             var unitnummerList = PrepareUnitnumbers(item.Batch);
 
-            if (unitnummerList.Count != item.Batch.Anzahl.ToInt(0))
+            if (unitnummerList.AnyAndNotNull() && unitnummerList.Count != item.Batch.Anzahl.ToInt(0))
             {
                 addModelError("", Localize.UnitnumbersInvalidRange);
                 return;
