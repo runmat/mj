@@ -428,6 +428,10 @@ namespace SapORM.Models
 
 			public string REFKUNNR2 { get; set; }
 
+			public string EVBNR { get; set; }
+
+			public DateTime? SEPA_STICHTAG { get; set; }
+
 			public static GT_WEB_PARTNER_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB_PARTNER_OUT
@@ -449,6 +453,8 @@ namespace SapORM.Models
 					SAVEKDDATEN = (string)row["SAVEKDDATEN"],
 					REFKUNNR = (string)row["REFKUNNR"],
 					REFKUNNR2 = (string)row["REFKUNNR2"],
+					EVBNR = (string)row["EVBNR"],
+					SEPA_STICHTAG = (string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString())) ? null : (DateTime?)row["SEPA_STICHTAG"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -590,6 +596,10 @@ namespace SapORM.Models
 
 			public string REFKUNNR2 { get; set; }
 
+			public string EVBNR { get; set; }
+
+			public DateTime? SEPA_STICHTAG { get; set; }
+
 			public static GT_WEB_PARTNER_ERR Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB_PARTNER_ERR
@@ -611,6 +621,8 @@ namespace SapORM.Models
 					SAVEKDDATEN = (string)row["SAVEKDDATEN"],
 					REFKUNNR = (string)row["REFKUNNR"],
 					REFKUNNR2 = (string)row["REFKUNNR2"],
+					EVBNR = (string)row["EVBNR"],
+					SEPA_STICHTAG = (string.IsNullOrEmpty(row["SEPA_STICHTAG"].ToString())) ? null : (DateTime?)row["SEPA_STICHTAG"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
