@@ -335,6 +335,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = model;
 
+            // Kontoinhaber aus Adresse übernehmen
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = String.Format("{0}{1}", model.Name1, (model.Name2.IsNotNullOrEmpty() ? " " + model.Name2 : ""));
+
             // ggf. Bankdaten aus Zahler Kfz-Steuer übernehmen (muss hier passieren, da die Bank- vor den Adressdaten gespeichert werden)
             if (Zulassung.BankAdressdaten.Cpdkunde
                 && Zulassung.Halter.Adresse.Name1 == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Name1
@@ -363,21 +366,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetZahlerKfzSteuerBankdaten(BankAdressdaten model)
         {
             Zulassung.ZahlerKfzSteuer.Bankdaten.Zahlungsart = model.Bankdaten.Zahlungsart;
-            Zulassung.ZahlerKfzSteuer.Bankdaten.Kontoinhaber = model.Bankdaten.Kontoinhaber;
             Zulassung.ZahlerKfzSteuer.Bankdaten.Iban = model.Bankdaten.Iban.NotNullOrEmpty().ToUpper();
-
-            if (model.Bankdaten.Swift.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
-                Zulassung.ZahlerKfzSteuer.Bankdaten.Swift = "";
-            else
-                Zulassung.ZahlerKfzSteuer.Bankdaten.Swift = model.Bankdaten.Swift.NotNullOrEmpty().ToUpper();
-
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Swift = model.Bankdaten.Swift.NotNullOrEmpty().ToUpper();
             Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr = model.Bankdaten.KontoNr;
             Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl = model.Bankdaten.Bankleitzahl;
-
-            if (model.Bankdaten.Geldinstitut.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
-                Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = "";
-            else
-                Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
+            Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
         }
 
         public void DataMarkForRefreshZahlerKfzSteuerAdressen()
@@ -399,19 +392,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.BankAdressdaten.Bankdaten.Zahlungsart = model.Bankdaten.Zahlungsart;
             Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = model.Bankdaten.Kontoinhaber;
             Zulassung.BankAdressdaten.Bankdaten.Iban = model.Bankdaten.Iban.NotNullOrEmpty().ToUpper();
-
-            if (model.Bankdaten.Swift.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
-                Zulassung.BankAdressdaten.Bankdaten.Swift = "";
-            else
-                Zulassung.BankAdressdaten.Bankdaten.Swift = model.Bankdaten.Swift.NotNullOrEmpty().ToUpper();
-
+            Zulassung.BankAdressdaten.Bankdaten.Swift = model.Bankdaten.Swift.NotNullOrEmpty().ToUpper();
             Zulassung.BankAdressdaten.Bankdaten.KontoNr = model.Bankdaten.KontoNr;
             Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = model.Bankdaten.Bankleitzahl;
-
-            if (model.Bankdaten.Geldinstitut.NotNullOrEmpty().ToUpper() == Localize.WillBeFilledAutomatically.ToUpper())
-                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = "";
-            else
-                Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
+            Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = model.Bankdaten.Geldinstitut;
         }
 
         public Bankdaten LoadBankdatenAusIban(string iban)
