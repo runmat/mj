@@ -2551,6 +2551,9 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Documents\Templates\UploadUnitnummern.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Documents\Templates\UploadBriefversand.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

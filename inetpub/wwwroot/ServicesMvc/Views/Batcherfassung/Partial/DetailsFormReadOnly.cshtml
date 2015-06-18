@@ -17,8 +17,8 @@
         @Html.FormTextBlockFor(m => m.Batch.Laufzeit, new { @class = "m-wrap large", col = "left", disabled = "disabled" })
         @Html.FormCheckBoxFor(m => m.Batch.Laufzeitbindung, new { @class = "m-wrap", col = "right", disabled = "disabled" }, labelHidden: true)
         
-        @Html.FormTextBlockFor(m => m.Batch.Liefermonat, new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBlockFor(m => m.Batch.Antrieb, new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBlockFor(m => m.Batch.Liefermonat, new { @class = "m-wrap large" })
+        @Html.HiddenFor(m => m.Batch.Antrieb)
                
         @Html.FormTextBlockFor(m => m.Batch.AuftragsnummerVon, new { @class = "m-wrap large", col = "left" })
         @Html.FormTextBlockFor(m => m.Batch.AuftragsnummerBis, new { @class = "m-wrap large", col = "right" })

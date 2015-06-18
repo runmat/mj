@@ -75,9 +75,9 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadDataByModelId(string modelId, string batchId)
+        public JsonResult LoadDataByModelId(string modelId)
         {
-            return PartialView("Partial/DetailsForm", ViewModel.ModifyEditItemWithModelData(modelId, batchId));
+            return Json(new { ModelData = ViewModel.GetModelData(modelId) });
         }
               
         [HttpPost]
@@ -147,19 +147,23 @@ namespace ServicesMvc.Controllers
 
         #region Excel Upload
       
+        public FileResult DownloadBatcherfassungXlsTemplate()
+        {
+            var pfad = Server.MapPath(Url.Content("/ServicesMvc/Documents/Templates/UploadUnitnummern.xls"));
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadUnitnummern.xls");
+        }
+
         [HttpPost]
         public ActionResult ExcelUploadStart(IEnumerable<HttpPostedFileBase> uploadFiles)
         {
-            // Step 1:  Upload the CSV file
-
             if (uploadFiles == null || uploadFiles.None())
-                return Json(new { success = false, message = "Fehler: Keine Datei angegeben!" }, "text/plain");
+                return Json(new { success = false, message = Localize.ErrorNoFileSelected }, "text/plain");
 
             // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
             var file = uploadFiles.ToArray()[0];
 
             if (!ViewModel.CsvUploadFileSave(file.FileName, file.SavePostedFile))
-                return Json(new { success = false, message = "Fehler: CSV Datei konnte nicht gespeichert werden!" }, "text/plain");
+                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
             return Json(new
             {
@@ -170,13 +174,11 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ExcelUploadShowData(bool showErrorsOnly)
+        public JsonResult ExcelUploadShowData()
         {
-            // Step 2:  Prepare data for user validation
-         
             ViewModel.PrepareUploadItems();
 
-            return PartialView("Partial/DetailsForm", ViewModel.SelectedItem);
+            return Json(new { ViewModel.SelectedItem.Batch.Unitnummern });
         }
 
         #endregion

@@ -247,6 +247,10 @@ namespace SapORM.Models
 
 			public string ANZ_FZG_ZULAUF { get; set; }
 
+			public string BLUETOOTH { get; set; }
+
+			public string ANTR { get; set; }
+
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_OUT
@@ -281,6 +285,8 @@ namespace SapORM.Models
 					ZUNITVERGEBEN = (string)row["ZUNITVERGEBEN"],
 					STATUS = (string)row["STATUS"],
 					ANZ_FZG_ZULAUF = (string)row["ANZ_FZG_ZULAUF"],
+					BLUETOOTH = (string)row["BLUETOOTH"],
+					ANTR = (string)row["ANTR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

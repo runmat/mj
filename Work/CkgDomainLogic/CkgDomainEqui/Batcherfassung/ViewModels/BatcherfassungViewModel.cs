@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -138,27 +137,9 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             return SelectedItem;
         }
 
-        public BatcherfassungEdit ModifyEditItemWithModelData(string modelId, string batchId)
+        public ModelHersteller GetModelData(string modelId)
         {
-            SelectedItem.Batch.ID = batchId;
-
-            var modelFoundById = ModelList.FirstOrDefault(m => m.ModelID == modelId) ?? new ModelHersteller();
-                       
-            SelectedItem.Batch.ModellId = modelId;
-            SelectedItem.Batch.Modellbezeichnung = modelFoundById.Modellbezeichnung;
-            SelectedItem.Batch.Fahrzeuggruppe = modelFoundById.Fahrzeuggruppe;
-            SelectedItem.Batch.Antrieb = modelFoundById.Antrieb;
-            SelectedItem.Batch.HerstellerName = modelFoundById.HerstellerName;
-            SelectedItem.Batch.SippCode = modelFoundById.SippCode;
-            SelectedItem.Batch.Antrieb = modelFoundById.Antrieb;
-            SelectedItem.Batch.Laufzeit = modelFoundById.Laufzeit;
-            SelectedItem.Batch.Laufzeitbindung = modelFoundById.Laufzeitbindung;
-            SelectedItem.Batch.SecurityFleet = modelFoundById.SecurityFleet;
-            SelectedItem.Batch.Bluetooth = modelFoundById.Bluetooth;
-            SelectedItem.Batch.NaviVorhanden = modelFoundById.NaviVorhanden;
-            SelectedItem.Batch.KennzeichenLeasingFahrzeug = modelFoundById.KennzeichenLeasingFahrzeug;
-
-            return SelectedItem;
+            return ModelList.FirstOrDefault(m => m.ModelID == modelId) ?? new ModelHersteller();
         }
 
         public void AddItem(Batcherfassung newItem)
@@ -201,6 +182,12 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
         {
             var unitnummerList = PrepareUnitnumbers(item.Batch);
 
+            if (unitnummerList.Count != item.Batch.Anzahl.ToInt(0))
+            {
+                addModelError("", Localize.UnitnumbersInvalidRange);
+                return;
+            }
+
             var errorMessage = DataService.SaveBatch(item.Batch, unitnummerList);
 
             if (errorMessage.IsNotNullOrEmpty())
@@ -214,7 +201,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             if (item.Unitnummern.IsNotNullOrEmpty())
             {
                 var items = item.Unitnummern.Replace("\"", "");
-                var lines = items.Split(new[] { "\r\n", "\n" }, StringSplitOptions.None);
+                var lines = items.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
 
                 return lines.Where(x => x.IsNotNullOrEmpty()).Select(line => new FzgUnitnummer { Unitnummer = line }).ToList();
             }
@@ -369,10 +356,12 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
 
         public void PrepareUploadItems()
         {         
-            //string sapError = DataService.SaveUploadItems(UploadItems);
             SelectedItem.Batch.Unitnummern = "";
             foreach (var item in UploadItems)
-                SelectedItem.Batch.Unitnummern += "\"" + item.Unitnummern + "\"\n" ;
+            {
+                if (item.Unitnummern.IsNotNullOrEmpty())
+                    SelectedItem.Batch.Unitnummern += "\"" + item.Unitnummern + "\"\n";
+            }
 
             SelectedItem.Batch.UnitnummerVon = "";
             SelectedItem.Batch.UnitnummerBis = "";

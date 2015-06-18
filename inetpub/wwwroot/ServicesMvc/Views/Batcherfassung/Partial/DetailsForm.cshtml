@@ -23,26 +23,18 @@
             @Html.FormTextBlockFor(m => m.Batch.ID, new { @class = "m-wrap medium", col = "left" })
         }                         
         @Html.FormTextBoxFor(m => m.Batch.ModellId, new { @class = "m-wrap ", col = "right", @onchange = "return TryLoadDataByModelId();" })
-        @*@Html.FormDropDownListFor(m => m.ModellId, Model.ModelList, new { @class = "m-wrap X-large", col = "right", @onchange = "return false" })*@
-        
-        @Html.FormTextBoxFor(m => m.Batch.Modellbezeichnung, new { @class = "m-wrap ", col = "left" })
-        @Html.FormTextBoxFor(m => m.Batch.SippCode, new { @class = "m-wrap ", col = "right" })
 
-        if (Model.InsertModeTmp)
-        {           
-            @Html.FormDropDownListFor(m => m.Batch.HerstellerName, Model.HerstellerList.ToSelectList("HerstellerName"), new { @class = "m-wrap large", col = "left" })
-        }
-        else
-        {           
-            @Html.FormTextBoxFor(m => m.Batch.HerstellerName, new { @class = "m-wrap medium", col = "left" })
-        }
-        @Html.FormTextBoxFor(m => m.Batch.Anzahl, new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Batch.Modellbezeichnung, new { @class = "m-wrap ", col = "left", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.Batch.SippCode, new { @class = "m-wrap ", col = "right", @readonly = "readonly" })
+        
+        @Html.FormTextBoxFor(m => m.Batch.HerstellerName, new { @class = "m-wrap medium", col = "left", @readonly = "readonly" })
+        @Html.FormTextBoxFor(m => m.Batch.Anzahl, new { @class = "m-wrap small", col = "right", @onblur = "return TryCalculateUnitNumbers()" })
                                                      
-        @Html.FormTextBoxFor(m => m.Batch.Laufzeit, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Batch.Laufzeit, new { @class = "m-wrap small", col = "left" })
         @Html.FormCheckBoxFor(m => m.Batch.Laufzeitbindung, new { @class = "m-wrap", col = "right" }, labelHidden: true)
         
-        @Html.FormTextBoxFor(m => m.Batch.Liefermonat, new { @class = "m-wrap large", col = "left" })
-        @Html.FormDropDownListFor(m => m.Batch.Antrieb, Model.AntriebeList.ToSelectList(), new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Batch.Liefermonat, new { @class = "m-wrap small" })
+        @Html.HiddenFor(m => m.Batch.Antrieb)
                
         @Html.FormDropDownListFor(m => m.Batch.AuftragsnummerVon, Model.AuftragsnummerList.ToSelectList("Nummer", "AuftragsNrUndText"), new { @class = "m-wrap large", col = "left" })
         @Html.FormDropDownListFor(m => m.Batch.AuftragsnummerBis, Model.AuftragsnummerList.ToSelectList("Nummer", "AuftragsNrUndText"), new { @class = "m-wrap large", col = "right" })
@@ -58,21 +50,17 @@
         
         // -> TODO Deko, Abgrenzung, 
                 
-        @Html.FormTextBoxFor(m => m.Batch.UnitnummerVon, new { @class = "m-wrap large", col = "left", @onblur = "return TryCalculateUnitNumbers(this)" })
-        @Html.FormTextBoxFor(m => m.Batch.UnitnummerBis, new { @class = "m-wrap large", col = "right", @onblur = "return TryCalculateUnitNumbers(this)" })
-             
-        <div id="divValidationError" class="hide" >
-            {@Html.FormTextBlockFor(m => m.ValidationError, new { @class = "m-wrap medium error" })}        
-        </div>       
-                                
-        <div id="divExcelUpload" class="left">       
-            @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })
+        @Html.FormTextBoxFor(m => m.Batch.UnitnummerVon, new { @class = "m-wrap small", col = "left", @onblur = "return TryCalculateUnitNumbers()" })
+        @Html.FormTextBoxFor(m => m.Batch.UnitnummerBis, new { @class = "m-wrap small", col = "right", @onblur = "return TryCalculateUnitNumbers()" })
 
-            <div id="formWizardTab1" >      
-                @Html.Partial("ExcelUpload/FileUpload")                                                                                   
+        <div class="row-fluid">
+            <div class="span6">
+                @Html.Partial("ExcelUpload/FileUpload")
             </div>
-        </div>        
-        @Html.FormTextAreaFor(m => m.Batch.Unitnummern, new { @class = "m-wrap large right" })
+            <div class="span6">
+                @Html.FormTextAreaFor(m => m.Batch.Unitnummern, new { @class = "m-wrap large" })
+            </div>
+        </div>
                
         @Html.FormRequiredFieldsSummary()
 

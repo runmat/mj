@@ -24,8 +24,8 @@ namespace CkgDomainLogic.FzgModelle.Models
                             d.Modellbezeichnung = s.ZMOD_DESCR;
                             d.SippCode = s.ZSIPP_CODE;
                             d.HerstellerName = s.ZMAKE;
-                            d.UnitnummerVon = s.ZUNIT_NR_VON;
-                            d.UnitnummerBis = s.ZUNIT_NR_BIS;
+                            d.UnitnummerVon = s.ZUNIT_NR_VON.TrimStart('0');
+                            d.UnitnummerBis = s.ZUNIT_NR_BIS.TrimStart('0');
                             d.Laufzeit = s.ZLAUFZEIT;
                             d.Laufzeitbindung = s.ZLZBINDUNG.XToBool();
                             d.AuftragsnummerVon = s.ZAUFNR_VON.TrimStart('0');
@@ -33,7 +33,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                             d.Bemerkung = s.ZBEMERKUNG;
                             d.Fahrzeuggruppe = s.ZFZG_GROUP;
                             d.Verwendung = s.ZVERWENDUNG;
-                            d.Anzahl = s.ZANZAHL;
+                            d.Anzahl = s.ZANZAHL.TrimStart('0');
                             d.Liefermonat = s.ZPURCH_MTH;
                             d.Status = s.STATUS;
                             d.Winterreifen = s.ZMS_REIFEN.XToBool();
@@ -206,7 +206,7 @@ namespace CkgDomainLogic.FzgModelle.Models
                         , null
                         , (s, d) =>
                         {
-                            d.ZUNIT_NR = s.Unitnummer;
+                            d.ZUNIT_NR = s.Unitnummer.PadLeft0(8);
                         }
                     ));
             }

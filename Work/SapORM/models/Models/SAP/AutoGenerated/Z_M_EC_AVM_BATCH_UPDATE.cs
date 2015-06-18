@@ -117,6 +117,10 @@ namespace SapORM.Models
 
 			public DateTime? AEDAT { get; set; }
 
+			public string BLUETOOTH { get; set; }
+
+			public string ANTR { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -164,6 +168,8 @@ namespace SapORM.Models
 					ERDAT = (string.IsNullOrEmpty(row["ERDAT"].ToString())) ? null : (DateTime?)row["ERDAT"],
 					AENAM = (string)row["AENAM"],
 					AEDAT = (string.IsNullOrEmpty(row["AEDAT"].ToString())) ? null : (DateTime?)row["AEDAT"],
+					BLUETOOTH = (string)row["BLUETOOTH"],
+					ANTR = (string)row["ANTR"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
