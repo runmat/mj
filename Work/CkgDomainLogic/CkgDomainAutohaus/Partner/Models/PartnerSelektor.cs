@@ -24,6 +24,7 @@ namespace CkgDomainLogic.Partner.Models
                     {
                         new SelectItem ("HALTER", Localize.Holder),
                         new SelectItem ("KAEUFER", Localize.Buyer),
+                        new SelectItem ("ZAHLERKFZSTEUER", Localize.CarTaxPayer)
                     };
             }
         }

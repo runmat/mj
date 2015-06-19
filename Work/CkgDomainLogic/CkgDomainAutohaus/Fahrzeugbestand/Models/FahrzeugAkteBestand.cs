@@ -97,6 +97,9 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.Buyer)]
         public string Kaeufer { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CarTaxPayer)]
+        public string ZahlerKfzSteuer { get; set; }
+
 
         [LocalizedDisplay(LocalizeConstants.ZBIInventoryInfo)]
         [Length(1)]
@@ -229,6 +232,15 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
             get
             {
                 return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("KAEUFER", Kaeufer) : null);
+            }
+        }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public Adresse SelectedZahlerKfzSteuer
+        {
+            get
+            {
+                return (GetViewModel != null ? GetViewModel().GetPartnerAdresse("ZAHLERKFZSTEUER", ZahlerKfzSteuer) : null);
             }
         }
 

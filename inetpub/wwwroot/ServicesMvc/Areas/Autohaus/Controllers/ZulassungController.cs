@@ -101,7 +101,6 @@ namespace ServicesMvc.Autohaus.Controllers
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
 
-
         #region Rechnungsdaten
 
         [HttpPost]
@@ -124,63 +123,12 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #endregion
 
-        #region Bank-/Adressdaten
-
-        [HttpPost]
-        public ActionResult BankAdressdaten()
-        {
-            ViewModel.CheckCpd();
-
-            return PartialView("Partial/BankAdressdaten", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult BankAdressdatenForm(BankAdressdaten model)
-        {
-            ViewModel.SetBankAdressdaten(ref model);
-
-            return PartialView("Partial/BankAdressdatenForm", model);
-        }
-
-        [HttpPost]
-        public ActionResult LoadBankdatenAusIban(string iban)
-        {
-            var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
-
-// ReSharper disable RedundantAnonymousTypePropertyName
-            return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
-// ReSharper restore RedundantAnonymousTypePropertyName
-        }
-
-        #endregion
-
-        #region Fahrzeugdaten
-
-        [HttpPost]
-        public ActionResult Fahrzeugdaten()
-        {
-            return PartialView("Partial/Fahrzeugdaten", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
-        {
-            if (ModelState.IsValid)
-            {
-                ViewModel.SetFahrzeugdaten(model);
-            }
-
-            return PartialView("Partial/FahrzeugdatenForm", model);
-        }
-
-        #endregion
-
-        #region HalterAdresse
+        #region Halter
 
         [HttpPost]
         public ActionResult HalterAdresse()
         {
-            return PartialView("Partial/HalterAdresse", ViewModel);
+            return PartialView("Partial/HalterAdresse", ViewModel.Zulassung.Halter.Adresse);
         }
 
         [HttpPost]
@@ -235,22 +183,246 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public ActionResult HalterAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("HalterAdressen", dt);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Holder, dt);
 
             return new EmptyResult();
         }
 
         public ActionResult HalterAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("HalterAdressen", dt, landscapeOrientation: true);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Holder, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }
 
         #endregion
-        
+
+        #region Zahler Kfz-Steuer
+
+        [HttpPost]
+        public ActionResult ZahlerKfzSteuer()
+        {
+            return PartialView("Partial/ZahlerKfzSteuer", ViewModel.Zulassung.ZahlerKfzSteuer);
+        }
+
+        [HttpPost]
+        public JsonResult ZahlerKfzSteuerAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ViewModel.GetZahlerKfzSteuerAdressenAsAutoCompleteItems() });
+        }
+
+        [HttpPost]
+        public ActionResult ZahlerKfzSteuerForm(BankAdressdaten model)
+        {
+            ViewModel.SetZahlerKfzSteuerBankdaten(model);
+
+            if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                model.Adressdaten.Adresse = ViewModel.GetZahlerKfzSteueradresse(model.Adressdaten.Adresse.TmpSelectionKey);
+                if (model.Adressdaten.Adresse == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                model.Adressdaten.Adresse.IsValid = false;
+                return PartialView("Partial/ZahlerKfzSteuerForm", model);
+            }
+
+            if (ModelState.IsValid)
+                ViewModel.SetZahlerKfzSteuerAdresse(model.Adressdaten.Adresse);
+
+            model.Adressdaten.Adresse.IsValid = ModelState.IsValid;
+
+            return PartialView("Partial/ZahlerKfzSteuerForm", model);
+        }
+
+        [GridAction]
+        public ActionResult ZahlerKfzSteuerAdressenAjaxBinding()
+        {
+            var items = ViewModel.ZahlerKfzSteuerAdressenFiltered;
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterZahlerKfzSteuerAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterZahlerKfzSteuerAdressen(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult ZahlerKfzSteuerAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshZahlerKfzSteuerAdressen();
+
+            return PartialView("Partial/ZahlerKfzSteuerAdressenAuswahlGrid");
+        }
+
+        public ActionResult ZahlerKfzSteuerAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.ZahlerKfzSteuerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.CarTaxPayer, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ZahlerKfzSteuerAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.ZahlerKfzSteuerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.CarTaxPayer, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Bank-/Adressdaten
+
+        [HttpPost]
+        public ActionResult BankAdressdaten()
+        {
+            return PartialView("Partial/BankAdressdaten", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult BankAdressdatenForm(BankAdressdaten model)
+        {
+            ViewModel.SetBankAdressdaten(model);
+
+            if (ViewModel.SkipBankAdressdaten)
+                ModelState.Clear();
+
+            return PartialView("Partial/BankAdressdatenForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult LoadBankdatenAusIban(string iban)
+        {
+            var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
+
+// ReSharper disable RedundantAnonymousTypePropertyName
+            return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
+// ReSharper restore RedundantAnonymousTypePropertyName
+        }
+
+        #endregion
+
+        #region Auslieferadressen
+
+        [HttpPost]
+        public ActionResult AuslieferAdressen()
+        {
+            return PartialView("Partial/AuslieferAdressen", ViewModel.SelectedAuslieferAdresse);
+        }
+
+        [HttpPost]
+        public JsonResult AuslieferAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ViewModel.GetAuslieferAdressenAsAutoCompleteItems() });
+        }
+
+        [HttpPost]
+        public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
+        {
+            if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.ZugeordneteMaterialien;
+                ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.Adressdaten.Bemerkung;
+                ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.Adressdaten.Adresse.TmpSelectionKey);
+                if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                ViewModel.SelectedAuslieferAdresse.IsValid = false;
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            }
+
+            if (model.TmpSelectedPartnerrolle != model.Adressdaten.Partnerrolle)
+            {
+                ViewModel.SelectedAuslieferAdressePartnerrolle = model.TmpSelectedPartnerrolle;
+                ModelState.Clear();
+                ViewModel.SelectedAuslieferAdresse.IsValid = false;
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            }
+
+            if (ModelState.IsValid)
+                ViewModel.SetAuslieferAdresse(model);
+
+            // Auslieferadressen sind optional
+            if (!model.HasData)
+                ModelState.Clear();
+
+            model.IsValid = (ModelState.IsValid && !model.TmpSaveAddressOnly);
+            model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
+
+            ModelState.SetModelValue("TmpSaveAddressOnly", false);
+            //model.TmpSaveAddressOnly = false;
+
+            return PartialView("Partial/AuslieferAdressenForm", model);
+        }
+
+        [GridAction]
+        public ActionResult AuslieferAdressenAjaxBinding()
+        {
+            var items = ViewModel.AuslieferAdressenFiltered;
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterAuslieferAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterAuslieferAdressen(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult AuslieferAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshAuslieferAdressen();
+
+            return PartialView("Partial/AuslieferAdressenAuswahlGrid");
+        }
+
+        public ActionResult AuslieferAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AuslieferAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.DeliveryAddresses, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult AuslieferAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AuslieferAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DeliveryAddresses, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Fahrzeugdaten
+
+        [HttpPost]
+        public ActionResult Fahrzeugdaten()
+        {
+            return PartialView("Partial/Fahrzeugdaten", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewModel.SetFahrzeugdaten(model);
+            }
+
+            return PartialView("Partial/FahrzeugdatenForm", model);
+        }
+
+        #endregion
+
         #region Zulassungsdaten
 
         [HttpPost]
@@ -397,7 +569,6 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         #endregion   
-
 
         #region Shopping Cart 
 

@@ -291,7 +291,11 @@
                 var dropdownTextSpan = $("#" + result.partnerKennung.toLowerCase().substr(0, 1) + "-dropdown-text");
                 console.log(dropdownTextSpan);
                 dropdownTextSpan.html(result.partnerName);
-                var hiddenFieldName = (result.partnerKennung.toLowerCase().substr(0, 1) == "k" ? "Kaeufer" : "Halter");
+                var hiddenFieldName = "Halter";
+                if (result.partnerKennung.toLowerCase().substr(0, 1) == "k")
+                    hiddenFieldName = "Kaeufer";
+                else if (result.partnerKennung.toLowerCase().substr(0, 1) == "z")
+                    hiddenFieldName = "ZahlerKfzSteuer";
                 $("#fahrzeug-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
 
                 ClosePartnerAddressGrid();

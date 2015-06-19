@@ -55,9 +55,12 @@
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
-            FormWizardShowHideSaveButton(step == 7, 500);
+            var stepName = FormWizard.GetStepKey(step + 1);
 
-            if (step == 2 && _skipBankAddressData) {
+            FormWizardShowHideSaveButton(stepName == "Receipt", 500);
+
+            var prevStepName = FormWizard.GetStepKey(step);
+            if (prevStepName == "BankAdressdaten" && _skipBankAddressData) {
                 FormWizard.ButtonPrevInvoke();
             }
 
@@ -72,7 +75,6 @@
         });
 
         FormWizard.OnSubmit(function () {
-
             LoadingShow();
             SpanAlertWarning("WaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
             AjaxRequestNextStep();
@@ -155,79 +157,6 @@
         }
     }
 
-    function TrySkipBankAddressData() {
-        if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
-            $("#AjaxFormBankAdressdaten").submit();
-        }
-    }
-
-    // BankAdressdaten
-    function AjaxFormBankAdressdatenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
-
-    var _ibanPrev = null;
-    function TryLoadBankdatenAusIban(textbox) {
-
-        if (_ibanPrev == $(textbox).val())
-            return;
-        _ibanPrev = $(textbox).val();
-        
-        if ($(textbox).val().length < 22)
-            return;
-
-        LoadBankdatenAusIban();
-    }
-
-    function LoadBankdatenAusIban() {
-
-        var iban = $("#Iban").val();
-
-        $.ajax(
-            {
-                type: "POST",
-                url: "LoadBankdatenAusIban",
-                data: { iban: iban },
-                loadingShow: true,
-                success: function (result) {
-                    if (result.Swift == null || result.Swift == '') {
-                        $("#Swift").attr("readonly", false);
-                        $("#Swift").attr("placeholder", "");
-                        $("#Swift").val("");
-                        $("#Geldinstitut").attr("readonly", false);
-                        $("#Geldinstitut").attr("placeholder", "");
-                        $("#Geldinstitut").val("");
-                        return;
-                    }
-
-                    $("#Swift").val(result.Swift);
-                    $("#Swift").attr("readonly", true);
-                    $("#KontoNr").val(result.KontoNr);
-                    $("#Bankleitzahl").val(result.Bankleitzahl);
-                    $("#Geldinstitut").val(result.Geldinstitut);
-                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
-                }
-            });
-
-        return false;
-
-    }
-
-    // Fahrzeugdaten
-    function AjaxFormFahrzeugdatenComplete() {
-        FormPrepareAjax();
-
-        if (_modelIsValid) {
-            AjaxRequestNextStep();
-            return;
-        }
-    }
-
     // HalterAdresse
     function AjaxFormHalterAdresseComplete() {
         FormPrepareAjax();
@@ -257,6 +186,141 @@
     function GridHalterAdresseOnSelect(id) {
         $("#TmpSelectionKey").val(id);
         $("#AjaxFormHalterAdresse").submit();
+    }
+
+    // ZahlerKfzSteuer
+    function AjaxFormZahlerKfzSteuerComplete() {
+        FormPrepareAjax();
+
+        var detailWindow = $("#Adressen").data("tWindow");
+        detailWindow.center().close();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    function OnDataBound_ZahlerKfzSteuerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_ZahlerKfzSteuerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_ZahlerKfzSteuerAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GridZahlerKfzSteuerAdresseOnSelect(id) {
+        $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
+        $("#AjaxFormZahlerKfzSteuer").submit();
+    }
+
+    // BankAdressdaten
+    function AjaxFormBankAdressdatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    var _ibanPrev = null;
+    function TryLoadBankdatenAusIban(textbox) {
+
+        if (_ibanPrev == $(textbox).val())
+            return;
+        _ibanPrev = $(textbox).val();
+        
+        if ($(textbox).val().length < 22)
+            return;
+
+        LoadBankdatenAusIban();
+    }
+
+    function LoadBankdatenAusIban() {
+
+        var iban = $("#Bankdaten_Iban").val();
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "LoadBankdatenAusIban",
+                data: { iban: iban },
+                loadingShow: true,
+                success: function (result) {
+                    if (result.Swift == null || result.Swift == '') {
+                        $("#Bankdaten_Swift").attr("readonly", false);
+                        $("#Bankdaten_Swift").attr("placeholder", "");
+                        $("#Bankdaten_Swift").val("");
+                        $("#Bankdaten_Geldinstitut").attr("readonly", false);
+                        $("#Bankdaten_Geldinstitut").attr("placeholder", "");
+                        $("#Bankdaten_Geldinstitut").val("");
+                        return;
+                    }
+
+                    $("#Bankdaten_Swift").val(result.Swift);
+                    $("#Bankdaten_Swift").attr("readonly", true);
+                    $("#Bankdaten_KontoNr").val(result.KontoNr);
+                    $("#Bankdaten_Bankleitzahl").val(result.Bankleitzahl);
+                    $("#Bankdaten_Geldinstitut").val(result.Geldinstitut);
+                    SpanAlertSuccess("bankDataHint", '@Localize.BankDataSuccessfullyRetrievedFromIban.ToJavascriptString()', 1800);
+                }
+            });
+
+        return false;
+
+    }
+
+    function TrySkipBankAddressData() {
+        if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
+            $("#AjaxFormBankAdressdaten").submit();
+        }
+    }
+
+    // AuslieferAdressen
+    function AjaxFormAuslieferAdressenComplete() {
+        FormPrepareAjax();
+
+        var detailWindow = $("#Adressen").data("tWindow");
+        detailWindow.center().close();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    function OnDataBound_AuslieferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_AuslieferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_AuslieferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GridAuslieferAdresseOnSelect(id) {
+        $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
+        $("#AjaxFormAuslieferAdressen").submit();
+    }
+
+    // Fahrzeugdaten
+    function AjaxFormFahrzeugdatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
     }
 
     // Zulassungsdaten
@@ -368,9 +432,11 @@
     // Adressen allgemein
     function AjaxFormAdressePrepareAutoCompleteReset(formID) {
         var form = $("#" + formID);
-        form.find("input:text").each(function () {
-            if ($(this).attr('id') != 'Name1')
-                $(this).bind('keyup', function () { $("#Name1").autocomplete("disable"); });
+        form.find("input:text:not([id$='Name1'])").each(function () {
+            $(this).bind('keyup', function () {
+                try { $("[id$='Name1']").first().autocomplete("disable"); }
+                catch (e) { }
+            });
         });
     }
 
@@ -378,9 +444,8 @@
 
         var form = tb.closest("form");
         var textboxValues = '';
-        form.find("input:text").each(function () {
-            if ($(this).attr('id') != 'Name1')
-                textboxValues = $(this).val();
+        form.find("input:text:not([id$='Name1'])").each(function () {
+            textboxValues = $(this).val();
         });
         if (textboxValues != '')
             return;
@@ -401,7 +466,7 @@
             minLength: 0,
             source: items,
             select: function (event, ui) {
-                $("#TmpSelectionKey").val(ui.item.value);
+                $("[id$='TmpSelectionKey']").first().val(ui.item.value);
                 var form = tb.closest("form");
                 form.submit();
             }
@@ -428,7 +493,7 @@
             }
         });
 
-        AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
+        AjaxFormAdressePrepareAutoComplete($("[id$='Name1']").first(), url);
         return false;
     }
 

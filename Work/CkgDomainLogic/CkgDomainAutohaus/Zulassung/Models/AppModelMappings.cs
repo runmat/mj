@@ -20,18 +20,18 @@ namespace CkgDomainLogic.Autohaus.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                         {
+                            d.Adresse.HausNr = s.HOUSE_NUM1;
+                            d.Adresse.Name1 = s.NAME1;
+                            d.Adresse.Name2 = s.NAME2;
+                            d.Adresse.Ort = s.CITY1;
+                            d.Adresse.PLZ = s.POST_CODE1;
+                            d.Adresse.Strasse = s.STREET;
                             d.Barkunde = s.BARKUNDE.XToBool();
                             d.CpdMitEinzugsermaechtigung = s.XCPDEIN.XToBool();
                             d.Cpdkunde = s.XCPDK.XToBool();
-                            d.HausNr = s.HOUSE_NUM1;
                             d.KundenNr = s.KUNNR;
-                            d.Name1 = s.NAME1;
-                            d.Name2 = s.NAME2;
                             d.OhneUmsatzsteuer = s.OHNEUST.XToBool();
-                            d.Ort = s.CITY1;
                             d.Pauschalkunde = s.ZZPAUSCHAL.XToBool();
-                            d.Plz = s.POST_CODE1;
-                            d.Strasse = s.STREET;
                             d.VkBur = s.VKBUR;
                             d.VkOrg = s.VKORG;
                         }));
@@ -264,14 +264,15 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.KUNNR = s.Rechnungsdaten.KundenNr;
 
                             // Bank-/Adressdaten
-                            d.EINZ_JN = s.BankAdressdaten.Einzugsermaechtigung.BoolToX();
-                            d.RECH_JN = s.BankAdressdaten.Rechnung.BoolToX();
-                            d.BARZ_JN = s.BankAdressdaten.Bar.BoolToX();
-                            d.KOINH = s.BankAdressdaten.Kontoinhaber;
-                            d.IBAN = s.BankAdressdaten.Iban;
-                            d.SWIFT = s.BankAdressdaten.Swift;
-                            d.BANKN = s.BankAdressdaten.KontoNr;
-                            d.BANKL = s.BankAdressdaten.Bankleitzahl;
+                            d.EINZ_JN = s.BankAdressdaten.Bankdaten.Einzugsermaechtigung.BoolToX();
+                            d.RECH_JN = s.BankAdressdaten.Bankdaten.Rechnung.BoolToX();
+                            d.BARZ_JN = s.BankAdressdaten.Bankdaten.Bar.BoolToX();
+                            d.KOINH = s.BankAdressdaten.Bankdaten.Kontoinhaber;
+                            d.IBAN = s.BankAdressdaten.Bankdaten.Iban;
+                            d.SWIFT = s.BankAdressdaten.Bankdaten.Swift;
+                            d.BANKN = s.BankAdressdaten.Bankdaten.KontoNr;
+                            d.BANKL = s.BankAdressdaten.Bankdaten.Bankleitzahl;
+                            d.EBPP_ACCNAME = s.BankAdressdaten.Bankdaten.Geldinstitut;
 
                             // Fahrzeug
                             d.ZZREFNR5 = s.Fahrzeugdaten.AuftragsNr;
@@ -283,10 +284,9 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZREFNR4 = s.Fahrzeugdaten.BestellNr;
 
                             // Halter
-                            d.ZZREFNR1 = s.Halter.NotNullOrEmpty().ToUpper();
+                            d.ZZREFNR1 = s.HalterName.NotNullOrEmpty().ToUpper();
 
                             // Zulassung
-
                             d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
                             d.STILL_DAT = null;
 
@@ -329,13 +329,15 @@ namespace CkgDomainLogic.Autohaus.Models
                     , null
                     , (s, d) =>
                         {
-                            d.PARVW = s.Kennung;
+                            d.KUNNR = s.Adresse.KundenNr;
+                            d.PARVW = s.Partnerrolle;
                             d.ZULBELN = s.BelegNr;
-                            d.NAME1 = s.Name1;
-                            d.NAME2 = s.Name2;
-                            d.STREET = s.Strasse;
-                            d.PLZ = s.Plz;
-                            d.CITY1 = s.Ort;
+                            d.NAME1 = s.Adresse.Name1;
+                            d.NAME2 = s.Adresse.Name2;
+                            d.STREET = s.Adresse.Strasse;
+                            d.PLZ = s.Adresse.PLZ;
+                            d.CITY1 = s.Adresse.Ort;
+                            d.BEMERKUNG = s.Bemerkung;
                         }));
             }
         }
@@ -353,6 +355,29 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.LFDNR = s.PositionsNr;
                         d.MATNR = s.MaterialNr;
                         d.MENGE = s.Menge;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_BANK_IN, Bankdaten> Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BANK_IN_From_Bankdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_BANK_IN, Bankdaten>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.PARVW = s.Partnerrolle;
+                        d.ZULBELN = s.BelegNr;
+                        d.EINZ_JN = s.Einzugsermaechtigung.BoolToX();
+                        d.RECH_JN = s.Rechnung.BoolToX();
+                        d.KOINH = s.Kontoinhaber;
+                        d.IBAN = s.Iban;
+                        d.SWIFT = s.Swift;
+                        d.BANKN = s.KontoNr;
+                        d.BANKL = s.Bankleitzahl;
+                        d.EBPP_ACCNAME = s.Geldinstitut;
                     }));
             }
         }
