@@ -42,8 +42,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
 
-        public List<FahrzeugAkteBestand> FinList { get; set; }      // MMA 20150618 ITA8096 Massenzulassung. Liste der zuzulassenden Fahrzeuge
-        
+        #region Für Massenzulassung
+        public List<FahrzeugAkteBestand> FinList { get; set; }      // MMA 20150618 ITA8096 Massenzulassung. Liste der zuzulassenden Fahrzeuge.
+        public bool IsMassenzulassung { get; set; }
+        #endregion
+
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string HalterDatenAsString { get { return HalterAdresse.GetAutoSelectString(); } }
@@ -216,70 +219,40 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
         }
         
+        /// <summary>
+        /// Überträgt die Liste der anzumeldenden Fahrzeuge in das ViewModel und
+        /// sorgt für Vorbelegung der relevanten Formulardaten, falls die entsprechenden 
+        /// Fahrzeug-Properties identische Werte haben.
+        /// </summary>
+        /// <param name="finList"></param>
         public void SetFinList(object finList)
         {
+            IsMassenzulassung = true;
 
             FinList = (List<FahrzeugAkteBestand>) finList;
-
+            
             var firstFahrzeug = FinList.FirstOrDefault();
-            //if (firstFahrzeug == null)
-            //{
-            //    return Content("Kein Fahrzeug ausgewählt.");
-            //}
+            if (firstFahrzeug == null) return;
 
-            // Wenn alle Halterdaten zu allen Fahrzeugen identisch, dann 
+            #region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
 
-            var isDifferent = false;
-            foreach (var fahrzeugAkteBestand in FinList)
+            var isEqual = true;
+            foreach (var fahrzeugAkteBestand in FinList) 
             {
-
-                if (ComparePublicInstanceProperties(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter))
+                if (ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
                 {
-                    var identisch = 1;
-                }
-                else
-                {
-                    var different = 2;
-                }
-
+                    isEqual = false;
+                    break;
+                }                
             }
 
-            if (isDifferent)
+            if (isEqual)    // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
             {
-                var asdf = 234;
+                SetParamHalter(firstFahrzeug.Halter);   // Zulassung.Halterdaten = firstFahrzeug.SelectedHalter;
             }
-        }
 
-        /// <summary>
-        /// Compare the properties of two objects
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="self"></param>
-        /// <param name="to"></param>
-        /// <param name="ignore"></param>
-        /// <returns>True = equal</returns>
-        public static bool ComparePublicInstanceProperties<T>(T self, T to, params string[] ignore) where T : class
-        {
-            if (self != null && to != null)
-            {
-                var type = typeof(T);
-                var ignoreList = new List<string>(ignore);
-                foreach (var pi in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
-                {
-                    if (!ignoreList.Contains(pi.Name))
-                    {
-                        var selfValue = type.GetProperty(pi.Name).GetValue(self, null);
-                        var toValue = type.GetProperty(pi.Name).GetValue(to, null);
+            #endregion
 
-                        if (selfValue != toValue && (selfValue == null || !selfValue.Equals(toValue)))
-                        {
-                            return false;
-                        }
-                    }
-                }
-                return true;
-            }
-            return self == to;
         }
 
         #endregion

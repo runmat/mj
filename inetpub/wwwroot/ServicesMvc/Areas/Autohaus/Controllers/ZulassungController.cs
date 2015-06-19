@@ -71,11 +71,10 @@ namespace ServicesMvc.Autohaus.Controllers
         [CkgApplication]
         public ActionResult IndexMultiReg()
         {
-
-            ViewModel.SetParamAbmeldung("x");
+            ViewModel.SetParamAbmeldung(null);
             ViewModel.DataInit();
 
-            ViewModel.SetFinList(TempData["SelectedFahrzeuge"]); 
+            ViewModel.SetFinList(TempData["SelectedFahrzeuge"]);
 
             var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
             if (firstFahrzeug == null)
@@ -83,19 +82,8 @@ namespace ServicesMvc.Autohaus.Controllers
                 return Content("Kein Fahrzeug ausgewählt.");
             }
             
-            ViewModel.SetParamFahrzeugAkte(firstFahrzeug.FIN); 
-
-            // Wenn alle Halter der selektierten Fahrzeuge identisch, dann Haltereinträge vorbelegen. Sonst leer 
-            // ViewModel.SetParamHalter(halterNr); 
-            ViewModel.SetParamHalter(firstFahrzeug.Halter);
-
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
-
-            //ViewModel.Zulassung.Zulassungsdaten.EvbNr = "evb";
-            //ViewModel.Zulassung.Halterdaten.Name1 = "Name1";
-            //ViewModel.Zulassung.Halterdaten.Name2 = "Name2";
-
 
             return View("Index", ViewModel);
         }
