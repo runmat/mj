@@ -52,7 +52,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public AuslieferAdresse(string partnerrolle)
         {
-            Adressdaten = new Adressdaten { Partnerrolle = partnerrolle };
+            Adressdaten = new Adressdaten("") { Partnerrolle = partnerrolle };
             Materialien = new List<SelectItem>();
             ZugeordneteMaterialien = new List<string>();
         }

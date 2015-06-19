@@ -459,11 +459,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public Adresse GetAuslieferadresse(string key)
         {
+            Adresse adr;
+
             int id;
             if (Int32.TryParse(key, out id))
-                return AuslieferAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+                adr = AuslieferAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+            else
+                adr = AuslieferAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
 
-            return AuslieferAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+            if (adr != null)
+                adr.Strasse = adr.StrasseHausNr;
+
+            return adr;
         }
 
         public void SetAuslieferAdresse(AuslieferAdresse model)
