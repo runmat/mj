@@ -61,6 +61,10 @@ namespace CkgDomainLogic.Equi.Models
 
         public List<EquiMeldungsdaten> LebenslaufFsm { get; set; }
 
-        public List<EquiTueteninhalt> InhalteFsm { get; set; } 
+        public List<EquiTueteninhalt> InhalteFsm { get; set; }
+
+        public List<FahrzeugAnforderung> FahrzeugAnforderungen { get; set; }
+
+        public bool FahrzeugAnforderungenAnzeigen { get; set; }
     }
 }

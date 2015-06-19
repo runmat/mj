@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridFahrzeugAnforderungen"; }
+
+<div id="divFahrzeugAnforderungGrid">
+    @(Html.Telerik()
+          .Grid<FahrzeugAnforderung>()
+          .Name(gridName)
+          .XAjaxDataBinding("EquiHistorieVermieterFahrzeugAnforderungenAjaxBinding", "Equi")
+          .Columns(columns =>
+          {
+              columns.XBound(c => c.DokTyp).Filterable(false).Sortable(false).Title("")
+                  .HeaderTemplate(
+                      "<button onclick='FahrzeugAnforderungNew();' class='btn mini gray tooltips' data-original-title='" + Localize.ItemAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                  ); 
+        
+              columns.XBound(c => c.DokTyp);
+              columns.XBound(c => c.Kennzeichen);
+              columns.XBound(c => c.EmailExtern);
+              columns.XBound(c => c.EmailAnlageUser);
+              columns.XBound(c => c.AnlageUser);
+              columns.XBound(c => c.AnlageDatum);
+              columns.XBound(c => c.Bemerkung);
+          })
+          .XAutoColumnConfiguration()
+          .ClientEvents(events => events.XAutoClientEvents(gridName))
+          .XPageSize(10)
+          .XSort(sortOrder => sortOrder.Add(c => c.AnlageDatum).Descending())
+          )
+</div>
+
+<div id="divFahrzeugAnforderungDetails" class="hide"></div>

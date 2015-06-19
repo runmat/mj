@@ -1,0 +1,42 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model FahrzeugAnforderung
+
+<div id="DivFahrzeugAnforderung">
+    @using (Ajax.BeginForm("FahrzeugAnforderungDetailsFormSave", "Equi", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugAnforderung", OnComplete = "FahrzeugAnforderungAjaxFormComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "FahrzeugAnforderungAjaxForm" }))
+    {
+
+        @Html.FormValidationSummary()
+
+        
+        @Html.HiddenFor(m => m.AnlageDatum)
+        @Html.HiddenFor(m => m.AnlageUser)
+        @Html.HiddenFor(m => m.Fahrgestellnummer)
+
+
+        @Html.FormTextBoxFor(m => m.EmailAnlageUser, new { @class = "m-wrap large", @readonly = "readonly" })
+        @Html.FormCheckBoxFor(m => m.SendEmailToAnlageUser, labelHidden: true)
+
+        @Html.FormTextBoxFor(m => m.EmailExtern, new { @class = "m-wrap large" })
+
+        @Html.FormDropDownListFor(m => m.DokTyp, FahrzeugAnforderung.GetViewModel().DocTypes, new { @class = "m-wrap large" })
+
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small uppercase" })
+
+        @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
+
+                
+        @Html.FormRequiredFieldsSummary()
+
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Request</button>
+            <button type="button" class="btn" onclick="CloseFahrzeugAnforderungDetails();">@Localize.Cancel</button>
+        </div>
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

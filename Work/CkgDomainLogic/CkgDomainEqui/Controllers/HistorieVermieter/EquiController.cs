@@ -68,6 +68,31 @@ namespace ServicesMvc.Controllers
             return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.InhalteFsm));
         }
 
+        [GridAction]
+        public ActionResult EquiHistorieVermieterFahrzeugAnforderungenAjaxBinding()
+        {
+            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.FahrzeugAnforderungen));
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugAnforderungNew()
+        {
+            ModelState.Clear();
+            return PartialView("Historie/Partial/FahrzeugAnforderungDetailsForm", EquipmentHistorieVermieterViewModel.FahrzeugAnforderungNew());
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugAnforderungDetailsFormSave(FahrzeugAnforderung model)
+        {
+            var viewModel = EquipmentHistorieVermieterViewModel;
+
+            if (ModelState.IsValid)
+                viewModel.FahrzeugAnforderungSave(model, ModelState.AddModelError);
+
+            return PartialView("Historie/Partial/FahrzeugAnforderungDetailsForm", model);
+        }
+
+
         public FileContentResult FahrzeughistorieVermieterPdf()
         {
             var formularPdfBytes = EquipmentHistorieVermieterViewModel.GetHistorieAsPdf();
