@@ -432,9 +432,11 @@
     // Adressen allgemein
     function AjaxFormAdressePrepareAutoCompleteReset(formID) {
         var form = $("#" + formID);
-        form.find("input:text").each(function () {
-            if ($(this).attr('id') != 'Name1')
-                $(this).bind('keyup', function () { $("#Name1").autocomplete("disable"); });
+        form.find("input:text:not([id$='Name1'])").each(function () {
+            $(this).bind('keyup', function () {
+                try { $("[id$='Name1']").first().autocomplete("disable"); }
+                catch (e) { }
+            });
         });
     }
 
@@ -442,9 +444,8 @@
 
         var form = tb.closest("form");
         var textboxValues = '';
-        form.find("input:text").each(function () {
-            if ($(this).attr('id') != 'Name1')
-                textboxValues = $(this).val();
+        form.find("input:text:not([id$='Name1'])").each(function () {
+            textboxValues = $(this).val();
         });
         if (textboxValues != '')
             return;
@@ -465,7 +466,7 @@
             minLength: 0,
             source: items,
             select: function (event, ui) {
-                $("#TmpSelectionKey").val(ui.item.value);
+                $("[id$='TmpSelectionKey']").first().val(ui.item.value);
                 var form = tb.closest("form");
                 form.submit();
             }
@@ -492,7 +493,7 @@
             }
         });
 
-        AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
+        AjaxFormAdressePrepareAutoComplete($("[id$='Name1']").first(), url);
         return false;
     }
 

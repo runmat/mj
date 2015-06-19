@@ -272,6 +272,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.SWIFT = s.BankAdressdaten.Bankdaten.Swift;
                             d.BANKN = s.BankAdressdaten.Bankdaten.KontoNr;
                             d.BANKL = s.BankAdressdaten.Bankdaten.Bankleitzahl;
+                            d.EBPP_ACCNAME = s.BankAdressdaten.Bankdaten.Geldinstitut;
 
                             // Fahrzeug
                             d.ZZREFNR5 = s.Fahrzeugdaten.AuftragsNr;
@@ -286,7 +287,6 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZREFNR1 = s.HalterName.NotNullOrEmpty().ToUpper();
 
                             // Zulassung
-
                             d.ZZZLDAT = (s.Zulassungsdaten.ModusAbmeldung ? s.Zulassungsdaten.Abmeldedatum : s.Zulassungsdaten.Zulassungsdatum);
                             d.STILL_DAT = null;
 
@@ -377,6 +377,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.SWIFT = s.Swift;
                         d.BANKN = s.KontoNr;
                         d.BANKL = s.Bankleitzahl;
+                        d.EBPP_ACCNAME = s.Geldinstitut;
                     }));
             }
         }
