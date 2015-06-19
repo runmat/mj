@@ -35,9 +35,9 @@
     .XToolBar("Fahrzeugbestand")
 )
 
-@*<a href="../Zulassung/IndexMultiReg"><button id="btnMassRegistration" class="btn blue">Massenzulassung</button></a>*@
-
-<a href="MultiReg"><button id="btnMassRegistration" class="btn blue">Massenzulassung</button></a>
+<div class="form-actions clearfix">
+    <a href="MultiReg"><button id="btnMassRegistration" class="btn blue hide">Massenzulassung</button></a>    
+</div>
 
 <script>
     
@@ -118,9 +118,9 @@
 
     function ShowHideNextButton() {
         if (_selectedItemsCount > 0) {
-            $('#btnMassRegistration').show();
+            $('#btnMassRegistration').removeClass('hide');
         } else {
-            $('#btnMassRegistration').hide();
+            $('#btnMassRegistration').addClass('hide');
         }
     }
     
