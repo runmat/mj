@@ -317,7 +317,8 @@ Public Class Change10_Korrektur_2
                 _mTransportbeauftragung.strSpediteur = rcbSpediteur.SelectedValue
                 _mTransportbeauftragung.FilltblWebHead(rtbStationscode.Text, rtbStation.Text, rtbStation2.Text, rtbStraße.Text,
                                                        rtbHausnummer.Text, rtbPlz.Text, rtbOrt.Text, "", rdpTermin.SelectedDate,
-                                                       rtpUhrzeit.SelectedDate, _mUser.UserName)
+                                                       rtpUhrzeit.SelectedDate, _mUser.UserName, _mUser.Email)
+
                 _mTransportbeauftragung.FahrzeugeAendern()
 
                 If _mTransportbeauftragung.ErrorOccured Then
@@ -346,7 +347,8 @@ Public Class Change10_Korrektur_2
             _mTransportbeauftragung.strSpediteur = rcbSpediteur.SelectedValue
             _mTransportbeauftragung.FilltblWebHead(rtbStationscode.Text, rtbStation.Text, rtbStation2.Text, rtbStraße.Text, rtbHausnummer.Text,
                                                    rtbPlz.Text, rtbOrt.Text, "", rdpTermin.SelectedDate, rtpUhrzeit.SelectedDate,
-                                                   _mUser.UserName)
+                                                   _mUser.UserName, _mUser.Email)
+
             _mTransportbeauftragung.FahrzeugeStornieren()
 
             If _mTransportbeauftragung.ErrorOccured Then
