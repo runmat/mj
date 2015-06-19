@@ -635,7 +635,7 @@ namespace AppZulassungsdienst.lib
             {
                 Vorgangsliste.ForEach(vg => vg.FehlerText = "");
 
-                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, blnAnnahmeAhSenden);
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, blnAnnahmeAhSenden || SelAenderungAngenommene);
 
                 List<string> idList;
 
@@ -682,6 +682,23 @@ namespace AppZulassungsdienst.lib
                                         break;
                                     default:
                                         kopf.Bearbeitungsstatus = "1";
+                                        break;
+                                }
+                            }
+
+                            p.WebBearbeitungsStatus = "";
+                        }
+                        else if (SelAenderungAngenommene)
+                        {
+                            if (p.PositionsNr == "10")
+                            {
+                                switch (p.WebBearbeitungsStatus)
+                                {
+                                    case "L":
+                                        kopf.Bearbeitungsstatus = "L";
+                                        break;
+                                    default:
+                                        kopf.Bearbeitungsstatus = "A";
                                         break;
                                 }
                             }

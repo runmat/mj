@@ -723,7 +723,6 @@ namespace AppZulassungsdienst.forms
         /// Bindet die Vorgangsdaten(tblEingabeListe) an das Gridview(GridView1). 
         /// Binden der Kalkulationfunktion(Jscript) an Controls. Zeilen farbig markieren für Barkunden.
         /// </summary>
-        /// <param name="rebind">Daten neu ermitteln oder vorhandene Daten beibehalten?</param>
         /// <param name="intPageIndex">Index der Gridviewseite</param>
         /// <param name="strSort">Sortierung nach</param>
         /// <param name="filterMode"></param>
@@ -899,8 +898,6 @@ namespace AppZulassungsdienst.forms
                             RadioButton rbRE = (RadioButton)row.FindControl("rbRE");
                             Label lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
                             Label lblid_pos = (Label)row.FindControl("lblid_pos");
-                            TextBox txtPreis_Amt = (TextBox)row.FindControl("txtPreis_Amt");
-                            HiddenField txtPreis_AmtOld = (HiddenField)row.FindControl("txtPreis_AmtOld");
                             HiddenField hfMenge = (HiddenField)row.FindControl("hfMenge");
                             Int32 iMenge = 1;
                             if (hfMenge.Value.IsNumeric()) Int32.TryParse(hfMenge.Value, out iMenge);
@@ -923,8 +920,8 @@ namespace AppZulassungsdienst.forms
                                                                 + lblGesamtGeb.ClientID + "','" + lblLoeschKZ.ClientID + "'," + iMenge + ")");
 
 
-                                    txtPreis_Amt = (TextBox)row.FindControl("txtPreis_Amt");
-                                    txtPreis_AmtOld = (HiddenField)row.FindControl("txtPreis_AmtOld");
+                                    TextBox txtPreis_Amt = (TextBox)row.FindControl("txtPreis_Amt");
+                                    HiddenField txtPreis_AmtOld = (HiddenField)row.FindControl("txtPreis_AmtOld");
 
                                     txtPreis_Amt.Attributes.Add("onchange", "Calculate('" + txtPreis_Amt.ClientID + "','" + txtPreis_AmtOld.ClientID + "','"
                                             + lblGesamtGebAmt.ClientID + "','" + lblLoeschKZ.ClientID +
