@@ -118,14 +118,16 @@ namespace AppZulassungsdienst.forms
             if (kopfdaten.LieferantenNr.NotNullOrEmpty().Length >= 2 && kopfdaten.LieferantenNr.TrimStart('0').Substring(0, 2) == "56")
                 objVorerf.CheckLieferant();
 
+            var is48hOk = Check48hVersandMoeglich();
+
             // bisherige Eingaben merken
             SavePrintTableData();
             Session["objVorVersand"] = objVorerf;
 
-            if (!Check48hVersandMoeglich())
+            if (!is48hOk)
                 return;
 
-            if (objCommon.Ist48hZulassung)
+            if (objCommon.Ist48hZulassung && (!String.IsNullOrEmpty(objCommon.LieferUhrzeitBis) || !String.IsNullOrEmpty(objCommon.AbwName1)))
             {
                 SetAbwLieferadresse();
                 Fill48hDialog();
@@ -799,10 +801,7 @@ namespace AppZulassungsdienst.forms
 
         private void Fill48hDialog()
         {
-            var liefUhrzeit = objCommon.LieferUhrzeitBis;
-            if (!String.IsNullOrEmpty(liefUhrzeit) && liefUhrzeit.Length > 5)
-                liefUhrzeit = String.Format("{0}:{1} Uhr", liefUhrzeit.Substring(0, 2), liefUhrzeit.Substring(2, 2));
-            lblLieferuhrzeit.Text = liefUhrzeit;
+            lblLieferuhrzeit.Text = objCommon.LieferUhrzeitBisFormatted;
             lblAbwName.Text = String.Format("{0} {1}", objCommon.AbwName1, objCommon.AbwName2);
             lblAbwStrasse.Text = objCommon.AbwStrasse;
             lblAbwOrt.Text = String.Format("{0} {1}", objCommon.AbwPlz, objCommon.AbwOrt);
@@ -819,6 +818,9 @@ namespace AppZulassungsdienst.forms
                 lblError.Text = "Fehler bei der Kommunikation. Daten konnten nicht in SAP gespeichert werden!" + objVorerf.Message;
                 return;
             }
+
+            var dRow = objVorerf.tblPrintDataForPdf.Rows[0];
+            dRow["ID"] = objVorerf.AktuellerVorgang.Kopfdaten.SapId;
 
             Hashtable imageHt = new Hashtable();
             imageHt.Add("Logo", m_User.Customer.LogoImage);
@@ -1045,6 +1047,8 @@ namespace AppZulassungsdienst.forms
         {
             var kopfdaten = objVorerf.AktuellerVorgang.Kopfdaten;
 
+            objVorerf.tblPrintDataForPdf.Clear();
+
             DataRow dRow = objVorerf.tblPrintDataForPdf.NewRow();
             dRow["KreisKennz"] = kopfdaten.Landkreis;
             dRow["Kunnr"] = kopfdaten.KundenNr;
@@ -1115,7 +1119,8 @@ namespace AppZulassungsdienst.forms
 
             dRow["Kreisbez"] = kopfdaten.KreisBezeichnung;
 
-            dRow["ID"] = kopfdaten.SapId;
+            if (objCommon.Ist48hZulassung && !String.IsNullOrEmpty(objCommon.LieferUhrzeitBis))
+                dRow["Lieferuhrzeit"] = String.Format("Lieferuhrzeit: {0}", objCommon.LieferUhrzeitBisFormatted);
 
             DataRow[] SelRow = objVorerf.BestLieferanten.Select("LIFNR = '" + ddlKunnr.SelectedValue + "'");
             if (SelRow.Length > 0) //== 1 Fehler wenn Lieferant/ZLD doppelt gepflegt
@@ -1149,6 +1154,14 @@ namespace AppZulassungsdienst.forms
                     dRow["FaxLief"] = SelRow[0]["FAX_NUMBER"].ToString() + " " + SelRow[0]["FAX_EXTENS"].ToString();
                 }
                 objVorerf = (VorerfZLD)Session["objVorVersand"];
+
+                if (objCommon.Ist48hZulassung && !String.IsNullOrEmpty(objCommon.AbwName1))
+                {
+                    dRow["Name1Lief"] = objCommon.AbwName1;
+                    dRow["Name2Lief"] = objCommon.AbwName2;
+                    dRow["StrasseLief"] = objCommon.AbwStrasse;
+                    dRow["OrtLief"] = objCommon.AbwPlz + " " + objCommon.AbwOrt;
+                }
 
                 if (objCommon.AdresseFiliale != null)
                 {

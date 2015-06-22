@@ -64,6 +64,17 @@ namespace AppZulassungsdienst.lib
         // 48h-Versandzulassung
         public bool Ist48hZulassung { get; private set; }
         public string LieferUhrzeitBis { get; private set; }
+        public string LieferUhrzeitBisFormatted {
+            get
+            {
+                var liefUhrzeit = LieferUhrzeitBis;
+
+                if (!String.IsNullOrEmpty(liefUhrzeit) && liefUhrzeit.Length > 5)
+                    liefUhrzeit = String.Format("{0}:{1} Uhr", liefUhrzeit.Substring(0, 2), liefUhrzeit.Substring(2, 2));
+
+                return liefUhrzeit;
+            }
+        }
         public string AbwName1 { get; private set; }
         public string AbwName2 { get; private set; }
         public string AbwStrasse { get; private set; }
@@ -702,6 +713,8 @@ namespace AppZulassungsdienst.lib
             tblWordData.Columns.Add("Rueck2Name2", typeof(String));
             tblWordData.Columns.Add("Rueck2Strasse", typeof(String));
             tblWordData.Columns.Add("Rueck2OrtPLZ", typeof(String));
+
+            tblWordData.Columns.Add("Lieferuhrzeit", typeof(String));
 
             return tblWordData;
         }
