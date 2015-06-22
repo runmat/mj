@@ -303,6 +303,7 @@ namespace ZLDMobile.Controllers
                 vorg.VkBur = ViewModel.VkBurNeuanlage;
                 vorg.Referenz1 = vorg.Referenz1.NotNullOrEmpty().ToUpper();
                 vorg.Referenz2 = vorg.Referenz2.NotNullOrEmpty().ToUpper();
+                vorg.Kennzeichen = vorg.Kennzeichen.NotNullOrEmpty().ToUpper();
 
                 vorg.Positionen.ForEach(p => p.KopfId = vorg.Id);
 

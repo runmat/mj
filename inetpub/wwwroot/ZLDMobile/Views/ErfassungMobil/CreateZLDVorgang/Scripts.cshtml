@@ -134,15 +134,15 @@
     }
 
     function ClearVorgangCreate() {
-        SetDropdownValue("ddlKunde", "", true);
+        SetDropdownValue("ddlKunde", "", false);
         $("#txtReferenz1").val("");
         $("#txtReferenz2").val("");
-        SetDropdownValue("ddlAmt", "", true);
+        SetDropdownValue("ddlAmt", "", false);
         SetCheckboxValue("chkWunschkennzeichen", false, true);
         SetCheckboxValue("chkReserviert", false, true);
         $("#txtZulDat").val("");
         SetCheckboxValue("chkNurEinKennzeichen", false, true);
-        SetDropdownValue("ddlHauptDl", "", true);
+        SetDropdownValue("ddlHauptDl", "", false);
         $("#tblZusatzpositionen tbody tr").remove();
     }
 
