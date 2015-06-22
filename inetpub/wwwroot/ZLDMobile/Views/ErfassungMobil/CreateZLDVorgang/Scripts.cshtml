@@ -5,6 +5,12 @@
 
         ChangeAnzeigemodus("VkBur");
     });
+    
+    function InitCreateVorgangSelect2() {
+        $("#ddlKunde").select2();
+        $("#ddlHauptDl").select2();
+        $("#ddlAmt").select2();
+    }
 
     // Macht in Abhängigkeit vom gewählten Modus (VkBur/Create) bestimmte Seitenbereich/-controls (un-)sichtbar
     function ChangeAnzeigemodus(neuerModus, createPartialHtml) {
@@ -17,6 +23,7 @@
             case "Create":
                 $("#divAuswahlVkbur").hide();
                 $("#divCreateVorgang").html(createPartialHtml);
+                InitCreateVorgangSelect2();
                 // UI-Refresh für eingebettete Controls
                 RefreshNestedControlsUI("divCreateVorgang");
                 jsZLDMobile.UpdateConnectivityStatus();

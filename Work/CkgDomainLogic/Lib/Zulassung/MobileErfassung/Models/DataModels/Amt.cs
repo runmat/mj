@@ -16,10 +16,5 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         {
             get { return KurzBez + "..." + Bezeichnung; }
         }
-
-        public string Anfangsbuchstabe
-        {
-            get { return (String.IsNullOrEmpty(KurzBez) ? "_" : KurzBez.Substring(0, 1)); }
-        }
     }
 }

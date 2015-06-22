@@ -4,7 +4,7 @@
 <div class="VerticalSpacer10">&nbsp;</div>
 <table width="100%">
     <colgroup>
-        <col class="TableColumn90"/>
+        <col class="TableColumn110"/>
         <col class="TableColumnAuto"/>
     </colgroup>
     <thead> 
@@ -23,7 +23,7 @@
                 @Model.PropertyDisplayNames["Kunde"]
             </td>
             <td>
-                <select id="ddlKunde" name="ddlKunde">
+                <select id="ddlKunde" name="ddlKunde" data-role="none" class="width-100percent">
                     @if (Model.StammdatenNeuanlage.Kunden.Count > 0)
                     {
                         foreach (Kunde k in Model.StammdatenNeuanlage.Kunden)
@@ -67,7 +67,7 @@
                 Haupt-DL
             </td>
             <td>
-                <select id="ddlHauptDl" name="ddlHauptDl" onchange="CheckHauptDl();">
+                <select id="ddlHauptDl" name="ddlHauptDl" onchange="CheckHauptDl();" data-role="none" class="width-100percent">
                     @if (Model.StammdatenNeuanlage.Dienstleistungen.Count > 0)
                     {
                         foreach (Dienstleistung d in Model.StammdatenNeuanlage.Dienstleistungen)
@@ -113,20 +113,12 @@
                 @Model.PropertyDisplayNames["Amt"]
             </td>
             <td>
-                <select id="ddlAmt" name="ddlAmt">
+                <select id="ddlAmt" name="ddlAmt" data-role="none" class="width-100percent">
                     @if (Model.StammdatenNeuanlage.Aemter.Count > 0)
                     {
-                        var aemterAnfangsbuchstaben = Model.StammdatenNeuanlage.Aemter.GroupBy(a => a.Anfangsbuchstabe).Select(grp => grp.First().Anfangsbuchstabe);
-                        
-                        foreach (var item in aemterAnfangsbuchstaben)
+                        foreach (Amt a in Model.StammdatenNeuanlage.Aemter)
                         {
-                            var anf = item;
-                            <optgroup label="@anf">
-                                @foreach (var amt in Model.StammdatenNeuanlage.Aemter.Where(a => a.KurzBez.StartsWith(anf)))
-                                {
-                                    <option value="@amt.KurzBez">@amt.AmtBez</option>
-                                }
-                            </optgroup>
+                            <option value="@a.KurzBez">@a.AmtBez</option>
                         }
                     }
                     else

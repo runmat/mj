@@ -555,3 +555,24 @@
 .DeleteButton {
     background: url(/Images/del.png) no-repeat;
 }
+
+.select2-container {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.select2-container a div {
+    display: none !Important;
+}
+
+.select2-container .ui-shadow-inset {
+    display: none !Important;
+}
+
+.select2-container, .select2-drop {
+	 font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+
+.width-100percent {
+    width: 100%;
+}

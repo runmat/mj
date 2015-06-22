@@ -268,12 +268,12 @@
                                     )
                                     .append($('<td>').addClass("TableGridCell")
                                         .append($('<div>').attr('id', "divKennzeichen" + vorg.Id)
-                                            .append($('<input>').attr('type', "text").attr('id', "txtKennzeichen" + vorg.Id).attr('maxlength', "20").addClass("TextUpperCase").val(vorg.Kennzeichen))
+                                            .append($('<input>').attr('type', "text").attr('id', "txtKennzeichen" + vorg.Id).attr('maxlength', "20").attr('data-mini', "true").addClass("TextUpperCase").val(vorg.Kennzeichen))
                                         )
                                     )
                                     .append($('<td>').addClass("TableGridCell")
                                         .append($('<div>').attr('id', "divGebuehr" + vorg.Id)
-                                            .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id).attr('maxlength', "11").addClass("RightAlignedText").val(FormatGebuehr(position.Gebuehr.toString()))
+                                            .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id).attr('maxlength', "11").attr('data-mini', "true").addClass("RightAlignedText").val(FormatGebuehr(position.Gebuehr.toString()))
                                                 .blur(function () {
                                                     CalculateGebuehrGesamt();
                                                 })
@@ -282,7 +282,7 @@
                                     )
                                     .append($('<td>').addClass("TableGridCell NoVerticalPadding")
                                         .append($('<div>').attr('id', "divStatus" + vorg.Id)
-                                            .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal")
+                                            .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal").attr('data-mini', "true")
                                                 .append($('<input>').attr('id', "rbStatusDurchgefuehrt" + vorg.Id).attr('type', "radio").attr('name', "Status" + vorg.Id).val("OK")
                                                     .on('click', function () {
                                                         CalculateGebuehrGesamt();
@@ -306,7 +306,7 @@
                                     )
                                     .append($('<td>').addClass("TableGridCell NoVerticalPadding")
                                         .append($('<div>').attr('id', "divZahlart" + vorg.Id)
-                                            .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal")
+                                            .append($('<fieldset>').attr('data-role', "controlgroup").attr('data-type', "horizontal").attr('data-mini', "true")
                                                 .append($('<input>').attr('id', "rbZahlartEC" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("EC"))
                                                 .append($('<label>').attr('for', "rbZahlartEC" + vorg.Id).text("EC"))
                                                 .append($('<input>').attr('id', "rbZahlartBar" + vorg.Id).attr('type', "radio").attr('name', "Zahlart" + vorg.Id).val("Bar"))
@@ -369,7 +369,7 @@
                                     )
                                     .append($('<td>').addClass("TableGridCell")
                                         .append($('<div>').attr('id', "divGebuehr" + vorg.Id + "_" + k.toString())
-                                            .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id + "_" + k.toString()).attr('maxlength', "11").addClass("RightAlignedText").val(FormatGebuehr(position.Gebuehr.toString()))
+                                            .append($('<input>').attr('type', "text").attr('id', "txtGebuehr" + vorg.Id + "_" + k.toString()).attr('maxlength', "11").attr('data-mini', "true").addClass("RightAlignedText").val(FormatGebuehr(position.Gebuehr.toString()))
                                                 .blur(function () {
                                                     CalculateGebuehrGesamt();
                                                 })
