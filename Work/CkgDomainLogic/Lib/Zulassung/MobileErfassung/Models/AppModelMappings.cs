@@ -119,6 +119,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
                         d.Gebuehr = s.GEB_AMT;
                         d.KopfId = s.ZULBELN.TrimStart('0');
                         d.PosNr = s.ZULPOSNR.TrimStart('0');
+                        d.GebuehrenMaterial = s.GEBMAT.TrimStart('0');
                     }
                 ));
             }

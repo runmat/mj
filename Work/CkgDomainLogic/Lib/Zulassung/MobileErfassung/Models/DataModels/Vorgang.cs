@@ -120,7 +120,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "Reserviert")]
         public bool Reserviert { get; set; }
 
-        [Display(Name = "NurEinKennzeichen")]
+        [Display(Name = "Nur ein Kennzeichen")]
         public bool NurEinKennzeichen { get; set; }
 
         [Display(Name = "Kennz.-Größe")]

@@ -21,5 +21,8 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
 
         [Display(Name = "Gebühr Amt")]
         public decimal? Gebuehr { get; set; }
+
+        [Display(Name = "Gebührenmaterial")]
+        public string GebuehrenMaterial { get; set; }
     }
 }

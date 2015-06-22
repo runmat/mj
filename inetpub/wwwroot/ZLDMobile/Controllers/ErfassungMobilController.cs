@@ -301,6 +301,8 @@ namespace ZLDMobile.Controllers
                 vorg.Id = "Z000000001";
                 vorg.VkOrg = LogonContext.VkOrg;
                 vorg.VkBur = ViewModel.VkBurNeuanlage;
+                vorg.Referenz1 = vorg.Referenz1.NotNullOrEmpty().ToUpper();
+                vorg.Referenz2 = vorg.Referenz2.NotNullOrEmpty().ToUpper();
 
                 vorg.Positionen.ForEach(p => p.KopfId = vorg.Id);
 

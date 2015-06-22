@@ -91,6 +91,7 @@
         vorg.Kunnr = GetDropdownValue("ddlKunde");
         vorg.Referenz1 = $("#txtReferenz1").val();
         vorg.Referenz2 = $("#txtReferenz2").val();
+        vorg.Kennzeichen = $("#txtKennzeichen").val();
         vorg.AmtEdit = GetDropdownValue("ddlAmt");
         vorg.Wunschkennzeichen = GetCheckboxValue("chkWunschkennzeichen");
         vorg.Reserviert = GetCheckboxValue("chkReserviert");
@@ -109,7 +110,7 @@
         vorg.Positionen[0] = { KopfId: vorg.Id, PosNr: "", DienstleistungId: hauptDl };
 
         // Zusatzdienstleistungen
-        for (var lfdNr = 1; lfdNr < 100; lfdNr++) {
+        for (var lfdNr = 1; lfdNr < 21; lfdNr++) {
             if (ControlExists("ddlDL" + lfdNr) == true) {
                 var neueDL = GetDropdownValue("ddlDL" + lfdNr);
                 if (neueDL == "") {
@@ -119,8 +120,6 @@
                 }
                 $("#divDL" + lfdNr).removeClass("DivFieldError");
                 vorg.Positionen[vorg.Positionen.length] = { KopfId: vorg.Id, PosNr: "", DienstleistungId: neueDL };
-            } else {
-                break;
             }
         }
 
@@ -143,16 +142,19 @@
     // Bei Auswahl bestimmter Haupt-DL auszuführende Aktionen
     function CheckHauptDl() {
         var hauptDl = GetDropdownValue("ddlHauptDl");
-        if (hauptDl == "8") {
-            SetCheckboxValue("chkNurEinKennzeichen", true, true);
-        }
+        SetCheckboxValue("chkNurEinKennzeichen", hauptDl == "8", true);
     }
 
     // Fügt am Ende der Liste eine neue Dienstleistungsposition hinzu
     function AddVorgangPosition() {
-        // Nächste lfd. Nr. ermitteln
+        // Nächste freie lfd. Nr. ermitteln
         var naechsteNr;
-        for (naechsteNr = 1; naechsteNr < 100; naechsteNr++) {
+        for (naechsteNr = 1; naechsteNr < 22; naechsteNr++) {
+            if (naechsteNr > 20) {
+                alert("Es können nur max. 20 Positionen zu einem Vorgang erfasst werden");
+                return;
+            }
+
             if (ControlExists("ddlDL" + naechsteNr) == false) {
                 break;
             }
@@ -163,10 +165,19 @@
             .append($('<tr>')
                 .append($('<td>').addClass("TableGridCellNarrow").text("neu"))
                 .append($('<td>').addClass("TableGridCellNarrow")
-                .append($('<div>').attr('id', "divDL" + naechsteNr)
-                    .append($('<label>').attr('for', "ddlDL" + naechsteNr).text(""))
-                    .append($('<select>').attr('id', "ddlDL" + naechsteNr).attr('name', "ddlDL" + naechsteNr))
+                    .append($('<div>').attr('id', "divDL" + naechsteNr)
+                        .append($('<label>').attr('for', "ddlDL" + naechsteNr).text(""))
+                        .append($('<select>').attr('id', "ddlDL" + naechsteNr).attr('name', "ddlDL" + naechsteNr))
+                    )
                 )
+                .append($('<td>').addClass("TableGridCellNarrow")
+                    .append($('<div>').attr('id', "divLoesch" + naechsteNr)
+                        .append($('<a>Löschen</a>').attr('href', "#").addClass("ui-btn-right").attr('data-role', "button").attr('data-icon', "delete").attr('data-iconpos', "notext")
+                            .click(function () {
+                                RemoveVorgangPosition($(this));
+                            })
+                        )
+                    )
                 )
             );
 
@@ -175,9 +186,16 @@
 
         // UI-Refresh für eingebettete Controls
         RefreshNestedControlsUI("divDL" + naechsteNr);
+        RefreshNestedControlsUI("divLoesch" + naechsteNr);
 
         // UI-Refresh für Table
         RefreshTableUI("tblZusatzpositionen");
+    }
+
+    // Löscht die gewählte Dienstleistungsposition
+    function RemoveVorgangPosition(loeschBtn) {
+        if (confirm("Wollen Sie diese Position wirklich löschen?") == true)
+            loeschBtn.closest('tr').remove();
     }
 
  </script>

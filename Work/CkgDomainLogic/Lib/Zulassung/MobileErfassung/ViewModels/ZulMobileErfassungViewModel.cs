@@ -135,20 +135,15 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
         /// <returns>leeren String, wenn Speichern ok, sonst den Fehlertext</returns>
         public string SaveVorgang(Vorgang vorg)
         {
-            string erg;
+            if (vorg == null)
+                return "Kein Vorgang ausgewählt";
 
-            if (vorg != null)
-            {
-                List<Vorgang> zuSpeicherndeVorgaenge = new List<Vorgang> { vorg };
+            if (String.IsNullOrEmpty(vorg.Referenz1))
+                return "Referenz 1 muss gefüllt sein";
 
-                erg = DataService.SaveVorgaenge(zuSpeicherndeVorgaenge);
-            }
-            else
-            {
-                erg = "Fehler beim Speichern: Kein Vorgang ausgewählt";
-            }
+            List<Vorgang> zuSpeicherndeVorgaenge = new List<Vorgang> { vorg };
 
-            return erg;
+            return DataService.SaveVorgaenge(zuSpeicherndeVorgaenge);
         }
    
         /// <summary>

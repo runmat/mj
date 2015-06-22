@@ -551,3 +551,7 @@
 .Float-Right {
     float: right;
 }
+
+.DeleteButton {
+    background: url(/Images/del.png) no-repeat;
+}

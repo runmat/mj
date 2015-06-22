@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
 {
@@ -14,6 +15,11 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public string AmtBez
         {
             get { return KurzBez + "..." + Bezeichnung; }
+        }
+
+        public string Anfangsbuchstabe
+        {
+            get { return (String.IsNullOrEmpty(KurzBez) ? "_" : KurzBez.Substring(0, 1)); }
         }
     }
 }

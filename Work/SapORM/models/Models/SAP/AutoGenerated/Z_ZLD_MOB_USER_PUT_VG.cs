@@ -233,6 +233,8 @@ namespace SapORM.Models
 
 			public decimal? GEB_AMT { get; set; }
 
+			public string GEBMAT { get; set; }
+
 			public static GT_VG_POS Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_VG_POS
@@ -242,6 +244,7 @@ namespace SapORM.Models
 					MATNR = (string)row["MATNR"],
 					MAKTX = (string)row["MAKTX"],
 					GEB_AMT = (decimal?)row["GEB_AMT"],
+					GEBMAT = (string)row["GEBMAT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

@@ -219,6 +219,7 @@
     <Content Include="Images\AmpelGruen.gif" />
     <Content Include="Images\AmpelRot.gif" />
     <Content Include="Images\blank.png" />
+    <Content Include="Images\del.png" />
     <Content Include="Images\FahneGruen.png" />
     <Content Include="Images\FahneGelb.png" />
     <Content Include="Images\FahneRot.png" />

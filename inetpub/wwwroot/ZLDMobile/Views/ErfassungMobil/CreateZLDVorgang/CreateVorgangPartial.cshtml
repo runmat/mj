@@ -5,7 +5,6 @@
 <table width="100%">
     <colgroup>
         <col class="TableColumn90"/>
-        <col class="TableColumn110"/>
         <col class="TableColumnAuto"/>
     </colgroup>
     <thead> 
@@ -15,7 +14,7 @@
             <td>
                 @Model.PropertyDisplayNames["VkBur"]
             </td>
-            <td colspan="2">
+            <td>
                 <label id="lblVkBur">@Model.VkBurNeuanlage</label>
             </td>
         </tr>
@@ -23,7 +22,7 @@
             <td>
                 @Model.PropertyDisplayNames["Kunde"]
             </td>
-            <td colspan="2">
+            <td>
                 <select id="ddlKunde" name="ddlKunde">
                     @if (Model.StammdatenNeuanlage.Kunden.Count > 0)
                     {
@@ -43,23 +42,31 @@
             <td>
                 @Model.PropertyDisplayNames["Referenz1"]
             </td>
-            <td colspan="2">
-                <input type="text" id="txtReferenz1" maxlength="20"/>
+            <td>
+                <input type="text" id="txtReferenz1" class="TextUpperCase" maxlength="20"/>
             </td>
         </tr>
         <tr>
             <td>
                 @Model.PropertyDisplayNames["Referenz2"]
             </td>
-            <td colspan="2">
-                <input type="text" id="txtReferenz2" maxlength="20"/>
+            <td>
+                <input type="text" id="txtReferenz2" class="TextUpperCase" maxlength="20"/>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Kennzeichen"]
+            </td>
+            <td>
+                <input type="text" id="txtKennzeichen" class="TextUpperCase" maxlength="20"/>
             </td>
         </tr>
         <tr>
             <td>
                 Haupt-DL
             </td>
-            <td colspan="2">
+            <td>
                 <select id="ddlHauptDl" name="ddlHauptDl" onchange="CheckHauptDl();">
                     @if (Model.StammdatenNeuanlage.Dienstleistungen.Count > 0)
                     {
@@ -84,11 +91,13 @@
                     <colgroup>
                         <col class="TableColumn80"/>
                         <col class="TableColumnAuto"/>
+                        <col class="TableColumn80"/>
                     </colgroup>
                     <thead>
                         <tr>
                             <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["PosNr"]</th>      
-                            <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["DienstleistungBez"]</th>      
+                            <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["DienstleistungBez"]</th>
+                            <th class="TableGridCellNarrow"></th>     
                         </tr>  
                     </thead>  
                     <tbody>
@@ -103,13 +112,21 @@
             <td>
                 @Model.PropertyDisplayNames["Amt"]
             </td>
-            <td colspan="2">
+            <td>
                 <select id="ddlAmt" name="ddlAmt">
                     @if (Model.StammdatenNeuanlage.Aemter.Count > 0)
                     {
-                        foreach (Amt a in Model.StammdatenNeuanlage.Aemter)
+                        var aemterAnfangsbuchstaben = Model.StammdatenNeuanlage.Aemter.GroupBy(a => a.Anfangsbuchstabe).Select(grp => grp.First().Anfangsbuchstabe);
+                        
+                        foreach (var item in aemterAnfangsbuchstaben)
                         {
-                            <option value="@a.KurzBez">@a.AmtBez</option>
+                            var anf = item;
+                            <optgroup label="@anf">
+                                @foreach (var amt in Model.StammdatenNeuanlage.Aemter.Where(a => a.KurzBez.StartsWith(anf)))
+                                {
+                                    <option value="@amt.KurzBez">@amt.AmtBez</option>
+                                }
+                            </optgroup>
                         }
                     }
                     else
@@ -122,7 +139,7 @@
         <tr>
             <td>
             </td>
-            <td colspan="2">
+            <td>
                 <input type="checkbox" id="chkWunschkennzeichen" name="chkWunschkennzeichen" data-mini="true"/>
                 <label for="chkWunschkennzeichen">@Model.PropertyDisplayNames["Wunschkennzeichen"]</label>
             </td>
@@ -130,7 +147,7 @@
         <tr>
             <td>
             </td>
-            <td colspan="2">
+            <td>
                 <input type="checkbox" id="chkReserviert" name="chkReserviert" data-mini="true"/>
                 <label for="chkReserviert">@Model.PropertyDisplayNames["Reserviert"]</label>
             </td>
@@ -141,16 +158,14 @@
             </td>
             <td>
                 <div id="divZulDat">
-                    <input type="text" id="txtZulDat" maxlength="10"/>
+                    <input type="text" id="txtZulDat" value="@DateTime.Today.ToShortDateString()" maxlength="10"/>
                 </div>
-            </td>
-            <td>
             </td>
         </tr>
         <tr>
             <td>
             </td>
-            <td colspan="2">
+            <td>
                 <input type="checkbox" id="chkNurEinKennzeichen" name="chkNurEinKennzeichen" data-mini="true"/>
                 <label for="chkNurEinKennzeichen">@Model.PropertyDisplayNames["NurEinKennzeichen"]</label>
             </td>
