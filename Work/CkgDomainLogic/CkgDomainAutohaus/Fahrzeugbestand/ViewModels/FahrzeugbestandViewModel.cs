@@ -187,6 +187,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
             fzg.IsSelected = select;
             allSelectionCount = FahrzeugeAkteBestand.Count(c => c.IsSelected);
         }
+
         public Adresse GetPartnerAdresse(string partnerArt, string id)
         {
             if (id.IsNullOrEmpty())

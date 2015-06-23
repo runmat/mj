@@ -166,34 +166,57 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// </summary>
         /// <param name="finList"></param>
         public void SetFinList(object finList)
-        {
+        {            
+
             IsMassenzulassung = true;
 
             FinList = (List<FahrzeugAkteBestand>) finList;
-            
+         
+            // FahrzeugAkteBestand
+            FinList = this.FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor());
+
+            FinList.ToList().ForEach(x => x.IsSelected = true);
+
             var firstFahrzeug = FinList.FirstOrDefault();
             if (firstFahrzeug == null) return;
 
-            #region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
+            //#region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
+            //var isEqual = true;
+            //foreach (var fahrzeugAkteBestand in FinList) 
+            //{
+            //    if (ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
+            //    {
+            //        isEqual = false;
+            //        break;
+            //    }                
+            //}
 
-            var isEqual = true;
-            foreach (var fahrzeugAkteBestand in FinList) 
-            {
-                if (ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
-                {
-                    isEqual = false;
-                    break;
-                }                
-            }
-
-            if (isEqual)    // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
-            {
-                SetParamHalter(firstFahrzeug.Halter);   // Zulassung.Halterdaten = firstFahrzeug.SelectedHalter;
-            }
-
-            #endregion
+            //if (isEqual)    // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
+            //{
+            //    SetParamHalter(firstFahrzeug.Halter);   // Zulassung.Halterdaten = firstFahrzeug.SelectedHalter;
+            //}
+            //#endregion
 
         }
+
+        //public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
+        //{
+        //    // FahrzeugeAkteBestandFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+        //    //allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
+        //    //allCount = FahrzeugeAkteBestandFiltered.Count();
+        //    FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+        //    allSelectionCount = FinList.Count(c => c.IsSelected);
+        //    allCount = FinList.Count();
+        //}
+        //public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        //{
+        //    allSelectionCount = 0;
+        //    var fzg = FinList.FirstOrDefault(f => f.FIN == vin);
+        //    if (fzg == null)
+        //        return;
+        //    fzg.IsSelected = select;
+        //    allSelectionCount = FinList.Count(c => c.IsSelected);
+        //}
 
         #endregion
 

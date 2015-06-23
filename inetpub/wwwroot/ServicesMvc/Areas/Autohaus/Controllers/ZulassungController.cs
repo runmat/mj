@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
+using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
@@ -67,6 +68,8 @@ namespace ServicesMvc.Autohaus.Controllers
             return View("Index", ViewModel);
         }
 
+        #region Massenzulassung
+
         // ##MMA##
         [CkgApplication]
         public ActionResult IndexMultiReg()
@@ -87,6 +90,89 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return View("Index", ViewModel);
         }
+
+        [HttpPost]
+        public ActionResult FahrzeugShowGrid()
+        {
+            ViewModel.DataMarkForRefreshHalterAdressen();
+
+            return PartialView("Partial/FahrzeugAuswahlGrid", ViewModel.FinList);
+        }
+
+        public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            // var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ViewModel.FinList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Holder, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult FahrzeugAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            // var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ViewModel.FinList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Holder, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        // 20150618 MMA ITA8076 Massenzulassung
+        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
+        {
+            //FahrzeugeAkteBestandFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            //allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
+            //allCount = FahrzeugeAkteBestandFiltered.Count();
+
+            ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
+            allCount = ViewModel.FinList.Count();
+
+        }
+        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var fzg = ViewModel.FinList.FirstOrDefault(f => f.FIN == vin);
+            if (fzg == null)
+                return;
+            fzg.IsSelected = select;
+            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
+
+            //allSelectionCount = 0;
+            //var fzg = FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == vin);
+            //if (fzg == null)
+            //    return;
+            //fzg.IsSelected = select;
+            //allSelectionCount = FahrzeugeAkteBestand.Count(c => c.IsSelected);
+        }
+
+        [GridAction]
+        public ActionResult FahrzeugAuswahlAjaxBinding()
+        {
+            var items = ViewModel.FinList;
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0;
+            if (vin.IsNullOrEmpty())
+                // ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+                SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+            else
+                // ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                SelectFahrzeug(vin, isChecked, out allSelectionCount);
+            return Json(new
+            {
+                allSelectionCount,
+                allCount,
+                zulassungenAnzahlPdiTotal = 11,     // ViewModel.FahrzeugeSelected,
+                zulassungenAnzahlGesamtTotal = 22   // ViewModel.FahrzeugeTotal,
+            });
+        }
+        #endregion
+
 
 
         [CkgApplication]

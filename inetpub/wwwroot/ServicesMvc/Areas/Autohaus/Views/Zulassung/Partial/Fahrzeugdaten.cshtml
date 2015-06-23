@@ -1,5 +1,7 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+﻿@using CkgDomainLogic.Fahrzeugbestand.Models
+@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
 <h4>@Localize.VehicleData</h4> 
 
 @Html.Partial("Partial/FahrzeugdatenForm", @Model.Zulassung.Fahrzeugdaten)
+

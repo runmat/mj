@@ -17,3 +17,101 @@
         @Html.Partial("Partial/" + Model.FirstStepPartialViewName)
     </div>
 </div>
+
+
+<script>
+    // ##MMA## TEST
+    function ArrayToGrid() {
+        //alert("ArrayToGrid");
+    }
+
+    function GridToArray() {
+        // alert("GridToArray ");
+    }
+
+    // FahrzeugAuswahlGrid
+    function OnDataBound_GridFahrzeugAuswahl() {
+        alert(1);
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
+    }
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+        alert(2);
+        var isValid = e.dataItem["IsValid"];
+
+        if (isValid)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+        else
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
+    function OnLoad_GridFahrzeugAuswahl() {
+        alert("OnLoad_GridFahrzeugAuswahl: " + ladeHinweis);
+        $('.t-no-data td').text(ladeHinweis);
+    }
+    function OnColumnShowHide_GridFahrzeugAuswahl() {
+        alert(4);
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+    function OnColumnReorder_GridFahrzeugAuswahl() {
+        alert(5);
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+    function OnSelectionChange_GridFahrzeugAuswahl(cb) {
+        alert(6);
+        Grid_FormatMultiRowSelected(cb);
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                ShowHideNextButton();
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        alert(7);
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                ShowHideNextButton();
+
+                FilterGrid("GridFahrzeugAuswahl");
+            }
+        });
+    }
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+        alert(8);
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }    
+
+</script>

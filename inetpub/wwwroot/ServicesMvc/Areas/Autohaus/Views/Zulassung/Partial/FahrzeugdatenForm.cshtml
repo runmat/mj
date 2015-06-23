@@ -1,4 +1,5 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.Fahrzeugbestand.Models
 @model Fahrzeugdaten
 
 @{
@@ -24,6 +25,35 @@
             {
                 @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase", col = "right" })
             }
+            
+            <h4>
+                <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+                    <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+                </span>
+            </h4>
+            var gridName = "GridFahrzeugAuswahl";
+            @(Html.Telerik()
+                .Grid<FahrzeugAkteBestand>()
+                .Name(gridName)
+                .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
+                .Columns(columns =>
+                {
+                    columns.XBound("")
+                        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                        .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                        .Filterable(false);
+                    columns.XBound(c => c.FIN);
+                    columns.XBound(c => c.HandelsName);
+                    columns.XBound(c => c.FahrzeugArt);
+                })
+
+                .XAutoColumnConfiguration()
+                .ClientEvents(events => events.XAutoClientEvents(gridName))
+                //.ClientEvents(events => events.OnDataBinding("ArrayToGrid"))    // Wird vor Paging aufgerufen. #MMA# FILTER sorgt für Änderung aller Input-Boxes!?!?
+                //.ClientEvents(events => events.OnDataBound("GridToArray"))      // Wird nach dem Datenladen/Paging aufgerufen
+                .XPageSize(10)
+                .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+              )
         }
         else
         {
