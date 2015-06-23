@@ -1,4 +1,5 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.Fahrzeugbestand.Models
 @model Zulassungsdaten
 @{
     var materialList = (List<Material>)ViewData["MaterialList"];
@@ -41,7 +42,31 @@
 
             if (isMassenzulassung)
             {
-                <span>MASSENZULASSUNG</span>
+                <div>MASSENZULASSUNG</div>
+        
+            var gridName = "GridFahrzeugAuswahlZulassung";
+            @(Html.Telerik()
+                .Grid<FahrzeugAkteBestand>()
+                .Name(gridName)
+                .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
+                .Columns(columns =>
+                {
+                    columns.XBound("")
+                        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                        .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                        .Filterable(false);
+                    columns.XBound(c => c.FIN);
+                    columns.XBound(c => c.HandelsName);
+                    columns.XBound(c => c.FahrzeugArt);
+                })
+
+                .XAutoColumnConfiguration()
+                .ClientEvents(events => events.XAutoClientEvents(gridName))
+                .XPageSize(10)
+                .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                  )
+        
+        
             }
             else
             {
