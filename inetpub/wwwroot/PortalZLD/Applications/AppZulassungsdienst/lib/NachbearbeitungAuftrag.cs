@@ -28,6 +28,7 @@ namespace AppZulassungsdienst.lib
         public string StornoBegruendung { get; set; }
         public string StornoStva { get; set; }
         public string StornoKennzeichen { get; set; }
+        public DateTime? StornoZulassungsdatum { get; set; }
 
         #endregion
 
@@ -119,6 +120,9 @@ namespace AppZulassungsdienst.lib
 
                     if (!String.IsNullOrEmpty(StornoKennzeichen))
                         SAP.SetImportParameter("I_ZZKENN", StornoKennzeichen);
+
+                    if (StornoZulassungsdatum.HasValue)
+                        SAP.SetImportParameter("I_ZZZLDAT", StornoZulassungsdatum);
 
                     CallBapi();
 
@@ -239,6 +243,7 @@ namespace AppZulassungsdienst.lib
             StornoBegruendung = "";
             StornoStva = "";
             StornoKennzeichen = "";
+            StornoZulassungsdatum = null;
         }
 
         #endregion
