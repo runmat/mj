@@ -1,4 +1,5 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿// ReSharper disable ConvertClosureToMethodGroup
+// ReSharper disable RedundantUsingDirective
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using CkgDomainLogic.DomainCommon.Models;

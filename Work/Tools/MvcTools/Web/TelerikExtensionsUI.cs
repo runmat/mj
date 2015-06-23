@@ -214,7 +214,7 @@ namespace Telerik.Web.Mvc.UI
                     throw new NotSupportedException(
                         "Grids die in irgendeiner Weise peristierbar sein sollen, " +
                         "==> müssen für alle Spalten einen 'Title' haben!    " +
-                        "Spalten ohne Titel: " + string.Join(", ", gridColumns.Select(dc => dc.Member))
+                        "Spalten ohne Titel: " + string.Join(", ", columnsWithoutTitle.Select(dc => dc.Member))
                         );
                 }
 

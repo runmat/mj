@@ -4,6 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
+    [GridColumnsAutoPersist]
     public class Fzg
     {
         public bool IsFilteredByExcelUpload;
@@ -136,5 +137,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string ValidationMessage { get; set; }
 
         public bool IsValid { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Aktion { get; set; }
     }
 }

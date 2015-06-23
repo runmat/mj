@@ -24,6 +24,8 @@
             @Html.FormDropDownListFor(m => m.SelectedModel, Model.FahrzeugeGroupByModel.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
             
             @Html.FormDropDownListFor(m => m.SelectedModelId, Model.FahrzeugeGroupByModelId.ToSelectList(), new { @class = "m-wrap small", col = "right3" })
+            
+            <span class="reqired-fields">@Html.FormRequiredFieldsSummary()</span>
         </div>  
         
         <script type="text/javascript">
