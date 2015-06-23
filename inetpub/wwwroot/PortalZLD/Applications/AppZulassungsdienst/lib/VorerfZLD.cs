@@ -164,6 +164,8 @@ namespace AppZulassungsdienst.lib
 
                 if (isNewVorgang)
                 {
+                    AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
+
                     zldDataContext.ZLDVorgangKopf.InsertOnSubmit(ModelMapping.Copy<ZLDKopfdaten, ZLDVorgangKopf>(kopfdaten));
                     zldDataContext.ZLDVorgangBank.InsertOnSubmit(ModelMapping.Copy<ZLDBankdaten, ZLDVorgangBank>(AktuellerVorgang.Bankdaten));
                     zldDataContext.ZLDVorgangAdresse.InsertOnSubmit(ModelMapping.Copy<ZLDAdressdaten, ZLDVorgangAdresse>(AktuellerVorgang.Adressdaten));
@@ -555,6 +557,8 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Erfasser = userName;
 
                 AktuellerVorgang.Adressdaten.KundenNr = kopfdaten.KundenNr;
+
+                AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
 
                 var adressListeWeb = new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten };
 

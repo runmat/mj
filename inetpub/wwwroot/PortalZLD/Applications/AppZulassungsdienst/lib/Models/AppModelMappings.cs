@@ -83,6 +83,7 @@ namespace AppZulassungsdienst.lib.Models
             d.KontoNr = s.BANKN;
             d.Kontoinhaber = s.KOINH;
             d.Loeschkennzeichen = s.LOEKZ.NotNullOrEmpty().Replace('X', 'L');
+            d.Partnerrolle = s.PARVW;
             d.Rechnung = s.RECH_JN.XToBool();
             d.SWIFT = s.SWIFT;
             d.SapId = s.ZULBELN.NotNullOrEmpty().TrimStart('0');
@@ -699,6 +700,7 @@ namespace AppZulassungsdienst.lib.Models
             d.IBAN = s.IBAN;
             d.KOINH = s.Kontoinhaber;
             d.LOEKZ = s.Loeschkennzeichen.NotNullOrEmpty().Replace('L', 'X');
+            d.PARVW = s.Partnerrolle;
             d.RECH_JN = s.Rechnung.BoolToX();
             d.SWIFT = s.SWIFT;
             d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
