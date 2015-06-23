@@ -1,7 +1,7 @@
 ﻿<style type="text/css">
     
     span.reqired-fields {
-        margin-left: -90px !important;
+        margin-left: 30px !important;
         white-space: nowrap !important;
     }
     
@@ -194,6 +194,9 @@
     }
 
     function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        $("#checkAllRecords").attr("checked", false);
+        $.uniform.update($("#checkAllRecords"));
+
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
@@ -211,17 +214,14 @@
     }
 
     function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
-            $("#uncheckAllRecords").attr("checked", false);
-            $.uniform.update($("#uncheckAllRecords"));
             return;
         }
 
         $("#FahrzeugAuswahlCount").removeClass('hide');
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
-        $("#uncheckAllRecords").attr("checked", true);
-        $.uniform.update($("#uncheckAllRecords"));
     }
 
     function InitDatePicker() {

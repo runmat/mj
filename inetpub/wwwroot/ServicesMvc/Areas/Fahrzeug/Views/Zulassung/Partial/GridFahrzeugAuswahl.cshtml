@@ -13,16 +13,18 @@
     </span>
 </h4> 
 
-@(Html.Telerik()
-    .Grid<Fzg>()
+@(Html.XTelerik()
+    .XGrid<Fzg>()
     .Name(gridName)
     .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
     .Columns(columns =>
         {
-            columns.XBound("")
+            columns.XBound(c => c.Aktion)
                 .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                .Filterable(false);
+                .HeaderTemplate(
+                    "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange(true)' /></span>" +
+                    "<i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='GridFahrzeugAuswahl_OnAllSelectionChange(false)'></i>"
+                ).Filterable(false);
 
             columns.XBound(c => c.Pdi);
             columns.XBound(c => c.Hersteller);
