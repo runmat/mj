@@ -2,8 +2,102 @@
 @using CkgDomainLogic.Fahrzeugbestand.Models
 @model Fahrzeugdaten
 
+<script>
+
+    var count = 0;
+    
+    $(function() {
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+    });
+
+    function OnDataBound_GridFahrzeugAuswahl() {
+        alert("OnDataBound_GridFahrzeugAuswahl");
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
+
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");  // MMA
+    }
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+        alert(2);
+        var isValid = e.dataItem["IsValid"];
+
+        if (isValid)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+        else
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
+    function OnLoad_GridFahrzeugAuswahl() {
+        alert("OnLoad_GridFahrzeugAuswahl: " + ladeHinweis);
+        $('.t-no-data td').text(ladeHinweis);
+    }
+    function OnColumnShowHide_GridFahrzeugAuswahl() {
+        alert(4);
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+    function OnColumnReorder_GridFahrzeugAuswahl() {
+        alert(5);
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+    function OnSelectionChange_GridFahrzeugAuswahl(cb) {
+        Grid_FormatMultiRowSelected(cb);
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                count = result.allSelectionCount; //_selectedItemsCount
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                // RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                // ShowHideNextButton();
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                // RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                // ShowHideNextButton();
+
+                FilterGrid("GridFahrzeugAuswahl");
+            }
+        });
+    }
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+    
+</script>
+
 @{
-    var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über ActionRequest hinweg durchgeschleift
+    var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über Ajax.BeginForm hinweg durchgeschleift
 }
 
 <div id="DivFahrzeugdaten" class="margin-top-20">
@@ -49,7 +143,7 @@
                 .Columns(columns =>
                 {
                     columns.XBound("")
-                        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
                         .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
                         .Filterable(false);
                     columns.XBound(c => c.FIN);
@@ -58,9 +152,11 @@
                 })
 
                 .XAutoColumnConfiguration()
-                .ClientEvents(events => events.XAutoClientEvents(gridName))
+                    //.ClientEvents(events => events.OnDataBound("OnDataBound_GridFahrzeugAuswahl"))
+                ////.ClientEvents(events => events.XAutoClientEvents(gridName))
                 .XPageSize(10)
                 .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                .XToolBar("GridFahrzeugAuswahl")
               )
         }
         else
@@ -88,3 +184,4 @@
         </script>
     }
 </div>
+

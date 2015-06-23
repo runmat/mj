@@ -42,8 +42,20 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
 
         #region Für Massenzulassung
-        public List<FahrzeugAkteBestand> FinList { get; set; }      // MMA 20150618 ITA8096 Massenzulassung. Liste der zuzulassenden Fahrzeuge.
-        //public bool IsMassenzulassung { get; set; }
+        // public List<FahrzeugAkteBestand> FinList { get; set; }      // MMA 20150618 ITA8096 Massenzulassung. Liste der zuzulassenden Fahrzeuge.
+
+        [XmlIgnore]
+        public List<FahrzeugAkteBestand> FinList
+        {
+            get { return PropertyCacheGet(() => new List<FahrzeugAkteBestand>()); }
+            private set { PropertyCacheSet(value); }
+        }
+        [XmlIgnore]
+        public List<FahrzeugAkteBestand> FinListFiltered
+        {
+            get { return PropertyCacheGet(() => FinList); }
+            private set { PropertyCacheSet(value); }
+        }
         #endregion
 
         [XmlIgnore]
@@ -758,5 +770,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         #endregion
+
+        public void FilterFinList(string filterValue, string filterProperties)
+        {
+            FinListFiltered = FinList.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
     }
 }

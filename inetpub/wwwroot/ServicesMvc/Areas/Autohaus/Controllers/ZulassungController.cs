@@ -153,6 +153,13 @@ namespace ServicesMvc.Autohaus.Controllers
             return View(new GridModel(items));
         }
 
+        [GridAction]
+        public ActionResult FahrzeugAuswahlSelectedAjaxBinding()   
+        {
+            var items = ViewModel.FinListFiltered.Where(x => x.IsSelected == true);
+            return View(new GridModel(items));
+        }
+
         [HttpPost]
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
@@ -167,10 +174,19 @@ namespace ServicesMvc.Autohaus.Controllers
             {
                 allSelectionCount,
                 allCount,
-                zulassungenAnzahlPdiTotal = 11,     // ViewModel.FahrzeugeSelected,
-                zulassungenAnzahlGesamtTotal = 22   // ViewModel.FahrzeugeTotal,
+                zulassungenAnzahlPdiTotal = ViewModel.FinListFiltered.Count, //  11,     // ViewModel.FahrzeugeSelected,
+                zulassungenAnzahlGesamtTotal = ViewModel.FinList.Count   // ViewModel.FahrzeugeTotal,
             });
         }
+
+        [HttpPost]
+        public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterFinList(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
         #endregion
 
 
