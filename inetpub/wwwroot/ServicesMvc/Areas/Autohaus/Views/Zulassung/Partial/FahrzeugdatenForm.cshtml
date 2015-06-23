@@ -3,7 +3,9 @@
 @model Fahrzeugdaten
 
 @{
-    var isMassenzulassung = (bool)ViewData["IsMassenzulassung"];
+    // var isMassenzulassung = (bool)ViewData["IsMassenzulassung"];
+    var isMassenzulassung = true;
+    Model.FahrgestellNr = "MASSENZULASSUNG";
 }
 
 <div id="DivFahrzeugdaten" class="margin-top-20">
@@ -17,15 +19,22 @@
         {
 
             @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })
+            
+            @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "left" })
+            @Html.HiddenFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17, col = "right" })
 
             @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
+            @Html.HiddenFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase", col = "right" })
+
             @Html.HiddenFor(m => m.KostenstelleVisible)
             if (Model.KostenstelleVisible)
             {
-                @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase", col = "right" })
+                @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
             }
-            
+            <span class="hidden">
+                @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+            </span>
+        
             <h4>
                 <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
                     <i class="icon-check"></i><span class="padding-left-5 bold"></span>
@@ -49,8 +58,6 @@
 
                 .XAutoColumnConfiguration()
                 .ClientEvents(events => events.XAutoClientEvents(gridName))
-                //.ClientEvents(events => events.OnDataBinding("ArrayToGrid"))    // Wird vor Paging aufgerufen. #MMA# FILTER sorgt für Änderung aller Input-Boxes!?!?
-                //.ClientEvents(events => events.OnDataBound("GridToArray"))      // Wird nach dem Datenladen/Paging aufgerufen
                 .XPageSize(10)
                 .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
               )

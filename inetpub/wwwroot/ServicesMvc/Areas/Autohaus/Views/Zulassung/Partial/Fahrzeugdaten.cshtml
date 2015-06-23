@@ -3,5 +3,7 @@
 
 <h4>@Localize.VehicleData</h4> 
 
-@Html.Partial("Partial/FahrzeugdatenForm", @Model.Zulassung.Fahrzeugdaten)
+@*@Html.Partial("Partial/FahrzeugdatenForm", @Model.Zulassung.Fahrzeugdaten)*@
+
+@Html.Partial("Partial/FahrzeugdatenForm", @Model.Zulassung.Fahrzeugdaten, new ViewDataDictionary { { "IsMassenzulassung", Model.IsMassenzulassung } })
 

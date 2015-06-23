@@ -2,4 +2,4 @@
 
 <h4>@(Model.ModusAbmeldung ? Localize.Cancellation : Localize.Registration)</h4> 
 
-@Html.Partial("Partial/ZulassungsdatenForm", @Model.Zulassung.Zulassungsdaten, new ViewDataDictionary { { "MaterialList", Model.Zulassungsarten } })
+@Html.Partial("Partial/ZulassungsdatenForm", @Model.Zulassung.Zulassungsdaten, new ViewDataDictionary { { "MaterialList", Model.Zulassungsarten }, { "IsMassenzulassung", Model.IsMassenzulassung } })
