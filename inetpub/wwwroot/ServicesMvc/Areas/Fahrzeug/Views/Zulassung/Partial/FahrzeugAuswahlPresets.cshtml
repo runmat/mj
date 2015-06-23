@@ -16,7 +16,8 @@
 
             @Html.FormDropDownListFor(m => m.SelectedKennzeichenSerie, Model.KennzeichenSerien.ToSelectList(), new { @class = "m-wrap medium", col = "middle3" })
             
-            @Html.FormPlaceHolder(@<text><span class="reqired-fields">@Html.FormRequiredFieldsSummary()</span></text>, new { col = "right3" })
+            @Html.FormTextBoxFor(m => m.MassSelectionCount, new { @class = "m-wrap xsmall", col = "right3" }, 
+                    postControlHtml: @<text><button class="btn mini blue margin-left-5" onclick="MassSelectionOnChange()">@Localize.Select!</button></text>)
 
             @Html.FormDropDownListFor(m => m.SelectedPdi, Model.FahrzeugeGroupByPdi.ToSelectList(), new { @class = "m-wrap small", col = "left3" }, 
                     postControlHtml: @<text><div id="zulassungenAnzahlPdiTotal" class="zulassungen-count hide"></div></text>)

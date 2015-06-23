@@ -47,7 +47,7 @@
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
     .XPageSize(5)
-    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .XSort(sortOrder => sortOrder.Add(c => c.EingangFahrzeugDatum).Ascending())
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportFahrzeugeFilteredExcel", "Zulassung");

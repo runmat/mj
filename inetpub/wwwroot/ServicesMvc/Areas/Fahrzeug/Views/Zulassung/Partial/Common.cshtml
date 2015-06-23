@@ -179,6 +179,9 @@
 
         Grid_FormatMultiRowSelected(cb);
 
+        FahrzeugAuswahlSelectionChanged(cb.val(), cb.is(':checked'));
+        return;
+
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
@@ -197,10 +200,15 @@
         $("#checkAllRecords").attr("checked", false);
         $.uniform.update($("#checkAllRecords"));
 
+        FahrzeugAuswahlSelectionChanged("", check, function() {
+            FilterGrid("GridFahrzeugAuswahl");
+        });
+        return;
+
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
-            data: { id: "", isChecked: check },
+            data: { vin: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
                 _selectedItemsCount = result.allSelectionCount;
@@ -222,6 +230,30 @@
 
         $("#FahrzeugAuswahlCount").removeClass('hide');
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+    }
+
+    function MassSelectionOnChange() {
+        FahrzeugAuswahlSelectionChanged($("#MassSelectionCount").val(), true, function () {
+            FilterGrid("GridFahrzeugAuswahl");
+        });
+    }
+
+    function FahrzeugAuswahlSelectionChanged(vin, isChecked, postFunction) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { vin: vin, isChecked: isChecked },
+            loadingShow: false,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                ShowHideNextButton();
+
+                if (typeof(postFunction) != 'undefined')
+                    postFunction();
+            }
+        });
     }
 
     function InitDatePicker() {

@@ -1,4 +1,5 @@
-﻿// ReSharper disable ConvertClosureToMethodGroup
+﻿using System.Collections;
+// ReSharper disable ConvertClosureToMethodGroup
 // ReSharper disable RedundantUsingDirective
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
@@ -116,6 +117,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         public string SelectedModelId { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.NumberOfVehiclesToSelect)]
+        [Length(3)]
+        public int MassSelectionCount { get; set; }
+
+        public string GridOrderByCurrent { get; set; }
 
         public List<Fzg> ZulassungenForPdiAndDate { get; set; }
 
@@ -244,9 +251,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
 
-        public void SelectFahrzeuge(bool select, Predicate<Fzg> filter, out int allSelectionCount)
+        public void SelectFahrzeuge(string vinOrCount, bool select, Func<string, IEnumerable> getSortedList, out int allSelectionCount)
         {
-            FahrzeugeFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            var massSelectionCount = int.MaxValue;
+            if (vinOrCount.NotNullOrEmpty().Length > 0)
+                massSelectionCount = vinOrCount.ToInt(0);
+
+            var i = 0;
+            var sortedList = (IEnumerable<Fzg>)getSortedList(GridOrderByCurrent);
+            sortedList.ToListOrEmptyList().ForEach(f =>
+            {
+                if (++i <= massSelectionCount)
+                    f.IsSelected = select;
+            });
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
