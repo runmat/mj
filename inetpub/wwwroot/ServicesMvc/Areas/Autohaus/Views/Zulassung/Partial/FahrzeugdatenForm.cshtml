@@ -3,9 +3,7 @@
 @model Fahrzeugdaten
 
 @{
-    // var isMassenzulassung = (bool)ViewData["IsMassenzulassung"];
-    var isMassenzulassung = true;
-    Model.FahrgestellNr = "MASSENZULASSUNG";
+    var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über ActionRequest hinweg durchgeschleift
 }
 
 <div id="DivFahrzeugdaten" class="margin-top-20">
@@ -18,6 +16,9 @@
         if (isMassenzulassung)
         {
 
+            Model.FahrgestellNr = "MASSENZULASSUNG";
+            @Html.Hidden("IsMassenzulassung", "true")
+            
             @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
             
             @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "left" })

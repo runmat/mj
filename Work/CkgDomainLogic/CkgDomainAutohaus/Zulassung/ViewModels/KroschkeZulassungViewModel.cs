@@ -43,7 +43,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Für Massenzulassung
         public List<FahrzeugAkteBestand> FinList { get; set; }      // MMA 20150618 ITA8096 Massenzulassung. Liste der zuzulassenden Fahrzeuge.
-        public bool IsMassenzulassung { get; set; }
+        //public bool IsMassenzulassung { get; set; }
         #endregion
 
         [XmlIgnore]
@@ -168,8 +168,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetFinList(object finList)
         {            
 
-            IsMassenzulassung = true;
-
+            // IsMassenzulassung = true;
+            Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+            
             FinList = (List<FahrzeugAkteBestand>) finList;
          
             // FahrzeugAkteBestand

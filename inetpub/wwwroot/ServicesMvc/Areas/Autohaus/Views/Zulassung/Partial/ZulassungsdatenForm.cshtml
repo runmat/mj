@@ -3,9 +3,13 @@
 @model Zulassungsdaten
 @{
     var materialList = (List<Material>)ViewData["MaterialList"];
-    
-    var isMassenzulassung = (bool)ViewData["IsMassenzulassung"];    // MMA
 }
+
+<style>
+    .inputwidth {
+        width: 100px;
+    }
+</style>
 
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
@@ -40,7 +44,7 @@
 
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
 
-            if (isMassenzulassung)
+            if (Model.IsMassenzulassung)
             {
                 <div>MASSENZULASSUNG</div>
         
@@ -51,13 +55,16 @@
                 .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
                 .Columns(columns =>
                 {
-                    columns.XBound("")
-                        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                        .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                        .Filterable(false);
                     columns.XBound(c => c.FIN);
-                    columns.XBound(c => c.HandelsName);
                     columns.XBound(c => c.FahrzeugArt);
+                    columns.XBound(c => c.HandelsName);
+                    columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FIN #>' type='text' class='inputwidth uppercase' value='<#= data.WunschKennz1 #>' />"); ;
+                    columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FIN #>' type='text' class='inputwidth uppercase' value='<#= data.WunschKennz2 #>' />"); ;
+                    columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FIN #>' type='text' class='inputwidth uppercase' value='<#= data.WunschKennz3 #>' />"); ;
+                    columns.XBound(c => c.ResKennz);
+                    columns.XBound(c => c.ReservationNr);
+                    columns.XBound(c => c.ReservationName);
+                    columns.XBound(c => c.Evb).ClientTemplate("<input id='Evb_<#= data.FIN #>' type='text' class='inputwidth' value='<#= data.Evb #>' />");
                 })
 
                 .XAutoColumnConfiguration()
@@ -65,7 +72,6 @@
                 .XPageSize(10)
                 .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                   )
-        
         
             }
             else

@@ -24,6 +24,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusAbmeldung { get; set; }
 
+        public bool IsMassenzulassung { get; set; }     // MMA
+
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
 

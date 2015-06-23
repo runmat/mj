@@ -493,7 +493,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Fahrzeugdaten()
         {
-            ViewData["IsMassenzulassung"] = ViewModel.IsMassenzulassung; // MMA 
+            // ViewData["IsMassenzulassung"] = ViewModel.IsMassenzulassung; // MMA 
 
             return PartialView("Partial/Fahrzeugdaten", ViewModel);
         }
