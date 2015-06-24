@@ -12,8 +12,9 @@
             @Html.HiddenFor(m => m.NurMitAbmeldungen)
             @Html.HiddenFor(m => m.NurOhneAbmeldungen)
 
-            @Html.FormDateRangePickerFor(m => m.MeldeDatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.StillegungsDatumRange, new { col = "right" })
+            @Html.FormDateRangePickerFor(m => m.MeldeDatumRange)
+
+            @Html.FormDateRangePickerFor(m => m.StillegungsDatumRange)
                        
             @*@Html.FormRequiredFieldsSummary()*@
 
