@@ -23,39 +23,8 @@
         }
     }
 
-    function OnDataBound_GridFahrzeugAuswahl() {
-        alert("OnDataBound_GridFahrzeugAuswahl");
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-
-        // prepare multi row selection
-        App.initUniform();
-        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
-
-        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");  // MMA
-    }
-    function OnRowDataBound_GridFahrzeugAuswahl(e) {
-        alert(2);
-        var isValid = e.dataItem["IsValid"];
-
-        if (isValid)
-            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
-        else
-            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
-    }
-    function OnLoad_GridFahrzeugAuswahl() {
-        alert("OnLoad_GridFahrzeugAuswahl: " + ladeHinweis);
-        $('.t-no-data td').text(ladeHinweis);
-    }
-    function OnColumnShowHide_GridFahrzeugAuswahl() {
-        alert(4);
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-    function OnColumnReorder_GridFahrzeugAuswahl() {
-        alert(5);
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
+        //alert("OnSelectionChange_GridFahrzeugAuswahl");
         Grid_FormatMultiRowSelected(cb);
         $.ajax({
             type: "POST",
@@ -63,33 +32,51 @@
             data: { vin: cb.val(), isChecked: cb.is(':checked') },
             loadingShow: false,
             success: function (result) {
-                _selectedItemsCount = result.allSelectionCount; 
-                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                // _selectedItemsCount = result.allSelectionCount;
+                UpdateGridInfo(result.allSelectionCount);
+                //                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
                 // RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
-                if (_selectedItemsCount == 0) {
-                    $("#FahrzeugAuswahlCount").addClass('hide');
-                    return;
-                }
-                $("#FahrzeugAuswahlCount").removeClass('hide');
-                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Fahrzeug' + (_selectedItemsCount == 1 ? '' : 'e') + ' ausgewählt!');
+                //                if (_selectedItemsCount == 0) {
+                //                    $("#FahrzeugAuswahlCount").addClass('hide');
+                //                    return;
+                //                }
+                //                $("#FahrzeugAuswahlCount").removeClass('hide');
+                //                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Fahrzeug' + (_selectedItemsCount == 1 ? '' : 'e') + ' ausgewählt!');
             }
         });
     }
     function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        // alert("GridFahrzeugAuswahl_OnAllSelectionChange");
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
-            data: { id: "", isChecked: check },
+            data: { vin: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
-                _selectedItemsCount = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                // _selectedItemsCount = result.allSelectionCount;
+                UpdateGridInfo(result.allSelectionCount);
+                // GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
                 // RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 FilterGrid("GridFahrzeugAuswahl");
             }
         });
     }
-    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+//    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+//        // alert("GridFahrzeugAuswahl_MultiSelectUpdate");
+//        if (count == 0) {
+//            $("#FahrzeugAuswahlCount").addClass('hide');
+//            $("#uncheckAllRecords").attr("checked", false);
+//            $.uniform.update($("#uncheckAllRecords"));
+//            return;
+//        }
+
+//        $("#FahrzeugAuswahlCount").removeClass('hide');
+//        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+//        $("#uncheckAllRecords").attr("checked", true);
+//        $.uniform.update($("#uncheckAllRecords"));
+//    }
+    
+    function UpdateGridInfo(count) {
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
@@ -102,7 +89,7 @@
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
     }
-    
+
 </script>
 
 @if (Model.Zulassung.Zulassungsdaten.IsMassenzulassung)

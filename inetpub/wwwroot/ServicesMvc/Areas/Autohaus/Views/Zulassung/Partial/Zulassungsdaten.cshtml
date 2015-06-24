@@ -121,7 +121,7 @@
                       columns.XBound(c => c.ResKennz);
                       columns.XBound(c => c.ReservationNr);
                       columns.XBound(c => c.ReservationName);
-                      columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' value='<#= data.Evb #>' />");
+                      columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
                   })
               .XAutoColumnConfiguration()
               .ClientEvents(events => events.XAutoClientEvents(gridName))

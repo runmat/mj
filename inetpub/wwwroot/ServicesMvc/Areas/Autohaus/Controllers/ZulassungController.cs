@@ -123,13 +123,14 @@ namespace ServicesMvc.Autohaus.Controllers
             //allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
             //allCount = FahrzeugeAkteBestandFiltered.Count();
 
-            //ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            //allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-            //allCount = ViewModel.FinList.Count();
+            ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
+            allCount = ViewModel.FinList.Count();
 
-            ViewModel.FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            allSelectionCount = ViewModel.FinListFiltered.Count(c => c.IsSelected);
-            allCount = ViewModel.FinListFiltered.Count();
+            // ##MMA## FinListFiltered oder FinList?!
+            //ViewModel.FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            //allSelectionCount = ViewModel.FinListFiltered.Count(c => c.IsSelected);
+            //allCount = ViewModel.FinListFiltered.Count();
         }
 
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)

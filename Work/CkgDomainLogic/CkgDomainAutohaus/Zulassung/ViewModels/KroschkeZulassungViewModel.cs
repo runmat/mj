@@ -197,22 +197,22 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             var firstFahrzeug = FinList.FirstOrDefault();
             if (firstFahrzeug == null) return;
 
-            //#region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
-            //var isEqual = true;
-            //foreach (var fahrzeugAkteBestand in FinList) 
-            //{
-            //    if (ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
-            //    {
-            //        isEqual = false;
-            //        break;
-            //    }                
-            //}
+            #region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
+            var isEqual = true;
+            foreach (var fahrzeugAkteBestand in FinList)
+            {
+                if (ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
+                {
+                    isEqual = false;
+                    break;
+                }
+            }
 
-            //if (isEqual)    // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
-            //{
-            //    SetParamHalter(firstFahrzeug.Halter);   // Zulassung.Halterdaten = firstFahrzeug.SelectedHalter;
-            //}
-            //#endregion
+            if (isEqual)    // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
+            {
+                SetParamHalter(firstFahrzeug.Halter);   // Zulassung.Halterdaten = firstFahrzeug.SelectedHalter;
+            }
+            #endregion
 
         }
 
