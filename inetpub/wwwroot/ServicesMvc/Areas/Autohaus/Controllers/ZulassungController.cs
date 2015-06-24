@@ -148,7 +148,8 @@ namespace ServicesMvc.Autohaus.Controllers
         [GridAction]
         public ActionResult FahrzeugAuswahlSelectedAjaxBinding()   
         {
-            var items = ViewModel.FinListFiltered.Where(x => x.IsSelected == true);
+            // var items = ViewModel.FinListFiltered.Where(x => x.IsSelected == true);
+            var items = ViewModel.FinList.Where(x => x.IsSelected);
             return View(new GridModel(items));
         }
 

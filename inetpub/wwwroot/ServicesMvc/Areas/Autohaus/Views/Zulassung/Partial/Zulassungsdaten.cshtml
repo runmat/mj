@@ -7,56 +7,67 @@
 
 <script type="text/javascript">
             
-    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-    
-    var grid;
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();        
     
     CheckKennzeichenReserviert();
     
-    $(function() {
-        
-        var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-        
-        $("#EvbNr").change(function() {                     // Auswirkung auf alle Fahrzeuge
-            var newEvb = $(this).val();
-            SetEvb(newEvb);
-        });
-    
-        $(document).on('change', '.editevb', function() {   // Auswirkung auf ein Fahrzeug
-            var evb = $(this).val();
-            var tr = $(this).closest('tr');
-            // var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-            var dataItem = grid.dataItem(tr);
-            var fin = dataItem["FIN"];
-            
-            $.ajax({
+    function SetEvb(fin, evb) { 
+        $.ajax({
                 type: "POST",
                 url: "SetEvb",
                 data: { fin: fin, evb: evb },
                 loadingShow: false,
-                success: function (result) {
-                    alert(result.message);
+                success: function(result) {
+                    // wenn fin = null, dann wurde für jedes Fahrzeug soeben die selbe evb vergeben. Dies jetzt noch visualisieren...
+                    if (fin == "") {
+                        $('.editevb').val(evb);
+                    }
+
+                    if (result.ok == false) {
+                        alert(result.message);
+                    }
                 }
             });
+    }
+
+    $(function() {
         
-        $(document).on('change', '.editkennz', function() {   // Auswirkung auf ein Fahrzeug
+        $("#EvbNr").off('change').on('change').change(function() {      // Auswirkung auf alle Fahrzeuge
+            var evb = $(this).val();
+            SetEvb("", evb);
+        });
+    
+        $(document).off('change', '.editevb');
+        $(document).on('change', '.editevb', function() {               // Auswirkung auf ein Fahrzeug
+            var evb = $(this).val();
             var tr = $(this).closest('tr');
-            // var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+            var dataItem = grid.dataItem(tr);
+            var fin = dataItem["FIN"];
+            SetEvb(fin, evb);
+        });
+        
+        $(document).off('change', '.editkennz');
+        $(document).on('change', '.editkennz', function() {             // Auswirkung auf ein Fahrzeug
+            var tr = $(this).closest('tr');
+            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
             var dataItem = grid.dataItem(tr);
             var fin = dataItem["FIN"];
             var field = $(this).data('fieldname');
             var wkennz = $(this).val();
-                
             $.ajax({
                 type: "POST",
                 url: "SetWunschKennz",
                 data: { fin: fin, field: field, kennz: wkennz },
                 loadingShow: false,
                 success: function (result) {
-                    alert(result.message);
+                    if (result.ok == true) {
+                    }
+                    if (result.ok == false) {
+                        alert(result.message);
+                    }
                 }
             });
-            
         });
         
     });
@@ -68,10 +79,6 @@
             AjaxRequestNextStep();
             return;
         }
-    }
-    
-    function SetEvb(newEvb, fin) {
-        alert("SetEvb: " + newEvb + " fin: " + fin);
     }
     
 </script>
@@ -96,7 +103,7 @@
                       columns.XBound(c => c.ResKennz);
                       columns.XBound(c => c.ReservationNr);
                       columns.XBound(c => c.ReservationName);
-                      columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth editevb' value='<#= data.Evb #>' />");
+                      columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' value='<#= data.Evb #>' />");
                   })
               .XAutoColumnConfiguration()
               .ClientEvents(events => events.XAutoClientEvents(gridName))

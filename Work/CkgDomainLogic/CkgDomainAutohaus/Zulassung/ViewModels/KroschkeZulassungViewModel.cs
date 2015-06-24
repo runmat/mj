@@ -42,18 +42,23 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
 
         #region Für Massenzulassung
+
         [XmlIgnore]
-        public List<FahrzeugAkteBestand> FinList
-        {
-            get { return PropertyCacheGet(() => new List<FahrzeugAkteBestand>()); }
-            private set { PropertyCacheSet(value); }
-        }
+        public List<FahrzeugAkteBestand> FinList { get; set; }
         [XmlIgnore]
-        public List<FahrzeugAkteBestand> FinListFiltered
-        {
-            get { return PropertyCacheGet(() => FinList); }
-            private set { PropertyCacheSet(value); }
-        }
+        public List<FahrzeugAkteBestand> FinListFiltered { get; set; }
+        //[XmlIgnore]
+        //public List<FahrzeugAkteBestand> FinList
+        //{
+        //    get { return PropertyCacheGet(() => new List<FahrzeugAkteBestand>()); }
+        //    private set { PropertyCacheSet(value); }
+        //}
+        //[XmlIgnore]
+        //public List<FahrzeugAkteBestand> FinListFiltered
+        //{
+        //    get { return PropertyCacheGet(() => FinList); }
+        //    private set { PropertyCacheSet(value); }
+        //}
         #endregion
 
         [XmlIgnore]
@@ -221,7 +226,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             try
             {
-                if (fin == null)
+                if (fin.IsNullOrEmpty())
                 {
                     // evb für ALLE Fahrzeuge setzen
                     FinList.ToList().ForEach(x => x.Evb = evb);
