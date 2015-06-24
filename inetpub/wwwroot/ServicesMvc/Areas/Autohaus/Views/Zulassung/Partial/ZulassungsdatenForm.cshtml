@@ -11,57 +11,7 @@
     }
 </style>
 
-<script type="text/javascript">
-            
-    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            
-    CheckKennzeichenReserviert();
 
-    //    // Zulassungsdaten
-//    function AjaxFormZulassungsdatenComplete() {
-//        FormPrepareAjax();
-
-//        if (_modelIsValid) {
-//            AjaxRequestNextStep();
-//            return;
-//        }
-//    }
-    
-    $(function() {
-        
-        $("#EvbNr").change(function() {
-            var newEvb = $(this).val();
-            var vin = $(this).closest('tr').prevAll().length;
-            SetEvb(newEvb, vin);
-        });
-    
-        // editevb    
-        $(".editevb").change(function() {
-            alert(99);
-            var newEvb = $(this).val();
-            var vin = $(this).closest('tr').prevAll().length;
-            SetEvb(newEvb, vin);
-        });
-        
-    });
-    
-    function initasdf() {
-        $(".editevb").change(function() {
-            var newEvb = $(this).val();
-            var tr = $(this).closest('tr');
-            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-            var dataItem = grid.dataItem(tr);
-            var vin = dataItem["FIN"];
-            
-            SetEvb(newEvb, vin);
-        });
-    }
-
-    function SetEvb(newEvb, vin) {
-        alert("SetEvb: " + newEvb + " vin: " + vin);
-    }
-
-</script>
 
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
@@ -97,41 +47,18 @@
 
             if (Model.IsMassenzulassung)
             {
-                var gridName = "GridFahrzeugAuswahlZulassung";
-                @(Html.Telerik()
-                    .Grid<FahrzeugAkteBestand>()
-                    .Name(gridName)
-                        .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
-                    .Columns(columns => 
-                    {
-                        columns.XBound(c => c.FIN);
-                        columns.XBound(c => c.FahrzeugArt);
-                        columns.XBound(c => c.HandelsName);
-                        columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FIN #>' type='text' class='inputwidth uppercase' value='<#= data.WunschKennz1 #>' />"); 
-                        columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FIN #>' type='text' class='inputwidth uppercase' value='<#= data.WunschKennz2 #>' />"); 
-                        columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FIN #>' type='text' class='inputwidth uppercase' value='<#= data.WunschKennz3 #>' />");
-                        columns.XBound(c => c.ResKennz);
-                        columns.XBound(c => c.ReservationNr);
-                        columns.XBound(c => c.ReservationName);
-                        columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth editevb' value='<#= data.Evb #>' />");
-                    })
-                    .XAutoColumnConfiguration()
-                    .ClientEvents(events => events.XAutoClientEvents(gridName))
-                    .ClientEvents(events => events.OnDataBound("initasdf"))
-                    .XPageSize(10)
-                    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-                )
+                // evtl. Grid
             }
             else
             {
-                @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-                @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
-        
-                @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-                @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
-        
-                @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-                @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
+                @Html.FormTextBoxFor(m => m.Kennzeichen, new {@class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left"})
+                @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new {@class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right"}, labelHidden: true)
+
+                @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new {@class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left"})
+                @Html.FormTextBoxFor(m => m.ReservierungsName, new {@class = "m-wrap medium", col = "right"})
+
+                @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new {@class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left"})
+                @Html.FormTextBoxFor(m => m.ReservierungsNr, new {@class = "m-wrap medium", col = "right"})
             }
         }
                 

@@ -42,8 +42,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
 
         #region Für Massenzulassung
-        // public List<FahrzeugAkteBestand> FinList { get; set; }      // MMA 20150618 ITA8096 Massenzulassung. Liste der zuzulassenden Fahrzeuge.
-
         [XmlIgnore]
         public List<FahrzeugAkteBestand> FinList
         {
@@ -170,7 +168,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             SkipBankAdressdaten = (!Zulassung.BankAdressdaten.Cpdkunde);
         }
-        
+        #endregion
+
+        #region Massenzulassung
         /// <summary>
         /// Überträgt die Liste der anzumeldenden Fahrzeuge in das ViewModel und
         /// sorgt für Vorbelegung der relevanten Formulardaten, falls die entsprechenden 
@@ -178,14 +178,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// </summary>
         /// <param name="finList"></param>
         public void SetFinList(object finList)
-        {            
+        {
 
             // IsMassenzulassung = true;
             Zulassung.Zulassungsdaten.IsMassenzulassung = true;
-            
-            FinList = (List<FahrzeugAkteBestand>) finList;
-         
-            // FahrzeugAkteBestand
+
+            FinList = (List<FahrzeugAkteBestand>)finList;
+
             // FinList = this.FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor());
 
             FinList.ToList().ForEach(x => x.IsSelected = true);
@@ -212,27 +211,68 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         }
 
-        //public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
-        //{
-        //    // FahrzeugeAkteBestandFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-        //    //allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
-        //    //allCount = FahrzeugeAkteBestandFiltered.Count();
-        //    FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-        //    allSelectionCount = FinList.Count(c => c.IsSelected);
-        //    allCount = FinList.Count();
-        //}
-        //public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
-        //{
-        //    allSelectionCount = 0;
-        //    var fzg = FinList.FirstOrDefault(f => f.FIN == vin);
-        //    if (fzg == null)
-        //        return;
-        //    fzg.IsSelected = select;
-        //    allSelectionCount = FinList.Count(c => c.IsSelected);
-        //}
+        /// <summary>
+        /// Setzt die evb für ein einzelnes Fahrzeug oder für alle in der aktuellen FinList
+        /// </summary>
+        /// <param name="fin"></param>
+        /// <param name="evb"></param>
+        /// <returns>Null = gespeichert</returns>
+        public string SetEvb(string fin, string evb)
+        {
+            try
+            {
+                if (fin == null)
+                {
+                    // evb für ALLE Fahrzeuge setzen
+                    FinList.ToList().ForEach(x => x.Evb = evb);
+                }
+                else
+                {
+                    // evb nur für ein Fahrzeug setzen
+                    FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Evb = evb);
+                }
+                
+                return null;  // return Json(new { ok = true, message = Localize.SaveSuccessful });
+            }
+            catch (Exception e)
+            {
+                return e.InnerException.ToString(); // Json(new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, e.InnerException) });
+            }
+        }
 
+        /// <summary>
+        /// Setzt das Wunschkennzeichen für ein angegebenes Fahrzeug
+        /// </summary>
+        /// <param name="fin"></param>
+        /// <param name="field"></param>
+        /// <param name="kennz"></param>
+        /// <returns>Null = gespeichert</returns>
+        public string SetWunschKennz(string fin, string field, string kennz)
+        {
+            try
+            {
+                switch (field.ToLower())
+                {
+                    case "wunschkennz1":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz1 = kennz);
+                        break;
+
+                    case "wunschkennz2":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz2 = kennz);
+                        break;
+
+                    case "wunschkennz3":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = kennz);
+                        break;
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.InnerException.ToString();
+            }
+        }
         #endregion
-
 
         #region Halter
 

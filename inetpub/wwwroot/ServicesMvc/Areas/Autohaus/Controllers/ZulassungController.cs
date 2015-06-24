@@ -101,7 +101,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            // var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             var dt = ViewModel.FinList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Holder, dt);
 
@@ -137,13 +136,6 @@ namespace ServicesMvc.Autohaus.Controllers
                 return;
             fzg.IsSelected = select;
             allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-
-            //allSelectionCount = 0;
-            //var fzg = FahrzeugeAkteBestand.FirstOrDefault(f => f.FIN == vin);
-            //if (fzg == null)
-            //    return;
-            //fzg.IsSelected = select;
-            //allSelectionCount = FahrzeugeAkteBestand.Count(c => c.IsSelected);
         }
 
         [GridAction]
@@ -165,10 +157,8 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             int allSelectionCount, allCount = 0;
             if (vin.IsNullOrEmpty())
-                // ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
                 SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
             else
-                // ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
                 SelectFahrzeug(vin, isChecked, out allSelectionCount);
             return Json(new
             {
@@ -179,6 +169,24 @@ namespace ServicesMvc.Autohaus.Controllers
             });
         }
 
+        #region Massenzulassung
+
+        [HttpPost]
+        public JsonResult SetEvb(string fin, string evb)
+        {
+            var result = ViewModel.SetEvb(fin, evb);
+            return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
+        }
+
+        [HttpPost]
+        public JsonResult SetWunschKennz(string fin, string field, string kennz)
+        {
+            var result = ViewModel.SetWunschKennz(fin, field, kennz);
+            return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
+        }
+
+        #endregion
+
         [HttpPost]
         public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)
         {
@@ -188,8 +196,6 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         #endregion
-
-
 
         [CkgApplication]
         public ActionResult Abmeldung(string fin, string halterNr)

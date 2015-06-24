@@ -1,6 +1,108 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+﻿@using CkgDomainLogic.Fahrzeugbestand.Models
+@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
 
 <h4>@(Model.ModusAbmeldung ? Localize.Cancellation : Localize.Registration)</h4> 
 
 @Html.Partial("Partial/ZulassungsdatenForm", @Model.Zulassung.Zulassungsdaten, new ViewDataDictionary { { "MaterialList", Model.Zulassungsarten } })
 
+<script type="text/javascript">
+            
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    
+    var grid;
+    
+    CheckKennzeichenReserviert();
+    
+    $(function() {
+        
+        var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+        
+        $("#EvbNr").change(function() {                     // Auswirkung auf alle Fahrzeuge
+            var newEvb = $(this).val();
+            SetEvb(newEvb);
+        });
+    
+        $(document).on('change', '.editevb', function() {   // Auswirkung auf ein Fahrzeug
+            var evb = $(this).val();
+            var tr = $(this).closest('tr');
+            // var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+            var dataItem = grid.dataItem(tr);
+            var fin = dataItem["FIN"];
+            
+            $.ajax({
+                type: "POST",
+                url: "SetEvb",
+                data: { fin: fin, evb: evb },
+                loadingShow: false,
+                success: function (result) {
+                    alert(result.message);
+                }
+            });
+        
+        $(document).on('change', '.editkennz', function() {   // Auswirkung auf ein Fahrzeug
+            var tr = $(this).closest('tr');
+            // var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+            var dataItem = grid.dataItem(tr);
+            var fin = dataItem["FIN"];
+            var field = $(this).data('fieldname');
+            var wkennz = $(this).val();
+                
+            $.ajax({
+                type: "POST",
+                url: "SetWunschKennz",
+                data: { fin: fin, field: field, kennz: wkennz },
+                loadingShow: false,
+                success: function (result) {
+                    alert(result.message);
+                }
+            });
+            
+        });
+        
+    });
+    
+    function AjaxFormZulassungsdatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+    
+    function SetEvb(newEvb, fin) {
+        alert("SetEvb: " + newEvb + " fin: " + fin);
+    }
+    
+</script>
+
+@if (Model.Zulassung.Zulassungsdaten.IsMassenzulassung)
+{
+    using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
+    {
+        var gridName = "GridFahrzeugAuswahlZulassung";
+        @(Html.Telerik()
+              .Grid<FahrzeugAkteBestand>()
+              .Name(gridName)
+              .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+              .Columns(columns =>
+                  {
+                      columns.XBound(c => c.FIN);
+                      columns.XBound(c => c.FahrzeugArt);
+                      columns.XBound(c => c.HandelsName);
+                      columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz1' value='<#= data.WunschKennz1 #>' />");
+                      columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");
+                      columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz3' value='<#= data.WunschKennz3 #>' />");
+                      columns.XBound(c => c.ResKennz);
+                      columns.XBound(c => c.ReservationNr);
+                      columns.XBound(c => c.ReservationName);
+                      columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth editevb' value='<#= data.Evb #>' />");
+                  })
+              .XAutoColumnConfiguration()
+              .ClientEvents(events => events.XAutoClientEvents(gridName))
+              //.ClientEvents(events => events.OnDataBound("initasdf"))
+              .XPageSize(10)
+              .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+              )
+    }
+}
