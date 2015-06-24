@@ -509,14 +509,24 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Fahrzeugdaten()
         {
-            // ViewData["IsMassenzulassung"] = ViewModel.IsMassenzulassung; // MMA 
-
             return PartialView("Partial/Fahrzeugdaten", ViewModel);
         }
 
         [HttpPost]
         public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
         {
+            //var viewModel = AdressenPflegeViewModel;
+            //viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
+            //if (ModelState.IsValid)
+            //    model = viewModel.SaveItem(model, ModelState.AddModelError);
+            //model.IsValid = ModelState.IsValid;
+            //model.InsertModeTmp = viewModel.InsertMode;
+
+            if (!ViewModel.FinList.Any(x => x.IsSelected))
+            {
+                ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
+            }
+
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);

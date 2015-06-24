@@ -5,3 +5,145 @@
 
 @Html.Partial("Partial/FahrzeugdatenForm", @Model.Zulassung.Fahrzeugdaten, new ViewDataDictionary { { "IsMassenzulassung", Model.Zulassung.Zulassungsdaten.IsMassenzulassung } })
 
+<script>
+
+    var _selectedItemsCount = 0;
+
+    $(function () {
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+    });
+
+//    function ShowHideNextButton() {
+//        alert("showHideNextButton");
+//        // var nextButtonValid = $('#SelectedZulassungsDatum').val() != '' && $('#SelectedZulassungsDatum').val() != null && _selectedItemsCount > 0 && !_validationError;
+//        var nextButtonValid = false;
+//        if (_selectedItemsCount > 0) nextButtonValid = true;
+//        FormWizard.ActionsShow(nextButtonValid);
+//    }
+
+    function AjaxFormFahrzeugdatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    function OnDataBound_GridFahrzeugAuswahl() {
+        alert("OnDataBound_GridFahrzeugAuswahl");
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
+
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");  // MMA
+    }
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+        alert(2);
+        var isValid = e.dataItem["IsValid"];
+
+        if (isValid)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+        else
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
+    function OnLoad_GridFahrzeugAuswahl() {
+        alert("OnLoad_GridFahrzeugAuswahl: " + ladeHinweis);
+        $('.t-no-data td').text(ladeHinweis);
+    }
+    function OnColumnShowHide_GridFahrzeugAuswahl() {
+        alert(4);
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+    function OnColumnReorder_GridFahrzeugAuswahl() {
+        alert(5);
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+    function OnSelectionChange_GridFahrzeugAuswahl(cb) {
+        Grid_FormatMultiRowSelected(cb);
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount; 
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                // RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                if (_selectedItemsCount == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Fahrzeug' + (_selectedItemsCount == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                // RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                FilterGrid("GridFahrzeugAuswahl");
+            }
+        });
+    }
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+    
+</script>
+
+@if (Model.Zulassung.Zulassungsdaten.IsMassenzulassung)
+{
+    <div id="divPortletFahrzeugauswahl">
+    
+        @using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
+        {
+            <h4>
+                <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide"><i class="icon-check"></i><span class="padding-left-5 bold"></span></span>
+            </h4>
+            
+            var gridName = "GridFahrzeugAuswahl";
+            @(Html.Telerik()
+                        .Grid<FahrzeugAkteBestand>()
+                        .Name(gridName)
+                        .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
+                        .Columns(columns =>
+                        {
+                            columns.XBound("")
+                                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                                .Filterable(false);
+                            columns.XBound(c => c.FIN);
+                            columns.XBound(c => c.HandelsName);
+                            columns.XBound(c => c.FahrzeugArt);
+                        })
+
+                        .XAutoColumnConfiguration()
+                        .XPageSize(10)
+                        .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                        .XToolBar("GridFahrzeugAuswahl")
+            )
+    }
+    </div>
+}

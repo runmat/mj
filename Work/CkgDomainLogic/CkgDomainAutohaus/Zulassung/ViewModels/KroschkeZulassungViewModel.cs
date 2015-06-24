@@ -186,7 +186,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             FinList = (List<FahrzeugAkteBestand>) finList;
          
             // FahrzeugAkteBestand
-            FinList = this.FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor());
+            // FinList = this.FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor());
 
             FinList.ToList().ForEach(x => x.IsSelected = true);
 
