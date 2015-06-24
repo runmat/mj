@@ -20,7 +20,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public UnfallmeldungenSelektor UnfallmeldungenSelektor
         {
-            get { return PropertyCacheGet(() => new UnfallmeldungenSelektor { NurMitAbmeldungen = true }); }
+            get { return PropertyCacheGet(() => new UnfallmeldungenSelektor()); }
             set { PropertyCacheSet(value); }
         }
 
@@ -56,12 +56,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get { return PropertyCacheGet(() => DataService.FahrzeugStatusWerte); }
         }
-      
-        public void DataInit(bool setMeldedatumSelected)
+
+        public void DataInit(bool forReport)
         {
             PropertyCacheClear(this, m => m.UnfallmeldungenSelektor);
             DataMarkForRefresh();
-            UnfallmeldungenSelektor.MeldeDatumRange.IsSelected = setMeldedatumSelected;
+            UnfallmeldungenSelektor.NurMitAbmeldungen = forReport;
+            UnfallmeldungenSelektor.MeldeDatumRange.IsSelected = forReport;
         }
 
         public void DataMarkForRefresh()
