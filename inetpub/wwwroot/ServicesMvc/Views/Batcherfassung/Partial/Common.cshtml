@@ -155,24 +155,31 @@
                 data: { modelId: modellId },
                 loadingShow: true,
                 success: function (result) {
-                    if (typeof(result.ModelData) !== "undefined") {
+                    if (typeof (result.ModelData) !== "undefined") {
                         var item = result.ModelData;
                         $("#Batch_Fahrzeuggruppe").val(item.Fahrzeuggruppe);
                         $("#Batch_Modellbezeichnung").val(item.Modellbezeichnung);
                         $("#Batch_SippCode").val(item.SippCode);
                         $("#Batch_HerstellerName").val(item.HerstellerName);
                         $("#Batch_Laufzeit").val(item.Laufzeit);
-                        $("#Batch_Laufzeitbindung").val(item.Laufzeitbindung);
+                        $("#Batch_Laufzeitbindung").attr("checked", item.Laufzeitbindung);
+                        $.uniform.update($("#Batch_Laufzeitbindung"));
                         $("#Batch_Antrieb").val(item.Antrieb);
-                        $("#Batch_Winterreifen").val(item.Winterreifen);
-                        $("#Batch_AnhaengerKupplung").val(item.AnhaengerKupplung);
-                        $("#Batch_NaviVorhanden").val(item.NaviVorhanden);
-                        $("#Batch_Bluetooth").val(item.Bluetooth);
-                        $("#Batch_KennzeichenLeasingFahrzeug").val(item.KennzeichenLeasingFahrzeug);
-                        $("#Batch_SecurityFleet").val(item.SecurityFleet);
+                        $("#Batch_Winterreifen").attr("checked", item.Winterreifen);
+                        $.uniform.update($("#Batch_Winterreifen"));
+                        $("#Batch_AnhaengerKupplung").attr("checked", item.AnhaengerKupplung);
+                        $.uniform.update($("#Batch_AnhaengerKupplung"));
+                        $("#Batch_NaviVorhanden").attr("checked", item.NaviVorhanden);
+                        $.uniform.update($("#Batch_NaviVorhanden"));
+                        $("#Batch_Bluetooth").attr("checked", item.Bluetooth);
+                        $.uniform.update($("#Batch_Bluetooth"));
+                        $("#Batch_KennzeichenLeasingFahrzeug").attr("checked", item.KennzeichenLeasingFahrzeug);
+                        $.uniform.update($("#Batch_KennzeichenLeasingFahrzeug"));
+                        $("#Batch_SecurityFleet").attr("checked", item.SecurityFleet);
+                        $.uniform.update($("#Batch_SecurityFleet"));
                     }
                     FormPreparePrivateAjax();
-                }                        
+                }
             });
 
         return false;
