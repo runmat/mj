@@ -45,7 +45,7 @@
             @Html.FormDateRangePickerFor(m => m.ZulassungDatumRange, new { col = "right" })
                       
             @Html.FormDropDownListFor(m => m.Herstellerkennung, FahrzeuguebersichtSelektor.FahrzeugHersteller, new { @class = "m-wrap" })         
-            @Html.FormDropDownListFor(m => m.PDIkennung, FahrzeuguebersichtSelektor.PDIStandorte, new { @class = "m-wrap" })
+            @Html.FormDropDownListFor(m => m.Pdi, FahrzeuguebersichtSelektor.PdiStandorte, new { @class = "m-wrap" })
             @Html.FormDropDownListFor(m => m.Statuskennung, FahrzeuguebersichtSelektor.FahrzeugStatus, new { @class = "m-wrap" })
 
             <div class="form-actions">

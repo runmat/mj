@@ -362,6 +362,17 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Navi = sap.ZNAVI.XToBool();
                         business.Anhaengerkupplung = sap.ZAHK.XToBool();
                         business.Fahrzeugtyp = sap.FZGART;
+
+                        business.Farbcode = sap.ZFARBE;
+                        business.Farbname = sap.FARBE_TEXT;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.BemerkungSperre = sap.ZBEMERKUNG;
+                        business.KraftstoffArt = sap.ZZKRAFTSTOFF_TXT;
+                        business.ZulassungBereit = sap.ZULBEREIT.XToBool();
+                        business.ZulassungsSperre = sap.ZZAKTSPERRE.XToBool();
+                        business.AbmeldeDatum = sap.ZZDAT_BER;
+                        business.VersandDatum = sap.ZZTMPDT;
                     }));
             }
         }

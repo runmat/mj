@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
@@ -9,7 +8,6 @@ using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
-using System.Linq;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
@@ -44,6 +42,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string BatchId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
+// ReSharper disable once InconsistentNaming
         public string SIPPCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
@@ -70,8 +69,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Statuskennung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Carport)]
-        public string PDIkennung { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
+// ReSharper disable once InconsistentNaming
+        public string Pdi { get; set; }
 
 
         public static List<SelectItem> FahrzeugHersteller
@@ -79,7 +79,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 var hersteller = GetViewModel().FahrzeugHersteller;
-                return hersteller.ConvertAll(new Converter<Fahrzeughersteller, SelectItem>(WrapManufacturer));              
+                return hersteller.ConvertAll(WrapManufacturer);              
             }
         }
 
@@ -88,16 +88,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 var status = GetViewModel().FahrzeugStatus;
-                return status.ConvertAll(new Converter<FahrzeuguebersichtStatus, SelectItem>(WrapStatus));
+                return status.ConvertAll(WrapStatus);
             }
         }
 
-        public static List<SelectItem> PDIStandorte
+        public static List<SelectItem> PdiStandorte
         {
             get
             {
-                var pdi = GetViewModel().PDIStandorte;
-                return pdi.ConvertAll(new Converter<FahrzeuguebersichtPDI, SelectItem>(WrapPDI));
+                var pdi = GetViewModel().PdiStandorte;
+                return pdi.ConvertAll(WrapPdi);
             }
         }
 
@@ -105,8 +105,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             if (hersteller.HerstellerName.StartsWith("(")) // wg. empty keys aus sap
                 return new SelectItem(String.Empty, hersteller.HerstellerName);
-            else            
-                return new SelectItem(hersteller.HerstellerName, hersteller.HerstellerName);
+            
+            return new SelectItem(hersteller.HerstellerName, hersteller.HerstellerName);
         }
 
         static SelectItem WrapStatus(FahrzeuguebersichtStatus status)
@@ -114,7 +114,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             return new SelectItem(status.StatusKey, status.StatusText);
         }
 
-        static SelectItem WrapPDI(FahrzeuguebersichtPDI pdi)
+        static SelectItem WrapPdi(FahrzeuguebersichtPDI pdi)
         {            
             return new SelectItem(pdi.PDIKey, pdi.PDIText);
         }

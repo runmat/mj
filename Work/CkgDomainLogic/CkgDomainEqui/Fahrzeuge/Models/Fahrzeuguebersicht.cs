@@ -11,10 +11,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Action)]
         public string Action { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Carport)]
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string Carport { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CarportName)]
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string Carportname { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
@@ -50,6 +50,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string BatchId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
+// ReSharper disable once InconsistentNaming
         public string SIPPCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
@@ -61,11 +62,18 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.DateOfReadyIndication)]
         public DateTime? BereitmeldungDatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CancellationDate)]
+        public DateTime? AbmeldeDatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DateOfDispatch)]
+        public DateTime? VersandDatum { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
         public string Hersteller { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.WinterTires)]
         public bool Winterreifen { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.CommentInternal)]
         public string BemerkungIntern { get; set; }
 
@@ -113,5 +121,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Bearbeitungsstatus { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FuelType)]
+        public string KraftstoffArt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationReady)]
+        public bool ZulassungBereit { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationStop)]
+        public bool ZulassungsSperre { get; set; }
     }
 }
