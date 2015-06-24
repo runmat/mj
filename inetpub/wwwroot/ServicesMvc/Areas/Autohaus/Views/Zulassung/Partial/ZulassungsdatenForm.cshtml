@@ -5,21 +5,13 @@
     var materialList = (List<Material>)ViewData["MaterialList"];
 }
 
-<style>
-    .inputwidth {
-        width: 100px;
-    }
-</style>
-
-
-
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivZulassungsdaten", OnComplete = "AjaxFormZulassungsdatenComplete();" },
                     htmlAttributes: new { @class = "form-horizontal label-width-175", id = "AjaxFormZulassungsdaten" }))
     {
         @Html.FormValidationSummary()
-        
+        @Html.HiddenFor(m => m.IsMassenzulassung)
         @Html.HiddenFor(m => m.ModusAbmeldung)
         @Html.HiddenFor(m => m.ZulassungskreisBezeichnung)
 
@@ -51,14 +43,14 @@
             }
             else
             {
-                @Html.FormTextBoxFor(m => m.Kennzeichen, new {@class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left"})
-                @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new {@class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right"}, labelHidden: true)
+                @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+                @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
 
-                @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new {@class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left"})
-                @Html.FormTextBoxFor(m => m.ReservierungsName, new {@class = "m-wrap medium", col = "right"})
+                @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+                @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
 
-                @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new {@class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left"})
-                @Html.FormTextBoxFor(m => m.ReservierungsNr, new {@class = "m-wrap medium", col = "right"})
+                @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+                @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
             }
         }
                 

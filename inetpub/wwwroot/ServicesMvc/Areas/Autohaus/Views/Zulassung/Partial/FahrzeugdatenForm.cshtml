@@ -20,7 +20,7 @@
         if (isMassenzulassung)
         {
             Model.FahrgestellNr = "MASSENZULASSUNG";
-            @Html.Hidden("IsMassenzulassung", "true")
+            @Html.Hidden("IsMassenzulassung", "true")            
             
             @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
             @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "right" })

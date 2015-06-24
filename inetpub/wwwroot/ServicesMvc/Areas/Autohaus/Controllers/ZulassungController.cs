@@ -123,11 +123,15 @@ namespace ServicesMvc.Autohaus.Controllers
             //allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
             //allCount = FahrzeugeAkteBestandFiltered.Count();
 
-            ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-            allCount = ViewModel.FinList.Count();
+            //ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            //allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
+            //allCount = ViewModel.FinList.Count();
 
+            ViewModel.FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            allSelectionCount = ViewModel.FinListFiltered.Count(c => c.IsSelected);
+            allCount = ViewModel.FinListFiltered.Count();
         }
+
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
@@ -146,7 +150,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [GridAction]
-        public ActionResult FahrzeugAuswahlSelectedAjaxBinding()   
+        public ActionResult FahrzeugAuswahlSelectedAjaxBinding()
         {
             // var items = ViewModel.FinListFiltered.Where(x => x.IsSelected == true);
             var items = ViewModel.FinList.Where(x => x.IsSelected);
@@ -165,12 +169,11 @@ namespace ServicesMvc.Autohaus.Controllers
             {
                 allSelectionCount,
                 allCount,
-                zulassungenAnzahlPdiTotal = ViewModel.FinListFiltered.Count, //  11,     // ViewModel.FahrzeugeSelected,
+                // zulassungenAnzahlPdiTotal = ViewModel.FinListFiltered.Count, //  11,     // ViewModel.FahrzeugeSelected,
+                zulassungenAnzahlPdiTotal = ViewModel.FinList.Count(x => x.IsSelected), //  11,     // ViewModel.FahrzeugeSelected,
                 zulassungenAnzahlGesamtTotal = ViewModel.FinList.Count   // ViewModel.FahrzeugeTotal,
             });
         }
-
-        #region Massenzulassung
 
         [HttpPost]
         public JsonResult SetEvb(string fin, string evb)
@@ -185,8 +188,6 @@ namespace ServicesMvc.Autohaus.Controllers
             var result = ViewModel.SetWunschKennz(fin, field, kennz);
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
-
-        #endregion
 
         [HttpPost]
         public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)

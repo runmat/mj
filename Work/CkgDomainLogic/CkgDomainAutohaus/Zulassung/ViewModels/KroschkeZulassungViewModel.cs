@@ -224,6 +224,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         /// <returns>Null = gespeichert</returns>
         public string SetEvb(string fin, string evb)
         {
+
+            if (!string.IsNullOrEmpty(evb) && evb.Length != 7)
+                return Localize.EvbNumberLengthMustBe7;
+
             try
             {
                 if (fin.IsNullOrEmpty())

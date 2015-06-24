@@ -171,29 +171,13 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #endregion
 
-
         public ActionResult MultiReg()
         {
-            // var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).Select(x => x.FIN).ToArray();
-
             var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).ToList();
-
 
             TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
 
             return RedirectToAction("IndexMultiReg", "Zulassung");
-
-            // return RedirectToAction("IndexMultiReg", "Zulassung", new { vin = selectedFahrzeuge });
-            // vorhanden...
-            // IAppSettings appSettings, 
-            // ILogonContextDataService logonContext, 
-            // IFahrzeugAkteBestandDataService fahrzeugbestandDataService
-            // erwartet...
-            // IAppSettings appSettings, 
-            // ILogonContextDataService logonContext, 
-            // IPartnerDataService partnerDataService, 
-            // IZulassungDataService zulassungDataService, 
-            // IFahrzeugAkteBestandDataService fahrzeugbestandDataService
         }
 
         #region Export

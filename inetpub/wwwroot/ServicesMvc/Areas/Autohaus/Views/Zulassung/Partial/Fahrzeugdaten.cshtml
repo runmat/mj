@@ -117,24 +117,24 @@
             
             var gridName = "GridFahrzeugAuswahl";
             @(Html.Telerik()
-                        .Grid<FahrzeugAkteBestand>()
-                        .Name(gridName)
-                        .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
-                        .Columns(columns =>
-                        {
-                            columns.XBound("")
-                                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                                .Filterable(false);
-                            columns.XBound(c => c.FIN);
-                            columns.XBound(c => c.HandelsName);
-                            columns.XBound(c => c.FahrzeugArt);
-                        })
+                    .Grid<FahrzeugAkteBestand>()
+                    .Name(gridName)
+                    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
+                    .Columns(columns =>
+                    {
+                        columns.XBound("")
+                            .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                            .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                            .Filterable(false);
+                        columns.XBound(c => c.FIN);
+                        columns.XBound(c => c.HandelsName);
+                        columns.XBound(c => c.FahrzeugArt);
+                    })
 
-                        .XAutoColumnConfiguration()
-                        .XPageSize(10)
-                        .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-                        .XToolBar("GridFahrzeugAuswahl")
+                    .XAutoColumnConfiguration()
+                    .XPageSize(10)
+                    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                    .XToolBar("GridFahrzeugAuswahl")
             )
     }
     </div>
