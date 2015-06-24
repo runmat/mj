@@ -13,36 +13,46 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public class FahrzeuguebersichtSelektor : Store
     {
-        
         [LocalizedDisplay(LocalizeConstants.Action)]
-        [FormPersistable]
-        public string Akion { get; set; }
+        public string Akion
+        {
+            get { return PropertyCacheGet(() => "manuell"); }
+            set { PropertyCacheSet(value); }
+        }
 
         public string Akionen { get { return string.Format("manuell,{0};upload,{1}", Localize.ManuelInput, Localize.FileUpload); } }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        [FormPersistable]
         public string Fahrgestellnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [FormPersistable]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
+        [FormPersistable]
         public string Zb2Nummer { get; set; }
      
         [LocalizedDisplay(LocalizeConstants.ModelID)]
+        [FormPersistable]
         public string ModelID { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.UnitNumber)]
+        [FormPersistable]
         public string Unitnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
+        [FormPersistable]
         public string Auftragsnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.BatchID)]
+        [FormPersistable]
         public string BatchId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
-// ReSharper disable once InconsistentNaming
+        [FormPersistable]
+        // ReSharper disable once InconsistentNaming
         public string SIPPCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
@@ -64,13 +74,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
+        [FormPersistable]
         public string Herstellerkennung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
+        [FormPersistable]
         public string Statuskennung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Pdi)]
-// ReSharper disable once InconsistentNaming
+        [FormPersistable]
+        // ReSharper disable once InconsistentNaming
         public string Pdi { get; set; }
 
 

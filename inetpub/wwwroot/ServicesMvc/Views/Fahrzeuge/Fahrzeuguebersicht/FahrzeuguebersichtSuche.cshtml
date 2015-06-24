@@ -11,12 +11,12 @@
 
             @Html.FormRadioButtonListFor(m => m.Akion, Model.Akionen.ToSelectList()) 
             
-            <div id="divExcelUpload" class="hide">
-                <h3><small>Excel Upload</small></h3>
+            <div id="divExcelUpload" class="form-wizard-excel-upload hide">
+                <h3><small>&nbsp;</small></h3>
                               
                 <div id="ExcelUpload" class="portlet app-view">
        
-                    @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Fertig!" })                                       
+                    @Html.FormWizard("icon-arrow-up", "Excel-Upload, ", new[] { "Excel Datei hochladen", "Fertig!" })                                       
 
                     <div id="formWizardTab1" class="hide">      
                         @Html.Partial("Fahrzeuguebersicht/FileUpload")                                                                                   
@@ -68,11 +68,11 @@
     
     function ShowElements() {       
         if ($(":radio[value='upload']").is(":checked")) {
-            $("#divExcelUpload").removeClass('hide');
-            $("#divOptionalSearchparams").addClass('hide');            
+            $("#divOptionalSearchparams").addClass('hide');
+            $("#divExcelUpload").slideDown(300);
         }
         else {
-            $("#divExcelUpload").addClass('hide');
+            $("#divExcelUpload").slideUp(300);
             $("#divOptionalSearchparams").removeClass('hide');
         }
     }

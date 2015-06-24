@@ -38,16 +38,13 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadFahrzeuguebersicht(FahrzeuguebersichtSelektor model)
         {
-            FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor = model;
-
-            //FahrzeuguebersichtViewModel.Validate(AddModelError);
-
             if (ModelState.IsValid && !PersistableMode)
             {
+                FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor = model;
                 FahrzeuguebersichtViewModel.LoadFahrzeuguebersicht(ModelState);
             }
 
-            return PersistablePartialView("Fahrzeuguebersicht/FahrzeuguebersichtSuche", FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor);
+            return PersistablePartialView("Fahrzeuguebersicht/FahrzeuguebersichtSuche", model);
         }
 
         [HttpPost]

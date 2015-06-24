@@ -373,6 +373,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.ZulassungsSperre = sap.ZZAKTSPERRE.XToBool();
                         business.AbmeldeDatum = sap.ZZDAT_BER;
                         business.VersandDatum = sap.ZZTMPDT;
+
+                        business.Lieferant = sap.NAME1_ZP;
+                        business.Ort = sap.CITY1_ZP;
+                        business.FinanzierungsArt = sap.FIN_ART;
                     }));
             }
         }

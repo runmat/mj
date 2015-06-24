@@ -48,7 +48,11 @@
         columns.XBound(c => c.ZulassungsSperre);
         
         columns.XBound(c => c.AbmeldeDatum);
-        columns.XBound(c => c.VersandDatum);   
+        columns.XBound(c => c.VersandDatum);
+
+        columns.XBound(c => c.Lieferant);
+        columns.XBound(c => c.Ort);
+        columns.XBound(c => c.FinanzierungsArt);
         
     })
     .XAutoColumnConfiguration()

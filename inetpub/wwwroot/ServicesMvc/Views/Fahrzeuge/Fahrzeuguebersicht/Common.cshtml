@@ -1,4 +1,19 @@
-﻿<script type="text/javascript">
+﻿<style type="text/css">
+    .form-wizard-excel-upload {
+        margin-left: 183px;
+    }   
+    
+    #divExcelUpload h3 {
+        margin: 0 !important;
+        height: 0 !important;
+        line-height: 0 !important;
+    }
+    #ExcelUpload {
+        margin-top: 0 !important;
+    }
+</style>
+
+<script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
 
@@ -39,30 +54,6 @@
     function OnColumnReorder_GridEquiHistorieInfosVermieter() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
-
-//    function ShowEquiHistorieVermieterSearchResult(result) {
-//        SearchFormHide();
-//        $("#divGrid").html(result);
-
-//        GridAllColumnFilterApplyToGrid("GridEquiHistorieInfosVermieter");
-
-//        $("#divGrid").slideDown();
-//        $("#divHistorieVermieterDetail").html('');
-//    }
-
-//    function ShowEquiHistorieVermieterAjax(equiNr, meldungsNr) {
-//        LoadingShow();
-//        $.ajax(
-//        {
-//            type: "POST",
-//            url: "GetFahrzeugHistorieVermieterPartial",
-//            loadingShow: true,
-//            data: { equiNr: equiNr, meldungsNr: meldungsNr },
-//            success: function (result) {
-//                ShowEquiHistorieVermieterDetail(result);
-//            }
-//        });
-//    }
 
     function ShowEquiHistorieVermieterDetail(result) {      
         $("#divHistorieVermieterDetail").html(result);

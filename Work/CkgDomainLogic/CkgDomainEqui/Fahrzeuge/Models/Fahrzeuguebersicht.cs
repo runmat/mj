@@ -130,5 +130,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.RegistrationStop)]
         public bool ZulassungsSperre { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Supplier)]
+        public string Lieferant { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.City)]
+        public string Ort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FinancingType)]
+        public string FinanzierungsArt { get; set; }
     }
 }

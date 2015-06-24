@@ -83,7 +83,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void Init()
         {
-            FahrzeuguebersichtSelektor.Akion = "manuell";
             FahrzeuguebersichtSelektor.Herstellerkennung = string.Empty;
             FahrzeuguebersichtSelektor.Statuskennung = string.Empty;
             FahrzeuguebersichtSelektor.Pdi = string.Empty;            
