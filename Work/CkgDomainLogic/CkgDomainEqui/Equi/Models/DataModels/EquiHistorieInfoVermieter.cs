@@ -14,7 +14,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractNo)]
+        [LocalizedDisplay(LocalizeConstants.ContractNo_VehicleHistory)]
         public string VertragsNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2)]

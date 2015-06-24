@@ -40,7 +40,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Cancellation)]
         public DateTime? Abmeldedatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractNo_HistoryAVM)]
+        [LocalizedDisplay(LocalizeConstants.ContractNo_VehicleHistory)]
         public string VertragsNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Reference1)]
