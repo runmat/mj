@@ -87,6 +87,7 @@
             $("#" + gridName + " .outer-export-menu").hide();
 
         // build grid page sizer
+        $("#" + gridName + " .grid-page-sizer").val(grid.pageSize);
         $("#" + gridName + " .grid-page-sizer").change(function () {
             var thatGrid = $("#" + gridName).data("tGrid");
             thatGrid.pageSize = $(this).val();
