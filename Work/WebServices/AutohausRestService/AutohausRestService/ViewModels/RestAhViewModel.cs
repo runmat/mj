@@ -104,7 +104,7 @@ namespace AutohausRestService.ViewModels
 
         private string GenerateWebLink(string remoteLoginKey, WebLinkType linkTyp, string itemId)
         {
-            var expToken = UserSecurityService.UrlRemoteEncryptHourAndDate(DateTime.Now.ToString("HHddMMyyy"));
+            var expToken = UserSecurityService.UrlRemoteEncryptHourAndDate(DateTime.Now.AddYears(10).ToString("HHddMMyyy"));
             var itemIdToken = HttpUtility.UrlEncode(CryptoMd5.Encrypt(itemId.Trim()));
             var appLink = "";
 
