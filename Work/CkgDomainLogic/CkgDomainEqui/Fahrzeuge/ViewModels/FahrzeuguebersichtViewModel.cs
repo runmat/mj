@@ -29,10 +29,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
-                return DataServiceHersteller.GetFahrzeugHersteller().Concat(new List<Fahrzeughersteller>
-            {
-                new Fahrzeughersteller { HerstellerKey = String.Empty, HerstellerName = Localize.DropdownDefaultOptionAll, ShowAllToken = true}
-                                        }).OrderBy(w => w.HerstellerName).ToList();
+                return PropertyCacheGet(() => DataServiceHersteller.GetFahrzeugHersteller()
+                    .Concat(new List<Fahrzeughersteller>
+                    {
+                        new Fahrzeughersteller { HerstellerKey = String.Empty, HerstellerName = Localize.DropdownDefaultOptionAll, ShowAllToken = true }
+                    }).OrderBy(w => w.HerstellerName).ToList());
             }
         }
 
@@ -41,10 +42,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
-                return DataService.GetPDIStandorte().Concat(new List<FahrzeuguebersichtPDI>
-            {
-                new FahrzeuguebersichtPDI { PDIKey = String.Empty, PDIText = Localize.DropdownDefaultOptionAll }
-                                        }).OrderBy(w => w.PDIText).ToList();
+                return PropertyCacheGet(() => DataService.GetPDIStandorte()
+                    .Concat(new List<FahrzeuguebersichtPDI>
+                    {
+                        new FahrzeuguebersichtPDI { PDIKey = String.Empty, PDIText = Localize.DropdownDefaultOptionAll }
+                    }).OrderBy(w => w.PDIText).ToList());
             }
         }
        
@@ -53,10 +55,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
-                return DataService.GetFahrzeugStatus().Concat(new List<FahrzeuguebersichtStatus>
-            {
-                new FahrzeuguebersichtStatus { StatusKey = String.Empty, StatusText = Localize.DropdownDefaultOptionAll }
-                                        }).OrderBy(w => w.StatusText).ToList();
+                return PropertyCacheGet(() => DataService.GetFahrzeugStatus()
+                    .Concat(new List<FahrzeuguebersichtStatus>
+                    {
+                        new FahrzeuguebersichtStatus { StatusKey = String.Empty, StatusText = Localize.DropdownDefaultOptionAll }
+                    }).OrderBy(w => w.StatusText).ToList());
             }
         }
                            
