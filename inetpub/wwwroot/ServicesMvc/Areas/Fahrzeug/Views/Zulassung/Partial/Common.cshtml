@@ -180,20 +180,6 @@
         Grid_FormatMultiRowSelected(cb);
 
         FahrzeugAuswahlSelectionChanged(cb.val(), cb.is(':checked'));
-        return;
-
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vin: cb.val(), isChecked: cb.is(':checked') },
-            loadingShow: false,
-            success: function (result) {
-                _selectedItemsCount = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
-                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
-                ShowHideNextButton();
-            }
-        });
     }
 
     function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
@@ -202,22 +188,6 @@
 
         FahrzeugAuswahlSelectionChanged("", check, function() {
             FilterGrid("GridFahrzeugAuswahl");
-        });
-        return;
-
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vin: "", isChecked: check },
-            loadingShow: true,
-            success: function (result) {
-                _selectedItemsCount = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
-                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
-                ShowHideNextButton();
-                
-                FilterGrid("GridFahrzeugAuswahl");
-            }
         });
     }
 
