@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
 using System.Web.Mvc;
 using System.Xml.Serialization;
@@ -7,7 +9,9 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
+using DocumentTools.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
@@ -30,6 +34,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
+                if (FahrzeugSelektor.Auswahl == "UPLOAD")
+                    return FahrzeugeUpload;
+
                 if (!EditMode)
                     return FahrzeugeGesamt;
 
@@ -97,6 +104,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             FahrzeugSelektor.NurMitBemerkung = nurMitBemerkung;
         }
 
+        public void Init()
+        {
+            PropertyCacheClear(this, m => m.FahrzeugSelektor);
+            PropertyCacheClear(this, m => m.FahrzeugeUpload);
+        }
+
         public void LoadFahrzeuge()
         {
             EditMode = true;
@@ -151,7 +164,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             EditMode = false;
 
-            var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
+            var fzge = SelektierteFahrzeuge;
 
             var anzOk = DataService.FahrzeugeSperren(model.Sperren, model.Sperrtext, ref fzge);
 
@@ -170,7 +183,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             EditMode = false;
 
-            var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
+            var fzge = SelektierteFahrzeuge;
 
             var anzOk = DataService.FahrzeugeVerschieben(model.ZielPdi, ref fzge);
 
@@ -190,7 +203,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             EditMode = false;
 
-            var fzge = Fahrzeuge.Where(f => f.IsSelected).ToList();
+            var fzge = SelektierteFahrzeuge;
 
             var anzOk = DataService.FahrzeugeTexteErfassen(model.BemerkungIntern, model.BemerkungExtern, ref fzge);
 
@@ -204,5 +217,67 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             model.Message = String.Format(Localize.TextsForNVehiclesChangedSuccessfully, anzOk);
         }
+
+        #region CSV Upload
+
+        public string CsvUploadFileName { get; private set; }
+        public string CsvUploadServerFileName { get; private set; }
+
+        [XmlIgnore]
+        public List<Fahrzeuguebersicht> FahrzeugeUpload
+        {
+            get { return PropertyCacheGet(() => new List<Fahrzeuguebersicht>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public bool CsvUploadFileSave(string fileName, Func<string, bool> fileSaveAction)
+        {
+            CsvUploadFileName = fileName;
+            CsvUploadServerFileName = Path.Combine(AppSettings.TempPath, Guid.NewGuid() + ".xls");
+
+            if (!fileSaveAction(CsvUploadServerFileName))
+                return false;
+
+            var list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName, true, "", CreateInstanceFromDatarow, ',').ToList();
+            FileService.TryFileDelete(CsvUploadServerFileName);
+            if (list.None())
+                return false;
+
+            FahrzeugeUpload = list;
+
+            return true;
+        }
+
+        static Fahrzeuguebersicht CreateInstanceFromDatarow(DataRow row)
+        {
+            var item = new Fahrzeuguebersicht
+            {
+                Fahrgestellnummer = row[0].ToString()
+            };
+            return item;
+        }
+
+        public void SaveUploadItems()
+        {
+            foreach (var item in FahrzeugeUpload)
+            {
+                var fzgData = FahrzeugeGesamt.FirstOrDefault(f => f.Fahrgestellnummer == item.Fahrgestellnummer);
+                
+                if (fzgData == null)
+                {
+                    item.UploadedFound = false;
+                }
+                else
+                {
+                    ModelMapping.Copy(fzgData, item);
+                    item.UploadedFound = true;
+                    item.IsSelected = true;
+                }
+            }
+
+            DataMarkForRefresh();
+        }
+
+        #endregion
     }
 }

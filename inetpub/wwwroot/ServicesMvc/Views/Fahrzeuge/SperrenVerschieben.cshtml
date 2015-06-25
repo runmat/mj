@@ -5,6 +5,12 @@
 
 @Html.SpanAlert("Message")
 
+@*<div id="divFzgSperrenVerschiebenUpload" class="hide">
+    <div id="ExcelUpload" class="portlet app-view">
+        @Html.Partial("SperrenVerschieben/FileUpload")
+    </div>
+</div>*@
+
 <div id="divFzgSperrenVerschiebenGrid">
     @Html.Partial("SperrenVerschieben/Grid", Model)
 </div>
@@ -43,6 +49,18 @@
         Grid_PrepareMultiRowSelected("GridFzgSperrenVerschieben");
     }
 
+    function OnRowDataBound_GridFzgSperrenVerschieben(e) {
+        var auswahl = $("input[name='FahrzeugSelektor.Auswahl']:checked").val();
+        
+        var isItemOk = ((auswahl != "UPLOAD") || (e.dataItem.UploadedFound.toString().toLowerCase() == "true"));
+
+        var tr = $(e.row);
+        var classSuffix = tr.hasClass("t-alt") ? "-alt" : "";
+
+        if (!isItemOk)
+            tr.addClass("t-grid-error" + classSuffix);
+    }
+
     function OnLoad_GridFzgSperrenVerschieben() {
         $('.t-no-data td').text(ladeHinweis);
     }
@@ -64,6 +82,13 @@
             url: "FilterFzgSperrenVerschiebenData",
             data: { auswahl: auswahl, nurMitBemerkung: nurMitBem },
             success: function (result) {
+                if (auswahl == "UPLOAD") {
+                    $("#divFilterNurBemerkung").hide();
+                    ShowUploadDialog();
+                } else {
+                    $("#divFilterNurBemerkung").show();
+                }
+
                 FormPreparePrivateAjax();
                 GridFzgSperrenVerschieben_OnAllSelectionChange(false);
                 setTimeout(function () {
@@ -281,6 +306,79 @@
         });
     }
 
+    ///////////////// Excel upload ///////////////////
+
+    function ShowUploadDialog() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "ShowFzgUpload",
+            loadingShow: true,
+            data: {},
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                var detailWindow = $("#FzgUploadDialog").data("tWindow");
+                detailWindow.title('@Localize.Upload');
+                $("#InnerFzgUploadDialog").html(result);
+                detailWindow.center().open();
+            }
+        });
+
+        return false;
+    }
+
+    function UploadStart(e) {
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.xls') <= 0) {
+            alert('Bitte nur XLS-Dateien hochladen!');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei!');
+    }
+
+    function UploadFinished(e) {
+
+        LoadingHide();
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        SubmitUpload();
+    }
+
+    function SubmitUpload() {
+        $.ajax({
+            type: "POST",
+            url: "ExcelUploadFzgSperrenVerschiebenSubmit",
+            loadingShow: true,
+            success: function (result) {
+                $("#FzgUploadDialog").data("tWindow").close();
+                GridFzgSperrenVerschieben_MultiSelectUpdate(result.allSelectionCount);
+                GridRefresh();
+            }
+        });
+    }
+
 </script>
 
 @(Html.Telerik().Window()
@@ -309,3 +407,12 @@
     .Scrollable(false)
     .Width(540)
     .Content(@<text><div id="InnerFzgTextErfassenDialog"></div></text>))
+    
+@(Html.Telerik().Window()
+    .Name("FzgUploadDialog")
+    .Visible(false)
+    .Modal(true)
+    .Draggable(true)
+    .Scrollable(false)
+    .Width(400)
+    .Content(@<text><div id="InnerFzgUploadDialog"></div></text>))

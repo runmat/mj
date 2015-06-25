@@ -361,6 +361,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.DadPdi = sap.ZZCARPORT;
                         business.Farbcode = sap.ZFARBE;
                         business.Farbname = sap.FARBE_TEXT;
+                        business.Anhaengerkupplung = sap.ZAHK.XToBool();
+                        business.Navi = sap.ZNAVI.XToBool();
+                        business.Winterreifen = sap.ZMS_REIFEN.XToBool();
                     }));
             }
         }

@@ -14,8 +14,10 @@
     
     <div id="divFzgSperrenVerschiebenFilter" class="form-horizontal label-width-150">
         @Html.FormRadioButtonListFor(m => m.FahrzeugSelektor.Auswahl, Model.FahrzeugSelektor.AuswahlOptionen.ToSelectList())
-
-        @Html.FormCheckBoxFor(m => m.FahrzeugSelektor.NurMitBemerkung, labelHidden: true)
+        
+        <div id="divFilterNurBemerkung">
+            @Html.FormCheckBoxFor(m => m.FahrzeugSelektor.NurMitBemerkung, labelHidden: true)
+        </div>
     </div>
 }
 
@@ -25,8 +27,8 @@
     .XAjaxDataBinding("FzgSperrenVerschiebenAjaxBinding", "Fahrzeuge")
     .Columns(columns =>
     {
-        columns.XBound("")
-            .ClientTemplate("<input type='checkbox' " + (Model.EditMode ? "" : "disabled") + " name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenVerschieben($(this))' />")
+        columns.XBound(c => c.IsSelected)
+            .ClientTemplate("<input type='checkbox' <# if (!data.IsViewModelEditMode || (data.IsViewModelUpload && !data.UploadedFound)) { #> disabled <# } #> name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenVerschieben($(this))' />")
             .HeaderTemplate("<input type='checkbox' " + (Model.EditMode ? "" : "disabled") + " id='uncheckAllRecords' onchange='GridFzgSperrenVerschieben_OnAllSelectionChange($(this).is(\":checked\"))' />")
             .Filterable(false);
 
@@ -43,9 +45,12 @@
         columns.XBound(c => c.BemerkungSperre);
         columns.XBound(c => c.BemerkungExtern);
         columns.XBound(c => c.BemerkungIntern);
+        columns.XBound(c => c.Anhaengerkupplung);
+        columns.XBound(c => c.Navi);
+        columns.XBound(c => c.Winterreifen);
     })
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFzgSperrenVerschieben"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFzgSperrenVerschieben").OnRowDataBound("OnRowDataBound_GridFzgSperrenVerschieben"))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
     .ToolBar(commands =>
@@ -72,7 +77,7 @@
 <script type="text/javascript">
     $('#divFzgSperrenVerschiebenFilter').on('change', ':radio', function (e) {
         FilterFzgSperrenVerschiebenData();
-    });
+    });    
     $('#divFzgSperrenVerschiebenFilter').on('change', ':checkbox', function (e) {
         FilterFzgSperrenVerschiebenData();
     });

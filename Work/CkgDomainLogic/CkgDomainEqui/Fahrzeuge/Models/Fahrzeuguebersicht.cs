@@ -1,4 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -103,5 +107,25 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Bearbeitungsstatus { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.WinterTires)]
+        public bool Winterreifen { get; set; }
+ 
+        [LocalizedDisplay(LocalizeConstants.Navi)]
+        public bool Navi { get; set; }
+        
+        [LocalizedDisplay(LocalizeConstants.TrailerHitch)]
+        public bool Anhaengerkupplung { get; set; }
+
+        public bool UploadedFound { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<FahrzeugSperrenVerschiebenViewModel> GetSperrenVerschiebenViewModel { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore]
+        public bool IsViewModelEditMode { get { return (GetSperrenVerschiebenViewModel != null && GetSperrenVerschiebenViewModel().EditMode); } }
+
+        [GridHidden, NotMapped, XmlIgnore]
+        public bool IsViewModelUpload { get { return (GetSperrenVerschiebenViewModel != null && GetSperrenVerschiebenViewModel().FahrzeugSelektor.Auswahl == "UPLOAD"); } }
     }
 }
