@@ -20,6 +20,7 @@ namespace AppRemarketing.forms
         private bool isExcelExportConfigured;
         private Reifenversand m_Report;
         private bool m_ModusReifenAnnahme;
+        private string ModusReifenText { get { return m_ModusReifenAnnahme ? "Reifen-Annahme" : "Reifen-Versand"; } }
         private string m_DateColumnName;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -378,13 +379,13 @@ namespace AppRemarketing.forms
 
             if (m_Report.Status == -9999)
             {
-                lblError.Text = "Die Daten konnten nicht gesichert werden.";
+                lblError.Text = ModusReifenText + ": Die Daten konnten nicht gesichert werden.";
                 return;
             }
 
             if (m_Report.tblUpload.Rows.Count > 0)
             {
-                lblError.Text = "Es konnten nicht alle Datensätze verarbeitet werden. Bitte korrigieren Sie Ihre Eingaben.";
+                lblError.Text = ModusReifenText + ": Es konnten nicht alle Datensätze verarbeitet werden. Bitte korrigieren Sie Ihre Eingaben.";
 
                 m_Report.Edit = true;
 
@@ -394,7 +395,7 @@ namespace AppRemarketing.forms
             }
             else
             {
-                lblError.Text = "Ihre Daten wurden gespeichert.";
+                lblError.Text = ModusReifenText + ": Ihre Daten wurden gespeichert.";
 
                 rgGrid1.Enabled = false;
                 lbSend.Visible = false;
