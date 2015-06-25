@@ -126,13 +126,13 @@
                                                             </asp:TextBox>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
-                                                    <telerik:GridTemplateColumn DataField="DAT_REIFVERS" SortExpression="DAT_REIFVERS" Groupable="false">
+                                                    <telerik:GridTemplateColumn UniqueName="gridDateColumn" Groupable="false">
                                                         <HeaderStyle Width="85px" />
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" ID="lblVersanddatum" Text='<%# Eval("DAT_REIFVERS") %>'>
+                                                            <asp:Label runat="server" ID="lblVersanddatum" Text='<%# Eval(Session["DateColumnName"].ToString()) %>'>
                                                             </asp:Label>
                                                             <asp:TextBox ID="txtVersanddatum" runat="server" Visible="False" 
-                                                                Text='<%# Eval("DAT_REIFVERS", "{0:dd.MM.yyyy}") %>' 
+                                                                Text='<%# Eval(Session["DateColumnName"].ToString(), "{0:dd.MM.yyyy}") %>' 
                                                                 BorderColor="Red" Width="80px" BorderWidth="1px">
                                                             </asp:TextBox>
                                                         </ItemTemplate>

@@ -19,6 +19,8 @@ namespace AppRemarketing.forms
         private App m_App;
         private bool isExcelExportConfigured;
         private Reifenversand m_Report;
+        private bool m_ModusReifenAnnahme;
+        private string m_DateColumnName;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -30,6 +32,13 @@ namespace AppRemarketing.forms
 
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
             lblError.Text = "";
+
+            m_ModusReifenAnnahme = (Request.QueryString["ReifenAnnahme"] != null);
+            m_DateColumnName = (m_ModusReifenAnnahme ? "DAT_REIFEN_ANNAHME" : "DAT_REIFVERS");
+            Session["DateColumnName"] = m_DateColumnName;
+            var gridDateColumn = (GridTemplateColumn)rgGrid1.Columns.FindByUniqueName("gridDateColumn");
+            gridDateColumn.DataField = m_DateColumnName;
+            gridDateColumn.SortExpression = m_DateColumnName;
 
             if (!IsPostBack)
             {
@@ -76,11 +85,11 @@ namespace AppRemarketing.forms
                 return;
             }
 
-            m_Report = new Reifenversand(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "");
+            m_Report = new Reifenversand(ref m_User, m_App, (string)Session["AppID"], Session.SessionID, "", m_ModusReifenAnnahme, m_DateColumnName);
 
             m_Report.tblUpload = new DataTable();
             m_Report.tblUpload.Columns.Add("FAHRGNR", typeof(string));
-            m_Report.tblUpload.Columns.Add("DAT_REIFVERS", typeof(string));
+            m_Report.tblUpload.Columns.Add(m_Report.DateColumnName, typeof(string));
             m_Report.tblUpload.Columns.Add("RET", typeof(string));
             m_Report.tblUpload.Columns.Add("ID", typeof(int));
             m_Report.tblUpload.AcceptChanges();
@@ -110,7 +119,7 @@ namespace AppRemarketing.forms
                 DateTime DummyDateTime;
                 if ((DateTime.TryParse(dr[1].ToString(), out DummyDateTime)))
                 {
-                    newRow["DAT_REIFVERS"] = Convert.ToDateTime(dr[1]).ToShortDateString();
+                    newRow[m_Report.DateColumnName] = Convert.ToDateTime(dr[1]).ToShortDateString();
                 }
                 else
                 {
@@ -210,7 +219,7 @@ namespace AppRemarketing.forms
                     if (errorRows.Length > 0)
                     {
                         errorRows[0]["FAHRGNR"] = ((TextBox)gdi.FindControl("txtFahrgestellnummer")).Text;
-                        errorRows[0]["DAT_REIFVERS"] = ((TextBox)gdi.FindControl("txtVersanddatum")).Text;
+                        errorRows[0][m_Report.DateColumnName] = ((TextBox)gdi.FindControl("txtVersanddatum")).Text;
                     }
                 }
             }
