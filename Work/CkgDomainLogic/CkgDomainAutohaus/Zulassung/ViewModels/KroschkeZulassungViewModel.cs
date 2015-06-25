@@ -176,26 +176,25 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #endregion
 
         #region Massenzulassung
+
         /// <summary>
         /// Überträgt die Liste der anzumeldenden Fahrzeuge in das ViewModel und
         /// sorgt für Vorbelegung der relevanten Formulardaten, falls die entsprechenden 
         /// Fahrzeug-Properties identische Werte haben.
         /// </summary>
         /// <param name="finList"></param>
-        public void SetFinList(object finList)
+        /// <returns>True, wenn FinList mit Fahrzeugen vorhanden</returns>
+        public bool SetFinList(object finList)
         {
-
-            // IsMassenzulassung = true;
-            Zulassung.Zulassungsdaten.IsMassenzulassung = true;
-
             FinList = (List<FahrzeugAkteBestand>)finList;
-
-            // FinList = this.FahrzeugAkteBestandDataService.GetFahrzeugeAkteBestand(new FahrzeugAkteBestandSelektor());
+            if (FinList == null)
+                return false;
 
             FinList.ToList().ForEach(x => x.IsSelected = true);
 
             var firstFahrzeug = FinList.FirstOrDefault();
-            if (firstFahrzeug == null) return;
+            if (firstFahrzeug == null) 
+                return false;
 
             #region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
             var isEqual = true;
@@ -209,11 +208,37 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
 
             if (isEqual)    // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
-            {
-                SetParamHalter(firstFahrzeug.Halter);   // Zulassung.Halterdaten = firstFahrzeug.SelectedHalter;
-            }
+                SetParamHalter(firstFahrzeug.Halter);
+
             #endregion
 
+            Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Setzt alle Kennzeichen auf Standardwerte
+        /// </summary>
+        /// <param name="zulassungsKreis"></param>
+        /// <returns></returns>
+        public string SetKreisAll(string zulassungskreis)
+        {
+            if (zulassungskreis.IsNullOrEmpty())
+                return null;
+
+            try
+            {
+                zulassungskreis += "-";
+                FinList.ToList().ForEach(x => x.WunschKennz1 = zulassungskreis);
+                FinList.ToList().ForEach(x => x.WunschKennz2 = zulassungskreis);
+                FinList.ToList().ForEach(x => x.WunschKennz3 = zulassungskreis);
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.InnerException.ToString();
+            }
         }
 
         /// <summary>
@@ -241,11 +266,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Evb = evb);
                 }
                 
-                return null;  // return Json(new { ok = true, message = Localize.SaveSuccessful });
+                return null; 
             }
             catch (Exception e)
             {
-                return e.InnerException.ToString(); // Json(new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, e.InnerException) });
+                return e.InnerException.ToString(); 
             }
         }
 
@@ -357,6 +382,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             string zulassungsKennzeichen;
             LoadKfzKreisAusHalterAdresse(out zulassungsKreis, out zulassungsKennzeichen);
             Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
+
+            // MMA Falls Massenzulassung, dann den Zulassungskreis auch für alle Wunschkennzeichen setzen
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                this.SetKreisAll(zulassungsKreis);
+            }
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
                 Zulassung.Zulassungsdaten.Kennzeichen = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);

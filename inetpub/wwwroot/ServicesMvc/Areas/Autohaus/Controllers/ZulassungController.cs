@@ -77,7 +77,10 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamAbmeldung(null);
             ViewModel.DataInit();
 
-            ViewModel.SetFinList(TempData["SelectedFahrzeuge"]);
+            if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+            {
+                return RedirectToAction("Index");
+            }
 
             var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
             if (firstFahrzeug == null)
@@ -109,7 +112,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            // var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             var dt = ViewModel.FinList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Holder, dt, landscapeOrientation: true);
 
@@ -153,7 +155,6 @@ namespace ServicesMvc.Autohaus.Controllers
         [GridAction]
         public ActionResult FahrzeugAuswahlSelectedAjaxBinding()
         {
-            // var items = ViewModel.FinListFiltered.Where(x => x.IsSelected == true);
             var items = ViewModel.FinList.Where(x => x.IsSelected);
             return View(new GridModel(items));
         }
@@ -174,6 +175,13 @@ namespace ServicesMvc.Autohaus.Controllers
                 zulassungenAnzahlPdiTotal = ViewModel.FinList.Count(x => x.IsSelected), //  11,     // ViewModel.FahrzeugeSelected,
                 zulassungenAnzahlGesamtTotal = ViewModel.FinList.Count   // ViewModel.FahrzeugeTotal,
             });
+        }
+
+        [HttpPost]
+        public JsonResult SetKreisAll(string zulassungsKreis)
+        {
+            var result = ViewModel.SetKreisAll(zulassungsKreis);
+            return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
         [HttpPost]

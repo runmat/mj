@@ -5,6 +5,121 @@
     var materialList = (List<Material>)ViewData["MaterialList"];
 }
 
+<style>
+    .inputwidth {
+        width: 100px;
+    }
+</style>
+
+<script>
+    
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+    CheckKennzeichenReserviert();
+    
+    function SetEvb(fin, evb, tagObj) { 
+        $.ajax({
+                type: "POST",
+                url: "SetEvb",
+                data: { fin: fin, evb: evb },
+                loadingShow: false,
+                success: function(result) {
+                    
+                    // Etwaige Error-Markierungen entfernen...
+                    $('#validationErrorEvb').remove();
+                    $(tagObj).closest(".control-group").removeClass("error");
+                    $(tagObj).removeClass("input-validation-error");
+                    
+                    // wenn fin = null, dann wurde für jedes Fahrzeug soeben die selbe evb vergeben. Dies jetzt noch visualisieren...
+                    if (result.ok == true && fin == "") {
+                        $('.editevb').val(evb);
+                        $('#GridFahrzeugAuswahlZulassung .editevb').removeClass("input-validation-error");
+                    }
+
+                    if (result.ok == false) {
+                        $(tagObj).closest(".control-group").addClass("error");
+                        $(tagObj).addClass("input-validation-error");
+                        $(tagObj).after("<span id='validationErrorEvb' class='help-inline'>" + result.message + "</span>");
+                    }
+                }
+            });
+    }
+    
+    function SetZulassungskreis(zulassungskreis) {
+        $.ajax({
+                type: "POST",
+                url: "SetKreisAll",
+                data: { zulassungskreis: zulassungskreis },
+                loadingShow: false,
+                success: function (result) {
+                    if (result.ok == true) {
+                        $('.editkennz').val(zulassungskreis + "-");
+                    }
+                    if (result.ok == false) {
+                        alert(result.message);
+                    }
+                }
+            });
+    }
+
+    $(function () {
+
+        $('#Zulassungskreis').off('change').on('change').change(function() {
+            var zulassungskreis = $(this).val();
+            SetZulassungskreis(zulassungskreis);
+        });
+
+        $("#EvbNr").off('change').on('change').change(function () {      // Auswirkung auf alle Fahrzeuge
+            var tagObj = $(this);
+            var evb = $(this).val();
+            SetEvb("", evb, tagObj);
+        });
+
+        $(document).off('change', '.editevb');
+        $(document).on('change', '.editevb', function () {               // Auswirkung auf ein Fahrzeug
+            var tagObj = $(this);
+            var evb = $(this).val();
+            var tr = $(this).closest('tr');
+            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+            var dataItem = grid.dataItem(tr);
+            var fin = dataItem["FIN"];
+            SetEvb(fin, evb, tagObj);
+        });
+
+        $(document).off('change', '.editkennz');
+        $(document).on('change', '.editkennz', function () {             // Auswirkung auf ein Fahrzeug
+            var tr = $(this).closest('tr');
+            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+            var dataItem = grid.dataItem(tr);
+            var fin = dataItem["FIN"];
+            var field = $(this).data('fieldname');
+            var wkennz = $(this).val();
+            $.ajax({
+                type: "POST",
+                url: "SetWunschKennz",
+                data: { fin: fin, field: field, kennz: wkennz },
+                loadingShow: false,
+                success: function (result) {
+                    if (result.ok == true) {
+                    }
+                    if (result.ok == false) {
+                        alert(result.message);
+                    }
+                }
+            });
+        });
+    });
+
+    function AjaxFormZulassungsdatenComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+</script>
+
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivZulassungsdaten", OnComplete = "AjaxFormZulassungsdatenComplete();" },
@@ -39,7 +154,33 @@
 
             if (Model.IsMassenzulassung)
             {
-                // evtl. Grid
+              
+                    using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
+                    {
+                        var gridName = "GridFahrzeugAuswahlZulassung";
+        @(Html.Telerik()
+              .Grid<FahrzeugAkteBestand>()
+              .Name(gridName)
+              .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+              .Columns(columns =>
+              {
+                  columns.XBound(c => c.FIN);
+                  columns.XBound(c => c.FahrzeugArt);
+                  columns.XBound(c => c.HandelsName);
+                  columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz1' value='<#= data.WunschKennz1 #>' />");
+                  columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");
+                  columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz3' value='<#= data.WunschKennz3 #>' />");
+                  columns.XBound(c => c.ResKennz);
+                  columns.XBound(c => c.ReservationNr);
+                  columns.XBound(c => c.ReservationName);
+                  columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
+              })
+              .XAutoColumnConfiguration()
+              .ClientEvents(events => events.XAutoClientEvents(gridName))
+              .XPageSize(10)
+              .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+              )
+                    }
             }
             else
             {
