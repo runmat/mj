@@ -201,12 +201,14 @@
 
     function ShowUnitNumbers(result) {
         $("#divGridUnitnumbers").html(result);
-        GridAllColumnFilterApplyToGrid("GridUnitnumbers");
-        $("#divGridBatcherfassung").slideUp();
-        $("#divGridUnitnumbers").slideDown();
-        $("#btnBackToResult").show();
-        setTimeout('LoadingHide()', 1000);        
-        FormPreparePrivateAjax();
+        setTimeout(function () {
+            GridAllColumnFilterApplyToGrid("GridUnitnumbers");
+            $("#divGridBatcherfassung").slideUp();
+            $("#divGridUnitnumbers").slideDown();
+            $("#btnBackToResult").show();
+            LoadingHide();
+            FormPreparePrivateAjax();
+        }, 1000);
     }
 
     function OnDataBound_GridUnitnumbers() {
