@@ -67,10 +67,6 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 
         public List<Adresse> KaeuferForSelection { get { return PropertyCacheGet(() => GetPartnerAdressenForSelection("KAEUFER")); } }
 
-        // 20150618 MMA ITA8076 Massenzulassung ##mma##removeme??##
-        public int FahrzeugeSelected { get; set; }
-        public int FahrzeugeTotal { get; set; }
-        
         public void DataInit()
         {
             DataMarkForRefresh();

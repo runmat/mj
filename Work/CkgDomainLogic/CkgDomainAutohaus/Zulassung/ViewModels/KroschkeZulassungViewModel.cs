@@ -826,6 +826,34 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
+        // MMA Save Massenzulassung 
+        public string SaveMultiReg()
+        {
+        
+            // Basierend auf FinList eine Liste mit Zulassungen erstellen, so dass für jedes Fahrzeug eine separate Zulassung erfolgen kann
+            var zulassungenMultiReg = new List<Vorgang>();
+
+            // Alle zuzulassenden Fahrzeuge durchlaufen 
+            foreach (var fahrzeugAkteBestand in FinList)
+            {
+                // var singleZulassung = Zulassung;
+                var singleZulassung = ModelMapping.Copy(Zulassung);
+                singleZulassung.Fahrzeugdaten.FahrgestellNr = fahrzeugAkteBestand.FIN;
+                singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb;
+                singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
+                singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
+                singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
+
+                zulassungenMultiReg.Add(singleZulassung);
+                // Save(new List<Vorgang> { singleZulassung }, saveDataToSap: true, saveFromShoppingCart: false);
+
+            }
+
+            Save(zulassungenMultiReg, saveDataToSap: true, saveFromShoppingCart: false);
+
+            return null;
+        }
+
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             if (!ModusAbmeldung && Zulassungsarten.None())

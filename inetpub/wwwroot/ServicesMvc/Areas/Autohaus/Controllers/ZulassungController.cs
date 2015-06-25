@@ -128,11 +128,6 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
             allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
             allCount = ViewModel.FinList.Count();
-
-            // ##MMA## FinListFiltered oder FinList?!
-            //ViewModel.FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            //allSelectionCount = ViewModel.FinListFiltered.Count(c => c.IsSelected);
-            //allCount = ViewModel.FinListFiltered.Count();
         }
 
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
@@ -171,9 +166,8 @@ namespace ServicesMvc.Autohaus.Controllers
             {
                 allSelectionCount,
                 allCount,
-                // zulassungenAnzahlPdiTotal = ViewModel.FinListFiltered.Count, //  11,     // ViewModel.FahrzeugeSelected,
-                zulassungenAnzahlPdiTotal = ViewModel.FinList.Count(x => x.IsSelected), //  11,     // ViewModel.FahrzeugeSelected,
-                zulassungenAnzahlGesamtTotal = ViewModel.FinList.Count   // ViewModel.FahrzeugeTotal,
+                zulassungenAnzahlPdiTotal = ViewModel.FinList.Count(x => x.IsSelected), 
+                zulassungenAnzahlGesamtTotal = ViewModel.FinList.Count   
             });
         }
 
@@ -633,7 +627,16 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Receipt()
         {
-            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
+
+            if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                ViewModel.SaveMultiReg();
+            }
+            else
+            {
+                ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
+            }
+
             ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);

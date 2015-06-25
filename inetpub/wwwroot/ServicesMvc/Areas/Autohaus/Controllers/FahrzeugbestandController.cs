@@ -163,17 +163,22 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(new
             {
                 allSelectionCount,
-                allCount,
-                zulassungenAnzahlPdiTotal = ViewModel.FahrzeugeSelected,    
-                zulassungenAnzahlGesamtTotal = ViewModel.FahrzeugeTotal,   
+                allCount
+                //zulassungenAnzahlPdiTotal = 1, // ViewModel.FahrzeugeSelected,    
+                //zulassungenAnzahlGesamtTotal = 2, //  ViewModel.FahrzeugeTotal,   
             });
         }
 
         #endregion
 
+        /// <summary>
+        /// Für Massenzulassung
+        /// </summary>
+        /// <returns></returns>
         public ActionResult MultiReg()
         {
-            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).ToList();
+            // var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestandFiltered.Where(x => x.IsSelected).ToList();
+            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestand.Where(x => x.IsSelected).ToList();   // Alle Fahrzeuge zurückgeben, die vom Benutzer selektiert wurden
 
             TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
 
