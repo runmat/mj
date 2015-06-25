@@ -4,9 +4,8 @@
 
     var _modelStateValid = false;
 
-    function FormPreparePrivate() {       
+    function FormPreparePrivate() {
         $("#BatcherfassungSearchForm button[type=submit]").trigger("click");
-        GridAllColumnFilterApplyToGrid("GridBatcherfassung");    
     }
 
     function FormPreparePrivateAjax() {
@@ -59,8 +58,10 @@
         $("#divGridBatcherfassung").html(result);
 
         // move our grid filter form into grid's toolbar:
-        GridAllColumnFilterApplyToGrid("GridBatcherfassung");
-        $("#divGridBatcherfassung").slideDown();
+        setTimeout(function () {
+            GridAllColumnFilterApplyToGrid("GridBatcherfassung");
+            $("#divGridBatcherfassung").slideDown();
+        }, 500); 
     }
 
     function ItemEdit(id) {
