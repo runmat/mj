@@ -507,6 +507,10 @@ namespace SapORM
             //new FunctionReflector("Z_M_EC_AVM_MELDUNGEN_PDI1").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
             //new FunctionReflector("Z_M_Ec_Avm_Pdiwechsel").WriteOrmForExportTableStructures("ZZKUNNR", "0000219853");
 
+            //new FunctionReflector("Z_DPM_READ_REM_VERS_VORG_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000330089");
+            //new FunctionReflector("Z_DPM_SAVE_REM_VERS_VORG_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000330089");
+            //new FunctionReflector("Z_DPM_READ_LAND_02").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000330089");
+
 
             //CoCTest();
             //TeslaTest();

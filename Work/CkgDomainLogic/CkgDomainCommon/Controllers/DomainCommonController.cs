@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿// ReSharper disable DoNotCallOverridableMethodsInConstructor
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
@@ -40,14 +39,14 @@ namespace ServicesMvc.Controllers
             if (string.IsNullOrEmpty(url) == false)
             {
                 var decodedUrl = HttpUtility.UrlDecode(url);
-                if (decodedUrl.StartsWith("mvc/"))
+                if (decodedUrl.NotNullOrEmpty().StartsWith("mvc/"))
                 {
-                    var mvcReadyUrl = string.Concat("~/", decodedUrl.Replace("mvc/", string.Empty));
+                    var mvcReadyUrl = string.Concat("~/", decodedUrl.NotNullOrEmpty().Replace("mvc/", string.Empty));
                     result = new RedirectResult(mvcReadyUrl);
                 }
                 else
                 {
-                    var nonMvcUrl = decodedUrl + (decodedUrl.Contains("?") ? "&" : "?") + "AppID=" + logappid;
+                    var nonMvcUrl = decodedUrl + (decodedUrl.NotNullOrEmpty().Contains("?") ? "&" : "?") + "AppID=" + logappid;
                     result = new RedirectResult(nonMvcUrl);
                 }
             }
