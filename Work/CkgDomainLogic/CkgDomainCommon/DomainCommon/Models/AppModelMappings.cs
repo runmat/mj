@@ -1,4 +1,5 @@
-﻿// ReSharper disable InconsistentNaming
+﻿using GeneralTools.Contracts;
+// ReSharper disable InconsistentNaming
 using System.Collections.Generic;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -157,6 +158,53 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "DOMVALUE_L", "Wert" },
                         { "DDTEXT", "Beschreibung" },
                     }));
+            }
+        }
+
+        #endregion
+
+
+        #region Haendler Adressen
+
+
+        static public ModelMapping<Z_DPM_READ_REM_VERS_VORG_01.GT_OUT, HaendlerAdresse> Z_DPM_READ_MODELID_TAB__GT_OUT_To_HaendlerAdresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_REM_VERS_VORG_01.GT_OUT, HaendlerAdresse>(
+                                                 new Dictionary<string, string>(),
+                                                 (s, d) =>
+                                                 {
+                                                     d.HaendlerNr = s.HAENDLER;
+                                                 }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_SAVE_REM_VERS_VORG_01.GT_TAB, HaendlerAdresse> Z_DPM_SAVE_MODELID_TAB__GT_TAB_To_HaendlerAdresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_SAVE_REM_VERS_VORG_01.GT_TAB, HaendlerAdresse>(
+                                                 new Dictionary<string, string>(),
+                                                 null,
+                                                 (s, d) =>
+                                                 {
+                                                     d.HAENDLER = s.HaendlerNr;
+                                                 }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, SelectItem> Z_DPM_READ_LAND_02__GT_OUT_To_SelectItem
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, SelectItem>(
+                                                 new Dictionary<string, string>(),
+                                                 (s, d) =>
+                                                 {
+                                                     d.Key = s.LAND1_EXT;
+                                                     d.Text = s.LAND1 + ", " + s.LANDX50;
+                                                 }));
             }
         }
 

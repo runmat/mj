@@ -111,6 +111,7 @@
     <Compile Include="Controllers\DocumentController.cs" />
     <Compile Include="Controllers\DomainCommonController.cs" />
     <Compile Include="Controllers\ChartsController.cs" />
+    <Compile Include="Controllers\HaendlerController.cs" />
     <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\UserReportingController.cs" />
     <Compile Include="Controllers\XarisController.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="DomainCommon\Models\AppModelMappings.cs" />
     <Compile Include="DomainCommon\Models\Domaenenfestwert.cs" />
     <Compile Include="DomainCommon\Models\Fahrzeug.cs" />
+    <Compile Include="DomainCommon\Models\HaendlerAdresse.cs" />
     <Compile Include="DomainCommon\Models\HaendlerAdressenSelektor.cs" />
     <Compile Include="DomainCommon\Models\VersandAuftragsAnlage.cs">
       <SubType>Code</SubType>

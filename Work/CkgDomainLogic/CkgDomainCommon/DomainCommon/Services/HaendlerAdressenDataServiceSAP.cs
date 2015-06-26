@@ -1,4 +1,7 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System.Linq;
+using System.Runtime.InteropServices;
+using NUnit.Framework;
+// ReSharper disable RedundantUsingDirective
 using CkgDomainLogic.DomainCommon.Contracts;
 using System;
 using System.Collections.Generic;
@@ -15,93 +18,69 @@ using SapORM.Models;
 
 namespace CkgDomainLogic.DomainCommon.Services
 {
-    public class HaendlerAdressenDataServiceSAP : AdressenDataServiceSAP, IHaendlerAdressenDataService 
+    public class HaendlerAdressenDataServiceSAP : CkgGeneralDataServiceSAP, IHaendlerAdressenDataService
     {
-        public string AuftragGeber { get; set; }
-
-        public string AuftragGeberOderKundenNr { get { return AuftragGeber.IsNotNullOrEmpty() ? AuftragGeber : KundenNr; } }
-
-
         public HaendlerAdressenDataServiceSAP(ISapDataService sap)
-            : base(sap)
+            :base(sap)
         {
         }
 
-        #region HaendlerAdressen-Adressen, overrides
-
-        override protected Dictionary<string, string> FriendlyAdressenKennungTranslationDict
+        public List<HaendlerAdresse> GetHaendlerAdressen()
         {
-            get
-            {
-                return new Dictionary<string, string> 
+            Z_DPM_READ_REM_VERS_VORG_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            SAP.Execute();
+
+            var sapItems = Z_DPM_READ_REM_VERS_VORG_01.GT_OUT.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_DPM_READ_MODELID_TAB__GT_OUT_To_HaendlerAdresse.Copy(sapItems).ToList();
+
+            return webItems;
+        }
+
+        public string SaveHaendlerAdresse(HaendlerAdresse haendlerAdresse)
+        {
+            var error = SAP.ExecuteAndCatchErrors(
+
+                // exception safe SAP action:
+                () =>
                 {
-                    { "ZO01", "HALTER" },
-                    { "ZO02", "KAEUFER" },
-                };
-            }
-        }
+                    Z_DPM_SAVE_REM_VERS_VORG_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
-        override public bool IsEqual(Adresse a1, Adresse a2)
-        {
-            return (a1.KundenNr.ToSapKunnr() == a2.KundenNr.ToSapKunnr());
-        }
+                    var sapItems = AppModelMappings.Z_DPM_READ_MODELID_TAB__GT_OUT_To_HaendlerAdresse
+                        .CopyBack(new List<HaendlerAdresse> {haendlerAdresse}).ToList();
+                    
+                    SAP.ApplyImport(sapItems);
 
-        override public List<Adresse> LoadFromSap(string internalKey = null, string kennungOverride = null, bool kundennrMitgeben = true)
-        {
-            Z_AHP_READ_HaendlerAdressen.Init(SAP);
-            
-            SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
+                    SAP.Execute();
+                },
 
-            if (kennungOverride.IsNotNullOrEmpty() || AdressenKennung.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_PARTART", TranslateFromFriendlyAdressenKennung(kennungOverride.IsNotNullOrEmpty() ? kennungOverride : AdressenKennung));
-
-            var sapList = Z_AHP_READ_HaendlerAdressen.GT_OUT.GetExportListWithExecute(SAP);
-
-            return AppModelMappings.Z_AHP_READ_HaendlerAdressen_GT_OUT_To_Adresse.Copy(sapList, (s, d) =>
+                // SAP custom error handling:
+                () =>
                 {
-                    d.Kennung = AdressenKennung;
-                }).ToList();
+                    var sapResult = SAP.ResultMessage;
+                    if (SAP.ResultMessage.IsNotNullOrEmpty())
+                        return sapResult;
+
+                    var exportList = Z_DPM_SAVE_REM_VERS_VORG_01.GT_TAB.GetExportList(SAP);
+                    if (exportList != null && exportList.Any() && exportList.First().BEM.IsNotNullOrEmpty())
+                        return exportList.First().BEM;
+
+                    return "";
+                });
+
+            return error;
         }
 
-        override protected Adresse StoreToSap(Adresse adresse, Action<string, string> addModelError, bool deleteOnly)
+        public List<SelectItem> GetLaenderList()
         {
-            var insertMode = adresse.KundenNr.IsNullOrEmpty();
+            Z_DPM_READ_LAND_02.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            var sapAdresse = AppModelMappings.Z_AHP_CRE_CHG_HaendlerAdressen_GT_WEB_IMP_To_Adresse.CopyBack(adresse);
-            sapAdresse.PARTART = TranslateFromFriendlyAdressenKennung(sapAdresse.PARTART);
+            SAP.Execute();
 
-            Z_AHP_CRE_CHG_HaendlerAdressen.Init(SAP);
-            SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
+            var sapItems = Z_DPM_READ_LAND_02.GT_OUT.GetExportList(SAP);
+            var webItems = AppModelMappings.Z_DPM_READ_LAND_02__GT_OUT_To_SelectItem.Copy(sapItems).ToList();
 
-            try
-            {
-                var importList = Z_AHP_CRE_CHG_HaendlerAdressen.GT_WEB_IMP.GetImportList(SAP);
-                importList.Add(sapAdresse);
-                SAP.ApplyImport(importList);
-                SAP.Execute();
-
-                if (insertMode)
-                {
-                    var savedSapItem = Z_AHP_CRE_CHG_HaendlerAdressen.GT_OUT.GetExportList(SAP).FirstOrDefault();
-                    if (savedSapItem != null)
-                        adresse.KundenNr = savedSapItem.KUNNR;
-                }
-            }
-            catch (Exception e)
-            {
-                if (addModelError != null)
-                {
-                    var errorPropertyName = e.Message.GetPartEnclosedBy('\'');
-                    if (errorPropertyName.IsNullOrEmpty())
-                        errorPropertyName = "SapError";
-
-                    addModelError(errorPropertyName, e.Message);
-                }
-            }
-
-            return adresse;
+            return webItems;
         }
-
-        #endregion
     }
 }

@@ -1,0 +1,30 @@
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.HaendlerAdressenViewModel 
+@using CkgDomainLogic.DomainCommon.Models
+@{
+    var gridName = "GridHaendlerAdressen";
+}
+
+@(Html.XTelerik()
+    .XGrid<HaendlerAdresse>()
+    .Name(gridName)
+    .XAjaxDataBinding("HaendlerAdressenAjaxBinding", "Haendler")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.Aktion).Filterable(false).Sortable(false)
+                    .ClientTemplate(
+                        "<button onclick='ItemEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                ).HeaderTemplate(
+                    "<button onclick='ItemNew(\"\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                );
+
+            columns.XBound(c => c.LaenderCode);
+            columns.XBound(c => c.HaendlerNr);
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.HaendlerNr).Ascending())
+    .XToolBar("Haendler")
+)
+
+

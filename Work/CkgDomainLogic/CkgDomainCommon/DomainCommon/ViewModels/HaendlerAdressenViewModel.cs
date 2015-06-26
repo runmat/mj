@@ -1,4 +1,6 @@
 ﻿// ReSharper disable RedundantUsingDirective
+// ReSharper disable RedundantEmptyObjectOrCollectionInitializer
+using System.Linq.Expressions;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -23,75 +25,96 @@ using SapORM.Contracts;
 
 namespace CkgDomainLogic.DomainCommon.ViewModels
 {
-    public class HaendlerAdressenViewModel : AdressenPflegeViewModel
+    public class HaendlerAdressenViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
         public IHaendlerAdressenDataService DataService { get { return CacheGet<IHaendlerAdressenDataService>(); } }
 
+        public bool InsertMode { get; set; }
+
         [XmlIgnore]
-        public override IAdressenDataService AdressenDataService { get { return DataService; } }
-
-        public IHtmlString AdressenKennungLocalized { get { return new HtmlString(Localize.DeliveryAddress); } }
-
-
-        public HaendlerAdressenSelektor HaendlerAdressenSelektor
+        public List<HaendlerAdresse> HaendlerAdressen
         {
-            get { return PropertyCacheGet(() => new HaendlerAdressenSelektor { HaendlerAdressenKennung = "VERSANDADRESSE" }); }
-            set { PropertyCacheSet(value); }
+            get { return PropertyCacheGet(() => new List<HaendlerAdresse>()); }
+            private set { PropertyCacheSet(value); }
         }
 
         [XmlIgnore]
-        public List<Adresse> HaendlerAdressen
-        {
-            get { return Adressen; }
-        }
-
-        [XmlIgnore]
-        public List<Adresse> HaendlerAdressenFiltered
+        public List<HaendlerAdresse> HaendlerAdressenFiltered
         {
             get { return PropertyCacheGet(() => HaendlerAdressen); }
             private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<SelectItem> LaenderList
+        {
+            get { return PropertyCacheGet(() => DataService.GetLaenderList()); }
+        }
+
 
         public void DataInit()
         {
+            LoadHaendlerAdressen();
+        }
+
+        public void LoadHaendlerAdressen()
+        {
+            HaendlerAdressen = DataService.GetHaendlerAdressen();
+
             DataMarkForRefresh();
         }
 
-        public override void DataMarkForRefresh()
+        public void DataMarkForRefresh()
         {
-            base.DataMarkForRefresh();
-
             PropertyCacheClear(this, m => m.HaendlerAdressenFiltered);
         }
 
-        public void ValidateSearch(Action<string, string> addModelError)
+        public void Validate(Action<string, string> addModelError)
         {
         }
 
-        public void LoadHaendlerAdressens()
+        public HaendlerAdresse GetItem(string id)
         {
-            AdressenDataInit(HaendlerAdressenSelektor.HaendlerAdressenKennung, KundennrOverride);
+            var model = HaendlerAdressen.FirstOrDefault(m => m.ID == id) ?? new HaendlerAdresse();
+
+            return model;
         }
 
-        public void FilterHaendlerAdressens(string filterValue, string filterProperties)
+        public void AddItem(HaendlerAdresse newItem)
+        {
+            HaendlerAdressen.Add(newItem);
+        }
+
+        public HaendlerAdresse NewItem()
+        {
+            return new HaendlerAdresse
+            {
+            };
+        }
+
+        public void SaveItem(HaendlerAdresse item, Action<string, string> addModelError)
+        {
+            var errorMessage = DataService.SaveHaendlerAdresse(item);
+
+            if (errorMessage.IsNotNullOrEmpty())
+                addModelError("", errorMessage);
+            else
+                LoadHaendlerAdressen();
+        }
+
+        public void ValidateModel(HaendlerAdresse model, bool insertMode, Action<Expression<Func<HaendlerAdresse, object>>, string> addModelError)
+        {
+            if (!insertMode)
+                return;
+
+            if (HaendlerAdressen.Any(m => m.ID.ToLowerAndNotEmpty() == model.ID.ToLowerAndNotEmpty()))
+                addModelError(m => m.ID, Localize.ItemAlreadyExistsWithThisID);
+        }
+
+        public void FilterHaendlerAdressen(string filterValue, string filterProperties)
         {
             HaendlerAdressenFiltered = HaendlerAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
-
-        public Adresse GetHaendlerAdressenAdresse(string haendlerAdressenArt, string id)
-        {
-            if (id.IsNullOrEmpty())
-                return new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose };
-
-            AdressenDataInit(haendlerAdressenArt, LogonContext.KundenNr);
-            return Adressen.FirstOrDefault(a => a.KundenNr.ToSapKunnr() == id.ToSapKunnr()) ?? new Adresse { Name1 = Localize.DropdownDefaultOptionPleaseChoose };
-        }
-
-        public override Adresse GetItem(int id)
-        {
-            return Adressen.FirstOrDefault(c => c.KundenNr.ToSapKunnr() == id.ToString().ToSapKunnr());
         }
     }
 }
