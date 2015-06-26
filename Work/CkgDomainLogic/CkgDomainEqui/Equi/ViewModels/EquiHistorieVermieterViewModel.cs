@@ -76,6 +76,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             return new FahrzeugAnforderung
                 {
                     Fahrgestellnummer = (EquipmentHistorie == null || EquipmentHistorie.HistorieInfo == null) ? "" : EquipmentHistorie.HistorieInfo.FahrgestellNr,
+                    Kennzeichen = (EquipmentHistorie == null || EquipmentHistorie.HistorieInfo == null) ? "" : EquipmentHistorie.HistorieInfo.Kennzeichen,
                     AnlageDatum = DateTime.Today,
                     AnlageUser = LogonContext.UserName,
                     EmailAnlageUser = LogonContext.GetEmailAddressForUser(),

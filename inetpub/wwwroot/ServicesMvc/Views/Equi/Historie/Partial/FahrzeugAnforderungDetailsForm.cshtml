@@ -13,6 +13,7 @@
         @Html.HiddenFor(m => m.AnlageDatum)
         @Html.HiddenFor(m => m.AnlageUser)
         @Html.HiddenFor(m => m.Fahrgestellnummer)
+        @Html.HiddenFor(m => m.Kennzeichen)
 
 
         @Html.FormTextBoxFor(m => m.EmailAnlageUser, new { @class = "m-wrap large", @readonly = "readonly" })
@@ -21,8 +22,6 @@
         @Html.FormTextBoxFor(m => m.EmailExtern, new { @class = "m-wrap large" })
 
         @Html.FormDropDownListFor(m => m.DokTyp, FahrzeugAnforderung.GetViewModel().DocTypes, new { @class = "m-wrap large" })
-
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small uppercase" })
 
         @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap large" })
 
