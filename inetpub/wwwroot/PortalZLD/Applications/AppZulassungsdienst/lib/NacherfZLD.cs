@@ -569,6 +569,9 @@ namespace AppZulassungsdienst.lib
                 if (SelSofortabrechnung)
                     SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
 
+                if (SelAenderungAngenommene)
+                    SAP.SetImportParameter("I_AENDERUNG_ANGENOMMENE", "X");
+
                 var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfdatenRel);
                 SAP.ApplyImport(kopfListe);
 
@@ -718,6 +721,9 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
+
+                if (SelAenderungAngenommene)
+                    SAP.SetImportParameter("I_AENDERUNG_ANGENOMMENE", "X");
 
                 var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(_lstKopfdaten.Where(k => idList.Contains(k.SapId)).ToList());
                 SAP.ApplyImport(kopfListe);
