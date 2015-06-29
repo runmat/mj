@@ -63,7 +63,7 @@
                                     </td>
                                     <td class="firstLeft active">
                                         <input ID="upFileFin" runat="server" name="upFileFin" size="49" type="file" />
-                                        <a href="javascript:openinfo('InfoReifenversand.htm');">
+                                        <a runat="server" ID="HrefTemplate">
                                         <img alt="Struktur Uploaddatei" border="0" height="16px" 
                                             src="/Services/Images/info.gif" title="Struktur Uploaddatei" 
                                             width="16px" /></a> &nbsp; * max. 

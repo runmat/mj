@@ -40,7 +40,8 @@ namespace AppRemarketing.forms
             var gridDateColumn = (GridTemplateColumn)rgGrid1.Columns.FindByUniqueName("gridDateColumn");
             gridDateColumn.DataField = m_DateColumnName;
             gridDateColumn.SortExpression = m_DateColumnName;
-
+            HrefTemplate.HRef = "javascript:openinfo('InfoReifen" + (m_ModusReifenAnnahme ? "Annahme" : "Versand") + ".htm');";
+             
             if (!IsPostBack)
             {
                 Common.TranslateTelerikColumns(rgGrid1);
