@@ -20,6 +20,7 @@
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+        InitAutocompleteDropdown();
     }
 
     function GetGrid() {
@@ -143,8 +144,6 @@
         MyLoadingHide();
         if (_modelIsValid)
             CloseItemDetails();
-        else
-            InitAutocompleteDropdown();
     }
 
     var _modelIsValid = false;
@@ -157,8 +156,6 @@
         $("button[type='submit']").click(function() {
             LoadingShow();
         });
-
-        InitAutocompleteDropdown();
     }
 
     function SchluesselAdresseVerfuegbarChange() {
