@@ -125,7 +125,7 @@ namespace ZLDMobile.Controllers
                 vg.ZulDatTextEdit = vg.ZulDatText;
                 vg.StatusDurchgefuehrt = (vg.Status == "2");
                 vg.StatusFehlgeschlagen = (vg.Status == "F");
-                vg.VersandzulVkBur = ((vg.BlTyp == "VZ" || vg.BlTyp == "AV") && vg.DurchfVkBur == LogonContext.VkBur ? vg.VkBur : "");
+                vg.VersandzulVkBur = ((vg.BlTyp == "VZ" || vg.BlTyp == "AV") ? vg.VkBur : "");
             }
             return Json(JsonConvert.SerializeObject(vorgaenge));
         }
