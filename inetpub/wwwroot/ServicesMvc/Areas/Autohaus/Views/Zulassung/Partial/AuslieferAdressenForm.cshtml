@@ -19,18 +19,23 @@
         @Html.FormValidationSummary()
         
         
-        @Html.FormRadioButtonListFor(m => m.TmpSelectedPartnerrolle, CkgDomainLogic.Autohaus.Models.Vorgang.AuslieferAdressenPartnerRollen.ToSelectList())
+        @Html.FormRadioButtonListFor(m => m.TmpSelectedPartnerrolle, CkgDomainLogic.Autohaus.Models.Vorgang.AuslieferAdressenPartnerRollen.ToSelectList(), new { col = "left" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium", col = "right" })
         
-        @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @class = "m-wrap chosen" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new { @class = "m-wrap large", maxlength = 50 }, postControlHtml: @<text> @Localize.RequiredWhenOtherIsSelected</text>)
-        
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+        @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @class = "m-wrap chosen", col = "left" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium", col = "right" })
+    
+        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new { @class = "m-wrap large", maxlength = 50, col = "left" }, postControlHtml: @<text> @Localize.RequiredWhenOtherIsSelected</text>)
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
-        @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" },
+        @Html.FormPlaceHolder(null, new { col = "left" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall", col = "right" })
+
+        @Html.FormPlaceHolder(null, new { col = "left" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium", col = "right" })
+
+        @Html.FormPlaceHolder(null, new { col = "left" })
+        @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium", col = "right" },
             postControlHtml: @<text><button type="button" class="btn green margin-left-20" onclick="SaveAuslieferAdresse();"><i class="icon-ok"></i> @Localize.SaveAddress</button></text>)
 
 
