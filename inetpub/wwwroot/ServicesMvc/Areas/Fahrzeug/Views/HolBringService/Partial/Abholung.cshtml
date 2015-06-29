@@ -1,0 +1,31 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Abholung 
+@using CkgDomainLogic.Autohaus.Models
+
+<div id="DivAbholung" class="margin-top-20">
+    @using (Ajax.BeginForm("Abholung", "HolBringService", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivAbholung", OnComplete = "AjaxFormAbholungComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAbholung" }))
+    {
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.AbholungKunde, new { @class = "m-wrap " })
+        @Html.FormTextBoxFor(m => m.AbholungStrasseHausNr, new { @class = "m-wrap " })
+        
+        @Html.FormTextBoxFor(m => m.AbholungPlz, new { @class = "m-wrap xsmall", col = "left" })
+        @Html.FormTextBoxFor(m => m.AbholungOrt, new { @class = "m-wrap small", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.AbholungAnsprechpartner, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.AbholungTel, new { @class = "m-wrap ", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.AbholungUhrzeitStunden, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.AbholungUhrzeitMinuten, new { @class = "m-wrap ", col = "right" })
+
+        @Html.FormDatePickerFor(m => m.AbholungUhrzeitMinuten, new { @class = "m-wrap " })
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

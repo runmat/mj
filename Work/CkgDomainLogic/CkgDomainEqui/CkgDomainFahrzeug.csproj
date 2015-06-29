@@ -202,6 +202,7 @@
     <Compile Include="Fahrzeuge\Contracts\IDispositionslisteDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IZulaufEinsteuernugDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeuguebersichtDataService.cs" />
+    <Compile Include="Fahrzeuge\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\Fahrzeughersteller.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungUploadModel.cs" />
@@ -217,6 +218,9 @@
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtStatus.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtPDI.cs" />
+    <Compile Include="Fahrzeuge\Models\HolBringService\Abholung.cs" />
+    <Compile Include="Fahrzeuge\Models\HolBringService\Anlieferung.cs" />
+    <Compile Include="Fahrzeuge\Models\HolBringService\Auftraggeber.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
     <Compile Include="Fahrzeuge\Models\Fzg.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
@@ -234,6 +238,7 @@
     <Compile Include="Fahrzeuge\Services\FahrzeugvoravisierungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\DispositionslisteDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeuguebersichtDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\ZulaufEinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
@@ -242,6 +247,7 @@
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugvoravisierungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\HolBringServiceViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandbestandViewModel.cs" />

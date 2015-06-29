@@ -1,0 +1,60 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.HolBringServiceViewModel
+
+<h3 class="page-title">@Localize.HolUndBringService <small>@Localize.Vehicles</small></h3>
+
+<div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys, stepTitlesInNewLine: true)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Partial/" + Model.FirstStepPartialViewName, Model.Auftraggeber)
+    </div>
+</div>
+
+<input id="DatePickerTest" type="text" class="m-wrap small " />
+
+@Html.Partial("Partial/Common")
+
+<div onclick="InitTestX();">TEST</div>
+
+<script>
+
+    $(function() {
+    });
+
+    function InitTestX() {
+        var dateFormat = "dd.MM.yyyy";
+        var feiertageAsString = "@Model.FeiertageAsString";
+        feiertageAsString = "14.07.2015,15.07.2015";
+        $("#DatePickerTest").datepicker({
+            minDate: new Date(2015, 5, 1),
+            beforeShowDay: function (date) {
+                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);     // Keine Wochenenden
+
+                if (dateIsSelectable) // Datum ab heute
+                    dateIsSelectable = (date >= Date.today());
+
+                var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
+                if (dateIsSelectable)
+                    dateIsSelectable = !istFeiertag;
+                return [dateIsSelectable, ""];
+            }
+        });
+
+        $("#PickupDate").datepicker({
+            minDate: new Date(2015, 5, 1),
+            beforeShowDay: function (date) {
+                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);     // Keine Wochenenden
+
+                if (dateIsSelectable) // Datum ab heute
+                    dateIsSelectable = (date >= Date.today());
+
+                var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
+                if (dateIsSelectable)
+                    dateIsSelectable = !istFeiertag;
+                return [dateIsSelectable, ""];
+            }
+        });
+    }
+
+</script>

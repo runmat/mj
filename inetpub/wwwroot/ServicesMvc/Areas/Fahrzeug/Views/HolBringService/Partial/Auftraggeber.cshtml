@@ -1,0 +1,34 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Auftraggeber 
+@using CkgDomainLogic.Autohaus.Models
+
+<div id="DivAuftraggeber" class="margin-top-20">
+    @using (Ajax.BeginForm("Auftraggeber", "HolBringService", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivAuftraggeber", OnComplete = "AjaxFormAuftraggeberComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuftraggeber" }))
+    {
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.Auftragersteller, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.AuftragerstellerTel, new { @class = "m-wrap ", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.Betrieb, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.Repco, new { @class = "m-wrap ", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.AnsprechpartnerTel, new { @class = "m-wrap ", col = "right" })
+        
+        <hr/>
+        
+        @Html.FormTextBoxFor(m => m.Kunde, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.KundeTel, new { @class = "m-wrap ", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small", col = "left3" })
+        @Html.FormTextBoxFor(m => m.Fahrzeugart, new { @class = "m-wrap small", col = "middle3" })        
+
+        @Html.FormRequiredFieldsSummary()
+        
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>

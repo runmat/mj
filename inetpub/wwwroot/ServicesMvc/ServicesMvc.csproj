@@ -2468,6 +2468,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\ZulassungController.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
@@ -2541,6 +2542,11 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Abholung.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Anlieferung.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4444,6 +4450,7 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
+    <Folder Include="Areas\Fahrzeug\Models\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

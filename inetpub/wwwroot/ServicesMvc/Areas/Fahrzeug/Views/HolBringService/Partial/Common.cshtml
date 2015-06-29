@@ -1,0 +1,204 @@
+﻿<style type="text/css">
+    
+    span.reqired-fields {
+        margin-left: -90px !important;
+        white-space: nowrap !important;
+    }
+    
+    div.presets-and-filter {
+        background-color: #f9fff9;
+        padding: 5px 0 0 0;
+        border: 1px solid #f0fcf0;
+        margin: 0 0 20px 0;
+    }
+    div.presets-and-filter input[type='text'] {
+        background-color: white!important;
+    }
+    .span4 a {
+        text-align: left!important;   
+    }
+    
+    div.zulassungen-count {
+        color: blue;
+        font-weight: bold;
+        margin-left: 5px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+    var _modelIsValid = false;
+    var _selectedItemsCount = 0;
+    var _validationError = false;
+
+    function FormPreparePrivate() {
+
+        try { FormWizardInitPrivate(); } catch (e) { }
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+        
+//        try { MultiSelectPreparePrivate(); } catch (e) { }
+
+        // InitSearchableAndEditableDropdowns();
+        // InitDatePicker();
+
+//        var dateFormat = "dd.MM.yyyy";
+//        var feiertageAsString = "@Model.FeiertageAsString";
+//        feiertageAsString = "14.07.2015,15.07.2015";
+//        $("#PickupDate").datepicker({
+//            minDate: new Date(2015, 5, 1),
+//            beforeShowDay: function (date) {
+//                var tooltip;
+
+//                // no weekends please
+//                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);
+
+//                // only today and later
+//                if (dateIsSelectable)
+//                    dateIsSelectable = (date >= Date.today());
+
+//                var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
+//                if (dateIsSelectable)
+//                    dateIsSelectable = !istFeiertag;
+//                return [dateIsSelectable, ""];
+//                //                tooltip = (istFeiertag ? "Feiertag!" : (dateIsSelectable ? "bisher keine Zuordnung" : "Wochenende!"));
+//                //                return [dateIsSelectable, "", tooltip];
+//            }
+//        }
+//        );
+        
+//        setTimeout(function() {
+//            ReFilterGrid();
+//        }, 800);
+    };
+
+    function FormPreparePrivateAjax(step) {
+        FormPrepareAjax();
+        var stepKey = FormWizard.GetStepKey(step + 1);
+        if ('Auftraggeber' == stepKey) {
+            // GridAllColumnFilterApplyToGrid("GridFahrzeugSummary");
+        }
+        if ('Abholung' == stepKey) {
+//            $("#GridFahrzeugSummary .t-grouping-header").hide();
+//            $("#GridFahrzeugSummary .t-grid-filter").hide();
+        }
+        $('.tooltips').tooltip();
+    }
+
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsShow(!FormWizard.HasStepKey('FahrzeugAuswahl') && typeof(_formErrorHint) == 'undefined');
+        });
+
+        FormWizard.OnNext(function (step, maxSteps) {
+            var stepKey = FormWizard.GetStepKey(step - 1);
+            
+            if ('Auftraggeber' == stepKey) {
+                return Auftraggeber();
+            }
+            if ('Abholung' == stepKey) {
+                return Abholung();
+            }
+
+            return true;
+        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step)) 
+                FormWizard.ActionsShow(true);
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+
+            AjaxRequestNextStep();
+
+            return true;
+        });
+
+        FormWizard.OnRestart(function () {
+            //alert('Ok, let´s restart! :)');
+            LocationReloadWithoutQueryString();
+        });
+    }
+
+    function AjaxRequestNextStep() {
+        var nextTabKey = FormWizard.GetNextTabKey();
+        // alert(nextTabKey);
+        $.ajax({
+            type: "POST",
+            url: nextTabKey,
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                if (nextTabKey == "Receipt") {
+                    $("#GridFahrzeugSummaryWrapper").html("");
+                }
+
+                FormWizard.SetNextTabHtmlAndMoveNext(result);
+            }
+        });    
+    }
+
+    function Auftraggeber() {
+        AjaxRequestNextStep();
+        return false;
+    }
+    
+    function Abholung() {
+        AjaxRequestNextStep();
+        return false;
+    }
+    
+    function Anlieferung() {
+        AjaxRequestNextStep();
+        return false;
+    }
+
+    function Upload() {
+        AjaxRequestNextStep();
+        return false;
+    }
+    
+    function OnDropdownChanged_SelectedKennzeichenSerie(value) {
+        $.ajax({
+            type: "POST",
+            url: "OnChangePresetValues",
+            data: { value: value, type: "SelectedKennzeichenSerie" },
+            loadingShow: false,
+            success: function (result) {
+                ShowHideNextButton();
+            }
+        });
+    }
+
+    function OnDropdownChanged_SelectedPdi(val) {
+        OnChangeFilterValues("SelectedPdi", val);
+    }
+
+    function OnDropdownChanged_SelectedModel(val) {
+        OnChangeFilterValues("SelectedModel", val);
+    }
+
+    function ShowHideNextButton() {
+        
+        var nextButtonValid = 
+            $('#SelectedZulassungsDatum').val() != '' && $('#SelectedZulassungsDatum').val() != null && 
+            _selectedItemsCount > 0 && !_validationError;
+
+        FormWizard.ActionsShow(nextButtonValid);
+    }
+
+    function ReFilterGrid() {
+        FilterGrid("GridFahrzeugAuswahl");
+    }
+
+
+</script>
+
