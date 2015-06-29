@@ -528,8 +528,10 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
 
+                if (String.IsNullOrEmpty(AktuellerVorgang.Bankdaten.Partnerrolle)) AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
+
                 AktuellerVorgang.Adressdaten.KundenNr = kopfdaten.KundenNr;
-                AktuellerVorgang.Adressdaten.Partnerrolle = "AG";
+                if (String.IsNullOrEmpty(AktuellerVorgang.Adressdaten.Partnerrolle)) AktuellerVorgang.Adressdaten.Partnerrolle = "AG";
 
                 foreach (var p in AktuellerVorgang.Positionen)
                 {
@@ -641,11 +643,17 @@ namespace AppZulassungsdienst.lib
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
 
+                    var bankd = bankdatenRel.FirstOrDefault(b => b.SapId == kopf.SapId);
+                    if (bankd != null)
+                    {
+                        if (String.IsNullOrEmpty(bankd.Partnerrolle)) bankd.Partnerrolle = "AG";
+                    }
+
                     var adresse = adressdatenRel.FirstOrDefault(a => a.SapId == kopf.SapId);
                     if (adresse != null)
                     {
                         adresse.KundenNr = kopf.KundenNr;
-                        adresse.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adresse.Partnerrolle)) adresse.Partnerrolle = "AG";
                     }
 
                     foreach (var p in _lstPositionen.Where(p => p.SapId == kopf.SapId))
@@ -761,11 +769,17 @@ namespace AppZulassungsdienst.lib
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
 
+                    var bankd = bankdatenRel.FirstOrDefault(b => b.SapId == kopf.SapId);
+                    if (bankd != null)
+                    {
+                        if (String.IsNullOrEmpty(bankd.Partnerrolle)) bankd.Partnerrolle = "AG";
+                    }
+
                     var adresse = adressdatenRel.FirstOrDefault(a => a.SapId == kopf.SapId);
                     if (adresse != null)
                     {
                         adresse.KundenNr = kopf.KundenNr;
-                        adresse.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adresse.Partnerrolle)) adresse.Partnerrolle = "AG";
                     }
 
                     foreach (var p in _lstPositionen.Where(p => p.SapId == kopf.SapId))
@@ -947,7 +961,10 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
 
+                if (String.IsNullOrEmpty(AktuellerVorgang.Bankdaten.Partnerrolle)) AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
+
                 AktuellerVorgang.Adressdaten.KundenNr = kopfdaten.KundenNr;
+                if (String.IsNullOrEmpty(AktuellerVorgang.Adressdaten.Partnerrolle)) AktuellerVorgang.Adressdaten.Partnerrolle = "AG";
 
                 var adressListeWeb = new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten };
 

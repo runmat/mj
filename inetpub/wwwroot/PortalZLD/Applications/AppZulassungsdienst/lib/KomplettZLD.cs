@@ -181,8 +181,6 @@ namespace AppZulassungsdienst.lib
 
                 if (isNewVorgang)
                 {
-                    AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
-
                     zldDataContext.ZLDVorgangKopf.InsertOnSubmit(ModelMapping.Copy<ZLDKopfdaten, ZLDVorgangKopf>(kopfdaten));
                     zldDataContext.ZLDVorgangBank.InsertOnSubmit(ModelMapping.Copy<ZLDBankdaten, ZLDVorgangBank>(AktuellerVorgang.Bankdaten));
                     zldDataContext.ZLDVorgangAdresse.InsertOnSubmit(ModelMapping.Copy<ZLDAdressdaten, ZLDVorgangAdresse>(AktuellerVorgang.Adressdaten));
@@ -742,12 +740,15 @@ namespace AppZulassungsdienst.lib
                     kopfListeWeb.Add(kopfdaten);
 
                     if (!String.IsNullOrEmpty(bankdaten.Kontoinhaber))
+                    {
+                        if (String.IsNullOrEmpty(bankdaten.Partnerrolle)) bankdaten.Partnerrolle = "AG";
                         bankListeWeb.Add(bankdaten);
+                    }
 
                     if (!String.IsNullOrEmpty(adressdaten.Name1))
                     {
                         adressdaten.KundenNr = kopfdaten.KundenNr;
-                        adressdaten.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adressdaten.Partnerrolle)) adressdaten.Partnerrolle = "AG";
                         adressListeWeb.Add(adressdaten);
                     }
 
