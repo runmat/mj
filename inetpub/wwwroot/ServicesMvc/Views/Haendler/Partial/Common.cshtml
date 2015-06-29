@@ -1,4 +1,13 @@
-﻿@using DomainCommonModels = CkgDomainLogic.DomainCommon.Models
+﻿<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+<style type="text/css">
+    
+    .address-divider {
+        margin-left: 5px;
+    }
+    
+</style>
 
 <script type="text/javascript">
 
@@ -35,6 +44,7 @@
     function OnDataBound_GridHaendlerAdressen() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+        App.initUniform();
     }
 
     function OnColumnShowHide_GridHaendlerAdressen() {
@@ -45,6 +55,36 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    function ShowHaendlerAdressen() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowHaendlerAdressen",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowHaendlerAdressenSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowHaendlerAdressenSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridHaendlerAdressen");
+
+        $("#divGrid").slideDown();
+        $("#divGridItemDetails").html('');
+    }
 
     function ItemEdit(id) {
 
@@ -63,12 +103,12 @@
         });
     }
 
-    function ItemNew(idToDuplicate) {
+    function ItemNew() {
         $.ajax(
         {
             type: "POST",
             url: "NewHaendlerAdresse",
-            data: { idToDuplicate: idToDuplicate },
+            data: { },
             loadingShow: true,
             success: function (result) {
                 ShowItemDetails(result);
@@ -76,10 +116,10 @@
         });
     }
 
-    function ShowItemDetails(result, showCloseButton) {
+    function ShowItemDetails(result) {
         $("#divGridItemDetails").html(result);
         GridItemDetailsFormPreparePrivateAjax();
-        $("#divGridEditStart").slideUp(function () {
+        $("#divGrid").slideUp(function () {
             $("#divGridItemDetails").show();
         });
         scrollToTop();
@@ -87,21 +127,23 @@
 
     function CloseItemDetailsInner() {
         $("#divGridItemDetails").slideUp(function() {
-            $("#divGridEditStart").delay(200).show();
+            $("#divGrid").delay(200).show();
             window.scrollTo(0, 0);
         });
     }
 
     function CloseItemDetails() {
         CloseItemDetailsInner();
-        try { BreadcrumbsMovePrev(); } catch (e) { }
         TryHaendlerAdresseGridRefresh();
     }
 
     function HaendlerAdresseAjaxFormComplete() {
-        FormPrepareAjax();
+        FormPreparePrivateAjax();
+        MyLoadingHide();
         if (_modelIsValid)
             CloseItemDetails();
+        else
+            InitAutocompleteDropdown();
     }
 
     var _modelIsValid = false;
@@ -110,15 +152,38 @@
     function GridItemDetailsFormPreparePrivateAjax() {
         FormPrepareAjax();
 
-        LoadingHide();
-        GridLoadingHide();
-
+        MyLoadingHide();
         $("button[type='submit']").click(function() {
             LoadingShow();
         });
 
-        if (_modelIsValid)
-            CloseItemDetails();
+        InitAutocompleteDropdown();
+    }
+
+    function SchluesselAdresseVerfuegbarChange() {
+        if ($("#SchluesselAdresseVerfuegbar").is(":checked"))
+            $("#div-schluessel-adresse").slideDown(300);
+        else
+            $("#div-schluessel-adresse").slideUp(300);
+    }
+
+    function InitAutocompleteDropdown() {
+
+        setTimeout(function () {
+            try{
+                $('#LaenderCode').select2({
+                    allowClear: true
+                });
+            } 
+            catch(e){}
+        }, 100);
+    }
+
+    function MyLoadingHide() {
+        setTimeout(function() {
+            LoadingHide();
+            GridLoadingHide();
+        }, 800);
     }
 
 </script>

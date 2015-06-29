@@ -7,7 +7,7 @@ namespace CkgDomainLogic.DomainCommon.Contracts
 {
     public interface IHaendlerAdressenDataService : ICkgGeneralDataService
     {
-        List<HaendlerAdresse> GetHaendlerAdressen();
+        List<HaendlerAdresse> GetHaendlerAdressen(HaendlerAdressenSelektor selektor);
 
         string SaveHaendlerAdresse(HaendlerAdresse haendlerAdresse);
 

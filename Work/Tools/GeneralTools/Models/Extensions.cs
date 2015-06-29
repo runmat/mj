@@ -514,6 +514,11 @@ namespace GeneralTools.Models
             return (stringValue.NotNullOrEmpty().ToUpper() == "X");
         }
 
+        public static bool XToBoolInverse(this string stringValue)
+        {
+            return (stringValue.NotNullOrEmpty().ToUpper() != "X");
+        }
+
         public static Int64 ToLong(this string stringValue, Int64 defaultValue = -1)
         {
             Int64 tmp;
@@ -887,6 +892,11 @@ namespace GeneralTools.Models
         public static string BoolToX(this bool boolValue)
         {
             return boolValue.ToCustomString("X", "");
+        }
+
+        public static string BoolToXInverse(this bool boolValue)
+        {
+            return boolValue.ToCustomString("", "X");
         }
     }
 

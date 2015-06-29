@@ -1,18 +1,20 @@
 ﻿@model CkgDomainLogic.DomainCommon.ViewModels.HaendlerAdressenViewModel
 
-@section LayoutScript { _controlGroupValidationType = "default"; }
-
 @Html.Partial("Partial/Common")
 
-<h3 class="page-title">Model-ID<small> Pflege</small></h3>
+<h3 class="page-title">Händler-Adressen<small> Pflege</small></h3>
 
-<div class="portlet">
-    <div id="divGridEditStart">
-        @Html.Partial("Partial/Grid")
-    </div>
-</div>
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Partial/Suche", Model.HaendlerAdressenSelektor)
+}
 
-<div id="divGridItemDetails"></div>
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divGridItemDetails"></div>
+}
+
 
 
 

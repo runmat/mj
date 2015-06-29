@@ -32,6 +32,12 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public bool InsertMode { get; set; }
 
+        public HaendlerAdressenSelektor HaendlerAdressenSelektor
+        {
+            get { return PropertyCacheGet(() => new HaendlerAdressenSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
         [XmlIgnore]
         public List<HaendlerAdresse> HaendlerAdressen
         {
@@ -52,6 +58,18 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             get { return PropertyCacheGet(() => DataService.GetLaenderList()); }
         }
 
+        [XmlIgnore]
+        public List<SelectItem> LaenderListWithOptionAll
+        {
+            get { return LaenderList.CopyAndInsertAtTop(new SelectItem { Key = "", Text = Localize.DropdownDefaultOptionAll }); }
+        }
+
+        [XmlIgnore]
+        public List<SelectItem> LaenderListWithOptionPleaseChoose
+        {
+            get { return LaenderList.CopyAndInsertAtTop(new SelectItem { Key = "", Text = Localize.DropdownDefaultOptionPleaseChoose }); }
+        }
+
 
         public void DataInit()
         {
@@ -60,7 +78,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void LoadHaendlerAdressen()
         {
-            HaendlerAdressen = DataService.GetHaendlerAdressen();
+            HaendlerAdressen = DataService.GetHaendlerAdressen(HaendlerAdressenSelektor);
 
             DataMarkForRefresh();
         }
@@ -90,6 +108,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         {
             return new HaendlerAdresse
             {
+                LaenderCode = HaendlerAdressenSelektor.LaenderCode,
+                LandBrief = "DE",
+                LandSchluessel = "DE",
             };
         }
 

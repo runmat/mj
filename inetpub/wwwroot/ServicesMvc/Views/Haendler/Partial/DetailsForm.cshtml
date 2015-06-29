@@ -11,24 +11,63 @@
 
         
         @Html.HiddenFor(m => m.InsertModeTmp)
-        @Html.HiddenFor(m => m.LaenderCode)
-        @Html.HiddenFor(m => m.HaendlerNr)
 
+        @Html.HiddenFor(m => m.LandBrief)
+        @Html.HiddenFor(m => m.LandSchluessel)
+
+
+        <h4 class="address-divider">@Localize.DealerData</h4>
+        
         if (Model.InsertModeTmp)
         {
-            @Html.FormTextBoxFor(m => m.LaenderCode, new { @class = "m-wrap medium", col = "left" })
-            @Html.FormTextBoxFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "right" })
+            @Html.FormTextBoxFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "left" })
+
+            if (HaendlerAdresse.GetViewModel().HaendlerAdressenSelektor.LaenderCode.IsNullOrEmpty())
+            {
+                @Html.FormDropDownListFor(m => m.LaenderCode, Model.LaenderListWithDefaultOption.ToSelectList(), new { @class = "m-wrap large", col = "right" })
+            }
+            else
+            {
+                @Html.HiddenFor(m => m.LaenderCode)
+                @Html.FormTextBlockFor(m => m.LaenderCode, new { @class = "m-wrap medium", col = "right" })
+            }
         }
         else
         {
-            @Html.HiddenFor(m => m.LaenderCode)
-            @Html.FormTextBlockFor(m => m.LaenderCode, new { @class = "m-wrap medium", col = "left" })
-
             @Html.HiddenFor(m => m.HaendlerNr)
-            @Html.FormTextBlockFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "right" })
+            @Html.FormTextBlockFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "left" })
+        
+            @Html.HiddenFor(m => m.LaenderCode)
+            @Html.FormTextBlockFor(m => m.LaenderCode, new { @class = "m-wrap medium", col = "right" })
         }
-       
+
+        
+        <h4 class="address-divider">@Localize.Equi_Briefversand</h4>
                 
+        @Html.FormTextBoxFor(m => m.Name1Brief, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Name2Brief, new { @class = "m-wrap medium", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.StrasseBrief, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.HausNrBrief, new { @class = "m-wrap xsmall", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.PlzBrief, new { @class = "m-wrap xsmall", col = "left" })
+        @Html.FormTextBoxFor(m => m.OrtBrief, new { @class = "m-wrap medium", col = "right" })
+
+        
+        <h4 class="address-divider">@Localize.Equi_Schluesselversand</h4>
+        @Html.FormCheckBoxFor(m => m.SchluesselAdresseVerfuegbar, new { @class = "m-wrap xsmall", onchange = "SchluesselAdresseVerfuegbarChange()" }, labelHidden: true)
+        <div id="div-schluessel-adresse" class="@(Model.SchluesselAdresseVerfuegbar ? "" : "hide")">
+            @Html.FormTextBoxFor(m => m.Name1Schluessel, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.Name2Schluessel, new { @class = "m-wrap medium", col = "right" })
+        
+            @Html.FormTextBoxFor(m => m.StrasseSchluessel, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.HausNrSchluessel, new { @class = "m-wrap xsmall", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.PlzSchluessel, new { @class = "m-wrap xsmall", col = "left" })
+            @Html.FormTextBoxFor(m => m.OrtSchluessel, new { @class = "m-wrap medium", col = "right" })
+        </div>
+        
+        
         @Html.FormRequiredFieldsSummary()
 
         

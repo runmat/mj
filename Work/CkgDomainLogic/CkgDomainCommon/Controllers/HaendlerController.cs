@@ -33,6 +33,24 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
+        [HttpPost]
+        public ActionResult LoadHaendlerAdressen(HaendlerAdressenSelektor model)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewModel.HaendlerAdressenSelektor = model;
+                ViewModel.LoadHaendlerAdressen();
+            }
+
+            return PartialView("Partial/Suche", model);
+        }
+
+        [HttpPost]
+        public ActionResult ShowHaendlerAdressen()
+        {
+            return PartialView("Partial/Grid", ViewModel);
+        }
+
         [GridAction]
         public ActionResult HaendlerAdressenAjaxBinding()
         {
@@ -42,6 +60,7 @@ namespace ServicesMvc.Controllers
         void InitModelStatics()
         {
             HaendlerAdresse.GetViewModel = GetViewModel<HaendlerAdressenViewModel>;
+            HaendlerAdressenSelektor.GetViewModel = GetViewModel<HaendlerAdressenViewModel>;
         }
 
 

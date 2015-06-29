@@ -8,7 +8,6 @@ using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
 using CkgDomainLogic.General.Services;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Models;

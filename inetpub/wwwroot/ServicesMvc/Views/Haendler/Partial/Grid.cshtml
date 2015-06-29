@@ -19,6 +19,18 @@
 
             columns.XBound(c => c.LaenderCode);
             columns.XBound(c => c.HaendlerNr);
+
+            columns.XBound(c => c.Name1Brief);
+            columns.XBound(c => c.StrasseHausNrBrief);
+            columns.XBound(c => c.PlzBrief);
+            columns.XBound(c => c.OrtBrief);
+
+            columns.XBound(c => c.SchluesselAdresseVerfuegbar);
+            
+            columns.XBound(c => c.Name1Schluessel);
+            columns.XBound(c => c.StrasseHausNrSchluessel);
+            columns.XBound(c => c.PlzSchluessel);
+            columns.XBound(c => c.OrtSchluessel);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
