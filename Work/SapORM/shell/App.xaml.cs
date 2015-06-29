@@ -413,6 +413,8 @@ namespace SapORM
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_ZULAUF").WriteOrmForExportTableStructures("ZUL_DAT, ZUL_BIS, I_HERSTNR", "01.04.2015", "10.04.2015", "0");
 
+            //new FunctionReflector("Z_ZLD_CHECK_48H").WriteOrmForExportTableStructures("I_KREISKZ, I_LIFNR, I_DATUM_BEAUFTRAGUNG", "OD", "1", "15.05.2015");
+
             //new FunctionReflector("Z_M_EC_AVM_KENNZ_SERIE").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_Massenzulassung").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_HERST_VWZWECK_MODID").WriteOrmForExportTableStructures();

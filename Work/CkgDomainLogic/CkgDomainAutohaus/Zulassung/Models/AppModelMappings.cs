@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using SapORM.Models;
@@ -50,6 +51,7 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.MaterialText = s.MAKTX;
                             d.MaterialNr = s.MATNR;
                             d.IstAbmeldung = s.ABMELDUNG.XToBool();
+                            d.IstVersand = s.VERSAND.XToBool();
                         }));
             }
         }
@@ -240,6 +242,25 @@ namespace CkgDomainLogic.Autohaus.Models
             SetPreise(s, d);
         }
 
+        static public ModelMapping<Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF, Adresse> Z_ZLD_EXPORT_INFOPOOL_GT_EX_ZUSTLIEF_To_Adresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF, Adresse>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.KundenNr = s.LIFNR;
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Strasse = s.STREET;
+                        d.HausNr = s.HOUSE_NUM1;
+                        d.PLZ = s.POST_CODE1;
+                        d.Ort = s.CITY1;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -305,6 +326,9 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.ZZKENN = formatKennzeichen(s.Zulassungsdaten.Kennzeichen);
                             d.WU_KENNZ2 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen2);
                             d.WU_KENNZ3 = formatKennzeichen(s.Zulassungsdaten.Wunschkennzeichen3);
+
+                            // Versandzulassung
+                            d.ZL_LIFNR = (s.Zulassungsdaten.ModusVersandzulassung ? s.VersandAdresse.Adresse.KundenNr : "");
 
                             // Optionen/Dienstleistungen
                             d.EINKENN_JN = s.OptionenDienstleistungen.NurEinKennzeichen.BoolToX();

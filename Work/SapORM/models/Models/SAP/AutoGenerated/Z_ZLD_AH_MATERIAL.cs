@@ -39,6 +39,8 @@ namespace SapORM.Models
 
 			public string ABMELDUNG { get; set; }
 
+			public string VERSAND { get; set; }
+
 			public static GT_MAT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_MAT
@@ -47,6 +49,7 @@ namespace SapORM.Models
 					BLTYP = (string)row["BLTYP"],
 					MAKTX = (string)row["MAKTX"],
 					ABMELDUNG = (string)row["ABMELDUNG"],
+					VERSAND = (string)row["VERSAND"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

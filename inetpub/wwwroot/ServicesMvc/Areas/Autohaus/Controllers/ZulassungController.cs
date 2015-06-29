@@ -50,9 +50,10 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung)
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
+            ViewModel.SetParamVersandzulassung(versandzulassung);
 
             ViewModel.DataInit();
 
@@ -71,6 +72,12 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Abmeldung(string fin, string halterNr)
         {
             return Index(fin, halterNr, abmeldung: "1");
+        }
+
+        [CkgApplication]
+        public ActionResult Versandzulassung(string fin, string halterNr)
+        {
+            return Index(fin, halterNr, versandzulassung: "1");
         }
 
         void InitModelStatics()
@@ -414,7 +421,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewModel.SetZulassungsdaten(model);
+                ViewModel.SetZulassungsdaten(model, ModelState);
             }
 
             ViewData.Add("MaterialList", ViewModel.Zulassungsarten);

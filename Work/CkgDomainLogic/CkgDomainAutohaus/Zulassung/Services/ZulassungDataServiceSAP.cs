@@ -142,6 +142,13 @@ namespace CkgDomainLogic.Autohaus.Services
                 kennzeichen = sapItem.ZKFZKZ;
         }
 
+        public Adresse GetLieferantZuKreis(string kreis)
+        {
+            Z_ZLD_EXPORT_INFOPOOL.Init(SAP, "I_KREISKZ", kreis);
+
+            return AppModelMappings.Z_ZLD_EXPORT_INFOPOOL_GT_EX_ZUSTLIEF_To_Adresse.Copy(Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF.GetExportListWithExecute(SAP)).FirstOrDefault();
+        }
+
         private IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> LoadZulassungskreisKennzeichenFromSap()
         {
             return Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST.GetExportListWithInitExecute(SAP);
@@ -207,6 +214,43 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
+        public string Check48hExpress(Vorgang zulassung)
+        {
+            Z_ZLD_CHECK_48H.Init(SAP);
+
+            SAP.SetImportParameter("I_KREISKZ", zulassung.Zulassungsdaten.Zulassungskreis);
+            SAP.SetImportParameter("I_LIFNR", zulassung.VersandAdresse.Adresse.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_DATUM_AUSFUEHRUNG", zulassung.Zulassungsdaten.Zulassungsdatum);
+
+            SAP.Execute();
+
+            if (SAP.ResultCode != 0)
+                return SAP.ResultMessage;
+
+            var checkResults = Z_ZLD_CHECK_48H.ES_VERSAND_48H.GetExportList(SAP);
+            if (checkResults.Any())
+            {
+                var item = checkResults.First();
+
+                zulassung.Ist48hZulassung = item.Z48H.XToBool();
+                zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
+
+                // Abweichende Versandadresse?
+                if (!String.IsNullOrEmpty(item.NAME1))
+                {
+                    var adr = zulassung.VersandAdresse.Adresse;
+                    adr.Name1 = item.NAME1;
+                    adr.Name2 = item.NAME2;
+                    adr.Strasse = item.STREET;
+                    adr.HausNr = "";
+                    adr.PLZ = item.POST_CODE1;
+                    adr.Ort = item.CITY1;
+                }
+            }
+
+            return "";
+        }
+
         public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
         {
             try
@@ -265,6 +309,9 @@ namespace CkgDomainLogic.Autohaus.Services
                             }
                             adressen.Add(a.Adressdaten);
                         });
+
+                    vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
+                    adressen.Add(vorgang.VersandAdresse);
 
                     // zus. Bankdaten (GT_BANK_IN)
                     vorgang.ZahlerKfzSteuer.Bankdaten.BelegNr = vorgang.BelegNr;
