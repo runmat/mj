@@ -22,9 +22,9 @@
         {
             @Html.FormTextBoxFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "left" })
 
-            if (HaendlerAdresse.GetViewModel().HaendlerAdressenSelektor.LaenderCode.IsNullOrEmpty())
+            if (HaendlerAdresse.GetViewModel().HaendlerAdressenSelektor.LandCode.IsNullOrEmpty())
             {
-                @Html.FormDropDownListFor(m => m.LaenderCode, Model.LaenderListWithDefaultOption.ToSelectList(), new { @class = "m-wrap large", col = "right" })
+                @Html.FormDropDownListFor(m => m.LaenderCode, Model.LaenderListWithDefaultOption.ToSelectList(), new { @class = "m-wrap medium", col = "right" })
             }
             else
             {

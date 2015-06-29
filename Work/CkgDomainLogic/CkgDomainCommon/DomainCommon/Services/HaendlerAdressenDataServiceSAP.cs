@@ -46,8 +46,8 @@ namespace CkgDomainLogic.DomainCommon.Services
             if (selektor.HaendlerNr.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_HAENDLER", selektor.HaendlerNr);
 
-            if (selektor.LaenderCode.IsNotNullOrEmpty())
-                SAP.SetImportParameter("I_LAND_CODE", selektor.LaenderCode);
+            if (selektor.LandCode.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_LAND_CODE", selektor.LandCode);
 
             SAP.Execute();
 

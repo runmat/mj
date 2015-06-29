@@ -108,7 +108,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         {
             return new HaendlerAdresse
             {
-                LaenderCode = HaendlerAdressenSelektor.LaenderCode,
+                LaenderCode = HaendlerAdressenSelektor.LandCode,
                 LandBrief = "DE",
                 LandSchluessel = "DE",
             };

@@ -15,7 +15,7 @@ namespace CkgDomainLogic.DomainCommon.Models
         public string HaendlerNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CountryCode)]
-        public string LaenderCode { get; set; }
+        public string LandCode { get; set; }
 
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]

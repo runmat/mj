@@ -15,6 +15,7 @@
 
     function FormPreparePrivate() {
         GridAllColumnFilterApplyToGrid("GridHaendlerAdressen");
+        InitAutocompleteDropdown();
     }
 
     function FormPreparePrivateAjax() {
@@ -170,12 +171,18 @@
     function InitAutocompleteDropdown() {
 
         setTimeout(function () {
-            try{
+            try {
                 $('#LaenderCode').select2({
                     allowClear: true
                 });
-            } 
-            catch(e){}
+            }
+            catch (e) { }
+            try {
+                $('#LandCode').select2({
+                    allowClear: true
+                });
+            }
+            catch (e) { }
         }, 100);
     }
 
