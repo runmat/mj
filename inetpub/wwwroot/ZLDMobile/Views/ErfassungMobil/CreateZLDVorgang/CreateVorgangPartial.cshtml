@@ -23,19 +23,21 @@
                 @Model.PropertyDisplayNames["Kunde"]
             </td>
             <td>
-                <select id="ddlKunde" name="ddlKunde" data-role="none" class="width-100percent">
-                    @if (Model.StammdatenNeuanlage.Kunden.Count > 0)
-                    {
-                        foreach (Kunde k in Model.StammdatenNeuanlage.Kunden)
+                <div id="divKunde">
+                    <select id="ddlKunde" name="ddlKunde" data-role="none" class="width-100percent">
+                        @if (Model.StammdatenNeuanlage.Kunden.Count > 0)
                         {
-                            <option value="@k.KundenNr">@k.Name</option>
+                            foreach (Kunde k in Model.StammdatenNeuanlage.Kunden)
+                            {
+                                <option value="@k.KundenNr">@k.Name</option>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <option></option>
-                    }       
-                </select>
+                        else
+                        {
+                            <option></option>
+                        }       
+                    </select>
+                </div>
             </td>
         </tr>
         <tr>
@@ -43,7 +45,9 @@
                 @Model.PropertyDisplayNames["Referenz1"]
             </td>
             <td>
-                <input type="text" id="txtReferenz1" class="TextUpperCase" maxlength="20"/>
+                <div id="divReferenz1">
+                    <input type="text" id="txtReferenz1" class="TextUpperCase" maxlength="20"/>
+                </div>
             </td>
         </tr>
         <tr>
@@ -51,7 +55,9 @@
                 @Model.PropertyDisplayNames["Referenz2"]
             </td>
             <td>
-                <input type="text" id="txtReferenz2" class="TextUpperCase" maxlength="20"/>
+                <div id="divReferenz2">
+                    <input type="text" id="txtReferenz2" class="TextUpperCase" maxlength="20"/>
+                </div>
             </td>
         </tr>
         <tr>
@@ -59,7 +65,9 @@
                 @Model.PropertyDisplayNames["Kennzeichen"]
             </td>
             <td>
-                <input type="text" id="txtKennzeichen" class="TextUpperCase" maxlength="20"/>
+                <div id="divKennzeichen">
+                    <input type="text" id="txtKennzeichen" class="TextUpperCase" maxlength="20"/>
+                </div>
             </td>
         </tr>
         <tr>
@@ -67,19 +75,21 @@
                 Haupt-DL
             </td>
             <td>
-                <select id="ddlHauptDl" name="ddlHauptDl" onchange="CheckHauptDl();" data-role="none" class="width-100percent">
-                    @if (Model.StammdatenNeuanlage.Dienstleistungen.Count > 0)
-                    {
-                        foreach (Dienstleistung d in Model.StammdatenNeuanlage.Dienstleistungen)
+                <div id="divHauptDl">
+                    <select id="ddlHauptDl" name="ddlHauptDl" onchange="CheckHauptDl();" data-role="none" class="width-100percent">
+                        @if (Model.StammdatenNeuanlage.Dienstleistungen.Count > 0)
                         {
-                            <option value="@d.Id">@d.DetailBez</option>
+                            foreach (Dienstleistung d in Model.StammdatenNeuanlage.Dienstleistungen)
+                            {
+                                <option value="@d.Id">@d.DetailBez</option>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <option></option>
-                    }       
-                </select>
+                        else
+                        {
+                            <option></option>
+                        }       
+                    </select>
+                </div>
             </td>
         </tr>
         <tr>

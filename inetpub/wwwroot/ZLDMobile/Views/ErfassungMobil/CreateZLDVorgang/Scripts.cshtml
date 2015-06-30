@@ -96,9 +96,9 @@
         vorg.ZulDatTextEdit = zulDat;
 
         vorg.Kunnr = GetDropdownValue("ddlKunde");
-        vorg.Referenz1 = $("#txtReferenz1").val();
-        vorg.Referenz2 = $("#txtReferenz2").val();
-        vorg.Kennzeichen = $("#txtKennzeichen").val();
+        vorg.Referenz1 = $("#txtReferenz1").val().toUpperCase();
+        vorg.Referenz2 = $("#txtReferenz2").val().toUpperCase();
+        vorg.Kennzeichen = $("#txtKennzeichen").val().toUpperCase().replace(" ", "");
         vorg.AmtEdit = GetDropdownValue("ddlAmt");
         vorg.Wunschkennzeichen = GetCheckboxValue("chkWunschkennzeichen");
         vorg.Reserviert = GetCheckboxValue("chkReserviert");
@@ -106,15 +106,29 @@
 
         vorg.Positionen = [];
 
+        if (vorg.Referenz1 == "") {
+            ShowMessage("Referenz 1 erforderlich", true);
+            $("#divReferenz1").addClass("DivFieldError");
+            return;
+        }
+        $("#divReferenz1").removeClass("DivFieldError");
+
         // Hauptdienstleistung
         var hauptDl = GetDropdownValue("ddlHauptDl");
         if (hauptDl == "") {
             ShowMessage("Bitte w\u00e4hlen Sie eine Haupt-Dienstleistung", true);
-            $("#ddlHauptDl").addClass("DivFieldError");
+            $("#divHauptDl").addClass("DivFieldError");
             return;
         }
-        $("#ddlHauptDl").removeClass("DivFieldError");
+        $("#divHauptDl").removeClass("DivFieldError");
         vorg.Positionen[0] = { KopfId: vorg.Id, PosNr: "", DienstleistungId: hauptDl };
+
+        if (vorg.Kennzeichen != "" && CheckFormatKennzeichen(vorg.Kennzeichen, hauptDl) == false) {
+            ShowMessage("Das Kennzeichen hat das falsche Format", true);
+            $("#divKennzeichen").addClass("DivFieldError");
+            return;
+        }
+        $("#divKennzeichen").removeClass("DivFieldError");
 
         // Zusatzdienstleistungen
         for (var lfdNr = 1; lfdNr < 21; lfdNr++) {
@@ -134,15 +148,11 @@
     }
 
     function ClearVorgangCreate() {
-        SetDropdownValue("ddlKunde", "", false);
         $("#txtReferenz1").val("");
         $("#txtReferenz2").val("");
-        SetDropdownValue("ddlAmt", "", false);
         SetCheckboxValue("chkWunschkennzeichen", false, true);
         SetCheckboxValue("chkReserviert", false, true);
-        $("#txtZulDat").val("");
         SetCheckboxValue("chkNurEinKennzeichen", false, true);
-        SetDropdownValue("ddlHauptDl", "", false);
         $("#tblZusatzpositionen tbody tr").remove();
     }
 

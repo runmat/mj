@@ -7,6 +7,7 @@ using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Zulassung.MobileErfassung.Contracts;
 using CkgDomainLogic.Zulassung.MobileErfassung.Models;
 using GeneralTools.Contracts;
+using System.Linq;
 
 namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
 {
@@ -138,9 +139,6 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
             if (vorg == null)
                 return "Kein Vorgang ausgewählt";
 
-            if (String.IsNullOrEmpty(vorg.Referenz1))
-                return "Referenz 1 muss gefüllt sein";
-
             List<Vorgang> zuSpeicherndeVorgaenge = new List<Vorgang> { vorg };
 
             return DataService.SaveVorgaenge(zuSpeicherndeVorgaenge);
@@ -175,7 +173,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.ViewModels
             VkBurNeuanlage = vkBur;
 
             if (StammdatenNeuanlage == null)
-                StammdatenNeuanlage = new StammdatenNeuanlage { Aemter = DataService.GetStammdatenAemter()};
+                StammdatenNeuanlage = new StammdatenNeuanlage { Aemter = DataService.GetStammdatenAemter().Where(a => !String.IsNullOrEmpty(a.KurzBez) && a.KurzBez != "3").ToList()};
 
             List<Kunde> kundenList;
             List<Dienstleistung> dienstleistungenList;
