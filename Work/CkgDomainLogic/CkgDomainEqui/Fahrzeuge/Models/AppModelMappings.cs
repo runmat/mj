@@ -161,7 +161,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung>(
-                     new Dictionary<string, string>()
+                     new Dictionary<string, string> ()
                     , (sap, business) =>
                     {
                         business.AnlageDatum = sap.ERDAT;
@@ -172,7 +172,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.KennzeicheneingangsDatum = sap.EG_KENNZ;
                         business.AbmeldeDatum = sap.ABMDT;
                         business.StationsCode = sap.STATION;
-                        business.Mahnstufe = sap.MAHNSTUFE;
+                        business.Mahnstufe = sap.MAHNSTUFE;                        
                         business.UnfallNr = sap.UNFALL_NR;
                         business.StornoDatum = sap.STORNODAT;
                     }));
@@ -228,23 +228,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.AGName = sap.NAME1_AG;
                         business.AGNummer = sap.AG;
                         business.TGNummer = sap.TREU;
-                       
-                    }));
-            }
-        }
-
-        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAG
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
-                    new Dictionary<string, string>()
-                    , (sap, business) =>
-                    {
-                        business.TGName = sap.NAME1_AG;
-                        business.AGName = sap.NAME1_TG;
-                        business.AGNummer = sap.TREU;
-                        business.TGNummer = sap.AG;
+                        business.Selection = sap.ZSELECT;
                     }));
             }
         }
@@ -264,32 +248,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.NameTG = sap.NAME1_TG;
                         business.TGNummer = sap.KUNNR_TG;
                         business.Zb2Nummer = sap.TIDNR;
-                        business.Vertragsnummer = sap.LIZNR;                        
+                        business.Vertragsnummer = sap.LIZNR;
                         business.Versandadresse = string.Concat(sap.NAME2_ZS.AppendIfNotNull(", "), sap.STRASSE_ZS.AppendIfNotNull(", "), sap.PLZ_ZS.AppendIfNotNull(", "), sap.ORT_ZS);
                         business.Ersteller = sap.ERNAM;
                         business.Belegnummer = sap.BELNR;
-                        business.Referenz = sap.ZZREFERENZ2;     
+                        business.Referenz = sap.ZZREFERENZ2;
+                        business.Ablehnungsgrund = sap.NICHT_FREIG_GRU;
+                        business.Ablehnender = sap.FREIGABEUSER;
                     }));
             }
         }
-
-        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAGServices
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
-                    new Dictionary<string, string>()
-                    , (sap, business) =>
-                    {
-                        business.TGName = sap.NAME1_AG;
-                        business.AGName = sap.NAME1_TG;
-                        business.AGNummer = sap.TREU;
-                        business.TGNummer = sap.AG;
-                        business.IsServicesAGMapping = true;
-                    }));
-            }
-        }
-
 
         static public ModelMapping<Z_M_EC_AVM_ZULASSUNGEN.GT_WEB, Dispositionsliste> Z_M_EC_AVM_ZULASSUNGEN_GT_WEB_ToDispositionsliste        
         {
