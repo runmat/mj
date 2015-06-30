@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeuge.Contracts;
@@ -23,7 +24,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public string UploadFile { get; set; }
 
         [XmlIgnore]
-        public IFahrzeugeDataService DataService { get { return CacheGet<IFahrzeugeDataService>(); } }
+        public IHolBringServiceDataService DataService { get { return CacheGet<IHolBringServiceDataService>(); } }
+
+        public List<Domaenenfestwert> Fahrzeugarten { get; set; }
+        public List<DropDownTimeItem> DropDownHours { get; set; }
+        public List<DropDownTimeItem> DropDownMinutes { get; set; }
+        public List<Domaenenfestwert> AbholungUhrzeitStundenList { get; set; }
 
         #region Wizard
         [XmlIgnore]
@@ -53,15 +59,62 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
         #endregion
 
-        [LocalizedDisplay(LocalizeConstants.Date)]
-        [Required]
-        public DateTime? PickupDate { get; set; }
+        public class DropDownTimeItem
+        {
+            // [LocalizedDisplay(LocalizeConstants.Code)]
+            [SelectListKey]
+            public string ID { get; set; }
+
+            // [LocalizedDisplay(LocalizeConstants.Country)]
+            [SelectListText]
+            public string Name { get; set; }
+        }
+
+        //public class DropDownMinute
+        //{
+        //    // [LocalizedDisplay(LocalizeConstants.Code)]
+        //    [SelectListKey]
+        //    public string ID { get; set; }
+
+        //    // [LocalizedDisplay(LocalizeConstants.Country)]
+        //    [SelectListText]
+        //    public string Name { get; set; }
+        //}
+
+        //[LocalizedDisplay(LocalizeConstants.Date)]
+        //[Required]
+        //public DateTime? PickupDate { get; set; }
 
         public void DataInit()
         {
             Auftraggeber = new Auftraggeber();
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
+            Fahrzeugarten = DataService.GetFahrzeugarten;
+
+            var selectableHours = new List<DropDownTimeItem>
+                {
+                    new DropDownTimeItem {ID = "Stunden", Name = "Stunden"}
+                };
+            for (var i = 5; i < 22; i++)
+            {
+                selectableHours.Add(new DropDownTimeItem { ID = i.ToString(), Name = i.ToString() });
+                
+            }
+            DropDownHours = selectableHours;
+            DropDownHours = selectableHours;
+
+            var selectableMinutes = new List<DropDownTimeItem>
+                {
+                    new DropDownTimeItem {ID = "Minuten", Name = "Minuten"},
+                    new DropDownTimeItem {ID = "00", Name = "00"},
+                    new DropDownTimeItem {ID = "15", Name = "15"},
+                    new DropDownTimeItem {ID = "30", Name = "30"},
+                    new DropDownTimeItem {ID = "45", Name = "45"}
+                };
+            DropDownMinutes = selectableMinutes;
+            DropDownMinutes = selectableMinutes;
+
             DataMarkForRefresh();
         }
 

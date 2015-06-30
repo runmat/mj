@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Database.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
@@ -24,5 +26,12 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         //List<KennzeichenSerie> GetKennzeichenSerie();
         //List<Fzg> GetZulassungenAnzahlForPdiAndDate(DateTime date, out string errorMessage);
         //string ZulassungSave(List<Fzg> fahrzeuge, DateTime zulassungsDatum, string kennzeichenSerie);
+
+        string Test();
+
+        List<Domaenenfestwert> GetFahrzeugarten { get; }
+
+        List<Domaenenfestwert> GetUsers { get; }
+
     }
 }

@@ -1,14 +1,14 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Anlieferung 
 @using CkgDomainLogic.Autohaus.Models
 
-<div id="DivUpload" class="margin-top-20">
-    @using (Ajax.BeginForm("Upload", "HolBringService", null,
-                new MvcAjaxOptions { UpdateTargetId = "DivUpload", OnComplete = "AjaxFormUploadComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormUpload" }))
+<div id="DivReady" class="margin-top-20">
+    @using (Ajax.BeginForm("Ready", "HolBringService", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivReady", OnComplete = "AjaxFormReadyComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormReady" }))
     {
         @Html.FormValidationSummary()
 
-        <span>UPLOAD</span>
+        <span>READY</span>
 
         @Html.FormRequiredFieldsSummary()
         

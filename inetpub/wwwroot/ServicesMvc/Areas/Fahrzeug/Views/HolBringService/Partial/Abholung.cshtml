@@ -1,5 +1,19 @@
-﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Abholung 
-@using CkgDomainLogic.Autohaus.Models
+﻿@using CkgDomainLogic.DomainCommon.Models
+@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Abholung 
+
+@{
+    var dropDownHourList = (List<HolBringServiceViewModel.DropDownTimeItem>)ViewData["DropDownHourList"];
+    var dropDownMinuteList = (List<HolBringServiceViewModel.DropDownTimeItem>)ViewData["DropDownMinuteList"];
+}
+
+<style>
+    .dropdownwidth {
+        width: 90px;
+    }    
+</style>
+
+
 
 <div id="DivAbholung" class="margin-top-20">
     @using (Ajax.BeginForm("Abholung", "HolBringService", null,
@@ -8,24 +22,51 @@
     {
         @Html.FormValidationSummary()
 
-        @Html.FormTextBoxFor(m => m.AbholungKunde, new { @class = "m-wrap " })
-        @Html.FormTextBoxFor(m => m.AbholungStrasseHausNr, new { @class = "m-wrap " })
+        <div class="row-fluid">
+            <div class="span6 ">
+                @Html.FormTextBoxFor(m => m.AbholungKunde, new { @class = "m-wrap " })
+                @Html.FormTextBoxFor(m => m.AbholungStrasseHausNr, new { @class = "m-wrap " })
+                
+                <div class="control-group">
+                    <label class="control-label">PLZ / Ort</label>
+                    <div class="controls">
+                        @Html.TextBoxFor(m => m.AbholungPlz, new { @class = "m-wrap xsmall"})
+                        @Html.TextBoxFor(m => m.AbholungOrt, new { @class = "m-wrap small "})
+                    </div>
+                </div>
+                @Html.FormTextBoxFor(m => m.AbholungAnsprechpartner, new { @class = "m-wrap "})
+            </div>
+            
+            <div class="span6 ">
+                @Html.FormTextAreaFor(m => m.AbholungHinweis, new { @class = "m-wrap"}, rows: 9)
+            </div>
+        </div>
         
-        @Html.FormTextBoxFor(m => m.AbholungPlz, new { @class = "m-wrap xsmall", col = "left" })
-        @Html.FormTextBoxFor(m => m.AbholungOrt, new { @class = "m-wrap small", col = "right" })
+            @Html.FormTextBoxFor(m => m.AbholungTel, new { @class = "m-wrap " })
         
-        @Html.FormTextBoxFor(m => m.AbholungAnsprechpartner, new { @class = "m-wrap ", col = "left" })
-        @Html.FormTextBoxFor(m => m.AbholungTel, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormTextBoxFor(m => m.AbholungUhrzeitStunden, new { @class = "m-wrap ", col = "left" })
-        @Html.FormTextBoxFor(m => m.AbholungUhrzeitMinuten, new { @class = "m-wrap ", col = "right" })
+        <div class="control-group">
+            <label class="control-label">Abhol-Uhrzeit</label>
+            <div class="controls">
+                @Html.DropDownListFor(m => m.AbholungUhrzeitStunden, dropDownHourList.ToSelectList(), new { @class = "dropdownwidth"})
+                @Html.DropDownListFor(m => m.AbholungUhrzeitMinuten, dropDownMinuteList.ToSelectList(), new { @class = " dropdownwidth"})
+            
+            </div>
+        </div>
+        
 
-        @Html.FormDatePickerFor(m => m.AbholungUhrzeitMinuten, new { @class = "m-wrap " })
+            @Html.FormTextBoxFor(m => m.AbholungUhrzeitStunden, new { @class = "m-wrap ", col = "left" })
+            @Html.FormTextBoxFor(m => m.AbholungUhrzeitMinuten, new { @class = "m-wrap ", col = "right" })
+
+            @Html.FormDatePickerFor(m => m.AbholungUhrzeitMinuten, new { @class = "m-wrap " })
         
-        @Html.FormRequiredFieldsSummary()
+            @Html.FormCheckBoxFor(m => m.AbholungMobilitaetsfahrzeug, new { @class = "m-wrap", col = "left" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">Mobilitätsfahrzeug</label></text>)
+
+                
+            @Html.FormRequiredFieldsSummary()
         
-        <script type="text/javascript">
-            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-        </script>
-    }
-</div>
+            <script type="text/javascript">
+                _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            </script>
+            }
+        </div>

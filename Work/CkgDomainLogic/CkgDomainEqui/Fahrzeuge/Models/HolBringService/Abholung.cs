@@ -3,13 +3,24 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.Fahrzeuge.ViewModels;
+using GeneralTools.Models;
+using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 {
-    public class Abholung : IValidatableObject
+    public class Abholung 
     {
+        [LocalizedDisplay(LocalizeConstants.Customer)]
         public string AbholungKunde { get; set; }
+
+        [Required]
+        [LocalizedDisplay("Straße / Haus-Nr.")]            // LocalizeConstants.Customer
         public string AbholungStrasseHausNr { get; set; }
+
         public string AbholungPlz { get; set; }
         public string AbholungOrt { get; set; }
         public string AbholungAnsprechpartner { get; set; }
@@ -19,12 +30,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string AbholungUhrzeitStunden { get; set; }
         public string AbholungUhrzeitMinuten { get; set; }
 
+        
+
         public string AbholungHinweis { get; set; }
         public bool AbholungMobilitaetsfahrzeug { get; set; }
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            // throw new NotImplementedException();
-            return null;
-        }
+
+
     }
 }

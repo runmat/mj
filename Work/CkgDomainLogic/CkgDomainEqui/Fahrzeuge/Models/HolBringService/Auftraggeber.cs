@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Models;
 
 namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 {
-    public class Auftraggeber : IValidatableObject    
+    public class Auftraggeber 
     {
         public string Auftragersteller { get; set; }
         public string AuftragerstellerTel { get; set; }
@@ -17,11 +20,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string Kunde { get; set; }
         public string KundeTel { get; set; }
         public string Kennnzeichen { get; set; }
-        public int Fahrzeugart { get; set; }
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        {
-            // throw new NotImplementedException();
-            return null;
-        }
+        public int FahrzeugartId { get; set; }
+
+        //[XmlIgnore, ScriptIgnore]
+        //public List<Domaenenfestwert> Fahrzeugarten { get; set; }
+
+
     }
 }

@@ -1,5 +1,9 @@
-﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Auftraggeber 
-@using CkgDomainLogic.Autohaus.Models
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Auftraggeber 
+
+@{
+    var fahrzeugArtenList = (List<Domaenenfestwert>)ViewData["FahrzeugArtenList"];
+}
 
 <div id="DivAuftraggeber" class="margin-top-20">
     @using (Ajax.BeginForm("Auftraggeber", "HolBringService", null,
@@ -22,8 +26,9 @@
         @Html.FormTextBoxFor(m => m.Kunde, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.KundeTel, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small", col = "left3" })
-        @Html.FormTextBoxFor(m => m.Fahrzeugart, new { @class = "m-wrap small", col = "middle3" })        
+        @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small", col = "left" })
+        
+        @Html.FormDropDownListFor(m => m.FahrzeugartId, fahrzeugArtenList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
 
         @Html.FormRequiredFieldsSummary()
         
