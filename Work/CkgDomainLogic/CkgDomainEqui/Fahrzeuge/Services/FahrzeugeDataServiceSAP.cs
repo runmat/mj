@@ -1,7 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
-// ReSharper disable AccessToForEachVariableInClosure
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Models;
@@ -13,8 +10,6 @@ using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeuge.Models.AppModelMappings;
-
-// ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Fahrzeuge.Services
 {
@@ -161,14 +156,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             if (selector.MeldeDatumRange.IsSelected)
             {
-                SAP.SetImportParameter("I_ABMDT_VON", selector.MeldeDatumRange.StartDate);
-                SAP.SetImportParameter("I_ABMDT_BIS", selector.MeldeDatumRange.EndDate);
+                SAP.SetImportParameter("I_ERDAT_VON", selector.MeldeDatumRange.StartDate);
+                SAP.SetImportParameter("I_ERDAT_BIS", selector.MeldeDatumRange.EndDate);
             }
 
             if (selector.StillegungsDatumRange.IsSelected)
             {
-                SAP.SetImportParameter("I_ERDAT_VON", selector.StillegungsDatumRange.StartDate);
-                SAP.SetImportParameter("I_ERDAT_BIS", selector.StillegungsDatumRange.EndDate);
+                SAP.SetImportParameter("I_ABMDT_VON", selector.StillegungsDatumRange.StartDate);
+                SAP.SetImportParameter("I_ABMDT_BIS", selector.StillegungsDatumRange.EndDate);
             }
 
             SAP.Execute();

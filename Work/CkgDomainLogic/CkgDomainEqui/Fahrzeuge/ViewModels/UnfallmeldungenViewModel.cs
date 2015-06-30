@@ -1,7 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
-
-#region using
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -10,15 +7,9 @@ using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
 using GeneralTools.Models;
-using System.IO;
-using GeneralTools.Services;
-#endregion
-// ReSharper restore RedundantUsingDirective
-
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
@@ -29,7 +20,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public UnfallmeldungenSelektor UnfallmeldungenSelektor
         {
-            get { return PropertyCacheGet(() => new UnfallmeldungenSelektor { NurMitAbmeldungen = true }); }
+            get { return PropertyCacheGet(() => new UnfallmeldungenSelektor()); }
             set { PropertyCacheSet(value); }
         }
 
@@ -65,11 +56,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get { return PropertyCacheGet(() => DataService.FahrzeugStatusWerte); }
         }
-      
-        public void DataInit()
-        {           
+
+        public void DataInit(bool forReport)
+        {
+            PropertyCacheClear(this, m => m.UnfallmeldungenSelektor);
             DataMarkForRefresh();
-            UnfallmeldungenSelektor.MeldeDatumRange.IsSelected = true;
+            UnfallmeldungenSelektor.NurMitAbmeldungen = forReport;
+            UnfallmeldungenSelektor.MeldeDatumRange.IsSelected = forReport;
         }
 
         public void DataMarkForRefresh()
@@ -84,14 +77,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void LoadUnfallmeldungen()
         {
             Unfallmeldungen = DataService.GetUnfallmeldungen(UnfallmeldungenSelektor);
-
-            DataMarkForRefresh();
-        }
-
-        public void LoadAllUnfallmeldungen()
-        {
-            // ToDo: Remove "NurOhneAbmeldungen = true"
-            Unfallmeldungen = DataService.GetUnfallmeldungen(new UnfallmeldungenSelektor { NurOhneAbmeldungen = false });
 
             DataMarkForRefresh();
         }
@@ -127,7 +112,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             DataService.UnfallmeldungenCancel(list, cancelText, out cancelCount, out errorMessage);
 
-            LoadAllUnfallmeldungen();
+            LoadUnfallmeldungen();
         }
 
         public void ValidateMeldungCreationSearch(Action<string, string> addModelError)
@@ -173,7 +158,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (errorMessage.IsNotNullOrEmpty())
                 addModelError("", errorMessage);
             else
-                LoadAllUnfallmeldungen();
+                LoadUnfallmeldungen();
         }
     }
 }
