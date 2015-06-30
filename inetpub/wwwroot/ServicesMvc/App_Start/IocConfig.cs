@@ -213,6 +213,7 @@ namespace ServicesMvc
             builder.RegisterType<FahrzeuguebersichtDataServiceSAP>().As<IFahrzeuguebersichtDataService>().InstancePerHttpRequest();
             builder.RegisterType<BatcherfassungDataServiceSAP>().As<IBatcherfassungDataService>().InstancePerHttpRequest();             
             builder.RegisterType<FahrzeugSperrenVerschiebenDataServiceSAP>().As<IFahrzeugSperrenVerschiebenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<StatusEinsteuerungDataServiceSAP>().As<IStatusEinsteuerungDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
