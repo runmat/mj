@@ -16,6 +16,8 @@ namespace CkgDomainLogic.Fahrer.Models
 
         public int FahrerAnzahl { get; set; }
 
+        public string Kommentar { get; set; }
+
         public string CssClass { get { return GetCssClass(BelegungsTyp); } }
 
 
