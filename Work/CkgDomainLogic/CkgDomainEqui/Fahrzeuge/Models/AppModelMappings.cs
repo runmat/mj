@@ -321,6 +321,17 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
                         business.BereitmeldungDatum = sap.ZZDAT_BER;
                         business.Hersteller = sap.ZZHERST_TEXT;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.BemerkungSperre = sap.ZBEMERKUNG;
+                        business.Gesperrt = (sap.ZZAKTSPERRE == "JA");
+                        business.MeldungsNr = sap.QMNUM;
+                        business.DadPdi = sap.ZZCARPORT;
+                        business.Farbcode = sap.ZFARBE;
+                        business.Farbname = sap.FARBE_TEXT;
+                        business.Anhaengerkupplung = sap.ZAHK.XToBool();
+                        business.Navi = sap.ZNAVI.XToBool();
+                        business.Winterreifen = sap.ZMS_REIFEN.XToBool();
                     }));
             }
         }
@@ -349,6 +360,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     {
                         business.PDIKey = sap.KUNPDI;
                         business.PDIText = sap.PDIWEB;
+                        business.DadPdi = sap.DADPDI;
                     }));
             }
         }
@@ -650,7 +662,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-
         static public ModelMapping<Z_DPM_FREIG_VERSAND_SPERR_001.GT_WEB, Treuhandbestand> Z_DPM_FREIG_VERSAND_SPERR_001_GT_WEB_From_Treuhandbestand
         {
             get
@@ -668,8 +679,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 ));
             }
         }
-
-      
 
         static public ModelMapping<Z_DPM_IMP_MODELL_ID_01.GT_IN, FahrzeugvoravisierungUploadModel> Z_DPM_IMP_MODELL_ID_01_GT_IN_From_FahrzeugvoravisierungUploadModel
         {

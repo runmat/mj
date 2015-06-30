@@ -2560,6 +2560,9 @@
     <Content Include="Documents\Templates\UploadUnitnummern.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Documents\Templates\UploadSperrenVerschieben.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Documents\Templates\UploadBriefversand.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -4428,6 +4431,11 @@
     <Content Include="Views\Batcherfassung\ExcelUpload\FileUpload.cshtml" />
     <Content Include="Views\Batcherfassung\Partial\GridUnitnumbers.cshtml" />
     <Content Include="Views\Batcherfassung\Partial\DetailsFormReadOnly.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\Grid.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\SperrenForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\VerschiebenForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\TextErfassenForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\UnfallmeldungenAlleGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateSearch.cshtml" />
@@ -4442,6 +4450,7 @@
     <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
