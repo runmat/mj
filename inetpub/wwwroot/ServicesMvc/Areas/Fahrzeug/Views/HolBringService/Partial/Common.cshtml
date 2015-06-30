@@ -151,9 +151,9 @@
         FormWizard.OnPrev(function (step, maxSteps) {
             FormWizardShowHideSaveButton(step == 7, 500);
 
-            if (step == 2 && _skipBankAddressData) {
-                FormWizard.ButtonPrevInvoke();
-            }
+//            if (step == 2 && _skipBankAddressData) {
+//                FormWizard.ButtonPrevInvoke();
+//            }
 
             window.scrollTo(0, 0);
             return true;
@@ -223,7 +223,24 @@
 
     // AjaxFormAuftraggeberComplete
     function AjaxFormAuftraggeberComplete() {
-//        alert("AjaxFormAuftraggeberComplete");
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    function AjaxFormAbholungComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+
+    function AjaxFormAnlieferungComplete() {
         FormPrepareAjax();
 
         if (_modelIsValid) {
@@ -261,7 +278,7 @@
     function FormWizardShowHideSaveButton(show, delay) {
         setTimeout(function () {
             $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
-            FormWizard.ButtonCustom1Show(show, _customButtonText);
+//            FormWizard.ButtonCustom1Show(show, _customButtonText);
         }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
     

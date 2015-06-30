@@ -13,15 +13,14 @@
     }    
 </style>
 
-
-
 <div id="DivAbholung" class="margin-top-20">
     @using (Ajax.BeginForm("Abholung", "HolBringService", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivAbholung", OnComplete = "AjaxFormAbholungComplete();" },
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAbholung" }))
     {
         @Html.FormValidationSummary()
-
+        @Html.Hidden("formSubmit", new { @Value = "ok" })
+        
         <div class="row-fluid">
             <div class="span6 ">
                 @Html.FormTextBoxFor(m => m.AbholungKunde, new { @class = "m-wrap " })

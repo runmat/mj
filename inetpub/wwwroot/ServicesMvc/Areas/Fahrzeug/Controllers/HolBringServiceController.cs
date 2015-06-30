@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
@@ -52,7 +53,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ViewModel.SetFahrzeugdaten(model);
+                ViewModel.Auftraggeber = model;
             }
 
             ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
@@ -60,11 +61,19 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         [HttpPost]
-        public ActionResult Abholung(Abholung model)
+        public ActionResult Abholung(string formSubmit, Abholung model)
         {
+            // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen und etwaige ModelStateErrors entfernen
+            if (formSubmit != "ok")     
+            {
+                model = ViewModel.Abholung;
+                foreach (var modelValue in ModelState.Values)
+                    modelValue.Errors.Clear();
+            }
+
             if (ModelState.IsValid)
             {
-                // ViewModel.SetFahrzeugdaten(model);
+                ViewModel.Abholung = model;
             }
 
             ViewData["DropDownHourList"] = ViewModel.DropDownHours;
@@ -73,11 +82,19 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         [HttpPost]
-        public ActionResult Anlieferung(Anlieferung model)
+        public ActionResult Anlieferung(string formSubmit, Anlieferung model)
         {
+            // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen und etwaige ModelStateErrors entfernen
+            if (formSubmit != "ok")
+            {
+                model = ViewModel.Anlieferung;
+                foreach (var modelValue in ModelState.Values)
+                    modelValue.Errors.Clear();
+            }
+
             if (ModelState.IsValid)
             {
-                // ViewModel.SetFahrzeugdaten(model);
+                ViewModel.Anlieferung = model;
             }
             return PartialView("Partial/Anlieferung", model);
         }

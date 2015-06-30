@@ -7,6 +7,7 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAnlieferungng" }))
     {
         @Html.FormValidationSummary()
+        @Html.Hidden("formSubmit", new { @Value = "ok" })
 
         @Html.FormTextBoxFor(m => m.AnlieferungKunde, new { @class = "m-wrap " })
         @Html.FormTextBoxFor(m => m.AnlieferungStrasseHausNr, new { @class = "m-wrap " })
