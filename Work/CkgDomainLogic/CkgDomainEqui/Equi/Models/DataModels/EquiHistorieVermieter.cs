@@ -40,13 +40,13 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Cancellation)]
         public DateTime? Abmeldedatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractNo)]
+        [LocalizedDisplay(LocalizeConstants.ContractNo)]  
         public string VertragsNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        [LocalizedDisplay(LocalizeConstants.FzgHistorieVermieter_Reference1)]
         public string Referenz1 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        [LocalizedDisplay(LocalizeConstants.FzgHistorieVermieter_Reference2)]
         public string Referenz2 { get; set; }
 
         public EquiHistorieInfoVermieter HistorieInfo { get; set; }
