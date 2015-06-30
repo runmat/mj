@@ -13,6 +13,9 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Model)]
         public string Modell { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Model)]
+        public string ModellAsText { get { return string.Format("{0}{1}", Modell, (Einsteuerungsdaten != null ? Einsteuerungsdaten.ModellName.PrependIfNotNull(" ") : "")); } }
+
         [LocalizedDisplay(LocalizeConstants.Color)]
         public string Farbe { get; set; }
 
