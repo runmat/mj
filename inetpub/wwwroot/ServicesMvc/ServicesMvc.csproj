@@ -2557,6 +2557,9 @@
     <Content Include="Documents\Templates\UploadFzgVoravisierungVW.xls" />
     <None Include="Documents\Templates\UploadSchluesselversand.csv" />
     <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
+    <Content Include="Documents\Templates\UploadUnitnummern.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Documents\Templates\UploadBriefversand.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -4417,6 +4420,14 @@
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FahrzeuguebersichtSuche.cshtml" />
     <Content Include="Views\Fahrzeuge\ReportFahrzeuguebersicht.cshtml" />
     <Content Include="Views\Fahrzeuge\Fahrzeuguebersicht\FileUpload.cshtml" />
+    <Content Include="Views\Batcherfassung\Verwaltung.cshtml" />
+    <Content Include="Views\Batcherfassung\Partial\Common.cshtml" />
+    <Content Include="Views\Batcherfassung\Partial\DetailsForm.cshtml" />
+    <Content Include="Views\Batcherfassung\Partial\GridBatcherfassung.cshtml" />
+    <Content Include="Views\Batcherfassung\Partial\Suche.cshtml" />
+    <Content Include="Views\Batcherfassung\ExcelUpload\FileUpload.cshtml" />
+    <Content Include="Views\Batcherfassung\Partial\GridUnitnumbers.cshtml" />
+    <Content Include="Views\Batcherfassung\Partial\DetailsFormReadOnly.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\UnfallmeldungenAlleGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\Unfallmeldungen\MeldungCreateSearch.cshtml" />

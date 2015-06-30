@@ -82,8 +82,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Batcherfassung\Contracts\IBatcherfassungDataService.cs" />
+    <Compile Include="Batcherfassung\Models\AppModelMappings.cs" />
+    <Compile Include="Batcherfassung\Models\Batcherfassung.cs" />
+    <Compile Include="Batcherfassung\Models\BatcherfassungSelektor.cs" />
+    <Compile Include="Batcherfassung\Models\Auftragsnummer.cs" />
+    <Compile Include="Batcherfassung\Models\FzgUnitnummer.cs" />
+    <Compile Include="Batcherfassung\Models\BatcherfassungEdit.cs" />
+    <Compile Include="Batcherfassung\Models\ModelHersteller.cs" />
+    <Compile Include="Batcherfassung\Services\BatcherfassungDataServiceSAP.cs" />
+    <Compile Include="Batcherfassung\ViewModels\BatcherfassungViewModel.cs" />
     <Compile Include="Controllers\Abmeldungen\FahrzeugeController.cs" />
     <Compile Include="Controllers\Abmeldungen\Version2\FahrzeugeController.cs" />
+    <Compile Include="Controllers\BatcherfassungController.cs" />
     <Compile Include="Controllers\Bestand\EquiController.cs" />
     <Compile Include="Controllers\BriefbestandVhc\EquiController.cs" />
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
