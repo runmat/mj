@@ -291,6 +291,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return webItemsEquis;
         }
+
+        public List<Domaenenfestwert> GetFarben()
+        {
+            var sapList = Z_DPM_DOMAENENFESTWERTE.GT_WEB.GetExportListWithInitExecute(SAP, "DOMNAME, DDLANGUAGE", "ZFARBE", "DE");
+
+            return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList).ToList();
+        }
+
         public List<Fzg> GetFahrzeugeForZulassung()
         {
             Z_M_EC_AVM_MELDUNGEN_PDI1.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
@@ -432,17 +440,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
                         foreach (var f in fahrzeuge)
                         {
-                            f.IsValid = true;
-                            f.ValidationMessage = "Zulassung durchgeführt!";
-
                             var savedItem = exportList.FirstOrDefault(e => e.ID == f.Fahrgestellnummer);
-                            if (savedItem == null)
-                                continue;
 
-                            f.IsValid = (retCode.NotNullOrEmpty().ToUpper() == "OK");
-                            f.ValidationMessage = "";
-                            if (!f.IsValid)
-                                f.ValidationMessage = savedItem.MESSAGE.PrependIfNotNull("Fehler, ");
+                            f.IsValid = (retCode.NotNullOrEmpty().ToUpper() == "OK" && (savedItem == null || savedItem.MESSAGE.IsNullOrEmpty()));
+                            f.ValidationMessage = (f.IsValid ? Localize.OK : (savedItem != null ? savedItem.MESSAGE : "").PrependIfNotNull(String.Format("{0}, ", Localize.Error)));
                         }
                     },
 
