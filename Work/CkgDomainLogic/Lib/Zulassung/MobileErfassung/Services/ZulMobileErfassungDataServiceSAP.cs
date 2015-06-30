@@ -71,7 +71,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
                     item.Positionen = positionen.Where(p => p.KopfId == item.Id).OrderBy(p => p.PosNr).ToList();
 
                     // User-Infos aus SQL lesen
-                    var vorerfUser = dbContext.GetUser(item.VorerfasserUser);
+                    var vorerfUser = dbContext.GetCkgUserInfo(item.VorerfasserUser);
                     if (vorerfUser != null)
                     {
                         item.VorerfasserAnrede = vorerfUser.Title;

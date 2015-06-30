@@ -194,6 +194,7 @@
     <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Dienstleistung.cs" />
     <Compile Include="Zulassung\MobileErfassung\Models\DataModels\AmtVorgaenge.cs" />
     <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Anwendung.cs" />
+    <Compile Include="Zulassung\MobileErfassung\Models\DataModels\CkgUserInfo.cs" />
     <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Kunde.cs" />
     <Compile Include="Zulassung\MobileErfassung\Models\DataModels\VorgangStatus.cs" />
     <Compile Include="Zulassung\MobileErfassung\Models\DataModels\Vorgang.cs" />
