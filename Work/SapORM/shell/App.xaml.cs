@@ -9,7 +9,6 @@ using SapORM.Services;
 using SapORM.Models;
 using SapORM.Contracts;
 using GeneralTools.Models;
-using WebTools.Services;
 
 namespace SapORM
 {
@@ -506,6 +505,8 @@ namespace SapORM
             //new FunctionReflector("Z_M_Ec_Avm_Zulassungssperre").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_MELDUNGEN_PDI1").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
             //new FunctionReflector("Z_M_Ec_Avm_Pdiwechsel").WriteOrmForExportTableStructures("ZZKUNNR", "0000219853");
+
+            //new FunctionReflector("Z_DPM_AVM_DOKUMENT_KOPIE").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000219853");
 
 
             //CoCTest();
