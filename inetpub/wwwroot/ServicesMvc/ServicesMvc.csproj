@@ -2551,6 +2551,12 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Documents\Templates\UploadBriefversand.csv" />
+    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
+    <Content Include="Documents\Templates\UploadFzgVoravisierungSonstigeHersteller.xls" />
+    <Content Include="Documents\Templates\UploadFzgVoravisierungVW.xls" />
+    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
+    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
     <None Include="Documents\Templates\UploadBriefversand.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
