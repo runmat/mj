@@ -18,6 +18,17 @@ namespace ServicesMvc.Controllers
         {
             return View(EquipmentHistorieVermieterViewModel);
         }
+               
+        public ActionResult GetHistorieVermieterByFinPartial(string fahrgestellnummer)
+        {
+            var model = new EquiHistorieSuchparameter(){ FahrgestellNr = fahrgestellnummer } ;            
+            EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
+
+            if (EquipmentHistorieVermieterViewModel.HistorieInfos != null)
+                EquipmentHistorieVermieterViewModel.LoadHistorie(EquipmentHistorieVermieterViewModel.HistorieInfos[0].EquipmentNr, null);
+        
+            return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);
+        }
 
         [HttpPost]
         public ActionResult GetFahrzeugHistorieVermieterPartial(string equiNr, string meldungsNr)

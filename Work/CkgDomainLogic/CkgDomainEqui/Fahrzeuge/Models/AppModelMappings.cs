@@ -318,6 +318,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.ModelID = sap.ZZMODELL;
                         business.Modell = sap.ZZBEZEI;
                         business.Status = sap.STATUS_TEXT;
+                        business.StatusKey = sap.STATUS.ToInt();
                         business.EingangZb2Datum = sap.ERDAT_EQUI;
                         business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
                         business.BereitmeldungDatum = sap.ZZDAT_BER;
@@ -333,6 +334,23 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Anhaengerkupplung = sap.ZAHK.XToBool();
                         business.Navi = sap.ZNAVI.XToBool();
                         business.Winterreifen = sap.ZMS_REIFEN.XToBool();
+                        business.SIPPCode = sap.ZZSIPP;
+                        business.Auftragsnummer = sap.LIZNR;
+                        business.Zb2Nummer = sap.TIDNR;
+                        business.BatchId = sap.ZBATCH_ID;
+                        business.Fahrzeugtyp = sap.FZGART;
+
+                        business.Farbcode = sap.ZFARBE;
+                        business.Farbname = sap.FARBE_TEXT;
+                        business.KraftstoffArt = sap.ZZKRAFTSTOFF_TXT;
+                        business.ZulassungBereit = sap.ZULBEREIT.XToBool();
+                        business.ZulassungsSperre = sap.ZZAKTSPERRE.XToBool();
+                        business.AbmeldeDatum = sap.ZZDAT_BER;
+                        business.VersandDatum = sap.ZZTMPDT;
+
+                        business.Lieferant = sap.NAME1_ZP;
+                        business.Ort = sap.CITY1_ZP;
+                        business.FinanzierungsArt = sap.FIN_ART;
                     }));
             }
         }
@@ -345,7 +363,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {
-                        business.StatusKey = sap.POS_TEXT;
+                        business.StatusKey = sap.POS_KURZTEXT;
                         business.StatusText = sap.POS_TEXT;                        
                     }));
             }
