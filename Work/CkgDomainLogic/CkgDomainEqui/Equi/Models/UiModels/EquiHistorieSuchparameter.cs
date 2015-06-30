@@ -15,10 +15,10 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string FahrgestellNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ZB2)]
+        [LocalizedDisplay(LocalizeConstants.ZB2No)]
         public string BriefNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractNo_VehicleHistory)]  
+        [LocalizedDisplay(LocalizeConstants.ContractNo_VehicleHistory)]
         public string VertragsNr { get; set; }
 
         public int AnzahlTreffer { get; set; }
