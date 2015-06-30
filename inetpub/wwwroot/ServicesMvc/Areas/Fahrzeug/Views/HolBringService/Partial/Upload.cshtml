@@ -1,5 +1,44 @@
-﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Anlieferung 
-@using CkgDomainLogic.Autohaus.Models
+﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Upload 
+
+<script>
+
+    function UploadStart(e) {
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.pdf') <= 0) {
+            alert('@Localize.FileUploadOnlyPdfLegal');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        alert(e.response.message);
+        $('#PdfPreview').attr('src', 'C:\temp\2ff07bde-0f87-40a9-8200-c6ad8de4fec6.pdf');
+        // ShowGrid(true);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('@Localize.ErrorFileCouldNotBeSaved');
+    }
+    
+</script>
 
 <div id="DivUpload" class="margin-top-20">
     @using (Ajax.BeginForm("Upload", "HolBringService", null,
@@ -7,10 +46,37 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormUpload" }))
     {
         @Html.FormValidationSummary()
+        @Html.Hidden("formSubmit", "ok")
 
-        <span>UPLOAD</span>
-
-        @Html.FormRequiredFieldsSummary()
+        
+        <h3>Werkstattauftrag</h3>
+        
+        <div class="control-group">
+            <label class="control-label">@Localize.UploadPdfFile:</label>
+            <div class="controls">
+                
+                @(Html.Telerik().Upload()
+                      .Name("fileUpload")
+                      .Localizable("de-DE")
+                      .Async(async => async
+                                          .Save("UploadPdfStart", "HolBringService")
+                                          .SaveField("uploadFiles")
+                                          .AutoUpload(true))
+                      .Multiple(false)
+                      .ShowFileList(false)
+                      .ClientEvents(events => events
+                                                  .OnUpload("UploadStart")
+                                                  .OnSuccess("UploadFinished")
+                                                  .OnError("UploadError")
+                      )
+                      )
+            </div>
+        </div>
+        
+        <div id="DivPdfPreview">
+            <iframe id="PdfPreview" width="400" height="400"></iframe>
+            <iframe src="http://samplepdf.com/sample.pdf" width="800px" height="600px" >
+        </div>
         
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();

@@ -37,9 +37,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         [LocalizedDisplay(LocalizeConstants.Phone)]
         public string KundeTel { get; set; }
 
+        [Required]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennnzeichen { get; set; }
-
+    
         [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
         public int FahrzeugartId { get; set; }
 

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
-using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models.HolBringService;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
+using MvcTools.Web;
 
 namespace ServicesMvc.Fahrzeug.Controllers
 {
@@ -111,14 +110,45 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         [HttpPost]
-        public ActionResult Upload(string model)
+        public ActionResult Upload(Upload model)
         {
+            // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen und etwaige ModelStateErrors entfernen
+            if (Request["formSubmit"] != "ok")
+            {
+                model = ViewModel.Upload;
+                foreach (var modelValue in ModelState.Values)
+                    modelValue.Errors.Clear();
+            }
+
             if (ModelState.IsValid)
             {
-                // ViewModel.SetFahrzeugdaten(model);
+                ViewModel.Upload = model;
             }
-            return PartialView("Partial/Upload", ViewModel);
+
+            return PartialView("Partial/Upload", model);
         }
+
+        [HttpPost]
+        public ActionResult UploadPdfStart(IEnumerable<HttpPostedFileBase> uploadFiles)
+        {
+            if (uploadFiles == null || uploadFiles.None())
+                return Json(new { success = false, message = Localize.ErrorNoFileSelected }, "text/plain");
+
+            // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+            var file = uploadFiles.ToArray()[0];
+
+            if (!ViewModel.PdfUploadFileSave(file.FileName, file.SavePostedFile))
+                return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
+
+            return Json(new
+            {
+                success = true,
+                message = "ok",
+                uploadFileName = file.FileName,
+            }, "text/plain");
+        }
+
+
 
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Web.Script.Serialization;
@@ -10,6 +11,7 @@ using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models.HolBringService;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -21,7 +23,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public Auftraggeber Auftraggeber { get; set; }
         public Abholung Abholung { get; set; }
         public Anlieferung Anlieferung { get; set; }
-        public string UploadFile { get; set; }
+        public Upload Upload { get; set; }
 
         [XmlIgnore]
         public IHolBringServiceDataService DataService { get { return CacheGet<IHolBringServiceDataService>(); } }
@@ -88,6 +90,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
+            Upload = new Upload();
             Fahrzeugarten = DataService.GetFahrzeugarten;
 
             var selectableHours = new List<DropDownTimeItem>
@@ -141,13 +144,33 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
         }
 
+        public bool PdfUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
+        {
+            Upload.UploadFileName = fileName;
+            var randomfilename = Guid.NewGuid().ToString();
+            // var extension = (Upload.UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
+            var extension = ".pdf"; //  (Upload.UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
+            Upload.UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
+
+            var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
+
+            if (string.IsNullOrEmpty(nameSaved))
+                return false;
+
+            //var list = new ExcelDocumentFactory().ReadToDataTable(Upload.UploadServerFileName, true, "", CreateInstanceFromDatarow, ';', true, true).ToList();
+            //FileService.TryFileDelete(Upload.UploadServerFileName);
+            //if (list.None())
+            //    return false;
+
+            return true;
+        }
+
         [XmlIgnore]
         public string FeiertageAsString { get { return DateService.FeiertageAsString; } }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            // throw new NotImplementedException();
-            return null;
+            return null;    // throw new NotImplementedException();
         }
     }
 }

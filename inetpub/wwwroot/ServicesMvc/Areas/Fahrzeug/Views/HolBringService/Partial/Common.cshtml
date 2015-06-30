@@ -66,9 +66,6 @@
 //        }
 //        );
         
-//        setTimeout(function() {
-//            ReFilterGrid();
-//        }, 800);
     };
 
     function FormPreparePrivateAjax(step) {        
@@ -84,50 +81,6 @@
         }
         $('.tooltips').tooltip();
     }
-
-//    function FormWizardInitPrivate() {
-//        FormWizard.Init(function () {
-//            FormWizard.ActionsShow(!FormWizard.HasStepKey('FahrzeugAuswahl') && typeof(_formErrorHint) == 'undefined');
-//        });
-
-//        FormWizard.OnNext(function (step, maxSteps) {
-//            var stepKey = FormWizard.GetStepKey(step - 1);
-//            
-//            alert("FormWizard.OnNext: " + stepKey);
-//            
-//            if ('Auftraggeber' == stepKey) {
-//                return Auftraggeber();
-//            }
-//            if ('Abholung' == stepKey) {
-//                return Abholung();
-//            }
-
-//            return true;
-//        });
-
-//        FormWizard.OnPrev(function (step, maxSteps) {
-//            
-//            alert("FormWizard.OnPrev: " + step);
-//            
-//            if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step))
-//                FormWizard.ActionsShow(true);
-//            return true;
-//        });
-
-//        FormWizard.OnSubmit(function () {
-
-//            alert("FormWizard.OnSubmit");
-//            
-//            AjaxRequestNextStep();
-
-//            return true;
-//        });
-
-//        FormWizard.OnRestart(function () {
-//            alert('Ok, let´s restart! :)');
-//            LocationReloadWithoutQueryString();
-//        });
-//    }
 
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
@@ -201,27 +154,6 @@
         });    
     }
 
-    function Auftraggeber() {
-        AjaxRequestNextStep();
-        return false;
-    }
-    
-    function Abholung() {
-        AjaxRequestNextStep();
-        return false;
-    }
-    
-    function Anlieferung() {
-        AjaxRequestNextStep();
-        return false;
-    }
-
-    function Upload() {
-        AjaxRequestNextStep();
-        return false;
-    }
-
-    // AjaxFormAuftraggeberComplete
     function AjaxFormAuftraggeberComplete() {
         FormPrepareAjax();
 
@@ -248,19 +180,16 @@
             return;
         }
     }
-    
-    function OnDropdownChanged_SelectedKennzeichenSerie(value) {
-        $.ajax({
-            type: "POST",
-            url: "OnChangePresetValues",
-            data: { value: value, type: "SelectedKennzeichenSerie" },
-            loadingShow: false,
-            success: function (result) {
-                ShowHideNextButton();
-            }
-        });
-    }
 
+    function AjaxFormUploadComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
+    
     function ShowHideNextButton() {
         
         var nextButtonValid = 
@@ -270,9 +199,9 @@
         FormWizard.ActionsShow(nextButtonValid);
     }
 
-    function ReFilterGrid() {
-        FilterGrid("GridFahrzeugAuswahl");
-    }
+//    function ReFilterGrid() {
+//        FilterGrid("GridFahrzeugAuswahl");
+//    }
 
 
     function FormWizardShowHideSaveButton(show, delay) {

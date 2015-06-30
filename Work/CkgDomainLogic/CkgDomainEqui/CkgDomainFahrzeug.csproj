@@ -221,6 +221,7 @@
     <Compile Include="Fahrzeuge\Models\HolBringService\Abholung.cs" />
     <Compile Include="Fahrzeuge\Models\HolBringService\Anlieferung.cs" />
     <Compile Include="Fahrzeuge\Models\HolBringService\Auftraggeber.cs" />
+    <Compile Include="Fahrzeuge\Models\HolBringService\Upload.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
     <Compile Include="Fahrzeuge\Models\Fzg.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
