@@ -190,6 +190,8 @@ namespace SapORM
             //new FunctionReflector("Z_FIL_STANDORTE").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_V_Ueberf_Verfuegbarkeit1").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_V_UEBERF_VERFUEGBARKEIT2").WriteOrmForExportTableStructures();
+            new FunctionReflector("Z_V_UEBERF_AUFTR_UPL_PROT_01").WriteOrmForExportTableStructures("I_FAHRER", "499930");
+            
 
             //new FunctionReflector("Z_M_GET_FAHRER_AUFTRAEGE").WriteOrmForExportTableStructures("I_VKORG,I_FAHRER", "1510", "0000499930");
             ///////new FunctionReflector("Z_M_SET_FAHRER_AUFTRAGS_STATUS").WriteOrmForExportTableStructures("I_VBELN, I_FAHRER_STATUS", "25648097".ToSapKunnr(), " ");
@@ -506,6 +508,7 @@ namespace SapORM
             //new FunctionReflector("Z_M_Ec_Avm_Zulassungssperre").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_MELDUNGEN_PDI1").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
             //new FunctionReflector("Z_M_Ec_Avm_Pdiwechsel").WriteOrmForExportTableStructures("ZZKUNNR", "0000219853");
+            
 
 
             //CoCTest();

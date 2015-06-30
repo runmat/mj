@@ -4423,6 +4423,7 @@
     <Content Include="Views\Logs\Partial\Errors\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\Errors\SucheErrorLogItems.cshtml" />
     <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
+    <Content Include="Views\Fahrer\ProtokollUpload.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

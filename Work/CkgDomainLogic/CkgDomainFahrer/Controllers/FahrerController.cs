@@ -66,6 +66,14 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult ProtokollUpload()
+        {
+            ViewModel.LoadFahrerAuftragsFahrten();
+
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
         public ActionResult QmReport()
         {
             return View(ViewModel);
