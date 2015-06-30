@@ -170,17 +170,6 @@
                                                             </asp:TextBox>
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
-                                                    <telerik:GridTemplateColumn DataField="VERTRAGSNR" SortExpression="VERTRAGSNR" Groupable="false">
-                                                        <HeaderStyle Width="105px" />
-                                                        <ItemTemplate>
-                                                            <asp:Label runat="server" ID="lblVertragsnummer" Text='<%# Eval("VERTRAGSNR") %>'>
-                                                            </asp:Label>
-                                                            <asp:TextBox ID="txtVertragsnummer" runat="server" Visible="False" 
-                                                                Text='<%# Eval("VERTRAGSNR") %>' 
-                                                                BorderColor="Red" Width="100px" BorderWidth="1px">
-                                                            </asp:TextBox>
-                                                        </ItemTemplate>
-                                                    </telerik:GridTemplateColumn>
                                                     <telerik:GridBoundColumn DataField="RET" SortExpression="RET" Visible="false" UniqueName="Bemerkung" >
                                                         <HeaderStyle Width="150px" />
                                                         <ItemStyle Wrap="false" />
