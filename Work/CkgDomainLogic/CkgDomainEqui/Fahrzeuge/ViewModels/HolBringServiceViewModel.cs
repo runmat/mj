@@ -31,6 +31,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public List<DropDownTimeItem> DropDownMinutes { get; set; }
         public List<Domaenenfestwert> AbholungUhrzeitStundenList { get; set; }
 
+        // CkgDomainLogic.General.Contracts.ILogonContextDataService
+
+        public string Username { get; set; }                // Antragsteller
+        public List<string> Betriebe { get; set; }
+        public List<string> Ansprechpartner { get; set; }
+
         #region Wizard
         [XmlIgnore]
         public IDictionary<string, string> Steps
@@ -61,33 +67,25 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public class DropDownTimeItem
         {
-            // [LocalizedDisplay(LocalizeConstants.Code)]
             [SelectListKey]
             public string ID { get; set; }
 
-            // [LocalizedDisplay(LocalizeConstants.Country)]
             [SelectListText]
             public string Name { get; set; }
         }
-
-        //public class DropDownMinute
-        //{
-        //    // [LocalizedDisplay(LocalizeConstants.Code)]
-        //    [SelectListKey]
-        //    public string ID { get; set; }
-
-        //    // [LocalizedDisplay(LocalizeConstants.Country)]
-        //    [SelectListText]
-        //    public string Name { get; set; }
-        //}
-
-        //[LocalizedDisplay(LocalizeConstants.Date)]
-        //[Required]
-        //public DateTime? PickupDate { get; set; }
-
+       
         public void DataInit()
         {
-            Auftraggeber = new Auftraggeber();
+            Auftraggeber = new Auftraggeber
+                {
+                    Auftragsersteller = DataService.GetUsername,
+                    AuftragerstellerTel = DataService.GetUserTel,
+                    Betrieb = "Betrieb",
+                    Ansprechpartner = "Ansprechpartner",
+                    AnsprechpartnerTel = "AnsprechpartnerTel"
+                    
+                };
+
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
             Fahrzeugarten = DataService.GetFahrzeugarten;
@@ -118,21 +116,29 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             DataMarkForRefresh();
         }
 
+        public void CopyDefaultValuesToAnlieferung(Abholung model)
+        {
+            if (!string.IsNullOrEmpty(model.AbholungStrasseHausNr) && string.IsNullOrEmpty(Anlieferung.AnlieferungStrasseHausNr))
+                Anlieferung.AnlieferungStrasseHausNr = model.AbholungStrasseHausNr;
+
+            if (!string.IsNullOrEmpty(model.AbholungPlz) && string.IsNullOrEmpty(Anlieferung.AnlieferungPlz))
+                Anlieferung.AnlieferungPlz = model.AbholungPlz;
+
+            if (!string.IsNullOrEmpty(model.AbholungOrt) && string.IsNullOrEmpty(Anlieferung.AnlieferungOrt))
+                Anlieferung.AnlieferungOrt = model.AbholungOrt;
+
+            if (!string.IsNullOrEmpty(model.AbholungAnsprechpartner) && string.IsNullOrEmpty(Anlieferung.AnlieferungAnsprechpartner))
+                Anlieferung.AnlieferungAnsprechpartner = model.AbholungAnsprechpartner;
+
+            if (!string.IsNullOrEmpty(model.AbholungStrasseHausNr) && string.IsNullOrEmpty(Anlieferung.AnlieferungStrasseHausNr))
+                Anlieferung.AnlieferungStrasseHausNr = model.AbholungStrasseHausNr;
+
+            if (!string.IsNullOrEmpty(model.AbholungTel) && string.IsNullOrEmpty(Anlieferung.AnlieferungTel))
+                Anlieferung.AnlieferungTel = model.AbholungTel;
+        }
+
         public void DataMarkForRefresh()
         {
-            //PropertyCacheClear(this, m => m.Fahrzeuge);
-            //PropertyCacheClear(this, m => m.FahrzeugeFiltered);
-            //PropertyCacheClear(this, m => m.FahrzeugeGroupByModel);
-            //PropertyCacheClear(this, m => m.FahrzeugeGroupByModelId);
-
-            //SelectedZulassungsDatum = null;
-            //SelectedKennzeichenSerie = null;
-            //SelectedPdi = null;
-            //SelectedModel = null;
-            //SelectedModelId = null;
-            //ZulassungenForPdiAndDate = new List<Fzg>();
-
-            //DataMarkForRefreshFahrzeugeSummary();
         }
 
         [XmlIgnore]

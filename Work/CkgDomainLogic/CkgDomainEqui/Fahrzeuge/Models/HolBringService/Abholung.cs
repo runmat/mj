@@ -17,22 +17,30 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string AbholungKunde { get; set; }
 
-        [Required]
-        [LocalizedDisplay("Straße / Haus-Nr.")]            // LocalizeConstants.Customer
+        [LocalizedDisplay(LocalizeConstants.StreetHouseNo)]
         public string AbholungStrasseHausNr { get; set; }
 
         public string AbholungPlz { get; set; }
         public string AbholungOrt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Contactperson)]
         public string AbholungAnsprechpartner { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Phone)]
         public string AbholungTel { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Date)]
         public DateTime AbholungDatumUhrzeit { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Time)]
         public string AbholungUhrzeitStunden { get; set; }
         public string AbholungUhrzeitMinuten { get; set; }
 
-        
-
+        [LocalizedDisplay(LocalizeConstants.Comment)]
+        [StringLength(200)]
         public string AbholungHinweis { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Mobilitaetsfahrzeug)]
         public bool AbholungMobilitaetsfahrzeug { get; set; }
 
 

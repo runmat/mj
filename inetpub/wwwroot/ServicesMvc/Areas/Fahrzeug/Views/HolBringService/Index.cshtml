@@ -1,5 +1,11 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.HolBringServiceViewModel
 
+<style>
+    .dropdownwidth {
+        width: 90px;
+    }    
+</style>
+
 <h3 class="page-title">@Localize.HolUndBringService <small>@Localize.Vehicles</small></h3>
 
 <div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
@@ -11,14 +17,13 @@
     </div>
 </div>
 
-<input id="DatePickerTest" type="text" class="m-wrap small " />
-
 @Html.Partial("Partial/Common")
-
-<div onclick="InitTestX();">TEST</div>
 
 <script>
 
+    var dateFormat = "dd.MM.yyyy";
+    var feiertageAsString = "@Model.FeiertageAsString";
+    
     $(function() {
     });
 

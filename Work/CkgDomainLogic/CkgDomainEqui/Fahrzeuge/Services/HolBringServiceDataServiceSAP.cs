@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.General.Models;
@@ -30,6 +31,20 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
         public List<Domaenenfestwert> GetFahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
         public List<Domaenenfestwert> GetUsers { get { return PropertyCacheGet(() => LoadUserList().ToList()); } }
+
+        public string GetUsername { get { return (LogonContext).User.Username; } }
+        public string GetUserTel { get { return (LogonContext).UserInfo.Telephone; } }
+
+        //public string GetUsername()
+        //{
+        //    // return ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString();
+        //    //var iGroup = ((ILogonContextDataService)LogonContext).Organization.OrganizationName;
+        //    //var iVkOrg = ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString();
+        //    //var iVkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2;
+        //    var asdf = (LogonContext).UserInfo.Telephone;
+        //    // return (LogonContext).Customer.Customername;
+        //    return (LogonContext).User.Username;
+        //}
 
         public HolBringServiceDataServiceSAP(ISapDataService sap)
             :base(sap)
