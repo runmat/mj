@@ -117,6 +117,7 @@ namespace EasyExportGeneralTask
             string strTitel = "";
             LogFile lfile;
             object strFilename = "";
+            string strBetreff = "";
 
             try
             {
@@ -211,7 +212,7 @@ namespace EasyExportGeneralTask
 
                         case AblaufTyp.LeasePlan:
                             strFahrgestellnummer = row["FAHRGESTELLNR"].ToString();
-                            string strBetreff = "";
+                            strBetreff = "";
                             if (additionalData != null)
                             {
                                 strBetreff = (additionalData[0] as string);
@@ -268,6 +269,11 @@ namespace EasyExportGeneralTask
                                 dataObj = (additionalData[0] as Z_M_EXPORTAENDERUNG_01.GT_WEB);
                             }
                             cls.SavePictureSixtMobility(ref LC, logDS, ref row, taskConfig, dataObj);
+                            break;
+
+                        case AblaufTyp.Autoinvest:
+                            strFahrgestellnummer = row["FIN"].ToString();
+                            cls.SavePictureAutoinvest(ref LC, logDS, ref row, taskConfig);
                             break;
                     }
                 }
@@ -925,6 +931,54 @@ namespace EasyExportGeneralTask
                         "Sehr geehrte Damen und Herren,",
                         "anbei erhalten Sie optisch archivierte Dokumente Ihrer Fahrzeuge.",
                         "Rückfragen richten Sie bitte an den Sie betreuenden Zulassungsdienst."
+                    });
+
+                Helper.SendEMail(mailBetreff, mailText, taskConfig.MailEmpfaenger, newFilePath);
+            }
+        }
+
+        public static void SavePictureAutoinvest(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig)
+        {
+            object iStatus;
+            object status = "";
+
+            string strFahrgestellnummer = row["FIN"].ToString();
+            string strDokumententyp = row[".TITEL"].ToString();
+
+            Console.WriteLine("Wait... for " + strFahrgestellnummer);
+
+            if (File.Exists(row["Filepath"].ToString()))
+            {
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
+            }
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
+            {
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
+            }
+
+            // neuen Namen für Datei vergeben
+            string newFilePath = taskConfig.easyBlobPathLocal + "\\" + strFahrgestellnummer + "-" + strDokumententyp + ".pdf";
+            if (File.Exists(newFilePath))
+            {
+                File.Delete(newFilePath);
+            }
+
+            File.Move(row["Filepath"].ToString(), newFilePath);
+
+            Thread.Sleep(2000);
+
+            if (taskConfig.MailsSenden)
+            {
+                var mailBetreff = String.Format("{0} - {1}", strFahrgestellnummer, strDokumententyp);
+                var mailText = String.Join(Environment.NewLine, new[]
+                    {
+                        "Sehr geehrte Damen und Herren,",
+                        "anbei erhalten Sie wie besprochen die in der Anlage enthaltenen Dokumente."
                     });
 
                 Helper.SendEMail(mailBetreff, mailText, taskConfig.MailEmpfaenger, newFilePath);
