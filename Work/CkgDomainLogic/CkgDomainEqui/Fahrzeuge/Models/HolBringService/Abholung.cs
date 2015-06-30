@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string AbholungTel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Date)]
-        public DateTime AbholungDatumUhrzeit { get; set; }
+        public DateTime AbholungDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Time)]
         public string AbholungUhrzeitStunden { get; set; }

@@ -12,7 +12,7 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAnlieferungng" }))
     {
         @Html.FormValidationSummary()
-        @Html.TextBox("formSubmit", "ok")
+        @Html.Hidden("formSubmit", "ok")
 
         <div class="row-fluid">
             <div class="span6 ">
@@ -43,7 +43,7 @@
                 @Html.DropDownListFor(m => m.AbholungAbUhrzeitMinuten, dropDownMinuteList.ToSelectList(), new { @class = " dropdownwidth" })
                 
                 <div class="input-append datepickerX">
-                    <input id="AbholungDatumUhrzeitX" name="AbholungDatumUhrzeitX" type="text" class="m-wrap small " />
+                    <input id="AnlieferungDatum" name="AnlieferungDatum" type="text" class="m-wrap small " />
                     <span class="add-on">
                         <i class="icon-calendar"></i>
                     </span>
@@ -72,7 +72,7 @@
     $(function () {
         feiertageAsString = "14.07.2015,15.07.2015";
 
-        $("#AbholungDatumUhrzeitX").datepicker({
+        $("#AnlieferungDatum").datepicker({
             minDate: new Date(2015, 5, 1),
             beforeShowDay: function (date) {
                 var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);     // Keine Wochenenden

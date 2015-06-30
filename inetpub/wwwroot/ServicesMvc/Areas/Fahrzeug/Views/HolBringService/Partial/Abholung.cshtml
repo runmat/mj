@@ -12,7 +12,7 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAbholung" }))
     {
         @Html.FormValidationSummary()
-        @Html.TextBox("formSubmit", "ok")
+        @Html.Hidden("formSubmit", "ok")
         
         <div class="row-fluid">
             <div class="span6 ">
