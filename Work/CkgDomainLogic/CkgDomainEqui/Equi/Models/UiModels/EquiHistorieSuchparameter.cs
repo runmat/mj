@@ -18,7 +18,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string BriefNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractNo)]  
+        [LocalizedDisplay(LocalizeConstants.ContractNo_VehicleHistory)]  
         public string VertragsNr { get; set; }
 
         public int AnzahlTreffer { get; set; }
