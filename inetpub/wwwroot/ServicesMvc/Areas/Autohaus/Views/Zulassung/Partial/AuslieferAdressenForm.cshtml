@@ -25,10 +25,10 @@
         @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @class = "m-wrap chosen", col = "left" })
         @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium", col = "right" })
     
-        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new { @class = "m-wrap large", maxlength = 50, col = "left" }, postControlHtml: @<text> @Localize.RequiredWhenOtherIsSelected</text>)
+        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new { @class = "m-wrap large", maxlength = 50, col = "left" })
         @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium", col = "right" })
 
-        @Html.FormPlaceHolder(null, new { col = "left" })
+        @Html.FormPlaceHolder(@<text>@Localize.RequiredWhenOtherIsSelected</text>, new { col = "left" })
         @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall", col = "right" })
 
         @Html.FormPlaceHolder(null, new { col = "left" })
