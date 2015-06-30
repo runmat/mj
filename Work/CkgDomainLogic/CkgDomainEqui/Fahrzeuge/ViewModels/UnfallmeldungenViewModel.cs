@@ -84,21 +84,21 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void SelectUnfallmeldung(string unfallNr, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
-            var fzg = Unfallmeldungen.FirstOrDefault(f => f.UnfallNr == unfallNr);
+            var fzg = UnfallmeldungenFiltered.FirstOrDefault(f => f.UnfallNr == unfallNr);
             if (fzg == null)
                 return;
 
             fzg.IsSelected = select;
-            allSelectionCount = Unfallmeldungen.Count(c => c.IsSelected);
+            allSelectionCount = UnfallmeldungenFiltered.Count(c => c.IsSelected);
         }
 
         public void SelectUnfallmeldungen(bool select, Predicate<Unfallmeldung> filter, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
-            Unfallmeldungen.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            UnfallmeldungenFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
-            allSelectionCount = Unfallmeldungen.Count(c => c.IsSelected);
-            allCount = Unfallmeldungen.Count();
-            allFoundCount = Unfallmeldungen.Count(c => c.IsValidForCancellation);
+            allSelectionCount = UnfallmeldungenFiltered.Count(c => c.IsSelected);
+            allCount = UnfallmeldungenFiltered.Count();
+            allFoundCount = UnfallmeldungenFiltered.Count(c => c.IsValidForCancellation);
         }
 
         public void FilterUnfallmeldungen(string filterValue, string filterProperties)
