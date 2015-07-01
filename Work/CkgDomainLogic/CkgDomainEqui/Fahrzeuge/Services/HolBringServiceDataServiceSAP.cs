@@ -39,11 +39,11 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
             Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
 
-            var orgRef = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference;
+            var orgRef = (LogonContext).Organization.OrganizationReference;
 
             SAP.SetImportParameter("I_KUNNR", (string.IsNullOrEmpty(orgRef) ? LogonContext.KundenNr.ToSapKunnr() : orgRef.ToSapKunnr()));
-            SAP.SetImportParameter("I_VKORG", ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString());
-            SAP.SetImportParameter("I_VKBUR", ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2);
+            SAP.SetImportParameter("I_VKORG", (LogonContext).Customer.AccountingArea.ToString());
+            SAP.SetImportParameter("I_VKBUR", (LogonContext).Organization.OrganizationReference2);
             SAP.SetImportParameter("I_SPART", "01");
 
             var sapList = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP);

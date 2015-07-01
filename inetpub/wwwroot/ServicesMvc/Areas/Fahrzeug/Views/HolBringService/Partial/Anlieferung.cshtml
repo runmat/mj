@@ -2,8 +2,9 @@
 @model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Anlieferung 
 
 @{
-    var dropDownHourList = (List<HolBringServiceViewModel.DropDownTimeItem>)ViewData["DropDownHourList"];
-    var dropDownMinuteList = (List<HolBringServiceViewModel.DropDownTimeItem>)ViewData["DropDownMinuteList"];
+    var dropDownHourList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownHourList"];
+    var dropDownMinuteList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownMinuteList"];
+    var abholungDt = ViewData["AbholungDt"];
 }
 
 <div id="DivAbholung" class="margin-top-20">
@@ -22,36 +23,29 @@
                 @Html.FormTextBoxFor(m => m.AnlieferungPlz, new { @class = "m-wrap xsmall" })
                 @Html.FormTextBoxFor(m => m.AnlieferungOrt, new { @class = "m-wrap " })
                 @Html.HiddenFor(m => m.Land, new { @class = "m-wrap medium" })
-
-                @*<div class="control-group">
-                    <label class="control-label">PLZ / Ort</label>
-                    <div class="controls">
-                        @Html.TextBoxFor(m => m.AnlieferungPlz, new { @class = "m-wrap xsmall" })
-                        @Html.TextBoxFor(m => m.AnlieferungOrt, new { @class = "m-wrap small" })
-                    </div>
-                </div>*@
-
             </div>
             
             <div class="span6 ">
                 @Html.FormTextAreaFor(m => m.AnlieferungHinweis, new { @class = "m-wrap" }, rows: 9)
             </div>
         </div>
-            @Html.FormTextBoxFor(m => m.AnlieferungAnsprechpartner, new { @class = "m-wrap ", col = "left" })
-            @Html.FormTextBoxFor(m => m.AnlieferungTel, new { @class = "m-wrap ", col = "right" })
+        @Html.FormTextBoxFor(m => m.AnlieferungAnsprechpartner, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.AnlieferungTel, new { @class = "m-wrap ", col = "right" })
         
+        @Html.FormDatePickerFor(m => m.AnlieferungDatum, new { @class = "m-wrap " })
+
         <div class="control-group">
             <label class="control-label">Abholung ab</label>
             <div class="controls">
                 @Html.DropDownListFor(m => m.AbholungAbUhrzeitStunden, dropDownHourList.ToSelectList(), new { @class = "dropdownwidth transporttime" })
                 @Html.DropDownListFor(m => m.AbholungAbUhrzeitMinuten, dropDownMinuteList.ToSelectList(), new { @class = " dropdownwidth transporttime" })
                 
-                <div class="input-append datepickerX">
-                    <input id="AnlieferungDatum" name="AnlieferungDatum" type="text" class="m-wrap small " />
+                @*<div class="input-append datepickerX">
+                    <input id="AnlieferungDatumX" name="AnlieferungDatum" type="text" class="m-wrap small " />
                     <span class="add-on">
                         <i class="icon-calendar"></i>
                     </span>
-                </div>
+                </div>*@
             </div>
         </div>
         
@@ -65,7 +59,10 @@
 
         <div id="DivTransportTimeInfo" class="alert margin-top-20 alert-danger">Anlieferung darf nicht vor Abholung liegen</div>
         
-        @Html.FormCheckBoxFor(m => m.AnlieferungMobilitaetsfahrzeug, new { @class = "m-wrap", col = "left" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">Mobilitätsfahrzeug</label></text>)
+        @Html.FormCheckBoxFor(m => m.AnlieferungMobilitaetsfahrzeug, new { @class = "m-wrap" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">Mobilitätsfahrzeug</label></text>)
+
+        <span class="clearfix"></span>
+        @Html.FormRequiredFieldsSummary()
 
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();

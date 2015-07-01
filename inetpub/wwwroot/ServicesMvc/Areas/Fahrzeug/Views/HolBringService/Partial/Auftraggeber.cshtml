@@ -31,9 +31,11 @@
         
         @Html.FormTextBoxFor(m => m.Kunde, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.KundeTel, new { @class = "m-wrap ", col = "right" })
+
         @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small", col = "left" })
         @Html.FormDropDownListFor(m => m.FahrzeugartId, fahrzeugArtenList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
 
+        <span class="clearfix"></span>
         @Html.FormRequiredFieldsSummary()
         
         <script type="text/javascript">

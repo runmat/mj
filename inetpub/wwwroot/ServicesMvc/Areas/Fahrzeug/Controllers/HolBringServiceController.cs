@@ -51,8 +51,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult Auftraggeber(Auftraggeber model)    // [Bind(Exclude = "Auftragsersteller")]
         {
-            // ModelState.Remove("Auftragsersteller"); // This will remove the key 
-            model.Auftragsersteller = ViewModel.Auftragsersteller;
+            model.Auftragsersteller = ViewModel.Auftragsersteller;  // Verhindern, dass der Antragsersteller durch Formularfeld-Manipulation im Browser geändert werden kann
 
             if (ModelState.IsValid)
             {
@@ -68,7 +67,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
             ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
             ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
             ViewData["AnsprechpartnerList"] = ViewModel.AnsprechpartnerList;
-
             return PartialView("Partial/Auftraggeber", model);
         }
 
@@ -112,6 +110,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
             ViewData["DropDownHourList"] = ViewModel.DropDownHours;
             ViewData["DropDownMinuteList"] = ViewModel.DropDownMinutes;
+            ViewData["AbholungDt"] = ViewModel.Abholung.AbholungDatum;
 
             return PartialView("Partial/Anlieferung", model);
         }

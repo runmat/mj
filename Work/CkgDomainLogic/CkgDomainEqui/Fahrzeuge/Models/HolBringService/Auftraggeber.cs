@@ -17,28 +17,35 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string Auftragsersteller { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Phone)]
+        [StringLength(30)]
         public string AuftragerstellerTel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Factory)]
         public string Betrieb { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Repco)]
+        [StringLength(30)]
         public string Repco { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
+        [StringLength(50)]
         public string Ansprechpartner { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Phone)]
+        [StringLength(30)]
         public string AnsprechpartnerTel { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Customer)]
+        [StringLength(50)]
         public string Kunde { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Phone)]
+        [StringLength(30)]
         public string KundeTel { get; set; }
 
         [Required]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [StringLength(10)]
         public string Kennnzeichen { get; set; }
     
         [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]

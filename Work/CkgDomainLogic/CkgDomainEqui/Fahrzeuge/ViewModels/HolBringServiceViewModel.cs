@@ -30,15 +30,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public IHolBringServiceDataService DataService { get { return CacheGet<IHolBringServiceDataService>(); } }
 
         public List<Domaenenfestwert> Fahrzeugarten { get; set; }
-        public List<DropDownTimeItem> DropDownHours { get; set; }
-        public List<DropDownTimeItem> DropDownMinutes { get; set; }
-        public List<Domaenenfestwert> AbholungUhrzeitStundenList { get; set; }
+        public List<DropDownItem> DropDownHours { get; set; }
+        public List<DropDownItem> DropDownMinutes { get; set; }
+        public List<DropDownItem> AbholungUhrzeitStundenList { get; set; }
+        //public List<Domaenenfestwert> AbholungUhrzeitStundenList { get; set; }
 
         public IEnumerable<Kunde> BetriebeSap { get { return DataService.LoadKundenFromSap(); } }
         public List<string> Betriebe { get; set; }
 
         public string Auftragsersteller { get; set; }
-        public List<Domaenenfestwert> AnsprechpartnerList { get { return DataService.GetAnsprechpartner; } } 
+        public List<Domaenenfestwert> AnsprechpartnerList { get; set; }
 
         #region Wizard
         [XmlIgnore]
@@ -73,7 +74,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return BetriebeSap.Select(a => a.Name1).ToList();
         }
 
-        public class DropDownTimeItem
+        public class DropDownItem 
         {
             [SelectListKey]
             public string ID { get; set; }
@@ -84,44 +85,47 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
        
         public void DataInit()
         {
-            Auftragsersteller = DataService.GetUsername;
-
             Auftraggeber = new Auftraggeber
                 {
-                    Auftragsersteller = Auftragsersteller,
+                    Auftragsersteller = DataService.GetUsername,
                     AuftragerstellerTel = DataService.GetUserTel,
                     Betrieb = "Betrieb",
                     Ansprechpartner = "Ansprechpartner",
                     AnsprechpartnerTel = "AnsprechpartnerTel"
+                    
                 };
 
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
             Upload = new Upload();
             Fahrzeugarten = DataService.GetFahrzeugarten;
+            AnsprechpartnerList = DataService.GetAnsprechpartner;
 
-            var selectableHours = new List<DropDownTimeItem>
+            var selectableHours = new List<DropDownItem>
                 {
-                    new DropDownTimeItem {ID = "Stunden", Name = "Stunden"}
+                    new DropDownItem {ID = "Stunden", Name = "Stunden"}
                 };
             for (var i = 5; i < 22; i++)
             {
-                selectableHours.Add(new DropDownTimeItem { ID = i.ToString(), Name = i.ToString() });
+                selectableHours.Add(new DropDownItem { ID = i.ToString(), Name = i.ToString() });
                 
             }
             DropDownHours = selectableHours;
             DropDownHours = selectableHours;
 
-            var selectableMinutes = new List<DropDownTimeItem>
+            var selectableMinutes = new List<DropDownItem>
                 {
-                    new DropDownTimeItem {ID = "Minuten", Name = "Minuten"},
-                    new DropDownTimeItem {ID = "00", Name = "00"},
-                    new DropDownTimeItem {ID = "15", Name = "15"},
-                    new DropDownTimeItem {ID = "30", Name = "30"},
-                    new DropDownTimeItem {ID = "45", Name = "45"}
+                    new DropDownItem {ID = "Minuten", Name = "Minuten"},
+                    new DropDownItem {ID = "00", Name = "00"},
+                    new DropDownItem {ID = "15", Name = "15"},
+                    new DropDownItem {ID = "30", Name = "30"},
+                    new DropDownItem {ID = "45", Name = "45"}
                 };
             DropDownMinutes = selectableMinutes;
             DropDownMinutes = selectableMinutes;
+
+            var test = BetriebeSap;
+            var asdf = test.FirstOrDefault(x => x.Barkunde == false);
 
             DataMarkForRefresh();
         }
