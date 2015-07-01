@@ -84,8 +84,8 @@
     }
 
     function DeleteCarporteingaengeOhneEH() {
-        var answer = confirm("Haltefrist ignorieren und abmelden?")
-        if (answer) {                
+        var answer = confirm("Haltefrist ignorieren und abmelden?");
+        if (answer) {
             $.ajax(
             {
                 type: "POST",
@@ -98,8 +98,9 @@
                     SpanAlertSuccess("spanAlertAbmelden", successMessage, 1800);
                     FormPreparePrivateAjax();
                 },
-                error: function (result) {
-                    SpanAlertWarning("spanAlertAbmelden", result.data, 5000);
+                error: function (jqXhr) {
+                    var error = JSON.parse(jqXhr.responseText);
+                    SpanAlertWarning("spanAlertAbmelden", '@Localize.ErrorsOccuredOnSaving' + ": " + error.message, 5000);
                 }
             });
         }

@@ -1,36 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using AutohausPortal.lib;
-using CKG.Base.Kernel;
-using CKG.Base.Kernel.Common;
-using CKG.Base;
-using System.Drawing.Imaging;
-using CKG.Base.Business;
-using CKG;
-using System.Data.SqlClient;
-using System.Net;
-using System.IO;
+using System.Collections;
 using System.Configuration;
 using System.Data;
-using System.Collections;
+using System.Data.SqlClient;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Net.Mail;
+using System.Web;
+using System.Web.Security;
+using System.Web.UI;
+using AutohausPortal.lib;
+using CKG.Base;
+using CKG.Base.Business;
+using CKG.Base.Kernel.Security;
 using WebTools.Services;
 
 namespace AutohausPortal.Start
 {
-    public partial class Login : System.Web.UI.Page
+    public partial class Login : Page
     {
-        private CKG.Base.Kernel.Security.User m_User = new CKG.Base.Kernel.Security.User();
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User = new User();
+        private App m_App;
 
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["objUser"] != null) 
             {
-                m_User = (CKG.Base.Kernel.Security.User)Session["objUser"];
+                m_User = (User)Session["objUser"];
                 if (!m_User.LoggedOn && !m_User.DoubleLoginTry) 
                 {
                     if (User.Identity.IsAuthenticated == false) 
@@ -68,7 +64,7 @@ namespace AutohausPortal.Start
 
                         String sKey = Request.QueryString["key"].ToString();
 
-                        CKG.Base.Kernel.Security.CryptNew clsCrypt = new CKG.Base.Kernel.Security.CryptNew();
+                        CryptNew clsCrypt = new CryptNew();
 
                         String DeCryptedKey = clsCrypt.psDecrypt(sKey);
                         String strDomainError  = "Die Anmeldung ist in der aktuellen Konfiguration nicht möglich.<br>Setzen Sie sich bitte mit Ihrer Kontaktperson bei der Christoph Kroschke GmbH in Verbindung.";
@@ -76,7 +72,7 @@ namespace AutohausPortal.Start
                         String strUserName = GetDomainUser(DeCryptedKey.ToUpper());
                         if (m_User.Login(strUserName, Session.SessionID.ToString()))
                         {
-                            System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
+                            FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
                         }
                         else
                         {
@@ -97,7 +93,7 @@ namespace AutohausPortal.Start
                         {
                             if (m_User.Login(strIpStandardUser, Session.SessionID.ToString()))
                             {
-                                System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
+                                FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
                             }
                             else
                             { 
@@ -114,9 +110,9 @@ namespace AutohausPortal.Start
 
         }
 
-        public String BouncePage(System.Web.UI.Page Form)
+        public String BouncePage(Page Form)
         {
-            return "/" +  ConfigurationManager.AppSettings["ApplicationKey"].ToString() + "/Start/Bounce.aspx?ReturnURL=" + System.Web.HttpUtility.UrlEncode(Form.Request.RawUrl);
+            return "/" +  ConfigurationManager.AppSettings["ApplicationKey"].ToString() + "/Start/Bounce.aspx?ReturnURL=" + HttpUtility.UrlEncode(Form.Request.RawUrl);
         }
 
         private Boolean CheckUniqueSessionID()
@@ -409,7 +405,7 @@ namespace AutohausPortal.Start
                         {
                             m_User.SetLastLogin(DateTime.Now);
                             Session["objUser"] = m_User;
-                            System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
+                            FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
                             Response.Redirect(string.Format("{0}?un={1}", returnUrl, CryptoMd5.EncryptToUrlEncoded(m_User.UserName)));
                             return;
                         }
@@ -441,7 +437,7 @@ namespace AutohausPortal.Start
                     }
                     else
                     {
-                        System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
+                        FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
 
                         //zur späteren Benutzung (iframe)
                         //FormsAuthentication.SetAuthCookie(m_User.UserID.ToString, False)
@@ -476,7 +472,7 @@ namespace AutohausPortal.Start
                             {
                                 if (m_User.Email.Length > 0 && m_User.Customer.ForcePasswordQuestion && m_User.QuestionID > -1)
                                 {
-                                    System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
+                                    FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
                                 }
 
                                 else
@@ -514,7 +510,7 @@ namespace AutohausPortal.Start
             }
             catch (Exception ex)
             {
-                m_App = new CKG.Base.Kernel.Security.App(m_User);
+                m_App = new App(m_User);
                 m_App.WriteErrorText(1, txtUsername.Text, "Login", "btnLogin_Click", ex.ToString());
                 lblError.Text = "Fehler bei der Anmeldung (" + ex.Message + ")";                
 
@@ -531,7 +527,7 @@ namespace AutohausPortal.Start
             {
                 if (m_User.Login(remoteUserName, remoteUserPwdHashed, "", false))
                 {
-                    System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
+                    FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
                 }
                 else
                 {
@@ -680,7 +676,7 @@ namespace AutohausPortal.Start
 
         private Boolean checkLogin()
         {
-            if (m_User.HighestAdminLevel == CKG.Base.Kernel.Security.AdminLevel.Master)
+            if (m_User.HighestAdminLevel == AdminLevel.Master)
             {
                 return true;
             }
@@ -728,7 +724,7 @@ namespace AutohausPortal.Start
             if (divKontakt.Visible == true) { GenerateCaptcha(); }
         }
         else if (m_User.Email.Length > 0 && m_User.Customer.ForcePasswordQuestion && m_User.QuestionID > -1 )
-            {System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);}
+            {FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);}
         else
             {
                 Session["LostPassword"] = 1;
@@ -753,7 +749,7 @@ namespace AutohausPortal.Start
             m_User.SetLoggedOn(m_User.UserName, true, Session.SessionID.ToString());
             m_User.SessionID = Session.SessionID.ToString();
             Session["objUser"] = m_User;
-            System.Web.Security.FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
+            FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
         }
 
         private void GenerateCaptcha()
@@ -794,47 +790,47 @@ namespace AutohausPortal.Start
             if (Session["LostPassword"].ToString() == "1") 
             {
                 if (txtWebUserName.Text.Trim().Length == 0) 
-                { 
-                    MessageLabel.Text = "Bitte geben Sie Ihren Benutzernamen ein!";
-                    txtProblem.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+                {
+                    SetzeHinweisPflichtfeld();
+                    txtProblem.BorderColor = ColorTranslator.FromHtml("#C40000");
                     breturn = true;                                
                 }
             }
             if (ddlAnrede.SelectedValue == "-")
-            { 
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!";
-                ddlAnrede.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+            {
+                SetzeHinweisPflichtfeld();
+                ddlAnrede.BorderColor = ColorTranslator.FromHtml("#C40000");
                 breturn = true;                
             }
             if (txtName.Text.Trim().Length == 0)
-            {   
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!";
-                txtName.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+            {
+                SetzeHinweisPflichtfeld();
+                txtName.BorderColor = ColorTranslator.FromHtml("#C40000");
                 breturn = true;
             }
             if (txtVorname.Text.Trim().Length == 0)
-            {   
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!";
-                txtVorname.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+            {
+                SetzeHinweisPflichtfeld();
+                txtVorname.BorderColor = ColorTranslator.FromHtml("#C40000");
                 breturn = true;
             }
             if (txtFirma.Text.Trim().Length == 0)
-            {   
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!";
-                txtFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+            {
+                SetzeHinweisPflichtfeld();
+                txtFirma.BorderColor = ColorTranslator.FromHtml("#C40000");
                 breturn = true;
             }
             if (txtTelefon.Text.Trim().Length == 0)
-            {   
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!";
-                txtTelefon.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+            {
+                SetzeHinweisPflichtfeld();
+                txtTelefon.BorderColor = ColorTranslator.FromHtml("#C40000");
                 breturn = true;
             }
 
             if (txtEmail.Text.Trim().Length == 0)
-            {   
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!";
-                txtEmail.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+            {
+                SetzeHinweisPflichtfeld();
+                txtEmail.BorderColor = ColorTranslator.FromHtml("#C40000");
                 breturn = true;
             }
             else
@@ -842,16 +838,16 @@ namespace AutohausPortal.Start
                 if (HelpProcedures.EmailAddressCheck(txtEmail.Text.Trim()) ==false)
                 {
                     MessageLabel.Text = "<br />Email-Adresse nicht im richtigen Format(yxz@firma.de))";
-                    txtEmail.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+                    txtEmail.BorderColor = ColorTranslator.FromHtml("#C40000");
                     breturn = true;
                 }
             }
             if (Session["LostPassword"].ToString() == "0" )
             {
                 if (txtProblem.Text.Trim().Length == 0)
-                {   
-                    MessageLabel.Text = "Bitte Plichfelder ausfüllen!";
-                    txtProblem.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000");
+                {
+                    SetzeHinweisPflichtfeld();
+                    txtProblem.BorderColor = ColorTranslator.FromHtml("#C40000");
                     breturn = true;
                 }
             }
@@ -952,11 +948,11 @@ namespace AutohausPortal.Start
         {
             try
             {
-                System.Net.Mail.MailMessage Mail;
-                System.Net.Mail.MailAddress smtpMailSender = new System.Net.Mail.MailAddress(ConfigurationManager.AppSettings["SmtpMailSender"]);
+                MailMessage Mail;
+                MailAddress smtpMailSender = new MailAddress(ConfigurationManager.AppSettings["SmtpMailSender"]);
                 String smtpMailServer = "", MailAdresses = "";
 
-                Mail = new System.Net.Mail.MailMessage();
+                Mail = new MailMessage();
                 Mail.Body = message;
                 Mail.From = smtpMailSender;
                 ZLDCommon.LeseMailEmpfaenger("1", ref MailAdresses);
@@ -982,7 +978,7 @@ namespace AutohausPortal.Start
                 Mail.Subject = "Helpdeskanfrage der Login-Seite Kroschke Kundenportal";
                 Mail.IsBodyHtml = false;
                 smtpMailServer = ConfigurationManager.AppSettings["SmtpMailServer"];
-                System.Net.Mail.SmtpClient client = new System.Net.Mail.SmtpClient(smtpMailServer);
+                SmtpClient client = new SmtpClient(smtpMailServer);
                 client.Send(Mail);
             }
             catch (Exception)
@@ -999,6 +995,11 @@ namespace AutohausPortal.Start
             CodeNumberTextBox.Text = "";
             GenerateCaptcha();
 
+        }
+
+        private void SetzeHinweisPflichtfeld()
+        {
+            MessageLabel.Text = "Bitte Pflichtfelder ausfüllen!";
         }
     }
 }

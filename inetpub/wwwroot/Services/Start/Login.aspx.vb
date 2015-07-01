@@ -810,32 +810,32 @@ Partial Public Class Login
             End If
         End If
         If ddlAnrede.SelectedValue = "-" Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             ddlAnrede.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtName.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtName.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtVorname.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtVorname.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtFirma.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtTelefon.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtTelefon.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtEmail.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
 
             txtEmail.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
@@ -848,7 +848,7 @@ Partial Public Class Login
         End If
         If CInt(Session("LostPassword")) = 0 Then
             If txtProblem.Text.Trim.Length = 0 Then
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+                SetzeHinweisPflichtfeld()
                 txtProblem.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
                 breturn = True
             End If
@@ -1026,6 +1026,10 @@ Partial Public Class Login
             Dim servicesMvsRootUrl As String = ErpBaseMvc.MVC.MvcPrepareUrl("", "", webUser.UserName)
             Response.Redirect(servicesMvsRootUrl)
         End If
+    End Sub
+
+    Private Sub SetzeHinweisPflichtfeld()
+        MessageLabel.Text = "Bitte Pflichtfelder ausfüllen!"
     End Sub
 
 End Class

@@ -508,8 +508,12 @@ namespace CarDocu.ViewModels
             barcodeBitmap.Save(tmpFile, ScanImage.ImageFormat);
             var savedBarcodeBitmap = new Bitmap(tmpFile);
 
+            var startBarcodeY = SelectedDocumentType.StartBarcodeY;
+            if (startBarcodeY > 200)
+                startBarcodeY -= 40;
+
             var x = SelectedDocumentType.TranslateXmmToPixel(SelectedDocumentType.StartBarcodeX, savedBarcodeBitmap.Width);
-            var y = SelectedDocumentType.TranslateYmmToPixel(SelectedDocumentType.StartBarcodeY, savedBarcodeBitmap.Height);
+            var y = SelectedDocumentType.TranslateYmmToPixel(startBarcodeY, savedBarcodeBitmap.Height);
             var w = SelectedDocumentType.TranslateXmmToPixel(SelectedDocumentType.BarcodeWidth, savedBarcodeBitmap.Width);
             var h = SelectedDocumentType.TranslateYmmToPixel(SelectedDocumentType.BarcodeHeight, savedBarcodeBitmap.Height);
             if (w > barcodeBitmap.Width - x) w = barcodeBitmap.Width - x - 1;
@@ -534,19 +538,23 @@ namespace CarDocu.ViewModels
             LastScannedBarcodeValue = result.Text;
 
             if (SelectedDocumentType.BarcodeType != LastScannedBarcodeType)
-                DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Ungültiger Barcodetyp wurde übersprungen."));
-            else
             {
-                var barcodeValue = long.Parse(LastScannedBarcodeValue);
-                if (SelectedDocumentType.BarcodeRangeStart > barcodeValue || SelectedDocumentType.BarcodeRangeEnd < barcodeValue)
-                    DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Barcode ist außerhalb des aktuellen Nummernkreises!"));
-                else
-                {
-                    DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Info, "Barcode " + LastScannedBarcodeValue + " erkannt.")); //erfolgreich gescannt
-                    return true;
-                }
+                DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Ungültiger Barcodetyp wurde übersprungen."));
+                return false;
             }
 
+            if (SelectedDocumentType.BarcodeAlphanumericAllowed)
+            {
+                //erfolgreich gescannt!
+                DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Info, "Barcode " + LastScannedBarcodeValue + " erkannt.")); 
+                return true;
+            }
+
+            var barcodeValue = long.Parse(LastScannedBarcodeValue);
+            if (SelectedDocumentType.BarcodeRangeStart <= barcodeValue && barcodeValue <= SelectedDocumentType.BarcodeRangeEnd)
+                return true;
+
+            DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Barcode ist außerhalb des aktuellen Nummernkreises!"));
             return false;
         }
 

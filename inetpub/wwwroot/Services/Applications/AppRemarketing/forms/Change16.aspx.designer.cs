@@ -94,6 +94,15 @@ namespace AppRemarketing.forms {
         protected global::System.Web.UI.HtmlControls.HtmlInputFile upFileFin;
         
         /// <summary>
+        /// HrefTemplate-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor HrefTemplate;
+        
+        /// <summary>
         /// Queryfooter-Steuerelement
         /// </summary>
         /// <remarks>
