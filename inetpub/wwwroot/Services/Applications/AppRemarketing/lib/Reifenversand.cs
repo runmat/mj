@@ -11,6 +11,7 @@ namespace AppRemarketing.lib
 
         DataTable m_tblUpload;
         Boolean m_Edit;
+        private Boolean m_ModusReifenAnnahme;
 
         #endregion
 
@@ -28,14 +29,31 @@ namespace AppRemarketing.lib
             set { m_Edit = value; }
         }
 
+        public Boolean ModusReifenAnnahme
+        {
+            get { return m_ModusReifenAnnahme; }
+            set { m_ModusReifenAnnahme = value; }
+        }
+
+        public string BapiName
+        {
+            get { return (ModusReifenAnnahme ? "Z_DPM_REM_SET_REIF_ANNAHME_01" : "Z_DPM_REM_SET_REIFVERS_01"); }
+        }
+
+        public string DateColumnName { get; set; }
+
+
+
         #endregion
 
         #region "Methods"
 
-        public Reifenversand(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
+        public Reifenversand(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename, bool modusReifenAnnahme, string dateColumnName)
             : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename)
-	    {
-		}
+        {
+            ModusReifenAnnahme = modusReifenAnnahme;
+            DateColumnName = dateColumnName;
+        }
 
         public override void Show()
         {
@@ -55,18 +73,17 @@ namespace AppRemarketing.lib
 
             try
             {
-                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_SET_REIFVERS_01", ref m_objApp, ref m_objUser, ref page);
-
+                var myProxy = DynSapProxy.getProxy(BapiName, ref m_objApp, ref m_objUser, ref page);
                 myProxy.setImportParameter("I_KUNNR_AG", m_objUser.KUNNR.PadLeft(10, '0'));
 
-                DataTable tblSap = myProxy.getImportTable("GT_DATEN");
+                var tblSap = myProxy.getImportTable("GT_DATEN");
 
                 foreach (DataRow dr in tblUpload.Rows)
                 {
-                    DataRow newRow = tblSap.NewRow();
+                    var newRow = tblSap.NewRow();
 
                     newRow["FAHRGNR"] = dr[0];
-                    newRow["DAT_REIFVERS"] = dr[1];
+                    newRow[DateColumnName] = dr[1];
 
                     tblSap.Rows.Add(newRow);
                 }

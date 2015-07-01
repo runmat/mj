@@ -1,7 +1,7 @@
 ﻿<style type="text/css">
     
     span.reqired-fields {
-        margin-left: -90px !important;
+        margin-left: 30px !important;
         white-space: nowrap !important;
     }
     
@@ -59,6 +59,7 @@
         if ('Receipt' == stepKey) {
             $("#GridFahrzeugSummary .t-grouping-header").hide();
             $("#GridFahrzeugSummary .t-grid-filter").hide();
+            GridAllColumnFilterApplyToGrid("GridFahrzeugSummary");
         }
 
         $('.tooltips').tooltip();
@@ -127,6 +128,7 @@
                 }
 
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
+                window.scrollTo(0, 0);
             }
         });    
     }
@@ -177,56 +179,51 @@
 
         Grid_FormatMultiRowSelected(cb);
 
+        FahrzeugAuswahlSelectionChanged(cb.val(), cb.is(':checked'));
+    }
+
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        $("#checkAllRecords").attr("checked", false);
+        $.uniform.update($("#checkAllRecords"));
+
+        FahrzeugAuswahlSelectionChanged("", check, function() {
+            FilterGrid("GridFahrzeugAuswahl");
+        });
+    }
+
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+    }
+
+    function MassSelectionOnChange() {
+        FahrzeugAuswahlSelectionChanged($("#MassSelectionCount").val(), true, function () {
+            FilterGrid("GridFahrzeugAuswahl");
+        });
+    }
+
+    function FahrzeugAuswahlSelectionChanged(vin, isChecked, postFunction) {
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
-            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            data: { vin: vin, isChecked: isChecked },
             loadingShow: false,
             success: function (result) {
                 _selectedItemsCount = result.allSelectionCount;
                 GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
                 RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ShowHideNextButton();
-                if (count == 0) {
-                    $("#FahrzeugAuswahlCount").addClass('hide');
-                    return;
-                }
 
-                $("#FahrzeugAuswahlCount").removeClass('hide');
-                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+                if (typeof(postFunction) != 'undefined')
+                    postFunction();
             }
         });
-    }
-
-    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { id: "", isChecked: check },
-            loadingShow: true,
-            success: function (result) {
-                _selectedItemsCount = result.allSelectionCount;
-                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
-                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
-                ShowHideNextButton();
-                
-                FilterGrid("GridFahrzeugAuswahl");
-            }
-        });
-    }
-
-    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
-        if (count == 0) {
-            $("#FahrzeugAuswahlCount").addClass('hide');
-            $("#uncheckAllRecords").attr("checked", false);
-            $.uniform.update($("#uncheckAllRecords"));
-            return;
-        }
-
-        $("#FahrzeugAuswahlCount").removeClass('hide');
-        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
-        $("#uncheckAllRecords").attr("checked", true);
-        $.uniform.update($("#uncheckAllRecords"));
     }
 
     function InitDatePicker() {

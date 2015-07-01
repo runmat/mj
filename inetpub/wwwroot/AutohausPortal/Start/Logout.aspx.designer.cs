@@ -7,6 +7,9 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
 namespace AutohausPortal.Start {
     
     
@@ -19,7 +22,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl FormDiv;
+        protected HtmlGenericControl FormDiv;
         
         /// <summary>
         /// Table1-Steuerelement
@@ -28,7 +31,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable Table1;
+        protected HtmlTable Table1;
         
         /// <summary>
         /// Table2-Steuerelement
@@ -37,7 +40,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTable Table2;
+        protected HtmlTable Table2;
         
         /// <summary>
         /// Literal1-Steuerelement
@@ -46,6 +49,6 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal1;
+        protected Literal Literal1;
     }
 }

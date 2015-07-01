@@ -23,10 +23,10 @@ else
         @Html.Partial("Partial/Summary/SummaryAsHeader", Model.CreateSummaryTitle())
     </h4> 
     <div class="margin-top-15">
-        @Html.Partial("Partial/GridFahrzeugSummaryReceipt")
+        @Html.Partial("Partial/Summary/Summary", Model.CreateSummaryOverview())
     </div>
     <div class="margin-top-15">
-        @Html.Partial("Partial/Summary/Summary", Model.CreateSummaryOverview())
+        @Html.Partial("Partial/GridFahrzeugSummaryReceipt")
     </div>
 </div>
 
