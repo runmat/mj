@@ -28,7 +28,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
     public class HolBringServiceDataServiceSAP : CkgGeneralDataServiceSAP, IHolBringServiceDataService
     {
         public List<Domaenenfestwert> GetFahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
-        public List<Domaenenfestwert> GetUsers { get { return PropertyCacheGet(() => LoadUserList().ToList()); } }
+        public List<Domaenenfestwert> GetAnsprechpartner { get { return PropertyCacheGet(() => LoadAnsprechpartnerList().ToList()); } }
 
         public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
 
@@ -74,12 +74,20 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList);
         }
 
-        public IEnumerable<Domaenenfestwert> LoadUserList()
+        public IEnumerable<Domaenenfestwert> LoadAnsprechpartnerList()
         {
+
+
             using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
             {
-                var test = dbContext.UserGroupsOfCurrentCustomer;
-                return null;
+                // , WebUser.Username 
+                var sql = string.Format("SELECT WebUser.LastName + ', ' + WebUser.FirstName AS Beschreibung, WebUserInfo.telephone2 AS Wert FROM WebUser INNER JOIN WebMember ON WebUser.UserID = WebMember.UserID INNER JOIN WebGroup " +
+                          "ON WebMember.GroupID = WebGroup.GroupID INNER JOIN WebUserInfo ON WebUser.UserID = WebUserInfo.id_user " +
+                          "WHERE (dbo.WebUser.CustomerID = {0}) AND (dbo.WebGroup.GroupName = '{1}')", (LogonContext).User.CustomerID, (LogonContext).GroupName);
+
+                var result = dbContext.Database.SqlQuery<Domaenenfestwert>(sql).ToList();
+
+                return result;
             }
         }
 

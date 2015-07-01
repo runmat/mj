@@ -43,6 +43,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
             ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
             ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
+            ViewData["AnsprechpartnerList"] = ViewModel.AnsprechpartnerList;
 
             var test = ViewModel.GetBetriebeAsAutoCompleteItems();
 
@@ -64,6 +65,8 @@ namespace ServicesMvc.Fahrzeug.Controllers
             }
 
             ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
+            ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
+
             return PartialView("Partial/Auftraggeber", model);
         }
 

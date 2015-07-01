@@ -38,7 +38,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public List<string> Betriebe { get; set; }          
         
         public string Username { get; set; }                // Antragsteller
-        public List<string> Ansprechpartner { get; set; }
+        public List<Domaenenfestwert> AnsprechpartnerList { get { return DataService.GetAnsprechpartner; } }    // public List<Domaenenfestwert> Ansprechpartner { get; set; }
 
         #region Wizard
         [XmlIgnore]
@@ -73,7 +73,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return BetriebeSap.Select(a => a.Name1).ToList();
         }
 
-
         public class DropDownTimeItem
         {
             [SelectListKey]
@@ -92,7 +91,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     Betrieb = "Betrieb",
                     Ansprechpartner = "Ansprechpartner",
                     AnsprechpartnerTel = "AnsprechpartnerTel"
-                    
                 };
 
             Abholung = new Abholung();
@@ -122,9 +120,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 };
             DropDownMinutes = selectableMinutes;
             DropDownMinutes = selectableMinutes;
-
-            var test = BetriebeSap;
-            var asdf = test.FirstOrDefault(x => x.Barkunde == false);
 
             DataMarkForRefresh();
         }

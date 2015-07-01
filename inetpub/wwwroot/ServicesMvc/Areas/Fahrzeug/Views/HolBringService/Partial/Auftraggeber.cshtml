@@ -7,6 +7,7 @@
 @{
     var fahrzeugArtenList = (List<Domaenenfestwert>)ViewData["FahrzeugArtenList"];
     var betriebeList = (List<string>)ViewData["BetriebeList"];
+    var ansprechpartnerList = (List<Domaenenfestwert>)ViewData["AnsprechpartnerList"];
 }
 
 <div id="DivAuftraggeber" class="margin-top-20">
@@ -16,15 +17,15 @@
     {
         @Html.FormValidationSummary()
 
-        @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap readonly", col = "left", @readonly = "" })
         @Html.FormTextBoxFor(m => m.AuftragerstellerTel, new { @class = "m-wrap ", col = "right" })
         
-        @*@Html.FormTextBoxFor(m => m.Betrieb, new { @class = "m-wrap ", col = "left" })*@
         @Html.FormDropDownListFor(m => m.Betrieb, betriebeList.ToSelectList(), new { @class = "m-wrap", col = "left" })
      
         @Html.FormTextBoxFor(m => m.Repco, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap ", col = "left" })
+        @*@Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap ", col = "left" })*@
+        @Html.FormDropDownListFor(m => m.Ansprechpartner, ansprechpartnerList.ToSelectList(), new { @class = "m-wrap", col = "left" })
         @Html.FormTextBoxFor(m => m.AnsprechpartnerTel, new { @class = "m-wrap ", col = "right" })
         
         <hr/>
@@ -45,6 +46,12 @@
             $(function() {
                 $('#Betrieb').select2();
                 $('#FahrzeugartId').select2();
+                $('#Ansprechpartner').select2({
+                    allowClear: true
+                }).off("change").on("change", function(e) {
+                    $('#AnsprechpartnerTel').val(e.val);
+                });
+
             });
             
 //            $(function() {

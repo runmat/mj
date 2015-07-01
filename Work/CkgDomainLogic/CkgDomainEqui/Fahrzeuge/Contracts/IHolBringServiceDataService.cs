@@ -12,7 +12,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
     public interface IHolBringServiceDataService : ICkgGeneralDataService 
     {
         List<Domaenenfestwert> GetFahrzeugarten { get; }
-        List<Domaenenfestwert> GetUsers { get; }
+        List<Domaenenfestwert> GetAnsprechpartner { get; }
 
         string GetUsername { get; }
         string GetUserTel { get; }
@@ -23,6 +23,5 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         //var iVkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2;
 
         IEnumerable<Kunde> LoadKundenFromSap(); // Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE 
-
     }
 }

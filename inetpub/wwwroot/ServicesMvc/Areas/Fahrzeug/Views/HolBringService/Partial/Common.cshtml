@@ -36,36 +36,6 @@
 
         try { FormWizardInitPrivate(); } catch (e) { }
         
-//        try { MultiSelectPreparePrivate(); } catch (e) { }
-
-        // InitSearchableAndEditableDropdowns();
-        // InitDatePicker();
-
-//        var dateFormat = "dd.MM.yyyy";
-//        var feiertageAsString = "@Model.FeiertageAsString";
-//        feiertageAsString = "14.07.2015,15.07.2015";
-//        $("#PickupDate").datepicker({
-//            minDate: new Date(2015, 5, 1),
-//            beforeShowDay: function (date) {
-//                var tooltip;
-
-//                // no weekends please
-//                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);
-
-//                // only today and later
-//                if (dateIsSelectable)
-//                    dateIsSelectable = (date >= Date.today());
-
-//                var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
-//                if (dateIsSelectable)
-//                    dateIsSelectable = !istFeiertag;
-//                return [dateIsSelectable, ""];
-//                //                tooltip = (istFeiertag ? "Feiertag!" : (dateIsSelectable ? "bisher keine Zuordnung" : "Wochenende!"));
-//                //                return [dateIsSelectable, "", tooltip];
-//            }
-//        }
-//        );
-        
     };
 
     function FormPreparePrivateAjax(step) {        
@@ -198,11 +168,6 @@
 
         FormWizard.ActionsShow(nextButtonValid);
     }
-
-//    function ReFilterGrid() {
-//        FilterGrid("GridFahrzeugAuswahl");
-//    }
-
 
     function FormWizardShowHideSaveButton(show, delay) {
         setTimeout(function () {
