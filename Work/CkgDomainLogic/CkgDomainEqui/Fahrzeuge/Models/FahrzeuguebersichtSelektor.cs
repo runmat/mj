@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
@@ -9,41 +8,51 @@ using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
-using System.Linq;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public class FahrzeuguebersichtSelektor : Store
     {
-        
         [LocalizedDisplay(LocalizeConstants.Action)]
-        [FormPersistable]
-        public string Akion { get; set; }
+        public string Akion
+        {
+            get { return PropertyCacheGet(() => "manuell"); }
+            set { PropertyCacheSet(value); }
+        }
 
         public string Akionen { get { return string.Format("manuell,{0};upload,{1}", Localize.ManuelInput, Localize.FileUpload); } }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        [FormPersistable]
         public string Fahrgestellnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [FormPersistable]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
+        [FormPersistable]
         public string Zb2Nummer { get; set; }
      
         [LocalizedDisplay(LocalizeConstants.ModelID)]
+        [FormPersistable]
         public string ModelID { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.UnitNumber)]
+        [FormPersistable]
         public string Unitnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
+        [FormPersistable]
         public string Auftragsnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.BatchID)]
+        [FormPersistable]
         public string BatchId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
+        [FormPersistable]
+        // ReSharper disable once InconsistentNaming
         public string SIPPCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
@@ -65,13 +74,17 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
+        [FormPersistable]
         public string Herstellerkennung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
+        [FormPersistable]
         public string Statuskennung { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Carport)]
-        public string PDIkennung { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
+        [FormPersistable]
+        // ReSharper disable once InconsistentNaming
+        public string Pdi { get; set; }
 
 
         public static List<SelectItem> FahrzeugHersteller
@@ -79,7 +92,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 var hersteller = GetViewModel().FahrzeugHersteller;
-                return hersteller.ConvertAll(new Converter<Fahrzeughersteller, SelectItem>(WrapManufacturer));              
+                return hersteller.ConvertAll(WrapManufacturer);              
             }
         }
 
@@ -88,16 +101,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 var status = GetViewModel().FahrzeugStatus;
-                return status.ConvertAll(new Converter<FahrzeuguebersichtStatus, SelectItem>(WrapStatus));
+                return status.ConvertAll(WrapStatus);
             }
         }
 
-        public static List<SelectItem> PDIStandorte
+        public static List<SelectItem> PdiStandorte
         {
             get
             {
-                var pdi = GetViewModel().PDIStandorte;
-                return pdi.ConvertAll(new Converter<FahrzeuguebersichtPDI, SelectItem>(WrapPDI));
+                var pdi = GetViewModel().PdiStandorte;
+                return pdi.ConvertAll(WrapPdi);
             }
         }
 
@@ -105,19 +118,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             if (hersteller.HerstellerName.StartsWith("(")) // wg. empty keys aus sap
                 return new SelectItem(String.Empty, hersteller.HerstellerName);
-            else            
-                return new SelectItem(hersteller.HerstellerName, hersteller.HerstellerName);
+            
+            return new SelectItem(hersteller.HerstellerName, hersteller.HerstellerName);
         }
 
         static SelectItem WrapStatus(FahrzeuguebersichtStatus status)
-        {
-            if (status.StatusKey.IsNullOrEmpty())
-                return new SelectItem(String.Empty, status.StatusText);
-            else                
-                return new SelectItem(status.StatusText, status.StatusText);
+        {            
+            return new SelectItem(status.StatusKey, status.StatusText);
         }
 
-        static SelectItem WrapPDI(FahrzeuguebersichtPDI pdi)
+        static SelectItem WrapPdi(FahrzeuguebersichtPDI pdi)
         {            
             return new SelectItem(pdi.PDIKey, pdi.PDIText);
         }

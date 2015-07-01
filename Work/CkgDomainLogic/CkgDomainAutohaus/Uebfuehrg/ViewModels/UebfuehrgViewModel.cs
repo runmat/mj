@@ -670,7 +670,9 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         public void SaveDienstleistungen(DienstleistungsAuswahl model)
         {
             model.InitDienstleistungen(Dienstleistungen, model.FahrtTyp);
+            model.Bemerkungen.FahrtIndex = model.FahrtIndex;
         }
+
 
 
         #region Fahrzeug

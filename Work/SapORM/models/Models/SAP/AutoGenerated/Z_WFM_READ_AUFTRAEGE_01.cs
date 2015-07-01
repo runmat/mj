@@ -145,6 +145,8 @@ namespace SapORM.Models
 
 			public string FOLGE_TASK_ID { get; set; }
 
+			public string VERLUST_ZB1 { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -206,6 +208,7 @@ namespace SapORM.Models
 					ANMERKUNG = (string)row["ANMERKUNG"],
 					STATUS = (string)row["STATUS"],
 					FOLGE_TASK_ID = (string)row["FOLGE_TASK_ID"],
+					VERLUST_ZB1 = (string)row["VERLUST_ZB1"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -1011,14 +1014,14 @@ namespace SapORM.Models
 
 			public DateTime? SOLLDATUM_VON { get; set; }
 
-			public DateTime? SOLLATUM_BIS { get; set; }
+			public DateTime? SOLLDATUM_BIS { get; set; }
 
 			public static GT_SEL_SOLLDAT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_SEL_SOLLDAT
 				{
 					SOLLDATUM_VON = (string.IsNullOrEmpty(row["SOLLDATUM_VON"].ToString())) ? null : (DateTime?)row["SOLLDATUM_VON"],
-					SOLLATUM_BIS = (string.IsNullOrEmpty(row["SOLLATUM_BIS"].ToString())) ? null : (DateTime?)row["SOLLATUM_BIS"],
+					SOLLDATUM_BIS = (string.IsNullOrEmpty(row["SOLLDATUM_BIS"].ToString())) ? null : (DateTime?)row["SOLLDATUM_BIS"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

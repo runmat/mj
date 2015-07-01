@@ -7,12 +7,10 @@ using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Finance.Models.AppModelMappings;
 
-
 namespace CkgDomainLogic.Finance.Services
 {
     public class FinanceCarporteingaengeOhneEHDataServiceSAP : CkgGeneralDataServiceSAP, IFinanceCarporteingaengeOhneEHDataService
     {
-
          public List<CarporteingaengeOhneEH> CarporteingaengeOhneEHs { get { return PropertyCacheGet(() => LoadCarporteingaengeOhneEHFromSap()); } }
 
          public FinanceCarporteingaengeOhneEHDataServiceSAP(ISapDataService sap)
@@ -20,13 +18,13 @@ namespace CkgDomainLogic.Finance.Services
         {
         }
 
-        public void DeleteCarporteingaengeOhneEHToSap(string kennzeichen, string fahrgestellnummer, string kundenPDI)
+        public void DeleteCarporteingaengeOhneEHToSap(CarporteingaengeOhneEH saveItem)
         {
             Z_M_ABMBEREIT_LAUFAEN.Init(SAP, "KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-            SAP.SetImportParameter("ZZKENN", kennzeichen);
-            SAP.SetImportParameter("ZZFAHRG", fahrgestellnummer);
-            SAP.SetImportParameter("KUNPDI", kundenPDI);
+            SAP.SetImportParameter("ZZKENN", saveItem.Kennzeichen);
+            SAP.SetImportParameter("ZZFAHRG", saveItem.Fahrgestellnummer);
+            SAP.SetImportParameter("KUNPDI", saveItem.BelegNr);
 
             SAP.Execute();  
         }
@@ -43,6 +41,5 @@ namespace CkgDomainLogic.Finance.Services
 
             return AppModelMappings.Z_M_ABMBEREIT_LAUFZEIT_To_CarporteingaengeOhneEH.Copy(sapList).ToList();                                        
         }     
-
     }
 }
