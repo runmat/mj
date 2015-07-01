@@ -1,0 +1,28 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.FahrzeugSperrenVerschieben
+
+<div id="DivFzgTextErfassen" class="margin-top-20">
+    @using (Ajax.BeginForm("FzgTextErfassenForm", "Fahrzeuge", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivFzgTextErfassen", OnComplete = "AjaxFormFzgTextErfassenComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "FzgTextErfassenAjaxForm" }))
+    {
+        @Html.FormValidationSummary()
+        
+        @Html.HiddenFor(m => m.Message)
+        
+        @Html.FormTextAreaFor(m => m.BemerkungIntern, new { @class = "m-wrap large" })
+
+        @Html.FormTextBoxFor(m => m.BemerkungExtern, new { @class = "m-wrap large" })
+        
+        <div class="space20"></div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.OK</button>
+            <button type="button" class="btn" onclick="AjaxFormFzgTextErfassenClose();">@Localize.Cancel</button>
+        </div>
+        
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _sperrenVerschiebenResult = '@Model.Message';
+        </script>
+    }
+</div>

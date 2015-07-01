@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrzeuge.Contracts;
@@ -11,10 +12,6 @@ using System;
 using System.Linq;
 using System.IO;
 using DocumentTools.Services;
-using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Globalization;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
@@ -27,29 +24,22 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public List<TreuhandKunde> TreuhandKunden { get { return PropertyCacheGet(() => DataService.GetTreuhandKundenFromSap(TreuhandverwaltungSelektor)); } }
 
         [XmlIgnore]
-        public List<TreuhandKunde> Auftraggeber { get { return PropertyCacheGet(() => DataService.GetAuftraggeberFromSap(TreuhandverwaltungSelektor)); } }
-       
-        [XmlIgnore]
         public List<Treuhandbestand> Treuhandbestands
         {
             get { return PropertyCacheGet(() => new List<Treuhandbestand>()); }
             private set { PropertyCacheSet(value); }
         }
-
-       
+   
         public TreuhandverwaltungSelektor TreuhandverwaltungSelektor
         {
-            get
-            {
-                return PropertyCacheGet(() => new TreuhandverwaltungSelektor());
-            }
+            get { return PropertyCacheGet(() => new TreuhandverwaltungSelektor()); }
             set { PropertyCacheSet(value); }
         }
 
         public void Init()
         {
             TreuhandverwaltungSelektor.Kundenkennung = "";
-            TreuhandverwaltungSelektor.Berechtigung = "";
+            TreuhandverwaltungSelektor.Treuhandberechtigung = new Treuhandberechtigung();
         }
 
         public void ModifyModelAblehnungsgrund(Treuhandbestand model)
@@ -69,8 +59,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public string CsvUploadFileName { get; private set; }
         public string CsvUploadServerFileName { get; private set; }
 
-        public bool UploadItemsSuccessfullyStored { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.ListItemsWithErrorsOnly)]
         public bool UploadItemsShowErrorsOnly { get; set; }
 
@@ -88,9 +76,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get { return "Upload_Treuhand-Services.xls"; }
         }
 
-        public void FreigebenAblehnen()
+        public void FreigebenAblehnen(bool freigeben, ModelStateDictionary state)
         {
-            DataService.FreigebenAblehnen(TreuhandverwaltungSelektor);           
+            var erg = DataService.FreigebenAblehnen(TreuhandverwaltungSelektor, freigeben);
+            if (erg.IsNotNullOrEmpty())
+                state.AddModelError("", erg);
+         
+            LoadTreuhandfreigabe(TreuhandverwaltungSelektor);
         }
 
         #region FreigabeSelection
@@ -124,28 +116,26 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public bool SelectFahrzeug(string fin, bool select, out int allSelectionCount)
         {
-            bool itemsWithoutErrorOnly = false;
             allSelectionCount = 0;
             var fzg = UploadItems.FirstOrDefault(f => f.Fahrgestellnummer == fin);
             if (fzg == null)
-                return itemsWithoutErrorOnly;
+                return false;
 
             fzg.IsSelected = select;
             allSelectionCount = UploadItems.Count(c => c.IsSelected);
 
-            return itemsWithoutErrorOnly = (allSelectionCount > 0) && (UploadItems.Where(c => c.ValidationErrors.Length > 0 && c.IsSelected).Count() == 0);
+            return (allSelectionCount > 0) && (!UploadItems.Any(c => c.ValidationErrors.Length > 0 && c.IsSelected));
         }
 
         public bool SelectFahrzeuge(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
-            bool itemsWithoutErrorOnly = false;
             UploadItems.ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
             allSelectionCount = UploadItems.Count(c => c.IsSelected);
             allCount = UploadItems.Count();
             allFoundCount = UploadItems.Count();
 
-            return itemsWithoutErrorOnly = (allSelectionCount > 0) && (UploadItems.Where(c => c.ValidationErrors.Length > 0 && c.IsSelected).Count() == 0);
+            return (allSelectionCount > 0) && (!UploadItems.Any(c => c.ValidationErrors.Length > 0 && c.IsSelected));
         }
 
         public List<TreuhandverwaltungCsvUpload> CSVUploadList {get ; set; }
@@ -158,7 +148,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (!fileSaveAction(CsvUploadServerFileName))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable<TreuhandverwaltungCsvUpload>(CsvUploadServerFileName, true, "", null, ',', false, false).ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable<TreuhandverwaltungCsvUpload>(CsvUploadServerFileName, true, "", null, ',').ToList();
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())
                 return false;
@@ -178,14 +168,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 item.AGNummer = TreuhandverwaltungSelektor.AGNummer;
                 item.TGNummer = TreuhandverwaltungSelektor.TGNummer;
                 item.AppId = LogonContext.GetAppIdCurrent().ToString();
-                item.Datum = (DateTime?)DateTime.Now;
+                item.Datum = DateTime.Now;
                 item.Sachbearbeiter = LogonContext.FullName;
                 item.IsSperren = (TreuhandverwaltungSelektor.Sperraktion == SperrAktion.Sperren);
                 item.Aktion = item.IsSperren ? Localize.TrusteeBlock : Localize.TrusteeUnBlock;               
                 DateTime? dateValue = null;
                 try { dateValue = new DateTime(item.Sperrdatum.Value.Year, item.Sperrdatum.Value.Day, item.Sperrdatum.Value.Month); }
                 catch { /* fix Excel format issue */}
-                item.Sperrdatum = dateValue != null ? dateValue : item.Sperrdatum; 
+                item.Sperrdatum = dateValue ?? item.Sperrdatum; 
             }
 
             TreuhandverwaltungSelektor.UploadItems = UploadItems;
@@ -194,9 +184,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
       
-        public void SaveUploadItems()
-        {            
-            UploadItemsSuccessfullyStored = DataService.SaveUploadItems(UploadItems);
+        public void SaveUploadItems(ModelStateDictionary state)
+        {
+            var erg = DataService.SaveUploadItems(UploadItems);
+            if (erg.IsNotNullOrEmpty())
+                state.AddModelError("", erg);
         }
 
         #endregion
@@ -215,27 +207,30 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             PropertyCacheClear(this, m => m.TreuhandbestandsFiltered);
             PropertyCacheClear(this, m => m.Treuhandbestands);
-            PropertyCacheClear(this, m => m.Auftraggeber);
             PropertyCacheClear(this, m => m.TreuhandKunden);
-            PropertyCacheClear(this, m => TreuhandverwaltungSelektor.Treuhandberechtigungen);
         }
 
+        public void LoadBerechtigungen(string kunnr)
+        {
+            TreuhandverwaltungSelektor.Kundenkennung = kunnr;
 
-
-        public void LoadBerechtingungen()
-        {            
             DataService.GetBerechtigungenFromSap(TreuhandverwaltungSelektor);
 
-            DataMarkForRefresh();           
-        }
+            // Vorbelegungen
+            if (TreuhandverwaltungSelektor.Treuhandberechtigung.Freigeben)
+                TreuhandverwaltungSelektor.Aktion = "0";
+            else if (TreuhandverwaltungSelektor.Treuhandberechtigung.Sperren)
+                TreuhandverwaltungSelektor.Aktion = "1";
+            else if (TreuhandverwaltungSelektor.Treuhandberechtigung.Entsperren)
+                TreuhandverwaltungSelektor.Aktion = "2";
 
+            TreuhandverwaltungSelektor.Selektion = "G";
+        }
 
         public void LoadTreuhandbestand(TreuhandverwaltungSelektor selector)
         {
             Treuhandbestands = DataService.GetTreuhandbestandFromSap(selector);
                                     
-            string filterValue = selector.Kennzeichen;
-
             var filterList = Treuhandbestands.Select(x => x).ToList();
 
             if (selector.Kennzeichen.IsNotNullOrEmpty())
@@ -244,8 +239,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (selector.Fahrgestellnummer.IsNotNullOrEmpty())
                 filterList = filterList.Where(x => x.Fahrgestellnummer == selector.Fahrgestellnummer).ToList();
 
-            if (selector.Darlehensnummer.IsNotNullOrEmpty())
-                filterList = filterList.Where(x => x.Vertragsnummer == selector.Darlehensnummer).ToList();           
+            if (selector.Vertragsnummer.IsNotNullOrEmpty())
+                filterList = filterList.Where(x => x.Vertragsnummer == selector.Vertragsnummer).ToList();           
 
             DataMarkForRefresh();
 

@@ -47,7 +47,11 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                 SAP.SetImportParameter("I_REPLA_DATE_VON", selector.ZulassungDatumRange.StartDate);
                 SAP.SetImportParameter("I_REPLA_DATE_BIS", selector.ZulassungDatumRange.EndDate);
             }
-                              
+
+            int i = 0;
+            if (Int32.TryParse(selector.Statuskennung, out i) && i <= 700)
+                SAP.SetImportParameter("I_SELECT", "X");
+
             SAP.Execute();
 
             var sapItemsEquis = Z_DPM_LIST_POOLS_001.GT_WEB.GetExportList(SAP);

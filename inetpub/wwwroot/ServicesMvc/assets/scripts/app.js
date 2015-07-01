@@ -633,7 +633,7 @@ var App = function () {
         // wrapper function to  block element(indicate loading)
         blockUI2: function (el) {
 
-            el.animate({ opacity: "0.3" }, 300);
+            el.animate({ opacity: "0.5" }, 300);
             $(".loading2").fadeIn(200);
 
             jQuery(el).block({
