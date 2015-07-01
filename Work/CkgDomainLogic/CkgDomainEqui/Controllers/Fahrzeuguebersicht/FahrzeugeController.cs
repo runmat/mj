@@ -1,7 +1,8 @@
-﻿using System.Collections;
+﻿using System;
 using System.Web.Mvc;
 using System.Web;
 using System.Linq;
+using System.Web.Routing;
 using MvcTools.Web;
 using System.Collections.Generic;
 using CkgDomainLogic.General.Controllers;
@@ -11,6 +12,9 @@ using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
+using CkgDomainLogic.Equi.Models;
+using CkgDomainLogic.Equi.ViewModels;
+
 
 namespace ServicesMvc.Controllers
 {
@@ -18,6 +22,9 @@ namespace ServicesMvc.Controllers
     {
         public FahrzeuguebersichtViewModel FahrzeuguebersichtViewModel { get { return GetViewModel<FahrzeuguebersichtViewModel>(); } }
 
+        public EquiHistorieVermieterViewModel EquipmentHistorieVermieterViewModel { get { return GetViewModel<EquiHistorieVermieterViewModel>(); } }
+
+      
         [CkgApplication]
         public ActionResult ReportFahrzeuguebersicht()
         {
@@ -31,18 +38,13 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult LoadFahrzeuguebersicht(FahrzeuguebersichtSelektor model)
         {
-            FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor = model;
-
-            //FahrzeuguebersichtViewModel.Validate(AddModelError);
-
             if (ModelState.IsValid && !PersistableMode)
             {
-                FahrzeuguebersichtViewModel.LoadFahrzeuguebersicht();
-                if (FahrzeuguebersichtViewModel.Fahrzeuguebersichts.None())
-                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+                FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor = model;
+                FahrzeuguebersichtViewModel.LoadFahrzeuguebersicht(ModelState);
             }
 
-            return PersistablePartialView("Fahrzeuguebersicht/FahrzeuguebersichtSuche", FahrzeuguebersichtViewModel.FahrzeuguebersichtSelektor);
+            return PersistablePartialView("Fahrzeuguebersicht/FahrzeuguebersichtSuche", model);
         }
 
         [HttpPost]
@@ -50,6 +52,7 @@ namespace ServicesMvc.Controllers
         {
             return PartialView("Fahrzeuguebersicht/FahrzeuguebersichtGrid", FahrzeuguebersichtViewModel);
         }
+
 
         [GridAction]
         public ActionResult FahrzeuguebersichtAjaxBinding()
@@ -67,6 +70,15 @@ namespace ServicesMvc.Controllers
 
 
         #region Excel Upload
+
+
+        public FileResult DownloadExcelFilterTemplate()
+        {
+            var pfad = System.IO.Path.Combine(Server.MapPath(Url.Content("~/Documents/Templates/")), FahrzeuguebersichtViewModel.ExcelTemplateFileName);
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, FahrzeuguebersichtViewModel.ExcelTemplateFileName);
+        }
+
+
 
        
         [HttpPost]
@@ -113,5 +125,28 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
-    }
-}
+
+
+        #region History
+
+
+        [HttpPost]
+        public ActionResult ShowHistory(string fin)
+        {                                       
+            return RedirectToAction("GetHistorieVermieterByFinPartial",
+                new RouteValueDictionary(new { controller = "Equi", action = "GetHistorieVermieterByFinPartial", fahrgestellnummer = fin }));            
+        }
+             
+        public FileContentResult FahrzeughistorieVermieterPdf()
+        {
+            var formularPdfBytes = EquipmentHistorieVermieterViewModel.GetHistorieAsPdf();
+
+            return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}_{1}.pdf", Localize.VehicleHistory, EquipmentHistorieVermieterViewModel.EquipmentHistorie.HistorieInfo.FahrgestellNr) };
+        }
+
+      
+        #endregion
+
+    } // class
+            
+} // ns

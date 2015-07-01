@@ -209,7 +209,7 @@ namespace CkgDomainLogic.Archive.Services
                 // Grid hat Probleme mit Spaltennamen, die mit "." beginnen
                 foreach (DataColumn col in erg.Columns)
                 {
-                    col.ColumnName = col.ColumnName.TrimStart('.');
+                    col.ColumnName = col.ColumnName.TrimStart('.').Replace("-", "");
                 }
             }
 

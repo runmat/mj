@@ -38,7 +38,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                     "   {\"title\":\"Datum\",\"member\":\"{0}\",\"type\":\"Date\",\"format\":\"{0:d}\"}" +
                     "  ,{\"title\":\"Verfügbarkeit\",\"member\":\"{1}\",\"type\":\"String\"}" +
                     "  ,{\"title\":\"Anzahl Fahrer\",\"member\":\"{2}\",\"type\":\"Int\"}" +
-                    "]").FormatPropertyParams<FahrerTagBelegung>(m => m.Datum, m => m.Verfuegbarkeit, m => m.FahrerAnzahl);
+                    "  ,{\"title\":\"Bemerkung\",\"member\":\"{3}\",\"type\":\"String\"}" +
+                    "]").FormatPropertyParams<FahrerTagBelegung>(m => m.Datum, m => m.Verfuegbarkeit, m => m.FahrerAnzahl, m => m.Kommentar);
             }
         }
 

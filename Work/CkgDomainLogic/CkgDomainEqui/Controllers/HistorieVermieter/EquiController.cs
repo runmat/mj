@@ -18,6 +18,17 @@ namespace ServicesMvc.Controllers
         {
             return View(EquipmentHistorieVermieterViewModel);
         }
+               
+        public ActionResult GetHistorieVermieterByFinPartial(string fahrgestellnummer)
+        {
+            var model = new EquiHistorieSuchparameter(){ FahrgestellNr = fahrgestellnummer } ;            
+            EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
+
+            if (EquipmentHistorieVermieterViewModel.HistorieInfos != null)
+                EquipmentHistorieVermieterViewModel.LoadHistorie(EquipmentHistorieVermieterViewModel.HistorieInfos[0].EquipmentNr, null);
+        
+            return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);
+        }
 
         [HttpPost]
         public ActionResult GetFahrzeugHistorieVermieterPartial(string equiNr, string meldungsNr)
@@ -67,6 +78,31 @@ namespace ServicesMvc.Controllers
         {
             return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.InhalteFsm));
         }
+
+        [GridAction]
+        public ActionResult EquiHistorieVermieterFahrzeugAnforderungenAjaxBinding()
+        {
+            return View(new GridModel(EquipmentHistorieVermieterViewModel.EquipmentHistorie.FahrzeugAnforderungen));
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugAnforderungNew()
+        {
+            ModelState.Clear();
+            return PartialView("Historie/Partial/FahrzeugAnforderungDetailsForm", EquipmentHistorieVermieterViewModel.FahrzeugAnforderungNew());
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugAnforderungDetailsFormSave(FahrzeugAnforderung model)
+        {
+            var viewModel = EquipmentHistorieVermieterViewModel;
+
+            if (ModelState.IsValid)
+                viewModel.FahrzeugAnforderungSave(model, ModelState.AddModelError);
+
+            return PartialView("Historie/Partial/FahrzeugAnforderungDetailsForm", model);
+        }
+
 
         public FileContentResult FahrzeughistorieVermieterPdf()
         {

@@ -94,5 +94,40 @@ namespace CkgDomainLogic.Equi.Services
 
             return SAP.GetExportParameterByte("E_PDF");
         }
+
+
+        #region Fahrzeug Anforderungen
+
+        public IEnumerable<FahrzeugAnforderung> FahrzeugAnforderungenLoad(string fahrgestellnummer)
+        {
+            Z_DPM_AVM_DOKUMENT_KOPIE.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_CHASSIS_NUM", fahrgestellnummer);
+
+            var sapList = Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_DPM_AVM_DOKUMENT_KOPIE_GT_WEB_To_FahrzeugAnforderung.Copy(sapList);
+        }
+        
+        public void FahrzeugAnforderungSave(FahrzeugAnforderung item)
+        {
+            Z_DPM_AVM_DOKUMENT_KOPIE.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            var sapList = AppModelMappings.Z_DPM_AVM_DOKUMENT_KOPIE_GT_WEB_To_FahrzeugAnforderung.CopyBack(new List<FahrzeugAnforderung>{ item }).ToList();
+            SAP.ApplyImport(sapList);
+
+            SAP.Execute();
+        }
+
+        public IEnumerable<SelectItem> FahrzeugAnforderungenLoadDocTypes()
+        {
+            Z_DPM_READ_AUFTR_006.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_KENNUNG", "KOPIE");
+
+            var sapList = Z_DPM_READ_AUFTR_006.GT_OUT.GetExportListWithExecute(SAP);
+
+            return AppModelMappings.Z_DPM_READ_AUFTR_006_GT_OUT_To_SelectItem.Copy(sapList);
+        }
+
+        #endregion
     }
 }

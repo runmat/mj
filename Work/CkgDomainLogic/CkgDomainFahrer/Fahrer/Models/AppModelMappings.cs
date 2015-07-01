@@ -39,9 +39,11 @@ namespace CkgDomainLogic.Fahrer.Models
                                     break;
                                 case "I":
                                     business.BelegungsTyp = FahrerTagBelegungsTyp.EingeschraenktVerfuegbar;
+                                    business.Kommentar = sap.BEMERKUNG;
                                     break;
                                 case "0": 
                                     business.BelegungsTyp = FahrerTagBelegungsTyp.NichtVerfuegbar; 
+                                    business.Kommentar = sap.BEMERKUNG;
                                     break;
                                                             
                                 default:
@@ -213,9 +215,11 @@ namespace CkgDomainLogic.Fahrer.Models
                                     break;
                                 case FahrerTagBelegungsTyp.EingeschraenktVerfuegbar:
                                     sap.ANZ_FAHRER = "I";
+                                    sap.BEMERKUNG = business.Kommentar;
                                     break;
                                 case FahrerTagBelegungsTyp.NichtVerfuegbar:
                                     sap.ANZ_FAHRER = "0";
+                                    sap.BEMERKUNG = business.Kommentar;
                                     break;
 
                                 case FahrerTagBelegungsTyp.Verfuegbar:
