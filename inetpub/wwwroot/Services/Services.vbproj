@@ -420,6 +420,8 @@
     <Content Include="Images\mahnstufe1.png" />
     <Content Include="Images\mahnstufe2.png" />
     <Content Include="Images\mahnstufe3.png" />
+    <Content Include="Images\mvc-report-solution-tool\mvc-report-solution-tool.mp4" />
+    <Content Include="Images\mvc-report-solution-tool\mvc-report-solution-tool.png" />
     <Content Include="Images\orga.png" />
     <Content Include="Images\Orga_Hover.png" />
     <Content Include="Images\overflowbackwhite.png" />
