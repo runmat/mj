@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Web.Script.Serialization;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
 using SapORM.Contracts;
 
 namespace SapORM.Models
@@ -36,6 +37,8 @@ namespace SapORM.Models
 
 			public string LIFNR { get; set; }
 
+			public string BEMERKUNG { get; set; }
+
 			public static T_VERFUEG1 Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new T_VERFUEG1
@@ -43,6 +46,7 @@ namespace SapORM.Models
 					VERFDAT = (string.IsNullOrEmpty(row["VERFDAT"].ToString())) ? null : (DateTime?)row["VERFDAT"],
 					ANZ_FAHRER = (string)row["ANZ_FAHRER"],
 					LIFNR = (string)row["LIFNR"],
+					BEMERKUNG = (string)row["BEMERKUNG"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -67,7 +71,7 @@ namespace SapORM.Models
 
 			public static List<T_VERFUEG1> ToList(DataTable dt, ISapConnection sapConnection = null)
 			{
-				return Select(dt, sapConnection).ToList();
+				return Select(dt, sapConnection).ToListOrEmptyList();
 			}
 
 			public static IEnumerable<T_VERFUEG1> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
@@ -81,7 +85,7 @@ namespace SapORM.Models
 
 			public static List<T_VERFUEG1> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
 			{
-				return Select(dts, sapConnection).ToList();
+				return Select(dts, sapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_VERFUEG1> ToList(ISapDataService sapDataService)
@@ -96,7 +100,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithInitExecute("Z_V_Ueberf_Verfuegbarkeit1", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_VERFUEG1> GetExportListWithExecute(ISapDataService sapDataService)
@@ -106,7 +110,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTablesWithExecute();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_VERFUEG1> GetExportList(ISapDataService sapDataService)
@@ -116,7 +120,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetExportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_VERFUEG1> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
@@ -126,7 +130,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTablesWithInit("Z_V_Ueberf_Verfuegbarkeit1", inputParameterKeys, inputParameterValues);
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 
 			public static List<T_VERFUEG1> GetImportList(ISapDataService sapDataService)
@@ -136,7 +140,7 @@ namespace SapORM.Models
 				 
 				var dts = sapDataService.GetImportTables();
 				 
-				return Select(dts, sapDataService.SapConnection).ToList();
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
 		}
 	}

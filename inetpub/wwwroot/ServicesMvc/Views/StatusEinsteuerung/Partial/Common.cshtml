@@ -1,0 +1,66 @@
+﻿@using DomainCommonModels = CkgDomainLogic.DomainCommon.Models
+
+<script type="text/javascript">
+
+    $("#StatusEinsteuerungForm button[type=submit]").trigger("click");
+
+    LoadingShow(true);
+
+    function ShowStatusReport() {
+       
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowStatusReport",
+            loadingShow: false,
+            success: function (result) {
+                $("#divGrid").html(result);
+                GridAllColumnFilterApplyToGrid("GridStatus");
+                LoadingHide();
+            }
+        });
+
+    }
+
+
+    function ShowStatusEinsteuerung() {
+       
+        FormPreparePrivateAjax();
+                
+        $.ajax({
+            type: "POST",
+            url: "ShowStatusEinsteuerung",
+            loadingShow: false,
+            success: function (result) {
+                $("#divGrid").html(result);
+                GridAllColumnFilterApplyToGrid("GridStatus");
+                LoadingHide();
+            }
+        });
+    }
+
+
+    function FormPreparePrivateAjax() {
+        //$("#divStatusEinsteuerungSuche").css("hide");       
+        FormPrepareAjax();
+    }
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridStatus");
+    }
+
+    function OnDataBound_GridStatus() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();     
+    }
+
+    function OnColumnShowHide_GridStatus() {    
+        FilteredData_Grid_OnColumnShowHide($(this));     
+    }
+
+    function OnColumnReorder_GridStatus() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+   
+</script>
