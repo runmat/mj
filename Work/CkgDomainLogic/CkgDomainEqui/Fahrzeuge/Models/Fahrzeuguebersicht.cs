@@ -1,4 +1,8 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -8,13 +12,13 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         public bool IsFilteredByExcelUpload;
 
-        [LocalizedDisplay(LocalizeConstants.VehicleHistory)]
-        public string ShowHistory { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Action { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Carport)]
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string Carport { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CarportName)]
+        [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string Carportname { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
@@ -42,7 +46,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
         public string Zb2Nummer { get; set; }
-
+             
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string Auftragsnummer { get; set; }
 
@@ -50,6 +54,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string BatchId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.SippCode)]
+// ReSharper disable once InconsistentNaming
         public string SIPPCode { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
@@ -61,8 +66,17 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.DateOfReadyIndication)]
         public DateTime? BereitmeldungDatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CancellationDate)]
+        public DateTime? AbmeldeDatum { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DateOfDispatch)]
+        public DateTime? VersandDatum { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.CarManufacturer)]
         public string Hersteller { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.WinterTires)]
+        public bool Winterreifen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CommentInternal)]
         public string BemerkungIntern { get; set; }
@@ -81,8 +95,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get
             {
-                if (String.IsNullOrEmpty(Farbcode))
-                    return Farbname;
+                if (String.IsNullOrEmpty(Farbname))
+                    return Farbcode;
 
                 return String.Format("{0} ({1})", Farbname, Farbcode);
             }
@@ -91,9 +105,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Comment)]
         public string BemerkungSperre { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.TrailerHitch)]
+        public bool Anhaengerkupplung { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Disabled)]
         public bool Gesperrt { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.VehicleType)]
+        public string Fahrzeugtyp { get; set; }
         [LocalizedDisplay(LocalizeConstants.MessageNo)]
         public string MeldungsNr { get; set; }
 
@@ -103,5 +122,37 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Bearbeitungsstatus { get; set; }
+ 
+        [LocalizedDisplay(LocalizeConstants.Navi)]
+        public bool Navi { get; set; }
+
+        public bool UploadedFound { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<FahrzeugSperrenVerschiebenViewModel> GetSperrenVerschiebenViewModel { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore]
+        public bool IsViewModelEditMode { get { return (GetSperrenVerschiebenViewModel != null && GetSperrenVerschiebenViewModel().EditMode); } }
+
+        [GridHidden, NotMapped, XmlIgnore]
+        public bool IsViewModelUpload { get { return (GetSperrenVerschiebenViewModel != null && GetSperrenVerschiebenViewModel().FahrzeugSelektor.Auswahl == "UPLOAD"); } }
+
+        [LocalizedDisplay(LocalizeConstants.FuelType)]
+        public string KraftstoffArt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationReady)]
+        public bool ZulassungBereit { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationStop)]
+        public bool ZulassungsSperre { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Supplier)]
+        public string Lieferant { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.City)]
+        public string Ort { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.FinancingType)]
+        public string FinanzierungsArt { get; set; }
     }
 }

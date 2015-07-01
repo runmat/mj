@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiHistorieVermieter
+
+<style type="text/css">   
+    .form-horizontal .control-group {
+        margin-bottom: 5px;
+    }
+</style>
+
+<form action="#" class="form-horizontal label-width-175">
+    
+    @Html.FormTextBlockFor(m => m.Hersteller, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Modell, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.FarbeText, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.BriefNr, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Erstzulassungsdatum, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Abmeldedatum, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.Referenz1, new { @class = "m-wrap", col = "left" })
+    @Html.FormTextBlockFor(m => m.Referenz2, new { @class = "m-wrap", col = "right" })
+    
+    @Html.FormTextBlockFor(m => m.VertragsNr, new { @class = "m-wrap" })
+
+</form>

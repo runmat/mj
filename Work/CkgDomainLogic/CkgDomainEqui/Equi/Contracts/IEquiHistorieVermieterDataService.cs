@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using CkgDomainLogic.Equi.Models;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.Equi.Contracts
 {
@@ -14,5 +15,14 @@ namespace CkgDomainLogic.Equi.Contracts
         EquiHistorieVermieter GetEquiHistorie(string equiNr, string meldungsNr);
 
         byte[] GetHistorieAsPdf(string equiNr, string meldungsNr);
+
+        
+        #region Fahrzeug Anforderungen
+        
+        IEnumerable<FahrzeugAnforderung> FahrzeugAnforderungenLoad(string fahrgestellnummer);
+        void FahrzeugAnforderungSave(FahrzeugAnforderung item);
+        IEnumerable<SelectItem> FahrzeugAnforderungenLoadDocTypes();
+
+        #endregion
     }
 }

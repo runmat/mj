@@ -1,6 +1,6 @@
 ﻿@model MaintenanceResult
 
-@if (Model.MessagesAvailable)
+@if (Model != null && Model.MessagesAvailable)
 {
     <!-- BEGIN NOTIFICATION DROPDOWN -->
     <li class="dropdown" id="header_notification_bar">

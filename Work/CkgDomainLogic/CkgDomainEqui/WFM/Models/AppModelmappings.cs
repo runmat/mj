@@ -286,7 +286,7 @@ namespace CkgDomainLogic.WFM.Models
                     , (s, d) =>
                     {
                         d.SOLLDATUM_VON = s.SolldatumVonBis.StartDate;
-                        d.SOLLATUM_BIS = s.SolldatumVonBis.EndDate;
+                        d.SOLLDATUM_BIS = s.SolldatumVonBis.EndDate;
                     }));
             }
         }

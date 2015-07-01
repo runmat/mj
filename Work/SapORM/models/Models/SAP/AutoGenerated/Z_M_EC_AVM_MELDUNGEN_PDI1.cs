@@ -119,6 +119,10 @@ namespace SapORM.Models
 
 			public string ZFZG_GROUP { get; set; }
 
+			public string BEMERKUNG_INTERN { get; set; }
+
+			public string BEMERKUNG_EXTERN { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -167,6 +171,8 @@ namespace SapORM.Models
 					ZNAVI = (string)row["ZNAVI"],
 					ZAHK = (string)row["ZAHK"],
 					ZFZG_GROUP = (string)row["ZFZG_GROUP"],
+					BEMERKUNG_INTERN = (string)row["BEMERKUNG_INTERN"],
+					BEMERKUNG_EXTERN = (string)row["BEMERKUNG_EXTERN"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
