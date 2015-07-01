@@ -9,6 +9,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string PDIKey { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Pdi)]
-        public string PDIText { get; set; }       
+        public string PDIText { get; set; }
+
+        public string DadPdi { get; set; }
     }
 }

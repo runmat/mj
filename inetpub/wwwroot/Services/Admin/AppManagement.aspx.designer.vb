@@ -329,6 +329,15 @@ Partial Public Class AppManagement
     Protected WithEvents txtAppParam As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
+    '''lnkMvcReportSolution-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lnkMvcReportSolution As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
     '''lnkColumnTranslation-Steuerelement
     '''</summary>
     '''<remarks>

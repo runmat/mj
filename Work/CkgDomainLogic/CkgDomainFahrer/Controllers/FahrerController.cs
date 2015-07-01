@@ -97,12 +97,13 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult SaveSelectedBelegungen(string model, int fahrerAnzahl, string belegungsType)
+        public ActionResult SaveSelectedBelegungen(string model, int fahrerAnzahl, string comment, string belegungsType)
         {
             var modelObject = JSon.Deserialize<FahrerBelegungViewModel>(model);
 
             ViewModel.FahrerBelegung.FahrerTagBelegungen = modelObject.FahrerTagBelegungen;
             ViewModel.FahrerBelegung.FahrerAnzahl = fahrerAnzahl;
+            ViewModel.FahrerBelegung.Kommentar = comment;
             ViewModel.FahrerBelegung.BelegungsTyp = (FahrerTagBelegungsTyp)Enum.Parse(typeof(FahrerTagBelegungsTyp), belegungsType);
 
             ViewModel.SaveFahrerTagBelegungen();

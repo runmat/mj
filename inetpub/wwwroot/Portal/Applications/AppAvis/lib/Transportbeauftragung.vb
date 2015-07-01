@@ -388,10 +388,6 @@ Public Class Transportbeauftragung
         row("WEBUSER") = webuser
         row("EMAIL_WEBUSER") = emailwebuser
 
-#If DEBUG Then
-        row("EMAIL_WEBUSER") = "christian.dittberner@kroschke.de"
-#End If
-
         tblWEBHead.Rows.Add(row)
         tblWEBHead.AcceptChanges()
 

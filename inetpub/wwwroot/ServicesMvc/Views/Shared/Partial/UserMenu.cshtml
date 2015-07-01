@@ -4,7 +4,10 @@
 {
     <ul class="nav pull-right">
     
-        @Html.Partial("Partial/UserMenuMessagesDropdown", Model.MaintenanceInfo)
+        @if (Model.MaintenanceInfo != null)
+        {
+            @Html.Partial("Partial/UserMenuMessagesDropdown", Model.MaintenanceInfo)
+        }
 
         @Html.Partial("Partial/UserMenuUserInfoDropdown")
 
