@@ -24,7 +24,6 @@
      
         @Html.FormTextBoxFor(m => m.Repco, new { @class = "m-wrap ", col = "right" })
         
-        @*@Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap ", col = "left" })*@
         @Html.FormDropDownListFor(m => m.Ansprechpartner, ansprechpartnerList.ToSelectList(), new { @class = "m-wrap", col = "left" })
         @Html.FormTextBoxFor(m => m.AnsprechpartnerTel, new { @class = "m-wrap ", col = "right" })
         
@@ -32,12 +31,9 @@
         
         @Html.FormTextBoxFor(m => m.Kunde, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.KundeTel, new { @class = "m-wrap ", col = "right" })
-        
         @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small", col = "left" })
-        
         @Html.FormDropDownListFor(m => m.FahrzeugartId, fahrzeugArtenList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
 
-        
         @Html.FormRequiredFieldsSummary()
         
         <script type="text/javascript">
@@ -49,18 +45,13 @@
                 $('#Ansprechpartner').select2({
                     allowClear: true
                 }).off("change").on("change", function(e) {
-                    $('#AnsprechpartnerTel').val(e.val);
+                    var telNr = e.val;
+                    var namePart = $('#Ansprechpartner').select2('data').text;
+                    telNr = telNr.replace(namePart + "|", "");
+                    $('#AnsprechpartnerTel').val(telNr);
                 });
 
             });
-            
-//            $(function() {
-//                $('#Betrieb').select2({
-//                    allowClear: true
-//                }).off("change").on("change", function(e) {
-//                    // eval('OnDropdownChanged_Betrieb("' + e.val + '")');
-//                });
-//            });
             
         </script>
     }

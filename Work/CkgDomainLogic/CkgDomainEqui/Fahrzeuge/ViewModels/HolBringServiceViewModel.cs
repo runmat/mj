@@ -35,10 +35,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public List<Domaenenfestwert> AbholungUhrzeitStundenList { get; set; }
 
         public IEnumerable<Kunde> BetriebeSap { get { return DataService.LoadKundenFromSap(); } }
-        public List<string> Betriebe { get; set; }          
-        
-        public string Username { get; set; }                // Antragsteller
-        public List<Domaenenfestwert> AnsprechpartnerList { get { return DataService.GetAnsprechpartner; } }    // public List<Domaenenfestwert> Ansprechpartner { get; set; }
+        public List<string> Betriebe { get; set; }
+
+        public string Auftragsersteller { get; set; }
+        public List<Domaenenfestwert> AnsprechpartnerList { get { return DataService.GetAnsprechpartner; } } 
 
         #region Wizard
         [XmlIgnore]
@@ -84,9 +84,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
        
         public void DataInit()
         {
+            Auftragsersteller = DataService.GetUsername;
+
             Auftraggeber = new Auftraggeber
                 {
-                    Auftragsersteller = DataService.GetUsername,
+                    Auftragsersteller = Auftragsersteller,
                     AuftragerstellerTel = DataService.GetUserTel,
                     Betrieb = "Betrieb",
                     Ansprechpartner = "Ansprechpartner",

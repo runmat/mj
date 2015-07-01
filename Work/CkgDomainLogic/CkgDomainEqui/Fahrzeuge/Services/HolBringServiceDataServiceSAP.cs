@@ -33,7 +33,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
 
         public string GetUsername { get { return (LogonContext).User.Username; } }
-        public string GetUserTel { get { return (LogonContext).UserInfo.Telephone; } }
+        public string GetUserTel { get { return (LogonContext).UserInfo.Telephone2; } }
 
         public IEnumerable<Kunde> LoadKundenFromSap()
         {
@@ -51,17 +51,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return Autohaus.Models.AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_Kunde.Copy(sapList).OrderBy(k => k.Name1);
         }
 
-        //public string GetUsername()
-        //{
-        //    // return ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString();
-        //    //var iGroup = ((ILogonContextDataService)LogonContext).Organization.OrganizationName;
-        //    //var iVkOrg = ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString();
-        //    //var iVkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2;
-        //    var asdf = (LogonContext).UserInfo.Telephone;
-        //    // return (LogonContext).Customer.Customername;
-        //    return (LogonContext).User.Username;
-        //}
-
         public HolBringServiceDataServiceSAP(ISapDataService sap)
             :base(sap)
         {
@@ -76,17 +65,17 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
         public IEnumerable<Domaenenfestwert> LoadAnsprechpartnerList()
         {
-
-
             using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
             {
-                // , WebUser.Username 
-                var sql = string.Format("SELECT WebUser.LastName + ', ' + WebUser.FirstName AS Beschreibung, WebUserInfo.telephone2 AS Wert FROM WebUser INNER JOIN WebMember ON WebUser.UserID = WebMember.UserID INNER JOIN WebGroup " +
+                //var sql = string.Format("SELECT WebUser.LastName + ', ' + WebUser.FirstName AS Beschreibung, WebUserInfo.telephone2 AS Wert FROM WebUser INNER JOIN WebMember ON WebUser.UserID = WebMember.UserID INNER JOIN WebGroup " +
+                //          "ON WebMember.GroupID = WebGroup.GroupID INNER JOIN WebUserInfo ON WebUser.UserID = WebUserInfo.id_user " +
+                //          "WHERE (dbo.WebUser.CustomerID = {0}) AND (dbo.WebGroup.GroupName = '{1}')", (LogonContext).User.CustomerID, (LogonContext).GroupName);
+
+                var sql = string.Format("SELECT WebUser.LastName + ', ' + WebUser.FirstName AS Beschreibung, WebUser.LastName + ', ' + WebUser.FirstName + '|' + WebUserInfo.telephone2 AS Wert FROM WebUser INNER JOIN WebMember ON WebUser.UserID = WebMember.UserID INNER JOIN WebGroup " +
                           "ON WebMember.GroupID = WebGroup.GroupID INNER JOIN WebUserInfo ON WebUser.UserID = WebUserInfo.id_user " +
                           "WHERE (dbo.WebUser.CustomerID = {0}) AND (dbo.WebGroup.GroupName = '{1}')", (LogonContext).User.CustomerID, (LogonContext).GroupName);
 
-                var result = dbContext.Database.SqlQuery<Domaenenfestwert>(sql).ToList();
-
+                var result = dbContext.Database.SqlQuery<Domaenenfestwert>(sql).OrderBy(x => x.Beschreibung).ToList();
                 return result;
             }
         }

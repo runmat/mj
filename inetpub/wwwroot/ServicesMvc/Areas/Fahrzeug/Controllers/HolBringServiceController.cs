@@ -45,14 +45,15 @@ namespace ServicesMvc.Fahrzeug.Controllers
             ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
             ViewData["AnsprechpartnerList"] = ViewModel.AnsprechpartnerList;
 
-            var test = ViewModel.GetBetriebeAsAutoCompleteItems();
-
             return View(ViewModel);
         }
 
         [HttpPost]
-        public ActionResult Auftraggeber(Auftraggeber model) 
+        public ActionResult Auftraggeber(Auftraggeber model)    // [Bind(Exclude = "Auftragsersteller")]
         {
+            // ModelState.Remove("Auftragsersteller"); // This will remove the key 
+            model.Auftragsersteller = ViewModel.Auftragsersteller;
+
             if (ModelState.IsValid)
             {
                 ViewModel.Auftraggeber = model;
@@ -66,6 +67,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
             ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
             ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
+            ViewData["AnsprechpartnerList"] = ViewModel.AnsprechpartnerList;
 
             return PartialView("Partial/Auftraggeber", model);
         }
@@ -84,7 +86,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
             if (ModelState.IsValid)
             {
                 ViewModel.Abholung = model;
-
                 ViewModel.CopyDefaultValuesToAnlieferung(model);
             }
 

@@ -17,11 +17,6 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         string GetUsername { get; }
         string GetUserTel { get; }
 
-        //var iKunnr = selector.KundenNr;
-        //var iGroup = ((ILogonContextDataService)LogonContext).Organization.OrganizationName;
-        //var iVkOrg = ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString();
-        //var iVkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2;
-
         IEnumerable<Kunde> LoadKundenFromSap(); // Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE 
     }
 }

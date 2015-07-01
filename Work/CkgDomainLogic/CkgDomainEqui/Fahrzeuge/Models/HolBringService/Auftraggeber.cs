@@ -44,8 +44,5 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
         public int FahrzeugartId { get; set; }
 
-        //[XmlIgnore, ScriptIgnore]
-        //public List<Domaenenfestwert> Fahrzeugarten { get; set; }
-
     }
 }
