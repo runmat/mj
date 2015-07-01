@@ -1,7 +1,7 @@
 ﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
 
 @Html.Partial("Partial/Common")
-@Html.Partial("Partial/FotoUpload/UploadScripts")
+@Html.Partial("Partial/Upload/UploadScripts")
 
 <style type="text/css">
     .form-horizontal .control-label { width: 70px; float: left;padding-top: 5px; text-align: left; }
@@ -31,10 +31,10 @@
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab_1_1">
-                @Html.Partial("Partial/FotoUpload/UploadNew", Model)
+                @Html.Partial("Partial/Upload/FotoUpload/UploadNew", Model)
             </div>               
             <div class="tab-pane" id="tab_1_2">
-                @Html.Partial("Partial/FotoUpload/UploadEdit", Model)
+                @Html.Partial("Partial/Upload/FotoUpload/UploadEdit", Model)
             </div>               
         </div>
     </div>

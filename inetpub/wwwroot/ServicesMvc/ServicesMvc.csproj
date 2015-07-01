@@ -2578,9 +2578,8 @@
     <Content Include="Views\Fahrer\Partial\Auftraege\AuftraegeGridAuftragsDetails.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\AuftraegeGridAuftragsCommandBar.cshtml" />
     <Content Include="Views\Fahrer\FotoUpload.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadNew.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadEdit.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadScripts.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\FotoUpload\UploadNew.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\FotoUpload\UploadEdit.cshtml" />
     <Content Include="Views\Fahrer\QmReport.cshtml" />
     <Content Include="Views\Fahrer\Partial\QmReport\Results.cshtml" />
     <Content Include="Views\Fahrer\Partial\QmReport\Filter.cshtml" />
@@ -4423,6 +4422,10 @@
     <Content Include="Views\Logs\Partial\Errors\Grid.cshtml" />
     <Content Include="Views\Logs\Partial\Errors\SucheErrorLogItems.cshtml" />
     <Content Include="Views\Logs\Partial\Errors\Details.cshtml" />
+    <Content Include="Views\Fahrer\ProtokollUpload.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\ProtokollUpload\UploadEdit.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\ProtokollUpload\UploadNew.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\UploadScripts.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

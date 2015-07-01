@@ -63,7 +63,7 @@ namespace ServicesMvc.Controllers
             ViewModel.SetParamProtokollMode(modeProtokoll);
             ViewModel.LoadFahrerAuftragsFahrten();
 
-            return View("FotoUpload", ViewModel);
+            return View(ViewModel);
         }
 
         [CkgApplication]
@@ -208,7 +208,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult GetUploadedImageFilesPartial()
         {
-            return PartialView("Partial/FotoUpload/UploadEdit", ViewModel);
+            var subDir = (ViewModel.ModeProtokoll ? "ProtokollUpload" : "FotoUpload");
+            return PartialView("Partial/Upload/" + subDir + "/UploadEdit", ViewModel);
         }
 
         [HttpPost]
