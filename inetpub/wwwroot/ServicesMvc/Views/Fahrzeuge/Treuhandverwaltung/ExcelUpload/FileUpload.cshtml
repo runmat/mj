@@ -1,6 +1,10 @@
 ﻿<div class="control-group">
     <label class="control-label">Excel file upload:</label>
     <div class="controls">
+           
+        <a href="DownloadCsvTemplate" class="btn white tooltips" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate <i class="icon-chevron-right"></i></a>
+               
+        <div class="space10"></div>   
                 
         @(Html.Telerik().Upload()
                 .Name("fileUpload")

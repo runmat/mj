@@ -1,8 +1,6 @@
 ﻿using System;
-using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
-
 
 namespace CkgDomainLogic.Finance.Models
 {
@@ -33,6 +31,7 @@ namespace CkgDomainLogic.Finance.Models
 
         [LocalizedDisplay(LocalizeConstants.FirstRegistration)]
         public DateTime? Erstzulassung { get; set; }
-       
+
+        public string BelegNr { get; set; }
     }
 }
