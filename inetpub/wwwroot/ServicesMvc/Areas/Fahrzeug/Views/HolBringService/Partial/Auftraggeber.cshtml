@@ -1,8 +1,12 @@
 ﻿@using CkgDomainLogic.DomainCommon.Models
 @model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Auftraggeber 
 
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
 @{
     var fahrzeugArtenList = (List<Domaenenfestwert>)ViewData["FahrzeugArtenList"];
+    var betriebeList = (List<string>)ViewData["BetriebeList"];
 }
 
 <div id="DivAuftraggeber" class="margin-top-20">
@@ -15,7 +19,9 @@
         @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.AuftragerstellerTel, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormTextBoxFor(m => m.Betrieb, new { @class = "m-wrap ", col = "left" })
+        @*@Html.FormTextBoxFor(m => m.Betrieb, new { @class = "m-wrap ", col = "left" })*@
+        @Html.FormDropDownListFor(m => m.Betrieb, betriebeList.ToSelectList(), new { @class = "m-wrap", col = "left" })
+     
         @Html.FormTextBoxFor(m => m.Repco, new { @class = "m-wrap ", col = "right" })
         
         @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap ", col = "left" })
@@ -30,10 +36,25 @@
         
         @Html.FormDropDownListFor(m => m.FahrzeugartId, fahrzeugArtenList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
 
+        
         @Html.FormRequiredFieldsSummary()
         
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            $(function() {
+                $('#Betrieb').select2();
+                $('#FahrzeugartId').select2();
+            });
+            
+//            $(function() {
+//                $('#Betrieb').select2({
+//                    allowClear: true
+//                }).off("change").on("change", function(e) {
+//                    // eval('OnDropdownChanged_Betrieb("' + e.val + '")');
+//                });
+//            });
+            
         </script>
     }
 </div>

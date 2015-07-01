@@ -5,6 +5,7 @@ using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Services;
+using CkgDomainLogic.Autohaus.Models;
 
 namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
@@ -20,5 +21,8 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         //var iGroup = ((ILogonContextDataService)LogonContext).Organization.OrganizationName;
         //var iVkOrg = ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString();
         //var iVkBur = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2;
+
+        IEnumerable<Kunde> LoadKundenFromSap(); // Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE 
+
     }
 }

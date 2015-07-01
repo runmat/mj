@@ -42,6 +42,9 @@ namespace ServicesMvc.Fahrzeug.Controllers
             ViewModel.DataInit();
 
             ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
+            ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
+
+            var test = ViewModel.GetBetriebeAsAutoCompleteItems();
 
             return View(ViewModel);
         }
@@ -109,6 +112,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
             return PartialView("Partial/Anlieferung", model);
         }
 
+        #region PDF-Upload
         [HttpPost]
         public ActionResult Upload(Upload model)
         {
@@ -148,7 +152,13 @@ namespace ServicesMvc.Fahrzeug.Controllers
             }, "text/plain");
         }
 
+        #endregion
 
-
+        [HttpPost]
+        public JsonResult BetriebeGetAutoCompleteItems()
+        {
+            // return Json(new { items = ViewModel.GetHalterAdressenAsAutoCompleteItems() });
+            return Json(new { items = ViewModel.Betriebe });
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models.HolBringService;
@@ -33,10 +34,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public List<DropDownTimeItem> DropDownMinutes { get; set; }
         public List<Domaenenfestwert> AbholungUhrzeitStundenList { get; set; }
 
-        // CkgDomainLogic.General.Contracts.ILogonContextDataService
-
+        public IEnumerable<Kunde> BetriebeSap { get { return DataService.LoadKundenFromSap(); } }
+        public List<string> Betriebe { get; set; }          
+        
         public string Username { get; set; }                // Antragsteller
-        public List<string> Betriebe { get; set; }
         public List<string> Ansprechpartner { get; set; }
 
         #region Wizard
@@ -66,6 +67,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get { return string.Format("{0}", StepKeys[0]); }
         }
         #endregion
+
+        public List<string> GetBetriebeAsAutoCompleteItems()
+        {
+            return BetriebeSap.Select(a => a.Name1).ToList();
+        }
+
 
         public class DropDownTimeItem
         {
@@ -115,6 +122,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 };
             DropDownMinutes = selectableMinutes;
             DropDownMinutes = selectableMinutes;
+
+            var test = BetriebeSap;
+            var asdf = test.FirstOrDefault(x => x.Barkunde == false);
 
             DataMarkForRefresh();
         }

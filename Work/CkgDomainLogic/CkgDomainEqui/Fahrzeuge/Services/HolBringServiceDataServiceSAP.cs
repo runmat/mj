@@ -5,7 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using CkgDomainLogic.Autohaus.Models;
+using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
+using CkgDomainLogic.DomainCommon.Services;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Database.Services;
@@ -24,16 +27,29 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 {
     public class HolBringServiceDataServiceSAP : CkgGeneralDataServiceSAP, IHolBringServiceDataService
     {
-        public string Test()
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Domaenenfestwert> GetFahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
         public List<Domaenenfestwert> GetUsers { get { return PropertyCacheGet(() => LoadUserList().ToList()); } }
 
+        public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
+
         public string GetUsername { get { return (LogonContext).User.Username; } }
         public string GetUserTel { get { return (LogonContext).UserInfo.Telephone; } }
+
+        public IEnumerable<Kunde> LoadKundenFromSap()
+        {
+            Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
+
+            var orgRef = ((ILogonContextDataService)LogonContext).Organization.OrganizationReference;
+
+            SAP.SetImportParameter("I_KUNNR", (string.IsNullOrEmpty(orgRef) ? LogonContext.KundenNr.ToSapKunnr() : orgRef.ToSapKunnr()));
+            SAP.SetImportParameter("I_VKORG", ((ILogonContextDataService)LogonContext).Customer.AccountingArea.ToString());
+            SAP.SetImportParameter("I_VKBUR", ((ILogonContextDataService)LogonContext).Organization.OrganizationReference2);
+            SAP.SetImportParameter("I_SPART", "01");
+
+            var sapList = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP);
+
+            return Autohaus.Models.AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_Kunde.Copy(sapList).OrderBy(k => k.Name1);
+        }
 
         //public string GetUsername()
         //{
@@ -66,5 +82,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                 return null;
             }
         }
+
+        
     }
 }
