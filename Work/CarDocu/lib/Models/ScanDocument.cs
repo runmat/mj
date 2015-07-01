@@ -53,25 +53,17 @@ namespace CarDocu.Models
         {
             get
             {
-                //return (!string.IsNullOrEmpty(FinNumber) && 
-                //            ValidDocumentType && 
-                //            (SelectedDocumentType.InputRuleObject.AllowedLengths.None() ||
-                //            (SelectedDocumentType.InputRuleObject.AllowedLengths.Contains(FinNumber.Length) && SelectedDocumentType.IsBarcodeInRange(FinNumber))
-                //            ));
-
                 if (!string.IsNullOrEmpty(FinNumber) && ValidDocumentType)
                 {
-                    if (SelectedDocumentType.InputRuleObject.AllowedLengths.None()) { 
+                    if (SelectedDocumentType.InputRuleObject.AllowedLengths.None()) 
                         return true;
-                    }
 
                     if (SelectedDocumentType.InputRuleObject.AllowedLengths.Contains(FinNumber.Length))
                     {
                         // Range nur prüfen, wenn BatchScan aktiv ist.
-                        if (SelectedDocumentType.IsBatchScanAllowed)
-                        {
+                        if (SelectedDocumentType.IsBatchScanAllowed && !SelectedDocumentType.BarcodeAlphanumericAllowed)
                             return SelectedDocumentType.IsBarcodeInRange(FinNumber);
-                        }
+
                         return true;
                     }
                     return false;

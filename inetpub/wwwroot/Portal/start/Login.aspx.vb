@@ -1,16 +1,7 @@
-Imports CKG.Base.Kernel
 Imports CKG.Portal.PageElements
 Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base
-Imports System
-Imports System.Data
-Imports System.Configuration
-Imports System.Web
 Imports System.Web.Security
-Imports System.Web.UI
-Imports System.Web.UI.WebControls
-Imports System.Web.UI.WebControls.WebParts
-Imports System.Web.UI.HtmlControls
 Imports System.Drawing.Imaging
 Imports CKG.Base.Business
 Imports System.Security.Cryptography
@@ -86,8 +77,6 @@ Public Class Login
 
     Private m_User As New Base.Kernel.Security.User()
     Private m_App As Base.Kernel.Security.App
-    Private cke As Integer
-    Private ckp As Integer
     Private random As New Random
 
     Protected WithEvents ucStyles As Styles
@@ -809,32 +798,32 @@ Public Class Login
             End If
         End If
         If ddlAnrede.SelectedValue = "-" Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             ddlAnrede.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtName.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtName.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtVorname.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtVorname.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtFirma.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtFirma.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtTelefon.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
             txtTelefon.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
         End If
         If txtEmail.Text.Trim.Length = 0 Then
-            MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+            SetzeHinweisPflichtfeld()
 
             txtEmail.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
             breturn = True
@@ -847,7 +836,7 @@ Public Class Login
         End If
         If CInt(Session("LostPassword")) = 0 Then
             If txtProblem.Text.Trim.Length = 0 Then
-                MessageLabel.Text = "Bitte Plichfelder ausfüllen!"
+                SetzeHinweisPflichtfeld()
                 txtProblem.BorderColor = System.Drawing.ColorTranslator.FromHtml("#C40000")
                 breturn = True
             End If
@@ -906,6 +895,11 @@ Public Class Login
 
 
     End Sub
+
+    Private Sub SetzeHinweisPflichtfeld()
+        MessageLabel.Text = "Bitte Pflichtfelder ausfüllen!"
+    End Sub
+
 End Class
 
 ' ************************************************

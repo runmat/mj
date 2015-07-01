@@ -556,11 +556,12 @@
     <Content Include="forms\InfoHC.htm" />
     <Content Include="forms\Change15.aspx" />
     <Content Include="forms\Change16.aspx" />
-    <Content Include="forms\InfoReifenversand.htm" />
+    <Content Include="forms\InfoReifenVersand.htm" />
     <Content Include="forms\InfoUebergabeTUEV.htm" />
     <Content Include="forms\Change17.aspx" />
     <Content Include="forms\InfoRechnungsdaten.htm" />
     <Content Include="forms\Change18.aspx" />
+    <Content Include="forms\InfoReifenAnnahme.htm" />
     <Content Include="forms\Report25.aspx" />
     <Content Include="forms\Report23.aspx" />
     <Content Include="forms\Report01.aspx" />
