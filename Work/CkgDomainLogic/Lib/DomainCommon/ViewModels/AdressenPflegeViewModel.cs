@@ -86,8 +86,10 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public string KundennrOverride { get; set; }
 
+        public string SubKundennr { get; set; }
 
-        public void AdressenDataInit(string adressenKennung, string kundennrOverride)
+
+        public void AdressenDataInit(string adressenKennung, string kundennrOverride, string subKundennr = null)
         {
             if (adressenKennung.IsNullOrEmpty() && AdressenKennungenLocalized.None(kennung => kennung.Key.ToUpper() == adressenKennung.ToUpper()) && AdressenKennungenLocalized.Any())
                 adressenKennung = AdressenKennungenLocalized.First().Key;
@@ -95,6 +97,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             AdressenDataService.AdressenKennung = adressenKennung.ToUpper();
             AdressenKennungTemp = adressenKennung;
             AdressenDataService.KundennrOverride = KundennrOverride = kundennrOverride;
+            AdressenDataService.SubKundennr = SubKundennr = subKundennr;
 
             Adresse.Laender = Laender;
 

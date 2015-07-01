@@ -78,7 +78,7 @@ namespace CkgDomainLogic.Partner.ViewModels
 
         public void LoadPartners()
         {
-            AdressenDataInit(PartnerSelektor.PartnerKennung, (!String.IsNullOrEmpty(PartnerSelektor.Kunnr) ? PartnerSelektor.Kunnr : KundennrOverride));
+            AdressenDataInit(PartnerSelektor.PartnerKennung, KundennrOverride, PartnerSelektor.Kunnr);
         }
 
         public void FilterPartners(string filterValue, string filterProperties)

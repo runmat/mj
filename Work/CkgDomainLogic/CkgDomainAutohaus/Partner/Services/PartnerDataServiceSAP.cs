@@ -55,8 +55,9 @@ namespace CkgDomainLogic.Partner.Services
         override public List<Adresse> LoadFromSap(string internalKey = null, string kennungOverride = null, bool kundennrMitgeben = true)
         {
             Z_AHP_READ_PARTNER.Init(SAP);
-            
+
             SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_KUNNR_PARVW", SubKundennr.ToSapKunnr());
 
             if (kennungOverride.IsNotNullOrEmpty() || AdressenKennung.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_PARTART", TranslateFromFriendlyAdressenKennung(kennungOverride.IsNotNullOrEmpty() ? kennungOverride : AdressenKennung));
