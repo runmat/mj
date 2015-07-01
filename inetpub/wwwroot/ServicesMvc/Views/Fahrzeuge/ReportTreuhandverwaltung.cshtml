@@ -5,183 +5,175 @@
 <h3 class="page-title" id="headerTitle">        
          @if (Model.TreuhandverwaltungSelektor.Reporttype == ReportType.TG)
          { @Localize.Fahrzeug_TreuhandbestandTG }
-         @if (Model.TreuhandverwaltungSelektor.Reporttype == ReportType.AG)
-         { @Localize.Fahrzeug_TreuhandbestandAG }                
+         else if (Model.TreuhandverwaltungSelektor.Reporttype == ReportType.AG)
+         { @Localize.Fahrzeug_TreuhandbestandAG }
+         else
+         { @Localize.Fahrzeug_Treuhandverwaltung }
         </h3>
             
 
 @using (Html.FormSearchBox())
 {
-    if (Model.TreuhandverwaltungSelektor.Reporttype == ReportType.Services)
-    { @Html.Partial("Treuhandverwaltung/TreuhandverwaltungKundenAuswahl", Model.TreuhandverwaltungSelektor)}
-    else
-    { @Html.Partial("Treuhandverwaltung/TreuhandverwaltungReportsSuche", Model.TreuhandverwaltungSelektor)}
-}
-
-<div id="divExcelUpload" class="hide">
-
-    <h3><small>Excel Upload</small></h3>
-
-    <div id="ExcelUpload" class="portlet app-view">
-    
-        @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Daten überprüfen", "Fertig!" })
-
-        <div id="formWizardTab1" class="hide">
-            @Html.Partial("Treuhandverwaltung/ExcelUpload/FileUpload")
-        </div>
-
+    <div id="divSuche">
+        @if (Model.TreuhandverwaltungSelektor.Reporttype == ReportType.Services)
+        { @Html.Partial("Treuhandverwaltung/TreuhandverwaltungKundenAuswahl", Model.TreuhandverwaltungSelektor)}
+        else
+        { @Html.Partial("Treuhandverwaltung/TreuhandverwaltungReportsSuche", Model.TreuhandverwaltungSelektor)}
     </div>
-
-    <script type="text/javascript">
-
-    var _formWizardForceHideSubmitButton = false;
-
-    function _FormPreparePrivate() {
-        LoadingHide();
-        FormWizardInitPrivate();
-    }
-
-    function _FormPreparePrivateAjax() {
-        FormPrepareAjax();
-        $(".t-status").hide();
-    }
-
-    function FormWizardInitPrivate() {
-        FormWizard.Init(function () {
-            FormWizard.ActionsShow(false);
-        });
-
-        //        FormWizard.OnNext(function (step, maxSteps) {
-        //            alert(_formWizardForceHideSubmitButton);
-        //            if (step == 2 && _formWizardForceHideSubmitButton)
-        //                FormWizard.ButtonSubmitShow(false);
-        //            return true;
-        //        });
-
-        FormWizard.OnPrev(function (step, maxSteps) {
-            if (step == 1)
-                FormWizard.ActionsShow(false);
-            return true;
-        });
-
-        FormWizard.OnSubmit(function () {
-            SubmitUpload();
-        });
-
-        FormWizard.OnRestart(function () {
-            //alert('Ok, let´s restart! :)');
-            LocationReloadWithoutQueryString();
-        });
-    }
-
-   
-    function UploadStart(e) {
-
-        $("#TreuhandverwaltungAuswahlForm").submit();
-        // clear only the UI of our Upload Control:
-        //$(this).children(".t-upload-files").remove();
-
-        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
-        var fileName = e.files[0].name;
-
-        if (fileName.toLowerCase().indexOf('.xls') <= 0) {
-            alert('Bitte nur XLS-Dateien hochladen!');
-            return false;
-        }
-
-        LoadingShow();
-
-        return true;
-    }
-
-    function UploadFinished(e) {
-
-        // clear only the UI of our Upload Control:
-        $(this).children(".t-upload-files").remove();
-
-        if (!e.response.success) {
-            alert(e.response.message);
-            return;
-        }
-
-        ShowGrid(false);
-    }
-
-    function UploadError(e) {
-        e.preventDefault();
-        alert('Fehler: Es gab ein Problem beim Speichern Ihrer Datei!');
-    }
-
-    function ShowGrid() {
-        $.ajax({
-            type: "POST",
-            url: "ExcelUploadShowGrid",
-            data: { showErrorsOnly: false },
-            loadingShow: true,
-            success: function (result) {
-                if (typeof (result.message) !== "undefined") {
-                    alert(result.message);
-                    return;
-                }
-                FormWizard.SetTabHtml(2, result);
-                FormPreparePrivateAjax();
-                FormWizard.ButtonNextInvoke();
-                if (_formWizardForceHideSubmitButton)
-                    FormWizard.ButtonSubmitShow(false);
-            }
-        });
-    }
-
-    function FilterGrid(showErrorsOnly) {
-        $.ajax({
-            type: "POST",
-            url: "ExcelUploadShowGrid",
-            data: { showErrorsOnly: showErrorsOnly },
-            loadingShow: true,
-            success: function (result) {
-                FormWizard.SetTabHtml(2, result);
-                FormPreparePrivateAjax();
-            }
-        });
-    }
-
-    function UploadItemsShowErrorsOnlyChanged(cb) {
-        FilterGrid(cb.is(':checked'));
-        if (cb.is(':checked'))
-            FormWizard.ButtonSubmitShow(cb.is(':checked') == false);
-    }
-
-    function SubmitUpload() {
-        $.ajax({
-            type: "POST",
-            url: "ExcelUploadSubmit",
-            loadingShow: true,
-            success: function (result) {
-                if (typeof (result.message) !== "undefined") {
-                    alert(result.message);
-                    return;
-                }
-                FormWizard.SetTabHtml(3, result);
-                FormPreparePrivateAjax();
-                FormWizard.ButtonNextInvoke();
-            }
-        });
-    }
-
-    </script>
-</div>
+}
 
 @using (Html.FormSearchResultsGrid())
 {
+    <div id="divExcelUpload" class="hide">
+
+        <h3><small>Excel Upload</small></h3>
+
+        <div id="ExcelUpload" class="portlet app-view">
+
+            @Html.FormWizard("icon-arrow-up", "", new[] { "Excel Datei hochladen", "Daten überprüfen", "Fertig!" })
+
+            <div id="formWizardTab1" class="hide">
+                @Html.Partial("Treuhandverwaltung/ExcelUpload/FileUpload")
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+
+            var _formWizardForceHideSubmitButton = false;
+
+            function _FormPreparePrivate() {
+                LoadingHide();
+                FormWizardInitPrivate();
+            }
+
+            function _FormPreparePrivateAjax() {
+                FormPrepareAjax();
+                $(".t-status").hide();
+            }
+
+            function FormWizardInitPrivate() {
+                FormWizard.Init(function () {
+                    FormWizard.ActionsShow(false);
+                });
+
+                FormWizard.OnPrev(function (step, maxSteps) {
+                    if (step == 1)
+                        FormWizard.ActionsShow(false);
+                    return true;
+                });
+
+                FormWizard.OnSubmit(function () {
+                    SubmitUpload();
+                });
+
+                FormWizard.OnRestart(function () {
+                    //alert('Ok, let´s restart! :)');
+                    LocationReloadWithoutQueryString();
+                });
+            }
+
+
+            function UploadStart(e) {
+
+                $("#TreuhandverwaltungAuswahlForm").submit();
+                // clear only the UI of our Upload Control:
+                //$(this).children(".t-upload-files").remove();
+
+                // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+                var fileName = e.files[0].name;
+
+                if (fileName.toLowerCase().indexOf('.xls') <= 0) {
+                    alert('Bitte nur XLS-Dateien hochladen!');
+                    return false;
+                }
+
+                LoadingShow();
+
+                return true;
+            }
+
+            function UploadFinished(e) {
+
+                // clear only the UI of our Upload Control:
+                $(this).children(".t-upload-files").remove();
+
+                if (!e.response.success) {
+                    alert(e.response.message);
+                    return;
+                }
+
+                ShowGrid(false);
+            }
+
+            function UploadError(e) {
+                e.preventDefault();
+                alert('Fehler: Es gab ein Problem beim Speichern Ihrer Datei!');
+            }
+
+            function ShowGrid() {
+                $.ajax({
+                    type: "POST",
+                    url: "ExcelUploadShowGrid",
+                    data: { showErrorsOnly: false },
+                    loadingShow: true,
+                    success: function (result) {
+                        if (typeof (result.message) !== "undefined") {
+                            alert(result.message);
+                            return;
+                        }
+                        FormWizard.SetTabHtml(2, result);
+                        FormPreparePrivateAjax();
+                        FormWizard.ButtonNextInvoke();
+                        if (_formWizardForceHideSubmitButton)
+                            FormWizard.ButtonSubmitShow(false);
+                    }
+                });
+            }
+
+            function FilterGrid(showErrorsOnly) {
+                $.ajax({
+                    type: "POST",
+                    url: "ExcelUploadShowGrid",
+                    data: { showErrorsOnly: showErrorsOnly },
+                    loadingShow: true,
+                    success: function (result) {
+                        FormWizard.SetTabHtml(2, result);
+                        FormPreparePrivateAjax();
+                    }
+                });
+            }
+
+            function UploadItemsShowErrorsOnlyChanged(cb) {
+                FilterGrid(cb.is(':checked'));
+                if (cb.is(':checked'))
+                    FormWizard.ButtonSubmitShow(cb.is(':checked') == false);
+            }
+
+            function SubmitUpload() {
+                $.ajax({
+                    type: "POST",
+                    url: "ExcelUploadSubmit",
+                    loadingShow: true,
+                    success: function (result) {
+                        if (typeof (result.message) !== "undefined") {
+                            alert(result.message);
+                            return;
+                        }
+                        FormWizard.SetTabHtml(3, result);
+                        FormPreparePrivateAjax();
+                        FormWizard.ButtonNextInvoke();
+                    }
+                });
+            }
+
+        </script>
+    </div>
+    
     <div id="divGrid"></div>  
 }
 
 <script type="text/javascript">
-
-    // Demo Lokalisierung JS
-    // SpanAlertWarning("WaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
-
-    var _modelStateValid = 'false';
 
     function ShowTreuhandverwaltungBestand() {
 
@@ -192,22 +184,19 @@
             url: "ShowTreuhandverwaltungBestand",
             loadingShow: false,
             success: function (result) {
-                //SearchResultsTryHide();
-                ShowTreuhandbestandSearchResult(result);
+                if (_modelStateValid) {
+                    ShowTreuhandbestandSearchResult(result);
+                }
                 LoadingHide();
-                //alert("5")
             }
         });
-        //alert("1")
     }
 
     function ShowTreuhandbestandSearchResult(result) {
         SearchFormHide();
         $("#divGrid").html(result);
-        //alert("4");
         GridAllColumnFilterApplyToGrid("GridTreuhandverwaltung");
         $("#divGrid").slideDown();
-        //alert("5");
     }
 
     function FormPreparePrivateAjax() {
@@ -226,9 +215,7 @@
 
         // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridTreuhandverwaltung");
-        //alert('1');
         $("#divGrid").slideDown();
-        //alert('2');
     }
 
 
@@ -247,8 +234,6 @@
     }
 
     function OnLoad_GridTreuhandverwaltung() {
-        //alert("1");
-        //$('.t-no-data td').text(ladeHinweis);
     }
        
    
@@ -264,7 +249,6 @@
             success: function (result) {
                 var count = result.allSelectionCount;
                 TreuhandverwaltungGrid_MultiSelectUpdate(result.allSelectionCount);
-                //alert(result.itemsWithoutErrorOnly);
                 FormWizard.ButtonSubmitShow(result.itemsWithoutErrorOnly == 0 && count > 0);               
             }
         });
@@ -277,7 +261,6 @@
             data: { fin: "", isChecked: check },
             loadingShow: true,
             success: function (result) {
-                var count = result.allSelectionCount;
                 TreuhandverwaltungGrid_MultiSelectUpdate(result.allSelectionCount);
              
                 FilterGrid("TreuhandverwaltungGrid");
@@ -287,7 +270,6 @@
 
     function TreuhandverwaltungGrid_MultiSelectUpdate(count) {
         if (count == 0) {
-           // $("#FahrzeugAuswahlCount").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
             $.uniform.update($("#uncheckAllRecords"));
             return;
@@ -295,7 +277,6 @@
        
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
-        //alert(count);
     }     
 
 
