@@ -62,11 +62,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\FahrerController.cs" />
+    <Compile Include="Fahrer\Contracts\IFahrerAuftragsFahrt.cs" />
     <Compile Include="Fahrer\Contracts\IFahrerDataService.cs" />
     <Compile Include="Fahrer\Models\AppModelMappings.cs" />
     <Compile Include="Fahrer\Models\FahrerAuftrag.cs" />
     <Compile Include="Fahrer\Models\FahrerTagBelegung.cs" />
     <Compile Include="Fahrer\Models\FahrerAuftragsFahrt.cs" />
+    <Compile Include="Fahrer\Models\FahrerAuftragsProtokoll.cs" />
     <Compile Include="Fahrer\Models\QmFahrer.cs" />
     <Compile Include="Fahrer\Models\QmFleetMonitor.cs" />
     <Compile Include="Fahrer\Models\QmSelektor.cs" />

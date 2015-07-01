@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.Fahrer.Contracts;
 using CkgDomainLogic.Fahrer.Models;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Services;
 using SapORM.Contracts;
 using SapORM.Models;
@@ -14,13 +13,11 @@ namespace CkgDomainLogic.Fahrer.Services
 {
     public class FahrerDataServiceSAP : CkgGeneralDataServiceSAP, IFahrerDataService
     {
-        private ILogonContextDataService LogonContextDataService { get { return LogonContext as ILogonContextDataService; } }
-
-        public string UserReference { get { return (LogonContextDataService == null ? "" : LogonContextDataService.User.Reference); } }
+        public string UserReference { get { return (LogonContext == null ? "" : LogonContext.User.Reference); } }
 
         public string FahrerID { get { return UserReference.ToSapKunnr(); } }
 
-        public int BuchungsKreis { get { return (LogonContextDataService == null ? 0 : LogonContextDataService.Customer.AccountingArea.GetValueOrDefault()); } }
+        public int BuchungsKreis { get { return (LogonContext == null ? 0 : LogonContext.Customer.AccountingArea.GetValueOrDefault()); } }
 
         public List<FahrerTagBelegung> FahrerTagBelegungen { get { return PropertyCacheGet(() => LoadFahrerTagBelegungen().ToList()); } }
 
@@ -82,14 +79,22 @@ namespace CkgDomainLogic.Fahrer.Services
             return AppModelMappings.Z_M_GET_FAHRER_AUFTRAEGE_GT_ORDER_To_FahrerAuftrag.Copy(sapList);
         }
 
-        public IEnumerable<FahrerAuftragsFahrt> LoadFahrerAuftragsFahrten()
+        public IEnumerable<IFahrerAuftragsFahrt> LoadFahrerAuftragsFahrten()
         {
             EnforceValidUserReference();
 
-            var sapList = Z_V_UEBERF_AUFTR_FAHRER.T_AUFTRAEGE.GetExportListWithInitExecute(SAP,
-                "I_FAHRER", FahrerID);
+            var sapList = Z_V_UEBERF_AUFTR_FAHRER.T_AUFTRAEGE.GetExportListWithInitExecute(SAP, "I_FAHRER", FahrerID).OrderBy(s => s.AUFNR).ThenBy(s => s.FAHRTNR);
 
             return AppModelMappings.Z_V_UEBERF_AUFTR_FAHRER_T_AUFTRAEGE_to_FahrerAuftragsFahrt.Copy(sapList);
+        }
+
+        public IEnumerable<IFahrerAuftragsFahrt> LoadFahrerAuftragsProtokolle()
+        {
+            EnforceValidUserReference();
+
+            var sapList = Z_V_UEBERF_AUFTR_UPL_PROT_01.GT_OUT.GetExportListWithInitExecute(SAP, "I_FAHRER", FahrerID).OrderBy(s => s.VBELN).ThenBy(s => s.FAHRTNR);
+
+            return AppModelMappings.Z_V_UEBERF_AUFTR_UPL_PROT_01_GT_OUT_to_FahrerAuftragsProtokoll.Copy(sapList);
         }
 
         public string SetFahrerAuftragsStatus(string auftragsNr, string status)

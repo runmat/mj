@@ -190,7 +190,7 @@ namespace SapORM
             //new FunctionReflector("Z_FIL_STANDORTE").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_V_Ueberf_Verfuegbarkeit1").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_V_UEBERF_VERFUEGBARKEIT2").WriteOrmForExportTableStructures();
-            new FunctionReflector("Z_V_UEBERF_AUFTR_UPL_PROT_01").WriteOrmForExportTableStructures("I_FAHRER", "499930");
+            //new FunctionReflector("Z_V_UEBERF_AUFTR_UPL_PROT_01").WriteOrmForExportTableStructures("I_FAHRER", "499930");
             
 
             //new FunctionReflector("Z_M_GET_FAHRER_AUFTRAEGE").WriteOrmForExportTableStructures("I_VKORG,I_FAHRER", "1510", "0000499930");

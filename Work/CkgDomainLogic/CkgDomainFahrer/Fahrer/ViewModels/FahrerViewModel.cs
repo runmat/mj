@@ -96,7 +96,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         [LocalizedDisplay(LocalizeConstants.Order)]
         public string SelectedFahrerAuftragsKey { get; set; }
 
-        public FahrerAuftragsFahrt SelectedFahrerAuftrag { get { return FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); } }
+        public IFahrerAuftragsFahrt SelectedFahrerAuftrag { get { return FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); } }
 
 
         public void LoadFahrerAuftraege(string status = null)
@@ -132,9 +132,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         #region Foto Upload
 
-        public List<FahrerAuftragsFahrt> FahrerAuftragsFahrten
+        public bool ModeProtokoll { get; set; }
+
+        public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrten
         {
-            get { return PropertyCacheGet(() => new List<FahrerAuftragsFahrt>()); }
+            get { return PropertyCacheGet(() => new List<IFahrerAuftragsFahrt>()); }
             set { PropertyCacheSet(value); }
         }
 
@@ -151,8 +153,16 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         public void LoadFahrerAuftragsFahrten()
         {
-            FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsFahrten().ToList();
-            FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsFahrt());
+            if (ModeProtokoll)
+            {
+                FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsProtokolle().ToList();
+                FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll());
+            }
+            else
+            {
+                FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsFahrten().ToList();
+                FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsFahrt());
+            }
         }
 
         public void SetSelectedFahrerAuftragsKey(string auftragsNr)
@@ -218,7 +228,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                 return new List<string>();
 
             var existingImageFiles = Directory.GetFiles(FotoUploadPath, string.Format("{0}.{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.FahrtNr), 
+                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt), 
                                                "*"));
 
             return existingImageFiles.ToListOrEmptyList().OrderBy(GetImageIndexFromFileName).Select(Path.GetFileName).ToList();
@@ -229,7 +239,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             var auftrag = SelectedFahrerAuftrag;
             var uploadImageIndex = (GetImageIndexFromFileName(UploadedImageFiles.LastOrDefault()) + 1).ToString();
             var serverFileName = string.Format("{0}{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.FahrtNr), 
+                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt), 
                                                Path.GetExtension(clientFileName));
 
             TryDirectoryCreateAndRaiseError(FotoUploadPath);
@@ -270,6 +280,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             DataMarkForRefreshUploadedImageFiles();
 
             return true;
+        }
+
+        public void SetParamProtokollMode(string modeProtokoll)
+        {
+            ModeProtokoll = modeProtokoll.IsNotNullOrEmpty();
         }
 
         #endregion    
