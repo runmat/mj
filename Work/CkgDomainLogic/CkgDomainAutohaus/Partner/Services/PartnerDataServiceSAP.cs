@@ -57,7 +57,8 @@ namespace CkgDomainLogic.Partner.Services
             Z_AHP_READ_PARTNER.Init(SAP);
 
             SAP.SetImportParameter("I_KUNNR", KundenNr.ToSapKunnr());
-            SAP.SetImportParameter("I_KUNNR_PARVW", SubKundennr.ToSapKunnr());
+            if (SubKundennr.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_KUNNR_PARVW", SubKundennr.ToSapKunnr());
 
             if (kennungOverride.IsNotNullOrEmpty() || AdressenKennung.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_PARTART", TranslateFromFriendlyAdressenKennung(kennungOverride.IsNotNullOrEmpty() ? kennungOverride : AdressenKennung));
