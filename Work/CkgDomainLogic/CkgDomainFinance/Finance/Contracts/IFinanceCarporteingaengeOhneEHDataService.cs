@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Finance.Models;
 
 namespace CkgDomainLogic.Finance.Contracts
@@ -8,9 +7,8 @@ namespace CkgDomainLogic.Finance.Contracts
     {
         List<CarporteingaengeOhneEH> CarporteingaengeOhneEHs { get; }
 
-        void DeleteCarporteingaengeOhneEHToSap(string kennzeichen, string fahrgestellnummer, string kundenPDI);
+        void DeleteCarporteingaengeOhneEHToSap(CarporteingaengeOhneEH saveItem);
 
         void MarkForRefresh(); 
-
     }
 }

@@ -66,6 +66,7 @@
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
+                        <RowDefinition Height="30" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Text="Code" Grid.Row="0" Grid.Column="0" />
@@ -152,36 +153,39 @@
                         <TextBlock Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
                              Text="mm" HorizontalAlignment="Center" TextAlignment="Left" Margin="5,0,0,0"  />
                     </StackPanel>
-                    
+
                     <TextBlock Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
-                               Text="Beginn Nummernkreis" Grid.Row="13" Grid.Column="0"/>
-                    <StackPanel Orientation="Horizontal" Grid.Row="13" Grid.Column="1" 
-                                Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}">
-                        <TextBox Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
+                               Text="Barcodetyp" Grid.Row="13" Grid.Column="0"/>
+                    <ComboBox Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
+                              SelectedValue="{Binding BarcodeType, UpdateSourceTrigger=PropertyChanged}" Grid.Row="13" Grid.Column="1" Width="200"
+                              Height="25" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding BarcodeListProp}" />
+
+                    <TextBlock Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" Text="Barcode Datentyp" Grid.Row="14" Grid.Column="0" />
+                    <CheckBox Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" Content="{Binding BarcodeAlphanumericAllowedText}" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                              IsChecked="{Binding BarcodeAlphanumericAllowed, UpdateSourceTrigger=PropertyChanged}" Grid.Row="14" Grid.Column="1" 
+                              />
+
+                    <TextBlock Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
+                               Text="Beginn Nummernkreis" Grid.Row="15" Grid.Column="0"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="15" Grid.Column="1" 
+                                Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                        <TextBox Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
                              Text="{Binding BarcodeRangeStart, UpdateSourceTrigger=PropertyChanged}" Width="200" 
                              Background="{Binding BarcodeRangeStartBackground}" Foreground="{Binding BarcodeRangeStartForeground}"/>
                         <TextBlock Visibility="{Binding ShowErrorBarcodeRangeStart, Converter={StaticResource BooleanVisibilityConverter}}" 
                                Text="{Binding ErrorTextBarcodeRangeStart, UpdateSourceTrigger=PropertyChanged}" Foreground="Red" Margin="10 0 0 0"/>    
                     </StackPanel>
-                    
-                    <TextBlock Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
-                               Text="Ende Nummernkreis" Grid.Row="14" Grid.Column="0"/>
-                    <StackPanel Orientation="Horizontal" Grid.Row="14" Grid.Column="1"
-                                Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}">
-                        <TextBox Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
+
+                    <TextBlock Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
+                               Text="Ende Nummernkreis" Grid.Row="16" Grid.Column="0"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="16" Grid.Column="1"
+                                Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}">
+                        <TextBox Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
                              Text="{Binding BarcodeRangeEnd, UpdateSourceTrigger=PropertyChanged}" Width="200" 
                              Background="{Binding BarcodeRangeEndBackground}" Foreground="{Binding BarcodeRangeEndForeground}" />
                         <TextBlock Visibility="{Binding ShowErrorBarcodeRangeEnd, Converter={StaticResource BooleanVisibilityConverter}}" 
                                Text="{Binding ErrorTextBarcodeRangeEnd, UpdateSourceTrigger=PropertyChanged}" Foreground="Red" Margin="10 0 0 0"/>
                     </StackPanel>
-                    
-                    <TextBlock Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
-                               Text="Barcodetyp" Grid.Row="15" Grid.Column="0"/>
-                    <!--<TextBox Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
-                             Text="{Binding BarcodeType, UpdateSourceTrigger=PropertyChanged}" Grid.Row="15" Grid.Column="1" Width="200"/>-->
-                    <ComboBox Visibility="{Binding IsBatchScanAllowed, Converter={StaticResource BooleanVisibilityConverter}}" 
-                              SelectedValue="{Binding BarcodeType, UpdateSourceTrigger=PropertyChanged}" Grid.Row="15" Grid.Column="1" Width="200"
-                              Height="25" VerticalAlignment="Center" HorizontalAlignment="Left" ItemsSource="{Binding BarcodeListProp}" />
                 </Grid>
             </StackPanel>
 

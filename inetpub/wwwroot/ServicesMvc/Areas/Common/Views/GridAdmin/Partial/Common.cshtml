@@ -1,0 +1,132 @@
+﻿<style type="text/css">
+     
+     #CustomerUserSelectionDiv {
+         margin-top: 30px;
+     }
+     
+    .span4 a {
+        text-align: left!important;
+    }     
+    
+    .alert-user-amount {
+        font-size: 0.85em;
+    }
+</style>
+
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        InitDropdowns();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function InitDropdowns() {
+        $('#customer-dropdown').val(0);
+        $('#customer-dropdown').select2({
+            allowClear: true
+        }).off("change").on("change", function (e) {
+            OnCustomerChanged(e.val);
+        });
+
+        setTimeout(function () {
+            $('#customer-dropdown').data('select2').open();
+        }, 100);
+    }
+
+    function OnCustomerChanged(customerId) {
+        $("#user-control-group").addClass("hide");
+        $(".alert-user").addClass("hide");
+        $(".form-actions").addClass("hide");
+
+        if (customerId == -1)
+            return;
+        
+        App.blockUI2($(".form-horizontal"));
+        
+        $.ajax({
+            type: "POST",
+            url: "OnCustomerChanged",
+            data: { customerId: customerId },
+            loadingShow: false,
+            success: function (result) {
+                App.unblockUI2($(".form-horizontal"));
+                
+                if (!result.success)
+                    return;
+
+                PopulateDropdown($("#user-dropdown"), result.users);
+
+                $('#user-dropdown').select2("destroy");
+
+                $('#user-dropdown').select2({
+                    allowClear: true
+                }).off("change").on("change", function (user) {
+                    OnUserChanged(user.val);
+                });
+
+                if (result.users.length <= 1)
+                    return;
+
+                $("#alert-user-amount").html((result.users.length-1) + " User für diesen Kunden gefunden");
+
+                $("#user-control-group").removeClass("hide");
+                $(".alert-user").removeClass("hide");
+                $(".form-actions").removeClass("hide");
+            }
+        });
+    }
+
+    function OnUserChanged(userId) {
+        App.blockUI2($(".form-horizontal"));
+        
+        $.ajax({
+            type: "POST",
+            url: "OnUserChanged",
+            data: { userId: userId },
+            loadingShow: false,
+            success: function() {
+                App.unblockUI2($(".form-horizontal"));
+            }
+        });
+    }
+    
+    function ReportSolutionReroute() {
+        App.blockUI2($(".form-horizontal"));
+        
+        $.ajax({
+            type: "POST",
+            url: "ReportSolutionReroute",
+            loadingShow: false,
+            success: function (result) {
+                location.href = result.url;
+            }
+        });
+
+        return false;
+    }
+    
+    function PopulateDropdown(dropdown, items) {
+        dropdown.empty();
+        $.each(items, function (index, val) {
+            dropdown.append($("<option />").val(val.ID).text(val.Name));
+            dropdown.val(0);
+        });
+    }
+
+    function ShowHideUserDetailInfo() {
+        if ($("#user-details-info").hasClass("hide")) {
+            $("#user-details-info").removeClass("hide");
+            $("#user-details-button").text("Info schließen ...");
+        } else {
+            $("#user-details-info").addClass("hide");
+            $("#user-details-button").text("Mehr Infos ...");
+        }
+    }
+    
+</script>

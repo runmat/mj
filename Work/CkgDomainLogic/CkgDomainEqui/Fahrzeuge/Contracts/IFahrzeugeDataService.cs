@@ -30,6 +30,8 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         List<Adresse> GetStationCodes();
 
+        List<Domaenenfestwert> GetFarben();
+
         List<Fzg> GetFahrzeugeForZulassung();
 
         List<KennzeichenSerie> GetKennzeichenSerie();

@@ -82,8 +82,19 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Batcherfassung\Contracts\IBatcherfassungDataService.cs" />
+    <Compile Include="Batcherfassung\Models\AppModelMappings.cs" />
+    <Compile Include="Batcherfassung\Models\Batcherfassung.cs" />
+    <Compile Include="Batcherfassung\Models\BatcherfassungSelektor.cs" />
+    <Compile Include="Batcherfassung\Models\Auftragsnummer.cs" />
+    <Compile Include="Batcherfassung\Models\FzgUnitnummer.cs" />
+    <Compile Include="Batcherfassung\Models\BatcherfassungEdit.cs" />
+    <Compile Include="Batcherfassung\Models\ModelHersteller.cs" />
+    <Compile Include="Batcherfassung\Services\BatcherfassungDataServiceSAP.cs" />
+    <Compile Include="Batcherfassung\ViewModels\BatcherfassungViewModel.cs" />
     <Compile Include="Controllers\Abmeldungen\FahrzeugeController.cs" />
     <Compile Include="Controllers\Abmeldungen\Version2\FahrzeugeController.cs" />
+    <Compile Include="Controllers\BatcherfassungController.cs" />
     <Compile Include="Controllers\Bestand\EquiController.cs" />
     <Compile Include="Controllers\BriefbestandVhc\EquiController.cs" />
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
@@ -105,6 +116,8 @@
     <Compile Include="Controllers\EquipController.cs" />
     <Compile Include="Controllers\EinAusgaenge\EquipController.cs" />
     <Compile Include="Controllers\HistorieVermieter\EquiController.cs" />
+    <Compile Include="Controllers\SperrenVerschieben\FahrzeugeController.cs" />
+    <Compile Include="Controllers\StatusEinsteuerungController.cs" />
     <Compile Include="Controllers\WfmController.cs" />
     <Compile Include="Controllers\WFM\WfmController.cs" />
     <Compile Include="Controllers\ModellIdController.cs" />
@@ -151,6 +164,7 @@
     <Compile Include="Equi\Models\DataModels\EquiEinsteuerung.cs" />
     <Compile Include="Equi\Models\DataModels\EquiAussteuerung.cs" />
     <Compile Include="Equi\Models\DataModels\EquiTueteninhalt.cs" />
+    <Compile Include="Equi\Models\DataModels\FahrzeugAnforderung.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragung.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragungSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\VersandAbweichungSelektor.cs" />
@@ -203,6 +217,7 @@
     <Compile Include="Fahrzeuge\Contracts\IZulaufEinsteuernugDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeuguebersichtDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IHolBringServiceDataService.cs" />
+    <Compile Include="Fahrzeuge\Contracts\IFahrzeugSperrenVerschiebenDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\Fahrzeughersteller.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugvoravisierungUploadModel.cs" />
@@ -222,6 +237,8 @@
     <Compile Include="Fahrzeuge\Models\HolBringService\Anlieferung.cs" />
     <Compile Include="Fahrzeuge\Models\HolBringService\Auftraggeber.cs" />
     <Compile Include="Fahrzeuge\Models\HolBringService\Upload.cs" />
+    <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschiebenSelektor.cs" />
+    <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
     <Compile Include="Fahrzeuge\Models\Fzg.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
@@ -240,6 +257,7 @@
     <Compile Include="Fahrzeuge\Services\DispositionslisteDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeuguebersichtDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\HolBringServiceDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\FahrzeugSperrenVerschiebenDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\ZulaufEinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
@@ -249,6 +267,7 @@
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\HolBringServiceViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandbestandViewModel.cs" />
@@ -271,6 +290,11 @@
     <Compile Include="Fahrzeuge\Models\AbgemeldeteFahrzeugeSelektor.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugeDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\AbgemeldeteFahrzeugeViewModel.cs" />
+    <Compile Include="StatusEinsteuerung\Contracts\IStatusEinsteuerungDataService.cs" />
+    <Compile Include="StatusEinsteuerung\Models\AppModelmappings.cs" />
+    <Compile Include="StatusEinsteuerung\Models\StatusEinsteuerung.cs" />
+    <Compile Include="StatusEinsteuerung\Services\StatusEinsteuerungDataServiceSAP.cs" />
+    <Compile Include="StatusEinsteuerung\ViewModels\StatusEinsteuerungViewModel.cs" />
     <Compile Include="WFM\Contracts\IWfmDataService.cs" />
     <Compile Include="WFM\Models\AppModelmappings.cs" />
     <Compile Include="WFM\Models\WfmDokument.cs" />
