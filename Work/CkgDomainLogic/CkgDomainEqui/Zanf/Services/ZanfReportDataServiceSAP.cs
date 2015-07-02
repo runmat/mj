@@ -4,6 +4,7 @@ using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Zanf.Contracts;
 using CkgDomainLogic.Zanf.Models;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Zanf.Models.AppModelMappings;
@@ -63,9 +64,14 @@ namespace CkgDomainLogic.Zanf.Services
             foreach (var webItem in webList)
             {
                 var zanf = webItem;
-                var zeilen = textList.Where(t => t.ORDERID == zanf.AnforderungsNr && t.HPPOS == zanf.HauptpositionsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG);
 
-                //zanf.KlaerfallTextPreview = zeilen.FirstOrDefault();
+                IEnumerable<string> zeilen;
+
+                if (zanf.AnforderungsNr.IsNotNullOrEmpty())
+                    zeilen = textList.Where(t => t.ORDERID == zanf.AnforderungsNr && t.HPPOS == zanf.HauptpositionsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG);
+                else
+                    zeilen = textList.Where(t => t.VBELN == zanf.AuftragsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG);
+
                 zanf.KlaerfallText = String.Join("<br/>", zeilen);
             }
 

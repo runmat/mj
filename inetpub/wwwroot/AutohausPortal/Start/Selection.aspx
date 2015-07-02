@@ -1,6 +1,6 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Selection.aspx.cs" Inherits="AutohausPortal.Start.Selection"
      MasterPageFile="/AutohausPortal/MasterPage/Selection.Master" %>
-     <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
+<%@ Import Namespace="System.Data" %>     <%@ Register Assembly="Telerik.Web.UI" Namespace="Telerik.Web.UI" TagPrefix="telerik" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
             <telerik:RadScriptManager ID="RadScriptManager1" runat="server" />
     <!-- content start -->
@@ -23,7 +23,7 @@
                     <ul>
                         <% for (int i = 0; i < 4 && i < MenuChangeSource.Count; i++)
                             { %>
-                            <% System.Data.DataRowView row = MenuChangeSource[i]; %>
+                            <% DataRowView row = MenuChangeSource[i]; %>
                             <li>
                                 <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>
@@ -40,7 +40,7 @@
                     <ul>
                         <% for (int i = 0; i < 4 && i < MenuChangeAHSource.Count; i++)
                             { %>
-                            <% System.Data.DataRowView row = MenuChangeAHSource[i]; %>
+                            <% DataRowView row = MenuChangeAHSource[i]; %>
                             <li>
                                 <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>
@@ -57,7 +57,7 @@
                     <ul>
                         <% for (int i = 0; i < 4 && i < MenuReportSource.Count; i++)
                             { %>
-                            <% System.Data.DataRowView row = MenuReportSource[i]; %>
+                            <% DataRowView row = MenuReportSource[i]; %>
                             <li>
                                 <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>
@@ -74,7 +74,7 @@
                     <ul>
                         <% for (int i = 0; i < 4 && i < MenuToolsSource.Count; i++)
                             { %>
-                            <% System.Data.DataRowView row = MenuToolsSource[i]; %>
+                            <% DataRowView row = MenuToolsSource[i]; %>
                             <li>
                                 <a href="<%= ResolveClientUrl(row["AppUrl"].ToString()) %>"><%= row["AppFriendlyName"]%></a>
                             </li>

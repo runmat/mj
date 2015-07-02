@@ -58,12 +58,12 @@ namespace Kantine
                     lstvArtikel.DataBind();
                 }
 
-                if (!KB.IsNachmittag)
-                {
-                    //Brötchen
-                    lstvArtikel2.DataSource = DB.GetArtikelAllByWarengruppeID(2);
-                    lstvArtikel2.DataBind();
-                }
+                //if (!KB.IsNachmittag)
+                //{
+                //    //Brötchen
+                //    lstvArtikel2.DataSource = DB.GetArtikelAllByWarengruppeID(2);
+                //    lstvArtikel2.DataBind();
+                //}
 
                 //Getränke
                 DataTable tmpDt = DB.GetArtikelAllByWarengruppeID(3);
@@ -81,6 +81,10 @@ namespace Kantine
                 lstvArtikel5.DataSource = tmpDt;
                 lstvArtikel5.DataBind();
             }
+
+            //Backwaren
+            lstvArtikel2.DataSource = DB.GetArtikelAllByWarengruppeID(2);
+            lstvArtikel2.DataBind();
 
 			//Süßwaren
 			lstvArtikel3.DataSource = DB.GetArtikelAllByWarengruppeID(5);
@@ -609,13 +613,11 @@ namespace Kantine
 					{
 						tpGuthaben.Enabled = false;
 						tpMittag.Enabled = false;
-						tpBrötchen.Enabled = false;
 					}
 					else 
 					{
 						tpGuthaben.Enabled = true;
 						tpMittag.Enabled = true;
-						tpBrötchen.Enabled = true;
 					}
 					
 					//Daten

@@ -14,7 +14,7 @@ namespace CarDocu.Models
         static private List<string> _barcodeList;
         static public List<string> BarcodeListProp
         {
-            get { return (_barcodeList ?? (_barcodeList = new List<string> { "", "EAN_8", "EAN_13" })); }
+            get { return (_barcodeList ?? (_barcodeList = new List<string> { "", "EAN_8", "EAN_13", "CODE_39" })); }
         }
 
         private string _code;
@@ -73,6 +73,13 @@ namespace CarDocu.Models
                 _inputRule = value;
                 SendPropertyChanged("InputRule");
                 SendPropertyChanged("InputRuleName");
+                SendPropertyChanged("ShowErrorBarcodeRangeStart");
+                SendPropertyChanged("ShowErrorBarcodeRangeEnd");
+
+                SendPropertyChanged("BarcodeRangeStartForeground");
+                SendPropertyChanged("BarcodeRangeStartBackground");
+                SendPropertyChanged("BarcodeRangeEndForeground");
+                SendPropertyChanged("BarcodeRangeEndBackground");
             }
         }
 
@@ -110,9 +117,14 @@ namespace CarDocu.Models
         }
 
         private bool _isBatchScanAllowed;
-        public bool IsBatchScanAllowed {
+        public bool IsBatchScanAllowed
+        {
             get { return _isBatchScanAllowed; }
-            set { _isBatchScanAllowed = value; SendPropertyChanged("IsBatchScanAllowed"); }
+            set
+            {
+                _isBatchScanAllowed = value; 
+                SendPropertyChanged("IsBatchScanAllowed");
+            }
         }
 
         private int _startBarcodeX = 1; 
@@ -161,11 +173,17 @@ namespace CarDocu.Models
                 _isOcrAllowed = value;
 
                 if (value == false)
-                {
                     IsBatchScanAllowed = false;
-                }
-                
-                SendPropertyChanged("IsOcrAllowed"); }
+
+                SendPropertyChanged("IsOcrAllowed");
+            }
+        }
+
+        private bool _barcodeAlphanumericAllowed;
+        public bool BarcodeAlphanumericAllowed
+        {
+            get { return _barcodeAlphanumericAllowed; }
+            set { _barcodeAlphanumericAllowed = value; SendPropertyChanged("BarcodeAlphanumericAllowed"); }
         }
 
         private long _barcodeRangeStart = 1000000000009;
@@ -357,8 +375,15 @@ namespace CarDocu.Models
         }
 
         [XmlIgnore]
-        public string IsOcrAllowedText {
+        public string IsOcrAllowedText
+        {
             get { return "Aktiviert die Barcode-Erkennung für diesen Dokumententyp."; }
+        }
+
+        [XmlIgnore]
+        public string BarcodeAlphanumericAllowedText
+        {
+            get { return "Alphanumerischer Barcode erlaubt (ansonsten rein numerisch)."; }
         }
 
         [XmlIgnore]

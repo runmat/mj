@@ -1,0 +1,56 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
+@using CkgDomainLogic.Fahrzeuge.Models
+@{ var gridName = "GridFahrzeugAuswahl"; }
+
+@Html.SpanAlert("MessageFahrzeugAuswahl")
+
+@Html.Partial("Partial/FahrzeugAuswahlPresets")
+
+<h4>
+    <span>@Localize.PleaseChooseOneOrMoreVehicles</span>
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4> 
+
+@(Html.XTelerik()
+    .XGrid<Fzg>()
+    .Name(gridName)
+    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.Aktion)
+                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                .HeaderTemplate(
+                    "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange(true)' /></span>" +
+                    "<i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='GridFahrzeugAuswahl_OnAllSelectionChange(false)'></i>"
+                ).Filterable(false);
+
+            columns.XBound(c => c.Pdi);
+            columns.XBound(c => c.Hersteller);
+            columns.XBound(c => c.Modell);
+            columns.XBound(c => c.ModelID);
+            columns.XBound(c => c.SippCode);
+            columns.XBound(c => c.EingangFahrzeugDatum);
+            columns.XBound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.Zb2Nummer);
+            columns.XBound(c => c.AuftragsNummer);
+            columns.XBound(c => c.Farbe);
+            columns.XBound(c => c.Navi).Hidden();
+            columns.XBound(c => c.Reifen).Hidden();
+            columns.XBound(c => c.Ahk).Hidden();
+            columns.XBound(c => c.BemerkungSperre);
+            columns.XBound(c => c.BemerkungIntern);
+            columns.XBound(c => c.BemerkungExtern);
+        })
+
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
+    .XPageSize(5)
+    .XSort(sortOrder => sortOrder.Add(c => c.EingangFahrzeugDatum).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFahrzeugeFilteredExcel", "Zulassung");
+        commands.FilteredDataCommand("ExportFahrzeugeFilteredPDF", "Zulassung");
+    })
+)

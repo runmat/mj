@@ -1,28 +1,20 @@
-﻿// ReSharper disable RedundantUsingDirective
-
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using CkgDomainLogic.Logs.Contracts;
 using CkgDomainLogic.Logs.Models;
 using GeneralTools.Log.Models.MultiPlatform;
-using GeneralTools.Models;
 
 namespace CkgDomainLogic.Logs.Services
 {
     public class LogsDataServiceSql : ILogsDataService 
     {
-        //static bool BusinessDataOnProdSystem { get { return ConfigurationManager.AppSettings["ProdSAP"].NotNullOrEmpty().ToLower() == "true"; } }
-        //public string LogsDefaultConnectionString { get { return BusinessDataOnProdSystem ? "LogsProd" : "LogsTest"; } }
-
         public string LogsDefaultConnectionString { get { return "LogsProd"; } }
 
         public string LogsConnectionString { get; set; }
 
         LogsSqlDbContext CreateLogsDbContext() { return new LogsSqlDbContext(LogsConnectionString ?? LogsDefaultConnectionString); }
-
-        
+       
         public List<MpApplicationTranslated> Applications { get { return CreateLogsDbContext().MpApplicationsTranslated.OrderBy(m => m.AppFriendlyName).ToList(); } }
 
         public List<MpCustomer> Customers { get { return CreateLogsDbContext().MpCustomers.OrderBy(m => m.Customername).ToList(); } }
@@ -175,6 +167,17 @@ namespace CkgDomainLogic.Logs.Services
             var logTables = logsDbContext.GetWebServiceTrafficLogTables();
 
             return logTables.ToList();
+        }
+
+        public List<ErrorLogItem> GetErrorLogItems(ErrorLogItemSelector errorLogItemSelector)
+        {
+            LogsConnectionString = errorLogItemSelector.LogsConnection;
+
+            var logsDbContext = CreateLogsDbContext();
+
+            var errorLogItems = logsDbContext.GetErrorLogItems(errorLogItemSelector);
+
+            return errorLogItems.ToList();
         }
     }
 }

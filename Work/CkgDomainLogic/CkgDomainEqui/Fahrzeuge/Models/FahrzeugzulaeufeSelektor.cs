@@ -13,12 +13,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.TransitDate)]
         public DateRange DatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Today) { IsSelected = true }); } set { PropertyCacheSet(value); } }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.Manufacturer)]
         public string HerstellerSchluessel { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (!DatumRange.IsSelected)
+                yield return new ValidationResult(Localize.DateRangeMissing);
+
             if (DatumRange.StartDate.HasValue && DatumRange.EndDate.HasValue && DatumRange.StartDate.Value > DatumRange.EndDate.Value)
                 yield return new ValidationResult(Localize.DateRangeInvalid);
         }

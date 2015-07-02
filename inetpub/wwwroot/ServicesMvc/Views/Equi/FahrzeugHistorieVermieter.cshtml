@@ -137,4 +137,81 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+
+    //
+    // <Fahrzeug Anforderungen>
+    //
+
+    function OnDataBound_GridFahrzeugAnforderungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridFahrzeugAnforderungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridFahrzeugAnforderungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function FahrzeugAnforderungNew() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "FahrzeugAnforderungNew",
+            data: {  },
+            loadingShow: true,
+            success: function (result) {
+                ShowFahrzeugAnforderungDetails(result);
+            }
+        });        
+    }
+
+    function ShowFahrzeugAnforderungDetails(result) {
+        $("#divFahrzeugAnforderungDetails").html(result);
+        GridFahrzeugAnforderungDetailsFormPreparePrivateAjax();
+        $("#divFahrzeugAnforderungGrid").slideUp(function () {
+            $("#divFahrzeugAnforderungDetails").show();
+        });
+    }
+
+    function CloseFahrzeugAnforderungDetailsInner() {
+        $("#divFahrzeugAnforderungDetails").slideUp(function () {
+            $("#divFahrzeugAnforderungGrid").delay(200).show();
+            window.scrollTo(0, 0);
+        });
+    }
+
+    function CloseFahrzeugAnforderungDetails() {
+        CloseFahrzeugAnforderungDetailsInner();
+        $("#GridFahrzeugAnforderungen").data("tGrid").ajaxRequest();
+    }
+
+    function FahrzeugAnforderungAjaxFormComplete() {
+        setTimeout('LoadingHide()', 800);
+        FormPrepareAjax();
+        if (_modelIsValid)
+            CloseFahrzeugAnforderungDetails();
+    }
+
+    var _modelIsValid = false;
+    var _modelIsInsertMode = false;
+
+    function GridFahrzeugAnforderungDetailsFormPreparePrivateAjax() {
+        FormPrepareAjax();
+
+        LoadingHide();
+        GridLoadingHide();
+
+        $("button[type='submit']").click(function () {
+            LoadingShow();
+        });
+    }
+
+    //
+    // </Fahrzeug Anforderungen>
+    //
+
 </script>

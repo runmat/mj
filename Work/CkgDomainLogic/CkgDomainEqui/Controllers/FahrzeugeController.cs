@@ -1,7 +1,10 @@
-﻿using CkgDomainLogic.General.Contracts;
+﻿using CkgDomainLogic.Fahrzeuge.ViewModels;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
+using CkgDomainLogic.Equi.Contracts;
+using CkgDomainLogic.Equi.ViewModels;
 using GeneralTools.Contracts;
 
 namespace ServicesMvc.Controllers
@@ -24,7 +27,10 @@ namespace ServicesMvc.Controllers
             IDispositionslisteDataService dispositionslisteDataService,
             IZulaufEinsteuerungDataService zulaufEinsteuerungDataService,
             IFahrzeuguebersichtDataService fahrzeuguebersichtDataService,
-            IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService
+            IFahrzeugSperrenVerschiebenDataService sperrenVerschiebenDataService,
+            IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService,
+            IEquiHistorieVermieterDataService equiHistorieVermieterDataService,
+            IEquiHistorieDataService equiHistorieDataService
             )
             : base(appSettings, logonContext)
         {
@@ -44,6 +50,9 @@ namespace ServicesMvc.Controllers
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeuguebersichtDataService);
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeugeDataService);           
             InitViewModel(FahrzeugzulaeufeViewModel, appSettings, logonContext, fahrzeugzulaeufeDataService);
+            InitViewModel(SperrenVerschiebenViewModel, appSettings, logonContext, sperrenVerschiebenDataService);
+            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
+            InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieDataService);
         }
 
         private void InitModelStatics()
@@ -54,6 +63,9 @@ namespace ServicesMvc.Controllers
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.TreuhandverwaltungViewModel>;
             FahrzeuguebersichtSelektor.GetViewModel =
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeuguebersichtViewModel>;
+        
+            Unfallmeldung.GetViewModel = GetViewModel<UnfallmeldungenViewModel>;
+            Fahrzeuguebersicht.GetSperrenVerschiebenViewModel = GetViewModel<FahrzeugSperrenVerschiebenViewModel>;
         }
     }
 }

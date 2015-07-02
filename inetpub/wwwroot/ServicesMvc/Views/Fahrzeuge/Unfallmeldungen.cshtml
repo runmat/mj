@@ -1,0 +1,250 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model UnfallmeldungenViewModel
+
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+
+<h3 class="page-title" id="headerTitle">@Localize.Unfallmeldungen</h3>
+
+<ul class="breadcrumbs event-breadcrumbs margin-bottom-20 hide">
+	<li><a href=""></a></li>
+	<li class="hide"><a href="" class="current">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+	<li class="hide"><a href="">[..]</a></li>
+</ul>	
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid">
+        @Html.Partial("Unfallmeldungen/UnfallmeldungenAlleGrid")
+    </div>
+    <div id="divMeldungCreateSearch" class="hide"></div>
+    <div id="divMeldungCreateEdit" class="hide"></div>
+}
+
+<style type="text/css">
+    #txtCancellation {
+        background-color: white!important;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+
+        BreadcrumbsMoveFirst("@Localize.Vehicles.ToJavascriptString()");
+        
+        GridAllColumnFilterApplyToGrid("GridUnfallmeldungen");
+        $("#FormSearchResults").show();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();        
+    }
+
+
+    function OnDataBound_GridUnfallmeldungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridUnfallmeldungen");
+
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridUnfallmeldungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUnfallmeldungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+    
+    function OnSelectionChange_GridUnfallmeldungen(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "UnfallmeldungenSelectionChanged",
+            data: { unfallNr: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                GridUnfallmeldungen_MultiSelectUpdate(result.allSelectionCount);
+                if (count == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
+
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function OnRowDataBound_GridUnfallmeldungen(e) {
+        var isValidForCancellation = e.dataItem["IsValidForCancellation"];
+
+        if (!isValidForCancellation)
+            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
+    }
+    
+    function GridUnfallmeldungen_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "UnfallmeldungenSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                GridUnfallmeldungen_MultiSelectUpdate(result.allSelectionCount);
+
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("GridUnfallmeldungen");
+            }
+        });
+    }
+
+    function GridUnfallmeldungen_MultiSelectUpdate(count) {
+
+        if (count == 0)
+            $("#div-cancellation").slideUp(300);
+        else
+            $("#div-cancellation").slideDown(300);
+        
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+
+    function SaveCancellation() {
+        $.ajax({
+            type: "POST",
+            url: "UnfallmeldungenCancel",
+            data: { cancelText: $("#txtCancellation").val() },
+            loadingShow: true,
+            success: function(result) {
+                GridUnfallmeldungen_MultiSelectUpdate(0);
+
+                if (result.cancelCountMessage != "")
+                    SpanAlertSuccess("Message", result.cancelCountMessage, 2000);
+
+                if (result.errorMessage != "")
+                    SpanAlertError("ErrorMessage", result.errorMessage, 15000);
+
+                FilterGrid("GridUnfallmeldungen");
+            }
+        });
+    }
+
+    function MeldungCreateSearch() {
+        $.ajax({
+            type: "POST",
+            url: "MeldungCreateSearch",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                $("#divMeldungCreateSearch").html(result);
+                FormPreparePrivateAjax();
+                $("#divGrid").slideUp(200, function () {
+                    $("#divMeldungCreateSearch").slideDown(200);
+                    BreadcrumbsMoveNext("@Localize.AccidentNotificationCreate.ToJavascriptString()");
+                    BreadcrumbsMoveNext("@Localize.Search.ToJavascriptString()");
+                });
+            }
+        });
+    }
+
+    function MeldungCreateSearchComplete() {
+
+        FormPreparePrivateAjax();
+
+        if (!_modelStateValid)
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: "MeldungCreateInit",
+            data: {},
+            loadingShow: true,
+            success: function (result) {
+                $("#divMeldungCreateEdit").html(result);
+                FormPreparePrivateAjax();
+                MeldungCreateEditInitDropdown();
+                $("#divMeldungCreateSearch").slideUp(200, function () {
+                    $("#divMeldungCreateEdit").slideDown(200);
+                    BreadcrumbsMoveNext("@Localize.Create.ToJavascriptString()");
+                });
+            }
+        });
+    }
+
+    function MeldungCreateSearchClose() {
+        $("#divMeldungCreateSearch").slideUp(200, function () {
+            $("#divGrid").slideDown(200);
+            BreadcrumbsMovePrev();
+            BreadcrumbsMovePrev();
+        });
+
+        return false;
+    }
+    
+    function MeldungCreateEditClose(postFunction) {
+        $("#divMeldungCreateEdit").slideUp(200, function () {
+            $("#divGrid").slideDown(200);
+            BreadcrumbsMovePrev();
+            BreadcrumbsMovePrev();
+            BreadcrumbsMovePrev();
+            if (typeof (postFunction) != 'undefined')
+                postFunction();
+        });
+
+        return false;
+    }
+
+    function MeldungCreateEditComplete() {
+
+        FormPreparePrivateAjax();
+
+        if (!_modelStateValid) {
+            MeldungCreateEditInitDropdown();
+            return;
+        }
+
+        SpanAlertSuccess("Message", "@Localize.AccidentNotificationSuccessfullyCreated.ToJavascriptString()", 2000);
+        setTimeout(function () {
+            MeldungCreateEditClose(function () { FilterGrid("GridUnfallmeldungen"); });
+        });
+    }
+
+    function MeldungCreateEditInitDropdown() {
+        
+        setTimeout(function () {
+            $('#StationsCode').select2({
+                allowClear: true
+            }).off("change").on("change", function (e) {
+                OnCustomerChanged(e.val);
+            });
+
+            setTimeout(function () {
+                $('#StationsCode').data('select2').open();
+            }, 100);
+        }, 100);
+    }
+    
+</script>

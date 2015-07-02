@@ -12,8 +12,9 @@
             @Html.FormValidationSummary()
 
 
-            @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap", col = "left" })
-            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap", col = "right" })
+            @Html.FormRadioButtonListFor(m => m.LogsConnection, Model.AllLogsConnections, new { @class = "m-wrap" })
+
+            @Html.FormDateRangePickerFor(m => m.DatumRange, new { @class = "m-wrap" })
 
             @Html.FormMultiSelectListFor(m => m.PortalTypes, Model.AllPortalTypes, new { @class = "m-wrap chosen", col = "left" })
             @Html.FormMultiSelectListFor(m => m.AppIds, SapLogItemSelector.AllApplications, new { @class = "m-wrap chosen", col = "right" })

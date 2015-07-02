@@ -2,101 +2,103 @@
 @model TreuhandverwaltungSelektor
 
 <div id="divTreuhandverwaltungKundenAuswahl">    
-    @using (Ajax.BeginForm("LoadBerechtigungen", "Fahrzeuge", null,
-        new MvcAjaxOptions("divTreuhandverwaltungKundenAuswahl") { OnComplete = "PrepareOnSubmitComplete();" }, new { id = "TreuhandverwaltungAuswahlForm" }))
-    {                                                                                
-                                                                                            
+    @using (Ajax.BeginForm("LoadTreuhandverwaltungFreigaben", "Fahrzeuge", null,
+        new MvcAjaxOptions("divTreuhandverwaltungKundenAuswahl") { OnComplete = "ShowTreuhandverwaltungFreigaben();" }, new { id = "TreuhandverwaltungAuswahlForm" }))
+    {
         <div class="form-horizontal" id="divAuswahlForm">  
              
-            @Html.FormValidationSummary()               
-                          
-            @{Model.Reporttype = ReportType.Services; }          
-                                                       
-            @Html.FormDropDownListFor(m => m.Kundenkennung, TreuhandverwaltungSelektor.TreuhandGeberEmpty, new { @class = "m-wrap", onchange = "KundenkennungOnChange();" })
-                                                                                               
-            @if (!String.IsNullOrEmpty(Model.Treuhandberechtigungen))
-            {
-                <div id="divBerechtigungen" >                 
-                    
-                    <div id="divDwnloadLink" class="hide" > 
-                        <h4>
-                        <a href="DownloadCsvTemplate" class="btn white tooltips" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate <i class="icon-chevron-right"></i></a>
-                        </h4>
-                   </div>
-                   @Html.FormRadioButtonListFor(m => m.Berechtigung, Model.Treuhandberechtigungen.ToSelectList())     
-                   <div id="divAktion" >  
-                       @if (Model.HasAction)
-                           {  @Html.FormRadioButtonListFor(m => m.Akion, Model.Akionen.ToSelectList())  } 
-                           
-                        @*<div class="form-actions">
-                            <button class='btn blue'><i class='icon-progress'></i>&nbsp;@Localize.Continue</button>
-                        </div>*@
-                   </div>                                                             
-                </div>                                
-            }                                 
-        </div>                                                 
+            @Html.FormValidationSummary()
+
+            @Html.HiddenFor(m => m.Treuhandberechtigung.Freigeben)
+            @Html.HiddenFor(m => m.Treuhandberechtigung.Sperren)
+            @Html.HiddenFor(m => m.Treuhandberechtigung.Entsperren)
+
+            @{Model.Reporttype = ReportType.Services; }
+
+            @Html.FormDropDownListFor(m => m.Kundenkennung, TreuhandverwaltungSelektor.TreuhandKundenEmpty, new { @class = "m-wrap", onchange = "KundenkennungOnChange();" })
+
+            <div id="divAktionen" class="@(@Model.HatBerechtigungen ? "" : "hide")">
+                @Html.FormRadioButtonListFor(m => m.Aktion, Model.Aktionen.ToSelectList())
+                <div id="divSelektion" class="@(@Model.Aktion == "0" ? "" : "hide")">  
+                    @Html.FormRadioButtonListFor(m => m.Selektion, TreuhandverwaltungSelektor.Selektionen.ToSelectList())
+                </div>
+            </div>
+                
+            <div id="divSubmit" class="form-actions @(@Model.HatBerechtigungen ? "" : "hide")">
+                <button type="submit" class='btn blue'>@Localize.Continue</button>
+            </div>
+        </div>
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _treuhandAktion = @Model.Aktion;
+        </script>
     }
 </div>
 
 
 <script type="text/javascript"> 
 
-    //$(":radio").click(function () { ShowElements(); }); // $(":radio").value
-
     $(":radio[value=0]").click(function () { ShowElements(); });
     $(":radio[value=1]").click(function () { ShowElements(); });
     $(":radio[value=2]").click(function () { ShowElements(); });
-
-    $(":radio[value=abgelehnte]").click(function () { LoadFreigebenAblehnen(); });
-    $(":radio[value=gesperrte]").click(function () { LoadFreigebenAblehnen(); });
-          
-    //LoadFreigebenAblehnen();
    
     function KundenkennungOnChange() {
-        // FormWizard zurücksetzen       
-        if ($(".button-prev").length > 0) {            
+        ResetWizard();
+
+        ApplyKunde($("#Kundenkennung").val());
+    }
+    
+    function ResetWizard() {
+        if ($(".button-prev").length > 0) {
             FormWizard.ButtonPrevInvoke();
+            // ggf. nochmal zurück, falls schon in Schritt 3
+            if ($(".button-prev").length > 0) {
+                FormWizard.ButtonPrevInvoke();
+            }
         }
         FormWizard.ActionsShow(false);
-        $("#TreuhandverwaltungAuswahlForm").submit();
-    }
-   
-    function PrepareOnSubmitComplete() {
-        FormPrepareAjax();       
-        ShowElements();
     }
 
-    function ShowElements() {        
-        if ($("#Berechtigung").length === 0) {
-            $("#divDwnloadLink").hide();
-            $("#divExcelUpload").hide();
-            $("#divAktion").hide();   
-        }            
-        if ($(":radio[value=0]").is(":checked")) {
-            $("#divDwnloadLink").hide();
-            $("#divExcelUpload").hide();
-            $("#divAktion").show();                 
-        }
-        if ($(":radio[value=1]").is(":checked")) {
-            $("#divDwnloadLink").show();
-            $("#divExcelUpload").show();
-            $("#divAktion").hide();                        
-        }
-        if ($(":radio[value=2]").is(":checked")) {
-            $("#divDwnloadLink").show();
-            $("#divExcelUpload").show();
-            $("#divAktion").hide();
-        }
-        // Kontextwechsel
-        $("#divGrid").empty();        
-    }
+    function ApplyKunde(kunnr) {
+        $.ajax({
+            type: "POST",
+            url: "ApplyKunde",
+            data: { kunnr: kunnr },
+            success: function (result) {
+                $("#divSuche").html(result);
+                FormPreparePrivateAjax();
+            }
+        });
+    }        
    
+    function ShowElements() {
+        if ($(":radio[value=0]").is(":checked")) {
+            $("#divSelektion").show();
+        }
+        else if ($(":radio[value=1]").is(":checked") || $(":radio[value=2]").is(":checked")) {
+            $("#divSelektion").hide();
+        }
+    }
+
     function FormPreparePrivate() {
-        ShowElements();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridTreuhandverwaltungFreigabe").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridTreuhandverwaltungFreigabeItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
     }
 
     function OnDataBound_TreuhandverwaltungGrid() { }
@@ -112,50 +114,39 @@
             $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
     }
 
-    
-    // -> 
-    
-    function LoadFreigebenAblehnen() {
-
-        if ($(":radio[value=gesperrte]").is(":checked")) {           
+    function ShowTreuhandverwaltungFreigaben() {
+        if (_treuhandAktion == "0") {
             $.ajax({
                 type: "POST",
-                url: "LoadTreuhandverwaltungFreigabenGesperrte",
+                url: "ShowTreuhandverwaltungFreigaben",
                 loadingShow: true,
-                success: function (result) {
-                    ShowTreuhandverwaltungFreigabeSearchResult(result);
+                success: function(result) {
+                    if (_modelStateValid) {
+                        $("#divExcelUpload").hide();
+                        ShowTreuhandverwaltungFreigabeSearchResult(result);
+                    }
                     LoadingHide();
-                    //alert("Post OK")
                 }
             });
+        } else {
+            $("#divExcelUpload").show();
+            ResetWizard();
+            $("#divGrid").empty();
+            SearchFormHide();
         }
 
-        if ($(":radio[value=abgelehnte]").is(":checked")) {
-            $.ajax({
-                type: "POST",
-                url: "LoadTreuhandverwaltungFreigabenAbgelehnte",
-                loadingShow: true,
-                success: function (result) {
-                    ShowTreuhandverwaltungFreigabeSearchResult(result);
-                    LoadingHide();
-                    //alert("Post OK")
-                }
-            });
-        }
+        FormPreparePrivateAjax();
     }        
 
     function ShowTreuhandverwaltungFreigabeSearchResult(result) {
         SearchFormHide();
         $("#divGrid").html(result);
-        //alert("4");
+
         GridAllColumnFilterApplyToGrid("GridTreuhandverwaltungFreigabe");
         $("#divGrid").slideDown();
-        //alert("5");
     }
              
-
-    function OnDataBound_GridTreuhandverwaltungFreigabe(e) {
-       
+    function OnDataBound_GridTreuhandverwaltungFreigabe(e) {   
         if (e != null && e.dataItem != null) {
             var hasError = e.dataItem["ValidationErrors"];
 
@@ -174,11 +165,8 @@
 
     function OnLoad_GridTreuhandverwaltungFreigabe() {        
     }
-
-
              
     function GridTreuhandverwaltungFreigabe_OnSelectionChange(cb) {
-
         Grid_FormatMultiRowSelected(cb);
 
         $.ajax({
@@ -189,7 +177,6 @@
             success: function (result) {
                 var count = result.allSelectionCount;
                 GridTreuhandverwaltungFreigabe_MultiSelectUpdate(result.allSelectionCount);
-                //alert(count);
                 if (count == 0) {
                     $("#formActions").addClass('hide');
                 }
@@ -202,7 +189,6 @@
 
     function GridTreuhandverwaltungFreigabe_MultiSelectUpdate(count) {
         if (count == 0) {
-            // $("#FahrzeugAuswahlCount").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
             $.uniform.update($("#uncheckAllRecords"));
             return;
@@ -210,7 +196,6 @@
 
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
-        //alert(count);
     }
 
     function FahrzeugeFreigeben() {
@@ -220,10 +205,8 @@
             url: "FahrzeugeFreigeben",
             loadingShow: false,
             success: function (result) {
-                LoadFreigebenAblehnen();
+                GridRefresh();
                 FormPreparePrivateAjax();
-            },
-            error: function (result) {
             }
         });
 
@@ -237,10 +220,8 @@
             url: "FreigabeAblehnen",
             loadingShow: false,
             success: function (result) {
-                LoadFreigebenAblehnen();
+                GridRefresh();
                 FormPreparePrivateAjax();
-            },
-            error: function (result) {
             }
         });
 
@@ -248,7 +229,6 @@
     }
 
     function AjaxFormKommentarEdit(fin) {
-
         $.ajax(
             {
                 type: "POST",
@@ -264,7 +244,6 @@
         return false;
     }
 
-
     function GridItemDetailsFormPreparePrivateAjax() {
         var detailWindow = $("#KommentarBearbeiten").data("tWindow");
         detailWindow.close();
@@ -278,8 +257,7 @@
         }       
     }
 
-
-    function ShowFreigebenAblehnen() {        
+    function ShowFreigebenAblehnen() {
         $.ajax({
             type: "POST",
             url: "ShowTreuhandverwaltungFreigabenGesperrte",
@@ -287,13 +265,9 @@
             success: function (result) {
                 ShowTreuhandverwaltungFreigabeSearchResult(result);
                 LoadingHide();
-                //alert("ShowTreuhandverwaltungFreigabenGesperrte OK")
             }
         });               
     }        
-
-    
-    
 
     function GridTreuhandverwaltungFreigabe_OnAllSelectionChange(check) {
         $.ajax({
@@ -310,12 +284,11 @@
         });
     }
        
-
 </script>
 
 
 @(Html.Telerik().Window()
-        .Name("KommentarBearbeiten")
+    .Name("KommentarBearbeiten")
     .Visible(false)
     .Title(Localize.Comment)
     .Modal(true)

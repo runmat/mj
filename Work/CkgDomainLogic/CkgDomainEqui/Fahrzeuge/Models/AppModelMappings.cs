@@ -1,4 +1,8 @@
-﻿using System.Collections.Generic;
+﻿// ReSharper disable InconsistentNaming
+
+using System.Collections.Generic;
+using CkgDomainLogic.DomainCommon.Models;
+using System.Linq;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using SapORM.Models;
@@ -9,9 +13,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
     {
         #region Load from Repository
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_ABM_LIST.ET_ABM_LIST, AbgemeldetesFahrzeug> Z_DPM_CD_ABM_LIST__ET_ABM_LIST_To_AbgemeldetesFahrzeug
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -40,9 +42,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        // ReSharper disable InconsistentNaming
         static public ModelMapping<Z_DPM_CD_ABM_HIST.ET_ABM_HIST, AbmeldeHistorie> Z_DPM_CD_ABM_HIST__ET_ABM_HIST_To_AbmeldeHistorie
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -100,7 +100,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         // Z_M_ECA_TAB_BESTAND
         static public ModelMapping<Z_M_ECA_TAB_BESTAND.GT_WEB, Zb2BestandSecurityFleet> Z_M_ECA_TAB_BESTAND_To_Zb2BestandSecurityFleet
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -121,7 +120,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static public ModelMapping<Z_M_HERSTELLERGROUP.T_HERST, Fahrzeughersteller> Z_M_HERSTELLERGROUP_To_Fahrzeughersteller
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -137,7 +135,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         static public ModelMapping<Z_M_TH_BESTAND.GT_BESTAND, Treuhandbestand> Z_M_TH_BESTAND__GET_BESTAND_LIST_To_Treuhandbestand
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -160,22 +157,42 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         static public ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung> Z_DPM_UF_MELDUNGS_SUCHE_To_Unfallmeldungen
-        // ReSharper restore InconsistentNaming
         {
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung>(
                      new Dictionary<string, string> ()
-                    ,(sap, business) => {
-                        business.Anlagedatum = sap.ERDAT;
+                    , (sap, business) =>
+                    {
+                        business.AnlageDatum = sap.ERDAT;
                         business.WebUser = sap.ERNAM;
                         business.Kennzeichen = sap.LICENSE_NUM;
                         business.Fahrgestellnummer = sap.CHASSIS_NUM;
-                        business.Erstzulassung = sap.ERSTZULDAT;
-                        business.Kennzeicheneingang = sap.EG_KENNZ;
-                        business.Abmeldung = sap.ABMDT;
+                        business.ErstzulassungDatum = sap.ERSTZULDAT;
+                        business.KennzeicheneingangsDatum = sap.EG_KENNZ;
+                        business.AbmeldeDatum = sap.ABMDT;
                         business.StationsCode = sap.STATION;
                         business.Mahnstufe = sap.MAHNSTUFE;                        
+                        business.UnfallNr = sap.UNFALL_NR;
+                        business.StornoDatum = sap.STORNODAT;
+                        business.StornoText = sap.STORNOBEM;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS, Unfallmeldung> Z_DPM_UF_EQUI_SUCHE_To_Unfallmeldungen
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_EQUI_SUCHE.GT_EQUIS, Unfallmeldung>(
+                     new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Fahrgestellnummer = sap.CHASSIS_NUM;
+                        business.Kennzeichen = sap.LICENSE_NUM;
+                        business.BriefNummer = sap.TIDNR;
+                        business.UnitNummer = sap.ZZREFERENZ1;
+                        business.EquiNr = sap.EQUNR;
                     }));
             }
         }
@@ -183,7 +200,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
 
         static public ModelMapping<Z_M_Abm_Abgemeldete_Kfz.AUSGABE, AbgemeldetesFahrzeug> Z_M_Abm_Abgemeldete_Kfz_AUSGABE_ToAbgemeldetesFahrzeug
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -202,7 +218,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         }
 
         static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKunden
-        // ReSharper restore InconsistentNaming
         {
             get
             {
@@ -214,24 +229,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.AGName = sap.NAME1_AG;
                         business.AGNummer = sap.AG;
                         business.TGNummer = sap.TREU;
-                       
-                    }));
-            }
-        }
-
-        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAG
-        // ReSharper restore InconsistentNaming
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
-                    new Dictionary<string, string>()
-                    , (sap, business) =>
-                    {
-                        business.TGName = sap.NAME1_AG;
-                        business.AGName = sap.NAME1_TG;
-                        business.AGNummer = sap.TREU;
-                        business.TGNummer = sap.AG;
+                        business.Selection = sap.ZSELECT;
                     }));
             }
         }
@@ -251,33 +249,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.NameTG = sap.NAME1_TG;
                         business.TGNummer = sap.KUNNR_TG;
                         business.Zb2Nummer = sap.TIDNR;
-                        business.Vertragsnummer = sap.LIZNR;                        
+                        business.Vertragsnummer = sap.LIZNR;
                         business.Versandadresse = string.Concat(sap.NAME2_ZS.AppendIfNotNull(", "), sap.STRASSE_ZS.AppendIfNotNull(", "), sap.PLZ_ZS.AppendIfNotNull(", "), sap.ORT_ZS);
                         business.Ersteller = sap.ERNAM;
                         business.Belegnummer = sap.BELNR;
-                        business.Referenz = sap.ZZREFERENZ2;     
+                        business.Referenz = sap.ZZREFERENZ2;
+                        business.Ablehnungsgrund = sap.NICHT_FREIG_GRU;
+                        business.Ablehnender = sap.FREIGABEUSER;
                     }));
             }
         }
-
-        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAGServices
-        // ReSharper restore InconsistentNaming
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
-                    new Dictionary<string, string>()
-                    , (sap, business) =>
-                    {
-                        business.TGName = sap.NAME1_AG;
-                        business.AGName = sap.NAME1_TG;
-                        business.AGNummer = sap.TREU;
-                        business.TGNummer = sap.AG;
-                        business.IsServicesAGMapping = true;
-                    }));
-            }
-        }
-
 
         static public ModelMapping<Z_M_EC_AVM_ZULASSUNGEN.GT_WEB, Dispositionsliste> Z_M_EC_AVM_ZULASSUNGEN_GT_WEB_ToDispositionsliste        
         {
@@ -337,10 +318,39 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.ModelID = sap.ZZMODELL;
                         business.Modell = sap.ZZBEZEI;
                         business.Status = sap.STATUS_TEXT;
+                        business.StatusKey = sap.STATUS.ToInt();
                         business.EingangZb2Datum = sap.ERDAT_EQUI;
                         business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
                         business.BereitmeldungDatum = sap.ZZDAT_BER;
                         business.Hersteller = sap.ZZHERST_TEXT;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.BemerkungSperre = sap.ZBEMERKUNG;
+                        business.Gesperrt = (sap.ZZAKTSPERRE == "JA");
+                        business.MeldungsNr = sap.QMNUM;
+                        business.DadPdi = sap.ZZCARPORT;
+                        business.Farbcode = sap.ZFARBE;
+                        business.Farbname = sap.FARBE_TEXT;
+                        business.Anhaengerkupplung = sap.ZAHK.XToBool();
+                        business.Navi = sap.ZNAVI.XToBool();
+                        business.Winterreifen = sap.ZMS_REIFEN.XToBool();
+                        business.SIPPCode = sap.ZZSIPP;
+                        business.Auftragsnummer = sap.LIZNR;
+                        business.Zb2Nummer = sap.TIDNR;
+                        business.BatchId = sap.ZBATCH_ID;
+                        business.Fahrzeugtyp = sap.FZGART;
+
+                        business.Farbcode = sap.ZFARBE;
+                        business.Farbname = sap.FARBE_TEXT;
+                        business.KraftstoffArt = sap.ZZKRAFTSTOFF_TXT;
+                        business.ZulassungBereit = sap.ZULBEREIT.XToBool();
+                        business.ZulassungsSperre = sap.ZZAKTSPERRE.XToBool();
+                        business.AbmeldeDatum = sap.ZZDAT_BER;
+                        business.VersandDatum = sap.ZZTMPDT;
+
+                        business.Lieferant = sap.NAME1_ZP;
+                        business.Ort = sap.CITY1_ZP;
+                        business.FinanzierungsArt = sap.FIN_ART;
                     }));
             }
         }
@@ -353,7 +363,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (sap, business) =>
                     {
-                        business.StatusKey = sap.POS_TEXT;
+                        business.StatusKey = sap.POS_KURZTEXT;
                         business.StatusText = sap.POS_TEXT;                        
                     }));
             }
@@ -369,9 +379,116 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     {
                         business.PDIKey = sap.KUNPDI;
                         business.PDIText = sap.PDIWEB;
+                        business.DadPdi = sap.DADPDI;
                     }));
             }
         }
+
+        // Z_M_ECA_TAB_BESTAND
+        static public ModelMapping<Z_DPM_CHANGE_ADDR002_001.GT_OUT, Adresse> Z_DPM_CHANGE_ADDR002_001_To_Adresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_CHANGE_ADDR002_001.GT_OUT, Adresse>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.KundenNr = sap.EX_KUNNR;
+                        business.Name1 = sap.NAME1;
+                        business.Name2 = sap.NAME2;
+                        business.Strasse = sap.STREET;
+                        business.HausNr = sap.HOUSE_NUM1;
+                        business.PLZ = sap.POST_CODE1;
+                        business.Ort = sap.CITY1;
+
+                        business.GetAutoSelectStringCustom = () => string.Format("{0} - {1}, {2} {3}", 
+                            business.KundenNr, business.Name1, business.PLZ, business.Ort);
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fzg> Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFzg
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB, Fzg>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.InternalID = sap.QMNUM;
+
+                        business.EquiNummer = sap.EQUNR;
+                        business.Pdi = sap.KUNPDI;
+                        business.DadPdi = sap.DADPDI;
+                        business.Fahrgestellnummer = sap.ZZFAHRG;
+                        business.Zb2Nummer = sap.ZZBRIEF;
+                        business.Zulassungsdatum = sap.REPLA_DATE;
+                        business.ModelID = sap.ZZMODELL;
+                        business.Modell = sap.ZZBEZEI;
+                        business.Hersteller = sap.HERST_T;
+                        business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
+                        business.Farbcode = sap.ZZFARBE;
+                        business.Reifen = sap.ZZREIFEN;
+                        business.Navi = sap.ZZNAVI;
+                        business.Ahk = sap.ZAHK;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.AuftragsNummer = sap.ZZREF1;
+                        business.SippCode = sap.ZZSIPP1.NotNullOrEmpty() + sap.ZZSIPP2.NotNullOrEmpty() +
+                                            sap.ZZSIPP3.NotNullOrEmpty() + sap.ZZSIPP4.NotNullOrEmpty();
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fzg> Z_M_EC_AVM_ANZ_BEAUFTR_ZUL_GT_WEB_ToFzg
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_ANZ_BEAUFTR_ZUL.GT_WEB, Fzg>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Pdi = sap.ZZCARPORT;
+                        business.Amount = sap.ZANZAHL.ToInt(0);
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB, KennzeichenSerie> Z_M_EC_AVM_KENNZ_SERIE_GT_WEB_ToKennzeichenSerie
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_EC_AVM_KENNZ_SERIE.GT_WEB, KennzeichenSerie>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.ID = sap.SONDERSERIE.NotNullOrEmpty();
+
+                        business.Name = string.Format("{0}-{1}{2}", sap.ORTKENNZ, sap.MINLETTER, sap.SONDERSERIE.FormatIfNotNull(" ({this})"));
+
+                        business.Art = sap.ART;
+                        business.OrtsKennzeichen = sap.ORTKENNZ;
+                        business.BuchstabenTeilMin = sap.MINLETTER;
+                        business.BuchstabenTeilMax = sap.MAXLETTER;
+                        business.NummernTeilMin = sap.MINNUMBER;
+                        business.NummernTeilMax = sap.MAXNUMBER;
+                        business.SonderSerie = sap.SONDERSERIE;
+                    }));
+            }
+        }
+
+        static public void Z_M_EC_AVM_MELDUNGEN_PDI1_GT_TXT_ToFzg(IEnumerable<Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT> sapItems, IEnumerable<Fzg> businessItems)
+        {
+            foreach (var businessItem in businessItems)
+            {
+                var business = businessItem;
+                var sap = sapItems.FirstOrDefault(s => s.QMNUM == business.InternalID);
+                if (sap == null)
+                    continue;
+
+                business.BemerkungSperre = sap.TDLINE;
+            }
+       }
 
         #endregion
 
@@ -567,7 +684,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-
         static public ModelMapping<Z_DPM_FREIG_VERSAND_SPERR_001.GT_WEB, Treuhandbestand> Z_DPM_FREIG_VERSAND_SPERR_001_GT_WEB_From_Treuhandbestand
         {
             get
@@ -585,8 +701,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 ));
             }
         }
-
-      
 
         static public ModelMapping<Z_DPM_IMP_MODELL_ID_01.GT_IN, FahrzeugvoravisierungUploadModel> Z_DPM_IMP_MODELL_ID_01_GT_IN_From_FahrzeugvoravisierungUploadModel
         {

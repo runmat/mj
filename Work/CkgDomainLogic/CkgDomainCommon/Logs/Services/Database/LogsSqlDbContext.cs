@@ -58,6 +58,12 @@ namespace CkgDomainLogic.Logs.Services
         }
 
 
+        public IEnumerable<ErrorLogItem> GetErrorLogItems(ErrorLogItemSelector errorLogItemSelector)
+        {
+            return Database.SqlQuery<ErrorLogItem>(errorLogItemSelector.GetSqlSelectStatement());
+        }
+
+
         public LogsSqlDbContext(string connectionString) 
             : base(connectionString)
         {

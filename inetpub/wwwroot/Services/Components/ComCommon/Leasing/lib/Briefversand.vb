@@ -1389,9 +1389,7 @@ Imports GeneralTools.Models
         End If
     End Sub
 
-    Public Sub AnfordernAusAutorisierung(ByVal strAppId As String, _
-                  ByVal strSessionId As String, _
-                  ByVal page As Page)
+    Public Sub AnfordernAusAutorisierung(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page, ByVal autUser As String)
 
         m_strClassAndMethod = "Briefversand.Anfordern"
         m_strAppID = strAppId
@@ -1457,6 +1455,11 @@ Imports GeneralTools.Models
 
                         sapRow("ERNAM") = Left(m_objUser.UserName, 12)
                         sapRow("LIZNR") = fahrzeugrow("Leasingnummer").ToString
+
+                        Dim jetzt As DateTime = DateTime.Now
+                        sapRow("USER_AUTOR") = autUser
+                        sapRow("DATUM_AUTOR") = jetzt.ToShortDateString()
+                        sapRow("UZEIT_AUTOR") = jetzt.ToString("HHmmss")
 
                         sapTable.Rows.Add(sapRow)
 
