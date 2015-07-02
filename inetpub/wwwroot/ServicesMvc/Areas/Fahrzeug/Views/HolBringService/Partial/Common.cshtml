@@ -159,6 +159,15 @@
             return;
         }
     }
+
+    function AjaxFormOverviewComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+    }
     
     function ShowHideNextButton() {
         

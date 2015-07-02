@@ -1,26 +1,40 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Helpers;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Data;
+using SapORM.Models;
 
 namespace ServicesMvc.Areas.Fahrzeug.Models.HolBringService
 {
     /// <summary>
-    /// Properties, die in den unterschiedlichen Partials als Datenquelle verwendet werden
+    /// Properties, die in den unterschiedlichen Partials als Datenquelle verwendet werden können
     /// </summary>
     public class GlobalViewData
     {
-        public List<Domaenenfestwert> Fahrzeugarten { get; set; }
-        public IEnumerable<Kunde> BetriebeSap { get; set; }
-        public List<Domaenenfestwert> AnsprechpartnerList { get; set; }
 
-        public List<DdItem> DropDownHours { get { return FillDropDownHours(); } }
-        public List<DdItem> DropDownMinutes { get { return FillDropDownMinutes(); } }
+        #region Für DropDown-Felder
+        public IEnumerable<Domaenenfestwert> Fahrzeugarten { get; set; }
+        public IOrderedEnumerable<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> BetriebeSap { get; set; }
+
+        public string BetriebeSapJsArray
+        {
+            get { return Json.Encode(BetriebeSap.Select(x => new {x.KUNNR, x.STREET, x.HOUSE_NUM1, x.POST_CODE1, x.CITY1})); }
+        }
+
+        public IEnumerable<Domaenenfestwert> AnsprechpartnerList { get; set; }
+
+        public IEnumerable<DdItem> DropDownHours { get { return FillDropDownHours(); } }
+        public IEnumerable<DdItem> DropDownMinutes { get { return FillDropDownMinutes(); } }
+        #endregion
+
+        public DateTime? ValidationAbholungDt { get; set; }
 
         public string Auftragsersteller { get; set; }
 
@@ -35,7 +49,7 @@ namespace ServicesMvc.Areas.Fahrzeug.Models.HolBringService
             public string Name { get; set; }
         }
 
-        private static List<DdItem> FillDropDownHours()
+        private static IEnumerable<DdItem> FillDropDownHours()
         {
             var selectableHours = new List<GlobalViewData.DdItem>
                 {
@@ -49,8 +63,7 @@ namespace ServicesMvc.Areas.Fahrzeug.Models.HolBringService
             return selectableHours;
         }
 
-
-        private static List<DdItem> FillDropDownMinutes()
+        private static IEnumerable<DdItem> FillDropDownMinutes()
         {
             return new List<DdItem>
                 {

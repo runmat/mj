@@ -2480,7 +2480,9 @@
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Abholung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Anlieferung.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\BapiParameterSet.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\GlobalViewData.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Overview.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Upload.cs" />
     <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Areas\Fahrzeug\ViewModels\HolBringServiceViewModel.cs" />
@@ -2567,7 +2569,7 @@
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Abholung.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Anlieferung.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
-    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Ready.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

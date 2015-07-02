@@ -30,12 +30,12 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         public List<Domaenenfestwert> GetFahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
         public List<Domaenenfestwert> GetAnsprechpartner { get { return PropertyCacheGet(() => LoadAnsprechpartnerList().ToList()); } }
 
-        public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
+        public List<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
 
         public string GetUsername { get { return (LogonContext).User.Username; } }
         public string GetUserTel { get { return (LogonContext).UserInfo.Telephone2; } }
 
-        public IEnumerable<Kunde> LoadKundenFromSap()
+        public IOrderedEnumerable<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> LoadKundenFromSap()
         {
             Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
 
@@ -46,9 +46,12 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             SAP.SetImportParameter("I_VKBUR", (LogonContext).Organization.OrganizationReference2);
             SAP.SetImportParameter("I_SPART", "01");
 
-            var sapList = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP);
+            var sapList = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP).OrderBy(x => x.NAME1);
 
-            return Autohaus.Models.AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_Kunde.Copy(sapList).OrderBy(k => k.Name1);
+            // var result = sapList.Select(x => new { x.NAME1, x.STREET, x.HOUSE_NUM1, x.POST_CODE1, x.CITY1 }).OrderBy(x => x.NAME1).ToList();
+
+            return sapList;
+
         }
 
         public HolBringServiceDataServiceSAP(ISapDataService sap)

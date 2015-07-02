@@ -49,6 +49,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get { return PropertyCacheGet(() => Upload); }
             set { PropertyCacheSet(value); }
         }
+
+        public Overview Overview                        
+        {
+            get { return PropertyCacheGet(() => Overview); }
+            set { PropertyCacheSet(value); }
+        }
         #endregion
 
         public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
@@ -65,8 +71,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     { "Abholung", Localize.Pickup },
                     { "Anlieferung", Localize.DeliveryHolBringService },
                     { "Upload", Localize.Upload },
-                    { "Übersicht", Localize.Overview },
-                    { "Fertig", Localize.Ready + " !" },
+                    { "Overview", Localize.Overview },
+                    { "Ready", Localize.Ready + " !" },
                 });
             }
         }
@@ -86,13 +92,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             #region Globale Properties, nutzbar in allen Partials
             GlobalViewData = new GlobalViewData
                 {
-                    BetriebeSap = new BindingList<Kunde>(),
+                    BetriebeSap = DataService.LoadKundenFromSap(),
+
                     Fahrzeugarten = DataService.GetFahrzeugarten,
                     FeiertageAsString =  DateService.FeiertageAsString,
                     AnsprechpartnerList = DataService.GetAnsprechpartner
                 };
 
-            GlobalViewData.BetriebeSap = DataService.LoadKundenFromSap();
             #endregion
 
             Auftraggeber = new Auftraggeber

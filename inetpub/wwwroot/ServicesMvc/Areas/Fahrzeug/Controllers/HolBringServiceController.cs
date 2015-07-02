@@ -41,8 +41,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {
             ViewModel.DataInit();
 
-            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
-
             return View(ViewModel);
         }
 
@@ -62,8 +60,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 }
             }
 
-            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
-
             return PartialView("Partial/Auftraggeber", model);
         }
 
@@ -77,9 +73,9 @@ namespace ServicesMvc.Fahrzeug.Controllers
             {
                 ViewModel.Abholung = model;
                 ViewModel.CopyDefaultValuesToAnlieferung(model);
-            }
 
-            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+                ViewModel.GlobalViewData.ValidationAbholungDt = model.AbholungDatum;
+            }
 
             return PartialView("Partial/Abholung", model);
         }
@@ -95,8 +91,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 ViewModel.Anlieferung = model;
             }
 
-            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
-
             return PartialView("Partial/Anlieferung", model);
         }
 
@@ -111,8 +105,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
             {
                 ViewModel.Upload = model;
             }
-
-            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
             return PartialView("Partial/Upload", model);
         }
@@ -138,5 +130,13 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         #endregion
+
+        [HttpPost]
+        public ActionResult Overview()
+        {
+            // Hier vom BAPI ein PDF abgerufen und angezeigt
+
+            return PartialView("Partial/Overview", ViewModel.Overview);
+        }
     }
 }

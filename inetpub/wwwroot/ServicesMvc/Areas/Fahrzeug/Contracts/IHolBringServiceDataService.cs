@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Autohaus.Models;
+using SapORM.Models;
 
 namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
@@ -13,6 +15,6 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         string GetUsername { get; }
         string GetUserTel { get; }
 
-        IEnumerable<Kunde> LoadKundenFromSap(); // Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE 
+        IOrderedEnumerable<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> LoadKundenFromSap(); // Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE 
     }
 }
