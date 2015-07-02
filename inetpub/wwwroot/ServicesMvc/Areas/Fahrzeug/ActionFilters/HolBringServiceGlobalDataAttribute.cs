@@ -2,6 +2,7 @@
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using ServicesMvc.Areas.Fahrzeug.Models.HolBringService;
+using ServicesMvc.Fahrzeug.Controllers;
 
 namespace ServicesMvc.Areas.Fahrzeug
 {
@@ -16,6 +17,40 @@ namespace ServicesMvc.Areas.Fahrzeug
                 foreach (var modelValue in filterContext.Controller.ViewData.ModelState.Values)
                     modelValue.Errors.Clear();
             }
+
+
+            var globalViewData = ((HolBringServiceController) filterContext.Controller).ViewModel.GlobalViewData;
+            filterContext.Controller.ViewData["GlobalViewData"] = globalViewData;
+            
+            // var test = filterContext.Controller.ControllerContext;
+
+            //var globalViewData = new GlobalViewData();
+            //var model = filterContext.Controller.ViewData.Model as HolBringServiceViewModel;
+            //if (model != null)
+            //{
+            //    globalViewData = model.GlobalViewData;
+            //}
+            //else
+            //{
+            //    object modelTest;
+            //    filterContext.Controller.ViewData.TryGetValue("GlobalViewData", out modelTest);
+            //    if (modelTest != null)
+            //        globalViewData = (GlobalViewData)modelTest;
+            //}
+            //if (globalViewData != null)
+            //    filterContext.Controller.ViewData["GlobalViewData"] = globalViewData;
+
+
+
+
+
+
+
+
+
+
+
+
 
             //object modelTry;
             //var x = filterContext.Controller.ViewData.TryGetValue("GlobalViewData", out modelTry);

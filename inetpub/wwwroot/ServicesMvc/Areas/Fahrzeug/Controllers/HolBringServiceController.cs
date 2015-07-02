@@ -62,7 +62,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 }
             }
 
-            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
             return PartialView("Partial/Auftraggeber", model);
         }
@@ -70,7 +70,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult Abholung(Abholung model)
         {
-            if (Request["formSubmit"] != "ok")      // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen
+            if (Request["formSubmit"] != "ok")          // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen
                 model = ViewModel.Abholung;
 
             if (ModelState.IsValid)
@@ -79,7 +79,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 ViewModel.CopyDefaultValuesToAnlieferung(model);
             }
 
-            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
             return PartialView("Partial/Abholung", model);
         }
@@ -95,7 +95,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 ViewModel.Anlieferung = model;
             }
 
-            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
             return PartialView("Partial/Anlieferung", model);
         }
@@ -112,7 +112,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 ViewModel.Upload = model;
             }
 
-            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+            //ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
             return PartialView("Partial/Upload", model);
         }
@@ -138,11 +138,5 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         #endregion
-
-        //[HttpPost]
-        //public JsonResult BetriebeGetAutoCompleteItems()
-        //{
-        //    return Json(new { items = ViewModel.GlobalViewData.Betriebe });
-        //}
     }
 }
