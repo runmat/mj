@@ -1,0 +1,17 @@
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.StatusEinsteuerungViewModel
+
+@section LayoutScript { _controlGroupValidationType = "default"; }
+
+<h3 class="page-title">@Localize.Report_Statusbericht</h3>
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/Suche", null)
+    }
+</div>
+
+<div class="portlet" id="divGrid"></div>
+
+@Html.Partial("Partial/Common")
+

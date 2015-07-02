@@ -1,0 +1,35 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
+
+@if (Model.SaveErrorMessage.IsNullOrEmpty())
+{
+    <div class="alert alert-success">
+        <i class="icon-check"></i><span class="padding-left-5"><strong>Vielen Dank</strong>, wir haben Ihren Auftrag erhalten!</span>
+    </div>
+}
+else
+{
+    <div class="alert alert-error">
+        <span class="label label-important"><i class="icon-bell"></i><span class="margin-left-5"> Es ist ein Fehler aufgetreten!</span></span><br /><br />
+        @Model.SaveErrorMessage.ToHtml()
+    </div>
+}
+
+<div id="ReceiptFormActions" class="hide">
+    <a href="SummaryAsPdf" class="btn blue tooltips margin-right-10" data-original-title="Ihr Vorgang als PDF Datei!" data-placement="top"> PDF Download <i class="icon-download-alt"></i></a>
+</div>
+
+<div class="margin-left-25 margin-bottom-20">
+    <h4 class="margin-bottom-20">
+        @Html.Partial("Partial/Summary/SummaryAsHeader", Model.CreateSummaryTitle())
+    </h4> 
+    <div class="margin-top-15">
+        @Html.Partial("Partial/Summary/Summary", Model.CreateSummaryOverview())
+    </div>
+    <div class="margin-top-15">
+        @Html.Partial("Partial/GridFahrzeugSummaryReceipt")
+    </div>
+</div>
+
+<script type="text/javascript">
+    FormWizard.InsertActionButton("#ReceiptFormActions");
+</script>    

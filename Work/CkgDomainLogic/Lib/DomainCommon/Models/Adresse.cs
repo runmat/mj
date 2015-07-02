@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
@@ -113,8 +114,14 @@ namespace CkgDomainLogic.DomainCommon.Models
             return this;
         }
 
+        [XmlIgnore]
+        public Func<string> GetAutoSelectStringCustom { get; set; }
+
         public string GetAutoSelectString()
         {
+            if (GetAutoSelectStringCustom != null)
+                return GetAutoSelectStringCustom();
+
             if (Land.IsNullOrEmpty() && PLZ.IsNullOrEmpty() && Ort.IsNullOrEmpty())
                 return Name1;
 
@@ -126,7 +133,7 @@ namespace CkgDomainLogic.DomainCommon.Models
             return string.Format("{0}<br/>{1}<br/>{2}{3} {4}", Name1, StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
         }
 
-        static string LandAsFormatted(string land)
+        public static string LandAsFormatted(string land)
         {
             return land.IsNullOrEmpty() || land == "-" ? "" : land + "-";
         }

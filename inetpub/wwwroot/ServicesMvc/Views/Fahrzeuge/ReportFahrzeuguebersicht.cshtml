@@ -3,6 +3,8 @@
 
 <h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Fahrzeuguebersicht</h3>
 
+@Html.Partial("Fahrzeuguebersicht/Common")
+
 @using (Html.FormSearchBox())
 {
     @Html.Partial("Fahrzeuguebersicht/FahrzeuguebersichtSuche", Model.FahrzeuguebersichtSelektor)                
@@ -10,7 +12,8 @@
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divGrid"></div>   
+    <div id="divGrid"></div>        
+    <div id="divHistorieVermieterDetail"></div>
 }
 
 
@@ -52,16 +55,31 @@
     function ShowFahrzeuguebersichtSearchResult(result) {
         SearchFormHide();
         $("#divGrid").html(result);
-
-        var grid = $("#GridFahrzeuguebersicht").data("tGrid");
+       
         // move our grid filter form into grid's toolbar:
-        if (grid != null)
-            GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht");
+        try {
+            GridAllColumnFilterApplyToGrid("GridFahrzeuguebersicht"); 
+        } catch(err){}
+       
         $("#divGrid").slideDown();
+        $("#divHistorieVermieterDetail").html('');
+
         ShowElements();                        
     }
 
+    function ShowHistory(fin) {
 
+        $.ajax({
+            type: "POST",
+            url: "ShowHistory",
+            data: { fin: fin },
+            loadingShow: true,
+            success: function (result) {
+                ShowEquiHistorieVermieterDetail(result);
+            }
+        });
+    }
+   
     function OnDataBound_GridFahrzeuguebersicht() {
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();

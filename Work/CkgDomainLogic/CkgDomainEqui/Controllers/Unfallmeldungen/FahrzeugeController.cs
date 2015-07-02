@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.Models;
@@ -10,7 +9,7 @@ using DocumentTools.Services;
 
 namespace ServicesMvc.Controllers
 {
-    public partial class FahrzeugeController : CkgDomainController
+    public partial class FahrzeugeController
     {
         public UnfallmeldungenViewModel UnfallmeldungenViewModel { get { return GetViewModel<UnfallmeldungenViewModel>(); } }
 
@@ -18,7 +17,17 @@ namespace ServicesMvc.Controllers
         public ActionResult ReportUnfallmeldungen()
         {
             _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
-            UnfallmeldungenViewModel.DataInit();
+            UnfallmeldungenViewModel.DataInit(true);
+
+            return View(UnfallmeldungenViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Unfallmeldungen()
+        {
+            _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
+            UnfallmeldungenViewModel.DataInit(false);
+            UnfallmeldungenViewModel.LoadUnfallmeldungen();
 
             return View(UnfallmeldungenViewModel);
         }
@@ -60,13 +69,71 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
+        [HttpPost]
+        public JsonResult UnfallmeldungenSelectionChanged(string unfallNr, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0, allFoundCount = 0;
+            if (unfallNr.IsNullOrEmpty())
+                UnfallmeldungenViewModel.SelectUnfallmeldungen(isChecked, f => f.IsValidForCancellation, out allSelectionCount, out allCount, out allFoundCount);
+            else
+                UnfallmeldungenViewModel.SelectUnfallmeldung(unfallNr, isChecked, out allSelectionCount);
+
+            return Json(new { allSelectionCount, allCount, allFoundCount });
+        }
+
+        [HttpPost]
+        public JsonResult UnfallmeldungenCancel(string cancelText)
+        {
+            string errorMessage; int cancelCount;
+            UnfallmeldungenViewModel.UnfallmeldungenCancel(cancelText, out cancelCount, out errorMessage);
+
+            var cancelCountMessage = (cancelCount == 0 ? "" : string.Format("{0} {1} {2} {3}", cancelCount, (cancelCount == 1 ? Localize.Vehicle : Localize.Vehicles), Localize.Successful.ToLower(), Localize.Cancelled.ToLower()));
+
+            return Json(new { cancelCountMessage, errorMessage});
+        }
+
+        [HttpPost]
+        public ActionResult MeldungCreateSearch(Unfallmeldung model)
+        {
+            if (model == null || model.MeldungTyp.IsNullOrEmpty())
+            {
+                UnfallmeldungenViewModel.MeldungForCreate = new Unfallmeldung { MeldungTyp = "U" };
+                return PartialView("Unfallmeldungen/MeldungCreateSearch", UnfallmeldungenViewModel.MeldungForCreate);
+            }
+
+            UnfallmeldungenViewModel.MeldungForCreate = model;
+
+            UnfallmeldungenViewModel.ValidateMeldungCreationSearch(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+                UnfallmeldungenViewModel.MeldungCreateTryLoadEqui(ModelState.AddModelError);
+
+            return PartialView("Unfallmeldungen/MeldungCreateSearch", UnfallmeldungenViewModel.MeldungForCreate);
+        }
+
+        [HttpPost]
+        public ActionResult MeldungCreateInit()
+        {
+            return PartialView("Unfallmeldungen/MeldungCreateEdit", UnfallmeldungenViewModel.MeldungForCreate);
+        }
+
+        [HttpPost]
+        public ActionResult MeldungCreateEdit(Unfallmeldung model)
+        {
+            UnfallmeldungenViewModel.ValidateMeldungCreationEdit(ModelState.AddModelError, model);
+
+            if (ModelState.IsValid)
+                UnfallmeldungenViewModel.MeldungCreate(ModelState.AddModelError, model);
+
+            return PartialView("Unfallmeldungen/MeldungCreateEdit", UnfallmeldungenViewModel.MeldungForCreate);
+        }
        
         #region Export
        
         public ActionResult ExportUnfallmeldungenFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationRequests, dt);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Unfallmeldungen, dt);
 
             return new EmptyResult();
         }
@@ -74,7 +141,23 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportUnfallmeldungenFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationRequests, dt, landscapeOrientation: true);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Unfallmeldungen, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportReportUnfallmeldungenFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.ZBII_Bestand_Unfallmeldungen_Mit_Abmeldung, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportReportUnfallmeldungenFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.ZBII_Bestand_Unfallmeldungen_Mit_Abmeldung, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

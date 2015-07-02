@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.Equi.Models
+@{ var gridName = "GridEquiHistorieInfosVermieter"; }
+
+@(Html.XTelerik()
+    .XGrid<EquiHistorieInfoVermieter>()
+    .Name(gridName)
+    .XAjaxDataBinding("EquiHistorieInfosVermieterAjaxBinding", "Equi")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.FahrgestellNr).ClientTemplate(
+                "<a href='#' class='link tooltips' data-original-title='" + Localize.VehicleHistory + "' data-placement='right' onclick='ShowEquiHistorieVermieterAjax(\"<#= data.EquipmentNr #>\",\"<#= data.MeldungsNr #>\");'><#= data.FahrgestellNr #></a>"
+            );
+        columns.XBound(c => c.BriefNr);
+        columns.XBound(c => c.ReferenzNr);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridEquiHistorieInfosVermieter"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportEquiHistorieInfosVermieterFilteredExcel", "Equi");
+        commands.FilteredDataCommand("ExportEquiHistorieInfosVermieterFilteredPDF", "Equi");
+    })
+)
+

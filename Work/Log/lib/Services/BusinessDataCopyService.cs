@@ -20,11 +20,11 @@ namespace LogMaintenance.Services
 
         #region MaintenanceLogsDb
 
-        public static bool MaintenanceLogsDb(Action<string> infoMessageAction, string appDataFilePath)
+        public static bool MaintenanceLogsDb(string serverType, Action<string> infoMessageAction, string appDataFilePath)
         {
             _infoMessageAction = infoMessageAction;
 
-            return Directory.GetFiles(appDataFilePath).All(xmlFileName => MaintenanceLogsDbForServer("Prod", xmlFileName));
+            return Directory.GetFiles(appDataFilePath).All(xmlFileName => MaintenanceLogsDbForServer(serverType, xmlFileName));
         }
 
         private static bool MaintenanceLogsDbForServer(string serverType, string appDataFileName)

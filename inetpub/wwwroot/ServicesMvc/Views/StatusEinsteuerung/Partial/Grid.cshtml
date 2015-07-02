@@ -1,0 +1,110 @@
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.StatusEinsteuerungViewModel 
+@using CkgDomainLogic.FzgModelle.Models
+
+@{
+    var gridName = "GridStatus";
+    var gridGroupFooterTemplate = "<strong>∑ <#= $.telerik.formatString('{0}', Sum) #></strong>";    
+}
+
+
+@(Html.XTelerik()
+    .Grid<StatusEinsteuerung>()
+    .Name(gridName)
+    .XAjaxDataBinding("StatusEinsteuerungAjaxBinding", "StatusEinsteuerung")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.PDINummer);
+            columns.XBound(c => c.PDIBezeichnung);
+            columns.XBound(c => c.Fahrzeuggruppe);
+            columns.XBound(c => c.ModellCode);
+            columns.XBound(c => c.Modellbezeichnung);
+            columns.XBound(c => c.HerstellerCode);
+            columns.XBound(c => c.Hersteller);
+                                 
+            columns.XBound(c => c.EingangGesamt).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+
+            columns.XBound(c => c.AusVorjahr).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+                .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+            
+            columns.XBound(c => c.ZulassungVormonat).Format("{0}")
+            .Aggregate(aggreages => aggreages.Sum())
+            .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+            .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.ZulassungLfdMonat).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.ZulassungProzLfdMonat).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.ZulassungProzFolgeMonat).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.ZulassungGesamtMonat).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.Bestand).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.Ausgerüstet).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.MitBrief).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.Zulassungsbereit).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+
+            columns.XBound(c => c.OhneUnitnummer).Format("{0}")
+              .Aggregate(aggreages => aggreages.Sum())
+              .ClientGroupFooterTemplate(gridGroupFooterTemplate)
+              .ClientFooterTemplate(gridGroupFooterTemplate).HtmlAttributes(new { @class = "td-right" }).FooterHtmlAttributes(new { @class = "td-right" });
+                        
+            //columns.XBoundAll();
+
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.PDINummer).Ascending())
+        .XToolBar("StatusEinsteuerung")
+                 .ToolBar(commands =>
+                 {
+                     commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredExcel", "StatusEinsteuerung");
+                     commands.FilteredDataCommand("ExportStatusEinsteuerungFilteredPDF", "StatusEinsteuerung");
+                 })
+            .Groupable(g => g.Groups(gr => gr.Add(gp => gp.PDINummer)))
+            .Groupable(g => g.Groups(gr => gr.Add(gp => gp.Fahrzeuggruppe)))
+)
+
+<div class="form-horizontal reduced-margin">
+    @Html.FormTextBlockFor(c => c.ZB2OhneFahrzeugCount, new { @class = "m-wrap medium", col = "left" })
+    @Html.FormTextBlockFor(c => c.AnzahlGesperrte, new { @class = "m-wrap medium", col = "right" })
+</div>
+
+<div class="form-actions margin-top-5">
+    <a href="ReportAsExcel" class="btn blue"> @Localize.OutputInExcel <i class="icon-download-alt"></i></a>
+    <a target="blank" href="ReportAsHtml" class="btn blue margin-left-10"> @Localize.PrintOutputInHtml <i class="icon-download-alt"></i></a>
+</div>

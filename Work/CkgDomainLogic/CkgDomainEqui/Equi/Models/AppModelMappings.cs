@@ -292,6 +292,8 @@ namespace CkgDomainLogic.Equi.Models
                         d.Pickdatum = s.PICKDAT;
                         d.Referenz1 = s.ZZREFERENZ1;
                         d.Referenz2 = s.ZZREFERENZ2;
+                        d.Erstzulassungsdatum = s.REPLA_DATE;
+                        d.Ummeldedatum = s.ZZZLDAT;
                     }));
             }
         }
@@ -720,7 +722,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.Hoechstgeschwindigkeit = s.ZZHOECHSTGESCHW;
                         d.Hoehe = s.ZZHOEHEMIN.TrimStart('0');
                         d.Hubraum = s.ZZHUBRAUM.TrimStart('0');
-                        d.Kraftstoffart = s.ZZCODE_KRAFTSTOF;
+                        d.Kraftstoffart = s.ZZKRAFTSTOFF_TXT;
                         d.Kraftstoffcode = s.ZZCODE_KRAFTSTOF;
                         d.Laenge = s.ZZLAENGEMIN.TrimStart('0');
                         d.Leistung = s.ZZNENNLEISTUNG.TrimStart('0');
@@ -861,5 +863,45 @@ namespace CkgDomainLogic.Equi.Models
         }
         
         #endregion
+
+
+        #region Load/Save from/to Repository
+
+
+        public static ModelMapping<Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB, FahrzeugAnforderung> Z_DPM_AVM_DOKUMENT_KOPIE_GT_WEB_To_FahrzeugAnforderung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB, FahrzeugAnforderung>(
+                    new Dictionary<string, string>
+                    {
+                        {"CHASSIS_NUM", "Fahrgestellnummer"},
+                        {"LICENSE_NUM", "Kennzeichen"},
+                        {"EMAIL1", "EmailAnlageUser"},
+                        {"EMAIL2", "EmailExtern"},
+                        {"DOK_TYP", "DokTyp"},
+                        {"ERNAM", "AnlageUser"},
+                        {"ERDAT", "AnlageDatum"},
+                        {"FREITEXT", "Bemerkung"},
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, SelectItem> Z_DPM_READ_AUFTR_006_GT_OUT_To_SelectItem
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, SelectItem>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Key = sap.POS_KURZTEXT;
+                        business.Text = sap.POS_TEXT;
+                    }));
+            }
+        }
+
+        #endregion
+
     }
 }
