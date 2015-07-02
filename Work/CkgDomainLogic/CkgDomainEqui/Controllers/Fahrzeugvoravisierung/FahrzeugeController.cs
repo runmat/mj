@@ -56,6 +56,19 @@ namespace ServicesMvc.Controllers
                
         #region Excel Upload
 
+        public FileResult DownloadCsvTemplateVW()
+        {
+            var pfad = System.IO.Path.Combine(Server.MapPath(Url.Content("~/Documents/Templates/")), FahrzeugvoravisierungViewModel.CsvTemplateVWFileName);
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, FahrzeugvoravisierungViewModel.CsvTemplateVWFileName);
+        }
+
+        public FileResult DownloadCsvTemplateOthers()
+        {
+            var pfad = System.IO.Path.Combine(Server.MapPath(Url.Content("~/Documents/Templates/")), FahrzeugvoravisierungViewModel.CsvTemplateOthersFileName);
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, FahrzeugvoravisierungViewModel.CsvTemplateOthersFileName);
+        }
+
+
         [HttpPost]
         public JsonResult FahrzeugAuswahlAvisierungSelectionChanged(string fin, bool isChecked)
         {
@@ -76,13 +89,13 @@ namespace ServicesMvc.Controllers
             // Step 1:  Upload the CSV file
 
             if (uploadFiles == null || uploadFiles.None())
-                return Json(new { success = false, message = "Fehler: Keine Datei angegeben!" }, "text/plain");
+                return Json(new { success = false, message = Localize.Error + ": " + Localize.FileUploadNoFileAssignedWarning }, "text/plain");
 
             // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
             var file = uploadFiles.ToArray()[0];
 
             if (!FahrzeugvoravisierungViewModel.CsvUploadFileSave(file.FileName, file.SavePostedFile))
-                return Json(new { success = false, message = "Fehler: CSV Datei konnte nicht gespeichert werden!" }, "text/plain");
+                return Json(new { success = false, message = Localize.Error + ": " + Localize.FileUploadCouldNotSaveWarning }, "text/plain");
 
             return Json(new
             {

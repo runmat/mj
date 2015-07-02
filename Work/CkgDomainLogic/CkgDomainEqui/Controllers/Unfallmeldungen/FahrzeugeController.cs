@@ -17,7 +17,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ReportUnfallmeldungen()
         {
             _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
-            UnfallmeldungenViewModel.DataInit();
+            UnfallmeldungenViewModel.DataInit(true);
 
             return View(UnfallmeldungenViewModel);
         }
@@ -26,8 +26,8 @@ namespace ServicesMvc.Controllers
         public ActionResult Unfallmeldungen()
         {
             _dataContextKey = typeof(UnfallmeldungenViewModel).Name;
-            UnfallmeldungenViewModel.DataInit();
-            UnfallmeldungenViewModel.LoadAllUnfallmeldungen();
+            UnfallmeldungenViewModel.DataInit(false);
+            UnfallmeldungenViewModel.LoadUnfallmeldungen();
 
             return View(UnfallmeldungenViewModel);
         }
@@ -133,7 +133,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportUnfallmeldungenFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationRequests, dt);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Unfallmeldungen, dt);
 
             return new EmptyResult();
         }
@@ -141,7 +141,23 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportUnfallmeldungenFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationRequests, dt, landscapeOrientation: true);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Unfallmeldungen, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportReportUnfallmeldungenFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.ZBII_Bestand_Unfallmeldungen_Mit_Abmeldung, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportReportUnfallmeldungenFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = UnfallmeldungenViewModel.UnfallmeldungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.ZBII_Bestand_Unfallmeldungen_Mit_Abmeldung, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

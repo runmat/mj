@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Models;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 using System.Linq;
 
 namespace CkgDomainLogic.Finance.ViewModels
@@ -23,7 +21,6 @@ namespace CkgDomainLogic.Finance.ViewModels
             PropertyCacheClear(this, m => m.CarporteingaengeOhneEHsFiltered);
         }
 
-
         public void SelectFahrzeug(string fin, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
@@ -39,14 +36,11 @@ namespace CkgDomainLogic.Finance.ViewModels
         {
             foreach (var item in CarporteingaengeOhneEHs.Where(x => x.IsSelected))
             {
-                string kennzeichen = CarporteingaengeOhneEHs.Where(x => x.Fahrgestellnummer == item.Fahrgestellnummer).FirstOrDefault().Kennzeichen;
-                string pdiNummer = CarporteingaengeOhneEHs.Where(x => x.Fahrgestellnummer == item.Fahrgestellnummer).FirstOrDefault().PDINummer;
-                DataService.DeleteCarporteingaengeOhneEHToSap(kennzeichen, item.Fahrgestellnummer, pdiNummer);
+                DataService.DeleteCarporteingaengeOhneEHToSap(item);
             }
 
             DataInit();
         }
-
 
         public void SelectFahrzeuge(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
         {
@@ -78,7 +72,5 @@ namespace CkgDomainLogic.Finance.ViewModels
         }
 
         #endregion
-
-
     }
 }

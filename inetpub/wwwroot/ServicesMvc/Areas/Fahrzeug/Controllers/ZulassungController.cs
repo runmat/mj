@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using System.Web.Mvc;
+using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.Contracts;
@@ -9,6 +11,8 @@ using GeneralTools.Contracts;
 using GeneralTools.Models;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
+using Telerik.Web.Mvc.Extensions;
+using Telerik.Web.Mvc.UI;
 
 namespace ServicesMvc.Fahrzeug.Controllers
 {
@@ -53,6 +57,14 @@ namespace ServicesMvc.Fahrzeug.Controllers
             return View(new GridModel(items));
         }
 
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            base.OnActionExecuting(filterContext);
+
+            if (filterContext.ActionDescriptor.ActionName == "FahrzeugAuswahlAjaxBinding")
+                ViewModel.GridOrderByCurrent = filterContext.Controller.ValueOf<string>(GridUrlParameters.OrderBy);
+        }
+
         [HttpPost]
         public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)
         {
@@ -64,15 +76,18 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
         {
-            int allSelectionCount, allCount = 0;
-            if (vin.IsNullOrEmpty())
-                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+            int allSelectionCount;
+            if (vin.NotNullOrEmpty().Length < 5)
+                ViewModel.SelectFahrzeuge(
+                    vin, isChecked,
+                    gridOrderByCurrent => GetGridExportData().GetGridFilteredData(gridOrderByCurrent, ""), 
+                    out allSelectionCount);
             else
                 ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
 
             return Json(new
             {
-                allSelectionCount, allCount,
+                allSelectionCount,
                 zulassungenAnzahlPdiTotal = ViewModel.ZulassungenAnzahlPdiTotal,
                 zulassungenAnzahlGesamtTotal = ViewModel.ZulassungenAnzahlGesamtTotal,
             });

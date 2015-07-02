@@ -124,6 +124,7 @@ namespace CkgDomainLogic.DomainCommon.Models
             return this;
         }
 
+        [XmlIgnore]
         public Func<string> GetAutoSelectStringCustom { get; set; }
 
         public string GetAutoSelectString()

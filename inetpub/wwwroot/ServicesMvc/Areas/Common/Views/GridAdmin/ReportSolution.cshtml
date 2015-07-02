@@ -1,0 +1,20 @@
+﻿@model CkgDomainLogic.DomainCommon.ViewModels.GridAdminViewModel
+
+@if (!Model.ReportSettings.AdminIsAuthorized)
+{
+    <div class="margin-top-20">
+        <span class="alert alert-error"><i class="icon-bell margin-right-5"></i>Link abgelaufen bzw. Zugriff verweigert!</span>
+    </div>
+}
+else
+{
+    <div class="hide">
+        <div>@Model.ReportSettings.AppID</div>
+        <div>@Model.ReportSettings.AdminUserName</div>
+        <div>@Model.ReportSettings.CallingDateTime.ToString("dd.MM.yyyy HH:mm:ss")</div>
+    </div>
+    
+    @Html.Partial("Partial/Common")
+
+    @Html.Partial("Partial/CustomerUserSelection", Model)
+}
