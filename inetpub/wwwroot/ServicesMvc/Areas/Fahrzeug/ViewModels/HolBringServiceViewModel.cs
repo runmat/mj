@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
@@ -16,30 +17,50 @@ using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using ServicesMvc.Areas.Fahrzeug.Models.HolBringService;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
     public class HolBringServiceViewModel : CkgBaseViewModel
     {
+        #region Models der einzelnen Partials
         public Auftraggeber Auftraggeber { get; set; }
         public Abholung Abholung { get; set; }
         public Anlieferung Anlieferung { get; set; }
         public Upload Upload { get; set; }
+        #endregion
 
-        [XmlIgnore]
+        public GlobalViewData GlobalViewData;
+
         public IHolBringServiceDataService DataService { get { return CacheGet<IHolBringServiceDataService>(); } }
 
-        public List<Domaenenfestwert> Fahrzeugarten { get; set; }
-        public List<DropDownItem> DropDownHours { get; set; }
-        public List<DropDownItem> DropDownMinutes { get; set; }
-        public List<DropDownItem> AbholungUhrzeitStundenList { get; set; }
-        //public List<Domaenenfestwert> AbholungUhrzeitStundenList { get; set; }
+        //public string FeiertageAsString { get { return DateService.FeiertageAsString; } }
 
-        public IEnumerable<Kunde> BetriebeSap { get { return DataService.LoadKundenFromSap(); } }
-        public List<string> Betriebe { get; set; }
+        //public List<Domaenenfestwert> AnsprechpartnerList { get; set; }
 
-        public string Auftragsersteller { get; set; }
-        public List<Domaenenfestwert> AnsprechpartnerList { get; set; }
+        public List<string> GetBetriebeAsAutoCompleteItems()
+        {
+            return GlobalViewData.BetriebeSap.Select(a => a.Name1).ToList();
+        }
+
+        //public class DropDownItem
+        //{
+        //    [SelectListKey]
+        //    public string ID { get; set; }
+
+        //    [SelectListText]
+        //    public string Name { get; set; }
+        //}
+
+        //public List<Domaenenfestwert> Fahrzeugarten { get; set; }
+        //public List<DropDownItem> DropDownHours { get; set; }
+        //public List<DropDownItem> DropDownMinutes { get; set; }
+        //public List<DropDownItem> AbholungUhrzeitStundenList { get; set; }
+
+        //public IEnumerable<Kunde> BetriebeSap { get { return DataService.LoadKundenFromSap(); } }
+        //public List<string> Betriebe { get; set; }
+
+        //public string Auftragsersteller { get; set; }
 
         #region Wizard
         [XmlIgnore]
@@ -69,63 +90,63 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
         #endregion
 
-        public List<string> GetBetriebeAsAutoCompleteItems()
-        {
-            return BetriebeSap.Select(a => a.Name1).ToList();
-        }
+        //public class DropDownItem 
+        //{
+        //    [SelectListKey]
+        //    public string ID { get; set; }
 
-        public class DropDownItem 
-        {
-            [SelectListKey]
-            public string ID { get; set; }
-
-            [SelectListText]
-            public string Name { get; set; }
-        }
+        //    [SelectListText]
+        //    public string Name { get; set; }
+        //}
        
         public void DataInit()
         {
+            #region Globale Properties, nutzbar in allen Partials
+            GlobalViewData = new GlobalViewData
+                {
+                    Test2 = "11",
+                    BetriebeSap = new BindingList<Kunde>(),
+                    Betriebe = new List<string>(),
+                    Fahrzeugarten = DataService.GetFahrzeugarten,
+                    FeiertageAsString =  DateService.FeiertageAsString,
+                    AnsprechpartnerList = DataService.GetAnsprechpartner
+                };
+            #endregion
+
             Auftraggeber = new Auftraggeber
                 {
                     Auftragsersteller = DataService.GetUsername,
                     AuftragerstellerTel = DataService.GetUserTel,
-                    Betrieb = "Betrieb",
-                    Ansprechpartner = "Ansprechpartner",
-                    AnsprechpartnerTel = "AnsprechpartnerTel"
-                    
                 };
 
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
             Upload = new Upload();
-            Fahrzeugarten = DataService.GetFahrzeugarten;
-            AnsprechpartnerList = DataService.GetAnsprechpartner;
 
-            var selectableHours = new List<DropDownItem>
+            // GlobalViewData.Fahrzeugarten = DataService.GetFahrzeugarten;
+
+            var selectableHours = new List<GlobalViewData.DdItem>
                 {
-                    new DropDownItem {ID = "Stunden", Name = "Stunden"}
+                    new GlobalViewData.DdItem {ID = "Stunden", Name = "Stunden"}
                 };
             for (var i = 5; i < 22; i++)
             {
-                selectableHours.Add(new DropDownItem { ID = i.ToString(), Name = i.ToString() });
+                selectableHours.Add(new GlobalViewData.DdItem { ID = i.ToString(), Name = i.ToString() });
                 
             }
-            DropDownHours = selectableHours;
-            DropDownHours = selectableHours;
+            GlobalViewData.DropDownHours = selectableHours;
+            GlobalViewData.DropDownHours = selectableHours;
 
-            var selectableMinutes = new List<DropDownItem>
+            var selectableMinutes = new List<GlobalViewData.DdItem>
                 {
-                    new DropDownItem {ID = "Minuten", Name = "Minuten"},
-                    new DropDownItem {ID = "00", Name = "00"},
-                    new DropDownItem {ID = "15", Name = "15"},
-                    new DropDownItem {ID = "30", Name = "30"},
-                    new DropDownItem {ID = "45", Name = "45"}
+                    new GlobalViewData.DdItem {ID = "Minuten", Name = "Minuten"},
+                    new GlobalViewData.DdItem {ID = "00", Name = "00"},
+                    new GlobalViewData.DdItem {ID = "15", Name = "15"},
+                    new GlobalViewData.DdItem {ID = "30", Name = "30"},
+                    new GlobalViewData.DdItem {ID = "45", Name = "45"}
                 };
-            DropDownMinutes = selectableMinutes;
-            DropDownMinutes = selectableMinutes;
-
-            var test = BetriebeSap;
-            var asdf = test.FirstOrDefault(x => x.Barkunde == false);
+            GlobalViewData.DropDownMinutes = selectableMinutes;
+            GlobalViewData.DropDownMinutes = selectableMinutes;
 
             DataMarkForRefresh();
         }
@@ -159,7 +180,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
-            // var extension = (Upload.UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
             var extension = ".pdf"; //  (Upload.UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
             Upload.UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
@@ -176,12 +196,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return true;
         }
 
-        [XmlIgnore]
-        public string FeiertageAsString { get { return DateService.FeiertageAsString; } }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            return null;    // throw new NotImplementedException();
+            return null;    
         }
     }
 }

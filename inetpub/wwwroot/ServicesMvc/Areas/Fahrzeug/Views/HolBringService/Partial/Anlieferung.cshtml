@@ -1,10 +1,14 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
 @model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Anlieferung 
 
 @{
-    var dropDownHourList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownHourList"];
-    var dropDownMinuteList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownMinuteList"];
-    var abholungDt = ViewData["AbholungDt"];
+    //var dropDownHourList = (List<GlobalViewData.DdItem>)ViewData["DropDownHourList"];
+    //var dropDownMinuteList = (List<GlobalViewData.DdItem>)ViewData["DropDownMinuteList"];
+    //var abholungDt = ViewData["AbholungDt"];
+
+    var globalData = (GlobalViewData)ViewData["GlobalViewData"];
+    
 }
 
 <div id="DivAbholung" class="margin-top-20">
@@ -37,8 +41,8 @@
         <div class="control-group">
             <label class="control-label">Abholung ab</label>
             <div class="controls">
-                @Html.DropDownListFor(m => m.AbholungAbUhrzeitStunden, dropDownHourList.ToSelectList(), new { @class = "dropdownwidth transporttime" })
-                @Html.DropDownListFor(m => m.AbholungAbUhrzeitMinuten, dropDownMinuteList.ToSelectList(), new { @class = " dropdownwidth transporttime" })
+                @Html.DropDownListFor(m => m.AbholungAbUhrzeitStunden, globalData.DropDownHours.ToSelectList(), new { @class = "dropdownwidth transporttime" })
+                @Html.DropDownListFor(m => m.AbholungAbUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth transporttime" })
                 
                 @*<div class="input-append datepickerX">
                     <input id="AnlieferungDatumX" name="AnlieferungDatum" type="text" class="m-wrap small " />
@@ -52,8 +56,8 @@
         <div class="control-group">
             <label class="control-label">Anlieferung bis</label>
             <div class="controls">
-                @Html.DropDownListFor(m => m.AnlieferungBisUhrzeitStunden, dropDownHourList.ToSelectList(), new { @class = "dropdownwidth transporttime" })
-                @Html.DropDownListFor(m => m.AnlieferungBisUhrzeitMinuten, dropDownMinuteList.ToSelectList(), new { @class = " dropdownwidth transporttime" })
+                @Html.DropDownListFor(m => m.AnlieferungBisUhrzeitStunden, globalData.DropDownHours.ToSelectList(), new { @class = "dropdownwidth transporttime" })
+                @Html.DropDownListFor(m => m.AnlieferungBisUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth transporttime" })
             </div>
         </div>
 

@@ -233,10 +233,6 @@
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtStatus.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeuguebersichtPDI.cs" />
-    <Compile Include="Fahrzeuge\Models\HolBringService\Abholung.cs" />
-    <Compile Include="Fahrzeuge\Models\HolBringService\Anlieferung.cs" />
-    <Compile Include="Fahrzeuge\Models\HolBringService\Auftraggeber.cs" />
-    <Compile Include="Fahrzeuge\Models\HolBringService\Upload.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschiebenSelektor.cs" />
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
@@ -266,7 +262,6 @@
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugvoravisierungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
-    <Compile Include="Fahrzeuge\ViewModels\HolBringServiceViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />
@@ -375,7 +370,9 @@
       <Name>CkgDomainLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Fahrzeuge\Models\HolBringService\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

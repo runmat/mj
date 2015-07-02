@@ -11,12 +11,12 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using MvcTools.Web;
+using ServicesMvc.Areas.Fahrzeug;
 
 namespace ServicesMvc.Fahrzeug.Controllers
 {
     public class HolBringServiceController : CkgDomainController 
     {
-
         public override string DataContextKey { get { return GetDataContextKey<HolBringServiceViewModel>(); } }
 
         public HolBringServiceViewModel ViewModel
@@ -25,8 +25,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
             set { SetViewModel(value); }
         }
 
-        public HolBringServiceController(IAppSettings appSettings, ILogonContextDataService logonContext,
-            IHolBringServiceDataService holBringServiceDataService) 
+        public HolBringServiceController(IAppSettings appSettings, ILogonContextDataService logonContext, IHolBringServiceDataService holBringServiceDataService) 
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, holBringServiceDataService);
@@ -37,21 +36,23 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {}
 
         [CkgApplication]
+        // [HolBringServiceInjectGlobalData]
         public ActionResult Index()
         {
             ViewModel.DataInit();
 
-            ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
+            ViewData["FahrzeugArtenList"] = ViewModel.GlobalViewData.Fahrzeugarten;
             ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
-            ViewData["AnsprechpartnerList"] = ViewModel.AnsprechpartnerList;
+            ViewData["AnsprechpartnerList"] = ViewModel.GlobalViewData.AnsprechpartnerList;
 
+            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
             return View(ViewModel);
         }
 
         [HttpPost]
         public ActionResult Auftraggeber(Auftraggeber model)    // [Bind(Exclude = "Auftragsersteller")]
         {
-            model.Auftragsersteller = ViewModel.Auftragsersteller;  // Verhindern, dass der Antragsersteller durch Formularfeld-Manipulation im Browser geändert werden kann
+            model.Auftragsersteller = ViewModel.GlobalViewData.Auftragsersteller;  // Verhindern, dass der Antragsersteller durch Formularfeld-Manipulation im Browser geändert werden kann
 
             if (ModelState.IsValid)
             {
@@ -64,9 +65,12 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 }
             }
 
-            ViewData["FahrzeugArtenList"] = ViewModel.Fahrzeugarten;
-            ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
-            ViewData["AnsprechpartnerList"] = ViewModel.AnsprechpartnerList;
+            //ViewData["FahrzeugArtenList"] = ViewModel.GlobalViewData.Fahrzeugarten;
+            //ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
+            //ViewData["AnsprechpartnerList"] = ViewModel.GlobalViewData.AnsprechpartnerList;
+
+            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+
             return PartialView("Partial/Auftraggeber", model);
         }
 
@@ -87,8 +91,11 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 ViewModel.CopyDefaultValuesToAnlieferung(model);
             }
 
-            ViewData["DropDownHourList"] = ViewModel.DropDownHours;
-            ViewData["DropDownMinuteList"] = ViewModel.DropDownMinutes;
+            //ViewData["DropDownHourList"] = ViewModel.GlobalViewData.DropDownHours;
+            //ViewData["DropDownMinuteList"] = ViewModel.GlobalViewData.DropDownMinutes;
+
+            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+
             return PartialView("Partial/Abholung", model);
         }
 
@@ -108,9 +115,12 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 ViewModel.Anlieferung = model;
             }
 
-            ViewData["DropDownHourList"] = ViewModel.DropDownHours;
-            ViewData["DropDownMinuteList"] = ViewModel.DropDownMinutes;
-            ViewData["AbholungDt"] = ViewModel.Abholung.AbholungDatum;
+            //ViewData["DropDownHourList"] = ViewModel.GlobalViewData.DropDownHours;
+            //ViewData["DropDownMinuteList"] = ViewModel.GlobalViewData.DropDownMinutes;
+            //ViewData["AbholungDt"] = ViewModel.Abholung.AbholungDatum;
+
+            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+
             return PartialView("Partial/Anlieferung", model);
         }
 
@@ -160,7 +170,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         public JsonResult BetriebeGetAutoCompleteItems()
         {
             // return Json(new { items = ViewModel.GetHalterAdressenAsAutoCompleteItems() });
-            return Json(new { items = ViewModel.Betriebe });
+            return Json(new { items = ViewModel.GlobalViewData.Betriebe });
         }
     }
 }

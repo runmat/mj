@@ -1,9 +1,16 @@
 ﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
 @model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Abholung 
 
 @{
-    var dropDownHourList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownHourList"];
-    var dropDownMinuteList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownMinuteList"];
+    //var dropDownHourList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownHourList"];
+    //var dropDownMinuteList = (List<HolBringServiceViewModel.DropDownItem>)ViewData["DropDownMinuteList"];
+
+    //var dropDownHourList = (List<GlobalViewData.DdItem>)ViewData["DropDownHourList"];
+    //var dropDownMinuteList = (List<GlobalViewData.DdItem>)ViewData["DropDownMinuteList"];
+
+    var globalData = (GlobalViewData)ViewData["GlobalViewData"];
+    
 }
 
 <div id="DivAbholung" class="margin-top-20">
@@ -37,8 +44,8 @@
         <div class="control-group">
             <label class="control-label">Abhol-Uhrzeit</label>
             <div class="controls">
-                @Html.DropDownListFor(m => m.AbholungUhrzeitStunden, dropDownHourList.ToSelectList(), new { @class = "dropdownwidth" })
-                @Html.DropDownListFor(m => m.AbholungUhrzeitMinuten, dropDownMinuteList.ToSelectList(), new { @class = " dropdownwidth" })
+                @Html.DropDownListFor(m => m.AbholungUhrzeitStunden, globalData.DropDownHours.ToSelectList(), new { @class = "dropdownwidth" })
+                @Html.DropDownListFor(m => m.AbholungUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth" })
                 
                 @*<div class="input-append datepickerX">
                     <input id="AbholungDatumUhrzeitX" name="AbholungDatumUhrzeitX" type="text" class="m-wrap small " />

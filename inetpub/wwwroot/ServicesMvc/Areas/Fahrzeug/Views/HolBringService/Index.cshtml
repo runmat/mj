@@ -1,5 +1,9 @@
-﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.HolBringServiceViewModel
+﻿@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
+@model CkgDomainLogic.Fahrzeuge.ViewModels.HolBringServiceViewModel
 
+@{
+    var globalData = (GlobalViewData)ViewData["GlobalViewData"];
+}
 <style>
     .dropdownwidth {
         @*width: 17.5%;*@
@@ -23,14 +27,15 @@
 <script>
 
     var dateFormat = "dd.MM.yyyy";
-    var feiertageAsString = "@Model.FeiertageAsString";
+//    var feiertageAsString = "Model.FeiertageAsString";
+    var feiertageAsString = "globalData.FeiertageAsString";
     
     $(function() {
     });
 
     function InitTestX() {
         var dateFormat = "dd.MM.yyyy";
-        var feiertageAsString = "@Model.FeiertageAsString";
+//        var feiertageAsString = "Model.FeiertageAsString";
         feiertageAsString = "14.07.2015,15.07.2015";
         $("#DatePickerTest").datepicker({
             minDate: new Date(2015, 5, 1),

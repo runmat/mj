@@ -2,7 +2,7 @@
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
-
+using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
 using ITextSharpText = iTextSharp.text;
