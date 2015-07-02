@@ -30,37 +30,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public Upload Upload { get; set; }
         #endregion
 
-        public GlobalViewData GlobalViewData;
+        public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
 
         public IHolBringServiceDataService DataService { get { return CacheGet<IHolBringServiceDataService>(); } }
 
-        //public string FeiertageAsString { get { return DateService.FeiertageAsString; } }
-
-        //public List<Domaenenfestwert> AnsprechpartnerList { get; set; }
-
-        public List<string> GetBetriebeAsAutoCompleteItems()
-        {
-            return GlobalViewData.BetriebeSap.Select(a => a.Name1).ToList();
-        }
-
-        //public class DropDownItem
+        //public List<string> GetBetriebeAsAutoCompleteItems()
         //{
-        //    [SelectListKey]
-        //    public string ID { get; set; }
-
-        //    [SelectListText]
-        //    public string Name { get; set; }
+        //    return GlobalViewData.BetriebeSap.Select(a => a.Name1).ToList();
         //}
-
-        //public List<Domaenenfestwert> Fahrzeugarten { get; set; }
-        //public List<DropDownItem> DropDownHours { get; set; }
-        //public List<DropDownItem> DropDownMinutes { get; set; }
-        //public List<DropDownItem> AbholungUhrzeitStundenList { get; set; }
-
-        //public IEnumerable<Kunde> BetriebeSap { get { return DataService.LoadKundenFromSap(); } }
-        //public List<string> Betriebe { get; set; }
-
-        //public string Auftragsersteller { get; set; }
 
         #region Wizard
         [XmlIgnore]
@@ -90,27 +67,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
         #endregion
 
-        //public class DropDownItem 
-        //{
-        //    [SelectListKey]
-        //    public string ID { get; set; }
-
-        //    [SelectListText]
-        //    public string Name { get; set; }
-        //}
-       
         public void DataInit()
         {
             #region Globale Properties, nutzbar in allen Partials
             GlobalViewData = new GlobalViewData
                 {
-                    Test2 = "11",
                     BetriebeSap = new BindingList<Kunde>(),
-                    Betriebe = new List<string>(),
+                    //Betriebe = new List<string>(),
                     Fahrzeugarten = DataService.GetFahrzeugarten,
                     FeiertageAsString =  DateService.FeiertageAsString,
                     AnsprechpartnerList = DataService.GetAnsprechpartner
                 };
+
+            GlobalViewData.BetriebeSap = DataService.LoadKundenFromSap();
             #endregion
 
             Auftraggeber = new Auftraggeber

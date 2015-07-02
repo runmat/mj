@@ -15,19 +15,15 @@ namespace ServicesMvc.Areas.Fahrzeug.Models.HolBringService
     /// </summary>
     public class GlobalViewData
     {
-        public string Test1 { get { return "OK"; } }
-        public string Test2 { get; set; }
-
         public List<Domaenenfestwert> Fahrzeugarten { get; set; }
-        public List<string> Betriebe { get; set; }
-        public List<Domaenenfestwert> Ansprechpartner { get; set; }
+        //public List<string> Betriebe { get; set; }
+        public IEnumerable<Kunde> BetriebeSap { get; set; }
         public List<Domaenenfestwert> AnsprechpartnerList { get; set; }
 
         public List<DdItem> DropDownHours { get; set; }
         public List<DdItem> DropDownMinutes { get; set; }
         public List<DdItem> AbholungUhrzeitStundenList { get; set; }
 
-        public IEnumerable<Kunde> BetriebeSap { get; set; }
 
         public string Auftragsersteller { get; set; }
 

@@ -6,10 +6,6 @@
 <link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
 
 @{
-    //var fahrzeugArtenList = (List<Domaenenfestwert>)ViewData["FahrzeugArtenList"];
-    //var betriebeList = (List<string>)ViewData["BetriebeList"];
-    //var ansprechpartnerList = (List<Domaenenfestwert>)ViewData["AnsprechpartnerList"];
-
     var globalData = (GlobalViewData) ViewData["GlobalViewData"];
 }
 
@@ -19,11 +15,12 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuftraggeber" }))
     {
         @Html.FormValidationSummary()
+        @Html.Hidden("formSubmit", "ok")
 
         @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap readonly", col = "left", @readonly = "" })
         @Html.FormTextBoxFor(m => m.AuftragerstellerTel, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormDropDownListFor(m => m.Betrieb, globalData.Betriebe.ToSelectList(), new { @class = "m-wrap", col = "left" })
+        @Html.FormDropDownListFor(m => m.Betrieb, globalData.BetriebeSap.Select(x => x.Name1).ToSelectList(), new { @class = "m-wrap", col = "left" })
      
         @Html.FormTextBoxFor(m => m.Repco, new { @class = "m-wrap ", col = "right" })
         

@@ -15,6 +15,7 @@ using ServicesMvc.Areas.Fahrzeug;
 
 namespace ServicesMvc.Fahrzeug.Controllers
 {
+    [HolBringServiceInjectGlobalData]
     public class HolBringServiceController : CkgDomainController 
     {
         public override string DataContextKey { get { return GetDataContextKey<HolBringServiceViewModel>(); } }
@@ -36,23 +37,19 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {}
 
         [CkgApplication]
-        // [HolBringServiceInjectGlobalData]
         public ActionResult Index()
         {
             ViewModel.DataInit();
 
-            ViewData["FahrzeugArtenList"] = ViewModel.GlobalViewData.Fahrzeugarten;
-            ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
-            ViewData["AnsprechpartnerList"] = ViewModel.GlobalViewData.AnsprechpartnerList;
-
             ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
+
             return View(ViewModel);
         }
 
         [HttpPost]
         public ActionResult Auftraggeber(Auftraggeber model)    // [Bind(Exclude = "Auftragsersteller")]
         {
-            model.Auftragsersteller = ViewModel.GlobalViewData.Auftragsersteller;  // Verhindern, dass der Antragsersteller durch Formularfeld-Manipulation im Browser geändert werden kann
+            model.Auftragsersteller = ViewModel.GlobalViewData.Auftragsersteller;  // Sicherstellen, dass Antragsteller nicht durch Formularfeld-Manipulation im Browser geändert werden kann
 
             if (ModelState.IsValid)
             {
@@ -65,10 +62,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 }
             }
 
-            //ViewData["FahrzeugArtenList"] = ViewModel.GlobalViewData.Fahrzeugarten;
-            //ViewData["BetriebeList"] = ViewModel.GetBetriebeAsAutoCompleteItems();
-            //ViewData["AnsprechpartnerList"] = ViewModel.GlobalViewData.AnsprechpartnerList;
-
             ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
             return PartialView("Partial/Auftraggeber", model);
@@ -77,22 +70,14 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult Abholung(Abholung model)
         {
-            // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen und etwaige ModelStateErrors entfernen
-            if (Request["formSubmit"] != "ok")     
-            {
+            if (Request["formSubmit"] != "ok")      // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen
                 model = ViewModel.Abholung;
-                foreach (var modelValue in ModelState.Values)
-                    modelValue.Errors.Clear();
-            }
 
             if (ModelState.IsValid)
             {
                 ViewModel.Abholung = model;
                 ViewModel.CopyDefaultValuesToAnlieferung(model);
             }
-
-            //ViewData["DropDownHourList"] = ViewModel.GlobalViewData.DropDownHours;
-            //ViewData["DropDownMinuteList"] = ViewModel.GlobalViewData.DropDownMinutes;
 
             ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
@@ -102,22 +87,13 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult Anlieferung(Anlieferung model)
         {
-            // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen und etwaige ModelStateErrors entfernen
-            if (Request["formSubmit"] != "ok")  
-            {
+            if (Request["formSubmit"] != "ok")          // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen
                 model = ViewModel.Anlieferung;
-                foreach (var modelValue in ModelState.Values)
-                    modelValue.Errors.Clear();
-            }
 
             if (ModelState.IsValid)
             {
                 ViewModel.Anlieferung = model;
             }
-
-            //ViewData["DropDownHourList"] = ViewModel.GlobalViewData.DropDownHours;
-            //ViewData["DropDownMinuteList"] = ViewModel.GlobalViewData.DropDownMinutes;
-            //ViewData["AbholungDt"] = ViewModel.Abholung.AbholungDatum;
 
             ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
@@ -128,18 +104,15 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult Upload(Upload model)
         {
-            // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen und etwaige ModelStateErrors entfernen
-            if (Request["formSubmit"] != "ok")
-            {
+            if (Request["formSubmit"] != "ok")          // Wenn Action nicht durch Absenden aufgerufen wird, model aus ViewModel übernehmen
                 model = ViewModel.Upload;
-                foreach (var modelValue in ModelState.Values)
-                    modelValue.Errors.Clear();
-            }
 
             if (ModelState.IsValid)
             {
                 ViewModel.Upload = model;
             }
+
+            ViewData["GlobalViewData"] = ViewModel.GlobalViewData;
 
             return PartialView("Partial/Upload", model);
         }
@@ -166,11 +139,10 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
         #endregion
 
-        [HttpPost]
-        public JsonResult BetriebeGetAutoCompleteItems()
-        {
-            // return Json(new { items = ViewModel.GetHalterAdressenAsAutoCompleteItems() });
-            return Json(new { items = ViewModel.GlobalViewData.Betriebe });
-        }
+        //[HttpPost]
+        //public JsonResult BetriebeGetAutoCompleteItems()
+        //{
+        //    return Json(new { items = ViewModel.GlobalViewData.Betriebe });
+        //}
     }
 }
