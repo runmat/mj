@@ -111,7 +111,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
             ViewData["DropDownHourList"] = ViewModel.DropDownHours;
             ViewData["DropDownMinuteList"] = ViewModel.DropDownMinutes;
             ViewData["AbholungDt"] = ViewModel.Abholung.AbholungDatum;
-
             return PartialView("Partial/Anlieferung", model);
         }
 
