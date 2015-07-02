@@ -4,6 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
+    [GridColumnsAutoPersist]
     public class Fzg
     {
         public bool IsFilteredByExcelUpload;
@@ -40,9 +41,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
         public string Zb2Nummer { get; set; }
-             
-        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
-        public string Auftragsnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.BatchID)]
         public string BatchId { get; set; }
@@ -71,11 +69,32 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
         public string EquiNummer { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Color)]
-        public string Farbe { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ColorCode)]
+        public string Farbcode { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Remark)]
-        public string Bemerkung { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbname { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(Farbname))
+                    return Farbcode;
+
+                return String.Format("{0} ({1})", Farbname, Farbcode);
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.BlockRemark)]
+        public string BemerkungSperre { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CommentInternal)]
+        public string BemerkungIntern { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CommentExternal)]
+        public string BemerkungExtern { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Tires)]
         public string Reifen { get; set; }
@@ -99,7 +118,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get { return string.Format("{0} / {1}",ModelID, Modell); }
         }
 
-        [LocalizedDisplay(LocalizeConstants.OrderID)]
+        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNummer { get; set; }
 
         public string FahrzeugAsText
@@ -118,5 +137,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string ValidationMessage { get; set; }
 
         public bool IsValid { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Aktion { get; set; }
     }
 }

@@ -72,11 +72,10 @@
 <script type="text/javascript">
 
     var _gridAllColumnFilterQuickMouseClickFilter_isActive = false;
-    
+
     function GridAllColumnFilterApplyToGrid(gridName, exportExcelAndPdfAvailable) {
 
         var columnFilter = $(".GridAllColumnFilter");
-        var grid = $("#" + gridName).data("tGrid");
 
         $("#" + gridName + " > .t-grid-toolbar").append(columnFilter.html());
 
@@ -87,18 +86,22 @@
             $("#" + gridName + " .outer-export-menu").hide();
 
         // build grid page sizer
-        $("#" + gridName + " .grid-page-sizer").change(function () {
-            var thatGrid = $("#" + gridName).data("tGrid");
-            thatGrid.pageSize = $(this).val();
-            thatGrid.pageTo(1);
-        });
+        setTimeout(function () {
+            var grid = $("#" + gridName).data("tGrid");
+            $("#" + gridName + " .grid-page-sizer").val(grid.pageSize);
+            $("#" + gridName + " .grid-page-sizer").change(function () {
+                var thatGrid = $("#" + gridName).data("tGrid");
+                thatGrid.pageSize = $(this).val();
+                thatGrid.pageTo(1);
+            });
+        }, 500);
 
         $("#" + gridName + " .grid-column-overall-quick-filter-reset").click(function () {
             GridAllColumnFilterQuickMouseClickFilterReset($(this));
         });
 
         FilterGridInit(gridName);
-        setTimeout(function() {
+        setTimeout(function () {
             GridColumnTranslationInit(gridName);
         }, 50);
     }
@@ -149,7 +152,7 @@
 
         return false;
     }
-    
+
     function TrySetOuterExportLink(grid, exportLink, href, exportType) {
         if (href.toLowerCase().indexOf(exportType) == -1)
             return;
