@@ -11,46 +11,43 @@ using CKG.Base.Kernel.Security;
 using CKG.Services;
 using Leasing.lib;
 using System.Globalization;
-using System.Collections.Generic;
+using GeneralTools.Services;
 
 namespace Leasing.forms
 {
     public partial class Change81_4 : Page
     {
-        private User m_User;
-        private App m_App;
-        private LP_02 objDienstleistung;
+        private User _mUser;
+        private App _mApp;
+        private LP_02 _objDienstleistung;
         protected GridNavigation GridNavigation1;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            m_User = Common.GetUser(this);
-            Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
+            _mUser = Common.GetUser(this);
+            Common.FormAuth(this, _mUser);
+            _mApp = new App(_mUser);
             Common.GetAppIDFromQueryString(this);
-            lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
+            lblHead.Text = (string)_mUser.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
             GridNavigation1.setGridElment(ref GridView1);
             GridNavigation1.PagerChanged += GridView1_PageIndexChanged;
             GridNavigation1.PageSizeChanged += GridView1_ddlPageSizeChanged;
 
-            //lnkFahrzeugsuche.NavigateUrl = "Change81.aspx?AppID=" + Session["AppID"].ToString();
-            //lnkFahrzeugauswahl.NavigateUrl = "Change81_2.aspx?AppID=" + Session["AppID"].ToString();
-            //lnkAdressen.NavigateUrl = "Change81_3.aspx?AppID=" + Session["AppID"].ToString();
             step1.NavigateUrl = "Change81.aspx?" + Request.QueryString;
             step2.NavigateUrl = "Change81_2.aspx?" + Request.QueryString;
             step2.NavigateUrl = "Change81_3.aspx?" + Request.QueryString;
 
             if (Session["objDienstleistung"] == null)
-            { Response.Redirect("Change81.aspx?AppID=" + Session["AppID"].ToString()); }
-            else { objDienstleistung = (LP_02)Session["objDienstleistung"]; }
+            { Response.Redirect("Change81.aspx?AppID=" + Session["AppID"]); }
+            else { _objDienstleistung = (LP_02)Session["objDienstleistung"]; }
 
-            var tmpDataView = objDienstleistung.Fahrzeuge.DefaultView;
+            var tmpDataView = _objDienstleistung.Fahrzeuge.DefaultView;
             tmpDataView.RowFilter = "MANDT = '99'";
 
             if (tmpDataView.Count == 0)
             {
-                Response.Redirect("Change81.aspx?AppID=" + Session["AppID"].ToString());
+                Response.Redirect("Change81.aspx?AppID=" + Session["AppID"]);
             }
             tmpDataView.RowFilter = "";
 
@@ -60,55 +57,30 @@ namespace Leasing.forms
             }
         }
 
-        //public override void ProcessRequest(HttpContext context)
-        //{
-        //    if (context.Request.QueryString.AllKeys.Contains("Download"))
-        //    {
-        //        var f = (string)context.Session["DLFile"];
-
-        //        if (!string.IsNullOrEmpty(f) && File.Exists(f))
-        //        {
-        //            var downloadFile = new FileInfo(f);
-        //            var fileName = Path.GetFileNameWithoutExtension(f).Split('_').First() + Path.GetExtension(f);
-
-        //            context.Response.Clear();
-        //            context.Response.AddHeader("Content-Disposition", String.Format("attachment; filename={0}", fileName));
-        //            context.Response.AddHeader("Content-Length", downloadFile.Length.ToString());
-        //            context.Response.ContentType = "application/octet-stream";
-        //            context.Response.WriteFile(downloadFile.FullName);
-        //            context.Response.Flush();
-        //            context.Response.End();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        base.ProcessRequest(context);
-        //    }
-        //}
-
+ 
         protected void DownloadSummary(object sender, EventArgs e)
         {
             var head = new DataTable("Kopf");
-            Array.ForEach(new[] { "Dienstleistung", "Username", "Datum", "Auftragsnummer" }, (c) => head.Columns.Add(c, typeof(string)));
+            Array.ForEach(new[] { "Dienstleistung", "Username", "Datum", "Auftragsnummer" }, c => head.Columns.Add(c, typeof(string)));
             var r = head.NewRow();
-            r["Dienstleistung"] = objDienstleistung.BeauftragungKlartext;
-            r["Username"] = m_User.UserName;
+            r["Dienstleistung"] = _objDienstleistung.BeauftragungKlartext;
+            r["Username"] = _mUser.UserName;
             r["Datum"] = DateTime.Now.ToShortDateString();
-            r["Auftragsnummer"] = objDienstleistung.Auftragsnummer;
+            r["Auftragsnummer"] = _objDienstleistung.Auftragsnummer;
             head.Rows.Add(r);
             head.AcceptChanges();
 
             var details = new DataTable("Details");
-            Array.ForEach(new[] { "Titel", "Wert" }, (c) => details.Columns.Add(c, typeof(string)));
+            Array.ForEach(new[] { "Titel", "Wert" }, c => details.Columns.Add(c, typeof(string)));
             if (pnlHalter.Visible)
             {
                 var h = details.NewRow();
                 h["Titel"] = "Halter";
-                var text = "Adresse: " + Environment.NewLine + objDienstleistung.HalterName1;
-                if (!string.IsNullOrEmpty(objDienstleistung.HalterName2))
-                    text += " " + objDienstleistung.HalterName2;
-                text += Environment.NewLine + objDienstleistung.HalterPLZ + " " + objDienstleistung.HalterOrt;
-                text += Environment.NewLine + objDienstleistung.HalterStrasse + " " + objDienstleistung.HalterHausnr;
+                var text = "Adresse: " + Environment.NewLine + _objDienstleistung.HalterName1;
+                if (!string.IsNullOrEmpty(_objDienstleistung.HalterName2))
+                    text += " " + _objDienstleistung.HalterName2;
+                text += Environment.NewLine + _objDienstleistung.HalterPLZ + " " + _objDienstleistung.HalterOrt;
+                text += Environment.NewLine + _objDienstleistung.HalterStrasse + " " + _objDienstleistung.HalterHausnr;
                 h["Wert"] = text;
                 details.Rows.Add(h);
             }
@@ -116,12 +88,12 @@ namespace Leasing.forms
             {
                 var z = details.NewRow();
                 z["Titel"] = "Zulassungsdaten";
-                var text = "Wunschkennzeichen " + objDienstleistung.Kreis + "-" + objDienstleistung.Wunschkennzeichen;
-                text += Environment.NewLine + "reserviert auf " + objDienstleistung.ReserviertAuf;
-                if (trVersicherungstr.Visible) text += Environment.NewLine + "Versicherungsträger: " + objDienstleistung.Versicherungstraeger;
-                if (!string.IsNullOrEmpty(objDienstleistung.EVBNr))
+                var text = "Wunschkennzeichen " + _objDienstleistung.Kreis + "-" + _objDienstleistung.Wunschkennzeichen;
+                text += Environment.NewLine + "reserviert auf " + _objDienstleistung.ReserviertAuf;
+                if (trVersicherungstr.Visible) text += Environment.NewLine + "Versicherungsträger: " + _objDienstleistung.Versicherungstraeger;
+                if (!string.IsNullOrEmpty(_objDienstleistung.EVBNr))
                 {
-                    var evbParts = objDienstleistung.EVBNr.Split(' ');
+                    var evbParts = _objDienstleistung.EVBNr.Split(' ');
                     if (trEvbNr.Visible) text += Environment.NewLine + "eVB-Nummer: " + evbParts.FirstOrDefault();
                     DateTime von, bis;
                     if (evbParts.Length >= 3 && DateTime.TryParseExact(evbParts.ElementAt(1), "yyyyMMdd", null, DateTimeStyles.AssumeLocal, out von) &&
@@ -137,10 +109,10 @@ namespace Leasing.forms
             {
                 var em = details.NewRow();
                 em["Titel"] = "Empfänger Schein/Schilder";
-                var text = "Adresse: " + Environment.NewLine + objDienstleistung.EmpfaengerName1;
-                if (!string.IsNullOrEmpty(objDienstleistung.EmpfaengerName2)) text += " " + objDienstleistung.EmpfaengerName2;
-                text += Environment.NewLine + objDienstleistung.EmpfaengerPLZ + " " + objDienstleistung.EmpfaengerOrt;
-                text += Environment.NewLine + objDienstleistung.EmpfaengerStrasse + " " + objDienstleistung.EmpfaengerHausnr;
+                var text = "Adresse: " + Environment.NewLine + _objDienstleistung.EmpfaengerName1;
+                if (!string.IsNullOrEmpty(_objDienstleistung.EmpfaengerName2)) text += " " + _objDienstleistung.EmpfaengerName2;
+                text += Environment.NewLine + _objDienstleistung.EmpfaengerPLZ + " " + _objDienstleistung.EmpfaengerOrt;
+                text += Environment.NewLine + _objDienstleistung.EmpfaengerStrasse + " " + _objDienstleistung.EmpfaengerHausnr;
                 em["Wert"] = text;
                 details.Rows.Add(em);
             }
@@ -148,16 +120,16 @@ namespace Leasing.forms
             {
                 var s = details.NewRow();
                 s["Titel"] = "Sonstiges";
-                var text = "gew. Durchführungsdatum: " + objDienstleistung.DurchfuehrungsDatum;
-                text += Environment.NewLine + "Bemerkung: " + objDienstleistung.Bemerkung;
+                var text = "gew. Durchführungsdatum: " + _objDienstleistung.DurchfuehrungsDatum;
+                text += Environment.NewLine + "Bemerkung: " + _objDienstleistung.Bemerkung;
                 s["Wert"] = text;
                 details.Rows.Add(s);
             }
             details.AcceptChanges();
 
             var fzg = new DataTable("Fahrzeuge");
-            Array.ForEach(new[] { "Fahrgestellnummer", "Leasingnummer", "ZBII", "Kennzeichen" }, (c) => fzg.Columns.Add(c, typeof(string)));
-            var rows = objDienstleistung.Fahrzeuge.Select("MANDT = '99'");
+            Array.ForEach(new[] { "Fahrgestellnummer", "Leasingnummer", "ZBII", "Kennzeichen" }, c => fzg.Columns.Add(c, typeof(string)));
+            var rows = _objDienstleistung.Fahrzeuge.Select("MANDT = '99'");
             foreach (var row in rows)
             {
                 var f = fzg.NewRow();
@@ -179,7 +151,7 @@ namespace Leasing.forms
         private void InitialLoad()
         {
             HideAll();
-            switch (objDienstleistung.Auftragsgrund)
+            switch (_objDienstleistung.Auftragsgrund)
             {
                 case "2052":
                     pnlHalter.Visible = true;
@@ -237,37 +209,35 @@ namespace Leasing.forms
                     trEvbNr.Visible = true;
                     trHinweis.Visible = false;
                     break;
-                default:
-                    break;
             }
-            lblBeauftragteDienstleistungAnzeige.Text = objDienstleistung.BeauftragungKlartext;
-            lblAdresseName.Text = objDienstleistung.HalterName1;
-            if (!string.IsNullOrEmpty(objDienstleistung.HalterName2))
-            { lblAdresseName.Text += " " + objDienstleistung.HalterName2; }
-            lblAdressePLZOrt.Text += objDienstleistung.HalterPLZ + " ";
-            lblAdressePLZOrt.Text += objDienstleistung.HalterOrt;
-            lblAdresseStrasseNr.Text += objDienstleistung.HalterStrasse + " ";
-            lblAdresseStrasseNr.Text += objDienstleistung.HalterHausnr;
+            lblBeauftragteDienstleistungAnzeige.Text = _objDienstleistung.BeauftragungKlartext;
+            lblAdresseName.Text = _objDienstleistung.HalterName1;
+            if (!string.IsNullOrEmpty(_objDienstleistung.HalterName2))
+            { lblAdresseName.Text += " " + _objDienstleistung.HalterName2; }
+            lblAdressePLZOrt.Text += _objDienstleistung.HalterPLZ + " ";
+            lblAdressePLZOrt.Text += _objDienstleistung.HalterOrt;
+            lblAdresseStrasseNr.Text += _objDienstleistung.HalterStrasse + " ";
+            lblAdresseStrasseNr.Text += _objDienstleistung.HalterHausnr;
 
-            lblKreis.Text = objDienstleistung.Kreis;
-            lblWunschkennzeichen.Text = objDienstleistung.Wunschkennzeichen;
-            lblWunschkennzeichen.Text = objDienstleistung.Wunschkennzeichen;
-            lblReserviertAuf.Text = objDienstleistung.ReserviertAuf;
-            lblVersicherungstraeger.Text = objDienstleistung.Versicherungstraeger;
-            lblAdresseNameEmpf.Text = objDienstleistung.EmpfaengerName1;
-            if (!string.IsNullOrEmpty(objDienstleistung.EmpfaengerName2))
-            { lblAdresseNameEmpf.Text += " " + objDienstleistung.EmpfaengerName2; }
-            lblAdressePLZOrtEmpf.Text += objDienstleistung.EmpfaengerPLZ + " ";
-            lblAdressePLZOrtEmpf.Text += objDienstleistung.EmpfaengerOrt;
-            lblAdresseStrasseNrEmpf.Text += objDienstleistung.EmpfaengerStrasse + " ";
-            lblAdresseStrasseNrEmpf.Text += objDienstleistung.EmpfaengerHausnr;
+            lblKreis.Text = _objDienstleistung.Kreis;
+            lblWunschkennzeichen.Text = _objDienstleistung.Wunschkennzeichen;
+            lblWunschkennzeichen.Text = _objDienstleistung.Wunschkennzeichen;
+            lblReserviertAuf.Text = _objDienstleistung.ReserviertAuf;
+            lblVersicherungstraeger.Text = _objDienstleistung.Versicherungstraeger;
+            lblAdresseNameEmpf.Text = _objDienstleistung.EmpfaengerName1;
+            if (!string.IsNullOrEmpty(_objDienstleistung.EmpfaengerName2))
+            { lblAdresseNameEmpf.Text += " " + _objDienstleistung.EmpfaengerName2; }
+            lblAdressePLZOrtEmpf.Text += _objDienstleistung.EmpfaengerPLZ + " ";
+            lblAdressePLZOrtEmpf.Text += _objDienstleistung.EmpfaengerOrt;
+            lblAdresseStrasseNrEmpf.Text += _objDienstleistung.EmpfaengerStrasse + " ";
+            lblAdresseStrasseNrEmpf.Text += _objDienstleistung.EmpfaengerHausnr;
 
-            lblDurchfuehrungsDatum.Text = objDienstleistung.DurchfuehrungsDatum;
-            lblBemerkung.Text = objDienstleistung.Bemerkung;
+            lblDurchfuehrungsDatum.Text = _objDienstleistung.DurchfuehrungsDatum;
+            lblBemerkung.Text = _objDienstleistung.Bemerkung;
 
-            if (!string.IsNullOrEmpty(objDienstleistung.EVBNr))
+            if (!string.IsNullOrEmpty(_objDienstleistung.EVBNr))
             {
-                var split = objDienstleistung.EVBNr.Split(' ');
+                var split = _objDienstleistung.EVBNr.Split(' ');
                 lblEVB.Text = split[0];
                 if (split.Length > 1)
                 {
@@ -295,7 +265,7 @@ namespace Leasing.forms
         private void Fillgrid(String strSort)
         {
             Result.Visible = true;
-            var tmpDataView = objDienstleistung.Fahrzeuge.DefaultView;
+            var tmpDataView = _objDienstleistung.Fahrzeuge.DefaultView;
 
             String strTempSort = "";
             String strDirection = null;
@@ -303,15 +273,15 @@ namespace Leasing.forms
             if (strSort.Trim(' ').Length > 0)
             {
                 strTempSort = strSort.Trim(' ');
-                if ((this.ViewState["Sort"] == null) || ((String)this.ViewState["Sort"] == strTempSort))
+                if ((ViewState["Sort"] == null) || ((String)ViewState["Sort"] == strTempSort))
                 {
-                    if (this.ViewState["Direction"] == null)
+                    if (ViewState["Direction"] == null)
                     {
                         strDirection = "desc";
                     }
                     else
                     {
-                        strDirection = (String)this.ViewState["Direction"];
+                        strDirection = (String)ViewState["Direction"];
                     }
                 }
                 else
@@ -328,8 +298,8 @@ namespace Leasing.forms
                     strDirection = "asc";
                 }
 
-                this.ViewState["Sort"] = strTempSort;
-                this.ViewState["Direction"] = strDirection;
+                ViewState["Sort"] = strTempSort;
+                ViewState["Direction"] = strDirection;
             }
 
             if (strTempSort.Length != 0)
@@ -339,17 +309,7 @@ namespace Leasing.forms
             tmpDataView.RowFilter = "MANDT = '99'";
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
-
-            //lblMessage.Text = tmpDataView.Count.ToString();
-            //Int32 intZaehl0099 = 0;
-            //lblMessage.Text = "";//Anforderungen zählen
-            //foreach (DataRow row in tmpDataView.Table.Rows)
-            //{
-            //    if (row["MANDT"].ToString() == "99")
-            //    {
-            //        intZaehl0099 += 1;
-            //    }
-            //}
+            
         }
 
         private void GridView1_PageIndexChanged(Int32 pageindex)
@@ -367,12 +327,12 @@ namespace Leasing.forms
             Fillgrid(e.SortExpression);
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -389,6 +349,25 @@ namespace Leasing.forms
 
         private void DoSubmit()
         {
+
+            string bapiName = ApplicationConfiguration.GetApplicationConfigValue("SonstDienstleistungSpeicherBapi", Session["AppID"].ToString(), _mUser.Customer.CustomerId);
+
+            //default, falls gar nichts konfiguriert wurde
+            if (String.IsNullOrEmpty(bapiName))
+            {
+                AnfordernDefault();
+                
+            }
+            else
+            {
+                    AnfordernCustom(bapiName);
+            }
+
+
+        }
+
+        private void AnfordernDefault()
+        {
             Trace logApp;
 
             if (Session["logObj"] != null)
@@ -397,7 +376,7 @@ namespace Leasing.forms
             }
             else
             {
-                logApp = new Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel);
+                logApp = new Trace(_mApp.Connectionstring, _mApp.SaveLogAccessSAP, _mApp.LogLevel);
             }
 
             lblMessage.Visible = false;
@@ -405,31 +384,32 @@ namespace Leasing.forms
 
             try
             {
-                var rows = objDienstleistung.Fahrzeuge.Select("MANDT = '99'");
+
+                var rows = _objDienstleistung.Fahrzeuge.Select("MANDT = '99'");
                 foreach (var row in rows)
                 {
-                    objDienstleistung.Equimpent = row["EQUNR"].ToString();
-                    objDienstleistung.Fahrgestellnummer = row["Fahrgestellnummer"].ToString();
+                    _objDienstleistung.Equimpent = row["EQUNR"].ToString();
+                    _objDienstleistung.Fahrgestellnummer = row["Fahrgestellnummer"].ToString();
 
-                    objDienstleistung.Anfordern(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
-                    row["STATUS"] = objDienstleistung.Auftragsstatus;
+                    _objDienstleistung.Anfordern(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
+                    row["STATUS"] = _objDienstleistung.Auftragsstatus;
 
-                    if (string.IsNullOrEmpty(objDienstleistung.Auftragsnummer) || objDienstleistung.Status != 0)
+                    if (string.IsNullOrEmpty(_objDienstleistung.Auftragsnummer) || _objDienstleistung.Status != 0)
                         break;
                 }
 
-                if (!string.IsNullOrEmpty(objDienstleistung.Auftragsnummer) && objDienstleistung.Status == 0)
+                if (!string.IsNullOrEmpty(_objDienstleistung.Auftragsnummer) && _objDienstleistung.Status == 0)
                 {
                     lblMessage.Visible = true;
-                    lblMessage.Text = "Ihre Auftragsnummer: " + objDienstleistung.Auftragsnummer;
+                    lblMessage.Text = "Ihre Auftragsnummer: " + _objDienstleistung.Auftragsnummer;
                     btnSummary.Visible = true;
                 }
-                else if (!string.IsNullOrEmpty(objDienstleistung.Message))
+                else if (!string.IsNullOrEmpty(_objDienstleistung.Message))
                 {
-                    lblError.Text = objDienstleistung.Message;
+                    lblError.Text = _objDienstleistung.Message;
                 }
 
-                var tmpDataView = objDienstleistung.Fahrzeuge.DefaultView;
+                var tmpDataView = _objDienstleistung.Fahrzeuge.DefaultView;
                 tmpDataView.RowFilter = "MANDT = '99'";
                 GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
@@ -438,9 +418,16 @@ namespace Leasing.forms
             catch (Exception ex)
             {
                 lblError.Text = "Fehler: " + ex.Message;
-                logApp.UpdateEntry("ERR", Session["AppID"].ToString(), "Fehler bei der Briefanforderung zu Equipment: " + objDienstleistung.Equimpent + "Fehler: " + ex.Message, null);
+                logApp.UpdateEntry("ERR", Session["AppID"].ToString(), "Fehler bei der Briefanforderung zu Equipment: " + _objDienstleistung.Equimpent + "Fehler: " + ex.Message, null);
                 throw;
             }
         }
+
+        private void AnfordernCustom(string bapiName)
+        {
+            
+        }
+
+
     }
 }

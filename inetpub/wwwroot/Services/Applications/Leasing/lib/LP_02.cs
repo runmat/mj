@@ -61,6 +61,7 @@ namespace Leasing.lib
         String m_strSucheLeasingvertragsNr;
         String m_strSucheNummerZB2;
         DataTable m_laenderPlz;
+
         #endregion
 
         #region "Properties"
@@ -267,6 +268,12 @@ namespace Leasing.lib
             get { return m_auftragsgrund; }
             set { m_auftragsgrund = value; }
         }
+
+        public string EvbSingle { get; set; }
+
+        public string EvbVon { get; set; }
+
+        public string EvbBis { get; set; }
 
         public DataTable LaenderPLZ
         {
@@ -653,6 +660,45 @@ namespace Leasing.lib
             }
 
         }
+
+
+        public void AnfordernCustom(String strAppID, String strSessionID, System.Web.UI.Page page)
+        {
+
+            try
+            {
+                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_WEB_SONST_DL_ANF_CKPT_01", ref m_objApp, ref m_objUser, ref page);
+
+                myProxy.setImportParameter("AG", m_objUser.KUNNR.PadLeft(10, '0'));
+                myProxy.setImportParameter("WEB_USER", m_objUser.UserName);
+                myProxy.setImportParameter("I_MATNR", m_auftragsgrund.Split('-')[0].PadLeft(18, '0'));
+                myProxy.setImportParameter("I_NEU", "X");
+
+                DataTable auftragsdaten = myProxy.getImportTable("GT_AUF");
+
+                var rows = Fahrzeuge.Select("MANDT = '99'");
+                foreach (var row in rows)
+                {
+                    var newRow = auftragsdaten.NewRow();
+
+                    newRow["ZZFAHRG"] = row["Fahrgestellnummer"];
+                    newRow["EVBNR"] = EVBNr;
+                    newRow["WUNSCHKENNZ"] = Wunschkennzeichen;
+                    newRow["VERSICHERUNG"] = Versicherungstraeger;
+                    newRow["EQUNR"] = row["EQUNR"].ToString();
+                    newRow["SFV_FZG"] = Bemerkung;
+                }
+            }
+            catch (Exception)
+            {
+                    
+                throw;
+            }
+
+        }
+
+
+
         public DataTable GiveResultStructure(System.Web.UI.Page page)
         {
             DataTable tblTemp = new DataTable();

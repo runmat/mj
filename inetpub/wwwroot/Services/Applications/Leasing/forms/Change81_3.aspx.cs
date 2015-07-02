@@ -350,6 +350,9 @@ namespace Leasing.forms
                             if (txtEVBVon.Text != String.Empty)
                             {
                                 objDienstleistung.EVBNr = txtEVBNummer.Text + " " + HelpProcedures.MakeDateSAP(txtEVBVon.Text) + " " + HelpProcedures.MakeDateSAP(txtEVBBis.Text);
+                                objDienstleistung.EvbNrSingle = txtEVBNummer.Text;
+                                objDienstleistung.EvbGueltigVon = HelpProcedures.MakeDateSAP(txtEVBVon.Text);
+                                objDienstleistung.EvbGueltigBis = HelpProcedures.MakeDateSAP(txtEVBBis.Text);
                             }
                             else
                             {
@@ -371,6 +374,9 @@ namespace Leasing.forms
                     txtEVBBis.Text = "";
                     objDienstleistung.Versicherungstraeger = "";
                     objDienstleistung.EVBNr = "";
+                    objDienstleistung.EvbNrSingle = "";
+                    objDienstleistung.EvbGueltigVon = "";
+                    objDienstleistung.EvbGueltigBis = "";
                 }
             }
 
