@@ -69,6 +69,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         #region CSV Upload
 
+        public string CsvTemplateVWFileName
+        {
+            get { return "UploadFzgVoravisierungVW.xls"; }
+        }
+
+        public string CsvTemplateOthersFileName
+        {
+            get { return "UploadFzgVoravisierungSonstigeHersteller.xls"; }
+        }
 
         public bool SelectFahrzeug(string fin, bool select, out int allSelectionCount)
         {
@@ -121,6 +130,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 return false;
 
             UploadItems = list.ToList();
+            UploadItemsFiltered = UploadItems; // Remove if filter not needed
             ValidateUploadItems();
             
             return true;

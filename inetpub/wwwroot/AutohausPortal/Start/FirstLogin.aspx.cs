@@ -1,17 +1,15 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using CKG.Base.Kernel;
-using CKG.Base.Kernel.Common;
 using System.Data;
+using System.Drawing;
+using System.Web.UI;
+using CKG.Base.Kernel.Logging;
+using CKG.Base.Kernel.Security;
+
 namespace AutohausPortal.Start
 {
-    public partial class FirstLogin : System.Web.UI.Page
+    public partial class FirstLogin : Page
     {
-        private CKG.Base.Kernel.Security.User m_User ;
+        private User m_User ;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -49,9 +47,9 @@ namespace AutohausPortal.Start
                 {
                     trPwdExp.Visible = false;
                     txtNewPwd.Enabled = false;
-                    txtNewPwd.BackColor = System.Drawing.Color.LightGray;
+                    txtNewPwd.BackColor = Color.LightGray;
                     txtNewPwdConfirm.Enabled = false;
-                    txtNewPwdConfirm.BackColor = System.Drawing.Color.LightGray;
+                    txtNewPwdConfirm.BackColor = Color.LightGray;
                     btnChange.Enabled = false;
                     lblMessage.Text = "" ;                                       
                 }
@@ -85,7 +83,7 @@ namespace AutohausPortal.Start
 
         private void Log(string strIdentification, string strDescription, string strCategory)
         {
-            CKG.Base.Kernel.Logging.Trace logApp = new CKG.Base.Kernel.Logging.Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel);
+            Trace logApp = new Trace(m_User.App.Connectionstring, m_User.App.SaveLogAccessSAP, m_User.App.LogLevel);
             string strUserName = m_User.UserName;
             // strUserName
             string strSessionID = Session.SessionID;
@@ -131,7 +129,7 @@ namespace AutohausPortal.Start
             catch (Exception ex)
             {
                 DataTable dt = new DataTable();
-                dt.Columns.Add("Fehler beim erstellen der Log-Parameter", System.Type.GetType("System.String"));
+                dt.Columns.Add("Fehler beim erstellen der Log-Parameter", Type.GetType("System.String"));
                 dt.Rows.Add(dt.NewRow());
                 string str = ex.Message;
                 if ((ex.InnerException != null))

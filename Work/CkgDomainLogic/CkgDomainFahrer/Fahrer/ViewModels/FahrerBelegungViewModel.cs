@@ -23,7 +23,6 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public List<FahrerTagBelegung> FahrerTagBelegungen { get; set; }
 
         [XmlIgnore]
-        //public List<Feiertag> Feiertage { get { return DateService.Feiertage; } }
         public string FeiertageAsString { get { return DateService.FeiertageAsString; } }
 
         [XmlIgnore]
@@ -41,6 +40,10 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                                         );
             }
         }
+
+        [LocalizedDisplay(LocalizeConstants.Comment)]
+        [Length(128)]
+        public string Kommentar { get; set; }
 
 
         public FahrerBelegungViewModel()

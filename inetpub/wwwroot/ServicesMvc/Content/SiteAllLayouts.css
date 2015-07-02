@@ -870,7 +870,6 @@ span.m-wrap.font-normal { font-weight: normal!important; }
 .font-bold { font-weight: bold; }
 
 .checker.disabled {
-    display: block;
     padding-top: 7px;
 }
 
@@ -1238,3 +1237,6 @@ div.controls-width-400 .controls {
     font-size: 0.9em;
 }
 
+.form-horizontal.reduced-margin .control-group {
+  margin-bottom: 5px;
+}
