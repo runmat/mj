@@ -216,7 +216,6 @@
     <Compile Include="Fahrzeuge\Contracts\IDispositionslisteDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IZulaufEinsteuernugDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeuguebersichtDataService.cs" />
-    <Compile Include="Fahrzeuge\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugSperrenVerschiebenDataService.cs" />
     <Compile Include="Fahrzeuge\Models\AbmeldeHistorie.cs" />
     <Compile Include="Fahrzeuge\Models\Fahrzeughersteller.cs" />
@@ -252,7 +251,6 @@
     <Compile Include="Fahrzeuge\Services\FahrzeugvoravisierungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\DispositionslisteDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeuguebersichtDataServiceSAP.cs" />
-    <Compile Include="Fahrzeuge\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugSperrenVerschiebenDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\ZulaufEinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />

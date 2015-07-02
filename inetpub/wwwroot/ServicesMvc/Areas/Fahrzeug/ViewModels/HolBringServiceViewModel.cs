@@ -23,21 +23,35 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
     public class HolBringServiceViewModel : CkgBaseViewModel
     {
+        public IHolBringServiceDataService DataService { get { return CacheGet<IHolBringServiceDataService>(); } }
+
         #region Models der einzelnen Partials
-        public Auftraggeber Auftraggeber { get; set; }
-        public Abholung Abholung { get; set; }
-        public Anlieferung Anlieferung { get; set; }
-        public Upload Upload { get; set; }
+        public Auftraggeber Auftraggeber            // public Auftraggeber Auftraggeber { get; set; }
+        {
+            get { return PropertyCacheGet(() => Auftraggeber); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public Abholung Abholung                    // public Abholung Abholung { get; set; }
+        {
+            get { return PropertyCacheGet(() => Abholung); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public Anlieferung Anlieferung              // public Anlieferung Anlieferung { get; set; }
+        {
+            get { return PropertyCacheGet(() => Anlieferung); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public Upload Upload                        // public Upload Upload { get; set; }
+        {
+            get { return PropertyCacheGet(() => Upload); }
+            set { PropertyCacheSet(value); }
+        }
         #endregion
 
         public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
-
-        public IHolBringServiceDataService DataService { get { return CacheGet<IHolBringServiceDataService>(); } }
-
-        //public List<string> GetBetriebeAsAutoCompleteItems()
-        //{
-        //    return GlobalViewData.BetriebeSap.Select(a => a.Name1).ToList();
-        //}
 
         #region Wizard
         [XmlIgnore]
@@ -73,7 +87,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             GlobalViewData = new GlobalViewData
                 {
                     BetriebeSap = new BindingList<Kunde>(),
-                    //Betriebe = new List<string>(),
                     Fahrzeugarten = DataService.GetFahrzeugarten,
                     FeiertageAsString =  DateService.FeiertageAsString,
                     AnsprechpartnerList = DataService.GetAnsprechpartner
@@ -91,31 +104,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
             Upload = new Upload();
-
-            // GlobalViewData.Fahrzeugarten = DataService.GetFahrzeugarten;
-
-            var selectableHours = new List<GlobalViewData.DdItem>
-                {
-                    new GlobalViewData.DdItem {ID = "Stunden", Name = "Stunden"}
-                };
-            for (var i = 5; i < 22; i++)
-            {
-                selectableHours.Add(new GlobalViewData.DdItem { ID = i.ToString(), Name = i.ToString() });
-                
-            }
-            GlobalViewData.DropDownHours = selectableHours;
-            GlobalViewData.DropDownHours = selectableHours;
-
-            var selectableMinutes = new List<GlobalViewData.DdItem>
-                {
-                    new GlobalViewData.DdItem {ID = "Minuten", Name = "Minuten"},
-                    new GlobalViewData.DdItem {ID = "00", Name = "00"},
-                    new GlobalViewData.DdItem {ID = "15", Name = "15"},
-                    new GlobalViewData.DdItem {ID = "30", Name = "30"},
-                    new GlobalViewData.DdItem {ID = "45", Name = "45"}
-                };
-            GlobalViewData.DropDownMinutes = selectableMinutes;
-            GlobalViewData.DropDownMinutes = selectableMinutes;
 
             DataMarkForRefresh();
         }

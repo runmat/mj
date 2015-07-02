@@ -18,76 +18,15 @@ namespace ServicesMvc.Areas.Fahrzeug
                     modelValue.Errors.Clear();
             }
 
+            var descriptor = filterContext.ActionDescriptor;
+            var actionName = descriptor.ActionName;
+            var controllerName = descriptor.ControllerDescriptor.ControllerName;
 
+            // GlobalViewData aus dem Controller-ViewModel in ViewData schreiben, damit in partial Views verfügbar, ohne dass dies in jedem ActionResult per ViewData["GlobalViewData"] = ViewModel.GlobalViewData; angestoßen werden muss
             var globalViewData = ((HolBringServiceController) filterContext.Controller).ViewModel.GlobalViewData;
+
+
             filterContext.Controller.ViewData["GlobalViewData"] = globalViewData;
-            
-            // var test = filterContext.Controller.ControllerContext;
-
-            //var globalViewData = new GlobalViewData();
-            //var model = filterContext.Controller.ViewData.Model as HolBringServiceViewModel;
-            //if (model != null)
-            //{
-            //    globalViewData = model.GlobalViewData;
-            //}
-            //else
-            //{
-            //    object modelTest;
-            //    filterContext.Controller.ViewData.TryGetValue("GlobalViewData", out modelTest);
-            //    if (modelTest != null)
-            //        globalViewData = (GlobalViewData)modelTest;
-            //}
-            //if (globalViewData != null)
-            //    filterContext.Controller.ViewData["GlobalViewData"] = globalViewData;
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //object modelTry;
-            //var x = filterContext.Controller.ViewData.TryGetValue("GlobalViewData", out modelTry);
-            //var globalViewData = (GlobalViewData)modelTry;
-            //if (globalViewData == null)
-            //{
-            //    var asdf = 1;
-            //}
-            //else
-            //{
-            //    filterContext.Controller.ViewData["GlobalViewData"] = globalViewData;
-            //}            
-
-            //var globalViewData = new GlobalViewData();
-
-            //var model = filterContext.Controller.ViewData.Model as HolBringServiceViewModel;
-            //if (model != null)
-            //{
-            //    // filterContext.Controller.ViewData["GlobalViewData"] = model.GlobalViewData;
-
-            //    globalViewData = model.GlobalViewData;
-
-            //    //object modelTest;
-            //    //var x = filterContext.Controller.ViewData.TryGetValue("GlobalViewData", out modelTest);
-            //    //var modelTest2 = (GlobalViewData)modelTest;
-
-            //}
-            //else
-            //{
-            //    var model2 = filterContext.Controller.ViewData.Values; 
-
-            //    object modelTest;
-            //    var x = filterContext.Controller.ViewData.TryGetValue("GlobalViewData", out modelTest);
-            //    globalViewData = (GlobalViewData) modelTest;
-            //}
-
-            //filterContext.Controller.ViewData["GlobalViewData"] = globalViewData;
 
         }
     }

@@ -2469,6 +2469,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
+    <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Models\ReportSolution.cs" />
@@ -2481,6 +2482,7 @@
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\GlobalViewData.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Upload.cs" />
+    <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Areas\Fahrzeug\ViewModels\HolBringServiceViewModel.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
@@ -5390,6 +5392,10 @@
     <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainLeasing\CkgDomainLeasing.csproj">
       <Project>{F80FCAF3-6A61-405B-859D-CF3AB8796DBC}</Project>
       <Name>CkgDomainLeasing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\work\Tools\WebTools\WebTools.csproj">
       <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>

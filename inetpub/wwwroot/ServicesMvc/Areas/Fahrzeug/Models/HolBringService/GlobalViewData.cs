@@ -16,14 +16,11 @@ namespace ServicesMvc.Areas.Fahrzeug.Models.HolBringService
     public class GlobalViewData
     {
         public List<Domaenenfestwert> Fahrzeugarten { get; set; }
-        //public List<string> Betriebe { get; set; }
         public IEnumerable<Kunde> BetriebeSap { get; set; }
         public List<Domaenenfestwert> AnsprechpartnerList { get; set; }
 
-        public List<DdItem> DropDownHours { get; set; }
-        public List<DdItem> DropDownMinutes { get; set; }
-        public List<DdItem> AbholungUhrzeitStundenList { get; set; }
-
+        public List<DdItem> DropDownHours { get { return FillDropDownHours(); } }
+        public List<DdItem> DropDownMinutes { get { return FillDropDownMinutes(); } }
 
         public string Auftragsersteller { get; set; }
 
@@ -38,5 +35,31 @@ namespace ServicesMvc.Areas.Fahrzeug.Models.HolBringService
             public string Name { get; set; }
         }
 
+        private static List<DdItem> FillDropDownHours()
+        {
+            var selectableHours = new List<GlobalViewData.DdItem>
+                {
+                    new GlobalViewData.DdItem {ID = "Stunden", Name = "Stunden"}
+                };
+            for (var i = 5; i < 22; i++)
+            {
+                selectableHours.Add(new GlobalViewData.DdItem { ID = i.ToString(), Name = i.ToString() });
+
+            }
+            return selectableHours;
+        }
+
+
+        private static List<DdItem> FillDropDownMinutes()
+        {
+            return new List<DdItem>
+                {
+                    new DdItem {ID = "Minuten", Name = "Minuten"},
+                    new DdItem {ID = "00", Name = "00"},
+                    new DdItem {ID = "15", Name = "15"},
+                    new DdItem {ID = "30", Name = "30"},
+                    new DdItem {ID = "45", Name = "45"}
+                };
+        }
     }
 }

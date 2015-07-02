@@ -67,10 +67,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
             using (var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName))
             {
-                //var sql = string.Format("SELECT WebUser.LastName + ', ' + WebUser.FirstName AS Beschreibung, WebUserInfo.telephone2 AS Wert FROM WebUser INNER JOIN WebMember ON WebUser.UserID = WebMember.UserID INNER JOIN WebGroup " +
-                //          "ON WebMember.GroupID = WebGroup.GroupID INNER JOIN WebUserInfo ON WebUser.UserID = WebUserInfo.id_user " +
-                //          "WHERE (dbo.WebUser.CustomerID = {0}) AND (dbo.WebGroup.GroupName = '{1}')", (LogonContext).User.CustomerID, (LogonContext).GroupName);
-
                 var sql = string.Format("SELECT WebUser.LastName + ', ' + WebUser.FirstName AS Beschreibung, WebUser.LastName + ', ' + WebUser.FirstName + '|' + WebUserInfo.telephone2 AS Wert FROM WebUser INNER JOIN WebMember ON WebUser.UserID = WebMember.UserID INNER JOIN WebGroup " +
                           "ON WebMember.GroupID = WebGroup.GroupID INNER JOIN WebUserInfo ON WebUser.UserID = WebUserInfo.id_user " +
                           "WHERE (dbo.WebUser.CustomerID = {0}) AND (dbo.WebGroup.GroupName = '{1}')", (LogonContext).User.CustomerID, (LogonContext).GroupName);

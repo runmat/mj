@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
+﻿using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Contracts;
-using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.Autohaus.Models;
 
 namespace CkgDomainLogic.Fahrzeuge.Contracts
