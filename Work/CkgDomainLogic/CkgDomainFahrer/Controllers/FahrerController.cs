@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -13,6 +14,7 @@ using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 
@@ -205,7 +207,7 @@ namespace ServicesMvc.Controllers
 
             return Json(new
             {
-                files = new object[] { new { url = "-" } }   // VirtualPathUtility.ToAbsolute(ViewModel.FotoUploadPathVirtual) + Path.GetFileName(destinationFileName);
+                files = new object[] { new { url = "-" } }   
             });
         }
 

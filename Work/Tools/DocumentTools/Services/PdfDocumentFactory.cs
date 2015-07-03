@@ -25,6 +25,7 @@ namespace DocumentTools.Services
                 var img = XImage.FromFile(file);
                 xgr.DrawImage(img, 0, 0);
                 xgr.Dispose();
+                img.Dispose();
             }
 
             pdfDoc.Save(pdfFileName);
