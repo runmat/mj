@@ -245,6 +245,14 @@ namespace ServicesMvc.Controllers
             return Json(new { success });
         }
 
+        [HttpPost]
+        public ActionResult ProtokollTryLoadSonstigenAuftrag(string auftragsnr)
+        {
+            var success = ViewModel.ProtokollTryLoadSonstigenAuftrag(auftragsnr);
+
+            return Json(new { success });
+        }
+
         //Protokoll
 
         #endregion

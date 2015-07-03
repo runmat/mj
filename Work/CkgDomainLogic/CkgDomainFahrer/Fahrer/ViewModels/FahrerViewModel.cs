@@ -16,6 +16,7 @@ using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using MvcTools.Models;
+using SapORM.Contracts;
 
 namespace CkgDomainLogic.Fahrer.ViewModels
 {
@@ -143,8 +144,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         [LocalizedDisplay(LocalizeConstants.MiscellaneousOrderNo)]
         [Required]
-        public string SonstigeAuftragsNummer 
-        { 
+        public string SonstigeAuftragsNummer
+        {
             get
             {
                 return SelectedFahrerAuftrag == null || !SelectedFahrerAuftrag.IstSonstigerAuftrag ? "" : SelectedFahrerAuftrag.AuftragsNr;
@@ -155,8 +156,10 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                     return;
 
                 SelectedFahrerAuftrag.AuftragsNr = value;
-            } 
+            }
         }
+
+        public bool IstSonstigerAuftrag { get { return SelectedFahrerAuftrag != null && SelectedFahrerAuftrag.IstSonstigerAuftrag; } }
 
         public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrten
         {
@@ -348,6 +351,17 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public void SetParamProtokollMode(string modeProtokoll)
         {
             ModeProtokoll = modeProtokoll.IsNotNullOrEmpty();
+        }
+
+        public bool ProtokollTryLoadSonstigenAuftrag(string auftragsnr)
+        {
+            if (auftragsnr.ToInt() <= 0)
+                return false;
+
+            SonstigeAuftragsNummer = auftragsnr.ToSapKunnr();
+            DataMarkForRefreshUploadedImageFiles();
+
+            return true;
         }
 
         #endregion    
