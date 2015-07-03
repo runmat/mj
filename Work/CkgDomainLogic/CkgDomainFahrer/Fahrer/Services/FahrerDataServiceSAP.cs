@@ -83,18 +83,46 @@ namespace CkgDomainLogic.Fahrer.Services
         {
             EnforceValidUserReference();
 
+#if __TEST
+            return new List<FahrerAuftragsFahrt>
+            {
+                new FahrerAuftragsFahrt
+                {
+                    AuftragsNr = "4711", OrtStart = "Ahrensburg", OrtZiel = "Hamburg", Kennzeichen = "HH-X 133", FahrzeugTyp = "PKW", Fahrt = "H", 
+                },
+                new FahrerAuftragsFahrt
+                {
+                    AuftragsNr = "4712", OrtStart = "Hamburg", OrtZiel = "Bargteheide", Kennzeichen = "OD-Z 987", FahrzeugTyp = "LKW", Fahrt = "R", 
+                },
+            };
+#else
             var sapList = Z_V_UEBERF_AUFTR_FAHRER.T_AUFTRAEGE.GetExportListWithInitExecute(SAP, "I_FAHRER", FahrerID).OrderBy(s => s.AUFNR).ThenBy(s => s.FAHRTNR);
 
             return AppModelMappings.Z_V_UEBERF_AUFTR_FAHRER_T_AUFTRAEGE_to_FahrerAuftragsFahrt.Copy(sapList);
+#endif 
         }
 
         public IEnumerable<IFahrerAuftragsFahrt> LoadFahrerAuftragsProtokolle()
         {
             EnforceValidUserReference();
 
+#if __TEST
+            return new List<FahrerAuftragsProtokoll>
+            {
+                new FahrerAuftragsProtokoll
+                {
+                    AuftragsNr = "5711", OrtStart = "Ahrensburg", OrtZiel = "Hamburg", Kennzeichen = "HH-X 133", Fahrt = "H", ProtokollArt = "DAD_AUSLIEF"
+                },
+                new FahrerAuftragsProtokoll
+                {
+                    AuftragsNr = "5712", OrtStart = "Hamburg", OrtZiel = "Bargteheide", Kennzeichen = "OD-Z 987", Fahrt = "R", ProtokollArt = "DAD_RUECK"
+                },
+            };
+#else
             var sapList = Z_V_UEBERF_AUFTR_UPL_PROT_01.GT_OUT.GetExportListWithInitExecute(SAP, "I_FAHRER", FahrerID).OrderBy(s => s.VBELN).ThenBy(s => s.FAHRTNR);
 
             return AppModelMappings.Z_V_UEBERF_AUFTR_UPL_PROT_01_GT_OUT_to_FahrerAuftragsProtokoll.Copy(sapList);
+#endif
         }
 
         public string SetFahrerAuftragsStatus(string auftragsNr, string status)

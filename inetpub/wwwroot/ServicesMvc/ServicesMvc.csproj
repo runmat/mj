@@ -4483,7 +4483,6 @@
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Fahrer\ProtokollUpload.cshtml" />
     <Content Include="Views\Fahrer\Partial\Upload\ProtokollUpload\UploadEdit.cshtml" />
-    <Content Include="Views\Fahrer\Partial\Upload\ProtokollUpload\UploadNew.cshtml" />
     <Content Include="Views\Fahrer\Partial\Upload\UploadScripts.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>

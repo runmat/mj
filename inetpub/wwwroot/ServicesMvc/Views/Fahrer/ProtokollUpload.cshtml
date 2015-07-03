@@ -11,6 +11,17 @@
     
     .btn-fixed-width { width: 150px!important; display: inline-block; }
     .btn { margin-bottom: 5px; }
+    #upload-edit {
+        margin: 15px 0 0 70px;
+    }
+
+    #upload-edit .controls {
+        margin-left: 0;
+    }
+    #upload-edit .control-label {
+        display: none;
+        width: 0 !important;
+    }
 </style>
 <h3 class="page-title">Protokoll <small>Upload</small></h3>
 
@@ -23,20 +34,9 @@
 </form>
 
 <div id="auftrags-fotos" class="hide">
-    <h5><i class="icon-picture"></i> Protokolle Ihres Auftrags <span id="SelectedAuftragsKey" class="bold">@Model.SelectedFahrerAuftragsKey</span></h5>
-    <div class="tabbable tabbable-custom margin-top-15">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#tab_1_1" data-toggle="tab">Hochladen</a></li>
-            <li><a href="#tab_1_2" onclick="return OnTabUploadedImagesActivated()" data-toggle="tab">Bearbeiten</a></li>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" id="tab_1_1">
-                @Html.Partial("Partial/Upload/ProtokollUpload/UploadNew", Model)
-            </div>               
-            <div class="tab-pane" id="tab_1_2">
-                @Html.Partial("Partial/Upload/ProtokollUpload/UploadEdit", Model)
-            </div>               
-        </div>
+    <h5><i class="icon-picture"></i> Protokoll Ihres Auftrags <span id="SelectedAuftragsKey" class="bold">@Model.SelectedFahrerAuftragsKey</span></h5>
+    <div id="upload-edit">
+        @Html.Partial("Partial/Upload/ProtokollUpload/UploadEdit", Model)
     </div>
 </div>
 
@@ -44,14 +44,15 @@
 
     function FormPreparePrivate() {
         InitUploadControl();
-        InitDropDownList();
+        InitDropdown();
+        InitCheckbox();
     }
     
     function ShowHideAuftragsFotoDiv(cb) {
         if (cb.val() == "-" || cb.val() == null) $("#auftrags-fotos").fadeOut(300); else $("#auftrags-fotos").fadeIn(300); 
     }
 
-    function InitDropDownList() {
+    function InitDropdown() {
 
         ShowHideAuftragsFotoDiv($("#SelectedFahrerAuftragsKey"));
         
@@ -63,7 +64,7 @@
             if (cb.val() == null)
                 return;
 
-            ShowWaitHintUploadedTab();
+            ShowWaitHint();
 
             $.ajax({
                 type: "POST",
@@ -73,7 +74,7 @@
                 loadingShow: false,
                 success: function (result) {
                     $("#SelectedAuftragsKey").html(result.selectedAuftragsKey);
-                    OnTabUploadedImagesActivated();
+                    RefreshPartial();
                 },
                 error: function (jqXhr) {
                     SpanAlertAjaxError("InfoMessage", jqXhr);
@@ -82,24 +83,54 @@
 
         });
         $("#SelectedFahrerAuftragsKey").trigger("change");
+    } 
+    
+    function InitCheckbox() {
+
+        InitFileUploadDueToCheckbox();
+        $("#ProtokollHasMultipleImages").on("change", function() {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "SetProtokollHasMultipleImages",
+                data: { check: $(this).is(":checked") },
+                loadingShow: false,
+                success: function (result) {
+                    InitFileUploadDueToCheckbox();
+                },
+                error: function (jqXhr) {
+                }
+            });
+        });
+    }
+
+    function InitFileUploadDueToCheckbox() {
+        if ($("#ProtokollHasMultipleImages").is(":checked"))
+            $("#fileupload").attr("multiple", "multiple");
+        else
+            $("#fileupload").removeAttr("multiple");
     }
     
-    function ShowWaitHintUploadedTab() {
-        $("#tab_1_2").html("<div class='margin-top-10 margin-bottom-10'><span class='alert'>Bitte einen Moment Geduld...</span></div>");
+    function ShowWaitHint() {
+        $("#upload-edit-hint").html("<div class=''><span class='alert'>Bitte einen Moment Geduld...</span></div>");
     }
 
-    function OnTabUploadedImagesActivated() {
+    function RefreshPartial(suppressShowWaitHint) {
 
-        ShowWaitHintUploadedTab();
-        
+        if (typeof (suppressShowWaitHint) == 'undefined')
+            ShowWaitHint();
+
         $.ajax({
+            cache: false,
             type: "POST",
             url: "GetUploadedImageFilesPartial",
             data: {},
             loadingShow: false,
             success: function (result) {
-                //alert(result);
-                $("#tab_1_2").html(result);
+                $("#upload-edit").html(result);
+                InitUploadControl();
+                InitCheckbox();
+                FormPrepareAjax();
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("InfoMessage", jqXhr);
@@ -108,20 +139,38 @@
 
         return true;
     }
-    
-    function DeleteUploadedImage(deleteButton, imageFileName) {
 
-//        if (!confirm("Foto wirklich löschen?"))
-//            return;
+    function ProtokollCreateAndShowPdf() {
+
+        ShowWaitHint();
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "ProtokollCreateAndShowPdf",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                if (!result.success)
+                    SpanAlertError("InfoMessage", "Beim Erstellen des PDF für Ihr Protokoll ist ein Fehler aufgetreten!", 3000);
+                RefreshPartial(true);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+    }
+
+    function ProtokollDeleteUploadedImagesAndPdf() {
 
         $.ajax({
             type: "POST",
             dataType: 'json',
-            url: "DeleteUploadedImage",
-            data: { imageFileName: imageFileName },
+            url: "ProtokollDeleteUploadedImagesAndPdf",
+            data: {  },
             loadingShow: false,
             success: function (result) {
-                deleteButton.closest(".preview-image").remove();
+                RefreshPartial();
             },
             error: function (jqXhr) {
                 SpanAlertAjaxError("InfoMessage", jqXhr);
@@ -160,13 +209,14 @@
             //.text('Entfernen...')
             .html('<i class="icon-remove"></i>')
             .on('click', function () {
-                var $this = $(this), data = $this.data();
+                var $this = $(this);
 
                 var nodeToRemove = $this.closest("div");
                 nodeToRemove.remove();
 
                 if ($(".upload-single").length == 0) {
-                    $("#upload-all").fadeOut({ duration: 300 });
+                    if ($("#ProtokollHasMultipleImages").is(":checked"))
+                        $("#upload-all").fadeOut({ duration: 300 });
                     $('#progress').fadeOut({ duration: 300 });
                 }
             });
@@ -185,9 +235,12 @@
                 //
                 // upload all finished!
                 $('#progress').fadeOut({ duration: 300 });
-                $("#upload-all").hide();
+                if ($("#ProtokollHasMultipleImages").is(":checked"))
+                    $("#upload-all").hide();
                 $('#progress .bar').css('width', '0%');
-                SpanAlertSuccess("InfoMessage", "Ihr Protokoll wurde hochgeladen!", 8000);
+                SpanAlertSuccess("InfoMessage", "Ihr Protokoll wurde hochgeladen!", 3000);
+
+                ProtokollCreateAndShowPdf();
                 return;
             }
 
@@ -199,7 +252,7 @@
             uploadAllSingleButtonIndex = 0;
             uploadAllSingles();
         });
-
+        
         $('#fileupload').fileupload({
             url: url,
             dataType: 'json',
@@ -213,10 +266,10 @@
             //            disableImageResize: /Android(?!.*Chrome)|Opera/
             //            .test(window.navigator.userAgent),
             disableImageResize: false,
-            previewMaxWidth: 150,
-            previewMaxHeight: 100,
-            imageMaxWidth: 800,
-            imageMaxHeight: 600,
+            previewMaxWidth: 300,
+            previewMaxHeight: 200,
+            imageMaxWidth: 1600,
+            imageMaxHeight: 1200,
             previewCrop: true
         }).on('fileuploadadd', function (e, data) {
             data.context = $('<div/>').appendTo('#files');
@@ -231,8 +284,16 @@
                         .append($('<div/>').text(file.name));
                 }
                 node.appendTo(data.context);
-                $("#upload-all").fadeIn({ duration: 1000 });
-                $('#progress').fadeIn({ duration: 1000 });
+                if ($("#ProtokollHasMultipleImages").is(":checked"))
+                    $("#upload-all").fadeIn({ duration: 400 });
+                $('#progress').fadeIn({ duration: 400 });
+
+                if (!$("#ProtokollHasMultipleImages").is(":checked")) {
+                    // auto upload
+                    setTimeout(function () {
+                        $("#upload-all").trigger("click");
+                    }, 400);
+                }
             });
         }).on('fileuploadprocessalways', function (e, data) {
             var index = data.index,
@@ -262,7 +323,6 @@
                 fileCount = uploadAllSingleButtons.length;
             }
             var progress = parseInt(data.loaded / data.total * 100 / (fileCount / filePosition), 10);
-            //alert(progress);
             $('#progress .bar').css('width', progress + '%');
         }).on('fileuploaddone', function (e, data) {
             $.each(data.result.files, function (index, file) {

@@ -187,6 +187,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public ActionResult SetProtokollHasMultipleImages(bool check)
+        {
+            ViewModel.SetProtokollHasMultipleImages(check);
+
+            return new EmptyResult();
+        }
+        
+        [HttpPost]
         public ActionResult UploadImage(IEnumerable<HttpPostedFileBase> files)
         {
             if (files == null || files.None())
@@ -220,6 +228,24 @@ namespace ServicesMvc.Controllers
 
             return Json(new { success  });
         }
+
+        [HttpPost]
+        public ActionResult ProtokollCreateAndShowPdf()
+        {
+            var success = ViewModel.ProtokollCreateAndShowPdf();
+
+            return Json(new { success });
+        }
+
+        [HttpPost]
+        public ActionResult ProtokollDeleteUploadedImagesAndPdf()
+        {
+            var success = ViewModel.ProtokollDeleteUploadedImagesAndPdf();
+
+            return Json(new { success });
+        }
+
+        //Protokoll
 
         #endregion
 

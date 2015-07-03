@@ -12,7 +12,7 @@
        {
            <div class="preview-image">
                <a target="_blank" href="@Model.GetOriginImageUrl(imageFileName)">
-                   <img src="@Model.GetThumbnailImageUrl(imageFileName)" alt="" />
+                   <img src="@Model.GetThumbnailImageUrl(imageFileName)?@DateTime.Now.Ticks" alt="" />
                </a>
                
                <button class="btn red mini delete-button" onclick="DeleteUploadedImage($(this), '@imageFileName')"><i class="icon-remove"></i></button>

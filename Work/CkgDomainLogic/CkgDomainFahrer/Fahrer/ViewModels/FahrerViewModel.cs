@@ -10,6 +10,7 @@ using CkgDomainLogic.Fahrer.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrer.Contracts;
+using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -131,9 +132,12 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         #endregion
 
 
-        #region Foto Upload
+        #region Foto / Protokoll Upload
 
         public bool ModeProtokoll { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ProtocolHasMultiplePages)]
+        public bool ProtokollHasMultipleImages { get; set; }
 
         public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrten
         {
@@ -170,6 +174,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             SelectedFahrerAuftragsKey = auftragsNr;
             DataMarkForRefreshUploadedImageFiles();
+        }
+
+        public void SetProtokollHasMultipleImages(bool check)
+        {
+            ProtokollHasMultipleImages = check;
         }
 
         static void TryDirectoryCreateAndRaiseError(string directoryName)
@@ -212,7 +221,12 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             return fileParts[1].ToInt();
         }
 
-        public string GetUploadedImageFileName(string auftragsNr, string imageIndex, string fahrerNr, string fahrtNr)
+        private string GetUploadedPdfFileName(FahrerAuftragsProtokoll auftrag)
+        {
+            return string.Format("{0}_{1}_P_{2}_{3}.pdf", LogonContext.KundenNr.PadLeft(10, '0'), auftrag.AuftragsNr.PadLeft(10, '0'), auftrag.ProtokollArt, auftrag.Fahrt);
+        }
+
+        private static string GetUploadedImageFileName(string auftragsNr, string imageIndex, string fahrerNr, string fahrtNr)
         {
             var imageMask = imageIndex.ToInt() == -1 ? "*" : imageIndex.ToInt().ToString("0000");
 
@@ -258,7 +272,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             // save origin / backup file / create thumbnail
             saveAction(destinationFileName);
             FileService.TryFileCopy(destinationFileName, backupFileName);
-            ImagingService.ScaleAndSaveImage(destinationFileName, thumbnailFileName, 200);
+            ImagingService.ScaleAndSaveImage(destinationFileName, thumbnailFileName, ModeProtokoll ? 600 : 200);
             
             DataMarkForRefreshUploadedImageFiles();
         }
@@ -279,6 +293,25 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             FileService.TryFileDelete(thumbnailFileName);
 
             DataMarkForRefreshUploadedImageFiles();
+
+            return true;
+        }
+
+        public bool ProtokollCreateAndShowPdf()
+        {
+            var pdfFileName = Path.Combine(FotoUploadPath, GetUploadedPdfFileName(SelectedFahrerAuftrag as FahrerAuftragsProtokoll));
+            var imageServerFileNames = UploadedImageFiles.Select(serverFileName => Path.Combine(FotoUploadPath, serverFileName));
+            PdfDocumentFactory.CreatePdfFromImages(imageServerFileNames, pdfFileName);
+
+            return true;
+        }
+        
+        public bool ProtokollDeleteUploadedImagesAndPdf()
+        {
+            var pdfFileName = Path.Combine(FotoUploadPath, GetUploadedPdfFileName(SelectedFahrerAuftrag as FahrerAuftragsProtokoll));
+
+            FileService.TryFileDelete(pdfFileName);
+            UploadedImageFiles.ToList().ForEach(f => DeleteUploadedImage(f));
 
             return true;
         }
