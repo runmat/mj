@@ -6,11 +6,12 @@
     var _gridColumnNameList = [];
     var _gridColumnNameListIsValid = false;
     var _gridColumnNameListMode = '';
+    var _gridGroupBy = '';
 
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
 
         if (_filteredData_DisableDataBound)
-            return; 
+            return;
 
         grid = (grid || $(this));
 
@@ -19,7 +20,7 @@
             gridDataBoundFirstTime = true;
             grid.data("gridDataBoundFirstTime", false);
         }
-        
+
         if (gridDataBoundFirstTime) {
             grid.css("opacity", 0.1);
             GridCaptionHintShowAsWait(grid);
@@ -52,7 +53,7 @@
         grid = (grid || $(this));
         //FilteredData_Grid_PrepareAllCommandHrefs(grid);
 
-        _filteredData_force_Grid_OnColumnReorder = true;  
+        _filteredData_force_Grid_OnColumnReorder = true;
         grid.data('tGrid').ajaxRequest();
     }
 
@@ -68,7 +69,7 @@
 
         if (_filteredData_DisableDataBound)
             return;
-        
+
         var dataGrid = grid.data('tGrid');
 
         var jsonColumnsString = GetJsonColumns(dataGrid);
@@ -96,7 +97,7 @@
         var url = "GridSettingsPersist";
         if (document.URL.toLowerCase().indexOf("autohausportalmvc") > 0)
             url = document.URL + "/" + url;
-    
+
         try {
             $.ajax(
                 {
@@ -110,12 +111,12 @@
                         autoPersistInDb: autoPersistInDb
                     },
                     loadingShow: false,
-                    success: function(result) {
+                    success: function (result) {
                         //alert(result.message);
                     }
                 });
-        } catch(e) {
-                //alert(e);
+        } catch (e) {
+            //alert(e);
         }
     }
 
@@ -123,6 +124,7 @@
         _gridColumnNameList = [];
         _gridColumnNameListIsValid = false;
         _gridColumnNameListMode = '';
+        _gridGroupBy = '';
     }
 
     function GridPrepareFromAutoColumnsPersistedState(grid) {
@@ -142,18 +144,28 @@
             grid.hideColumn(hiddenColumns[i].member);
         }
 
+
         //
         // 2. reorder columns
         //
         for (i = settingsColumns.length - 1; i >= 0; i--) {
             var column = grid.columnFromMember(settingsColumns[i]);
-            if (typeof(column) != 'undefined')
-                grid.reorderColumn(0, column); 
+            if (typeof (column) != 'undefined')
+                grid.reorderColumn(0, column);
         }
+
+        //
+        // 3. grid grouping
+        //
+        grid.groups = [];
+        if (_gridGroupBy != '') {
+            grid.group(grid.columnFromMember(_gridGroupBy).title);
+        }
+
 
         GridColumnResetOrderAndVisibility();
     }
-    
+
     function GetJsonColumns(grid) {
         // Update the 'columns' parameter 
         var columnsFiltered = $.grep(grid.columns, function (column, j) {
@@ -192,12 +204,11 @@
         // Update the 'href' attribute
         $exportLink.attr('href', href);
 
-        try 
-        {
+        try {
             TrySetOuterExportLink(grid, $exportLink, href, 'excel');
             TrySetOuterExportLink(grid, $exportLink, href, 'pdf');
         }
-        catch(e) {}
+        catch (e) { }
     }
 
     function GridCaptionGetWaitHintElement(grid) {
