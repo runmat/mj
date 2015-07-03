@@ -15,7 +15,6 @@ using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
-using MvcTools.Models;
 using SapORM.Contracts;
 
 namespace CkgDomainLogic.Fahrer.ViewModels
@@ -243,8 +242,13 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             return fileParts[1].ToInt();
         }
 
-        private string GetUploadedPdfFileName(FahrerAuftragsProtokoll auftrag)
+        public string GetUploadedPdfFileName(FahrerAuftragsProtokoll auftrag = null)
         {
+            if (auftrag == null)
+                auftrag = SelectedFahrerAuftrag as FahrerAuftragsProtokoll;
+            if (auftrag == null)
+                return "";
+
             return string.Format("{0}_{1}_P_{2}_{3}.pdf", LogonContext.KundenNr.PadLeft(10, '0'), auftrag.AuftragsNr.PadLeft(10, '0'), auftrag.ProtokollArt, auftrag.Fahrt);
         }
 
@@ -329,9 +333,14 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             return true;
         }
 
+        public string ProtokollGetFullPdfFilePath()
+        {
+            return Path.Combine(FotoUploadPath, GetUploadedPdfFileName());
+        }
+
         public bool ProtokollCreateAndShowPdf()
         {
-            var pdfFileName = Path.Combine(FotoUploadPath, GetUploadedPdfFileName(SelectedFahrerAuftrag as FahrerAuftragsProtokoll));
+            var pdfFileName = ProtokollGetFullPdfFilePath();
             var imageServerFileNames = UploadedImageFiles.Select(serverFileName => Path.Combine(FotoUploadPath, serverFileName));
             PdfDocumentFactory.CreatePdfFromImages(imageServerFileNames, pdfFileName);
 
@@ -340,7 +349,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         
         public bool ProtokollDeleteUploadedImagesAndPdf()
         {
-            var pdfFileName = Path.Combine(FotoUploadPath, GetUploadedPdfFileName(SelectedFahrerAuftrag as FahrerAuftragsProtokoll));
+            var pdfFileName = Path.Combine(FotoUploadPath, GetUploadedPdfFileName());
 
             FileService.TryFileDelete(pdfFileName);
             UploadedImageFiles.ToList().ForEach(f => DeleteUploadedImage(f));

@@ -8,7 +8,8 @@
     .form-horizontal .controls { margin-left: 170px; }
     .delete-button { vertical-align: top; }
     .preview-image {float: left; margin-right: 15px;margin-bottom: 10px; }
-    
+    @*.preview-image.protokoll{ float:none!important }*@    
+
     .btn-fixed-width { width: 150px!important; display: inline-block; }
     .btn { margin-bottom: 5px; }
     #upload-edit {
@@ -183,6 +184,8 @@
                 SpanAlertAjaxError("InfoMessage", jqXhr);
             }
         });
+
+        return false;
     }
 
     function ProtokollTryLoadSonstigenAuftrag() {

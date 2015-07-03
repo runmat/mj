@@ -332,9 +332,15 @@ namespace GeneralTools.Services
 
         public static void ScaleAndSaveImage(string sourceImageFileName, string destinationImageFileName, int dimensions)
         {
-            var bitmapSource = Image.FromFile(sourceImageFileName);
-            var imgBytes = BytesFromImage(bitmapSource);
-            var bitmapDestination = ImageFromBytes(ScaleImage(imgBytes, dimensions, dimensions));
+            Image bitmapSource;
+            Image bitmapDestination;
+            using (var fs = File.OpenRead(sourceImageFileName))
+            {
+                bitmapSource = Image.FromStream(fs);
+                var imgBytes = BytesFromImage(bitmapSource);
+                bitmapDestination = ImageFromBytes(ScaleImage(imgBytes, dimensions, dimensions));
+                fs.Close();
+            }
 
             TryRotateImageDueToExifOrientationProperty(bitmapSource, bitmapDestination);
 

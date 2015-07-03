@@ -7,9 +7,9 @@
         {
             @Html.FormTextBoxFor(m => m.SonstigeAuftragsNummer, new {@class = "m-wrap small"}, postControlHtml:
                 @<text>
-                     <button class="btn blue" type="submit" onclick="return ProtokollTryLoadSonstigenAuftrag();">@Localize.OK</button>
-                     @Html.SpanAlert("SonstigerAuftragMessage")
-                 </text>)
+                    <button class="btn blue" type="submit" onclick="return ProtokollTryLoadSonstigenAuftrag();">@Localize.OK</button>
+                    @Html.SpanAlert("SonstigerAuftragMessage")
+                </text>)
             
         }
     </form>
@@ -46,18 +46,21 @@
         }
         else
         {
+            <form action="#" class="form-horizontal">
+                @Html.FormPlaceHolder(
+                    @<text>
+                         <a class="btn yellow" href="ProtokollDownloadPdf"><i class="icon-download-alt"></i> @Localize.PdfDownload</a>
+                         <button class="btn red" onclick="return ProtokollDeleteUploadedImagesAndPdf();"><i class="icon-remove"></i> @Localize.Delete</button>
+                    </text>)
+            </form>
+
             var i = 0;
             foreach (var imageFileName in Model.UploadedImageFiles)
             {
-                <div class="preview-image">
+                <div class="preview-image protokoll">
                     <a target="_blank" href="@Model.GetOriginImageUrl(imageFileName)">
                         <img src="@Model.GetThumbnailImageUrl(imageFileName)?@DateTime.Now.Ticks" alt="" />
                     </a>
-             
-                    @if (i++ == 0)
-                    {
-                        <button class="btn red mini delete-button" onclick="ProtokollDeleteUploadedImagesAndPdf()"><i class="icon-remove"></i></button>
-                    }
                 </div>
             }
         }

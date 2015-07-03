@@ -176,7 +176,7 @@ namespace ServicesMvc.Controllers
         #endregion
 
 
-        #region Foto Upload
+        #region Foto / Protokoll Upload
 
         [HttpPost]
         public ActionResult SetSelectedFahrerAuftragsKey(string auftragsKey)
@@ -253,8 +253,13 @@ namespace ServicesMvc.Controllers
             return Json(new { success });
         }
 
-        //Protokoll
+        public FileContentResult ProtokollDownloadPdf()
+        {
+            var pdfFilePath = ViewModel.ProtokollGetFullPdfFilePath();
+            var pdfBytes = System.IO.File.ReadAllBytes(pdfFilePath);
 
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = ViewModel.GetUploadedPdfFileName() };
+        }
         #endregion
 
 
