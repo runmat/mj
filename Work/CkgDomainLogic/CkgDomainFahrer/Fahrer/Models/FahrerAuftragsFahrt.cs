@@ -33,6 +33,8 @@ namespace CkgDomainLogic.Fahrer.Models
             }
         }
 
+        public bool IstSonstigerAuftrag { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Tour)]
         public string Fahrt { get; set; }
 

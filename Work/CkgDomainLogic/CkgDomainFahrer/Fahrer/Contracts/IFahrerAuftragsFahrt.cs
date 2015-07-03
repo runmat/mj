@@ -15,5 +15,7 @@ namespace CkgDomainLogic.Fahrer.Contracts
 
         [SelectListText]
         string AuftragsDetails { get; }
+
+        bool IstSonstigerAuftrag { get; set; }
     }
 }

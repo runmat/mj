@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,7 @@ using DocumentTools.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using MvcTools.Models;
 
 namespace CkgDomainLogic.Fahrer.ViewModels
 {
@@ -139,19 +141,35 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         [LocalizedDisplay(LocalizeConstants.ProtocolHasMultiplePages)]
         public bool ProtokollHasMultipleImages { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.MiscellaneousOrderNo)]
+        [Required]
+        public string SonstigeAuftragsNummer 
+        { 
+            get
+            {
+                return SelectedFahrerAuftrag == null || !SelectedFahrerAuftrag.IstSonstigerAuftrag ? "" : SelectedFahrerAuftrag.AuftragsNr;
+            }
+            set
+            {
+                if (SelectedFahrerAuftrag == null || !SelectedFahrerAuftrag.IstSonstigerAuftrag)
+                    return;
+
+                SelectedFahrerAuftrag.AuftragsNr = value;
+            } 
+        }
+
         public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrten
         {
             get { return PropertyCacheGet(() => new List<IFahrerAuftragsFahrt>()); }
             set { PropertyCacheSet(value); }
         }
 
-        public string FotoUploadPathVirtual { get { return ConfigurationManager.AppSettings["FahrerFotoUploadPathVirtual"]; } }
-        public string FotoUploadPath { get { return ConfigurationManager.AppSettings["FahrerFotoUploadPath"]; } }
+        public string FotoUploadPathVirtual { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathVirtual"]); } }
+        public string FotoUploadPath { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPath"]); } }
+        public string FotoUploadPathBackup { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathBackup"]); } }
 
         public string FotoUploadPathThumbnails { get { return Path.Combine(FotoUploadPath, "_tb"); } }
         public string FotoUploadPathThumbnailsVirtual { get { return Path.Combine(FotoUploadPathVirtual, "_tb"); } }
-
-        public string FotoUploadPathBackup { get { return ConfigurationManager.AppSettings["FahrerFotoUploadPathBackup"]; } }
                                                                                                                                     // ReSharper disable ConvertClosureToMethodGroup
         public List<string> UploadedImageFiles { get { return PropertyCacheGet(() => GetUploadedImageFiles()); } }
                                                                                                                                     // ReSharper restore ConvertClosureToMethodGroup
@@ -161,6 +179,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             if (ModeProtokoll)
             {
                 FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsProtokolle().ToList();
+                FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll { IstSonstigerAuftrag = true, ProtokollArt = "SONSTIGES" });
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll());
             }
             else
@@ -231,6 +250,16 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             var imageMask = imageIndex.ToInt() == -1 ? "*" : imageIndex.ToInt().ToString("0000");
 
             return string.Format("{0}-{1}-{2}-{3}", auftragsNr.TrimStart('0'), imageMask, fahrerNr.TrimStart('0'), fahrtNr);
+        }
+
+        private string GetFotoOrProtocolPath(string path)
+        {
+            if (!ModeProtokoll)
+                return path;
+
+            var slash = (path.Contains("/") ? "/" : "\\");
+
+            return string.Format("{0}{1}{2}", path, slash, "Protokolle");
         }
 
         public List<string> GetUploadedImageFiles()

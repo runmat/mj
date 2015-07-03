@@ -2,16 +2,23 @@
 
 <div class="margin-top-15">
    
-   @if (Model.UploadedImageFiles.None())
-   {
+    <form action="#" class="form-horizontal">
+        @if (Model.SelectedFahrerAuftrag != null && Model.SelectedFahrerAuftrag.IstSonstigerAuftrag)
+        {
+            @Html.FormTextBoxFor(m => m.SonstigeAuftragsNummer, new {@class = "m-wrap small"}, postControlHtml:@<text><span>Bitte </span></text>)
+        }
+    </form>
+
+    @if (Model.UploadedImageFiles.None())
+    {
        <div id="upload-edit-hint" class="alert"><i class='icon icon-bell'></i> Sie haben für den aktuell gewählten Auftrag bisher kein Protokoll hochgeladen.</div>
        
-           <form action="#" class="form-horizontal">
-               @Html.FormCheckBoxFor(m => m.ProtokollHasMultipleImages, new { @class = "m-wrap xlarge" }, labelHidden: true)
+       <form action="#" class="form-horizontal">
+           @Html.FormCheckBoxFor(m => m.ProtokollHasMultipleImages, new { @class = "m-wrap xlarge" }, labelHidden: true)
     
-               @Html.SpanAlert("InfoMessage")
-           </form>
-       <div class="margin-top-15">
+           @Html.SpanAlert("InfoMessage")
+       </form>
+       <div id="protocol-upload-action">
     
            <!-- The fileinput-button span is used to style the file input field as button -->
            <span class="btn btn-success fileinput-button btn green">
@@ -30,23 +37,23 @@
            <div id="files" class="files"></div>
 
        </div>
-   }
-   else
-   {
-       var i = 0;
-       foreach (var imageFileName in Model.UploadedImageFiles)
-       {
-           <div class="preview-image">
-               <a target="_blank" href="@Model.GetOriginImageUrl(imageFileName)">
-                   <img src="@Model.GetThumbnailImageUrl(imageFileName)?@DateTime.Now.Ticks" alt="" />
-               </a>
+    }
+    else
+    {
+        var i = 0;
+        foreach (var imageFileName in Model.UploadedImageFiles)
+        {
+            <div class="preview-image">
+                <a target="_blank" href="@Model.GetOriginImageUrl(imageFileName)">
+                    <img src="@Model.GetThumbnailImageUrl(imageFileName)?@DateTime.Now.Ticks" alt="" />
+                </a>
              
-             @if (i++ == 0)
-             {
-                 <button class="btn red mini delete-button" onclick="ProtokollDeleteUploadedImagesAndPdf()"><i class="icon-remove"></i></button>
-             }
-           </div>
-       }
-   }
+                @if (i++ == 0)
+                {
+                    <button class="btn red mini delete-button" onclick="ProtokollDeleteUploadedImagesAndPdf()"><i class="icon-remove"></i></button>
+                }
+            </div>
+        }
+    }
 
 </div>

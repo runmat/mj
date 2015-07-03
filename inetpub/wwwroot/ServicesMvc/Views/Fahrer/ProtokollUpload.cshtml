@@ -4,24 +4,31 @@
 @Html.Partial("Partial/Upload/UploadScripts")
 
 <style type="text/css">
-    .form-horizontal .control-label { width: 70px; float: left;padding-top: 5px; text-align: left; }
-    .form-horizontal .controls { margin-left: 70px; }
+    .form-horizontal .control-label { width: 170px; float: left;padding-top: 5px; text-align: left; }
+    .form-horizontal .controls { margin-left: 170px; }
     .delete-button { vertical-align: top; }
     .preview-image {float: left; margin-right: 15px;margin-bottom: 10px; }
     
     .btn-fixed-width { width: 150px!important; display: inline-block; }
     .btn { margin-bottom: 5px; }
     #upload-edit {
-        margin: 15px 0 0 70px;
+        margin: 15px 0 0 0;
+    }
+    #protocol-upload-action {
+        margin: 15px 0 0 170px;
+    }
+    #upload-edit-hint {
+        margin: 0 0 0 170px;
     }
 
-    #upload-edit .controls {
+    @*#upload-edit .controls {  
         margin-left: 0;
     }
     #upload-edit .control-label {
         display: none;
         width: 0 !important;
-    }
+    }*@
+
 </style>
 <h3 class="page-title">Protokoll <small>Upload</small></h3>
 

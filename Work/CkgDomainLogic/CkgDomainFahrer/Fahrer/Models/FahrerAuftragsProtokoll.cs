@@ -17,13 +17,19 @@ namespace CkgDomainLogic.Fahrer.Models
         public string AuftragsNrFriendly { get { return AuftragsNr.NotNullOrEmpty().TrimStart('0'); } }
 
         [GridHidden]
-        public string UniqueKey { get { return string.Format("{0}-{1}", AuftragsNr.NotNullOrEmpty(), Fahrt.NotNullOrEmpty()); } }
+        public string UniqueKey { get { return string.Format("{0}-{1}{2}", AuftragsNr.NotNullOrEmpty(), Fahrt.NotNullOrEmpty(), IstSonstigerAuftrag ? "s" : ""); } }
+
+        [LocalizedDisplay(LocalizeConstants.MiscellaneousOrder)]
+        public bool IstSonstigerAuftrag { get; set; }
 
         [GridHidden]
         public string AuftragsDetails
         {
             get
             {
+                if (IstSonstigerAuftrag)
+                    return Localize.MiscellaneousOrder;
+
                 if (AuftragsNr.IsNullOrEmpty())
                     return Localize.DropdownDefaultOptionPleaseChoose;
 
