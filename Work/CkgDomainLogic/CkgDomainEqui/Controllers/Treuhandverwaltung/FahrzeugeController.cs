@@ -62,14 +62,10 @@ namespace ServicesMvc.Controllers
         }
         
         [HttpPost]
-        public ActionResult LoadBerechtigungen(TreuhandverwaltungSelektor selector)
+        public ActionResult ApplyKunde(string kunnr)
         {
-            TreuhandverwaltungViewModel.TreuhandverwaltungSelektor = selector;
+            TreuhandverwaltungViewModel.LoadBerechtigungen(kunnr);
 
-            if (ModelState.IsValid)
-            {
-                TreuhandverwaltungViewModel.LoadBerechtingungen();              
-            }
             return PartialView("Treuhandverwaltung/TreuhandverwaltungKundenAuswahl", TreuhandverwaltungViewModel.TreuhandverwaltungSelektor);
         }
 
@@ -98,48 +94,34 @@ namespace ServicesMvc.Controllers
             return PartialView("Treuhandverwaltung/TreuhandverwaltungGrid", TreuhandverwaltungViewModel);
         }
 
-              
         [HttpPost]
-        public ActionResult ShowBerechtigungen()
+        public ActionResult LoadTreuhandverwaltungFreigaben(TreuhandverwaltungSelektor selector)
         {
-            return PartialView("Treuhandverwaltung/TreuhandverwaltungKundenAuswahl", TreuhandverwaltungViewModel.TreuhandverwaltungSelektor);
-        }
+            TreuhandverwaltungViewModel.TreuhandverwaltungSelektor = selector;
 
-        [HttpPost]
-        public ActionResult LoadTreuhandverwaltungFreigabenGesperrte()
-        {           
-            TreuhandverwaltungViewModel.TreuhandverwaltungSelektor.IsActionShowGesperrte = true;
-            return LoadFreigaben();
-        }
-
-        [HttpPost]
-        public ActionResult LoadTreuhandverwaltungFreigabenAbgelehnte()
-        {
-            TreuhandverwaltungViewModel.TreuhandverwaltungSelektor.IsActionShowGesperrte = false;
-            return LoadFreigaben();
-        }
-
-        private ActionResult LoadFreigaben()
-        {
             if (ModelState.IsValid)
             {
-                TreuhandverwaltungViewModel.LoadTreuhandfreigabe(TreuhandverwaltungViewModel.TreuhandverwaltungSelektor);
+                TreuhandverwaltungViewModel.LoadTreuhandfreigabe(selector);
 
-                if (TreuhandverwaltungViewModel.Treuhandbestands.Count == 0)
+                if (selector.Sperraktion == SperrAktion.Freigeben && TreuhandverwaltungViewModel.Treuhandbestands.Count == 0)
                 {
                     ModelState.AddModelError(String.Empty, Localize.NoDataFound);
                 }
             }
 
-            return PartialView("Treuhandverwaltung/TreuhandverwaltungFreigabeGrid", TreuhandverwaltungViewModel);
+            return PartialView("Treuhandverwaltung/TreuhandverwaltungKundenAuswahl", TreuhandverwaltungViewModel.TreuhandverwaltungSelektor);
         }
 
+        [HttpPost]
+        public ActionResult ShowTreuhandverwaltungFreigaben()
+        {
+            return PartialView("Treuhandverwaltung/TreuhandverwaltungFreigabeGrid", TreuhandverwaltungViewModel);
+        }
 
         [HttpPost]
         public ActionResult FahrzeugeFreigeben()
         {
-            TreuhandverwaltungViewModel.TreuhandverwaltungSelektor.IsActionFreigeben = true;
-            TreuhandverwaltungViewModel.FreigebenAblehnen();
+            TreuhandverwaltungViewModel.FreigebenAblehnen(true, ModelState);
 
             return new EmptyResult();
         }
@@ -147,8 +129,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult FreigabeAblehnen()
         {
-            TreuhandverwaltungViewModel.TreuhandverwaltungSelektor.IsActionFreigeben = false;
-            TreuhandverwaltungViewModel.FreigebenAblehnen();
+            TreuhandverwaltungViewModel.FreigebenAblehnen(false, ModelState);
 
             return new EmptyResult();
         }
@@ -282,7 +263,7 @@ namespace ServicesMvc.Controllers
         {
             // Step 3:  Save CSV data to data store
 
-            TreuhandverwaltungViewModel.SaveUploadItems();
+            TreuhandverwaltungViewModel.SaveUploadItems(ModelState);
 
             return PartialView("Treuhandverwaltung/ExcelUpload/Receipt", TreuhandverwaltungViewModel);
         }

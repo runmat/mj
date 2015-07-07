@@ -27,6 +27,7 @@ namespace ServicesMvc.Controllers
             IDispositionslisteDataService dispositionslisteDataService,
             IZulaufEinsteuerungDataService zulaufEinsteuerungDataService,
             IFahrzeuguebersichtDataService fahrzeuguebersichtDataService,
+            IFahrzeugSperrenVerschiebenDataService sperrenVerschiebenDataService,
             IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService,
             IEquiHistorieVermieterDataService equiHistorieVermieterDataService,
             IEquiHistorieDataService equiHistorieDataService
@@ -49,6 +50,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeuguebersichtDataService);
             InitViewModel(FahrzeuguebersichtViewModel, appSettings, logonContext, fahrzeugeDataService);           
             InitViewModel(FahrzeugzulaeufeViewModel, appSettings, logonContext, fahrzeugzulaeufeDataService);
+            InitViewModel(SperrenVerschiebenViewModel, appSettings, logonContext, sperrenVerschiebenDataService);
             InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
             InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieDataService);
         }
@@ -63,6 +65,7 @@ namespace ServicesMvc.Controllers
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeuguebersichtViewModel>;
         
             Unfallmeldung.GetViewModel = GetViewModel<UnfallmeldungenViewModel>;
+            Fahrzeuguebersicht.GetSperrenVerschiebenViewModel = GetViewModel<FahrzeugSperrenVerschiebenViewModel>;
         }
     }
 }

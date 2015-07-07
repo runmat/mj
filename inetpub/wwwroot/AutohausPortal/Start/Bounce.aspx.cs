@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
+using System.Web.UI;
 
 namespace AutohausPortal.Start
 {
-    public partial class Bounce : System.Web.UI.Page
+    public partial class Bounce : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -58,11 +55,11 @@ namespace AutohausPortal.Start
 
         private void WriteLog(string strMessage)
         {
-            System.Data.SqlClient.SqlConnection conn = new System.Data.SqlClient.SqlConnection(ConfigurationManager.AppSettings["Connectionstring"].ToString());
+            SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"].ToString());
 
             try
             {
-                System.Data.SqlClient.SqlCommand cmdWriteLog = new System.Data.SqlClient.SqlCommand("INSERT INTO LogBounce (Message,UserHostAddress) VALUES (@Message,@UserHostAddress)", conn);
+                SqlCommand cmdWriteLog = new SqlCommand("INSERT INTO LogBounce (Message,UserHostAddress) VALUES (@Message,@UserHostAddress)", conn);
 
                 conn.Open();
 

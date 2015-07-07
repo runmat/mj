@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using CkgDomainLogic.Fahrzeuge.Models;
-using CkgDomainLogic.General.Contracts;
 
 namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
@@ -12,14 +11,12 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         List<TreuhandKunde> GetTreuhandKundenFromSap(TreuhandverwaltungSelektor selector);
 
-        List<TreuhandKunde> GetAuftraggeberFromSap(TreuhandverwaltungSelektor selector);
-
-        TreuhandverwaltungSelektor GetBerechtigungenFromSap(TreuhandverwaltungSelektor selector);
+        void GetBerechtigungenFromSap(TreuhandverwaltungSelektor selector);
 
         void ValidateUploadTreuhandverwaltung(TreuhandverwaltungSelektor selector);
 
-        bool SaveUploadItems(List<TreuhandverwaltungCsvUpload> uploadItems);
+        string SaveUploadItems(List<TreuhandverwaltungCsvUpload> uploadItems);
 
-        void FreigebenAblehnen(TreuhandverwaltungSelektor selector);
+        string FreigebenAblehnen(TreuhandverwaltungSelektor selector, bool freigeben);
     }
 }

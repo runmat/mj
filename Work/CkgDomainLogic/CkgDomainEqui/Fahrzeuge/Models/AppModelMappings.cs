@@ -161,7 +161,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_UF_MELDUNGS_SUCHE.GT_UF, Unfallmeldung>(
-                     new Dictionary<string, string>()
+                     new Dictionary<string, string> ()
                     , (sap, business) =>
                     {
                         business.AnlageDatum = sap.ERDAT;
@@ -172,9 +172,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.KennzeicheneingangsDatum = sap.EG_KENNZ;
                         business.AbmeldeDatum = sap.ABMDT;
                         business.StationsCode = sap.STATION;
-                        business.Mahnstufe = sap.MAHNSTUFE;
+                        business.Mahnstufe = sap.MAHNSTUFE;                        
                         business.UnfallNr = sap.UNFALL_NR;
                         business.StornoDatum = sap.STORNODAT;
+                        business.StornoText = sap.STORNOBEM;
                     }));
             }
         }
@@ -228,23 +229,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.AGName = sap.NAME1_AG;
                         business.AGNummer = sap.AG;
                         business.TGNummer = sap.TREU;
-                       
-                    }));
-            }
-        }
-
-        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAG
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
-                    new Dictionary<string, string>()
-                    , (sap, business) =>
-                    {
-                        business.TGName = sap.NAME1_AG;
-                        business.AGName = sap.NAME1_TG;
-                        business.AGNummer = sap.TREU;
-                        business.TGNummer = sap.AG;
+                        business.Selection = sap.ZSELECT;
                     }));
             }
         }
@@ -264,32 +249,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.NameTG = sap.NAME1_TG;
                         business.TGNummer = sap.KUNNR_TG;
                         business.Zb2Nummer = sap.TIDNR;
-                        business.Vertragsnummer = sap.LIZNR;                        
+                        business.Vertragsnummer = sap.LIZNR;
                         business.Versandadresse = string.Concat(sap.NAME2_ZS.AppendIfNotNull(", "), sap.STRASSE_ZS.AppendIfNotNull(", "), sap.PLZ_ZS.AppendIfNotNull(", "), sap.ORT_ZS);
                         business.Ersteller = sap.ERNAM;
                         business.Belegnummer = sap.BELNR;
-                        business.Referenz = sap.ZZREFERENZ2;     
+                        business.Referenz = sap.ZZREFERENZ2;
+                        business.Ablehnungsgrund = sap.NICHT_FREIG_GRU;
+                        business.Ablehnender = sap.FREIGABEUSER;
                     }));
             }
         }
-
-        static public ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde> Z_M_TH_GET_TREUH_AG_GT_EXP_ToTreuhandKundenAGServices
-        {
-            get
-            {
-                return EnsureSingleton(() => new ModelMapping<Z_M_TH_GET_TREUH_AG.GT_EXP, TreuhandKunde>(
-                    new Dictionary<string, string>()
-                    , (sap, business) =>
-                    {
-                        business.TGName = sap.NAME1_AG;
-                        business.AGName = sap.NAME1_TG;
-                        business.AGNummer = sap.TREU;
-                        business.TGNummer = sap.AG;
-                        business.IsServicesAGMapping = true;
-                    }));
-            }
-        }
-
 
         static public ModelMapping<Z_M_EC_AVM_ZULASSUNGEN.GT_WEB, Dispositionsliste> Z_M_EC_AVM_ZULASSUNGEN_GT_WEB_ToDispositionsliste        
         {
@@ -354,20 +323,25 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
                         business.BereitmeldungDatum = sap.ZZDAT_BER;
                         business.Hersteller = sap.ZZHERST_TEXT;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.BemerkungSperre = sap.ZBEMERKUNG;
+                        business.Gesperrt = (sap.ZZAKTSPERRE == "JA");
+                        business.MeldungsNr = sap.QMNUM;
+                        business.DadPdi = sap.ZZCARPORT;
+                        business.Farbcode = sap.ZFARBE;
+                        business.Farbname = sap.FARBE_TEXT;
+                        business.Anhaengerkupplung = sap.ZAHK.XToBool();
+                        business.Navi = sap.ZNAVI.XToBool();
+                        business.Winterreifen = sap.ZMS_REIFEN.XToBool();
                         business.SIPPCode = sap.ZZSIPP;
                         business.Auftragsnummer = sap.LIZNR;
                         business.Zb2Nummer = sap.TIDNR;
                         business.BatchId = sap.ZBATCH_ID;
-                        business.Winterreifen = sap.ZMS_REIFEN.XToBool();
-                        business.Navi = sap.ZNAVI.XToBool();
-                        business.Anhaengerkupplung = sap.ZAHK.XToBool();
                         business.Fahrzeugtyp = sap.FZGART;
 
                         business.Farbcode = sap.ZFARBE;
                         business.Farbname = sap.FARBE_TEXT;
-                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
-                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
-                        business.BemerkungSperre = sap.ZBEMERKUNG;
                         business.KraftstoffArt = sap.ZZKRAFTSTOFF_TXT;
                         business.ZulassungBereit = sap.ZULBEREIT.XToBool();
                         business.ZulassungsSperre = sap.ZZAKTSPERRE.XToBool();
@@ -405,6 +379,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     {
                         business.PDIKey = sap.KUNPDI;
                         business.PDIText = sap.PDIWEB;
+                        business.DadPdi = sap.DADPDI;
                     }));
             }
         }
@@ -452,10 +427,13 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Modell = sap.ZZBEZEI;
                         business.Hersteller = sap.HERST_T;
                         business.EingangFahrzeugDatum = sap.ZZDAT_EIN;
-                        business.Farbe = sap.ZZFARBE;
+                        business.Farbcode = sap.ZZFARBE;
                         business.Reifen = sap.ZZREIFEN;
                         business.Navi = sap.ZZNAVI;
                         business.Ahk = sap.ZAHK;
+                        business.BemerkungIntern = sap.BEMERKUNG_INTERN;
+                        business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
+                        business.AuftragsNummer = sap.ZZREF1;
                         business.SippCode = sap.ZZSIPP1.NotNullOrEmpty() + sap.ZZSIPP2.NotNullOrEmpty() +
                                             sap.ZZSIPP3.NotNullOrEmpty() + sap.ZZSIPP4.NotNullOrEmpty();
                     }));
@@ -508,7 +486,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 if (sap == null)
                     continue;
 
-                business.Bemerkung = sap.TDLINE;
+                business.BemerkungSperre = sap.TDLINE;
             }
        }
 
@@ -706,7 +684,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-
         static public ModelMapping<Z_DPM_FREIG_VERSAND_SPERR_001.GT_WEB, Treuhandbestand> Z_DPM_FREIG_VERSAND_SPERR_001_GT_WEB_From_Treuhandbestand
         {
             get
@@ -724,8 +701,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 ));
             }
         }
-
-      
 
         static public ModelMapping<Z_DPM_IMP_MODELL_ID_01.GT_IN, FahrzeugvoravisierungUploadModel> Z_DPM_IMP_MODELL_ID_01_GT_IN_From_FahrzeugvoravisierungUploadModel
         {

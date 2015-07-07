@@ -1,6 +1,7 @@
 ﻿using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.Equi.Contracts;
+using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
@@ -53,6 +54,7 @@ namespace ServicesMvc.Controllers
         void InitModelStatics()
         {
             CkgDomainLogic.Equi.Models.VersandOptionen.GetViewModel = GetViewModel<BriefversandViewModel>;
+            FahrzeugAnforderung.GetViewModel = GetViewModel<EquiHistorieVermieterViewModel>;
         }
 
         public ActionResult Index()
