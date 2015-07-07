@@ -25,6 +25,11 @@ namespace ServicesMvc
         {
             Instance = this;
 
+            // register theme supporting web form view engine
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new WebFormViewEngineThemed());
+
+            // Register Areas (auto register)
             AreaAutoRegistration.RegisterAreasFolder(Assembly.GetAssembly(typeof(MvcApplication)));
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);

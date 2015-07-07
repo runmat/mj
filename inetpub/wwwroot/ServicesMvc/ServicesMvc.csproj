@@ -710,6 +710,16 @@
     <Content Include="assets\plugins\flot\jquery.flot.axislabels.js" />
     <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.1.custom.min.js" />
     <Content Include="assets\plugins\uniform\images\sprite.png" />
+    <Content Include="Content\2012.2.607\AH2015\editor.png" />
+    <Content Include="Content\2012.2.607\AH2015\imagebrowser.png" />
+    <Content Include="Content\2012.2.607\AH2015\loading.gif" />
+    <Content Include="Content\2012.2.607\AH2015\slider-h.gif" />
+    <Content Include="Content\2012.2.607\AH2015\slider-v.gif" />
+    <Content Include="Content\2012.2.607\AH2015\sprite.png" />
+    <Content Include="Content\2012.2.607\AH2015\treeview-line.png" />
+    <Content Include="Content\2012.2.607\AH2015\treeview-nodes-rtl.png" />
+    <Content Include="Content\2012.2.607\AH2015\treeview-nodes.png" />
+    <Content Include="Content\2012.2.607\telerik.AH2015.min.css" />
     <Content Include="Content\fileupload\blueimp-gallery.min.css" />
     <Content Include="Content\fileupload\bootstrap.min.css" />
     <Content Include="Content\fileupload\demo-ie8.css" />
@@ -720,6 +730,7 @@
     <Content Include="Content\fileupload\jquery.fileupload.css" />
     <Content Include="Content\fileupload\style.css" />
     <Content Include="Content\img\loading.gif" />
+    <Content Include="Content\defaults.css" />
     <Content Include="Images\BriefversandCsvTemplate.png" />
     <Content Include="Images\CarGateCsvTemplate.png" />
     <Content Include="Images\fahrer\1.png" />
@@ -4482,6 +4493,8 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
+    <Content Include="Views\Shared\Formulare\Partial\UserMenu.cshtml" />
+    <Content Include="Views\Shared\Formulare\Wrappers\FormSearchBox_Begin.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

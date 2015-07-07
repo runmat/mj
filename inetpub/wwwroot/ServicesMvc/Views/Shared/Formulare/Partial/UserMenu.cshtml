@@ -1,0 +1,18 @@
+﻿@model CkgDomainLogic.General.Contracts.ILogonContextDataService
+
+@if (Model != null)
+{
+    <ul class="nav pull-right">
+        <div class="alert alert-danger">TEST TEST</div>   
+        @if (Model.MaintenanceInfo != null)
+        {
+            @Html.Partial("Partial/UserMenuMessagesDropdown", Model.MaintenanceInfo)
+        }
+
+        @Html.Partial("Partial/UserMenuUserInfoDropdown")
+
+        @{ViewBag.HeaderIconCssClass = "icon-globe";}
+        @Html.Partial("Partial/UserLanguageSwitch")
+
+    </ul>
+}

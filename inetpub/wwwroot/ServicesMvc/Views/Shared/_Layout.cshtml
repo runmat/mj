@@ -19,17 +19,29 @@
             }
         </title>
 
-        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.Simple.css").Combined(true).Compress(true)))
+        <!-- BEGIN Telerik Style Sheets -->
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.AH2015.css").Combined(true).Compress(true)))
+        <!-- END Telerik Style Sheets -->
         
+        <!-- BEGIN Partial/LayoutPage/Styles -->
         @Html.Partial("Partial/LayoutPage/Styles")
+        <!-- END Partial/LayoutPage/Styles -->
+        
+        <!-- BEGIN Partial/LayoutPage/ScriptsPreload -->
         @Html.Partial("Partial/LayoutPage/ScriptsPreload")
+        <!-- END Partial/LayoutPage/ScriptsPreload -->
 
         <link href="~/content/SiteAllLayouts.css?v=20150605" rel="stylesheet" type="text/css" />
         <link href="~/content/Site.css?v=20150126" rel="stylesheet" type="text/css" />
     </head>
     <body class="fixed-top">
+        <!-- BEGIN Partial/TelerikGridDummy -->
         @Html.Partial("Partial/TelerikGridDummy")
+        <!-- END Partial/TelerikGridDummy -->
+
+        <!-- BEGIN Partial/LayoutPage/Scripts -->
         @Html.Partial("Partial/LayoutPage/Scripts")
+        <!-- END Partial/LayoutPage/Scripts -->
         
         <img class="loading hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
         <img class="loading2 hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
@@ -41,7 +53,9 @@
                 <div class="container-fluid gray">
                     <!-- BEGIN LOGO -->
                     <a class="brand" href="~/">
+                        <!-- BEGIN Partial/LayoutPageHeader -->
                         @Html.Partial("Partial/LayoutPageHeader", logonContext)
+                        <!-- END Partial/LayoutPageHeader -->
                     </a>
                     <!-- END LOGO -->
                     <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -50,7 +64,11 @@
                     </a>          
                     <!-- END RESPONSIVE MENU TOGGLER -->            
                     <!-- BEGIN TOP NAVIGATION MENU -->              
+
+                    <!-- BEGIN Partial/UserMenu -->
                     @Html.Partial("Partial/UserMenu", logonContext)
+                    <!-- END Partial/UserMenu -->
+
                     <!-- END TOP NAVIGATION MENU --> 
                 </div>
             </div>
@@ -80,8 +98,9 @@
                         <!-- END RESPONSIVE QUICK SEARCH FORM -->
                     </li>
 				
-                	        		
+                	<!-- BEGIN Partial/Menus/AppMenu -->
                     @Html.Partial("Partial/Menus/AppMenu")
+                    <!-- END Partial/Menus/AppMenu -->
 
                 </ul>
                 <!-- END SIDEBAR MENU -->
@@ -95,7 +114,9 @@
                 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
                 <!-- BEGIN PAGE CONTAINER-->
                 <div class="container-fluid body-container">
+                	<!-- BEGIN Page Body -->
                     @RenderBody()
+                	<!-- BEGIN Page Body -->
                 </div>
                 <!-- END PAGE CONTAINER-->    
             </div>
@@ -123,11 +144,9 @@
         <script type="text/javascript">
 
             function FormPrepareLayoutPrivate() {
-                //alert('FormPrepareLayoutPrivate()');
             }
 
             function FormPrepareAjaxLayoutPrivate() {
-                //alert('FormPrepareAjaxLayoutPrivate()');
             }
         
         </script>

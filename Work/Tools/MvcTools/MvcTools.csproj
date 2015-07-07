@@ -189,6 +189,7 @@
     <Compile Include="Web\SessionHelper.cs" />
     <Compile Include="Web\StringExtensions.cs" />
     <Compile Include="Web\TelerikExtensions.cs" />
+    <Compile Include="Web\WebFormViewEngineThemed.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
