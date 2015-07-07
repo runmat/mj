@@ -111,7 +111,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportFahrzeuguebersichtFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = FahrzeuguebersichtViewModel.FahrzeuguebersichtsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationRequests, dt);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Vehicles, dt);
 
             return new EmptyResult();
         }
@@ -119,7 +119,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportFahrzeuguebersichtFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = FahrzeuguebersichtViewModel.FahrzeuguebersichtsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationRequests, dt, landscapeOrientation: true);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Vehicles, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }
