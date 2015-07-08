@@ -19,6 +19,7 @@ using CkgDomainLogic.Fahrzeuge.Models;
 using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
+using ServicesMvc.Areas.Fahrzeug.Models.HolBringService;
 using AppModelMappings = CkgDomainLogic.Fahrzeuge.Models.AppModelMappings;
 
 // ReSharper restore RedundantUsingDirective
@@ -48,10 +49,83 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             var sapList = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP).OrderBy(x => x.NAME1);
 
-            // var result = sapList.Select(x => new { x.NAME1, x.STREET, x.HOUSE_NUM1, x.POST_CODE1, x.CITY1 }).OrderBy(x => x.NAME1).ToList();
+            return sapList;
+        }
+
+        // public IOrderedEnumerable<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(BapiParameterSet bapiParameterSet, out byte[] pdfGenerated)
+        public List<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(List<BapiParameterSet> bapiParameterSets, out byte[] pdfGenerated)
+        {
+
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                    // exception safe SAP action:
+                    () =>
+                    {
+                        var list = Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN.GetImportList(SAP);
+
+                        foreach (var f in bapiParameterSets)
+                            list.Add(new Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN 
+                            {
+                                ABHOLUNGANSPRECHPARTNER = f.AbholungAnsprechpartner,
+                                ABHOLUNGDATETIME = f.AbholungDateTime.ToString("dd.MM.yyyy"),
+                                ABHOLUNGHINWEIS = f.AbholungHinweis,
+                                ABHOLUNGKUNDE = f.AbholungKunde,
+                                ABHOLUNGMOBILITAETSFAHRZEUG = f.AbholungMobilitaetsfahrzeug.ToString(),
+                                ABHOLUNGORT = f.AbholungOrt,
+                                ABHOLUNGPLZ = f.AbholungPlz,
+                                ABHOLUNGSTRASSEHAUSNR = f.AbholungStrasseHausNr,
+                                ABHOLUNGTEL = f.AbholungTel,
+                                ANLIEFERUNGABHOLUNGABDT = f.AnlieferungAbholungAbDt.ToString("dd.MM.yyyy"),
+                                ANLIEFERUNGANLIEFERUNGBISDT = f.AnlieferungAnlieferungBisDt.ToString("dd.MM.yyyy"),
+                                ANLIEFERUNGANSPRECHPARTNER = f.AnlieferungAnsprechpartner,
+                                ANLIEFERUNGHINWEIS = f.AnlieferungHinweis,
+                                ANLIEFERUNGKUNDE = f.AnlieferungKunde,
+                                ANLIEFERUNGMOBILITAETSFAHRZEUG = f.AnlieferungMobilitaetsfahrzeug.ToString(),
+                                ANLIEFERUNGORT = f.AnlieferungOrt,
+                                ANLIEFERUNGPLZ = f.AnlieferungPlz,
+                                ANLIEFERUNGSTRASSEHAUSNR = f.AnlieferungStrasseHausNr,
+                                ANLIEFERUNGTEL = f.AnlieferungTel,
+                                ANSPRECHPARTNER = f.Ansprechpartner,
+                                ANSPRECHPARTNERTEL = f.AnsprechpartnerTel,
+                                AUFTRAGERSTELLERTEL = f.AuftragerstellerTel,
+                                AUFTRAGSERSTELLER = f.Auftragsersteller,
+                                BETRIEBHAUSNR = f.BetriebHausNr,
+                                BETRIEBNAME = f.BetriebName,
+                                BETRIEBORT = f.BetriebOrt,
+                                BETRIEBPLZ = f.BetriebPLZ,
+                                BETRIEBSTRASSE = f.BetriebStrasse,
+                                FAHRZEUGART = f.Fahrzeugart,
+                                KENNNZEICHEN = f.Kennnzeichen,
+                                KUNDETEL = f.KundeTel,
+                                REPCO = f.Repco
+                            });
+
+                        Z_ZLD_AH_2015_HOLUNDBRING_PDF.Init(SAP);
+                        SAP.ApplyImport(list);
+                        SAP.Execute();
+
+                        var retCode = SAP.GetExportParameter("E_SUBRC");
+                        var retMessage = SAP.GetExportParameter("E_MESSAGE");
+                    },
+
+                    // SAP custom error handling:
+                    () =>
+                    {
+                        var sapResult = SAP.ResultMessage;
+                        if (SAP.ResultMessage.IsNotNullOrEmpty())
+                            return sapResult;
+
+                        return "";
+                    });
+
+            try { pdfGenerated = SAP.GetExportParameterByte("E_PDF"); }
+            catch { pdfGenerated = null; }
+            
+            var sapList = Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN.GetExportListWithExecute(SAP);
+
+            var pdf2 = SAP.GetExportParameterByte("E_PDF");
 
             return sapList;
-
         }
 
         public HolBringServiceDataServiceSAP(ISapDataService sap)

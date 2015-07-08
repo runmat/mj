@@ -50,11 +50,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             set { PropertyCacheSet(value); }
         }
 
-        public Overview Overview                        
-        {
-            get { return PropertyCacheGet(() => Overview); }
-            set { PropertyCacheSet(value); }
-        }
+        public Overview Overview { get; set; }
         #endregion
 
         public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
@@ -86,6 +82,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             get { return string.Format("{0}", StepKeys[0]); }
         }
         #endregion
+
+        public byte[] GenerateSapPdf(List<BapiParameterSet> bapiParameterSets)
+        {
+            byte[] pdfGenerated;
+
+            DataService.GenerateSapPdf(bapiParameterSets, out pdfGenerated);
+
+            return pdfGenerated;
+        }
 
         public void DataInit()
         {

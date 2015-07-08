@@ -41,14 +41,7 @@
     function FormPreparePrivateAjax(step) {        
         FormPrepareAjax();
         var stepKey = FormWizard.GetStepKey(step + 1);
-//        alert("FormPreparePrivateAjax: " + stepKey);
         
-        if ('Auftraggeber' == stepKey) {
-            // GridAllColumnFilterApplyToGrid("GridFahrzeugSummary");
-        }
-        if ('Abholung' == stepKey) {
-//            $("#GridFahrzeugSummary .t-grouping-header").hide();
-        }
         $('.tooltips').tooltip();
     }
 
@@ -60,7 +53,6 @@
 
         FormWizard.OnNext(function (step, maxSteps) {
             var stepName = FormWizard.GetStepKey(step - 1);
-//            alert("FormWizard.OnNext" + stepName);
             try {
                 $("#AjaxForm" + stepName).submit();
                 window.scrollTo(0, 0);
@@ -104,20 +96,20 @@
     
     function AjaxRequestNextStep() {
         var nextTabKey = FormWizard.GetNextTabKey();
-//        alert("AjaxRequestNextStep: " + nextTabKey);
+        // alert("AjaxRequestNextStep: " + nextTabKey);
         $.ajax({
             type: "POST",
             url: nextTabKey,
-            data: {},
+            data: {firstRequest: 'ok'},
             loadingShow: true,
             success: function (result) {
                 if (typeof (result.message) !== "undefined") {
                     alert(result.message);
                     return;
                 }
-                if (nextTabKey == "Receipt") {
-                    $("#GridFahrzeugSummaryWrapper").html("");
-                }
+//                if (nextTabKey == "Receipt") {
+//                    $("#GridFahrzeugSummaryWrapper").html("");
+//                }
 
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
             }

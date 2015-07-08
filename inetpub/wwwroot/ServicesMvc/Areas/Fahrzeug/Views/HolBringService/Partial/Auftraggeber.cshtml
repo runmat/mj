@@ -15,7 +15,6 @@
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuftraggeber" }))
     {
         @Html.FormValidationSummary()
-        @Html.Hidden("formSubmit", "ok")
 
         @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap readonly", col = "left", @readonly = "" })
         @Html.FormTextBoxFor(m => m.AuftragerstellerTel, new { @class = "m-wrap ", col = "right" })
@@ -37,6 +36,8 @@
 
         <span class="clearfix"></span>
         @Html.FormRequiredFieldsSummary()
+        
+        <a href="GeneratedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='@Localize.OrderListAsPdfFile' data-placement="top"> @Localize.OrderList <i class="icon-download-alt"></i></a>
         
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();

@@ -13,8 +13,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 {
     public class Overview 
     {
+
+        [XmlIgnore]
         public byte[] PdfUploaded { get; set; }
+
+        [XmlIgnore]
         public byte[] PdfGenerated { get; set; }
+
+        [XmlIgnore]
         public byte[] PdfMerged { get; set; }
     }
 }
