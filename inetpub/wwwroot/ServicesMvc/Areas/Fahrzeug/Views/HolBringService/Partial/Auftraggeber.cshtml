@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.DomainCommon.Models
-@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
+﻿@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
 @model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Auftraggeber 
 
 <script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
@@ -14,6 +13,7 @@
                 new MvcAjaxOptions { UpdateTargetId = "DivAuftraggeber", OnComplete = "AjaxFormAuftraggeberComplete();" },
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuftraggeber" }))
     {
+        
         @Html.FormValidationSummary()
 
         @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap readonly", col = "left", @readonly = "" })
@@ -35,13 +35,11 @@
         @Html.FormDropDownListFor(m => m.FahrzeugartId, globalData.Fahrzeugarten.ToSelectList(), new { @class = "m-wrap small", col = "right" })
 
         <span class="clearfix"></span>
-        @Html.FormRequiredFieldsSummary()
-        
-        <a href="GeneratedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='@Localize.OrderListAsPdfFile' data-placement="top"> @Localize.OrderList <i class="icon-download-alt"></i></a>
-        
+        @Html.FormRequiredFieldsSummary()                
+            
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-
+            
             var arrBetriebe = @Html.Raw(globalData.BetriebeSapJsArray);
 
             $(function() {

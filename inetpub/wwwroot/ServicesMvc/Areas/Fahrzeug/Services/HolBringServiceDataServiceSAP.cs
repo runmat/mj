@@ -53,8 +53,11 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         }
 
         // public IOrderedEnumerable<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(BapiParameterSet bapiParameterSet, out byte[] pdfGenerated)
-        public List<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(List<BapiParameterSet> bapiParameterSets, out byte[] pdfGenerated)
+        public List<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(List<BapiParameterSet> bapiParameterSets, out byte[] pdfGenerated, out int retCode, out string retMessage)
         {
+
+            var tmpRetCode = -1;
+            var tmpRetMessage = "";
 
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -104,8 +107,8 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                         SAP.ApplyImport(list);
                         SAP.Execute();
 
-                        var retCode = SAP.GetExportParameter("E_SUBRC");
-                        var retMessage = SAP.GetExportParameter("E_MESSAGE");
+                        tmpRetCode = Convert.ToInt32(SAP.GetExportParameter("E_SUBRC"));
+                        tmpRetMessage = SAP.GetExportParameter("E_MESSAGE");
                     },
 
                     // SAP custom error handling:
@@ -119,13 +122,15 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                     });
 
             try { pdfGenerated = SAP.GetExportParameterByte("E_PDF"); }
-            catch { pdfGenerated = null; }
+                catch { pdfGenerated = null; }
             
-            var sapList = Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN.GetExportListWithExecute(SAP);
+            // var sapList = Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN.GetExportListWithExecute(SAP);
 
-            var pdf2 = SAP.GetExportParameterByte("E_PDF");
+            retCode = tmpRetCode;
+            retMessage = tmpRetMessage;
 
-            return sapList;
+            return null;
+            // return sapList;
         }
 
         public HolBringServiceDataServiceSAP(ISapDataService sap)

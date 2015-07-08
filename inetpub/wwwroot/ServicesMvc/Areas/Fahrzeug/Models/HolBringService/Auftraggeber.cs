@@ -25,6 +25,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 
         [LocalizedDisplay(LocalizeConstants.Repco)]
         [StringLength(30)]
+        [Required]
         public string Repco { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
@@ -50,6 +51,12 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
     
         [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
         public int FahrzeugartId { get; set; }
+        public string Fahrzeugart { get; set; }
+
+        public string BetriebStrasse { get; set; }
+        public string BetriebHausNr { get; set; }
+        public string BetriebPLZ { get; set; }
+        public string BetriebOrt { get; set; }
 
     }
 }

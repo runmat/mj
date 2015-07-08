@@ -1,5 +1,4 @@
-﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Upload 
-
+﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Upload
 <script>
 
     function UploadStart(e) {
@@ -27,9 +26,12 @@
             return;
         }
 
-        alert(e.response.message);
-        $('#PdfPreview').attr('src', 'C:\temp\2ff07bde-0f87-40a9-8200-c6ad8de4fec6.pdf');
-        // ShowGrid(true);
+        $('#PdfPreview').attr('src', 'ShowUploadedPdf');
+        parent.document.getElementById('PdfPreview').contentWindow.location.reload();
+        setTimeout(
+            function () {
+                $('#PdfPreview').removeClass("hidden");
+            }, 2000);
     }
 
     function UploadError(e) {
@@ -37,9 +39,14 @@
         setTimeout("LoadingHide()", 1000);
         alert('@Localize.ErrorFileCouldNotBeSaved');
     }
+
+    function RemovePdfFile() {
+        alert("RemovePdfFile");
+        $('.fileUpload').val("");
+        $('#PdfPreview').addClass("hidden");
+    }
     
 </script>
-
 <div id="DivUpload" class="margin-top-20">
     @using (Ajax.BeginForm("Upload", "HolBringService", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivUpload", OnComplete = "AjaxFormUploadComplete();" },
@@ -47,36 +54,53 @@
     {
         @Html.FormValidationSummary()
         
-        <h3>Werkstattauftrag</h3>
+        <h3>
+            Werkstattauftrag</h3>
         
-        <div class="control-group">
-            <label class="control-label">@Localize.UploadPdfFile:</label>
-            <div class="controls">
+        <div class="row-fluid">
+            <div class="span7">
+                <div class="control-group">
+                    <label class="control-label">@Localize.UploadPdfFile:</label>
+                    <div class="controls">
+                        @(Html.Telerik().Upload()
+                              .Name("fileUpload")
+                              .Localizable("de-DE")
+                              .Async(async => async
+                                                  .Save("UploadPdfStart", "HolBringService")
+                                                  .SaveField("uploadFiles")
+                                                  .AutoUpload(true))
+                              .Multiple(false)
+                              .ShowFileList(false)
+                              .ClientEvents(events => events
+                                                          .OnUpload("UploadStart")
+                                                          .OnSuccess("UploadFinished")
+                                                          .OnError("UploadError")
+                              )
+                              )
+                    </div>
+                </div>
                 
-                @(Html.Telerik().Upload()
-                      .Name("fileUpload")
-                      .Localizable("de-DE")
-                      .Async(async => async
-                                          .Save("UploadPdfStart", "HolBringService")
-                                          .SaveField("uploadFiles")
-                                          .AutoUpload(true))
-                      .Multiple(false)
-                      .ShowFileList(false)
-                      .ClientEvents(events => events
-                                                  .OnUpload("UploadStart")
-                                                  .OnSuccess("UploadFinished")
-                                                  .OnError("UploadError")
-                      )
-                      )
+                <div id="DivPdfPreview">
+                    <iframe id="PdfPreview" src="ShowUploadedPdf" frameborder="0" scrolling="yes" width="100%" height="400" class="hidden"></iframe>
+                </div>
+
+            </div>
+            <div class="span5">
+                <button onclick="RemovePdfFile();" type="button" class="btn green">
+                    <i class="icon-ok"></i> Datei entfernen</button>
             </div>
         </div>
         
-        <div id="DivPdfPreview">
-            <iframe id="PdfPreview" width="400" height="400"></iframe>
-        </div>
-        
         <script type="text/javascript">
-            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+                _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+                $(function() {
+                    @if (Model.PdfBytes != null)
+                    {
+                        <text>$('#PdfPreview').removeClass("hidden");</text>
+                    }
+                });
         </script>
-    }
+        
+            }
 </div>

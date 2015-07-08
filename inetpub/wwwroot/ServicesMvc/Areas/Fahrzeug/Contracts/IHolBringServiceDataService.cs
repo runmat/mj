@@ -18,7 +18,9 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         IOrderedEnumerable<Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB> LoadKundenFromSap();
 
-        List<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(List<BapiParameterSet> bapiParameterSets, out byte[] pdfGenerated);
+        List<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(List<BapiParameterSet> bapiParameterSets,
+                                                                    out byte[] pdfGenerated, out int retCode,
+                                                                    out string retMessage);
 
     }
 }

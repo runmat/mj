@@ -81,13 +81,60 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get { return string.Format("{0}", StepKeys[0]); }
         }
+
+        public BapiParameterSet GetBapiParameterSets
+        {
+            get
+            {
+                var bapiParameterSet = new BapiParameterSet
+                {
+                    AbholungAnsprechpartner = Abholung.AbholungAnsprechpartner, //  "AbholungAnsprechpartner",
+                    AbholungDateTime = Abholung.AbholungDatum, //  new DateTime(2015, 7, 1),
+                    AbholungHinweis = Abholung.AbholungHinweis, //  "AbholungHinweis",
+                    AbholungKunde = Abholung.AbholungKunde, //  "AbholungKunde",
+                    AbholungMobilitaetsfahrzeug = "J",
+                    AbholungOrt = Abholung.AbholungOrt, //  "AbholungOrt",
+                    AbholungPlz = Abholung.AbholungPlz, //  "11111",
+                    AbholungStrasseHausNr = Abholung.AbholungStrasseHausNr, //  "AbholungStrasseHausNr",
+                    AbholungTel = Abholung.AbholungTel, //  "AbholungTel",
+                    AnlieferungAbholungAbDt = Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 10, 0, 0),
+                    AnlieferungAnlieferungBisDt = Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 15, 15, 0),
+                    AnlieferungAnsprechpartner = Anlieferung.AnlieferungAnsprechpartner, //  "AnlieferungAnsprechpartner",
+                    AnlieferungHinweis = Anlieferung.AnlieferungHinweis, //  "AnlieferungHinweis",
+                    AnlieferungKunde = Anlieferung.AnlieferungKunde, //  "AnlieferungKunde",
+                    AnlieferungMobilitaetsfahrzeug = "Y",
+                    AnlieferungOrt = Anlieferung.AnlieferungOrt, //  "AnlieferungOrt",
+                    AnlieferungPlz = Anlieferung.AnlieferungPlz, //  "22222",
+                    AnlieferungStrasseHausNr = Anlieferung.AnlieferungStrasseHausNr, //  "AnlieferungStrasseHausNr",
+                    AnlieferungTel = Anlieferung.AnlieferungTel, // "AnlieferungTel",
+                    Ansprechpartner = Auftraggeber.Ansprechpartner, //  "Ansprechpartner",
+                    AnsprechpartnerTel = Auftraggeber.AnsprechpartnerTel, 
+                    AuftragerstellerTel = Auftraggeber.AuftragerstellerTel, 
+                    Auftragsersteller = Auftraggeber.Auftragsersteller,
+                    BetriebName = "BetriebName",
+                    BetriebStrasse = "BetriebStraße",
+                    BetriebHausNr = "BetriebHausNr",
+                    BetriebPLZ = "BetriebPLZ",
+                    BetriebOrt = "BetriebOrt",
+                    Fahrzeugart = Auftraggeber.FahrzeugartId.ToString(), //   "Fahrzeugart",
+                    Kennnzeichen = Auftraggeber.Kennnzeichen, //   "Kennzeichen",
+                    KundeTel = Auftraggeber.KundeTel, //   "KundeTel",
+                    Repco = Auftraggeber.Repco, //   "Repco"
+                };
+
+                return bapiParameterSet;
+            }
+        }
+
         #endregion
 
         public byte[] GenerateSapPdf(List<BapiParameterSet> bapiParameterSets)
         {
             byte[] pdfGenerated;
+            int retCode;
+            string retMessage;
 
-            DataService.GenerateSapPdf(bapiParameterSets, out pdfGenerated);
+            DataService.GenerateSapPdf(bapiParameterSets, out pdfGenerated, out retCode, out retMessage);
 
             return pdfGenerated;
         }
@@ -115,6 +162,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
             Upload = new Upload();
+            Overview = new Overview();
 
             DataMarkForRefresh();
         }
@@ -148,7 +196,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
-            var extension = ".pdf"; //  (Upload.UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
+            const string extension = ".pdf"; 
             Upload.UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
             var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
@@ -156,10 +204,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            //var list = new ExcelDocumentFactory().ReadToDataTable(Upload.UploadServerFileName, true, "", CreateInstanceFromDatarow, ';', true, true).ToList();
-            //FileService.TryFileDelete(Upload.UploadServerFileName);
-            //if (list.None())
-            //    return false;
+            var bytes = File.ReadAllBytes(AppSettings.TempPath + @"\" + nameSaved + extension);
+            Upload.PdfBytes = bytes;
+            Overview.PdfUploaded = bytes;
 
             return true;
         }

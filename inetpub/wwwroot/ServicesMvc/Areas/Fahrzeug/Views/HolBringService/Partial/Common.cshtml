@@ -101,6 +101,7 @@
             type: "POST",
             url: nextTabKey,
             data: {firstRequest: 'ok'},
+            //data: {},
             loadingShow: true,
             success: function (result) {
                 if (typeof (result.message) !== "undefined") {
@@ -118,7 +119,6 @@
 
     function AjaxFormAuftraggeberComplete() {
         FormPrepareAjax();
-
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
@@ -127,7 +127,6 @@
 
     function AjaxFormAbholungComplete() {
         FormPrepareAjax();
-
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;

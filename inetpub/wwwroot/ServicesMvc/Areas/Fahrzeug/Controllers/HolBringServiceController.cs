@@ -45,53 +45,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {
             ViewModel.DataInit();
 
-            // PDF-Test...
-            var bapiParameterSet = new BapiParameterSet
-                {
-                    AbholungAnsprechpartner = "AbholungAnsprechpartner",
-                    AbholungDateTime = new DateTime(2015,7,1),
-                    AbholungHinweis = "AbholungHinweis",
-                    AbholungKunde = "AbholungKunde",
-                    AbholungMobilitaetsfahrzeug = "0",
-                    AbholungOrt = "AbholungOrt",
-                    AbholungPlz = "11111",
-                    AbholungStrasseHausNr = "AbholungStrasseHausNr",
-                    AbholungTel = "AbholungTel",
-                    AnlieferungAbholungAbDt = new DateTime(2015, 7, 2, 10,0,0),
-                    AnlieferungAnlieferungBisDt = new DateTime(2015,7,2, 15,15,0),
-                    AnlieferungAnsprechpartner = "AnlieferungAnsprechpartner",
-                    AnlieferungHinweis = "AnlieferungHinweis",
-                    AnlieferungKunde = "AnlieferungKunde",
-                    AnlieferungMobilitaetsfahrzeug = "1",
-                    AnlieferungOrt = "AnlieferungOrt",
-                    AnlieferungPlz = "22222",
-                    AnlieferungStrasseHausNr = "AnlieferungStrasseHausNr",
-                    AnlieferungTel = "AnlieferungTel",
-                    Ansprechpartner = "Ansprechpartner",
-                    AnsprechpartnerTel = "AnsprechpartnerTel",
-                    AuftragerstellerTel = "AntragstellerTel",
-                    Auftragsersteller = "Antragsteller",
-                    BetriebHausNr = "BetriebHausNr",
-                    BetriebName = "BetriebName",
-                    BetriebOrt = "BetriebOrt",
-                    BetriebPLZ = "BetriebPLZ",
-                    BetriebStrasse = "BetriebStraße",
-                    Fahrzeugart = "Fahrzeugart",
-                    Kennnzeichen = "Kennzeichen",
-                    KundeTel = "KundeTel",
-                    Repco = "Repco",
-
-                    Return = ""
-                };
-
-            var bapiParameterSets = new List<BapiParameterSet> { bapiParameterSet };
-
-            var pdf = ViewModel.GenerateSapPdf(bapiParameterSets);
-
-            ViewModel.Overview = new Overview();
-
-            ViewModel.Overview.PdfGenerated = pdf;
-
             return View(ViewModel);
         }
 
@@ -99,6 +52,9 @@ namespace ServicesMvc.Fahrzeug.Controllers
         public ActionResult Auftraggeber(Auftraggeber model)   
         {
             model.Auftragsersteller = ViewModel.GlobalViewData.Auftragsersteller;  // Sicherstellen, dass Antragsteller nicht durch Formularfeld-Manipulation im Browser geändert werden kann
+
+            if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+                model = ViewModel.Auftraggeber;
 
             if (ModelState.IsValid)
             {
@@ -110,6 +66,8 @@ namespace ServicesMvc.Fahrzeug.Controllers
                     ViewModel.Anlieferung.AnlieferungKunde = model.Kunde;
                 }
             }
+
+//            ViewBag.IsModelValid = ModelState.IsValid;
 
             return PartialView("Partial/Auftraggeber", model);
         }
@@ -185,49 +143,71 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult Overview()
         {
-            // Hier vom BAPI ein PDF abgerufen und angezeigt
-
-            ViewModel.Overview = new Overview();
-            ViewModel.Overview.PdfUploaded = ViewModel.Upload.PdfBytes = null;
-
-            // return PartialView("Partial/Overview", ViewModel.Overview);
-
-            return PartialView("GeneratedPdf", ViewModel.Overview);
-        }
-
-        public FileContentResult GeneratedPdf()
-        {
-
-            // var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
+            var bapiParameterSets = new List<BapiParameterSet> { ViewModel.GetBapiParameterSets };
+            var pdf = ViewModel.GenerateSapPdf(bapiParameterSets);
             
-            var summaryPdfBytes = ViewModel.Overview.PdfGenerated; //  PdfDocumentFactory.HtmlToPdf(summaryHtml);
+            ViewModel.Overview.PdfGenerated = pdf;
 
-            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
+            // PDFs zusammenfassen...
+            var pdfGenerated = ViewModel.Overview.PdfGenerated;
+            var pdfUploaded = ViewModel.Overview.PdfUploaded; 
+
+            if (pdfUploaded != null)
+            {
+                var docList = new List<byte[]>
+                {
+                    pdfGenerated, pdfUploaded
+                };
+
+                var pdfMerged = PdfDocumentFactory.MergePdfDocuments(docList);
+                ViewModel.Overview.PdfMerged = pdfMerged;
+            }
+            
+            return PartialView("Partial/Overview", ViewModel.Overview);
         }
 
-        //public FileStreamResult PDFGenerator()
-        //{
-        //    Stream fileStream = GeneratePDF();
+        public FileContentResult DownloadGeneratedPdf()
+        {            
+            var pdf = ViewModel.Overview.PdfGenerated;
+            return new FileContentResult(pdf, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", ViewModel.Auftraggeber.Repco) };
+        }
 
-        //    HttpContext.Response.AddHeader("content-disposition",
-        //    "attachment; filename=form.pdf");
+        /// <summary>
+        /// Gibt zusammengefasstes PDF aus GeneratedPdf und UploadedPdf zurück
+        /// </summary>
+        /// <returns></returns>
+        public FileContentResult DownloadMergedPdf()
+        {
+            var pdf = ViewModel.Overview.PdfMerged;
+            return new FileContentResult(pdf, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.PDF) };
+        }
 
-        //    return new FileStreamResult(fileStream, "application/pdf");
-        //}
+        public ActionResult ShowGeneratedPdf()
+        {
+            var contentDispostion = new System.Net.Mime.ContentDisposition
+            {
+                FileName = "fileName",
+                Inline = true,
+            };
+            Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
 
-        //private Stream GeneratePDF()
-        //{
-        //    //create your pdf and put it into the stream... pdf variable below
-        //    //comes from a class I use to write content to PDF files
+            var pdf = ViewModel.Overview.PdfMerged ?? ViewModel.Overview.PdfGenerated;
 
-        //    MemoryStream ms = new MemoryStream();
+            return File(pdf, "application/pdf");
+        }
 
-        //    byte[] byteInfo = pdf.Output();
-        //    ms.Write(byteInfo, 0, byteInfo.Length);
-        //    ms.Position = 0;
+        public ActionResult ShowUploadedPdf()
+        {
+            var contentDispostion = new System.Net.Mime.ContentDisposition
+            {
+                FileName = "fileName",
+                Inline = true,
+            };
+            Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
 
-        //    return ms;
-        //}
+            var pdf = ViewModel.Overview.PdfUploaded;
 
+            return File(pdf, "application/pdf");
+        }
     }
 }
