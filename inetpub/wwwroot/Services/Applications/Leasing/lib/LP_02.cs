@@ -1,23 +1,20 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using CKG.Base.Kernel;
-using CKG.Base.Business;
-using CKG.Base.Common;
-using CKG.Base;
 using System.Data;
 using System.Text.RegularExpressions;
+using System.Web.UI;
+using CKG.Base.Business;
+using CKG.Base.Common;
 using CKG.Base.Kernel.Common;
+using CKG.Base.Kernel.Security;
 
 namespace Leasing.lib
 {
-    public class LP_02 : CKG.Base.Business.DatenimportBase
+    public class Lp02 : DatenimportBase
     {
 
         #region " Declarations"
         String m_strBriefnummer;
-        DateTime m_datEingangsdatumVon;
+        DateTime _mDatEingangsdatumVon;
         DateTime m_datEingangsdatumBis;
         String m_strFahrgestellnummer;
         String m_strHaendlerID;
@@ -27,7 +24,6 @@ namespace Leasing.lib
         Int32 m_intResultCount;
         String m_strExpress;
         String m_auftragsgrund;
-        String m_strBeauftragungKlartext;
         String m_strWunschkennzeichen;
         String m_equ;
         String m_Kreis;
@@ -76,12 +72,9 @@ namespace Leasing.lib
             get { return strAuftragsstatus; }
             set { strAuftragsstatus = value; }
         }
-        public String Auftragsnummer { get; set; }
-        public String BeauftragungKlartext
-        {
-            get { return m_strBeauftragungKlartext; }
-            set { m_strBeauftragungKlartext = value; }
-        }
+        public string Auftragsnummer { get; set; }
+        public string BeauftragungKlartext { get; set; }
+
         public DataTable History
         {
             get { return m_tblHistory; }
@@ -269,11 +262,11 @@ namespace Leasing.lib
             set { m_auftragsgrund = value; }
         }
 
-        public string EvbSingle { get; set; }
+        public string EvbNrSingle { get; set; }
 
-        public string EvbVon { get; set; }
+        public string EvbGueltigVon { get; set; }
 
-        public string EvbBis { get; set; }
+        public string EvbGueltigBis { get; set; }
 
         public DataTable LaenderPLZ
         {
@@ -307,11 +300,11 @@ namespace Leasing.lib
         }
         #endregion
 
-        public LP_02(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
+        public Lp02(ref User objUser, App objApp, string strFilename)
             : base(ref objUser, objApp, strFilename)
         { }
 
-        public void FillHistory(String strAppID, String strSessionID, String strAmtlKennzeichen, String strFahrgestellnummer, String strBriefnummer, String strOrdernummer, System.Web.UI.Page page)
+        public void FillHistory(String strAppID, String strSessionID, String strAmtlKennzeichen, String strFahrgestellnummer, String strBriefnummer, String strOrdernummer, Page page)
         {
             m_strClassAndMethod = "LP_02.FillHistory";
             m_strAppID = strAppID;
@@ -377,7 +370,7 @@ namespace Leasing.lib
             }
 
         }
-        public void GiveCars(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void GiveCars(String strAppID, String strSessionID, Page page)
         {
             DataTable tableGrund = new DataTable();
             DataTable tableFahrzeuge = new DataTable();
@@ -406,7 +399,7 @@ namespace Leasing.lib
 
                 m_tableGrund = myProxy.getExportTable("GT_GRU");
                 m_tblResult = myProxy.getExportTable("GT_WEB");
-                m_tblResult.Columns.Add("STATUS", System.Type.GetType("System.String"));
+                m_tblResult.Columns.Add("STATUS", Type.GetType("System.String"));
                 m_intStatus = 0;
 
                 foreach (DataRow row in m_tblResult.Rows)
@@ -449,7 +442,7 @@ namespace Leasing.lib
             }
 
         }
-        public void Anfordern(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void Anfordern(String strAppID, String strSessionID, Page page)
         {
             m_strClassAndMethod = "LP_02.Anfordern";
             m_strAppID = strAppID;
@@ -662,7 +655,7 @@ namespace Leasing.lib
         }
 
 
-        public void AnfordernCustom(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void AnfordernCustom(String strAppID, String strSessionID, Page page)
         {
 
             try
@@ -699,20 +692,20 @@ namespace Leasing.lib
 
 
 
-        public DataTable GiveResultStructure(System.Web.UI.Page page)
+        public DataTable GiveResultStructure(Page page)
         {
             DataTable tblTemp = new DataTable();
 
-            tblTemp.Columns.Add("EQUNR", typeof(System.String));
-            tblTemp.Columns.Add("MANDT", typeof(System.String));
-            tblTemp.Columns.Add("Fahrgestellnummer", typeof(System.String));
-            tblTemp.Columns.Add("Leasingnummer", typeof(System.String));
-            tblTemp.Columns.Add("NummerZB2", typeof(System.String));
-            tblTemp.Columns.Add("Kennzeichen", typeof(System.String));
-            tblTemp.Columns.Add("Ordernummer", typeof(System.String));
-            tblTemp.Columns.Add("Abmeldedatum", typeof(System.String));
-            tblTemp.Columns.Add("CoC", typeof(System.String));
-            tblTemp.Columns.Add("STATUS", typeof(System.String));
+            tblTemp.Columns.Add("EQUNR", typeof(String));
+            tblTemp.Columns.Add("MANDT", typeof(String));
+            tblTemp.Columns.Add("Fahrgestellnummer", typeof(String));
+            tblTemp.Columns.Add("Leasingnummer", typeof(String));
+            tblTemp.Columns.Add("NummerZB2", typeof(String));
+            tblTemp.Columns.Add("Kennzeichen", typeof(String));
+            tblTemp.Columns.Add("Ordernummer", typeof(String));
+            tblTemp.Columns.Add("Abmeldedatum", typeof(String));
+            tblTemp.Columns.Add("CoC", typeof(String));
+            tblTemp.Columns.Add("STATUS", typeof(String));
             return tblTemp;
 
         }

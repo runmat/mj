@@ -19,7 +19,7 @@ namespace Leasing.forms
     {
         private User _mUser;
         private App _mApp;
-        private LP_02 _objDienstleistung;
+        private Lp02 _objDienstleistung;
         protected GridNavigation GridNavigation1;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -40,7 +40,7 @@ namespace Leasing.forms
 
             if (Session["objDienstleistung"] == null)
             { Response.Redirect("Change81.aspx?AppID=" + Session["AppID"]); }
-            else { _objDienstleistung = (LP_02)Session["objDienstleistung"]; }
+            else { _objDienstleistung = (Lp02)Session["objDienstleistung"]; }
 
             var tmpDataView = _objDienstleistung.Fahrzeuge.DefaultView;
             tmpDataView.RowFilter = "MANDT = '99'";
@@ -360,7 +360,7 @@ namespace Leasing.forms
             }
             else
             {
-                    AnfordernCustom(bapiName);
+                    AnfordernCustom();
             }
 
 
@@ -423,7 +423,7 @@ namespace Leasing.forms
             }
         }
 
-        private void AnfordernCustom(string bapiName)
+        private void AnfordernCustom()
         {
             
         }

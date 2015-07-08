@@ -14,7 +14,7 @@ namespace Leasing.forms
     {
         private User m_User;
         private App m_App;
-        private LP_02 objDienstleistung;
+        private Lp02 objDienstleistung;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,7 +33,7 @@ namespace Leasing.forms
             }
             else
             {
-                objDienstleistung = (LP_02)Session["objDienstleistung"];
+                objDienstleistung = (Lp02)Session["objDienstleistung"];
             }
 
             if (!IsPostBack)
