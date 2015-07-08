@@ -18,8 +18,8 @@
             columns.XBound(c => c.ModellAsText)
                 .Aggregate(aggregates => aggregates.Count())
                 .ClientGroupHeaderTemplate("<strong><#= Count #>x Model-ID: <#= Key #></strong>");
-            columns.XBound(c => c.ModelID);
             columns.XBound(c => c.Modell);
+            columns.XBound(c => c.ModelID);
             columns.XBound(c => c.Hersteller);
             columns.XBound(c => c.SippCode);
             columns.XBound(c => c.EingangFahrzeugDatum);

@@ -33,8 +33,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         public string ModelID { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Model)]
+        [LocalizedDisplay(LocalizeConstants.ModelName)]
         public string Modell { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Model)]
+        public string ModellAsText
+        {
+            get { return string.Format("{0} / {1}", ModelID, Modell); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
@@ -111,12 +117,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.Amount)]
         public int Amount { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Model)]
-        public string ModellAsText
-        {
-            get { return string.Format("{0} / {1}",ModelID, Modell); }
-        }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNummer { get; set; }
