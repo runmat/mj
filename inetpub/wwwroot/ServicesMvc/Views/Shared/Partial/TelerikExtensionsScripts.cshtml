@@ -2,6 +2,7 @@
 
     var _filteredData_DisableDataBound = false;
     var _filteredData_force_Grid_OnColumnReorder = false;
+    var _filteredData_suppress_AutoPersistColumns = false;
 
     var _gridColumnNameList = [];
     var _gridColumnNameListIsValid = false;
@@ -38,8 +39,13 @@
                 }
             }
 
-            FilteredData_Grid_PrepareAllCommandHrefs(grid, _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns);
+            var doPersist = _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns;
+            if (_filteredData_suppress_AutoPersistColumns)
+                doPersist = false;
+            console.log(doPersist);
+            FilteredData_Grid_PrepareAllCommandHrefs(grid, doPersist);
             _filteredData_force_Grid_OnColumnReorder = false;
+            _filteredData_suppress_AutoPersistColumns = false;
 
             if (gridDataBoundFirstTime) {
                 GridCaptionHintHide(grid);
@@ -48,24 +54,32 @@
         }, 1000);
     }
 
-    function FilteredData_Grid_OnColumnReorder(grid) {
+    function FilteredData_Grid_OnColumnReorder(grid, autoPersistColumns) {
 
         if (_filteredData_DisableDataBound)
             return;
 
         grid = (grid || $(this));
-        //FilteredData_Grid_PrepareAllCommandHrefs(grid);
+
+        if (typeof (autoPersistColumns) == 'undefined')
+            autoPersistColumns = true;
+        if (!autoPersistColumns)
+            _filteredData_suppress_AutoPersistColumns = true;
 
         _filteredData_force_Grid_OnColumnReorder = true;
+
         grid.data('tGrid').ajaxRequest();
     }
 
-    function FilteredData_Grid_OnColumnShowHide(grid) {
+    function FilteredData_Grid_OnColumnShowHide(grid, autoPersistColumns) {
 
         if (_filteredData_DisableDataBound)
             return;
 
-        FilteredData_Grid_OnDataBound(grid, true);
+        if (typeof (autoPersistColumns) == 'undefined')
+            autoPersistColumns = true;
+
+        FilteredData_Grid_OnDataBound(grid, autoPersistColumns);
     }
 
     function FilteredData_Grid_PrepareAllCommandHrefs(grid, autoPersistColumns) {
@@ -82,7 +96,7 @@
         });
 
         var autoPersistInDb = false;
-        if (typeof (autoPersistColumns) != 'undefined')
+        if (typeof (autoPersistColumns) != 'undefined' && autoPersistColumns)
             autoPersistInDb = true;
 
         GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, autoPersistInDb);
