@@ -125,12 +125,12 @@ Public Class Change11
     End Sub
 
     Private Sub FillAdresseSAP()
-        Dim strSelectPropertyName As String = IIf(ModusStationen, "EX_KUNNR", "DADPDI").ToString
+        Dim strSelectPropertyName As String = IIf(ModusStationen, "EX_KUNNR", "KUNPDI").ToString
         Dim rows As DataRow() = _mAdresspflege.Adressen.Select(strSelectPropertyName & "='" & txtStationscode.Text & "'")
         If rows IsNot Nothing And rows.Count > 0 Then
             Dim row As DataRow = rows(0)
 
-            If ModusStationen Then lblStationsnummer.Text = row("EX_KUNNR").ToString Else lblStationsnummer.Text = row("DADPDI").ToString
+            If ModusStationen Then lblStationsnummer.Text = row("EX_KUNNR").ToString Else lblStationsnummer.Text = row("KUNPDI").ToString
             lblName1.Text = row("NAME1").ToString
             lblName2.Text = row("NAME2").ToString
             If ModusStationen Then lblStrasse.Text = row("STREET").ToString Else lblStrasse.Text = row("STRAS1").ToString
@@ -168,12 +168,12 @@ Public Class Change11
     End Sub
 
     Private Sub FillAdresseEdit()
-        Dim strSelectPropertyName As String = IIf(ModusStationen, "EX_KUNNR", "DADPDI").ToString
+        Dim strSelectPropertyName As String = IIf(ModusStationen, "EX_KUNNR", "KUNPDI").ToString
         Dim rows As DataRow() = _mAdresspflege.Adressen.Select(strSelectPropertyName & "='" & txtStationscode.Text & "'")
         If rows IsNot Nothing And rows.Count > 0 Then
             Dim row As DataRow = rows(0)
 
-            If ModusStationen Then txtStationscode.Text = row("EX_KUNNR").ToString Else txtStationscode.Text = row("DADPDI").ToString
+            If ModusStationen Then txtStationscode.Text = row("EX_KUNNR").ToString Else txtStationscode.Text = row("KUNPDI").ToString
             txtName1.Text = row("NAME1").ToString
             txtName2.Text = row("NAME2").ToString
             If ModusStationen Then txtStrasse.Text = row("STREET").ToString Else txtStrasse.Text = row("STRAS1").ToString
