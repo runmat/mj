@@ -2562,6 +2562,7 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Formulare\_Themes\AH2015\Partial\Suche.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4493,8 +4494,8 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
-    <Content Include="Views\Shared\Formulare\Partial\UserMenu.cshtml" />
-    <Content Include="Views\Shared\Formulare\Wrappers\FormSearchBox_Begin.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\UserMenu.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Wrappers\FormSearchBox_Begin.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
