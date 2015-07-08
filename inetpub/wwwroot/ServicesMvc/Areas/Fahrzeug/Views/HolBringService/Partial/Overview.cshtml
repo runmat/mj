@@ -1,19 +1,15 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Overview 
-@using CkgDomainLogic.Autohaus.Models
 
-<div id="DivReady" class="margin-top-20">
+<div id="DivOverview" class="margin-top-20">
     @using (Ajax.BeginForm("Overview", "HolBringService", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivOverview", OnComplete = "AjaxFormOverviewComplete();" },
                     htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormOverview" }))
     {
         @Html.FormValidationSummary()
-
-        <a href="DownloadGeneratedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='PDF herunterladen' data-placement="top"> PDF herunterladen <i class="icon-download-alt"></i></a>
-        <a href="DownloadMergedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='PDF mit Werkstattauftrag herunterladen' data-placement="top"> PDF mit Werkstattauftrag herunterladen <i class="icon-download-alt"></i></a>
         
-        <embed src="ShowGeneratedPdf" type="application/pdf" width="70%" height="500" />
+        <iframe id="PdfPreview" src="ShowGeneratedPdf" frameborder="0" scrolling="yes" width="100%" height="400" class=""></iframe>
         
-        <script type="text/javascript">
+        <script>
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
         </script>
     }

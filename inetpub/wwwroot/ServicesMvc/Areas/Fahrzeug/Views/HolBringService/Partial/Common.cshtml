@@ -63,17 +63,6 @@
             }
         });
 
-        FormWizard.OnPrev(function (step, maxSteps) {
-            FormWizardShowHideSaveButton(step == 7, 500);
-
-//            if (step == 2 && _skipBankAddressData) {
-//                FormWizard.ButtonPrevInvoke();
-//            }
-
-            window.scrollTo(0, 0);
-            return true;
-        });
-
         FormWizard.OnCustom1(function (step, maxSteps) {
             SaveZulassung();
 

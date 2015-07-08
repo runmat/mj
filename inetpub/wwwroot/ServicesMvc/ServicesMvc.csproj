@@ -2482,6 +2482,7 @@
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\BapiParameterSet.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\GlobalViewData.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\SendMail.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Overview.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Upload.cs" />
     <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
@@ -2570,6 +2571,7 @@
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Anlieferung.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4522,6 +4524,7 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
+    <Folder Include="Areas\Fahrzeug\Views\HolBringService\Files\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

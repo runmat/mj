@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Web;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.Models;
@@ -18,6 +19,7 @@ using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using ServicesMvc.Areas.Fahrzeug.Models.HolBringService;
+using WebTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
@@ -51,6 +53,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         public Overview Overview { get; set; }
+
+        public SendMail SendMail { get; set; }
+
         #endregion
 
         public GlobalViewData GlobalViewData;   // Model für Nutzung in allen Partials
@@ -68,7 +73,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     { "Anlieferung", Localize.DeliveryHolBringService },
                     { "Upload", Localize.Upload },
                     { "Overview", Localize.Overview },
-                    { "Ready", Localize.Ready + " !" },
+                    { "SendMail", Localize.Ready + " !" },
                 });
             }
         }
@@ -163,6 +168,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Anlieferung = new Anlieferung();
             Upload = new Upload();
             Overview = new Overview();
+            SendMail = new SendMail();
 
             DataMarkForRefresh();
         }
@@ -194,9 +200,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public bool PdfUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
+            const string extension = ".pdf"; 
+
             Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
-            const string extension = ".pdf"; 
+            
             Upload.UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
             var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
@@ -214,6 +222,46 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             return null;    
+        }
+
+        public bool SendMailTo()
+        {
+            var mailService = new SmtpMailService(AppSettings);
+
+            var result = mailService.SendMail(SendMail.MailReceiver, Auftraggeber.Repco, "Hol- und BringService", new[] { Overview.PdfMergedFilename });
+
+            return result;
+        }
+
+        public void MergePdf()
+        {
+            const string extension = ".pdf"; 
+
+            var pdfOutput = Overview.PdfGenerated;
+
+            if (Overview.PdfUploaded != null)
+            {
+                var docList = new List<byte[]>
+                {
+                    Overview.PdfGenerated, Overview.PdfUploaded
+                };
+
+                pdfOutput = PdfDocumentFactory.MergePdfDocuments(docList);
+                Overview.PdfMerged = pdfOutput;
+            }
+
+            
+            // Path.Combine(AppSettings.TempPath, randomfilename + extension)
+            //var path = HttpContext.Current.Server.MapPath("Files"); 
+            //var path2 = HttpContext.Current.Server.MapPath("Files"); 
+            //var path3 = System.Web.Hosting.HostingEnvironment.MapPath("~/Files/"); 
+            // System.Web.Hosting.HostingEnvironment.MapPath("~/SignatureImages/");
+            // var fullFilename = string.Format("{0}/{1}", path, Auftraggeber.Repco + "_" + Overview.PdfMergedFilename);
+
+            Overview.PdfMergedFilename = Path.Combine(AppSettings.TempPath, Auftraggeber.Repco + "_" + Guid.NewGuid().ToString() + extension);
+
+            File.WriteAllBytes(Overview.PdfMergedFilename, pdfOutput);
+            
         }
     }
 }

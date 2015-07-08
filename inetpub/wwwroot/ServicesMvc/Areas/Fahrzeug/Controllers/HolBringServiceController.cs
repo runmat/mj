@@ -149,19 +149,24 @@ namespace ServicesMvc.Fahrzeug.Controllers
             ViewModel.Overview.PdfGenerated = pdf;
 
             // PDFs zusammenfassen...
-            var pdfGenerated = ViewModel.Overview.PdfGenerated;
-            var pdfUploaded = ViewModel.Overview.PdfUploaded; 
+            ViewModel.MergePdf();
 
-            if (pdfUploaded != null)
-            {
-                var docList = new List<byte[]>
-                {
-                    pdfGenerated, pdfUploaded
-                };
+            //var pdfGenerated = ViewModel.Overview.PdfGenerated;
+            //var pdfUploaded = ViewModel.Overview.PdfUploaded; 
 
-                var pdfMerged = PdfDocumentFactory.MergePdfDocuments(docList);
-                ViewModel.Overview.PdfMerged = pdfMerged;
-            }
+            //if (pdfUploaded != null)
+            //{
+            //    var docList = new List<byte[]>
+            //    {
+            //        pdfGenerated, pdfUploaded
+            //    };
+
+            //    var pdfMerged = PdfDocumentFactory.MergePdfDocuments(docList);
+            //    ViewModel.Overview.PdfMerged = pdfMerged;
+
+            //    File.WriteAllBytes("path", pdfMerged);
+
+            //}
             
             return PartialView("Partial/Overview", ViewModel.Overview);
         }
@@ -207,7 +212,26 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
             var pdf = ViewModel.Overview.PdfUploaded;
 
-            return File(pdf, "application/pdf");
+            return File(pdf ?? PdfDocumentFactory.HtmlToPdf("Keine Datei gewählt"), "application/pdf");
         }
+
+        [HttpPost]
+        public ActionResult SendMail(SendMail model)
+        {
+            if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
+                model = ViewModel.SendMail;
+
+            if (ModelState.IsValid)
+            {
+                // ViewModel.SendMail = model;
+
+                // Versenden...
+                var result = ViewModel.SendMailTo();
+
+            }
+
+            return PartialView("Partial/SendMail", model);
+        }
+
     }
 }

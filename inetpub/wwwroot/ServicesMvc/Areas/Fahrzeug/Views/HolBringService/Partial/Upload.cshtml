@@ -54,8 +54,7 @@
     {
         @Html.FormValidationSummary()
         
-        <h3>
-            Werkstattauftrag</h3>
+        <h3>Werkstattauftrag</h3>
         
         <div class="row-fluid">
             <div class="span7">
@@ -81,7 +80,7 @@
                 </div>
                 
                 <div id="DivPdfPreview">
-                    <iframe id="PdfPreview" src="ShowUploadedPdf" frameborder="0" scrolling="yes" width="100%" height="400" class="hidden"></iframe>
+                    <iframe id="PdfPreview" src="ShowUploadedPdf" frameborder="0" scrolling="yes" width="100%" height="400" class=""></iframe>
                 </div>
 
             </div>
@@ -98,6 +97,10 @@
                     @if (Model.PdfBytes != null)
                     {
                         <text>$('#PdfPreview').removeClass("hidden");</text>
+                    }
+                    else
+                    {
+                        <text>$('#PdfPreview').addClass("hidden");</text>
                     }
                 });
         </script>
