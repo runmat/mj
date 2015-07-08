@@ -44,6 +44,10 @@ namespace SapORM
                 myProxy.setImportParameter("I_EQTYP", "B")                                        
              */
 
+            // 20150708 Hol- und Bringservice   Z_ZLD_AH_2015_HOLUNDBRING_PDF
+            // new FunctionReflector("Z_ZLD_AH_2015_HOLUNDBRING_PDF").WriteOrmForExportTableStructures();
+
+            //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_M_EC_AVM_BATCH_UPDATE").WriteOrmForExportTableStructures();             
 		    //new FunctionReflector("Z_M_EC_AVM_BATCH_INSERT").WriteOrmForExportTableStructures();             
