@@ -12,13 +12,12 @@ using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
-using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
 
 
 namespace ServicesMvc.Controllers
 {
-    public partial class FahrzeugeController : CkgDomainController
+    public partial class FahrzeugeController 
     {
         public FahrzeuguebersichtViewModel FahrzeuguebersichtViewModel { get { return GetViewModel<FahrzeuguebersichtViewModel>(); } }
 
@@ -29,7 +28,6 @@ namespace ServicesMvc.Controllers
         public ActionResult ReportFahrzeuguebersicht()
         {
             _dataContextKey = typeof(FahrzeuguebersichtViewModel).Name;
-            FahrzeuguebersichtViewModel.DataInit();
             FahrzeuguebersichtViewModel.Init();
 
             return View(FahrzeuguebersichtViewModel);
