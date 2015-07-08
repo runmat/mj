@@ -3,6 +3,7 @@
 @{
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
     var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
+    var telerikStyleSheetTheme = logonContext.CurrentLayoutTheme.NotNullOr("Simple");
 }
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -13,35 +14,24 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>
-            @if (logonContext != null)
-            {
-                @logonContext.CustomerName
-            }
+            @logonContext.CustomerName
         </title>
 
-        <!-- BEGIN Telerik Style Sheets -->
-        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.AH2015.css").Combined(true).Compress(true)))
+        <!-- BEGIN Telerik Style Sheets (Theme = @telerikStyleSheetTheme) -->
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik." + telerikStyleSheetTheme + ".css").Combined(true).Compress(true)))
         <!-- END Telerik Style Sheets -->
         
-        <!-- BEGIN Partial/LayoutPage/Styles -->
         @Html.Partial("Partial/LayoutPage/Styles")
-        <!-- END Partial/LayoutPage/Styles -->
         
-        <!-- BEGIN Partial/LayoutPage/ScriptsPreload -->
         @Html.Partial("Partial/LayoutPage/ScriptsPreload")
-        <!-- END Partial/LayoutPage/ScriptsPreload -->
 
         <link href="~/content/SiteAllLayouts.css?v=20150605" rel="stylesheet" type="text/css" />
         <link href="~/content/Site.css?v=20150126" rel="stylesheet" type="text/css" />
     </head>
     <body class="fixed-top">
-        <!-- BEGIN Partial/TelerikGridDummy -->
         @Html.Partial("Partial/TelerikGridDummy")
-        <!-- END Partial/TelerikGridDummy -->
 
-        <!-- BEGIN Partial/LayoutPage/Scripts -->
         @Html.Partial("Partial/LayoutPage/Scripts")
-        <!-- END Partial/LayoutPage/Scripts -->
         
         <img class="loading hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
         <img class="loading2 hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
@@ -53,9 +43,7 @@
                 <div class="container-fluid gray">
                     <!-- BEGIN LOGO -->
                     <a class="brand" href="~/">
-                        <!-- BEGIN Partial/LayoutPageHeader -->
                         @Html.Partial("Partial/LayoutPageHeader", logonContext)
-                        <!-- END Partial/LayoutPageHeader -->
                     </a>
                     <!-- END LOGO -->
                     <!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -65,9 +53,7 @@
                     <!-- END RESPONSIVE MENU TOGGLER -->            
                     <!-- BEGIN TOP NAVIGATION MENU -->              
 
-                    <!-- BEGIN Partial/UserMenu -->
                     @Html.Partial("Partial/UserMenu", logonContext)
-                    <!-- END Partial/UserMenu -->
 
                     <!-- END TOP NAVIGATION MENU --> 
                 </div>
@@ -98,9 +84,7 @@
                         <!-- END RESPONSIVE QUICK SEARCH FORM -->
                     </li>
 				
-                	<!-- BEGIN Partial/Menus/AppMenu -->
                     @Html.Partial("Partial/Menus/AppMenu")
-                    <!-- END Partial/Menus/AppMenu -->
 
                 </ul>
                 <!-- END SIDEBAR MENU -->
