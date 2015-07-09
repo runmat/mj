@@ -4496,6 +4496,8 @@
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\UserMenu.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Wrappers\FormSearchBox_Begin.cshtml" />
+    <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviation.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviation.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
