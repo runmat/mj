@@ -236,21 +236,23 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public bool PdfUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
-            const string extension = ".pdf"; 
+            const string extension = ".pdf";
 
             Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
-            
-            //Upload.UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
             var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var bytes = File.ReadAllBytes(AppSettings.TempPath + @"\" + nameSaved + extension);
-            // Upload.PdfBytes = bytes;
+            var tmpFilename = AppSettings.TempPath + @"\" + nameSaved + extension;
+
+            var bytes = File.ReadAllBytes(tmpFilename);
             Overview.PdfUploaded = bytes;
+
+            // Datei wieder löschen...
+            // System.IO.File.Delete(tmpFilename);
 
             return true;
         }
