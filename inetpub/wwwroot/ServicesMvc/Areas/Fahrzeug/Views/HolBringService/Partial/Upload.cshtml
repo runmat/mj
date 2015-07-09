@@ -3,7 +3,7 @@
 <script>
 
     $(function () {
-        $("#pdfContent").resizable({
+        $("#pdfContentUpload").resizable({
             helper: "ui-resizable-helper"
         });
 
@@ -13,12 +13,11 @@
             ResizePdfContainer();
         });
 
-        $("#pdfContent").removeClass("hidden");
+        $("#pdfContentUpload").removeClass("hidden");
 
         if ($("#UploadFileName").val().length > 0) {
             $('#BtnRemoveFile').removeClass("hidden");
         }
-
     });
 
     function UploadStart(e) {
@@ -48,9 +47,9 @@
 
         var iframe = document.getElementById("uploadedPdf");
         iframe.src = iframe.src;
-        $('#pdfContent').show();
+        $('#UploadFileName').val(e.response.uploadFileName);
         $('#BtnRemoveFile').removeClass("hidden");
-        $('#pdfContent').removeClass("hidden");
+        $('#pdfContentUpload').removeClass("hidden");
     }
 
     function UploadError(e) {
@@ -60,7 +59,7 @@
     }
 
     function RemovePdfFile() {
-        $('#pdfContent').addClass("hidden");
+        $('#pdfContentUpload').addClass("hidden");
         $('#DeleteUploadedPdf').val(true);
         $('#UploadFileName').val("");
     }
@@ -101,7 +100,7 @@
                 @Html.HiddenFor(m => m.DeleteUploadedPdf)
                 @Html.HiddenFor(m => m.UploadFileName)
                 
-                <div id="pdfContent" class="ui-widget-content hidden">
+                <div id="pdfContentUpload" class="ui-widget-content pdfContentStyle hidden">
                     <iframe id="uploadedPdf" src="ShowUploadedPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
                 </div>
 

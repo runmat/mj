@@ -16,10 +16,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         [LocalizedDisplay(LocalizeConstants.FileName)]
         public string UploadFileName { get; set; }
 
-        public string UploadServerFileName { get; set; }
-
-        public byte[] PdfBytes { get; set; }
-
         public bool DeleteUploadedPdf { get; set; }
+
+        //public string UploadServerFileName { get; set; }
+        //public byte[] PdfBytes { get; set; }
     }
 }

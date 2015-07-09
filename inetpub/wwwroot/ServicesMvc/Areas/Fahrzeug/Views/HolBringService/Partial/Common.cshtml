@@ -24,8 +24,8 @@
          margin-left: 5px;
      }
     
-     #pdfContent { width: 150px; height: 150px; padding: 0.5em; }
-     #pdfContent h3 { text-align: center; margin: 0; }
+     #pdfContentStyle { width: 150px; height: 150px; padding: 0.5em; }
+     #pdfContentStyle h3 { text-align: center; margin: 0; }
      .ui-resizable-helper { border: 75px solid #EFEFEF; margin: -75px; }
 
 </style>
@@ -121,9 +121,6 @@
         FormPrepareAjax();
         if (_modelIsValid) {
             AjaxRequestNextStep();
-
-           
-            
             return;
         }
     }
@@ -174,8 +171,8 @@
     function ResizePdfContainer() {
         var width = $("#formWizard").width();
         var height = $(window).height();
-        $("#pdfContent").css('width', width - 15 | 0);
-        $("#pdfContent").css('height', height * 0.35 | 0);
+        $(".pdfContentStyle").css('width', width - 15 | 0);
+        $(".pdfContentStyle").css('height', height * 0.35 | 0);
     }
 </script>
 

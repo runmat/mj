@@ -142,6 +142,8 @@ namespace ServicesMvc.Fahrzeug.Controllers
             if (!ViewModel.PdfUploadFileSave(file.FileName, file.SavePostedFile))
                 return Json(new { success = false, message = Localize.ErrorFileCouldNotBeSaved }, "text/plain");
 
+            ViewModel.Upload.UploadFileName = file.FileName;
+            
             return Json(new
             {
                 success = true,
@@ -221,8 +223,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
             if (ModelState.IsValid)
             {
-                // ViewModel.SendMail = model;
-
                 // Versenden...
                 var result = ViewModel.SendMailTo();
 

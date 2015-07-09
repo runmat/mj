@@ -25,46 +25,6 @@
 @Html.Partial("Partial/Common")
 
 <script>
-
     var dateFormat = "dd.MM.yyyy";
     var feiertageAsString = "@globalData.FeiertageAsString";
-    
-    $(function() {
-    });
-
-    function InitTestX() {
-        var dateFormat = "dd.MM.yyyy";
-//        var feiertageAsString = "Model.FeiertageAsString";
-        feiertageAsString = "14.07.2015,15.07.2015";
-        $("#DatePickerTest").datepicker({
-            minDate: new Date(2015, 5, 1),
-            beforeShowDay: function (date) {
-                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);     // Keine Wochenenden
-
-                if (dateIsSelectable) // Datum ab heute
-                    dateIsSelectable = (date >= Date.today());
-
-                var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
-                if (dateIsSelectable)
-                    dateIsSelectable = !istFeiertag;
-                return [dateIsSelectable, ""];
-            }
-        });
-
-        $("#PickupDate").datepicker({
-            minDate: new Date(2015, 5, 1),
-            beforeShowDay: function (date) {
-                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);     // Keine Wochenenden
-
-                if (dateIsSelectable) // Datum ab heute
-                    dateIsSelectable = (date >= Date.today());
-
-                var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
-                if (dateIsSelectable)
-                    dateIsSelectable = !istFeiertag;
-                return [dateIsSelectable, ""];
-            }
-        });
-    }
-
 </script>

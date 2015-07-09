@@ -241,7 +241,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
             
-            Upload.UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
+            //Upload.UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
             var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
 

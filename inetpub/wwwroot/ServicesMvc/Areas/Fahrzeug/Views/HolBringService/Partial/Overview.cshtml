@@ -7,7 +7,7 @@
     {
         @Html.FormValidationSummary()
         
-        <div id="pdfContent" class="ui-widget-content"> 
+        <div id="pdfContentOverview" class="ui-widget-content pdfContentStyle"> 
             <iframe id="pdfGenerated" src="ShowGeneratedPdf" class="ui-widget-content" frameborder="no"  width="100%" height="100%" />
         </div>
         
@@ -15,7 +15,7 @@
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
 
             $(function() {
-                $("#pdfContent").resizable({
+                $("#pdfContentOverview").resizable({
                     helper: "ui-resizable-helper"
                 });
 
