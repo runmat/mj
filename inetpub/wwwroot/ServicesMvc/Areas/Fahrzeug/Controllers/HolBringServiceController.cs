@@ -63,11 +63,17 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 if (!string.IsNullOrEmpty(model.Kunde))
                 {
                     ViewModel.Abholung.AbholungKunde = model.Kunde;
-                    ViewModel.Anlieferung.AnlieferungKunde = model.Kunde;
+                    ViewModel.Anlieferung.AnlieferungKunde = model.Kunde;                    
                 }
-            }
 
-//            ViewBag.IsModelValid = ModelState.IsValid;
+                ViewModel.SetBetriebAddress();
+
+                var fahrzeugArt = ViewModel.GlobalViewData.Fahrzeugarten.FirstOrDefault(x => x.Wert == model.FahrzeugartId.ToString()).Beschreibung;
+                
+
+                ViewModel.Auftraggeber.Fahrzeugart =
+                    ViewModel.GlobalViewData.Fahrzeugarten.FirstOrDefault(x => x.Wert == model.FahrzeugartId.ToString()).Beschreibung;
+            }
 
             return PartialView("Partial/Auftraggeber", model);
         }
@@ -148,26 +154,9 @@ namespace ServicesMvc.Fahrzeug.Controllers
             
             ViewModel.Overview.PdfGenerated = pdf;
 
-            // PDFs zusammenfassen...
+            // PDFs zusammenfassen. Falls keine PDF-Datei hochgeladen wurde, wird nur das SAP-Pdf genutzt
             ViewModel.MergePdf();
 
-            //var pdfGenerated = ViewModel.Overview.PdfGenerated;
-            //var pdfUploaded = ViewModel.Overview.PdfUploaded; 
-
-            //if (pdfUploaded != null)
-            //{
-            //    var docList = new List<byte[]>
-            //    {
-            //        pdfGenerated, pdfUploaded
-            //    };
-
-            //    var pdfMerged = PdfDocumentFactory.MergePdfDocuments(docList);
-            //    ViewModel.Overview.PdfMerged = pdfMerged;
-
-            //    File.WriteAllBytes("path", pdfMerged);
-
-            //}
-            
             return PartialView("Partial/Overview", ViewModel.Overview);
         }
 
@@ -196,7 +185,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
             };
             Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
 
-            var pdf = ViewModel.Overview.PdfMerged ?? ViewModel.Overview.PdfGenerated;
+            var pdf = ViewModel.Overview.PdfGenerated;
 
             return File(pdf, "application/pdf");
         }
@@ -216,7 +205,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         [HttpPost]
-        public ActionResult SendMail(SendMail model)
+        public ActionResult SendMail(Mail model)
         {
             if (Request["firstRequest"] == "ok")          // Wenn Action durch AjaxRequestNextStep aufgerufen wurde, model aus ViewModel übernehmen
                 model = ViewModel.SendMail;

@@ -31,20 +31,18 @@
         @Html.FormTextBoxFor(m => m.AbholungTel, new { @class = "m-wrap ", col = "right" })
         
         @Html.FormDatePickerFor(m => m.AbholungDatum, new { @class = "m-wrap " })
+@*        <div class="input-append datepickerX">
+            <input id="AbholungDatum" name="AbholungDatum" type="text" class="m-wrap small " />
+            <span class="add-on">
+                <i class="icon-calendar"></i>
+            </span>
+        </div>*@
                 
         <div class="control-group">
             <label class="control-label">Abhol-Uhrzeit</label>
             <div class="controls">
                 @Html.DropDownListFor(m => m.AbholungUhrzeitStunden, globalData.DropDownHours.ToSelectList(), new { @class = "dropdownwidth" })
                 @Html.DropDownListFor(m => m.AbholungUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth" })
-                
-                @*<div class="input-append datepickerX">
-                    <input id="AbholungDatumUhrzeitX" name="AbholungDatumUhrzeitX" type="text" class="m-wrap small " />
-                    <span class="add-on">
-                        <i class="icon-calendar"></i>
-                    </span>
-                </div>*@
-
             </div>
         </div>
 

@@ -53,6 +53,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public int FahrzeugartId { get; set; }
         public string Fahrzeugart { get; set; }
 
+        public string BetriebName { get; set; }
         public string BetriebStrasse { get; set; }
         public string BetriebHausNr { get; set; }
         public string BetriebPLZ { get; set; }

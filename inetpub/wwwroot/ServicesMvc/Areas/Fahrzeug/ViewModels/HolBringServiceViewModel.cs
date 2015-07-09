@@ -54,7 +54,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public Overview Overview { get; set; }
 
-        public SendMail SendMail { get; set; }
+        public Mail SendMail { get; set; }
 
         #endregion
 
@@ -91,37 +91,63 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
+                var ansprechpartner = Auftraggeber.Ansprechpartner.Replace("|" + Auftraggeber.AnsprechpartnerTel, "");
+                var abholungMobilitaetsfahrzeug = Abholung.AbholungMobilitaetsfahrzeug == true ? "X" : "";
+                var anlieferungMobilitaetsfahrzeug = Anlieferung.AnlieferungMobilitaetsfahrzeug == true ? "X" : "";
+
+                DateTime? abholungDt = null;
+                if (Abholung.AbholungDatum.HasValue)
+                {
+                    abholungDt = Abholung.AbholungDatum;
+                    abholungDt = abholungDt.Value.AddHours(Convert.ToDouble(Abholung.AbholungUhrzeitStunden));
+                    abholungDt = abholungDt.Value.AddMinutes(Convert.ToDouble(Abholung.AbholungUhrzeitMinuten));
+                }
+
+                DateTime? anlieferungAbholungAbDt = null;
+                DateTime? anlieferungAbholungBisDt = null;
+
+                if (Anlieferung.AnlieferungDatum.HasValue)
+                {
+                    anlieferungAbholungAbDt = Anlieferung.AnlieferungDatum;
+                    anlieferungAbholungAbDt = anlieferungAbholungAbDt.Value.AddHours(Convert.ToDouble(Anlieferung.AbholungAbUhrzeitStunden));
+                    anlieferungAbholungAbDt = anlieferungAbholungAbDt.Value.AddMinutes(Convert.ToDouble(Anlieferung.AbholungAbUhrzeitMinuten));
+                
+                    anlieferungAbholungBisDt = Anlieferung.AnlieferungDatum;
+                    anlieferungAbholungBisDt = anlieferungAbholungBisDt.Value.AddHours(Convert.ToDouble(Anlieferung.AnlieferungBisUhrzeitStunden));
+                    anlieferungAbholungBisDt = anlieferungAbholungBisDt.Value.AddMinutes(Convert.ToDouble(Anlieferung.AnlieferungBisUhrzeitMinuten));
+                }
+
                 var bapiParameterSet = new BapiParameterSet
                 {
                     AbholungAnsprechpartner = Abholung.AbholungAnsprechpartner, //  "AbholungAnsprechpartner",
-                    AbholungDateTime = Abholung.AbholungDatum, //  new DateTime(2015, 7, 1),
+                    AbholungDateTime = abholungDt, // Abholung.AbholungDatum, //  new DateTime(2015, 7, 1),
                     AbholungHinweis = Abholung.AbholungHinweis, //  "AbholungHinweis",
                     AbholungKunde = Abholung.AbholungKunde, //  "AbholungKunde",
-                    AbholungMobilitaetsfahrzeug = "J",
+                    AbholungMobilitaetsfahrzeug = abholungMobilitaetsfahrzeug, 
                     AbholungOrt = Abholung.AbholungOrt, //  "AbholungOrt",
-                    AbholungPlz = Abholung.AbholungPlz, //  "11111",
+                    AbholungPlz = Abholung.AbholungPlz, 
                     AbholungStrasseHausNr = Abholung.AbholungStrasseHausNr, //  "AbholungStrasseHausNr",
                     AbholungTel = Abholung.AbholungTel, //  "AbholungTel",
-                    AnlieferungAbholungAbDt = Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 10, 0, 0),
-                    AnlieferungAnlieferungBisDt = Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 15, 15, 0),
+                    AnlieferungAbholungAbDt = anlieferungAbholungAbDt, //  new DateTime(2015, 7, 2, 10, 15, 20), // Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 10, 0, 0),
+                    AnlieferungAnlieferungBisDt = anlieferungAbholungBisDt, // Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 15, 15, 0),
                     AnlieferungAnsprechpartner = Anlieferung.AnlieferungAnsprechpartner, //  "AnlieferungAnsprechpartner",
                     AnlieferungHinweis = Anlieferung.AnlieferungHinweis, //  "AnlieferungHinweis",
                     AnlieferungKunde = Anlieferung.AnlieferungKunde, //  "AnlieferungKunde",
-                    AnlieferungMobilitaetsfahrzeug = "Y",
+                    AnlieferungMobilitaetsfahrzeug = anlieferungMobilitaetsfahrzeug , //  "X" = true
                     AnlieferungOrt = Anlieferung.AnlieferungOrt, //  "AnlieferungOrt",
                     AnlieferungPlz = Anlieferung.AnlieferungPlz, //  "22222",
                     AnlieferungStrasseHausNr = Anlieferung.AnlieferungStrasseHausNr, //  "AnlieferungStrasseHausNr",
                     AnlieferungTel = Anlieferung.AnlieferungTel, // "AnlieferungTel",
-                    Ansprechpartner = Auftraggeber.Ansprechpartner, //  "Ansprechpartner",
+                    Ansprechpartner = ansprechpartner, // Auftraggeber.Ansprechpartner, //  "Ansprechpartner",
                     AnsprechpartnerTel = Auftraggeber.AnsprechpartnerTel, 
                     AuftragerstellerTel = Auftraggeber.AuftragerstellerTel, 
                     Auftragsersteller = Auftraggeber.Auftragsersteller,
-                    BetriebName = "BetriebName",
-                    BetriebStrasse = "BetriebStraße",
-                    BetriebHausNr = "BetriebHausNr",
-                    BetriebPLZ = "BetriebPLZ",
-                    BetriebOrt = "BetriebOrt",
-                    Fahrzeugart = Auftraggeber.FahrzeugartId.ToString(), //   "Fahrzeugart",
+                    BetriebName = Auftraggeber.BetriebName, 
+                    BetriebStrasse = Auftraggeber.BetriebStrasse, //  "BetriebStraße",
+                    BetriebHausNr = Auftraggeber.BetriebHausNr, // "BetriebHausNr",
+                    BetriebPLZ = Auftraggeber.BetriebPLZ, // "BetriebPLZ",
+                    BetriebOrt = Auftraggeber.BetriebOrt, // "BetriebOrt",
+                    Fahrzeugart = Auftraggeber.Fahrzeugart, // Auftraggeber.FahrzeugartId.ToString(), //   "Fahrzeugart",
                     Kennnzeichen = Auftraggeber.Kennnzeichen, //   "Kennzeichen",
                     KundeTel = Auftraggeber.KundeTel, //   "KundeTel",
                     Repco = Auftraggeber.Repco, //   "Repco"
@@ -168,7 +194,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Anlieferung = new Anlieferung();
             Upload = new Upload();
             Overview = new Overview();
-            SendMail = new SendMail();
+            SendMail = new Mail();
 
             DataMarkForRefresh();
         }
@@ -249,19 +275,22 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 pdfOutput = PdfDocumentFactory.MergePdfDocuments(docList);
                 Overview.PdfMerged = pdfOutput;
             }
-
             
-            // Path.Combine(AppSettings.TempPath, randomfilename + extension)
-            //var path = HttpContext.Current.Server.MapPath("Files"); 
-            //var path2 = HttpContext.Current.Server.MapPath("Files"); 
-            //var path3 = System.Web.Hosting.HostingEnvironment.MapPath("~/Files/"); 
-            // System.Web.Hosting.HostingEnvironment.MapPath("~/SignatureImages/");
-            // var fullFilename = string.Format("{0}/{1}", path, Auftraggeber.Repco + "_" + Overview.PdfMergedFilename);
-
             Overview.PdfMergedFilename = Path.Combine(AppSettings.TempPath, Auftraggeber.Repco + "_" + Guid.NewGuid().ToString() + extension);
 
             File.WriteAllBytes(Overview.PdfMergedFilename, pdfOutput);
             
+        }
+
+        public void SetBetriebAddress()
+        {
+            var betriebAddress = GlobalViewData.BetriebeSap.FirstOrDefault(x => x.KUNNR == Auftraggeber.Betrieb);
+            if (betriebAddress == null) return;
+            Auftraggeber.BetriebName = betriebAddress.NAME1;
+            Auftraggeber.BetriebStrasse = betriebAddress.STREET;
+            Auftraggeber.BetriebHausNr = betriebAddress.HOUSE_NUM1;
+            Auftraggeber.BetriebPLZ = betriebAddress.POST_CODE1;
+            Auftraggeber.BetriebOrt = betriebAddress.CITY1;
         }
     }
 }

@@ -11,16 +11,12 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 {
-    public class SendMail 
+    public class Mail 
     {
         public string SendMailResult { get; set; }
 
         public string MailReceiver { get { return "Marco.Maihofer@kroschke.de"; }
         }
 
-
-        //public byte[] PdfUploaded { get; set; }
-        //public byte[] PdfGenerated { get; set; }
-        //public byte[] PdfMerged { get; set; }
     }
 }

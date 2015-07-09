@@ -19,7 +19,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string AbholungKunde { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.StreetHouseNo)]
-        [StringLength(10)]
+        [StringLength(50)]
         public string AbholungStrasseHausNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PostCode)]
@@ -31,7 +31,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         [StringLength(30)]
         public string AbholungOrt { get; set; }
 
-        public string Land { get { return "D"; } }
+        public string Land { get { return "DE"; } }
 
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
         [StringLength(50)]

@@ -23,7 +23,8 @@ namespace ServicesMvc.Areas.Fahrzeug.Models.HolBringService
         public string AnsprechpartnerTel { get; set; }
         public string KundeTel { get; set; }
         public string Kennnzeichen { get; set; }
-        public string Fahrzeugart { get; set; }
+        public string Fahrzeugart { get; set; } 
+        public string FahrzeugartBezeichnung { get; set; }
 
         public string AbholungKunde { get; set; }
         public string AbholungStrasseHausNr { get; set; }
