@@ -213,6 +213,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Kennzeichen = sap.ZZKENN;                        
                         business.Durchfuehrung = sap.PICKDAT;
                         business.Versand = sap.ZZTMPDT;
+
+                        var halterName1 = "Göster Halmacken";
+                        var halterName2 = "";
+                        var halterStrasse = "Walterstr. 34";
+                        var halterPlz = "22941";
+                        var halterOrt = "Bargteheide";
+                        business.HalterAdresse = string.Format(
+                            "{0}{1}{2}{3}{4}",
+                            halterName1, halterName2.PrependIfNotNull(", "), 
+                            halterStrasse.PrependIfNotNull(", "), halterPlz.PrependIfNotNull(", "), halterOrt.PrependIfNotNull(", "));
                     }));
             }
         }

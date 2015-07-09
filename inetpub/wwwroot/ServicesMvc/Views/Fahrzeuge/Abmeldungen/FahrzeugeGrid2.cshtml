@@ -17,6 +17,8 @@
         columns.Bound(fahrzeug => fahrzeug.Briefnummer);
         columns.Bound(fahrzeug => fahrzeug.Durchfuehrung).Format("{0:dd.MM.yyyy}"); 
         columns.Bound(fahrzeug => fahrzeug.Versand).Format("{0:dd.MM.yyyy}");     
+
+        columns.Bound(fahrzeug => fahrzeug.HalterAdresse).Visible();
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
