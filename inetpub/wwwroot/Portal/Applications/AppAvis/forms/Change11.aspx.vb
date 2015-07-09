@@ -184,6 +184,8 @@ Public Class Change11
             If ModusStationen Then txtTelefon.Text = row("TEL_NUMBER").ToString Else txtTelefon.Text = row("TELF1").ToString
             If ModusStationen Then txtFax.Text = row("FAX_NUMBER").ToString Else txtFax.Text = ""
 
+            litDADPDI.Text = row("DADPDI").ToString
+
             Dim mailAdr As String = row("SMTP_ADDR").ToString
 
             If mailAdr.Contains(";"c) Then
@@ -221,6 +223,7 @@ Public Class Change11
         lblEmail4.Text = ""
         lblEmail5.Text = ""
         lblÄnderung.Text = ""
+        litDADPDI.Text = ""
     End Sub
 
     Private Sub ClearAdresseEdit()
@@ -238,6 +241,7 @@ Public Class Change11
         txtEmail3.Text = ""
         txtEmail4.Text = ""
         txtEmail5.Text = ""
+        litDADPDI.Text = ""
     End Sub
 
     Private Function ValidateInput() As Boolean
@@ -375,7 +379,8 @@ Public Class Change11
                                          txtLand.Text,
                                          txtTelefon.Text,
                                          txtFax.Text,
-                                         mailAdr.Trim(";"c))
+                                         mailAdr.Trim(";"c),
+                                         litDADPDI.Text)
 
             If _mAdresspflege.ErrorOccured Then
                 lblError.Text = _mAdresspflege.ErrorMessage
