@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,12 +17,38 @@ namespace CkgDomainLogic.DomainCommon.Models
         public string ID { get { return HaendlerNr + "-" + LaenderCode; } }
 
         [LocalizedDisplay(LocalizeConstants.DealerNo)]
-        [Required]
+        [RequiredConditional]
         public string HaendlerNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CountryCode)]
         [Required]
         public string LaenderCode { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Country)]
+        public string LandAsText
+        {
+            get
+            {
+                if (GetViewModel == null) 
+                    return "";
+
+                var landName = GetViewModel().LaenderList.FirstOrDefault(l => l.Key == LaenderCode);
+                if (landName == null)
+                    return "";
+
+                return landName.Text;
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.DispatchLock)]
+        public bool VersandSperre { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ClientNo)]
+        [Required]
+        public string ClientNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ClientName)]
+        public string ClientName { get; set; }
 
 
         //
@@ -103,6 +130,9 @@ namespace CkgDomainLogic.DomainCommon.Models
         [RequiredConditional]
         [AddressPostcodeCityMapping("PlzSchluessel", "LandSchluessel")]
         public string OrtSchluessel { get; set; }
+
+        public bool LandAdressenModus { get { return GetViewModel != null && GetViewModel().HaendlerAdressenSelektor.LandAdressenModus; } }
+        public bool HaendlerAdressenModus { get { return GetViewModel != null && GetViewModel().HaendlerAdressenSelektor.HaendlerAdressenModus; } }
 
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]

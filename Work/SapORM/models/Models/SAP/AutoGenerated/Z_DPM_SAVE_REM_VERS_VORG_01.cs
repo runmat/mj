@@ -35,6 +35,8 @@ namespace SapORM.Models
 
 			public string HAENDLER { get; set; }
 
+			public string VERSANDSPERRE { get; set; }
+
 			public string BRIEF_SCHLUE_ADR { get; set; }
 
 			public string NAME1_B { get; set; }
@@ -73,6 +75,7 @@ namespace SapORM.Models
 				{
 					LAND_CODE = (string)row["LAND_CODE"],
 					HAENDLER = (string)row["HAENDLER"],
+					VERSANDSPERRE = (string)row["VERSANDSPERRE"],
 					BRIEF_SCHLUE_ADR = (string)row["BRIEF_SCHLUE_ADR"],
 					NAME1_B = (string)row["NAME1_B"],
 					NAME2_B = (string)row["NAME2_B"],

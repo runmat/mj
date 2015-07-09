@@ -10,6 +10,8 @@
             @Html.FormValidationSummary()
 
 
+            @Html.FormRadioButtonListFor(m => m.AdressenTyp, HaendlerAdressenSelektor.AdressenTypen, new { @class = "m-wrap" })
+
             @Html.FormDropDownListFor(m => m.LandCode, Model.LaenderListWithDefaultOption.ToSelectList(), new { @class = "m-wrap medium" })
 
 

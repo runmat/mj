@@ -34,7 +34,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public HaendlerAdressenSelektor HaendlerAdressenSelektor
         {
-            get { return PropertyCacheGet(() => new HaendlerAdressenSelektor()); }
+            get { return PropertyCacheGet(() => new HaendlerAdressenSelektor { AdressenTyp = "HAENDLER" }); }
             set { PropertyCacheSet(value); }
         }
 
@@ -70,6 +70,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             get { return LaenderList.CopyAndInsertAtTop(new SelectItem { Key = "", Text = Localize.DropdownDefaultOptionPleaseChoose }); }
         }
 
+        public bool LandAdressenModus { get { return HaendlerAdressenSelektor.LandAdressenModus; } }
+        public bool HaendlerAdressenModus { get { return HaendlerAdressenSelektor.HaendlerAdressenModus; } }
+
 
         public void DataInit()
         {
@@ -78,7 +81,17 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void LoadHaendlerAdressen()
         {
-            HaendlerAdressen = DataService.GetHaendlerAdressen(HaendlerAdressenSelektor);
+            var list = DataService.GetHaendlerAdressen(HaendlerAdressenSelektor);
+
+            if (LandAdressenModus)
+                list = list.Where(a => a.HaendlerNr.IsNullOrEmpty()).ToListOrEmptyList();
+
+            if (HaendlerAdressenModus)
+                list = list.Where(a => a.HaendlerNr.IsNotNullOrEmpty()).ToListOrEmptyList();
+
+            list = list.Where(a => LaenderList.Any(land => land.Key == a.LaenderCode)).ToListOrEmptyList();
+
+            HaendlerAdressen = list;
 
             DataMarkForRefresh();
         }
@@ -131,6 +144,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             if (HaendlerAdressen.Any(m => m.ID.ToLowerAndNotEmpty() == model.ID.ToLowerAndNotEmpty()))
                 addModelError(m => m.ID, Localize.ItemAlreadyExistsWithThisID);
+
+            if (HaendlerAdressenModus && model.HaendlerNr.IsNullOrEmpty())
+                addModelError(m => m.HaendlerNr, Localize.Required);
         }
 
         public void FilterHaendlerAdressen(string filterValue, string filterProperties)

@@ -209,6 +209,10 @@ namespace CkgDomainLogic.DomainCommon.Models
                                                      d.PlzSchluessel = s.PLZ_T;
                                                      d.OrtSchluessel = s.ORT_T;
                                                      d.LandSchluessel = "DE";
+
+                                                     d.VersandSperre = s.VERSANDSPERRE.XToBool();
+                                                     d.ClientNr = s.CLIENT_NR;
+                                                     d.ClientName = s.CLIENTNAME;
                                                  }));
             }
         }
@@ -240,6 +244,10 @@ namespace CkgDomainLogic.DomainCommon.Models
                                                      d.HAUSNR_T = s.HausNrSchluessel;
                                                      d.PLZ_T = s.PlzSchluessel;
                                                      d.ORT_T = s.OrtSchluessel;
+
+                                                     d.VERSANDSPERRE = s.VersandSperre.BoolToX();
+                                                     d.CLIENT_NR = s.ClientNr;
+                                                     d.CLIENTNAME = s.ClientName;
                                                  }));
             }
         }
