@@ -11,8 +11,9 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 {
-    public class Overview 
+    public class Overview
     {
+        public DateTime? PdfCreateDt { get; set; }
         public byte[] PdfUploaded { get; set; }
         public byte[] PdfGenerated { get; set; }
         public byte[] PdfMerged { get; set; }

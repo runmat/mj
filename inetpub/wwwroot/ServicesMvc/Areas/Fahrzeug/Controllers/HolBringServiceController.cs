@@ -118,6 +118,12 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
             if (ModelState.IsValid)
             {
+                if (model.DeleteUploadedPdf)
+                {
+                    ViewModel.Overview.PdfUploaded = null;
+                    ViewModel.Overview.PdfCreateDt = null;
+                }
+                
                 ViewModel.Upload = model;
             }
 
@@ -163,7 +169,8 @@ namespace ServicesMvc.Fahrzeug.Controllers
         public FileContentResult DownloadGeneratedPdf()
         {            
             var pdf = ViewModel.Overview.PdfGenerated;
-            return new FileContentResult(pdf, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", ViewModel.Auftraggeber.Repco) };
+            var filename = ViewModel.GetPdfFilename();
+            return new FileContentResult(pdf, "application/pdf") { FileDownloadName = filename };
         }
 
         /// <summary>
@@ -173,16 +180,18 @@ namespace ServicesMvc.Fahrzeug.Controllers
         public FileContentResult DownloadMergedPdf()
         {
             var pdf = ViewModel.Overview.PdfMerged;
-            return new FileContentResult(pdf, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.PDF) };
+            var filename = ViewModel.GetPdfFilename();
+            return new FileContentResult(pdf, "application/pdf") { FileDownloadName = filename };
         }
 
         public ActionResult ShowGeneratedPdf()
         {
             var contentDispostion = new System.Net.Mime.ContentDisposition
             {
-                FileName = "fileName",
+                FileName = ViewModel.GetPdfFilename(),
                 Inline = true,
             };
+
             Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
 
             var pdf = ViewModel.Overview.PdfGenerated;
@@ -194,7 +203,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         {
             var contentDispostion = new System.Net.Mime.ContentDisposition
             {
-                FileName = "fileName",
+                FileName = ViewModel.GetPdfFilename(),
                 Inline = true,
             };
             Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
@@ -217,6 +226,9 @@ namespace ServicesMvc.Fahrzeug.Controllers
                 // Versenden...
                 var result = ViewModel.SendMailTo();
 
+                model.SendMailResult = result;
+
+                model.UploadedPdfExists = ViewModel.Overview.PdfUploaded != null;
             }
 
             return PartialView("Partial/SendMail", model);

@@ -30,14 +30,18 @@
         @Html.FormTextBoxFor(m => m.AbholungAnsprechpartner, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.AbholungTel, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormDatePickerFor(m => m.AbholungDatum, new { @class = "m-wrap " })
-@*        <div class="input-append datepickerX">
-            <input id="AbholungDatum" name="AbholungDatum" type="text" class="m-wrap small " />
-            <span class="add-on">
-                <i class="icon-calendar"></i>
-            </span>
-        </div>*@
-                
+        <div class="control-group">
+            <label class="control-label">Abholdatum</label>
+            <div class="controls">
+                <div class="input-append">
+                    @Html.TextBoxFor(m => m.AbholungDatum, new { @class = "m-wrap " })
+                    <span class="add-on">
+                        <i class="icon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+        </div>
+        
         <div class="control-group">
             <label class="control-label">Abhol-Uhrzeit</label>
             <div class="controls">
@@ -56,18 +60,16 @@
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
         </script>
         
-            }
-    </div>
+    }
 
-<script>
+</div>
     
-    $(function() {
-        feiertageAsString = "14.07.2015,15.07.2015";
-
-        $("#AbholungDatum").datepicker({    // AbholungDatumUhrzeitX
+<script>
+    $(function () {
+        $("#AbholungDatum").datepicker({
             minDate: new Date(2015, 5, 1),
             beforeShowDay: function (date) {
-                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);     // Keine Wochenenden
+                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6); // Keine Wochenenden
 
                 if (dateIsSelectable) // Datum ab heute
                     dateIsSelectable = (date >= Date.today());
@@ -78,6 +80,5 @@
                 return [dateIsSelectable, ""];
             }
         });
-
-    })
+    });
 </script>

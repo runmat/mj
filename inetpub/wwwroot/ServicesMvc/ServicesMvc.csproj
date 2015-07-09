@@ -2482,7 +2482,7 @@
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\BapiParameterSet.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\GlobalViewData.cs" />
-    <Compile Include="Areas\Fahrzeug\Models\HolBringService\SendMail.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Mail.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Overview.cs" />
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Upload.cs" />
     <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />

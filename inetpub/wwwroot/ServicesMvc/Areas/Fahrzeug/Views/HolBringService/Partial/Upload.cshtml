@@ -1,5 +1,25 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Upload
+
 <script>
+
+    $(function () {
+        $("#pdfContent").resizable({
+            helper: "ui-resizable-helper"
+        });
+
+        ResizePdfContainer();
+
+        $(window).resize(function () {
+            ResizePdfContainer();
+        });
+
+        $("#pdfContent").removeClass("hidden");
+
+        if ($("#UploadFileName").val().length > 0) {
+            $('#BtnRemoveFile').removeClass("hidden");
+        }
+
+    });
 
     function UploadStart(e) {
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
@@ -26,12 +46,11 @@
             return;
         }
 
-        $('#PdfPreview').attr('src', 'ShowUploadedPdf');
-        parent.document.getElementById('PdfPreview').contentWindow.location.reload();
-        setTimeout(
-            function () {
-                $('#PdfPreview').removeClass("hidden");
-            }, 2000);
+        var iframe = document.getElementById("uploadedPdf");
+        iframe.src = iframe.src;
+        $('#pdfContent').show();
+        $('#BtnRemoveFile').removeClass("hidden");
+        $('#pdfContent').removeClass("hidden");
     }
 
     function UploadError(e) {
@@ -41,9 +60,9 @@
     }
 
     function RemovePdfFile() {
-        alert("RemovePdfFile");
-        $('.fileUpload').val("");
-        $('#PdfPreview').addClass("hidden");
+        $('#pdfContent').addClass("hidden");
+        $('#DeleteUploadedPdf').val(true);
+        $('#UploadFileName').val("");
     }
     
 </script>
@@ -79,30 +98,22 @@
                     </div>
                 </div>
                 
-                <div id="DivPdfPreview">
-                    <iframe id="PdfPreview" src="ShowUploadedPdf" frameborder="0" scrolling="yes" width="100%" height="400" class=""></iframe>
+                @Html.HiddenFor(m => m.DeleteUploadedPdf)
+                @Html.HiddenFor(m => m.UploadFileName)
+                
+                <div id="pdfContent" class="ui-widget-content hidden">
+                    <iframe id="uploadedPdf" src="ShowUploadedPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
                 </div>
 
             </div>
             <div class="span5">
-                <button onclick="RemovePdfFile();" type="button" class="btn green">
-                    <i class="icon-ok"></i> Datei entfernen</button>
+                <button id="BtnRemoveFile" onclick="RemovePdfFile();" type="button" class="btn green hidden">
+                    <i class="icon-ok"></i> Datei entfernen</button>    
             </div>
         </div>
         
         <script type="text/javascript">
                 _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-
-                $(function() {
-                    @if (Model.PdfBytes != null)
-                    {
-                        <text>$('#PdfPreview').removeClass("hidden");</text>
-                    }
-                    else
-                    {
-                        <text>$('#PdfPreview').addClass("hidden");</text>
-                    }
-                });
         </script>
         
             }

@@ -95,12 +95,17 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 var abholungMobilitaetsfahrzeug = Abholung.AbholungMobilitaetsfahrzeug == true ? "X" : "";
                 var anlieferungMobilitaetsfahrzeug = Anlieferung.AnlieferungMobilitaetsfahrzeug == true ? "X" : "";
 
+                double stunden = 0;
+                double minuten = 0;
+
                 DateTime? abholungDt = null;
                 if (Abholung.AbholungDatum.HasValue)
                 {
+                    double.TryParse(Abholung.AbholungUhrzeitStunden, out stunden);  
+                    double.TryParse(Abholung.AbholungUhrzeitMinuten, out minuten); 
                     abholungDt = Abholung.AbholungDatum;
-                    abholungDt = abholungDt.Value.AddHours(Convert.ToDouble(Abholung.AbholungUhrzeitStunden));
-                    abholungDt = abholungDt.Value.AddMinutes(Convert.ToDouble(Abholung.AbholungUhrzeitMinuten));
+                    abholungDt = abholungDt.Value.AddHours(stunden);
+                    abholungDt = abholungDt.Value.AddMinutes(minuten);
                 }
 
                 DateTime? anlieferungAbholungAbDt = null;
@@ -108,49 +113,53 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 if (Anlieferung.AnlieferungDatum.HasValue)
                 {
+                    double.TryParse(Anlieferung.AbholungAbUhrzeitStunden, out stunden); 
+                    double.TryParse(Anlieferung.AbholungAbUhrzeitMinuten, out minuten); 
                     anlieferungAbholungAbDt = Anlieferung.AnlieferungDatum;
-                    anlieferungAbholungAbDt = anlieferungAbholungAbDt.Value.AddHours(Convert.ToDouble(Anlieferung.AbholungAbUhrzeitStunden));
-                    anlieferungAbholungAbDt = anlieferungAbholungAbDt.Value.AddMinutes(Convert.ToDouble(Anlieferung.AbholungAbUhrzeitMinuten));
-                
+                    anlieferungAbholungAbDt = anlieferungAbholungAbDt.Value.AddHours(stunden);
+                    anlieferungAbholungAbDt = anlieferungAbholungAbDt.Value.AddMinutes(minuten);
+
+                    double.TryParse(Anlieferung.AnlieferungBisUhrzeitStunden, out stunden); 
+                    double.TryParse(Anlieferung.AnlieferungBisUhrzeitMinuten, out minuten); 
                     anlieferungAbholungBisDt = Anlieferung.AnlieferungDatum;
-                    anlieferungAbholungBisDt = anlieferungAbholungBisDt.Value.AddHours(Convert.ToDouble(Anlieferung.AnlieferungBisUhrzeitStunden));
-                    anlieferungAbholungBisDt = anlieferungAbholungBisDt.Value.AddMinutes(Convert.ToDouble(Anlieferung.AnlieferungBisUhrzeitMinuten));
+                    anlieferungAbholungBisDt = anlieferungAbholungBisDt.Value.AddHours(stunden);
+                    anlieferungAbholungBisDt = anlieferungAbholungBisDt.Value.AddMinutes(minuten);
                 }
 
                 var bapiParameterSet = new BapiParameterSet
                 {
-                    AbholungAnsprechpartner = Abholung.AbholungAnsprechpartner, //  "AbholungAnsprechpartner",
-                    AbholungDateTime = abholungDt, // Abholung.AbholungDatum, //  new DateTime(2015, 7, 1),
-                    AbholungHinweis = Abholung.AbholungHinweis, //  "AbholungHinweis",
-                    AbholungKunde = Abholung.AbholungKunde, //  "AbholungKunde",
+                    AbholungAnsprechpartner = Abholung.AbholungAnsprechpartner, 
+                    AbholungDateTime = abholungDt, 
+                    AbholungHinweis = Abholung.AbholungHinweis, 
+                    AbholungKunde = Abholung.AbholungKunde, 
                     AbholungMobilitaetsfahrzeug = abholungMobilitaetsfahrzeug, 
-                    AbholungOrt = Abholung.AbholungOrt, //  "AbholungOrt",
+                    AbholungOrt = Abholung.AbholungOrt, 
                     AbholungPlz = Abholung.AbholungPlz, 
-                    AbholungStrasseHausNr = Abholung.AbholungStrasseHausNr, //  "AbholungStrasseHausNr",
-                    AbholungTel = Abholung.AbholungTel, //  "AbholungTel",
-                    AnlieferungAbholungAbDt = anlieferungAbholungAbDt, //  new DateTime(2015, 7, 2, 10, 15, 20), // Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 10, 0, 0),
-                    AnlieferungAnlieferungBisDt = anlieferungAbholungBisDt, // Anlieferung.AnlieferungDatum, //  new DateTime(2015, 7, 2, 15, 15, 0),
-                    AnlieferungAnsprechpartner = Anlieferung.AnlieferungAnsprechpartner, //  "AnlieferungAnsprechpartner",
-                    AnlieferungHinweis = Anlieferung.AnlieferungHinweis, //  "AnlieferungHinweis",
-                    AnlieferungKunde = Anlieferung.AnlieferungKunde, //  "AnlieferungKunde",
-                    AnlieferungMobilitaetsfahrzeug = anlieferungMobilitaetsfahrzeug , //  "X" = true
-                    AnlieferungOrt = Anlieferung.AnlieferungOrt, //  "AnlieferungOrt",
-                    AnlieferungPlz = Anlieferung.AnlieferungPlz, //  "22222",
-                    AnlieferungStrasseHausNr = Anlieferung.AnlieferungStrasseHausNr, //  "AnlieferungStrasseHausNr",
-                    AnlieferungTel = Anlieferung.AnlieferungTel, // "AnlieferungTel",
-                    Ansprechpartner = ansprechpartner, // Auftraggeber.Ansprechpartner, //  "Ansprechpartner",
+                    AbholungStrasseHausNr = Abholung.AbholungStrasseHausNr, 
+                    AbholungTel = Abholung.AbholungTel,
+                    AnlieferungAbholungAbDt = anlieferungAbholungAbDt,
+                    AnlieferungAnlieferungBisDt = anlieferungAbholungBisDt, 
+                    AnlieferungAnsprechpartner = Anlieferung.AnlieferungAnsprechpartner,
+                    AnlieferungHinweis = Anlieferung.AnlieferungHinweis, 
+                    AnlieferungKunde = Anlieferung.AnlieferungKunde, 
+                    AnlieferungMobilitaetsfahrzeug = anlieferungMobilitaetsfahrzeug , 
+                    AnlieferungOrt = Anlieferung.AnlieferungOrt, 
+                    AnlieferungPlz = Anlieferung.AnlieferungPlz,
+                    AnlieferungStrasseHausNr = Anlieferung.AnlieferungStrasseHausNr, 
+                    AnlieferungTel = Anlieferung.AnlieferungTel, 
+                    Ansprechpartner = ansprechpartner, 
                     AnsprechpartnerTel = Auftraggeber.AnsprechpartnerTel, 
                     AuftragerstellerTel = Auftraggeber.AuftragerstellerTel, 
                     Auftragsersteller = Auftraggeber.Auftragsersteller,
                     BetriebName = Auftraggeber.BetriebName, 
-                    BetriebStrasse = Auftraggeber.BetriebStrasse, //  "BetriebStraße",
-                    BetriebHausNr = Auftraggeber.BetriebHausNr, // "BetriebHausNr",
-                    BetriebPLZ = Auftraggeber.BetriebPLZ, // "BetriebPLZ",
-                    BetriebOrt = Auftraggeber.BetriebOrt, // "BetriebOrt",
-                    Fahrzeugart = Auftraggeber.Fahrzeugart, // Auftraggeber.FahrzeugartId.ToString(), //   "Fahrzeugart",
-                    Kennnzeichen = Auftraggeber.Kennnzeichen, //   "Kennzeichen",
-                    KundeTel = Auftraggeber.KundeTel, //   "KundeTel",
-                    Repco = Auftraggeber.Repco, //   "Repco"
+                    BetriebStrasse = Auftraggeber.BetriebStrasse, 
+                    BetriebHausNr = Auftraggeber.BetriebHausNr,
+                    BetriebPLZ = Auftraggeber.BetriebPLZ, 
+                    BetriebOrt = Auftraggeber.BetriebOrt, 
+                    Fahrzeugart = Auftraggeber.Fahrzeugart, 
+                    Kennnzeichen = Auftraggeber.Kennnzeichen,
+                    KundeTel = Auftraggeber.KundeTel,
+                    Repco = Auftraggeber.Repco, 
                 };
 
                 return bapiParameterSet;
@@ -166,6 +175,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             string retMessage;
 
             DataService.GenerateSapPdf(bapiParameterSets, out pdfGenerated, out retCode, out retMessage);
+            Overview.PdfCreateDt = DateTime.Now;
 
             return pdfGenerated;
         }
@@ -239,7 +249,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 return false;
 
             var bytes = File.ReadAllBytes(AppSettings.TempPath + @"\" + nameSaved + extension);
-            Upload.PdfBytes = bytes;
+            // Upload.PdfBytes = bytes;
             Overview.PdfUploaded = bytes;
 
             return true;
@@ -250,13 +260,29 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return null;    
         }
 
-        public bool SendMailTo()
+        public string SendMailTo()
         {
+            var resultMessage = "Auftrag wurde erfolgreich versendet.";
+
             var mailService = new SmtpMailService(AppSettings);
 
-            var result = mailService.SendMail(SendMail.MailReceiver, Auftraggeber.Repco, "Hol- und BringService", new[] { Overview.PdfMergedFilename });
+            var subject = string.Format("{0}_{1}_{2}", DateTime.Now.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco, Auftraggeber.BetriebOrt);
+            const string body = "Hol- und BringService";
 
-            return result;
+            var result = mailService.SendMail(SendMail.MailReceiver, subject, body, new[] { Overview.PdfMergedFilename });
+
+            if (result == false)
+            {
+                resultMessage = "Fehler beim Versenden des Auftrages.";
+            }
+
+            return resultMessage;
+        }
+
+        public string GetPdfFilename()
+        {
+            return string.Format("{0}_{1}_{2}", DateTime.Now.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco, Auftraggeber.BetriebOrt);
+            // return string.Format("{0}_{1}.pdf", Overview.PdfCreateDt.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco);
         }
 
         public void MergePdf()
@@ -276,7 +302,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 Overview.PdfMerged = pdfOutput;
             }
             
-            Overview.PdfMergedFilename = Path.Combine(AppSettings.TempPath, Auftraggeber.Repco + "_" + Guid.NewGuid().ToString() + extension);
+            Overview.PdfMergedFilename = Path.Combine(AppSettings.TempPath, DateTime.Now.ToString("yyyyMMddHHmmss") + "_" + Auftraggeber.Repco + extension);
 
             File.WriteAllBytes(Overview.PdfMergedFilename, pdfOutput);
             

@@ -1,19 +1,14 @@
-﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.SendMail
+﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Mail
 
 <div id="DivSendMail" class="margin-top-20">
     
-    <h3>Auftrag per Mail versenden</h3>
+    <h3>@Model.SendMailResult</h3>
     
-    <div>@Model.SendMailResult</div>
+    <a href="DownloadGeneratedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='Auftrag' data-placement="top"> PDF-Auftrag herunterladen <i class="icon-download-alt"></i></a>
     
-    <a href="DownloadGeneratedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='PDF herunterladen' data-placement="top"> PDF herunterladen <i class="icon-download-alt"></i></a>
-    <a href="DownloadMergedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='PDF mit Werkstattauftrag herunterladen' data-placement="top"> PDF mit Werkstattauftrag herunterladen <i class="icon-download-alt"></i></a>
+    @if (Model.UploadedPdfExists)
+    {
+        <a href="DownloadMergedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='Auftrag inkl. Werkstattauftrag' data-placement="top"> PDF inkl. Werkstattauftrag herunterladen <i class="icon-download-alt"></i></a>       
+    }
       
 </div>
-
-<script>
-    $(function() {
-        alert("4");
-        FormWizard.ButtonCustom1Show(show, "sdfasdf");
-    })
-</script>

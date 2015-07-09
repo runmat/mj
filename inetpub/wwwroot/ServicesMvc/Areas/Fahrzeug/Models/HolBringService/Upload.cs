@@ -19,5 +19,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string UploadServerFileName { get; set; }
 
         public byte[] PdfBytes { get; set; }
+
+        public bool DeleteUploadedPdf { get; set; }
     }
 }

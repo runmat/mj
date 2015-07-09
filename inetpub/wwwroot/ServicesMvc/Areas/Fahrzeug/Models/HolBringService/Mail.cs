@@ -14,9 +14,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
     public class Mail 
     {
         public string SendMailResult { get; set; }
+        public string MailReceiver { get { return "Marco.Maihofer@kroschke.de"; } }
 
-        public string MailReceiver { get { return "Marco.Maihofer@kroschke.de"; }
-        }
-
+        public bool UploadedPdfExists { get; set; }
     }
 }

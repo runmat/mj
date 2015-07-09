@@ -29,20 +29,25 @@
         @Html.FormTextBoxFor(m => m.AnlieferungAnsprechpartner, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.AnlieferungTel, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormDatePickerFor(m => m.AnlieferungDatum, new { @class = "m-wrap " })
-
+        @*@Html.FormDatePickerFor(m => m.AnlieferungDatum, new { @class = "m-wrap " })*@
+        <div class="control-group">
+            <label class="control-label">Anlieferdatum</label>
+            <div class="controls">
+                <div class="input-append">
+                    @Html.TextBoxFor(m => m.AnlieferungDatum, new { @class = "m-wrap " })
+                    <span class="add-on">
+                        <i class="icon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+            <div id="DivTransportDateInfo" class="alert margin-top-20 alert-danger">Anlieferung darf nicht vor Abholung liegen</div>
+        </div>
+        
         <div class="control-group">
             <label class="control-label">Abholung ab</label>
             <div class="controls">
                 @Html.DropDownListFor(m => m.AbholungAbUhrzeitStunden, globalData.DropDownHours.ToSelectList(), new { @class = "dropdownwidth transporttime" })
-                @Html.DropDownListFor(m => m.AbholungAbUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth transporttime" })
-                
-                @*<div class="input-append datepickerX">
-                    <input id="AnlieferungDatumX" name="AnlieferungDatum" type="text" class="m-wrap small " />
-                    <span class="add-on">
-                        <i class="icon-calendar"></i>
-                    </span>
-                </div>*@
+                @Html.DropDownListFor(m => m.AbholungAbUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth transporttime" })                
             </div>
         </div>
         
@@ -70,14 +75,13 @@
 <script>
 
     $(function () {
-        // feiertageAsString = "14.07.2015,15.07.2015";
-
         ShowHideTransportTimeInfo();
-
+        CompareDate();
+        
         $("#AnlieferungDatum").datepicker({
             minDate: new Date(2015, 5, 1),
             beforeShowDay: function (date) {
-                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6);     // Keine Wochenenden
+                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6); // Keine Wochenenden
 
                 if (dateIsSelectable) // Datum ab heute
                     dateIsSelectable = (date >= Date.today());
@@ -90,12 +94,33 @@
         });
 
         $('#AnlieferungDatum').change(function () {
-            alert("ValidationAbholungDt: @globalData.ValidationAbholungDt");
+            CompareDate();
         });
 
         $(".transporttime").change(function () {
             ShowHideTransportTimeInfo();
         });
+
+        function CompareDate() {
+            var date1 = '@globalData.ValidationAbholungDt';
+            var date2 = $('#AnlieferungDatum').val();
+
+            if (date2 != "" && date1.toDate() > date2.toDate()) {
+                $('#DivTransportDateInfo').removeClass("hidden");
+            } else {
+                $('#DivTransportDateInfo').addClass("hidden");
+            }
+        }
+
+        String.prototype.toDate = function () {
+            var string = this.replace(/[-\/]/g, '.').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ');
+            var split = string.split("."); 	// Datum splitten 
+            var day = parseInt(split[0], 10);
+            var month = parseInt(split[1] || 0, 10);
+            var year = parseInt(split[2] || 0, 10);
+            var check = new Date(year, month - 1, day);
+            return (check.getFullYear() === year && month === (check.getMonth() + 1) && day === check.getDate()) ? check : null;
+        };
 
         function ShowHideTransportTimeInfo() {
             var result = true;

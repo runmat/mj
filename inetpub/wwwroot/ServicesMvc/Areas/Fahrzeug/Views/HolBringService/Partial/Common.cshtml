@@ -1,28 +1,33 @@
 ﻿<style type="text/css">
     
-    span.reqired-fields {
-        margin-left: -90px !important;
-        white-space: nowrap !important;
-    }
+     span.reqired-fields {
+         margin-left: -90px !important;
+         white-space: nowrap !important;
+     }
     
-    div.presets-and-filter {
-        background-color: #f9fff9;
-        padding: 5px 0 0 0;
-        border: 1px solid #f0fcf0;
-        margin: 0 0 20px 0;
-    }
-    div.presets-and-filter input[type='text'] {
-        background-color: white!important;
-    }
-    .span4 a {
-        text-align: left!important;   
-    }
+     div.presets-and-filter {
+         background-color: #f9fff9;
+         padding: 5px 0 0 0;
+         border: 1px solid #f0fcf0;
+         margin: 0 0 20px 0;
+     }
+     div.presets-and-filter input[type='text'] {
+         background-color: white!important;
+     }
+     .span4 a {
+         text-align: left!important;   
+     }
     
-    div.zulassungen-count {
-        color: blue;
-        font-weight: bold;
-        margin-left: 5px;
-    }
+     div.zulassungen-count {
+         color: blue;
+         font-weight: bold;
+         margin-left: 5px;
+     }
+    
+     #pdfContent { width: 150px; height: 150px; padding: 0.5em; }
+     #pdfContent h3 { text-align: center; margin: 0; }
+     .ui-resizable-helper { border: 75px solid #EFEFEF; margin: -75px; }
+
 </style>
 
 <script type="text/javascript">
@@ -31,14 +36,14 @@
     var _modelIsValid = false;
     var _selectedItemsCount = 0;
     var _validationError = false;
-
+    
     function FormPreparePrivate() {
-
+        
         try { FormWizardInitPrivate(); } catch (e) { }
         
     };
 
-    function FormPreparePrivateAjax(step) {        
+    function FormPreparePrivateAjax(step) {     
         FormPrepareAjax();
         var stepKey = FormWizard.GetStepKey(step + 1);
         
@@ -97,11 +102,9 @@
                     alert(result.message);
                     return;
                 }
-//                if (nextTabKey == "Receipt") {
-//                    $("#GridFahrzeugSummaryWrapper").html("");
-//                }
 
-                FormWizard.SetNextTabHtmlAndMoveNext(result);
+                FormWizard.SetNextTabHtmlAndMoveNext(result);       
+                
             }
         });    
     }
@@ -111,13 +114,16 @@
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
-        }
+        }             
     }
 
     function AjaxFormAbholungComplete() {
         FormPrepareAjax();
         if (_modelIsValid) {
             AjaxRequestNextStep();
+
+           
+            
             return;
         }
     }
@@ -164,7 +170,12 @@
 //            FormWizard.ButtonCustom1Show(show, _customButtonText);
         }, (typeof (buttonText) !== 'undefined' ? delay : 0));
     }
-    
 
+    function ResizePdfContainer() {
+        var width = $("#formWizard").width();
+        var height = $(window).height();
+        $("#pdfContent").css('width', width - 15 | 0);
+        $("#pdfContent").css('height', height * 0.35 | 0);
+    }
 </script>
 
