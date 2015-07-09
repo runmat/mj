@@ -34,22 +34,27 @@
                 if (!_gridReportGeneratorMode)
                     GridPrepareFromAutoColumnsPersistedState(grid.data("tGrid"));
                 else {
-                    try { GridPrepareFromSelectorPersistedState(grid.data("tGrid")); } 
-                    catch(e) {}
+                    try { GridPrepareFromSelectorPersistedState(grid.data("tGrid")); }
+                    catch (e) { }
                 }
             }
-
-            var doPersist = _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns;
-            if (_filteredData_suppress_AutoPersistColumns)
-                doPersist = false;
-            console.log(doPersist);
-            FilteredData_Grid_PrepareAllCommandHrefs(grid, doPersist);
-            _filteredData_force_Grid_OnColumnReorder = false;
-            _filteredData_suppress_AutoPersistColumns = false;
 
             if (gridDataBoundFirstTime) {
                 GridCaptionHintHide(grid);
                 grid.animate({ opacity: "1.0" }, 300);
+            }
+
+            try {
+                var doPersist = _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns;
+                if (_filteredData_suppress_AutoPersistColumns)
+                    doPersist = false;
+                console.log(doPersist);
+                FilteredData_Grid_PrepareAllCommandHrefs(grid, doPersist);
+                _filteredData_force_Grid_OnColumnReorder = false;
+                _filteredData_suppress_AutoPersistColumns = false;
+            } catch (e) {
+                _filteredData_force_Grid_OnColumnReorder = false;
+                _filteredData_suppress_AutoPersistColumns = false;
             }
         }, 1000);
     }
