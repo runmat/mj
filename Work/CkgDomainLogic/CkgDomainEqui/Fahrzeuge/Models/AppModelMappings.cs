@@ -222,7 +222,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.HalterAdresse = string.Format(
                             "{0}{1}{2}{3}{4}",
                             halterName1, halterName2.PrependIfNotNull(", "), 
-                            halterStrasse.PrependIfNotNull(", "), halterPlz.PrependIfNotNull(", "), halterOrt.PrependIfNotNull(", "));
+                            halterStrasse.PrependIfNotNull(", "), halterPlz.PrependIfNotNull(", "), halterOrt.PrependIfNotNull(" "));
                     }));
             }
         }
