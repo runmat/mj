@@ -33,9 +33,9 @@
         <div class="control-group">
             <label class="control-label">Abholdatum</label>
             <div class="controls">
-                <div class="input-append">
+                <div class="input-append ">
                     @Html.TextBoxFor(m => m.AbholungDatum, new { @class = "m-wrap", @Value = Model.AbholungDatum.ToString("dd.MM.yyyy") })
-                    <span class="add-on">
+                    <span class="add-on showdatepicker">
                         <i class="icon-calendar"></i>
                     </span>
                 </div>
@@ -77,6 +77,9 @@
                     dateIsSelectable = !istFeiertag;
                 return [dateIsSelectable, ""];
             }
+        });
+        $(".showdatepicker").click(function () {
+            $("#AbholungDatum").datepicker("show");
         });
     });
 </script>

@@ -19,9 +19,8 @@
         @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap readonly", col = "left", @readonly = "" })
         @Html.FormTextBoxFor(m => m.AuftragerstellerTel, new { @class = "m-wrap ", col = "right" })
         
-        @Html.FormDropDownListFor(m => m.Betrieb, globalData.BetriebeSap.Select(x => new { x.NAME1, x.KUNNR }).ToSelectList("KUNNR", "NAME1"), new { @class = "m-wrap", col = "left", @PostControlHtml= "<div>xxx</div>" })
+        @Html.FormDropDownListFor(m => m.Betrieb, globalData.BetriebeSap.Select(x => new { x.NAME1, x.KUNNR }).ToSelectList("KUNNR", "NAME1"), new { @class = "m-wrap", col = "left", @xx = "test" })
         @Html.FormTextBoxFor(m => m.Repco, new { @class = "m-wrap ", col = "right" })
-        @*<p id="BetriebAddress" class="controls help-block" style="margin-top:-30px;"></p>*@
         
         @Html.FormDropDownListFor(m => m.Ansprechpartner, globalData.AnsprechpartnerList.ToSelectList(), new { @class = "m-wrap", col = "left" })
         @Html.FormTextBoxFor(m => m.AnsprechpartnerTel, new { @class = "m-wrap ", col = "right" })
@@ -50,9 +49,8 @@
 
             $(function() {
                 
-//                ShowBetriebAddress();
                 $('#Betrieb').select2().off("change").on("change", function(e) {
-//                    ShowBetriebAddress();
+                    ShowBetriebAddress();
                 });                
                 
                 $('#FahrzeugartId').select2();
@@ -62,6 +60,7 @@
                     ShowAnsprechpartnerTel();
                 });
 
+                ShowBetriebAddress();
                 ShowAnsprechpartnerTel();
             });
             
@@ -72,14 +71,16 @@
                 $('#AnsprechpartnerTel').val(telNr);
             }
 
-//            function ShowBetriebAddress() {
-//                var kunnr = $('#Betrieb').val(); 
-//                for (var i = 0; i < arrBetriebe.length; i++) {
-//                    if (arrBetriebe[i].KUNNR == kunnr) {
-//                        $('#BetriebAddress').html(arrBetriebe[i].STREET + " " + arrBetriebe[i].HOUSE_NUM1 + ", " + arrBetriebe[i].POST_CODE1 + " " + arrBetriebe[i].CITY1);
-//                    }
-//                }
-//            }
+            function ShowBetriebAddress() {
+                var kunnr = $('#Betrieb').val(); 
+                for (var i = 0; i < arrBetriebe.length; i++) {
+                    if (arrBetriebe[i].KUNNR == kunnr) {
+                        var addresstext = arrBetriebe[i].STREET + " " + arrBetriebe[i].HOUSE_NUM1 + ", " + arrBetriebe[i].POST_CODE1 + " " + arrBetriebe[i].CITY1;
+                        $('#betriebAddress').remove();
+                        $('#s2id_Betrieb').append("<div id='betriebAddress' class='help-block no-margin' >" + addresstext + "</div>");
+                    }
+                }
+            }
         </script>
     }
 </div>

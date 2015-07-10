@@ -35,7 +35,7 @@
             <div class="controls">
                 <div class="input-append">
                     @Html.TextBoxFor(m => m.AnlieferungDatum, new { @class = "m-wrap", @Value = Model.AnlieferungDatum.ToString("dd.MM.yyyy") })
-                    <span class="add-on">
+                    <span class="add-on showdatepicker">
                         <i class="icon-calendar"></i>
                     </span>
                 </div>
@@ -75,9 +75,6 @@
 <script>
 
     $(function() {
-        ShowHideTransportTimeInfo();
-        CompareDate();
-
         $("#AnlieferungDatum").datepicker({
             beforeShowDay: function(date) {
                 var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6); // Keine Wochenenden
@@ -91,6 +88,9 @@
                 return [dateIsSelectable, ""];
             }
         });
+        $(".showdatepicker").click(function () {
+            $("#AnlieferungDatum").datepicker("show");
+        });
 
         $('#AnlieferungDatum').change(function() {
             CompareDate();
@@ -99,6 +99,9 @@
         $(".transporttime").change(function() {
             ShowHideTransportTimeInfo();
         });
+
+        ShowHideTransportTimeInfo();
+        CompareDate();
     });
 
     function CompareDate() {

@@ -246,13 +246,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
 
-            // var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
             var nameSaved = fileSaveAction(GetUploadPathTemp(), randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
-
-            // var tmpFilename = AppSettings.TempPath + @"\" + nameSaved + extension;
 
             var tmpFilename = GetUploadPathTemp() + @"\" + nameSaved + extension;
 
@@ -280,11 +277,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var subject = string.Format("{0}_{1}_{2}", DateTime.Now.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco, Auftraggeber.BetriebOrt);
             const string body = "Hol- und BringService";
 
-            var result = mailService.SendMail(mailReceiver, subject, body, new[] { Overview.PdfMergedFilename });
+            var result = mailService.SendMailMain(mailReceiver, subject, body, new[] { Overview.PdfMergedFilename });
 
-            if (result == false)
+            if (result != null)
             {
-                resultMessage = "Fehler beim Versenden des Auftrages.";
+                resultMessage = "Fehler beim Versenden des Auftrages: " + result;
             }
 
             return resultMessage;
