@@ -74,12 +74,12 @@
     
 <script>
 
-    $(function () {
+    $(function() {
         ShowHideTransportTimeInfo();
         CompareDate();
-        
+
         $("#AnlieferungDatum").datepicker({
-            beforeShowDay: function (date) {
+            beforeShowDay: function(date) {
                 var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6); // Keine Wochenenden
 
                 if (dateIsSelectable) // Datum ab heute
@@ -92,58 +92,72 @@
             }
         });
 
-        $('#AnlieferungDatum').change(function () {
+        $('#AnlieferungDatum').change(function() {
             CompareDate();
         });
 
-        $(".transporttime").change(function () {
+        $(".transporttime").change(function() {
             ShowHideTransportTimeInfo();
         });
+    });
 
-        function CompareDate() {
-            var date1 = '@globalData.ValidationAbholungDt';
-            var date2 = $('#AnlieferungDatum').val();
+    function CompareDate() {
+        var date1 = '@globalData.ValidationAbholungDt';
+        var date2 = $('#AnlieferungDatum').val();
 
-            if (date2 != "" && date1.toDate() > date2.toDate()) {
-                $('#DivTransportDateInfo').removeClass("hidden");
-            } else {
-                $('#DivTransportDateInfo').addClass("hidden");
-            }
+        if (date2 != "" && date1.toDate() > date2.toDate()) {
+            $('#DivTransportDateInfo').removeClass("hidden");
+            _validationError = true;
+            
+        } else {
+            $('#DivTransportDateInfo').addClass("hidden");
+            _validationError = false;
+        }
+        ShowHideNextButton();
+    }
+
+    String.prototype.toDate = function () {
+        var string = this.replace(/[-\/]/g, '.').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ');
+        var split = string.split("."); 	// Datum splitten 
+        var day = parseInt(split[0], 10);
+        var month = parseInt(split[1] || 0, 10);
+        var year = parseInt(split[2] || 0, 10);
+        var check = new Date(year, month - 1, day);
+        return (check.getFullYear() === year && month === (check.getMonth() + 1) && day === check.getDate()) ? check : null;
+    };
+
+    function ShowHideTransportTimeInfo() {
+        var result = true;
+
+        var fromHour = parseInt($('#AbholungAbUhrzeitStunden').val());
+        var fromMinute = parseInt($('#AbholungAbUhrzeitMinuten').val());
+
+        var toHour = parseInt($('#AnlieferungBisUhrzeitStunden').val());
+        var toMinute = parseInt($('#AnlieferungBisUhrzeitMinuten').val());
+
+        var fromTime = (fromHour * 100) + fromMinute;
+        var toTime = (toHour * 100) + toMinute;
+
+        if (fromTime > toTime) {
+            result = false;
         }
 
-        String.prototype.toDate = function () {
-            var string = this.replace(/[-\/]/g, '.').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ');
-            var split = string.split("."); 	// Datum splitten 
-            var day = parseInt(split[0], 10);
-            var month = parseInt(split[1] || 0, 10);
-            var year = parseInt(split[2] || 0, 10);
-            var check = new Date(year, month - 1, day);
-            return (check.getFullYear() === year && month === (check.getMonth() + 1) && day === check.getDate()) ? check : null;
-        };
-
-        function ShowHideTransportTimeInfo() {
-            var result = true;
-
-            var fromHour = parseInt($('#AbholungAbUhrzeitStunden').val());
-            var fromMinute = parseInt($('#AbholungAbUhrzeitMinuten').val());
-
-            var toHour = parseInt($('#AnlieferungBisUhrzeitStunden').val());
-            var toMinute = parseInt($('#AnlieferungBisUhrzeitMinuten').val());
-
-            var fromTime = (fromHour * 100) + fromMinute;
-            var toTime = (toHour * 100) + toMinute;
-
-            if (fromTime > toTime) {
-                result = false;
-            }
-
-            if (result == true) {
-                $('#DivTransportTimeInfo').addClass('hidden');
-            } else {
-                $('#DivTransportTimeInfo').removeClass('hidden');
-            }
-
+        if (result == true) {
+            $('#DivTransportTimeInfo').addClass('hidden');
+            _validationError = false;
+        } else {
+            $('#DivTransportTimeInfo').removeClass('hidden');
+            _validationError = true;
         }
-
-    })
+        ShowHideNextButton();
+    }
+    
+    function ShowHideNextButton() {
+        if (_validationError) {
+            $('#formWizard').find('.button-next').hide();
+        } else {
+            $('#formWizard').find('.button-next').show();
+        }
+    }
+    
 </script>

@@ -51,17 +51,15 @@
             $(function() {
                 
 //                ShowBetriebAddress();
-//                $('#Betrieb').select2().off("change").on("change", function(e) {
+                $('#Betrieb').select2().off("change").on("change", function(e) {
 //                    ShowBetriebAddress();
-//                });                
+                });                
                 
                 $('#FahrzeugartId').select2();
                 $('#Ansprechpartner').select2({
                     allowClear: true
                 }).off("change").on("change", function(e) {
                     ShowAnsprechpartnerTel();
-                }).on("select2-open", function(e) {
-                  alert("ok");
                 });
 
                 ShowAnsprechpartnerTel();

@@ -1,7 +1,11 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Upload
 
 <script>
+    
+    var firstRequest = '@Request["firstRequest"]';
 
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    
     $(function () {
         $("#pdfContentUpload").resizable({
             helper: "ui-resizable-helper"
@@ -18,6 +22,7 @@
         if ($("#UploadFileName").val().length > 0) {
             $('#BtnRemoveFile').removeClass("hidden");
         }
+
     });
 
     function UploadStart(e) {
@@ -50,6 +55,7 @@
         $('#UploadFileName').val(e.response.uploadFileName);
         $('#BtnRemoveFile').removeClass("hidden");
         $('#pdfContentUpload').removeClass("hidden");
+        $('#DeleteUploadedPdf').val(false);
     }
 
     function UploadError(e) {
@@ -63,7 +69,7 @@
         $('#DeleteUploadedPdf').val(true);
         $('#UploadFileName').val("");
     }
-    
+
 </script>
 <div id="DivUpload" class="margin-top-20">
     @using (Ajax.BeginForm("Upload", "HolBringService", null,
@@ -99,21 +105,16 @@
                 
                 @Html.HiddenFor(m => m.DeleteUploadedPdf)
                 @Html.HiddenFor(m => m.UploadFileName)
-                
+
                 <div id="pdfContentUpload" class="ui-widget-content pdfContentStyle hidden">
                     <iframe id="uploadedPdf" src="ShowUploadedPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
-                </div>
-
+                </div>    
+                
             </div>
             <div class="span5">
                 <button id="BtnRemoveFile" onclick="RemovePdfFile();" type="button" class="btn green hidden">
                     <i class="icon-ok"></i> Datei entfernen</button>    
             </div>
         </div>
-        
-        <script type="text/javascript">
-                _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-        </script>
-        
-            }
+    }
 </div>

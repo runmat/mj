@@ -68,11 +68,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
                 ViewModel.SetBetriebAddress();
 
-                var fahrzeugArt = ViewModel.GlobalViewData.Fahrzeugarten.FirstOrDefault(x => x.Wert == model.FahrzeugartId.ToString()).Beschreibung;
-                
-
-                ViewModel.Auftraggeber.Fahrzeugart =
-                    ViewModel.GlobalViewData.Fahrzeugarten.FirstOrDefault(x => x.Wert == model.FahrzeugartId.ToString()).Beschreibung;
+                ViewModel.Auftraggeber.Fahrzeugart = ViewModel.GlobalViewData.Fahrzeugarten.FirstOrDefault(x => x.Wert == model.FahrzeugartId.ToString()).Beschreibung;
             }
 
             return PartialView("Partial/Auftraggeber", model);

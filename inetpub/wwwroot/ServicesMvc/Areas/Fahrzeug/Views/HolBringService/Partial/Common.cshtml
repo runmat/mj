@@ -24,8 +24,8 @@
          margin-left: 5px;
      }
     
-     #pdfContentStyle { width: 150px; height: 150px; padding: 0.5em; }
-     #pdfContentStyle h3 { text-align: center; margin: 0; }
+     .pdfContentStyle { width: 150px; height: 150px; padding: 0.5em; }
+     .pdfContentStyle h3 { text-align: center; margin: 0; }
      .ui-resizable-helper { border: 75px solid #EFEFEF; margin: -75px; }
 
 </style>
@@ -45,8 +45,7 @@
 
     function FormPreparePrivateAjax(step) {     
         FormPrepareAjax();
-        var stepKey = FormWizard.GetStepKey(step + 1);
-        
+//        var stepKey = FormWizard.GetStepKey(step + 1);
         $('.tooltips').tooltip();
     }
 
@@ -68,14 +67,12 @@
             }
         });
 
-        FormWizard.OnCustom1(function (step, maxSteps) {
-            SaveZulassung();
-
-            return true;
-        });
+//        FormWizard.OnCustom1(function (step, maxSteps) {
+//            SaveZulassung();
+//            return true;
+//        });
 
         FormWizard.OnSubmit(function () {
-
             LoadingShow();
             SpanAlertWarning("WaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
             AjaxRequestNextStep();
@@ -90,12 +87,10 @@
     
     function AjaxRequestNextStep() {
         var nextTabKey = FormWizard.GetNextTabKey();
-        // alert("AjaxRequestNextStep: " + nextTabKey);
         $.ajax({
             type: "POST",
             url: nextTabKey,
             data: {firstRequest: 'ok'},
-            //data: {},
             loadingShow: true,
             success: function (result) {
                 if (typeof (result.message) !== "undefined") {
@@ -153,20 +148,17 @@
     }
     
     function ShowHideNextButton() {
-        
-        var nextButtonValid = 
-            $('#SelectedZulassungsDatum').val() != '' && $('#SelectedZulassungsDatum').val() != null && 
-            _selectedItemsCount > 0 && !_validationError;
-
-        FormWizard.ActionsShow(nextButtonValid);
+//        var nextButtonValid = $('#AnlieferungDatum').val() != '' && $('#AnlieferungDatum').val() != null && _selectedItemsCount > 0 && !_validationError;
+//        FormWizard.ActionsShow(nextButtonValid);
+        FormWizard.ActionsShow(_validationError);
     }
 
-    function FormWizardShowHideSaveButton(show, delay) {
-        setTimeout(function () {
-            $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
-//            FormWizard.ButtonCustom1Show(show, _customButtonText);
-        }, (typeof (buttonText) !== 'undefined' ? delay : 0));
-    }
+//    function FormWizardShowHideSaveButton(show, delay) {
+//        setTimeout(function () {
+//            $(".button-custom1 i").removeClass("m-icon-swapright").addClass("icon-shopping-cart");
+////            FormWizard.ButtonCustom1Show(show, _customButtonText);
+//        }, (typeof (buttonText) !== 'undefined' ? delay : 0));
+//    }
 
     function ResizePdfContainer() {
         var width = $("#formWizard").width();
