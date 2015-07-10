@@ -41,20 +41,29 @@ namespace MvcTools.Web
             return result;
         }
 
+
         public static void TrySetPartialViewMarkerModeFromRequestToSession()
         {
             TrySetValueFromRequestToSession("pvm");
         }
 
+        public static void EnforcePartialViewMarkerMode()
+        {
+            if (HttpContext.Current.Session != null)
+                HttpContext.Current.Session["pvm"] = "1";
+        }
+
+
         public static void TrySetThemeFromRequestToSession()
         {
             TrySetValueFromRequestToSession("theme", val =>
             {
-                var logonContext = (ILogonContext) SessionHelper.GetSessionObject("LogonContext");
+                var logonContext = (ILogonContext)SessionHelper.GetSessionObject("LogonContext");
                 if (logonContext != null)
                     logonContext.CurrentLayoutTheme = val;
             });
         }
+
 
         private static void TrySetValueFromRequestToSession(string key, Action<string> onSetAction = null)
         {

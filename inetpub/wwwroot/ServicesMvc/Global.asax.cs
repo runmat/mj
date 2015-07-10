@@ -87,6 +87,8 @@ namespace ServicesMvc
         {
             SetCulture();
 
+            RazorViewEngineThemed.EnforcePartialViewMarkerMode();
+
             RazorViewEngineThemed.TrySetPartialViewMarkerModeFromRequestToSession();
             RazorViewEngineThemed.TrySetThemeFromRequestToSession();
         }
