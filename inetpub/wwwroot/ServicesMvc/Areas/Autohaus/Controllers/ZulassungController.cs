@@ -121,10 +121,6 @@ namespace ServicesMvc.Autohaus.Controllers
         // 20150618 MMA ITA8076 Massenzulassung
         public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
         {
-            //FahrzeugeAkteBestandFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            //allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
-            //allCount = FahrzeugeAkteBestandFiltered.Count();
-
             ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
             allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
             allCount = ViewModel.FinList.Count();

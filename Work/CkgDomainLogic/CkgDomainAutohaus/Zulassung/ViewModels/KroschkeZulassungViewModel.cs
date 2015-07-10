@@ -829,7 +829,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         // MMA Save Massenzulassung 
         public string SaveMultiReg()
         {
-        
             // Basierend auf FinList eine Liste mit Zulassungen erstellen, so dass für jedes Fahrzeug eine separate Zulassung erfolgen kann
             var zulassungenMultiReg = new List<Vorgang>();
 
@@ -846,7 +845,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 zulassungenMultiReg.Add(singleZulassung);
                 // Save(new List<Vorgang> { singleZulassung }, saveDataToSap: true, saveFromShoppingCart: false);
-
             }
 
             Save(zulassungenMultiReg, saveDataToSap: true, saveFromShoppingCart: false);
@@ -866,7 +864,29 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
+
+            // MMA Massenzulassung...
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                var errorList= new List<string>();
+
+                foreach (var vorgang in zulassungen)
+                {
+                    SaveErrorMessage = ZulassungDataService.SaveZulassungen(new List<Vorgang> { vorgang }, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
+                    if (!SaveErrorMessage.IsNullOrEmpty())
+                    {
+                        errorList.Add(SaveErrorMessage);
+                    }
+                }
+
+            }
+            else
+            {
+                SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
+            }
+
+            // MMA Originalzeile...
+            // SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
