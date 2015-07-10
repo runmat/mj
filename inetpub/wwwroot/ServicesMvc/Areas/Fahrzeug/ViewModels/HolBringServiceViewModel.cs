@@ -168,6 +168,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         #endregion
 
+        public string GetUploadPathTemp()
+        {
+            return HttpContext.Current.Server.MapPath(string.Format(@"{0}", AppSettings.UploadFilePathTemp));
+        }
+
         public byte[] GenerateSapPdf(List<BapiParameterSet> bapiParameterSets)
         {
             byte[] pdfGenerated;
@@ -241,18 +246,18 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             Upload.UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
 
-            var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
+            // var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
+            var nameSaved = fileSaveAction(GetUploadPathTemp(), randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var tmpFilename = AppSettings.TempPath + @"\" + nameSaved + extension;
+            // var tmpFilename = AppSettings.TempPath + @"\" + nameSaved + extension;
+
+            var tmpFilename = GetUploadPathTemp() + @"\" + nameSaved + extension;
 
             var bytes = File.ReadAllBytes(tmpFilename);
             Overview.PdfUploaded = bytes;
-
-            // Datei wieder löschen...
-            // System.IO.File.Delete(tmpFilename);
 
             return true;
         }
@@ -264,6 +269,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string SendMailTo()
         {
+            var mailReceiver = GetApplicationConfigValueForCustomer("PdfVersandEmailAdresse");
+            if (mailReceiver.IsNullOrEmpty())
+                return "Empfänger-eMail-Adresse nicht definiert (PdfVersandEmailAdresse). Es wurde keine eMail generiert.";
+
             var resultMessage = "Auftrag wurde erfolgreich versendet.";
 
             var mailService = new SmtpMailService(AppSettings);
@@ -271,7 +280,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var subject = string.Format("{0}_{1}_{2}", DateTime.Now.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco, Auftraggeber.BetriebOrt);
             const string body = "Hol- und BringService";
 
-            var result = mailService.SendMail(SendMail.MailReceiver, subject, body, new[] { Overview.PdfMergedFilename });
+            var result = mailService.SendMail(mailReceiver, subject, body, new[] { Overview.PdfMergedFilename });
 
             if (result == false)
             {
@@ -284,7 +293,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public string GetPdfFilename()
         {
             return string.Format("{0}_{1}_{2}", DateTime.Now.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco, Auftraggeber.BetriebOrt);
-            // return string.Format("{0}_{1}.pdf", Overview.PdfCreateDt.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco);
         }
 
         public void MergePdf()
