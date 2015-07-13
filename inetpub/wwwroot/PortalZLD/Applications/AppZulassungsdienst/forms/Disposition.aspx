@@ -17,6 +17,11 @@
                         </h1>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                        <Triggers>
+                            <asp:PostBackTrigger ControlID="rbNichtDisponiert" />
+                            <asp:PostBackTrigger ControlID="rbBereitsDisponiert" />
+                            <asp:PostBackTrigger ControlID="rbBereitsInArbeit" />
+                        </Triggers>
                         <ContentTemplate>
                             <div id="TableQuery" style="margin-bottom: 10px">
                                 <table id="tab1" runat="server" cellpadding="0" cellspacing="0">
