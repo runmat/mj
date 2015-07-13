@@ -52,6 +52,8 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.MaterialNr = s.MATNR;
                             d.IstAbmeldung = s.ABMELDUNG.XToBool();
                             d.IstVersand = s.VERSAND.XToBool();
+                            d.Auf48hVersandPruefen = s.Z48H_VERSAND.XToBool();
+                            d.ZulassungAmFolgetagNichtMoeglich = s.NO_NEXT_DAY.XToBool();
                         }));
             }
         }

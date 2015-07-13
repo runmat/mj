@@ -146,7 +146,7 @@ namespace CkgDomainLogic.Autohaus.Services
             throw new NotImplementedException();
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung)
         {
             throw new NotImplementedException();
         }

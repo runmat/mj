@@ -18,5 +18,9 @@ namespace CkgDomainLogic.Autohaus.Models
         public bool IstAbmeldung { get; set; }
 
         public bool IstVersand { get; set; }
+
+        public bool Auf48hVersandPruefen { get; set; }
+
+        public bool ZulassungAmFolgetagNichtMoeglich { get; set; }
     }
 }

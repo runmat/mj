@@ -251,7 +251,7 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung)
         {
             try
             {
@@ -310,8 +310,11 @@ namespace CkgDomainLogic.Autohaus.Services
                             adressen.Add(a.Adressdaten);
                         });
 
-                    vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
-                    adressen.Add(vorgang.VersandAdresse);
+                    if (modusVersandzulassung)
+                    {
+                        vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
+                        adressen.Add(vorgang.VersandAdresse);
+                    }
 
                     // zus. Bankdaten (GT_BANK_IN)
                     vorgang.ZahlerKfzSteuer.Bankdaten.BelegNr = vorgang.BelegNr;

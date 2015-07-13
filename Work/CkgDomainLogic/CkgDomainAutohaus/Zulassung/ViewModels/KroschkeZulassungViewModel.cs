@@ -538,7 +538,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Zulassungsdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten.Where(z => !z.IstVersand || !ModusVersandzulassung).ToList()); } }
+        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten.Where(z => !ModusVersandzulassung || z.IstVersand).ToList()); } }
 
         [XmlIgnore, ScriptIgnore]
         public List<Material> Abmeldearten { get { return PropertyCacheGet(() => ZulassungDataService.Abmeldearten); } }
@@ -578,16 +578,22 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (tempKg != null)
                 Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
 
-            if (ModusVersandzulassung)
+            if (ModusVersandzulassung || zulDat.Zulassungsart.Auf48hVersandPruefen)
             {
                 Zulassung.VersandAdresse.Adresse = ZulassungDataService.GetLieferantZuKreis(zulDat.Zulassungskreis);
 
-                var tmpLiefNr = Zulassung.VersandAdresse.Adresse.KundenNr.NotNullOrEmpty().TrimStart('0');
-                if (tmpLiefNr.StartsWith("564"))
-                    Zulassung.VkBur = tmpLiefNr.Substring(2);
+                if (ModusVersandzulassung)
+                {
+                    var tmpLiefNr = Zulassung.VersandAdresse.Adresse.KundenNr.NotNullOrEmpty().TrimStart('0');
+                    if (tmpLiefNr.StartsWith("564"))
+                        Zulassung.VkBur = tmpLiefNr.Substring(2);
+                }
 
                 var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
-                if (!String.IsNullOrEmpty(checkErg))
+
+                if (Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
+                    state.AddModelError("", Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture);
+                else if (!String.IsNullOrEmpty(checkErg))
                     state.AddModelError("", checkErg);
             }
         }
@@ -721,7 +727,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung, ModusVersandzulassung);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {

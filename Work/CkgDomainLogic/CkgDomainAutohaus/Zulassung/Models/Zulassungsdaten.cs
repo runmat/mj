@@ -150,9 +150,9 @@ namespace CkgDomainLogic.Autohaus.Models
             else
             {
                 if (Zulassungskreis.IsNullOrEmpty())
-                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationAreaInvalid, Localize.Required.ToLower()), new[] { "Zulassungskreis" });
+                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationArea, Localize.Required.ToLower()), new[] { "Zulassungskreis" });
 
-                if (Zulassungsdatum == null)
+                if (!Zulassungsdatum.HasValue)
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
 
                 if (ZulassungsartMatNr.IsNullOrEmpty())
