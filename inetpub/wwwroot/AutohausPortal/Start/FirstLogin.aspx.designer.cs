@@ -7,6 +7,9 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
 namespace AutohausPortal.Start {
     
     
@@ -19,7 +22,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxLogin_TEST;
+        protected CheckBox cbxLogin_TEST;
         
         /// <summary>
         /// cbxLogin_PROD-Steuerelement
@@ -28,7 +31,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxLogin_PROD;
+        protected CheckBox cbxLogin_PROD;
         
         /// <summary>
         /// litAlert-Steuerelement
@@ -37,7 +40,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litAlert;
+        protected Literal litAlert;
         
         /// <summary>
         /// lblHead-Steuerelement
@@ -46,7 +49,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblHead;
+        protected Label lblHead;
         
         /// <summary>
         /// StandardLogin-Steuerelement
@@ -55,7 +58,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl StandardLogin;
+        protected HtmlGenericControl StandardLogin;
         
         /// <summary>
         /// trPwdExp-Steuerelement
@@ -64,7 +67,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlTableRow trPwdExp;
+        protected HtmlTableRow trPwdExp;
         
         /// <summary>
         /// lblLength-Steuerelement
@@ -73,7 +76,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblLength;
+        protected Label lblLength;
         
         /// <summary>
         /// lblSpecial-Steuerelement
@@ -82,7 +85,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblSpecial;
+        protected Label lblSpecial;
         
         /// <summary>
         /// lblUpperCase-Steuerelement
@@ -91,7 +94,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblUpperCase;
+        protected Label lblUpperCase;
         
         /// <summary>
         /// lblNumeric-Steuerelement
@@ -100,7 +103,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblNumeric;
+        protected Label lblNumeric;
         
         /// <summary>
         /// txtNewPwd-Steuerelement
@@ -109,7 +112,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNewPwd;
+        protected TextBox txtNewPwd;
         
         /// <summary>
         /// txtNewPwdConfirm-Steuerelement
@@ -118,7 +121,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtNewPwdConfirm;
+        protected TextBox txtNewPwdConfirm;
         
         /// <summary>
         /// btnChange-Steuerelement
@@ -127,7 +130,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton btnChange;
+        protected LinkButton btnChange;
         
         /// <summary>
         /// RequestQuestion-Steuerelement
@@ -136,7 +139,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl RequestQuestion;
+        protected HtmlGenericControl RequestQuestion;
         
         /// <summary>
         /// ddlFrage-Steuerelement
@@ -145,7 +148,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlFrage;
+        protected DropDownList ddlFrage;
         
         /// <summary>
         /// txtAnfordernSpeichern-Steuerelement
@@ -154,7 +157,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtAnfordernSpeichern;
+        protected TextBox txtAnfordernSpeichern;
         
         /// <summary>
         /// ImageButton1-Steuerelement
@@ -163,7 +166,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ImageButton ImageButton1;
+        protected ImageButton ImageButton1;
         
         /// <summary>
         /// cmdSetzeFrageAntwort-Steuerelement
@@ -172,7 +175,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdSetzeFrageAntwort;
+        protected LinkButton cmdSetzeFrageAntwort;
         
         /// <summary>
         /// lnkShowPassword-Steuerelement
@@ -181,7 +184,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkShowPassword;
+        protected LinkButton lnkShowPassword;
         
         /// <summary>
         /// lblMessage-Steuerelement
@@ -190,7 +193,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblMessage;
+        protected Label lblMessage;
         
         /// <summary>
         /// lblError-Steuerelement
@@ -199,6 +202,6 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
+        protected Label lblError;
     }
 }

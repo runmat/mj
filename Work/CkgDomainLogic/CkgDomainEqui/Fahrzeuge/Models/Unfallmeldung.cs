@@ -64,6 +64,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CancelDate)]
         public DateTime? StornoDatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.CancelRemark)]
+        public string StornoText { get; set; }
+
 
         [ModelMappingCompareIgnore]
         public bool IsSelected { get; set; }
