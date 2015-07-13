@@ -1,7 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
-// ReSharper disable AccessToForEachVariableInClosure
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.DomainCommon.Models;
@@ -13,8 +10,6 @@ using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeuge.Models.AppModelMappings;
-
-// ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.Fahrzeuge.Services
 {
@@ -161,14 +156,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             if (selector.MeldeDatumRange.IsSelected)
             {
-                SAP.SetImportParameter("I_ABMDT_VON", selector.MeldeDatumRange.StartDate);
-                SAP.SetImportParameter("I_ABMDT_BIS", selector.MeldeDatumRange.EndDate);
+                SAP.SetImportParameter("I_ERDAT_VON", selector.MeldeDatumRange.StartDate);
+                SAP.SetImportParameter("I_ERDAT_BIS", selector.MeldeDatumRange.EndDate);
             }
 
             if (selector.StillegungsDatumRange.IsSelected)
             {
-                SAP.SetImportParameter("I_ERDAT_VON", selector.StillegungsDatumRange.StartDate);
-                SAP.SetImportParameter("I_ERDAT_BIS", selector.StillegungsDatumRange.EndDate);
+                SAP.SetImportParameter("I_ABMDT_VON", selector.StillegungsDatumRange.StartDate);
+                SAP.SetImportParameter("I_ABMDT_BIS", selector.StillegungsDatumRange.EndDate);
             }
 
             SAP.Execute();
@@ -296,6 +291,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
             return webItemsEquis;
         }
+
+        public List<Domaenenfestwert> GetFarben()
+        {
+            var sapList = Z_DPM_DOMAENENFESTWERTE.GT_WEB.GetExportListWithInitExecute(SAP, "DOMNAME, DDLANGUAGE", "ZFARBE", "DE");
+
+            return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList).ToList();
+        }
+
         public List<Fzg> GetFahrzeugeForZulassung()
         {
             Z_M_EC_AVM_MELDUNGEN_PDI1.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
@@ -437,17 +440,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
 
                         foreach (var f in fahrzeuge)
                         {
-                            f.IsValid = true;
-                            f.ValidationMessage = "Zulassung durchgeführt!";
-
                             var savedItem = exportList.FirstOrDefault(e => e.ID == f.Fahrgestellnummer);
-                            if (savedItem == null)
-                                continue;
 
-                            f.IsValid = (retCode.NotNullOrEmpty().ToUpper() == "OK");
-                            f.ValidationMessage = "";
-                            if (!f.IsValid)
-                                f.ValidationMessage = savedItem.MESSAGE.PrependIfNotNull("Fehler, ");
+                            f.IsValid = (retCode.NotNullOrEmpty().ToUpper() == "OK" && (savedItem == null || savedItem.MESSAGE.IsNullOrEmpty()));
+                            f.ValidationMessage = (f.IsValid ? Localize.OK : (savedItem != null ? savedItem.MESSAGE : "").PrependIfNotNull(String.Format("{0}, ", Localize.Error)));
                         }
                     },
 
