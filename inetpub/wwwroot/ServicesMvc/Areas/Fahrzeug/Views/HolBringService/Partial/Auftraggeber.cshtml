@@ -1,0 +1,86 @@
+﻿@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
+@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Auftraggeber 
+
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+@{
+    var globalData = (GlobalViewData) ViewData["GlobalViewData"];
+}
+
+<div id="DivAuftraggeber" class="margin-top-20">
+    @using (Ajax.BeginForm("Auftraggeber", "HolBringService", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivAuftraggeber", OnComplete = "AjaxFormAuftraggeberComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuftraggeber" }))
+    {
+        
+        @Html.FormValidationSummary()
+
+        @Html.FormTextBoxFor(m => m.Auftragsersteller, new { @class = "m-wrap readonly", col = "left", @readonly = "" })
+        @Html.FormTextBoxFor(m => m.AuftragerstellerTel, new { @class = "m-wrap ", col = "right" })
+        
+        @Html.FormDropDownListFor(m => m.Betrieb, globalData.BetriebeSap.Select(x => new { x.NAME1, x.KUNNR }).ToSelectList("KUNNR", "NAME1"), new { @class = "m-wrap", col = "left", @xx = "test" })
+        @Html.FormTextBoxFor(m => m.Repco, new { @class = "m-wrap ", col = "right" })
+        
+        @Html.FormDropDownListFor(m => m.Ansprechpartner, globalData.AnsprechpartnerList.ToSelectList(), new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.AnsprechpartnerTel, new { @class = "m-wrap ", col = "right" })
+        
+        <hr/>
+        
+        @Html.FormTextBoxFor(m => m.Kunde, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.KundeTel, new { @class = "m-wrap ", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small", col = "left" })
+        @Html.FormDropDownListFor(m => m.FahrzeugartId, globalData.Fahrzeugarten.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+
+        @Html.HiddenFor(m => m.BetriebName)
+        @Html.HiddenFor(m => m.BetriebStrasse)
+        @Html.HiddenFor(m => m.BetriebHausNr)
+        @Html.HiddenFor(m => m.BetriebPLZ)
+        @Html.HiddenFor(m => m.BetriebOrt)
+        
+        <span class="clearfix"></span>
+        @Html.FormRequiredFieldsSummary()                
+            
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            
+            var arrBetriebe = @Html.Raw(globalData.BetriebeSapJsArray);
+
+            $(function() {
+                
+                $('#Betrieb').select2().off("change").on("change", function(e) {
+                    ShowBetriebAddress();
+                });                
+                
+                $('#FahrzeugartId').select2();
+                $('#Ansprechpartner').select2({
+                    allowClear: true
+                }).off("change").on("change", function(e) {
+                    ShowAnsprechpartnerTel();
+                });
+
+                ShowBetriebAddress();
+                ShowAnsprechpartnerTel();
+            });
+            
+            function ShowAnsprechpartnerTel() {
+                var telNr = $('#Ansprechpartner').val();  
+                var namePart = $('#Ansprechpartner').select2('data').text;
+                telNr = telNr.replace(namePart + "|", "");
+                $('#AnsprechpartnerTel').val(telNr);
+            }
+
+            function ShowBetriebAddress() {
+                var kunnr = $('#Betrieb').val(); 
+                for (var i = 0; i < arrBetriebe.length; i++) {
+                    if (arrBetriebe[i].KUNNR == kunnr) {
+                        var addresstext = arrBetriebe[i].STREET + " " + arrBetriebe[i].HOUSE_NUM1 + ", " + arrBetriebe[i].POST_CODE1 + " " + arrBetriebe[i].CITY1;
+                        $('#betriebAddress').remove();
+                        $('#s2id_Betrieb').append("<div id='betriebAddress' class='help-block no-margin' >" + addresstext + "</div>");
+                    }
+                }
+            }
+        </script>
+    }
+</div>

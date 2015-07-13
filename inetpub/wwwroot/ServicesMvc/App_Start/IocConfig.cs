@@ -125,6 +125,8 @@ namespace ServicesMvc
             builder.RegisterType<EquiHistorieDataServiceSAP>().As<IEquiHistorieDataService>().InstancePerLifetimeScope();
             builder.RegisterType<FahrzeugeDataServiceSAP>().As<IFahrzeugeDataService>().InstancePerLifetimeScope();
 
+            builder.RegisterType<HolBringServiceDataServiceSAP>().As<IHolBringServiceDataService>().InstancePerLifetimeScope(); // ITA8163
+
             builder.RegisterType<StrafzettelDataServiceSAP>().As<IStrafzettelDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<AppUserOverviewDataService>().As<IAppUserOverviewDataService>().InstancePerLifetimeScope(); // MaihoferM
@@ -136,6 +138,9 @@ namespace ServicesMvc
             builder.RegisterType<AdressenDataServiceSAP>().As<IAdressenDataService>().InstancePerHttpRequest();
             builder.RegisterType<BriefVersandDataServiceSAP>().As<IBriefVersandDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungDataServiceSAP>().As<IZulassungDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<HolBringServiceDataServiceSAP>().As<IHolBringServiceDataService>().InstancePerHttpRequest();   // ITA6183
+
             builder.RegisterType<InfoCenterDataService>().As<IInfoCenterDataService>().InstancePerHttpRequest();
             builder.RegisterType<LeasingZB1KopienDataServiceSAP>().As<ILeasingZB1KopienDataService>().InstancePerHttpRequest();
             builder.RegisterType<LeasingUnzugelFzgDataServiceSAP>().As<ILeasingUnzugelFzgDataService>().InstancePerHttpRequest();

@@ -6,7 +6,7 @@ using CkgDomainLogic.General.Contracts;
 
 namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
-    public interface IFahrzeugeDataService : ICkgGeneralDataService 
+    public interface IFahrzeugeDataService : ICkgGeneralDataService
     {
         List<AbgemeldetesFahrzeug> GetAbgemeldeteFahrzeuge(AbgemeldeteFahrzeugeSelektor selector);
 
