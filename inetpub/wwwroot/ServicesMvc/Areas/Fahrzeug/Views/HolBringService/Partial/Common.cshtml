@@ -33,7 +33,6 @@
 
     var ladeHinweis = '@Localize.LoadingData';
     var _modelIsValid = false;
-//    var _selectedItemsCount = 0;
     var _validationError = false;
     
     function FormPreparePrivate() {
@@ -98,7 +97,8 @@
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
-        }             
+        }
+//        ShowAnsprechpartnerTel();
     }
 
     function AjaxFormAbholungComplete() {

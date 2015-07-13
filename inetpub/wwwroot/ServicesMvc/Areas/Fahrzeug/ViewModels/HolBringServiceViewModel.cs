@@ -91,7 +91,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             get
             {
-                var ansprechpartner = Auftraggeber.Ansprechpartner.Replace("|" + Auftraggeber.AnsprechpartnerTel, "");
+
+                // ##mma##refactorthis##
+                var telToRemove = "";
+                var tmpAnsprechpartner = GlobalViewData.AnsprechpartnerList.FirstOrDefault(x => x.Wert == Auftraggeber.Ansprechpartner);
+                if (tmpAnsprechpartner != null)
+                {
+                    telToRemove = tmpAnsprechpartner.Wert.Replace(tmpAnsprechpartner.Beschreibung + "|", "");
+                }
+                var ansprechpartner = Auftraggeber.Ansprechpartner.Replace("|" + telToRemove, "");   // Aus "Ansprechpartner|TelNr" die Standard-TelNr entfernen
+
                 var abholungMobilitaetsfahrzeug = Abholung.AbholungMobilitaetsfahrzeug == true ? "X" : "";
                 var anlieferungMobilitaetsfahrzeug = Anlieferung.AnlieferungMobilitaetsfahrzeug == true ? "X" : "";
 
@@ -191,7 +200,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             GlobalViewData = new GlobalViewData
                 {
                     BetriebeSap = DataService.LoadKundenFromSap(),
-
+                    Auftragsersteller = DataService.GetUsername,
                     Fahrzeugarten = DataService.GetFahrzeugarten,
                     FeiertageAsString =  DateService.FeiertageAsString,
                     AnsprechpartnerList = DataService.GetAnsprechpartner
@@ -204,12 +213,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     Auftragsersteller = DataService.GetUsername,
                     AuftragerstellerTel = DataService.GetUserTel,
                 };
-
+            
             Abholung = new Abholung();
             Anlieferung = new Anlieferung();
             Upload = new Upload();
             Overview = new Overview();
             SendMail = new Mail();
+
+            // Ansprechpartner-Tel setzen...
+            var firstAnsprechpartner = GlobalViewData.AnsprechpartnerList.FirstOrDefault();
+            if (firstAnsprechpartner != null)
+            {
+                Auftraggeber.AnsprechpartnerTel = firstAnsprechpartner.Wert.Replace(firstAnsprechpartner.Beschreibung + "|", "");
+            }
 
             DataMarkForRefresh();
         }
