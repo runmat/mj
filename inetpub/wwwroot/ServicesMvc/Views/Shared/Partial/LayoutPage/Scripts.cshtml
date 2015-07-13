@@ -400,7 +400,7 @@
         LoadingHide();
 
         var grid = $("#" + gridName).data("tGrid");
-
+       
         $.ajax({
             type: "POST",
             url: "Filter" + gridName,
@@ -408,7 +408,7 @@
                 filterValue: tb.val(),
                 filterColumns: GridGetFilterColumns(grid)
             },
-            success: function (result) {
+            success: function (result) {               
                 LoadingHide();
                 setTimeout(function() {
                     grid.pageTo(page);

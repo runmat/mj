@@ -15,9 +15,11 @@ namespace CkgDomainLogic.General.Database.Models
 
         public string Format { get; set; }
 
+        [Required]
         public string en { get; set; }
         public string en_kurz { get; set; }
 
+        [Required]
         public string de { get; set; }
         public string de_kurz { get; set; }
 
