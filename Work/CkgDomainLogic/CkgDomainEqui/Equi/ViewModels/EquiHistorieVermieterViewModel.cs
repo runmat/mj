@@ -20,6 +20,21 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public EquiHistorieVermieter EquipmentHistorie { get; set; }
 
+        public List<SelectItem> DocTypes
+        {
+            get
+            {
+                return PropertyCacheGet(() => DataService.FahrzeugAnforderungenLoadDocTypes()
+                                                .ToListOrEmptyList()
+                                                    .CopyAndInsertAtTop(new SelectItem("", Localize.DropdownDefaultOptionPleaseChoose)));
+            }
+        }
+
+        public bool FahrzeugAnforderungenAnzeigen
+        {
+            get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen").ToBool(); }
+        }
+
         public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
         {
             DataService.Suchparameter = suchparameter;
@@ -43,6 +58,40 @@ namespace CkgDomainLogic.Equi.ViewModels
                 var item = HistorieInfos[0];
                 EquipmentHistorie = DataService.GetEquiHistorie(item.EquipmentNr, item.MeldungsNr);
             }
+
+            LoadFahrzeugAnforderungen();
+        }
+
+        public void LoadFahrzeugAnforderungen()
+        {
+            if (EquipmentHistorie == null || EquipmentHistorie.HistorieInfo == null)
+                return;
+
+            EquipmentHistorie.FahrzeugAnforderungen = DataService.FahrzeugAnforderungenLoad(EquipmentHistorie.HistorieInfo.FahrgestellNr).ToListOrEmptyList();
+            EquipmentHistorie.FahrzeugAnforderungenAnzeigen = FahrzeugAnforderungenAnzeigen;
+        }
+
+        public FahrzeugAnforderung FahrzeugAnforderungNew()
+        {
+            return new FahrzeugAnforderung
+                {
+                    Fahrgestellnummer = (EquipmentHistorie == null || EquipmentHistorie.HistorieInfo == null) ? "" : EquipmentHistorie.HistorieInfo.FahrgestellNr,
+                    Kennzeichen = (EquipmentHistorie == null || EquipmentHistorie.HistorieInfo == null) ? "" : EquipmentHistorie.HistorieInfo.Kennzeichen,
+                    AnlageDatum = DateTime.Today,
+                    AnlageUser = LogonContext.UserName,
+                    EmailAnlageUser = LogonContext.GetEmailAddressForUser(),
+                    SendEmailToAnlageUser = true,
+                };
+        }
+
+        public void FahrzeugAnforderungSave(FahrzeugAnforderung item, Action<string, string> addModelError)
+        {
+            if (!item.SendEmailToAnlageUser)
+                item.EmailAnlageUser = "";
+
+            DataService.FahrzeugAnforderungSave(item);
+
+            LoadFahrzeugAnforderungen();
         }
 
         public byte[] GetHistorieAsPdf()
