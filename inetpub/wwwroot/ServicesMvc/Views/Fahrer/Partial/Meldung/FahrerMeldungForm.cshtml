@@ -18,11 +18,27 @@
                                                     <a class="btn btn-plus-minus margin-left-15" href="#" onclick="return incrementFahrer('Up');"><i class="icon-plus"></i></a> 
                                                     <a class="btn btn-plus-minus margin-left-15" href="#" onclick="return incrementFahrer('Down');"><i class="icon-minus"></i></a> 
                                                 </text>)
+
+        @Html.FormTextBoxFor(m => m.Kommentar, new { @class = "m-wrap large"},
+                             postControlHtml: @<text>
+                                                    <a class="btn btn-plus-minus margin-left-15 tooltips" data-original-title="Bemerkungsfeld leeren" data-placement="right" href="#" onclick="return clearComment();"><i class="icon-remove"></i></a> 
+                                                </text>)
         
-        <div class="control-group">
-            <div class="controls">
-                <div id="ui_date_picker_inline" class="datepicker-inline"></div>
-                @Html.SpanAlert("DatePickerMessage")
+        <div class="row-fluid">
+            <div class="span8">
+                <div class="control-group">
+                    <div class="controls">
+                        <div id="ui_date_picker_inline" class="datepicker-inline"></div>
+                        @Html.SpanAlert("DatePickerMessage")
+                    </div>
+                </div>
+            </div>
+            <div class="span4">
+                <div class="control-group">
+                    <div class="controls">
+                        <div id="kommentar-grid"></div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -49,11 +65,6 @@
                 $(selectedBelegungen).each(function(index, belegung) {
                     belegung.Datum = GetDateFromJson(belegung.Datum);
                 });
-                
-                // depricated, holding all "feiertage" as models in an array is not performant:
-                // $(feiertage).each(function(index, day) {
-                //     day.Datum = GetDateFromJson(day.Datum);
-                // });
             }
 
             function FahrerMeldungFormComplete() {
@@ -71,8 +82,10 @@
                 $("#FahrerAnzahl").spinner({min : 1, max : 25}).removeClass("ui-spinner-input");
 
                 ShowHideFahrerAnzahl(model.BelegungsTyp, false);
+                ShowHideKommentar(model.BelegungsTyp, false);
                 $("input[name=BelegungsTypAsInt]").on("click", function() {
                     ShowHideFahrerAnzahl($(this).val(), true);
+                    ShowHideKommentar($(this).val(), true);
                 });
                 
                 InitInlineDatepicker("ui_date_picker_inline");
@@ -82,15 +95,9 @@
             
             function InitRadioButtons() {
                 InitRadioButtonCssClasses();
-//                $("div.radio > span input").on("click", function() {
-//                    InitRadioButtonCssClasses();
-//                });
             }
 
             function InitRadioButtonCssClasses() {
-
-                // reset all unchecked radio buttons:
-                //$("div.radio > span").not('.checked').parents("label.radio").removeClass().addClass("radio");
                 
                 // set the checked radio button
                 var belegungsCssClasses = new Array("verfuegbar", "eingeschraenktverfuegbar", "nichtverfuegbar", "urlaub", "krank");
@@ -105,6 +112,25 @@
                 else 
                     animate ? div.slideUp(100) : div.hide();
             }
+            
+            function ShowHideKommentar(belegungsTyp, animate) {
+                var div = $("#Kommentar").closest(".control-group");
+                if (belegungsTyp == "2" || belegungsTyp == "3") 
+                    animate ? div.slideDown(200) : div.show(); 
+                else 
+                    animate ? div.slideUp(100) : div.hide();
+            }
+
+            function getBelegungsTypText(belegung) {
+                var cssClass = getBelegungsCssClass(belegung.BelegungsTyp);
+                if (cssClass == "") 
+                    return "";
+
+                var text = cssClass.replace(/nichtverfuegbar/g, 'nicht verfuegbar');
+                text = text.replace(/eingeschraenktverfuegbar/g, 'eingeschraenkt verfuegbar').replace(/ae/g, 'ä').replace(/ue/g, 'ü');
+
+                return text;
+            }
 
             function InitInlineDatepicker(datepickerID) {
 
@@ -115,7 +141,7 @@
                     
                     onSelect: function (dateText, inst) {
                         var date = Date.parseExact(dateText, dateFormat);
-                        setBelegung(date, getBelegungsType(), getFahrerCount());
+                        setBelegung(date, getBelegungsType(), getFahrerCount(), getComment());
                         DatepickerRefreshCustomUI($datePickerID);
                     },
                     
@@ -131,8 +157,8 @@
                             var cssClass = getBelegungsCssClass(belegung.BelegungsTyp);
                             if (cssClass == "") 
                                 return [true, ""];
-                            tooltip = cssClass.replace(/nichtverfuegbar/g, 'nicht verfuegbar').replace(/ue/g, 'ü');
-                            tooltip = cssClass.replace(/eingeschraenktverfuegbar/g, 'eingeschraenkt verfuegbar').replace(/ae/g, 'ä').replace(/ue/g, 'ü');
+
+                            tooltip = getBelegungsTypText(belegung);
                             
                             return [true, "date-selected date-" + cssClass, tooltip];
                         }
@@ -143,13 +169,6 @@
                         // only today and later
                         if (dateIsSelectable)
                             dateIsSelectable = (date >= Date.today()); // && date < Date.today().addMonths(3));
-                        
-                        // depricated, holding all "feiertage" as models in an array is not performant:
-//                      var thisDateAsFeiertag = $.grep(feiertage, function(feiertag) { return date.toString(dateFormat) == feiertag.Datum.toString(dateFormat); });
-//                      var thisFeiertag = (thisDateAsFeiertag.length == 0 ? null : thisDateAsFeiertag[0]);
-//                      if (dateIsSelectable)
-//                          dateIsSelectable = (thisFeiertag == null);
-//                      tooltip = (thisFeiertag != null ? "Feiertag: " + thisFeiertag.Name : (dateIsSelectable ? "bisher keine Zuordnung" : "Wochenende!"));
                         
                         var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
                         if (dateIsSelectable)
@@ -186,6 +205,7 @@
                     data : {
                          model: JSON.stringify(model),
                          fahrerAnzahl: getFahrerCount(),
+                         comment: getComment(),
                          belegungsType: getBelegungsType()
                     },
                     loadingShow: false,
@@ -204,10 +224,19 @@
             function getFahrerCount() {
                 return $("#FahrerAnzahl").val();
             }
+
+            function getComment() {
+                return $("#Kommentar").val();
+            }
             
             function incrementFahrer(increment) {
                 var spinnerMode = "step" + increment;
                 $("#FahrerAnzahl").spinner(spinnerMode);
+                return false;
+            }
+
+            function clearComment() {
+                $("#Kommentar").val("");
                 return false;
             }
 
@@ -239,13 +268,14 @@
                 return (items && items.length > 0) ? items[0] : null;
             }
             function newBelegungFromDate(date) {
-                return newBelegung(date, getBelegungsType(), getFahrerCount());
+                return newBelegung(date, getBelegungsType(), getFahrerCount(), getComment());
             }
-            function newBelegung(date, belegungType, fahrerCount) {
+            function newBelegung(date, belegungType, fahrerCount, comment) {
                 return {
                      Datum: date, 
                      BelegungsTyp: belegungType, 
-                     FahrerAnzahl: fahrerCount
+                     FahrerAnzahl: fahrerCount,
+                     Kommentar: comment,
                 };
             }
             function addBelegung(item) {
@@ -256,15 +286,13 @@
                     selectedBelegungen.push(item);
             }
             function removeBelegung(item) {
-//                var index = selectedBelegungen.indexOf(item);
-//                if (index >= 0)
-//                    selectedBelegungen.splice(index, 1);
                 if (item.Datum == null)
                     return;
 
                 var belegung = getBelegungFromDate(item.Datum);
                 if (belegung != null) {
                     belegung.BelegungsTyp = belegung.FahrerAnzahl = 0;
+                    belegung.Kommentar = "";
                 }
             }
             function addOrRemoveBelegungExplicitely(item, remove) {
@@ -291,14 +319,43 @@
 
             function DatepickerPrepareDays($datePickerID) {
 
+                var kommentare = [];
                 $($datePickerID + " td.date-selected")
                     .each(function() {
                         var date = getDayFromTableCell($(this));
                         var belegung = getBelegungFromDate(date);
-                        if (belegung != null && belegung.BelegungsTyp == 1)
-                            //$(this).append($("<span class='fahrer-anzahl'/>").html(belegung.FahrerAnzahl + " Fahrer"));
+                        if (belegung != null && (belegung.BelegungsTyp == 1)) 
                             $(this).children("a").addClass("fahrer-anzahl-bg-" + belegung.FahrerAnzahl);
+                        if (belegung != null && (belegung.BelegungsTyp == 2 || belegung.BelegungsTyp == 3)) {
+                            var a = $(this);
+                            a.attr("title", a.attr("title") + ": " + belegung.Kommentar);
+                            kommentare.push(belegung);
+                        }
                     });
+
+                PrepareKommentarGrid(kommentare);
+                $(".tooltips").tooltip();
+            }
+
+            function PrepareKommentarGrid(kommentare) {
+                var grid = $("#kommentar-grid");
+                grid.html("");
+                if (kommentare.length == 0)
+                    return;
+
+                grid.append($("<table></table>"));
+                var tb = grid.find("table");
+                tb.append("<tr></tr>");
+                var tr = tb.find("tr").last();
+                tr.append("<th>Tag</th>");
+                tr.append("<th>Bemerkung</th>");
+                $.each(kommentare, function(i, belegung) {
+                    var cssClass = getBelegungsCssClass(belegung.BelegungsTyp);
+                    tb.append("<tr></tr>");
+                    tr = tb.find("tr").last();
+                    tr.append("<td>" + belegung.Datum.toString("dd.MM.") + "</td>");
+                    tr.append("<td class='radio-" + cssClass + "'>" + belegung.Kommentar + "</td>");
+                });
             }
 
             function DatepickerSelectWeek($datePickerID, weekTdNode) {
@@ -306,12 +363,9 @@
                 var thisWeekDays = $.map(weekTdNode.nextAll("td").slice(0, 5),
                                          function (td) { return getDayFromTableCell($(td)); }
                                     );
-                //var countSelectedWeekDays = $.grep(thisWeekDays, function(weekDay) { return getBelegungFromDate(weekDay) != null; }).length;
-                // deselectAll <==>  alle 5 Werktage waren schon ausgewählt => also alle 5 de-markieren:
-                //var removeWeekItems = (countSelectedWeekDays == 5);
-                //alert(countSelectedWeekDays);
+
                 $(thisWeekDays).each(function (index, weekDay) {
-                    setBelegung(weekDay, getBelegungsType(), getFahrerCount());
+                    setBelegung(weekDay, getBelegungsType(), getFahrerCount(), getComment());
                 });
                    
                 $($datePickerID).datepicker("refresh");
@@ -324,7 +378,7 @@
                 return new Date($(td).data('year'), $(td).data('month'), day);
             }
 
-            function setBelegung(day, belegungsType, fahrerAnzahl) {
+            function setBelegung(day, belegungsType, fahrerAnzahl, comment) {
                 if (day == null || day == "Invalid Date") 
                     return;
 
@@ -334,6 +388,7 @@
                 if (existingItem != null && !remove) {
                     existingItem.BelegungsTyp = belegungsType;
                     existingItem.FahrerAnzahl = fahrerAnzahl;
+                    existingItem.Kommentar = comment;
                     return;
                 }
                 addOrRemoveBelegungExplicitely(belegung, remove);

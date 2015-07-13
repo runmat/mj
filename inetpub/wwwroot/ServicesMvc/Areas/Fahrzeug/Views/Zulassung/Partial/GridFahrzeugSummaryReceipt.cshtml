@@ -19,5 +19,10 @@
         .XAutoColumnConfiguration()
         .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridFahrzeugAuswahl"))
         .XPageSize(5)
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredExcel", "Zulassung");
+            commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredPDF", "Zulassung");
+        })
     )
 </div>

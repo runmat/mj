@@ -6,22 +6,21 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 {
     public class Fahrzeugzulauf
     {
+        [LocalizedDisplay(LocalizeConstants.TransitDate)]
         public DateTime? ZulaufDatumDatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Time)]
         public string ZulaufDatumUhrzeit { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.TransitDate)]
-        public DateTime? ZulaufDatum
+        [LocalizedDisplay(LocalizeConstants.Time)]
+        public string ZulaufDatumUhrzeitFormatted
         {
             get
             {
-                if (!ZulaufDatumDatum.HasValue || String.IsNullOrEmpty(ZulaufDatumUhrzeit))
-                    return ZulaufDatumDatum;
+                if (String.IsNullOrEmpty(ZulaufDatumUhrzeit) || ZulaufDatumUhrzeit.Length < 6)
+                    return ZulaufDatumUhrzeit;
 
-                return ZulaufDatumDatum.Value
-                    .AddHours(ZulaufDatumUhrzeit.Substring(0, 2).ToInt(0))
-                    .AddMinutes(ZulaufDatumUhrzeit.Substring(2, 2).ToInt(0))
-                    .AddSeconds(ZulaufDatumUhrzeit.Substring(4, 2).ToInt(0));
+                return String.Format("{0}:{1}:{2}", ZulaufDatumUhrzeit.Substring(0, 2), ZulaufDatumUhrzeit.Substring(2, 2), ZulaufDatumUhrzeit.Substring(4, 2));
             }
         }
 
