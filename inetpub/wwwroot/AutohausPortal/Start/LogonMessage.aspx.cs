@@ -1,6 +1,7 @@
 ﻿using System;
+using System.Web.UI;
 
-public partial class LogonMessage : System.Web.UI.Page
+public partial class LogonMessage : Page
 {
     protected void Page_Load(object sender, EventArgs e)
     {

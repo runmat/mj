@@ -315,6 +315,7 @@ namespace CkgDomainLogic.Finance.Models
                         destination.PDINummer = source.KUNPDI;
                         destination.Hersteller = source.ZZHERST_TEXT;
                         destination.Laufzeit = source.ZZLAUFZEIT;
+                        destination.BelegNr = source.BELNR;
                     }));
             }
         }

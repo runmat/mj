@@ -1,6 +1,4 @@
-﻿using System;
-using CkgDomainLogic.General.Services;
-using GeneralTools.Models;
+﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
@@ -17,7 +15,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         public string AGNummer { get; set; }
 
-        public bool IsServicesAGMapping { get; set; }
-      
+        public string Selection { get; set; }
     }
 }

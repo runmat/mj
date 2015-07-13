@@ -45,6 +45,7 @@
                 columns.XBound(m => m.StationsCode);
                 columns.XBound(m => m.Mahnstufe);
                 columns.XBound(m => m.StornoDatum);
+                columns.XBound(m => m.StornoText);
             })
         .XAutoColumnConfiguration()
             .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridUnfallmeldungen"))
