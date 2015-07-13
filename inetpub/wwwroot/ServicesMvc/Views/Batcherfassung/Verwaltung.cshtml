@@ -1,0 +1,22 @@
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.BatcherfassungViewModel
+
+@section LayoutScript { _controlGroupValidationType = "default"; }
+
+<h3 class="page-title">@Localize.BatcherfassungReporting</h3>
+
+<div  class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Partial/Suche", Model.BatcherfassungSelektor)
+    }
+</div>
+
+@Html.Partial("Partial/Common")
+
+@Html.SpanAlert("spanAlertBatcherfassung")
+
+<div id="divGridBatcherfassung">
+</div>
+
+<div id="divGridItemDetails"></div>
+<div id="divGridUnitnumbers"></div>

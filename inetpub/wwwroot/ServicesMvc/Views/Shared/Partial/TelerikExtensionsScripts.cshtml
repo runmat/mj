@@ -6,6 +6,7 @@
     var _gridColumnNameList = [];
     var _gridColumnNameListIsValid = false;
     var _gridColumnNameListMode = '';
+    var _gridGroupBy = '';
 
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
 
@@ -123,6 +124,7 @@
         _gridColumnNameList = [];
         _gridColumnNameListIsValid = false;
         _gridColumnNameListMode = '';
+        _gridGroupBy = '';
     }
 
     function GridPrepareFromAutoColumnsPersistedState(grid) {
@@ -150,6 +152,16 @@
             var column = grid.columnFromMember(settingsColumns[i]);
             grid.reorderColumn(0, column);
         }
+
+
+        //
+        // 3. grid grouping
+        //
+        grid.groups = [];
+        if (_gridGroupBy != '') {
+            grid.group(grid.columnFromMember(_gridGroupBy).title);
+        }
+
 
         GridColumnResetOrderAndVisibility();
     }
