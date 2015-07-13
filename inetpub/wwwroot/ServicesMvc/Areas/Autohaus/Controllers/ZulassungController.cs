@@ -685,6 +685,9 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public FileContentResult AuftragslisteAsPdf()
         {
+
+            // ##mma#removeme## Hinweis: Warum wird hier aus etwaig mehreren Zulassungen per FirstOrDefault nur eine Zulassung herausgepickt und verarbeitet?
+
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
             if (zulassung == null)
                 return new FileContentResult(new byte[1], "");
