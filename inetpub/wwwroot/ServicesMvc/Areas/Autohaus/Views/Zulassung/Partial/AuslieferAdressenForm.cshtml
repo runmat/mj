@@ -15,9 +15,12 @@
         @Html.HiddenFor(m => m.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
         @Html.HiddenFor(m => m.Adressdaten.Partnerrolle)
         @Html.HiddenFor(m => m.TmpSaveAddressOnly)
+        @Html.HiddenFor(m => m.TmpSaveAddressSuccessful)
         
         @Html.FormValidationSummary()
         
+        @Html.SpanAlert("AuslieferAdressenMessage")
+
         
         @Html.FormRadioButtonListFor(m => m.TmpSelectedPartnerrolle, CkgDomainLogic.Autohaus.Models.Vorgang.AuslieferAdressenPartnerRollen.ToSelectList(), new { col = "left" })
         @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium", col = "right" })

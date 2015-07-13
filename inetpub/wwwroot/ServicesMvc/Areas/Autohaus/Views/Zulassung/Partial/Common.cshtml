@@ -293,6 +293,12 @@
             AjaxRequestNextStep();
             return;
         }
+
+        var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        if (saveSuccessful == 'true') {
+            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
+            $("#TmpSaveAddressSuccessful").val(false);
+        }
     }
 
     function OnDataBound_AuslieferAdressenAuswahlGrid() {

@@ -38,6 +38,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool TmpSaveAddressOnly { get; set; }
 
+        public bool TmpSaveAddressSuccessful { get; set; }
+
         public bool HasData { get { return (ZugeordneteMaterialien.AnyAndNotNull() || Adressdaten.AdresseVollstaendig); } }
 
         public bool IsValid { get; set; }

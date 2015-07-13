@@ -334,8 +334,8 @@ namespace ServicesMvc.Autohaus.Controllers
             model.IsValid = (ModelState.IsValid && !model.TmpSaveAddressOnly);
             model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
 
+            ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.TmpSaveAddressOnly);
             ModelState.SetModelValue("TmpSaveAddressOnly", false);
-            //model.TmpSaveAddressOnly = false;
 
             return PartialView("Partial/AuslieferAdressenForm", model);
         }
