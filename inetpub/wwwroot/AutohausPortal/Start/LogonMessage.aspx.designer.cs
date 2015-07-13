@@ -7,6 +7,9 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
 public partial class LogonMessage {
         
     /// <summary>
@@ -16,7 +19,7 @@ public partial class LogonMessage {
     /// Automatisch generiertes Feld
     /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+    protected HtmlHead Head1;
         
     /// <summary>
     /// form1-Steuerelement
@@ -25,7 +28,7 @@ public partial class LogonMessage {
     /// Automatisch generiertes Feld
     /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+    protected HtmlForm form1;
         
     /// <summary>
     /// pnBody-Steuerelement
@@ -34,7 +37,7 @@ public partial class LogonMessage {
     /// Automatisch generiertes Feld
     /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Panel pnBody;
+    protected Panel pnBody;
         
     /// <summary>
     /// imgMessage-Steuerelement
@@ -43,7 +46,7 @@ public partial class LogonMessage {
     /// Automatisch generiertes Feld
     /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Image imgMessage;
+    protected Image imgMessage;
         
     /// <summary>
     /// lblTitle-Steuerelement
@@ -52,7 +55,7 @@ public partial class LogonMessage {
     /// Automatisch generiertes Feld
     /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblTitle;
+    protected Label lblTitle;
         
     /// <summary>
     /// lblMessage-Steuerelement
@@ -61,7 +64,7 @@ public partial class LogonMessage {
     /// Automatisch generiertes Feld
     /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Label lblMessage;
+    protected Label lblMessage;
         
     /// <summary>
     /// btOk-Steuerelement
@@ -70,6 +73,6 @@ public partial class LogonMessage {
     /// Automatisch generiertes Feld
     /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     /// </remarks>
-    protected global::System.Web.UI.WebControls.Button btOk;
+    protected Button btOk;
 }
 

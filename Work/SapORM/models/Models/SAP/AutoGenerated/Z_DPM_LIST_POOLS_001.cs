@@ -89,6 +89,24 @@ namespace SapORM.Models
 
 			public string BEMERKUNG_EXTERN { get; set; }
 
+			public string ZBEMERKUNG { get; set; }
+
+			public string STATUS { get; set; }
+
+			public string FARBE_TEXT { get; set; }
+
+			public string QMNUM { get; set; }
+
+			public string ZZCARPORT { get; set; }
+
+			public string ZBATCH_ID { get; set; }
+
+			public string ZMS_REIFEN { get; set; }
+
+			public string ZNAVI { get; set; }
+
+			public string ZAHK { get; set; }
+
 			public static GT_WEB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_WEB
@@ -122,6 +140,15 @@ namespace SapORM.Models
 					FIN_ART = (string)row["FIN_ART"],
 					BEMERKUNG_INTERN = (string)row["BEMERKUNG_INTERN"],
 					BEMERKUNG_EXTERN = (string)row["BEMERKUNG_EXTERN"],
+					ZBEMERKUNG = (string)row["ZBEMERKUNG"],
+					STATUS = (string)row["STATUS"],
+					FARBE_TEXT = (string)row["FARBE_TEXT"],
+					QMNUM = (string)row["QMNUM"],
+					ZZCARPORT = (string)row["ZZCARPORT"],
+					ZBATCH_ID = (string)row["ZBATCH_ID"],
+					ZMS_REIFEN = (string)row["ZMS_REIFEN"],
+					ZNAVI = (string)row["ZNAVI"],
+					ZAHK = (string)row["ZAHK"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

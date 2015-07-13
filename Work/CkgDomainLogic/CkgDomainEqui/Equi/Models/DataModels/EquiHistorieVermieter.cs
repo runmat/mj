@@ -13,6 +13,9 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Model)]
         public string Modell { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Model)]
+        public string ModellAsText { get { return string.Format("{0}{1}", Modell, (Einsteuerungsdaten != null ? Einsteuerungsdaten.ModellName.PrependIfNotNull(" ") : "")); } }
+
         [LocalizedDisplay(LocalizeConstants.Color)]
         public string Farbe { get; set; }
 
@@ -40,13 +43,13 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.Cancellation)]
         public DateTime? Abmeldedatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractNo)]
+        [LocalizedDisplay(LocalizeConstants.ContractNo_VehicleHistory)]
         public string VertragsNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        [LocalizedDisplay(LocalizeConstants.Reference1_VehicleHistory)]
         public string Referenz1 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        [LocalizedDisplay(LocalizeConstants.Reference2_VehicleHistory)]
         public string Referenz2 { get; set; }
 
         public EquiHistorieInfoVermieter HistorieInfo { get; set; }
@@ -61,6 +64,10 @@ namespace CkgDomainLogic.Equi.Models
 
         public List<EquiMeldungsdaten> LebenslaufFsm { get; set; }
 
-        public List<EquiTueteninhalt> InhalteFsm { get; set; } 
+        public List<EquiTueteninhalt> InhalteFsm { get; set; }
+
+        public List<FahrzeugAnforderung> FahrzeugAnforderungen { get; set; }
+
+        public bool FahrzeugAnforderungenAnzeigen { get; set; }
     }
 }

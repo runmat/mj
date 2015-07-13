@@ -1,6 +1,9 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System.Collections;
+// ReSharper disable ConvertClosureToMethodGroup
+// ReSharper disable RedundantUsingDirective
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
+using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Resources;
 using System;
 using System.Collections.Generic;
@@ -48,9 +51,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         }
 
         [XmlIgnore]
+        public List<Domaenenfestwert> Farben { get { return PropertyCacheGet(() => DataService.GetFarben()); } }
+
+        [XmlIgnore]
         public List<Fzg> Fahrzeuge
         {
-            get { return PropertyCacheGet(() => DataService.GetFahrzeugeForZulassung()); }
+            get { return PropertyCacheGet(() => GetFahrzeuge()); }
             protected set { PropertyCacheSet(value); }
         }
 
@@ -112,6 +118,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         public string SelectedModelId { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.NumberOfVehiclesToSelect)]
+        [Length(3)]
+        public int MassSelectionCount { get; set; }
+
+        public string GridOrderByCurrent { get; set; }
+
         public List<Fzg> ZulassungenForPdiAndDate { get; set; }
 
         public int ZulassungenAnzahlPdiStored { get { return SelectedZulassungsDatum == null || SelectedPdi.IsNullOrEmpty() ? 0 : ZulassungenForPdiAndDate.Where(z => z.Pdi == SelectedPdi).Sum(z => z.Amount); } }
@@ -143,6 +155,25 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public IEnumerable<string> FahrzeugeGroupByPdi
         {
             get { return PropertyCacheGet(() => GetFahrzeugeGroupedByKey(g => g.Pdi, SortPdi)); }
+        }
+
+        private List<Fzg> GetFahrzeuge()
+        {
+            var liste = DataService.GetFahrzeugeForZulassung();
+
+            liste.ForEach(f => f.Farbname = GetFarbName(f.Farbcode));
+
+            return liste;
+        }
+
+        private string GetFarbName(string farbCode)
+        {
+            var farbe = Farben.FirstOrDefault(f => f.Wert == farbCode);
+
+            if (farbe != null)
+                return farbe.Beschreibung;
+
+            return "";
         }
 
         IEnumerable<string> GetFahrzeugeGroupedByKey(Func<Fzg, string> groupKey, Func<string, string> sortExpression = null)
@@ -220,12 +251,21 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
         }
 
-        public void SelectFahrzeuge(bool select, Predicate<Fzg> filter, out int allSelectionCount, out int allCount)
+        public void SelectFahrzeuge(string vinOrCount, bool select, Func<string, IEnumerable> getSortedList, out int allSelectionCount)
         {
-            Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            var massSelectionCount = int.MaxValue;
+            if (vinOrCount.NotNullOrEmpty().Length > 0)
+                massSelectionCount = vinOrCount.ToInt(0);
+
+            var i = 0;
+            var sortedList = (IEnumerable<Fzg>)getSortedList(GridOrderByCurrent);
+            sortedList.ToListOrEmptyList().ForEach(f =>
+            {
+                if (++i <= massSelectionCount)
+                    f.IsSelected = select;
+            });
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
-            allCount = Fahrzeuge.Count();
         }
 
         public void OnChangeFilterValues(string type, string value)

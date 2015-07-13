@@ -7,6 +7,10 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+using Telerik.Web.UI;
+
 namespace AutohausPortal.Start {
     
     
@@ -19,7 +23,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadScriptManager RadScriptManager1;
+        protected RadScriptManager RadScriptManager1;
         
         /// <summary>
         /// RadAjaxManager1-Steuerelement
@@ -28,7 +32,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadAjaxManager RadAjaxManager1;
+        protected RadAjaxManager RadAjaxManager1;
         
         /// <summary>
         /// teasercontent1-Steuerelement
@@ -37,7 +41,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl teasercontent1;
+        protected HtmlGenericControl teasercontent1;
         
         /// <summary>
         /// teasercontent2-Steuerelement
@@ -46,7 +50,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl teasercontent2;
+        protected HtmlGenericControl teasercontent2;
         
         /// <summary>
         /// teasercontent3-Steuerelement
@@ -55,7 +59,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl teasercontent3;
+        protected HtmlGenericControl teasercontent3;
         
         /// <summary>
         /// teasercontent4-Steuerelement
@@ -64,7 +68,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl teasercontent4;
+        protected HtmlGenericControl teasercontent4;
         
         /// <summary>
         /// imgAnsprechpartner-Steuerelement
@@ -73,7 +77,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Image imgAnsprechpartner;
+        protected Image imgAnsprechpartner;
         
         /// <summary>
         /// lblKontaktdaten-Steuerelement
@@ -82,7 +86,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblKontaktdaten;
+        protected Label lblKontaktdaten;
         
         /// <summary>
         /// lblErrorAutrag-Steuerelement
@@ -91,7 +95,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblErrorAutrag;
+        protected Label lblErrorAutrag;
         
         /// <summary>
         /// RadGrid1-Steuerelement
@@ -100,7 +104,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::Telerik.Web.UI.RadGrid RadGrid1;
+        protected RadGrid RadGrid1;
         
         /// <summary>
         /// Literal1-Steuerelement
@@ -109,7 +113,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal Literal1;
+        protected Literal Literal1;
         
         /// <summary>
         /// litAlert-Steuerelement
@@ -118,7 +122,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litAlert;
+        protected Literal litAlert;
         
         /// <summary>
         /// lblError-Steuerelement
@@ -127,6 +131,6 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
+        protected Label lblError;
     }
 }

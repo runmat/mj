@@ -3,12 +3,16 @@
     
 <div id="divFahrzeugvoravisierungSuche">    
       @using (Ajax.BeginForm("ShowFahrzeugvoravisierungSuche", "Fahrzeuge", null,
-        new MvcAjaxOptions("divFahrzeugvoravisierungSuche") { OnComplete = "FormPreparePrivateAjax();" }, new { id = "searchForm" }))
+        new MvcAjaxOptions("divFahrzeugvoravisierungSuche") { OnComplete = "OnSubmitComplete();" }, new { id = "searchForm" }))
     {                                                                                            
         @Html.FormValidationSummary()                       
                    
-        <div class="form-horizontal">                                                         
-              @Html.FormRadioButtonListFor(m => m.Option, FahrzeugvoravisierungSelektor.Optionen.ToSelectList())                                                                                                                                                                                                                  
+        <div class="form-horizontal">
+             <h4>
+                 <a id="DownloadCsvTemplateVW" href="DownloadCsvTemplateVW" class="btn white tooltips" data-original-title="@Localize.DownloadExcelFileTemplateTitle" data-placement="top">@Localize.DownloadExcelFileTemplateTitle (Volkswagen) <i class="icon-chevron-right"></i></a>
+                 <a id="DownloadCsvTemplateOthers" href="DownloadCsvTemplateOthers" class="btn white tooltips hide" data-original-title="@Localize.DownloadExcelFileTemplateTitle" data-placement="top">@Localize.DownloadExcelFileTemplateTitle &nbsp;(@Localize.Others) <i class="icon-chevron-right"></i></a>
+            </h4>                                                         
+            @Html.FormRadioButtonListFor(m => m.Option, FahrzeugvoravisierungSelektor.Optionen.ToSelectList())                                                                                                                                                                                                                  
         </div>                                                         
     }
 </div>
