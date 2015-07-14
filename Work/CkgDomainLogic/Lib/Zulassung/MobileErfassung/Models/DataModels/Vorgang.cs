@@ -19,7 +19,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public string VkOrg { get; set; }
 
         [Display(Name = "VkBur")]
-        public string VkBuero { get; set; }
+        public string VkBur { get; set; }
 
         [Display(Name = "Kundennummer")]
         public string Kunnr { get; set; }
@@ -30,7 +30,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "Kunde")]
         public string Kunde
         {
-            get { return Kunnr.TrimStart('0') + " " + Kunname; }
+            get { return Kunnr + " " + Kunname; }
         }
 
         [Display(Name = "Referenz 1")]
@@ -40,7 +40,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public string Referenz2 { get; set; }
 
         [Display(Name = "Zul.datum")]
-        public DateTime ZulDat { get; set; }
+        public DateTime? ZulDat { get; set; }
 
         /// <summary>
         /// für JSON-Übergabe
@@ -86,70 +86,88 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         {
             get
             {
-                string erg = "";
+                if (ZahlartEC)
+                    return "EC";
 
-                if (ZahlartEC == "X")
-                {
-                    erg = "EC";
-                }
-                if (ZahlartBar == "X")
-                {
-                    erg = "Bar";
-                }
-                if (ZahlartRE == "X")
-                {
-                    erg = "RE";
-                }
-                return erg;
+                if (ZahlartBar)
+                    return "Bar";
+
+                if (ZahlartRE)
+                    return "RE";
+
+                return "";
             }
         }
 
         [Display(Name = "EC")]
-        // ReSharper disable InconsistentNaming
-        public string ZahlartEC { get; set; }
-        // ReSharper restore InconsistentNaming
-
-        /// <summary>
-        /// für JSON-Übergabe
-        /// </summary>
-        [Display(Name = "EC")]
-        // ReSharper disable InconsistentNaming
-        public bool ZahlartECBool { get; set; }
-        // ReSharper restore InconsistentNaming
+        public bool ZahlartEC { get; set; }
 
         [Display(Name = "Bar")]
-        public string ZahlartBar { get; set; }
-
-        /// <summary>
-        /// für JSON-Übergabe
-        /// </summary>
-        [Display(Name = "Bar")]
-        public bool ZahlartBarBool { get; set; }
+        public bool ZahlartBar { get; set; }
 
         [Display(Name = "RE")]
-        // ReSharper disable InconsistentNaming
-        public string ZahlartRE { get; set; }
-        // ReSharper restore InconsistentNaming
+        public bool ZahlartRE { get; set; }
 
-        /// <summary>
-        /// für JSON-Übergabe
-        /// </summary>
-        [Display(Name = "RE")]
-        // ReSharper disable InconsistentNaming
-        public bool ZahlartREBool { get; set; }
-        // ReSharper restore InconsistentNaming
+        [Display(Name = "Infotext")]
+        public string Infotext { get; set; }
+
+        [Display(Name = "Nachbearbeiten")]
+        public bool Nachbearbeiten { get; set; }
+
+        [Display(Name = "Wunschkennzeichen")]
+        public bool Wunschkennzeichen { get; set; }
+
+        [Display(Name = "Reserviert")]
+        public bool Reserviert { get; set; }
+
+        [Display(Name = "Nur ein Kennzeichen")]
+        public bool NurEinKennzeichen { get; set; }
+
+        [Display(Name = "Kennz.-Größe")]
+        public string KennzeichenGroesse { get; set; }
+
+        [Display(Name = "Kennz.-Anzahl")]
+        public string KennzeichenAnzahl { get; set; }
 
         [Display(Name = "Bemerkung")]
         public string Bemerkung { get; set; }
 
-        [Display(Name = "Nachbearbeiten")]
-        public string Nachbearbeiten { get; set; }
+        public string TelefonNrVorwahl { get; set; }
 
-        /// <summary>
-        /// für JSON-Übergabe
-        /// </summary>
-        [Display(Name = "Nachbearbeiten")]
-        public bool NachbearbeitenBool { get; set; }
+        public string TelefonNrDurchwahl { get; set; }
+
+        [Display(Name = "Telefon-Nr.")]
+        public string TelefonNr { get { return String.Format("{0} {1}", TelefonNrVorwahl, TelefonNrDurchwahl); } }
+
+        public string VorerfasserUser { get; set; }
+
+        public string VorerfasserAnrede { get; set; }
+
+        public string VorerfasserName1 { get; set; }
+
+        public string VorerfasserName2 { get; set; }
+
+        [Display(Name = "Erfasser")]
+        public string Vorerfasser
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(VorerfasserName1))
+                    return VorerfasserUser;
+
+                return String.Format("{0}{1}{2}",
+                    (String.IsNullOrEmpty(VorerfasserAnrede) ? "" : VorerfasserAnrede + " "),
+                    VorerfasserName1,
+                    (String.IsNullOrEmpty(VorerfasserName2) ? "" : " " + VorerfasserName2)
+                );
+            }
+        }
+
+        [Display(Name = "Durchführendes VkBur")]
+        public string DurchfVkBur { get; set; }
+
+        [Display(Name = "Versandzul. von")]
+        public string VersandzulVkBur { get; set; }
 
         [Display(Name = "Positionen")]
         public List<VorgangPosition> Positionen { get; set; }
@@ -165,47 +183,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
 
         public Vorgang()
         {
-            this.Id = "";
-            this.BlTyp = "";
-            this.VkOrg = "";
-            this.VkBuero = "";
-            this.Kunnr = "";
-            this.Kunname = "";
-            this.Referenz1 = "";
-            this.Referenz2 = "";
-            this.ZulDat = DateTime.MinValue;
-            this.Amt = "";
-            this.Kennzeichen = "";
-            this.Status = "";
-            this.ZahlartEC = "";
-            this.ZahlartBar = "";
-            this.ZahlartRE = "";
             this.Positionen = new List<VorgangPosition>();
-            this.IsDirty = false;
-            this.IsShown = false;
-        }
-
-        public Vorgang(string id, string bltyp, string vkorg, string vkbuero, string kunnr, string kunname, string ref1, string ref2, DateTime zuldat,
-            string amt, string kennzeichen, string status, string ec, string bar, string re)
-        {
-            this.Id = id;
-            this.BlTyp = bltyp;
-            this.VkOrg = vkorg;
-            this.VkBuero = vkbuero;
-            this.Kunnr = kunnr;
-            this.Kunname = kunname;
-            this.Referenz1 = ref1;
-            this.Referenz2 = ref2;
-            this.ZulDat = zuldat;
-            this.Amt = amt;
-            this.Kennzeichen = kennzeichen;
-            this.Status = status;
-            this.ZahlartEC = ec;
-            this.ZahlartBar = bar;
-            this.ZahlartRE = re;
-            this.Positionen = new List<VorgangPosition>();
-            this.IsDirty = false;
-            this.IsShown = false;
         }
     }
 }

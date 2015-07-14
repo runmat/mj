@@ -17,8 +17,12 @@
 </div>
 
 <div id="divVorgangsliste" class="NotDisplayed">
-    <div class="VerticalSpacer10">&nbsp;</div>
-    <a id="lnkSelAmt" href="#"></a>    
+    <div class="VerticalSpacer10">&nbsp;</div>  
+    <a id="lnkSelAmt" href="#"></a>
+    <b class="Margin-Left-20">
+        <label for="lblGebuehrGesamt" class="TextUnderline">Gesamtgebühr:&nbsp;</label>
+        <label id="lblGebuehrGesamt"></label>
+    </b> 
     <div class="VerticalSpacer10">&nbsp;</div>
     <input type="search" name="suche" id="txtSuche" value="" placeholder="Suchen..." />
     <div class="VerticalSpacer5">&nbsp;</div>
@@ -27,19 +31,25 @@
         <colgroup>
             <col class="TableColumn80"/>
             <col />
-            <col class="TableColumn150"/>
-            <col class="TableColumn110"/>
+            <col />
             <col class="TableColumn140"/>
-            <col class="TableColumn215"/>
+            <col class="TableColumn90"/>
+            <col class="TableColumn130"/>
+            <col class="TableColumn150"/>
         </colgroup>
         <thead>
             <tr>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Id"]</th>      
-                <th class="TableGridCell">Referenz</th>      
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Id"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["DienstleistungBez"]</th>
+                <th class="TableGridCell">Referenz</th>
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Kennzeichen"]</th>
-                <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>      
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Gebuehr"]</th>
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Status"]</th>  
                 <th class="TableGridCell">@Model.PropertyDisplayNames["Zahlart"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenGroesse"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["KennzeichenAnzahl"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["Bemerkung"]</th>
+                <th class="TableGridCell">@Model.PropertyDisplayNames["VersandzulVkBur"]</th>
             </tr>  
         </thead>  
         <tbody>
@@ -63,7 +73,6 @@
             </tr>
         </tbody>
     </table>
-
 </div>
 
 <div id="popupEditVorgang" class="ui-content PopupWindow" data-role="popup">
@@ -89,6 +98,22 @@
                 </td>
                 <td colspan="2">
                     <input type="text" id="txtKunde" disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["TelefonNr"]
+                </td>
+                <td colspan="2">
+                    <input type="text" id="txtTelefonNr" disabled="disabled"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Model.PropertyDisplayNames["Vorerfasser"]
+                </td>
+                <td colspan="2">
+                    <input type="text" id="txtVorerfasser" disabled="disabled"/>
                 </td>
             </tr>
             <tr>
@@ -125,10 +150,10 @@
             </tr>
             <tr>
                 <td>
-                    @Model.PropertyDisplayNames["Bemerkung"]
+                    @Model.PropertyDisplayNames["Infotext"]
                 </td>
                 <td colspan="2">
-                    <textarea id="txtBemerkung" maxlength="40"></textarea>
+                    <textarea id="txtInfotext" maxlength="40"></textarea>
                 </td>
             </tr>
             <tr>
@@ -163,4 +188,4 @@
     </div>
 </div>
 
-@Html.Partial("Partial/_EditZLDVorgaengeScripts")
+@Html.Partial("EditZLDVorgaenge/Scripts")

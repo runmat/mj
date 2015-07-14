@@ -1257,19 +1257,26 @@ namespace AppZulassungsdienst.forms
                     return;
                 }
 
-                if (!kopfdaten.Flieger.IsTrue())
+                if (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && !objNacherf.SelAenderungAngenommene
+                    && !kopfdaten.Flieger.IsTrue() && kopfdaten.Bearbeitungsstatus == "F")
                 {
-                    if (kopfdaten.Bearbeitungsstatus == "F")
+                    // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist, außer es wurde Dl. 656 gewählt
+                    if (objNacherf.AktuellerVorgang.Positionen.None(p => p.PositionsNr == "10" && p.MaterialNr == "656"))
                     {
-                        // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
                         kopfdaten.Bearbeitungsstatus = "A";
                         kopfdaten.MobilUser = "";
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = "");
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : ""));
                     }
                     else
                     {
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
+                        kopfdaten.Bearbeitungsstatus = "2";
+                        kopfdaten.MobilUser = "";
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "O"));
                     }
+                }
+                else
+                {
+                    objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
                 }
 
                 objNacherf.SaveVorgangToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);

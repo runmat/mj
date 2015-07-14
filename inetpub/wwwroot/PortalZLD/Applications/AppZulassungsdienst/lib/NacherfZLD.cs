@@ -58,6 +58,7 @@ namespace AppZulassungsdienst.lib
         public String SelVorgang { get; set; }
         public bool SelFlieger { get; set; }
         public bool SelAnnahmeAH { get; set; }
+        public bool SelAenderungAngenommene { get; set; }
         public bool SelSofortabrechnung { get; set; }
         public bool SelEditDurchzufVersZul { get; set; }
         public string SelGroupTourID { get; set; }
@@ -149,6 +150,8 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     Z_ZLD_EXPORT_SOFORT_ABRECH2.Init(SAP);
+                else if (SelAenderungAngenommene)
+                    Z_ZLD_MOB_EXPORT_ANGENOMMENE.Init(SAP);
                 else
                     Z_ZLD_EXPORT_NACHERF2.Init(SAP);
 
@@ -193,6 +196,20 @@ namespace AppZulassungsdienst.lib
                     _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId.ToLong(0)).ToList();
                     _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId.ToLong(0)).ThenBy(p => p.PositionsNr.ToInt(0)).ToList();
                     _lstKundendaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
+                }
+                else if (SelAenderungAngenommene)
+                {
+                    var sapKopfdaten = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BAK.GetExportList(SAP);
+                    var sapBankdaten = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BANK.GetExportList(SAP);
+                    var sapAdressen = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_ADRS.GetExportList(SAP);
+                    var sapPositionen = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_POS.GetExportList(SAP);
+                    var sapKundendaten = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_KUNDE.GetExportList(SAP);
+
+                    _lstKopfdaten = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId).ToList();
+                    _lstBankdaten = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId).ToList();
+                    _lstAdressen = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId).ToList();
+                    _lstPositionen = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId).ThenBy(p => p.PositionsNr).ToList();
+                    _lstKundendaten = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
                 }
                 else
                 {
@@ -566,6 +583,9 @@ namespace AppZulassungsdienst.lib
                 if (SelSofortabrechnung)
                     SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
 
+                if (SelAenderungAngenommene)
+                    SAP.SetImportParameter("I_AENDERUNG_ANGENOMMENE", "X");
+
                 var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfdatenRel);
                 SAP.ApplyImport(kopfListe);
 
@@ -632,7 +652,7 @@ namespace AppZulassungsdienst.lib
             {
                 Vorgangsliste.ForEach(vg => vg.FehlerText = "");
 
-                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, blnAnnahmeAhSenden);
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, blnAnnahmeAhSenden || SelAenderungAngenommene);
 
                 List<string> idList;
 
@@ -691,6 +711,23 @@ namespace AppZulassungsdienst.lib
 
                             p.WebBearbeitungsStatus = "";
                         }
+                        else if (SelAenderungAngenommene)
+                        {
+                            if (p.PositionsNr == "10")
+                            {
+                                switch (p.WebBearbeitungsStatus)
+                                {
+                                    case "L":
+                                        kopf.Bearbeitungsstatus = "L";
+                                        break;
+                                    default:
+                                        kopf.Bearbeitungsstatus = "A";
+                                        break;
+                                }
+                            }
+
+                            p.WebBearbeitungsStatus = "";
+                        }
 
                         if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
                             p.Loeschkennzeichen = "L";
@@ -704,6 +741,9 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
+
+                if (SelAenderungAngenommene)
+                    SAP.SetImportParameter("I_AENDERUNG_ANGENOMMENE", "X");
 
                 var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(_lstKopfdaten.Where(k => idList.Contains(k.SapId)).ToList());
                 SAP.ApplyImport(kopfListe);

@@ -542,6 +542,61 @@ namespace AppZulassungsdienst.lib.Models
             }
         }
 
+        static public ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_ADRS, ZLDAdressdaten> Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_ADRS_To_ZLDAdressdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_ADRS, ZLDAdressdaten>(
+                    new Dictionary<string, string>()
+                    , Map_ZZLD_ADRS_To_ZLDAdressdaten));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BAK, ZLDKopfdaten> Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_BAK_To_ZLDKopfdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BAK, ZLDKopfdaten>(
+                    new Dictionary<string, string>()
+                    , Map_ZZLD_BAK_To_ZLDKopfdaten));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BANK, ZLDBankdaten> Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_BANK_To_ZLDBankdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BANK, ZLDBankdaten>(
+                    new Dictionary<string, string>()
+                    , Map_ZZLD_BANK_To_ZLDBankdaten));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_KUNDE, Kundenname> Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_KUNDE_To_Kundenname
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_KUNDE, Kundenname>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.KundenNr = s.KUNNR.NotNullOrEmpty().TrimStart('0');
+                        d.Name1 = s.NAME1;
+                        d.Namenserweiterung = s.EXTENSION1;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_POS, ZLDPosition> Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_POS_To_ZLDPosition
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_POS, ZLDPosition>(
+                    new Dictionary<string, string>()
+                    , Map_ZZLD_POS_2_To_ZLDPosition));
+            }
+        }
+
         static public ModelMapping<Z_ZLD_MOB_GET_USER.GT_USER, MobileUser> Z_ZLD_MOB_GET_USER_GT_USER_To_MobileUser
         {
             get
