@@ -164,6 +164,10 @@
 
         $(formIdSelector + ".datepicker").each(function () {
             var datePicker = $(this);
+            
+            if (datePicker.children("input").hasClass("hasDatepicker"))
+                return;
+
             datePicker.children("input").datepicker("destroy");
             datePicker.children("input").datepicker();
             
