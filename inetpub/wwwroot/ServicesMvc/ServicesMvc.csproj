@@ -4517,9 +4517,14 @@
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\xUserMenu.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Wrappers\xFormSearchBox_Begin.cshtml" />
-    <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviation.cshtml" />
+    <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationGrid.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
+    <None Include="Content\fonts\PT_Sans-Web-Bold.ttf" />
+    <None Include="Content\fonts\PT_Sans-Web-BoldItalic.ttf" />
+    <None Include="Content\fonts\PT_Sans-Web-Italic.ttf" />
+    <None Include="Content\fonts\PT_Sans-Web-Regular.ttf" />
+    <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4578,7 +4583,6 @@
     <Folder Include="assets\plugins\jquery-validation\test\qunit\" />
     <Folder Include="assets\plugins\jquery-validation\test\selects\" />
     <Folder Include="assets_v2\plugins\jquery-file-upload\server\php\files\thumbnail\" />
-    <Folder Include="Content\fonts\" />
     <Folder Include="TmpUpload\Images\" />
   </ItemGroup>
   <ItemGroup>
