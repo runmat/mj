@@ -224,9 +224,8 @@ namespace CkgDomainLogic.Autohaus.Services
                     SAP.SetImportParameter("I_SPEICHERN", "X");
 
                 SAP.SetImportParameter("I_FORMULAR", "X");
-                if (!modusAbmeldung)
-                    SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
-
+                SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
+                    
                 var positionen = new List<Zusatzdienstleistung>();
                 var adressen = new List<Adressdaten>();
                 var zusBankdaten = new List<Bankdaten>();
