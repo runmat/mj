@@ -24,7 +24,7 @@ namespace CkgDomainLogic.DomainCommon.Contracts
 
         void MarkForRefreshAdressen();
 
-        Adresse SaveAdresse(Adresse adresse, Action<string, string> addModelError);
+        List<Adresse> SaveAdressen(List<Adresse> adressen, Action<string, string> addModelError);
 
         void DeleteAdresse(Adresse adresse);
     }

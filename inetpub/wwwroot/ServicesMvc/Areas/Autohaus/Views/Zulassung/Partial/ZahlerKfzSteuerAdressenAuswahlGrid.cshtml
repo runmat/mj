@@ -1,0 +1,35 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@using GeneralTools.Resources
+@{
+    var gridName = "ZahlerKfzSteuerAdressenAuswahlGrid";
+}
+
+<h5 class="margin-bottom-25 bold">@Localize.SelectCarTaxPayer: </h5> 
+
+@(Html.Telerik()
+    .Grid<Adresse>()
+    .Name(gridName)
+    .XAjaxDataBinding("ZahlerKfzSteuerAdressenAjaxBinding", "Zulassung")
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.ID).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+            "<button onclick='GridZahlerKfzSteuerAdresseOnSelect(\"<#= data.KundenNr #>\");' class='btn mini gray tooltips' data-original-title='" + CommonResources.PickAddress + "' data-placement='right'><i class='halflings-icon white chevron-right'></i></button>"
+            );
+        columns.Bound(c => c.Name1);
+        columns.Bound(c => c.Name2);
+        columns.Bound(c => c.StrasseHausNr);
+        columns.Bound(c => c.PLZ);
+        columns.Bound(c => c.Ort);
+        columns.Bound(c => c.Land);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnComplete("OnComplete_AdressenAuswahlGrid"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Name1).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ZahlerKfzSteuerAdressenAuswahlExportFilteredExcel", "Zulassung");
+        commands.FilteredDataCommand("ZahlerKfzSteuerAdressenAuswahlExportFilteredPDF", "Zulassung");
+    })
+)

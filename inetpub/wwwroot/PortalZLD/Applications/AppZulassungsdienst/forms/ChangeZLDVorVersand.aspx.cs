@@ -1356,6 +1356,7 @@ namespace AppZulassungsdienst.forms
             var bankdaten = objVorVersand.AktuellerVorgang.Bankdaten;
 
             bankdaten.SapId = objVorVersand.AktuellerVorgang.Kopfdaten.SapId;
+            bankdaten.Partnerrolle = "AG";
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             bankdaten.Bankleitzahl = hfBankleitzahl.Value;

@@ -880,6 +880,7 @@ namespace AppZulassungsdienst.forms
             var bankdaten = objNacherf.AktuellerVorgang.Bankdaten;
 
             bankdaten.SapId = objNacherf.AktuellerVorgang.Kopfdaten.SapId;
+            bankdaten.Partnerrolle = "AG";
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             bankdaten.Bankleitzahl = hfBankleitzahl.Value;

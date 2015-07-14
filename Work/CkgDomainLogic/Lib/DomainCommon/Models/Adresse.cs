@@ -108,6 +108,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         [GridHidden]
         public bool IsDefaultPartner { get; set; }
 
+        [GridHidden]
+        [LocalizedDisplay(LocalizeConstants.PartnerRolesToCreate)]
+        public List<string> KennungenToInsert { get; set; }
+
         public Adresse SetInsertMode(bool insertMode)
         {
             InsertModeTmp = insertMode;
@@ -130,7 +134,7 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string GetPostLabelString()
         {
-            return string.Format("{0}<br/>{1}<br/>{2}{3} {4}", Name1, StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
+            return string.Format("{0}{1}<br/>{2}<br/>{3}{4} {5}", Name1, (Name2.IsNullOrEmpty() ? "" : " " + Name2), StrasseHausNr, LandAsFormatted(Land), PLZ, Ort);
         }
 
         public static string LandAsFormatted(string land)

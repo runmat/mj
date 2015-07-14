@@ -2251,6 +2251,7 @@ namespace AppZulassungsdienst.forms
             adressdaten.SapId = objKompletterf.AktuellerVorgang.Kopfdaten.SapId;
             adressdaten.Name1 = txtName1.Text;
             adressdaten.Name2 = txtName2.Text;
+            adressdaten.Partnerrolle = "AG";
             adressdaten.Strasse = txtStrasse.Text;
             adressdaten.Plz = txtPlz.Text;
             adressdaten.Ort = txtOrt.Text;
@@ -2258,6 +2259,7 @@ namespace AppZulassungsdienst.forms
             var bankdaten = objKompletterf.AktuellerVorgang.Bankdaten;
 
             bankdaten.SapId = objKompletterf.AktuellerVorgang.Kopfdaten.SapId;
+            bankdaten.Partnerrolle = "AG";
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             bankdaten.Bankleitzahl = hfBankleitzahl.Value;
