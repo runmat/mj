@@ -305,7 +305,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string GetPdfFilename()
         {
-            return string.Format("{0}_{1}_{2}", DateTime.Now.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco, Auftraggeber.BetriebOrt);
+            return string.Format("{0}_{1}_{2}.pdf", DateTime.Now.ToString("yyyyMMddHHmmss"), Auftraggeber.Repco, Auftraggeber.BetriebOrt);
         }
 
         public void MergePdf()
