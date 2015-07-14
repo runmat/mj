@@ -39,6 +39,14 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        // 20150528 MMA 
+        // [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
+        // [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]    // Localization per default not working,so implemented in separate validation below
+        public int? MindesthaltedauerDays { get; set; }                                     // number of days
+
+        // 20150602 MMA
+        public string WunschkennzeichenReservierenUrl { get; set; }
+
         [XmlIgnore]
         static List<Material> MaterialList { get { return GetZulassungViewModel == null ? new List<Material>() : GetZulassungViewModel().Zulassungsarten; } }
 
@@ -148,7 +156,8 @@ namespace CkgDomainLogic.Autohaus.Models
             else
             {
                 if (Zulassungskreis.IsNullOrEmpty())
-                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationAreaInvalid, Localize.Required.ToLower()), new[] { "Zulassungskreis" });
+                    // yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationAreaInvalid, Localize.Required.ToLower()), new[] { "Zulassungskreis" });
+                    yield return new ValidationResult(string.Format("{0}", Localize.RegistrationAreaInvalid), new[] { "Zulassungskreis" });    // 20150608 MMA Correct "Dies ist kein gültiger Zulassungskreis erforderlich"
 
                 if (Zulassungsdatum == null)
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
@@ -165,6 +174,15 @@ namespace CkgDomainLogic.Autohaus.Models
 
             foreach (var dateResult in ValidateWochenendeUndFeiertage(Abmeldedatum, "Abmeldedatum").ToList())
                 yield return dateResult;
+
+            // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv...
+            if (KennzeichenReserviert == true && ReservierungsName.IsNullOrEmpty())
+                yield return new ValidationResult(string.Format("{0} {1}", Localize.ReservationName, Localize.Required.ToLower()), new[] { "ReservierungsName" });
+
+            // 20150608 MMA 8083 Mindesthaltedauer
+            if (IstFirmeneigeneZulassung(ZulassungsartMatNr) && (MindesthaltedauerDays == null || MindesthaltedauerDays < 1 || MindesthaltedauerDays > 360))
+                yield return new ValidationResult(string.Format("{0}", Localize.MindestHaltedauerRangeError), new[] { "MindesthaltedauerDays" }); 
+
         }
 
         static IEnumerable<ValidationResult> ValidateWochenendeUndFeiertage(DateTime? dateValue, string datePropertyName)

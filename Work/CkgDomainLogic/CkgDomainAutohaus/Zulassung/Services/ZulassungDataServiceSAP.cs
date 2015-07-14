@@ -112,6 +112,33 @@ namespace CkgDomainLogic.Autohaus.Services
             return (sapItem.KREISKZ.IsNotNullOrEmpty() ? sapItem.KREISKZ : sapItem.ZKFZKZ).ToUpper();
         }
 
+        /// <summary>
+        /// 20150602 MMA Gibt URL der Wunschkennzeichen-Seite der Zulassungsstelle zurück, falls von Z_ZLD_EXPORT_ZULSTEL geliefert
+        /// </summary>
+        /// <param name="zulassungsKreis"></param>
+        /// <returns></returns>
+        public string GetZulassungsstelleWkzUrl(string zulassungsKreis)
+        {
+            if (zulassungsKreis == null)
+                return null;
+
+            Z_ZLD_EXPORT_ZULSTEL.Init(SAP);
+            var sapList = Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL.GetExportListWithExecute(SAP);
+
+            string url = null;
+
+            if (SAP.ResultCode == 0 && sapList.Count > 0)
+            {
+                var sapItem = sapList.FirstOrDefault(x => x.KREISKZ == zulassungsKreis.ToUpper());
+                if (sapItem != null)
+                {
+                    url = sapItem.URL;
+                }
+            }
+
+            return url;
+        }
+
         public void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen)
         {
             kreis = "";
