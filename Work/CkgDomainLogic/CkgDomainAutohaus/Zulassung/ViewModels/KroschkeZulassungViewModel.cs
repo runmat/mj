@@ -47,18 +47,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public List<FahrzeugAkteBestand> FinList { get; set; }
         [XmlIgnore]
         public List<FahrzeugAkteBestand> FinListFiltered { get; set; }
-        //[XmlIgnore]
-        //public List<FahrzeugAkteBestand> FinList
-        //{
-        //    get { return PropertyCacheGet(() => new List<FahrzeugAkteBestand>()); }
-        //    private set { PropertyCacheSet(value); }
-        //}
-        //[XmlIgnore]
-        //public List<FahrzeugAkteBestand> FinListFiltered
-        //{
-        //    get { return PropertyCacheGet(() => FinList); }
-        //    private set { PropertyCacheSet(value); }
-        //}
+
         #endregion
 
         [XmlIgnore]
