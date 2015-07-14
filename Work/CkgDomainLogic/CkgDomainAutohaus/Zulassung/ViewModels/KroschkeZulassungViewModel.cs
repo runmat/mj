@@ -243,6 +243,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             // 20150602 MMA Gegebenenfalls verfügbare externe Wunschkennzeichen-Reservierungs-Url ermitteln 
              Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
+
+            Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
+
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)

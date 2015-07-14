@@ -97,6 +97,7 @@ namespace SapORM.Models
 					DynSapProxyFactory = dynSapProxyFactory,
 				};
 				o.OnInitFromSap();
+
 				return o;
 			}
 

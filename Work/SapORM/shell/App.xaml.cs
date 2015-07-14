@@ -413,6 +413,10 @@ namespace SapORM
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_ZULAUF").WriteOrmForExportTableStructures("ZUL_DAT, ZUL_BIS, I_HERSTNR", "01.04.2015", "10.04.2015", "0");
 
+            //new FunctionReflector("Z_DPM_ZULASSUNGSSPERRE_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_ACTION", "219853", "E");
+            //new FunctionReflector("Z_DPM_SET_BEM_FZGPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
+            //new FunctionReflector("Z_M_EC_AVM_PDIWECHSEL").WriteOrmForExportTableStructures("ZZKUNNR, ZZQMNUM, ZZCARPORT, I_ZZCARPORT", "0000219853", "0", "0", "0");
+
             //new FunctionReflector("Z_M_EC_AVM_KENNZ_SERIE").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_Massenzulassung").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_HERST_VWZWECK_MODID").WriteOrmForExportTableStructures();
