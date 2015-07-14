@@ -70,10 +70,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                 return;
                             }
 
-                            if (entry.Key == "OptionenDienstleistungen")
-                                return;
-
-                            if (entry.Key == "ZahlerKfzSteuer")
+                            if (entry.Key == "OptionenDienstleistungen" || entry.Key == "ZahlerKfzSteuer" || entry.Key == "AuslieferAdressen")
                                 return;
 
                             abmeldungsDict.Add(entry.Key, entry.Value);
@@ -406,6 +403,93 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #endregion
 
 
+        #region Auslieferadressen
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Adresse> AuslieferAdressen
+        {
+            // ReSharper disable ConvertClosureToMethodGroup
+            get { return PropertyCacheGet(() => GetAuslieferAdressen()); }
+            // ReSharper restore ConvertClosureToMethodGroup
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Adresse> AuslieferAdressenFiltered
+        {
+            get { return PropertyCacheGet(() => AuslieferAdressen); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        private string _selectedAuslieferAdressePartnerrolle;
+        public string SelectedAuslieferAdressePartnerrolle
+        {
+            get { return _selectedAuslieferAdressePartnerrolle; }
+            set
+            {
+                _selectedAuslieferAdressePartnerrolle = value;
+                SelectedAuslieferAdresse.TmpSelectedPartnerrolle = _selectedAuslieferAdressePartnerrolle;
+            }
+        }
+
+        public AuslieferAdresse SelectedAuslieferAdresse { get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); } }
+
+        public void FilterAuslieferAdressen(string filterValue, string filterProperties)
+        {
+            AuslieferAdressenFiltered = AuslieferAdressen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        List<Adresse> GetAuslieferAdressen()
+        {
+            PartnerDataService.AdressenKennung = "HALTER";
+            PartnerDataService.MarkForRefreshAdressen();
+            var list = PartnerDataService.Adressen;
+            list.ForEach(a => a.Typ = "Halter");
+            PartnerDataService.AdressenKennung = "KAEUFER";
+            PartnerDataService.MarkForRefreshAdressen();
+            var listKaeufer = PartnerDataService.Adressen;
+            listKaeufer.ForEach(a => a.Typ = "Kaeufer");
+            list.AddRange(listKaeufer);
+            return list;
+        }
+
+        public List<string> GetAuslieferAdressenAsAutoCompleteItems()
+        {
+            return AuslieferAdressen.Select(a => a.GetAutoSelectString()).ToList();
+        }
+
+        public Adresse GetAuslieferadresse(string key)
+        {
+            Adresse adr;
+
+            int id;
+            if (Int32.TryParse(key, out id))
+                adr = AuslieferAdressen.FirstOrDefault(v => v.KundenNr.NotNullOrEmpty().ToSapKunnr() == key.NotNullOrEmpty().ToSapKunnr());
+            else
+                adr = AuslieferAdressen.FirstOrDefault(a => a.GetAutoSelectString() == key);
+
+            if (adr != null)
+                adr.Strasse = adr.StrasseHausNr;
+
+            return adr;
+        }
+
+        public void SetAuslieferAdresse(AuslieferAdresse model)
+        {
+            var item = Zulassung.AuslieferAdressen.Find(a => a.Adressdaten.Partnerrolle == model.Adressdaten.Partnerrolle);
+            ModelMapping.Copy(model, item);
+
+            Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+        }
+
+        public void DataMarkForRefreshAuslieferAdressen()
+        {
+            PropertyCacheClear(this, m => m.AuslieferAdressen);
+            PropertyCacheClear(this, m => m.AuslieferAdressenFiltered);
+        }
+
+        #endregion
+
+
         #region Fahrzeugdaten
 
         [XmlIgnore, ScriptIgnore]
@@ -559,6 +643,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                         FahrzeugartId = "1",
                     }
             };
+
+            SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;
 
             DataMarkForRefresh();
         }

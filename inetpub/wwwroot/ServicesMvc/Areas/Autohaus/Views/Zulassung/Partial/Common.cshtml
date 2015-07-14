@@ -55,9 +55,12 @@
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
-            FormWizardShowHideSaveButton(step == 7, 500);
+            var stepName = FormWizard.GetStepKey(step + 1);
 
-            if (step == 4 && _skipBankAddressData) {
+            FormWizardShowHideSaveButton(stepName == "Receipt", 500);
+
+            var prevStepName = FormWizard.GetStepKey(step);
+            if (prevStepName == "BankAdressdaten" && _skipBankAddressData) {
                 FormWizard.ButtonPrevInvoke();
             }
 
@@ -72,7 +75,6 @@
         });
 
         FormWizard.OnSubmit(function () {
-
             LoadingShow();
             SpanAlertWarning("WaitHint", '@Localize.PleaseWaitWhileProcessingYourRequest.ToJavascriptString()', 120000);
             AjaxRequestNextStep();
@@ -278,6 +280,43 @@
         if (FormWizard.GetNextTabKey() == "BankAdressdaten" && _skipBankAddressData) {
             $("#AjaxFormBankAdressdaten").submit();
         }
+    }
+
+    // AuslieferAdressen
+    function AjaxFormAuslieferAdressenComplete() {
+        FormPrepareAjax();
+
+        var detailWindow = $("#Adressen").data("tWindow");
+        detailWindow.center().close();
+
+        if (_modelIsValid) {
+            AjaxRequestNextStep();
+            return;
+        }
+
+        var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        if (saveSuccessful == 'true') {
+            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
+            $("#TmpSaveAddressSuccessful").val(false);
+        }
+    }
+
+    function OnDataBound_AuslieferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_AuslieferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_AuslieferAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function GridAuslieferAdresseOnSelect(id) {
+        $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
+        $("#AjaxFormAuslieferAdressen").submit();
     }
 
     // Fahrzeugdaten

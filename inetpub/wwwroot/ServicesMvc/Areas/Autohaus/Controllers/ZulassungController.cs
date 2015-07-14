@@ -286,6 +286,100 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #endregion
 
+        #region Auslieferadressen
+
+        [HttpPost]
+        public ActionResult AuslieferAdressen()
+        {
+            return PartialView("Partial/AuslieferAdressen", ViewModel.SelectedAuslieferAdresse);
+        }
+
+        [HttpPost]
+        public JsonResult AuslieferAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ViewModel.GetAuslieferAdressenAsAutoCompleteItems() });
+        }
+
+        [HttpPost]
+        public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
+        {
+            if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.ZugeordneteMaterialien;
+                ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.Adressdaten.Bemerkung;
+                ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.Adressdaten.Adresse.TmpSelectionKey);
+                if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                ViewModel.SelectedAuslieferAdresse.IsValid = false;
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            }
+
+            if (model.TmpSelectedPartnerrolle != model.Adressdaten.Partnerrolle)
+            {
+                ViewModel.SelectedAuslieferAdressePartnerrolle = model.TmpSelectedPartnerrolle;
+                ModelState.Clear();
+                ViewModel.SelectedAuslieferAdresse.IsValid = false;
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            }
+
+            if (ModelState.IsValid)
+                ViewModel.SetAuslieferAdresse(model);
+
+            // Auslieferadressen sind optional
+            if (!model.HasData)
+                ModelState.Clear();
+
+            model.IsValid = (ModelState.IsValid && !model.TmpSaveAddressOnly);
+            model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
+
+            ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.TmpSaveAddressOnly);
+            ModelState.SetModelValue("TmpSaveAddressOnly", false);
+
+            return PartialView("Partial/AuslieferAdressenForm", model);
+        }
+
+        [GridAction]
+        public ActionResult AuslieferAdressenAjaxBinding()
+        {
+            var items = ViewModel.AuslieferAdressenFiltered;
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterAuslieferAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterAuslieferAdressen(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult AuslieferAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshAuslieferAdressen();
+
+            return PartialView("Partial/AuslieferAdressenAuswahlGrid");
+        }
+
+        public ActionResult AuslieferAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AuslieferAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.DeliveryAddresses, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult AuslieferAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AuslieferAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DeliveryAddresses, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
         #region Fahrzeugdaten
 
         [HttpPost]
