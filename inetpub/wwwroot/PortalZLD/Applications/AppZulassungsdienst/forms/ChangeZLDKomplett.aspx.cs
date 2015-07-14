@@ -1718,7 +1718,7 @@ namespace AppZulassungsdienst.forms
                 targetRow["Search"] = txtBox.Text;
                 targetRow["Value"] = ddl.SelectedValue;
                 targetRow["Text"] = ddl.SelectedItem.Text;
-                targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "");
+                targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
 
                 txtBox = (TextBox)gvRow.FindControl("txtPreis");
                 targetRow["Preis"] = txtBox.Text.ToDecimal(0);
