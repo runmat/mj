@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -7,12 +8,13 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.Autohaus.Models
 {
-    public class ZulassungsReportSelektor : Store, IValidatableObject 
+    public class ZulassungsReportSelektor : Store, IValidatableObject
     {
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Kennzeichen]
         public string Kennzeichen
         {
             get { return PropertyCacheGet(() => "").NotNullOrEmpty().ToUpper(); }
@@ -43,12 +45,12 @@ namespace CkgDomainLogic.Autohaus.Models
 
         [LocalizedDisplay(LocalizeConstants.Reference4)]
         public string Referenz4 { get; set; }
-    
-        
+
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if (!AuftragsDatumRange.IsSelected && !ZulassungsDatumRange.IsSelected)
-                yield return new ValidationResult(Localize.PleaseChooseAtLeastOneOption, new[] { "AuftragsDatumRange",  "ZulassungsDatumRange" });
+                yield return new ValidationResult(Localize.PleaseChooseAtLeastOneOption, new[] { "AuftragsDatumRange", "ZulassungsDatumRange" });
         }
     }
 }

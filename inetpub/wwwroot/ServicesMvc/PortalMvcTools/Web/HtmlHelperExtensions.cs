@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Models;
@@ -132,13 +131,13 @@ namespace PortalMvcTools.Web
         public static MvcWrapper PortletBox(this HtmlHelper html, string header, string iconCssClass, string portletCssClass = "light-grey", bool isCollapsible = true, bool isClosable = false)
         {
             return new MvcWrapper(html.ViewContext, "PortletBox", new FormOuterLayerModel
-                {
-                    Header = header,
-                    IconCssClass = iconCssClass,
-                    PortletCssClass = portletCssClass,
-                    IsCollapsible = isCollapsible,
-                    IsClosable = isClosable
-                });
+            {
+                Header = header,
+                IconCssClass = iconCssClass,
+                PortletCssClass = portletCssClass,
+                IsCollapsible = isCollapsible,
+                IsClosable = isClosable
+            });
         }
 
         public static MvcHtmlString FormValidationSummaryResponsive(this HtmlHelper html, Func<Exception, IHtmlString> responsiveErrorUrlFunction = null)
@@ -151,7 +150,7 @@ namespace PortalMvcTools.Web
         {
             html.ViewBag.IeVersion = ieVersion;
             html.ViewBag.IeExplicitVersion = ieExplicitVersion;
-            html.ViewBag.IeWarningMessage = 
+            html.ViewBag.IeWarningMessage =
                 string.Format("Diese Seite ist nicht kompatibel mit Browsern vom Typ 'Internet Explorer', Version {0} {1}",
                                 ieVersion, (ieExplicitVersion ? "" : " und ältere Versionen")
                 );
@@ -198,11 +197,11 @@ namespace PortalMvcTools.Web
         public static MvcForm AutoForm<T>(this AjaxHelper ajax, T model, string controllerName, int id) where T : class
         {
             return ajax.BeginForm(typeof(T).Name + "Form", controllerName, null,
-                                  new MvcAjaxOptions { UpdateTargetId = ajax.AutoFormWrapperDivID(id), OnComplete = "AjaxFormComplete(" + id +");" },
+                                  new MvcAjaxOptions { UpdateTargetId = ajax.AutoFormWrapperDivID(id), OnComplete = "AjaxFormComplete(" + id + ");" },
                                   htmlAttributes: new { @class = "form-horizontal", id = "AjaxForm" + id });
         }
 
-        public static string AutoFormWrapperDivID(this AjaxHelper ajax, int id) 
+        public static string AutoFormWrapperDivID(this AjaxHelper ajax, int id)
         {
             return string.Format("Div_{0}", id);
         }
@@ -231,22 +230,11 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabel", model);
         }
 
-        private static object DictionaryToObject(IDictionary<string, object> dictionary)
-        {
-            var eo = new ExpandoObject();
-            var eoColl = (IDictionary<string, object>)eo;
-
-            foreach (var kvp in dictionary)
-                eoColl.Add(kvp);
-
-            return eo;
-        }
-
         private static string GetKnockoutDataBindAttributeValue(string propertyName, string controlType = "")
         {
             var dataBindPropertyValue = string.Format("value: {0}", propertyName);
             if (controlType == "textbox")
-                dataBindPropertyValue = dataBindPropertyValue + ", valueUpdate:'afterkeydown'"; 
+                dataBindPropertyValue = dataBindPropertyValue + ", valueUpdate:'afterkeydown'";
 
             if (controlType.IsNotNullOrEmpty())
             {
@@ -280,7 +268,7 @@ namespace PortalMvcTools.Web
                 if (s.StartsWith("xauto"))
                     dict["data-bind"] = knockoutDataBindAttributeValue + s.Replace("xauto", "");
             }
-            catch{}
+            catch { }
 
             return dict;
         }
@@ -309,23 +297,49 @@ namespace PortalMvcTools.Web
             });
         }
 
-        static object GetMaxLengthAttributes<TModel, TValue>(Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes)
+        static object GetMaxLengthAttribute<TModel, TValue>(Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes)
         {
             var propertyName = expression.GetPropertyName();
             var property = typeof(TModel).GetProperty(propertyName);
             if (property == null)
                 return controlHtmlAttributes;
 
-            var maxLengthAttribute = property.GetCustomAttributes(typeof(LengthAttribute), true).OfType<LengthAttribute>().FirstOrDefault();
-            if (maxLengthAttribute == null)
+            var attribute = property.GetCustomAttributes(typeof(LengthAttribute), true).OfType<LengthAttribute>().FirstOrDefault();
+            if (attribute == null)
                 return controlHtmlAttributes;
 
-            return TypeMerger.MergeTypes(controlHtmlAttributes, new { maxlength = maxLengthAttribute.Length });
+            return TypeMerger.MergeTypes(controlHtmlAttributes, new { maxlength = attribute.Length });
+        }
+
+        static IDictionary<string, object> MergeKennzeichenClass<TModel, TValue>(Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributesDict)
+        {
+            var propertyName = expression.GetPropertyName();
+            var property = typeof(TModel).GetProperty(propertyName);
+            if (property == null)
+                return controlHtmlAttributesDict;
+
+            var attribute = property.GetCustomAttributes(typeof(KennzeichenAttribute), true).OfType<KennzeichenAttribute>().FirstOrDefault();
+            if (attribute == null)
+                return controlHtmlAttributesDict;
+
+            var additionalClassName = "kennzeichen";
+            var classPropertyValue = "";
+            if (controlHtmlAttributesDict.ContainsKey("class"))
+                classPropertyValue = (string)controlHtmlAttributesDict["class"];
+
+            if (!classPropertyValue.ToLower().Split(' ').Contains(additionalClassName))
+            {
+                classPropertyValue += (classPropertyValue.IsNotNullOrEmpty() ? " " : "") + additionalClassName;
+                controlHtmlAttributesDict["class"] = classPropertyValue;
+            }
+
+            return controlHtmlAttributesDict;
         }
 
         public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
+            controlHtmlAttributesDict = MergeKennzeichenClass(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
@@ -343,8 +357,9 @@ namespace PortalMvcTools.Web
         public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
-            controlHtmlAttributes = GetMaxLengthAttributes(expression, controlHtmlAttributes);
+            controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
+            controlHtmlAttributesDict = MergeKennzeichenClass(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
@@ -383,6 +398,7 @@ namespace PortalMvcTools.Web
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
             controlHtmlAttributes = TypeMerger.MergeTypes(controlHtmlAttributes, new { placeholder = html.DisplayNameFor(expression).ToString() });
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
+            controlHtmlAttributesDict = MergeKennzeichenClass(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
