@@ -4518,7 +4518,8 @@
     <Content Include="Views\Shared\_Themes\AH2015\Partial\xUserMenu.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Wrappers\xFormSearchBox_Begin.cshtml" />
     <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviation.cshtml" />
-    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviation.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationGrid.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
