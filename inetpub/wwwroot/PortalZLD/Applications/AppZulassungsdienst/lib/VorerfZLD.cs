@@ -21,6 +21,18 @@ namespace AppZulassungsdienst.lib
         public DataTable tblBarcodData { get; set; }
         public DataTable tblBarcodMaterial { get; set; }
 
+	    private DataTable _tblPrintDataForPdf;
+	    public DataTable tblPrintDataForPdf
+	    {
+	        get
+	        {
+	            if (_tblPrintDataForPdf == null)
+                    _tblPrintDataForPdf = ZLDCommon.CreatePrintTable();
+
+	            return _tblPrintDataForPdf;
+	        }
+	    }
+
         public bool IsZLD { get; set; }
         public int IDCount { get; set; }
         public String Name1Hin { get; set; }

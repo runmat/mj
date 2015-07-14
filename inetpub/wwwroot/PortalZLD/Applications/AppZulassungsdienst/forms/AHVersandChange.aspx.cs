@@ -60,7 +60,10 @@ namespace AppZulassungsdienst.forms
                 {
                     var sapId = Request.QueryString["id"];
                     if (Request.QueryString["Back"] == null)
+                    {
                         objNacherf.LoadAHVersandVorgangDetailFromSap(sapId);
+                        objNacherf.tblPrintDataForPdf.Clear();
+                    }
 
                     Session["objNacherf"] = objNacherf;
 
@@ -512,7 +515,18 @@ namespace AppZulassungsdienst.forms
                 }
 
             }
+
             checkDate();
+
+            CheckZulstOffen();
+        }
+
+        private void CheckZulstOffen()
+        {
+            var errMsg = objCommon.CheckZulstGeoeffnet(txtStVa.Text, ZLDCommon.toShortDateStr(txtZulDate.Text));
+
+            if (!String.IsNullOrEmpty(errMsg))
+                lblError.Text = String.Format("Bitte wählen Sie ein gültiges Zulassungsdatum! ({0})", errMsg);
         }
 
         /// <summary>

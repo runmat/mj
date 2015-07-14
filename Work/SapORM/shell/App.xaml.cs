@@ -416,6 +416,7 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_STO_STORNO_ORDER").WriteOrmForExportTableStructures("I_ZULBELN, I_STORNOGRUND, I_ERNAM", "0", "0", "test");
             //new FunctionReflector("Z_ZLD_STO_STORNOGRUENDE").WriteOrmForExportTableStructures();
 
+            //new FunctionReflector("Z_FIL_CHECK_OPEN_002").WriteOrmForExportTableStructures("I_KREISKZ, I_VKORG, I_VKBUR, I_DATUM", "B", "1010", "4837", "04.05.2015");
             //new FunctionReflector("Z_FIL_READ_OFF_BEST_POS_001").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_FIL_WE_ZUR_BEST_POS_001").WriteOrmForExportTableStructures("I_LGORT, I_EBELN", "4837", "0");
 
@@ -426,6 +427,8 @@ namespace SapORM
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_ZULAUF").WriteOrmForExportTableStructures("ZUL_DAT, ZUL_BIS, I_HERSTNR", "01.04.2015", "10.04.2015", "0");
 
+            //new FunctionReflector("Z_ZLD_ZULST_OPEN").WriteOrmForExportTableStructures("I_KREISKZ, I_DATUM", "OD", "15.05.2015");
+            //new FunctionReflector("Z_ZLD_CHECK_48H").WriteOrmForExportTableStructures("I_KREISKZ, I_LIFNR, I_DATUM_BEAUFTRAGUNG", "OD", "1", "15.05.2015");
             //new FunctionReflector("Z_DPM_ZULASSUNGSSPERRE_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_ACTION", "219853", "E");
             //new FunctionReflector("Z_DPM_SET_BEM_FZGPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
             //new FunctionReflector("Z_M_EC_AVM_PDIWECHSEL").WriteOrmForExportTableStructures("ZZKUNNR, ZZQMNUM, ZZCARPORT, I_ZZCARPORT", "0000219853", "0", "0", "0");

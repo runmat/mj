@@ -35,6 +35,18 @@ namespace AppZulassungsdienst.lib
         public DataTable tblBarquittungen { get; set; }
         public DataTable AHVersandListe { get; set; }
 
+        private DataTable _tblPrintDataForPdf;
+        public DataTable tblPrintDataForPdf
+        {
+            get
+            {
+                if (_tblPrintDataForPdf == null)
+                    _tblPrintDataForPdf = ZLDCommon.CreatePrintTable();
+
+                return _tblPrintDataForPdf;
+            }
+        }
+
         // Selektion
         public String SelMatnr { get; set; }
         public String SelDatum { get; set; }
