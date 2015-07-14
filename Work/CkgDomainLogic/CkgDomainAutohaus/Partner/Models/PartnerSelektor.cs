@@ -30,6 +30,9 @@ namespace CkgDomainLogic.Partner.Models
 
         public IHtmlString PartnerKennungLocalized { get { return GetViewModel().AdressenKennungLocalized; } }
 
+        [LocalizedDisplay(LocalizeConstants.CustomerNo)]
+        public string Kunnr { get; set; }
+
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<PartnerViewModel> GetViewModel { get; set; }
     }

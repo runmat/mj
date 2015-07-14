@@ -1,27 +1,15 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Web.Mvc;
-using CkgDomainLogic.DomainCommon.Contracts;
-using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.Fahrzeugbestand.Contracts;
-using CkgDomainLogic.Fahrzeugbestand.Models;
-using CkgDomainLogic.Fahrzeugbestand.ViewModels;
 using CkgDomainLogic.Partner.Contracts;
 using CkgDomainLogic.Partner.Models;
 using CkgDomainLogic.Partner.ViewModels;
-using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
-using MvcTools.Web;
 using Telerik.Web.Mvc;
-using System.Linq;
-using Adresse = CkgDomainLogic.DomainCommon.Models.Adresse;
 
 namespace ServicesMvc.Autohaus.Controllers
 {
@@ -42,17 +30,17 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index()
+        public ActionResult Index(string pid = null)
         {
-            ViewModel.DataInit();
+            ViewModel.DataInit(pid);
 
             return View("Pflege", ViewModel);
         }
 
         [CkgApplication]
-        public ActionResult Pflege()
+        public ActionResult Pflege(string pid = null)
         {
-            ViewModel.DataInit();
+            ViewModel.DataInit(pid);
 
             return View(ViewModel);
         }
