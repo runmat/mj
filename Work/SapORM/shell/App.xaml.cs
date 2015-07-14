@@ -435,6 +435,8 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_AVM_DOKUMENT_KOPIE").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000219853");
 
+            //new FunctionReflector("Z_DPM_FFD_DATEN_OHNE_DOKUMENTE").WriteOrmForExportTableStructures("I_KUNNR_AG", "324562");
+
 
             //CoCTest();
             //TeslaTest();
