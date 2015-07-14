@@ -2,7 +2,7 @@
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
-using SmartSoft.PdfLibrary;     // 20150527 MMA
+using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
 using ITextSharpText = iTextSharp.text;
@@ -54,8 +54,7 @@ namespace DocumentTools.Services
 
             return output.ToArray();
         }
-        
-        // 
+
         /// <summary>
         /// 20150528 MMA Erstellt aus mehreren PDF-Documenten eine einzige PDF-Datei und gibt diese als byte[] zurück.
         /// </summary>
