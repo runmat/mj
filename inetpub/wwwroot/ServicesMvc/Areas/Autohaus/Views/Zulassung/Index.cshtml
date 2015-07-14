@@ -3,7 +3,7 @@
 @Html.Partial("Partial/Common")
 
 <div class="page-title">
-    @(Model.ModusAbmeldung ? Localize.Cancellation : Localize.Registration) <small></small>
+    @Model.ApplicationTitle <small></small>
     @Html.Partial("ShoppingCart/Menu")
 </div>
 @Html.Partial("ShoppingCart/Common")
