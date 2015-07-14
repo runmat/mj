@@ -1,7 +1,205 @@
 <!-- all style deviations for AH2015 theme  -->
 
 <style type="text/css">
-h3{
-  color:red !important;
-  }
+
+/* Allgemein */
+@@font-face {
+   font-family: 'PT Sans';
+    src: url('/ServicesMvc/Content/fonts/pt_sans-webfont.eot');
+    src: url('/ServicesMvc/Content/fonts/pt_sans-webfont.eot?iefix') format('eot'),
+         url('/ServicesMvc/Content/fonts/pt_sans-webfont.woff') format('woff'),
+         url('/ServicesMvc/Content/fonts/pt_sans-webfont.ttf') format('truetype'),
+         url('/ServicesMvc/Content/fonts/pt_sans-webfont.svg#webfont') format('svg');
+}
+
+html{
+ background-color: #dee9ee;
+}
+
+body{
+    font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 14px;
+    background-color: #dee9ee;
+}
+
+/* Obere NavBar */ 
+.navbar-fixed-top{
+    position:  static;
+}
+
+.fixed-top .page-container{
+    margin-top: 0;
+}
+
+.header .navbar-inner{
+    min-height: 65px;
+    background-color:#FFF;
+}
+
+.navbar-inverse .brand{
+  color: #07398F;
+  font-size: 24px;
+  padding-top: 20px;
+  margin: 0;
+}
+
+.navbar-inverse .brand:hover{
+    opacity: 0.8;
+     color: #07398F;
+}
+
+.header .navbar-inner .container-fluid.gray,
+.header .navbar-inner{
+    background-color: #FFF !important;
+}
+
+.header{
+    box-shadow: 0px 1px 4px rgba(0,0,0,0.13);
+    background-color: #FFF;
+}
+
+/* rechte Navbar */
+.page-sidebar{
+      background-color: #0a2D69 !important;
+      min-height: 90%;
+}
+
+.page-sidebar > ul > li > a{
+    font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 20px;
+    letter-spacing: 1.17px;
+    line-height: 26px;
+    padding: 10px 8px;
+    border-top: none !important;
+}
+
+.page-sidebar > ul > li.open > a, .page-sidebar > ul > li >a:hover, .page-sidebar > ul > li:hover >a,
+.page-sidebar > ul > li.active > a{
+    background-color: #08275c !important;
+}
+
+.page-sidebar > ul > li > ul.sub-menu > li > a{
+      padding-left: 41px !important;
+      color:#fff !important;
+}
+
+.page-sidebar > ul > li > ul.sub-menu > li > a:hover{
+     background-color: #08275c !important;
+}
+
+.page-sidebar > ul > li a i{
+    color:#fff;
+}
+
+.page-sidebar ul{
+    width: auto;
+}
+
+.page-sidebar > ul > li.active > a .selected{
+    background-image: none;
+}
+
+/* contentbereich */
+.page-content{
+    background-color:#dee9ee;
+    padding-top: 1px !important;
+    padding-bottom: 30px !important;
+}
+
+.page-title{
+  font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 20px;
+  color: #FFF;
+  letter-spacing: 1.18px;
+  line-height: 26px;
+  background-color: #6E8CBF;
+  margin-top: 0;
+  border-radius: 10px 10px 0 0;
+  padding: 10px 20px;
+}
+
+.page-title small{
+    color:#FFF;
+}
+
+
+.container-fluid{
+    background-color:#FFF;
+    padding-right: 0  !important;
+    padding-left: 0 !important;   
+}
+
+.container-fluid>div,
+.container-fluid>h4{
+    padding-right: 20px  !important;
+    padding-left: 20px !important;   
+}
+
+.body-container{
+    margin: 30px;
+    border-radius: 10px !important;
+     -webkit-transition: all 1s ease-in-out;
+     -moz-transition: all 1s ease-in-out;
+     -o-transition: all 1s ease-in-out;
+     transition: all 1s ease-in-out;
+}
+
+.mitgrid .body-container{
+    margin: 30px 0 30px 30px;
+    border-radius: 10px 0 0 10px !important;
+}
+
+.mitgrid .page-title{
+    border-radius: 10px 0 0 0;
+}
+
+/* footer */
+.footer {
+  background-color: #0a2D69 !important;
+}
+
+
+.btn{
+   font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
+   border-radius: 4px !important; 
+   text-transform: uppercase;
+}
+
+
+
+/* dropdown */
+.dropdown-menu{
+    border-radius: 4px !important;
+}
+.dropdown-menu .divider {
+  margin: 0 1px;
+  border-bottom: none;
+}
+
+
+/* Mediaquerys */
+@@media (min-width: 1080px) { 
+    .page-sidebar {
+		position: absolute;
+ 		width: 246px;
+  	}
+    .page-content {
+        margin-left: 246px;
+    }
+}
+
+@@media all and (max-width: 1079px)
+    /* rechte Nav blendet aus */
+    .page-content {
+        padding-top: 1px !important;
+        padding-bottom: 30px !important;
+    }
+}
+
+@@media (max-width: 1079px)
+    .page-title {
+        margin: 15px 0px;
+    }   
+}
+    
 </style>

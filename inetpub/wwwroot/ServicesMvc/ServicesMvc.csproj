@@ -729,6 +729,7 @@
     <Content Include="Content\fileupload\jquery.fileupload-ui.css" />
     <Content Include="Content\fileupload\jquery.fileupload.css" />
     <Content Include="Content\fileupload\style.css" />
+    <Content Include="Content\fonts\pt_sans-webfont.svg" />
     <Content Include="Content\img\loading.gif" />
     <Content Include="Content\defaults.css" />
     <Content Include="Images\BriefversandCsvTemplate.png" />
@@ -2594,6 +2595,9 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\fonts\pt_sans-webfont.eot" />
+    <None Include="Content\fonts\pt_sans-webfont.ttf" />
+    <None Include="Content\fonts\pt_sans-webfont.woff" />
     <None Include="Documents\Templates\UploadBriefversand.csv" />
     <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
     <Content Include="Documents\Templates\UploadFzgUebersichtFilter.xls" />
@@ -4520,10 +4524,6 @@
     <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationGrid.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
-    <None Include="Content\fonts\PT_Sans-Web-Bold.ttf" />
-    <None Include="Content\fonts\PT_Sans-Web-BoldItalic.ttf" />
-    <None Include="Content\fonts\PT_Sans-Web-Italic.ttf" />
-    <None Include="Content\fonts\PT_Sans-Web-Regular.ttf" />
     <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationGrid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
