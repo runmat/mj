@@ -5,6 +5,13 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
  <script type="text/javascript" src="../JavaScript/helper.js?26082013"></script>
+    <script language="javascript" type="text/javascript">
+        function checkZulassungsdatum() {
+            var tb = document.getElementById('<%= txtStornoZulassungsdatum.ClientID %>');
+            document.getElementById('<%= ihDatumIstWerktag.ClientID %>').value = nurWerktage(tb.value)[0];
+            return true;
+        }
+    </script>
 
     <div id="site">
         <div id="content">
@@ -262,6 +269,22 @@
                                                 <asp:TextBox ID="txtStornoKennz2" MaxLength="6" CssClass="TextBoxNormal" Width="100px" runat="server" style="text-transform:uppercase;"/>
                                             </td>
                                         </tr>
+                                        <tr id="trStornoZulassungsdatum" runat="server" class="formquery" style="height: 32px" Visible="False">
+                                            <td class="firstLeft active" style="width: 20%">
+                                                <asp:Label ID="lblStornoZulassungsdatum" runat="server">Neues Zulassungsdatum:</asp:Label>
+                                            </td>
+                                            <td style="width: 80%">
+                                                <asp:TextBox ID="txtStornoZulassungsdatum" runat="server" CssClass="TextBoxNormal" Width="65px" MaxLength="6"/>
+                                                <asp:Label ID="txtStornoZulassungsdatumFormat" Style="padding-left: 2px; font-weight: normal"
+                                                    Height="15px" runat="server">(ttmmjj)</asp:Label>
+                                                <asp:LinkButton runat="server" Style="padding-left: 10px; font-weight: normal" Height="15px"
+                                                    ID="lbtnGestern" Text="Gestern |" Width="60px" />
+                                                <asp:LinkButton runat="server" Style="font-weight: normal" Height="15px" ID="lbtnHeute"
+                                                    Width="50px" Text="Heute |" />
+                                                <asp:LinkButton runat="server" Style="font-weight: normal" Height="15px" ID="lbtnMorgen"
+                                                    Width="60px" Text="Morgen" />
+                                            </td>
+                                        </tr>
                                     </table>
                                 </div>
                                 <div id="EditPreise" runat="server" Visible="False" style="margin-top: 10px">
@@ -326,7 +349,7 @@
                                 <asp:LinkButton ID="cmdAbbrechen" runat="server" CssClass="Tablebutton" 
                                     Width="78px" onclick="cmdAbbrechen_Click" Visible="False">» Abbrechen </asp:LinkButton>
                                 <asp:LinkButton ID="cmdStorno" runat="server" CssClass="Tablebutton" 
-                                    Width="78px" onclick="cmdStorno_Click" Visible="False">» Stornieren </asp:LinkButton>
+                                    Width="78px" onclick="cmdStorno_Click" OnClientClick="checkZulassungsdatum();" Visible="False">» Stornieren </asp:LinkButton>
                                 <asp:LinkButton ID="cmdAbsenden" runat="server" CssClass="Tablebutton" 
                                     Width="78px" onclick="cmdAbsenden_Click" Visible="False">» Absenden </asp:LinkButton>
                             </div>
@@ -398,6 +421,7 @@
                                     </asp:GridView>
                                 </asp:Panel>
                             </div>
+                            <input type="hidden" runat="server" id="ihDatumIstWerktag" value="false" />
                         </ContentTemplate>
                     </asp:UpdatePanel>
                 </div>
