@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web.Services;
-using Elmah;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using SapORM.Contracts;
@@ -271,7 +270,8 @@ namespace SoapRuecklaeuferschnittstelle
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                var logService = new LogService(String.Empty, String.Empty);
+                logService.LogElmahError(ex, null);
                 throw;
             }
 
@@ -362,7 +362,7 @@ namespace SoapRuecklaeuferschnittstelle
                                                                                                  gtRepExportList,
                                                                                                  gtTranspExportList));
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
                         // Im Falle eines Fehlers bei dem einlesen der Werte einen leeren Satz zurückgeben
                         list.Add(new Ruecklaeuferschnittstelle
@@ -381,7 +381,8 @@ namespace SoapRuecklaeuferschnittstelle
             }
             catch (Exception ex)
             {
-                ErrorSignal.FromCurrentContext().Raise(ex);
+                var logService = new LogService(String.Empty, String.Empty);
+                logService.LogElmahError(ex, null);
                 throw;
             }
         }

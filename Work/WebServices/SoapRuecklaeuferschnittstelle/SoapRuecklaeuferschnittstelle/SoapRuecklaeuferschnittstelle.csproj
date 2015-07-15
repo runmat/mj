@@ -62,18 +62,12 @@
     <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Elmah">
-      <HintPath>..\packages\elmah.corelibrary.1.2.2\lib\Elmah.dll</HintPath>
-    </Reference>
     <Reference Include="ERPConnect35, Version=4.2.4.0, Culture=neutral, PublicKeyToken=737201975e95eeee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Work\GAC\ERPConnect35.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MySql.Data, Version=6.7.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <HintPath>..\packages\MySql.Data.6.7.4\lib\net40\MySql.Data.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core" />
@@ -94,6 +88,7 @@
     <None Include="App_Readme\Elmah.MySql.sql" />
     <None Include="App_Readme\Elmah.MySql.txt" />
     <None Include="App_Readme\Elmah.txt" />
+    <Content Include="NLog.config" />
     <None Include="ReadMe.txt" />
     <Content Include="Ruecklaeuferschnittstelle.asmx" />
     <Content Include="Global.asax" />
@@ -135,7 +130,6 @@
     <None Include="hla-dad_130814.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\SapORM\contracts\SapORM.Contracts.csproj">
