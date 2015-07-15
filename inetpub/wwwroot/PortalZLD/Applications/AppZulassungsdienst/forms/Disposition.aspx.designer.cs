@@ -121,6 +121,33 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.LinkButton lbtnMorgen;
         
         /// <summary>
+        /// rbNichtDisponiert-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbNichtDisponiert;
+        
+        /// <summary>
+        /// rbBereitsDisponiert-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbBereitsDisponiert;
+        
+        /// <summary>
+        /// rbBereitsInArbeit-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.RadioButton rbBereitsInArbeit;
+        
+        /// <summary>
         /// cmdSearch-Steuerelement
         /// </summary>
         /// <remarks>

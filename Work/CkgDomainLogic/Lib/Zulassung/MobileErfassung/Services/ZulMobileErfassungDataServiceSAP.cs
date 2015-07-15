@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using CkgDomainLogic.General.Database.Services;
 using CkgDomainLogic.Zulassung.MobileErfassung.Contracts;
 using CkgDomainLogic.Zulassung.MobileErfassung.Models;
 using GeneralTools.Contracts;
@@ -27,57 +29,57 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
 
         public List<Anwendung> GetAnwendungen()
         {
-            List<Anwendung> liste = new List<Anwendung> { new Anwendung("ZLD-Vorgänge bearbeiten", "EditZLDVorgaenge", "ErfassungMobil") };
+            List<Anwendung> liste = new List<Anwendung>
+                {
+                    new Anwendung("ZLD-Vorgänge bearbeiten", "EditZLDVorgaenge", "ErfassungMobil"),
+                    new Anwendung("Neuen Vorgang erfassen", "CreateZLDVorgang", "ErfassungMobil")
+                };
 
             return liste;
         }
 
         public Stammdatencontainer GetStammdaten()
         {
-            Stammdatencontainer stda = new Stammdatencontainer();
+            Z_ZLD_MOB_STAMMD.Init(SAP);
 
-            SAP.InitExecute("Z_ZLD_MOB_STAMMD");
+            SAP.Execute();
 
-            // Ämter
-            var sapItems_amt = Z_ZLD_MOB_STAMMD.GT_KREISKZ.GetExportList(SAP);
-            var webItems_amt = AppModelMappings.Z_ZLD_MOB_STAMMD_GT_KREISKZ_To_Amt.Copy(sapItems_amt).OrderBy(w => w.KurzBez).ToList();
-
-            // Dienstleistungen
-            var sapItems_dl = Z_ZLD_MOB_STAMMD.GT_MAT.GetExportList(SAP);
-            var webItems_dl = AppModelMappings.Z_ZLD_MOB_STAMMD_GT_MAT_To_Dienstleistung.Copy(sapItems_dl).OrderBy(w => w.Bezeichnung).ToList();
-
-            stda.Aemter = webItems_amt;
-            stda.Dienstleistungen = webItems_dl;
-
-            return stda;
+            return new Stammdatencontainer
+                {
+                    Aemter = AppModelMappings.Z_ZLD_MOB_STAMMD_GT_KREISKZ_To_Amt.Copy(Z_ZLD_MOB_STAMMD.GT_KREISKZ.GetExportList(SAP)).OrderBy(w => w.KurzBez).ToList(),
+                    Dienstleistungen = AppModelMappings.Z_ZLD_MOB_STAMMD_GT_MAT_To_Dienstleistung.Copy(Z_ZLD_MOB_STAMMD.GT_MAT.GetExportList(SAP)).OrderBy(w => w.Bezeichnung).ToList()
+                };
         }
 
         public void GetAemterMitVorgaengen(out List<AmtVorgaenge> aemterMitVorgaengen, out List<Vorgang> vorgaenge)
         {
-            SAP.InitExecute("Z_ZLD_MOB_USER_GET_VG", "I_VKORG, I_VKBUR, I_MOBUSER", LogonContext.VkOrg, LogonContext.VkBur, LogonContext.UserName.ToUpper());
+            Z_ZLD_MOB_USER_GET_VG.Init(SAP, "I_VKORG, I_VKBUR, I_MOBUSER", LogonContext.VkOrg, LogonContext.VkBur, LogonContext.UserName.ToUpper());
 
-            // GT_VGANZ
-            var sapItems_vganz = Z_ZLD_MOB_USER_GET_VG.GT_VGANZ.GetExportList(SAP);
-            var webItems_vganz = AppModelMappings.Z_ZLD_MOB_USER_GET_VG_GT_VGANZ_To_AmtVorgaenge.Copy(sapItems_vganz).OrderBy(w => w.KurzBez).ToList();
+            SAP.Execute();
 
-            aemterMitVorgaengen = webItems_vganz;
+            aemterMitVorgaengen = AppModelMappings.Z_ZLD_MOB_USER_GET_VG_GT_VGANZ_To_AmtVorgaenge.Copy(Z_ZLD_MOB_USER_GET_VG.GT_VGANZ.GetExportList(SAP)).OrderBy(w => w.KurzBez).ToList();
 
-            // GT_VG_KOPF
-            var sapItems_vgkopf = Z_ZLD_MOB_USER_GET_VG.GT_VG_KOPF.GetExportList(SAP);
-            var webItems_vgkopf = AppModelMappings.Z_ZLD_MOB_USER_GET_VG_GT_VG_KOPF_To_Vorgang.Copy(sapItems_vgkopf).OrderBy(w => w.Id).ToList();
+            vorgaenge = AppModelMappings.Z_ZLD_MOB_USER_GET_VG_GT_VG_KOPF_To_Vorgang.Copy(Z_ZLD_MOB_USER_GET_VG.GT_VG_KOPF.GetExportList(SAP)).OrderBy(w => w.Id).ToList();
 
-            // GT_VG_POS
-            var sapItems_vgpos = Z_ZLD_MOB_USER_GET_VG.GT_VG_POS.GetExportList(SAP);
-            var webItems_vgpos = AppModelMappings.Z_ZLD_MOB_USER_GET_VG_GT_VG_POS_To_VorgangPosition.Copy(sapItems_vgpos).OrderBy(w => w.KopfId).ThenBy(w => w.PosNr).ToList();
+            var positionen = AppModelMappings.Z_ZLD_MOB_USER_GET_VG_GT_VG_POS_To_VorgangPosition.Copy(Z_ZLD_MOB_USER_GET_VG.GT_VG_POS.GetExportList(SAP)).OrderBy(w => w.KopfId).ThenBy(w => w.PosNr).ToList();
             
-            // Positionen den Kopfsätzen zuordnen
-            webItems_vgkopf.ForEach(item =>
+            var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], LogonContext.UserName);
+
+            vorgaenge.ForEach(item =>
                 {
-                    item.Positionen = webItems_vgpos.Where(w => w.KopfId == item.Id).ToList();
+                    // Positionen den Kopfsätzen zuordnen
+                    item.Positionen = positionen.Where(p => p.KopfId == item.Id).OrderBy(p => p.PosNr).ToList();
+
+                    // User-Infos aus SQL lesen
+                    var vorerfUser = dbContext.GetCkgUserInfo(item.VorerfasserUser);
+                    if (vorerfUser != null)
+                    {
+                        item.VorerfasserAnrede = vorerfUser.Title;
+                        item.VorerfasserName1 = vorerfUser.FirstName;
+                        item.VorerfasserName2 = vorerfUser.LastName;
+                    }
                 }
             );
-
-            vorgaenge = webItems_vgkopf;
         }
 
         public string SaveVorgaenge(List<Vorgang> vorgaenge)
@@ -86,7 +88,7 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
 
             try
             {
-                SAP.Init("Z_ZLD_MOB_USER_PUT_VG");
+                Z_ZLD_MOB_USER_PUT_VG.Init(SAP, "I_VKORG, I_VKBUR, I_MOBUSER", LogonContext.VkOrg, LogonContext.VkBur, LogonContext.UserName.ToUpper());
 
                 List<VorgangPosition> positionen = new List<VorgangPosition>();
                 foreach (Vorgang vg in vorgaenge)
@@ -94,8 +96,8 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
                     positionen.AddRange(vg.Positionen);
                 }
 
-                var positionList = AppModelMappings.Z_ZLD_MOB_USER_PUT_VG_GT_VG_POS_To_VorgangPosition.CopyBack(positionen).ToList();
-                var vorgangList = AppModelMappings.Z_ZLD_MOB_USER_PUT_VG_GT_VG_KOPF_To_Vorgang.CopyBack(vorgaenge).ToList();
+                var positionList = AppModelMappings.Z_ZLD_MOB_USER_PUT_VG_GT_VG_POS_From_VorgangPosition.CopyBack(positionen).ToList();
+                var vorgangList = AppModelMappings.Z_ZLD_MOB_USER_PUT_VG_GT_VG_KOPF_From_Vorgang.CopyBack(vorgaenge).ToList();
 
                 SAP.ApplyImport(positionList);
                 SAP.ApplyImport(vorgangList);
@@ -114,27 +116,47 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Services
 
         public List<VorgangStatus> GetVorgangBebStatus(List<string> vorgIds)
         {
-            List<VorgangStatus> liste = new List<VorgangStatus>();
+            Z_ZLD_MOB_CHECK_BEB_STATUS.Init(SAP);
 
-            SAP.Init("Z_ZLD_MOB_CHECK_BEB_STATUS");
-
-            foreach (string vorgId in vorgIds)
+            var liste = new List<VorgangStatus>();
+            foreach (var vorgId in vorgIds)
             {
                 liste.Add(new VorgangStatus(vorgId, ""));
             }
 
-            var vorgList = AppModelMappings.Z_ZLD_MOB_CHECK_BEB_STATUS_GT_BEB_STATUS_To_VorgangStatus.CopyBack(liste).ToList();
+            var sapList = AppModelMappings.Z_ZLD_MOB_CHECK_BEB_STATUS_GT_BEB_STATUS_From_VorgangStatus.CopyBack(liste).ToList();
 
-            SAP.ApplyImport(vorgList);
+            SAP.ApplyImport(sapList);
 
             SAP.Execute();
 
-            var sapItems_vorgaenge = Z_ZLD_MOB_CHECK_BEB_STATUS.GT_BEB_STATUS.GetExportList(SAP);
-            var webItems_vorgaenge = AppModelMappings.Z_ZLD_MOB_CHECK_BEB_STATUS_GT_BEB_STATUS_To_VorgangStatus.Copy(sapItems_vorgaenge).OrderBy(w => w.Id).ToList();
+            return AppModelMappings.Z_ZLD_MOB_CHECK_BEB_STATUS_GT_BEB_STATUS_To_VorgangStatus.Copy(Z_ZLD_MOB_CHECK_BEB_STATUS.GT_BEB_STATUS.GetExportList(SAP)).OrderBy(w => w.Id).ToList();
+        }
 
-            liste = webItems_vorgaenge;
+        public List<string> GetVkBurs()
+        {
+            Z_ZLD_MOB_GET_USER_AEMTER.Init(SAP, "I_VKORG, I_MOBUSER", LogonContext.VkOrg, LogonContext.UserName.ToUpper());
 
-            return liste;
+            return Z_ZLD_MOB_GET_USER_AEMTER.GT_MOBUSER.GetExportListWithExecute(SAP).OrderBy(a => a.VKBUR).Select(a => a.VKBUR).ToList();
+        }
+
+        public void GetStammdatenKundenUndHauptdienstleistungen(string vkBur, out List<Kunde> kunden, out List<Dienstleistung> dienstleistungen)
+        {
+            Z_ZLD_EXPORT_KUNDE_MAT.Init(SAP, "I_VKORG, I_VKBUR", LogonContext.VkOrg, vkBur);
+
+            SAP.Execute();
+
+            kunden = AppModelMappings.Z_ZLD_EXPORT_KUNDE_MAT_GT_EX_KUNDE_To_Kunde.Copy(Z_ZLD_EXPORT_KUNDE_MAT.GT_EX_KUNDE.GetExportList(SAP)).OrderBy(w => w.Name).ToList();
+            dienstleistungen = AppModelMappings.Z_ZLD_EXPORT_KUNDE_MAT_GT_EX_MATERIAL_To_Dienstleistung.Copy(Z_ZLD_EXPORT_KUNDE_MAT.GT_EX_MATERIAL.GetExportList(SAP)).OrderBy(w => w.Bezeichnung).ToList();
+        }
+
+        public List<Amt> GetStammdatenAemter()
+        {
+            Z_ZLD_EXPORT_ZULSTEL.Init(SAP);
+
+            SAP.Execute();
+
+            return AppModelMappings.Z_ZLD_EXPORT_ZULSTEL_GT_EX_ZULSTELL_To_Amt.Copy(Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL.GetExportList(SAP)).OrderBy(w => w.KurzBez).ToList();
         }
     }
 }

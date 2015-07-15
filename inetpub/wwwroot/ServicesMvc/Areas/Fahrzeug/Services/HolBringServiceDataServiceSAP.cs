@@ -52,7 +52,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return sapList;
         }
 
-        // public IOrderedEnumerable<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(BapiParameterSet bapiParameterSet, out byte[] pdfGenerated)
         public List<Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN> GenerateSapPdf(List<BapiParameterSet> bapiParameterSets, out byte[] pdfGenerated, out int retCode, out string retMessage)
         {
 
@@ -69,8 +68,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                         foreach (var f in bapiParameterSets)
                             list.Add(new Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN 
                             {
+                                ANSPRECHPARTNER = f.Ansprechpartner,
+                                ANSPRECHPARTNERTEL = f.AnsprechpartnerTel,
                                 ABHOLUNGANSPRECHPARTNER = f.AbholungAnsprechpartner,
-                                ABHOLUNGDATETIME = f.AbholungDateTime.ToString("dd.MM.yyyy HH:mm"), // f.AbholungDateTime.ToString("dd.MM.yyyy"),
+                                ABHOLUNGDATETIME = f.AbholungDateTime.ToString("dd.MM.yyyy HH:mm"), 
                                 ABHOLUNGHINWEIS = f.AbholungHinweis,
                                 ABHOLUNGKUNDE = f.AbholungKunde,
                                 ABHOLUNGMOBILITAETSFAHRZEUG = f.AbholungMobilitaetsfahrzeug,
@@ -78,8 +79,8 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                                 ABHOLUNGPLZ = f.AbholungPlz,
                                 ABHOLUNGSTRASSEHAUSNR = f.AbholungStrasseHausNr,
                                 ABHOLUNGTEL = f.AbholungTel,
-                                ANLIEFERUNGABHOLUNGABDT = f.AnlieferungAbholungAbDt.ToString("dd.MM.yyyy HH:mm"),         // f.AnlieferungAbholungAbDt.ToString("dd.MM.yyyy"),
-                                ANLIEFERUNGANLIEFERUNGBISDT = f.AnlieferungAnlieferungBisDt.ToString("dd.MM.yyyy HH:mm"), // f.AnlieferungAnlieferungBisDt.ToString("dd.MM.yyyy"),
+                                ANLIEFERUNGABHOLUNGABDT = f.AnlieferungAbholungAbDt.ToString("dd.MM.yyyy HH:mm"),         
+                                ANLIEFERUNGANLIEFERUNGBISDT = f.AnlieferungAnlieferungBisDt.ToString("dd.MM.yyyy HH:mm"),
                                 ANLIEFERUNGANSPRECHPARTNER = f.AnlieferungAnsprechpartner,
                                 ANLIEFERUNGHINWEIS = f.AnlieferungHinweis,
                                 ANLIEFERUNGKUNDE = f.AnlieferungKunde,
@@ -88,8 +89,6 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                                 ANLIEFERUNGPLZ = f.AnlieferungPlz,
                                 ANLIEFERUNGSTRASSEHAUSNR = f.AnlieferungStrasseHausNr,
                                 ANLIEFERUNGTEL = f.AnlieferungTel,
-                                ANSPRECHPARTNER = f.Ansprechpartner,
-                                ANSPRECHPARTNERTEL = f.AnsprechpartnerTel,
                                 AUFTRAGERSTELLERTEL = f.AuftragerstellerTel,
                                 AUFTRAGSERSTELLER = f.Auftragsersteller,
                                 BETRIEBHAUSNR = f.BetriebHausNr,
@@ -124,13 +123,10 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             try { pdfGenerated = SAP.GetExportParameterByte("E_PDF"); }
                 catch { pdfGenerated = null; }
             
-            // var sapList = Z_ZLD_AH_2015_HOLUNDBRING_PDF.IS_DATEN.GetExportListWithExecute(SAP);
-
             retCode = tmpRetCode;
             retMessage = tmpRetMessage;
 
             return null;
-            // return sapList;
         }
 
         public HolBringServiceDataServiceSAP(ISapDataService sap)

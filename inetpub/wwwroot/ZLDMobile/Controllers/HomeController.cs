@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Linq;
+using System.Web.Mvc;
 using MvcTools.Controllers;
 using GeneralTools.Contracts;
 using CkgDomainLogic.General.Contracts;
@@ -80,33 +81,32 @@ namespace ZLDMobile.Controllers
             if (logonAction != null)
                 return logonAction;
 
+            var initialSelection = false;
+
             if (ViewModel == null)
             {
                 ViewModel = new ZulMobileErfassungViewModel(ZulMobileErfassungDataService, LogonContext);
+                initialSelection = true;
             }
 
-            // Wenn nur eine Anwendung zur Auswahl, diese automatisch aufrufen
-            if ((ViewModel.Anwendungen != null) && (ViewModel.Anwendungen.Count == 1))
+            if (ViewModel.Anwendungen != null)
             {
-                return RedirectToAction(ViewModel.Anwendungen[0].AppAction, ViewModel.Anwendungen[0].AppController);
+                if (ViewModel.Anwendungen.Count == 1)
+                {
+                    // Wenn nur eine Anwendung zur Auswahl, diese automatisch aufrufen
+                    return RedirectToAction(ViewModel.Anwendungen[0].AppAction, ViewModel.Anwendungen[0].AppController);
+                }
+
+                if (initialSelection)
+                {
+                    // Nach dem Login immer zuerst die Vorgangsbearbeitung öffnen
+                    var app = ViewModel.Anwendungen.FirstOrDefault(a => a.AppAction == "EditZLDVorgaenge");
+                    if (app != null)
+                        return RedirectToAction(app.AppAction, app.AppController);
+                }
             }
 
             return View(ViewModel);
         }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Ihre App-Beschreibungsseite.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Ihre Kontaktseite.";
-
-            return View();
-        }
-
     }
 }

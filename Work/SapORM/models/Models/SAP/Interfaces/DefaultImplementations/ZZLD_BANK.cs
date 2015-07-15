@@ -4,6 +4,7 @@ namespace SapORM.Models
     public class ZZLD_BANK : IZZLD_BANK
     {
         public string ZULBELN { get; set; }
+        public string PARVW { get; set; }
         public string BANKL { get; set; }
         public string BANKN { get; set; }
         public string EBPP_ACCNAME { get; set; }

@@ -36,8 +36,8 @@
         @Html.FormTextBoxFor(m => m.Batch.Liefermonat, new { @class = "m-wrap small" })
         @Html.HiddenFor(m => m.Batch.Antrieb)
                
-        @Html.FormDropDownListFor(m => m.Batch.AuftragsnummerVon, Model.AuftragsnummerList.ToSelectList("Nummer", "AuftragsNrUndText"), new { @class = "m-wrap large", col = "left" })
-        @Html.FormDropDownListFor(m => m.Batch.AuftragsnummerBis, Model.AuftragsnummerList.ToSelectList("Nummer", "AuftragsNrUndText"), new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Batch.AuftragsnummerVon, new { @class = "m-wrap small", col = "left" })
+        @Html.FormTextBoxFor(m => m.Batch.AuftragsnummerBis, new { @class = "m-wrap small", col = "right" })
                      
         @Html.FormCheckBoxFor(m => m.Batch.Winterreifen, new { @class = "m-wrap", col = "left" }, labelHidden: true)
         @Html.FormCheckBoxFor(m => m.Batch.AnhaengerKupplung, new { @class = "m-wrap", col = "right" }, labelHidden: true)
@@ -72,6 +72,19 @@
 
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            
+            InitAuftragsnummernAutocomplete($("#Batch_AuftragsnummerVon"));
+            InitAuftragsnummernAutocomplete($("#Batch_AuftragsnummerBis"));
+            
+            function InitAuftragsnummernAutocomplete(tb) {
+                var items = @Html.Raw(Json.Encode(Model.AuftragsnummerList.Select(a => a.AuftragsNrUndText)));
+                tb.autocomplete({ minLength: 0, source: items })
+                    .focus(function(){
+                        if ($(this).attr('state') != 'open') {
+                            $(this).autocomplete("search");
+                        }
+                    });
+            }
         </script>
     }
 </div>

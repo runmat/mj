@@ -1,4 +1,5 @@
 ﻿using System;
+using CkgDomainLogic.DomainCommon.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -14,23 +15,7 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string VkBur { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Name1)]
-        public string Name1 { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Name2)]
-        public string Name2 { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.Street)]
-        public string Strasse { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.HouseNo)]
-        public string HausNr { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.PostCode)]
-        public string Plz { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.City)]
-        public string Ort { get; set; }
+        public Adresse Adresse { get; set; }
 
         [SelectListText]
         [LocalizedDisplay(LocalizeConstants.Customer)]
@@ -39,12 +24,12 @@ namespace CkgDomainLogic.Autohaus.Models
             get
             {
                 if (KundenNr.IsNullOrEmpty())
-                    return Name1;
+                    return Adresse.Name1;
 
-                return String.Format("{0}{1}{2} ~ {3}", 
-                    Name1, 
-                    (String.IsNullOrEmpty(Name2) ? "" : ", " + Name2), 
-                    (String.IsNullOrEmpty(Ort) ? "" : ", " + Ort), 
+                return String.Format("{0}{1}{2} ~ {3}",
+                    Adresse.Name1,
+                    (String.IsNullOrEmpty(Adresse.Name2) ? "" : ", " + Adresse.Name2),
+                    (String.IsNullOrEmpty(Adresse.Ort) ? "" : ", " + Adresse.Ort), 
                     KundenNr.NotNullOrEmpty().TrimStart('0'));
             }
         }
@@ -58,5 +43,16 @@ namespace CkgDomainLogic.Autohaus.Models
         public bool CpdMitEinzugsermaechtigung { get; set; }
 
         public bool Barkunde { get; set; }
+
+        public Kunde()
+        {
+            Adresse = new Adresse { Land = "DE" };
+        }
+
+        public Kunde(string kunnr, string name1)
+        {
+            KundenNr = kunnr;
+            Adresse = new Adresse { Name1 = name1, Land = "DE" };
+        }
     }
 }

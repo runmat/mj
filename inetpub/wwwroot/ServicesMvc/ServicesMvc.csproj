@@ -2566,6 +2566,9 @@
     <Content Include="Areas\Autohaus\Views\Formulare\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Suche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuer.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
@@ -2574,6 +2577,10 @@
     <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
@@ -4528,6 +4535,7 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
+    <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\UserMenu.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Wrappers\xFormSearchBox_Begin.cshtml" />
     <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
@@ -4558,6 +4566,7 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
+    <Folder Include="Areas\Autohaus\ViewModels\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />
