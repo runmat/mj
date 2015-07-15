@@ -33,6 +33,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         // Fahrzeug Bestand
                         d.Halter = s.HALTER;
                         d.Kaeufer = s.KAEUFER;
+                        d.ZahlerKfzSteuer = s.KONTOINHABER;
 
                         d.BriefbestandsInfo = s.BRIEFBESTAND;
                         d.BriefLagerort = s.LGORT;
@@ -50,7 +51,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.FahrzeugNummer = s.FZGNR;
                         d.AuftragsNummer = s.AUFNR;
                         d.FirmenReferenz1 = s.FAREF1;
-                        d.FirmenReferenz2 = s.FAREF2;
+                        d.FirmenReferenz2 = s.FAREF2;                        
                     }));
             }
         }
@@ -102,6 +103,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         // Fahrzeug Bestand
                         d.KAEUFER = s.Kaeufer;
                         d.HALTER = s.Halter;
+                        d.KONTOINHABER = s.ZahlerKfzSteuer;
 
                         d.BRIEFBESTAND = s.BriefbestandsInfo;
                         d.LGORT = s.BriefLagerort;
@@ -119,7 +121,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.FZGNR = s.FahrzeugNummer;
                         d.AUFNR = s.AuftragsNummer;
                         d.FAREF1 = s.FirmenReferenz1;
-                        d.FAREF2 = s.FirmenReferenz2;
+                        d.FAREF2 = s.FirmenReferenz2;                        
                     }));
             }
         }
@@ -152,6 +154,8 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                         d.Email = s.EMAIL;
                         d.ReferenzNr = s.REFKUNNR;
                         d.Gewerblich = s.GEWERBE.XToBool();
+                        d.EvbNr = s.EVBNR;                      // 20150612 MMA ITA 8127
+                        d.Stichtagsabbuchung = s.SEPA_STICHTAG; // 20150612 MMA ITA 8127
                     }));
             }
         }
@@ -172,6 +176,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
                 {"EMAIL", "Email"},
                 {"BEMERKUNG", "Bemerkung"},
                 {"REFKUNNR", "ReferenzNr"},
+
+                {"EVBNR", "EvbNr"},
+                {"SEPA_STICHTAG", "Stichtagsabbuchung"},
+
             };
 
         static public ModelMapping<Z_AHP_CRE_CHG_PARTNER.GT_WEB_IMP, Adresse> Z_AHP_CRE_CHG_PARTNER_GT_WEB_IMP_To_Adresse

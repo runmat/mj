@@ -149,6 +149,50 @@
                                                             </td>
                                                         </tr>
                                                         <tr>
+                                                            <td valign="top" width="120" style="font-weight:normal">
+                                                                48 Std. möglich:
+                                                            </td>
+                                                            <td valign="top">
+                                                                <asp:Label ID="Label18" runat="server">-</asp:Label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr runat="server" ID="trAbwAdresse" Visible="False">
+                                                            <td  valign="top" width="120" style="font-weight:normal">
+                                                                abw. Versandadresse:
+                                                            </td>
+                                                            <td valign="top" width="100%">
+                                                                <asp:Label ID="Label21" runat="server">-</asp:Label><br>
+                                                                <asp:Label ID="Label22" runat="server"></asp:Label><br>
+                                                                <asp:Label ID="Label23" runat="server"></asp:Label><br/>
+                                                                <asp:Label ID="Label24" runat="server"></asp:Label>&nbsp;
+                                                                <asp:Label ID="Label25" runat="server"></asp:Label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td valign="top" width="120" style="font-weight:normal">
+                                                                Lieferuhrzeit:
+                                                            </td>
+                                                            <td valign="top">
+                                                                <asp:Label ID="Label19" runat="server">-</asp:Label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td valign="top" width="120" style="font-weight:normal">
+                                                                Nachreichen möglich:
+                                                            </td>
+                                                            <td valign="top">
+                                                                <asp:Label ID="Label20" runat="server">-</asp:Label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td valign="top" width="120">
+                                                                &nbsp;
+                                                            </td>
+                                                            <td class="TextLarge" valign="top">
+                                                                &nbsp;
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
                                                             <td valign="top" style="font-weight:normal">
                                                                 Anforderungen:
                                                             </td>

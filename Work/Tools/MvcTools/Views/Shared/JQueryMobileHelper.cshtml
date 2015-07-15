@@ -59,6 +59,11 @@
         return $("#" + dropdownid + " option:selected").val();
     }
 
+    // Ermitteln der aktuell ausgwählten Select-Option
+    function GetDropdownText(dropdownid) {
+        return $("#" + dropdownid + " option:selected").text();
+    }
+
     // Setzen des angegebenen Wertes der Checkbox (ggf. inkl. UI-Refresh)
     function SetCheckboxValue(checkid, checked, withUIRefresh) {
         $("#" + checkid).attr('checked', checked);

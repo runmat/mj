@@ -61,14 +61,13 @@
                 });
 
                 ShowBetriebAddress();
-                ShowAnsprechpartnerTel();
             });
             
             function ShowAnsprechpartnerTel() {
                 var telNr = $('#Ansprechpartner').val();  
                 var namePart = $('#Ansprechpartner').select2('data').text;
                 telNr = telNr.replace(namePart + "|", "");
-                $('#AnsprechpartnerTel').val(telNr);
+                $('#AnsprechpartnerTel').val(telNr);    
             }
 
             function ShowBetriebAddress() {

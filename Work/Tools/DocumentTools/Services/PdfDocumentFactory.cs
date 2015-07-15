@@ -26,7 +26,7 @@ namespace DocumentTools.Services
                 xgr.DrawImage(img, 0, 0);
                 xgr.Dispose();
             }
-
+            
             pdfDoc.Save(pdfFileName);
             pdfDoc.Close();
         }
@@ -78,5 +78,6 @@ namespace DocumentTools.Services
             #endregion
 
         }
+
     }
 }

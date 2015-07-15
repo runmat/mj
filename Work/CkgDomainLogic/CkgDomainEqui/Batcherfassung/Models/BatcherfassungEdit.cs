@@ -64,6 +64,9 @@ namespace CkgDomainLogic.FzgModelle.Models
         {
             if (Batch.UnitnummerVon.IsNullOrEmpty() && Batch.UnitnummerBis.IsNullOrEmpty() && Batch.Unitnummern.IsNullOrEmpty())
                 yield return new ValidationResult(Localize.UnitNumbersRequired);
+
+            if (Batch.AuftragsnummerVon.IsNotNullOrEmpty() && Batch.AuftragsnummerBis.IsNullOrEmpty())
+                yield return new ValidationResult(Localize.InvalidOrderNoSelection);
         }
     }
 }

@@ -27,6 +27,8 @@ namespace ZLDMobile
 
             bundles.Add(new ScriptBundle("~/bundles/zldmobile").Include("~/Scripts/zldmobile*"));
 
+            bundles.Add(new ScriptBundle("~/bundles/select2").Include("~/Scripts/select2*"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/mobilecss").Include("~/Content/jquery.mobile*"));
@@ -46,6 +48,8 @@ namespace ZLDMobile
                         "~/Content/themes/base/jquery.ui.theme.css"));
 
             bundles.Add(new StyleBundle("~/Content/zldmobile").Include("~/Content/zldmobile*"));
+
+            bundles.Add(new StyleBundle("~/Content/select2").Include("~/Content/select2*"));
         }
     }
 }

@@ -122,7 +122,8 @@ namespace EasyExportGeneralTask
         XLCheck,
         DCBank,
         DaimlerFleet,
-        SixtMobility
+        SixtMobility,
+        Autoinvest
     }
 
     public class ArchivDefinition

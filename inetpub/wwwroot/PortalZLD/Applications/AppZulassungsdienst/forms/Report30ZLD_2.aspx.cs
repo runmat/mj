@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {   
@@ -34,24 +35,45 @@ namespace AppZulassungsdienst.forms
                     }
                     else 
                     { 
-                        DataRow [] rows = tblResultTableRaw.Select("ID = " + Request.QueryString["ID"]);
-                        Label1.Text = rows[0]["NAME1"].ToString();
-                        Label2.Text = rows[0]["ANSPRECHPARTNER"].ToString();
-                        Label3.Text = rows[0]["NAME1"].ToString();
-                        Label4.Text = rows[0]["NAME2"].ToString();
-                        Label5.Text = rows[0]["STREET"].ToString();
-                        Label6.Text = rows[0]["HOUSE_NUM1"].ToString();
-                        Label7.Text = rows[0]["POST_CODE1"].ToString();
-                        Label8.Text = rows[0]["CITY1"].ToString();
-                        Label9.Text = rows[0]["TELE1"].ToString();
-                        Label10.Text = rows[0]["TELE2"].ToString();
-                        Label11.Text = rows[0]["TELE3"].ToString();
-                        Label12.Text = rows[0]["FAX_NUMBER"].ToString();
-                        Label13.Text = rows[0]["SMTP_ADDR"].ToString();
-                        Label14.Text = rows[0]["ZTXT1"].ToString();
-                        Label15.Text = rows[0]["ZTXT2"].ToString();
-                        Label16.Text = rows[0]["ZTXT3"].ToString();
-                        Label17.Text = rows[0]["BEMERKUNG"].ToString();
+                        var row = tblResultTableRaw.Select("ID = " + Request.QueryString["ID"])[0];
+                        Label1.Text = row["NAME1"].ToString();
+                        Label2.Text = row["ANSPRECHPARTNER"].ToString();
+                        Label3.Text = row["NAME1"].ToString();
+                        Label4.Text = row["NAME2"].ToString();
+                        Label5.Text = row["STREET"].ToString();
+                        Label6.Text = row["HOUSE_NUM1"].ToString();
+                        Label7.Text = row["POST_CODE1"].ToString();
+                        Label8.Text = row["CITY1"].ToString();
+                        Label9.Text = row["TELE1"].ToString();
+                        Label10.Text = row["TELE2"].ToString();
+                        Label11.Text = row["TELE3"].ToString();
+                        Label12.Text = row["FAX_NUMBER"].ToString();
+                        Label13.Text = row["SMTP_ADDR"].ToString();
+                        Label14.Text = row["ZTXT1"].ToString();
+                        Label15.Text = row["ZTXT2"].ToString();
+                        Label16.Text = row["ZTXT3"].ToString();
+                        Label17.Text = row["BEMERKUNG"].ToString();
+                        var bln48h = row["Z48H"].ToString().XToBool();
+                        Label18.Text = (bln48h ? "Ja" : "Nein");
+                        if (bln48h)
+                        {
+                            trAbwAdresse.Visible = true;
+                            Label21.Text = row["Z48H_NAME1"].ToString();
+                            Label22.Text = row["Z48H_NAME2"].ToString();
+                            Label23.Text = row["Z48H_STREET"].ToString();
+                            Label24.Text = row["Z48H_POST_CODE1"].ToString();
+                            Label25.Text = row["Z48H_CITY1"].ToString();
+                        }
+                        else
+                        {
+                            trAbwAdresse.Visible = false;
+                        }
+                        var lifZeit = row["LIFUHRBIS"].ToString();
+                        if (!String.IsNullOrEmpty(lifZeit) && lifZeit.Length > 3)
+                            lifZeit = String.Format("{0}:{1}", lifZeit.Substring(0, 2), lifZeit.Substring(2, 2));
+                        Label19.Text = lifZeit;
+                        var blnNachreich = row["NACHREICH"].ToString().XToBool();
+                        Label20.Text = (blnNachreich ? "Ja" : "Nein");
                     }
                 }
             }
