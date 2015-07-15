@@ -72,7 +72,6 @@ namespace AppRemarketing.lib
                     newRow["NUMMER_RE"] = dr[2];
                     newRow["BETRAG_RE"] = dr[3].ToString().Replace('.', ',');
                     newRow["DATUM_RE"] = dr[4];
-                    newRow["VERTRAGSNR"] = dr[5];
 
                     tblSap.Rows.Add(newRow);
                 }
