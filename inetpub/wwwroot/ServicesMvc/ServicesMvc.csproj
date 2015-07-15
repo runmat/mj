@@ -384,6 +384,13 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="_Themes\AH2015\images\test.png" />
+    <Content Include="_Themes\AH2015\images\avatar.png" />
+    <Content Include="_Themes\AH2015\images\de.png" />
+    <Content Include="_Themes\AH2015\images\en.png" />
+    <Content Include="_Themes\AH2015\images\fr.png" />
+    <Content Include="_Themes\AH2015\images\Glocke.png" />
+    <Content Include="_Themes\AH2015\images\Logout.png" />
+    <Content Include="_Themes\AH2015\images\test.jpg" />
     <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -4519,12 +4526,15 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
-    <Content Include="Views\Shared\_Themes\AH2015\Partial\xUserMenu.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\UserMenu.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Wrappers\xFormSearchBox_Begin.cshtml" />
     <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationGrid.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationDefault.cshtml" />
     <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationGrid.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\UserMenuUserInfoDropdown.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\UserLanguageSwitch.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\UserMenuMessagesDropdown.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

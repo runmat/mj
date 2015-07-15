@@ -138,11 +138,16 @@ body{
 .body-container{
     margin: 30px;
     border-radius: 10px !important;
+     display:inline-block;
+     /* min-width: cal(100%-246px); */
 }
+
+
 
 .mitgrid .body-container{
     margin: 30px 0 30px 30px;
     border-radius: 10px 0 0 10px !important;
+    display:inline-block;
 }
 
 .mitgrid .page-title{
@@ -162,6 +167,38 @@ body{
 }
 
 /* dropdown */
+.aktuellesprache{
+      width:50px;
+      height: 50px;
+      overflow: hidden;
+      border-radius: 50% !important;  
+      background-repeat:no-repeat;
+      background-position: center center;
+      background-size: 50px 50px;
+      border: 1px solid transparent;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+}
+
+.header .nav .dropdown-toggle:hover{
+    background-color: transparent !important;
+}
+
+.header .nav .dropdown-toggle:hover .aktuellesprache{
+    border: 1px solid #979797;
+}
+
+.header .nav > li.dropdown .dropdown-toggle.language {
+  padding: 5px 4px 0 4px;
+}
+
+
+.navbar-inverse .nav li.dropdown.open > .dropdown-toggle, .navbar-inverse .nav li.dropdown.active > .dropdown-toggle, .navbar-inverse .nav li.dropdown.open.active > .dropdown-toggle{
+    background-color: transparent !important;
+}
+
+
 .dropdown-menu{
     border-radius: 4px !important;
 }
@@ -175,6 +212,15 @@ body{
     padding: 5px;
 }
 
+.dropdown-menu li a{
+    padding: 5px 10px;
+}
+
+.language .dropdown-menu{
+    min-width: 0;
+}
+
+
 .dropdown-menu.extended li a{
     padding: 5px !important;
 }
@@ -187,6 +233,66 @@ body{
     border-radius: 50% !important;
 }
 
+.glocke{
+    background-image: url(/ServicesMvc/_Themes/AH2015/images/Glocke.png);
+    background-repeat: no-repeat;
+    background-size: 24px 27px;
+    width: 24px;
+    height: 27px;
+    margin-bottom: 19px;
+}
+
+
+
+.header .nav > li.dropdown .dropdown-toggle .badge{
+       font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif; 
+      border-radius: 50% !important;
+      height: 25px;
+      width: 25px;
+      background-color: #F09359;
+      padding: 8px 5px 6px 5px;
+      height: 19px;
+      font-size: 18px !important;
+      top: 26px;
+      right: 30px;
+}
+
+
+.logout a{
+    text-indent: -99999px;
+    display:block !important;
+    width:25px;
+    height: 27px;
+    background-image: url(/ServicesMvc/_Themes/AH2015/images/Logout.png);
+    background-repeat: no-repeat;
+    background-size: 24px 27px;
+    background-position: center center;
+    margin-top: 9px;
+}
+
+
+.header .nav > li.dropdown.user .dropdown-toggle .username{
+  display: block;
+  color: #000;
+  letter-spacing: 0.84px;
+  padding: 15px 8px 0 0;
+  float: left;
+}
+
+.userbild{
+      width:50px;
+      height: 50px;
+      overflow: hidden;
+      border-radius: 50% !important;  
+      background-repeat:no-repeat;
+      background-position: center center;
+      background-size: 50px 50px;
+      border: 1px solid transparent;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      box-shadow: inset 0px 1px 4px 0px rgba(0,0,0,0.12);
+}
 
 /* Ansprechpartner */
 .contact-blocks{
@@ -208,7 +314,6 @@ body{
     color: #000;
 }
 
-
 /* Mediaquerys */
 @@media (min-width: 1080px) { 
     .page-sidebar {
@@ -220,18 +325,28 @@ body{
     }
 }
 
-@@media all and (max-width: 1079px)
+@@media all and (max-width: 1079px){
     /* rechte Nav blendet aus */
     .page-content {
         padding-top: 1px !important;
         padding-bottom: 30px !important;
     }
+   
 }
 
-@@media (max-width: 1079px)
-    .page-title {
-        margin: 15px 0px;
-    }   
+@@media (max-width: 1079px){
+    .body-container{
+        margin: 15px;
+    }
+    .page-title{
+        color:red !important;
+    }
 }
-    
+
+
+@@media (max-width: 867px){
+    .page-content {
+      padding: 1px 0 30px !important;
+    }
+}    
 </style>

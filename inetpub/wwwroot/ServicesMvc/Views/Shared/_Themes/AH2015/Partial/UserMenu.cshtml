@@ -3,7 +3,9 @@
 @if (Model != null)
 {
     <ul class="nav pull-right">
-        <div class="alert alert-danger">TEST TEST</div>   
+        @{ViewBag.HeaderIconCssClass = "icon-globe";}
+        @Html.Partial("Partial/UserLanguageSwitch")
+
         @if (Model.MaintenanceInfo != null)
         {
             @Html.Partial("Partial/UserMenuMessagesDropdown", Model.MaintenanceInfo)
@@ -11,8 +13,6 @@
 
         @Html.Partial("Partial/UserMenuUserInfoDropdown")
 
-        @{ViewBag.HeaderIconCssClass = "icon-globe";}
-        @Html.Partial("Partial/UserLanguageSwitch")
-
+        <li class="logout"><a href="javascript:UserLogout()">Log Out</a></li>
     </ul>
 }
