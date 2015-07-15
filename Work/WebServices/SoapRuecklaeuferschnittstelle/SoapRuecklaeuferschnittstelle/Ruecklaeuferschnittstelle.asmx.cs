@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web.Services;
 using Elmah;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using SapORM.Services;
@@ -245,6 +246,11 @@ namespace SoapRuecklaeuferschnittstelle
 
                 #region SAP Aufuruf
 
+                LogService logService = new LogService(String.Empty, String.Empty);
+
+                var logInput = String.Format("GT_DAT: {0}, GT_REP: {1}, GT_TRANSP: {2}", gtDat.GetObjectAsString(), repListe.GetListAsString(), transpList.GetListAsString());
+                logService.LogWebServiceTraffic("SAP-Input", logInput, ConfigurationManager.AppSettings["LogTableName"]);
+
                 gtdatList.Add(gtDat);
 
                 sap.ApplyImport(gtdatList);
@@ -256,6 +262,9 @@ namespace SoapRuecklaeuferschnittstelle
                 var gtdatExportList = Z_DPM_IMP_DAT_RUECKL_01.GT_DAT.GetExportList(sap);
                 var gtReps = Z_DPM_IMP_DAT_RUECKL_01.GT_REP.GetExportList(sap);
                 var gtTransps = Z_DPM_IMP_DAT_RUECKL_01.GT_TRANSP.GetExportList(sap);
+
+                var logOutput = String.Format("GT_DAT: {0}, GT_REP: {1}, GT_TRANSP: {2}", gtdatExportList.GetListAsString(), gtReps.GetListAsString(), gtTransps.GetListAsString());
+                logService.LogWebServiceTraffic("SAP-Input", logOutput, ConfigurationManager.AppSettings["LogTableName"]);
 
                 var toReturn = RuecklaeuferschnittstelleUtils.RuecklaeuferschnittstelleFromSap(gtdatExportList, gtReps, gtTransps);
                 return toReturn;
@@ -294,10 +303,14 @@ namespace SoapRuecklaeuferschnittstelle
 
                 IEnumerable<long> enumerable = ids.ToArray();
 
+                LogService logService = new LogService(String.Empty, String.Empty);
+
                 var list = new List<Ruecklaeuferschnittstelle>();
 
                 foreach (var id in enumerable)
                 {
+                    logService.LogWebServiceTraffic("SAP-Input", "VORGANGS_ID: " + id, ConfigurationManager.AppSettings["LogTableName"]);
+
                     var sap = SapDataService;
 
                     Z_DPM_IMP_DAT_RUECKL_01.Init(sap);
@@ -316,6 +329,9 @@ namespace SoapRuecklaeuferschnittstelle
                     var gtDatExportList = Z_DPM_IMP_DAT_RUECKL_01.GT_DAT.GetExportList(sap);
                     var gtRepExportList = Z_DPM_IMP_DAT_RUECKL_01.GT_REP.GetExportList(sap);
                     var gtTranspExportList = Z_DPM_IMP_DAT_RUECKL_01.GT_TRANSP.GetExportList(sap);
+
+                    var logOutput = String.Format("GT_DAT: {0}, GT_REP: {1}, GT_TRANSP: {2}", gtDatExportList.GetListAsString(), gtRepExportList.GetListAsString(), gtTranspExportList.GetListAsString());
+                    logService.LogWebServiceTraffic("SAP-Input", logOutput, ConfigurationManager.AppSettings["LogTableName"]);
 
                     // Wenn auf SAP Seite kein Satz ermittelt wurde, einen "leeren" Satz mit Fehlercode zurückgeben
                     if (gtDatExportList.Any() == false)
@@ -356,7 +372,6 @@ namespace SoapRuecklaeuferschnittstelle
                             });                        
                     }
                 }
-
 
                 return new RuecklaeuferschnittstelleList
                 {

@@ -153,6 +153,16 @@ namespace GeneralTools.Models
 
             return sql;
         }
+
+        public static string GetListAsString<T>(this List<T> items)
+        {
+            var erg = "";
+
+            if (items != null && items.Any())
+                items.ForEach(i => erg += (i as object).GetObjectAsString() + Environment.NewLine);
+
+            return erg;
+        }
     }
 
     public static class DateRangeExtensions
@@ -682,6 +692,24 @@ namespace GeneralTools.Models
         {
             return TypeMerger.ToHtmlDictionary(model);
         }
+
+        public static string GetObjectAsString(this object model)
+        {
+            var erg = "";
+
+            if (model != null)
+            {
+                erg += "[";
+                foreach (var prop in model.GetType().GetProperties())
+                {
+                    erg += prop.Name + ": " + prop.GetValue(model, null).ToString() + "|";
+                }
+                if (erg.EndsWith("|")) erg = erg.Substring(0, erg.Length - 1);
+                erg += "]";
+            }
+
+            return erg;
+        }
     }
 
     public static class TypeExtensions
@@ -856,6 +884,38 @@ namespace GeneralTools.Models
             }
 
             return dataTable;
+        }
+
+        public static string GetTableAsString(this DataTable dataTable)
+        {
+            var erg = "";
+
+            if (dataTable != null)
+            {
+                // Header
+                erg += dataTable.TableName + Environment.NewLine;
+                erg += "[";
+                for (var i = 0; i < dataTable.Columns.Count; i++)
+                {
+                    erg += dataTable.Columns[i].ColumnName + "|";
+                }
+                if (erg.EndsWith("|")) erg = erg.Substring(0, erg.Length - 1);
+                erg += "]" + Environment.NewLine;
+
+                // Daten
+                for (var j = 0; j < dataTable.Rows.Count; j++)
+                {
+                    erg += "[";
+                    for (var k = 0; k < dataTable.Columns.Count; k++)
+                    {
+                        erg += dataTable.Rows[j][dataTable.Columns[k]].ToString() + "|";
+                    }
+                    if (erg.EndsWith("|")) erg = erg.Substring(0, erg.Length - 1);
+                    erg += "]" + Environment.NewLine;
+                }
+            }
+
+            return erg;
         }
     }
 
