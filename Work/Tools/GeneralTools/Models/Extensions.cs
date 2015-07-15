@@ -702,7 +702,7 @@ namespace GeneralTools.Models
                 erg += "[";
                 foreach (var prop in model.GetType().GetProperties())
                 {
-                    erg += prop.Name + ": " + prop.GetValue(model, null).ToString() + "|";
+                    erg += String.Format("{0}: {1}|", prop.Name, prop.GetValue(model, null));
                 }
                 if (erg.EndsWith("|")) erg = erg.Substring(0, erg.Length - 1);
                 erg += "]";
