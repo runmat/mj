@@ -253,7 +253,7 @@ body {
 /* Tablet device width */
 @media (min-width: 551px) and (max-width: 1200px) 
 {
-    .t-grid table { zoom: 1.2; }
+    .t-grid table { zoom: 1.0; }
 }   
     
 /* Workstation device width */

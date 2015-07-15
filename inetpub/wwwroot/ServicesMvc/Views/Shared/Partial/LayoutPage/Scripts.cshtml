@@ -227,11 +227,11 @@
     });
 
     function LoadingShow() {
-        App.blockUI($(".body-container"));
+        App.blockUI($(".page-content"));
     }
 
     function LoadingHide() {
-        App.unblockUI($(".body-container"));
+        App.unblockUI($(".page-content"));
     }
     
     //
@@ -522,11 +522,23 @@
     }
 
     function InitResponsiveControlWidths() {
-        
-        HandleResponsiveControlWidths();
-        
+
+        setTimeout(function() {
+            HandleResponsiveControlWidths();
+        }, 50);
+
         $('.page-sidebar').on('click', '.sidebar-toggler', function(e) {
             HandleResponsiveControlWidths();
+        });
+
+        $('#FormSearchBox .portlet-title, #FormSearchResults .portlet-title').on('click', function(e) {
+            setTimeout(function() {
+                HandleResponsiveControlWidths();
+            }, 500);
+        });
+        $('#FormSearchBox .portlet-title').on('click', function(e) {
+            if (!SearchFormIsCollapsed())
+                SearchResultsHide();
         });
         
         $( window ).resize(function() {
@@ -536,28 +548,51 @@
     }    
     
     function HandleResponsiveControlWidths() {
-        $(".portlet").each(function () {
+
+        $(".body-container").each(function() {
+            var e = $(this);
+            var sidebar = $(".page-sidebar");
+            var sidebarWidth = parseInt(sidebar.css("width"), 10);
+            if (sidebarWidth > 300)
+                sidebarWidth = 0;
+            var windowWidth = $(window).width();
+
+            var margin = 60;
+            var containerWidth = windowWidth - sidebarWidth - margin;
+
+            var tGridTable = $(".body-container .t-grid>table");
+            if (tGridTable.length > 0) {
+                tGridTable = $(tGridTable[0]);
+
+                if (tGridTable.width() > e.width() - margin)
+                    containerWidth = tGridTable.width() + (margin / 2);
+            }
+
+            e.css("width", containerWidth);
+        });
+
+        $(".portlet").each(function() {
             var p = $(this);
 
             var pWidth = parseInt(p.css("width"), 10);
             var isSmallContainer = (p.parent().hasClass("span8"));
 
             var maxPageWidth = 900;
-            if (isSmallContainer) 
+            if (isSmallContainer)
                 maxPageWidth = 300;
 
-            p.children().find(".m-wrap,.chzn-container").each(function () {
-                
+            p.children().find(".m-wrap,.chzn-container").each(function() {
+
                 var e = $(this);
                 var eWidth = ((pWidth / 2) - 250);
-                
+
                 if ((isSmallContainer || eWidth > 150) && pWidth > maxPageWidth) {
 
                     if (eWidth < 120)
                         eWidth = 120;
                     if (eWidth > 450)
                         eWidth = 450;
-                    
+
                     if (e.hasClass("chzn-container"))
                         eWidth += 14;
                     if (e.hasClass("hasDatepicker"))
@@ -568,16 +603,16 @@
                         eWidth += 12;
 
                     e.css("width", eWidth);
-                    
+
                     e.find(".chzn-drop").css("width", eWidth - 3);
                     return;
                 }
 
                 var eWidthReset = "";
-                
+
                 if (e.hasClass("chzn-container"))
                     eWidthReset = "220";
-                
+
                 e.css("width", eWidthReset);
             });
         });
