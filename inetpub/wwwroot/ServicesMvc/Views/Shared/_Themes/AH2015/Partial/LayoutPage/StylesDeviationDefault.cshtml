@@ -87,6 +87,10 @@ body{
      background-color: #08275c !important;
 }
 
+.page-sidebar > ul > li > ul.sub-menu > li.active > a, .page-sidebar > ul > li > ul.sub-menu > li > a:hover{
+    background-color: #08275c !important;
+}
+
 .page-sidebar > ul > li a i{
     color:#fff;
 }
@@ -133,6 +137,11 @@ body{
 .container-fluid>h4{
     padding-right: 20px  !important;
     padding-left: 20px !important;   
+}
+
+.container-fluid>.portlet.box{
+    margin-right: 20px  !important;
+    margin-left: 20px !important;   
 }
 
 .body-container{
@@ -199,6 +208,31 @@ body{
 }
 
 
+.sidebar-toggler{
+  background-image: url(/ServicesMvc/_Themes/AH2015/images/menu_white.png);
+  background-repeat: no-repeat;
+  background-position: 90% center;
+  background-size: 36px auto;
+  margin: 0;
+  height: 33px;
+  opacity: 0.8;
+  background-color: #6E8CBF;
+  width: 100%;
+  padding: 10px 0;
+}
+
+.sidebar-closed .sidebar-toggler{
+        width: auto;
+        background-size: 25px auto;
+        opacity: 1;
+        margin: 0;
+        background-position: center center;
+}
+
+.sidebar-closed > .page-sidebar > ul > li:first-child:hover{
+    width: auto;
+}
+
 .dropdown-menu{
     border-radius: 4px !important;
 }
@@ -242,7 +276,19 @@ body{
     margin-bottom: 19px;
 }
 
+.header .btn-navbar{
+    background-image: url(/ServicesMvc/_Themes/AH2015/images/Menu.png);
+    background-repeat: no-repeat;
+    background-size: 36px 33px;
+    width: 36px;
+    height: 33px;
+    margin-top: 16px;
+    background-color: transparent !important;
+}
 
+.header .btn-navbar img{
+    display:none;
+}
 
 .header .nav > li.dropdown .dropdown-toggle .badge{
        font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif; 
@@ -314,6 +360,9 @@ body{
     color: #000;
 }
 
+
+
+
 /* Mediaquerys */
 @@media (min-width: 1080px) { 
     .page-sidebar {
@@ -331,15 +380,11 @@ body{
         padding-top: 1px !important;
         padding-bottom: 30px !important;
     }
-   
 }
 
 @@media (max-width: 1079px){
     .body-container{
         margin: 15px;
-    }
-    .page-title{
-        color:red !important;
     }
 }
 

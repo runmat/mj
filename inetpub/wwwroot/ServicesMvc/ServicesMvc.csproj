@@ -383,6 +383,8 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="_Themes\AH2015\images\menu.png" />
+    <Content Include="_Themes\AH2015\images\menu_white.png" />
     <Content Include="_Themes\AH2015\images\test.png" />
     <Content Include="_Themes\AH2015\images\avatar.png" />
     <Content Include="_Themes\AH2015\images\de.png" />
