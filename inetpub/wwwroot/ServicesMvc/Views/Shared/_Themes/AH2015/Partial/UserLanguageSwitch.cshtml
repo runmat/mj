@@ -1,0 +1,23 @@
+﻿@{ 
+    var culture = SessionHelper.GetSessionValue("UserCulture", "de-DE").NotNullOrEmpty();
+    var languageImage = culture.SubstringTry(0, 2).ToLower() + ".png";
+}
+
+<style type="text/css">
+    .header .nav > li.dropdown .dropdown-toggle.language {
+        padding: 9px 4px 10px 4px;
+    }
+</style>
+
+<ul class="nav language-menu">
+    <li class="dropdown language">
+	    <a href="#" class="dropdown-toggle language" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+	        <div class="aktuellesprache" style="background-image:url(/ServicesMvc/_Themes/AH2015/images/@languageImage);"> </div>
+	    </a>
+	    <ul class="dropdown-menu">
+		    <li><a href="#" onclick="return UserSwitchCulture('DE');"><img alt="" src="/ServicesMvc/_Themes/AH2015/images/de.png" /></a></li>
+		    <li><a href="#" onclick="return UserSwitchCulture('EN');"><img alt="" src="/ServicesMvc/_Themes/AH2015/images/en.png" /></a></li>
+		    <li><a href="#" onclick="return UserSwitchCulture('FR');"><img alt="" src="/ServicesMvc/_Themes/AH2015/images/fr.png" /></a></li>
+	    </ul>
+    </li>
+</ul>
