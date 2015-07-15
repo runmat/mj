@@ -177,6 +177,7 @@
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Halterabweichung.cs" />
     <Compile Include="Equi\Models\UIModels\EquiHistorieSuchparameter.cs" />
+    <Compile Include="Equi\Models\UIModels\KlaerfaelleVhcSuchparameter.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreEdit.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreSuchparameter.cs" />
     <Compile Include="Equi\Models\VersandartOptionen.cs" />

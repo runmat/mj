@@ -445,6 +445,9 @@ namespace SapORM
             //new FunctionReflector("Z_M_Ec_Avm_Pdiwechsel").WriteOrmForExportTableStructures("ZZKUNNR", "0000219853");
 
 
+            //new FunctionReflector("Z_DPM_FFD_DATEN_OHNE_DOKUMENTE").WriteOrmForExportTableStructures("I_KUNNR_AG", "324562");
+
+
             //CoCTest();
             //TeslaTest();
             //BrieflebenslaufTest();
