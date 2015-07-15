@@ -383,6 +383,7 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="_Themes\AH2015\images\test.png" />
     <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -4368,7 +4369,6 @@
     <Content Include="Areas\Autohaus\Views\Fahrzeugbestand\Partial\FahrzeugAkteBestandDetailsFinSuche.cshtml" />
     <Content Include="Views\Shared\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Views\Shared\Partial\BreadCrumbs.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Partner\Partial\Common.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\Partial\PartnerAdressenGrid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenDetailsForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Partner\AdressenPflege\AdressenGrid.cshtml" />
