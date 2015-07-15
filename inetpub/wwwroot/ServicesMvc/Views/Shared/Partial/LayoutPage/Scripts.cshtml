@@ -530,10 +530,15 @@
         $('.page-sidebar').on('click', '.sidebar-toggler', function(e) {
             HandleResponsiveControlWidths();
         });
+
         $('#FormSearchBox .portlet-title, #FormSearchResults .portlet-title').on('click', function(e) {
             setTimeout(function() {
                 HandleResponsiveControlWidths();
             }, 500);
+        });
+        $('#FormSearchBox .portlet-title').on('click', function(e) {
+            if (!SearchFormIsCollapsed())
+                SearchResultsHide();
         });
         
         $( window ).resize(function() {
@@ -559,14 +564,10 @@
             if (tGridTable.length > 0) {
                 tGridTable = $(tGridTable[0]);
 
-                console.log(e.width());
-                console.log(tGridTable.width());
-
                 if (tGridTable.width() > e.width() - margin)
                     containerWidth = tGridTable.width() + (margin / 2);
             }
 
-            //console.log(containerWidth);
             e.css("width", containerWidth);
         });
 
