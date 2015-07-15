@@ -6,6 +6,7 @@ using System.Linq;
 using System.Transactions;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models.DataModels;
+using CkgDomainLogic.Zulassung.MobileErfassung.Models;
 using GeneralTools.Services;
 using GeneralTools.Models;
 
@@ -776,6 +777,15 @@ namespace CkgDomainLogic.General.Database.Services
                     User.CustomerID, grundId).ToList();
 
             return (ergs.Count > 0 ? ergs[0] : "");
+        }
+
+        #endregion
+
+        #region ZLD (Mobile)
+
+        public CkgUserInfo GetCkgUserInfo(string username)
+        {
+            return Database.SqlQuery<CkgUserInfo>("SELECT * FROM vwCkgUser WHERE Username = {0}", username).FirstOrDefault();
         }
 
         #endregion

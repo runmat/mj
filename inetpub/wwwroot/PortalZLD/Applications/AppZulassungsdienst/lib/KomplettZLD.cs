@@ -740,12 +740,15 @@ namespace AppZulassungsdienst.lib
                     kopfListeWeb.Add(kopfdaten);
 
                     if (!String.IsNullOrEmpty(bankdaten.Kontoinhaber))
+                    {
+                        if (String.IsNullOrEmpty(bankdaten.Partnerrolle)) bankdaten.Partnerrolle = "AG";
                         bankListeWeb.Add(bankdaten);
+                    }
 
                     if (!String.IsNullOrEmpty(adressdaten.Name1))
                     {
                         adressdaten.KundenNr = kopfdaten.KundenNr;
-                        adressdaten.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adressdaten.Partnerrolle)) adressdaten.Partnerrolle = "AG";
                         adressListeWeb.Add(adressdaten);
                     }
 

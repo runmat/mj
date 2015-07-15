@@ -48,7 +48,7 @@
                                     <i class="icon-chevron-right margin-right-10"></i> 
                                     <span id="h-dropdown-text" class="p-dropdown">@Model.SelectedHalter.GetAutoSelectString()</span>
                                 </a>
-                            </text>, new { @class = "m-wrap", col = "left" })                
+                            </text>, new { @class = "m-wrap", col = "left3" })                
 
                     @Html.HiddenFor(m => m.Kaeufer)
                     @Html.FormTemplateControl(Localize.Buyer,
@@ -57,7 +57,16 @@
                                     <i class="icon-chevron-right margin-right-10"></i> 
                                     <span id="k-dropdown-text" class="p-dropdown">@Model.SelectedKaeufer.GetAutoSelectString()</span>
                                 </a>
-                            </text>, new { @class = "m-wrap", col = "right" })
+                            </text>, new { @class = "m-wrap", col = "middle3" })
+
+                    @Html.HiddenFor(m => m.ZahlerKfzSteuer)
+                    @Html.FormTemplateControl(Localize.CarTaxPayer,
+                            @<text>
+                                <a id="z-dropdown" class="btn white" onclick="return PickPartnerAddress('ZAHLERKFZSTEUER');">
+                                    <i class="icon-chevron-right margin-right-10"></i> 
+                                    <span id="z-dropdown-text" class="p-dropdown">@Model.SelectedZahlerKfzSteuer.GetAutoSelectString()</span>
+                                </a>
+                            </text>, new { @class = "m-wrap", col = "right3" })
 
                     @Html.FormDropDownListFor(m => m.BriefbestandsInfo, FahrzeugAkteBestand.BriefbestandsInfoOptionen.ToSelectList(), new { @class = "m-wrap", col = "left" })
                     @Html.FormTextBoxFor(m => m.BriefLagerort, new { @class = "m-wrap", col = "right" })

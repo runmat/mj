@@ -146,11 +146,19 @@ namespace AppZulassungsdienst.forms
                 tmpValid = false;
                 txtLieferscheinnummer.BorderColor = System.Drawing.Color.Red;
             }
+            else
+            {
+                txtLieferscheinnummer.BorderColor = System.Drawing.Color.Empty;
+            }
 
             if (!txtBelegdatum.Text.IsDate())
             {
                 tmpValid = false;
                 txtBelegdatum.BorderColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                txtBelegdatum.BorderColor = System.Drawing.Color.Empty;
             }
 
             Fillgrid(0, "");

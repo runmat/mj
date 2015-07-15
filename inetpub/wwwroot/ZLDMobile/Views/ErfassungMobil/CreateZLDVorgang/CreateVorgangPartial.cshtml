@@ -1,0 +1,179 @@
+﻿@using CkgDomainLogic.Zulassung.MobileErfassung.Models
+@model CkgDomainLogic.Zulassung.MobileErfassung.ViewModels.ZulMobileErfassungViewModel
+  
+<div class="VerticalSpacer10">&nbsp;</div>
+<table width="100%">
+    <colgroup>
+        <col class="TableColumn110"/>
+        <col class="TableColumnAuto"/>
+    </colgroup>
+    <thead> 
+    </thead>  
+    <tbody>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["VkBur"]
+            </td>
+            <td>
+                <label id="lblVkBur">@Model.VkBurNeuanlage</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Kunde"]
+            </td>
+            <td>
+                <div id="divKunde">
+                    <select id="ddlKunde" name="ddlKunde" data-role="none" class="width-100percent">
+                        @if (Model.StammdatenNeuanlage.Kunden.Count > 0)
+                        {
+                            foreach (Kunde k in Model.StammdatenNeuanlage.Kunden)
+                            {
+                                <option value="@k.KundenNr">@k.Name</option>
+                            }
+                        }
+                        else
+                        {
+                            <option></option>
+                        }       
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Referenz1"]
+            </td>
+            <td>
+                <div id="divReferenz1">
+                    <input type="text" id="txtReferenz1" class="TextUpperCase" maxlength="20"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Referenz2"]
+            </td>
+            <td>
+                <div id="divReferenz2">
+                    <input type="text" id="txtReferenz2" class="TextUpperCase" maxlength="20"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Kennzeichen"]
+            </td>
+            <td>
+                <div id="divKennzeichen">
+                    <input type="text" id="txtKennzeichen" class="TextUpperCase" maxlength="20"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Haupt-DL
+            </td>
+            <td>
+                <div id="divHauptDl">
+                    <select id="ddlHauptDl" name="ddlHauptDl" onchange="CheckHauptDl();" data-role="none" class="width-100percent">
+                        @if (Model.StammdatenNeuanlage.Dienstleistungen.Count > 0)
+                        {
+                            foreach (Dienstleistung d in Model.StammdatenNeuanlage.Dienstleistungen)
+                            {
+                                <option value="@d.Id">@d.DetailBez</option>
+                            }
+                        }
+                        else
+                        {
+                            <option></option>
+                        }       
+                    </select>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Zusatz-DL
+            </td>
+            <td>
+                <table id="tblZusatzpositionen" class="table-positionen-responsive table-stroke" data-role="table" data-mode="reflow">
+                    <colgroup>
+                        <col class="TableColumn80"/>
+                        <col class="TableColumnAuto"/>
+                        <col class="TableColumn80"/>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["PosNr"]</th>      
+                            <th class="TableGridCellNarrow">@Model.PropertyDisplayNames["DienstleistungBez"]</th>
+                            <th class="TableGridCellNarrow"></th>     
+                        </tr>  
+                    </thead>  
+                    <tbody>
+                    </tbody>
+                </table>
+                <div>
+                    <input id="btnAddPos" type="button" value="Dienstleistung ergänzen" onclick="ClearMessage(); AddVorgangPosition();" /> 
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["Amt"]
+            </td>
+            <td>
+                <select id="ddlAmt" name="ddlAmt" data-role="none" class="width-100percent">
+                    @if (Model.StammdatenNeuanlage.Aemter.Count > 0)
+                    {
+                        foreach (Amt a in Model.StammdatenNeuanlage.Aemter)
+                        {
+                            <option value="@a.KurzBez">@a.AmtBez</option>
+                        }
+                    }
+                    else
+                    {
+                        <option></option>
+                    }       
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <input type="checkbox" id="chkWunschkennzeichen" name="chkWunschkennzeichen" data-mini="true"/>
+                <label for="chkWunschkennzeichen">@Model.PropertyDisplayNames["Wunschkennzeichen"]</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <input type="checkbox" id="chkReserviert" name="chkReserviert" data-mini="true"/>
+                <label for="chkReserviert">@Model.PropertyDisplayNames["Reserviert"]</label>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Model.PropertyDisplayNames["ZulDatTextEdit"]
+            </td>
+            <td>
+                <div id="divZulDat">
+                    <input type="text" id="txtZulDat" value="@DateTime.Today.ToShortDateString()" maxlength="10"/>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+            </td>
+            <td>
+                <input type="checkbox" id="chkNurEinKennzeichen" name="chkNurEinKennzeichen" data-mini="true"/>
+                <label for="chkNurEinKennzeichen">@Model.PropertyDisplayNames["NurEinKennzeichen"]</label>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<div>
+    <input id="btnSave" type="button" value="Speichern" onclick="ClearMessage(); SaveVorgang();" />
+</div>

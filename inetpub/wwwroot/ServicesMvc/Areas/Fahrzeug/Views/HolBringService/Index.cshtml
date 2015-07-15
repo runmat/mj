@@ -1,0 +1,30 @@
+﻿@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
+@model CkgDomainLogic.Fahrzeuge.ViewModels.HolBringServiceViewModel
+
+@{
+    var globalData = (GlobalViewData)ViewData["GlobalViewData"];
+}
+
+<style>
+    .dropdownwidth {
+        width: 110px;
+    }    
+</style>
+
+<h3 class="page-title">@Localize.HolUndBringService <small>@Localize.Vehicles</small></h3>
+
+<div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys, stepTitlesInNewLine: true)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Partial/" + Model.FirstStepPartialViewName, Model.Auftraggeber)
+    </div>
+</div>
+
+@Html.Partial("Partial/Common")
+
+<script>
+    var dateFormat = "dd.MM.yyyy";
+    var feiertageAsString = "@globalData.FeiertageAsString";
+</script>

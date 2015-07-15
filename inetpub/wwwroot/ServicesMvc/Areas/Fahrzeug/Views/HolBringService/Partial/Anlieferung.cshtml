@@ -1,0 +1,166 @@
+﻿@using ServicesMvc.Areas.Fahrzeug.Models.HolBringService
+@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Anlieferung 
+
+@{
+    var globalData = (GlobalViewData)ViewData["GlobalViewData"];
+}
+
+<div id="DivAbholung" class="margin-top-20">
+    @using (Ajax.BeginForm("Anlieferung", "HolBringService", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivAnlieferung", OnComplete = "AjaxFormAnlieferungComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAnlieferung" }))
+    {
+        @Html.FormValidationSummary()
+
+        <div class="row-fluid">
+            <div class="span6 ">
+                @Html.FormTextBoxFor(m => m.AnlieferungKunde, new { @class = "m-wrap " })
+                @Html.FormTextBoxFor(m => m.AnlieferungStrasseHausNr, new { @class = "m-wrap " })
+        
+                @Html.FormTextBoxFor(m => m.AnlieferungPlz, new { @class = "m-wrap xsmall" })
+                @Html.FormTextBoxFor(m => m.AnlieferungOrt, new { @class = "m-wrap " })
+                @Html.HiddenFor(m => m.Land, new { @class = "m-wrap medium" })
+            </div>
+            
+            <div class="span6 ">
+                @Html.FormTextAreaFor(m => m.AnlieferungHinweis, new { @class = "m-wrap" }, rows: 9)
+            </div>
+        </div>
+        @Html.FormTextBoxFor(m => m.AnlieferungAnsprechpartner, new { @class = "m-wrap ", col = "left" })
+        @Html.FormTextBoxFor(m => m.AnlieferungTel, new { @class = "m-wrap ", col = "right" })
+        
+        @*@Html.FormDatePickerFor(m => m.AnlieferungDatum, new { @class = "m-wrap " })*@
+        <div class="control-group">
+            <label class="control-label">Anlieferdatum</label>
+            <div class="controls">
+                <div class="input-append">
+                    @Html.TextBoxFor(m => m.AnlieferungDatum, new { @class = "m-wrap", @Value = Model.AnlieferungDatum.ToString("dd.MM.yyyy") })
+                    <span class="add-on showdatepicker">
+                        <i class="icon-calendar"></i>
+                    </span>
+                </div>
+            </div>
+            <div id="DivTransportDateInfo" class="alert margin-top-20 alert-danger">Anlieferung darf nicht vor Abholung liegen</div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">Abholung ab</label>
+            <div class="controls">
+                @Html.DropDownListFor(m => m.AbholungAbUhrzeitStunden, globalData.DropDownHours.ToSelectList(), new { @class = "dropdownwidth transporttime" })
+                @Html.DropDownListFor(m => m.AbholungAbUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth transporttime" })                
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label class="control-label">Anlieferung bis</label>
+            <div class="controls">
+                @Html.DropDownListFor(m => m.AnlieferungBisUhrzeitStunden, globalData.DropDownHours.ToSelectList(), new { @class = "dropdownwidth transporttime" })
+                @Html.DropDownListFor(m => m.AnlieferungBisUhrzeitMinuten, globalData.DropDownMinutes.ToSelectList(), new { @class = " dropdownwidth transporttime" })
+            </div>
+        </div>
+
+        <div id="DivTransportTimeInfo" class="alert margin-top-20 alert-danger">Anlieferung darf nicht vor Abholung liegen</div>
+        
+        @Html.FormCheckBoxFor(m => m.AnlieferungMobilitaetsfahrzeug, new { @class = "m-wrap" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">Mobilitätsfahrzeug</label></text>)
+
+        <span class="clearfix"></span>
+        @Html.FormRequiredFieldsSummary()
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+    </div>
+    
+<script>
+
+    $(function() {
+        $("#AnlieferungDatum").datepicker({
+            beforeShowDay: function(date) {
+                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6); // Keine Wochenenden
+
+                if (dateIsSelectable) // Datum ab heute
+                    dateIsSelectable = (date >= Date.today());
+
+                var istFeiertag = feiertageAsString.indexOf(date.toString(dateFormat)) >= 0;
+                if (dateIsSelectable)
+                    dateIsSelectable = !istFeiertag;
+                return [dateIsSelectable, ""];
+            }
+        });
+        $(".showdatepicker").click(function () {
+            $("#AnlieferungDatum").datepicker("show");
+        });
+
+        $('#AnlieferungDatum').change(function() {
+            CompareDate();
+        });
+
+        $(".transporttime").change(function() {
+            ShowHideTransportTimeInfo();
+        });
+
+        ShowHideTransportTimeInfo();
+        CompareDate();
+    });
+
+    function CompareDate() {
+        var date1 = '@globalData.ValidationAbholungDt';
+        var date2 = $('#AnlieferungDatum').val();
+
+        if (date2 != "" && date1.toDate() > date2.toDate()) {
+            $('#DivTransportDateInfo').removeClass("hidden");
+            _validationError = true;
+            
+        } else {
+            $('#DivTransportDateInfo').addClass("hidden");
+            _validationError = false;
+        }
+        ShowHideNextButton();
+    }
+
+    String.prototype.toDate = function () {
+        var string = this.replace(/[-\/]/g, '.').replace(/[^0-9. ]/g, '').replace(/ +/g, ' ');
+        var split = string.split("."); 	// Datum splitten 
+        var day = parseInt(split[0], 10);
+        var month = parseInt(split[1] || 0, 10);
+        var year = parseInt(split[2] || 0, 10);
+        var check = new Date(year, month - 1, day);
+        return (check.getFullYear() === year && month === (check.getMonth() + 1) && day === check.getDate()) ? check : null;
+    };
+
+    function ShowHideTransportTimeInfo() {
+        var result = true;
+
+        var fromHour = parseInt($('#AbholungAbUhrzeitStunden').val());
+        var fromMinute = parseInt($('#AbholungAbUhrzeitMinuten').val());
+
+        var toHour = parseInt($('#AnlieferungBisUhrzeitStunden').val());
+        var toMinute = parseInt($('#AnlieferungBisUhrzeitMinuten').val());
+
+        var fromTime = (fromHour * 100) + fromMinute;
+        var toTime = (toHour * 100) + toMinute;
+
+        if (fromTime > toTime) {
+            result = false;
+        }
+
+        if (result == true) {
+            $('#DivTransportTimeInfo').addClass('hidden');
+            _validationError = false;
+        } else {
+            $('#DivTransportTimeInfo').removeClass('hidden');
+            _validationError = true;
+        }
+        ShowHideNextButton();
+    }
+    
+    function ShowHideNextButton() {
+        if (_validationError) {
+            $('#formWizard').find('.button-next').hide();
+        } else {
+            $('#formWizard').find('.button-next').show();
+        }
+    }
+    
+</script>
