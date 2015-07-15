@@ -140,6 +140,7 @@ namespace AppZulassungsdienst.forms
 
             if (tmpDataView.Count == 0)
             {
+                lblError.Text = "Keine Ergebnisse für die gewählten Kriterien.";
                 gvZuldienst.Visible = false;
                 Result.Visible = false;
                 GridNavigation1.Visible = false;
@@ -149,7 +150,6 @@ namespace AppZulassungsdienst.forms
             else
             {
                 Result.Visible = true;
-                lblError.Visible = false;
                 Panel1.Visible = false;
                 cmdCreate.Visible = false;
                 gvZuldienst.Visible = true;
@@ -207,7 +207,7 @@ namespace AppZulassungsdienst.forms
             lblError.Text = "";
 
             objZLDSuche = new ZLD_Suche();
-            objZLDSuche.Kennzeichen = txtKennzeichen.Text;
+            objZLDSuche.Kennzeichen = txtKennzeichen.Text.ToUpper();
             objZLDSuche.Zulassungspartner = txtZulassungspartner.Text;
             objZLDSuche.PLZ = txtPLZ.Text;
 
@@ -217,20 +217,9 @@ namespace AppZulassungsdienst.forms
             Session["ResultTableRaw"] = objZLDSuche.tblResultRaw;
 
             if (objZLDSuche.ErrorOccured)
-            {
                 lblError.Text = "Fehler: " + objZLDSuche.Message;
-            }
             else
-            {
-                if (objZLDSuche.tblResult.Rows.Count == 0)
-                {
-                    lblError.Text = "Keine Ergebnisse für die gewählten Kriterien.";
-                }
-                else
-                {
-                    Fillgrid(0, "");
-                }
-            }
+                Fillgrid(0, "");
         }
 
         #endregion

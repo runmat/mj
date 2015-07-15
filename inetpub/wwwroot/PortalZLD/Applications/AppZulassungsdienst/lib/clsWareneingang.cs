@@ -51,22 +51,11 @@ namespace AppZulassungsdienst.lib
             foreach (DataRow tmpRow in tblTemp.Rows)
             {
                 DataRow rowNew = Bestellpositionen.NewRow();
-                Int32 iTemp = 0;
-
-                if (tmpRow["EBELP"].ToString().IsNumeric())
-                {
-                    Int32.TryParse(tmpRow["EBELP"].ToString(), out iTemp);
-                }
-                rowNew["Bestellposition"] = iTemp;
+                rowNew["Bestellposition"] = tmpRow["EBELP"].ToString().NotNullOrEmpty().Replace(".", "").ToInt(0);
                 rowNew["Materialnummer"] = tmpRow["MATNR"].ToString();
                 rowNew["Artikelbezeichnung"] = tmpRow["TXZ01"].ToString();
                 rowNew["MaterialnummerLieferant"] = tmpRow["IDNLF"].ToString();
-
-                if (tmpRow["BSTMG"].ToString().IsNumeric())
-                {
-                    Int32.TryParse(tmpRow["BSTMG"].ToString(), out iTemp);
-                }
-                rowNew["BestellteMenge"] = iTemp;
+                rowNew["BestellteMenge"] = tmpRow["BSTMG"].ToString().NotNullOrEmpty().Replace(".", "").ToInt(0);
                 rowNew["Mengeneinheit"] = tmpRow["MEINS"].ToString();
                 rowNew["EAN"] = tmpRow["EAN11"].ToString();
                 rowNew["PositionLieferMenge"] = DBNull.Value;
@@ -97,22 +86,11 @@ namespace AppZulassungsdienst.lib
             foreach (DataRow tmpRow in tblTemp.Rows)
             {
                 DataRow rowNew = Bestellpositionen.NewRow();
-                Int32 iTemp = 0;
-
-                if (tmpRow["POSNR"].ToString().IsNumeric())
-                {
-                    Int32.TryParse(tmpRow["POSNR"].ToString(), out iTemp);
-                }
-                rowNew["Bestellposition"] = iTemp;
+                rowNew["Bestellposition"] = tmpRow["POSNR"].ToString().NotNullOrEmpty().Replace(".", "").ToInt(0);
                 rowNew["Materialnummer"] = tmpRow["MATNR"].ToString();
                 rowNew["Artikelbezeichnung"] = tmpRow["MAKTX"].ToString();
                 rowNew["MaterialnummerLieferant"] = tmpRow["MATNR"].ToString();
-
-                if (tmpRow["MENGE"].ToString().IsNumeric())
-                {
-                    Int32.TryParse(tmpRow["MENGE"].ToString(), out iTemp);
-                }
-                rowNew["BestellteMenge"] = iTemp;
+                rowNew["BestellteMenge"] = tmpRow["MENGE"].ToString().NotNullOrEmpty().Replace(".", "").ToInt(0);
                 rowNew["Buchungsdatum"] = tmpRow["BUDAT"].ToString();
                 rowNew["Mengeneinheit"] = "";
                 rowNew["EAN"] = tmpRow["EAN11"].ToString();
@@ -192,14 +170,10 @@ namespace AppZulassungsdienst.lib
                     tmpSAPRow["MATNR"] = tmprow["Materialnummer"].ToString();
                     tmpSAPRow["ERFME"] = tmprow["Mengeneinheit"].ToString();
                     tmpSAPRow["EAN11"] = tmprow["EAN"].ToString();
-                    Int32 i = 0;
                     if (tmprow["PositionVollstaendig"].ToString() == "X")
                     {
-                        if (tmprow["PositionLieferMenge"].ToString().IsNumeric())
-                        {
-                            Int32.TryParse(tmprow["PositionLieferMenge"].ToString(), out i);
-                        }
-                        if (i > 0)
+                        var liefMenge = tmprow["PositionLieferMenge"].ToString().NotNullOrEmpty().Replace(".", "").ToInt(0);
+                        if (liefMenge > 0)
                         {
                             tmpSAPRow["ERFMG"] = tmprow["PositionLieferMenge"].ToString();
                         }
@@ -220,11 +194,8 @@ namespace AppZulassungsdienst.lib
                         else
                         {
                             tmpSAPRow["ELIKZ"] = "";
-                            if (tmprow["PositionLieferMenge"].ToString().IsNumeric())
-                            {
-                                Int32.TryParse(tmprow["PositionLieferMenge"].ToString(), out i);
-                            }
-                            if (i > 0)
+                            var liefMenge = tmprow["PositionLieferMenge"].ToString().NotNullOrEmpty().Replace(".", "").ToInt(0);
+                            if (liefMenge > 0)
                             {
                                 tmpSAPRow["ERFMG"] = tmprow["PositionLieferMenge"].ToString();
                             }
@@ -277,12 +248,8 @@ namespace AppZulassungsdienst.lib
                         }
                         else
                         {
-                            Int32 i = 0;
-                            if (tmprow["PositionLieferMenge"].ToString().IsNumeric())
-                            {
-                                Int32.TryParse(tmprow["PositionLieferMenge"].ToString(), out i);
-                            }
-                            if (i > 0)
+                            var liefMenge = tmprow["PositionLieferMenge"].ToString().NotNullOrEmpty().Replace(".", "").ToInt(0);
+                            if (liefMenge > 0)
                             {
                                 tmpSAPRow["MENGE"] = tmprow["PositionLieferMenge"].ToString();
                             }

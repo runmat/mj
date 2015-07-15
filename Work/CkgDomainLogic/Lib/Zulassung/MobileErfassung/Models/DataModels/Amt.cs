@@ -1,10 +1,8 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
 {
-    /// <summary>
-    /// Amt-Infoobjekt (für Dropdown-Auswahl)
-    /// </summary>
     public class Amt
     {
         [Display(Name = "Kurzbezeichnung")]
@@ -17,18 +15,6 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public string AmtBez
         {
             get { return KurzBez + "..." + Bezeichnung; }
-        }
-
-        public Amt()
-        {
-            this.KurzBez = "";
-            this.Bezeichnung = "";
-        }
-
-        public Amt(string kuerzel, string langtext)
-        {
-            this.KurzBez = kuerzel;
-            this.Bezeichnung = langtext;
         }
     }
 }

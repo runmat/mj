@@ -1,0 +1,106 @@
+﻿<script type="text/javascript">
+
+    var jsZLDMobile = new ZLDMobileJS();
+
+    function InitPage() {
+        // Prüfen, ob LocalStorage verfügbar
+        if (BrowserSupportsLocalStorage() == false) {
+            alert("Ihr Browser unterstützt leider keine Offline-Anwendungen. Bitte aktualisieren Sie ihn oder verwenden Sie einen anderen Browser.");
+            return;
+        }
+
+        // JSON-Funktionalität sicherstellen
+        if (BrowserSupportsJSON() == false) {
+            alert("Ihr Browser scheint im Kompatibilitätsmodus zu arbeiten, wodurch die Anwendung anders dargestellt wird und u.U. nicht in vollem Umfang funktioniert. Bitte deaktivieren Sie diesen.");
+        }
+        EnsureJSONFunctionality();
+
+        // Eventhandler
+        $("#btnCheckConnectivity").click(function () {
+            ClearMessage();
+            jsZLDMobile.UpdateConnectivityStatus();
+        });
+
+        $("#popupOptionsMenu li").on('click', function () {
+            ClearMessage();
+            SelectOption($(this).attr("title"));
+        });
+
+        // Name des aktiven Users im LocalStorage merken
+        var zldmob = {};
+        zldmob.LastUser = $("#ihSelUsername").val();
+        if (zldmob.LastUser != null && zldmob.LastUser.length > 0) {
+            SaveInLocalStorage("ZLDMobile", zldmob);
+        }
+
+        jsZLDMobile.selUsername = $("#ihSelUsername").val();
+    }
+
+    // Entfernt die Meldung im Error- bzw. Meldungs-Label
+    function ClearMessage() {
+        $("#lblError").text("");
+    }
+
+    // Zeigt eine (Fehler-)Meldung im Error- bzw. Meldungs-Label an
+    // Umlaute im Meldungstext sind durch \u00 + Hexwert zu ersetzen
+    // Hexwerte: ä=e4, ö=f6, ü=fc, Ä=c4, Ö=d6, Ü=dc, ß=df
+    function ShowMessage(strText, isError) {
+        // Mit diesem Schalter kann das Fehleranzeigeverhalten geändert werden
+        var alertErrors = false;
+
+        if (isError == true) {
+            if (alertErrors == true) {
+                alert(strText);
+            } else {
+                $("#lblError").addClass("MessageLabelError");
+            }
+        } else {
+            $("#lblError").removeClass("MessageLabelError");
+        }
+        if (alertErrors == false) {
+            $("#lblError").text(strText);
+            // Ggf. wieder nach oben scrollen, damit der Benutzer das Label mit der Nachricht sieht
+            $.mobile.silentScroll(0);
+        }
+    }
+
+    // Seitenfunktionalität je nach Verbindungsstatus einschränken/erweitern
+    function ApplyConnectivityStatus(verbunden) {
+        if (verbunden == true) {
+            $("#imgAmpelRot").hide();
+            $("#imgAmpelGruen").show();
+        } else {
+            $("#imgAmpelGruen").hide();
+            $("#imgAmpelRot").show();
+        }
+
+        try { ApplyConnectivityStatusPrivate(verbunden); } catch (e) { }
+    }
+
+    // Options-Menüpunktauswahl verarbeiten
+    function SelectOption(id) {
+        try { SelectOptionPrivate(id); } catch (e) { }
+
+        // Popup-Menü schließen
+        $("#popupOptionsMenu").popup('close');
+    }
+
+    // Gebühr auf 2 Nachkommastellen formatieren
+    function FormatGebuehr(strGebuehr) {
+        var erg = strGebuehr.replace(".", ",");
+        if (erg.length > 0) {
+            var kommaPos = erg.indexOf(",");
+            if (kommaPos > -1) {
+                if (kommaPos > (erg.length - 3)) {
+                    erg = erg + "0";
+                }
+            } else {
+                erg = erg + ",00";
+            }
+        } else {
+            erg = "0,00";
+        }
+        return erg;
+    }
+
+ </script>

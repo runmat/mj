@@ -344,6 +344,9 @@ namespace CkgDomainLogic.General.Controllers
         {
             AdressenPflegeViewModel.InsertMode = false;
             ModelState.Clear();
+
+            var test = AdressenPflegeViewModel.GetItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode);
+
             return PartialView("AdressenPflege/AdressenDetailsForm", AdressenPflegeViewModel.GetItem(id).SetInsertMode(AdressenPflegeViewModel.InsertMode));
         }
 
@@ -375,12 +378,7 @@ namespace CkgDomainLogic.General.Controllers
             viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
 
             if (ModelState.IsValid)
-            {
-                if (viewModel.InsertMode)
-                    viewModel.AddItem(model);
-
                 model = viewModel.SaveItem(model, ModelState.AddModelError);
-            }
 
             model.IsValid = ModelState.IsValid;
             model.InsertModeTmp = viewModel.InsertMode;

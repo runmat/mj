@@ -2469,11 +2469,24 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
+    <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Models\ReportSolution.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Services\GridAdminDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\ViewModels\GridAdminViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\ZulassungController.cs" />
+    <Compile Include="Areas\Fahrzeug\ActionFilters\HolBringServiceGlobalDataAttribute.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Abholung.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Anlieferung.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Auftraggeber.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\BapiParameterSet.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\GlobalViewData.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Mail.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Overview.cs" />
+    <Compile Include="Areas\Fahrzeug\Models\HolBringService\Upload.cs" />
+    <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
+    <Compile Include="Areas\Fahrzeug\ViewModels\HolBringServiceViewModel.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2531,6 +2544,9 @@
     <Content Include="Areas\Autohaus\Views\Formulare\Index.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Grid.cshtml" />
     <Content Include="Areas\Autohaus\Views\Formulare\Partial\Suche.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuer.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
@@ -2539,6 +2555,10 @@
     <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
@@ -2551,6 +2571,14 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Abholung.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Anlieferung.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4482,6 +4510,7 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungenGrid.cshtml" />
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
+    <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4503,6 +4532,7 @@
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
+    <Folder Include="Areas\Autohaus\ViewModels\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />
@@ -4755,18 +4785,21 @@
     <Content Include="App_GlobalResources\EditorLocalization.de-DE.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditorLocalization.de-DE.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\EditorLocalization.da-DK.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditorLocalization.da-DK.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_GlobalResources\EditorLocalization.bg-BG.resx">
       <Generator>GlobalResourceProxyGenerator</Generator>
       <LastGenOutput>EditorLocalization.bg-BG.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </Content>
   </ItemGroup>
   <ItemGroup>
@@ -5372,6 +5405,10 @@
     <ProjectReference Include="..\..\..\Work\CkgDomainLogic\CkgDomainLeasing\CkgDomainLeasing.csproj">
       <Project>{F80FCAF3-6A61-405B-859D-CF3AB8796DBC}</Project>
       <Name>CkgDomainLeasing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\..\work\Tools\WebTools\WebTools.csproj">
       <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>

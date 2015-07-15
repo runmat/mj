@@ -459,6 +459,8 @@ namespace SapORM.Models
 
 			public string ZULBELN { get; set; }
 
+			public string PARVW { get; set; }
+
 			public string BANKL { get; set; }
 
 			public string BANKN { get; set; }
@@ -482,6 +484,7 @@ namespace SapORM.Models
 				var o = new GT_IMP_BANK
 				{
 					ZULBELN = (string)row["ZULBELN"],
+					PARVW = (string)row["PARVW"],
 					BANKL = (string)row["BANKL"],
 					BANKN = (string)row["BANKN"],
 					EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],

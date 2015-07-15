@@ -76,7 +76,6 @@ ZLDMobileJS.prototype.RemoveAemterUndVorgaengeFromLocalStorage = function (showM
 // Setzt einen AJAX-Post mit den Vorgangs-Ids an den Server ab, um die BEB-Stati zurückzuerhalten 
 // und dann ggf. erledigte/fehlgeschlagene alte Vorgänge lokal zu entfernen
 ZLDMobileJS.prototype.CheckBEBStatusAndCleanUpVorgaenge = function (vorgIds) {
-    //SetWaitCursor();
     $.ajax({
         type: "POST",
         url: "/ZLDMobile/ErfassungMobil/GetBEBStatusVorgaenge",
@@ -86,7 +85,6 @@ ZLDMobileJS.prototype.CheckBEBStatusAndCleanUpVorgaenge = function (vorgIds) {
         beforeSend: function () { ShowBusyIndicator(); },
         complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            //SetDefaultCursor();
             var liste = JSON.parse(result);
             if (liste == "unauthenticated") {
                 this.RedirectToLoginPage();
@@ -115,7 +113,6 @@ ZLDMobileJS.prototype.CheckBEBStatusAndCleanUpVorgaenge = function (vorgIds) {
             }
         },
         error: function (req, status, error) {
-            //SetDefaultCursor();
             ShowMessage("Ermittlung des Bearbeitungsstatus der Vorg\u00e4nge fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung. (" + error + ")", true);
         }
     });
@@ -316,7 +313,6 @@ ZLDMobileJS.prototype.SynchronisiereVorgaenge = function (serverVorgaenge) {
 
 // Setzt einen AJAX-Post an den Server ab, um die aktuellen Vorgänge zurückzubekommen
 ZLDMobileJS.prototype.GetVorgaengeFromServer = function () {
-    //SetWaitCursor();
     $.ajax({
         type: "POST",
         url: "/ZLDMobile/ErfassungMobil/LoadVorgaenge",
@@ -326,7 +322,6 @@ ZLDMobileJS.prototype.GetVorgaengeFromServer = function () {
         beforeSend: function () { ShowBusyIndicator(); },
         complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            //SetDefaultCursor();
             var vorgaenge = JSON.parse(result);
             if (vorgaenge == "unauthenticated") {
                 this.RedirectToLoginPage();
@@ -335,7 +330,6 @@ ZLDMobileJS.prototype.GetVorgaengeFromServer = function () {
             FillVorgangGrid();
         },
         error: function (req, status, error) {
-            //SetDefaultCursor();
             ShowMessage("Abrufen der Vorg\u00e4nge vom Server fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung", true);
         }
     });
@@ -343,7 +337,6 @@ ZLDMobileJS.prototype.GetVorgaengeFromServer = function () {
 
 // Setzt einen AJAX-Post an den Server ab, um die aktuellen Ämter zurückzubekommen
 ZLDMobileJS.prototype.GetAemterVorgaengeFromServer = function () {
-    //SetWaitCursor();
     $.ajax({
         type: "POST",
         url: "/ZLDMobile/ErfassungMobil/LoadAemterVorgaenge",
@@ -353,7 +346,6 @@ ZLDMobileJS.prototype.GetAemterVorgaengeFromServer = function () {
         beforeSend: function () { ShowBusyIndicator(); },
         complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            //SetDefaultCursor();
             var aemter = JSON.parse(result);
             if (aemter == "unauthenticated") {
                 this.RedirectToLoginPage();
@@ -362,7 +354,6 @@ ZLDMobileJS.prototype.GetAemterVorgaengeFromServer = function () {
             ChangeAnzeigemodus("Kreis", true);
         },
         error: function (req, status, error) {
-            //SetDefaultCursor();
             ShowMessage("Abrufen der Amt-/Vorgangsdaten vom Server fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung", true);
         }
     });
@@ -375,7 +366,6 @@ ZLDMobileJS.prototype.LadeAemterMitVorgaengen = function () {
 
 // Setzt einen AJAX-Post an den Server ab, um die Datenstruktur zurückzubekommen
 ZLDMobileJS.prototype.GetDatenstrukturFromServer = function () {
-    //SetWaitCursor();
     $.ajax({
         type: "POST",
         url: "/ZLDMobile/ErfassungMobil/LoadDatenstruktur",
@@ -385,7 +375,6 @@ ZLDMobileJS.prototype.GetDatenstrukturFromServer = function () {
         beforeSend: function () { ShowBusyIndicator(); },
         complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            //SetDefaultCursor();
             var dStruktur = JSON.parse(result);
             if (dStruktur == "unauthenticated") {
                 this.RedirectToLoginPage();
@@ -396,7 +385,6 @@ ZLDMobileJS.prototype.GetDatenstrukturFromServer = function () {
             }
         },
         error: function (req, status, error) {
-            //SetDefaultCursor();
             ShowMessage("Abrufen der Anwendungsdaten vom Server fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung", true);
         }
     });
@@ -404,7 +392,6 @@ ZLDMobileJS.prototype.GetDatenstrukturFromServer = function () {
 
 // Setzt einen AJAX-Post an den Server ab, um die aktuellen Stammdaten zu erhalten
 ZLDMobileJS.prototype.GetStammdatenFromServer = function (showMessageOnSuccess, vorgaengeLaden) {
-    //SetWaitCursor();
     $.ajax({
         type: "POST",
         url: "/ZLDMobile/ErfassungMobil/LoadStammdaten",
@@ -414,7 +401,6 @@ ZLDMobileJS.prototype.GetStammdatenFromServer = function (showMessageOnSuccess, 
         beforeSend: function () { ShowBusyIndicator(); },
         complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            //SetDefaultCursor();
             var stda = JSON.parse(result);
             if (stda == "unauthenticated") {
                 this.RedirectToLoginPage();
@@ -431,7 +417,6 @@ ZLDMobileJS.prototype.GetStammdatenFromServer = function (showMessageOnSuccess, 
             }
         },
         error: function (req, status, error) {
-            //SetDefaultCursor();
             ShowMessage("Abrufen der Stammdaten vom Server fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung", true);
         }
     });
@@ -494,8 +479,12 @@ ZLDMobileJS.prototype.SendeNaechstenVorgang = function (sendebeginn) {
         }
     }
     if (sendeVorgang != null) {
+        if (sendebeginn == true) {
+            ShowBusyIndicator();
+        }
         this.SendVorgangToServer(sendeVorgang);
     } else {
+        HideBusyIndicator();
         if (sendebeginn == true) {
             ShowMessage("Es wurden keine Vorg\u00e4nge bearbeitet", false);
         } else {
@@ -516,19 +505,16 @@ ZLDMobileJS.prototype.SendeNaechstenVorgang = function (sendebeginn) {
 
 // Setzt einen AJAX-Post mit den Vorgangsdaten an den Server ab, damit diese dort gespeichert werden
 ZLDMobileJS.prototype.SendVorgangToServer = function (vg) {
-    //SetWaitCursor();
     $.ajax({
         type: "POST",
         url: "/ZLDMobile/ErfassungMobil/SaveVorgang",
         data: { vorgang: JSON.stringify(vg) },
         dataType: "json",
         context: this,
-        beforeSend: function () { ShowBusyIndicator(); },
-        complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            //SetDefaultCursor();
             var saveErg = JSON.parse(result);
             if (saveErg == "unauthenticated") {
+                HideBusyIndicator();
                 this.RedirectToLoginPage();
             } else {
                 this.letzteGesendeteId = saveErg.Id;
@@ -549,6 +535,7 @@ ZLDMobileJS.prototype.SendVorgangToServer = function (vg) {
                     // Nächsten Vorgang senden, falls vorhanden
                     this.SendeNaechstenVorgang(false);
                 } else if (saveErg.Ergebniscode == "APPERROR") {
+                    HideBusyIndicator();
                     if (this.anzGesendetDuplikat != 0) {
                         ShowMessage("Serverfehler beim Speichern(vorher an Server gesendet: " + this.anzGesendetOk + " OK, " + this.anzGesendetDuplikat + " bereits erledigt): " + saveErg.Meldungstext);
                     } else if (this.anzGesendetOk != 0) {
@@ -565,7 +552,7 @@ ZLDMobileJS.prototype.SendVorgangToServer = function (vg) {
             
         },
         error: function (req, status, error) {
-            //SetDefaultCursor();
+            HideBusyIndicator();
             ShowMessage("Es konnten nicht alle Daten zum Server \u00fcbertragen werden. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung. (" + error + ")", true);
         }
     });
@@ -573,7 +560,6 @@ ZLDMobileJS.prototype.SendVorgangToServer = function (vg) {
 
 // Per AJAX-Post prüfen, ob der Server erreichbar ist bzw. antwortet, und ggf. Seitenfunktionalität einschränken/erweitern
 ZLDMobileJS.prototype.UpdateConnectivityStatus = function () {
-    //SetWaitCursor();
     $.ajax({
         type: "POST",
         url: "/ZLDMobile/ErfassungMobil/ReturnHeartbeat",
@@ -583,16 +569,84 @@ ZLDMobileJS.prototype.UpdateConnectivityStatus = function () {
         beforeSend: function () { ShowBusyIndicator(); },
         complete: function () { HideBusyIndicator(); },
         success: function (result) {
-            //SetDefaultCursor();
             ApplyConnectivityStatus(true);
         },
         error: function (req, status, error) {
-            //SetDefaultCursor();
             ApplyConnectivityStatus(false);
         }
     });
 };
 
+// Liste der zur Auswahl stehenden VkBurs vom Server laden
+ZLDMobileJS.prototype.LoadVkBurListe = function () {
+    $.ajax({
+        type: "POST",
+        url: "/ZLDMobile/ErfassungMobil/LoadVkBurListe",
+        data: {},
+        dataType: "json",
+        context: this,
+        beforeSend: function () { ShowBusyIndicator(); },
+        complete: function () { HideBusyIndicator(); },
+        success: function (result) {
+            var vkBurs = JSON.parse(result);
+            if (vkBurs == "unauthenticated") {
+                this.RedirectToLoginPage();
+            }
+            FillVkBurAuswahl(vkBurs);
+        },
+        error: function (req, status, error) {
+            ShowMessage("Laden der Kostenstelle(n) fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung. (" + error + ")", true);
+        }
+    });
+};
 
+// VkBur-Auswahl an Server senden, um serverseitig Stammdaten zu laden und anschließend zur Bearbeitungsansicht zu wechseln
+ZLDMobileJS.prototype.SelectVkBur = function (vkBur) {
+    $.ajax({
+        type: "POST",
+        url: "/ZLDMobile/ErfassungMobil/ApplyVkBur",
+        data: { vkBur: vkBur },
+        context: this,
+        beforeSend: function () { ShowBusyIndicator(); },
+        complete: function () { HideBusyIndicator(); },
+        success: function (result) {
+            if (result == "unauthenticated") {
+                this.RedirectToLoginPage();
+            }
+            ChangeAnzeigemodus("Create", result);
+        },
+        error: function (req, status, error) {
+            ShowMessage("Laden der Stammdaten fehlgeschlagen. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung. (" + error + ")", true);
+        }
+    });
+};
 
-
+// Setzt einen AJAX-Post mit den Vorgangsdaten an den Server ab, damit diese dort gespeichert werden
+ZLDMobileJS.prototype.SaveNewVorgang = function (vg) {
+    $.ajax({
+        type: "POST",
+        url: "/ZLDMobile/ErfassungMobil/SaveNewVorgang",
+        data: { vorgang: JSON.stringify(vg) },
+        dataType: "json",
+        context: this,
+        beforeSend: function () { ShowBusyIndicator(); },
+        complete: function () { HideBusyIndicator(); },
+        success: function (result) {
+            var saveErg = JSON.parse(result);
+            if (saveErg == "unauthenticated") {
+                this.RedirectToLoginPage();
+            } else {
+                if (saveErg.Ergebniscode == "OK") {
+                    ShowMessage("Vorgang erfolgreich gespeichert", false);
+                    ClearVorgangCreate();
+                } else {
+                    ShowMessage("Fehler beim Speichern: " + saveErg.Meldungstext, true);
+                }
+            }
+        },
+        error: function (req, status, error) {
+            HideBusyIndicator();
+            ShowMessage("Es konnten nicht alle Daten zum Server \u00fcbertragen werden. Bitte \u00fcberpr\u00fcfen Sie Ihre Internetverbindung. (" + error + ")", true);
+        }
+    });
+};

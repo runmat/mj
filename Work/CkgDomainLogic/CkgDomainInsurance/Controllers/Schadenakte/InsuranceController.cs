@@ -43,7 +43,7 @@ namespace ServicesMvc.Controllers
         {
             var doc = SchadenakteViewModel.DocsViewModel.GetSchadenakteDoc(id);
 
-            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.Categories;
+            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.CategoriesWithoutZero;
 
             return PartialView("Schadenakte/Partial/Dokumente/SchadenakteDocEdit", doc);
         }
@@ -56,7 +56,7 @@ namespace ServicesMvc.Controllers
                 SchadenakteViewModel.DocsViewModel.UpdateDocument(model, ModelState);
             }
 
-            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.Categories;
+            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.CategoriesWithoutZero;
 
             return PartialView("Schadenakte/Partial/Dokumente/SchadenakteDocEdit", model);
         }
@@ -105,13 +105,17 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult UploadSchadenakteDoc(IEnumerable<HttpPostedFileBase> uploadFiles)
         {
+            // Prüfen, ob Kategorie gesetzt ist
+            if (SchadenakteViewModel.DocsViewModel.NewDocCategoryID == 0)
+                return Content(Localize.ErrorsOccuredOnSaving);
+
             // Prüfen, ob Upload-Verzeichnis ok und Dateitypen erlaubt
             foreach (var uploadfile in uploadFiles)
             {
                 var verifyResult = VerifyDocument(uploadfile);
                 if (verifyResult != null)
                 {
-                    return verifyResult;
+                    return Content(verifyResult);
                 }
             }
 
@@ -162,18 +166,18 @@ namespace ServicesMvc.Controllers
             }       
         }
 
-        private JsonResult VerifyDocument(HttpPostedFileBase uploadFile)
+        private string VerifyDocument(HttpPostedFileBase uploadFile)
         {
 
             if (!CheckFolderAvailablilityAndCreate())
             {
-                return Json(new { success = false, message = Localize.DocumentCannotCreateFolder }, "text/plain");
+                return Localize.DocumentCannotCreateFolder;
             }
 
 
             if (!CheckFileExtension(uploadFile.FileName))
             {
-                return Json(new { success = false, message = Localize.CustomerDocumentUploadLegalFiletypeWarning }, "text/plain"); ;
+                return Localize.CustomerDocumentUploadLegalFiletypeWarning;
             }
 
             return null;

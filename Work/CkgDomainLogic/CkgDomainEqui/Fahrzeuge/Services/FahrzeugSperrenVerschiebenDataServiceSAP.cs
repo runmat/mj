@@ -74,14 +74,14 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
             var anzOk = 0;
 
-            Z_M_EC_AVM_PDIWECHSEL.Init(SAP, "ZZKUNNR", LogonContext.KundenNr.ToSapKunnr());
-
             var jetzt = DateTime.Now.ToShortDateString();
 
             foreach (var fzg in fahrzeuge)
             {
                 try
                 {
+                    Z_M_EC_AVM_PDIWECHSEL.Init(SAP, "ZZKUNNR", LogonContext.KundenNr.ToSapKunnr());
+
                     SAP.SetImportParameter("ZZQMNUM", fzg.MeldungsNr);
                     SAP.SetImportParameter("ZZCARPORT", zielPdi);
                     SAP.SetImportParameter("I_ZZCARPORT", fzg.DadPdi);
