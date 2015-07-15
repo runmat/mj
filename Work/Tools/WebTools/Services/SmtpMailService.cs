@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Helpers;
 using GeneralTools.Contracts;
 
@@ -8,35 +9,26 @@ namespace WebTools.Services
     {
         public ISmtpSettings SmtpSettings { get; private set; }
         
-
         public SmtpMailService(ISmtpSettings smtpSettings)
         {
             SmtpSettings = smtpSettings;
-
-            // Nasser
-            // Ich muss hier keine Werte setzen, brauche einfach auf die ISmtpSettings zuzugreifen
-            // SetSmtpSettings(smtpSettings);
         }
 
         private static void SetSmtpSettings(ISmtpSettings smtpSettings)
         {
             WebMail.SmtpServer = smtpSettings.SmtpServer;
             WebMail.From = smtpSettings.SmtpSender;
-
-            //if (!string.IsNullOrEmpty(smtpSettings.SmtpPort))
-            //    WebMail.SmtpPort = Convert.ToInt32(smtpSettings.SmtpPort);
-
-            //WebMail.EnableSsl = smtpSettings.SmtpEnableSsl;
-
-            //if (!string.IsNullOrEmpty(smtpSettings.SmtpUserName))
-            //{
-            //    WebMail.UserName = smtpSettings.SmtpUserName;
-            //    WebMail.Password = smtpSettings.SmtpPassword;
-            //}
         }
 
         public bool SendMail(string to, string subject, string body, IEnumerable<string> filesToAttach = null)
         {
+            return SendMailMain(to, subject, body, filesToAttach) == null;
+        }
+
+        public string SendMailMain(string to, string subject, string body, IEnumerable<string> filesToAttach = null)
+        {
+            string result = null;
+
             try
             {
                 SetSmtpSettings(SmtpSettings);
@@ -49,9 +41,13 @@ namespace WebTools.Services
                     filesToAttach: filesToAttach
                     );
             }
-            catch { return false; }
+            catch (Exception e)
+            {
+                result = e.Message;
+            }
 
-            return true;
+            return result;
         }
+
     }
 }

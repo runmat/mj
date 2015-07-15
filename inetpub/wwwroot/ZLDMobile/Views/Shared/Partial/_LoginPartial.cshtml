@@ -4,7 +4,7 @@
     <input type="hidden" id="ihSelUsername" value='@Session["AngemeldeterUser"]'/>
     <a href="#popupUserOptionsMenu" data-role="button" data-icon="gear" data-transition="slideup" data-rel="popup" data-mini="true" data-inline="true">@Session["AngemeldeterUser"]</a>
     <div id="popupUserOptionsMenu" data-role="popup">
-        <ul style="min-width: 275px;" data-role="listview" data-inset="true">
+        <ul class="Min-Width-275" data-role="listview" data-inset="true">
             <li data-role="divider">User @Session["AngemeldeterUser"]</li>        
             <li title="ChangePassword"><a href='@Url.Action("ChangePassword", "Login")'>Kennwort ändern</a></li>   
             <li title="Logout"><a href='@Url.Action("Logout", "Login")'>Abmelden</a></li>                          

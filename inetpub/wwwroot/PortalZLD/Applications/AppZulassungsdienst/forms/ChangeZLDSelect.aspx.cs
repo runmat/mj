@@ -60,6 +60,7 @@ namespace AppZulassungsdienst.forms
         protected void Page_Load(object sender, EventArgs e)
         {
             bool ModusNeueAHVorgaenge = (Request.QueryString["A"] != null);
+            bool ModusAenderungAngenommene = (Request.QueryString["E"] != null);
             bool ModusSofortabrechnung = (Request.QueryString["S"] != null);
             bool BackfromList = (Request.QueryString["B"] != null);
             var strZulDatOld = "";
@@ -83,6 +84,7 @@ namespace AppZulassungsdienst.forms
                 Session["SucheValue"] = null;
                 Session["Rowfilter"] = null;
                 objNacherf.SelAnnahmeAH = ModusNeueAHVorgaenge;
+                objNacherf.SelAenderungAngenommene = ModusAenderungAngenommene;
                 objNacherf.SelSofortabrechnung = ModusSofortabrechnung;
                 fillForm();
                 ShowHideControls();
@@ -141,7 +143,7 @@ namespace AppZulassungsdienst.forms
         {
             lblError.Text = "";
 
-            if (String.IsNullOrEmpty(objNacherf.SelDatum) && String.IsNullOrEmpty(objNacherf.SelID) && !chkFlieger.Checked && !objNacherf.SelAnnahmeAH)
+            if (String.IsNullOrEmpty(objNacherf.SelDatum) && String.IsNullOrEmpty(objNacherf.SelID) && !chkFlieger.Checked && !objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene)
             {
                 lblError.Text = "Bitte geben Sie das Zulassungsdatum ein!";
                 return;
@@ -174,6 +176,12 @@ namespace AppZulassungsdienst.forms
             {
                 objNacherf.SelVorgang = "A";
                 objNacherf.SelStatus = "AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge       
+                objNacherf.SelFlieger = false;
+            }
+            else if (objNacherf.SelAenderungAngenommene)
+            {
+                objNacherf.SelVorgang = "A";
+                objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung       
                 objNacherf.SelFlieger = false;
             }
             else
@@ -302,12 +310,12 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void ShowHideControls()
         {
-            trKundengruppe.Visible = objNacherf.SelAnnahmeAH;
-            trTour.Visible = objNacherf.SelAnnahmeAH;
+            trKundengruppe.Visible = (objNacherf.SelAnnahmeAH ||objNacherf.SelAenderungAngenommene);
+            trTour.Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
             trStva.Visible = !objNacherf.SelSofortabrechnung;
-            trDienstleistung.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-            trVorgang.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung);
-            trFlieger.Visible = !objNacherf.SelAnnahmeAH;
+            trDienstleistung.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
+            trVorgang.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
+            trFlieger.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
         }
 
         #endregion

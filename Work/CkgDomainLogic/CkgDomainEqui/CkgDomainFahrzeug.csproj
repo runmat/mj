@@ -177,6 +177,7 @@
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Halterabweichung.cs" />
     <Compile Include="Equi\Models\UIModels\EquiHistorieSuchparameter.cs" />
+    <Compile Include="Equi\Models\UIModels\KlaerfaelleVhcSuchparameter.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreEdit.cs" />
     <Compile Include="Equi\Models\UIModels\MahnsperreSuchparameter.cs" />
     <Compile Include="Equi\Models\VersandartOptionen.cs" />
@@ -355,6 +356,10 @@
       <Project>{540F0A45-F018-4489-8153-4504CA663CFE}</Project>
       <Name>WebTools</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CkgDomainAutohaus\CkgDomainAutohaus.csproj">
+      <Project>{B8B39B55-B1CD-4C1F-A768-C73CE1F3EA08}</Project>
+      <Name>CkgDomainAutohaus</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CkgDomainCommon\CkgDomainCommon.csproj">
       <Project>{116FCA66-F690-41B3-86F5-B8BF7BBA2949}</Project>
       <Name>CkgDomainCommon</Name>
@@ -364,7 +369,9 @@
       <Name>CkgDomainLogic</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Fahrzeuge\Models\HolBringService\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

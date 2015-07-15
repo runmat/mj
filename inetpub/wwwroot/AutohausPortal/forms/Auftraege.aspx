@@ -185,9 +185,9 @@
                             <asp:Label ID="lblMatbez" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Matbez") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="Zulassungsdatum" HeaderText="Zulassungsdatum">
+                    <asp:TemplateField SortExpression="Zulassungsdatum" HeaderText="Zul.datum">
                         <HeaderTemplate>
-                            <asp:LinkButton ID="col_Zulassungsdatum" runat="server" CommandName="Sort" CommandArgument="Zulassungsdatum">Zulassungsdatum</asp:LinkButton></HeaderTemplate>
+                            <asp:LinkButton ID="col_Zulassungsdatum" runat="server" CommandName="Sort" CommandArgument="Zulassungsdatum">Zul.datum</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
                             <asp:Label ID="lblZulassungsdatum" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Zulassungsdatum", "{0:d}") %>'></asp:Label>
                         </ItemTemplate>

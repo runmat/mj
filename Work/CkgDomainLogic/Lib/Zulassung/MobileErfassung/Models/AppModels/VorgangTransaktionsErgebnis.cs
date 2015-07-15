@@ -16,13 +16,6 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         [Display(Name = "Meldungstext")]
         public string Meldungstext { get; set; }
 
-        public VorgangTransaktionsErgebnis(string id)
-        {
-            this.Id = id;
-            this.Ergebniscode = "";
-            this.Meldungstext = "";
-        }
-
         public VorgangTransaktionsErgebnis(string id, string ergebniscode, string meldungstext)
         {
             this.Id = id;

@@ -72,7 +72,7 @@ namespace AppRemarketing.forms
                 return;
             }
 
-            if (tmpTable.Columns.Count < 6)
+            if (tmpTable.Columns.Count < 5)
             {
                 lblError.Text = "Ungültige Spaltenanzahl. Bitte überprüfen Sie das Uploadformat.";
                 return;
@@ -86,7 +86,6 @@ namespace AppRemarketing.forms
             m_Report.tblUpload.Columns.Add("NUMMER_RE", typeof(string));
             m_Report.tblUpload.Columns.Add("BETRAG_RE", typeof(string));
             m_Report.tblUpload.Columns.Add("DATUM_RE", typeof(string));
-            m_Report.tblUpload.Columns.Add("VERTRAGSNR", typeof(string));
             m_Report.tblUpload.Columns.Add("RET", typeof (string));
             m_Report.tblUpload.Columns.Add("ID", typeof (int));
             m_Report.tblUpload.AcceptChanges();
@@ -95,7 +94,7 @@ namespace AppRemarketing.forms
 
             foreach (DataRow dr in tmpTable.Rows)
             {
-                for (int i = 0; i < 6; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     if (string.IsNullOrEmpty(dr[i].ToString()))
                     {
@@ -126,8 +125,6 @@ namespace AppRemarketing.forms
                     lblError.Text = "Kein korrektes Rechnungsdatum. Bitte überprüfen Sie Ihre Daten.";
                     return;
                 }
-
-                newRow["VERTRAGSNR"] = dr[5];
 
                 m_Report.tblUpload.Rows.Add(newRow);
             }
@@ -211,8 +208,6 @@ namespace AppRemarketing.forms
                 item.FindControl("lblRechnungsbetrag").Visible = false;
                 item.FindControl("txtRechnungsdatum").Visible = true;
                 item.FindControl("lblRechnungsdatum").Visible = false;
-                item.FindControl("txtVertragsnummer").Visible = true;
-                item.FindControl("lblVertragsnummer").Visible = false;
             }
         }
 
@@ -233,7 +228,6 @@ namespace AppRemarketing.forms
                         errorRows[0]["NUMMER_RE"] = ((TextBox)gdi.FindControl("txtRechnungsnummer")).Text;
                         errorRows[0]["BETRAG_RE"] = ((TextBox)gdi.FindControl("txtRechnungsbetrag")).Text;
                         errorRows[0]["DATUM_RE"] = ((TextBox)gdi.FindControl("txtRechnungsdatum")).Text;
-                        errorRows[0]["VERTRAGSNR"] = ((TextBox)gdi.FindControl("txtVertragsnummer")).Text;
                     }
                 }
             }

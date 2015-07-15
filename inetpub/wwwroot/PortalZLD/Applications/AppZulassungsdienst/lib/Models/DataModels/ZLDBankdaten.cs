@@ -5,6 +5,8 @@ namespace AppZulassungsdienst.lib.Models
     {
         public string SapId { get; set; }
 
+        public string Partnerrolle { get; set; }
+
         public string Bankleitzahl { get; set; }
 
         public string KontoNr { get; set; }

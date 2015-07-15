@@ -8,101 +8,6 @@
     <script src="/PortalZLD/JScript/jquery.blockUI.js" type="text/javascript"></script>
         <script src="/PortalZLD/JScript/jquery.ui.datepicker-de.js" type="text/javascript"></script>
     <script src="/PortalZLD/JScript/jquery.scrollTo-1.4.2.js" type="text/javascript"></script>
-	<script type="text/javascript">
-	    var scroll;
-	    $(document).ready(function () {
-	        $("#divEditAdrHin").dialog({
-	            autoOpen: false,
-	            bgiframe: true,
-	            modal: true,
-	            resizable: true,
-	            closeOnEscape: false,
-	            height: 220,
-	            width: 590,
-	            open: function (event, ui) {
-	                $(this).parent().appendTo("#divEditAdrHinDlgContainer");
-	                $(this).parent().children().children('.ui-dialog-titlebar-close').hide();
-
-	            }
-
-	        });
-	        $("#divEditAdrRueck").dialog({
-	            autoOpen: false,
-	            bgiframe: true,
-	            modal: true,
-	            resizable: true,
-	            closeOnEscape: false,
-	            height: 480,
-	            width: 650,
-	            open: function (event, ui) {
-	                $(this).parent().appendTo("#divEditAdrRueckDlgContainer");
-	                $(this).parent().children().children('.ui-dialog-titlebar-close').hide();
-
-	            }
-
-	        });
-
-	    });
-
-
-	    function closeDialogandSave(title) {
-	        //Could cause an infinite loop because of "on close handling"
-	        if (title == 'AdresseHin') {
-	            $("#divEditAdrHin").dialog('close');
-
-	            __doPostBack('ctl00$ContentPlaceHolder1$btnRefreshAdressHin', '');
-	        }
-	        else {
-	            $("#divEditAdrRueck").dialog('close');
-
-	            __doPostBack('ctl00$ContentPlaceHolder1$btnRefreshAdressHin', '');
-	        }
-	    }
-	    function closeDialog(title) {
-	        //Could cause an infinite loop because of "on close handling"
-	        if (title == 'AdresseHin') {
-	            $("#divEditAdrHin").dialog('close');
-	        }
-	        else {
-	            $("#divEditAdrRueck").dialog('close');
-	        }
-	    }
-	    function openDialog(title) {
-	        if (title == 'AdresseHin') {
-	            $("#divEditAdrHin").dialog('open');
-	        }
-	        else { $("#divEditAdrRueck").dialog('open'); }
-
-	    }
-
-	    function openDialogAndBlock(title) {
-	        openDialog(title);
-	        if (title == 'AdresseHin') {
-	            //block it to clean out the data
-	            $("#divEditAdrHin").block({
-	                message: '<img src="/PortalZLD/images/indicator.gif" />',
-	                css: { border: '0px' },
-	                fadeIn: 0,
-	                overlayCSS: { backgroundColor: '#ffffff', opacity: 1 }
-	            });
-	        }
-	        else {
-	            $("#divEditAdrRueck").block({
-	                message: '<img src="/PortalZLD/images/indicator.gif" />',
-	                css: { border: '0px' },
-	                fadeIn: 0,
-	                overlayCSS: { backgroundColor: '#ffffff', opacity: 1 }
-	            });
-	        }
-	    }
-	    function unblockDialog(title) {
-	        if (title == 'AdresseHin') {
-	            $("#divEditAdrHin").unblock();
-	        }
-	        else { $("#divEditAdrRueck").unblock(); }
-	    }
-
-	</script>
     <div id="site">
         <div id="content">
             <div class="divPopupBack" runat="server" visible="false" id="divBackDisabled">
@@ -495,212 +400,298 @@
                             </div>
                         </ContentTemplate>
                     </asp:UpdatePanel>
-
-                       <div id="divEditAdrHinDlgContainer">
+                    
+                    <asp:Button ID="MPEDummyAdrHin" Width="0" Height="0" runat="server" Style="display: none" />
+                    <ajaxToolkit:ModalPopupExtender runat="server" ID="MPEAdrHin" BackgroundCssClass="divProgress"
+                        Enabled="true" PopupControlID="PanelAdrHin" TargetControlID="MPEDummyAdrHin">
+                    </ajaxToolkit:ModalPopupExtender>
+                    <asp:Panel ID="PanelAdrHin" HorizontalAlign="Center" runat="server" Style="display: none">
                         <div id="divEditAdrHin" title="Abweichende Adresse Hinsendung" style="display: block;">
-                            <asp:UpdatePanel ID="upnlEditAdrHin" runat="server">
-                                <ContentTemplate>
-                                        
-                                    <table cellpadding="0" cellspacing="0" style="color:#595959;width:480px">
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold">
-                                                <asp:Label ID="lblNameHin" runat="server" Text="Name"></asp:Label>
-                                            </td>
-                                            <td  style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtNameHin1" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="40"></asp:TextBox> 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;" nowrap="nowrap">
-                                            </td>
-                                            <td class="firstLeft active" style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtNameHin2" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="40"></asp:TextBox>  
-                                            </td>
+                            <table cellpadding="0" cellspacing="0" style="color:#595959;width:480px; border: solid 1px #646464" bgcolor="white">
+                                <tr>
+                                    <td style="padding-top:10px;padding-right:10px;font-weight:bold">
+                                        <asp:Label ID="lblNameHin" runat="server" Text="Name"></asp:Label>
+                                    </td>
+                                    <td  style="padding-top:10px;padding-right:10px;" colspan="2">
+                                        <asp:TextBox ID="txtNameHin1" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                            MaxLength="40"></asp:TextBox> 
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top:10px;padding-right:10px;" nowrap="nowrap">
+                                    </td>
+                                    <td class="firstLeft active" style="padding-top:10px;padding-right:10px;" colspan="2">
+                                        <asp:TextBox ID="txtNameHin2" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                            MaxLength="40"></asp:TextBox>  
+                                    </td>
                                                
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold">
-                                                <asp:Label ID="lblStrasseHin" runat="server">Straße:</asp:Label>
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtStrasseHin" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="60"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold">
-                                                <asp:Label ID="lblPLZBank" runat="server">PLZ/Ort*:</asp:Label>
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;">
-                                                <asp:TextBox ID="txtPlz" runat="server" CssClass="TextBoxNormal" MaxLength="5" Width="65px"  onKeyPress="return numbersonly(event, false)"></asp:TextBox>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top:10px;padding-right:10px;font-weight:bold">
+                                        <asp:Label ID="lblStrasseHin" runat="server">Straße:</asp:Label>
+                                    </td>
+                                    <td style="padding-top:10px;padding-right:10px;" colspan="2">
+                                        <asp:TextBox ID="txtStrasseHin" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                            MaxLength="60"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top:10px;padding-right:10px;font-weight:bold">
+                                        <asp:Label ID="lblPLZBank" runat="server">PLZ/Ort*:</asp:Label>
+                                    </td>
+                                    <td style="padding-top:10px;padding-right:10px;">
+                                        <asp:TextBox ID="txtPlz" runat="server" CssClass="TextBoxNormal" MaxLength="5" Width="65px"  onKeyPress="return numbersonly(event, false)"></asp:TextBox>
 
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;" class="ui-accordion">
-                                                <asp:TextBox ID="txtOrt" Width="320px" CssClass="TextBoxNormal" runat="server" 
-                                                    MaxLength="40"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold" colspan="3">
-                                                <asp:Label ID="lblAdrHinError" runat="server" CssClass="TextError"></asp:Label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                           <td align="right" style="padding-top:10px;padding-right:10px;" colspan="3">
-                                        <asp:LinkButton ID="cmdSetBackHin" runat="server" Text="Zurücksetzen" CssClass="Tablebutton"
-                                            Width="78px" onclick="cmdSetBackHin_Click" />
-                                      <asp:LinkButton ID="cmdCloseDialog" runat="server" Text="Schließen" CssClass="Tablebutton"
-                                            Width="78px" onclick="cmdCloseDialog_Click"  />
-                                        <asp:LinkButton ID="cmdSaveAdrHin" runat="server" Text="Übernehmen" CssClass="Tablebutton"
-                                            Width="78px" onclick="cmdSaveAdrHin_Click" />
-                                            </td>
-                                        </tr>
-                                    </table>
-
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
+                                    </td>
+                                    <td style="padding-top:10px;padding-right:10px;" class="ui-accordion">
+                                        <asp:TextBox ID="txtOrt" Width="320px" CssClass="TextBoxNormal" runat="server" 
+                                            MaxLength="40"></asp:TextBox>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="padding-top:10px;padding-right:10px;font-weight:bold" colspan="3">
+                                        <asp:Label ID="lblAdrHinError" runat="server" CssClass="TextError"></asp:Label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td align="right" style="padding-top:10px;padding-right:10px;" colspan="3">
+                                <asp:LinkButton ID="cmdSetBackHin" runat="server" Text="Zurücksetzen" CssClass="Tablebutton"
+                                    Width="78px" onclick="cmdSetBackHin_Click" />
+                                <asp:LinkButton ID="cmdCloseDialogHin" runat="server" Text="Schließen" CssClass="Tablebutton"
+                                    Width="78px" onclick="cmdCloseDialogHin_Click"  />
+                                <asp:LinkButton ID="cmdSaveAdrHin" runat="server" Text="Übernehmen" CssClass="Tablebutton"
+                                    Width="78px" onclick="cmdSaveAdrHin_Click" />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="3">
+                                        &nbsp;
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
-                    </div>
-                       <div id="divEditAdrRueckDlgContainer"  style="width: 600px;">
+                    </asp:Panel>
+                    
+                    <asp:Button ID="MPEDummyAdrRueck" Width="0" Height="0" runat="server" Style="display: none" />
+                    <ajaxToolkit:ModalPopupExtender runat="server" ID="MPEAdrRueck" BackgroundCssClass="divProgress"
+                        Enabled="true" PopupControlID="PanelAdrRueck" TargetControlID="MPEDummyAdrRueck">
+                    </ajaxToolkit:ModalPopupExtender>
+                    <asp:Panel ID="PanelAdrRueck" HorizontalAlign="Center" runat="server" Style="display: none">
                         <div id="divEditAdrRueck" title="Vesandadressen Rücksendung" style="display: block; width: 550px;">
-                            <asp:UpdatePanel ID="upnlEditAdrRueck" runat="server">
-                                <ContentTemplate>
-                                    <table cellpadding="0" cellspacing="0" style="color:#595959; width: 507px;">
-                                           <tr>  
-                                               <td style="padding-top: 10px; padding-right: 10px; font-weight: bold; width: 120px;">
-                                                <asp:Label ID="lblDocRueck" runat="server" Text="welche Unterlagen:"></asp:Label>
-                                            </td>
-                                            <td colspan="2" style="padding-top: 10px; padding-right: 10px;">
-                                                <asp:TextBox ID="txtDocRueck1" runat="server" CssClass="TextBoxNormal" MaxLength="100"
-                                                    Width="400px"></asp:TextBox>
-                                            </td>  </tr>                                   
-                                     <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
-                                                <asp:Label ID="lblNameRueck" runat="server" Text="Name"></asp:Label>
-                                            </td>
-                                            <td  style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtNameRueck1" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="40"></asp:TextBox> 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px; width: 120px;" nowrap="nowrap">
-                                            </td>
-                                            <td class="firstLeft active" style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtNameRueck2" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="40"></asp:TextBox>  
-                                            </td>
+                            <table cellpadding="0" cellspacing="0" style="color:#595959; width: 507px;border: solid 1px #646464" bgcolor="white">
+                                <tr>  
+                                    <td style="padding-top: 10px; padding-right: 10px; font-weight: bold; width: 120px;">
+                                    <asp:Label ID="lblDocRueck" runat="server" Text="welche Unterlagen:"></asp:Label>
+                                </td>
+                                <td colspan="2" style="padding-top: 10px; padding-right: 10px;">
+                                    <asp:TextBox ID="txtDocRueck1" runat="server" CssClass="TextBoxNormal" MaxLength="100"
+                                        Width="400px"></asp:TextBox>
+                                </td>  </tr>                                   
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
+                                    <asp:Label ID="lblNameRueck" runat="server" Text="Name"></asp:Label>
+                                </td>
+                                <td  style="padding-top:10px;padding-right:10px;" colspan="2">
+                                    <asp:TextBox ID="txtNameRueck1" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                        MaxLength="40"></asp:TextBox> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px; width: 120px;" nowrap="nowrap">
+                                </td>
+                                <td class="firstLeft active" style="padding-top:10px;padding-right:10px;" colspan="2">
+                                    <asp:TextBox ID="txtNameRueck2" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                        MaxLength="40"></asp:TextBox>  
+                                </td>
                                                
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
-                                                <asp:Label ID="Label17" runat="server">Straße:</asp:Label>
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtStrasseRueck" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="60"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
-                                                <asp:Label ID="Label18" runat="server">PLZ/Ort*:</asp:Label>
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;">
-                                                <asp:TextBox ID="txtPLZRueck" runat="server" CssClass="TextBoxNormal" 
-                                                    MaxLength="5" Width="65px" onKeyPress="return numbersonly(event, false)"></asp:TextBox>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
+                                    <asp:Label ID="Label17" runat="server">Straße:</asp:Label>
+                                </td>
+                                <td style="padding-top:10px;padding-right:10px;" colspan="2">
+                                    <asp:TextBox ID="txtStrasseRueck" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                        MaxLength="60"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
+                                    <asp:Label ID="Label18" runat="server">PLZ/Ort*:</asp:Label>
+                                </td>
+                                <td style="padding-top:10px;padding-right:10px;">
+                                    <asp:TextBox ID="txtPLZRueck" runat="server" CssClass="TextBoxNormal" 
+                                        MaxLength="5" Width="65px" onKeyPress="return numbersonly(event, false)"></asp:TextBox>
 
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;width: 100%;">
-                                                <asp:TextBox ID="txtOrtRueck" Width="320px" CssClass="TextBoxNormal" runat="server" 
-                                                    MaxLength="40"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" style="height: 10px;" >
+                                </td>
+                                <td style="padding-top:10px;padding-right:10px;width: 100%;">
+                                    <asp:TextBox ID="txtOrtRueck" Width="320px" CssClass="TextBoxNormal" runat="server" 
+                                        MaxLength="40"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="height: 10px;" >
                                                
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" style="margin-top: 10px;" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" style="margin-top: 10px;" class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix" >
                                                
-                                            </td>
-                                        </tr>
-                                           <tr>  
-                                               <td style="padding-top: 10px; padding-right: 10px; font-weight: bold; width: 120px;">
-                                                <asp:Label ID="Label16" runat="server" Text="welche Unterlagen:"></asp:Label>
-                                            </td>
-                                            <td colspan="2" style="padding-top: 10px; padding-right: 10px;">
-                                                <asp:TextBox ID="txtDoc2Rueck" runat="server" CssClass="TextBoxNormal" MaxLength="100"
-                                                    Width="400px"></asp:TextBox>
-                                            </td>  </tr>                                   
-                                     <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
-                                                <asp:Label ID="Label19" runat="server" Text="Name"></asp:Label>
-                                            </td>
-                                            <td  style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtName1Rueck2" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="40"></asp:TextBox> 
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px; width: 120px;" nowrap="nowrap">
-                                            </td>
-                                            <td class="firstLeft active" style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtName2Rueck2" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="40"></asp:TextBox>  
-                                            </td>
+                                </td>
+                            </tr>
+                                <tr>  
+                                    <td style="padding-top: 10px; padding-right: 10px; font-weight: bold; width: 120px;">
+                                    <asp:Label ID="Label16" runat="server" Text="welche Unterlagen:"></asp:Label>
+                                </td>
+                                <td colspan="2" style="padding-top: 10px; padding-right: 10px;">
+                                    <asp:TextBox ID="txtDoc2Rueck" runat="server" CssClass="TextBoxNormal" MaxLength="100"
+                                        Width="400px"></asp:TextBox>
+                                </td>  </tr>                                   
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
+                                    <asp:Label ID="Label19" runat="server" Text="Name"></asp:Label>
+                                </td>
+                                <td  style="padding-top:10px;padding-right:10px;" colspan="2">
+                                    <asp:TextBox ID="txtName1Rueck2" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                        MaxLength="40"></asp:TextBox> 
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px; width: 120px;" nowrap="nowrap">
+                                </td>
+                                <td class="firstLeft active" style="padding-top:10px;padding-right:10px;" colspan="2">
+                                    <asp:TextBox ID="txtName2Rueck2" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                        MaxLength="40"></asp:TextBox>  
+                                </td>
                                                
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
-                                                <asp:Label ID="Label20" runat="server">Straße:</asp:Label>
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;" colspan="2">
-                                                <asp:TextBox ID="txtStrasse2Rueck" Width="400px" CssClass="TextBoxNormal" runat="server"
-                                                    MaxLength="60"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
-                                                <asp:Label ID="Label21" runat="server">PLZ/Ort*:</asp:Label>
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;">
-                                                <asp:TextBox ID="txtPLZ2Rueck" runat="server" CssClass="TextBoxNormal" 
-                                                    MaxLength="5" Width="65px" onKeyPress="return numbersonly(event, false)"></asp:TextBox>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
+                                    <asp:Label ID="Label20" runat="server">Straße:</asp:Label>
+                                </td>
+                                <td style="padding-top:10px;padding-right:10px;" colspan="2">
+                                    <asp:TextBox ID="txtStrasse2Rueck" Width="400px" CssClass="TextBoxNormal" runat="server"
+                                        MaxLength="60"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px;font-weight:bold; width: 120px;">
+                                    <asp:Label ID="Label21" runat="server">PLZ/Ort*:</asp:Label>
+                                </td>
+                                <td style="padding-top:10px;padding-right:10px;">
+                                    <asp:TextBox ID="txtPLZ2Rueck" runat="server" CssClass="TextBoxNormal" 
+                                        MaxLength="5" Width="65px" onKeyPress="return numbersonly(event, false)"></asp:TextBox>
 
-                                            </td>
-                                            <td style="padding-top:10px;padding-right:10px;width: 100%;">
-                                                <asp:TextBox ID="txtOrt2Rueck" Width="320px" CssClass="TextBoxNormal" runat="server" 
-                                                    MaxLength="40"></asp:TextBox>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="padding-top:10px;padding-right:10px;font-weight:bold" colspan="3">
-                                                <asp:Label ID="lblAdrRueckError" runat="server" CssClass="TextError"></asp:Label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                           <td align="right" style="padding-top:10px;padding-right:50px;" colspan="3">
-                                            <asp:LinkButton ID="cmdSetBackRueck" runat="server" Text="Zurücksetzen" CssClass="Tablebutton"
-                                            Width="78px" onclick="cmdSetBackRueck_Click" />
-                                      <asp:LinkButton ID="cmdCloseDialogRueck" runat="server" Text="Schließen" CssClass="Tablebutton"
-                                            Width="78px" onclick="cmdCloseDialogRueck_Click"  />
-                                        <asp:LinkButton ID="LinkButton2" runat="server" Text="Übernehmen" CssClass="Tablebutton"
-                                            Width="78px" onclick="LinkButton2_Click" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </ContentTemplate>
-                            </asp:UpdatePanel>
+                                </td>
+                                <td style="padding-top:10px;padding-right:10px;width: 100%;">
+                                    <asp:TextBox ID="txtOrt2Rueck" Width="320px" CssClass="TextBoxNormal" runat="server" 
+                                        MaxLength="40"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="padding-top:10px;padding-right:10px;font-weight:bold" colspan="3">
+                                    <asp:Label ID="lblAdrRueckError" runat="server" CssClass="TextError"></asp:Label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" style="padding-top:10px;padding-right:50px;" colspan="3">
+                                <asp:LinkButton ID="cmdSetBackRueck" runat="server" Text="Zurücksetzen" CssClass="Tablebutton"
+                                Width="78px" onclick="cmdSetBackRueck_Click" />
+                            <asp:LinkButton ID="cmdCloseDialogRueck" runat="server" Text="Schließen" CssClass="Tablebutton"
+                                Width="78px" onclick="cmdCloseDialogRueck_Click"  />
+                            <asp:LinkButton ID="cmdSaveAdrRueck" runat="server" Text="Übernehmen" CssClass="Tablebutton"
+                                Width="78px" onclick="cmdSaveAdrRueck_Click" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
                         </div>
-                    </div>
-		            <asp:UpdatePanel ID="upnlJsRunner" UpdateMode="Always" runat="server">
-			            <ContentTemplate>
-				            <asp:PlaceHolder ID="phrJsRunner" runat="server"></asp:PlaceHolder>
-			            </ContentTemplate>
-		            </asp:UpdatePanel>
+                    </asp:Panel>
+
+                    <asp:Button ID="MPEDummy" Width="0" Height="0" runat="server" Style="display: none" />
+                    <ajaxToolkit:ModalPopupExtender runat="server" ID="MPE48h" BackgroundCssClass="divProgress"
+                        Enabled="true" PopupControlID="Panel48h" TargetControlID="MPEDummy">
+                    </ajaxToolkit:ModalPopupExtender>
+                    <asp:Panel ID="Panel48h" HorizontalAlign="Center" runat="server" Style="display: none">
+                        <table cellspacing="0" id="Table1" runat="server" width="55%" bgcolor="white" cellpadding="0"
+                            style="width: 55%; border: solid 1px #646464">
+                            <tr>
+                                <td colspan="2">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="firstLeft active" colspan="2">
+                                    <b>
+                                        48h-Versandzulassung
+                                    </b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="firstLeft active" colspan="2" style="color: red; padding-left: 3px; padding-right: 3px">
+                                    <b>Achtung! Aufgrund des gewählten Zulassungsdatums, Amtes und Lieferanten wird dieser Vorgang als 48h-Expresszulassung behandelt.</b>
+                                    <br/>
+                                    <b>Bitte beachten Sie die folgenden Zusatzinformationen und passen Sie ggf. den Versand vor dem Absenden noch einmal an.</b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="firstLeft active">
+                                    <b>Lieferuhrzeit:</b>
+                                </td>
+                                <td class="firstLeft active">
+                                    <asp:Label ID="lblLieferuhrzeit" runat="server"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="firstLeft active">
+                                    <b>Abw. Lieferadresse:</b>
+                                </td>
+                                <td class="firstLeft active">
+                                    <asp:Label ID="lblAbwName" runat="server"/>
+                                    <br/>
+                                    <asp:Label ID="lblAbwStrasse" runat="server"/>
+                                    <br/>
+                                    <asp:Label ID="lblAbwOrt" runat="server"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    <asp:LinkButton ID="lb48hCancel" Text="Versand anpassen" Height="16px" Width="128px" runat="server"
+                                                    CssClass="TablebuttonLarge"/>
+                                    <asp:LinkButton ID="lb48hContinue" Text="Weiter" Height="16px" Width="78px" runat="server"
+                                                    CssClass="Tablebutton" OnClick="lb48hContinue_Click"/>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">
+                                    &nbsp;
+                                </td>
+                            </tr>
+                        </table>
+                    </asp:Panel>
                 </div>
             </div>
         </div>

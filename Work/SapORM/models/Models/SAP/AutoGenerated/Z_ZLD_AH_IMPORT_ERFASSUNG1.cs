@@ -588,6 +588,150 @@ namespace SapORM.Models
 			}
 		}
 
+		public partial class GT_BANK_IN : IModelMappingApplied
+		{
+			[SapIgnore]
+			[ScriptIgnore]
+			public ISapConnection SAPConnection { get; set; }
+
+			[SapIgnore]
+			[ScriptIgnore]
+			public IDynSapProxyFactory DynSapProxyFactory { get; set; }
+
+			public string ZULBELN { get; set; }
+
+			public string PARVW { get; set; }
+
+			public string BANKL { get; set; }
+
+			public string BANKN { get; set; }
+
+			public string EBPP_ACCNAME { get; set; }
+
+			public string KOINH { get; set; }
+
+			public string EINZ_JN { get; set; }
+
+			public string RECH_JN { get; set; }
+
+			public string SWIFT { get; set; }
+
+			public string IBAN { get; set; }
+
+			public string LOEKZ { get; set; }
+
+			public static GT_BANK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
+			{
+				var o = new GT_BANK_IN
+				{
+					ZULBELN = (string)row["ZULBELN"],
+					PARVW = (string)row["PARVW"],
+					BANKL = (string)row["BANKL"],
+					BANKN = (string)row["BANKN"],
+					EBPP_ACCNAME = (string)row["EBPP_ACCNAME"],
+					KOINH = (string)row["KOINH"],
+					EINZ_JN = (string)row["EINZ_JN"],
+					RECH_JN = (string)row["RECH_JN"],
+					SWIFT = (string)row["SWIFT"],
+					IBAN = (string)row["IBAN"],
+					LOEKZ = (string)row["LOEKZ"],
+
+					SAPConnection = sapConnection,
+					DynSapProxyFactory = dynSapProxyFactory,
+				};
+				o.OnInitFromSap();
+				return o;
+			}
+
+			partial void OnInitFromSap();
+
+			partial void OnInitFromExtern();
+
+			public void OnModelMappingApplied()
+			{
+				OnInitFromExtern();
+			}
+
+			public static IEnumerable<GT_BANK_IN> Select(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return dt.AsEnumerable().Select(r => Create(r, sapConnection));
+			}
+
+			public static List<GT_BANK_IN> ToList(DataTable dt, ISapConnection sapConnection = null)
+			{
+				return Select(dt, sapConnection).ToListOrEmptyList();
+			}
+
+			public static IEnumerable<GT_BANK_IN> Select(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				var tbl = dts.FirstOrDefault(t => t.TableName.ToLower() == typeof(GT_BANK_IN).Name.ToLower());
+				if (tbl == null)
+					return null;
+
+				return Select(tbl, sapConnection);
+			}
+
+			public static List<GT_BANK_IN> ToList(IEnumerable<DataTable> dts, ISapConnection sapConnection = null)
+			{
+				return Select(dts, sapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_BANK_IN> ToList(ISapDataService sapDataService)
+			{
+				return ToList(sapDataService.GetExportTables(), sapDataService.SapConnection);
+			}
+
+			public static List<GT_BANK_IN> GetExportListWithInitExecute(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_BANK_IN>();
+				 
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_ZLD_AH_IMPORT_ERFASSUNG1", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_BANK_IN> GetExportListWithExecute(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_BANK_IN>();
+				 
+				var dts = sapDataService.GetExportTablesWithExecute();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_BANK_IN> GetExportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_BANK_IN>();
+				 
+				var dts = sapDataService.GetExportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_BANK_IN> GetImportListWithInit(ISapDataService sapDataService, string inputParameterKeys = null, params object[] inputParameterValues)
+			{
+				if (sapDataService == null) 
+					return new List<GT_BANK_IN>();
+				 
+				var dts = sapDataService.GetImportTablesWithInit("Z_ZLD_AH_IMPORT_ERFASSUNG1", inputParameterKeys, inputParameterValues);
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+
+			public static List<GT_BANK_IN> GetImportList(ISapDataService sapDataService)
+			{
+				if (sapDataService == null) 
+					return new List<GT_BANK_IN>();
+				 
+				var dts = sapDataService.GetImportTables();
+				 
+				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
+			}
+		}
+
 		public partial class GT_ERROR : IModelMappingApplied
 		{
 			[SapIgnore]
@@ -866,6 +1010,17 @@ namespace SapORM.Models
 		}
 
 		public static void Apply(this IEnumerable<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_ADRS_IN> list, DataTable dtDst)
+		{
+			SapDataServiceExtensions.Apply(list, dtDst);
+		}
+
+
+		public static DataTable ToTable(this IEnumerable<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_BANK_IN> list)
+		{
+			return SapDataServiceExtensions.ToTable(list);
+		}
+
+		public static void Apply(this IEnumerable<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_BANK_IN> list, DataTable dtDst)
 		{
 			SapDataServiceExtensions.Apply(list, dtDst);
 		}
