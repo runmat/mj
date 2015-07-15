@@ -9,6 +9,7 @@ using SapORM.Services;
 using SapORM.Models;
 using SapORM.Contracts;
 using GeneralTools.Models;
+using WebTools.Services;
 
 namespace SapORM
 {
@@ -43,7 +44,11 @@ namespace SapORM
                 myProxy.setImportParameter("I_TREU", m_objUser.KUNNR.PadLeft(10, "0"c))
                 myProxy.setImportParameter("I_EQTYP", "B")                                        
              */
+           
+            // 20150708 Hol- und Bringservice   Z_ZLD_AH_2015_HOLUNDBRING_PDF
+            // new FunctionReflector("Z_ZLD_AH_2015_HOLUNDBRING_PDF").WriteOrmForExportTableStructures();
 
+            //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
 
             //new FunctionReflector("Z_M_EC_AVM_BATCH_UPDATE").WriteOrmForExportTableStructures();             
 		    //new FunctionReflector("Z_M_EC_AVM_BATCH_INSERT").WriteOrmForExportTableStructures();             
@@ -322,7 +327,7 @@ namespace SapORM
             //new FunctionReflector("Z_M_BAPIRDZ").WriteOrmForExportTableStructures("IZKFZKZ", "UN");
 
             //new FunctionReflector("Z_M_KLAERFAELLEVW").WriteOrmForExportTableStructures("I_KUNNR", "0000336070");      
-            //new FunctionReflector("Z_WFM_READ_AUFTRAEGE_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            new FunctionReflector("Z_WFM_READ_AUFTRAEGE_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
             //new FunctionReflector("Z_WFM_READ_KONVERTER_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
 
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
@@ -413,6 +418,7 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_STO_STORNO_ORDER").WriteOrmForExportTableStructures("I_ZULBELN, I_STORNOGRUND, I_ERNAM", "0", "0", "test");
             //new FunctionReflector("Z_ZLD_STO_STORNOGRUENDE").WriteOrmForExportTableStructures();
 
+            //new FunctionReflector("Z_FIL_CHECK_OPEN_002").WriteOrmForExportTableStructures("I_KREISKZ, I_VKORG, I_VKBUR, I_DATUM", "B", "1010", "4837", "04.05.2015");
             //new FunctionReflector("Z_FIL_READ_OFF_BEST_POS_001").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_FIL_WE_ZUR_BEST_POS_001").WriteOrmForExportTableStructures("I_LGORT, I_EBELN", "4837", "0");
 
@@ -423,10 +429,15 @@ namespace SapORM
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_ZULAUF").WriteOrmForExportTableStructures("ZUL_DAT, ZUL_BIS, I_HERSTNR", "01.04.2015", "10.04.2015", "0");
 
+            //new FunctionReflector("Z_ZLD_MOB_GET_USER_AEMTER").WriteOrmForExportTableStructures("I_VKORG, I_MOBUSER", "1010", "carlmobil");
+            //new FunctionReflector("Z_ZLD_ZULST_OPEN").WriteOrmForExportTableStructures("I_KREISKZ, I_DATUM", "OD", "15.05.2015");
+
             //new FunctionReflector("Z_DPM_ZULASSUNGSSPERRE_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_ACTION", "219853", "E");
             //new FunctionReflector("Z_DPM_SET_BEM_FZGPOOL_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
             //new FunctionReflector("Z_M_EC_AVM_PDIWECHSEL").WriteOrmForExportTableStructures("ZZKUNNR, ZZQMNUM, ZZCARPORT, I_ZZCARPORT", "0000219853", "0", "0", "0");
+            //new FunctionReflector("Z_ZLD_CHECK_48H").WriteOrmForExportTableStructures("I_KREISKZ, I_LIFNR, I_DATUM_BEAUFTRAGUNG", "OD", "1", "15.05.2015");
 
+            //new FunctionReflector("Z_ZLD_MOB_EXPORT_ANGENOMMENE").WriteOrmForExportTableStructures("I_VKORG, I_VKBUR", "1010", "4837");
             //new FunctionReflector("Z_M_EC_AVM_KENNZ_SERIE").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_Massenzulassung").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_EC_AVM_HERST_VWZWECK_MODID").WriteOrmForExportTableStructures();
@@ -436,7 +447,8 @@ namespace SapORM
             //new FunctionReflector("Z_M_Ec_Avm_Pdiwechsel").WriteOrmForExportTableStructures("ZZKUNNR", "0000219853");
             
 
-            //new FunctionReflector("Z_DPM_AVM_DOKUMENT_KOPIE").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000219853");
+
+            //new FunctionReflector("Z_DPM_FFD_DATEN_OHNE_DOKUMENTE").WriteOrmForExportTableStructures("I_KUNNR_AG", "324562");
 
 
             //CoCTest();

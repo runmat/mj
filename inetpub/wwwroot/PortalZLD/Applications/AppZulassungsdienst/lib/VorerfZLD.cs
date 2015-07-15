@@ -21,6 +21,18 @@ namespace AppZulassungsdienst.lib
         public DataTable tblBarcodData { get; set; }
         public DataTable tblBarcodMaterial { get; set; }
 
+	    private DataTable _tblPrintDataForPdf;
+	    public DataTable tblPrintDataForPdf
+	    {
+	        get
+	        {
+	            if (_tblPrintDataForPdf == null)
+                    _tblPrintDataForPdf = ZLDCommon.CreatePrintTable();
+
+	            return _tblPrintDataForPdf;
+	        }
+	    }
+
         public bool IsZLD { get; set; }
         public int IDCount { get; set; }
         public String Name1Hin { get; set; }
@@ -363,12 +375,15 @@ namespace AppZulassungsdienst.lib
                     kopfListeWeb.Add(kopfdaten);
 
                     if (!String.IsNullOrEmpty(bankdaten.Kontoinhaber))
+                    {
+                        if (String.IsNullOrEmpty(bankdaten.Partnerrolle)) bankdaten.Partnerrolle = "AG";
                         bankListeWeb.Add(bankdaten);
+                    }
 
                     if (!String.IsNullOrEmpty(adressdaten.Name1))
                     {
                         adressdaten.KundenNr = kopfdaten.KundenNr;
-                        adressdaten.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adressdaten.Partnerrolle)) adressdaten.Partnerrolle = "AG";
                         adressListeWeb.Add(adressdaten);
                     }
                     
@@ -554,7 +569,10 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
 
+                if (String.IsNullOrEmpty(AktuellerVorgang.Bankdaten.Partnerrolle)) AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
+
                 AktuellerVorgang.Adressdaten.KundenNr = kopfdaten.KundenNr;
+                if (String.IsNullOrEmpty(AktuellerVorgang.Adressdaten.Partnerrolle)) AktuellerVorgang.Adressdaten.Partnerrolle = "AG";
 
                 var adressListeWeb = new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten };
 

@@ -6,6 +6,7 @@ using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
 using System.Linq;
 using CKG.Base.Business;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {
@@ -249,7 +250,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    gvZuldienst.DataSource = objVorerf.Vorgangsliste.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId.ToLong(0)).ThenBy(v => v.PositionsNr.ToInt(0)).ToList();
                 }
 
                 gvZuldienst.PageIndex = intTempPageIndex;

@@ -44,6 +44,10 @@ namespace AppZulassungsdienst.forms
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
 
+            lbtnGestern.Attributes.Add("onclick", "SetDate( -1,'" + txtStornoZulassungsdatum.ClientID + "'); return false;");
+            lbtnHeute.Attributes.Add("onclick", "SetDate( 0,'" + txtStornoZulassungsdatum.ClientID + "'); return false;");
+            lbtnMorgen.Attributes.Add("onclick", "SetDate( +1,'" + txtStornoZulassungsdatum.ClientID + "'); return false;");
+
             if (!IsPostBack)
             {
                 objNachbearbeitung = new NachbearbeitungAuftrag(m_User.Reference);
@@ -86,7 +90,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenDisplay.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr).ToList();
+                rgPositionenDisplay.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             }
             else
             {
@@ -116,6 +120,7 @@ namespace AppZulassungsdienst.forms
                     trStornoBegruendung.Visible = (grundRows[0]["GRUND_PFLICHT"].ToString() == "X");
                     trStornoStva.Visible = (grundRows[0]["AMT_CHG"].ToString() == "X");
                     trStornoKennzeichen.Visible = (grundRows[0]["KENNZ_CHG"].ToString() == "X");
+                    trStornoZulassungsdatum.Visible = (grundRows[0]["DATUM_CHG"].ToString() == "X");
 
                     if (grundRows[0]["PREISE_CHG"].ToString() == "X")
                     {
@@ -156,7 +161,7 @@ namespace AppZulassungsdienst.forms
         {
             if (objNachbearbeitung.AktuellerVorgang.Positionen.Any())
             {
-                rgPositionenEdit.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr).ToList();
+                rgPositionenEdit.DataSource = objNachbearbeitung.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             }
             else
             {
@@ -436,6 +441,14 @@ namespace AppZulassungsdienst.forms
                         return;
                     }
                     objNachbearbeitung.StornoKennzeichen = txtStornoKennz1.Text.ToUpper() + "-" + txtStornoKennz2.Text.ToUpper();
+                }
+
+                if (trStornoZulassungsdatum.Visible)
+                {
+                    if (!checkDate())
+                        return;
+
+                    objNachbearbeitung.StornoZulassungsdatum = txtStornoZulassungsdatum.Text.ToNullableDateTime("ddMMyy");
                 }
 
                 objNachbearbeitung.VorgangStornieren(m_User.UserName);
@@ -751,6 +764,7 @@ namespace AppZulassungsdienst.forms
             txtStornoAmt.Text = "";
             txtStornoKennz1.Text = "";
             txtStornoKennz2.Text = "";
+            txtStornoZulassungsdatum.Text = "";
 
             VorgangInfo.Visible = false;
             StornoDetails.Visible = false;
@@ -763,6 +777,60 @@ namespace AppZulassungsdienst.forms
             Panel1.Visible = true;
             cmdCreate.Visible = true;
             cmdOffeneStornos.Visible = true;
+        }
+
+        /// <summary>
+        /// Validierung Datum
+        /// </summary>
+        private bool checkDate()
+        {
+            String ZDat = ZLDCommon.toShortDateStr(txtStornoZulassungsdatum.Text);
+
+            if (String.IsNullOrEmpty(ZDat))
+            {
+                lblError.Text = "Bitte geben Sie ein Zulassungsdatum an!";
+                return false;
+            }
+
+            if (!ZDat.IsDate())
+            {
+                lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
+                return false;
+            }
+
+            DateTime tagesdatum = DateTime.Today;
+            int i = 60;
+            do
+            {
+                if (tagesdatum.DayOfWeek != DayOfWeek.Saturday && tagesdatum.DayOfWeek != DayOfWeek.Sunday)
+                {
+                    i--;
+                }
+                tagesdatum = tagesdatum.AddDays(-1);
+            } while (i > 0);
+            DateTime DateNew;
+            DateTime.TryParse(ZDat, out DateNew);
+            if (DateNew < tagesdatum)
+            {
+                lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
+                return false;
+            }
+
+            tagesdatum = DateTime.Today;
+            tagesdatum = tagesdatum.AddYears(1);
+            if (DateNew > tagesdatum)
+            {
+                lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
+                return false;
+            }
+
+            if (ihDatumIstWerktag.Value == "false")
+            {
+                lblError.Text = "Bitte wählen Sie einen Werktag für das Zulassungsdatum aus!";
+                return false;
+            }
+
+            return true;
         }
 
         #endregion

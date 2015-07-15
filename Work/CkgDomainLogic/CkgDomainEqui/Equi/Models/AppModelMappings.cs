@@ -495,10 +495,29 @@ namespace CkgDomainLogic.Equi.Models
                     {
                         d.HaendlerNr = s.ZZHAENR;
                         d.FahrgestellNr = s.ZZFAHRG;
-                        d.OrderNr = s.ZZORDER;
+                        d.VertragsNr = s.ZZORDER;
                         d.Anlagedatum = s.ERDAT;
                         d.AnlagedatumKlaerfall = s.ANLAGEDAT_KLAERF;
                         d.EingangsdatumZb2 = s.ZB2EINGDAT;
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_FFD_DATEN_OHNE_DOKUMENTE.GT_WEB, KlaerfallVhc> Z_DPM_FFD_DATEN_OHNE_DOKUMENTE_GT_WEB_To_KlaerfallVhc
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FFD_DATEN_OHNE_DOKUMENTE.GT_WEB, KlaerfallVhc>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.HaendlerNr = s.ZZHAENR;
+                        d.FahrgestellNr = s.ZZFAHRG;
+                        d.VertragsNr = s.ZZVTGNR;
+                        d.Anlagedatum = s.ERDAT;
+                        d.Plancode = s.PLANCODE;
                     }));
             }
         }

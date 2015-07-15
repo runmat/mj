@@ -1,0 +1,14 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Mail
+
+<div id="DivSendMail" class="margin-top-20">
+    
+    <h3>@Model.SendMailResult</h3>
+    
+    <a href="DownloadGeneratedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='Auftrag' data-placement="top"> PDF-Auftrag herunterladen <i class="icon-download-alt"></i></a>
+    
+    @if (Model.UploadedPdfExists)
+    {
+        <a href="DownloadMergedPdf" class="btn yellow tooltips margin-right-5 margin-bottom-10" data-original-title='Auftrag inkl. Werkstattauftrag' data-placement="top"> PDF inkl. Werkstattauftrag herunterladen <i class="icon-download-alt"></i></a>       
+    }
+      
+</div>

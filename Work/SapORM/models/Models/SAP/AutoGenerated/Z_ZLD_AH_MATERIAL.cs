@@ -39,6 +39,12 @@ namespace SapORM.Models
 
 			public string ABMELDUNG { get; set; }
 
+			public string VERSAND { get; set; }
+
+			public string Z48H_VERSAND { get; set; }
+
+			public string NO_NEXT_DAY { get; set; }
+
 			public static GT_MAT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_MAT
@@ -47,6 +53,9 @@ namespace SapORM.Models
 					BLTYP = (string)row["BLTYP"],
 					MAKTX = (string)row["MAKTX"],
 					ABMELDUNG = (string)row["ABMELDUNG"],
+					VERSAND = (string)row["VERSAND"],
+					Z48H_VERSAND = (string)row["Z48H_VERSAND"],
+					NO_NEXT_DAY = (string)row["NO_NEXT_DAY"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

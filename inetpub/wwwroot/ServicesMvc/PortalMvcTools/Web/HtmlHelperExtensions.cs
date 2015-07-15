@@ -291,8 +291,14 @@ namespace PortalMvcTools.Web
 
         static object GetAutoPostcodeCityMapping<TModel, TValue>(Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes)
         {
+            var modelType = typeof (TModel);
+
+            var mExpr = expression.Body as MemberExpression;
+            if (mExpr != null)
+                modelType = mExpr.Expression.Type;
+            
             var cityPropertyName = expression.GetPropertyName();
-            var cityProperty = typeof(TModel).GetProperty(cityPropertyName);
+            var cityProperty = modelType.GetProperty(cityPropertyName);
             if (cityProperty == null)
                 return controlHtmlAttributes;
 

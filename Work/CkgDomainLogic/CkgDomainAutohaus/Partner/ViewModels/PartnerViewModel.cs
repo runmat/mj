@@ -22,6 +22,7 @@ using System.IO;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using SapORM.Contracts;
+using WebTools.Services;
 
 namespace CkgDomainLogic.Partner.ViewModels
 {
@@ -56,9 +57,12 @@ namespace CkgDomainLogic.Partner.ViewModels
         }
 
 
-        public void DataInit()
+        public void DataInit(string partnerId)
         {
             DataMarkForRefresh();
+
+            if (!String.IsNullOrEmpty(partnerId))
+                PartnerSelektor.Kunnr = CryptoMd5.Decrypt(partnerId).ToSapKunnr();
         }
 
         public override void DataMarkForRefresh()
@@ -74,7 +78,7 @@ namespace CkgDomainLogic.Partner.ViewModels
 
         public void LoadPartners()
         {
-            AdressenDataInit(PartnerSelektor.PartnerKennung, KundennrOverride);
+            AdressenDataInit(PartnerSelektor.PartnerKennung, KundennrOverride, PartnerSelektor.Kunnr);
         }
 
         public void FilterPartners(string filterValue, string filterProperties)
