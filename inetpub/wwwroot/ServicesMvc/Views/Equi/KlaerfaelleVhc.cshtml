@@ -59,10 +59,12 @@
     }
 
     function ShowKlaerfaelleVhcSearchResult(result) {
-        SearchFormHide();
         $("#divKlaerfaelleVhcGrid").html(result);
         GridAllColumnFilterApplyToGrid("GridKlaerfaelleVhc");
         $("#divKlaerfaelleVhcGrid").slideDown();
+        setTimeout(function () {
+            $("#FormSearchResults").show();
+        }, 200);
     }
 
 </script>
