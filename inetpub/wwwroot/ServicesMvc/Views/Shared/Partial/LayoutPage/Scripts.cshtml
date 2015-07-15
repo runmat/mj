@@ -187,22 +187,6 @@
         };
         $.datepicker.setDefaults($.datepicker.regional['de']);
     }
-    
-//    function FormProcessReadOnlyControls() {
-//        $(".checkbox").each(function () {
-//            var cbDiv = $(this);
-//            var readonlyInputAvailable = false;
-//            cbDiv.find("input[type=checkbox][readonly]").each(function () {
-//                //alert(cbDiv.attr('class'));
-//                readonlyInputAvailable = true;
-//                alert($(this).attr('readonly'));
-//                //cbDiv.click(function () { alert($(this).attr('readonly')); });
-//            });
-//            if (readonlyInputAvailable)
-//                alert('readonly');
-//        });  
-//    }
-
 
 
     //
@@ -530,6 +514,9 @@
         $('.page-sidebar').on('click', '.sidebar-toggler', function(e) {
             HandleResponsiveControlWidths();
         });
+        $(window).on('scroll', function(e) {
+            HandleResponsiveControlWidths();
+        });
 
         $('#FormSearchBox .portlet-title, #FormSearchResults .portlet-title').on('click', function(e) {
             setTimeout(function() {
@@ -560,12 +547,26 @@
             var margin = 60;
             var containerWidth = windowWidth - sidebarWidth - margin;
 
-            var tGridTable = $(".body-container .t-grid>table");
+            var tGridTable = e.find(".t-grid>table");
             if (tGridTable.length > 0) {
                 tGridTable = $(tGridTable[0]);
 
-                if (tGridTable.width() > e.width() - margin)
+                if (tGridTable.width() > e.width() - margin) {
                     containerWidth = tGridTable.width() + (margin / 2);
+
+                    if (containerWidth > windowWidth){
+                        var gridExportMenu = e.find(".outer-export-menu");
+                        var tStatusText = e.find(".t-status-text");
+
+                        var scrollPosX = document.body.scrollLeft;
+
+                        var gridExportMenuMarginRight = containerWidth - windowWidth + sidebarWidth + 20 - scrollPosX;
+                        //console.log(gridExportMenuMarginRight);
+                        
+                        gridExportMenu.css("margin-right", gridExportMenuMarginRight);
+                        tStatusText.css("margin-right", gridExportMenuMarginRight);
+                    }
+                }
             }
 
             e.css("width", containerWidth);
