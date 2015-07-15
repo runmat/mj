@@ -72,10 +72,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             get
             {
                 return PropertyCacheGet(() => 
-                    DataService.GetAuftragsnummern().Concat(
-                        new List<Auftragsnummer>
-                            { new Auftragsnummer { Nummer = String.Empty,  AuftragsNrText = Localize.DropdownDefaultOptionNotSpecified } }
-                    ).OrderBy(w => w.Nummer).ToList()
+                    DataService.GetAuftragsnummern().OrderBy(w => w.Nummer).ToList()
                 );
             }
         }
@@ -187,6 +184,12 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
                 addModelError("", Localize.UnitnumbersInvalidRange);
                 return;
             }
+
+            if (item.Batch.AuftragsnummerVon.NotNullOrEmpty().Contains('-'))
+                item.Batch.AuftragsnummerVon = item.Batch.AuftragsnummerVon.Split('-')[0].Trim();
+
+            if (item.Batch.AuftragsnummerBis.NotNullOrEmpty().Contains('-'))
+                item.Batch.AuftragsnummerBis = item.Batch.AuftragsnummerBis.Split('-')[0].Trim();
 
             var errorMessage = DataService.SaveBatch(item.Batch, unitnummerList);
 
