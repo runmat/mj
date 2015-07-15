@@ -10,6 +10,10 @@
 
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
 
+        setTimeout(function () {
+            HandleResponsiveControlWidths();
+        }, 500);
+
         if (_filteredData_DisableDataBound)
             return;
 
@@ -27,7 +31,7 @@
         }
 
         setTimeout(function () {
-            HandleResponsiveControlWidths();
+            
             if (typeof (autoPersistColumns) == 'undefined') {
                 try {
                     GridPrepareFromSelectorPersistedState(grid.data("tGrid"));
@@ -43,6 +47,7 @@
                 GridCaptionHintHide(grid);
                 grid.animate({ opacity: "1.0" }, 300);
             }
+
         }, 500);
     }
 
