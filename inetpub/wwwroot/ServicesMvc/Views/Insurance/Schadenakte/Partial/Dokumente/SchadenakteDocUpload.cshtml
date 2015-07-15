@@ -101,7 +101,7 @@
     function UploadError(e) {
         e.preventDefault();
         LoadingHide();
-        var message = '@Localize.UploadErrorOccurred.ToJavascriptString()';
-        SpanAlertWarning("Message", message, 3000);
+        var message = '@Localize.UploadErrorOccurred.ToJavascriptString(), @Localize.PleaseTryAgain';
+        SpanAlertWarning("Message", message, 5000);
     }
 </script>     

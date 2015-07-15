@@ -16,12 +16,18 @@ namespace AppZulassungsdienst.lib
         public List<MobileUser> Fahrerliste { get; set; }
         public List<AmtDispos> Dispositionen { get; set; }
 
+        /// <summary>
+        /// 1 = nicht disponiert, 2 = bereits disponiert, 3 = bereits in Arbeit
+        /// </summary>
+        public string Modus { get; set; }
+
         public clsDisposition(string userReferenz)
         {
             VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
             VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
 
             ZulDat = DateTime.Today.AddDays(1).ToString("dd.MM.yyyy");
+            Modus = "1";
 
             FillFahrerliste();
         }
@@ -81,6 +87,7 @@ namespace AppZulassungsdienst.lib
                     SAP.SetImportParameter("I_VKORG", VKORG);
                     SAP.SetImportParameter("I_VKBUR", VKBUR);
                     SAP.SetImportParameter("I_ZZZLDAT", ZulDat);
+                    SAP.SetImportParameter("I_FUNCTION", Modus);
 
                     CallBapi();
 
@@ -211,6 +218,7 @@ namespace AppZulassungsdienst.lib
                     SAP.SetImportParameter("I_VKORG", VKORG);
                     SAP.SetImportParameter("I_VKBUR", VKBUR);
                     SAP.SetImportParameter("I_ZZZLDAT", ZulDat);
+                    SAP.SetImportParameter("I_FUNCTION", Modus);
 
                     // Nur die disponierten Ämter an SAP übergeben
                     var disposToSave = Dispositionen.Where(d => !String.IsNullOrEmpty(d.MobileUserId));

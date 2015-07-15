@@ -272,6 +272,14 @@ namespace EasyExportGeneralTask
                     #endregion
                     break;
 
+                case AblaufTyp.Autoinvest:
+                    #region Autoinvest
+
+                    QueryAutoinvest();
+
+                    #endregion
+                    break;
+
                 default:
                     Console.WriteLine("FEHLER: Config-Parameter 'Ablauf' hat keine gültigen Wert");
                     EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Config-Parameter 'Ablauf' hat keine gültigen Wert", EventLogEntryType.Information);
@@ -1659,6 +1667,52 @@ namespace EasyExportGeneralTask
             {
                 Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
                 EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für Autoinvest
+        /// </summary>
+        private static void QueryAutoinvest()
+        {
+            string queryexpression = "";
+
+            try
+            {
+                result.clear();
+
+                // EasyArchiv-Query initialisieren
+                clsQueryClass Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                if ((taskConfiguration.AbfrageNachDatum) && (taskConfiguration.Abfragedatum.Year > 1900))
+                {
+                    queryexpression = ".103=#" + taskConfiguration.Abfragedatum.ToShortDateString();
+                }
+
+                // Dokumente aus Archiv holen
+                string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                if (status == "Keine Daten gefunden.")
+                {
+                    return;
+                }
+
+                // Bilder holen
+                for (int i = 0; i < result.hitList.Rows.Count; i++)
+                {
+                    status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, i);
+
+                    if (!String.IsNullOrEmpty(status))
+                    {
+                        Console.WriteLine(status);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Verarbeitung abgebrochen:  " + ex.Message);
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Verarbeitung abgebrochen:  " + ex.Message, EventLogEntryType.Warning);
             }
         }
 

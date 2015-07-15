@@ -390,7 +390,7 @@
 													<asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>' runat="server" CommandName="Del" 
                                                         ToolTip="Löschen" Visible='<%# !objNacherf.SelSofortabrechnung %>' />
 													<asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>' runat="server" CommandName="OK" 
-                                                        ToolTip='<%# objNacherf.SelAnnahmeAH ? "Annehmen" : "OK" %>' />
+                                                        ToolTip='<%# objNacherf.SelAnnahmeAH ? "Annehmen" : "OK" %>' Visible='<%# !objNacherf.SelAenderungAngenommene %>' />
 												</ItemTemplate>
 												<HeaderStyle CssClass="TablePadding" Width="60px" />
 												<ItemStyle CssClass="TablePadding"  Width="60px" />
