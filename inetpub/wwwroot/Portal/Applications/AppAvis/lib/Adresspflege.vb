@@ -42,7 +42,7 @@ Public Class Adresspflege
     Private Sub SendAdresse(type As String, stationscode As String, Optional name1 As String = "", Optional name2 As String = "",
                                  Optional strasse As String = "", Optional hausnr As String = "", Optional plz As String = "",
                                  Optional stadt As String = "", Optional land As String = "", Optional telefon As String = "", Optional fax As String = "",
-                                 Optional email As String = "")
+                                 Optional email As String = "", Optional dadPdi As String = "")
         ClearError()
 
         Try
@@ -86,6 +86,7 @@ Public Class Adresspflege
 
                 Dim newRow As DataRow = tblSap.NewRow()
                 newRow("SMTP_ADDR") = email
+                newRow("DADPDI") = dadPdi
                 tblSap.Rows.Add(newRow)
 
                 S.AP.Execute()
@@ -105,8 +106,8 @@ Public Class Adresspflege
     End Sub
 
     Public Sub ChangeAdresse(stationscode As String, name1 As String, name2 As String, strasse As String, hausnr As String,
-                                 plz As String, stadt As String, land As String, telefon As String, fax As String, email As String)
-        SendAdresse("2", stationscode, name1, name2, strasse, hausnr, plz, stadt, land, telefon, fax, email)
+                                 plz As String, stadt As String, land As String, telefon As String, fax As String, email As String, dadPdi As String)
+        SendAdresse("2", stationscode, name1, name2, strasse, hausnr, plz, stadt, land, telefon, fax, email, dadPdi)
     End Sub
 
     Public Function CheckStationExists(stationscode As String) As Boolean

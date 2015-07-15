@@ -114,10 +114,10 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             return new List<Kunde>
                 {
-                    new Kunde {KundenNr = "Avis", Name1 = "Avis Autovermietung GmbH"},
-                    new Kunde {KundenNr = "CSI", Name1 = "CSI Catastrophe International Inc."},
-                    new Kunde {KundenNr = "Tesla", Name1 = "Tesla Motors"},
-                    new Kunde {KundenNr = "Sixt", Name1 = "Sixt Leasing GmbH"},
+                    new Kunde("Avis", "Avis Autovermietung GmbH"),
+                    new Kunde("CSI", "CSI Catastrophe International Inc."),
+                    new Kunde("Tesla", "Tesla Motors"),
+                    new Kunde("Sixt", "Sixt Leasing GmbH"),
                 };
         }
 
@@ -136,7 +136,27 @@ namespace CkgDomainLogic.Autohaus.Services
             throw new NotImplementedException();
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
+        /// <summary>
+        /// 20150602 MMA
+        /// </summary>
+        /// <param name="kreis"></param>
+        /// <returns></returns>
+        public string GetZulassungsstelleWkzUrl(string kreis)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Adresse GetLieferantZuKreis(string kreis)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Check48hExpress(Vorgang zulassung)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung)
         {
             throw new NotImplementedException();
         }
@@ -174,7 +194,6 @@ namespace CkgDomainLogic.Autohaus.Services
         }
 
         #endregion
-
 
         #region Zulassungs Report
 

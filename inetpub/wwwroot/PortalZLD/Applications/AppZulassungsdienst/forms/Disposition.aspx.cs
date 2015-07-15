@@ -41,13 +41,13 @@ namespace AppZulassungsdienst.forms
             if (!IsPostBack)
             {
                 FillForm();
-                ZulDateChanged();
+                SelectionChanged();
             }
             else
             {
                 if (Request.Params["__EVENTTARGET"] == "txtZulDate")
                 {
-                    ZulDateChanged();
+                    SelectionChanged();
                 }
             }
         }
@@ -100,7 +100,7 @@ namespace AppZulassungsdienst.forms
 
         protected void cmdSearch_Click(object sender, EventArgs e)
         {
-            ZulDateChanged();
+            SelectionChanged();
         }
 
         protected void cmdSave_Click(object sender, EventArgs e)
@@ -111,6 +111,11 @@ namespace AppZulassungsdienst.forms
         protected void cmdSend_Click(object sender, EventArgs e)
         {
             DatenSpeichern(true);
+        }
+
+        protected void rbModusChanged(object sender, EventArgs e)
+        {
+            SelectionChanged();
         }
 
         #endregion
@@ -199,10 +204,17 @@ namespace AppZulassungsdienst.forms
             return erg;
         }
 
-        private void ZulDateChanged()
+        private void SelectionChanged()
         {
             if (ApplyZulDate())
             {
+                if (rbBereitsDisponiert.Checked)
+                    objDispo.Modus = "2";
+                else if (rbBereitsInArbeit.Checked)
+                    objDispo.Modus = "3";
+                else
+                    objDispo.Modus = "1";
+
                 objDispo.LoadDispos();
                 Session["objDispo"] = objDispo;
                 Fillgrid();

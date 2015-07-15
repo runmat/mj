@@ -5,16 +5,23 @@
 
 @section LayoutScript { _controlGroupValidationType = "individual"; }
 
-<div id="divKlaerfaelleVhcGrid">
-    @Html.Partial("KlaerfaelleVhc/KlaerfaelleVhcGrid", Model)
-</div>
+@using (Html.FormSearchBox())
+{
+    <div id="divSuche">
+        @Html.Partial("KlaerfaelleVhc/KlaerfaelleVhcSuche", Model.DataService.Suchparameter)
+    </div>
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divKlaerfaelleVhcGrid"></div>
+}
 
 <script type="text/javascript">
 
     var ladeHinweis = '@Localize.LoadingData';
 
     function FormPreparePrivate() {
-        GridAllColumnFilterApplyToGrid("GridKlaerfaelleVhc");
     }
 
     function FormPreparePrivateAjax() {
@@ -49,6 +56,15 @@
 
     function OnColumnReorder_GridKlaerfaelleVhc() {
         FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowKlaerfaelleVhcSearchResult(result) {
+        $("#divKlaerfaelleVhcGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridKlaerfaelleVhc");
+        $("#divKlaerfaelleVhcGrid").slideDown();
+        setTimeout(function () {
+            $("#FormSearchResults").show();
+        }, 200);
     }
 
 </script>

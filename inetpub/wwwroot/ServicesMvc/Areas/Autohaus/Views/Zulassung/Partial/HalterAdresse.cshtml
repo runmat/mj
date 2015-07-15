@@ -1,4 +1,4 @@
-﻿@model CkgDomainLogic.Autohaus.ViewModels.KroschkeZulassungViewModel
+﻿@model CkgDomainLogic.DomainCommon.Models.Adresse
 
 <h4>@Localize.CarOwnerAddress</h4> 
 
@@ -7,4 +7,4 @@
     <a href="#" onclick="return AjaxFormAdresseEmpty('AjaxFormHalterAdresse', 'HalterAdresseGetAutoCompleteItems')" class="btn white">@Localize.ClearForm <i class="icon-remove"></i></a>
 </div>
 
-@Html.Partial("Partial/HalterAdresseForm", @Model.Zulassung.Halterdaten)
+@Html.Partial("Partial/HalterAdresseForm", Model)

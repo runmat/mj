@@ -1,0 +1,120 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.HolBringService.Upload
+
+<script>
+    
+    var firstRequest = '@Request["firstRequest"]';
+
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+    
+    $(function () {
+        $("#pdfContentUpload").resizable({
+            helper: "ui-resizable-helper"
+        });
+
+        ResizePdfContainer();
+
+        $(window).resize(function () {
+            ResizePdfContainer();
+        });
+
+        $("#pdfContentUpload").removeClass("hidden");
+
+        if ($("#UploadFileName").val().length > 0) {
+            $('#BtnRemoveFile').removeClass("hidden");
+        }
+
+    });
+
+    function UploadStart(e) {
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.pdf') <= 0) {
+            alert('@Localize.FileUploadOnlyPdfLegal');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        var iframe = document.getElementById("uploadedPdf");
+        iframe.src = iframe.src;
+        $('#UploadFileName').val(e.response.uploadFileName);
+        $('#BtnRemoveFile').removeClass("hidden");
+        $('#pdfContentUpload').removeClass("hidden");
+        $('#DeleteUploadedPdf').val(false);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('@Localize.ErrorFileCouldNotBeSaved');
+    }
+
+    function RemovePdfFile() {
+        $('#pdfContentUpload').addClass("hidden");
+        $('#DeleteUploadedPdf').val(true);
+        $('#UploadFileName').val("");
+    }
+
+</script>
+<div id="DivUpload" class="margin-top-20">
+    @using (Ajax.BeginForm("Upload", "HolBringService", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivUpload", OnComplete = "AjaxFormUploadComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormUpload" }))
+    {
+        @Html.FormValidationSummary()
+        
+        <h3>Werkstattauftrag</h3>
+        
+        <div class="row-fluid">
+            <div class="span7">
+                <div class="control-group">
+                    <label class="control-label">@Localize.UploadPdfFile:</label>
+                    <div class="controls">
+                        @(Html.Telerik().Upload()
+                              .Name("fileUpload")
+                              .Localizable("de-DE")
+                              .Async(async => async
+                                                  .Save("UploadPdfStart", "HolBringService")
+                                                  .SaveField("uploadFiles")
+                                                  .AutoUpload(true))
+                              .Multiple(false)
+                              .ShowFileList(false)
+                              .ClientEvents(events => events
+                                                          .OnUpload("UploadStart")
+                                                          .OnSuccess("UploadFinished")
+                                                          .OnError("UploadError")
+                              )
+                              )
+                    </div>
+                </div>
+                
+                @Html.HiddenFor(m => m.DeleteUploadedPdf)
+                @Html.HiddenFor(m => m.UploadFileName)
+
+                <div id="pdfContentUpload" class="ui-widget-content pdfContentStyle hidden">
+                    <iframe id="uploadedPdf" src="ShowUploadedPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
+                </div>    
+                
+            </div>
+            <div class="span5">
+                <button id="BtnRemoveFile" onclick="RemovePdfFile();" type="button" class="btn green hidden">
+                    <i class="icon-ok"></i> Datei entfernen</button>    
+            </div>
+        </div>
+    }
+</div>

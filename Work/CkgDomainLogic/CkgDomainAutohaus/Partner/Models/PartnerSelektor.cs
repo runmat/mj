@@ -24,11 +24,15 @@ namespace CkgDomainLogic.Partner.Models
                     {
                         new SelectItem ("HALTER", Localize.Holder),
                         new SelectItem ("KAEUFER", Localize.Buyer),
+                        new SelectItem ("ZAHLERKFZSTEUER", Localize.CarTaxPayer)
                     };
             }
         }
 
         public IHtmlString PartnerKennungLocalized { get { return GetViewModel().AdressenKennungLocalized; } }
+
+        [LocalizedDisplay(LocalizeConstants.CustomerNo)]
+        public string Kunnr { get; set; }
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<PartnerViewModel> GetViewModel { get; set; }

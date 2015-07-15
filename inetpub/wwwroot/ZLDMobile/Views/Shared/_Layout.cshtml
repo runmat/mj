@@ -8,14 +8,16 @@
         <meta name="author" content="Christoph Kroschke GmbH" />
         <meta name="viewport" content="width=device-width" />
         <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
-        @Styles.Render("~/Content/mobileCss", "~/Content/css", "~/Content/zldmobile")
+        @Styles.Render("~/Content/mobileCss", "~/Content/css", "~/Content/zldmobile", "~/Content/select2")
         @*----- Include-Reihenfolge beachten! -----*@
         @Scripts.Render("~/bundles/modernizr", "~/bundles/jquery")
         @Scripts.Render("~/bundles/jqminit", "~/bundles/jquerymobile", "~/bundles/jqueryval")
+        @Scripts.Render("~/bundles/select2")
         @Scripts.Render("~/bundles/zldmobile")
         @RenderSection("scripts", required: false)
         @Html.Partial("JQueryHelper")
         @Html.Partial("JQueryMobileHelper")
+        @Html.Partial("Partial/_GlobalScripts")
     </head>
     <body>
         <div data-role="page" data-theme="a">
@@ -41,5 +43,4 @@
             </div>
         </div>
     </body>
-    @Html.Partial("Partial/_LayoutScripts")
 </html>

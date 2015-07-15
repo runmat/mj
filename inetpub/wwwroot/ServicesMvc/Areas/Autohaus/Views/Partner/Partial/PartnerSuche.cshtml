@@ -8,6 +8,11 @@
         <div class="form-horizontal">
             
             @Html.FormValidationSummary()
+            
+            @if (!String.IsNullOrEmpty(Model.Kunnr))
+            {
+                @Html.FormTextBoxFor(m => m.Kunnr, new { @class = "m-wrap" })
+            }
 
             @Html.FormRadioButtonListFor(m => m.PartnerKennung, PartnerSelektor.PartnerKennungen, new { @class = "m-wrap" })
 

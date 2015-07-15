@@ -607,7 +607,7 @@ namespace AppZulassungsdienst.forms
 
             DataTable tblData = CreatePosTable();
 
-            foreach (var item in objVorerf.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr))
+            foreach (var item in objVorerf.AktuellerVorgang.Positionen.OrderBy(p => p.PositionsNr.ToInt(0)))
             {
                 DataRow tblRow = tblData.NewRow();
 
@@ -1276,7 +1276,7 @@ namespace AppZulassungsdienst.forms
                 tblData.Rows[i]["Search"] = txtBox.Text;
                 tblData.Rows[i]["Value"] = ddl.SelectedValue;
                 tblData.Rows[i]["Text"] = ddl.SelectedItem.Text;
-                tblData.Rows[i]["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "");
+                tblData.Rows[i]["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
 
                 if (ddl.SelectedValue == ZLDCommon.CONST_IDSONSTIGEDL)
                 {
@@ -1320,7 +1320,7 @@ namespace AppZulassungsdienst.forms
                 ddl.DataTextField = "Name";
                 ddl.DataBind();
 
-                DataRow[] dRows = tblData.Select("ID_POS =" + lblID_POS.Text);
+                DataRow[] dRows = tblData.Select("ID_POS='" + lblID_POS.Text + "'");
                 if (dRows.Length == 0)
                 {
                     txtBox.Text = tblData.Rows[i]["Search"].ToString();
@@ -1582,6 +1582,7 @@ namespace AppZulassungsdienst.forms
             adressdaten.SapId = objVorerf.AktuellerVorgang.Kopfdaten.SapId;
             adressdaten.Name1 = txtName1.Text;
             adressdaten.Name2 = txtName2.Text;
+            adressdaten.Partnerrolle = "AG";
             adressdaten.Strasse = txtStrasse.Text;
             adressdaten.Plz = txtPlz.Text;
             adressdaten.Ort = txtOrt.Text;
@@ -1589,6 +1590,7 @@ namespace AppZulassungsdienst.forms
             var bankdaten = objVorerf.AktuellerVorgang.Bankdaten;
 
             bankdaten.SapId = objVorerf.AktuellerVorgang.Kopfdaten.SapId;
+            bankdaten.Partnerrolle = "AG";
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
             bankdaten.Bankleitzahl = hfBankleitzahl.Value;

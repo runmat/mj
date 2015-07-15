@@ -92,7 +92,7 @@
                 FormPreparePrivateAjax();
                 GridFzgSperrenVerschieben_OnAllSelectionChange(false);
                 setTimeout(function () {
-                    GetGrid().pageTo(1);
+                    FilterGrid("GridFzgSperrenVerschieben");
                 }, 500);
             }
         });

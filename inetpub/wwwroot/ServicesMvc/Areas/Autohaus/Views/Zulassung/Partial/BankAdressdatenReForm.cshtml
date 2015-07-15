@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.Autohaus.Models
-@model Adressdaten
+﻿@model CkgDomainLogic.DomainCommon.Models.Adresse
 
 @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap" })
 
@@ -7,9 +6,8 @@
 
 @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap" })
 
-@Html.FormTextBoxFor(m => m.Plz, new { @class = "m-wrap xsmall" })
+@Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall" })
 
 @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap" }) 
 
 @Html.HiddenFor(m => m.Land) 
-
