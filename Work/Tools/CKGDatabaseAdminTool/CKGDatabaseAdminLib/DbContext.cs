@@ -105,7 +105,7 @@ namespace CKGDatabaseAdminLib
                 var strKey = item.KUNNR + "-" + item.Customername + "-" + item.AppFriendlyName;
                 if (liste.None(i => i.KUNNR == item.KUNNR && i.Customername == item.Customername && i.AppFriendlyName == item.AppFriendlyName))
                 {
-                    var bapiList = Bapi2ReportItemsRaw.Where(x => (x.KUNNR + "-" + x.Customername + "-" + x.AppFriendlyName) == strKey).ToList();
+                    var bapiList = Bapi2ReportItemsRaw.Where(x => (x.KUNNR + "-" + x.Customername + "-" + x.AppFriendlyName) == strKey).Select(x => x.BAPI).ToList();
                     var bapiString = String.Join("|", bapiList);
 
                     liste.Add(new Bapi2Report4CsvExport
