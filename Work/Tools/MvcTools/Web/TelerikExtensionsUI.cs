@@ -390,7 +390,7 @@ namespace Telerik.Web.Mvc.UI
             SessionHelper.SetSessionObject(string.Format("Telerik_Grid_{0}", type.Name), grid);
         }
 
-        public GridBuilder<T> XGrid<T>() where T : class
+        public GridBuilder<T> XGrid<T>(bool ignoreAutoPersistsColumnsLoading = false) where T : class
         {
             var gridBuilder = GridBuilder<T>.Create(Register(() =>
                 {
@@ -401,7 +401,9 @@ namespace Telerik.Web.Mvc.UI
 
                     SaveGridToSession(grid, typeof (T));
 
-                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns(typeof(T)));
+                    if (!ignoreAutoPersistsColumnsLoading)
+                        HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns(typeof(T)));
+
                     HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormReportGeneratorSettings());
                     HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridSettingsAdministration(typeof(T)));
                     
