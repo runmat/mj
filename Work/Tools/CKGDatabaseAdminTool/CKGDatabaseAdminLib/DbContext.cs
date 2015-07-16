@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Linq;
 using CKGDatabaseAdminLib.Models;
+using GeneralTools.Models;
 
 namespace CKGDatabaseAdminLib
 {
@@ -89,32 +90,32 @@ namespace CKGDatabaseAdminLib
             return Applications.SqlQuery(query);
         }
 
-        public DbSet<Bapi2Report4CsvExport> Bapi2Report4CsvExportItemsRaw { get; set; }
+        public DbSet<Bapi2Report> Bapi2ReportItemsRaw { get; set; }
 
-        public Dictionary<string, Bapi2Report4CsvExport> GetBapi2Report4CsvExportAggregatedItems()
+        public List<Bapi2Report4CsvExport> GetBapi2Report4CsvExportAggregatedItems()
         {
-            Dictionary<string, Bapi2Report4CsvExport> liste = new Dictionary<string, Bapi2Report4CsvExport>();
+            var liste = new List<Bapi2Report4CsvExport>();
 
-            var items = Bapi2Report4CsvExportItemsRaw.ToList();
+            var rawItems = Bapi2ReportItemsRaw.ToList();
 
-            foreach (var item in items)
+            foreach (var rawItem in rawItems)
             {
+                var item = rawItem;
+
                 var strKey = item.KUNNR + "-" + item.Customername + "-" + item.AppFriendlyName;
-                if (!liste.ContainsKey(strKey))
+                if (liste.None(i => i.KUNNR == item.KUNNR && i.Customername == item.Customername && i.AppFriendlyName == item.AppFriendlyName))
                 {
-                    var bapiString = "";
-                    var bapiList = Bapi2Report4CsvExportItemsRaw.Where(x => (x.KUNNR + "-" + x.Customername + "-" + x.AppFriendlyName) == strKey).ToList();
-                    bapiList.ForEach(x => bapiString += x.BAPI + "|");
-                    bapiString = bapiString.TrimEnd('|');
-                    liste.Add(strKey, new Bapi2Report4CsvExport
+                    var bapiList = Bapi2ReportItemsRaw.Where(x => (x.KUNNR + "-" + x.Customername + "-" + x.AppFriendlyName) == strKey).ToList();
+                    var bapiString = String.Join("|", bapiList);
+
+                    liste.Add(new Bapi2Report4CsvExport
                         {
-                            RowID = item.RowID,
                             KUNNR = item.KUNNR,
                             Customername = item.Customername,
-                            AppFriendlyName = item.AppFriendlyName,
+                            AppFriendlyName = item.AppFriendlyName.NotNullOrEmpty().Replace(";", "").Replace("\r", "").Replace("\n", ""),
                             AppName = item.AppName,
                             AppURL = item.AppURL,
-                            BAPI = bapiString
+                            BAPI = bapiString.NotNullOrEmpty().ToUpper()
                         });
                 }
             }
