@@ -12,13 +12,12 @@ using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
-using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
 
 
 namespace ServicesMvc.Controllers
 {
-    public partial class FahrzeugeController : CkgDomainController
+    public partial class FahrzeugeController 
     {
         public FahrzeuguebersichtViewModel FahrzeuguebersichtViewModel { get { return GetViewModel<FahrzeuguebersichtViewModel>(); } }
 
@@ -29,7 +28,6 @@ namespace ServicesMvc.Controllers
         public ActionResult ReportFahrzeuguebersicht()
         {
             _dataContextKey = typeof(FahrzeuguebersichtViewModel).Name;
-            FahrzeuguebersichtViewModel.DataInit();
             FahrzeuguebersichtViewModel.Init();
 
             return View(FahrzeuguebersichtViewModel);
@@ -111,7 +109,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportFahrzeuguebersichtFilteredExcel(int page, string orderBy, string filterBy)
         {
             var dt = FahrzeuguebersichtViewModel.FahrzeuguebersichtsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationRequests, dt);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Vehicles, dt);
 
             return new EmptyResult();
         }
@@ -119,7 +117,7 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportFahrzeuguebersichtFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = FahrzeuguebersichtViewModel.FahrzeuguebersichtsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationRequests, dt, landscapeOrientation: true);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Vehicles, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

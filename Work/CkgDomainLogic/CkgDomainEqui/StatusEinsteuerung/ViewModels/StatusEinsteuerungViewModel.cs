@@ -70,8 +70,8 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             {
                 StatusEinsteuerungsInklSummenzeilen = DataService.GetStatusbericht();
                 StatusEinsteuerungsInklSummenzeilen.Add(new StatusEinsteuerung());
-                StatusEinsteuerungsInklSummenzeilen.Add(new StatusEinsteuerung { PDINummer = "ZBII ohne Fahrzeug:", PDIBezeichnung = ZB2OhneFahrzeugCount.ToString() });
-                StatusEinsteuerungsInklSummenzeilen.Add(new StatusEinsteuerung { PDINummer = "Gesperrte Fahrzeuge:", PDIBezeichnung = AnzahlGesperrte.ToString() });
+                StatusEinsteuerungsInklSummenzeilen.Add(new StatusEinsteuerung { PDINummer = "ZBII ohne Fahrzeug", PDIBezeichnung = ZB2OhneFahrzeugCount.ToString() });
+                StatusEinsteuerungsInklSummenzeilen.Add(new StatusEinsteuerung { PDINummer = "Gesperrte Fahrzeuge", PDIBezeichnung = AnzahlGesperrte.ToString() });
             }
             else
             {
@@ -245,7 +245,7 @@ namespace CkgDomainLogic.FzgModelle.ViewModels
             if (ModusStatusReport)
             {
                 dt.Columns[3].SetOrdinal(4);
-                dt.Columns.RemoveAt(19);
+                dt.Columns.RemoveAt(20);
             }
             else
             {

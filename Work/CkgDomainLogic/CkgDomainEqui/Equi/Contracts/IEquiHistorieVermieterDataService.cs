@@ -12,9 +12,9 @@ namespace CkgDomainLogic.Equi.Contracts
 
         void MarkForRefreshHistorieInfos();
 
-        EquiHistorieVermieter GetEquiHistorie(string equiNr, string meldungsNr);
+        EquiHistorieVermieter GetEquiHistorie(string fahrgestellNr);
 
-        byte[] GetHistorieAsPdf(string equiNr, string meldungsNr);
+        byte[] GetHistorieAsPdf(string fahrgestellNr);
 
         
         #region Fahrzeug Anforderungen
