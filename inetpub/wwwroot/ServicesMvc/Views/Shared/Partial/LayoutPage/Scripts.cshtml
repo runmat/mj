@@ -546,9 +546,10 @@
                 sidebarWidth = 0;
             var windowWidth = $(window).width();
 
-            var marginThis = e.css("margin");
+            var marginThis = e.css("margin-left");
+            //console.log(marginThis);
             var margin = parseInt(marginThis, 10) * 2;
-            console.log(margin);
+            //console.log(margin);
 
             var containerWidth = windowWidth - sidebarWidth - margin;
 
@@ -570,12 +571,13 @@
                 var tStatusText = e.find(".t-status-text");
 
                 if (containerWidth > windowWidth) {
-                    var scrollPosX = document.body.scrollLeft;
+                    var scrollPosX = $(window).scrollLeft();
 
                     var marg = 0;
                     if (scrollPosX > 500)
                         marg = 70;
                     var gridExportMenuMarginRight = containerWidth - windowWidth + sidebarWidth + marg - scrollPosX;
+                    console.log(scrollPosX);
                     //console.log(gridExportMenuMarginRight);
 
                     gridExportMenu.css("margin-right", gridExportMenuMarginRight);
