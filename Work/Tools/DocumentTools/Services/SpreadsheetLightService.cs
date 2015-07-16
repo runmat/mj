@@ -160,10 +160,15 @@ namespace DocumentTools.Services
 
         private static void ReorderDataTableToFirstGroupByColumn(DataTable dt, string groupByFirstColumn)
         {
-            var dtGroupByFirstColumn = dt.Columns[groupByFirstColumn];
-            dtGroupByFirstColumn.SetOrdinal(0);
+            var newColumnIndex = 0;
 
-            var newColumnIndex = 1;
+            var dtGroupByFirstColumn = dt.Columns[groupByFirstColumn];
+            if (dtGroupByFirstColumn != null)
+            {
+                dtGroupByFirstColumn.SetOrdinal(0);
+                newColumnIndex++;
+            }
+
             for (var i = 0; i < dt.Columns.Count; i++)
             {
                 var column = dt.Columns[i];

@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using CkgDomainLogic.General.Services;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
-using GeneralTools.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeuge.Models.AppModelMappings;
 
 namespace CkgDomainLogic.Fahrzeuge.Services
@@ -48,8 +46,8 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                 SAP.SetImportParameter("I_REPLA_DATE_BIS", selector.ZulassungDatumRange.EndDate);
             }
 
-            int i = 0;
-            if (Int32.TryParse(selector.Statuskennung, out i) && i <= 700)
+            int i;
+            if (Int32.TryParse(selector.Statuskennung.NotNullOrEmpty(), out i) && i <= 700)
                 SAP.SetImportParameter("I_SELECT", "X");
 
             SAP.Execute();

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.Equi.ViewModels;
@@ -21,19 +22,19 @@ namespace ServicesMvc.Controllers
                
         public ActionResult GetHistorieVermieterByFinPartial(string fahrgestellnummer)
         {
-            var model = new EquiHistorieSuchparameter(){ FahrgestellNr = fahrgestellnummer } ;            
+            var model = new EquiHistorieSuchparameter { FahrgestellNr = fahrgestellnummer };
             EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
 
-            if (EquipmentHistorieVermieterViewModel.HistorieInfos != null)
-                EquipmentHistorieVermieterViewModel.LoadHistorie(EquipmentHistorieVermieterViewModel.HistorieInfos[0].EquipmentNr, null);
+            if (EquipmentHistorieVermieterViewModel.HistorieInfos != null && EquipmentHistorieVermieterViewModel.HistorieInfos.Any())
+                EquipmentHistorieVermieterViewModel.LoadHistorie(EquipmentHistorieVermieterViewModel.HistorieInfos[0].FahrgestellNr);
         
             return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);
         }
 
         [HttpPost]
-        public ActionResult GetFahrzeugHistorieVermieterPartial(string equiNr, string meldungsNr)
+        public ActionResult GetFahrzeugHistorieVermieterPartial(string fahrgestellNr)
         {
-            EquipmentHistorieVermieterViewModel.LoadHistorie(equiNr, meldungsNr);
+            EquipmentHistorieVermieterViewModel.LoadHistorie(fahrgestellNr);
 
             return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);
         }
