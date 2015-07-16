@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
@@ -57,6 +58,23 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public static string PfadAuftragszettel { get { return GeneralConfiguration.GetConfigValue("KroschkeAutohaus", "PfadAuftragszettel"); } }
 
         public bool ModusAbmeldung { get; set; }
+
+        public bool ModusVersandzulassung { get; set; }
+
+        [XmlIgnore]
+        public string ApplicationTitle
+        {
+            get
+            {
+                if (ModusAbmeldung)
+                    return Localize.Cancellation;
+
+                if (ModusVersandzulassung)
+                    return Localize.MailOrderRegistration;
+
+                return Localize.Registration;
+            }
+        }
 
         [XmlIgnore, ScriptIgnore]
         public IDictionary<string, string> Steps
@@ -141,6 +159,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             ModusAbmeldung = abmeldung.IsNotNullOrEmpty();
         }
 
+        public void SetParamVersandzulassung(string versandzulassung)
+        {
+            ModusVersandzulassung = versandzulassung.IsNotNullOrEmpty();
+        }
+ 
  
         #region Rechnungsdaten
 
@@ -389,6 +412,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
+
+            // 20150602 MMA Gegebenenfalls verfügbare externe Wunschkennzeichen-Reservierungs-Url ermitteln 
+             Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
+
+            Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
+
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
@@ -420,6 +449,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void LoadKfzKennzeichenFromKreis(string kreis, out string kennzeichen)
         {
             ZulassungDataService.GetZulassungsKennzeichen(kreis, out kennzeichen);
+        }
+
+        /// <summary>
+        /// 20150602 MMA 
+        /// </summary>
+        /// <param name="zulassungsKreis"></param>
+        public string LoadZulassungsstelleWkzUrl(string zulassungsKreis)
+        {
+            return ZulassungDataService.GetZulassungsstelleWkzUrl(zulassungsKreis);
         }
 
         #endregion
@@ -664,43 +702,74 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Zulassungsdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten); } }
+        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten.Where(z => !ModusVersandzulassung || z.IstVersand).ToList()); } }
 
         [XmlIgnore, ScriptIgnore]
         public List<Material> Abmeldearten { get { return PropertyCacheGet(() => ZulassungDataService.Abmeldearten); } }
 
-        public void SetZulassungsdaten(Zulassungsdaten model)
+        public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state)
         {
-            Zulassung.Zulassungsdaten.ZulassungsartMatNr = model.ZulassungsartMatNr;
-            Zulassung.Zulassungsdaten.Zulassungsdatum = model.Zulassungsdatum;
-            Zulassung.Zulassungsdaten.Abmeldedatum = model.Abmeldedatum;
-            Zulassung.Zulassungsdaten.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
-            Zulassung.Zulassungsdaten.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
-            Zulassung.Zulassungsdaten.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
+            var zulDat = Zulassung.Zulassungsdaten;
 
-            Zulassung.Zulassungsdaten.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
-            Zulassung.Zulassungsdaten.KennzeichenReserviert = model.KennzeichenReserviert;
+            zulDat.ZulassungsartMatNr = model.ZulassungsartMatNr;
+            zulDat.Zulassungsdatum = model.Zulassungsdatum;
+            zulDat.Abmeldedatum = model.Abmeldedatum;
+            zulDat.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
+            zulDat.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
+            zulDat.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
 
-            if (Zulassung.Zulassungsdaten.KennzeichenReserviert)
+            zulDat.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
+            zulDat.KennzeichenReserviert = model.KennzeichenReserviert;
+
+            if (zulDat.KennzeichenReserviert)
             {
-                Zulassung.Zulassungsdaten.ReservierungsNr = model.ReservierungsNr;
-                Zulassung.Zulassungsdaten.ReservierungsName = model.ReservierungsName;
+                zulDat.ReservierungsNr = model.ReservierungsNr;
+                zulDat.ReservierungsName = model.ReservierungsName;
             }
             else
             {
-                Zulassung.Zulassungsdaten.ReservierungsNr = "";
-                Zulassung.Zulassungsdaten.ReservierungsName = "";
+                zulDat.ReservierungsNr = "";
+                zulDat.ReservierungsName = "";
             }
 
-            Zulassung.Zulassungsdaten.Kennzeichen = model.Kennzeichen;
-            Zulassung.Zulassungsdaten.Wunschkennzeichen2 = model.Wunschkennzeichen2;
-            Zulassung.Zulassungsdaten.Wunschkennzeichen3 = model.Wunschkennzeichen3;
+            zulDat.Kennzeichen = model.Kennzeichen;
+            zulDat.Wunschkennzeichen2 = model.Wunschkennzeichen2;
+            zulDat.Wunschkennzeichen3 = model.Wunschkennzeichen3;
 
-            Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = Zulassung.Zulassungsdaten.ZulassungsartMatNr;
+            Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = zulDat.ZulassungsartMatNr;
 
             var tempKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
             if (tempKg != null)
                 Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
+
+            // 20150602 MMA
+            Zulassung.Zulassungsdaten.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
+
+            // Falls Zulassungsdatum gefüllt und firmeneigene Zulassung, dann Datumsfeld "HaltedauerBis" setzen...
+            if (model.MindesthaltedauerDays != null && model.Zulassungsdatum != null && Zulassungsdaten.IstFirmeneigeneZulassung(Zulassung.OptionenDienstleistungen.ZulassungsartMatNr))
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = model.Zulassungsdatum.Value.AddDays((double)model.MindesthaltedauerDays);
+            else
+                Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
+
+
+            if (ModusVersandzulassung || zulDat.Zulassungsart.Auf48hVersandPruefen)
+            {
+                Zulassung.VersandAdresse.Adresse = ZulassungDataService.GetLieferantZuKreis(zulDat.Zulassungskreis);
+
+                if (ModusVersandzulassung)
+                {
+                    var tmpLiefNr = Zulassung.VersandAdresse.Adresse.KundenNr.NotNullOrEmpty().TrimStart('0');
+                    if (tmpLiefNr.StartsWith("564"))
+                        Zulassung.VkBur = tmpLiefNr.Substring(2);
+                }
+
+                var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
+
+                if (Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
+                    state.AddModelError("", Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture);
+                else if (!String.IsNullOrEmpty(checkErg))
+                    state.AddModelError("", checkErg);
+            }
         }
 
         #endregion
@@ -784,6 +853,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassungsdaten = new Zulassungsdaten
                     {
                         ModusAbmeldung = ModusAbmeldung,
+                        ModusVersandzulassung = ModusVersandzulassung,
                         ZulassungsartMatNr = (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
                         Zulassungskreis = null,
                     },
@@ -850,6 +920,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             if (!ModusAbmeldung && Zulassungsarten.None())
                 return;
+
             if (ModusAbmeldung && Abmeldearten.None())
                 return;
 
@@ -889,8 +960,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             ZulassungenForReceipt = new List<Vorgang>();
 
-            // SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusAbmeldung);
+            
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusAbmeldung, ModusVersandzulassung);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {

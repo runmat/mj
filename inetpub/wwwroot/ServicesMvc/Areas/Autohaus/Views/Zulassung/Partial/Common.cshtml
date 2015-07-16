@@ -293,6 +293,12 @@
             AjaxRequestNextStep();
             return;
         }
+
+        var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        if (saveSuccessful == 'true') {
+            SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
+            $("#TmpSaveAddressSuccessful").val(false);
+        }
     }
 
     function OnDataBound_AuslieferAdressenAuswahlGrid() {
@@ -356,7 +362,7 @@
             resNr.attr('readonly', true);
         }
     }
-    
+
     function ZulassungskreisOnChange() {
         $.ajax(
             {
@@ -370,12 +376,43 @@
                     $("#Wunschkennzeichen3").val(result.kennzeichenLinkeSeite);
 
                     $('.editkennz').val(result.kennzeichenLinkeSeite); // MMA
+
+                    // MMA ITA8083
+                    $('#WunschkennzeichenReservierenUrl').val(result.zulassungsstelleUrl);
+                    ShowHideWunschkennzeichenUrl();
                 }
             });
 
         return false;
     }
 
+    // MMA ITA8083
+    function ShowHideWunschkennzeichenUrl() {
+        var url = $('#WunschkennzeichenReservierenUrl').val();
+        $('#LinkWunschkennzeichen').attr('href', url);
+        if (url == undefined || url == '') {
+            $('#divWkzLink').hide();
+        } else {
+            $('#divWkzLink').show();
+        }
+    }
+    function ShowHideMindesthaltedauer() {
+        var controlGroup = $("#MindesthaltedauerDays").closest(".control-group");
+        var id = $('#ZulassungsartMatNr').val();
+        var tagHaltedauer = $('#MindesthaltedauerDays');
+        if (id == "000000000000000619") {                   // Firmeneigene Zulassung
+            if (tagHaltedauer.val() == "") {  // Falls noch kein Wert vorhanden, Default setzen
+                tagHaltedauer.val("0");
+            } else {
+                // Vom User eingegebenen Wert beim Blättern im Wizard nicht überschreiben
+            }
+            controlGroup.show();
+        } else {
+            tagHaltedauer.val("");
+            controlGroup.hide();
+        }
+    }
+    
     // OptionenDienstleistungen
     function AjaxFormOptionenDienstleistungenComplete() {
         FormPrepareAjax();

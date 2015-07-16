@@ -25,6 +25,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         public List<Adresse> ZulassungsStellen { get { return PropertyCacheGet(() => GetZulassungsStellenFromSap()); } }
 
         public string KundennrOverride { get; set; }
+        public string SubKundennr { get; set; }
         public string KundenNr { get { return KundennrOverride ?? LogonContext.KundenNr; } }
 
 

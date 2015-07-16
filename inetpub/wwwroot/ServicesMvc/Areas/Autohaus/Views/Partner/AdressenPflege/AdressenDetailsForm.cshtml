@@ -34,6 +34,11 @@
         @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextAreaFor(m => m.Bemerkung, new { @class = "m-wrap medium", col = "right" })
 
+        <div id="divEvbInfo">
+            @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap medium uppercase", col = "left", maxlength = 7 })
+            @Html.FormDatePickerFor(m => m.Stichtagsabbuchung, new { @class = "m-wrap medium", col = "right" })
+        </div>
+        
         if (Model.InsertModeTmp)
         {
             @Html.FormMultiSelectListFor(m => m.KennungenToInsert, CkgDomainLogic.Partner.Models.PartnerSelektor.PartnerKennungen.ToSelectList(), new { @class = "m-wrap chosen" })
@@ -49,6 +54,16 @@
         <script type="text/javascript">
             _modelIsValid = @Model.IsValid.ToString().ToLower();
             _modelIsInsertMode = @Model.InsertModeTmp.ToString().ToLower();
+
+            $(function(){ 
+                if ($('#Kennung').val() == 'HALTER') {
+                    $('#divEvbInfo').show();
+                } else {
+                    $('#divEvbInfo').hide();
+                }
+            });
+            
+
         </script>
     }
 </div>

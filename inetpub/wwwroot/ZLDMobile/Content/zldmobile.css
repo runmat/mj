@@ -366,8 +366,20 @@
     width: 90px;
 }
 
+.TableColumn100 {
+    width: 100px;
+}
+
 .TableColumn110 {
     width: 110px;
+}
+
+.TableColumn120 {
+    width: 120px;
+}
+
+.TableColumn130 {
+    width: 130px;
 }
 
 .TableColumn140 {
@@ -376,6 +388,26 @@
 
 .TableColumn150 {
     width: 150px;
+}
+
+.TableColumn160 {
+    width: 160px;
+}
+
+.TableColumn170 {
+    width: 170px;
+}
+
+.TableColumn180 {
+    width: 180px;
+}
+
+.TableColumn190 {
+    width: 190px;
+}
+
+.TableColumn200 {
+    width: 200px;
 }
 
 .TableColumn215 {
@@ -440,6 +472,10 @@
     text-transform: uppercase;
 }
 
+.TextUnderline {
+    text-decoration: underline;
+}
+
 .DivFieldError div
 {
     border-width: 2px;
@@ -498,4 +534,45 @@
 
 .FontSize12 {
     font-size: 12px
+}
+
+.Margin-Left-20 {
+    margin-left: 20px;
+}
+
+.Min-Width-275 {
+    min-width: 275px;
+}
+
+.Float-Left {
+    float: left;
+}
+
+.Float-Right {
+    float: right;
+}
+
+.DeleteButton {
+    background: url(/Images/del.png) no-repeat;
+}
+
+.select2-container {
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+}
+
+.select2-container a div {
+    display: none !Important;
+}
+
+.select2-container .ui-shadow-inset {
+    display: none !Important;
+}
+
+.select2-container, .select2-drop {
+	 font-family: Helvetica, Arial, sans-serif /*{global-font-family}*/;
+}
+
+.width-100percent {
+    width: 100%;
 }

@@ -65,15 +65,8 @@ namespace CkgDomainLogic.General.Services
             AppTypes = dbContext.ApplicationTypes.ToList();
             User = dbContext.User;
 
-            if (dbContext.User == null)
-            {
+            if (User == null || !dbContext.TryLogin(password) || User.AccountIsLockedOut || !User.Approved)
                 return false;
-            }
-
-            if (!dbContext.TryLogin(password))
-            {
-                return false;
-            }
 
             UserName = userName;
             UserInfo = dbContext.GetUserInfo();

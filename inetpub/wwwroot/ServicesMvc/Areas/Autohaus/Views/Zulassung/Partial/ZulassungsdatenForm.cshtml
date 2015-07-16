@@ -6,6 +6,10 @@
 }
 
 <style>
+    .fontUnderline {
+        text-decoration: underline    
+    }
+
     .inputwidth {
         width: 100px;
     }
@@ -130,7 +134,9 @@
         @Html.FormValidationSummary()
         @Html.HiddenFor(m => m.IsMassenzulassung)
         @Html.HiddenFor(m => m.ModusAbmeldung)
+        @Html.HiddenFor(m => m.ModusVersandzulassung)
         @Html.HiddenFor(m => m.ZulassungskreisBezeichnung)
+        @Html.HiddenFor(m => m.WunschkennzeichenReservierenUrl) 
 
         if (Model.ModusAbmeldung)
         {
@@ -143,7 +149,10 @@
         }
         else
         {
-            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium" })
+            @*@Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium" })*@
+            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
+            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 }) // 20150528 
+        
             @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
 
             @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" },
@@ -186,6 +195,11 @@
             }
             else
             {
+
+            <div id="divWkzLink">
+                <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline"><i class="margin-right-5"></i> @Localize.AssignKennzeichen</a>
+            </div>
+
                 @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
                 @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
 
@@ -201,5 +215,15 @@
         
     }
 </div>
+<script type="text/javascript">
+            
+    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            
+    CheckKennzeichenReserviert();
+
+    ShowHideMindesthaltedauer();    // 20150528 MMA
+    ShowHideWunschkennzeichenUrl(); // 20150602 MMA
 
 
+
+</script>

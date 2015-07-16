@@ -15,5 +15,10 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Contracts
 
         List<VorgangStatus> GetVorgangBebStatus(List<string> vorgIds);
 
+        List<string> GetVkBurs();
+
+        void GetStammdatenKundenUndHauptdienstleistungen(string vkBur, out List<Kunde> kunden, out List<Dienstleistung> dienstleistungen);
+
+        List<Amt> GetStammdatenAemter();
     }
 }

@@ -112,6 +112,33 @@ namespace CkgDomainLogic.Autohaus.Services
             return (sapItem.KREISKZ.IsNotNullOrEmpty() ? sapItem.KREISKZ : sapItem.ZKFZKZ).ToUpper();
         }
 
+        /// <summary>
+        /// 20150602 MMA Gibt URL der Wunschkennzeichen-Seite der Zulassungsstelle zurück, falls von Z_ZLD_EXPORT_ZULSTEL geliefert
+        /// </summary>
+        /// <param name="zulassungsKreis"></param>
+        /// <returns></returns>
+        public string GetZulassungsstelleWkzUrl(string zulassungsKreis)
+        {
+            if (zulassungsKreis == null)
+                return null;
+
+            Z_ZLD_EXPORT_ZULSTEL.Init(SAP);
+            var sapList = Z_ZLD_EXPORT_ZULSTEL.GT_EX_ZULSTELL.GetExportListWithExecute(SAP);
+
+            string url = null;
+
+            if (SAP.ResultCode == 0 && sapList.Count > 0)
+            {
+                var sapItem = sapList.FirstOrDefault(x => x.KREISKZ == zulassungsKreis.ToUpper());
+                if (sapItem != null)
+                {
+                    url = sapItem.URL;
+                }
+            }
+
+            return url;
+        }
+
         public void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen)
         {
             kreis = "";
@@ -140,6 +167,13 @@ namespace CkgDomainLogic.Autohaus.Services
             var sapItem = sapList.FirstOrDefault(s => GetKreis(s) == kreis.NotNullOrEmpty().ToUpper());
             if (sapItem != null)
                 kennzeichen = sapItem.ZKFZKZ;
+        }
+
+        public Adresse GetLieferantZuKreis(string kreis)
+        {
+            Z_ZLD_EXPORT_INFOPOOL.Init(SAP, "I_KREISKZ", kreis);
+
+            return AppModelMappings.Z_ZLD_EXPORT_INFOPOOL_GT_EX_ZUSTLIEF_To_Adresse.Copy(Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF.GetExportListWithExecute(SAP)).FirstOrDefault();
         }
 
         private IEnumerable<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> LoadZulassungskreisKennzeichenFromSap()
@@ -207,7 +241,44 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
+        public string Check48hExpress(Vorgang zulassung)
+        {
+            Z_ZLD_CHECK_48H.Init(SAP);
+
+            SAP.SetImportParameter("I_KREISKZ", zulassung.Zulassungsdaten.Zulassungskreis);
+            SAP.SetImportParameter("I_LIFNR", zulassung.VersandAdresse.Adresse.KundenNr.ToSapKunnr());
+            SAP.SetImportParameter("I_DATUM_AUSFUEHRUNG", zulassung.Zulassungsdaten.Zulassungsdatum);
+
+            SAP.Execute();
+
+            if (SAP.ResultCode != 0)
+                return SAP.ResultMessage;
+
+            var checkResults = Z_ZLD_CHECK_48H.ES_VERSAND_48H.GetExportList(SAP);
+            if (checkResults.Any())
+            {
+                var item = checkResults.First();
+
+                zulassung.Ist48hZulassung = item.Z48H.XToBool();
+                zulassung.LieferuhrzeitBis = item.LIFUHRBIS;
+
+                // Abweichende Versandadresse?
+                if (!String.IsNullOrEmpty(item.NAME1))
+                {
+                    var adr = zulassung.VersandAdresse.Adresse;
+                    adr.Name1 = item.NAME1;
+                    adr.Name2 = item.NAME2;
+                    adr.Strasse = item.STREET;
+                    adr.HausNr = "";
+                    adr.PLZ = item.POST_CODE1;
+                    adr.Ort = item.CITY1;
+                }
+            }
+
+            return "";
+        }
+
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung)
         {
             try
             {
@@ -224,9 +295,8 @@ namespace CkgDomainLogic.Autohaus.Services
                     SAP.SetImportParameter("I_SPEICHERN", "X");
 
                 SAP.SetImportParameter("I_FORMULAR", "X");
-                if (!modusAbmeldung)
-                    SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
-
+                SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
+                    
                 var positionen = new List<Zusatzdienstleistung>();
                 var adressen = new List<Adressdaten>();
                 var zusBankdaten = new List<Bankdaten>();
@@ -265,6 +335,12 @@ namespace CkgDomainLogic.Autohaus.Services
                             }
                             adressen.Add(a.Adressdaten);
                         });
+
+                    if (modusVersandzulassung)
+                    {
+                        vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
+                        adressen.Add(vorgang.VersandAdresse);
+                    }
 
                     // zus. Bankdaten (GT_BANK_IN)
 

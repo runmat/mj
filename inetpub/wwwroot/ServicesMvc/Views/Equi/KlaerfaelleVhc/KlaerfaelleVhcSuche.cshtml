@@ -1,0 +1,47 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model KlaerfaelleVhcSuchparameter
+
+<div id="divKlaerfaelleVhcSuche">
+    @using (Ajax.BeginForm("LoadKlaerfaelleVhc", "Equi", null,
+        new MvcAjaxOptions("divKlaerfaelleVhcSuche") { OnComplete = "ShowKlaerfaelleVhc();" }, new { id = "KlaerfaelleVhcForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+            
+            
+            @Html.FormRadioButtonListFor(m => m.Auswahl, Model.AuswahlOptionen.ToSelectList())
+            
+            <div class="space10"></div>
+
+            @*@Html.FormRequiredFieldsSummary()*@
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+
+<script type="text/javascript">
+
+    function ShowKlaerfaelleVhc() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowKlaerfaelleVhc",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowKlaerfaelleVhcSearchResult(result);
+                }
+            }
+        });
+    }
+
+</script>

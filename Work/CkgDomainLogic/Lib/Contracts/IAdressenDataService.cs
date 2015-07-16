@@ -17,6 +17,7 @@ namespace CkgDomainLogic.DomainCommon.Contracts
         Adresse AgAdresse { get; }
 
         string KundennrOverride { get; set; }
+        string SubKundennr { get; set; }
 
         List<Adresse> ZulassungsStellen { get; }
 

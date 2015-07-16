@@ -16,5 +16,11 @@ namespace CkgDomainLogic.Autohaus.Models
         public string Belegtyp { get; set; }
 
         public bool IstAbmeldung { get; set; }
+
+        public bool IstVersand { get; set; }
+
+        public bool Auf48hVersandPruefen { get; set; }
+
+        public bool ZulassungAmFolgetagNichtMoeglich { get; set; }
     }
 }

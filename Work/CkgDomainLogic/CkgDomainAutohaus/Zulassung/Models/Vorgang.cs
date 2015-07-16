@@ -36,6 +36,27 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public BankAdressdaten ZahlerKfzSteuer { get; set; }
 
+        public Adressdaten VersandAdresse { get; set; }
+
+        public bool Ist48hZulassung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.DeliveryTimeBy)]
+        public string LieferuhrzeitBis { get; set; }
+
+        [XmlIgnore]
+        public string LieferuhrzeitBisFormatted
+        {
+            get
+            {
+                var tmpZeit = LieferuhrzeitBis;
+
+                if (!String.IsNullOrEmpty(tmpZeit) && tmpZeit.Length == 6)
+                    tmpZeit = tmpZeit.Substring(0, 2) + ":" + tmpZeit.Substring(2, 2) + ":" + tmpZeit.Substring(4, 2);
+
+                return tmpZeit;
+            }
+        }
+
         public List<Kunde> Kunden { get; set; }
 
         public string HalterName
@@ -97,9 +118,24 @@ namespace CkgDomainLogic.Autohaus.Models
             Fahrzeugdaten = new Fahrzeugdaten { FahrzeugartId = "1" };
             Halter = new Adressdaten("HALTER") { Partnerrolle = "ZH"};
             ZahlerKfzSteuer = new BankAdressdaten("Z6", false, "ZAHLERKFZSTEUER");
+            VersandAdresse = new Adressdaten("") { Partnerrolle = "ZZ" };
             OptionenDienstleistungen = new OptionenDienstleistungen();
         }
 
+        [XmlIgnore, ScriptIgnore]
+        string SummaryHeaderText
+        {
+            get
+            {
+                if (Zulassungsdaten.ModusAbmeldung)
+                    return Localize.OrderSummaryVehicleCancellation;
+
+                if (Zulassungsdaten.ModusVersandzulassung)
+                    return Localize.OrderSummaryVehicleMailOrderRegistration;
+
+                return Localize.OrderSummaryVehicleRegistration;
+            }
+        }
 
         [XmlIgnore, ScriptIgnore]
         string BeauftragungBezeichnungKunde
@@ -135,6 +171,27 @@ namespace CkgDomainLogic.Autohaus.Models
                     s += "<br/>" + item.Adressdaten.Adresse.GetPostLabelString();
                 }
 
+                return s;
+            }
+        }
+
+        [XmlIgnore, ScriptIgnore]
+        string VersandAdresseSummaryString
+        {
+            get
+            {
+                var s = "";
+
+                s += VersandAdresse.Adresse.GetPostLabelString();
+
+                if (Ist48hZulassung)
+                {
+                    s += "<br/>" + Localize.ExpressRegistration48h;
+
+                    if (!String.IsNullOrEmpty(LieferuhrzeitBis))
+                        s += String.Format("<br/>{0}: {1} Uhr", Localize.DeliveryTimeBy, LieferuhrzeitBisFormatted);
+                }
+                    
                 return s;
             }
         }
@@ -182,7 +239,7 @@ namespace CkgDomainLogic.Autohaus.Models
         {
             var summaryModel = new GeneralSummary
             {
-                Header = (Zulassungsdaten.ModusAbmeldung ? Localize.OrderSummaryVehicleCancellation : Localize.OrderSummaryVehicleRegistration),
+                Header = SummaryHeaderText,
                 Items = new ListNotEmpty<GeneralEntity>
                         (
                             SummaryBeauftragungsHeaderKunde,
@@ -227,6 +284,14 @@ namespace CkgDomainLogic.Autohaus.Models
                                     {
                                         Title = Localize.RegistrationOptions,
                                         Body = OptionenDienstleistungen.GetSummaryString(),
+                                    }),
+
+                            (!Zulassungsdaten.ModusVersandzulassung
+                                    ? null :
+                                    new GeneralEntity
+                                    {
+                                        Title = Localize.ShippingAddress,
+                                        Body = VersandAdresseSummaryString,
                                     }),
 
                             (BankAdressdaten.GetSummaryString().IsNullOrEmpty()

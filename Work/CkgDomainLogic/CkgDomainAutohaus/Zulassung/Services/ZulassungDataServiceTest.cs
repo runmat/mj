@@ -136,7 +136,27 @@ namespace CkgDomainLogic.Autohaus.Services
             throw new NotImplementedException();
         }
 
-        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
+        /// <summary>
+        /// 20150602 MMA
+        /// </summary>
+        /// <param name="kreis"></param>
+        /// <returns></returns>
+        public string GetZulassungsstelleWkzUrl(string kreis)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Adresse GetLieferantZuKreis(string kreis)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string Check48hExpress(Vorgang zulassung)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung)
         {
             throw new NotImplementedException();
         }
