@@ -21,47 +21,47 @@
     
     function SetEvb(fin, evb, tagObj) { 
         $.ajax({
-                type: "POST",
-                url: "SetEvb",
-                data: { fin: fin, evb: evb },
-                loadingShow: false,
-                success: function(result) {
+            type: "POST",
+            url: "SetEvb",
+            data: { fin: fin, evb: evb },
+            loadingShow: false,
+            success: function(result) {
                     
-                    // Etwaige Error-Markierungen entfernen...
-                    $('#validationErrorEvb').remove();
-                    $(tagObj).closest(".control-group").removeClass("error");
-                    $(tagObj).removeClass("input-validation-error");
+                // Etwaige Error-Markierungen entfernen...
+                $('#validationErrorEvb').remove();
+                $(tagObj).closest(".control-group").removeClass("error");
+                $(tagObj).removeClass("input-validation-error");
                     
-                    // wenn fin = null, dann wurde für jedes Fahrzeug soeben die selbe evb vergeben. Dies jetzt noch visualisieren...
-                    if (result.ok == true && fin == "") {
-                        $('.editevb').val(evb);
-                        $('#GridFahrzeugAuswahlZulassung .editevb').removeClass("input-validation-error");
-                    }
-
-                    if (result.ok == false) {
-                        $(tagObj).closest(".control-group").addClass("error");
-                        $(tagObj).addClass("input-validation-error");
-                        $(tagObj).after("<span id='validationErrorEvb' class='help-inline'>" + result.message + "</span>");
-                    }
+                // wenn fin = null, dann wurde für jedes Fahrzeug soeben die selbe evb vergeben. Dies jetzt noch visualisieren...
+                if (result.ok == true && fin == "") {
+                    $('.editevb').val(evb);
+                    $('#GridFahrzeugAuswahlZulassung .editevb').removeClass("input-validation-error");
                 }
-            });
+
+                if (result.ok == false) {
+                    $(tagObj).closest(".control-group").addClass("error");
+                    $(tagObj).addClass("input-validation-error");
+                    $(tagObj).after("<span id='validationErrorEvb' class='help-inline'>" + result.message + "</span>");
+                }
+            }
+        });
     }
     
     function SetZulassungskreis(zulassungskreis) {
         $.ajax({
-                type: "POST",
-                url: "SetKreisAll",
-                data: { zulassungskreis: zulassungskreis },
-                loadingShow: false,
-                success: function (result) {
-                    if (result.ok == true) {
-                        $('.editkennz').val(zulassungskreis + "-");
-                    }
-                    if (result.ok == false) {
-                        alert(result.message);
-                    }
+            type: "POST",
+            url: "SetKreisAll",
+            data: { zulassungskreis: zulassungskreis },
+            loadingShow: false,
+            success: function (result) {
+                if (result.ok == true) {
+                    $('.editkennz').val(zulassungskreis + "-");
                 }
-            });
+                if (result.ok == false) {
+                    alert(result.message);
+                }
+            }
+        });
     }
 
     $(function () {
@@ -120,91 +120,6 @@
             return;
         }
     }
-    
-//    // FahrzeugAuswahlGridZulassung
-//    function OnDataBound_GridFahrzeugAuswahlZulassung() {
-//        FilteredData_Grid_OnDataBound($(this));
-//        $('.tooltips').tooltip();
-
-//        // prepare multi row selection
-//        App.initUniform();
-//        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahlZulassung");
-//    }
-//    function OnRowDataBound_GridFahrzeugAuswahlZulassung(e) {
-//        alert(2);
-//        var isValid = e.dataItem["IsValid"];
-
-//        if (isValid)
-//            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
-//        else
-//            $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-error" : "t-grid-error-alt");
-//    }
-//    function OnLoad_GridFahrzeugAuswahlZulassung() {
-//        alert("OnLoad_GridFahrzeugAuswahlZulassung: " + ladeHinweis);
-//        $('.t-no-data td').text(ladeHinweis);
-//    }
-//    function OnColumnShowHide_GridFahrzeugAuswahlZulassung() {
-//        alert(4);
-//        FilteredData_Grid_OnColumnShowHide($(this));
-//    }
-//    function OnColumnReorder_GridFahrzeugAuswahlZulassung() {
-//        alert(5);
-//        FilteredData_Grid_OnColumnReorder($(this));
-//    }
-//    function OnSelectionChange_GridFahrzeugAuswahlZulassung(cb) {
-//        alert(6);
-//        Grid_FormatMultiRowSelected(cb);
-//        $.ajax({
-//            type: "POST",
-//            url: "FahrzeugAuswahlSelectionChanged",
-//            data: { vin: cb.val(), isChecked: cb.is(':checked') },
-//            loadingShow: false,
-//            success: function (result) {
-//                _selectedItemsCount = result.allSelectionCount;
-//                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
-//                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
-//                ShowHideNextButton();
-//                if (count == 0) {
-//                    $("#FahrzeugAuswahlCount").addClass('hide');
-//                    return;
-//                }
-//                $("#FahrzeugAuswahlCount").removeClass('hide');
-//                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
-//            }
-//        });
-//    }
-//    function GridFahrzeugAuswahlZulassung_OnAllSelectionChange(check) {
-//        alert(7);
-//        $.ajax({
-//            type: "POST",
-//            url: "FahrzeugAuswahlSelectionChanged",
-//            data: { id: "", isChecked: check },
-//            loadingShow: true,
-//            success: function (result) {
-//                _selectedItemsCount = result.allSelectionCount;
-//                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
-//                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
-//                ShowHideNextButton();
-
-//                FilterGrid("GridFahrzeugAuswahl");
-//            }
-//        });
-//    }
-//    function GridFahrzeugAuswahlZulassung_MultiSelectUpdate(count) {
-//        alert(8);
-//        if (count == 0) {
-//            $("#FahrzeugAuswahlCount").addClass('hide');
-//            $("#uncheckAllRecords").attr("checked", false);
-//            $.uniform.update($("#uncheckAllRecords"));
-//            return;
-//        }
-
-//        $("#FahrzeugAuswahlCount").removeClass('hide');
-//        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
-//        $("#uncheckAllRecords").attr("checked", true);
-//        $.uniform.update($("#uncheckAllRecords"));
-//    }    
-    
 </script>
 
 <div id="DivZulassungsdaten" class="margin-top-20">

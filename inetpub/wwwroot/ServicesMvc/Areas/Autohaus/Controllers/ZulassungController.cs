@@ -139,7 +139,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [GridAction]
         public ActionResult FahrzeugAuswahlAjaxBinding()
         {
-            var items = ViewModel.FinList;
+            var items = ViewModel.FinListFiltered;
             return View(new GridModel(items));
         }
 
@@ -529,7 +529,8 @@ namespace ServicesMvc.Autohaus.Controllers
             //model.IsValid = ModelState.IsValid;
             //model.InsertModeTmp = viewModel.InsertMode;
 
-            if (!ViewModel.FinList.Any(x => x.IsSelected))
+            // if (!ViewModel.FinList.Any(x => x.IsSelected))
+            if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung && !ViewModel.FinList.Any(x => x.IsSelected))
             {
                 ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
             }
@@ -624,14 +625,7 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Receipt()
         {
 
-            if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung)
-            {
-                ViewModel.SaveMultiReg();
-            }
-            else
-            {
-                ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
-            }
+            ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
 
             ShoppingCartItemRemove(ViewModel.ObjectKey);
 
@@ -641,6 +635,8 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Summary()
         {
+            TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
 
@@ -675,6 +671,7 @@ namespace ServicesMvc.Autohaus.Controllers
                 return new FileContentResult(new byte[1], "");
 
             var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
+            // var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Belegnummer == id && z.Typ == typ);   // 20150715 MMA 
             if (zusatzFormular == null)
                 return new FileContentResult(new byte[1], ""); 
 

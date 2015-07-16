@@ -1,6 +1,8 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.Models
 @model GeneralSummary
 
+@{ var isMassenzulassung = (bool)TempData["IsMassenzulassung"];}
+
 <h4>@Model.Header</h4>
 
 @Html.SpanAlert("WaitHint")
@@ -18,32 +20,35 @@
     }
 </div>
 
+@if (isMassenzulassung)
+{
 <div id="divPortletFahrzeugauswahl">
     @using (@Html.PortletBox(Localize.Vehicles, "icon-table", "light-grey", false))
     {
         var gridName = "GridFahrzeugAnzeige";
         @(Html.Telerik()
-                .Grid<FahrzeugAkteBestand>()
-                .Name(gridName)
-                    .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
-                .Columns(columns =>
-                {
-                    columns.XBound(c => c.FIN);
-                    columns.XBound(c => c.FahrzeugArt);
-                    columns.XBound(c => c.HandelsName);
-                    columns.XBound(c => c.WunschKennz1);
-                    columns.XBound(c => c.WunschKennz2);
-                    columns.XBound(c => c.WunschKennz3);
-                    columns.XBound(c => c.ReservationNr);
-                    columns.XBound(c => c.ReservationName);
-                    columns.XBound(c => c.Evb);
-                })
-                .XAutoColumnConfiguration()
-                .XPageSize(10)
-                .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-        )
-}
+              .Grid<FahrzeugAkteBestand>()
+              .Name(gridName)
+              .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+              .Columns(columns =>
+                  {
+                      columns.XBound(c => c.FIN);
+                      columns.XBound(c => c.FahrzeugArt);
+                      columns.XBound(c => c.HandelsName);
+                      columns.XBound(c => c.WunschKennz1);
+                      columns.XBound(c => c.WunschKennz2);
+                      columns.XBound(c => c.WunschKennz3);
+                      columns.XBound(c => c.ReservationNr);
+                      columns.XBound(c => c.ReservationName);
+                      columns.XBound(c => c.Evb);
+                  })
+              .XAutoColumnConfiguration()
+              .XPageSize(10)
+              .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+              )
+    }
 </div>
+}
 
 <script type="text/javascript">
     FormWizardShowHideSaveButton(true);

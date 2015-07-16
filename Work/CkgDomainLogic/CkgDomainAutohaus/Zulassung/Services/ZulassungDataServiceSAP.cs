@@ -267,8 +267,15 @@ namespace CkgDomainLogic.Autohaus.Services
                         });
 
                     // zus. Bankdaten (GT_BANK_IN)
-                    vorgang.ZahlerKfzSteuer.Bankdaten.BelegNr = vorgang.BelegNr;
-                    zusBankdaten.Add(vorgang.ZahlerKfzSteuer.Bankdaten);
+
+                    // MMA nachfolgender Block auskommentiert, da er identische BelegNummern in zusBankdaten erzeugt (Referenz und nicht Value)
+                    //vorgang.ZahlerKfzSteuer.Bankdaten.BelegNr = vorgang.BelegNr;
+                    //zusBankdaten.Add(vorgang.ZahlerKfzSteuer.Bankdaten);
+
+                    // MMA
+                    var bankdaten = ModelMapping.Copy(vorgang.ZahlerKfzSteuer.Bankdaten);
+                    bankdaten.BelegNr = vorgang.BelegNr;
+                    zusBankdaten.Add(bankdaten);
                 }
 
                 var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(zulassungen).ToList();
@@ -322,7 +329,9 @@ namespace CkgDomainLogic.Autohaus.Services
             foreach (var vorgang in zulassungen)
             {
                 var bnr = vorgang.BelegNr;
+
                 vorgang.Zusatzformulare.AddRange(fileNames.Where(f => f.Belegnummer == bnr));
+
                 if (auftragsListePath != null)
                     vorgang.Zusatzformulare.Add(auftragsListePath);
 

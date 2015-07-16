@@ -26,7 +26,7 @@
                 .HeaderTemplate(
                       "<button onclick='FahrzeugCreateAjax();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
                 );
-            columns.XBoundAllExcept(m => m.Bemerkung);
+            columns.XBoundAllExcept(m => m.Bemerkung, m => m.IsSelected, m => m.Zb2Nr, m => m.WunschKennz1, m => m.WunschKennz2, m => m.WunschKennz3, m => m.ResKennz, m => m.ReservationName, m => m.ReservationNr, m => m.Evb);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))

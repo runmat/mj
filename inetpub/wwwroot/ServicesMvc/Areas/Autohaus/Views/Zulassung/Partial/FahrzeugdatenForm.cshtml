@@ -11,33 +11,28 @@
     var _selectedItemsCount = 0;
 
     function AjaxFormFahrzeugdatenComplete() {
+        // alert("AjaxFormFahrzeugdatenComplete: " + _modelIsValid);
         FormPrepareAjax();
-
         if (_modelIsValid) {
             AjaxRequestNextStep();
             return;
         }
     }
-    
     function OnDataBound_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
-
         // prepare multi row selection
         App.initUniform();
         Grid_PrepareMultiRowSelected("GridFahrzeugAuswahlZulassung");
     }
-    
     function OnColumnReorder_GridFahrzeugAuswahl() {
-        alert(5);
         FilteredData_Grid_OnColumnReorder($(this));
     }
     function OnColumnShowHide_GridFahrzeugAuswahl() {
-        alert(4);
         FilteredData_Grid_OnColumnShowHide($(this));
     }
+    
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
-        // alert("OnSelectionChange_GridFahrzeugAuswahl");
         Grid_FormatMultiRowSelected(cb);
         $.ajax({
             type: "POST",
@@ -49,8 +44,8 @@
             }
         });
     }
+    
     function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
-        // alert("GridFahrzeugAuswahl_OnAllSelectionChange");
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
@@ -62,7 +57,7 @@
             }
         });
     }
-
+    
     function UpdateGridInfo(count) {
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
@@ -70,18 +65,27 @@
             $.uniform.update($("#uncheckAllRecords"));
             return;
         }
-
         $("#FahrzeugAuswahlCount").removeClass('hide');
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
     }
-</script>
 
+    $(function() {
+        GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+    });
+    
+    function OnLoad_GridFahrzeugAuswahl() {
+        alert("OnLoad_GridFahrzeugAuswahl");
+        // $('.t-no-data td').text("test");
+    }
+    
+</script>
 <div id="DivFahrzeugdaten" class="margin-top-20">
+    
     @using (Ajax.BeginForm("FahrzeugdatenForm", "Zulassung", null,
-            new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugdaten", OnComplete = "AjaxFormFahrzeugdatenComplete();" },
-                htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
+                           new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugdaten", OnComplete = "AjaxFormFahrzeugdatenComplete();" },
+                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
     {
         @Html.FormValidationSummary()
 
@@ -108,49 +112,51 @@
         
             using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
             {
-            <h4>
-                <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
-                    <i class="icon-check"></i><span class="padding-left-5 bold"></span>
-                </span>
-            </h4>
+                <h4>
+                    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+                        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+                    </span>
+                </h4>
             
-            var gridName = "GridFahrzeugAuswahl";
-            @(Html.Telerik()
-                    .Grid<FahrzeugAkteBestand>()
-                    .Name(gridName)
-                    .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
-                    .Columns(columns =>
-                    {
-                        columns.XBound("")
-                                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                                .Filterable(false);
-                        columns.XBound(c => c.FIN);
-                        columns.XBound(c => c.HandelsName);
-                        columns.XBound(c => c.FahrzeugArt);
-                    })
-                    .ClientEvents(events => events.OnComplete("GridAllColumnFilterApplyToGrid('GridFahrzeugAuswahl')")) // move our grid filter form into grid's toolbar:
-                    // .ClientEvents(events => events.XAutoClientEvents(gridName))
-                    //.ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
-                    .XAutoColumnConfiguration()
-                    .XPageSize(10)
-                    .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-                    .XToolBar("GridFahrzeugAuswahl")
-                    )
+                var gridName = "GridFahrzeugAuswahl";
+                @(Html.Telerik()
+                      .Grid<FahrzeugAkteBestand>()
+                      .Name(gridName)
+                      .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
+                      .Columns(columns =>
+                          {
+                              columns.XBound("")
+                                     .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                                     .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                                     .Filterable(false);
+                              columns.XBound(c => c.FIN);
+                              columns.XBound(c => c.HandelsName);
+                              columns.XBound(c => c.FahrzeugArt);
+                          })
+                      // .XAutoColumnConfiguration()
+                      //.ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
+                      //.ClientEvents(events => events.XAutoClientEvents(gridName))
+                      // .ClientEvents(events => events.OnComplete("GridAllColumnFilterApplyToGrid('GridFahrzeugAuswahl')")) // move our grid filter form into grid's toolbar:
+                      // .ClientEvents(events => events.XAutoClientEvents(gridName))
+                      // .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
+                      .XPageSize(10)
+                      .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                      .XToolBar(gridName)
+                          )
             }
         }
         else
         {
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
-        @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
+            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap medium uppercase", col = "left" })
+            @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "left" })
-        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17, col = "right" })
+            @Html.FormTextBoxFor(m => m.VerkaeuferKuerzel, new { @class = "m-wrap small", col = "left" })
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17, col = "right" })
 
-        @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
-        @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase", col = "right" })
+            @Html.FormTextBoxFor(m => m.BestellNr, new { @class = "m-wrap medium uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase", col = "right" })
 
-        @Html.HiddenFor(m => m.KostenstelleVisible)
+            @Html.HiddenFor(m => m.KostenstelleVisible)
             if (Model.KostenstelleVisible)
             {
                 @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
