@@ -44,7 +44,7 @@ namespace CkgDomainLogic.DomainCommon.Models
         public bool VersandSperre { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ClientNo)]
-        [Required]
+        [RequiredConditional]
         public string ClientNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ClientName)]

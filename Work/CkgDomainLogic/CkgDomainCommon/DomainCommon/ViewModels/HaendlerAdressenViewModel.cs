@@ -139,14 +139,17 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void ValidateModel(HaendlerAdresse model, bool insertMode, Action<Expression<Func<HaendlerAdresse, object>>, string> addModelError)
         {
-            if (!insertMode)
-                return;
-
-            if (HaendlerAdressen.Any(m => m.ID.ToLowerAndNotEmpty() == model.ID.ToLowerAndNotEmpty()))
-                addModelError(m => m.ID, Localize.ItemAlreadyExistsWithThisID);
+            if (insertMode)
+            {
+                if (HaendlerAdressen.Any(m => m.ID.ToLowerAndNotEmpty() == model.ID.ToLowerAndNotEmpty()))
+                    addModelError(m => m.ID, Localize.ItemAlreadyExistsWithThisID);
+            }
 
             if (HaendlerAdressenModus && model.HaendlerNr.IsNullOrEmpty())
-                addModelError(m => m.HaendlerNr, Localize.Required);
+                addModelError(m => m.HaendlerNr, Localize.FieldIsRequired);
+
+            if (HaendlerAdressenModus && model.ClientNr.IsNullOrEmpty())
+                addModelError(m => m.ClientNr, Localize.FieldIsRequired);
         }
 
         public void FilterHaendlerAdressen(string filterValue, string filterProperties)

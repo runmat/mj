@@ -52,7 +52,10 @@ namespace CkgDomainLogic.DomainCommon.Services
             SAP.Execute();
 
             var sapItems = Z_DPM_READ_REM_VERS_VORG_01.GT_OUT.GetExportList(SAP);
-            sapItems = sapItems.Where(s => s.CLIENT_NR.IsNotNullOrEmpty() && s.LAND_CODE.IsNotNullOrEmpty()).ToListOrEmptyList();
+            sapItems = sapItems.Where(s => 
+                                        (s.HAENDLER.IsNotNullOrEmpty() && s.CLIENT_NR.IsNotNullOrEmpty()) ||
+                                        (s.LAND_CODE.IsNotNullOrEmpty() && s.HAENDLER.IsNullOrEmpty() && s.CLIENT_NR.IsNullOrEmpty()))
+                               .ToListOrEmptyList();
             var webItems = AppModelMappings.Z_DPM_READ_MODELID_TAB__GT_OUT_To_HaendlerAdresse.Copy(sapItems).ToList();
             return webItems;
         }

@@ -20,44 +20,47 @@
         
         if (Model.InsertModeTmp)
         {
-            if (Model.HaendlerAdressenModus)
-            {
-                @Html.FormTextBoxFor(m => m.HaendlerNr, new {@class = "m-wrap medium", col = "left"})
-            }
-            else
-            {
-                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "left" })
-            }
-
             if (Model.LaenderCode.IsNullOrEmpty())
             {
-                @Html.FormDropDownListFor(m => m.LaenderCode, Model.LaenderListWithDefaultOption.ToSelectList(), new { @class = "m-wrap medium", col = "right" })
+                @Html.FormDropDownListFor(m => m.LaenderCode, Model.LaenderListWithDefaultOption.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
             }
             else
             {
                 @Html.HiddenFor(m => m.LaenderCode)
-                @Html.FormTextBlockFor(m => m.LandAsText, new { @class = "m-wrap medium", col = "right" })
+                @Html.FormTextBlockFor(m => m.LandAsText, new { @class = "m-wrap medium", col = "left" })
+            }
+            
+            if (Model.HaendlerAdressenModus)
+            {
+                @Html.FormTextBoxFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "right" })
+            }
+            else
+            {
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
             }
         }
         else
         {
+            @Html.HiddenFor(m => m.LaenderCode)
+            @Html.FormTextBlockFor(m => m.LandAsText, new { @class = "m-wrap medium", col = "left" })
+
             if (Model.HaendlerAdressenModus)
             {
                 @Html.HiddenFor(m => m.HaendlerNr)
-                @Html.FormTextBlockFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "left" })
+                @Html.FormTextBlockFor(m => m.HaendlerNr, new { @class = "m-wrap medium", col = "right" })
             }
             else
             {
-                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "left" })
+                @Html.FormPlaceHolder(null, new { @class = "m-wrap medium", col = "right" })
             }
-        
-            @Html.HiddenFor(m => m.LaenderCode)
-            @Html.FormTextBlockFor(m => m.LandAsText, new { @class = "m-wrap medium", col = "right" })
         }
 
-        @Html.FormTextBoxFor(m => m.ClientNr, new { @class = "m-wrap medium", col = "left" })
-        @Html.FormTextBoxFor(m => m.ClientName, new { @class = "m-wrap medium", col = "right" })
-
+        if (Model.HaendlerAdressenModus)
+        {
+            @Html.FormTextBoxFor(m => m.ClientNr, new { @class = "m-wrap medium", col = "left" })
+            @Html.FormTextBoxFor(m => m.ClientName, new { @class = "m-wrap medium", col = "right" })
+        }
+        
         @Html.FormCheckBoxFor(m => m.VersandSperre, new { @class = "m-wrap medium" }, labelHidden: true)
 
         
