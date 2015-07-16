@@ -888,34 +888,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
-        // Save Massenzulassung 
-        public string SaveMultiReg()
-        {
-
-            //// Basierend auf FinList eine Liste mit Zulassungen erstellen
-            //var zulassungenMultiReg = new List<Vorgang>();
-            //// Alle zuzulassenden Fahrzeuge durchlaufen 
-            //foreach (var fahrzeugAkteBestand in FinList)
-            //{
-            //    var singleZulassung = new Vorgang();
-            //    singleZulassung = ModelMapping.Copy(Zulassung);
-            //    singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);
-
-            //    singleZulassung.Fahrzeugdaten.FahrgestellNr = fahrzeugAkteBestand.FIN;
-
-            //    singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb;
-            //    singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
-            //    singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
-            //    singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
-
-            //    zulassungenMultiReg.Add(singleZulassung);
-            //}
-
-            // Save(zulassungenMultiReg, saveDataToSap: true, saveFromShoppingCart: false);
-
-            return null;
-        }
-
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             if (!ModusAbmeldung && Zulassungsarten.None())
@@ -929,13 +901,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // if (FinList.Count > 1)
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
-                var first = true;
                 // Alle zuzulassenden Fahrzeuge durchlaufen
-                // var zulassungenMultiReg = new List<Vorgang>();
                 foreach (var fahrzeugAkteBestand in FinList)
                 {
-                    var singleZulassung = ModelMapping.Copy(Zulassung);
-                    singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);
+                    var singleZulassung = ModelMapping.Copy(Zulassung); // Achtung: Kopiert nicht, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
+                    singleZulassung.Zulassungsdaten = ModelMapping.Copy(Zulassung.Zulassungsdaten); // Explizit Zulassungsdaten kopieren, damit keine Referenz erzeugt wird
+                    singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);     // Explizit Fahrzeugdaten kopieren, damit keine Referenz erzeugt wird
 
                     // singleZulassung.Zusatzformulare = ModelMapping.Copy(Zulassung.Zusatzformulare);  // Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
                     singleZulassung.Zusatzformulare = new List<PdfFormular>();
@@ -959,7 +930,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             AuftragslisteAvailable = saveDataToSap;
 
             ZulassungenForReceipt = new List<Vorgang>();
-
             
             SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusAbmeldung, ModusVersandzulassung);
 
