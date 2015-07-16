@@ -86,9 +86,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void Init()
         {
-            FahrzeuguebersichtSelektor.Herstellerkennung = string.Empty;
-            FahrzeuguebersichtSelektor.Statuskennung = string.Empty;
-            FahrzeuguebersichtSelektor.Pdi = string.Empty;            
+            DataInit();
         }
 
         public void DataInit()
@@ -146,19 +144,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     customList = customList.Where(x => x.Zb2Nummer == FahrzeuguebersichtSelektor.Zb2Nummer).ToList();
 
                 if (FahrzeuguebersichtSelektor.Herstellerkennung.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Hersteller.Contains(FahrzeuguebersichtSelektor.Herstellerkennung)).ToList();
+                    customList = customList.Where(x => x.Hersteller.Contains(FahrzeuguebersichtSelektor.Herstellerkennung.NotNullOrEmpty())).ToList();
 
                 if (FahrzeuguebersichtSelektor.Pdi.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Carport == FahrzeuguebersichtSelektor.Pdi).ToList();
+                    customList = customList.Where(x => x.Carport == FahrzeuguebersichtSelektor.Pdi.NotNullOrEmpty()).ToList();
 
                 if (FahrzeuguebersichtSelektor.Statuskennung.IsNotNullOrEmpty())
                 {
-                    if (FahrzeuguebersichtSelektor.Statuskennung != "700")
+                    if (FahrzeuguebersichtSelektor.Statuskennung.NotNullOrEmpty() != "700")
                         customList = customList.Where(x => x.StatusKey.ToString() == FahrzeuguebersichtSelektor.Statuskennung).ToList();
                     else
                     {
                         int i;
-                        if (Int32.TryParse(FahrzeuguebersichtSelektor.Statuskennung, out i))
+                        if (Int32.TryParse(FahrzeuguebersichtSelektor.Statuskennung.NotNullOrEmpty(), out i))
                             customList = customList.Where(x => x.StatusKey <= 700).ToList();
                     }
                 }
