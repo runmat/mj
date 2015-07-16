@@ -23,7 +23,6 @@
         }
 
         if (gridDataBoundFirstTime) {
-            grid.css("opacity", 0.1);
             GridCaptionHintShowAsWait(grid);
         }
 
@@ -41,7 +40,6 @@
 
             if (gridDataBoundFirstTime) {
                 GridCaptionHintHide(grid);
-                grid.animate({ opacity: "1.0" }, 300);
             }
 
             try {
