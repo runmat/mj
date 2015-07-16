@@ -149,7 +149,6 @@
         }
         else
         {
-            @*@Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium" })*@
             @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
             @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 }) // 20150528 
         
@@ -162,6 +161,9 @@
                                                     </text>)
 
             @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
+            <div id="divWkzLink">
+                <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline"><i class="margin-right-5"></i> @Localize.AssignKennzeichen</a>
+            </div>
 
             if (Model.IsMassenzulassung)
             {
@@ -187,19 +189,14 @@
                               columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
                           })
                           .XAutoColumnConfiguration()
-                          //.ClientEvents(events => events.XAutoClientEvents(gridName))
+                                                                //.ClientEvents(events => events.XAutoClientEvents(gridName))
                           .XPageSize(10)
-                          .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())    
+                          .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                     )
                 }
             }
             else
             {
-
-            <div id="divWkzLink">
-                <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline"><i class="margin-right-5"></i> @Localize.AssignKennzeichen</a>
-            </div>
-
                 @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
                 @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
 

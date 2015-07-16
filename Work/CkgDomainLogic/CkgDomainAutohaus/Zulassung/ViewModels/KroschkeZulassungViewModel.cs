@@ -44,9 +44,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Für Massenzulassung
 
-        [XmlIgnore]
+        //[XmlIgnore]
         public List<FahrzeugAkteBestand> FinList { get; set; }
-        [XmlIgnore]
+        //[XmlIgnore]
         public List<FahrzeugAkteBestand> FinListFiltered { get; set; }
 
         #endregion
@@ -231,15 +231,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         /// <summary>
-        /// Setzt alle Kennzeichen auf Standardwerte
+        /// Setzt alle Kennzeichen auf Standardwerte. Nur für Massenzulassung benötigt.
         /// </summary>
-        /// <param name="zulassungsKreis"></param>
+        /// <param name="zulassungskreis"></param>
         /// <returns></returns>
         public string SetKreisAll(string zulassungskreis)
         {
-            if (zulassungskreis.IsNullOrEmpty())
+            if (!Zulassung.Zulassungsdaten.IsMassenzulassung || zulassungskreis.IsNullOrEmpty())
                 return null;
-
+ 
             try
             {
                 zulassungskreis += "-";

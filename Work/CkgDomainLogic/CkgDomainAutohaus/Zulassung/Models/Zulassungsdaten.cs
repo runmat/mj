@@ -44,7 +44,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         // 20150528 MMA 
-        // [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
+        [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
         // [Range(1, 360, ErrorMessage = LocalizeConstants.MindestHaltedauerRangeError)]    // Localization per default not working,so implemented in separate validation below
         public int? MindesthaltedauerDays { get; set; }                                     // number of days
 
