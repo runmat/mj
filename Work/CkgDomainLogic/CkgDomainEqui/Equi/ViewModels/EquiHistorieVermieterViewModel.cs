@@ -47,17 +47,9 @@ namespace CkgDomainLogic.Equi.ViewModels
                 state.AddModelError("", Localize.NoDataFound);
         }
 
-        public void LoadHistorie(string equiNr, string meldungsNr)
+        public void LoadHistorie(string fahrgestellNr)
         {
-            if (!String.IsNullOrEmpty(equiNr))
-            {
-                EquipmentHistorie = DataService.GetEquiHistorie(equiNr, meldungsNr);
-            }
-            else if (HistorieInfos.Count == 1)
-            {
-                var item = HistorieInfos[0];
-                EquipmentHistorie = DataService.GetEquiHistorie(item.EquipmentNr, item.MeldungsNr);
-            }
+            EquipmentHistorie = DataService.GetEquiHistorie(fahrgestellNr);
 
             LoadFahrzeugAnforderungen();
         }
@@ -96,7 +88,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public byte[] GetHistorieAsPdf()
         {
-            return DataService.GetHistorieAsPdf(EquipmentHistorie.HistorieInfo.EquipmentNr, EquipmentHistorie.HistorieInfo.MeldungsNr);
+            return DataService.GetHistorieAsPdf(EquipmentHistorie.HistorieInfo.FahrgestellNr);
         }
 
         #region Filter

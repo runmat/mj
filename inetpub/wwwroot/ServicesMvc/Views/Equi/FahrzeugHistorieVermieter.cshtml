@@ -66,14 +66,14 @@
         $("#divHistorieVermieterDetail").html('');
     }
 
-    function ShowEquiHistorieVermieterAjax(equiNr, meldungsNr) {
+    function ShowEquiHistorieVermieterAjax(fahrgestellNr) {
         LoadingShow();
         $.ajax(
         {
             type: "POST",
             url: "GetFahrzeugHistorieVermieterPartial",
             loadingShow: true,
-            data: { equiNr: equiNr, meldungsNr: meldungsNr },
+            data: { fahrgestellNr: fahrgestellNr },
             success: function (result) {
                 ShowEquiHistorieVermieterDetail(result);
             }

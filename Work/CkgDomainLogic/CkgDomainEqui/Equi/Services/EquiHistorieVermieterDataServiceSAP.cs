@@ -48,16 +48,9 @@ namespace CkgDomainLogic.Equi.Services
             return AppModelMappings.Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EQUIS_To_EquiHistorieInfoVermieter.Copy(sapList);
         }
 
-        public EquiHistorieVermieter GetEquiHistorie(string equiNr, string meldungsNr)
+        public EquiHistorieVermieter GetEquiHistorie(string fahrgestellNr)
         {
-            Z_DPM_FAHRZEUGHISTORIE_AVM.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
-
-            SAP.SetImportParameter("I_EQUNR", equiNr);
-            SAP.SetImportParameter("I_QMNUM", meldungsNr);
-
-            SAP.Execute();
-
-            var sapItems = Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER.GetExportList(SAP);
+            var sapItems = Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER.GetExportListWithInitExecute(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fahrgestellNr);
 
             if (sapItems.None())
                 return null;
@@ -83,12 +76,9 @@ namespace CkgDomainLogic.Equi.Services
             return hist;
         }
 
-        public byte[] GetHistorieAsPdf(string equiNr, string meldungsNr)
+        public byte[] GetHistorieAsPdf(string fahrgestellNr)
         {
-            Z_DPM_DRUCK_FZG_HISTORIE_AVM.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
-
-            SAP.SetImportParameter("I_EQUNR", equiNr);
-            SAP.SetImportParameter("I_QMNUM", meldungsNr);
+            Z_DPM_DRUCK_FZG_HISTORIE_AVM.Init(SAP, "I_KUNNR_AG, I_CHASSIS_NUM", LogonContext.KundenNr.ToSapKunnr(), fahrgestellNr);
 
             SAP.Execute();
 
