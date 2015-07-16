@@ -39,10 +39,10 @@ namespace CkgDomainLogic.WFM.Services
                 SAP.SetImportParameter("I_SELEKTION3", selector.Selektionsfeld3.BoolToX());
 
             if (!String.IsNullOrEmpty(selector.FahrgestellNr))
-                SAP.SetImportParameter("I_FIN", selector.FahrgestellNr);
+                SAP.SetImportParameter("I_FIN", selector.FahrgestellNr.ToUpper());
 
             if (!String.IsNullOrEmpty(selector.Kennzeichen))
-                SAP.SetImportParameter("I_KENNZ", selector.Kennzeichen);
+                SAP.SetImportParameter("I_KENNZ", selector.Kennzeichen.ToUpper());
 
             if (selector.Modus == SelektionsModus.KlaerfallWorkplace)
             {

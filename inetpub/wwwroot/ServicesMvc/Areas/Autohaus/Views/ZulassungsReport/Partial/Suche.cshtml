@@ -5,7 +5,7 @@
 @{
     var kundenList = (List<Kunde>)ViewData["KundenList"];
 
-    kundenList = kundenList.ToListOrEmptyList().CopyAndInsertAtTop(new Kunde {Name1 = Localize.DropdownDefaultOptionAll});
+    kundenList = kundenList.ToListOrEmptyList().CopyAndInsertAtTop(new Kunde("", Localize.DropdownDefaultOptionAll));
 }
 
 <div id="divZulassungsReportSuche">

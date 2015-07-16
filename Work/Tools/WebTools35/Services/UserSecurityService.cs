@@ -65,8 +65,8 @@ namespace WebTools.Services
                 return false;
             }
 
-            var differenceToNow = dDate - DateTime.Now;
-            if ((Math.Abs(differenceToNow.TotalMinutes) > tokenExpirationMinutes))    // 120))
+            var differenceToNow = DateTime.Now - dDate;
+            if (differenceToNow.TotalMinutes > tokenExpirationMinutes)    // 120))
                 return false;
 
             return true;

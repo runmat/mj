@@ -14,8 +14,7 @@
     })
     .XAutoColumnConfiguration()
                     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridZulaufEinsteuerung"))
-    .XPageSize(10)
-        .XSort(sortOrder => sortOrder.Add(c => c.Hersteller))
+    .XPageSize(20)
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportZulaufEinsteuerungFilteredExcel", "Fahrzeuge");

@@ -12,8 +12,8 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.OrderNo)]
-        public string OrderNr { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ContractNo)]
+        public string VertragsNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
         public DateTime? Anlagedatum { get; set; }
@@ -23,5 +23,8 @@ namespace CkgDomainLogic.Equi.Models
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
         public DateTime? EingangsdatumZb2 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Plancode)]
+        public string Plancode { get; set; }
     }
 }

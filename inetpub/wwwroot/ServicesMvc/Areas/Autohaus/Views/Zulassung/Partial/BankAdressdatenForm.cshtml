@@ -9,6 +9,8 @@
         @Html.FormValidationSummary()
         
 
+        @Html.HiddenFor(m => m.DatenFuerCpd)
+        
         <div class="row-fluid">
             
             <div class="span6">
@@ -18,9 +20,9 @@
                     @Html.HiddenFor(m => m.Cpdkunde)
                     @Html.HiddenFor(m => m.CpdMitEinzugsermaechtigung)
 
-                    @Html.PartialFor(m => m.Rechnungsempfaenger, "Partial/BankAdressdatenReForm")
+                    @Html.PartialFor(m => m.Adressdaten.Adresse, "Partial/BankAdressdatenReForm")
 
-                    @Html.FormRadioButtonListFor(m => m.Zahlungsart, BankAdressdaten.Zahlungsarten.ToSelectList())
+                    @Html.FormRadioButtonListFor(m => m.Bankdaten.Zahlungsart, Bankdaten.Zahlungsarten.ToSelectList())
                 }
 
             </div>
@@ -29,25 +31,9 @@
                 
                 @using (Html.PortletBox(Localize.BankData, "icon-book"))
                 {
-                    @Html.HiddenFor(m => m.KontoNr)
-                    @Html.HiddenFor(m => m.Bankleitzahl)
-        
-                    @Html.FormTextBoxFor(m => m.Kontoinhaber, new { @class = "m-wrap" })
-
-                    @Html.FormTextBoxFor(m => m.Iban, new { @class = "m-wrap uppercase", @onkeyup = "return TryLoadBankdatenAusIban(this)", @onpaste = "return TryLoadBankdatenAusIban(this)" },
-                                         postControlHtml: @<text>
-                                                           </text>)
-
-                    @Html.FormTextBoxFor(m => m.Swift, new { @class = "m-wrap uppercase", @readonly = "readonly" },
-                                         postControlHtml: @<text>
-                                                               <div>@Localize.WillBeFilledAutomatically</div>
-                                                           </text>)
-
-                    @Html.FormTextBoxFor(m => m.Geldinstitut, new { @class = "m-wrap", @readonly = "readonly" },
-                                         postControlHtml: @<text>
-                                                               <div>@Localize.WillBeFilledAutomatically</div>
-                                                               @Html.SpanAlert("bankDataHint")
-                                                           </text>)
+                    @Html.FormTextBoxFor(m => m.Bankdaten.Kontoinhaber, new { @class = "m-wrap" })
+                    
+                    @Html.PartialFor(m => m.Bankdaten, "Partial/BankdatenForm")
                 }
 
             </div>

@@ -5,6 +5,8 @@ namespace SapORM.Models
     {
         string ZULBELN { get; set; }
 
+        string PARVW { get; set; }
+
         string BANKL { get; set; }
 
         string BANKN { get; set; }

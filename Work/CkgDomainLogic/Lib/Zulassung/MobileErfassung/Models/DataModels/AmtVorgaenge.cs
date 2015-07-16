@@ -8,24 +8,12 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
     public class AmtVorgaenge : Amt
     {
         [Display(Name = "Anzahl Vorgänge")]
-        public int AnzVorgaenge { get; set; }
+        public int? AnzVorgaenge { get; set; }
 
         /// <summary>
         /// für JSON-Übergabe
         /// </summary>
         [Display(Name = "Zul.datum")]
         public string ZulDatText { get; set; }
-
-        public AmtVorgaenge()
-            : base()
-        {
-            this.AnzVorgaenge = 0;
-        }
-
-        public AmtVorgaenge(string kuerzel, string langtext, int anzVorgaenge) 
-            : base(kuerzel, langtext)
-        {
-            this.AnzVorgaenge = anzVorgaenge;
-        }
     }
 }

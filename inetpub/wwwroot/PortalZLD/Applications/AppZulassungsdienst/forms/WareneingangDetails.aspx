@@ -38,7 +38,7 @@
                                         Lieferscheinnummer:
                                     </td>
                                     <td width="100%">
-                                        <asp:TextBox ID="txtLieferscheinnummer" CssClass="TextBoxNormal" runat="server" MaxLength="16"></asp:TextBox>
+                                        <asp:TextBox ID="txtLieferscheinnummer" runat="server" MaxLength="16"></asp:TextBox>
                                     </td>
                                 </tr>
                                 <tr id="TrBelegdatum" runat="server">
