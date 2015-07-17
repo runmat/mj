@@ -1,0 +1,63 @@
+﻿@model MvcTools.Models.FormWizardModel 
+
+
+<div class="row-fluid">
+    <div class="span12">
+        <div class="grey hide" id="formWizard">
+            <div class="portlet-title">
+                <div class="caption">
+                    <i class="@Model.HeaderIconCssClass"></i> @Model.Header <span class="step-title">Schritt 1 / @Model.StepCount</span>
+                </div>
+                <div class="tools hidden-phone">
+                </div>
+            </div>
+            <div class="portlet-body form">
+                <div class="form-horizontal">
+                    <div class="form-wizard">
+                        <div class="navbar steps">
+                            <div class="navbar-inner">
+                                <ul class="row-fluid">
+                                    @for (var i = 0; i < Model.StepCount; i++)
+                                    {
+                                        <li class="@Model.GetStepSpanCssClass()" id="formWizardStep_@Model.GetStepNo(i)">
+                                            <a href="@Model.GetTabHref(i)" data-toggle="tab" class="@Model.GetStepTitleCssClass(i)">
+                                                <span class="formWizardStepDescWrapper new-line">
+                                                    <span data="@Model.GetStepTitle(i)" class="formWizardStepDesc">@Model.GetStepTitle(i)</span>   
+                                                </span>
+                                            </a>
+                                        </li>
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="tab-content">
+                            @for (var i = 0; i < Model.StepCount; i++)
+                            {
+                                <div class="@Model.GetStepTabCssClass(i)" id="@Model.GetTabID(i)"></div>
+                            }
+                        </div>
+
+                        <div class="form-actions clearfix">
+                            <a href="javascript:;" class="btn button-prev">
+                                <i class="m-icon-swapleft"></i> Zurück 
+                            </a>
+                            <a href="javascript:;" class="btn green button-next">
+                                <span>Weiter</span> <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                            <a href="javascript:;" class="btn green button-submit">
+                                Absenden <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                            <a href="javascript:;" class="btn blue margin-left-10 button-custom1">
+                                <span>Custom 1</span> <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                            <a href="javascript:;" class="btn green button-restart">
+                                Neuen Vorgang beginnen <i class="m-icon-swapright m-icon-white"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
