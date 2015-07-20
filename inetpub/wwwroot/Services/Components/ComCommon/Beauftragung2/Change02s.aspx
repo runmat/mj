@@ -589,6 +589,15 @@
                                                         <asp:Label ID="lblEVBInfo" runat="server" CssClass="TextError"></asp:Label>
                                                     </td>
                                                 </tr>
+                                                <tr class="formquery" id="trVersicherungsunternehmen" runat="server" Visible="False">
+                                                    <td class="firstLeft active">
+                                                        <asp:Label ID="lblVSU" runat="server" Text="Versicherungsunternehmensnr."></asp:Label>
+                                                    </td>
+                                                    <td class="active">
+                                                        <asp:TextBox ID="txtVSU" runat="server" CssClass="InputSolid" Width="60px" Enabled="false" ReadOnly="True" ToolTip="Wird automatisch gefüllt"></asp:TextBox>
+                                                        <asp:Label ID="lblVersicherer" runat="server"></asp:Label>
+                                                    </td>
+                                                </tr>
                                                 <tr class="formquery">
                                                     <td class="firstLeft active" nowrap="nowrap">
                                                         <asp:Label ID="lblZulDatum" runat="server" Text="Datum Zulassung </br>(bzw. Abmeldung/ Änderungen) "></asp:Label>
@@ -723,14 +732,21 @@
                                                             </tr>
                                                             <tr class="formquery">
                                                                 <td class="firstLeft active" style="width: 120px">
-                                                                    &nbsp;
+                                                                    <asp:Label ID="lblSepaDatum" runat="server" Text="Datum Unterschrift SEPA"></asp:Label>
                                                                 </td>
                                                                 <td class="active" style="width: 320px">
-                                                                    &nbsp;
+                                                                    <asp:TextBox ID="txtSepaDatum" runat="server" Width="80px" TabIndex="71" CssClass="InputSolid"></asp:TextBox>
+                                                                    <cc1:CalendarExtender ID="txtSepaDatum_CalendarExtender" runat="server" Enabled="True"
+                                                                        TargetControlID="txtSepaDatum">
+                                                                    </cc1:CalendarExtender>
+                                                                    <cc1:MaskedEditExtender ID="meetxtSepaDatum" runat="server" TargetControlID="txtSepaDatum"
+                                                                        Mask="99/99/9999" MaskType="Date" InputDirection="LeftToRight">
+                                                                    </cc1:MaskedEditExtender>
+                                                                    <asp:Label ID="lblSepaDatumInfo" runat="server" CssClass="TextError"></asp:Label>
                                                                 </td>
                                                                 <td class="active" style="width: 220px">
                                                                     <span>
-                                                                        <asp:CheckBox ID="cbxWunschkennzFlag" runat="server" TabIndex="71" Text="Wunsch-Kennzeichen" />
+                                                                        <asp:CheckBox ID="cbxWunschkennzFlag" runat="server" TabIndex="72" Text="Wunsch-Kennzeichen" />
                                                                     </span>
                                                                 </td>
                                                             </tr>
@@ -743,9 +759,9 @@
                                                                 </td>
                                                                 <td class="active" style="width: 220px">
                                                                     <span>
-                                                                        <asp:CheckBox ID="cbxReserviert" runat="server" TabIndex="72" Text="Reserviert, Nr." />
+                                                                        <asp:CheckBox ID="cbxReserviert" runat="server" TabIndex="73" Text="Reserviert, Nr." />
                                                                         &nbsp;
-                                                                        <asp:TextBox ID="txtReservNr" runat="server" Font-Bold="True" CssClass="InputSolid" TabIndex="73" Width="150px"></asp:TextBox></span>
+                                                                        <asp:TextBox ID="txtReservNr" runat="server" Font-Bold="True" CssClass="InputSolid" TabIndex="74" Width="150px"></asp:TextBox></span>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery" id="trGutachten" runat="server">
@@ -765,7 +781,7 @@
                                                                 </td>
                                                                 <td colspan="2" class="active">
                                                                     <asp:DropDownList ID="ddlPrueforganisation" runat="server" 
-                                                                        CssClass="InputSolid" AutoPostBack="true" TabIndex="74">
+                                                                        CssClass="InputSolid" AutoPostBack="true" TabIndex="75">
                                                                     </asp:DropDownList>
                                                                     <asp:Label ID="lblPrueforganisationInfo" runat="server" CssClass="TextError"></asp:Label>
                                                                 </td>
@@ -776,7 +792,7 @@
                                                                 </td>
                                                                 <td colspan="2" class="active" style="width: 220px">
                                                                     <asp:TextBox ID="txtGutachtenNr" runat="server" Width="150px" CssClass="InputSolid"></asp:TextBox><asp:Label
-                                                                        ID="lblGutachtenNrInfo" runat="server" CssClass="TextError" MaxLength="30" TabIndex="75"></asp:Label>
+                                                                        ID="lblGutachtenNrInfo" runat="server" CssClass="TextError" MaxLength="30" TabIndex="76"></asp:Label>
                                                                 </td>
                                                             </tr>
                                                         </table>
@@ -784,7 +800,7 @@
                                                 </tr>
                                                 <tr class="formquery">
                                                     <td class="active" colspan="2" align="right">
-                                                        <asp:LinkButton ID="lbForwardDL" runat="server" CssClass="Tablebutton" Width="78px" TabIndex="76">» Weiter </asp:LinkButton>
+                                                        <asp:LinkButton ID="lbForwardDL" runat="server" CssClass="Tablebutton" Width="78px" TabIndex="77">» Weiter </asp:LinkButton>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -808,7 +824,7 @@
                                                 </tr>
                                                 <tr class="formquery">
                                                     <td class="active" colspan="2" align="right">
-                                                        <asp:LinkButton ID="lbForwardZusatzDL" runat="server" CssClass="Tablebutton" Width="78px" TabIndex="77">» Weiter </asp:LinkButton>
+                                                        <asp:LinkButton ID="lbForwardZusatzDL" runat="server" CssClass="Tablebutton" Width="78px" TabIndex="78">» Weiter </asp:LinkButton>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -955,7 +971,7 @@
                                                 </tr>
                                                 <tr class="formquery">
                                                     <td class="active" colspan="2" align="right">
-                                                        <asp:LinkButton ID="lbCreate" runat="server" CssClass="Tablebutton" Width="78px" TabIndex="78">» Absenden </asp:LinkButton>
+                                                        <asp:LinkButton ID="lbCreate" runat="server" CssClass="Tablebutton" Width="78px" TabIndex="79">» Absenden </asp:LinkButton>
                                                     </td>
                                                 </tr>
                                             </table>
