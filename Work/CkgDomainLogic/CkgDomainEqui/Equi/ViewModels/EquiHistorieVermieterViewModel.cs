@@ -49,7 +49,15 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public void LoadHistorie(string fahrgestellNr)
         {
-            EquipmentHistorie = DataService.GetEquiHistorie(fahrgestellNr);
+            if (!String.IsNullOrEmpty(fahrgestellNr))
+            {
+                EquipmentHistorie = DataService.GetEquiHistorie(fahrgestellNr);
+            }
+            else if (HistorieInfos.Count == 1)
+            {
+                var item = HistorieInfos[0];
+                EquipmentHistorie = DataService.GetEquiHistorie(item.FahrgestellNr);
+            }
 
             LoadFahrzeugAnforderungen();
         }
