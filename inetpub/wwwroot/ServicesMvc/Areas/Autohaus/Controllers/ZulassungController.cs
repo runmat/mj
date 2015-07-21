@@ -50,9 +50,10 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung)
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
+            ViewModel.SetParamVersandzulassung(versandzulassung);
 
             ViewModel.DataInit();
 
@@ -73,12 +74,17 @@ namespace ServicesMvc.Autohaus.Controllers
             return Index(fin, halterNr, abmeldung: "1");
         }
 
+        [CkgApplication]
+        public ActionResult Versandzulassung(string fin, string halterNr)
+        {
+            return Index(fin, halterNr, versandzulassung: "1");
+        }
+
         void InitModelStatics()
         {
             CkgDomainLogic.Autohaus.Models.Zulassungsdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
             CkgDomainLogic.Autohaus.Models.Fahrzeugdaten.GetZulassungViewModel = GetViewModel<KroschkeZulassungViewModel>;
         }
-
 
         #region Rechnungsdaten
 
@@ -102,63 +108,12 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #endregion
 
-        #region Bank-/Adressdaten
-
-        [HttpPost]
-        public ActionResult BankAdressdaten()
-        {
-            ViewModel.CheckCpd();
-
-            return PartialView("Partial/BankAdressdaten", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult BankAdressdatenForm(BankAdressdaten model)
-        {
-            ViewModel.SetBankAdressdaten(ref model);
-
-            return PartialView("Partial/BankAdressdatenForm", model);
-        }
-
-        [HttpPost]
-        public ActionResult LoadBankdatenAusIban(string iban)
-        {
-            var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
-
-// ReSharper disable RedundantAnonymousTypePropertyName
-            return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
-// ReSharper restore RedundantAnonymousTypePropertyName
-        }
-
-        #endregion
-
-        #region Fahrzeugdaten
-
-        [HttpPost]
-        public ActionResult Fahrzeugdaten()
-        {
-            return PartialView("Partial/Fahrzeugdaten", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
-        {
-            if (ModelState.IsValid)
-            {
-                ViewModel.SetFahrzeugdaten(model);
-            }
-
-            return PartialView("Partial/FahrzeugdatenForm", model);
-        }
-
-        #endregion
-
-        #region HalterAdresse
+        #region Halter
 
         [HttpPost]
         public ActionResult HalterAdresse()
         {
-            return PartialView("Partial/HalterAdresse", ViewModel);
+            return PartialView("Partial/HalterAdresse", ViewModel.Zulassung.Halter.Adresse);
         }
 
         [HttpPost]
@@ -213,22 +168,246 @@ namespace ServicesMvc.Autohaus.Controllers
 
         public ActionResult HalterAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("HalterAdressen", dt);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Holder, dt);
 
             return new EmptyResult();
         }
 
         public ActionResult HalterAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("HalterAdressen", dt, landscapeOrientation: true);
+            var dt = ViewModel.HalterAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Holder, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }
 
         #endregion
-        
+
+        #region Zahler Kfz-Steuer
+
+        [HttpPost]
+        public ActionResult ZahlerKfzSteuer()
+        {
+            return PartialView("Partial/ZahlerKfzSteuer", ViewModel.Zulassung.ZahlerKfzSteuer);
+        }
+
+        [HttpPost]
+        public JsonResult ZahlerKfzSteuerAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ViewModel.GetZahlerKfzSteuerAdressenAsAutoCompleteItems() });
+        }
+
+        [HttpPost]
+        public ActionResult ZahlerKfzSteuerForm(BankAdressdaten model)
+        {
+            ViewModel.SetZahlerKfzSteuerBankdaten(model);
+
+            if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                model.Adressdaten.Adresse = ViewModel.GetZahlerKfzSteueradresse(model.Adressdaten.Adresse.TmpSelectionKey);
+                if (model.Adressdaten.Adresse == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                model.Adressdaten.Adresse.IsValid = false;
+                return PartialView("Partial/ZahlerKfzSteuerForm", model);
+            }
+
+            if (ModelState.IsValid)
+                ViewModel.SetZahlerKfzSteuerAdresse(model.Adressdaten.Adresse);
+
+            model.Adressdaten.Adresse.IsValid = ModelState.IsValid;
+
+            return PartialView("Partial/ZahlerKfzSteuerForm", model);
+        }
+
+        [GridAction]
+        public ActionResult ZahlerKfzSteuerAdressenAjaxBinding()
+        {
+            var items = ViewModel.ZahlerKfzSteuerAdressenFiltered;
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterZahlerKfzSteuerAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterZahlerKfzSteuerAdressen(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult ZahlerKfzSteuerAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshZahlerKfzSteuerAdressen();
+
+            return PartialView("Partial/ZahlerKfzSteuerAdressenAuswahlGrid");
+        }
+
+        public ActionResult ZahlerKfzSteuerAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.ZahlerKfzSteuerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.CarTaxPayer, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ZahlerKfzSteuerAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.ZahlerKfzSteuerAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.CarTaxPayer, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Bank-/Adressdaten
+
+        [HttpPost]
+        public ActionResult BankAdressdaten()
+        {
+            return PartialView("Partial/BankAdressdaten", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult BankAdressdatenForm(BankAdressdaten model)
+        {
+            ViewModel.SetBankAdressdaten(model);
+
+            if (ViewModel.SkipBankAdressdaten)
+                ModelState.Clear();
+
+            return PartialView("Partial/BankAdressdatenForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult LoadBankdatenAusIban(string iban)
+        {
+            var bankdaten = ViewModel.LoadBankdatenAusIban(iban);
+
+// ReSharper disable RedundantAnonymousTypePropertyName
+            return Json(new { Swift = bankdaten.Swift, KontoNr = bankdaten.KontoNr, Bankleitzahl = bankdaten.Bankleitzahl, Geldinstitut = bankdaten.Geldinstitut });
+// ReSharper restore RedundantAnonymousTypePropertyName
+        }
+
+        #endregion
+
+        #region Auslieferadressen
+
+        [HttpPost]
+        public ActionResult AuslieferAdressen()
+        {
+            return PartialView("Partial/AuslieferAdressen", ViewModel.SelectedAuslieferAdresse);
+        }
+
+        [HttpPost]
+        public JsonResult AuslieferAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ViewModel.GetAuslieferAdressenAsAutoCompleteItems() });
+        }
+
+        [HttpPost]
+        public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
+        {
+            if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.ZugeordneteMaterialien;
+                ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.Adressdaten.Bemerkung;
+                ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.Adressdaten.Adresse.TmpSelectionKey);
+                if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                ViewModel.SelectedAuslieferAdresse.IsValid = false;
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            }
+
+            if (model.TmpSelectedPartnerrolle != model.Adressdaten.Partnerrolle)
+            {
+                ViewModel.SelectedAuslieferAdressePartnerrolle = model.TmpSelectedPartnerrolle;
+                ModelState.Clear();
+                ViewModel.SelectedAuslieferAdresse.IsValid = false;
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            }
+
+            if (ModelState.IsValid)
+                ViewModel.SetAuslieferAdresse(model);
+
+            // Auslieferadressen sind optional
+            if (!model.HasData)
+                ModelState.Clear();
+
+            model.IsValid = (ModelState.IsValid && !model.TmpSaveAddressOnly);
+            model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
+
+            ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.TmpSaveAddressOnly);
+            ModelState.SetModelValue("TmpSaveAddressOnly", false);
+
+            return PartialView("Partial/AuslieferAdressenForm", model);
+        }
+
+        [GridAction]
+        public ActionResult AuslieferAdressenAjaxBinding()
+        {
+            var items = ViewModel.AuslieferAdressenFiltered;
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterAuslieferAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterAuslieferAdressen(filterValue, filterColumns);
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult AuslieferAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshAuslieferAdressen();
+
+            return PartialView("Partial/AuslieferAdressenAuswahlGrid");
+        }
+
+        public ActionResult AuslieferAdressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AuslieferAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.DeliveryAddresses, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult AuslieferAdressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.AuslieferAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DeliveryAddresses, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Fahrzeugdaten
+
+        [HttpPost]
+        public ActionResult Fahrzeugdaten()
+        {
+            return PartialView("Partial/Fahrzeugdaten", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewModel.SetFahrzeugdaten(model);
+            }
+
+            return PartialView("Partial/FahrzeugdatenForm", model);
+        }
+
+        #endregion
+
         #region Zulassungsdaten
 
         [HttpPost]
@@ -242,7 +421,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             if (ModelState.IsValid)
             {
-                ViewModel.SetZulassungsdaten(model);
+                ViewModel.SetZulassungsdaten(model, ModelState);
             }
 
             ViewData.Add("MaterialList", ViewModel.Zulassungsarten);
@@ -265,7 +444,16 @@ namespace ServicesMvc.Autohaus.Controllers
             string zulassungsKennzeichen;
             ViewModel.LoadKfzKennzeichenFromKreis(zulassungsKreis, out zulassungsKennzeichen);
 
-            return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
+            var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
+
+            // return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
+
+            // 20150502 MMA Zusätzlich Zulassungsstellen-Url für Wunschkennzeichenreservierung zurückgeben
+            return Json(new
+                {
+                    kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen),
+                    zulassungsstelleUrl = url 
+                });
         }
 
         #endregion
@@ -320,62 +508,193 @@ namespace ServicesMvc.Autohaus.Controllers
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
 
+        #region SummaryAsPdf
         public FileContentResult SummaryAsPdf(string id)
         {
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
+            //var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
+            //var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
+
+            var summaryPdfBytes = SummaryAsPdfGetPdfBytes(id);
+
+            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
+        }
+        /// <summary>
+        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
+        /// </summary>
+        /// <returns></returns>
+        private byte[] SummaryAsPdfGetPdfBytes(string id)
+        {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+
             if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
             var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
 
             var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
 
-            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
+            return summaryPdfBytes;
         }
+        #endregion
 
+        #region KundenformularAsPdf
         public FileContentResult KundenformularAsPdf(string id)
         {
-            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
-            if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+            // 20150528 MMA Folgender Block auskommentiert...
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
+            //var formularPdfBytes = zulassung.KundenformularPdf;
 
-            var formularPdfBytes = zulassung.KundenformularPdf;
+            var formularPdfBytes = KundenformularAsPdfGetPdfBytes(id);
 
             return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.CustomerForm) };
         }
-
-        public FileContentResult ZusatzformularAsPdf(string id, string typ)
+        /// <summary>
+        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        private byte[] KundenformularAsPdfGetPdfBytes(string id)
         {
             var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
             if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
+
+            var formularPdfBytes = zulassung.KundenformularPdf;
+
+            return formularPdfBytes;
+        }
+        #endregion
+
+        #region ZusatzformularAsPdf
+        public FileContentResult ZusatzformularAsPdf(string id, string typ)
+        {
+            // 20150528 MMA Folgender Block auskommentiert...
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
+            //var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
+            //if (zusatzFormular == null)
+            //    return new FileContentResult(new byte[1], ""); 
+            //var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
+            // var dateiPfad = "";
+            // var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
+            // return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(zusatzFormular.DateiPfad) };
+
+            var dateiPfad = "";
+            var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
+
+            return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(dateiPfad) };
+        }
+
+        /// <summary>
+        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="typ"></param>
+        /// <param name="dateiPfad"></param>
+        /// <returns></returns>
+        private byte[] ZusatzformularAsPdfGetPdfBytes(string id, string typ, out string dateiPfad)
+        {
+            dateiPfad = "Dummy";
+
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
+            if (zulassung == null)
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
             var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
             if (zusatzFormular == null)
-                return new FileContentResult(new byte[1], ""); 
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
-            var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
+            var zusatzformularPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
+            
+            dateiPfad = zusatzFormular.DateiPfad;
 
-            return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(zusatzFormular.DateiPfad) };
+            return zusatzformularPdfBytes;
         }
+        #endregion
 
+        #region AuftragslisteAsPdf
         public FileContentResult AuftragslisteAsPdf()
         {
-            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
-            if (zulassung == null)
-                return new FileContentResult(new byte[1], "");
+            // 20150528 MMA Folgender Block auskommentiert...
+            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
+            //if (zulassung == null)
+            //    return new FileContentResult(new byte[1], "");
+            //var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
+            //if (auftragslisteFormular == null)
+            //    return new FileContentResult(new byte[1], "");
+            //var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
 
-            var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
-            if (auftragslisteFormular == null)
-                return new FileContentResult(new byte[1], "");
-            
-            var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
+            var auftragPdfBytes = AuftragslisteGetPdfBytes();
 
             return new FileContentResult(auftragPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.OrderList) };
         }
 
-        #endregion   
+        /// <summary>
+        /// 20150528 MMA
+        /// </summary>
+        /// <returns></returns>
+        private byte[] AuftragslisteGetPdfBytes()
+        {
+            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault();
+            if (zulassung == null)
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
+            var auftragslisteFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.IstAuftragsListe);
+            if (auftragslisteFormular == null)
+                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
+
+            var auftragPdfBytes = System.IO.File.ReadAllBytes(auftragslisteFormular.DateiPfad);
+
+            return auftragPdfBytes;
+        }
+        #endregion
+
+        /// <summary>
+        /// 20150527 MMA Generate one PDF file with all downloadable documents
+        /// </summary>
+        /// <returns></returns>
+        // public FileContentResult AllDocumentsAsPdf(string id, string typ)
+        public FileContentResult AllDocumentsAsPdf()
+        {
+            var pdfsToMerge = new List<byte[]>();
+
+            // Anhand des ViewModels ermitteln, welche Dokumente verfügbar sind (analog Buttons-Anzeige in Receipt.cshtml)
+            // Sollten neue Buttons bzw. Berichte im View eingebunden werden, muss dies hier ggfl. berücksichtigt werden.
+
+            // Falls Auftragsliste soll nicht im PDF stehen, daher deaktiviert...
+            //if (ViewModel.AuftragslisteAvailable)
+            //{
+            //    pdfsToMerge.Add(AuftragslisteGetPdfBytes());
+            //}
+
+            foreach (var zulassung in ViewModel.ZulassungenForReceipt)
+            {
+                pdfsToMerge.Add(SummaryAsPdfGetPdfBytes(zulassung.BelegNr));                                                    // <a href="SummaryAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.YourOrderAsPdfFile' data-placement="top"> @Localize.PdfDownload <i class="icon-download-alt"></i></a>
+
+                if (zulassung.KundenformularPdf != null)
+                {
+                    pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));                                         // <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
+                }
+
+                foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
+                {
+                    var dateiPfad = "";
+                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ, out dateiPfad));   // <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
+                }
+            }
+
+            var mergedPdf = PdfDocumentFactory.MergePdfDocuments(pdfsToMerge);
+
+            return new FileContentResult(mergedPdf, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", "Alle Zulassungsdateien") };
+        }
+
+        #endregion   
 
         #region Shopping Cart 
 

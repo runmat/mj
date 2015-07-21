@@ -18,7 +18,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Pdi)]
         public string Carport { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Pdi)]
+        [LocalizedDisplay(LocalizeConstants.PdiName)]
         public string Carportname { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]

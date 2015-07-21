@@ -17,13 +17,14 @@ namespace CkgDomainLogic.DomainCommon.Contracts
         Adresse AgAdresse { get; }
 
         string KundennrOverride { get; set; }
+        string SubKundennr { get; set; }
 
         List<Adresse> ZulassungsStellen { get; }
 
 
         void MarkForRefreshAdressen();
 
-        Adresse SaveAdresse(Adresse adresse, Action<string, string> addModelError);
+        List<Adresse> SaveAdressen(List<Adresse> adressen, Action<string, string> addModelError);
 
         void DeleteAdresse(Adresse adresse);
     }

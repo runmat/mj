@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Web.Mvc;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
@@ -15,10 +17,16 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public List<KlaerfallVhc> KlaerfaelleVhc { get { return DataService.KlaerfaelleVhc; } }
 
-        public void LoadKlaerfaelleVhc()
+        public string ExcelExportListName { get { return (DataService.Suchparameter.Auswahl == "K" ? Localize.ClarificationCases : Localize.DataWithoutZB2); } }
+
+        public void LoadKlaerfaelleVhc(KlaerfaelleVhcSuchparameter suchparameter, ModelStateDictionary state)
         {
+            DataService.Suchparameter = suchparameter;
             DataService.MarkForRefreshKlaerfaelleVhc();
             PropertyCacheClear(this, m => m.KlaerfaelleVhcFiltered);
+
+            if (KlaerfaelleVhc.None())
+                state.AddModelError("", Localize.NoDataFound);
         }
 
         #region Filter
