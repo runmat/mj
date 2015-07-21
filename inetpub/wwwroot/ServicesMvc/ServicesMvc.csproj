@@ -2612,9 +2612,9 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <None Include="Content\fonts\pt_sans-webfont.eot" />
-    <None Include="Content\fonts\pt_sans-webfont.ttf" />
-    <None Include="Content\fonts\pt_sans-webfont.woff" />
+    <Content Include="Content\fonts\pt_sans-webfont.eot" />
+    <Content Include="Content\fonts\pt_sans-webfont.ttf" />
+    <Content Include="Content\fonts\pt_sans-webfont.woff" />
     <None Include="Documents\Templates\UploadBriefversand.csv" />
     <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
     <Content Include="Documents\Templates\UploadFzgUebersichtFilter.xls" />

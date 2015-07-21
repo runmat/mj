@@ -547,9 +547,9 @@
             var windowWidth = $(window).width();
 
             var marginThis = e.css("margin-left");
-            //console.log(marginThis);
+            console.log("marginThis: " + marginThis);
             var margin = parseInt(marginThis, 10) * 2;
-            //console.log(margin);
+            console.log("margin: " + margin);
 
             var containerWidth = windowWidth - sidebarWidth - margin;
 
@@ -557,8 +557,8 @@
             if (tGridTable.length > 0) {
                 tGridTable = $(tGridTable[0]);
 
-                //console.log(tGridTable.width());
-                //console.log(containerWidth);
+                console.log("gridTable.width: " + tGridTable.width());
+                console.log("container.width: " + containerWidth);
 
                 if (tGridTable.width() > 200 && tGridTable.width() >= containerWidth) {
                     containerWidth = tGridTable.width() + (3*margin);
