@@ -11,6 +11,10 @@
 
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
 
+        setTimeout(function () {
+            HandleResponsiveControlWidths();
+        }, 500);
+
         if (_filteredData_DisableDataBound)
             return;
 
@@ -23,13 +27,12 @@
         }
 
         if (gridDataBoundFirstTime) {
-            grid.css("opacity", 0.1);
             GridCaptionHintShowAsWait(grid);
         }
 
 
         setTimeout(function () {
-            HandleResponsiveControlWidths();
+            
             if (typeof (autoPersistColumns) == 'undefined') {
 
                 if (!_gridReportGeneratorMode)
@@ -42,7 +45,6 @@
 
             if (gridDataBoundFirstTime) {
                 GridCaptionHintHide(grid);
-                grid.animate({ opacity: "1.0" }, 300);
             }
 
             try {
