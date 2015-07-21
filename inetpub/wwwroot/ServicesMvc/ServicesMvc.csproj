@@ -383,6 +383,8 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\fonts\europlate-webfont.svg" />
+    <Content Include="_Themes\AH2015\images\kennzeichen.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
     <Content Include="_Themes\AH2015\images\menu_white.png" />
     <Content Include="_Themes\AH2015\images\test.png" />
@@ -2612,6 +2614,10 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Content\fonts\europlate-webfont.eot" />
+    <None Include="Content\fonts\europlate-webfont.ttf" />
+    <None Include="Content\fonts\europlate-webfont.woff" />
+    <None Include="Content\fonts\europlate-webfont.woff2" />
     <None Include="Content\fonts\pt_sans-webfont.eot" />
     <None Include="Content\fonts\pt_sans-webfont.ttf" />
     <None Include="Content\fonts\pt_sans-webfont.woff" />
