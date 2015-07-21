@@ -438,15 +438,6 @@
     </None>
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Pie.txt" />
-    <Content Include="Areas\Common\Content\Dashboard\datatables\jquery.dataTables.js" />
-    <Content Include="Areas\Common\Content\Dashboard\exampleData.js" />
-    <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.ie.min.js" />
-    <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.js" />
-    <Content Include="Areas\Common\Content\Dashboard\gritter\jquery.gritter.js" />
-    <Content Include="Areas\Common\Content\Dashboard\icon-sprite.PNG" />
-    <Content Include="Areas\Common\Content\Dashboard\jquery-sDashboard.js" />
-    <Content Include="Areas\Common\Content\Dashboard\sDashboard.css" />
-    <Content Include="Areas\Common\Content\Dashboard\touchpunch\jquery.ui.touch-punch.js" />
     <Content Include="apple-touch-icon-120x120-precomposed.png" />
     <Content Include="apple-touch-icon-120x120.png" />
     <Content Include="apple-touch-icon-152x152-precomposed.png" />
@@ -2459,16 +2450,7 @@
     <Compile Include="Areas\Autohaus\Controllers\PartnerController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\FahrzeugbestandController.cs" />
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
-    <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\Controllers\GridAdminController.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemUser.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemAnnotator.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
@@ -2548,8 +2530,6 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
-    <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
