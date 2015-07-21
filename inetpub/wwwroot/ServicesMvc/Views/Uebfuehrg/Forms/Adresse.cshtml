@@ -5,7 +5,7 @@
 <div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
-        <div class="form-actions">
+        <div class="form-actions form-actions-top">
             <a href="#" onclick="return AjaxFormAdressenShowGrid('Uebfuehrg', @Model.UiIndex)" class="btn white tooltips margin-left-10" data-original-title="Wählen Sie eine Adresse über Ihren Adressenpool aus" data-placement="top"><i class="icon-search margin-right-5"></i> Adressen suchen</a>
             <a href="#" onclick="return AjaxFormAdresseEmpty(@Model.UiIndex, 'UebfuehrgAdresseGetAutoCompleteItems')" class="btn white tooltips margin-left-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top"><i class="icon-remove margin-right-5"></i> Formular leeren</a>
             
