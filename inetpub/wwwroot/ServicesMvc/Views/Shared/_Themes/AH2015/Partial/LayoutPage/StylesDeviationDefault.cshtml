@@ -12,6 +12,18 @@
          url('/ServicesMvc/Content/fonts/pt_sans-webfont.svg#webfont') format('svg');
 }
 
+@@font-face {
+    font-family: 'europlate';
+    src: url('/ServicesMvc/Content/fonts/europlate-webfont.eot');
+    src: url('/ServicesMvc/Content/fonts/europlate-webfont.eot?#iefix') format('embedded-opentype'),
+         url('/ServicesMvc/Content/fonts/europlate-webfont.woff2') format('woff2'),
+         url('/ServicesMvc/Content/fonts/europlate-webfont.woff') format('woff'),
+         url('/ServicesMvc/Content/fonts/europlate-webfont.ttf') format('truetype'),
+         url('/ServicesMvc/Content/fonts/europlate-webfont.svg#euro_plateregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 html{
  background-color: #dee9ee;
 }
@@ -25,6 +37,15 @@ body{
 /* Obere NavBar */ 
 .navbar-fixed-top{
     position:  static;
+}
+
+.nav-collapse.collapse{
+    /* height: 100% !important; */
+}
+
+.page-container{
+    background-color: #0a2d69;
+
 }
 
 .fixed-top .page-container{
@@ -43,6 +64,11 @@ body{
   margin: 0;
 }
 
+.navbar-inverse .brand img{
+    padding-top: -20px;
+    display: block;
+}
+
 .navbar-inverse .brand:hover{
     opacity: 0.8;
      color: #07398F;
@@ -51,6 +77,10 @@ body{
 .header .navbar-inner .container-fluid.gray,
 .header .navbar-inner{
     background-color: #FFF !important;
+}
+
+.maintenance-message-wrapper span{
+    white-space: normal;
 }
 
 .header{
@@ -104,6 +134,20 @@ body{
 }
 
 /* contentbereich */
+.loading, .loading2{
+    left: 50%;
+    top: 50%;
+}
+
+
+.btn.black{
+    background-color: #6e8cbf;
+}
+
+.btn.black:hover, .btn.black:focus, .btn.black:active, .btn.black.active, .btn.black.disabled, .btn.black[disabled] {
+    background-color: #6e8cbf !important;
+}
+
 .page-content{
     background-color:#dee9ee;
     padding-top: 1px !important;
@@ -162,6 +206,19 @@ body{
 .mitgrid .page-title{
     border-radius: 10px 0 0 0;
 }
+
+
+
+input#Kennzeichen{
+    border:none;
+    font-family:'europlate', Arial, Sans-Serif;
+    color: #000;
+    background-image: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen.png);
+    background-repeat : no-repeat;
+    background-position :  left center;
+    background-size: 461px 100px;
+}
+
 
 /* footer */
 .footer {
@@ -296,6 +353,7 @@ body{
       height: 25px;
       width: 25px;
       background-color: #F09359;
+      opacity: 0.89;
       padding: 8px 5px 6px 5px;
       height: 19px;
       font-size: 18px !important;
@@ -338,6 +396,7 @@ body{
       -moz-box-sizing: border-box;
       box-sizing: border-box;
       box-shadow: inset 0px 1px 4px 0px rgba(0,0,0,0.12);
+      float:left;
 }
 
 /* Ansprechpartner */

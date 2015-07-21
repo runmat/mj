@@ -1,5 +1,11 @@
 ﻿@model MvcTools.Models.FormWizardModel 
 
+@{
+    var modelStepAdditionalClass = ""; 
+    if (Model.StepCount > 7){
+        modelStepAdditionalClass = "formWizard_StepCounts_flow";
+    }
+}
 
 <div class="row-fluid">
     <div class="span12">
@@ -16,10 +22,10 @@
                     <div class="form-wizard">
                         <div class="navbar steps">
                             <div class="navbar-inner">
-                                <ul class="row-fluid">
+                                <ul class="row-fluid @modelStepAdditionalClass">
                                     @for (var i = 0; i < Model.StepCount; i++)
                                     {
-                                        <li class="@Model.GetStepSpanCssClass()" id="formWizardStep_@Model.GetStepNo(i)">
+                                        <li class="" id="formWizardStep_@Model.GetStepNo(i)">
                                             <a href="@Model.GetTabHref(i)" data-toggle="tab" class="@Model.GetStepTitleCssClass(i)">
                                                 <span class="formWizardStepDescWrapper new-line">
                                                     <span data="@Model.GetStepTitle(i)" class="formWizardStepDesc">@Model.GetStepTitle(i)</span>   
