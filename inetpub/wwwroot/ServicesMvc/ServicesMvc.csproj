@@ -2614,6 +2614,9 @@
     <Content Include="Documents\Templates\UploadBestandsdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\fonts\pt_sans-webfont.eot" />
+    <Content Include="Content\fonts\pt_sans-webfont.ttf" />
+    <Content Include="Content\fonts\pt_sans-webfont.woff" />
     <None Include="Content\fonts\europlate-webfont.eot" />
     <None Include="Content\fonts\europlate-webfont.ttf" />
     <None Include="Content\fonts\europlate-webfont.woff" />

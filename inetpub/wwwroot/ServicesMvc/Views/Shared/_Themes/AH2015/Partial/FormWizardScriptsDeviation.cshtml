@@ -8,6 +8,36 @@
         fwTab.removeClass("nav");
         fwTab.removeClass("nav-pills");
 
+        FormWizardOnStepChange();
+        var stepTitle = $('#formWizard .step-title');
+        stepTitle.closest(".portlet-title").addClass("hide");
+    }
+
+    function FormWizardOnStepChange() {
+
+        var h3Header = $(".body-container h3.page-title");
+        var h3HeaderText = h3Header.html();
+
+        var stepTitle = $('#formWizard .step-title');
+        var stepTitleText = stepTitle.html();
+        //console.log(stepTitle);
+
+        var stepDividerIndex = stepTitleText.indexOf("&nbsp;") + 6;
+        var stepSection = stepTitleText.substr(stepDividerIndex);
+        stepSection = stepSection.replace(/Schritt /g, "");
+
+        var hr3DividerIndex = h3HeaderText.indexOf("&nbsp;");
+        var h3HeaderSection = h3HeaderText;
+        if (hr3DividerIndex != -1)
+            h3HeaderSection = h3HeaderText.substr(0, hr3DividerIndex);
+
+        //console.log("h3HeaderSection: " + h3HeaderSection);
+        //console.log("stepSection: " + stepSection);
+
+        var stepText = "&nbsp;" + stepSection;
+        
+        // move formwizard step title to closest h3 header
+        h3Header.html(h3HeaderSection + " " + stepText);
     }
 
 

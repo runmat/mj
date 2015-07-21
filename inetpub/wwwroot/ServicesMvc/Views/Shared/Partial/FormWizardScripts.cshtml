@@ -56,7 +56,9 @@
                             }
 
                         // set wizard title
-                        $('.step-title', $('#formWizard')).text('Schritt ' + (index + 1) + ' / ' + total);
+                        $('.step-title', $('#formWizard')).html('&nbsp;Schritt ' + (index + 1) + ' / ' + total);
+                        FormWizardOnStepChange();
+
                         // set done steps
                         jQuery('li', $('#formWizard')).removeClass("done");
                         var liList = navigation.find('li');
@@ -81,7 +83,9 @@
                             }
 
                         // set wizard title
-                        $('.step-title', $('#formWizard')).text('Schritt ' + (index + 1) + ' / ' + total);
+                        $('.step-title', $('#formWizard')).html('&nbsp;Schritt ' + (index + 1) + ' / ' + total);
+                        FormWizardOnStepChange();
+
                         // set done steps
                         jQuery('li', $('#formWizard')).removeClass("done");
                         var liList = navigation.find('li');
