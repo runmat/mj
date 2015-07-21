@@ -6,6 +6,7 @@ using CKG.Base.Business;
 using CKG.Base.Common;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
+using GeneralTools.Models;
 
 namespace Leasing.lib
 {
@@ -264,9 +265,9 @@ namespace Leasing.lib
 
         public string EvbNrSingle { get; set; }
 
-        public string EvbGueltigVon { get; set; }
+        public DateTime? EvbGueltigVon { get; set; }
 
-        public string EvbGueltigBis { get; set; }
+        public DateTime? EvbGueltigBis { get; set; }
 
         public DataTable LaenderPLZ
         {
@@ -660,7 +661,8 @@ namespace Leasing.lib
 
             try
             {
-                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_WEB_SONST_DL_ANF_CKPT_01", ref m_objApp, ref m_objUser, ref page);
+                DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_WEB_SONST_DL_ANF_CKPT_01", ref m_objApp,
+                    ref m_objUser, ref page);
 
                 myProxy.setImportParameter("AG", m_objUser.KUNNR.PadLeft(10, '0'));
                 myProxy.setImportParameter("WEB_USER", m_objUser.UserName);
@@ -675,21 +677,116 @@ namespace Leasing.lib
                     var newRow = auftragsdaten.NewRow();
 
                     newRow["ZZFAHRG"] = row["Fahrgestellnummer"];
-                    newRow["EVBNR"] = EVBNr;
+                    newRow["EVBNR"] = EvbNrSingle;
+                    newRow["INFO_ZUM_AG_1"] = m_objUser.Store;
+
+                    if (EvbGueltigVon.HasValue)
+                    {
+                        newRow["EVBVONDAT"] = EvbGueltigVon;
+                    }
+                    if (EvbGueltigBis.HasValue)
+                    {
+                        newRow["EVBBISDAT"] = EvbGueltigBis;
+                    }
+
+
+                    newRow["ZZBRIEF"] = row["NummerZB2"];
+                    newRow["ZZREFNR"] = row["Leasingnummer"];
+
                     newRow["WUNSCHKENNZ"] = Wunschkennzeichen;
                     newRow["VERSICHERUNG"] = Versicherungstraeger;
                     newRow["EQUNR"] = row["EQUNR"].ToString();
                     newRow["SFV_FZG"] = Bemerkung;
+
+                    auftragsdaten.Rows.Add(newRow);
+                }
+
+
+                DataTable partner = myProxy.getImportTable("GT_PARTNER");
+
+                var partnerRow = partner.NewRow();
+                partnerRow["PARTN_ROLE"] = "ZS";
+                partnerRow["PARTN_NUMB"] = "1";
+                partnerRow["NAME"] = "DAD Deutscher Auto Dienst GmbH";
+                partnerRow["STREET"] = "Ladestraße 1";
+                partnerRow["POSTL_CODE"] = "22926";
+                partnerRow["CITY"] = "Ahrensburg";
+                partnerRow["COUNTRY"] = "DE";
+                partner.Rows.Add(partnerRow);
+
+
+
+                if (m_strHalterName1.Length + m_strHalterName2.Length + m_strHalterStrasse.Length +
+                    m_strHalterPLZ.Length + m_strHalterOrt.Length > 0)
+                {
+                    partnerRow = partner.NewRow();
+                    partnerRow["PARTN_ROLE"] = "ZH";
+                    partnerRow["NAME"] = m_strHalterName1;
+                    partnerRow["NAME_2"] = m_strHalterName2;
+                    partnerRow["STREET"] = m_strHalterStrasse + SetSpaceInHouseNumber(m_strHalterHausnr);
+                    partnerRow["POSTL_CODE"] = m_strHalterPLZ;
+                    partnerRow["CITY"] = m_strHalterOrt;
+                    partnerRow["COUNTRY"] = "DE";
+                    partner.Rows.Add(partnerRow);
+                }
+
+                if (m_strEmpfaengerName1.Length + m_strEmpfaengerName2.Length + m_strEmpfaengerStrasse.Length +
+                    m_strEmpfaengerPLZ.Length + m_strEmpfaengerOrt.Length > 0)
+                {
+                    partnerRow = partner.NewRow();
+                    partnerRow["PARTN_ROLE"] = "ZE";
+                    partnerRow["NAME"] = m_strEmpfaengerName1;
+                    partnerRow["NAME_2"] = m_strEmpfaengerName2;
+                    partnerRow["STREET"] = m_strEmpfaengerStrasse + SetSpaceInHouseNumber(m_strEmpfaengerHausnr);
+                    partnerRow["POSTL_CODE"] = m_strEmpfaengerPLZ;
+                    partnerRow["CITY"] = m_strEmpfaengerOrt;
+                    partnerRow["COUNTRY"] = "DE";
+                    partner.Rows.Add(partnerRow);
+                }
+
+                myProxy.callBapi();
+
+                DataTable returnTable = myProxy.getExportTable("GT_RETURN");
+
+                foreach (DataRow dRow in returnTable.Rows)
+                {
+                    var fahrzeugeRow = Fahrzeuge.Select("Fahrgestellnummer='" + dRow["ZZFAHRG"] + "'")[0];
+
+                    if (!string.IsNullOrEmpty(dRow["VBELN"].ToString()))
+                    {
+                        Auftragsnummer = dRow["VBELN"].ToString();
+                        fahrzeugeRow["Status"] = "OK";
+                    }
+                    else
+                    {
+                        fahrzeugeRow["Status"] = dRow["MESSAGE"];
+                    }
+                    
+                    
+                    
+
+                    
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                    
-                throw;
+                strAuftragsstatus = HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
+                m_intStatus = -9999;
             }
+            
 
         }
 
+
+        String SetSpaceInHouseNumber(String houseNumber)
+        {
+            if (!String.IsNullOrEmpty(houseNumber))
+            {
+                houseNumber = " " + houseNumber;
+            }
+
+            return houseNumber;
+        }
 
 
         public DataTable GiveResultStructure(Page page)

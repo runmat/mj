@@ -339,7 +339,7 @@ namespace Leasing.forms
 
         protected void cmdContinue_Click(object sender, EventArgs e)
         {
-            cmdContinue.Enabled = false;
+            cmdContinue.Visible = false;
             //lnkAdressen.Enabled = false;
             //lnkFahrzeugauswahl.Enabled = false;
             step2.Enabled = false;
@@ -425,6 +425,48 @@ namespace Leasing.forms
 
         private void AnfordernCustom()
         {
+            Trace logApp;
+
+            if (Session["logObj"] != null)
+            {
+                logApp = (Trace)(Session["logObj"]);
+            }
+            else
+            {
+                logApp = new Trace(_mApp.Connectionstring, _mApp.SaveLogAccessSAP, _mApp.LogLevel);
+            }
+
+            lblMessage.Visible = false;
+            btnSummary.Visible = false;
+
+            try
+            {
+                _objDienstleistung.AnfordernCustom(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
+
+                if (!string.IsNullOrEmpty(_objDienstleistung.Auftragsnummer))
+                {
+                    lblMessage.Visible = true;
+                    lblMessage.Text = "Ihre Auftragsnummer: " + _objDienstleistung.Auftragsnummer;
+                    btnSummary.Visible = true;
+                }
+                else if (!string.IsNullOrEmpty(_objDienstleistung.Message))
+                {
+                    lblError.Text = _objDienstleistung.Message;
+                }
+
+
+                var tmpDataView = _objDienstleistung.Fahrzeuge.DefaultView;
+                tmpDataView.RowFilter = "MANDT = '99'";
+                GridView1.DataSource = tmpDataView;
+                GridView1.DataBind();
+                logApp.UpdateEntry("APP", Session["AppID"].ToString(), "Beauftragung sonstiger Dienstleistungen", null);
+            }
+            catch (Exception ex)
+            {
+                lblError.Text = "Fehler: " + ex.Message;
+                logApp.UpdateEntry("ERR", Session["AppID"].ToString(), "Fehler bei der Briefanforderung zu Equipment: " + _objDienstleistung.Equimpent + "Fehler: " + ex.Message, null);
+                throw;
+            }
             
         }
 
