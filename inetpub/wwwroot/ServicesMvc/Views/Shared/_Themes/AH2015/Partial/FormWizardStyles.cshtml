@@ -6,7 +6,8 @@
     /* <Breadcrumbs> */
     
     h4.wizard-header {
-        font-weight: bold;        
+      font-size: 18px;
+      font-weight: bold;    
     }
 	
     .form-wizard .steps .navbar-inner ul
@@ -197,7 +198,9 @@
     .form-wizard .steps .navbar-inner ul li{
         width:100%;
     }
-
+    .form-wizard .steps .navbar-inner ul li a {
+        min-height: 42px;
+    }
 
     .form-wizard .steps .navbar-inner ul.formWizard_StepCounts_flow li{
          width:auto;
@@ -208,6 +211,11 @@
         border-radius: 4px 0 0 4px !important;
     }
 
+    .form-wizard .steps .navbar-inner ul li.done:first-child a::before{
+        border-color: #3AAFDA ;
+        border-radius: 4px 0 0 4px !important;
+    }
+    
     .form-wizard .steps .navbar-inner ul li:first-child a::before{
         border-color: #ddd;
         border-radius: 4px 0 0 4px !important;
@@ -221,4 +229,11 @@
        border-radius: 0 4px 4px 0  !important;
     }
 
+    .form-actions{
+        text-align: right;
+    }
+
+    .form-actions-top{
+        text-align: left;
+    }
 </style>
