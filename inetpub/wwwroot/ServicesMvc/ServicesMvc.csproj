@@ -383,8 +383,14 @@
     <Compile Include="App_Start\LocalizedRequiredAttributeAdapter.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="assets\img\bg\1.jpg" />
+    <Content Include="assets\img\bg\2.jpg" />
+    <Content Include="assets\img\bg\3.jpg" />
+    <Content Include="assets\img\bg\4.jpg" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
+    <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
+    <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
     <Content Include="_Themes\AH2015\images\menu_white.png" />
     <Content Include="_Themes\AH2015\images\test.png" />
@@ -2834,10 +2840,10 @@
     <Content Include="assets\img\bg-opacity.png" />
     <Content Include="assets\img\bg-white-lock.png" />
     <Content Include="assets\img\bg-white.png" />
-    <Content Include="assets\img\bg\1.jpg" />
-    <Content Include="assets\img\bg\2.jpg" />
-    <Content Include="assets\img\bg\3.jpg" />
-    <Content Include="assets\img\bg\4.jpg" />
+    <Content Include="assets\img\bg\old\1.jpg" />
+    <Content Include="assets\img\bg\old\2.jpg" />
+    <Content Include="assets\img\bg\old\3.jpg" />
+    <Content Include="assets\img\bg\old\4.jpg" />
     <Content Include="assets\img\gallery\image1.jpg" />
     <Content Include="assets\img\gallery\image2.jpg" />
     <Content Include="assets\img\gallery\image3.jpg" />
@@ -4565,6 +4571,11 @@
     <Content Include="Views\Shared\Partial\LayoutPage\ScriptsDeviation.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\ScriptsDeviation.cshtml" />
     <Content Include="Views\Login\_Themes\AH2015\Index.cshtml" />
+    <Content Include="Views\Login\_Themes\AH2015\Partial\Common.cshtml" />
+    <Content Include="Views\Login\_Themes\AH2015\Partial\Logo.cshtml" />
+    <Content Include="Views\Login\_Themes\AH2015\Partial\LoginForm.cshtml" />
+    <Content Include="Views\Login\_Themes\AH2015\Kontakt.cshtml" />
+    <Content Include="Views\Login\_Themes\AH2015\Impressum.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4625,7 +4636,6 @@
     <Folder Include="assets\plugins\jquery-validation\test\selects\" />
     <Folder Include="assets_v2\plugins\jquery-file-upload\server\php\files\thumbnail\" />
     <Folder Include="TmpUpload\Images\" />
-    <Folder Include="Views\Login\_Themes\AH2015\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
