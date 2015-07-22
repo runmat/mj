@@ -318,6 +318,12 @@ select.m-wrap{
     border-radius:4px !important;
 }
 
+input[disabled].m-wrap, select[disabled].m-wrap, textarea[disabled].m-wrap, input[readonly].m-wrap, select[readonly].m-wrap, textarea[readonly].m-wrap{
+    border: none !important;
+    border-radius:0 !important;
+}
+
+
 .control-label{
     font-size:18px;
 }
@@ -397,6 +403,11 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 .btn i{
     display:none !important;
 }
+
+.t-grid .btn i{
+    display: inline-block !important;
+}
+
 
 /* dropdown */
 .aktuellesprache{
