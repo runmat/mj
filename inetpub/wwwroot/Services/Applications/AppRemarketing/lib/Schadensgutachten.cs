@@ -2,6 +2,7 @@
 using CKG.Base.Business;
 using CKG.Base.Common;
 using System.Data;
+using Telerik.Web.UI;
 
 namespace AppRemarketing.lib
 {
@@ -128,7 +129,20 @@ namespace AppRemarketing.lib
                 }
                 tblTemp.AcceptChanges();
 
+ 
                 myProxy.callBapi();
+
+                DataTable exTable = myProxy.getExportTable("GT_OUT");
+
+                foreach (DataRow exRow in exTable.Rows)
+                {
+                    DataRow uploadRow = tblUploads.Select("FAHRGESTELLNUMMER = '" + exRow["FAHRGNR"] + "'")[0];
+
+                    uploadRow["STATUS"] = exRow["BEM"];
+
+                }
+
+                tblUploads.AcceptChanges();
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
 
