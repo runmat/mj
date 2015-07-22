@@ -11,22 +11,30 @@
         if (_formWizardCurrentStepCount == 0)
             return;
 
-        //var maxWidthOneStep = 130;
-        var maxWidthAllSteps = 0; //maxWidthOneStep * _formWizardCurrentStepCount;
+        var formWizardStepBar = $("#formWizard ul.row-fluid");
+        if (typeof (formWizardStepBar) == "undefined")
+            return;
+
+        var widestStepWidth = 0;
 
         $("#formWizard ul.row-fluid li .formWizardStepDesc").each(function () {
             var e = $(this);
-            var eWidth = parseInt(e.css("width"), 10);
+            var eWidth = e.width();
 
             var a = e.closest("a.step");
-            var aWidth = parseInt(e.css("width"), 10);
+            var aWidth = a.width();
 
-            maxWidthAllSteps += cWidth;
-            console.log(e.text() + " - " + e.css("width"));
+            var cWidth = (eWidth > aWidth ? eWidth : aWidth);
+            if (cWidth > widestStepWidth)
+                widestStepWidth = cWidth;
         });
-        console.log(containerWidth + " - " + maxWidthAllSteps);
+        widestStepWidth += 30;
 
-        var formWizardStepBar = $("#formWizard ul.row-fluid");
+        if (widestStepWidth < 100)
+            widestStepWidth = 100;
+
+        var maxWidthAllSteps = _formWizardCurrentStepCount * widestStepWidth;
+
         if (containerWidth > maxWidthAllSteps)
             formWizardStepBar.removeClass("formWizard_StepCounts_flow");
         else
@@ -88,9 +96,9 @@
 
             e.css("width", containerWidth);
 
-            HandleResponsiveFormWizardStepBar(containerWidth);
+            HandleResponsiveFormWizardStepBar(containerWidth - margin);
         });
-           
+
     }
 
 </script>
