@@ -1354,13 +1354,14 @@ namespace AppZulassungsdienst.lib
 
             foreach (var item in uploadList)
             {
-                var vorgang = Vorgangsliste.FirstOrDefault(v => v.Kennzeichen == item.Kennzeichen);
+                var vorgang = Vorgangsliste.FirstOrDefault(v => v.Kennzeichen == item.Kennzeichen && v.PositionsNr == "10" && v.WebBearbeitungsStatus != "L");
                 if (vorgang != null)
                 {
-                    vorgang.WebBearbeitungsStatus = "O";
                     vorgang.GebuehrAmt = item.Gebuehren.ToDecimal(0);
                     if (!vorgang.Gebuehrenpaket.IsTrue())
                         vorgang.Gebuehr = item.Gebuehren.ToDecimal(0);
+
+                    Vorgangsliste.Where(v => v.SapId == vorgang.SapId && v.WebBearbeitungsStatus != "L").ToList().ForEach(v => v.WebBearbeitungsStatus = "O");
 
                     anzGefunden++;
                 }
