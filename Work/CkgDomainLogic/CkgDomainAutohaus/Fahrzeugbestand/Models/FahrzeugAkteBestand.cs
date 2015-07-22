@@ -6,6 +6,7 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -148,6 +149,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [Length(15)]
+        [Kennzeichen]
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
