@@ -1741,6 +1741,8 @@ namespace AutohausPortal.lib
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
 
+                    myProxy.setImportParameter("I_TELNR", m_objUser.PhoneEmployee);
+
                     if (cpdFormular)
                         myProxy.setImportParameter("I_FORMULAR", "X");
 
