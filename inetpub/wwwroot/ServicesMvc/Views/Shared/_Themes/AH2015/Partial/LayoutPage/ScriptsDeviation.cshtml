@@ -1,0 +1,60 @@
+<script type="text/javascript">
+
+    function HandleResponsiveControlWidthsForTheme() {
+
+        $(".body-container").each(function () {
+            var e = $(this);
+            var sidebar = $(".page-sidebar");
+            var sidebarWidth = parseInt(sidebar.css("width"), 10);
+            if (sidebarWidth > 300)
+                sidebarWidth = 0;
+            var windowWidth = $(window).width();
+
+            var marginThis = e.css("margin-left");
+            //console.log("marginThis: " + marginThis);
+            var margin = parseInt(marginThis, 10) * 2;
+            //console.log("margin: " + margin);
+
+            var containerWidth = windowWidth - sidebarWidth - margin;
+
+            var tGridTable = e.find(".t-grid>table");
+            if (tGridTable.length > 0) {
+                tGridTable = $(tGridTable[0]);
+
+                //console.log("gridTable.width: " + tGridTable.width());
+                //console.log("container.width: " + containerWidth);
+
+                if (tGridTable.width() > 200 && tGridTable.width() >= containerWidth) {
+                    containerWidth = tGridTable.width() + (3 * margin);
+                }
+
+                //console.log(containerWidth);
+                //console.log(windowWidth);
+
+                var gridExportMenu = e.find(".outer-export-menu");
+                var tStatusText = e.find(".t-status-text");
+
+                if (containerWidth > windowWidth) {
+                    var scrollPosX = $(window).scrollLeft();
+
+                    var marg = 0;
+                    if (scrollPosX > 500)
+                        marg = 70;
+                    var gridExportMenuMarginRight = containerWidth - windowWidth + sidebarWidth + marg - scrollPosX;
+                    console.log(scrollPosX);
+                    //console.log(gridExportMenuMarginRight);
+
+                    gridExportMenu.css("margin-right", gridExportMenuMarginRight);
+                    tStatusText.css("margin-right", gridExportMenuMarginRight);
+                } else {
+                    gridExportMenu.css("margin-right", "");
+                    tStatusText.css("margin-right", "");
+                }
+            }
+
+            e.css("width", containerWidth);
+        });
+           
+    }
+
+</script>

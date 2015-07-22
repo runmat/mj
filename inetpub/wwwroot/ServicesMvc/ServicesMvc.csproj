@@ -4562,6 +4562,8 @@
     <Content Include="Views\Shared\Partial\FormWizardScriptsDeviation.cshtml" />
     <Content Include="Views\Shared\Partial\FormWizardStylesDeviation.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\FormWizardScriptsDeviation.cshtml" />
+    <Content Include="Views\Shared\Partial\LayoutPage\ScriptsDeviation.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\ScriptsDeviation.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
