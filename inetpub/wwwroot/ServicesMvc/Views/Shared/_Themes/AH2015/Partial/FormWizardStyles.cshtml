@@ -186,6 +186,7 @@
   	    -ms-flex-wrap: nowrap;
   	        flex-wrap: nowrap;
     margin: 0;
+    overflow: visible;
     }
 
      .form-wizard .steps .navbar-inner ul.formWizard_StepCounts_flow{
@@ -224,10 +225,14 @@
     .form-wizard .steps .navbar-inner ul li.active:last-child a::after{
        border-radius: 0 4px 4px 0 !important; 
     }
-
-    .form-wizard .steps .navbar-inner ul li:last-child a::after{
+    
+    .form-wizard .steps .navbar-inner ul li:last-child a{
        border-radius: 0 4px 4px 0  !important;
     }
+    .form-wizard .steps .navbar-inner ul li:last-child a::after{
+       border: none !important;
+    }
+    
 
     .form-actions{
         text-align: right;

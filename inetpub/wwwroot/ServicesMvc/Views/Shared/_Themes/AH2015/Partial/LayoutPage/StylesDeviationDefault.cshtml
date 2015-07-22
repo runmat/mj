@@ -170,8 +170,11 @@ body{
     margin-right: 20px;
 }
 
+/* FORMS */
 .form .form-actions{
-    padding-left: 170px;
+    padding-left: 0;
+    text-align: right;
+    background-color: transparent !important;
 }
 
 .btn [class^="m-icon-"]{
@@ -254,7 +257,6 @@ body{
 }
 
 
-
 .mitgrid .body-container{
     margin: 30px 0 30px 30px;
     border-radius: 10px 0 0 10px !important;
@@ -267,8 +269,9 @@ body{
 
 
 
-input#Kennzeichen{
-      border: none !important;
+input[type="text"].m-wrap.kennzeichen,
+span.kennzeichen{
+  border: none !important;
   font-family: 'europlate', Arial, Sans-Serif;
   color: #000;
   background-image: url(/ServicesMvc/_Themes/AH2015/images/kennzeichen.png) !important;
@@ -280,6 +283,13 @@ input#Kennzeichen{
   padding: 0 20px 5px 26px !important;
   font-size: 35px;
   text-transform: uppercase;
+  margin-top: -7px !important;
+  font-weight: normal !important;
+  max-width: 190px;
+}
+
+span.kennzeichen{
+    padding-top: 11px !important;
 }
 
 
@@ -335,6 +345,40 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 }
 
 
+.portlet.box{
+    border-radius: 4px !important;
+}
+
+.portlet-title,
+.portlet-body.light-grey, 
+.portlet.light-grey,
+.portlet.box .portlet-body{
+    background-color: transparent !important;
+}
+
+.portlet.box.light-grey{
+    border: 1px solid #96A0AD;
+}
+
+.portlet.box .portlet-title{
+    border-bottom: none !important; 
+}
+
+.portlet-title .caption{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.portlet-title .caption i{
+    display:none !important;
+}
+
+
+
+.breadcrumbs a{
+      min-height: 22px;
+}
+
 
 
 
@@ -348,6 +392,10 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
    font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
    border-radius: 4px !important; 
    text-transform: uppercase;
+}
+
+.btn i{
+    display:none !important;
 }
 
 /* dropdown */
@@ -556,6 +604,9 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     .page-content {
         padding-top: 1px !important;
         padding-bottom: 30px !important;
+    }
+    .page-container{
+        background-color: #fff;
     }
 }
 
