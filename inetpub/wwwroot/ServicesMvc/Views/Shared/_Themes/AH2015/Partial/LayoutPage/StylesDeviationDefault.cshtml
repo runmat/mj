@@ -138,7 +138,7 @@ body{
     left: 50%;
     top: 50%;
 }
-
+/******************** BUTTONS *********************************************/
 
 .btn.black{
     background-color: #6e8cbf;
@@ -148,9 +148,20 @@ body{
     background-color: #6e8cbf !important;
 }
 
+.btn.gray{
+    background-color:#3BAFDA;
+}
 
-.btn.green.button-next{
-    background-color: #3BAFDA;
+.btn.gray:hover, .btn.gray:focus, .btn.gray:active, .btn.gray.active, .btn.gray.disabled, .btn.gray[disabled] {
+    background-color: #3BAFDA !important;
+}
+
+
+
+.btn.green.button-next,
+.btn.green,
+.btn.green:hover, .btn.green:focus, .btn.green:active, .btn.green.active, .btn.green.disabled, .btn.green[disabled] {
+    background-color: #3BAFDA !important
 }
 
 .btn.green.button-next{
@@ -161,20 +172,41 @@ body{
 .btn.button-prev{
     background-color: #9B9B9B !important;
     color:#FFF;
-    margin-right: 20px;
 }
 
 .btn.button-prev:hover{
     background-color: #9B9B9B !important;
     color:#FFF;
-    margin-right: 20px;
+}
+
+.btn:hover, .btn:focus, .btn:active, .btn.active, .btn[disabled], .btn.disabled{
+    opacity: 0.8;
+}
+
+.btn{
+   font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
+   border-radius: 4px !important; 
+   text-transform: uppercase;
+   padding: 7px 44px;
+}
+
+.btn i{
+    display:none !important;
+}
+
+.t-grid .btn i{
+    display: inline-block !important;
 }
 
 /* FORMS */
-.form .form-actions{
+.form-actions{
     padding-left: 0;
     text-align: right;
     background-color: transparent !important;
+}
+
+.form-actions .btn{
+    margin-left:20px;
 }
 
 .btn [class^="m-icon-"]{
@@ -366,6 +398,10 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     border: 1px solid #96A0AD;
 }
 
+.FormSearchResultsGrid.portlet.box.light-grey{
+     border: 1px solid #96A0AD !important;
+}
+
 .portlet.box .portlet-title{
     border-bottom: none !important; 
 }
@@ -394,19 +430,7 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 }
 
 
-.btn{
-   font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
-   border-radius: 4px !important; 
-   text-transform: uppercase;
-}
 
-.btn i{
-    display:none !important;
-}
-
-.t-grid .btn i{
-    display: inline-block !important;
-}
 
 
 /* dropdown */
