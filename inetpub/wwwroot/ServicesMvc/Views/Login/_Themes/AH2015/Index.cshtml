@@ -8,10 +8,10 @@
 
 @Html.Partial("Partial/Common") 
 
-<h1>!!! This is theme "AH2015" !!!</h1>
+<div class="loginhead">@Html.Partial("Partial/Logo")</div>
+
 
 <div class="content">
-    @Html.Partial("Partial/Logo") 
     
     @Html.Partial("Partial/MaintenanceHintsLogonDisabled", Model.MaintenanceInfo)
 

@@ -187,12 +187,24 @@ body{
    font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif;
    border-radius: 4px !important; 
    text-transform: uppercase;
-   padding: 7px 44px;
 }
-
-.btn i{
+/* Icon bei Button ausblenden */
+.form-actions .btn i{
     display:none !important;
 }
+
+
+/* Grosse Buttons */
+.form-actions .btn{
+     padding: 7px 44px;
+}
+
+
+/* Kleine Buttons */
+.btn.mini{
+    padding: 7px;
+}
+
 
 .t-grid .btn i{
     display: inline-block !important;
@@ -421,17 +433,10 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
       min-height: 22px;
 }
 
-
-
-
 /* footer */
 .footer {
   background-color: #0a2D69 !important;
 }
-
-
-
-
 
 /* dropdown */
 .aktuellesprache{
@@ -548,7 +553,8 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     display:none;
 }
 
-.header .nav > li.dropdown .dropdown-toggle .badge{
+.header .nav > li.dropdown .dropdown-toggle .badge,
+.shopping-cart-menu .badge{
        font-family: 'PT Sans', Arial, "Helvetica Neue", Helvetica, sans-serif; 
       border-radius: 50% !important;
       height: 25px;
@@ -620,7 +626,20 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     color: #000;
 }
 
+.shopping-cart-menu i{
+    display:none;
+}
 
+
+.shopping-cart-menu .glyphicons{
+    padding-left: 0;
+}
+
+
+.shopping-cart-body{
+    box-shadow: none !important;
+    width: auto !important;
+}
 
 
 /* Mediaquerys */
