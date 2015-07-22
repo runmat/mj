@@ -11,8 +11,20 @@
         if (_formWizardCurrentStepCount == 0)
             return;
 
-        var maxWidthOneStep = 100;
-        var maxWidthAllSteps = maxWidthOneStep * _formWizardCurrentStepCount;
+        //var maxWidthOneStep = 130;
+        var maxWidthAllSteps = 0; //maxWidthOneStep * _formWizardCurrentStepCount;
+
+        $("#formWizard ul.row-fluid li .formWizardStepDesc").each(function () {
+            var e = $(this);
+            var eWidth = parseInt(e.css("width"), 10);
+
+            var a = e.closest("a.step");
+            var aWidth = parseInt(e.css("width"), 10);
+
+            maxWidthAllSteps += cWidth;
+            console.log(e.text() + " - " + e.css("width"));
+        });
+        console.log(containerWidth + " - " + maxWidthAllSteps);
 
         var formWizardStepBar = $("#formWizard ul.row-fluid");
         if (containerWidth > maxWidthAllSteps)
