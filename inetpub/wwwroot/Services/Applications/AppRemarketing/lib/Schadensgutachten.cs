@@ -138,7 +138,11 @@ namespace AppRemarketing.lib
                 {
                     DataRow uploadRow = tblUploads.Select("FAHRGESTELLNUMMER = '" + exRow["FAHRGNR"] + "'")[0];
 
-                    uploadRow["STATUS"] = exRow["BEM"];
+                    if (!String.IsNullOrEmpty(exRow["BEM"].ToString()))
+                    {
+                        uploadRow["STATUS"] = exRow["BEM"];
+                    }
+                    
 
                 }
 
