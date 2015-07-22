@@ -100,6 +100,8 @@
 
     function FahrzeugShowAjax(fin) {
         FahrzeugShowCreateAjax(fin);
+
+        return false;
     }
 
     function FahrzeugCreateAjax() {
@@ -152,6 +154,10 @@
             setTimeout('LoadingHide();', 500);
             scrollToTop();
             BreadcrumbsMovePrev();
+
+            setTimeout(function() {
+                HandleResponsiveControlWidths();
+            }, 1000);
         }, 150);
     }
 
