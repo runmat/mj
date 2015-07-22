@@ -543,6 +543,9 @@
             }, 500);
         });
         
+        $('a.btn-navbar').off('click').on('click', function(e) {
+            MetronicSidebarEnforceOpen();
+        });
     }    
     
     function HandleResponsiveControlWidths() {
@@ -724,6 +727,16 @@
         
         var pageContainer = $(".page-container");
         if (pageContainer.hasClass("sidebar-closed"))
+            return;
+
+        var sideBarToggler = $(".sidebar-toggler");
+        sideBarToggler.trigger("click");
+    }
+        
+    function MetronicSidebarEnforceOpen() {
+        
+        var pageContainer = $(".page-container");
+        if (!pageContainer.hasClass("sidebar-closed"))
             return;
 
         var sideBarToggler = $(".sidebar-toggler");

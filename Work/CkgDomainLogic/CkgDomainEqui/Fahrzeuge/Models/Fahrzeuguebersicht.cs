@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -25,6 +26,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Fahrgestellnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]

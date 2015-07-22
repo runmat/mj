@@ -2,6 +2,28 @@
 
     function HandleResponsiveControlWidthsForTheme() {
 
+        HandleResponsiveBodyContainerForTheme();
+
+    }
+
+    function HandleResponsiveFormWizardStepBar(containerWidth) {
+
+        if (_formWizardCurrentStepCount == 0)
+            return;
+
+        var maxWidthOneStep = 100;
+        var maxWidthAllSteps = maxWidthOneStep * _formWizardCurrentStepCount;
+
+        var formWizardStepBar = $("#formWizard ul.row-fluid");
+        if (containerWidth > maxWidthAllSteps)
+            formWizardStepBar.removeClass("formWizard_StepCounts_flow");
+        else
+            formWizardStepBar.addClass("formWizard_StepCounts_flow");
+
+    }
+
+    function HandleResponsiveBodyContainerForTheme() {
+
         $(".body-container").each(function () {
             var e = $(this);
             var sidebar = $(".page-sidebar");
@@ -53,6 +75,8 @@
             }
 
             e.css("width", containerWidth);
+
+            HandleResponsiveFormWizardStepBar(containerWidth);
         });
            
     }

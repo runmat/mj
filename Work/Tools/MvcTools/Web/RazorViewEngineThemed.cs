@@ -22,8 +22,8 @@ namespace MvcTools.Web
 
             if (layoutTheme.IsNotNullOrEmpty())
             {
-                var partialViewFullPath = string.Format("_Themes/{0}/{1}", layoutTheme, viewName);
-                result = func(partialViewFullPath); 
+                var themedViewPath = string.Format("_Themes/{0}/{1}", layoutTheme, viewName);
+                result = func(themedViewPath); 
             }
 
             //Fall back to default search path if no other view has been selected  
