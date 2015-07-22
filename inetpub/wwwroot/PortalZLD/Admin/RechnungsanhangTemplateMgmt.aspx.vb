@@ -25,7 +25,7 @@ Partial Public Class RechnungsanhangTemplateMgmt
 
         Result.Visible = True
 
-        Dim dvTemplates As New DataView
+        Dim dvTemplates As DataView
 
         If Session("dvTemplates") Is Nothing Then
             Dim dtTemplates As New DataTable
@@ -130,9 +130,9 @@ Partial Public Class RechnungsanhangTemplateMgmt
         Try
             m_App = New App(m_User)
 
-            If Not IsPostBack Then
-                lblError.Text = ""
+            lblError.Text = ""
 
+            If Not IsPostBack Then
                 Search(True, True, True, True)
             End If
         Catch ex As Exception
@@ -140,7 +140,7 @@ Partial Public Class RechnungsanhangTemplateMgmt
         End Try
     End Sub
 
-    Private Sub lbtnCancel_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnCancel.Click
+    Private Sub lbtnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnCancel.Click
         If dgSearchResult.Rows.Count = 0 Then
             Search(True, True)
         Else
@@ -148,12 +148,12 @@ Partial Public Class RechnungsanhangTemplateMgmt
         End If
     End Sub
 
-    Private Sub lbtnNew_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnNew.Click
+    Private Sub lbtnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnNew.Click
         SwitchViewMode(False)
         ClearEdit()
     End Sub
 
-    Private Sub lbtnSave_Click(ByVal sender As System.Object, ByVal e As EventArgs) Handles lbtnSave.Click
+    Private Sub lbtnSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnSave.Click
         If String.IsNullOrEmpty(txtBezeichnung.Text) Then
             lblError.Text = "Bezeichnung fehlt!"
             Exit Sub

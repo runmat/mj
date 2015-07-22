@@ -52,7 +52,7 @@
                                                         <asp:TemplateField HeaderText="Löschen">
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ImageUrl="/PortalZLD/Images/Papierkorb_01.gif" Width="16px" Height="16px" 
-                                                                    CommandName="Del" OnClientClick="return ConfirmDeleteTemplate();"/>
+                                                                    CommandName="Del" CommandArgument='<%# CType(Container, GridViewRow).RowIndex %>' OnClientClick="return ConfirmDeleteTemplate();"/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                     </Columns>

@@ -42,9 +42,12 @@ namespace AppZulassungsdienst.lib
     partial void InsertZLDVorgangKopf(ZLDVorgangKopf instance);
     partial void UpdateZLDVorgangKopf(ZLDVorgangKopf instance);
     partial void DeleteZLDVorgangKopf(ZLDVorgangKopf instance);
+    partial void InsertRechnungsanhangTemplates(RechnungsanhangTemplates instance);
+    partial void UpdateRechnungsanhangTemplates(RechnungsanhangTemplates instance);
+    partial void DeleteRechnungsanhangTemplates(RechnungsanhangTemplates instance);
     #endregion
-
-        public ZLDTableClassesDataContext() :
+		
+		public ZLDTableClassesDataContext() :
                 base(global::System.Configuration.ConfigurationManager.AppSettings["Connectionstring"].ToString(), mappingSource)
 		{
 			OnCreated();
@@ -103,6 +106,14 @@ namespace AppZulassungsdienst.lib
 			get
 			{
 				return this.GetTable<ZLDVorgangKopf>();
+			}
+		}
+		
+		public System.Data.Linq.Table<RechnungsanhangTemplates> RechnungsanhangTemplates
+		{
+			get
+			{
+				return this.GetTable<RechnungsanhangTemplates>();
 			}
 		}
 	}
@@ -2007,6 +2018,164 @@ namespace AppZulassungsdienst.lib
 		{
 			this.SendPropertyChanging();
 			entity.ZLDVorgangKopf = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.RechnungsanhangTemplates")]
+	public partial class RechnungsanhangTemplates : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _ID;
+		
+		private string _Bezeichnung;
+		
+		private int _DatenAbZeile;
+		
+		private string _SpalteKennzeichen;
+		
+		private string _SpalteGebuehren;
+		
+    #region Definitionen der Erweiterungsmethoden
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIDChanging(int value);
+    partial void OnIDChanged();
+    partial void OnBezeichnungChanging(string value);
+    partial void OnBezeichnungChanged();
+    partial void OnDatenAbZeileChanging(int value);
+    partial void OnDatenAbZeileChanged();
+    partial void OnSpalteKennzeichenChanging(string value);
+    partial void OnSpalteKennzeichenChanged();
+    partial void OnSpalteGebuehrenChanging(string value);
+    partial void OnSpalteGebuehrenChanged();
+    #endregion
+		
+		public RechnungsanhangTemplates()
+		{
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ID", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int ID
+		{
+			get
+			{
+				return this._ID;
+			}
+			set
+			{
+				if ((this._ID != value))
+				{
+					this.OnIDChanging(value);
+					this.SendPropertyChanging();
+					this._ID = value;
+					this.SendPropertyChanged("ID");
+					this.OnIDChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Bezeichnung", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Bezeichnung
+		{
+			get
+			{
+				return this._Bezeichnung;
+			}
+			set
+			{
+				if ((this._Bezeichnung != value))
+				{
+					this.OnBezeichnungChanging(value);
+					this.SendPropertyChanging();
+					this._Bezeichnung = value;
+					this.SendPropertyChanged("Bezeichnung");
+					this.OnBezeichnungChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_DatenAbZeile", DbType="Int NOT NULL")]
+		public int DatenAbZeile
+		{
+			get
+			{
+				return this._DatenAbZeile;
+			}
+			set
+			{
+				if ((this._DatenAbZeile != value))
+				{
+					this.OnDatenAbZeileChanging(value);
+					this.SendPropertyChanging();
+					this._DatenAbZeile = value;
+					this.SendPropertyChanged("DatenAbZeile");
+					this.OnDatenAbZeileChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpalteKennzeichen", DbType="VarChar(2) NOT NULL", CanBeNull=false)]
+		public string SpalteKennzeichen
+		{
+			get
+			{
+				return this._SpalteKennzeichen;
+			}
+			set
+			{
+				if ((this._SpalteKennzeichen != value))
+				{
+					this.OnSpalteKennzeichenChanging(value);
+					this.SendPropertyChanging();
+					this._SpalteKennzeichen = value;
+					this.SendPropertyChanged("SpalteKennzeichen");
+					this.OnSpalteKennzeichenChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SpalteGebuehren", DbType="VarChar(2) NOT NULL", CanBeNull=false)]
+		public string SpalteGebuehren
+		{
+			get
+			{
+				return this._SpalteGebuehren;
+			}
+			set
+			{
+				if ((this._SpalteGebuehren != value))
+				{
+					this.OnSpalteGebuehrenChanging(value);
+					this.SendPropertyChanging();
+					this._SpalteGebuehren = value;
+					this.SendPropertyChanged("SpalteGebuehren");
+					this.OnSpalteGebuehrenChanged();
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
 		}
 	}
 }

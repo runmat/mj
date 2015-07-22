@@ -86,4 +86,13 @@
       <Association Name="ZLDVorgangKopf_ZLDVorgangPosition" Member="ZLDVorgangPosition" ThisKey="SapId" OtherKey="SapId" Type="ZLDVorgangPosition" />
     </Type>
   </Table>
+  <Table Name="dbo.RechnungsanhangTemplates" Member="RechnungsanhangTemplates">
+    <Type Name="RechnungsanhangTemplates">
+      <Column Name="ID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Bezeichnung" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="DatenAbZeile" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SpalteKennzeichen" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="SpalteGebuehren" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+    </Type>
+  </Table>
 </Database>
