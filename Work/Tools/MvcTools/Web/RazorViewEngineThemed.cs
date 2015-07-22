@@ -8,39 +8,40 @@ namespace MvcTools.Web
 {
     public class RazorViewEngineThemed : RazorViewEngine
     {
-        public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+        public ViewEngineResult FindThemedView(ControllerContext controllerContext, string viewName, bool useCache, Func<string, ViewEngineResult> func)
         {
             ViewEngineResult result = null;
 
+            var layoutTheme = "";
             var logonContext = (ILogonContext)SessionHelper.GetSessionObject("LogonContext");
-            if (logonContext != null && logonContext.CurrentLayoutTheme.IsNotNullOrEmpty())
-            {
-                if (partialViewName.ToLower().Contains("usermenu"))
-                {
-                    var x = partialViewName;
-                }
-                if (partialViewName.ToLower().Contains("formsearchbox"))
-                {
-                    var x = partialViewName;
-                }
-                if (partialViewName.ToLower().Contains("partial/suche"))
-                {
-                    var x = partialViewName;
-                }
 
-                var partialViewFullPath = string.Format("_Themes/{0}/{1}", logonContext.CurrentLayoutTheme, partialViewName);
-                result = base.FindPartialView(controllerContext, partialViewFullPath, useCache);
+            if (logonContext != null && logonContext.CurrentLayoutTheme.IsNotNullOrEmpty())
+                layoutTheme = logonContext.CurrentLayoutTheme;
+            else if (HttpContext.Current.Session["theme"] != null)
+                layoutTheme = HttpContext.Current.Session["theme"].ToString();
+
+            if (layoutTheme.IsNotNullOrEmpty())
+            {
+                var partialViewFullPath = string.Format("_Themes/{0}/{1}", layoutTheme, viewName);
+                result = func(partialViewFullPath); 
             }
 
             //Fall back to default search path if no other view has been selected  
             if (result == null || result.View == null)
-            {
-                result = base.FindPartialView(controllerContext, partialViewName, useCache);
-            }
+                result = func(viewName); 
 
             return result;
         }
 
+        public override ViewEngineResult FindPartialView(ControllerContext controllerContext, string partialViewName, bool useCache)
+        {
+            return FindThemedView(controllerContext, partialViewName, useCache, viewPath => base.FindPartialView(controllerContext, viewPath, useCache));
+        }
+
+        public override ViewEngineResult FindView(ControllerContext controllerContext, string viewName, string masterName, bool useCache)
+        {
+            return FindThemedView(controllerContext, viewName, useCache, viewPath => base.FindView(controllerContext, viewPath, masterName, useCache));
+        }
 
         public static void TrySetPartialViewMarkerModeFromRequestToSession()
         {

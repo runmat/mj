@@ -4564,6 +4564,7 @@
     <Content Include="Views\Shared\_Themes\AH2015\Partial\FormWizardScriptsDeviation.cshtml" />
     <Content Include="Views\Shared\Partial\LayoutPage\ScriptsDeviation.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\ScriptsDeviation.cshtml" />
+    <Content Include="Views\Login\_Themes\AH2015\Index.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -4624,6 +4625,7 @@
     <Folder Include="assets\plugins\jquery-validation\test\selects\" />
     <Folder Include="assets_v2\plugins\jquery-file-upload\server\php\files\thumbnail\" />
     <Folder Include="TmpUpload\Images\" />
+    <Folder Include="Views\Login\_Themes\AH2015\Partial\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
