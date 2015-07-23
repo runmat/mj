@@ -345,7 +345,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.KraftstoffArt = sap.ZZKRAFTSTOFF_TXT;
                         business.ZulassungBereit = sap.ZULBEREIT.XToBool();
                         business.ZulassungsSperre = sap.ZZAKTSPERRE.XToBool();
-                        business.AbmeldeDatum = sap.ZZDAT_BER;
+                        business.AbmeldeDatum = sap.EXPIRY_DATE;
                         business.VersandDatum = sap.ZZTMPDT;
 
                         business.Lieferant = sap.NAME1_ZP;
