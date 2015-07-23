@@ -32,7 +32,7 @@ namespace StockCapture
                 {
                     var timeStart = DateTime.Now;
                     
-                    StockService.CaptureStockQuote();
+                    //StockService.CaptureStockQuote();
 
                     if (i == maxCalls)
                         break;
