@@ -389,9 +389,20 @@ input[type="email"].m-wrap,
 input[type="url"].m-wrap, 
 input[type="search"].m-wrap, 
 input[type="tel"].m-wrap, 
-input[type="color"].m-wrap{
+input[type="color"].m-wrap,
+.select2-container.m-wrap a,
+.select2-search input
+{
     border: 1px solid #96A0AD !important;
     border-radius:4px !important;
+}
+.select2-search  {
+    margin-top: 1px !important;
+}
+.select2-drop.select2-with-searchbox.select2-drop-active{
+    border: 1px solid #96A0AD !important;
+    border-top-width: 0 !important;
+    border-radius: 0 0 4px 4px !important;
 }
 
 select.m-wrap{
@@ -402,6 +413,7 @@ select.m-wrap{
 input[disabled].m-wrap, select[disabled].m-wrap, textarea[disabled].m-wrap, input[readonly].m-wrap, select[readonly].m-wrap, textarea[readonly].m-wrap{
     border: none !important;
     border-radius:0 !important;
+    background-color: transparent !important;
 }
 
 
