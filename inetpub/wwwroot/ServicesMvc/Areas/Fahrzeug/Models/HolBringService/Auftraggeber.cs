@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Web.Script.Serialization;
-using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Models;
+﻿using System.ComponentModel.DataAnnotations;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -45,6 +39,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string KundeTel { get; set; }
 
         [Required]
+        [Kennzeichen]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [StringLength(10)]
         public string Kennnzeichen { get; set; }
