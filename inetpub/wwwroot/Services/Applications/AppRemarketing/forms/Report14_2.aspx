@@ -52,7 +52,7 @@
                                 Brief/Schlüssel</li>
                             <li id="Tab3" onclick="javascript:click3()" class="Histbutton">
                                 Typdaten </li>
-                            <li id="Tab4" onclick="javascript:click4()" class="HistButton">
+                            <li id="Tab4" onclick="javascript:click4()" class="Histbutton">
                                 Lebenslauf </li>
                             <li id="Tab5" onclick="javascript:click5()" class="HistButtonLast">
                                 Vorschäden </li>
@@ -913,30 +913,30 @@
                             </tr>
                             <asp:Repeater id="VorschadenRepeater" runat="server">
                                 <ItemTemplate>
-                                <tr>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"FAHRGNR") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"KENNZ") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"ERDAT") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"PREIS") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"SCHAD_DAT") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"BESCHREIBUNG") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"DAT_UPD_VORSCH") %></td>  
-                                    <td><%# DataBinder.Eval(Container.DataItem,"REPARIERT") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"WRTMBETR") %></td>                                   
-                                </tr>
+                                    <tr>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"FAHRGNR") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"KENNZ") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"ERDAT", "{0:dd.MM.yyyy}") %></td>
+                                        <td align="right"><%# DataBinder.Eval(Container.DataItem,"PREIS", "{0:c}") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"SCHAD_DAT", "{0:dd.MM.yyyy}") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"BESCHREIBUNG") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"DAT_UPD_VORSCH", "{0:dd.MM.yyyy}") %></td>  
+                                        <td><%# DataBinder.Eval(Container.DataItem,"REPARIERT") %></td>
+                                        <td align="right"><%# DataBinder.Eval(Container.DataItem,"WRTMBETR", "{0:c}") %></td>                                   
+                                    </tr>
                                 </ItemTemplate>
                                 <AlternatingItemTemplate>
-                                <tr style="background-color:rgb(239, 239, 239)">
-                                   <td><%# DataBinder.Eval(Container.DataItem,"FAHRGNR") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"KENNZ") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"ERDAT") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"PREIS") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"SCHAD_DAT") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"BESCHREIBUNG") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"DAT_UPD_VORSCH") %></td>  
-                                    <td><%# DataBinder.Eval(Container.DataItem,"REPARIERT") %></td>
-                                    <td><%# DataBinder.Eval(Container.DataItem,"WRTMBETR") %></td>                                     
-                                </tr>
+                                    <tr style="background-color:rgb(239, 239, 239)">
+                                        <td><%# DataBinder.Eval(Container.DataItem,"FAHRGNR") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"KENNZ") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"ERDAT", "{0:dd.MM.yyyy}") %></td>
+                                        <td align="right"><%# DataBinder.Eval(Container.DataItem,"PREIS", "{0:c}") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"SCHAD_DAT", "{0:dd.MM.yyyy}") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"BESCHREIBUNG") %></td>
+                                        <td><%# DataBinder.Eval(Container.DataItem,"DAT_UPD_VORSCH", "{0:dd.MM.yyyy}") %></td>  
+                                        <td><%# DataBinder.Eval(Container.DataItem,"REPARIERT") %></td>
+                                        <td align="right"><%# DataBinder.Eval(Container.DataItem,"WRTMBETR", "{0:c}") %></td>                                     
+                                    </tr>
                                 </AlternatingItemTemplate> 
                             </asp:Repeater>
                             <tr>
