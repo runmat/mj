@@ -18,10 +18,12 @@
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
+        FormPreparePrivatePopups();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+        FormPreparePrivatePopups();
     }
 
     function ShowZulassungsReportSearchResult(result) {
@@ -60,4 +62,14 @@
                     grid.collapseRow(elem);
             });
     }
+
+    function FormPreparePrivatePopups() {
+        $('.FormDateRangePickerButton').magnificPopup({
+            items: {
+                src: '#popup',
+                type: 'inline'
+            }
+        });
+    }
+
 </script>

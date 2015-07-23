@@ -396,6 +396,8 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="assets\img\bg\1.jpg" />
     <Content Include="assets\img\bg\2.jpg" />
+    <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
+    <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
