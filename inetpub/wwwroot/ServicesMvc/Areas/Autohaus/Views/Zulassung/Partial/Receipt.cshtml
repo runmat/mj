@@ -95,8 +95,19 @@ else
 }
 
 <script type="text/javascript">
+
     try { FormWizardShowHideSaveButton(false); } catch (e) { }
 
     if ($(".formWizardStepSpanGeneral").length == 0)
         $(".restart-with-new-order").show();
+
+    function LocationReloadWithoutQueryString() {
+        var isMassenzulassung = '@Model.Zulassung.Zulassungsdaten.IsMassenzulassung';
+        if (isMassenzulassung == "True") {
+            window.location = "../Fahrzeugbestand/index";
+        } else {
+            window.location = window.location.pathname;
+        }
+    }
+    
 </script>

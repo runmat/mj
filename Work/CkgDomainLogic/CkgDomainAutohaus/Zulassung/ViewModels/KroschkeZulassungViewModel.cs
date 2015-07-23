@@ -72,6 +72,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (ModusVersandzulassung)
                     return Localize.MailOrderRegistration;
 
+                if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+                    return Localize.MassRegistration;
+
                 return Localize.Registration;
             }
         }
@@ -897,16 +900,25 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return;
 
             var zulassungenToSave = new List<Vorgang>();
-
-            // if (FinList.Count > 1)
+           
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
-                foreach (var fahrzeugAkteBestand in FinList)
+                // foreach (var fahrzeugAkteBestand in FinList)
+                foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => x.IsSelected == true))
                 {
                     var singleZulassung = ModelMapping.Copy(Zulassung); // Achtung: Kopiert nicht, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
                     singleZulassung.Zulassungsdaten = ModelMapping.Copy(Zulassung.Zulassungsdaten); // Explizit Zulassungsdaten kopieren, damit keine Referenz erzeugt wird
                     singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);     // Explizit Fahrzeugdaten kopieren, damit keine Referenz erzeugt wird
+                    
+                    // 20150723
+                    singleZulassung.ZahlerKfzSteuer = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer);
+                    singleZulassung.VersandAdresse = ModelMapping.Copy(Zulassung.VersandAdresse);
+
+                    // 20150722
+                    singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+                    singleZulassung.Halter = ModelMapping.Copy(Zulassung.Halter);
+                    singleZulassung.BankAdressdaten = ModelMapping.Copy(Zulassung.BankAdressdaten);
 
                     // singleZulassung.Zusatzformulare = ModelMapping.Copy(Zulassung.Zusatzformulare);  // Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
                     singleZulassung.Zusatzformulare = new List<PdfFormular>();

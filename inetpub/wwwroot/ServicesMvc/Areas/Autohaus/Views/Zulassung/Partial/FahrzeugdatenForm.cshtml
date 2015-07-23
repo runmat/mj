@@ -11,7 +11,6 @@
     var _selectedItemsCount = 0;
 
     function AjaxFormFahrzeugdatenComplete() {
-        // alert("AjaxFormFahrzeugdatenComplete: " + _modelIsValid);
         FormPrepareAjax();
         if (_modelIsValid) {
             AjaxRequestNextStep();
@@ -77,10 +76,9 @@
     
     function OnLoad_GridFahrzeugAuswahl() {
         alert("OnLoad_GridFahrzeugAuswahl");
-        // $('.t-no-data td').text("test");
     }
-    
 </script>
+
 <div id="DivFahrzeugdaten" class="margin-top-20">
     
     @using (Ajax.BeginForm("FahrzeugdatenForm", "Zulassung", null,
@@ -110,40 +108,7 @@
             
             @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
         
-            using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
-            {
-                <h4>
-                    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
-                        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
-                    </span>
-                </h4>
             
-                var gridName = "GridFahrzeugAuswahl";
-                @(Html.Telerik()
-                      .Grid<FahrzeugAkteBestand>()
-                      .Name(gridName)
-                      .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
-                      .Columns(columns =>
-                          {
-                              columns.XBound("")
-                                     .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                                     .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                                     .Filterable(false);
-                              columns.XBound(c => c.FIN);
-                              columns.XBound(c => c.HandelsName);
-                              columns.XBound(c => c.FahrzeugArt);
-                          })
-                      // .XAutoColumnConfiguration()
-                      //.ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
-                      //.ClientEvents(events => events.XAutoClientEvents(gridName))
-                      // .ClientEvents(events => events.OnComplete("GridAllColumnFilterApplyToGrid('GridFahrzeugAuswahl')")) // move our grid filter form into grid's toolbar:
-                      // .ClientEvents(events => events.XAutoClientEvents(gridName))
-                      // .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugAuswahl"))
-                      .XPageSize(10)
-                      .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-                      .XToolBar(gridName)
-                          )
-            }
         }
         else
         {
@@ -163,4 +128,37 @@
             }
         }
     }
+    
+    @if (isMassenzulassung)
+    {
+        using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
+            {
+                <h4>
+                    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+                        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+                    </span>
+                </h4>
+            
+                var gridName = "GridFahrzeugAuswahl";
+                @(Html.Telerik()
+                      .Grid<FahrzeugAkteBestand>()
+                      .Name(gridName)
+                      .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
+                      .Columns(columns =>
+                      {
+                          columns.XBound("")
+                                 .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                                 .Filterable(false);
+                          columns.XBound(c => c.FIN);
+                          columns.XBound(c => c.HandelsName);
+                          columns.XBound(c => c.FahrzeugArt);
+                      })
+                      .XPageSize(10)
+                      .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+                      .XToolBar(gridName)
+                          )
+            }
+    }
+    
 </div>

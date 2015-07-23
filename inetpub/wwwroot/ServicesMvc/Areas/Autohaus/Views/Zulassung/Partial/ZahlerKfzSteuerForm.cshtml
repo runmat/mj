@@ -2,14 +2,6 @@
 @using CkgDomainLogic.DomainCommon.Models
 @model BankAdressdaten
 
-@{
-    // ##MMA## remove me
-    Model.Bankdaten.Iban = "1";
-    Model.Bankdaten.Swift = "2";
-    Model.Bankdaten.Geldinstitut = "3";
-}
-
-
 <div id="DivZahlerKfzSteuer" class="margin-top-20">
     @using (Ajax.BeginForm("ZahlerKfzSteuerForm", "Zulassung", null,
                 new MvcAjaxOptions { UpdateTargetId = "DivZahlerKfzSteuer", OnComplete = "AjaxFormZahlerKfzSteuerComplete();" },
@@ -25,7 +17,6 @@
         
         @Html.FormValidationSummary()
         
-
         <div class="row-fluid">
             
             <div class="span6">
@@ -59,7 +50,6 @@
         
 
         @Html.FormRequiredFieldsSummary()
-
         
         <script type="text/javascript">      
             _modelIsValid = @Model.Adressdaten.Adresse.IsValid.ToString().ToLower();

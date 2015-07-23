@@ -16,9 +16,8 @@
 </style>
 
 <script>
-    
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-
+    
     var _selectedItemsCount = 0;
     
     CheckKennzeichenReserviert();
@@ -75,14 +74,14 @@
             SetZulassungskreis(zulassungskreis);
         });
 
-        $("#EvbNr").off('change').on('change').change(function () {      // Auswirkung auf alle Fahrzeuge
+        $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
             var tagObj = $(this);
             var evb = $(this).val();
             SetEvb("", evb, tagObj);
         });
 
         $(document).off('change', '.editevb');
-        $(document).on('change', '.editevb', function () {               // Auswirkung auf ein Fahrzeug
+        $(document).on('change', '.editevb', function () {              // Auswirkung auf ein Fahrzeug                    
             var tagObj = $(this);
             var evb = $(this).val();
             var tr = $(this).closest('tr');
@@ -93,7 +92,7 @@
         });
 
         $(document).off('change', '.editkennz');
-        $(document).on('change', '.editkennz', function () {             // Auswirkung auf ein Fahrzeug
+        $(document).on('change', '.editkennz', function () {            // Auswirkung auf ein Fahrzeug
             var tr = $(this).closest('tr');
             var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
             var dataItem = grid.dataItem(tr);
@@ -123,7 +122,12 @@
             AjaxRequestNextStep();
             return;
         }
-    }
+    }        
+            
+    CheckKennzeichenReserviert();
+
+    ShowHideMindesthaltedauer();    // 20150528 MMA
+    ShowHideWunschkennzeichenUrl(); // 20150602 MMA
 </script>
 
 <div id="DivZulassungsdaten" class="margin-top-20">
@@ -189,7 +193,6 @@
                               columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
                           })
                           .XAutoColumnConfiguration()
-                                                                //.ClientEvents(events => events.XAutoClientEvents(gridName))
                           .XPageSize(10)
                           .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                     )
@@ -214,13 +217,6 @@
 </div>
 <script type="text/javascript">
             
-    _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-            
-    CheckKennzeichenReserviert();
-
-    ShowHideMindesthaltedauer();    // 20150528 MMA
-    ShowHideWunschkennzeichenUrl(); // 20150602 MMA
-
 
 
 </script>

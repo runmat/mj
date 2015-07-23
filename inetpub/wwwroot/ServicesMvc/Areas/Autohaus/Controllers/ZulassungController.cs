@@ -51,12 +51,29 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
+        // public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string massenzulassung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
 
             ViewModel.DataInit();
+
+            #region Massenzulassung
+            if (massenzulassung == "1")
+            {
+                if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+                if (firstFahrzeug == null)
+                {
+                    return Content("Kein Fahrzeug ausgewählt.");
+                }
+            }
+            #endregion
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
@@ -87,7 +104,7 @@ namespace ServicesMvc.Autohaus.Controllers
             if (firstFahrzeug == null)
             {
                 return Content("Kein Fahrzeug ausgewählt.");
-            }
+            }    
             
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
@@ -178,14 +195,14 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public JsonResult SetEvb(string fin, string evb)
         {
-            var result = ViewModel.SetEvb(fin, evb);
+            var result = ViewModel.SetEvb(fin, evb.ToUpper());
             return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
         [HttpPost]
         public JsonResult SetWunschKennz(string fin, string field, string kennz)
         {
-            var result = ViewModel.SetWunschKennz(fin, field, kennz);
+            var result = ViewModel.SetWunschKennz(fin, field, kennz.ToUpper());
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
@@ -721,18 +738,6 @@ namespace ServicesMvc.Autohaus.Controllers
         #region ZusatzformularAsPdf
         public FileContentResult ZusatzformularAsPdf(string id, string typ)
         {
-            // 20150528 MMA Folgender Block auskommentiert...
-            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
-            //if (zulassung == null)
-            //    return new FileContentResult(new byte[1], "");
-            //var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
-            //if (zusatzFormular == null)
-            //    return new FileContentResult(new byte[1], ""); 
-            //var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
-            // var dateiPfad = "";
-            // var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
-            // return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(zusatzFormular.DateiPfad) };
-
             var dateiPfad = "";
             var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
 
@@ -755,7 +760,6 @@ namespace ServicesMvc.Autohaus.Controllers
                 return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
             var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
-            // var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Belegnummer == id && z.Typ == typ);   // 20150715 MMA 
             if (zusatzFormular == null)
                 return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
 
