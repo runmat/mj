@@ -320,8 +320,82 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT, Versendung> Z_DPM_EXP_VERS_AUSWERTUNG_01_GT_OUT_To_Versendung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT, Versendung>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                        {
+                            destination.Aenderungsdatum = source.DAT_GEAEND;
+                            destination.AnfordererAnrede = source.ANREDE_ANF;
+                            destination.AnfordererEmail = source.EMAIL_ANF;
+                            destination.AnfordererFax1 = source.FAX1_ANF;
+                            destination.AnfordererFax2 = source.FAX2_ANF;
+                            destination.AnfordererHausnummer = source.HNR_ANF;
+                            destination.AnfordererInfo = source.INFO_ANF;
+                            destination.AnfordererLand = source.LAND_ANF;
+                            destination.AnfordererMobil = source.MOBIL_ANF;
+                            destination.AnfordererName = source.NAME_ANF;
+                            destination.AnfordererOrt = source.ORT_ANF;
+                            destination.AnfordererPostleitzahl = source.PLZ_ANF;
+                            destination.AnfordererStrasse = source.STRASSE_ANF;
+                            destination.AnfordererTelefon1 = source.TEL1_ANF;
+                            destination.AnfordererTelefon2 = source.TEL2_ANF;
+                            destination.AnfordererVorname = source.VORNAME_ANF;
+                            destination.Anforderungsart = source.ANF_ART;
+                            destination.Anforderungsweg = source.ANFORDERUNGSWEG;
+                            destination.Anlagedatum = source.DAT_ANGEL;
+                            destination.AnsprechpartnerAnrede = source.ANREDE_ANSP;
+                            destination.AnsprechpartnerName = source.NAME_ANSP;
+                            destination.AnsprechpartnerVorname = source.VORNAME_ANSP;
+                            destination.AuftraggeberId = source.AUFTRAGGEBERID;
+                            destination.AutorisierungsUser = source.USER_AUTOR;
+                            destination.CIN = source.CIN;
+                            destination.ClientLd = source.CLIENTLD.XToBool();
+                            destination.EmpfaengerAnrede = source.ANREDE_EMPF;
+                            destination.EmpfaengerArt = source.EMPF_ART;
+                            destination.EmpfaengerHausnummer = source.HNR_EMPF;
+                            destination.EmpfaengerLand = source.LAND_EMPF;
+                            destination.EmpfaengerName = source.NAME_EMPF;
+                            destination.EmpfaengerOrt = source.ORT_EMPF;
+                            destination.EmpfaengerPostleitzahl = source.PLZ_EMPF;
+                            destination.EmpfaengerStrasse = source.STRASSE_EMPF;
+                            destination.EmpfaengerVorname = source.VORNAME_EMPF;
+                            destination.EndgueltigerVersand = source.ENDG_VERS;
+                            destination.Kontonummer = source.KONTONR;
+                            destination.PAID = source.PAID;
+                            destination.PicklistenFormular = source.ZZPLFOR;
+                            destination.SicherheitsIdCMS = source.SICHERHEITSIDCMS;
+                            destination.StornoVersand = source.VERS_STORNO.XToBool();
+                            destination.Systemkennzeichen = source.SYSTEMKENNZ;
+                            destination.Uebermittlungsdatum = source.DAT_UEBERM_1;
+                            destination.Uebernahmedatum = source.DAT_VERSAUFTR;
+                            destination.Versandart = source.VERS_ART;
+                            destination.Versanddatum = source.ZZTMPDT;
+                            destination.Versandgrund = source.VERS_GRUND;
+                            destination.VersandgrundText = source.VERSGRU_TEXT;
+                            destination.Vertragsart = source.ZVERT_ART;
+                            destination.Zb2Nummer = source.ZBRIEF;
+                        }));
+            }
+        }
 
-
+        static public ModelMapping<Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT_SUM, VersendungSummiert> Z_DPM_EXP_VERS_AUSWERTUNG_01_GT_OUT_SUM_To_VersendungSummiert
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_EXP_VERS_AUSWERTUNG_01.GT_OUT_SUM, VersendungSummiert>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Anforderungsart = source.ANF_ART;
+                        destination.Summe = source.SUMME;
+                        destination.Versandgrund = source.VERS_GRUND;
+                    }));
+            }
+        }
 
         #endregion
 
