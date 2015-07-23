@@ -52,8 +52,10 @@
                                 Brief/Schlüssel</li>
                             <li id="Tab3" onclick="javascript:click3()" class="Histbutton">
                                 Typdaten </li>
-                            <li id="Tab4" onclick="javascript:click4()" class="HistButtonLast">
+                            <li id="Tab4" onclick="javascript:click4()" class="HistButton">
                                 Lebenslauf </li>
+                            <li id="Tab5" onclick="javascript:click5()" class="HistButtonLast">
+                                Vorschäden </li>
                         </ul>
                     </div>
                     <div id="HistTabPanel1" class="HistTabPanel">
@@ -872,6 +874,81 @@
                             </tr>           
                         </table>
                     </div>
+                    
+                    <div id="HistTabPanel5"  class="HistTabPanel"  style="display: none">
+                        <table id="Schaden" width="100%" cellspacing="0" cellpadding="0">
+                            <tr>
+                                <td colspan="9">
+                                    &nbsp;
+                                </td>                                            
+                            </tr>                                    
+                            <tr>
+                                <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Fahrgestellnummer</asp:Label>
+                                </td>                                            
+                                <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Kennzeichen</asp:Label>
+                                </td>
+                                <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Anlagedatum</asp:Label>
+                                </td>
+                                <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Schadensbetrag</asp:Label>
+                                </td>
+                                <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Schadensdatum</asp:Label>
+                                </td>
+                                 <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Beschreibung</asp:Label>
+                                </td>
+                                <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Datum Update</asp:Label>
+                                </td>
+                                 <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Repariert</asp:Label>
+                                </td>
+                                <td style="background-color: #9C9C9C">
+                                    <asp:Label Font-Bold="true" ForeColor="#FFFFFF" runat="server">Wertminderungsbetrag</asp:Label>
+                                </td>                                               
+                            </tr>
+                            <asp:Repeater id="VorschadenRepeater" runat="server">
+                                <ItemTemplate>
+                                <tr>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"FAHRGNR") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"KENNZ") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"ERDAT") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"PREIS") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"SCHAD_DAT") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"BESCHREIBUNG") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"DAT_UPD_VORSCH") %></td>  
+                                    <td><%# DataBinder.Eval(Container.DataItem,"REPARIERT") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"WRTMBETR") %></td>                                   
+                                </tr>
+                                </ItemTemplate>
+                                <AlternatingItemTemplate>
+                                <tr style="background-color:rgb(239, 239, 239)">
+                                   <td><%# DataBinder.Eval(Container.DataItem,"FAHRGNR") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"KENNZ") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"ERDAT") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"PREIS") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"SCHAD_DAT") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"BESCHREIBUNG") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"DAT_UPD_VORSCH") %></td>  
+                                    <td><%# DataBinder.Eval(Container.DataItem,"REPARIERT") %></td>
+                                    <td><%# DataBinder.Eval(Container.DataItem,"WRTMBETR") %></td>                                     
+                                </tr>
+                                </AlternatingItemTemplate> 
+                            </asp:Repeater>
+                            <tr>
+                                <td colspan="9">
+                                    &nbsp;
+                                </td>                                            
+                            </tr>           
+                        </table>
+                    </div>
+                    
+                    
+
                 </div>
             </div>
         </div>
@@ -883,9 +960,10 @@
         click2 = function () { click(1); };
         click3 = function () { click(2); };
         click4 = function () { click(3); };
+        click5 = function () { click(4); };
 
         click = function (i) {
-            var numTabs = 4;
+            var numTabs = 5;
             for (var t = 0; t < numTabs; t++) {
                 var tab = document.getElementById("Tab" + (t + 1));
                 var panel = document.getElementById("HistTabPanel" + (t + 1));
