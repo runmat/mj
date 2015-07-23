@@ -431,6 +431,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Reifen = sap.ZZREIFEN;
                         business.Navi = sap.ZZNAVI;
                         business.Ahk = sap.ZAHK;
+                        business.BemerkungSperre = sap.ZBEMERKUNG;
                         business.BemerkungIntern = sap.BEMERKUNG_INTERN;
                         business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
                         business.AuftragsNummer = sap.ZZREF1;
