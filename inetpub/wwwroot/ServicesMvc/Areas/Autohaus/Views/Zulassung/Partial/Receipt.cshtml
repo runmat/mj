@@ -103,7 +103,8 @@ else
 
     function LocationReloadWithoutQueryString() {
         var isMassenzulassung = '@Model.Zulassung.Zulassungsdaten.IsMassenzulassung';
-        if (isMassenzulassung == "True") {
+        var isMassenabmeldung = '@Model.Zulassung.Zulassungsdaten.IsMassenabmeldung';
+        if (isMassenzulassung == "True" || isMassenzulassung == "True") {
             window.location = "../Fahrzeugbestand/index";
         } else {
             window.location = window.location.pathname;
