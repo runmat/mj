@@ -95,8 +95,8 @@
         {
             //Model.FahrgestellNr = "MASSENZULASSUNG";
             
-            @Html.TextBox("IsMassenzulassung", isMassenzulassung)
-            @Html.TextBox("IsMassenabmeldung", isMassenabmeldung)
+            @Html.Hidden("IsMassenzulassung", isMassenzulassung)
+            @Html.Hidden("IsMassenabmeldung", isMassenabmeldung)
             @Html.HiddenFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
             @Html.HiddenFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
 

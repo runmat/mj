@@ -922,7 +922,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var zulassungenToSave = new List<Vorgang>();
            
-            if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            // if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung)
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
                 // foreach (var fahrzeugAkteBestand in FinList)
@@ -950,6 +951,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
+
+                    singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.Kennzeichen;      // 20150723 MMA Falls "Kennzeichen" nicht benötigt, wieder rausnehmen
 
                     zulassungenToSave.Add(singleZulassung);
                 }

@@ -699,6 +699,7 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Summary()
         {
             TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+            TempData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
 
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
