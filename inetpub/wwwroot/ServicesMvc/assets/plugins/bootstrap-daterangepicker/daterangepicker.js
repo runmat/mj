@@ -9,6 +9,7 @@
 !function ($) {
 
     var DateRangePicker = function (element, options, cb) {
+
         var hasOptions = typeof options == 'object'
         var localeObject;
 
@@ -74,7 +75,8 @@
             }
         }
 
-        var DRPTemplate = '<div class="daterangepicker dropdown-menu">' +
+        var DRPTemplate = '<div class="daterangepicker Xdropdown-menu white-popup mfp-hide">' +
+                '<button class="btn hide " disabled="disabled">' + this.locale.applyLabel + '</button>' +
                 '<div class="calendar left"></div>' +
                 '<div class="calendar right"></div>' +
                 '<div class="ranges">' +
@@ -87,7 +89,6 @@
                       '<label for="daterangepicker_end">' + this.locale.toLabel + '</label>' +
                       '<input class="m-wrap input-mini" type="text" name="daterangepicker_end" disabled="disabled"/>' +
                     '</div>' +
-                    '<button class="btn " disabled="disabled">' + this.locale.applyLabel + '</button>' +
                   '</div>' +
                 '</div>' +
               '</div>';
@@ -95,6 +96,18 @@
         this.parentEl = (hasOptions && options.parentEl && $(options.parentEl)) || $(this.parentEl);
         //the date range picker
         this.container = $(DRPTemplate).appendTo(this.parentEl);
+
+        var that = this;
+        this.container.find('.btn').on("click", function () {
+            that.clickApply();
+        });
+
+        $(element).magnificPopup({
+            items: {
+                src: this.container,
+                type: 'inline'
+            }
+        });
 
         //setTimeout(function() { $(".datepicker").datepicker(); }, 1000);
 
@@ -214,8 +227,10 @@
             right.removeClass('right').addClass('left');
         }
 
-        if (typeof options == 'undefined' || typeof options.ranges == 'undefined')
+        if (typeof options == 'undefined' || typeof options.ranges == 'undefined') {
             this.container.find('.calendar').show();
+            this.container.find('.btn').show();
+        }
 
         if (typeof cb == 'function')
             this.cb = cb;
@@ -298,23 +313,23 @@
         },
 
         move: function () {
-            var parentOffset = {
-                top: this.parentEl.offset().top - this.parentEl.scrollTop(),
-                left: this.parentEl.offset().left - this.parentEl.scrollLeft()
-            };
-            if (this.opens == 'left') {
-                this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
-                    left: 'auto'
-                });
-            } else {
-                this.container.css({
-                    top: this.element.offset().top + this.element.outerHeight(),
-                    left: this.element.offset().left - parentOffset.left,
-                    right: 'auto'
-                });
-            }
+            //var parentOffset = {
+            //    top: this.parentEl.offset().top - this.parentEl.scrollTop(),
+            //    left: this.parentEl.offset().left - this.parentEl.scrollLeft()
+            //};
+            //if (this.opens == 'left') {
+            //    this.container.css({
+            //        top: this.element.offset().top + this.element.outerHeight(),
+            //        right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
+            //        left: 'auto'
+            //    });
+            //} else {
+            //    this.container.css({
+            //        top: this.element.offset().top + this.element.outerHeight(),
+            //        left: this.element.offset().left - parentOffset.left,
+            //        right: 'auto'
+            //    });
+            //}
         },
 
         show: function (e) {
@@ -339,6 +354,8 @@
                 this.changed = false;
                 this.notify();
             }
+
+            $(".mfp-close").trigger("click");
         },
 
         enterRange: function (e) {
@@ -356,6 +373,7 @@
             var label = e.target.innerHTML;
             if (label == this.locale.customRangeLabel) {
                 this.container.find('.calendar').show();
+                this.container.find('.btn').show();
             } else {
                 var dates = this.ranges[label];
 
@@ -369,6 +387,7 @@
                 this.changed = true;
 
                 this.container.find('.calendar').hide();
+                this.container.find('.btn').hide();
                 this.hide();
             }
         },

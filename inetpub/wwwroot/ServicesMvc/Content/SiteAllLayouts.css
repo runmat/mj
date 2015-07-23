@@ -1240,3 +1240,25 @@ div.controls-width-400 .controls {
 .form-horizontal.reduced-margin .control-group {
   margin-bottom: 5px;
 }
+
+
+/* <Magnific Popup> */
+
+div.mfp-content{
+    background-color: white;
+}
+
+
+.white-popup {
+    position: relative;
+    background: #FFF;
+    padding: 40px;
+    width: auto;
+    margin: 10px auto;
+}
+
+.mfp-content {
+    width:auto !important;
+}
+
+/* </Magnific Popup> */

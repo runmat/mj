@@ -18,12 +18,10 @@
     var _modelStateValid = 'false';
 
     function FormPreparePrivate() {
-        FormPreparePrivatePopups();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
-        FormPreparePrivatePopups();
     }
 
     function ShowZulassungsReportSearchResult(result) {
@@ -63,13 +61,13 @@
             });
     }
 
-    function FormPreparePrivatePopups() {
-        $('.FormDateRangePickerButton').magnificPopup({
-            items: {
-                src: '#popup',
-                type: 'inline'
-            }
-        });
-    }
+    //function FormPreparePrivatePopups() {
+    //    $('.FormDateRangePickerButton').magnificPopup({
+    //        items: {
+    //            src: '#popup',
+    //            type: 'inline'
+    //        }
+    //    });
+    //}
 
 </script>
