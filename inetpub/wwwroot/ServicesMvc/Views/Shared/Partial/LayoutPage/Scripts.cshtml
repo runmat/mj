@@ -248,7 +248,7 @@
 
         $.ajax({
             type: "POST",
-            url: "CheckLogonTimeout",
+            url: "/ServicesMvc/DomainCommon/CheckLogonTimeout",
             success: function (result) {
 
                 if (typeof (result.timeoutOccurred) !== "undefined" && result.timeoutOccurred) {
