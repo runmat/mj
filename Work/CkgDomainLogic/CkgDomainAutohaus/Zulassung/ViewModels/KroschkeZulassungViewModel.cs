@@ -66,6 +66,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get
             {
+                if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
+                    return Localize.MassCancellation;
+
                 if (ModusAbmeldung)
                     return Localize.Cancellation;
 
@@ -74,6 +77,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung)
                     return Localize.MassRegistration;
+
+                if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
+                    return Localize.MassCancellation;
 
                 return Localize.Registration;
             }
@@ -228,7 +234,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             #endregion
 
-            Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+            // Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+            if (ModusAbmeldung)     // 20150723
+            {
+                Zulassung.Zulassungsdaten.IsMassenzulassung = false;
+                Zulassung.Zulassungsdaten.IsMassenabmeldung = true;
+            }
+            else
+            {
+                Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+                Zulassung.Zulassungsdaten.IsMassenabmeldung = false;
+            }
 
             return true;
         }
@@ -293,13 +309,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         /// <summary>
-        /// Setzt das Wunschkennzeichen für ein angegebenes Fahrzeug
+        /// Setzt das Kennzeichen für ein angegebenes Fahrzeug
         /// </summary>
         /// <param name="fin"></param>
         /// <param name="field"></param>
         /// <param name="kennz"></param>
         /// <returns>Null = gespeichert</returns>
-        public string SetWunschKennz(string fin, string field, string kennz)
+        public string SetKennz(string fin, string field, string kennz)
         {
             try
             {
@@ -316,6 +332,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     case "wunschkennz3":
                         FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = kennz);
                         break;
+
+                    case "kennzeichen": // Massenabmeldung
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = kennz);
+                        break;
                 }
                 return null;
             }
@@ -324,6 +344,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return e.InnerException.ToString();
             }
         }
+
         #endregion
 
         #region Halter
@@ -404,7 +425,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // MMA Falls Massenzulassung, dann den Zulassungskreis auch für alle Wunschkennzeichen setzen
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
-                this.SetKreisAll(zulassungsKreis);
+                SetKreisAll(zulassungsKreis);
             }
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
@@ -417,7 +438,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
 
             // 20150602 MMA Gegebenenfalls verfügbare externe Wunschkennzeichen-Reservierungs-Url ermitteln 
-             Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
+            Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
 

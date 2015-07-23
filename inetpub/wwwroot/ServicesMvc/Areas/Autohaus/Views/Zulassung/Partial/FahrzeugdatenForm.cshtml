@@ -3,6 +3,10 @@
 @model Fahrzeugdaten
 @{
     var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über Ajax.BeginForm hinweg durchgeschleift
+    var isMassenabmeldung = Convert.ToBoolean(ViewData["IsMassenabmeldung"]) || Convert.ToBoolean(Request["IsMassenabmeldung"]);   
+    
+    if (isMassenzulassung) { Model.FahrgestellNr = "MASSENZULASSUNG"; }
+    if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
 }
 <script>
     
@@ -87,11 +91,12 @@
     {
         @Html.FormValidationSummary()
 
-        if (isMassenzulassung)
+        if (isMassenzulassung || isMassenabmeldung)
         {
-            Model.FahrgestellNr = "MASSENZULASSUNG";
+            //Model.FahrgestellNr = "MASSENZULASSUNG";
             
-            @Html.Hidden("IsMassenzulassung", "true")            
+            @Html.TextBox("IsMassenzulassung", isMassenzulassung)
+            @Html.TextBox("IsMassenabmeldung", isMassenabmeldung)
             @Html.HiddenFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
             @Html.HiddenFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
 
@@ -107,8 +112,6 @@
             }
             
             @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
-        
-            
         }
         else
         {
@@ -129,7 +132,7 @@
         }
     }
     
-    @if (isMassenzulassung)
+    @if (isMassenzulassung || isMassenabmeldung)
     {
         using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
             {

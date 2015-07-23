@@ -2572,7 +2572,6 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
-
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
@@ -2581,6 +2580,8 @@
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAbmeldung.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

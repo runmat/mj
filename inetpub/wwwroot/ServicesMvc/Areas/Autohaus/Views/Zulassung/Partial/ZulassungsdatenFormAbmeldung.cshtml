@@ -1,0 +1,44 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.Fahrzeugbestand.Models
+@model Zulassungsdaten
+
+@if (Model.IsMassenabmeldung)
+{
+    @Html.HiddenFor(m => m.ZulassungsartMatNr)
+    @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
+    @Html.HiddenFor(m => m.Zulassungskreis)
+    
+    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+    @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+
+    using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
+    {
+        var gridName = "GridFahrzeugAuswahlAbmeldung";
+        @(Html.Telerik()
+                .Grid<FahrzeugAkteBestand>()
+                .Name(gridName)
+                .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+                .Columns(columns =>
+                {
+                    columns.XBound(c => c.FIN);
+                    columns.XBound(c => c.FahrzeugArt);
+                    columns.XBound(c => c.HandelsName);
+                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennzAbm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
+                    // ResKennz oder Kennzeichen?
+                })
+                .XAutoColumnConfiguration()
+                .XPageSize(10)
+                .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+        )
+    }
+
+}
+else
+{
+    @Html.HiddenFor(m => m.ZulassungsartMatNr)
+    @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
+    @Html.HiddenFor(m => m.Zulassungskreis)
+
+    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+    @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+}

@@ -36,7 +36,10 @@
 )
 
 <div class="form-actions clearfix">
-    <a href="MultiReg"><button id="btnMassRegistration" class="btn blue hide">Massenzulassung</button></a>    
+    <div id="MassFunctions" class="hide">
+        <a href="MultiReg"><button class="btn blue">@Localize.MassRegistration</button></a>    
+        <a href="MultiCancellation"><button class="btn yellow">@Localize.MassCancellation</button></a>    
+    </div>
 </div>
 
 <script>
@@ -118,9 +121,9 @@
 
     function ShowHideNextButton() {
         if (_selectedItemsCount > 1) {
-            $('#btnMassRegistration').removeClass('hide');
+            $('#MassFunctions').removeClass('hide');
         } else {
-            $('#btnMassRegistration').addClass('hide');
+            $('#MassFunctions').addClass('hide');
         }
     }
     

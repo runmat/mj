@@ -52,28 +52,28 @@ namespace ServicesMvc.Autohaus.Controllers
 
         [CkgApplication]
         // public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string massenzulassung = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
 
             ViewModel.DataInit();
 
-            #region Massenzulassung
-            if (massenzulassung == "1")
-            {
-                if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
-                {
-                    return RedirectToAction("Index");
-                }
+            //#region Massenzulassung
+            //if (massenzulassung == "1")
+            //{
+            //    if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+            //    {
+            //        return RedirectToAction("Index");
+            //    }
 
-                var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
-                if (firstFahrzeug == null)
-                {
-                    return Content("Kein Fahrzeug ausgewählt.");
-                }
-            }
-            #endregion
+            //    var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+            //    if (firstFahrzeug == null)
+            //    {
+            //        return Content("Kein Fahrzeug ausgewählt.");
+            //    }
+            //}
+            //#endregion
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
@@ -110,7 +110,7 @@ namespace ServicesMvc.Autohaus.Controllers
             ShoppingCartTryEditItemAsViewModel();
 
             return View("Index", ViewModel);
-        }
+        }        
 
         [HttpPost]
         public ActionResult FahrzeugShowGrid()
@@ -200,11 +200,18 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetWunschKennz(string fin, string field, string kennz)
+        public JsonResult SetKennz(string fin, string field, string kennz)
         {
-            var result = ViewModel.SetWunschKennz(fin, field, kennz.ToUpper());
+            var result = ViewModel.SetKennz(fin, field, kennz.ToUpper());
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
+
+        //[HttpPost]
+        //public JsonResult SetAbmKennz(string fin, string field, string kennz)
+        //{
+        //    var result = ViewModel.SetKennz(fin, field, kennz.ToUpper());
+        //    return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
+        //}
 
         [HttpPost]
         public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)
@@ -212,6 +219,33 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.FilterFinList(filterValue, filterColumns);
 
             return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Massenabmeldung
+
+        [CkgApplication]
+        public ActionResult IndexMultiCancellation()
+        {
+            ViewModel.SetParamAbmeldung("x");
+            ViewModel.DataInit();
+
+            if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+            if (firstFahrzeug == null)
+            {
+                return Content("Kein Fahrzeug ausgewählt.");
+            }
+
+            ShoppingCartLoadAndCacheItems();
+            ShoppingCartTryEditItemAsViewModel();
+
+            return View("Index", ViewModel);
         }
 
         #endregion
@@ -546,15 +580,8 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
         {
-            //var viewModel = AdressenPflegeViewModel;
-            //viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
-            //if (ModelState.IsValid)
-            //    model = viewModel.SaveItem(model, ModelState.AddModelError);
-            //model.IsValid = ModelState.IsValid;
-            //model.InsertModeTmp = viewModel.InsertMode;
-
-            // if (!ViewModel.FinList.Any(x => x.IsSelected))
-            if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung && !ViewModel.FinList.Any(x => x.IsSelected))
+            // if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung && !ViewModel.FinList.Any(x => x.IsSelected))
+            if ((ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung || ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung) && !ViewModel.FinList.Any(x => x.IsSelected))
             {
                 ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
             }
@@ -563,6 +590,9 @@ namespace ServicesMvc.Autohaus.Controllers
             {
                 ViewModel.SetFahrzeugdaten(model);
             }
+
+            ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+            ViewData["isMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
         }

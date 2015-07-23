@@ -175,6 +175,19 @@ namespace ServicesMvc.Autohaus.Controllers
             return RedirectToAction("IndexMultiReg", "Zulassung");
         }
 
+        /// <summary>
+        /// Für Massenabmeldung
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MultiCancellation()
+        {
+            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestand.Where(x => x.IsSelected).ToList();   // Alle Fahrzeuge zurückgeben, die vom Benutzer selektiert wurden
+
+            TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
+
+            return RedirectToAction("IndexMultiCancellation", "Zulassung");
+        }
+
         #region Export
 
         protected override IEnumerable GetGridExportData()
