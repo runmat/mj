@@ -18,7 +18,11 @@ namespace MvcTools.Web
             if (logonContext != null && logonContext.CurrentLayoutTheme.IsNotNullOrEmpty())
                 layoutTheme = logonContext.CurrentLayoutTheme;
             else if (HttpContext.Current.Session["theme"] != null)
+            {
                 layoutTheme = HttpContext.Current.Session["theme"].ToString();
+                if (logonContext != null)
+                    logonContext.CurrentLayoutTheme = layoutTheme;
+            }
 
             if (layoutTheme.IsNotNullOrEmpty())
             {

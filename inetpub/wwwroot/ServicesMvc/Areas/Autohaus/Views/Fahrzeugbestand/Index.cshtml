@@ -106,6 +106,8 @@
 
     function FahrzeugCreateAjax() {
         FahrzeugShowCreateAjax(null);
+
+        return false;
     }
     
     function FahrzeugShowCreateAjax(fin) {
@@ -312,6 +314,8 @@
                 alert(result.data);
             }
         });
+
+        return false;
     }
 
     function ShowPartnerAddressGrid(result) {

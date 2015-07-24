@@ -11,8 +11,8 @@
         {
             columns.XBound(c => c.Typ);
             columns.XBound(c => c.DateiPfad).ClientTemplate(
-                    "   <a class='btn mini gray pdf tooltips a_btn_mini' " +
-                    "   data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DateiPfad #>' ></a> "
+                    "   <a class='btn mini gray tooltips' " +
+                    "   data-original-title='" + Localize.DownloadPdfDocument + "' data-placement='right' href='PdfDocumentDownload?docName=<#= data.DateiPfad #>' ><i class='icon-download-alt'></i></a> "
                 ).Title("").Sortable(false).Filterable(false);
         })
     .XAutoColumnConfiguration()
