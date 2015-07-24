@@ -488,7 +488,11 @@ Partial Public Class Change99
         Else
             sprache = tmpstr(0).ToUpper
         End If
-        ddlLand.Items.FindByValue(sprache).Selected = True
+
+        Dim lItem As ListItem = ddlLand.Items.FindByValue(sprache)
+        If lItem IsNot Nothing Then
+            ddlLand.SelectedValue = sprache
+        End If
 
     End Sub
 

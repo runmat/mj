@@ -8,6 +8,7 @@
     {
         @Html.HiddenFor(m => m.ID)
         @Html.HiddenFor(m => m.IsValid)
+        @Html.HiddenFor(m => m.KundenNr)
         @Html.HiddenFor(m => m.Kennung)
         @Html.HiddenFor(m => m.Typ)
         @Html.HiddenFor(m => m.TmpSelectionKey)
@@ -23,6 +24,7 @@
         @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium" })
         @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
 
+        @Html.HiddenFor(m => m.EvbNr, new { @class = "m-wrap xsmall" })
         
         @Html.FormRequiredFieldsSummary()
 

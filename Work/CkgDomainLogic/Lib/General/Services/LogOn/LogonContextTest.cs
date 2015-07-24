@@ -18,6 +18,8 @@ namespace CkgDomainLogic.General.Services
     {
         public string CurrentGridColumns { get; set; }
 
+        public string UserNameForDisplay { get; set; }
+
         public ILocalizationService LocalizationService { get; private set; }
 
         public List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return new List<IMaintenanceSecurityRuleDataProvider>(); } }
@@ -231,45 +233,6 @@ namespace CkgDomainLogic.General.Services
             return new HtmlString(string.Format("{0}", url));
         }
 
-        public virtual string GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup)
-        {
-            var logonLevel = UserLogonLevel;
-
-            if (gridGroup.IsNullOrEmpty() || (logonLevel == LogonLevel.Admin && gridColumnMode == GridColumnMode.Master))
-                // let give a chance to all model properties here, return empty string
-                return string.Join("~", modelType.GetScaffoldPropertyNames());
-
-            var customerNo = KundenNrToInt();
-            var userName = "";
-
-            if ((logonLevel == LogonLevel.Admin && gridColumnMode == GridColumnMode.Slave) ||
-                (logonLevel == LogonLevel.Customer && gridColumnMode == GridColumnMode.Master))
-                customerNo = 0;
-
-            if ((logonLevel == LogonLevel.Customer && gridColumnMode == GridColumnMode.Slave))
-                userName = UserName;
-
-            var dbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
-            var affectedColumns = dbContext.ColumnTranslations.FirstOrDefault(ct => ct.CustomerNo == customerNo && ct.GridGroup == gridGroup && ct.UserName == userName);
-            if (affectedColumns == null)
-                return string.Join("~", modelType.GetScaffoldPropertyNames());
-
-            return affectedColumns.ColumnNames;
-        }
-
-        public virtual void SetUserGridColumnNames(string gridGroup, string columns)
-        {
-        }
-
-        int KundenNrToInt()
-        {
-            int customerNo;
-            if (!Int32.TryParse(KundenNr, out customerNo))
-                return -1;
-
-            return customerNo;
-        }
-
         public void DataContextPersist(object dataContext)
         {
             var ct = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], UserName);
@@ -394,6 +357,11 @@ namespace CkgDomainLogic.General.Services
         public int GetAppIdCurrent()
         {
             return LogonContextHelper.GetAppIdCurrent(UserApps);
+        }
+
+        public string GetEmailAddressForUser()
+        {
+            return "";
         }
     }
 }

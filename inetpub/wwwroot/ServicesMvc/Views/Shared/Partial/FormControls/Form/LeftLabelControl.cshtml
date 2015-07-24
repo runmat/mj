@@ -25,7 +25,7 @@
     <label class="control-label">
         @if (!Model.LabelHidden)
         {
-            @Model.DisplayNameHtml @Model.RequiredIndicatorHtml
+            @Model.DisplayNameHtml @Model.RequiredIndicatorHtml @Model.PerstistenceIndicatorHtml
         }
     </label>
 
@@ -36,25 +36,29 @@
             @Model.PreControlHtml
         }
            
-        @Model.ControlHtml
-        
+       
+        @if (Model.IsCheckBox && Model.LabelHidden && Model.PostControlHtml == null)
+        {
+            <label class="checkbox">
+                @Model.ControlHtml
+                @Model.DisplayNameHtml @Model.PerstistenceIndicatorHtml
+            </label>
+        }
+        else
+        {
+            @Model.ControlHtml
+        }
+
+
         @if (Model.ValidationMessageHtml != null)
         {
             @Model.ValidationMessageHtml
         }
         
-        @if (Model.IsCheckBox && Model.LabelHidden && Model.PostControlHtml == null)
-        {
-            <label class="checkbox">@Model.DisplayNameHtml</label>
-        }
-        
+
         @if (Model.PostControlHtml != null)
         {
             @Model.PostControlHtml
-        }
-        else if (Model.IsCheckBox)
-        {
-            @Html.Raw("&nbsp;")
         }
 
     </div>

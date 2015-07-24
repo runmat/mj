@@ -166,13 +166,13 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.TextBox txtZLDLief;
         
         /// <summary>
-        /// ddlKunnr-Steuerelement
+        /// ddlLief-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlKunnr;
+        protected global::System.Web.UI.WebControls.DropDownList ddlLief;
         
         /// <summary>
         /// lbtnStamm-Steuerelement
@@ -742,13 +742,31 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.LinkButton btnRefreshAdresseRueck;
         
         /// <summary>
-        /// upnlEditAdrHin-Steuerelement
+        /// MPEDummyAdrHin-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlEditAdrHin;
+        protected global::System.Web.UI.WebControls.Button MPEDummyAdrHin;
+        
+        /// <summary>
+        /// MPEAdrHin-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender MPEAdrHin;
+        
+        /// <summary>
+        /// PanelAdrHin-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelAdrHin;
         
         /// <summary>
         /// lblNameHin-Steuerelement
@@ -841,13 +859,13 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.LinkButton cmdSetBackHin;
         
         /// <summary>
-        /// cmdCloseDialog-Steuerelement
+        /// cmdCloseDialogHin-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCloseDialog;
+        protected global::System.Web.UI.WebControls.LinkButton cmdCloseDialogHin;
         
         /// <summary>
         /// cmdSaveAdrHin-Steuerelement
@@ -859,13 +877,31 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.LinkButton cmdSaveAdrHin;
         
         /// <summary>
-        /// upnlEditAdrRueck-Steuerelement
+        /// MPEDummyAdrRueck-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlEditAdrRueck;
+        protected global::System.Web.UI.WebControls.Button MPEDummyAdrRueck;
+        
+        /// <summary>
+        /// MPEAdrRueck-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::AjaxControlToolkit.ModalPopupExtender MPEAdrRueck;
+        
+        /// <summary>
+        /// PanelAdrRueck-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel PanelAdrRueck;
         
         /// <summary>
         /// lblDocRueck-Steuerelement
@@ -1075,30 +1111,102 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.LinkButton cmdCloseDialogRueck;
         
         /// <summary>
-        /// LinkButton2-Steuerelement
+        /// cmdSaveAdrRueck-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton2;
+        protected global::System.Web.UI.WebControls.LinkButton cmdSaveAdrRueck;
         
         /// <summary>
-        /// upnlJsRunner-Steuerelement
+        /// MPEDummy-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.UpdatePanel upnlJsRunner;
+        protected global::System.Web.UI.WebControls.Button MPEDummy;
         
         /// <summary>
-        /// phrJsRunner-Steuerelement
+        /// MPE48h-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.PlaceHolder phrJsRunner;
+        protected global::AjaxControlToolkit.ModalPopupExtender MPE48h;
+        
+        /// <summary>
+        /// Panel48h-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Panel Panel48h;
+        
+        /// <summary>
+        /// Table1-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTable Table1;
+        
+        /// <summary>
+        /// lblLieferuhrzeit-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblLieferuhrzeit;
+        
+        /// <summary>
+        /// lblAbwName-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAbwName;
+        
+        /// <summary>
+        /// lblAbwStrasse-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAbwStrasse;
+        
+        /// <summary>
+        /// lblAbwOrt-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblAbwOrt;
+        
+        /// <summary>
+        /// lb48hCancel-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lb48hCancel;
+        
+        /// <summary>
+        /// lb48hContinue-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.LinkButton lb48hContinue;
     }
 }

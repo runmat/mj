@@ -148,24 +148,6 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.TextBox txtRef2Bank;
         
         /// <summary>
-        /// chkCPD-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkCPD;
-        
-        /// <summary>
-        /// chkCPDEinzug-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox chkCPDEinzug;
-        
-        /// <summary>
         /// lblName-Steuerelement
         /// </summary>
         /// <remarks>
@@ -328,6 +310,24 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.TextBox txtGeldinstitut;
         
         /// <summary>
+        /// hfBankleitzahl-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfBankleitzahl;
+        
+        /// <summary>
+        /// hfKontonummer-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField hfKontonummer;
+        
+        /// <summary>
         /// cmdSaveBank-Steuerelement
         /// </summary>
         /// <remarks>
@@ -427,13 +427,13 @@ namespace AppZulassungsdienst.forms {
         protected global::AjaxControlToolkit.FilteredTextBoxExtender fteBarcode;
         
         /// <summary>
-        /// cmdCreate0-Steuerelement
+        /// cmdGetData-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton cmdCreate0;
+        protected global::System.Web.UI.WebControls.LinkButton cmdGetData;
         
         /// <summary>
         /// lblKunde-Steuerelement
@@ -677,15 +677,6 @@ namespace AppZulassungsdienst.forms {
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtNrReserviert;
-        
-        /// <summary>
-        /// cbxSave-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxSave;
         
         /// <summary>
         /// lbtnFeinstaub-Steuerelement

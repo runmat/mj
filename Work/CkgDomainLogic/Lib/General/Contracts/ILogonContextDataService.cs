@@ -21,6 +21,8 @@ namespace CkgDomainLogic.General.Contracts
 
         User User { get; set; }
 
+        string UserNameForDisplay { get; set; }
+
         WebUserInfo UserInfo { get; set; }
 
         LogonLevel UserLogonLevel { get; set; }
@@ -43,17 +45,14 @@ namespace CkgDomainLogic.General.Contracts
 
         string ReturnUrl { get; set; }
 
-        string CurrentGridColumns { get; set; }
+        // only for backward compatibility:
+        string CurrentGridColumns { get; }
 
         IHtmlString GetUserEncrytpedUrl(IApplicationUserMenuItem menuItem);
 
         IHtmlString FormatUserEncrytpedUrl(string url);
 
         IHtmlString FormatUrl(string url);
-
-        string GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup);
-
-        void SetUserGridColumnNames(string gridGroup, string columns);
 
         void DataContextPersist(object dataContext);
 
@@ -62,6 +61,8 @@ namespace CkgDomainLogic.General.Contracts
         void TryLogonUser(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
 
         string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
+        
+        string GetEmailAddressForUser();
 
         void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
 

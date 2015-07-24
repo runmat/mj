@@ -360,7 +360,7 @@ var App = function () {
     };
 
     var handleUniform = function () {
-        
+
         if (!jQuery().uniform) {
             return;
         }
@@ -590,7 +590,7 @@ var App = function () {
         blockUiTimeout: null,
 
         // wrapper function to  block element(indicate loading)
-        blockUI: function (el, centerY) {
+        blockUI: function (el) {
 
             App.blockUiTimeout = setTimeout(function () { $(".loading").fadeIn(200); }, 500);
 
@@ -622,6 +622,46 @@ var App = function () {
             if (App.blockUiTimeout != null)
                 clearTimeout(App.blockUiTimeout);
             App.blockUiTimeout = null;
+
+            jQuery(el).unblock({
+                onUnblock: function () {
+                    jQuery(el).removeAttr("style");
+                }
+            });
+        },
+
+        // wrapper function to  block element(indicate loading)
+        blockUI2: function (el) {
+
+            el.animate({ opacity: "0.5" }, 300);
+            $(".loading2").fadeIn(200);
+
+            jQuery(el).block({
+                message: '', //'<img src="../assets/img/ajax-loading.gif" align="">',
+                centerX: false,
+                centerY: false, //centerY != undefined ? centerY : true,
+                css: {
+                    //left: '200px',
+                    //top: '300px',
+                    //position: 'absolute',
+                    border: 'none',
+                    //padding: '0px',
+                    //marginTop: '-50px',
+                    //marginLeft: '-200px',
+                    backgroundColor: 'none'
+                },
+                overlayCSS: {
+                    backgroundColor: '#000',
+                    opacity: 0.00,
+                    cursor: 'wait'
+                }
+            });
+        },
+
+        // wrapper function to  un-block element(finish loading)
+        unblockUI2: function (el) {
+            $(".loading2").fadeOut(200);
+            el.css("opacity", "1.0");
 
             jQuery(el).unblock({
                 onUnblock: function () {

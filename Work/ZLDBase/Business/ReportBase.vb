@@ -51,9 +51,9 @@ Namespace Business
             End Get
         End Property
 
-        Public ReadOnly Property ErrorCode() As String Implements Common.ISapError.ErrorCode
+        Public ReadOnly Property ErrorCode() As Integer Implements Common.ISapError.ErrorCode
             Get
-                Return m_intStatus.ToString
+                Return m_intStatus
             End Get
         End Property
 
@@ -154,9 +154,9 @@ Namespace Business
         '''<summary>
         ''' Löst ein Fehlerereignis mit Fehlercode und Fehlermeldung aus
         '''</summary>
-        Protected Overridable Sub RaiseError(errorcode As String, message As String) Implements Common.ISapError.RaiseError
+        Protected Overridable Sub RaiseError(errorcode As Integer, message As String) Implements Common.ISapError.RaiseError
             m_blnErrorOccured = True
-            m_intStatus = CInt(errorcode)
+            m_intStatus = errorcode
             m_strMessage = message
         End Sub
 #End Region

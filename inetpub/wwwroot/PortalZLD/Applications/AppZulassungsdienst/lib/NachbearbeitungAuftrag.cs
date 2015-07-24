@@ -1,416 +1,194 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
-using CKG.Base.Common;
+using System.Linq;
+using AppZulassungsdienst.lib.Models;
 using CKG.Base.Business;
-using CKG.Base.Kernel.Security;
+using GeneralTools.Models;
+using SapORM.Contracts;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib
 {
-    /// <summary>
-    /// Nachbearbeitung Vorgang
-    /// </summary>
-    public class NachbearbeitungAuftrag : DatenimportBase
+    public class NachbearbeitungAuftrag : SapOrmBusinessBase
     {
         #region "Properties"
 
-        public string VkOrg { get; private set; }
-
-        public string VkBur { get; private set; }
-
         public string SucheId { get; set; }
-
         public string SucheAuftragsnummer { get; set; }
 
-        public string VorgangId { get; set; }
-
-        public DataTable tblKopfdaten { get; private set; }
-
-        public DataTable tblBankdaten { get; private set; }
-
-        public DataTable tblAdressdaten { get; private set; }
-
-        public DataTable tblPositionsdaten { get; private set; }
+        public ZLDVorgang AktuellerVorgang { get; private set; }
 
         public DataTable tblStornogruende { get; private set; }
+        public DataTable tblOffeneStornos { get; private set; }
+        public DataTable tblBarquittungen { get; private set; }
 
         public string Stornogrund { get; set; }
-
         public string StornoKundennummer { get; set; }
-
         public string StornoBegruendung { get; set; }
-
         public string StornoStva { get; set; }
-
         public string StornoKennzeichen { get; set; }
-
-        /// <summary>
-        /// Alle stornierten Datensätze, die noch nicht nachbearbeitet wurden
-        /// </summary>
-        public DataTable tblOffeneStornos { get; private set; }
-
-        public DataTable tblBarquittungen { get; private set; }
+        public DateTime? StornoZulassungsdatum { get; set; }
 
         #endregion
 
         #region "Methods"
 
-        /// <summary>
-        /// Konstruktor
-        /// </summary>
-        /// <param name="objUser">Webuserobjekt</param>
-        /// <param name="objApp">Applikationsobjekt</param>
-        public NachbearbeitungAuftrag(ref User objUser, App objApp)
-            : base(ref objUser, objApp, "")
+        public NachbearbeitungAuftrag(string userReferenz)
         {
-            if ((objUser != null) && (!String.IsNullOrEmpty(objUser.Reference)))
-            {
-                if (objUser.Reference.Length > 4)
-                {
-                    VkOrg = objUser.Reference.Substring(0, 4);
-                    VkBur = objUser.Reference.Substring(4);
-                }
-                else
-                {
-                    VkOrg = objUser.Reference;
-                    VkBur = "";
-                }
-            }
-            else
-            {
-                VkOrg = "";
-                VkBur = "";
-            }
+            VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
+            VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
+
+            AktuellerVorgang = new ZLDVorgang(VKORG, VKBUR);
         }
 
-        /// <summary>
-        /// Stornogründe laden. Bapi: Z_ZLD_STO_STORNOGRUENDE
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void StornogruendeLaden(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void StornogruendeLaden()
         {
-            m_strClassAndMethod = "NachbearbeitungAuftrag.StornogruendeLaden";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_STO_STORNOGRUENDE", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_STO_STORNOGRUENDE.Init(SAP);
 
-                    myProxy.callBapi();
+                    CallBapi();
 
-                    tblStornogruende = myProxy.getExportTable("GT_GRUENDE");
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Laden der Stornogründe ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    tblStornogruende = SAP.GetExportTable("GT_GRUENDE");
+                });
         }
 
-        /// <summary>
-        /// Prüfen, ob Vorgang storniert werden kann. Bapi: Z_ZLD_STO_STORNO_CHECK
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void VorgangPruefen(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void VorgangPruefen()
         {
-            m_strClassAndMethod = "NachbearbeitungAuftrag.VorgangPruefen";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_STO_STORNO_CHECK", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_STO_STORNO_CHECK.Init(SAP);
 
-                    myProxy.setImportParameter("I_VKORG", VkOrg);
-                    myProxy.setImportParameter("I_VKBUR", VkBur);
+                    SAP.SetImportParameter("I_VKORG", VKORG);
+                    SAP.SetImportParameter("I_VKBUR", VKBUR);
 
                     if (!String.IsNullOrEmpty(SucheAuftragsnummer))
-                    {
-                        myProxy.setImportParameter("I_VBELN", SucheAuftragsnummer.PadLeft(10, '0'));
-                    }
+                        SAP.SetImportParameter("I_VBELN", SucheAuftragsnummer.PadLeft0(10));
+
                     if (!String.IsNullOrEmpty(SucheId))
-                    {
-                        myProxy.setImportParameter("I_ZULBELN", SucheId.PadLeft(10, '0'));
-                    }
+                        SAP.SetImportParameter("I_ZULBELN", SucheId.PadLeft0(10));
 
-                    myProxy.callBapi();
+                    CallBapi();
 
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
-                    {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
-
-                    if (m_intStatus == 0)
-                    {
-                        VorgangId = myProxy.getExportParameter("E_ZULBELN");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Prüfen des Vorgangs ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    if (!ErrorOccured)
+                        AktuellerVorgang.Kopfdaten.SapId = SAP.GetExportParameter("E_ZULBELN");
+                });
         }
 
-        /// <summary>
-        /// Vorgang zur ID laden. Bapi: Z_ZLD_STO_GET_ORDER
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void VorgangLaden(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void VorgangLaden()
         {
-            m_strClassAndMethod = "NachbearbeitungAuftrag.VorgangLaden";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_STO_GET_ORDER", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_STO_GET_ORDER2.Init(SAP, "I_ZULBELN", AktuellerVorgang.Kopfdaten.SapId.PadLeft0(10));
 
-                    myProxy.setImportParameter("I_ZULBELN", VorgangId.PadLeft(10, '0'));
+                    CallBapi();
 
-                    myProxy.callBapi();
-
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
+                    if (!ErrorOccured)
                     {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+                        var sapKopfdaten = Z_ZLD_STO_GET_ORDER2.ES_BAK.GetExportList(SAP).FirstOrDefault(new Z_ZLD_STO_GET_ORDER2.ES_BAK());
+                        var sapBankdaten = Z_ZLD_STO_GET_ORDER2.ES_BANK.GetExportList(SAP).FirstOrDefault(new Z_ZLD_STO_GET_ORDER2.ES_BANK());
+                        var sapAdresse = Z_ZLD_STO_GET_ORDER2.GT_ADRS.GetExportList(SAP).FirstOrDefault(new Z_ZLD_STO_GET_ORDER2.GT_ADRS());
+                        var sapPositionen = Z_ZLD_STO_GET_ORDER2.GT_POS.GetExportList(SAP);
 
-                    if (m_intStatus == 0)
-                    {
-                        tblKopfdaten = myProxy.getExportTable("ES_BAK");
-                        tblBankdaten = myProxy.getExportTable("ES_BANK");
-                        tblAdressdaten = myProxy.getExportTable("GT_ADRS");
-                        tblPositionsdaten = myProxy.getExportTable("GT_POS_S01");
-
-                        foreach (DataRow row in tblPositionsdaten.Rows)
-                        {
-                            row["PREIS_C"] = row["PREIS_C"].ToString().Trim();
-                            row["GEB_AMT_C"] = row["GEB_AMT_C"].ToString().Trim();
-                        }
-                        tblPositionsdaten.AcceptChanges();
+                        AktuellerVorgang.Kopfdaten = AppModelMappings.Z_ZLD_STO_GET_ORDER2_ES_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten);
+                        AktuellerVorgang.Bankdaten = AppModelMappings.Z_ZLD_STO_GET_ORDER2_ES_BANK_To_ZLDBankdaten.Copy(sapBankdaten);
+                        AktuellerVorgang.Adressdaten = AppModelMappings.Z_ZLD_STO_GET_ORDER2_GT_ADRS_To_ZLDAdressdaten.Copy(sapAdresse);
+                        AktuellerVorgang.Positionen = AppModelMappings.Z_ZLD_STO_GET_ORDER2_GT_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
                     }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Laden des Vorgangs ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                });
         }
 
-        /// <summary>
-        /// Vorgang stornieren. Bapi: Z_ZLD_STO_STORNO_ORDER
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void VorgangStornieren(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void VorgangStornieren(string userName)
         {
-            m_strClassAndMethod = "NachbearbeitungAuftrag.VorgangStornieren";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_STO_STORNO_ORDER", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_STO_STORNO_ORDER.Init(SAP);
 
-                    myProxy.setImportParameter("I_ZULBELN", VorgangId.PadLeft(10, '0'));
-                    myProxy.setImportParameter("I_ERNAM", m_objUser.UserName);
-                    myProxy.setImportParameter("I_STORNOGRUND", Stornogrund);
+                    SAP.SetImportParameter("I_ZULBELN", AktuellerVorgang.Kopfdaten.SapId.PadLeft0(10));
+                    SAP.SetImportParameter("I_ERNAM", userName);
+                    SAP.SetImportParameter("I_STORNOGRUND", Stornogrund);
+
                     if (!String.IsNullOrEmpty(StornoKundennummer))
-                    {
-                        myProxy.setImportParameter("I_KUNNR", StornoKundennummer.PadLeft(10, '0'));
-                    }
+                        SAP.SetImportParameter("I_KUNNR", StornoKundennummer.PadLeft0(10));
+
                     if (!String.IsNullOrEmpty(StornoBegruendung))
-                    {
-                        myProxy.setImportParameter("I_BEGRUENDUNG", StornoBegruendung);
-                    }
+                        SAP.SetImportParameter("I_BEGRUENDUNG", StornoBegruendung);
+
                     if (!String.IsNullOrEmpty(StornoStva))
-                    {
-                        myProxy.setImportParameter("I_KREISKZ", StornoStva);
-                    }
+                        SAP.SetImportParameter("I_KREISKZ", StornoStva);
+
                     if (!String.IsNullOrEmpty(StornoKennzeichen))
-                    {
-                        myProxy.setImportParameter("I_ZZKENN", StornoKennzeichen);
-                    }
+                        SAP.SetImportParameter("I_ZZKENN", StornoKennzeichen);
 
-                    myProxy.callBapi();
+                    if (StornoZulassungsdatum.HasValue)
+                        SAP.SetImportParameter("I_ZZZLDAT", StornoZulassungsdatum);
 
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
-                    {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+                    CallBapi();
 
-                    if (m_intStatus == 0)
+                    if (!ErrorOccured)
                     {
-                        VorgangId = myProxy.getExportParameter("E_ZULBELN_NEU");
-                        tblBarquittungen = myProxy.getExportTable("GT_BARQ");
+                        var newSapId = SAP.GetExportParameter("E_ZULBELN_NEU");
+                        AktuellerVorgang.Kopfdaten = new ZLDKopfdaten { VkOrg = VKORG, VkBur = VKBUR, SapId = newSapId };
+                        tblBarquittungen = SAP.GetExportTable("GT_BARQ");
                     }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Stornieren des Vorgangs ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                });
         }
 
-        /// <summary>
-        /// Vorgang absenden. Bapi: Z_ZLD_STO_STORNO_ORDER
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        public void VorgangAbsenden(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void VorgangAbsenden()
         {
-            m_strClassAndMethod = "NachbearbeitungAuftrag.VorgangAbsenden";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
+            ExecuteSapZugriff(() =>
             {
-                m_blnGestartet = true;
+                Z_ZLD_IMP_NACHERF2.Init(SAP);
 
-                try
+                var kopfListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(new List<ZLDKopfdaten> { AktuellerVorgang.Kopfdaten });
+                SAP.ApplyImport(kopfListe);
+
+                var bankListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_BANK_From_ZLDBankdaten.CopyBack(new List<ZLDBankdaten> { AktuellerVorgang.Bankdaten });
+                SAP.ApplyImport(bankListe);
+
+                var adressListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_ADRS_From_ZLDAdressdaten.CopyBack(new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten });
+                SAP.ApplyImport(adressListe);
+
+                var posListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_IMP_POS_From_ZLDPosition.CopyBack(AktuellerVorgang.Positionen);
+                SAP.ApplyImport(posListe);
+
+                CallBapi();
+
+                tblBarquittungen = SAP.GetExportTable("GT_BARQ");
+
+                var fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
+
+                if (fehlerListe.Any(f => !String.IsNullOrEmpty(f.FehlerText) && f.FehlerText != "OK"))
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_IMP_NACHERF", ref m_objApp, ref m_objUser, ref page);
+                    RaiseError(-9999, "Beim Speichern des Vorgangs in SAP sind Fehler aufgetreten");
 
-                    DataTable importAuftrag = myProxy.getImportTable("GT_IMP_BAK");
-                    DataTable importPos = myProxy.getImportTable("GT_IMP_POS_S01");
-                    DataTable importBank = myProxy.getImportTable("GT_IMP_BANK");
-                    DataTable importAdresse = myProxy.getImportTable("GT_IMP_ADRS");
-
-                    FillSapImportTable(tblKopfdaten, ref importAuftrag);
-                    FillSapImportTable(tblPositionsdaten, ref importPos);
-                    FillSapImportTable(tblBankdaten, ref importBank);
-                    FillSapImportTable(tblAdressdaten, ref importAdresse);
-
-                    myProxy.callBapi();
-
-                    var tblErrors = myProxy.getExportTable("GT_EX_ERRORS");
-                    tblBarquittungen = myProxy.getExportTable("GT_BARQ");
-
-                    if (tblErrors.Rows.Count > 0 && tblErrors.Rows[0]["ERROR_TEXT"].ToString() != "OK")
+                    foreach (var fehler in fehlerListe)
                     {
-                        m_intStatus = -9999;
-                        m_strMessage = "Beim Absenden des Vorgangs ist ein Fehler aufgetreten: " + tblErrors.Rows[0]["ERROR_TEXT"].ToString();
+                        var pos = AktuellerVorgang.Positionen.FirstOrDefault(p => p.SapId == fehler.SapId && (String.IsNullOrEmpty(fehler.PositionsNr) || p.PositionsNr == fehler.PositionsNr));
+                        if (pos != null)
+                        {
+                            if (!String.IsNullOrEmpty(fehler.FehlerText))
+                                pos.FehlerText = fehler.FehlerText;
+                            else
+                                pos.FehlerText = "OK";
+                        }
                     }
                 }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Absenden des Vorgangs ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+            });
         }
 
-        /// <summary>
-        /// Offene Stornos laden. Bapi: Z_ZLD_STO_???
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">...aspx</param>
-        /// <param name="kundenstamm"></param>
-        public void OffeneStornosLaden(String strAppID, String strSessionID, System.Web.UI.Page page, DataTable kundenstamm)
+        public void OffeneStornosLaden(List<Kundenstammdaten> kundenStamm)
         {
-            m_strClassAndMethod = "NachbearbeitungAuftrag.OffeneStornosLaden";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_STO_STORNO_LISTE", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_STO_STORNO_LISTE.Init(SAP, "I_VKORG, I_VKBUR", VKORG, VKBUR);
 
-                    myProxy.setImportParameter("I_VKORG", VkOrg);
-                    myProxy.setImportParameter("I_VKBUR", VkBur);
+                    CallBapi();
 
-                    myProxy.callBapi();
-
-                    Int32 subrc;
-                    if (Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc))
+                    if (!ErrorOccured)
                     {
-                        m_intStatus = subrc;
-                    }
-                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
-
-                    if (m_intStatus == 0)
-                    {
-                        tblOffeneStornos = myProxy.getExportTable("GT_LISTE");
+                        tblOffeneStornos = SAP.GetExportTable("GT_LISTE");
 
                         tblOffeneStornos.Columns.Add("Kunde");
                         tblOffeneStornos.Columns.Add("Erfasst");
@@ -420,11 +198,9 @@ namespace AppZulassungsdienst.lib
                             row["ZULBELN"] = row["ZULBELN"].ToString().TrimStart('0');
                             row["ZULBELN_ALT"] = row["ZULBELN_ALT"].ToString().TrimStart('0');
 
-                            DataRow[] drow = kundenstamm.Select("KUNNR = '" + row["KUNNR"].ToString().TrimStart('0') + "'");
-                            if (drow.Length > 0)
-                            {
-                                row["Kunde"] = drow[0]["NAME1"].ToString();
-                            }
+                            var kunde = kundenStamm.FirstOrDefault(k => k.KundenNr == row["KUNNR"].ToString().TrimStart('0'));
+                            if (kunde != null)
+                                row["Kunde"] = kunde.Name1;
 
                             string strErfasst = "";
                             if (!String.IsNullOrEmpty(row["VE_ERDAT"].ToString()))
@@ -446,44 +222,7 @@ namespace AppZulassungsdienst.lib
 
                         tblOffeneStornos.AcceptChanges();
                     }
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = "Beim Laden der offenen Stornos ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
-        }
-
-        private void FillSapImportTable(DataTable srcTable, ref DataTable impTable)
-        {
-            foreach (DataRow srcRow in srcTable.Rows)
-            {
-                var newRow = impTable.NewRow();
-
-                foreach (DataColumn col in impTable.Columns)
-                {
-                    // leere DateTime-Werte abfangen
-                    if (col.DataType.Name == "DateTime" && String.IsNullOrEmpty(srcRow[col.ColumnName].ToString()))
-                    {
-                        newRow[col.ColumnName] = DBNull.Value;
-                    }
-                    else
-                    {
-                        newRow[col.ColumnName] = srcRow[col.ColumnName];
-                    }
-                }
-
-                impTable.Rows.Add(newRow);
-            }
-
-            impTable.AcceptChanges();
+                });
         }
 
         /// <summary>
@@ -497,22 +236,14 @@ namespace AppZulassungsdienst.lib
                 SucheAuftragsnummer = "";
             }
           
-            VorgangId = "";
-
-            if (tblKopfdaten != null)
-                tblKopfdaten.Clear();
-            if (tblBankdaten != null)
-                tblBankdaten.Clear();
-            if (tblAdressdaten != null)
-                tblAdressdaten.Clear();
-            if (tblPositionsdaten != null)
-                tblPositionsdaten.Clear();
+            AktuellerVorgang = new ZLDVorgang(VKORG, VKBUR);
 
             Stornogrund = "";
             StornoKundennummer = "";
             StornoBegruendung = "";
             StornoStva = "";
             StornoKennzeichen = "";
+            StornoZulassungsdatum = null;
         }
 
         #endregion

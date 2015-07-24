@@ -1,0 +1,28 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.ZulassungViewModel
+@using CkgDomainLogic.Fahrzeuge.Models
+@{ var gridName = "GridFahrzeugSummary"; }
+
+<div id="GridFahrzeugSummaryWrapper">
+    @(Html.XTelerik()
+        .XGrid<Fzg>()
+        .Name(gridName)
+        .XAjaxDataBinding("FahrzeugSummaryAjaxBinding", "Zulassung")
+        .Columns(columns =>
+        {
+            columns.XBound(c => c.ModellAsText);
+            columns.XBound(c => c.Fahrgestellnummer);
+            columns.XBound(c => c.Zb2Nummer);
+            columns.XBound(c => c.ValidationMessage);
+            columns.XBound(c => c.IsValid).Visible(false);
+        })
+
+        .XAutoColumnConfiguration()
+        .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridFahrzeugAuswahl"))
+        .XPageSize(5)
+        .ToolBar(commands =>
+        {
+            commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredExcel", "Zulassung");
+            commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredPDF", "Zulassung");
+        })
+    )
+</div>

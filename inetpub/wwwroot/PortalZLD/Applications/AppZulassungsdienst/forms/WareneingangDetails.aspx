@@ -33,6 +33,14 @@
                                         <asp:Label ID="lblBelegnummer" runat="server" Visible="false"></asp:Label>
                                     </td>
                                 </tr>
+                                <tr id="TrLiefernr" runat="server">
+                                    <td>
+                                        Lieferscheinnummer:
+                                    </td>
+                                    <td width="100%">
+                                        <asp:TextBox ID="txtLieferscheinnummer" runat="server" MaxLength="16"></asp:TextBox>
+                                    </td>
+                                </tr>
                                 <tr id="TrBelegdatum" runat="server">
                                     <td>
                                         Wareneingangsdatum:
@@ -88,7 +96,7 @@
                                                 <Columns>
                                                     <asp:TemplateField Visible="false">
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblEAN" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Bestellposition") %>'>
+                                                            <asp:Label ID="lblEAN" runat="server" Text='<%# Eval("Bestellposition") %>'>
                                                             </asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
@@ -102,7 +110,7 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chkVollstaendig" ToolTip="diese Position ist vollstaendig/unvollstaendig"
-                                                                CausesValidation="true" Checked='<%# (DataBinder.Eval(Container, "DataItem.PositionVollstaendig")=="X") %>'
+                                                                CausesValidation="true" Checked='<%# (Eval("PositionVollstaendig")=="X") %>'
                                                                 runat="server" OnCheckedChanged="chkVollstaendig_CheckedChanged" />
                                                         </ItemTemplate>
                                                         <HeaderStyle Width="60px" />
@@ -116,7 +124,7 @@
                                                         <HeaderTemplate>
 																<asp:LinkButton ID="lblKennzform" runat="server" CommandName="Sort" CommandArgument="KennzForm">Kennz.- <br />Größe </asp:LinkButton></HeaderTemplate>
                                                         <ItemTemplate>
-                                                            <asp:Label ID="lblKennzForm" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.KennzForm") %>'>
+                                                            <asp:Label ID="lblKennzForm" runat="server" Text='<%# Eval("KennzForm") %>'>
                                                             </asp:Label>
                                                         </ItemTemplate>
                                                         <HeaderStyle Width="45px" />
@@ -130,10 +138,10 @@
                                                             <asp:LinkButton ID="colPositionLieferMenge" runat="server" CommandName="Sort" CommandArgument="PositionLieferMenge">gelieferte<br /> Menge</asp:LinkButton>
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
-                                                            <input id="txtPositionLieferMenge2" runat="server" value='<%# DataBinder.Eval(Container, "DataItem.PositionLieferMenge") %>'
+                                                            <input id="txtPositionLieferMenge2" runat="server" value='<%# Eval("PositionLieferMenge") %>'
                                                                 type="hidden" />
                                                             <asp:TextBox ID="txtPositionLieferMenge" onKeyPress="return numbersonly(event, false)"
-                                                                MaxLength="4" onFocus="Javascript:this.select();" Width="50px" Text='<%# DataBinder.Eval(Container, "DataItem.PositionLieferMenge") %>'
+                                                                MaxLength="4" onFocus="Javascript:this.select();" Width="50px" Text='<%# Eval("PositionLieferMenge") %>'
                                                                 runat="server"></asp:TextBox>
                                                         </ItemTemplate>
                                                         <HeaderStyle Width="80px" />
@@ -141,8 +149,8 @@
                                                     </asp:TemplateField>
                                                     <asp:TemplateField HeaderText="Freitext">
                                                         <ItemTemplate>
-                                                            <asp:Label runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Freitext")%>' 
-                                                                ToolTip='<%# DataBinder.Eval(Container, "DataItem.LangText")%>'>
+                                                            <asp:Label runat="server" Text='<%# Eval("Freitext")%>' 
+                                                                ToolTip='<%# Eval("LangText")%>'>
                                                             </asp:Label>
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
@@ -152,10 +160,10 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:RadioButton GroupName="Abgeschlossen" ID="rbPositionAbgeschlossenJA" runat="server"
-                                                                Text="Ja" Checked='<%# (DataBinder.Eval(Container, "DataItem.PositionAbgeschlossen")=="J") %>' />
+                                                                Text="Ja" Checked='<%# (Eval("PositionAbgeschlossen").ToString() == "J") %>' />
                                                             &nbsp;
                                                             <asp:RadioButton ID="rbPositionAbgeschlossenNEIN" GroupName="Abgeschlossen" runat="server"
-                                                                Text="Nein" Checked='<%# (DataBinder.Eval(Container, "DataItem.PositionAbgeschlossen")=="N") %>' />
+                                                                Text="Nein" Checked='<%# (Eval("PositionAbgeschlossen").ToString() == "N") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>
@@ -231,7 +239,7 @@
                                         <Columns>
                                             <asp:TemplateField Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblEAN" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Bestellposition") %>'>
+                                                    <asp:Label ID="lblEAN" runat="server" Text='<%# Eval("Bestellposition") %>'>
                                                     </asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
@@ -246,14 +254,14 @@
                                                 DataField="BestellteMenge"></asp:BoundField>
                                             <asp:TemplateField HeaderText="gelieferte Menge">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblLieferMenge" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.PositionLieferMenge") %>' />
+                                                    <asp:Label ID="lblLieferMenge" runat="server" Text='<%# Eval("PositionLieferMenge") %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:BoundField HeaderText="Mengeneinheit" DataField="Mengeneinheit" />
                                             <asp:TemplateField HeaderText="Lieferung abgeschlossen">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblLieferungAbgeschlossenJA" runat="server" Text="Nein" Visible='<%# (DataBinder.Eval(Container, "DataItem.PositionAbgeschlossen")=="N") %>' />
-                                                    <asp:Label ID="lblLieferungAbgeschlossenNEIN" runat="server" Text="Ja" Visible='<%# ((DataBinder.Eval(Container, "DataItem.PositionAbgeschlossen")=="J") || (DataBinder.Eval(Container, "DataItem.PositionVollstaendig")=="X")) %>' />
+                                                    <asp:Label ID="lblLieferungAbgeschlossenJA" runat="server" Text="Nein" Visible='<%# (Eval("PositionAbgeschlossen")=="N") %>' />
+                                                    <asp:Label ID="lblLieferungAbgeschlossenNEIN" runat="server" Text="Ja" Visible='<%# ((Eval("PositionAbgeschlossen")=="J") || (Eval("PositionVollstaendig")=="X")) %>' />
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                         </Columns>
@@ -268,7 +276,7 @@
                             <tr>
                                 <td align="center" style="height: 20px">
                                     <asp:LinkButton ID="lbWareneingangKorrektur" Text="Korrektur" Height="16px" Width="78px"
-                                        runat="server" CssClass="Tablebutton" OnClick="lbWareneingangKorrektur_Click1"></asp:LinkButton>&nbsp;
+                                        runat="server" CssClass="Tablebutton" OnClick="lbWareneingangKorrektur_Click"></asp:LinkButton>&nbsp;
                                     &nbsp;
                                     <asp:LinkButton ID="lbWareneingangOk" Text="Absenden" Height="16px" Width="78px"
                                         runat="server" CssClass="Tablebutton" OnClick="lbWareneingangOk_Click"></asp:LinkButton>

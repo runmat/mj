@@ -1,5 +1,6 @@
 Imports System.Configuration
 Imports System.Web
+Imports GeneralTools.Models
 Imports WebTools.Services
 
 
@@ -26,6 +27,8 @@ Namespace Kernel.Security
         Private m_blnAccountIsLockedOut As Boolean
         Private m_strAccountIsLockedBy As String
         Private m_strReference As String
+        Private m_strReference2 As String
+        Private m_strReference3 As String
         Private m_blnLoggedOn As Boolean
         Private m_blnMatrixfilled As Boolean
         Private m_blnPasswordExpired As Boolean = False
@@ -101,6 +104,8 @@ Namespace Kernel.Security
                        ByVal intUserId As Integer, _
                        ByVal strUserName As String, _
                        ByVal strReference As String, _
+                       ByVal strReference2 As String, _
+                       ByVal strReference3 As String, _
                        ByVal blnTestUser As Boolean, _
                        ByVal intCustomerId As Integer, _
                        ByVal blnCustomerAdmin As Boolean, _
@@ -124,6 +129,8 @@ Namespace Kernel.Security
             m_intUserId = intUserId
             m_strUsername = strUserName
             m_strReference = strReference
+            m_strReference2 = strReference2
+            m_strReference3 = strReference3
             m_blnTestUser = blnTestUser
             m_blnIsCustomerAdmin = blnCustomerAdmin
             m_blnPwdNeverExpires = blnPwdNeverExpires
@@ -154,6 +161,8 @@ Namespace Kernel.Security
                        ByVal intUserId As Integer, _
                        ByVal strUserName As String, _
                        ByVal strReference As String, _
+                       ByVal strReference2 As String, _
+                       ByVal strReference3 As String, _
                        ByVal blnTestUser As Boolean, _
                        ByVal intCustomerId As Integer, _
                        ByVal blnCustomerAdmin As Boolean, _
@@ -174,6 +183,8 @@ Namespace Kernel.Security
             m_intUserId = intUserId
             m_strUsername = strUserName
             m_strReference = strReference
+            m_strReference2 = strReference2
+            m_strReference3 = strReference3
             m_blnTestUser = blnTestUser
             m_blnIsCustomerAdmin = blnCustomerAdmin
             m_blnPwdNeverExpires = blnPwdNeverExpires
@@ -419,6 +430,18 @@ Namespace Kernel.Security
         Public ReadOnly Property Reference() As String
             Get
                 Return m_strReference
+            End Get
+        End Property
+
+        Public ReadOnly Property Reference2() As String
+            Get
+                Return m_strReference2
+            End Get
+        End Property
+
+        Public ReadOnly Property Reference3() As String
+            Get
+                Return m_strReference3
             End Get
         End Property
 
@@ -905,6 +928,8 @@ Namespace Kernel.Security
                                                     "AccountIsLockedOut, " & _
                                                     "FirstLevelAdmin, " & _
                                                     "Reference, " & _
+                                                    "Reference2, " & _
+                                                    "Reference3, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1062,6 +1087,8 @@ Namespace Kernel.Security
                                                     "AccountIsLockedOut, " & _
                                                     "FirstLevelAdmin, " & _
                                                     "Reference, " & _
+                                                    "Reference2, " & _
+                                                    "Reference3, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1311,6 +1338,8 @@ Namespace Kernel.Security
                                                     "AccountIsLockedOut, " & _
                                                     "FirstLevelAdmin, " & _
                                                     "Reference, " & _
+                                                    "Reference2, " & _
+                                                    "Reference3, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1369,6 +1398,8 @@ Namespace Kernel.Security
                                                     "AccountIsLockedOut, " & _
                                                     "FirstLevelAdmin, " & _
                                                     "Reference, " & _
+                                                    "Reference2, " & _
+                                                    "Reference3, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1507,6 +1538,14 @@ Namespace Kernel.Security
                         m_strReference = ""
                         If Not TypeOf drUser("Reference") Is System.DBNull Then
                             m_strReference = CStr(drUser("Reference"))
+                        End If
+                        m_strReference2 = ""
+                        If Not TypeOf drUser("Reference2") Is System.DBNull Then
+                            m_strReference2 = CStr(drUser("Reference2"))
+                        End If
+                        m_strReference3 = ""
+                        If Not TypeOf drUser("Reference3") Is System.DBNull Then
+                            m_strReference3 = CStr(drUser("Reference3"))
                         End If
                         m_blnLoggedOn = CBool(drUser("LoggedOn"))
                         If Not drUser("LastLogin") Is System.DBNull.Value Then
@@ -2420,6 +2459,8 @@ Namespace Kernel.Security
                                                  "AccountIsLockedOut, " & _
                                                  "FirstLevelAdmin, " & _
                                                  "Reference, " & _
+                                                 "Reference2, " & _
+                                                 "Reference3, " & _
                                                  "LoggedOn, " & _
                                                  "LastLogin, " & _
                                                  "ReadMessageCount, " & _
@@ -2444,6 +2485,8 @@ Namespace Kernel.Security
                                     "@AccountIsLockedOut, " & _
                                     "@FirstLevelAdmin, " & _
                                     "@Reference, " & _
+                                    "@Reference2, " & _
+                                    "@Reference3, " & _
                                     "@LoggedOn, " & _
                                     "GetDate(), " & _
                                     "@ReadMessageCount, " & _
@@ -2550,6 +2593,8 @@ Namespace Kernel.Security
                                  "AccountIsLockedOut=@AccountIsLockedOut, " & _
                                  "FirstLevelAdmin=@FirstLevelAdmin, " & _
                                  "Reference=@Reference, " & _
+                                 "Reference2=@Reference2, " & _
+                                 "Reference3=@Reference3, " & _
                                  "LoggedOn=@LoggedOn, " & _
                                  "ReadMessageCount=@ReadMessageCount, " & _
                                  "Approved=@Approved, " & _
@@ -2628,6 +2673,8 @@ Namespace Kernel.Security
                         .AddWithValue("@CreatedBy", m_strCreatedBy)
                     End If
                     .AddWithValue("@Reference", m_strReference)
+                    .AddWithValue("@Reference2", m_strReference2)
+                    .AddWithValue("@Reference3", m_strReference3)
                     .AddWithValue("@LoggedOn", m_blnLoggedOn)
                     .AddWithValue("@ReadMessageCount", m_intReadMessageCount)
                     .AddWithValue("@Approved", m_approved)
@@ -2782,6 +2829,23 @@ Namespace Kernel.Security
             End Try
 
         End Sub
+
+        Public Function GetUserReferenceValueByReferenceType(ByVal referenceType As Referenzfeldtyp) As String
+            If Customer.ReferenceType1 = referenceType.ToString() Then
+                Return Reference
+            End If
+
+            If Customer.ReferenceType2 = referenceType.ToString() Then
+                Return Reference2
+            End If
+
+            If Customer.ReferenceType3 = referenceType.ToString() Then
+                Return Reference3
+            End If
+
+            Return ""
+
+        End Function
 
 #End Region
 

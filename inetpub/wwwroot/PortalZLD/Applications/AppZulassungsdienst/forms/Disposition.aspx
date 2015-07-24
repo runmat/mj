@@ -17,26 +17,31 @@
                         </h1>
                     </div>
                     <asp:UpdatePanel ID="UpdatePanel1" runat="server">
+                        <Triggers>
+                            <asp:PostBackTrigger ControlID="rbNichtDisponiert" />
+                            <asp:PostBackTrigger ControlID="rbBereitsDisponiert" />
+                            <asp:PostBackTrigger ControlID="rbBereitsInArbeit" />
+                        </Triggers>
                         <ContentTemplate>
                             <div id="TableQuery" style="margin-bottom: 10px">
                                 <table id="tab1" runat="server" cellpadding="0" cellspacing="0">
                                     <tr class="formquery">
-                                        <td class="firstLeft active" colspan="4" style="vertical-align:top">
+                                        <td class="firstLeft active" colspan="5" style="vertical-align:top">
                                             <asp:Label ID="lblError" runat="server" CssClass="TextError"></asp:Label>
                                             <asp:Label ID="lblMessage" runat="server" Font-Bold="True" ForeColor="#269700"></asp:Label>
                                         </td>
                                     </tr>
                                     <tr class="formquery">
-                                        <td class="firstLeft active" style="width: 125px" >
+                                        <td class="firstLeft active" style="width: 100px" >
                                             <asp:Label ID="lblDatum" runat="server">Zulassungdatum:</asp:Label>
                                         </td>
-                                        <td class="firstLeft active" style="width: 175px" >
+                                        <td class="firstLeft active" style="width: 150px" >
                                             <asp:TextBox ID="txtZulDate" runat="server" CssClass="TextBoxNormal" 
                                                 Width="75px" MaxLength="6"></asp:TextBox>
                                             <asp:Label ID="txtZulDateFormate" Style="padding-left: 2px; font-weight: normal"
                                                 Height="15px" runat="server" Width="48px">(ttmmjj)</asp:Label>                                                      
                                         </td>
-                                        <td class="firstLeft active" style="width: 175px" >
+                                        <td class="firstLeft active" style="width: 170px" >
                                             <asp:LinkButton ID="lbtnGestern" runat="server" Height="15px" 
                                                 Style="font-weight: normal" 
                                                 Text="Gestern |" Width="60px" />
@@ -46,6 +51,14 @@
                                             <asp:LinkButton ID="lbtnMorgen" runat="server" Height="15px" 
                                                 Style="font-weight: normal" Text="Morgen" 
                                                 Width="60px" />
+                                        </td>
+                                        <td class="firstLeft active" style="width: 370px" >
+                                            <asp:RadioButton ID="rbNichtDisponiert" runat="server" Checked="true" 
+                                                GroupName="Modus" Text="nicht disponiert" AutoPostBack="True" OnCheckedChanged="rbModusChanged" />
+                                            <asp:RadioButton ID="rbBereitsDisponiert" runat="server" GroupName="Modus" 
+                                                style="padding-left:5px" Text="bereits disponiert" AutoPostBack="True" OnCheckedChanged="rbModusChanged" />
+                                            <asp:RadioButton ID="rbBereitsInArbeit" runat="server" GroupName="Modus" 
+                                                style="padding-left:5px" Text="bereits in Arbeit" AutoPostBack="True" OnCheckedChanged="rbModusChanged" />
                                         </td>
                                         <td class="firstLeft active" >
                                             <asp:LinkButton ID="cmdSearch" runat="server" CssClass="Tablebutton" Width="78px" 
@@ -69,12 +82,12 @@
                                                             <HeaderStyle Width="45px"/>
                                                             <ItemStyle HorizontalAlign="Center"/>
                                                             <ItemTemplate>
-                                                                <asp:Label runat="server" ID="lblAmt" Text='<%# Eval("AMT") %>'/>
+                                                                <asp:Label runat="server" ID="lblAmt" Text='<%# Eval("Amt") %>'/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:BoundField DataField="KREISBEZ" HeaderText="">
+                                                        <asp:BoundField DataField="KreisBezeichnung" HeaderText="">
                                                         </asp:BoundField>
-                                                        <asp:BoundField DataField="VG_ANZ" HeaderText="Anzahl Vorgänge">
+                                                        <asp:BoundField DataField="AnzahlVorgaenge" HeaderText="Anzahl Vorgänge">
                                                             <HeaderStyle Width="120px" HorizontalAlign="Center"/>
                                                             <ItemStyle HorizontalAlign="Center"/>
                                                         </asp:BoundField>

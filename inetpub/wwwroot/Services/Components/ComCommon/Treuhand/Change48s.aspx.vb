@@ -297,7 +297,7 @@ Namespace Treuhand
                             formatter = New BinaryFormatter()
                             m_Versand = New Briefversand(m_User, m_App, Session.SessionID.ToString, Session("AppID").ToString, "")
                             m_Versand = DirectCast(formatter.Deserialize(OutPutStream), Briefversand)
-                            m_Versand.AnfordernAusAutorisierung(Session("AppID").ToString, Session.SessionID.ToString, Me.Page)
+                            m_Versand.AnfordernAusAutorisierung(Session("AppID").ToString, Session.SessionID.ToString, Me.Page, m_User.UserName)
                             If m_Versand.Status <> 0 Then
                                 lblError.Text = "Beim Speichern Ihrer Daten sind Fehler aufgetreten."
                                 rowTemp("Ergebnis") = m_Versand.Message
@@ -336,7 +336,7 @@ Namespace Treuhand
                             formatter = New BinaryFormatter()
                             m_Versand = New Briefversand(m_User, m_App, Session.SessionID.ToString, Session("AppID").ToString, "")
                             m_Versand = DirectCast(formatter.Deserialize(OutPutStream), Briefversand)
-                            m_Versand.AnfordernAusAutorisierung(Session("AppID").ToString, Session.SessionID.ToString, Me.Page)
+                            m_Versand.AnfordernAusAutorisierung(Session("AppID").ToString, Session.SessionID.ToString, Me.Page, m_User.UserName)
                             If m_Versand.Status <> 0 Then
                                 lblError.Text = "Beim Speichern Ihrer Daten sind Fehler aufgetreten."
                                 rowTemp("Ergebnis") = m_Versand.Message

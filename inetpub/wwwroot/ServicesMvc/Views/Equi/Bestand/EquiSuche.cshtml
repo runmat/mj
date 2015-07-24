@@ -1,5 +1,5 @@
 ﻿@using CkgDomainLogic.Equi.Models
-@model GrunddatenEquiSuchparameter
+@model EquiGrunddatenSelektor
 
 <div id="divEquiSuche">
     @using (Ajax.BeginForm("LoadGrunddatenEquis", "Equi", null,
@@ -9,11 +9,10 @@
             
             @Html.FormValidationSummary()
 
+            @Html.FormMultiSelectListFor(m => m.Standorte, EquiGrunddatenSelektor.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "left" })
+            @Html.FormMultiSelectListFor(m => m.Betriebsnummern, EquiGrunddatenSelektor.AlleBetriebsnummern.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "right" })
 
-            @Html.FormMultiSelectListFor(m => m.Standorte, Model.AlleStandorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "left" })
-            @Html.FormMultiSelectListFor(m => m.Betriebsnummern, Model.AlleBetriebsnummern.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen", col = "right" })
-
-            @Html.FormMultiSelectListFor(m => m.Zielorte, Model.AlleZielorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen" })
+            @Html.FormMultiSelectListFor(m => m.Zielorte, EquiGrunddatenSelektor.AlleZielorte.ToSelectList("Id", "Bezeichnung"), new { @class = "m-wrap chosen" })
 
             @Html.FormTextAreaFor(m => m.Fahrgestellnummer, new { @class = "m-wrap uppercase", col = "left" }, null, 40, 3)
             @Html.FormTextAreaFor(m => m.Fahrgestellnummer10, new { @class = "m-wrap uppercase", col = "right" }, null, 40, 3)
@@ -22,14 +21,14 @@
             @Html.FormDateRangePickerFor(m => m.AbmeldeDatumRange, new { col = "right" })
             @Html.FormDateRangePickerFor(m => m.ErfassungsDatumRange)
 
-            @Html.FormRadioButtonListFor(m => m.FahrzeugeMitZulassungsStatus, GrunddatenEquiSuchparameter.FahrzeugeZulassungsStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "left" })
-            @Html.FormCheckBoxFor(m => m.NurAbgemeldeteFahrzeuge, new { col = "right" })
+            @Html.FormRadioButtonListFor(m => m.FahrzeugeMitZulassungsStatus, EquiGrunddatenSelektor.FahrzeugeZulassungsStatusWerte.ToSelectList(), new { @class = "m-wrap", col = "left" })
+            @Html.FormCheckBoxFor(m => m.NurAbgemeldeteFahrzeuge, new { col = "right" }, labelHidden:true)
             
 
             @*@Html.FormRequiredFieldsSummary()*@
 
             <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;Suchen</button>
+                <button type="submit" class='btn blue'><i class='icon-search'></i>&nbsp;@Localize.Search</button>
             </div>
         </div>  
         

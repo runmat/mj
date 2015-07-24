@@ -11,11 +11,14 @@ namespace CkgDomainLogic.Equi.Services
 {
     public class KlaerfaelleVhcDataServiceSAP : CkgGeneralDataServiceSAP, IKlaerfaelleVhcDataService
     {
+        public KlaerfaelleVhcSuchparameter Suchparameter { get; set; }
+
         public List<KlaerfallVhc> KlaerfaelleVhc { get { return PropertyCacheGet(() => LoadKlaerfaelleVhcFromSap().ToList()); } }
 
         public KlaerfaelleVhcDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
+            Suchparameter = new KlaerfaelleVhcSuchparameter { Auswahl = "K" };
         }
 
         public void MarkForRefreshKlaerfaelleVhc()
@@ -25,9 +28,10 @@ namespace CkgDomainLogic.Equi.Services
 
         private IEnumerable<KlaerfallVhc> LoadKlaerfaelleVhcFromSap()
         {
-            var sapList = Z_M_VHC_KLAERFAELLE_001.GT_WEB.GetExportListWithInitExecute(SAP, "I_KONZS, I_VKORG", LogonContext.KundenNr.ToSapKunnr(), "1510");
-
-            return AppModelMappings.Z_M_VHC_KLAERFAELLE_001_GT_WEB_To_KlaerfallVhc.Copy(sapList);
+            if (Suchparameter.Auswahl == "D")
+                return AppModelMappings.Z_DPM_FFD_DATEN_OHNE_DOKUMENTE_GT_WEB_To_KlaerfallVhc.Copy(Z_DPM_FFD_DATEN_OHNE_DOKUMENTE.GT_WEB.GetExportListWithInitExecute(SAP, "I_KUNNR_AG, I_TAGE", LogonContext.KundenNr.ToSapKunnr(), 3));
+            
+            return AppModelMappings.Z_M_VHC_KLAERFAELLE_001_GT_WEB_To_KlaerfallVhc.Copy(Z_M_VHC_KLAERFAELLE_001.GT_WEB.GetExportListWithInitExecute(SAP, "I_KONZS, I_VKORG", LogonContext.KundenNr.ToSapKunnr(), "1510"));
         }
     }
 }

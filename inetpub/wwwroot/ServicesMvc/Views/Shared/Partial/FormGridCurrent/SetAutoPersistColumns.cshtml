@@ -1,0 +1,25 @@
+﻿@using MvcTools.Models
+@using Newtonsoft.Json
+@using Telerik.Web.Mvc
+@model GridSettings
+
+@{
+    var gridSettings = Model;
+    var jCols = gridSettings.Columns.NotNullOrEmpty().GetGridColumns();
+    var gridColumnNameList = (jCols == null ? null : JsonConvert.SerializeObject(jCols.Select(jc => (string)jc.member.Value).ToArray()));
+
+    var gridGrouping = gridSettings.GroupBy.NotNullOrEmpty();
+    if (gridGrouping.Contains("-"))
+    {
+        gridGrouping = gridGrouping.Split('-')[0];
+    }
+}
+
+<script type="text/javascript">
+
+    _gridColumnNameList = @Html.Raw(gridColumnNameList ?? "[]");
+    _gridColumnNameListIsValid = true;
+    _gridReportGeneratorMode = (@SessionHelper.GetSessionString("PersistableSelectorObjectKeyCurrent").IsNotNullOrEmpty().ToString().ToLower());
+    _gridGroupBy = '@gridGrouping';
+
+</script>

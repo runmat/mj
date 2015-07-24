@@ -43,7 +43,7 @@ namespace ServicesMvc.Controllers
         {
             var doc = SchadenakteViewModel.DocsViewModel.GetSchadenakteDoc(id);
 
-            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.Categories;
+            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.CategoriesWithoutZero;
 
             return PartialView("Schadenakte/Partial/Dokumente/SchadenakteDocEdit", doc);
         }
@@ -56,7 +56,7 @@ namespace ServicesMvc.Controllers
                 SchadenakteViewModel.DocsViewModel.UpdateDocument(model, ModelState);
             }
 
-            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.Categories;
+            ViewBag.AuswahlKategorie = SchadenakteViewModel.DocsViewModel.CategoriesWithoutZero;
 
             return PartialView("Schadenakte/Partial/Dokumente/SchadenakteDocEdit", model);
         }
@@ -105,13 +105,17 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult UploadSchadenakteDoc(IEnumerable<HttpPostedFileBase> uploadFiles)
         {
+            // Prüfen, ob Kategorie gesetzt ist
+            if (SchadenakteViewModel.DocsViewModel.NewDocCategoryID == 0)
+                return Content(Localize.ErrorsOccuredOnSaving);
+
             // Prüfen, ob Upload-Verzeichnis ok und Dateitypen erlaubt
             foreach (var uploadfile in uploadFiles)
             {
                 var verifyResult = VerifyDocument(uploadfile);
                 if (verifyResult != null)
                 {
-                    return verifyResult;
+                    return Content(verifyResult);
                 }
             }
 
@@ -162,18 +166,18 @@ namespace ServicesMvc.Controllers
             }       
         }
 
-        private JsonResult VerifyDocument(HttpPostedFileBase uploadFile)
+        private string VerifyDocument(HttpPostedFileBase uploadFile)
         {
 
             if (!CheckFolderAvailablilityAndCreate())
             {
-                return Json(new { success = false, message = Localize.DocumentCannotCreateFolder }, "text/plain");
+                return Localize.DocumentCannotCreateFolder;
             }
 
 
             if (!CheckFileExtension(uploadFile.FileName))
             {
-                return Json(new { success = false, message = Localize.CustomerDocumentUploadLegalFiletypeWarning }, "text/plain"); ;
+                return Localize.CustomerDocumentUploadLegalFiletypeWarning;
             }
 
             return null;
@@ -261,7 +265,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportSchadenakteDocsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Dokumente", dt);
 
             return new EmptyResult();
@@ -269,7 +273,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportSchadenakteDocsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.SchadenakteDocumentsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Dokumente", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -338,7 +342,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDocCategoriesFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Kategorien", dt);
 
             return new EmptyResult();
@@ -346,7 +350,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportDocCategoriesFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = SchadenakteViewModel.DocsViewModel.CategoriesFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Kategorien", dt, landscapeOrientation: true);
 
             return new EmptyResult();

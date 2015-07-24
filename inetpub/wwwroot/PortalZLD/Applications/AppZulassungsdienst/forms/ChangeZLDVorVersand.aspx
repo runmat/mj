@@ -83,12 +83,6 @@
                                                     MaxLength="20" />
                                             </td>
                                         </tr>
-                                        <tr class="formquery">
-                                            <td class="firstLeft active" colspan="3" style="height: 30px">
-                                                <asp:CheckBox ID="chkCPD" Visible="False" runat="server" />
-                                                <asp:CheckBox ID="chkCPDEinzug" Visible="False" runat="server" />
-                                            </td>
-                                        </tr>
                                         <tr>
                                             <td colspan="3" class="firstLeft active" style="background-color: #dfdfdf; height: 22px;
                                                 padding-left: 15px">
@@ -191,6 +185,8 @@
                                         <tr class="formquery">
                                             <td class="firstLeft active" colspan="3">
                                                 &nbsp;
+                                                <asp:HiddenField runat="server" ID="hfBankleitzahl"/>
+                                                <asp:HiddenField runat="server" ID="hfKontonummer"/>
                                             </td>
                                         </tr>
                                     </table>
@@ -265,31 +261,30 @@
                                                         <Columns>
                                                             <asp:TemplateField Visible="false">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblID_POS" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ID_POS") %>'></asp:Label>
+                                                                    <asp:Label ID="lblID_POS" runat="server" Text='<%# Eval("ID_POS") %>'/>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtSearch" CssClass="TextBoxNormal" runat="server" Width="75px"
-                                                                       ></asp:TextBox>
+                                                                    <asp:TextBox ID="txtSearch" CssClass="TextBoxNormal" runat="server" Width="75px"/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="firstLeft active" Width="75px" />
                                                                 <HeaderStyle BorderStyle="None" BorderColor="#ffffff" BorderWidth="0px"/>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField>
                                                                 <ItemTemplate>
-                                                                    <asp:DropDownList ID="ddlItems" Style="width: 375px"  runat="server" >
-                                                                    </asp:DropDownList>
+                                                                    <asp:DropDownList ID="ddlItems" Style="width: 375px"  runat="server"/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="firstLeft active" Width="375px" />
                                                                 <HeaderStyle BorderStyle="None" BorderColor="#ffffff" BorderWidth="0px"/>
                                                             </asp:TemplateField>
                                                             <asp:TemplateField>
                                                                 <HeaderTemplate>
-                                                                    <asp:Label ID="lblMenge" runat="server" Text="Stk."></asp:Label></HeaderTemplate>
+                                                                    <asp:Label ID="lblMenge" runat="server" Text="Stk."/>
+                                                                </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtMenge" CssClass="TextBoxNormal" runat="server" Width="40px" 
-                                                                    onKeyPress="return numbersonly(event, true)" Text='<%# DataBinder.Eval(Container, "DataItem.Menge") %>' ></asp:TextBox>
+                                                                                 onKeyPress="return numbersonly(event, true)" Text='<%# Eval("Menge") %>'/>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderStyle="None" CssClass="TablePadding" Width="55px"/>
                                                                 <HeaderStyle BorderStyle="None" BorderColor="#ffffff" BorderWidth="0px"/>
@@ -305,7 +300,7 @@
                                                             </asp:TemplateField>
                                                             <asp:TemplateField Visible="false">
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblDLBezeichnung" runat="server" Text='<%# Eval("DLBezeichnung") %>'></asp:Label>
+                                                                    <asp:Label ID="lblDLBezeichnung" runat="server" Text='<%# Eval("DLBezeichnung") %>'/>
                                                                 </ItemTemplate>
                                                             </asp:TemplateField>
                                                         </Columns>
@@ -361,7 +356,6 @@
                                                 <td class="firstLeft active" colspan="3" style="width: 100%">
                                                     <asp:LinkButton runat="server" ID="lbtnFeinstaub" CssClass="TablebuttonXSmall" Width="20px" Height="16px" Text="+" OnClick="lbtnFeinstaub_Click"></asp:LinkButton>
                                                     &nbsp;&nbsp;Feinstaubplakette vom Amt
-                                                    <asp:CheckBox ID="cbxSave" runat="server" Enabled="False" Text="saved" Visible="False" />
                                                 </td>
                                             </tr>
                                             <tr class="formquery">

@@ -12,12 +12,13 @@ namespace AppZulassungsdienst.forms
     public partial class Wareneingang : System.Web.UI.Page
     {
         private User m_User;
-        private App m_App;
         private clsWareneingang objWareneingang;
+
+        #region Events
 
         /// <summary>
         /// Page_Load Ereignis. Prüfen ob die Anwendung dem Benutzer zugeordnet ist.
-        /// Erwartete Bestellungen laden(Z_FIL_READ_OFF_BEST_001) und an die Listbox binden.
+        /// Erwartete Bestellungen laden und an die Listbox binden.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -25,10 +26,10 @@ namespace AppZulassungsdienst.forms
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User);
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
@@ -41,42 +42,33 @@ namespace AppZulassungsdienst.forms
             {
                 if (Request.QueryString["BackToList"] != null && Session["objWareneingang"] != null)
                 {
-                    objWareneingang = (clsWareneingang) Session["objWareneingang"];
+                    objWareneingang = (clsWareneingang)Session["objWareneingang"];
                     objWareneingang.ReInit(Request.QueryString["BackToList"]);
                 }
                 else
                 {
-                    objWareneingang = new clsWareneingang(ref m_User, m_App, Session["AppID"].ToString(), Session.SessionID, "");
-                    objWareneingang.VKBUR = m_User.Reference.Substring(4, 4);
-                    objWareneingang.VKORG = m_User.Reference.Substring(0, 4);
-                    objWareneingang.getErwarteteLieferungenFromSAP(Session["AppID"].ToString(), Session.SessionID, this);   
+                    objWareneingang = new clsWareneingang(m_User.Reference);
+                    objWareneingang.getErwarteteLieferungenFromSAP();
                 }
 
                 Session["objWareneingang"] = objWareneingang;
 
-                if (objWareneingang.Status != 0)
+                if (objWareneingang.ErrorOccured)
                 {
-                    if (objWareneingang.Status == -1)
-                    {
-                        lblError.Text = objWareneingang.Message;
-                    }
-                    else
-                    {
-                        lblError.Text = "Es ist ein Fehler aufgetreten <br> " + objWareneingang.Message;
-                    }
+                    lblError.Text = "Es ist ein Fehler aufgetreten <br> " + objWareneingang.Message;
                     lbWeiter.Visible = false;
                 }
                 else
-                { 
+                {
                     lbWeiter.Visible = true;
-                    lbxBestellungen.DataSource = new DataView(objWareneingang.ErwarteteLieferungen);
+                    lbxBestellungen.DataSource = objWareneingang.ErwarteteLieferungen;
                     lbxBestellungen.DataBind();
                 }
             }
         }
 
         /// <summary>
-        /// Positionen der ausgewählten Bestellung selektieren(Z_FIL_EFA_UML_OFF_POS). Und an die Detailseite übergeben.
+        /// Positionen der ausgewählten Bestellung selektieren und an die Detailseite übergeben.
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">EventArgs</param>
@@ -84,32 +76,33 @@ namespace AppZulassungsdienst.forms
         {
             if (lbxBestellungen.SelectedIndex != -1)
             {
-                DataRow [] drow;
-                drow = objWareneingang.ErwarteteLieferungen.Select("Bestellnummer='" + lbxBestellungen.SelectedValue + "'");
+                DataRow[] drow = objWareneingang.ErwarteteLieferungen.Select("Bestellnummer='" + lbxBestellungen.SelectedValue + "'");
                 if (drow.Length > 0)
                 {
+                    objWareneingang.IstUmlagerung = (drow[0]["IstUmlagerung"].ToString() == "X");
                     objWareneingang.BELNR = lbxBestellungen.SelectedValue;
-                    objWareneingang.getUmlPositionenFromSAP(Session["AppID"].ToString(), Session.SessionID, this);
 
-                }
-                else { lblError.Text = "Fehler beim lesen der Bestellungdetails!"; }
+                    if (objWareneingang.IstUmlagerung)
+                        objWareneingang.getUmlPositionenFromSAP();
+                    else
+                        objWareneingang.getBestPositionenFromSAP();
 
-
-                switch (objWareneingang.Status)
-                {
-                    case 0:
-                        objWareneingang.Lieferant = lbxBestellungen.SelectedItem.Text;
-                        Response.Redirect("WareneingangDetails.aspx?AppID=" + Session["AppID"].ToString());
-                        break;
-                    case -1:
-                        lblError.Text = objWareneingang.Message;
-                        break;
-                    default:
+                    if (objWareneingang.ErrorOccured)
+                    {
                         lblError.Text = "Es ist ein Fehler aufgetreten: <br>" + objWareneingang.Message;
-                        break;
+                    }
+                    else
+                    {
+                        objWareneingang.Lieferant = lbxBestellungen.SelectedItem.Text;
+                        Session["objWareneingang"] = objWareneingang;
+                        Response.Redirect("WareneingangDetails.aspx?AppID=" + Session["AppID"].ToString());
+                    }
+                }
+                else
+                {
+                    lblError.Text = "Fehler beim lesen der Bestellungdetails!";
                 }
             }
-
         }
 
         /// <summary>
@@ -133,26 +126,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Filter auf die Listbox setzen. Bei Lieferanten- und/oder Bestellnummersuche.
-        /// </summary>
-        private void SelectBestellung() 
-        {
-            objWareneingang.BestellnummerSelection = txtBestellnummer.Text.Replace(" ", "");
-            objWareneingang.LieferantSelection = txtLieferantName.Text.Replace(" ", "");
-
-
-            DataView tmpDataView = new DataView(objWareneingang.ErwarteteLieferungen);
-            tmpDataView.RowFilter = "LieferantName LIKE '" + objWareneingang.LieferantSelection.Replace("*", "%") + "' AND Bestellnummer LIKE '" + objWareneingang.BestellnummerSelection.Replace("*", "%") + "'";
-
-            lbxBestellungen.DataSource = tmpDataView;
-            lbxBestellungen.DataBind();
-            if (tmpDataView.Count == 1) 
-            {
-                lbxBestellungen.SelectedIndex = 0;
-            }
-        }
-
-        /// <summary>
         /// Zurück zur Startseite.
         /// </summary>
         /// <param name="sender">object</param>
@@ -170,7 +143,31 @@ namespace AppZulassungsdienst.forms
         private void Page_PreRender(object sender, EventArgs e)
         {
             lblBestellungsAnzahl.Text = lbxBestellungen.Items.Count.ToString();
-
         }
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Filter auf die Listbox setzen. Bei Lieferanten- und/oder Bestellnummersuche.
+        /// </summary>
+        private void SelectBestellung()
+        {
+            objWareneingang.BestellnummerSelection = txtBestellnummer.Text.Replace(" ", "");
+            objWareneingang.LieferantSelection = txtLieferantName.Text.Replace(" ", "");
+
+            DataView tmpDataView = new DataView(objWareneingang.ErwarteteLieferungen);
+            tmpDataView.RowFilter = "LieferantName LIKE '" + objWareneingang.LieferantSelection.Replace("*", "%") + "' AND Bestellnummer LIKE '" + objWareneingang.BestellnummerSelection.Replace("*", "%") + "'";
+
+            lbxBestellungen.DataSource = tmpDataView;
+            lbxBestellungen.DataBind();
+            if (tmpDataView.Count == 1)
+            {
+                lbxBestellungen.SelectedIndex = 0;
+            }
+        }
+
+        #endregion
     }
 }

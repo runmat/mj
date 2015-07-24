@@ -33,6 +33,12 @@
             }     
             __doPostBack(ddlClientID.id, '');
         }
+        function SetHalterName(txtName, ddlStva, txtReferenz) {
+            var amt = ddlStva.options[ddlStva.selectedIndex].value;
+            if (amt == "DN") {
+                txtReferenz.value = txtName.value.toUpperCase();
+            }
+        }
     </script>
     <div id="site">
         <div id="content">
@@ -174,7 +180,7 @@
                                                                         </td>
                                                                     </tr>
                                                                     <div id="divHalter" runat="server" visible="false">
-                                                                        <tr class="formquery">
+                                                                        <tr id="trAnrede" runat="server" class="formquery" visible="false">
                                                                             <td class="firstLeft active" style="width: 130px">
                                                                                 <asp:Label ID="lblAnrede" runat="server" Text="Anrede*"></asp:Label>
                                                                             </td>
@@ -187,7 +193,7 @@
                                                                                 <asp:Label ID="lblAnredeInfo" runat="server" CssClass="TextError"></asp:Label>
                                                                             </td>
                                                                         </tr>
-                                                                        <tr class="formquery">
+                                                                        <tr id="trName" runat="server" class="formquery" visible="false">
                                                                             <td class="firstLeft active" style="width: 130px">
                                                                                 <asp:Label ID="lblName" runat="server" Text="Name1*"></asp:Label>
                                                                             </td>
@@ -201,7 +207,7 @@
                                                                                 <asp:Label ID="lblNameInfo" runat="server" CssClass="TextError"></asp:Label>
                                                                             </td>
                                                                         </tr>
-                                                                        <tr class="formquery">
+                                                                        <tr id="trName2" runat="server" class="formquery" visible="false">
                                                                             <td class="firstLeft active" style="width: 130px">
                                                                                 <asp:Label ID="lblName2" runat="server" Text="Name2*"></asp:Label>
                                                                             </td>
@@ -244,7 +250,7 @@
                                                                                     Height="18px" Width="18px" Visible="False" />
                                                                             </td>
                                                                         </tr>
-                                                                        <tr class="formquery">
+                                                                        <tr id="trStrasse" runat="server" class="formquery" visible="false">
                                                                             <td class="firstLeft active" style="width: 130px">
                                                                                 <asp:Label ID="lblStrasse" runat="server" Text="Strasse und Hausnr.*"></asp:Label>
                                                                             </td>
@@ -263,7 +269,7 @@
                                                                                 <asp:Label ID="lblStrasseInfo" runat="server" CssClass="TextError"></asp:Label>
                                                                             </td>
                                                                         </tr>
-                                                                        <tr class="formquery">
+                                                                        <tr id="trOrt" runat="server" class="formquery" visible="false">
                                                                             <td class="firstLeft active" style="width: 130px">
                                                                                 <asp:Label ID="lblOrt" runat="server" Text="PLZ und Ort*"></asp:Label>
                                                                             </td>
@@ -824,6 +830,14 @@
                                                         <asp:Label ID="lblZusKundeData" runat="server"></asp:Label>
                                                     </td>
                                                 </tr>
+                                                <tr ID="trZusHalter" runat="server" class="formquery">
+                                                    <td class="firstLeft active">
+                                                        <asp:Label ID="lblZusHalter" runat="server" Text="Halter"></asp:Label>
+                                                    </td>
+                                                    <td class="active">
+                                                        <asp:Label ID="lblZusHalterData" runat="server"></asp:Label>
+                                                    </td>
+                                                </tr>
                                                 <tr class="formquery">
                                                     <td class="firstLeft active">
                                                         <asp:Label ID="lblZusStva" runat="server" Text="StVA"></asp:Label>
@@ -993,7 +1007,7 @@
                             PopupControlID="mb2" BackgroundCssClass="modalBackground" DropShadow="true">
                         </cc1:ModalPopupExtender>
                         <asp:Panel ID="mb2" runat="server" Width="240px" BackColor="White" DefaultButton="btnAgeWarningHold" Style="padding-left: 10px; padding-top: 15px;">
-                            Achtung!<br />Das von Ihnen eingegebene Geburtsdatum ergibt ein Alter von <18 oder >90 Jahren.<br />Bitte prüfen Sie diesen Wert vor dem Absenden ggf. noch einmal.<br />
+                            Achtung!<br />Das von Ihnen eingegebene Geburtsdatum ergibt ein Alter von &lt;18 oder &gt;90 Jahren.<br />Bitte prüfen Sie diesen Wert vor dem Absenden ggf. noch einmal.<br />
                             <table width="100%" style="text-align: center">
                                 <tr>
                                     <td>

@@ -238,6 +238,91 @@ namespace CkgDomainLogic.Finance.Models
             }
         }
 
+        static public ModelMapping<Z_M_BRIEF_TEMP_VERS_MAHN_001.GT_WEB, TempZb2Versand> Z_DPM_EXP_MAHN_ERSTEINGANG_GT_WEB_To_TempZb2Versand
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_BRIEF_TEMP_VERS_MAHN_001.GT_WEB, TempZb2Versand>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {                        
+                        destination.Kennzeichen = source.LICENSE_NUM;
+                        destination.Fahrgestellnummer = source.CHASSIS_NUM;
+                        destination.Zb2Nummer = source.TIDNR;
+                        destination.Name = source.NAME1;
+                        destination.Strasse = source.STREET;
+                        destination.Postleitzahl = source.POST_CODE1;
+                        destination.Ort = source.CITY1;
+                        destination.Versandadresse = string.Concat(source.NAME1.AppendIfNotNull(", "), source.STREET.AppendIfNotNull(", "),
+                            source.POST_CODE1.AppendIfNotNull(", "), source.CITY1); 
+                        destination.Versanddatum = source.ZZTMPDT;
+                        destination.Versandgrund = source.ZZVGRUND_TEXT;                       
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_SCHLUE_TEMP_VERS_MAHN_001.GT_WEB, TempVersandZweitschluessel> Z_M_SCHLUE_TEMP_VERS_MAHN_001_To_TempVersandZweitschluessel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_SCHLUE_TEMP_VERS_MAHN_001.GT_WEB, TempVersandZweitschluessel>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kennzeichen = source.LICENSE_NUM;
+                        destination.Fahrgestellnummer = source.CHASSIS_NUM;
+                        destination.Versandadresse = string.Concat(source.NAME1.AppendIfNotNull(", "), source.STREET.AppendIfNotNull(", "),
+                            source.POST_CODE1.AppendIfNotNull(", "), source.CITY1);                       
+                        destination.Versanddatum = source.ZZTMPDT;
+                        destination.Vertragsnummer = source.EQUNR;                      
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_M_SCHLUESSELDIFFERENZEN.GT_WEB_OUT_BRIEFE, FehlendeSchluesseltuete> Z_M_SCHLUESSELDIFFERENZEN_To_FehlendeSchluesseltuete
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_SCHLUESSELDIFFERENZEN.GT_WEB_OUT_BRIEFE, FehlendeSchluesseltuete>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kennzeichen = source.LICENSE_NUM;
+                        destination.Fahrgestellnummer = source.CHASSIS_NUM;                       
+                        destination.Briefnummer = source.TIDNR;
+                        destination.Erstzulassung = source.REPLA_DATE;
+                        destination.PDINummer = source.KUNPDI.Replace("PDI", String.Empty);                        
+                        destination.Hersteller = String.Empty;
+                        destination.Vertragsnummer = source.EQUNR;                        
+                    }));
+            }
+        }
+
+
+        static public ModelMapping<Z_M_ABMBEREIT_LAUFZEIT.AUSGABE, CarporteingaengeOhneEH> Z_M_ABMBEREIT_LAUFZEIT_To_CarporteingaengeOhneEH
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_ABMBEREIT_LAUFZEIT.AUSGABE, CarporteingaengeOhneEH>(
+                    new Dictionary<string, string>()
+                    , (source, destination) =>
+                    {
+                        destination.Kennzeichen = source.ZZKENN;
+                        destination.Fahrgestellnummer = source.ZZFAHRG;
+                        destination.Modellbezeichnung = source.ZZHANDELSNAME;
+                        destination.FruehesteAbmeldung = source.REPLA_DATE;
+                        destination.Erstzulassung = source.VDATU;
+                        destination.PDINummer = source.KUNPDI;
+                        destination.Hersteller = source.ZZHERST_TEXT;
+                        destination.Laufzeit = source.ZZLAUFZEIT;
+                        destination.BelegNr = source.BELNR;
+                    }));
+            }
+        }
+
+
+
+
         #endregion
 
 
@@ -361,6 +446,30 @@ namespace CkgDomainLogic.Finance.Models
                     }));
             }
         }
+
+
+
+        /// <summary>
+        /// Upload Fahrzeugeinsteuerung
+        /// </summary>
+        static public ModelMapping<Z_M_Schluesselverloren.GT_WEB_IN, FehlendeSchluesseltuete> Z_M_Schluesselverloren_GT_WEB_IN_From_FehlendeSchluesseltuete
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_Schluesselverloren.GT_WEB_IN, FehlendeSchluesseltuete>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (source, destination) =>
+                    {
+                        destination.KUNNR = source.KUNNR;
+                        destination.CHASSIS_NUM = source.Fahrgestellnummer;                      
+                        destination.EQUNR = source.Vertragsnummer;
+                        destination.FLAG = "X";                        
+                    }
+                ));
+            }
+        }
+
 
         #endregion
     }

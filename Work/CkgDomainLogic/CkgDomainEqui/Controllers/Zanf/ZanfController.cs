@@ -40,9 +40,9 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult ShowZanfKlaerfalltext(string anforderungsNr, string hauptpositionsNr)
+        public ActionResult ShowZanfKlaerfalltext(string anforderungsNr, string hauptpositionsNr, string auftragsNr)
         {
-            return PartialView("ZanfReport/ZanfKlaerfalltext", ZanfReportViewModel.GetItem(anforderungsNr, hauptpositionsNr));
+            return PartialView("ZanfReport/ZanfKlaerfalltext", ZanfReportViewModel.GetItem(anforderungsNr, hauptpositionsNr, auftragsNr));
         }
 
         [HttpPost]
@@ -55,7 +55,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZulassungsAnforderungenFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.RegistrationRequests, dt);
 
             return new EmptyResult();
@@ -63,7 +63,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportZulassungsAnforderungenFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ZanfReportViewModel.ZulassungsAnforderungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.RegistrationRequests, dt, landscapeOrientation: true);
 
             return new EmptyResult();

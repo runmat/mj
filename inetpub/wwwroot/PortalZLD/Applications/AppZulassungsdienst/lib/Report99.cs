@@ -1,126 +1,56 @@
 ﻿using System;
-using CKG.Base.Common;
 using System.Data;
 using CKG.Base.Business;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib
 {
     /// <summary>
     /// Klasse für die Dokumentenanforderung der Zulassungstellen.
     /// </summary>
-    public class Report99 : DatenimportBase
+    public class Report99 : SapOrmBusinessBase
     {
-        #region "Declarations"
-        String strKennzeichen;
-        #endregion
-
         #region "Properties"
+
         /// <summary>
         /// Selektierte StVa zur Übergabe an das Bapi.
         /// </summary>
-        public String PKennzeichen
-        {
-            get { return strKennzeichen; }
-            set { strKennzeichen = value; }
-        }
+        public String PKennzeichen { get; set; }
+
+        public DataTable tblResult { get; private set; }
 
         #endregion
 
         #region "Methods"
 
-        /// <summary>
-        /// Kontruktor
-        /// </summary>
-        /// <param name="objUser">User-Object</param>
-        /// <param name="objApp">Applikations-Object</param>
-        /// <param name="strFilename">Empty</param>
-        public Report99(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strFilename)
-            : base(ref objUser, objApp, strFilename)
-        {}
-
-        /// <summary>
-        ///  Datenselektion für die Ausgabe der Dokumentenanforderung. Bapi: Z_M_ZGBS_BEN_ZULASSUNGSUNT
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Dokumentenanforderung.aspx.cs</param>
-        public void Fill(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void Fill()
         {
-
-            m_strClassAndMethod = "Report99ZLD.Fill";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_M_ZGBS_BEN_ZULASSUNGSUNT", ref m_objApp, ref m_objUser, ref page);
-               
-                    myProxy.setImportParameter("I_ZKBA1", "");
-                    myProxy.setImportParameter("I_ZKBA2", "");
-                    myProxy.setImportParameter("I_ZKFZKZ", strKennzeichen);
-                    myProxy.setImportParameter("I_AUSWAHL", "");
+                    Z_M_ZGBS_BEN_ZULASSUNGSUNT.Init(SAP);
 
-                    myProxy.callBapi();
+                    SAP.SetImportParameter("I_ZKBA1", "");
+                    SAP.SetImportParameter("I_ZKBA2", "");
+                    SAP.SetImportParameter("I_ZKFZKZ", PKennzeichen);
+                    SAP.SetImportParameter("I_AUSWAHL", "");
 
-                    m_tblResult = myProxy.getExportTable("GT_WEB");
-                    WriteLogEntry(true, "I_ZKFZKZ=" + strKennzeichen , ref m_tblResult);
-                }
+                    CallBapi();
 
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden.";
-                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult);
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult);
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    tblResult = SAP.GetExportTable("GT_WEB");
+                });
         }
 
-        /// <summary>
-        /// Pflegen der Dokumentenanforderung der Zulassungstellen. Bapi: Z_ZLD_IMPORT_ZULUNT
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Change99ZLD.aspx</param>
-        /// <param name="tblForm">Importtabelle</param>
-        public void Change(String strAppID, String strSessionID, System.Web.UI.Page page, DataTable tblForm)
+        public void Change(DataTable tblForm)
         {
-
-            m_strClassAndMethod = "ZLD_Suche.Change";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_IMPORT_ZULUNT", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_IMPORT_ZULUNT.Init(SAP);
 
-                    DataTable tblSap = myProxy.getImportTable("GS_WEB");
-
-
-                    DataRow SapRow = tblSap.NewRow();
+                    DataTable tblSap = SAP.GetImportTable("GS_WEB");
 
                     foreach (DataRow FormRow in tblForm.Rows)
                     {
+                        DataRow SapRow = tblSap.NewRow();
 
                         SapRow["MANDT"] = FormRow["MANDT"].ToString();
                         SapRow["ZKBA1"] = FormRow["ZKBA1"].ToString();
@@ -233,28 +163,9 @@ namespace AppZulassungsdienst.lib
 
                         tblSap.Rows.Add(SapRow);
                     }
-                    myProxy.callBapi();
 
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_intStatus = subrc;
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    CallBapi();
+                });
         }
 
     #endregion

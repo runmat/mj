@@ -696,6 +696,11 @@ div.t-window {
 {
     padding-left: 15px;
 }
+.t-grid-multi-row-select {
+    cursor: pointer!important;
+    background-color: #fff;
+}
+
 
 .t-grid-selected {
     background-color: #dff0d8!important;
@@ -703,16 +708,29 @@ div.t-window {
 .t-grid-selected-alt {
     background-color: #d0f0c6!important;
 }
+
 .t-grid-error {
     background-color: #ffeeee!important;
 }
 .t-grid-error-alt {
     background-color: #f6e6e6!important;
 }
-.t-grid-multi-row-select {
-    cursor: pointer!important;
-    background-color: #fff;
+
+.t-grid-confirmed {
+    background-color: #E2FBE2!important;
 }
+.t-grid-confirmed-alt {
+    background-color: #D7FCD7!important;
+}
+
+.t-grid-unconfirmed {
+    background-color: #ffffd8!important;
+}
+.t-grid-unconfirmed-alt {
+    background-color: #ffffc6!important;
+}
+
+
 
 .text-box.single-line {
     width: 150px;
@@ -730,9 +748,9 @@ div.t-window {
 /* <Summary> */
 .SummaryItems 
 {
+    margin-left: 2px; 
     padding-bottom: 20px;
 }
-
 .SummaryItem {
     float: left;
     margin-left: 25px;
@@ -749,15 +767,28 @@ div.t-window {
     min-height: 20px!important;
     height: auto!important;
 }
-
 .SummaryItemTitle {
     font-weight: bold;
     margin-bottom: 0;
 }
-
 .SummaryItemBody {
     margin-bottom: 0;
     margin-left: 1px;
+}
+
+.SummaryItemsFullWidth {
+    margin-left: 2px; 
+    margin-top: 10px;
+}
+.SummaryItemFullWidth {
+   margin-top: 2px;
+}
+.SummaryItemTitleFullWidth {
+    margin-top: 2px;
+}
+.SummaryItemBodyFullWidth {
+    margin-top: 1px;
+    min-height: 20px;
 }
 
 .SummaryAddressHint {
@@ -768,7 +799,7 @@ div.t-window {
 
 
 /* <Loading> */
-.loading {
+.loading,.loading2 {
     position: absolute;
     left: 500px;
     top: 300px;
@@ -839,7 +870,6 @@ span.m-wrap.font-normal { font-weight: normal!important; }
 .font-bold { font-weight: bold; }
 
 .checker.disabled {
-    display: block;
     padding-top: 7px;
 }
 
@@ -1199,4 +1229,14 @@ i.dienstleistung-gewaehlt {
 
 div.controls-width-400 .controls {
     width: 400px;
+}
+
+.persistable-field-marker {
+    margin-left: 3px;
+    color: orange;
+    font-size: 0.9em;
+}
+
+.form-horizontal.reduced-margin .control-group {
+  margin-bottom: 5px;
 }

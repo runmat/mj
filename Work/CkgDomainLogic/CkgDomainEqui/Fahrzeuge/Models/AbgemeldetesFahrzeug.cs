@@ -4,6 +4,7 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
+    [GridColumnsAutoPersist]
     public class AbgemeldetesFahrzeug
     {
         [LocalizedDisplay(LocalizeConstants.Status)]
@@ -57,10 +58,34 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.DepartmentHead)]
         public string AbteilungsLeiter { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string Kennzeichen { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        public string Fahrgestellnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.RegistrationNo)]
+        public string Briefnummer { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ExecutionDate)]
+        public DateTime? Durchfuehrung { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.ShippingDate)]
+        public DateTime? Versand { get; set; }
+
         [GridHidden]
         public bool HistorieAvailable { get { return Art.IsNotNullOrEmpty() || Bemerkung.IsNotNullOrEmpty(); } }
 
         [GridHidden]
         public string HistorieCssClass { get { return HistorieAvailable ? "" : "hide"; } }
+
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Action1 { get; set; }
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.ActionDot)]
+        public string Action2 { get; set; }
     }
 }

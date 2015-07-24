@@ -1,0 +1,86 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model CkgDomainLogic.Fahrzeuge.ViewModels.TreuhandbestandViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeug_Treuhandbestand</h3>
+
+<style type="text/css">  
+</style>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+<div class="hide">
+    @using (Html.FormSearchBox())
+    {
+        @Html.Partial("Treuhandbestand/TreuhandbestandSuche", null)
+    }
+</div>
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divTreuhandbestandGrid"></div>
+}
+
+
+<script type="text/javascript">
+
+    var ladeHinweis = '@Localize.LoadingData';
+
+    function FormPreparePrivate() {
+        $("#TreuhandbestandForm button[type=submit]").trigger("click");
+    }
+
+    function FormPreparePrivateAjax() {
+        $("#divTreuhandbestandSuche").css("hide");
+        FormPrepareAjax();
+    }
+
+    function ShowTreuhandbestand() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowTreuhandbestand",
+            loadingShow: false,
+            success: function (result) {
+                //SearchResultsTryHide();
+                ShowTreuhandbestandSearchResult(result);
+                LoadingHide();
+            }
+        });
+        //alert("1")
+    }
+
+    function OnDataBound_GridTreuhandbestand() {
+        //alert("Entry_OnDataBound_GridTreuhandbestand");
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        //alert("OnDataBound_GridTreuhandbestand");
+    }
+
+    function OnLoad_GridTreuhandbestand() {
+        //alert("1");
+        //$('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnColumnShowHide_GridTreuhandbestand() {
+        //alert("2");
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridTreuhandbestand() {
+        //alert("3");
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowTreuhandbestandSearchResult(result) {
+        SearchFormHide();
+        $("#divTreuhandbestandGrid").html(result);
+        //alert("4");
+        GridAllColumnFilterApplyToGrid("GridTreuhandbestand");
+        $("#divTreuhandbestandGrid").slideDown();
+        //alert("5");
+    }
+
+    
+</script>

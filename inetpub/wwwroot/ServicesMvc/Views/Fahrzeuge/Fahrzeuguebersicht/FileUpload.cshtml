@@ -1,0 +1,26 @@
+﻿<div class="control-group">
+    <label class="control-label">@Localize.UploadFile:</label>
+    <div class="controls">
+                
+        @(Html.Telerik().Upload()
+                .Name("fileUpload")
+                .Multiple(false)
+                .Localizable("de-DE")
+                .Async(async => async
+                                    .Save("ExcelUploadFahrzeuguebersichtStart", "Fahrzeuge")
+                                    .SaveField("uploadFiles")                                                                        
+                                    .AutoUpload(true))
+                .Multiple(false)
+                .ShowFileList(false)
+                .ClientEvents(events => events
+                                            .OnUpload("UploadStart")
+                                            .OnSuccess("UploadFinished")
+                                            .OnError("UploadError")
+                                            //.OnComplete("UploadComplete")
+                )
+        )
+
+    </div>
+</div>
+
+<a href="DownloadExcelFilterTemplate" class="btn white tooltips margin-right-10" data-original-title="@Localize.DownloadExcelFileTemplateTitle" data-placement="top">@Localize.TemplateForUploadFile <i class="icon-chevron-right"></i></a>

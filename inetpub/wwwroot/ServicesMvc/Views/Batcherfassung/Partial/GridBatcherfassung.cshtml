@@ -1,0 +1,42 @@
+﻿@model CkgDomainLogic.FzgModelle.ViewModels.BatcherfassungViewModel 
+@using CkgDomainLogic.FzgModelle.Models
+@{
+    var gridName = "GridBatcherfassung";
+}
+
+@(Html.XTelerik()
+    .XGrid<Batcherfassung>()
+    .Name(gridName)
+    .XAjaxDataBinding("BatcherfassungAjaxBinding", "Batcherfassung")
+    .Columns(columns =>
+        {
+            columns.XBound(c => c.ID).Filterable(false).Sortable(false).Groupable(false)
+                    .ClientTemplate(
+                        "<button onclick='ItemEdit(\"<#= data.ID #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+                        + "&nbsp;"
+                        + "<button onclick='ShowGridUnitNumbers(\"<#= data.ID #>\");' class='btn copy mini gray tooltips' data-original-title='" + Localize.UnitNumber + "' data-placement='right'><i class='halflings-icon list white'></i></button>"
+                ).HeaderTemplate(
+                    "<button onclick='ItemNew(\"\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemAdd + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
+                );
+         
+            columns.XBound(c => c.ID);
+            columns.XBound(c => c.ModellId);
+            columns.XBound(c => c.Modellbezeichnung);
+            columns.XBound(c => c.AuftragsnummerVon);
+            columns.XBound(c => c.AuftragsnummerBis);
+            columns.XBound(c => c.Anzahl);
+            columns.XBound(c => c.Vertragsart);
+            columns.XBound(c => c.Liefermonat); 
+            columns.XBound(c => c.Status);
+        })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.ID).Ascending())
+        .XToolBar("Batcherfassung")
+         .ToolBar(commands =>
+         {
+             commands.FilteredDataCommand("ExportBatcherfassungFilteredExcel", "Batcherfassung");
+             commands.FilteredDataCommand("ExportBatcherfassungFilteredPDF", "Batcherfassung");
+         })
+)

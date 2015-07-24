@@ -69,6 +69,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PdfSharp\PdfSharp.dll</HintPath>
     </Reference>
+    <Reference Include="SmartSoft.PdfLibrary, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="SpreadsheetLight">
       <HintPath>..\..\GAC\SpreadsheetLight\SpreadsheetLight.dll</HintPath>
     </Reference>

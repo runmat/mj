@@ -11,6 +11,7 @@ using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using MvcTools.Models;
 using MvcTools.Web;
 
 namespace CkgDomainLogic.General.Services
@@ -39,6 +40,9 @@ namespace CkgDomainLogic.General.Services
 
         [LocalizedDisplay(LocalizeConstants.UserName)]
         public string UserName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.UserName)]
+        public string UserNameForDisplay { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.FirstName)]
         public string FirstName { get; set; }
@@ -102,6 +106,18 @@ namespace CkgDomainLogic.General.Services
         }
 
         public string ReturnUrl { get { return SessionHelper.GetSessionString("ReturnUrl"); } set { SessionHelper.SetSessionValue("ReturnUrl", value); } }
+
+        // only for backward compatibility:
+        public string CurrentGridColumns
+        {
+            get
+            {
+                var gridSettings = SessionHelper.GetSessionObject("GridCurrentSettings", () => new GridSettings());
+
+                return gridSettings.Columns;
+            }
+        }
+
 
         virtual public bool AppFavoritesEditSwitchOneFavorite(int appID)
         {
@@ -249,15 +265,6 @@ namespace CkgDomainLogic.General.Services
             return Customer.MvcRawLayout;
         }
 
-        public virtual string GetUserGridColumnNames(Type modelType, GridColumnMode gridColumnMode, string gridGroup)
-        {
-            return "";
-        }
-
-        public virtual void SetUserGridColumnNames(string gridGroup, string columns)
-        {
-        }
-
         public virtual void DataContextPersist(object dataContext) 
         {
         }
@@ -389,6 +396,11 @@ namespace CkgDomainLogic.General.Services
         public int GetAppIdCurrent()
         {
             return LogonContextHelper.GetAppIdCurrent(UserApps);
+        }
+
+        public virtual string GetEmailAddressForUser()
+        {
+            return "";
         }
     }
 }

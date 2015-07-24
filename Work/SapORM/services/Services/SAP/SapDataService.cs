@@ -286,7 +286,10 @@ namespace SapORM.Services
 
             if (!string.IsNullOrEmpty(paramName))
             {
-                _sapProxy.SetImportParameter(paramName,(value == null) ? null : value.ToString());
+                if (value is  byte[])
+                    _sapProxy.SetImportParameter(paramName, value);
+                else
+                    _sapProxy.SetImportParameter(paramName, (value == null) ? null : value.ToString());
             }       
         }
 
@@ -377,8 +380,13 @@ namespace SapORM.Services
                 var customErrorMessage = getCustomErrorMessageFunction();
                 if (customErrorMessage.IsNotNullOrEmpty())
                 {
-                    errorMessage += errorMessage.IsNotNullOrEmpty() ? ";Meldung im Detail: " : "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden: ";
-                    errorMessage += customErrorMessage;
+                    if (!errorMessage.NotNullOrEmpty().ToLower().Contains(customErrorMessage.NotNullOrEmpty().ToLower()))
+                    {
+                        errorMessage += errorMessage.IsNotNullOrEmpty()
+                                            ? ";Meldung im Detail: "
+                                            : "Eine oder mehrere Anforderungen konnten im System nicht erstellt werden: ";
+                        errorMessage += customErrorMessage;
+                    }
                 }
             }
 

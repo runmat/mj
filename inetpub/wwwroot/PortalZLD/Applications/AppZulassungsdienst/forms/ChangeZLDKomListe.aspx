@@ -4,7 +4,6 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 
 	<script language="JavaScript" type="text/javascript" src="/PortalZLD/Applications/AppZulassungsdienst/JavaScript/helper.js?26082013"></script>
-	<script src="/PortalZLD/Applications/AppZulassungsdienst/Javascript/GridViewHelper.js" type="text/javascript"></script>
     <script src="/PortalZLD/JScript/jquery-1.6.2.min.js" type="text/javascript"></script>
     <script src="/PortalZLD/JScript/jquery-ui-1.8.16.custom.min.js" type="text/javascript"></script>
         <script src="/PortalZLD/JScript/jquery.blockUI.js" type="text/javascript"></script>
@@ -99,13 +98,13 @@
 												<td class="firstLeft active">
 													<asp:DropDownList ID="ddlSuche" runat="server" Style="width: auto" >
 													    <asp:ListItem Text="Kennzeichen" Value="Kennzeichen"></asp:ListItem>
-													    <asp:ListItem Text="Kundennummer" Value="kundennr"></asp:ListItem>
-													    <asp:ListItem Text="Dienstleistung" Value="Matbez"></asp:ListItem>
-													    <asp:ListItem Text="Gebühr" Value="GebPreis"></asp:ListItem>
+													    <asp:ListItem Text="Kundennummer" Value="KundenNr"></asp:ListItem>
+													    <asp:ListItem Text="Dienstleistung" Value="MaterialName"></asp:ListItem>
+													    <asp:ListItem Text="Gebühr" Value="Gebuehr"></asp:ListItem>
 													    <asp:ListItem Text="Referenz1" Value="Referenz1"></asp:ListItem> 
-                                                        <asp:ListItem Text="Amt" Value="KreisKZ"></asp:ListItem>
+                                                        <asp:ListItem Text="Amt" Value="Landkreis"></asp:ListItem>
                                                         <asp:ListItem Text="Zulassungsdatum(ttmmjj)" Value="Zulassungsdatum"></asp:ListItem>
-                                                        <asp:ListItem Text="ID" Value="id_sap"></asp:ListItem>
+                                                        <asp:ListItem Text="ID" Value="SapId"></asp:ListItem>
 													</asp:DropDownList>                                                
 												</td>
 												<td class="firstLeft active">
@@ -185,241 +184,228 @@
                                     <asp:GridView ID="GridView1" Width="100%" runat="server" AutoGenerateColumns="False"
                                         CellPadding="0" CellSpacing="0" GridLines="None" AllowSorting="true" AllowPaging="true"
                                         CssClass="GridView" PageSize="20" OnSorting="GridView1_Sorting" OnPageIndexChanging="GridView1_PageIndexChanging"
-                                        OnRowCommand="GridView1_RowCommand" DataKeyNames="ID">
+                                        OnRowCommand="GridView1_RowCommand" DataKeyNames="SapId,PositionsNr">
                                         <HeaderStyle CssClass="GridTableHead" Width="100%" ForeColor="White" />
                                         <PagerSettings Visible="False" />
                                         <Columns>
-                                            <asp:TemplateField Visible="false">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblID" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ID") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
                                             <asp:TemplateField HeaderText="Status" Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblStatus" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Status") %>'></asp:Label>
+                                                    <asp:Label ID="lblStatus" runat="server" Text='<%# Eval("FehlerText") %>'/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField Visible="false">
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblGebMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.GebMatnr") %>'></asp:Label>
-                                                </ItemTemplate>
-                                            </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="id_sap" HeaderText="col_ID">
+                                            <asp:TemplateField SortExpression="SapId" HeaderText="col_ID">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_ID" runat="server" CommandName="Sort" CommandArgument="id_sap">col_ID</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_ID" runat="server" CommandName="Sort" CommandArgument="SapId">col_ID</asp:LinkButton></HeaderTemplate>
                                                 <ItemTemplate>
-
-                                                    <asp:Label ID="lblsapID" runat="server" Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>'
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.id_sap") %>'></asp:Label>
+                                                    <asp:Label ID="lblsapID" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("SapId") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="40px" />
                                                 <ItemStyle CssClass="TablePadding" Width="40px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="PosLoesch" HeaderText="col_LoeschKZ">
+                                            <asp:TemplateField SortExpression="WebBearbeitungsStatus" HeaderText="col_LoeschKZ">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_LoeschKZ" runat="server" CommandName="Sort" CommandArgument="PosLoesch">col_LoeschKZ</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_LoeschKZ" runat="server" CommandName="Sort" CommandArgument="WebBearbeitungsStatus">col_LoeschKZ</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblPosLoesch" runat="server" Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>'
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.PosLoesch").ToString() %>'></asp:Label>
+                                                    <asp:Label ID="lblPosLoesch" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("WebBearbeitungsStatus") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="30px" />
-                                                <ItemStyle CssClass="TablePadding" Width="30px" />
+                                                <ItemStyle CssClass="TablePadding" Width="30px" HorizontalAlign="Center" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="kundennr" HeaderText="col_Kundennr">
+                                            <asp:TemplateField SortExpression="KundenNr" HeaderText="col_Kundennr">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Kundennr" runat="server" CommandName="Sort" CommandArgument="kundennr">col_Kundennr</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Kundennr" runat="server" CommandName="Sort" CommandArgument="KundenNr">col_Kundennr</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblKundennr" runat="server" Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>'
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.kundennr") %>'></asp:Label>
+                                                    <asp:Label ID="lblKundennr" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("KundenNr") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="57px" />
                                                 <ItemStyle CssClass="TablePadding" Width="57px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="kundenname" HeaderText="col_Kundenname">
+                                            <asp:TemplateField SortExpression="KundenName" HeaderText="col_Kundenname">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Kundenname" runat="server" CommandName="Sort" CommandArgument="kundenname">col_Kundenname</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Kundenname" runat="server" CommandName="Sort" CommandArgument="KundenName">col_Kundenname</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblKundenname" runat="server" Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>'
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.kundenname") %>'></asp:Label>
+                                                    <asp:Label ID="lblKundenname" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("KundenName") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="125px" />
                                                 <ItemStyle CssClass="TablePadding" Width="125px" />
                                             </asp:TemplateField>
                                             <asp:TemplateField Visible="false" HeaderText="col_id_pos">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblid_pos" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.id_pos") %>'></asp:Label>
+                                                    <asp:Label ID="lblid_pos" runat="server" Text='<%# Eval("PositionsNr") %>'/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
                                             <asp:TemplateField Visible="false">
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Matnr") %>'></asp:Label>
+                                                    <asp:Label ID="lblMatnr" runat="server" Text='<%# Eval("MaterialNr") %>'/>
                                                 </ItemTemplate>
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="Matbez" HeaderText="col_Matbez">
+                                            <asp:TemplateField SortExpression="MaterialName" HeaderText="col_Matbez">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Matbez" runat="server" CommandName="Sort" CommandArgument="Matbez">col_Matbez</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Matbez" runat="server" CommandName="Sort" CommandArgument="MaterialName">col_Matbez</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblMatbez" runat="server" Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>'
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.Matbez") %>'></asp:Label>
-                                                        <asp:HiddenField runat="server" ID="hfMenge" Value='<%# DataBinder.Eval(Container, "DataItem.Menge") %>' />
+                                                    <asp:Label ID="lblMatbez" runat="server" Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("MaterialName") %>'/>
+                                                    <asp:HiddenField runat="server" ID="hfMenge" Value='<%# Eval("Menge") %>' />
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="105px" />
                                                 <ItemStyle CssClass="TablePadding" Width="105px" />
                                             </asp:TemplateField>
                                             <asp:TemplateField SortExpression="Preis" HeaderText="col_Preis">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Preis" runat="server" CommandName="Sort" CommandArgument="Preis">col_Preis</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Preis" runat="server" CommandName="Sort" CommandArgument="Preis">col_Preis</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtPreis" CssClass="TextBoxNormal" onKeyPress="return numbersonly(event, true)"
-                                                        Width="45" Font-Size="8pt" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Preis", "{0:F}") %>'></asp:TextBox>
+                                                                 Width="45" Font-Size="8pt" runat="server" Text='<%# Eval("Preis", "{0:F}") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="55px" />
                                                 <ItemStyle CssClass="TablePadding" Width="55px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="GebPreis" HeaderText="col_GebPreis">
+                                            <asp:TemplateField SortExpression="Gebuehr" HeaderText="col_GebPreis">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_GebPreis" runat="server" CommandName="Sort" CommandArgument="GebPreis">col_GebPreis</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_GebPreis" runat="server" CommandName="Sort" CommandArgument="Gebuehr">col_GebPreis</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtGebPreis" onKeyPress="return numbersonly(event, true)" CssClass="TextBoxNormal"
-                                                        Width="45" Font-Size="8pt" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.GebPreis", "{0:F}") %>'
-                                                        Visible='<%# DataBinder.Eval(Container, "DataItem.GebMatPflicht").ToString() == "X" %>'
-                                                        Enabled='<%# proofGebPak(DataBinder.Eval(Container, "DataItem.ID").ToString(), DataBinder.Eval(Container, "DataItem.id_pos").ToString()) %>' ></asp:TextBox>
-                                                    <asp:HiddenField ID="txtGebPreisOld" Value='<%# DataBinder.Eval(Container, "DataItem.GebPreis", "{0:F}") %>'
-                                                        runat="server" />
+                                                                 Width="45" Font-Size="8pt" runat="server" Text='<%# Eval("Gebuehr", "{0:F}") %>'
+                                                                 Visible='<%# proofGebMat(Eval("MaterialNr").ToString()) %>'
+                                                                 Enabled='<%# ((bool?)Eval("Gebuehrenpaket")) == false %>'/>
+                                                    <asp:HiddenField ID="txtGebPreisOld" Value='<%# Eval("Gebuehr", "{0:F}") %>' runat="server" />
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="55px" />
                                                 <ItemStyle CssClass="TablePadding" Width="55px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="Preis_Amt" HeaderText="col_Preis_Amt">
+                                            <asp:TemplateField SortExpression="GebuehrAmt" HeaderText="col_Preis_Amt">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Preis_Amt" runat="server" CommandName="Sort" CommandArgument="Preis_Amt">col_Preis_Amt</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Preis_Amt" runat="server" CommandName="Sort" CommandArgument="GebuehrAmt">col_Preis_Amt</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtPreis_Amt" onKeyPress="return numbersonly(event, true)" CssClass="TextBoxNormal"
-                                                        Width="45" Font-Size="8pt" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Preis_Amt", "{0:F}") %>'
-                                                        Visible='<%# DataBinder.Eval(Container, "DataItem.GebMatPflicht").ToString() == "X" %>' ></asp:TextBox>
-                                                    <asp:HiddenField ID="txtPreis_AmtOld" Value='<%# DataBinder.Eval(Container, "DataItem.Preis_Amt", "{0:F}") %>'
-                                                        runat="server" />
+                                                                 Width="45" Font-Size="8pt" runat="server" Text='<%# Eval("GebuehrAmt", "{0:F}") %>'
+                                                                 Visible='<%# proofGebMat(Eval("MaterialNr").ToString()) %>'/>
+                                                    <asp:HiddenField ID="txtPreis_AmtOld" Value='<%# Eval("GebuehrAmt", "{0:F}") %>' runat="server" />
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="55px" />
                                                 <ItemStyle CssClass="TablePadding" Width="55px" />
                                             </asp:TemplateField>
                                             <asp:TemplateField SortExpression="Steuer" HeaderText="col_Steuer">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Steuer" runat="server" CommandName="Sort" CommandArgument="Steuer">col_Steuer</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Steuer" runat="server" CommandName="Sort" CommandArgument="Steuer">col_Steuer</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
                                                     <asp:TextBox ID="txtSteuer" onKeyPress="return numbersonly(event, true)" CssClass="TextBoxNormal"
-                                                        Width="45" Font-Size="8pt" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Steuer", "{0:F}") %>'
-                                                        Visible='<%# (Int32)DataBinder.Eval(Container, "DataItem.id_pos")== 10 %>'></asp:TextBox>
+                                                                 Width="45" Font-Size="8pt" runat="server" Text='<%# Eval("Steuer", "{0:F}") %>'
+                                                                 Visible='<%# Eval("PositionsNr").ToString() == "10" %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="55px" />
                                                 <ItemStyle CssClass="TablePadding" Width="55px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="PreisKZ" HeaderText="col_PreisKZ">
+                                            <asp:TemplateField SortExpression="PreisKennzeichen" HeaderText="col_PreisKZ">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_PreisKZ" runat="server" CommandName="Sort" CommandArgument="PreisKZ">col_PreisKZ</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_PreisKZ" runat="server" CommandName="Sort" CommandArgument="PreisKennzeichen">col_PreisKZ</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:TextBox ID="txtPreisKZ" Enabled='<%# proofPauschMat(DataBinder.Eval(Container, "DataItem.PauschalKunde").ToString(), DataBinder.Eval(Container, "DataItem.Matnr").ToString()) %>' 
-                                                        onKeyPress="return numbersonly(event, true)" CssClass="TextBoxNormal" Width="45"
-                                                        Font-Size="8pt" runat="server" Visible='<%# (Int32)DataBinder.Eval(Container, "DataItem.id_pos")== 10 %>'
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.PreisKZ", "{0:F}") %>'></asp:TextBox>
+                                                    <asp:TextBox ID="txtPreisKZ" Enabled='<%# proofPauschMat(Eval("KundenNr").ToString(), Eval("MaterialNr").ToString()) %>' 
+                                                                 onKeyPress="return numbersonly(event, true)" CssClass="TextBoxNormal" Width="45"
+                                                                 Font-Size="8pt" runat="server" Visible='<%# Eval("PositionsNr").ToString() == "10" %>'
+                                                                 Text='<%# Eval("PreisKennzeichen", "{0:F}") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="55px" />
                                                 <ItemStyle CssClass="TablePadding" Width="55px" />
                                             </asp:TemplateField>
                                             <asp:TemplateField SortExpression="Zulassungsdatum" HeaderText="col_Zulassungsdatum">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Zulassungsdatum" runat="server" CommandName="Sort" CommandArgument="Zulassungsdatum">col_Zulassungsdatum</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Zulassungsdatum" runat="server" CommandName="Sort" CommandArgument="Zulassungsdatum">col_Zulassungsdatum</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblZulassungsdatum" runat="server" Visible='<%# (Int32)DataBinder.Eval(Container, "DataItem.id_pos")== 10 %>'
-                                                        Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>' Text='<%# DataBinder.Eval(Container, "DataItem.Zulassungsdatum", "{0:d}") %>'></asp:Label>
+                                                    <asp:Label ID="lblZulassungsdatum" runat="server" Visible='<%# Eval("PositionsNr").ToString() == "10" %>'
+                                                               Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("Zulassungsdatum", "{0:d}") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="65px" />
                                                 <ItemStyle CssClass="TablePadding" Width="65px" />
                                             </asp:TemplateField>
                                             <asp:TemplateField SortExpression="Referenz1" HeaderText="col_Referenz1">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Referenz1" runat="server" CommandName="Sort" CommandArgument="Referenz1">col_Referenz1</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Referenz1" runat="server" CommandName="Sort" CommandArgument="Referenz1">col_Referenz1</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblReferenz1" runat="server" Visible='<%# (Int32)DataBinder.Eval(Container, "DataItem.id_pos")== 10 %>'
-                                                        Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>' Text='<%# DataBinder.Eval(Container, "DataItem.Referenz1") %>'></asp:Label>
+                                                    <asp:Label ID="lblReferenz1" runat="server" Visible='<%# Eval("PositionsNr").ToString() == "10" %>'
+                                                               Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("Referenz1") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="60px" />
                                                 <ItemStyle CssClass="TablePadding" Width="60px" />
                                             </asp:TemplateField>
                                             <asp:TemplateField SortExpression="Kennzeichen" HeaderText="col_Kennzeichen">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Kennzeichen" runat="server" CommandName="Sort" CommandArgument="Kennzeichen">col_Kennzeichen</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Kennzeichen" runat="server" CommandName="Sort" CommandArgument="Kennzeichen">col_Kennzeichen</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblKennKZ1" runat="server" Visible='<%# (Int32)DataBinder.Eval(Container, "DataItem.id_pos")== 10 %>'
-                                                        Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>' Text='<%# DataBinder.Eval(Container, "DataItem.KennKZ") %>'></asp:Label>
-                                                    <asp:TextBox ID="txtKennzAbc" onkeyup="FilterKennz(this,event)" Visible='<%# (Int32)DataBinder.Eval(Container, "DataItem.id_pos")== 10 %>'
-                                                        CssClass="TextBoxNormal" Width="45" MaxLength="6" Font-Size="8pt" runat="server"
-                                                        Text='<%# DataBinder.Eval(Container, "DataItem.KennABC") %>'></asp:TextBox>
+                                                    <asp:Label ID="lblKennKZ1" runat="server" Visible='<%# Eval("PositionsNr").ToString() == "10" %>'
+                                                               Font-Bold='<%# Eval("Bearbeitet") %>' Text='<%# Eval("KennzeichenTeil1") %>'/>
+                                                    <asp:TextBox ID="txtKennzAbc" onkeyup="FilterKennz(this,event)" Visible='<%# Eval("PositionsNr").ToString() == "10" %>'
+                                                                 CssClass="TextBoxNormal" Width="45" MaxLength="6" Font-Size="8pt" runat="server"
+                                                                 Text='<%# Eval("KennzeichenTeil2") %>'/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="80px" />
                                                 <ItemStyle CssClass="TablePadding" Width="80px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="Reserviert" HeaderText="col_Reserviert">
+                                            <asp:TemplateField SortExpression="KennzeichenReservieren" HeaderText="col_Reserviert">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Reserviert" runat="server" CommandName="Sort" CommandArgument="Reserviert">col_Reserviert</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Reserviert" runat="server" CommandName="Sort" CommandArgument="KennzeichenReservieren">col_Reserviert</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:Label ID="lblReserviert" runat="server" Visible='<%# ((Boolean)DataBinder.Eval(Container, "DataItem.Reserviert")) == true  %>'
-                                                        Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>' Text="R"></asp:Label>
-                                                    <asp:Label ID="lblWunschKennz" runat="server" Visible='<%# ((Boolean)DataBinder.Eval(Container, "DataItem.WunschKenn")) == true  && ((Boolean)DataBinder.Eval(Container, "DataItem.Reserviert")) == false %>'
-                                                        Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>' Text="W"></asp:Label>
+                                                    <asp:Label ID="lblReserviert" runat="server" Visible='<%# Eval("KennzeichenReservieren") %>'
+                                                               Font-Bold='<%# Eval("Bearbeitet") %>' Text="R"/>
+                                                    <asp:Label ID="lblWunschKennz" runat="server" Visible='<%# (bool?)Eval("Wunschkennzeichen") == true && (bool?)Eval("KennzeichenReservieren") == false %>'
+                                                               Font-Bold='<%# Eval("Bearbeitet") %>' Text="W"/>
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="14px" />
                                                 <ItemStyle CssClass="TablePadding" Width="14px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="Feinstaub" HeaderText="col_Reserviert">
-                                                <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Feinstaub" runat="server" CommandName="Sort" CommandArgument="Feinstaub">col_Feinstaub</asp:LinkButton></HeaderTemplate>
-                                                <ItemTemplate>
-                                                    <asp:Label ID="lblFeinstaub" runat="server" Visible='<%#((Boolean)DataBinder.Eval(Container, "DataItem.Feinstaub")) == true %>'
-                                                        Font-Bold='<%# DataBinder.Eval(Container, "DataItem.bearbeitet") %>' Text="F"></asp:Label>
-                                                </ItemTemplate>
-                                                <HeaderStyle CssClass="TablePadding" Width="10px" />
-                                                <ItemStyle CssClass="TablePadding" Width="10px" />
-                                            </asp:TemplateField>
                                             <asp:TemplateField>
                                                 <ItemTemplate>
-                                                    <asp:ImageButton ID="ibtnedt" Visible='<%# DataBinder.Eval(Container, "DataItem.toDelete").ToString() != "X" %>'
-                                                        ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.ID") %>'
+                                                    <asp:ImageButton ID="ibtnedt" Visible='<%# Eval("WebBearbeitungsStatus").ToString() != "L" %>' ImageUrl="/PortalZLD/images/Edit.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
                                                         runat="server" CommandName="Edt" ToolTip="Bearbeiten" Width="16" Height="16" />
-                                                    <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%#  ((GridViewRow)Container).RowIndex %>'
-                                                        runat="server" CommandName="Del" ToolTip="Löschen" />
+                                                    <asp:ImageButton ID="ibtnDel" ImageUrl="/PortalZLD/images/del.png" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
+                                                        runat="server" CommandName="Del" ToolTip="Löschen" 
+                                                        OnClientClick='<%# Eval("PositionsNr").ToString() == "10" ? "" : "if (!confirm(\"Wollen Sie die Position bzw. den Vorgang wirklich löschen?\")) return false;" %>' />
                                                     <asp:ImageButton ID="ibtnOK" ImageUrl="/PortalZLD/images/haken_gruen.gif" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'
-                                                        Enabled='<%# DataBinder.Eval(Container, "DataItem.toDelete").ToString() != "X" %>'
                                                         runat="server" CommandName="OK" ToolTip="OK" />
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="60px" />
                                                 <ItemStyle CssClass="TablePadding" Width="60px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="EC" HeaderText="col_EC">
+                                            <asp:TemplateField SortExpression="Zahlart_EC" HeaderText="col_EC">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_EC" runat="server" CommandName="Sort" CommandArgument="EC">col_EC</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_EC" runat="server" CommandName="Sort" CommandArgument="Zahlart_EC">col_EC</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:RadioButton ID="rbEC" AutoPostBack="true" GroupName="Bezahlung" Checked='<%# DataBinder.Eval(Container, "DataItem.EC") %>'
+                                                    <asp:RadioButton ID="rbEC" AutoPostBack="true" GroupName="Bezahlung" Checked='<%# Eval("Zahlart_EC") %>'
                                                         runat="server" OnCheckedChanged="rbEC_CheckedChanged" />
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="18px" />
                                                 <ItemStyle CssClass="TablePadding" Width="18px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="Bar" HeaderText="col_Bar">
+                                            <asp:TemplateField SortExpression="Zahlart_Bar" HeaderText="col_Bar">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_Bar" runat="server" CommandName="Sort" CommandArgument="Bar">col_Bar</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_Bar" runat="server" CommandName="Sort" CommandArgument="Zahlart_Bar">col_Bar</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:RadioButton ID="rbBar" GroupName="Bezahlung" Checked='<%# DataBinder.Eval(Container, "DataItem.Bar") %>'
+                                                    <asp:RadioButton ID="rbBar" GroupName="Bezahlung" Checked='<%# Eval("Zahlart_Bar") %>'
                                                         runat="server" AutoPostBack="True" OnCheckedChanged="rbBar_CheckedChanged" />
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="18px" />
                                                 <ItemStyle CssClass="TablePadding" Width="18px" />
                                             </asp:TemplateField>
-                                            <asp:TemplateField SortExpression="RE" HeaderText="col_RE">
+                                            <asp:TemplateField SortExpression="Zahlart_Rechnung" HeaderText="col_RE">
                                                 <HeaderTemplate>
-                                                    <asp:LinkButton ID="col_RE" runat="server" CommandName="Sort" CommandArgument="Bar">col_RE</asp:LinkButton></HeaderTemplate>
+                                                    <asp:LinkButton ID="col_RE" runat="server" CommandName="Sort" CommandArgument="Zahlart_Rechnung">col_RE</asp:LinkButton>
+                                                </HeaderTemplate>
                                                 <ItemTemplate>
-                                                    <asp:RadioButton ID="rbRE" GroupName="Bezahlung" Checked='<%# DataBinder.Eval(Container, "DataItem.RE") %>'
+                                                    <asp:RadioButton ID="rbRE" GroupName="Bezahlung" Checked='<%# Eval("Zahlart_Rechnung") %>'
                                                         runat="server" AutoPostBack="True" OnCheckedChanged="rbRE_CheckedChanged" />
                                                 </ItemTemplate>
                                                 <HeaderStyle CssClass="TablePadding" Width="18px" />
@@ -443,7 +429,7 @@
 						<asp:LinkButton ID="cmdalleBar" runat="server" CssClass="Tablebutton" 
                             Width="78px" onclick="cmdalleBar_Click" 
 							 >» alle Bar</asp:LinkButton>		
-						<asp:LinkButton ID="cmdalleRE" runat="server" CssClass="Tablebutton" Width="78px" onclick="RE_Click" 
+						<asp:LinkButton ID="cmdalleRE" runat="server" CssClass="Tablebutton" Width="78px" onclick="cmdalleRE_Click" 
 							 >» alle RE</asp:LinkButton>	
 						<asp:LinkButton ID="cmdOK" runat="server"  CssClass="Tablebutton" Width="78px"   onclick="cmdOK_Click"
 							 >» alle OK</asp:LinkButton>			  
@@ -482,12 +468,12 @@
                             <Columns>
                                 <asp:TemplateField HeaderText="Quittung">
                                     <ItemTemplate>
-                                        <asp:Label ID="lblFileName" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Filename") %>'></asp:Label>
+                                        <asp:Label ID="lblFileName" runat="server" Text='<%# Eval("Filename") %>'/>
                                     </ItemTemplate>
                                 </asp:TemplateField>
                                 <asp:TemplateField HeaderText="Aufrufen">
                                     <ItemTemplate>
-                                        <asp:ImageButton ID="cmdPrint" CommandName="Print" CommandArgument='<%# DataBinder.Eval(Container, "DataItem.Path") %>'
+                                        <asp:ImageButton ID="cmdPrint" CommandName="Print" CommandArgument='<%# Eval("Path") %>'
                                             runat="server" ImageUrl="/PortalZLD/Images/iconPDF.gif" />
                                     </ItemTemplate>
                                     <HeaderStyle Width="40px" />
@@ -495,9 +481,6 @@
                                 </asp:TemplateField>
                             </Columns>
                         </asp:GridView>
-
-
- 
 
                     </asp:Panel>
 

@@ -70,6 +70,14 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
+        [CkgApplication]
+        public ActionResult Errors()
+        {
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
 
         #region PageVisit Logs
 
@@ -148,6 +156,7 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
+
 
         #region UnusedApps
 
@@ -271,13 +280,61 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ShowWebServiceTrafficLogDetails(int id)
         {
-            return PartialView("Partial/WebServiceTraffic/Details", ViewModel.GetDetails(id));
+            return PartialView("Partial/WebServiceTraffic/Details", ViewModel.GetWebServiceTrafficLogItemDetails(id));
         }
 
         [HttpPost]
         public ActionResult FilterGridLogsWebServiceTraffic(string filterValue, string filterColumns)
         {
             ViewModel.FilterWebServiceTrafficLogItems(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+
+        #region Error Logs
+
+        [HttpPost]
+        public ActionResult LoadErrorLogItems(ErrorLogItemSelector model)
+        {
+            ModelState.Clear();
+
+            ViewModel.Validate(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                if (ViewModel.LoadErrorLogItems(model))
+                    if (ViewModel.ErrorLogItemsFiltered.None())
+                        ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("Partial/Errors/SucheErrorLogItems", ViewModel.ErrorLogItemSelector);
+        }
+
+        [HttpPost]
+        public ActionResult ShowErrorLogItems()
+        {
+            return PartialView("Partial/Errors/Grid", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult LogsErrorsAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.ErrorLogItemsFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult ShowErrorLogDetails(string id)
+        {
+            return PartialView("Partial/Errors/Details", ViewModel.GetErrorLogItemDetails(id));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridLogsErrors(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterErrorLogItems(filterValue, filterColumns);
 
             return new EmptyResult();
         }
@@ -294,7 +351,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("PageVisits", dt);
 
             return new EmptyResult();
@@ -302,7 +359,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("PageVisits", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -310,7 +367,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsDetailFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("PageVisits Detail", dt);
 
             return new EmptyResult();
@@ -318,7 +375,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportPageVisitLogItemsDetailFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsDetailFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("PageVisits Detail", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -326,7 +383,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportWebServiceTrafficLogItemsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Webservice-Log", dt);
 
             return new EmptyResult();
@@ -334,7 +391,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportWebServiceTrafficLogItemsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.WebServiceTrafficLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Webservice-Log", dt, landscapeOrientation: true);
 
             return new EmptyResult();
@@ -342,7 +399,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUnusedAppsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UnusedApps", dt);
 
             return new EmptyResult();
@@ -350,8 +407,24 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportUnusedAppsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = ViewModel.PageVisitLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UnusedApps", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportErrorLogItemsFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.ErrorLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Errors", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportErrorLogItemsFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.ErrorLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Errors", dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

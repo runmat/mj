@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using CKG.Base.Business;
-using CKG.Base.Common;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib.Logbuch
 {
@@ -10,8 +10,7 @@ namespace AppZulassungsdienst.lib.Logbuch
     /// Arbeitsklasse die ein Filialbuch darstellt. Sie beinhaltet alle Funktionen zur Kommunikation mit SAP und hält die Daten
     /// die ein Filialbuch kennzeichnen
     /// </summary>
-    /// <remarks></remarks>
-    public class LogbuchClass : BankBase
+    public class LogbuchClass : SapOrmBusinessBase
     {
         #region "Enumeratoren"
 
@@ -55,57 +54,26 @@ namespace AppZulassungsdienst.lib.Logbuch
 
         public Protokoll Protokoll { get; set; }
         public FilialbuchUser UserLoggedIn { get; set; }
-        public string VkOrg { get; set; }
-        public string VkBur { get; set; }
         public StatusFilter letzterStatus { get; set; }
         public DateTime? Von { get; set; }
         public DateTime? Bis { get; set; }
 
-        public List<VorgangsartDetails> Vorgangsarten
-        {
-            get { return lstVorgangsarten; }
-        }
+        public List<VorgangsartDetails> Vorgangsarten { get { return lstVorgangsarten; } }
 
-        public List<VorgangsartRolleDetails> VorgangsartenRolle
-        {
-            get { return lstVorgangsartenRolle; }
-        }
+        public List<VorgangsartRolleDetails> VorgangsartenRolle { get { return lstVorgangsartenRolle; } }
 
         #endregion
 
-        public LogbuchClass(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string strAppID, string strSessionID, string strFilename)
-            : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename)
+        public LogbuchClass(string userReferenz)
         {
-            if ((objUser != null) && (!String.IsNullOrEmpty(objUser.Reference)))
-            {
-                if (objUser.Reference.Length > 4)
-                {
-                    VkOrg = objUser.Reference.Substring(0, 4);
-                    VkBur = objUser.Reference.Substring(4);
-                }
-                else
-                {
-                    VkOrg = objUser.Reference;
-                    VkBur = "";
-                }
-            }
-            else
-            {
-                VkOrg = "";
-                VkBur = "";
-            }
+            VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
+            VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
 
-            Protokoll = new Protokoll(ref lstVorgangsarten, ref m_objUser, m_objApp, strAppID, strSessionID, strFilename);
+            Protokoll = new Protokoll(ref lstVorgangsarten);
         }
 
         #region "Shared Functions"
 
-        /// <summary>
-        /// Übersetzt Rollenwerte für SAP
-        /// </summary>
-        /// <param name="rolle">Rolle</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static string TranslateRolle(Rolle rolle)
         {
             switch (rolle)
@@ -121,12 +89,6 @@ namespace AppZulassungsdienst.lib.Logbuch
             }
         }
 
-        /// <summary>
-        /// Übersetzt Rollenwerte aus SAP
-        /// </summary>
-        /// <param name="rolle">Rolle</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static Rolle TranslateRolle(string rolle)
         {
             switch (rolle)
@@ -142,12 +104,6 @@ namespace AppZulassungsdienst.lib.Logbuch
             }
         }
 
-        /// <summary>
-        /// Übersetzt Antwortarten für SAP
-        /// </summary>
-        /// <param name="antwortart">Antwortart</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static char TranslateAntwortart(Antwortart antwortart)
         {
             switch (antwortart)
@@ -163,12 +119,6 @@ namespace AppZulassungsdienst.lib.Logbuch
             }
         }
 
-        /// <summary>
-        /// Übersetzt Antwortarten für SAP
-        /// </summary>
-        /// <param name="antwortart">Antwortart</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static Antwortart TranslateAntwortart(char antwortart)
         {
             switch (antwortart)
@@ -184,12 +134,6 @@ namespace AppZulassungsdienst.lib.Logbuch
             }
         }
 
-        /// <summary>
-        /// Übersetzt Eintragsstatus für SAP
-        /// </summary>
-        /// <param name="status">Status</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static string TranslateStatus(StatusFilter status)
         {
             switch (status)
@@ -203,12 +147,6 @@ namespace AppZulassungsdienst.lib.Logbuch
             }
         }
 
-        /// <summary>
-        /// Übersetzt Eintragsstatus für SAP
-        /// </summary>
-        /// <param name="status">Status</param>
-        /// <returns></returns>
-        /// <remarks></remarks>
         public static StatusFilter TranslateStatus(string status)
         {
             switch (status)
@@ -229,46 +167,32 @@ namespace AppZulassungsdienst.lib.Logbuch
             return new DataTable();
         }
 
-        public FilialbuchUser LoginUser(string strAppID, string strSessionID, System.Web.UI.Page page, string vbur, string LoginValue)
+        public void LoginUser(string vbur, string LoginValue)
         {
-            m_strClassAndMethod = "LogbuchClass.LoginUser";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_MC_CONNECT", ref m_objApp, ref m_objUser, ref page);
+                    Z_MC_CONNECT.Init(SAP, "I_VKBUR, I_BD_NR", vbur, LoginValue);
 
-                    myProxy.setImportParameter("I_VKBUR", vbur);
-                    myProxy.setImportParameter("I_BD_NR", LoginValue);
+                    CallBapi();
 
-                    myProxy.callBapi();
+                    string expUname = SAP.GetExportParameter("E_UNAME");
+                    string expBdname = SAP.GetExportParameter("E_BD_NAME");
+                    string expRolle = SAP.GetExportParameter("E_ROLLE");
+                    string expBezei = SAP.GetExportParameter("E_BEZEI");
+                    string expRollepa = SAP.GetExportParameter("E_ROLLE_PA");
+                    string expNamepa = SAP.GetExportParameter("E_UNAME_PA");
 
-                    string expUname = myProxy.getExportParameter("E_UNAME");
-                    string expBdname = myProxy.getExportParameter("E_BD_NAME");
-                    string expRolle = myProxy.getExportParameter("E_ROLLE");
-                    string expBezei = myProxy.getExportParameter("E_BEZEI");
-                    string expRollepa = myProxy.getExportParameter("E_ROLLE_PA");
-                    string expNamepa = myProxy.getExportParameter("E_UNAME_PA");
-
-                    DataTable tblVorgart = myProxy.getExportTable("GT_VORGART");
-                    DataTable tblVorgartRolle = myProxy.getExportTable("GT_ROLLE_VGART");
+                    DataTable tblVorgart = SAP.GetExportTable("GT_VORGART");
+                    DataTable tblVorgartRolle = SAP.GetExportTable("GT_ROLLE_VGART");
 
                     // User auswerten
                     if (String.IsNullOrEmpty(LoginValue))
                     {
-                        m_intStatus = 9999;
-                        m_strMessage = "Es konnte kein Benutzer ermittelt werden.";
+                        RaiseError(9999, "Es konnte kein Benutzer ermittelt werden.");
                     }
                     else if (String.IsNullOrEmpty(expUname))
                     {
-                        m_intStatus = 9998;
-                        m_strMessage = "Es konnte keine Rolle ermittelt werden.";
+                        RaiseError(9998, "Es konnte keine Rolle ermittelt werden.");
                     }
                     else
                     {
@@ -320,90 +244,51 @@ namespace AppZulassungsdienst.lib.Logbuch
                             lstVorgangsartenRolle.Add(new VorgangsartRolleDetails(rolle, vgart, stufe, close));
                         }
                     }
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
-
-            return UserLoggedIn;
+                });
         }
 
-
-        public void GetEinträge(string strAppID, string strSessionID, System.Web.UI.Page page, FilialbuchUser FilBuUser,
-            StatusFilter status, string an_kst = null, DateTime? vonDate = null, DateTime? bisDate = null)
+        public void GetEinträge(FilialbuchUser FilBuUser, StatusFilter status, string an_kst = null, DateTime? vonDate = null, DateTime? bisDate = null)
         {
-            m_strClassAndMethod = "LogbuchClass.GetEinträge";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-
-                this.Von = vonDate;
-                this.Bis = bisDate;
-                this.letzterStatus = status;
-
-                string strVon = "";
-                string strBis = "";
-
-                if (status == StatusFilter.Alle)
+            ExecuteSapZugriff(() =>
                 {
-                    if (vonDate == null)
+                    this.Von = vonDate;
+                    this.Bis = bisDate;
+                    this.letzterStatus = status;
+
+                    string strVon = "";
+                    string strBis = "";
+
+                    if (status == StatusFilter.Alle)
                     {
-                        m_intStatus = 9999;
-                        m_strMessage = "Es wurde kein gültiges Von-Datum für die Auswal mitgegeben!";
-                        return;
+                        if (vonDate == null)
+                        {
+                            RaiseError(9999, "Es wurde kein gültiges Von-Datum für die Auswahl mitgegeben!");
+                            return;
+                        }
+
+                        if (bisDate == null)
+                        {
+                            RaiseError(9999, "Es wurde kein gültiges Bis-Datum für die Auswahl mitgegeben!");
+                            return;
+                        }
+
+                        strVon = ((DateTime)vonDate).ToShortDateString();
+                        strBis = ((DateTime)bisDate).ToShortDateString();
                     }
 
-                    if (bisDate == null)
-                    {
-                        m_intStatus = 9999;
-                        m_strMessage = "Es wurde kein gültiges Bis-Datum für die Auswal mitgegeben!";
-                        return;
-                    }
+                    Z_MC_GET_IN_OUT.Init(SAP);
 
-                    strVon = ((DateTime)vonDate).ToShortDateString();
-                    strBis = ((DateTime)bisDate).ToShortDateString();
-                }
+                    SAP.SetImportParameter("I_UNAME", FilBuUser.UsernameSAP);
+                    SAP.SetImportParameter("I_STATUS", TranslateStatus(status));
+                    SAP.SetImportParameter("I_VON", strVon);
+                    SAP.SetImportParameter("I_BIS", strBis);
 
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_MC_GET_IN_OUT", ref m_objApp, ref m_objUser, ref page);
+                    CallBapi();
 
-                    myProxy.setImportParameter("I_UNAME", FilBuUser.UsernameSAP);
-                    myProxy.setImportParameter("I_STATUS", TranslateStatus(status));
-                    myProxy.setImportParameter("I_VON", strVon);
-                    myProxy.setImportParameter("I_BIS", strBis);
+                    DataTable tblEingang = SAP.GetExportTable("GT_IN");
+                    DataTable tblAusgang = SAP.GetExportTable("GT_OUT");
 
-                    myProxy.callBapi();
-
-                    DataTable tblEingang = myProxy.getExportTable("GT_IN");
-                    DataTable tblAusgang = myProxy.getExportTable("GT_OUT");
-
-                    Protokoll = new Protokoll(ref lstVorgangsarten, ref m_objUser, m_objApp, strAppID, strSessionID, m_strFileName);
+                    Protokoll = new Protokoll(ref lstVorgangsarten);
 
                     // Eingang auswerten
                     if ((tblEingang != null))
@@ -432,7 +317,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                                         dRow["VON"].ToString(), dRow["VERTR"].ToString(), dRow["BETREFF"].ToString(), dRow["LTXNR"].ToString(),
                                         dRow["ANTW_LFDNR"].ToString(), LogbuchEntry.TranslateEntryStatus(dRow["STATUS"].ToString()),
                                         LogbuchEntry.TranslateEmpfängerStatus(dRow["STATUSE"].ToString()), dRow["VGART"].ToString(), dRow["ZERLDAT"].ToString(),
-                                        UserLoggedIn.UsernameSAP, ref m_objUser, m_objApp, strAppID, strSessionID, m_strFileName));
+                                        UserLoggedIn.UsernameSAP));
                                 }
                             }
                             else
@@ -441,7 +326,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                                     dRow["VON"].ToString(), dRow["VERTR"].ToString(), dRow["BETREFF"].ToString(), dRow["LTXNR"].ToString(),
                                     dRow["ANTW_LFDNR"].ToString(), LogbuchEntry.TranslateEntryStatus(dRow["STATUS"].ToString()),
                                     LogbuchEntry.TranslateEmpfängerStatus(dRow["STATUSE"].ToString()), dRow["VGART"].ToString(), dRow["ZERLDAT"].ToString(),
-                                    UserLoggedIn.UsernameSAP, ref m_objUser, m_objApp, strAppID, strSessionID, m_strFileName));
+                                    UserLoggedIn.UsernameSAP));
                             }
                         }
                     }
@@ -473,7 +358,7 @@ namespace AppZulassungsdienst.lib.Logbuch
                                         dRow["ZAN"].ToString(), dRow["VERTR"].ToString(), dRow["BETREFF"].ToString(), dRow["LTXNR"].ToString(),
                                         dRow["ANTW_LFDNR"].ToString(), LogbuchEntry.TranslateEntryStatus(dRow["STATUS"].ToString()),
                                         LogbuchEntry.TranslateEmpfängerStatus(dRow["STATUSE"].ToString()), dRow["VGART"].ToString(), dRow["ZERLDAT"].ToString(),
-                                        dRow["ERLDAT"].ToString(), ref m_objUser, m_objApp, strAppID, strSessionID, m_strFileName));
+                                        dRow["ERLDAT"].ToString()));
                                 }
                             }
                             else
@@ -482,119 +367,44 @@ namespace AppZulassungsdienst.lib.Logbuch
                                     dRow["ZAN"].ToString(), dRow["VERTR"].ToString(), dRow["BETREFF"].ToString(), dRow["LTXNR"].ToString(),
                                     dRow["ANTW_LFDNR"].ToString(), LogbuchEntry.TranslateEntryStatus(dRow["STATUS"].ToString()),
                                     LogbuchEntry.TranslateEmpfängerStatus(dRow["STATUSE"].ToString()), dRow["VGART"].ToString(), dRow["ZERLDAT"].ToString(),
-                                    dRow["ERLDAT"].ToString(), ref m_objUser, m_objApp, strAppID, strSessionID, m_strFileName));
+                                    dRow["ERLDAT"].ToString()));
                             }
                         }
                     }
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                });
         }
 
-        /// <summary>
-        /// Erstellt einen neuen Filialbucheintrag
-        /// </summary>
-        /// <param name="strAppID"></param>
-        /// <param name="strSessionID"></param>
-        /// <param name="page"></param>
-        /// <param name="Betreff"></param>
-        /// <param name="Text"></param>
-        /// <param name="an"></param>
-        /// <param name="vorgangsart"></param>
-        /// <param name="zuerledigenBis"></param>
-        /// <remarks></remarks>
-        public void NeuerEintrag(string strAppID, string strSessionID, System.Web.UI.Page page, string Betreff, string Text, string an, string vorgangsart, string zuerledigenBis)
+        public void NeuerEintrag(string Betreff, string Text, string an, string vorgangsart, string zuerledigenBis, string userName)
         {
-            m_strClassAndMethod = "LogbuchClass.NeuerEintrag";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
+            LongStringToSap lsts = new LongStringToSap();
+            string ltxnr = "";
+            if (Text.Trim().Length != 0)
             {
-                m_blnGestartet = true;
-
-                LongStringToSap lsts = new LongStringToSap(m_objUser, m_objApp, page);
-                string ltxnr = "";
-                if (Text.Trim().Length != 0)
+                ltxnr = lsts.InsertString(Text, "MC");
+                if (lsts.ErrorOccured)
                 {
-                    ltxnr = lsts.InsertString(Text, "MC");
-                    if (lsts.E_SUBRC != "0")
-                    {
-                        int lstsStatus;
-                        Int32.TryParse(lsts.E_SUBRC, out lstsStatus);
-                        m_intStatus = lstsStatus;
-                        m_strMessage = lsts.E_MESSAGE;
-                        return;
-                    }
+                    RaiseError(lsts.ErrorCode, lsts.Message);
+                    return;
                 }
-
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_MC_NEW_VORGANG", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_UNAME", UserLoggedIn.UsernameSAP);
-                    myProxy.setImportParameter("I_BD_NR", m_objUser.UserName.ToUpper());
-                    myProxy.setImportParameter("I_AN", an);
-                    myProxy.setImportParameter("I_LTXNR", ltxnr);
-                    myProxy.setImportParameter("I_BETREFF", Betreff);
-                    myProxy.setImportParameter("I_VGART", vorgangsart);
-                    myProxy.setImportParameter("I_ZERLDAT", zuerledigenBis);
-                    myProxy.setImportParameter("I_VKBUR", m_objUser.Kostenstelle);
-
-                    myProxy.callBapi();
-
-                    GetEinträge(strAppID, strSessionID, page, UserLoggedIn, letzterStatus, an, Von, Bis);
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        case "NO_DATA":
-                            m_intStatus = -5555;
-                            m_strMessage = "Keine Daten gefunden.";
-                            break;
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                    if (!string.IsNullOrEmpty(ltxnr))
-                    {
-                        lsts.DeleteString(ltxnr);
-                    }
-                }
-                finally { m_blnGestartet = false; }
             }
+
+            ExecuteSapZugriff(() =>
+                {
+                    Z_MC_NEW_VORGANG.Init(SAP);
+
+                    SAP.SetImportParameter("I_UNAME", UserLoggedIn.UsernameSAP);
+                    SAP.SetImportParameter("I_BD_NR", userName.ToUpper());
+                    SAP.SetImportParameter("I_AN", an);
+                    SAP.SetImportParameter("I_LTXNR", ltxnr);
+                    SAP.SetImportParameter("I_BETREFF", Betreff);
+                    SAP.SetImportParameter("I_VGART", vorgangsart);
+                    SAP.SetImportParameter("I_ZERLDAT", zuerledigenBis);
+                    SAP.SetImportParameter("I_VKBUR", VKBUR);
+
+                    CallBapi();
+                });
+
+            GetEinträge(UserLoggedIn, letzterStatus, an, Von, Bis);
         }
 
         public string GetAntwortToVorgangsart(string vgart)
@@ -608,16 +418,6 @@ namespace AppZulassungsdienst.lib.Logbuch
                 return false;
             });
             return Antwort.Antwortart.ToString();
-        }
-
-        public override void Show()
-        {
-            throw new System.NotImplementedException();
-        }
-
-        public override void Change()
-        {
-            throw new System.NotImplementedException();
         }
     }
 

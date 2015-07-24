@@ -20,24 +20,9 @@ namespace CkgDomainLogic.Zulassung.MobileErfassung.Models
         public string DienstleistungBez { get; set; }
 
         [Display(Name = "Gebühr Amt")]
-        public decimal Gebuehr { get; set; }
+        public decimal? Gebuehr { get; set; }
 
-        public VorgangPosition()
-        {
-            this.KopfId = "";
-            this.PosNr = "0";
-            this.DienstleistungId = "";
-            this.DienstleistungBez = "";
-            this.Gebuehr = 0;
-        }
-
-        public VorgangPosition(string kopfid, string posNr, string dlId, string dlBez, decimal gebuehr)
-        {
-            this.KopfId = kopfid;
-            this.PosNr = posNr;
-            this.DienstleistungId = dlId;
-            this.DienstleistungBez = dlBez;
-            this.Gebuehr = gebuehr;
-        }
+        [Display(Name = "Gebührenmaterial")]
+        public string GebuehrenMaterial { get; set; }
     }
 }

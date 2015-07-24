@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AppZulassungsdienst.lib.Models;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
-using System.Data;
+using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
 {
     public partial class ChangeZLDNachVersandListe : Page
     {
         private User m_User;
-        private App m_App;
         private NacherfZLD objNacherf;
         private ZLDCommon objCommon;
-        DataTable tblTracing;
-        private const string CONST_IDSONSTIGEDL = "570";
+
+        #region Events
 
         protected void Page_Load(object sender, EventArgs e)
         {
             m_User = Common.GetUser(this);
             Common.FormAuth(this, m_User, "");
-            m_App = new App(m_User);
             Common.GetAppIDFromQueryString(this);
             lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
@@ -30,21 +30,20 @@ namespace AppZulassungsdienst.forms
             {
                 //Session-Variable weg (Session vermutlich abgelaufen) -> zurück zum Hauptmenü
                 Response.Redirect("/PortalZLD/Start/Selection.aspx?AppID=" + Session["AppID"].ToString());
+                return;
             }
 
             objNacherf = (NacherfZLD)Session["objNacherf"];
-            if (m_User.Reference.Trim(' ').Length == 0)
+            if (String.IsNullOrEmpty(m_User.Reference))
             {
                 lblError.Text = "Es wurde keine Benutzerreferenz angegeben! Somit können keine Stammdaten ermittelt werden!";
                 return;
             }
             if (Session["objCommon"] == null)
             {
-                objCommon = new ZLDCommon(ref m_User, m_App);
-                objCommon.VKBUR = m_User.Reference.Substring(4, 4);
-                objCommon.VKORG = m_User.Reference.Substring(0, 4);
-                objCommon.getSAPDatenStamm(Session["AppID"].ToString(), Session.SessionID, this);
-                objCommon.getSAPZulStellen(Session["AppID"].ToString(), Session.SessionID, this);
+                objCommon = new ZLDCommon(m_User.Reference);
+                objCommon.getSAPDatenStamm();
+                objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
                 Session["objCommon"] = objCommon;
             }
@@ -53,36 +52,365 @@ namespace AppZulassungsdienst.forms
                 objCommon = (ZLDCommon)Session["objCommon"];
             }
 
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
-                Fillgrid(0, "", null);
-                if (objNacherf.MatError == -4444)
-                { lblError.Text = objNacherf.MatErrorText;}
+                if (objNacherf != null)
+                {
+                    if (objNacherf.DataFilterActive)
+                    {
+                        ddlSuche.SelectedValue = objNacherf.DataFilterProperty;
+                        txtSuche.Text = objNacherf.DataFilterValue;
+                        ibtnNoFilter.Visible = true;
+                    }
+
+                    if (objNacherf.MatError != 0)
+                        lblError.Text = objNacherf.MatErrorText;
+                }
+
+                Fillgrid();
             }
         }
 
-        private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
+        protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
         {
-            DataTable tmpTable = objNacherf.tblEingabeListe;
-            if (!tmpTable.Columns.Contains("DLBezeichnung"))
+            CheckGrid(GridCheckMode.CheckNone);
+            Session["objNacherf"] = objNacherf;
+            Fillgrid(0, e.SortExpression);
+        }
+
+        protected void lb_zurueck_Click(object sender, EventArgs e)
+        {
+            Response.Redirect("ChangeZLDNachVersand.aspx?AppID=" + Session["AppID"].ToString());
+        }
+
+        private void Page_PreRender(object sender, EventArgs e)
+        {
+            Common.SetEndASPXAccess(this);
+        }
+
+        private void Page_Unload(object sender, EventArgs e)
+        {
+            Common.SetEndASPXAccess(this);
+        }
+
+        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            try
             {
-                tmpTable.Columns.Add("DLBezeichnung", typeof(String));
+                Int32 Index;
+                Label lblID;
+                Label lblIDPos;
+                Label lblLoeschKZ;
+                String newLoeschkz;
+                lblError.Text = "";
+
+                switch (e.CommandName)
+                {
+                    case "Edt":
+                        CheckGrid(GridCheckMode.CheckNone);
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                        objNacherf.SelEditDurchzufVersZul = true;
+                        Session["objNacherf"] = objNacherf;
+                        Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + lblID.Text + "&B=true");
+                        break;
+
+                    case "Del":
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                        lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
+                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+
+                        newLoeschkz = (lblLoeschKZ.Text == "L" ? "" : "L");
+
+                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, lblIDPos.Text, newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
+                        {
+                            lblError.Text = objNacherf.Message;
+                            return;
+                        }
+
+                        lblLoeschKZ.Text = newLoeschkz;
+
+                        if (lblIDPos.Text == "10")
+                        {
+                            foreach (GridViewRow row in GridView1.Rows)
+                            {
+                                if (GridView1.DataKeys[row.RowIndex] != null)
+                                {
+                                    if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
+                                    {
+                                        lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                        lblLoeschKZ.Text = newLoeschkz;
+                                        ImageButton ibtnedt = (ImageButton)row.FindControl("ibtnedt");
+                                        ibtnedt.Visible = (newLoeschkz != "L");
+
+                                        SetGridRowEdited(row, true);
+                                    }
+                                }
+                            }
+                        }
+
+                        SetGridRowEdited(GridView1.Rows[Index], true);
+                        Session["objNacherf"] = objNacherf;
+                        break;
+
+                    case "OK":
+                        newLoeschkz = "O";
+
+                        Int32.TryParse(e.CommandArgument.ToString(), out Index);
+                        if (CheckGridRow(GridView1.Rows[Index], GridCheckMode.CheckAll, true))
+                            return;
+
+                        lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
+                        lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
+                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+
+                        if (lblLoeschKZ.Text == "L")
+                            throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
+
+                        objNacherf.UpdateWebBearbeitungsStatus(lblID.Text, "10", newLoeschkz);
+
+                        if (objNacherf.ErrorOccured)
+                        {
+                            lblError.Text = objNacherf.Message;
+                            return;
+                        }
+
+                        foreach (GridViewRow row in GridView1.Rows)
+                        {
+                            if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
+                            {
+                                Label IDPos = (Label)row.FindControl("lblid_pos");
+                                lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                if (lblLoeschKZ.Text != "L")
+                                {
+                                    lblLoeschKZ.Text = newLoeschkz;
+                                }
+
+                                if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
+                                {
+                                    CheckGridRow(row, GridCheckMode.CheckAll, true);
+                                }
+
+                                SetGridRowEdited(row, true);
+                            }
+                        }
+
+                        Session["objNacherf"] = objNacherf;
+                        break;
+                }
             }
-            DataView tmpDataView = tmpTable.DefaultView;
-            String strFilter = "";
-            if (Rowfilter != null)
+            catch (Exception ex)
             {
-                ViewState["Rowfilter"] = Rowfilter;
-                strFilter = Rowfilter;
+                lblError.Text = ex.Message;
             }
-            else if (ViewState["Rowfilter"] != null)
+        }
+
+        protected void ibtnSearch_Click(object sender, ImageClickEventArgs e)
+        {
+            lblError.Text = "";
+
+            if (ddlSuche.SelectedValue == "Zulassungsdatum")
             {
-                strFilter = (String)this.ViewState["Rowfilter"];
+                if (!String.IsNullOrEmpty(txtSuche.Text))
+                {
+                    var SelDatum = ZLDCommon.toShortDateStr(txtSuche.Text);
+                    if (!SelDatum.IsDate())
+                    {
+                        lblError.Text = "Die Eingabe konnte nicht als Datum erkannt werden!(ttmmjj)";
+                        return;
+                    }
+                }
+            }
+            else if (ddlSuche.SelectedValue == "SapId")
+            {
+                if (!String.IsNullOrEmpty(txtSuche.Text))
+                {
+                    var SelID = txtSuche.Text;
+                    if (!SelID.IsNumeric())
+                    {
+                        lblError.Text = "Die Eingabe konnte nicht als numerisch erkannt werden!";
+                        return;
+                    }
+                }
             }
 
-            tmpDataView.RowFilter = strFilter;
+            CheckGrid(GridCheckMode.CheckNone);
 
-            if (tmpDataView.Count == 0)
+            objNacherf.DataFilterActive = true;
+            objNacherf.DataFilterProperty = ddlSuche.SelectedValue;
+            objNacherf.DataFilterValue = txtSuche.Text;
+            Session["objNacherf"] = objNacherf;
+
+            Fillgrid();
+
+            trSuche.Visible = true;
+            ibtnNoFilter.Visible = true;
+        }
+
+        protected void ibtnNoFilter_Click(object sender, ImageClickEventArgs e)
+        {
+            ddlSuche.SelectedIndex = 0;
+            txtSuche.Text = "";
+
+            CheckGrid(GridCheckMode.CheckNone);
+
+            objNacherf.DataFilterActive = false;
+            Session["objNacherf"] = objNacherf;
+
+            Fillgrid();
+
+            ibtnSearch.Visible = true;
+            ibtnNoFilter.Visible = false;
+        }
+
+        protected void cmdSend_Click(object sender, EventArgs e)
+        {
+            if (!CheckGrid(GridCheckMode.CheckOnlyRelevant))
+            {
+                lblError.Text = "";
+
+                objNacherf.SendVorgaengeToSap(objCommon.MaterialStamm, objCommon.StvaStamm, m_User.UserName, m_User.FirstName, m_User.LastName, true);
+
+                if (objNacherf.ErrorOccured)
+                {
+                    lblError.Text = objNacherf.Message;
+                    return;
+                }
+
+                if (objNacherf.Vorgangsliste.Any(v => !String.IsNullOrEmpty(v.FehlerText) && v.FehlerText != "OK"))
+                {
+                    lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+                    lblMessage.Visible = false;
+                }
+                else
+                {
+                    lblMessage.Visible = true;
+                    lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
+                    lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
+                }
+
+                cmdSave.Enabled = false;
+                cmdSend.Enabled = false;
+                cmdContinue.Visible = true;
+
+                Fillgrid(0, "", GridFilterMode.ShowOnlyOandL);
+
+                trSuche.Visible = false;
+
+                ShowHideColumns(true);
+
+                Session["objNacherf"] = objNacherf;
+            }
+        }
+
+        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
+        {
+            if (e.Row.RowType == DataControlRowType.DataRow)
+            {
+                TextBox Zuldat = (TextBox)e.Row.FindControl("txtZulassungsdatum");
+                if (!String.IsNullOrEmpty(Zuldat.Text))
+                {
+                    var tmpDate = Zuldat.Text;
+                    Zuldat.Text = tmpDate.Substring(0, 2) + tmpDate.Substring(3, 2) + tmpDate.Substring(8, 2);
+                }
+            }
+        }
+
+        protected void cmdSave_Click(object sender, EventArgs e)
+        {
+            if (!CheckGrid(GridCheckMode.CheckNone))
+            {
+                lblError.Text = "";
+
+                objNacherf.SaveVorgaengeToSap(objCommon.MaterialStamm, objCommon.StvaStamm, m_User.UserName);
+
+                if (objNacherf.ErrorOccured)
+                {
+                    lblError.Text = objNacherf.Message;
+                }
+                else
+                {
+                    lblMessage.Visible = true;
+                    lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
+                    lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
+                }
+            }
+        }
+
+        protected void cmdContinue_Click(object sender, EventArgs e)
+        {
+            objNacherf.DeleteVorgaengeOkAndDelFromLists();
+
+            objNacherf.DataFilterActive = false;
+            ddlSuche.SelectedIndex = 0;
+            txtSuche.Text = "";
+            ibtnSearch.Visible = true;
+            ibtnNoFilter.Visible = false;
+
+            if (objNacherf.Vorgangsliste.Count == 0)
+            {
+                Fillgrid();
+                Result.Visible = false;
+                cmdSend.Enabled = false;
+                cmdSave.Enabled = false;
+                trSuche.Visible = false;
+                lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
+            }
+            else
+            {
+                Result.Visible = true;
+                cmdSend.Enabled = true;
+                cmdSave.Enabled = true;
+                trSuche.Visible = true;
+                tab1.Visible = true;
+                Fillgrid();
+            }
+
+            ShowHideColumns();
+
+            cmdContinue.Visible = false;
+            cmdSend.Enabled = true;
+        }
+
+        #endregion
+
+        #region Methods
+
+        private void Fillgrid(Int32 intPageIndex = -1, String strSort = "", GridFilterMode filterMode = GridFilterMode.Default)
+        {
+            List<ZLDVorgangUINacherfassung> srcList;
+
+            switch (filterMode)
+            {
+                case GridFilterMode.ShowOnlyOandL:
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true) && (vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L")).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg => vg.WebBearbeitungsStatus == "O" || vg.WebBearbeitungsStatus == "L").ToList();
+                    }
+                    break;
+
+                default:
+                    if (objNacherf.DataFilterActive)
+                    {
+                        srcList = objNacherf.Vorgangsliste.Where(vg =>
+                            ZLDCommon.FilterData(vg, objNacherf.DataFilterProperty, objNacherf.DataFilterValue, true)).ToList();
+                    }
+                    else
+                    {
+                        srcList = objNacherf.Vorgangsliste;
+                    }
+                    break;
+            }
+
+            if (srcList.Count == 0)
             {
                 GridView1.Visible = false;
                 Result.Visible = false;
@@ -93,23 +421,23 @@ namespace AppZulassungsdienst.forms
                 Result.Visible = true;
                 GridView1.Visible = true;
                 trSuche.Visible = true;
-                Int32 intTempPageIndex = intPageIndex;
-                String strTempSort = "";
+                var intTempPageIndex = (intPageIndex > -1 ? intPageIndex : GridView1.PageIndex);
+                var strTempSort = "";
                 String strDirection = null;
 
-                if (strSort.Trim(' ').Length > 0)
+                if (!String.IsNullOrEmpty(strSort))
                 {
                     intTempPageIndex = 0;
                     strTempSort = strSort.Trim(' ');
-                    if ((this.ViewState["Sort"] == null) || ((String)this.ViewState["Sort"] == strTempSort))
+                    if ((Session["Sort"] == null) || ((String)Session["Sort"] == strTempSort))
                     {
-                        if (this.ViewState["Direction"] == null)
+                        if (Session["Direction"] == null)
                         {
                             strDirection = "desc";
                         }
                         else
                         {
-                            strDirection = (String)this.ViewState["Direction"];
+                            strDirection = (String)Session["Direction"];
                         }
                     }
                     else
@@ -126,73 +454,74 @@ namespace AppZulassungsdienst.forms
                         strDirection = "asc";
                     }
 
-                    this.ViewState["Sort"] = strTempSort;
-                    this.ViewState["Direction"] = strDirection;
+                    Session["Sort"] = strTempSort;
+                    Session["Direction"] = strDirection;
                 }
-
-                if (strTempSort.Length != 0)
+                else if (Session["Sort"] != null)
                 {
-                    tmpDataView.Sort = strTempSort + " " + strDirection;
+                    strTempSort = Session["Sort"].ToString();
+                    strDirection = Session["Direction"].ToString();
+                }
+                if (!String.IsNullOrEmpty(strTempSort))
+                {
+                    var prop = typeof(ZLDVorgangUINacherfassung).GetProperty(strTempSort);
+
+                    if (strDirection == "asc")
+                    {
+                        GridView1.DataSource = srcList.OrderBy(v => prop.GetValue(v, null)).ToList();
+                    }
+                    else
+                    {
+                        GridView1.DataSource = srcList.OrderByDescending(v => prop.GetValue(v, null)).ToList();
+                    }
+                }
+                else
+                {
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId.ToLong(0)).ThenBy(v => v.PositionsNr.ToInt(0)).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
-                GridView1.DataSource = tmpDataView;
                 GridView1.DataBind();
 
-                String myId = GridView1.DataKeys[0]["ID"].ToString();
-                String Css = "ItemStyle";
-                foreach (GridViewRow row in GridView1.Rows)
+                // Zeilen mit gleicher ID gleich färben
+                if (GridView1.DataKeys.Count > 0 && GridView1.DataKeys[0] != null)
                 {
-
-                    if (GridView1.DataKeys[row.RowIndex]["ID"].ToString() == myId)
+                    var myId = GridView1.DataKeys[0]["SapId"].ToString();
+                    var Css = "ItemStyle";
+                    foreach (GridViewRow row in GridView1.Rows)
                     {
-                        row.CssClass = Css;
-                        myId = GridView1.DataKeys[row.RowIndex]["ID"].ToString();
-                    }
-                    else
-                    {
-                        if (Css == "ItemStyle")
+                        if (GridView1.DataKeys[row.RowIndex] != null)
                         {
-                            Css = "GridTableAlternate2";
-                        }
-                        else
-                        {
-                            Css = "ItemStyle";
-                        }
-                        row.CssClass = Css;
-                        myId = GridView1.DataKeys[row.RowIndex]["ID"].ToString();
+                            if (GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == myId)
+                            {
+                                row.CssClass = Css;
+                            }
+                            else
+                            {
+                                if (Css == "ItemStyle")
+                                {
+                                    Css = "GridTableAlternate2";
+                                }
+                                else
+                                {
+                                    Css = "ItemStyle";
+                                }
+                                row.CssClass = Css;
 
-                    }
-
-                    Label lblMatnr = (Label)row.FindControl("lblMatnr");
-                    Label lblMatbez = (Label)row.FindControl("lblMatbez");
-                    Label lblDLBezeichnung = (Label)row.FindControl("lblDLBezeichnung");
-                    if (lblMatnr.Text.TrimStart('0') == CONST_IDSONSTIGEDL)
-                    {
-                        lblDLBezeichnung.Text = lblMatbez.Text;
-                    }
-                    else
-                    {
-                        lblDLBezeichnung.Text = "";
+                                myId = GridView1.DataKeys[row.RowIndex]["SapId"].ToString();
+                            }
+                        }
                     }
                 }
-
             }
         }
 
-        protected void GridView1_Sorting(object sender, GridViewSortEventArgs e)
+        private void ClearGridErrors()
         {
-            Fillgrid(0, e.SortExpression, null);
-        }
-
-        protected void lb_zurueck_Click(object sender, EventArgs e)
-        {
-            Response.Redirect("ChangeZLDNachVersand.aspx?AppID=" + Session["AppID"].ToString());
-        }
-
-        protected void GridView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
+            foreach (GridViewRow gvRow in GridView1.Rows)
+            {
+                ClearGridRowErrors(gvRow);
+            }
         }
 
         private void ClearGridRowErrors(GridViewRow gvRow)
@@ -203,14 +532,15 @@ namespace AppZulassungsdienst.forms
             txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
         }
 
-        private Boolean CheckGrid(String RowUpdate)
+        private Boolean CheckGrid(GridCheckMode checkMode)
         {
-            Boolean bError = false;
+            ClearGridErrors();
+            var bError = false;
             try
             {
                 foreach (GridViewRow gvRow in GridView1.Rows)
                 {
-                    if (CheckGridRow(gvRow, RowUpdate))
+                    if (CheckGridRow(gvRow, checkMode, false))
                     {
                         bError = true;
                         break;
@@ -219,395 +549,184 @@ namespace AppZulassungsdienst.forms
             }
             catch (Exception ex)
             {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
                 bError = true;
             }
 
             return bError;
         }
 
-        private Boolean CheckGridRow(GridViewRow gvRow, String rowUpdate)
+        private Boolean CheckGridRow(GridViewRow gvRow, GridCheckMode checkMode, bool einzelsatzPruefung)
         {
-            bool pruefungsrelevant = false;
+            var pruefungsrelevant = false;
 
-            ClearGridRowErrors(gvRow);
-            Boolean bError = false;
+            if (einzelsatzPruefung)
+                ClearGridRowErrors(gvRow);
+
             try
             {
-                Label lblID = (Label)gvRow.FindControl("lblID");
+                Label lblID = (Label)gvRow.FindControl("lblSapId");
                 Label posID = (Label)gvRow.FindControl("lblid_pos");
                 TextBox ZulDate = (TextBox)gvRow.FindControl("txtZulassungsdatum");
                 Label matnr = (Label)gvRow.FindControl("lblMatnr");
-                Label matbez = (Label)gvRow.FindControl("lblMatbez");
                 RadioButton rb = (RadioButton)gvRow.FindControl("rbBar");
                 RadioButton rbEC = (RadioButton)gvRow.FindControl("rbEC");
                 RadioButton rbRE = (RadioButton)gvRow.FindControl("rbRE");
-                Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
                 Label lblLoeschKZ = (Label)gvRow.FindControl("lblPosLoesch");
 
-                String Loeschkz = lblLoeschKZ.Text;
+                var Loeschkz = lblLoeschKZ.Text;
                 if (lblLoeschKZ.Text == "L")
-                {
-                    Loeschkz = "X";
-                }
+                    Loeschkz = "L";
 
-                if (rowUpdate == "")
+                if (checkMode == GridCheckMode.CheckAll)
                 {
                     pruefungsrelevant = true;
                 }
-                else if (rowUpdate == "R")
+                else if (checkMode == GridCheckMode.CheckOnlyRelevant)
                 {
                     pruefungsrelevant = (Loeschkz == "O");
                 }
 
-                Int32 intID = 0;
-                Int32 intPosID = 0;
+                var bBar = rb.Checked;
+                var bEC = rbEC.Checked;
+                var bRE = rbRE.Checked;
 
-                Boolean bBar = rb.Checked;
-                Boolean bEC = rbEC.Checked;
-                Boolean bRE = rbRE.Checked;
-
-                if (ZLDCommon.IsNumeric(lblID.Text))
+                if (posID.Text == "10" && pruefungsrelevant)
                 {
-                    Int32.TryParse(lblID.Text, out intID);
-                }
-
-                if (ZLDCommon.IsNumeric(posID.Text))
-                {
-                    Int32.TryParse(posID.Text, out intPosID);
-                }
-                if (pruefungsrelevant && intPosID == 10)
-                {
-                    if (ZulDate.Text == "")
+                    if (ZulDate.Visible && (String.IsNullOrEmpty(ZulDate.Text) || !checkDate(ZulDate)))
                     {
                         ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                        lblError.Text = "Bitte geben Sie ein Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
-                        return true;
-                    }
-
-                    if (checkDate(ZulDate) == false)
-                    {
+                        lblError.Text = "Bitte geben Sie ein gültiges Zulassungsdatum für die markierten Dienstleistungen/Artikel ein!";
                         return true;
                     }
                 }
-                
-                if ((matnr.Text == CONST_IDSONSTIGEDL) && (String.IsNullOrEmpty(lblDLBezeichnung.Text)))
+
+                TextBox txtBoxGebuehren = (TextBox)gvRow.FindControl("txtGebPreis");
+                Decimal decGeb = 0;
+
+                if (txtBoxGebuehren.Text.IsDecimal())
                 {
-                    matbez.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                    lblError.Text = "Bitte erfassen Sie für die \"Sonstige Dienstleistung\" einen Beschreibungstext!";
+                    Decimal.TryParse(txtBoxGebuehren.Text, out decGeb);
+                    txtBoxGebuehren.Text = String.Format("{0:0.00}", decGeb);
+                }
+
+                if (pruefungsrelevant && decGeb == 0)
+                {
+                    var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == matnr.Text);
+                    if (txtBoxGebuehren.Visible && mat != null && mat.Gebuehrenpflichtig)
+                    {
+                        txtBoxGebuehren.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                        lblError.Text = "Bitte geben Sie die Gebühr für die markierten Dienstleistungen/Artikel ein!";
+                        return true;
+                    }
+                }
+
+                TextBox txtBoxKennzAbc = (TextBox)gvRow.FindControl("txtKennzAbc");
+                if (posID.Text == "10" && pruefungsrelevant && txtBoxKennzAbc.Visible && String.IsNullOrEmpty(txtBoxKennzAbc.Text))
+                {
+                    txtBoxKennzAbc.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                    lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
                     return true;
                 }
 
-                TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-                Decimal decGeb = 0;
-
-                if (ZLDCommon.IsDecimal(txtBox.Text))
+                // Daten aktualisieren
+                var pos = objNacherf.Vorgangsliste.FirstOrDefault(vg => vg.SapId == lblID.Text && vg.PositionsNr == posID.Text);
+                if (pos != null)
                 {
-                    Decimal.TryParse(txtBox.Text, out decGeb);
-                    txtBox.Text = String.Format("{0:0.00}", decGeb);
-                }
-
-                if ((pruefungsrelevant) && (decGeb == 0))
-                {
-                    DataRow[] matRow = objCommon.tblMaterialStamm.Select("MATNR = '" + matnr.Text.TrimStart('0') + "'");
-
-                    if (matRow.Length == 1)
+                    if (txtBoxGebuehren.Visible)
                     {
-                        if (matRow[0]["ZZGEBPFLICHT"].ToString() == "X")
-                        { 
-                            txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                            lblError.Text = "Bitte geben Sie die Gebühr für die markierten Dienstleistungen/Artikel ein!";
-                            return true;                            
-                        }                        
+                        if (!pos.Gebuehrenpaket.IsTrue())
+                            pos.Gebuehr = decGeb;
+
+                        pos.GebuehrAmt = decGeb;
                     }
-                }
 
-                txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
+                    if (txtBoxKennzAbc.Visible)
+                        pos.KennzeichenTeil2 = txtBoxKennzAbc.Text.NotNullOrEmpty().ToUpper();
 
-                if (pruefungsrelevant && txtBox.Text.Length == 0 && intPosID == 10)
-                {
-                    txtBox.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                    lblError.Text = "Bitte geben Sie das vollständige Kennzeichen ein!";
-                    bError = true;
-                }
-                objNacherf.UpdateDB_GridDataGeb(intID, intPosID, decGeb, txtBox.Text, bBar, bEC, ZulDate.Text, lblDLBezeichnung.Text);
-
-                if (objNacherf.Status != 0)
-                {
-                    lblError.Text = "Fehler beim Speichern der Daten(SQL):" + objNacherf.Message;
-                    bError = true;
-                }
-                else
-                {
-                    DataRow[] RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID + " AND id_pos=" + intPosID);
-                    foreach (DataRow Row in RowsEdit)
+                    if (rbEC.Visible)
                     {
-                        Row["GebPreis"] = decGeb;
-                        Row["Bar"] = bBar;
-                        Row["EC"] = bEC;
-                        Row["RE"] = bRE;
-                        String ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
-                        if (ZDat != String.Empty)
-                        { Row["Zulassungsdatum"] = ZDat; }
-                        Row["DLBezeichnung"] = lblDLBezeichnung.Text;
+                        pos.Zahlart_Bar = bBar;
+                        pos.Zahlart_EC = bEC;
+                        pos.Zahlart_Rechnung = bRE;
                     }
-                    if (intPosID == 10)
+
+                    if (ZulDate.Visible)
+                        pos.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
+
+                    if (pos.PositionsNr == "10")
                     {
-                        RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID);
-                        foreach (DataRow Row in RowsEdit)
+                        foreach (var item in objNacherf.Vorgangsliste.Where(vg => vg.SapId == pos.SapId))
                         {
-                            Row["KennABC"] = txtBox.Text;
+                            if (txtBoxKennzAbc.Visible)
+                                item.KennzeichenTeil2 = txtBoxKennzAbc.Text.NotNullOrEmpty().ToUpper();
+
+                            if (ZulDate.Visible)
+                                item.Zulassungsdatum = ZulDate.Text.ToNullableDateTime("ddMMyy");
                         }
                     }
                 }
-                
             }
             catch (Exception ex)
             {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-                bError = true;
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
+                return true;
             }
 
-            return bError;
+            return false;
         }
 
         private Boolean checkDate(TextBox ZulDate)
         {
-            Boolean bReturn = true;
-            String ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
+            var ZDat = ZLDCommon.toShortDateStr(ZulDate.Text);
 
-            if (ZDat != String.Empty)
+            if (String.IsNullOrEmpty(ZDat))
             {
-                if (ZLDCommon.IsDate(ZDat) == false)
+                lblError.Text = "Ungültiges Zulassungsdatum!";
+                ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
+            }
+
+            if (!ZDat.IsDate())
+            {
+                lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
+                ZulDate.BackColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
+            }
+
+            var tagesdatum = DateTime.Today;
+            var i = 60;
+            do
+            {
+                if (tagesdatum.DayOfWeek != DayOfWeek.Saturday && tagesdatum.DayOfWeek != DayOfWeek.Sunday)
                 {
-                    lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                    bReturn = false;
+                    i--;
                 }
-                else
-                {
-                    DateTime tagesdatum = DateTime.Today;
-                    int i = 60;
-                    do
-                    {
-                        if (tagesdatum.DayOfWeek == DayOfWeek.Saturday || tagesdatum.DayOfWeek == DayOfWeek.Sunday)
-                        {
-
-                        }
-                        else
-                        {
-                            i--;
-                        }
-                        tagesdatum = tagesdatum.AddDays(-1);
-                    } while (i > 0);
-                    DateTime DateNew;
-                    DateTime.TryParse(ZDat, out DateNew);
-                    if (DateNew < tagesdatum)
-                    {
-                        lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
-                        ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                        bReturn = false;
-                    }
-                    else
-                    {
-                        tagesdatum = DateTime.Today;
-                        tagesdatum = tagesdatum.AddYears(1);
-                        if (DateNew > tagesdatum)
-                        {
-                            lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
-                            ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                            bReturn = false;
-                        }
-                    }
-                }
-            }
-            else
+                tagesdatum = tagesdatum.AddDays(-1);
+            } while (i > 0);
+            DateTime DateNew;
+            DateTime.TryParse(ZDat, out DateNew);
+            if (DateNew < tagesdatum)
             {
-                    lblError.Text = "Ungültiges Zulassungsdatum: Falsches Format.";
-                    ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
-                    bReturn = false;
+                lblError.Text = "Das Datum darf max. 60 Werktage zurück liegen!";
+                ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
             }
 
-            return bReturn;
-
-        }
-
-        private void Page_PreRender(object sender, EventArgs e)
-        {
-            Common.SetEndASPXAccess(this);
-        }
-
-        private void Page_Unload(object sender, EventArgs e)
-        {
-            Common.SetEndASPXAccess(this);
-        }
-
-        protected void GridView1_RowDeleting(object sender, GridViewDeleteEventArgs e)
-        {
-
-        }
-
-        protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
-        {
-            try
+            tagesdatum = DateTime.Today;
+            tagesdatum = tagesdatum.AddYears(1);
+            if (DateNew > tagesdatum)
             {
-                Int32 Index;
-                Label lblID;
-                Label lblLoeschKZ;
-                String Loeschkz = "";
-                Int32 IDSatz;
-                DataRow[] RowsEdit;
-
-                lblError.Text = "";
-                objNacherf = (NacherfZLD)Session["objNacherf"];
-                Int32.TryParse(e.CommandArgument.ToString(), out Index);
-
-                switch (e.CommandName)
-                {
-                    case "Edt":
-                        CheckGrid("X");
-                        DataRow[] drow = objNacherf.tblEingabeListe.Select("ID=" + e.CommandArgument);
-                        if (drow.Length > 0)
-                        {
-                            objNacherf.Vorgang = drow[0]["Vorgang"].ToString();
-                        }
-                        objNacherf.SelEditDurchzufVersZul = true;
-                        Session["objNacherf"] = objNacherf;
-                        Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString() + "&ID=" + e.CommandArgument + "&B=true");
-                        break;
-
-                    case "Del":
-                        Int32 IDPos;
-                        lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
-                        Label lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
-                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
-
-                        Int32.TryParse(lblID.Text, out IDSatz);
-                        Int32.TryParse(lblIDPos.Text, out IDPos);
-                        if (lblLoeschKZ.Text == "L")
-                        {
-                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, IDPos);
-                            lblLoeschKZ.Text = Loeschkz;
-                        }
-                        else
-                        {
-                            Loeschkz = "L";
-                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, IDPos);
-                            lblLoeschKZ.Text = Loeschkz;
-                        }
-
-                        if (objNacherf.Status != 0)
-                        {
-                            lblError.Text = objNacherf.Message;
-
-                        }
-
-                        if (IDPos != 10)
-                        {
-                            RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + IDSatz + " AND id_pos =" + IDPos);
-                        }
-                        else
-                        {
-                            foreach (GridViewRow row in GridView1.Rows)
-                            {
-
-                                if (GridView1.DataKeys[row.RowIndex]["ID"].ToString() == IDSatz.ToString())
-                                {
-                                    lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
-                                    lblLoeschKZ.Text = Loeschkz;
-                                    SetGridRowEdited(row, true);
-                                }
-
-                            }
-                            RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + IDSatz);
-                        }
-
-                        foreach (DataRow Row in RowsEdit)
-                        {
-                            Row["PosLoesch"] = Loeschkz;
-                            Row["bearbeitet"] = true;
-                        }
-                        SetGridRowEdited(GridView1.Rows[Index], true);
-                        Session["objNacherf"] = objNacherf;
-                        break;
-
-                    case "OK":
-                        if (CheckGridRow(GridView1.Rows[Index], "") == false)
-                        {
-                            CheckGridRowforTracing(GridView1.Rows[Index]);
-                            lblID = (Label)GridView1.Rows[Index].FindControl("lblID");
-                            lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
-
-                            Int32.TryParse(lblID.Text, out IDSatz);
-                            if (lblLoeschKZ.Text == "L")
-                            {
-                                throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
-                            }
-
-                            Loeschkz = "O";
-                            objNacherf.UpdateDB_LoeschKennzeichen(IDSatz, Loeschkz, 0);
-
-                            if (objNacherf.Status != 0)
-                            {
-                                lblError.Text = objNacherf.Message;
-
-                            }
-                            foreach (GridViewRow row in GridView1.Rows)
-                            {
-
-                                if (GridView1.DataKeys[row.RowIndex]["ID"].ToString() == IDSatz.ToString())
-                                {
-                                    lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
-                                    lblLoeschKZ.Text = Loeschkz;
-                                    SetGridRowEdited(row, true);
-                                }
-
-                            }
-                            RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + IDSatz);
-                            foreach (DataRow Row in RowsEdit)
-                            {
-                                Row["PosLoesch"] = Loeschkz;
-                                Row["bearbeitet"] = true;
-                            }
-                            Session["objNacherf"] = objNacherf;
-
-                        }
-                        break;
-
-                    case "SetDLBez":
-                        ihAktuellerDatensatz.Value = Index.ToString();
-                        mpeDLBezeichnung.Show();
-                        break;
-                }
-
-                Result.Visible = true;
+                lblError.Text = "Das Datum darf max. 1 Jahr in der Zukunft liegen!";
+                ZulDate.BorderColor = System.Drawing.ColorTranslator.FromHtml("#bc2b2b");
+                return false;
             }
-            catch (Exception ex)
-            {
-                lblError.Text = ex.Message;
-            }
-        }
 
-        /// <summary>
-        /// Den im PopUp gesetzten Beschreibungstext übernehmen
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        protected void dlgErfassungDLBez_TexteingabeBestaetigt(object sender, EventArgs e)
-        {            
-            Int32 rowIndex;
-
-            Int32.TryParse(ihAktuellerDatensatz.Value, out rowIndex);
-            GridViewRow gvRow = GridView1.Rows[rowIndex];
-
-            Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
-            lblDLBezeichnung.Text = dlgErfassungDLBez.DLBezeichnung;         
-
-            mpeDLBezeichnung.Hide();
+            return true;
         }
 
         private void SetGridRowEdited(GridViewRow gvRow, Boolean Edited)
         {
-
             try
             {
                 Label lblsapID = (Label)gvRow.FindControl("lblsapID");
@@ -619,8 +738,6 @@ namespace AppZulassungsdienst.forms
                 Label lblKennKZ1 = (Label)gvRow.FindControl("lblKennKZ1");
                 Label lblReserviert = (Label)gvRow.FindControl("lblReserviert");
                 Label lblWunschKennz = (Label)gvRow.FindControl("lblWunschKennz");
-                Label lblFeinstaub = (Label)gvRow.FindControl("lblFeinstaub");
-
 
                 lblsapID.Font.Bold = Edited;
                 lblLoeschKZ.Font.Bold = Edited;
@@ -631,355 +748,41 @@ namespace AppZulassungsdienst.forms
                 lblKennKZ1.Font.Bold = Edited;
                 lblReserviert.Font.Bold = Edited;
                 lblWunschKennz.Font.Bold = Edited;
-                lblFeinstaub.Font.Bold = Edited;
-
-
             }
             catch (Exception ex)
             {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
+                lblError.Text = "Fehler beim Speichern der Daten:" + ex.Message;
             }
         }
 
-        protected void ibtnSearch_Click(object sender, ImageClickEventArgs e)
+        /// <summary>
+        /// Gebührenmaterial vorhanden?
+        /// </summary>
+        /// <param name="Matnr"></param>
+        /// <returns></returns>
+        protected bool proofGebMat(String Matnr)
         {
-            String sFilter = "";
-            if (ddlSuche.SelectedValue.Contains("Preis"))
-            {
-                if (ZLDCommon.IsDecimal(txtSuche.Text))
-                {
-                    Decimal Preis;
-                    Decimal.TryParse(txtSuche.Text, out Preis);
-                    sFilter = ddlSuche.SelectedValue + " = " + txtSuche.Text.Replace(",", ".");
-                }
-            }
-            else if (ddlSuche.SelectedValue.Contains("Zulassungsdatum"))
-            {
-                if (txtSuche.Text.Length > 0)
-                {
-                    String SelDatum = ZLDCommon.toShortDateStr(txtSuche.Text);
-                    if (ZLDCommon.IsDate(SelDatum))
-                    {
-                        sFilter = ddlSuche.SelectedValue + " = '" + SelDatum + "'";
-                    }
-                    else
-                    {
-                        lblError.Text = "Die Eingabe konnte nicht als Datum erkannt werden!(ttmmjj)";
-                    }
-                }
-            }
-            else if (ddlSuche.SelectedValue.Contains("id_sap"))
-            {
-                if (txtSuche.Text.Length > 0)
-                {
-                    String SelID = txtSuche.Text;
-                    if (ZLDCommon.IsNumeric(SelID))
-                    {
-                        sFilter = ddlSuche.SelectedValue + " = " + SelID;
-                    }
-                    else
-                    {
-                        lblError.Text = "Die Eingabe konnte nicht als numerisch erkannt werden!";
-                    }
-                }
-            }
-            else
-            {
-
-                sFilter = ddlSuche.SelectedValue + " Like '*" + txtSuche.Text + "*'";
-            }
-            Fillgrid(0, "", sFilter);
-            ibtnNoFilter.Visible = true;
+            return objCommon.proofGebMat(Matnr);
         }
 
-        protected void ibtnNoFilter_Click(object sender, ImageClickEventArgs e)
+        private void ShowHideColumns(bool modusSenden = false)
         {
-            ddlSuche.SelectedIndex = 0;
-            txtSuche.Text = "";
-            Fillgrid(0, "", "");
-            ibtnSearch.Visible = true;
-            ibtnNoFilter.Visible = false;
+            // Status
+            GridView1.Columns[1].Visible = modusSenden;
+            // Sapid
+            GridView1.Columns[2].Visible = !modusSenden;
+
+            // Gebühr
+            GridView1.Columns[9].Visible = !modusSenden;
+            // Zuldat
+            GridView1.Columns[10].Visible = !modusSenden;
+            // Ref1
+            GridView1.Columns[11].Visible = !modusSenden;
+
+            // Aktions-Buttons
+            GridView1.Columns[15].Visible = !modusSenden;
         }
 
-        protected void cmdSend_Click(object sender, EventArgs e)
-        {
-            //CheckGridforTracing();
-            if (CheckGrid("R") == false)
-            {
-                lblError.Text = "";
-                objNacherf = (NacherfZLD)Session["objNacherf"];
-                objNacherf.SaveDZLDNacherfassung(Session["AppID"].ToString(), Session.SessionID, this,objCommon.tblStvaStamm, objCommon.tblMaterialStamm);
-                if (objNacherf.Status != 0)
-                {
-                    tab1.Visible = true;
-                    if (objNacherf.Status == -5555)
-                    {
-                        lblError.Text = "Fehler bei der Kommunikation. Daten konnten nicht in SAP gespeichert werden! " + objNacherf.Message;
-                        return;
-                    }
-                    lblError.Text = objNacherf.Message;
-                    if (objNacherf.Status == -7777)// "Es sind keine Vorgänge mit \"O\" oder \"L\" markiert"
-                    {
-                        return;
-                    }
-
-                    DataRow[] rowListe = objNacherf.tblEingabeListe.Select("Status = '' AND PosLoesch <> ''");
-
-                    if (rowListe.Length > 0)
-                    {
-                        foreach (DataRow dRow in rowListe)
-                        {
-                            Int32 id;
-                            Int32.TryParse(dRow["ID"].ToString(), out id);
-                            objNacherf.DeleteRecordSet(id);
-                            objNacherf.tblEingabeListe.Rows.Remove(dRow);
-                        }
-                    }
-
-                    Fillgrid(0, "", null);
-                    GridView1.Columns[1].Visible = true;
-                    GridView1.Columns[3].Visible = false;
-
-                    if (GridView1.Columns[10] != null) { GridView1.Columns[10].Visible = false; }
-                    if (GridView1.Columns[11] != null) { GridView1.Columns[11].Visible = false; }
-                    if (GridView1.Columns[12] != null) { GridView1.Columns[12].Visible = false; }
-                }
-                else
-                {
-                    tab1.Visible = true;
-                    //tab1.Height = "250px";
-                    lblMessage.Visible = true;
-                    lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
-                    lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
-                    DataRow[] rowListe = objNacherf.tblEingabeListe.Select("Status = '' AND PosLoesch <> ''");
-
-                    if (rowListe.Length > 0)
-                    {
-                        foreach (DataRow dRow in rowListe)
-                        {
-                            Int32 id;
-                            Int32.TryParse(dRow["ID"].ToString(), out id);
-                            objNacherf.DeleteRecordSet(id);
-                            objNacherf.tblEingabeListe.Rows.Remove(dRow);
-                        }
-
-                    }
-                    cmdSend.Enabled = false;
-                    cmdContinue.Visible = true;
-                    Fillgrid(0, "", null);
-                }
-
-                Session["objNacherf"] = objNacherf;
-            }
-        }
-
-        private void CheckGridRowforTracing(GridViewRow gvRow)
-        {
-            tblTracing = new DataTable();
-            tblTracing.Columns.Add("Wert", typeof(String));
-            tblTracing.Columns.Add("ID", typeof(String));
-            tblTracing.Columns.Add("Kunde", typeof(String));
-            tblTracing.Columns.Add("Kennzeichen", typeof(String));
-            tblTracing.Columns.Add("Dienstleistung", typeof(String));
-            tblTracing.Columns.Add("Zulassungsdatum", typeof(String));
-            tblTracing.Columns.Add("Gebuehr", typeof(String));
-            try
-            {
-                Label lblID = (Label)gvRow.FindControl("lblID");
-                Label posID = (Label)gvRow.FindControl("lblid_pos");
-                Int32 intID = 0;
-                Int32 intPosID = 0;
-
-                if (ZLDCommon.IsNumeric(lblID.Text))
-                {
-                    Int32.TryParse(lblID.Text, out intID);
-                }
-
-                if (ZLDCommon.IsNumeric(posID.Text))
-                {
-                    Int32.TryParse(posID.Text, out intPosID);
-                }
-
-                TextBox txtBox = (TextBox)gvRow.FindControl("txtGebPreis");
-                Decimal Geb = 0;
-                if (ZLDCommon.IsDecimal(txtBox.Text))
-                {
-                    Decimal.TryParse(txtBox.Text, out Geb);
-                }
-
-                txtBox = (TextBox)gvRow.FindControl("txtKennzAbc");
-                String Kennzeichen = txtBox.Text;
-
-                Label lblTemp = (Label)gvRow.FindControl("lblKundennr");
-                String Kundenname = lblTemp.Text;
-                lblTemp = (Label)gvRow.FindControl("lblKundenname");
-                String Kunnr = lblTemp.Text;
-                lblTemp = (Label)gvRow.FindControl("lblMatbez");
-                String Dienstleistung = lblTemp.Text;
-                String Kennz1 = txtBox.Text;
-                Boolean Change = false;
-                DataRow[] RowsEdit = objNacherf.tblEingabeListe.Select("ID=" + intID + " AND id_pos=" + intPosID);
-                foreach (DataRow Row in RowsEdit)
-                {
-
-                    Decimal OldPreisGeb = 0;
-                    if (ZLDCommon.IsDecimal(Row["GebPreis"].ToString()))
-                    {
-                        Decimal.TryParse(Row["GebPreis"].ToString(), out OldPreisGeb);
-                    }
-                    if (OldPreisGeb != Geb)
-                    {
-                        Change = true;
-                    }
-
-                    if (Row["KennABC"].ToString() != Kennzeichen)
-                    {
-                        Change = true;
-                    }
-
-                    if (Change)
-                    {
-                        DataRow TracingRow = tblTracing.NewRow();
-                        TracingRow["Wert"] = "alt";
-                        TracingRow["ID"] = intID.ToString();
-                        TracingRow["Kunde"] = Kunnr + "  " + Kundenname;
-                        TracingRow["Kennzeichen"] = Kennz1 + "-" + Row["KennABC"].ToString();
-                        TracingRow["Dienstleistung"] = Dienstleistung;
-                        TracingRow["Gebuehr"] = String.Format("{0:0.00}", OldPreisGeb);
-
-                        tblTracing.Rows.Add(TracingRow);
-
-                        TracingRow = tblTracing.NewRow();
-                        TracingRow["Wert"] = "neu";
-                        TracingRow["ID"] = intID.ToString();
-                        TracingRow["Kunde"] = Kunnr + "  " + Kundenname;
-                        TracingRow["Kennzeichen"] = Kennz1 + "-" + Kennzeichen;
-                        TracingRow["Dienstleistung"] = Dienstleistung;
-                        TracingRow["Gebuehr"] = Geb;
-
-
-                        tblTracing.Rows.Add(TracingRow);
-                        
-                    }
-
-                }
-                if (tblTracing.Rows.Count > 0)
-                {
-                    int AppID;
-                    int.TryParse(Session["AppID"].ToString(), out AppID);
-                    CKG.Base.Kernel.Logging.Trace logApp = new CKG.Base.Kernel.Logging.Trace(m_App.Connectionstring, m_App.SaveLogAccessSAP, m_App.LogLevel);
-                    logApp.WriteEntry("APP", m_User.UserName, Session.SessionID, AppID, lblHead.Text, m_User.Reference,
-                        "Änderung Nacherfassung am " + DateTime.Now.ToString() + ".", m_User.CustomerName, m_User.Customer.CustomerId, m_User.IsTestUser, 0, tblTracing);
-
-                }
-            }
-            catch (Exception ex)
-            {
-                lblError.Text = "Fehler beim Speichern der Daten(SQL):" + ex.Message;
-            }
-        }
-
-        protected void GridView1_RowDataBound(object sender, GridViewRowEventArgs e)
-        {
-            if (e.Row.RowType == DataControlRowType.DataRow) 
-            {
-                TextBox Zuldat = (TextBox)e.Row.FindControl("txtZulassungsdatum");
-                if (Zuldat.Text.Length > 0) 
-                {
-
-                    String tmpDate = Zuldat.Text;
-                    Zuldat.Text = tmpDate.Substring(0, 2) + tmpDate.Substring(3, 2) + tmpDate.Substring(8, 2);
-
-                }
-            
-            }
-        }
-
-        protected void cmdSave_Click(object sender, EventArgs e)
-        {
-            Update();
-        }
-
-        private void Update()
-        {
-
-            if (CheckGrid("X") == false)
-            {
-                lblError.Text = "";
-                objNacherf = (NacherfZLD)Session["objNacherf"];
-
-                objNacherf.UpdateZLDNacherfassung(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, objCommon.tblMaterialStamm);
-
-
-                if (objNacherf.Status != 0)
-                {
-                    tab1.Visible = true;
-                    lblError.Text = objNacherf.Message;
-
-                }
-                else
-                {
-
-                    lblMessage.Visible = true;
-                    lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
-                    lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
-                }
-            }
-        }
-
-        protected void cmdContinue_Click(object sender, EventArgs e)
-        {
-            cmdContinue.Visible = false;
-            cmdSend.Enabled = true;
-
-            LoescheAusEingabeliste("Status = 'OK'");
-
-            if (objNacherf.tblEingabeListe.DefaultView.Count == 0)
-            {
-                Session["Rowfilter"] = null;
-                Fillgrid(0, "", null);
-                Result.Visible = false;
-                cmdSend.Enabled = false;
-                cmdSave.Enabled = false;
-                trSuche.Visible = true;
-                lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
-            }
-            else
-            {
-                Result.Visible = true;
-                cmdSend.Enabled = true;
-                cmdSave.Enabled = true;
-                trSuche.Visible = false;
-                tab1.Visible = true;
-                ddlSuche.SelectedIndex = 0;
-                txtSuche.Text = "";
-                ibtnSearch.Visible = true;
-                ibtnNoFilter.Visible = false;
-                Fillgrid(0, "", null);
-            }
-        }
-
-        private void LoescheAusEingabeliste(string filter)
-        {
-            DataRow[] rowListe = objNacherf.tblEingabeListe.Select(filter);
-            List<int> loeschIds = new List<int>();
-            foreach (DataRow dRow in rowListe)
-            {
-                Int32 id;
-                Int32.TryParse(dRow["id"].ToString(), out id);
-                if (!loeschIds.Contains(id))
-                {
-                    loeschIds.Add(id);
-                }
-            }
-            foreach (int remId in loeschIds)
-            {
-                DataRow[] rowPos = objNacherf.tblEingabeListe.Select("id = " + remId);
-                for (int i = (rowPos.Length - 1); i >= 0; i--)
-                {
-                    objNacherf.tblEingabeListe.Rows.Remove(rowPos[i]);
-                }
-            }
-        }
+        #endregion
     }
 }

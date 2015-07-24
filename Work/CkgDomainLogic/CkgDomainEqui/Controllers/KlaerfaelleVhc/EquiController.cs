@@ -1,4 +1,5 @@
 ﻿using System.Web.Mvc;
+using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Equi.ViewModels;
 using Telerik.Web.Mvc;
@@ -16,9 +17,24 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult KlaerfaelleVhc()
         {
-            KlaerfaelleVhcViewModel.LoadKlaerfaelleVhc();
-
             return View(KlaerfaelleVhcViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult LoadKlaerfaelleVhc(KlaerfaelleVhcSuchparameter model)
+        {
+            if (ModelState.IsValid)
+            {
+                KlaerfaelleVhcViewModel.LoadKlaerfaelleVhc(model, ModelState);
+            }
+
+            return PartialView("KlaerfaelleVhc/KlaerfaelleVhcSuche", model);
+        }
+
+        [HttpPost]
+        public ActionResult ShowKlaerfaelleVhc()
+        {
+            return PartialView("KlaerfaelleVhc/KlaerfaelleVhcGrid", KlaerfaelleVhcViewModel);
         }
 
         [GridAction]
@@ -39,16 +55,16 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportKlaerfaelleVhcFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = KlaerfaelleVhcViewModel.KlaerfaelleVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("KlaerfaelleVhc", dt);
+            var dt = KlaerfaelleVhcViewModel.KlaerfaelleVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(KlaerfaelleVhcViewModel.ExcelExportListName, dt);
 
             return new EmptyResult();
         }
 
         public ActionResult ExportKlaerfaelleVhcFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = KlaerfaelleVhcViewModel.KlaerfaelleVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("KlaerfaelleVhc", dt, landscapeOrientation: true);
+            var dt = KlaerfaelleVhcViewModel.KlaerfaelleVhcFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(KlaerfaelleVhcViewModel.ExcelExportListName, dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

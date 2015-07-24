@@ -1,0 +1,213 @@
+﻿<style type="text/css">
+     
+     .persistable-selector-current {
+         color: blue!important;
+         font-weight: bold!important;
+     }
+     .persistable-selector-current-for-grid-results {
+         color: orange!important;
+         font-weight: bold!important;
+         margin-right: 5px;
+         display: inline;
+         margin-left: 20px;
+     }
+     
+     input[type=text].persistable-selector-current-textbox {
+         color: orange!important;
+         font-weight: bold!important;
+         margin-left: 10px;
+         background-color: white!important;
+         width: 60px;
+     }
+     
+     .persistable-form-dropdown-menu 
+     {
+         display: inline-block;
+         color: #666;
+         font-size: 12pt;
+         padding: 5px 15px 5px 15px;
+         margin:0 0 0 20px;
+         padding:0;
+     }
+     .persistable-form-dropdown-menu * {
+         color: #666!important;
+         text-decoration:none!important;
+     }
+     .persistable-form-dropdown-menu li {
+         color: #666;
+         text-decoration:none;
+         margin:0;
+         /*border-radius: 20px !important;
+        box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);*/
+     }
+     .persistable-form-dropdown-menu i.icon-angle-down {
+         font-size: 1.0em;
+         width: 10px;
+     }
+     .persistable-form-dropdown-menu i.icon-cog {
+         margin-left: 2px;
+         width: 15px;
+     }
+
+     .persistable-form-dropdown-menu span.badge {
+         padding-top: 6px;
+         padding-bottom: 4px;
+         padding-left: 5px;
+         padding-right: 5px;
+         margin-left: 22px;
+         font-size: 16px!important;
+         font-weight: normal;
+         height: 16px;
+         width: 16px;
+         background-color: #ffb848;
+         border-radius: 16px !important;
+         text-shadow: none!important;
+         float: none;
+         text-align: center;
+         box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
+         color: white!important;
+     }
+     .persistable-form-dropdown-menu ul.dropdown-menu i.icon-bar-chart {
+         margin-right: 10px;
+     }
+     .persistable-form-dropdown-menu ul.dropdown-menu li a {
+         padding-right: 10px;
+     }
+     .persistable-form-dropdown-menu ul.dropdown-menu {
+         margin-top: 8px;
+     }
+     .persistable-form-dropdown-menu .dropdown-toggle {
+         background-color: transparent!important;
+     }
+     .persistable-form-dropdown-menu a.dropdown-toggle i.icon-bar-chart {
+         margin-left: 8px;
+     }
+
+     a.persistable-form-toolbar-item, a.persistable-form-toolbar-item:hover {
+         display: inline;
+         float: right;
+         cursor: pointer!important;
+         font-size: 1.25em!important;
+         color: black!important;
+         font-style: normal!important;
+         text-decoration: none!important;
+     }
+     
+     ul.dropdown-menu li {
+         padding: 3px;
+         cursor: default;
+         width: 280px;
+         white-space: nowrap;
+     }
+     ul.dropdown-menu li.loadable {
+         cursor: pointer!important;
+     }
+     ul.dropdown-menu li.current {
+         font-weight: bold;
+     }
+     ul.dropdown-menu li.loadable:hover {
+         background-color: #c6c6c6;
+     }
+     ul.dropdown-menu li span.li-button {
+         padding: 3px;
+         white-space: nowrap;
+     }
+     ul.dropdown-menu li span.li-button i.icon-remove {
+         float: right;
+     }
+     ul.dropdown-menu li span.li-item {
+         white-space: nowrap;
+     }
+     
+     .btn.mini.yellow i.icon-save, .btn.mini.yellow i.icon-copy, .btn.mini.yellow i.icon-remove {
+         color: white;
+         font-size: 1.3em;
+         padding-top: 1px;
+         display: inline-block;
+     }
+     .btn.mini.yellow:focus {
+         outline: 0!important; 
+         outline-offset: 0!important; 
+     } 
+ </style>
+ 
+ 
+<script type="text/javascript">
+
+    App.unblockUI2($(".persistable-form-dropdown-menu").closest("form"));
+
+    function PersistableSelectorDelete(objectKey) {
+
+        if (!confirm('@Localize.ItemDeleteConfirm.ToJavascriptString()'))
+            return;
+
+        var form = $(".persistable-form-dropdown-menu").closest("form");
+        AjaxSetPersistableMode("delete", form, objectKey, function (result) {
+            form.submit();
+        });
+    }
+
+    function PersistableSelectorLoad(objectKey) {
+        var form = $(".persistable-form-dropdown-menu").closest("form");
+        AjaxSetPersistableMode("load", form, objectKey, function (result) {
+            form.submit();
+        });
+    }
+
+
+    function PersistableSelectorSave(span, objectKey) {
+        var form = span.closest("form");
+        AjaxSetPersistableMode("save", form, objectKey, function (result) {
+            form.submit();
+        });
+    }
+
+    function PersistableSelectorSaveAs(span, objectKey) {
+        var form = span.closest("form");
+        AjaxSetPersistableMode("saveas", form, objectKey, function (result) {
+            form.submit();
+        });
+    }
+
+    function PersistableSelectorClear(span) {
+        var form = span.closest("form");
+        AjaxSetPersistableMode("clear", form, "", function (result) {
+            form.submit();
+        });
+    }
+
+
+    function PersistableSelectorSaveGrid(objectKey) {
+        AjaxSetPersistableMode("savegrid", null, objectKey, function (result) {
+            if (result.success) {
+                GridCaptionHintShowAsSuccess("@Localize.FormPersistableSelector_FormSaveGridSuccessful.ToJavascriptString()");
+                setTimeout(function () {
+                    GridCaptionHintHide();
+                }, 1500);
+            } else
+                alert("ACHTUNG, Fehler beim Speichern der Grid Einstellungen!");
+        });
+    }
+
+    function AjaxSetPersistableMode(mode, form, objectKey, callBackFunction) {
+
+        if (form != null) {
+            App.blockUI2(form);
+        }
+
+        $.ajax(
+            {
+                type: "POST",
+                url: "PersistablePartialViewSetMode",
+                data: { mode: mode, objectKey: objectKey },
+                loadingShow: false,
+                success: function (result) {
+                    
+                    callBackFunction(result);
+
+                }
+            });
+        
+    }
+
+</script>

@@ -15,7 +15,7 @@ namespace CkgDomainLogic.General.Controllers
     {
         public override sealed string DataContextKey { get { return GetDataContextKey<LoginViewModel>(); } }
 
-        public LoginViewModel ViewModel { get { return GetViewModel<LoginViewModel>(); }  }
+        public LoginViewModel ViewModel { get { return GetViewModel<LoginViewModel>(); } }
 
         protected override bool NeedsAuhentification { get { return false; } }
 
@@ -30,7 +30,7 @@ namespace CkgDomainLogic.General.Controllers
         {
             if (!string.IsNullOrEmpty(LogonContext.UserName))
                 LogonContext.LogoutUser();
-                
+
             LogonContext.MvcEnforceRawLayout = false;
 
             CaptchaGenerate();
@@ -53,6 +53,85 @@ namespace CkgDomainLogic.General.Controllers
         static void CaptchaGenerate()
         {
             CaptchaService.GetAndSetSessionCaptchaText(5);
+        }
+        public ActionResult ChangePassword(string confirmation)
+        {
+            ViewModel.ChangePasswordModel = new ChangePasswordModel { ModePasswordReset = true, PasswordCurrent = "dummy" };
+
+            if (!ViewModel.CacheUserAndCustomerFromConfirmationToken(confirmation))
+                return View("ChangePasswordError", ViewModel);
+
+            return View(ViewModel);
+        }
+
+        public ActionResult ChangePasswordLoggedOn()
+        {
+            if (LogonContext.UserName.IsNullOrEmpty())
+                return new EmptyResult();
+
+            if (!ViewModel.CacheUserAndCustomerFromUserName(LogonContext.UserName))
+                return View("ChangePasswordError", ViewModel);
+
+            return View(ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePasswordForm(ChangePasswordModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                ViewModel.ChangePasswordModel = model;
+
+                if (!model.ModePasswordReset)
+                {
+                    if (!LogonContext.ValidatePassword(model.PasswordCurrent, LogonContext.User))
+                        ModelState.AddModelError<ChangePasswordModel>(m => m.PasswordCurrent, Localize.PasswordCurrentInvalid);
+                }
+            }
+
+            if (ModelState.IsValid)
+                ViewModel.ValidatePasswordModelAgainstRules(ModelState.AddModelError);
+
+            if (ModelState.IsValid)
+            {
+                // change password successful!
+                var encryptedPassword = LogonContext.SecurityService.EncryptPassword(model.Password);
+
+                LogonContext.StorePasswordToUser(model.UserName, encryptedPassword);
+                if (LogonContext.User != null)
+                    LogonContext.User.Password = encryptedPassword;
+
+                LogonContext.ReturnUrl = null;
+            }
+
+
+            model.IsValid = ModelState.IsValid;
+
+            return PartialView(model);
+        }
+
+        [HttpPost]
+        public ActionResult PasswordPrecheck(string password)
+        {
+            List<string> localizedPasswordValidationErrorMessages;
+            List<string> localizedPasswordRuleMessages;
+
+            ViewModel.ValidatePasswordAgainstRules(password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
+
+            return Json(new
+            {
+                passwordRuleCount = ViewModel.PasswordRuleCount,
+                localizedPasswordValidationErrorMessages,
+                localizedPasswordRuleMessages
+            });
+        }
+
+        [HttpPost]
+        public ActionResult ConfirmActiveMessagesDontShowAgain()
+        {
+            LogonContext.MaintenanceMessageConfirmAndDontShowAgain();
+
+            return new EmptyResult();
         }
 
         [HttpPost]
@@ -129,85 +208,7 @@ namespace CkgDomainLogic.General.Controllers
 
             return PartialView(model);
         }
-
-        public ActionResult ChangePassword(string confirmation)
-        {
-            ViewModel.ChangePasswordModel = new ChangePasswordModel { ModePasswordReset = true, PasswordCurrent = "dummy" };
-            
-            if (!ViewModel.CacheUserAndCustomerFromConfirmationToken(confirmation))
-                return View("ChangePasswordError", ViewModel);
-
-            return View(ViewModel);
-        }
-
-        public ActionResult ChangePasswordLoggedOn()
-        {
-            if (LogonContext.UserName.IsNullOrEmpty())
-                return new EmptyResult();
-
-            if (!ViewModel.CacheUserAndCustomerFromUserName(LogonContext.UserName))
-                return View("ChangePasswordError", ViewModel);
-
-            return View(ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult ChangePasswordForm(ChangePasswordModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                ViewModel.ChangePasswordModel = model;
-
-                if (!model.ModePasswordReset)
-                {
-                    if (!LogonContext.ValidatePassword(model.PasswordCurrent, LogonContext.User))
-                        ModelState.AddModelError<ChangePasswordModel>(m => m.PasswordCurrent, Localize.PasswordCurrentInvalid);
-                }
-            }
-
-            if (ModelState.IsValid)
-                ViewModel.ValidatePasswordModelAgainstRules(ModelState.AddModelError);
-
-            if (ModelState.IsValid)
-            {
-                // change password successful!
-                var encryptedPassword = LogonContext.SecurityService.EncryptPassword(model.Password);
-                    
-                LogonContext.StorePasswordToUser(model.UserName, encryptedPassword);
-                if (LogonContext.User != null)
-                    LogonContext.User.Password = encryptedPassword;
-
-                LogonContext.ReturnUrl = null;
-            }
-
-
-            model.IsValid = ModelState.IsValid; 
-            
-            return PartialView(model);
-        }
-
-        [HttpPost]
-        public ActionResult PasswordPrecheck(string password)
-        {
-            List<string> localizedPasswordValidationErrorMessages;
-            List<string> localizedPasswordRuleMessages;
-
-            ViewModel.ValidatePasswordAgainstRules(password, out localizedPasswordValidationErrorMessages, out localizedPasswordRuleMessages);
-
-            return Json(new
-            {
-                passwordRuleCount = ViewModel.PasswordRuleCount,
-                localizedPasswordValidationErrorMessages,
-                localizedPasswordRuleMessages
-            });
-        }
-
-        [HttpPost]
-        public ActionResult ConfirmActiveMessagesDontShowAgain()
-        {
-            LogonContext.MaintenanceMessageConfirmAndDontShowAgain();
-
-            return new EmptyResult();
-        }
     }
 }
+
+

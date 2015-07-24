@@ -1,0 +1,53 @@
+﻿@using CkgDomainLogic.Equi.Models
+@model EquiHistorieVermieter
+
+<style type="text/css">
+    a.btn {
+        color: #ffffff !Important;
+    }
+</style>
+
+<button type="button" id="btnBackToResult" class="btn blue pull-right margin-left-10 hide" onclick="CloseEquiHistorieVermieterDetail();"><i class="icon-arrow-left"></i>&nbsp;@Localize.Back</button>
+
+<h5>
+    <i class="icon-road"></i>
+    <span class="margin-left-10 margin-right-5 bold">@Localize.ChassisNo</span>@Model.HistorieInfo.FahrgestellNr
+    <span class="margin-left-10 margin-right-5 bold">@Localize.LicenseNo</span>@Model.HistorieInfo.Kennzeichen
+    <a href="FahrzeughistorieVermieterPdf" class="btn blue float-right"> @Localize.DownloadPdf <i class="icon-download-alt"></i></a>
+</h5>
+
+<div class="tabbable tabbable-custom margin-top-15">
+    <ul class="nav nav-tabs">
+        @*Anzeigereihenfolge umgedreht*@
+        <li class="active"><a href="#tab_1_7" data-toggle="tab">@Localize.Overview</a></li>
+        <li><a href="#tab_1_6" data-toggle="tab">@Localize.IntroductionOfVehicles</a></li>
+        <li><a href="#tab_1_5" data-toggle="tab">@Localize.DisqualificationOfVehicles</a></li>
+        <li><a href="#tab_1_4" data-toggle="tab">@Localize.TypeData</a></li>
+        <li><a href="#tab_1_3" data-toggle="tab">@Localize.VitaZb2</a></li>
+        <li><a href="#tab_1_2" data-toggle="tab">@Localize.VitaFsm</a></li>
+        <li><a href="#tab_1_1" data-toggle="tab">@Localize.ContentsFsm</a></li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane overflow-x-auto" id="tab_1_1">
+            @Html.Partial("Historie/Partial/TueteninhaltFsmGrid")
+        </div>
+        <div class="tab-pane overflow-x-auto" id="tab_1_2">
+            @Html.Partial("Historie/Partial/LebenslaufZb2Grid")
+        </div>
+        <div class="tab-pane overflow-x-auto" id="tab_1_3">
+            @Html.Partial("Historie/Partial/LebenslaufFsmGrid")
+        </div>
+        <div class="tab-pane" id="tab_1_4">
+            @Html.Partial("Historie/Partial/Typdaten", @Model.Typdaten)
+        </div>
+        <div class="tab-pane" id="tab_1_5">
+            @Html.Partial("Historie/Partial/Aussteuerung", @Model.Aussteuerungsdaten)
+        </div>
+        <div class="tab-pane" id="tab_1_6">
+            @Html.Partial("Historie/Partial/Einsteuerung", @Model.Einsteuerungsdaten)
+        </div>
+        <div class="tab-pane active" id="tab_1_7">
+            @Html.Partial("Historie/Partial/UebersichtVermieter", @Model)
+        </div>
+    </div>
+</div>

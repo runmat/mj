@@ -176,8 +176,9 @@ namespace MvcTools.Controllers
                     var urlKeysToIgnore = new[] { "un", "appid", "ra", "rb", "logouturl" };
                     var urlParams = Request.QueryString.ToDictionary().Where(p => !urlKeysToIgnore.Contains(p.Key.ToLower()));
                     var urlQueryString = "";
+                    // Explizites UrlEncode erforderlich, weil Werte aus QueryString beim Auslesen stets automatisch decoded werden
                     if (urlParams.Any())
-                        urlParams.ToList().ForEach(p => urlQueryString += string.Format("{0}{1}={2}", (urlQueryString == "" ? "?" : "&"), p.Key, p.Value));
+                        urlParams.ToList().ForEach(p => urlQueryString += string.Format("{0}{1}={2}", (urlQueryString == "" ? "?" : "&"), p.Key, HttpUtility.UrlEncode(p.Value)));
 
                     var controllerUrlPart = ControllerContext.RouteData.GetRequiredString("controller") + "/";
                     if (rawUrl.ToLower().Contains(string.Format("/{0}", controllerUrlPart.ToLower())))
@@ -235,8 +236,8 @@ namespace MvcTools.Controllers
                 if (!NeedsAuhentification)
                     return false;
 
-                if (Request.Url != null && Request.Url.ToString().ToLower().StartsWith("http://localhost/"))
-                    return false;
+                //if (Request.Url != null && Request.Url.ToString().ToLower().StartsWith("http://localhost/"))
+                //    return false;
 
                 return LogonTimeoutCheckSeconds > LogonTimeoutSeconds;
             }
@@ -263,6 +264,22 @@ namespace MvcTools.Controllers
                 LogonContext = null;
 
             return Json(new { timeoutOccurred });
+        }
+
+        [HttpGet]
+        public ActionResult CheckLogonTimeOut()
+        {
+            return Undefined();
+        }
+
+        [HttpGet]
+        public ActionResult Undefined()
+        {
+            LogonContext = null;
+
+            HttpContext.Response.Redirect("~/");
+
+            return new EmptyResult();
         }
 
         [HttpPost]

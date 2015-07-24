@@ -199,7 +199,7 @@ function keyPressed(TB , e) {
                                                                     <asp:Label ID="lblMatnr" runat="server" Text="Material"></asp:Label>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:Label ID="lblDienstNr" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Matnr") %>' Font-Bold="False"></asp:Label>
+                                                                    <asp:Label ID="lblDienstNr" runat="server" Text='<%# Eval("Matnr") %>' Font-Bold="False"></asp:Label>
                                                                 </ItemTemplate>
                                                                 <HeaderStyle Width="50px" BorderColor="#dfdfdf" BorderStyle="Solid" BorderWidth="1px"
                                                                     HorizontalAlign="Left" />
@@ -210,7 +210,7 @@ function keyPressed(TB , e) {
                                                                     <asp:Label ID="Label1" runat="server" Text="Bezeichnung"></asp:Label>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:Label Width="250px" ID="lblDienst" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Maktx") %>'></asp:Label>
+                                                                    <asp:Label Width="250px" ID="lblDienst" runat="server" Text='<%# Eval("Maktx") %>'></asp:Label>
                                                                 </ItemTemplate>
                                                                 <ItemStyle BorderColor="#dfdfdf" BorderStyle="Solid" BorderWidth="1px" />
                                                                 <HeaderStyle BorderColor="#dfdfdf" BorderStyle="Solid" BorderWidth="1px" HorizontalAlign="Left" />
@@ -221,7 +221,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput1" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva1") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva1") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -233,19 +233,19 @@ function keyPressed(TB , e) {
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput2" onkeypress="return numbersonly(event, true)"
                                                                         MaxLength="8" onkeyup="keyPressed(this.id, event)"
-                                                                        runat="server" Width="60px" Text='<%# DataBinder.Eval(Container, "DataItem.Stva2") %>' ></asp:TextBox>
+                                                                        runat="server" Width="60px" Text='<%# Eval("Stva2") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
                                                             </asp:TemplateField>
                                                             <asp:TemplateField>
                                                                 <HeaderTemplate>
-                                                                    <asp:TextBox ID="txtStva3" MaxLength="3" runat="server" onkeyup="keyPressed(this.id, event)" Text='<%# DataBinder.Eval(Container, "DataItem.Stva1") %>' Width="60px"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtStva3" MaxLength="3" runat="server" onkeyup="keyPressed(this.id, event)" Text='<%# Eval("Stva1") %>' Width="60px"></asp:TextBox>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput3" onkeypress="return numbersonly(event, true)"
                                                                         MaxLength="8" onkeyup="keyPressed(this.id, event)"
-                                                                        runat="server" Width="60px" Text='<%# DataBinder.Eval(Container, "DataItem.Stva3") %>'></asp:TextBox>
+                                                                        runat="server" Width="60px" Text='<%# Eval("Stva3") %>'></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -256,7 +256,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput4" onkeypress="return numbersonly(event, true)"
-                                                                        MaxLength="8" onkeyup="keyPressed(this.id, event)" Text='<%# DataBinder.Eval(Container, "DataItem.Stva4") %>'
+                                                                        MaxLength="8" onkeyup="keyPressed(this.id, event)" Text='<%# Eval("Stva4") %>'
                                                                         runat="server" Width="60px"></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
@@ -267,7 +267,7 @@ function keyPressed(TB , e) {
                                                                     <asp:TextBox ID="txtStva5" MaxLength="3" onkeyup="keyPressed(this.id, event)" runat="server" Width="60px"></asp:TextBox>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtInput5" onkeypress="return numbersonly(event, true)" Text='<%# DataBinder.Eval(Container, "DataItem.Stva5") %>'
+                                                                    <asp:TextBox ID="txtInput5" onkeypress="return numbersonly(event, true)" Text='<%# Eval("Stva5") %>'
                                                                         MaxLength="8" onkeyup="keyPressed(this.id, event)"
                                                                         runat="server" Width="60px"></asp:TextBox>
                                                                 </ItemTemplate>
@@ -279,7 +279,7 @@ function keyPressed(TB , e) {
                                                                     <asp:TextBox  ID="txtStva6" MaxLength="3" onkeyup="keyPressed(this.id, event)" runat="server" Width="60px"></asp:TextBox>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox  ID="txtInput6" onkeypress="return numbersonly(event, true)" Text='<%# DataBinder.Eval(Container, "DataItem.Stva6") %>'
+                                                                    <asp:TextBox  ID="txtInput6" onkeypress="return numbersonly(event, true)" Text='<%# Eval("Stva6") %>'
                                                                         MaxLength="8" onkeyup="keyPressed(this.id, event)"
                                                                         runat="server" Width="60px"></asp:TextBox>
                                                                 </ItemTemplate>
@@ -291,7 +291,7 @@ function keyPressed(TB , e) {
                                                                     <asp:TextBox ID="txtStva7" MaxLength="3" onkeyup="keyPressed(this.id, event)" runat="server" Width="60px"></asp:TextBox>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtInput7" onkeypress="return numbersonly(event, true)" Text='<%# DataBinder.Eval(Container, "DataItem.Stva7") %>'
+                                                                    <asp:TextBox ID="txtInput7" onkeypress="return numbersonly(event, true)" Text='<%# Eval("Stva7") %>'
                                                                         MaxLength="8" onkeyup="keyPressed(this.id, event)"
                                                                         runat="server" Width="60px"></asp:TextBox>
                                                                 </ItemTemplate>
@@ -303,7 +303,7 @@ function keyPressed(TB , e) {
                                                                     <asp:TextBox ID="txtStva8" MaxLength="3" onkeyup="keyPressed(this.id, event)" runat="server" Width="60px"></asp:TextBox>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtInput8" onkeypress="return numbersonly(event, true)" Text='<%# DataBinder.Eval(Container, "DataItem.Stva8") %>'
+                                                                    <asp:TextBox ID="txtInput8" onkeypress="return numbersonly(event, true)" Text='<%# Eval("Stva8") %>'
                                                                         MaxLength="8" onkeyup="keyPressed(this.id, event)"
                                                                         runat="server" Width="60px"></asp:TextBox>
                                                                 </ItemTemplate>
@@ -315,7 +315,7 @@ function keyPressed(TB , e) {
                                                                     <asp:TextBox  ID="txtStva9" MaxLength="3" onkeyup="keyPressed(this.id, event)" runat="server" Width="60px"></asp:TextBox>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtInput9" onkeypress="return numbersonly(event, true)" Text='<%# DataBinder.Eval(Container, "DataItem.Stva9") %>'
+                                                                    <asp:TextBox ID="txtInput9" onkeypress="return numbersonly(event, true)" Text='<%# Eval("Stva9") %>'
                                                                         MaxLength="8" onkeyup="keyPressed(this.id, event)"
                                                                         runat="server" Width="60px"></asp:TextBox>
                                                                 </ItemTemplate>
@@ -328,7 +328,7 @@ function keyPressed(TB , e) {
                                                                         Width="60px"></asp:TextBox>
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
-                                                                    <asp:TextBox ID="txtInput10" onkeypress="return numbersonly(event, true)" MaxLength="8"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva10") %>'
+                                                                    <asp:TextBox ID="txtInput10" onkeypress="return numbersonly(event, true)" MaxLength="8"  Text='<%# Eval("Stva10") %>'
                                                                         onkeyup="keyPressed(this.id, event)" runat="server" Width="60px"></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
@@ -341,7 +341,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput11" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva11") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva11") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -352,7 +352,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput12" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva12") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva12") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -363,7 +363,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput13" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva13") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva13") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -375,7 +375,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput14" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva14") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva14") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -386,7 +386,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput15" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva15") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva15") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -397,7 +397,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput16" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva16") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva16") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -410,7 +410,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput17" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva17") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva17") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -421,7 +421,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput18" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva18") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva18") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -432,7 +432,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput19" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva19") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva19") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -444,7 +444,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput20" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva20") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva20") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -455,7 +455,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput21" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva21") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva21") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -468,7 +468,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput22" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva22") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva22") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -479,7 +479,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput23" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva23") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva23") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -490,7 +490,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput24" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva24") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva24") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -502,7 +502,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput25" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva25") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva25") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -513,7 +513,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput26" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva26") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva26") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -524,7 +524,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput27" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva27") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva27") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -536,7 +536,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput28" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva28") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva28") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -547,7 +547,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput29" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva29") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva29") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />
@@ -558,7 +558,7 @@ function keyPressed(TB , e) {
                                                                 </HeaderTemplate>
                                                                 <ItemTemplate>
                                                                     <asp:TextBox ID="txtInput30" onkeypress="return numbersonly(event, true)" onkeyup="keyPressed(this.id, event);"
-                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# DataBinder.Eval(Container, "DataItem.Stva30") %>' ></asp:TextBox>
+                                                                        MaxLength="8" runat="server" Width="60px"  Text='<%# Eval("Stva30") %>' ></asp:TextBox>
                                                                 </ItemTemplate>
                                                                 <ItemStyle CssClass="ExcelSheetGreen" Width="75px" />
                                                                 <HeaderStyle CssClass="ExcelSheetGreen" HorizontalAlign="Left" />

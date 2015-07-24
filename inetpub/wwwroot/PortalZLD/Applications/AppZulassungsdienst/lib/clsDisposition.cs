@@ -1,172 +1,105 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using CKG.Base.Common;
+using System.Linq;
+using AppZulassungsdienst.lib.Models;
 using CKG.Base.Business;
 using System.Configuration;
 using System.Data.SqlClient;
+using SapORM.Models;
 
 namespace AppZulassungsdienst.lib
 {
-    public class clsDisposition : BankBase
+    public class clsDisposition : SapOrmBusinessBase
     {
-        public string VkOrg { get; set; }
-        public string VkBur { get; set; }
         public string ZulDat { get; set; }
-        public DataTable Fahrerliste { get; set; }
-        public DataTable Dispositionen { get; set; }
+        public List<MobileUser> Fahrerliste { get; set; }
+        public List<AmtDispos> Dispositionen { get; set; }
 
-        public clsDisposition(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, String strAppID, String strSessionID, string strFilename, System.Web.UI.Page page)
-            : base(ref objUser, ref objApp, strAppID, strSessionID, strFilename )
+        /// <summary>
+        /// 1 = nicht disponiert, 2 = bereits disponiert, 3 = bereits in Arbeit
+        /// </summary>
+        public string Modus { get; set; }
+
+        public clsDisposition(string userReferenz)
         {
-            if ((objUser != null) && (!String.IsNullOrEmpty(objUser.Reference)))
-            {
-                if (objUser.Reference.Length > 4)
-                {
-                    VkOrg = objUser.Reference.Substring(0, 4);
-                    VkBur = objUser.Reference.Substring(4);
-                }
-                else
-                {
-                    VkOrg = objUser.Reference;
-                    VkBur = "";
-                }
-            }
-            else
-            {
-                VkOrg = "";
-                VkBur = "";
-            }
+            VKORG = ZLDCommon.GetVkOrgFromUserReference(userReferenz);
+            VKBUR = ZLDCommon.GetVkBurFromUserReference(userReferenz);
 
             ZulDat = DateTime.Today.AddDays(1).ToString("dd.MM.yyyy");
+            Modus = "1";
 
-            FillFahrerliste(strAppID, strSessionID, page);
+            FillFahrerliste();
         }
 
-        private void FillFahrerliste(String strAppID, String strSessionID, System.Web.UI.Page page)
+        private void FillFahrerliste()
         {
-            m_strClassAndMethod = "Disposition.FillFahrerliste";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    Fahrerliste = new DataTable();
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_MOB_GET_USER", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_MOB_GET_USER.Init(SAP, "I_VKORG, I_VKBUR", VKORG, VKBUR);
 
-                    myProxy.setImportParameter("I_VKORG", VkOrg);
-                    myProxy.setImportParameter("I_VKBUR", VkBur);
+                    CallBapi();
 
-                    myProxy.callBapi();
+                    Fahrerliste = AppModelMappings.Z_ZLD_MOB_GET_USER_GT_USER_To_MobileUser.Copy(Z_ZLD_MOB_GET_USER.GT_USER.GetExportList(SAP)).OrderBy(f => f.UserId).ToList();
 
-                    Fahrerliste = myProxy.getExportTable("GT_USER");
-
-                    // "Leere" Auswahl hinzufügen
-                    DataRow aRow = Fahrerliste.NewRow();
-                    aRow["MOBUSER"] = "0";
-                    aRow["NAME"] = "Bitte wählen Sie einen Fahrer...";
-                    Fahrerliste.Rows.Add(aRow);
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                    Fahrerliste.Add(new MobileUser
                     {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                        UserId = "0",
+                        UserName = "Bitte wählen Sie einen Fahrer..."
+                    });
+                });
         }
-
-        public override void Show() {}
-
-        public override void Change() {}
         
-        /// <summary>
-        /// Lädt die aktuellen Zulassungskreise/Dispositionen aus SAP und SQL
-        /// </summary>
-        /// <param name="strAppID"></param>
-        /// <param name="strSessionID"></param>
-        /// <param name="page"></param>
-        public void LoadDispos(String strAppID, String strSessionID, System.Web.UI.Page page)
+        public void LoadDispos()
         {
             // Zulassungskreise/Dispositionen aus SAP laden
-            LoadDisposFromSap(strAppID, strSessionID, page);
+            LoadDisposFromSap();
             // Ggf. vorhandene Zuordnungen aus SQL laden und verarbeiten
             Dictionary<string, string> vorhandeneZuordnungen = LoadZuordnungenFromSql();
-            foreach (DataRow dRow in Dispositionen.Rows)
+            foreach (var dispo in Dispositionen)
             {
-                string amt = dRow["AMT"].ToString();
-                if (vorhandeneZuordnungen.ContainsKey(amt))
+                if (vorhandeneZuordnungen.ContainsKey(dispo.Amt))
                 {
-                    dRow["MOBUSER"] = vorhandeneZuordnungen[amt];
-                    foreach (DataRow fRow in Fahrerliste.Rows)
+                    dispo.MobileUserId = vorhandeneZuordnungen[dispo.Amt];
+
+                    foreach (var fahrer in Fahrerliste)
                     {
-                        if (fRow["MOBUSER"].ToString() == vorhandeneZuordnungen[amt])
+                        if (fahrer.UserId == vorhandeneZuordnungen[dispo.Amt])
                         {
-                            dRow["NAME"] = fRow["NAME"].ToString();
+                            dispo.MobileUserName = fahrer.UserName;
                             break;
                         }
                     }
-                    if (String.IsNullOrEmpty(dRow["NAME"].ToString()))
+                    if (String.IsNullOrEmpty(dispo.MobileUserName))
                     {
-                        dRow["NAME"] = dRow["MOBUSER"].ToString();
+                        dispo.MobileUserName = dispo.MobileUserId;
                     }
                 }
             }
         }
 
-        private void LoadDisposFromSap(String strAppID, String strSessionID, System.Web.UI.Page page)
+        private void LoadDisposFromSap()
         {
-            m_strClassAndMethod = "Disposition.GetDispositionen";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    Dispositionen = new DataTable();
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_MOB_DISPO_GET_VG", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_MOB_DISPO_GET_VG.Init(SAP);
 
-                    myProxy.setImportParameter("I_VKORG", VkOrg);
-                    myProxy.setImportParameter("I_VKBUR", VkBur);
-                    myProxy.setImportParameter("I_ZZZLDAT", ZulDat);
+                    SAP.SetImportParameter("I_VKORG", VKORG);
+                    SAP.SetImportParameter("I_VKBUR", VKBUR);
+                    SAP.SetImportParameter("I_ZZZLDAT", ZulDat);
+                    SAP.SetImportParameter("I_FUNCTION", Modus);
 
-                    myProxy.callBapi();
+                    CallBapi();
 
-                    Dispositionen = myProxy.getExportTable("GT_VGANZ");
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    Dispositionen = AppModelMappings.Z_ZLD_MOB_DISPO_GET_VG_GT_VGANZ_To_AmtDispos.Copy(Z_ZLD_MOB_DISPO_GET_VG.GT_VGANZ.GetExportList(SAP)).OrderBy(d => d.Amt).ToList();
+                });
         }
 
         private Dictionary<string, string> LoadZuordnungenFromSql()
         {
+            ClearError();
+
             Dictionary<string, string> erg = new Dictionary<string, string>();
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
 
             SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
@@ -182,8 +115,8 @@ namespace AppZulassungsdienst.lib
                                       "WHERE VkOrg = @VkOrg AND VkBur = @VkBur " +
                                       " ORDER BY Amt";
 
-                command.Parameters.AddWithValue("@VkOrg", VkOrg);
-                command.Parameters.AddWithValue("@VkBur", VkBur);
+                command.Parameters.AddWithValue("@VkOrg", VKORG);
+                command.Parameters.AddWithValue("@VkBur", VKBUR);
 
                 connection.Open();
                 command.Connection = connection;
@@ -198,8 +131,7 @@ namespace AppZulassungsdienst.lib
             }
             catch (Exception ex)
             {
-                m_intStatus = 9999;
-                m_strMessage = "Fehler beim Laden der Dispositionen aus Sql: " + ex.Message;
+                RaiseError(9999, "Fehler beim Laden der Dispositionen aus Sql: " + ex.Message);
             }
             finally
             {
@@ -209,20 +141,14 @@ namespace AppZulassungsdienst.lib
             return erg;
         }
 
-        /// <summary>
-        /// Speichert die Dispositionen in Sql und ggf. SAP
-        /// </summary>
-        /// <param name="strAppID"></param>
-        /// <param name="strSessionID"></param>
-        /// <param name="page"></param>
-        /// <param name="inSapSpeichern"></param>
-        public void SaveDispos(String strAppID, String strSessionID, System.Web.UI.Page page, bool inSapSpeichern)
+        public void SaveDispos(bool inSapSpeichern)
         {
             SaveChangesToSql();
+
             if (inSapSpeichern)
             {
-                SaveDisposToSap(strAppID, strSessionID, page);
-                if (m_intStatus == 0)
+                SaveDisposToSap();
+                if (!ErrorOccured)
                 {
                     // Wenn Übernahme nach SAP erfolgreich -> Zuordnungen aus Sql löschen
                     RemoveChangesFromSql(true);
@@ -232,8 +158,7 @@ namespace AppZulassungsdienst.lib
 
         private void SaveChangesToSql()
         {
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
+            ClearError();
 
             SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
@@ -245,15 +170,15 @@ namespace AppZulassungsdienst.lib
                 command.Connection = connection;
                 command.CommandType = CommandType.Text;
 
-                foreach (DataRow dRow in Dispositionen.Rows)
+                foreach (var dispo in Dispositionen)
                 {
                     // Insert bzw. Update in Sql-Tabelle
                     command.CommandText = "SELECT Amt FROM dbo.ZLDDisposition " +
                                       "WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND Amt = @Amt ";
                     command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@VkOrg", VkOrg);
-                    command.Parameters.AddWithValue("@VkBur", VkBur);
-                    command.Parameters.AddWithValue("@Amt", dRow["AMT"].ToString());
+                    command.Parameters.AddWithValue("@VkOrg", VKORG);
+                    command.Parameters.AddWithValue("@VkBur", VKBUR);
+                    command.Parameters.AddWithValue("@Amt", dispo.Amt);
                     object tmpErg = command.ExecuteScalar();
 
                     if (tmpErg == null)
@@ -267,17 +192,16 @@ namespace AppZulassungsdienst.lib
                                       "SET Fahrer = @Fahrer WHERE VkOrg = @VkOrg AND VkBur = @VkBur AND Amt = @Amt ";
                     }
                     command.Parameters.Clear();
-                    command.Parameters.AddWithValue("@Fahrer", dRow["MOBUSER"].ToString());
-                    command.Parameters.AddWithValue("@VkOrg", VkOrg);
-                    command.Parameters.AddWithValue("@VkBur", VkBur);
-                    command.Parameters.AddWithValue("@Amt", dRow["AMT"].ToString());
+                    command.Parameters.AddWithValue("@Fahrer", dispo.MobileUserId);
+                    command.Parameters.AddWithValue("@VkOrg", VKORG);
+                    command.Parameters.AddWithValue("@VkBur", VKBUR);
+                    command.Parameters.AddWithValue("@Amt", dispo.Amt);
                     command.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
-                m_intStatus = 9999;
-                m_strMessage = "Fehler beim Speichern der Dispositionen in Sql: " + ex.Message;
+                RaiseError(9999, "Fehler beim Speichern der Dispositionen in Sql: " + ex.Message);
             }
             finally
             {
@@ -285,68 +209,28 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        private void SaveDisposToSap(String strAppID, String strSessionID, System.Web.UI.Page page)
+        private void SaveDisposToSap()
         {
-            m_strClassAndMethod = "Dispositionen.SetDispositionen";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                try
+            ExecuteSapZugriff(() =>
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_MOB_DISPO_SET_USER", ref m_objApp, ref m_objUser, ref page);
+                    Z_ZLD_MOB_DISPO_SET_USER.Init(SAP);
 
-                    myProxy.setImportParameter("I_VKORG", VkOrg);
-                    myProxy.setImportParameter("I_VKBUR", VkBur);
-                    myProxy.setImportParameter("I_ZZZLDAT", ZulDat);
+                    SAP.SetImportParameter("I_VKORG", VKORG);
+                    SAP.SetImportParameter("I_VKBUR", VKBUR);
+                    SAP.SetImportParameter("I_ZZZLDAT", ZulDat);
+                    SAP.SetImportParameter("I_FUNCTION", Modus);
 
-                    DataTable tblSAP = myProxy.getImportTable("GT_VGANZ");
+                    // Nur die disponierten Ämter an SAP übergeben
+                    var disposToSave = Dispositionen.Where(d => !String.IsNullOrEmpty(d.MobileUserId));
+                    SAP.ApplyImport(AppModelMappings.Z_ZLD_MOB_DISPO_SET_USER_GT_VGANZ_From_AmtDispos.CopyBack(disposToSave));
 
-                    foreach (DataRow tmpRow in Dispositionen.Rows)
-                    {
-                        // Nur die disponierten Ämter an SAP übergeben
-                        if (!String.IsNullOrEmpty(tmpRow["MOBUSER"].ToString()))
-                        {
-                            DataRow tmpSAPRow = tblSAP.NewRow();
-                            tmpSAPRow["AMT"] = tmpRow["AMT"].ToString();
-                            tmpSAPRow["KREISBEZ"] = tmpRow["KREISBEZ"].ToString();
-                            tmpSAPRow["VG_ANZ"] = tmpRow["VG_ANZ"].ToString();
-                            tmpSAPRow["MOBUSER"] = tmpRow["MOBUSER"].ToString().ToUpper();
-                            tmpSAPRow["NAME"] = tmpRow["NAME"].ToString();
-                            tblSAP.Rows.Add(tmpSAPRow);
-                        }
-                    }
-
-                    myProxy.callBapi();
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
-                }
-                catch (Exception ex)
-                {
-                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
-                    {
-                        default:
-                            m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
-                            break;
-                    }
-                }
-                finally { m_blnGestartet = false; }
-            }
+                    CallBapi();
+                });
         }
 
         private void RemoveChangesFromSql(bool nurDisponierte)
         {
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
+            ClearError();
 
             SqlConnection connection = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"]);
 
@@ -365,14 +249,13 @@ namespace AppZulassungsdienst.lib
                     command.CommandText += "AND ISNULL(Fahrer,'') <> '' ";
                 }
                 command.Parameters.Clear();
-                command.Parameters.AddWithValue("@VkOrg", VkOrg);
-                command.Parameters.AddWithValue("@VkBur", VkBur);
+                command.Parameters.AddWithValue("@VkOrg", VKORG);
+                command.Parameters.AddWithValue("@VkBur", VKBUR);
                 command.ExecuteNonQuery();
             }
             catch (Exception ex)
             {
-                m_intStatus = 9999;
-                m_strMessage = "Fehler beim Entfernen der Dispositionen aus Sql: " + ex.Message;
+                RaiseError(9999, "Fehler beim Entfernen der Dispositionen aus Sql: " + ex.Message);
             }
             finally
             {

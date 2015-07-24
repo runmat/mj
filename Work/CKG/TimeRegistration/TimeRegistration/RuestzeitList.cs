@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace TimeRegistration
 {
@@ -9,51 +6,42 @@ namespace TimeRegistration
     {
         public RuestzeitObj getÖffnung()
         {
-            return this.Find(new Predicate<RuestzeitObj>(IsÖffnung));
+            return this.Find(IsÖffnung);
         }
 
         public RuestzeitObj getAbrechnung()
         {
-            return this.Find(new Predicate<RuestzeitObj>(IsAbrechnung));
+            return this.Find(IsAbrechnung);
         }
 
         public RuestzeitObj getEinzahlung()
         {
-            return this.Find(new Predicate<RuestzeitObj>(IsEinzahlung));
+            return this.Find(IsEinzahlung);
         }
 
         public RuestzeitObj getAbrechnungEinzahlung()
         {
-            return this.Find(new Predicate<RuestzeitObj>(IsAbrechnungEinzahlung));
+            return this.Find(IsAbrechnungEinzahlung);
         }
-
 
         private bool IsÖffnung(RuestzeitObj objRuest)
         {
-            if (objRuest.Ruestzeitschluessel == "0")
-            { return true; }
-            else { return false; }
+            return (objRuest.Ruestzeitschluessel == "0");
         }
 
         private bool IsAbrechnung(RuestzeitObj objRuest)
         {
-            if (objRuest.Ruestzeitschluessel == "1")    // || objRuest.Ruestzeitschluessel == "3"
-            { return true; }
-            else { return false; }
+            return (objRuest.Ruestzeitschluessel == "1") ;
         }
 
         private bool IsEinzahlung(RuestzeitObj objRuest)
         {
-            if (objRuest.Ruestzeitschluessel == "2")    // || objRuest.Ruestzeitschluessel == "3"
-            { return true; }
-            else { return false; }
+            return (objRuest.Ruestzeitschluessel == "2");
         }
 
         private bool IsAbrechnungEinzahlung(RuestzeitObj objRuest)
         {
-            if (objRuest.Ruestzeitschluessel == "3")
-            { return true; }
-            else { return false; }
+            return (objRuest.Ruestzeitschluessel == "3");
         }
     }
 }

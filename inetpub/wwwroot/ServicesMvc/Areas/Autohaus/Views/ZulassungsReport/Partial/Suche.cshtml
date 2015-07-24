@@ -4,9 +4,8 @@
 
 @{
     var kundenList = (List<Kunde>)ViewData["KundenList"];
-    
-    // ToDo: Mail RSc v. 21.01, Option "Alle Einträge listen" ausbauen bis Bapi umgebaut ist
-    //kundenList = kundenList.ToListOrEmptyList().CopyAndInsertAtTop(new Kunde {Name1 = Localize.DropdownDefaultOptionAll});
+
+    kundenList = kundenList.ToListOrEmptyList().CopyAndInsertAtTop(new Kunde("", Localize.DropdownDefaultOptionAll));
 }
 
 <div id="divZulassungsReportSuche">
