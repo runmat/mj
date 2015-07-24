@@ -548,6 +548,7 @@ Namespace Beauftragung2
 
         Private Sub txtEVB_TextChanged(sender As Object, e As EventArgs) Handles txtEVB.TextChanged
             CheckVersicherer()
+            txtZulDatum.Focus()
         End Sub
 
 #End Region
