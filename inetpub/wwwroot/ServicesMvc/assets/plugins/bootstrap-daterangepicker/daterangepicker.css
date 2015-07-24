@@ -191,5 +191,14 @@
 
 .daterangepicker .btn{
     float: right;
+    clear: both;
+    margin: 5px 5px 0 0;
 }
+.daterangepicker.opensleft .calendar, .daterangepicker.opensright .calendar {
+    float: left;
+}
+.daterangepicker .calendarwrapper {
+    float: right;
+}
+
 

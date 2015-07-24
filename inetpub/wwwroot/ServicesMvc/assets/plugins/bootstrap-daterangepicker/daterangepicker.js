@@ -76,9 +76,11 @@
         }
 
         var DRPTemplate = '<div class="daterangepicker Xdropdown-menu white-popup mfp-hide">' +
-                '<button class="btn hide " disabled="disabled">' + this.locale.applyLabel + '</button>' +
-                '<div class="calendar left"></div>' +
-                '<div class="calendar right"></div>' +
+                '<div class="calendarwrapper">' +
+                    '<div class="calendar right"></div>' +
+                    '<div class="calendar left"></div>' +
+                    '<button class="btn hide " disabled="disabled">' + this.locale.applyLabel + '</button>' +
+                '</div>' +
                 '<div class="ranges">' +
                   '<div class="range_inputs">' +
                     '<div>' +
@@ -105,11 +107,10 @@
         $(element).magnificPopup({
             items: {
                 src: this.container,
-                type: 'inline'
+                type: 'inline',
+                overflowY: 'scroll'
             }
         });
-
-        //setTimeout(function() { $(".datepicker").datepicker(); }, 1000);
 
         if (hasOptions) {
 
@@ -238,7 +239,7 @@
         this.container.addClass('opens' + this.opens);
 
         //event listeners
-        this.container.on('mousedown', $.proxy(this.mousedown, this));
+        //this.container.on('mousedown', $.proxy(this.mousedown, this));
         this.container.find('.calendar').on('click', '.prev', $.proxy(this.clickPrev, this));
         this.container.find('.calendar').on('click', '.next', $.proxy(this.clickNext, this));
         this.container.find('.ranges').on('click', 'button', $.proxy(this.clickApply, this));
@@ -266,12 +267,12 @@
 
         constructor: DateRangePicker,
 
-        mousedown: function (e) {
-            e.stopPropagation();
-            //e.preventDefault();
-        },
+        //mousedown: function (e) {
+        //    e.stopPropagation();
+        //},
 
         updateView: function () {
+            
             this.leftCalendar.month.set({ month: this.startDate.getMonth(), year: this.startDate.getFullYear() });
             this.rightCalendar.month.set({ month: this.endDate.getMonth(), year: this.endDate.getFullYear() });
 
@@ -342,13 +343,15 @@
             }
 
             this.changed = false;
-
-            $(document).on('mousedown', $.proxy(this.hide, this));
+            
+            //$(document).on('mousedown', $.proxy(this.hide, this));
         },
 
         hide: function (e) {
+            console.log(e);
+
             this.container.hide();
-            $(document).off('mousedown', this.hide);
+            //$(document).off('mousedown', this.hide);
 
             if (this.changed) {
                 this.changed = false;
