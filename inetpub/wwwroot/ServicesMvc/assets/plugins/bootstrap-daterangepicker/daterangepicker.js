@@ -105,11 +105,10 @@
         });
 
         $(element).magnificPopup({
-            items: {
-                src: this.container,
-                type: 'inline',
-                overflowY: 'scroll'
-            }
+            items: { src: this.container },
+            type: 'inline',
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
         });
 
         if (hasOptions) {

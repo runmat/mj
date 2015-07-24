@@ -166,8 +166,9 @@
             return;
         }
 
-        var detailWindow = $("#Adressen").data("tWindow");
-        detailWindow.center().close();
+        //var detailWindow = $("#Adressen").data("tWindow");
+        //detailWindow.center().close();
+        $(".mfp-close").trigger("click");
     }
 
     function OnDataBound_HalterAdressenAuswahlGrid() {
@@ -192,8 +193,9 @@
     function AjaxFormZahlerKfzSteuerComplete() {
         FormPrepareAjax();
 
-        var detailWindow = $("#Adressen").data("tWindow");
-        detailWindow.center().close();
+        //var detailWindow = $("#Adressen").data("tWindow");
+        //detailWindow.center().close();
+        $(".mfp-close").trigger("click");
 
         if (_modelIsValid) {
             AjaxRequestNextStep();
@@ -286,8 +288,9 @@
     function AjaxFormAuslieferAdressenComplete() {
         FormPrepareAjax();
 
-        var detailWindow = $("#Adressen").data("tWindow");
-        detailWindow.center().close();
+        //var detailWindow = $("#Adressen").data("tWindow");
+        //detailWindow.center().close();
+        $(".mfp-close").trigger("click");
 
         if (_modelIsValid) {
             AjaxRequestNextStep();
@@ -543,10 +546,18 @@
                 data: {},
                 loadingShow: true,
                 success: function (result) {
-                    var detailWindow = $("#Adressen").data("tWindow");
                     $("#InnerAdressen").html(result);
                     GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
-                    detailWindow.center().open();
+
+                    //var detailWindow = $("#Adressen").data("tWindow");
+                    //detailWindow.center().open();
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdressen") },
+                        type: 'inline',
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
                 }
             });
 
@@ -590,7 +601,7 @@
 </script>
 
 
-@(Html.Telerik().Window()
+@*@(Html.Telerik().Window()
     .Name("Adressen")
     .Visible(false)
     .Title("Auswahl Adressen")
@@ -599,5 +610,7 @@
     .Scrollable(false)
     .Width(900)
     .Height(700)
-    .Content(@<text><div id="InnerAdressen"></div></text>))
+    .Content(@<text><div id="InnerAdressen"></div></text>))*@
 
+<div id="InnerAdressen" class="white-popup mfp-hide">
+</div>
