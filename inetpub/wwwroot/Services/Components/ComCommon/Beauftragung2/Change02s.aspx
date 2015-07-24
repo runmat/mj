@@ -585,7 +585,7 @@
                                                         <asp:Label ID="lblEVB" runat="server" Text="eVB-Nummer"></asp:Label>
                                                     </td>
                                                     <td class="active">
-                                                        <asp:TextBox ID="txtEVB" runat="server" MaxLength="7" TabIndex="55" CssClass="InputSolid TextUpperCase"></asp:TextBox>
+                                                        <asp:TextBox ID="txtEVB" runat="server" MaxLength="7" TabIndex="55" CssClass="InputSolid TextUpperCase" AutoPostBack="True"></asp:TextBox>
                                                         <asp:Label ID="lblEVBInfo" runat="server" CssClass="TextError"></asp:Label>
                                                     </td>
                                                 </tr>

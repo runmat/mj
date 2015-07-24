@@ -546,6 +546,10 @@ Namespace Beauftragung2
             SelectNextTab()
         End Sub
 
+        Private Sub txtEVB_TextChanged(sender As Object, e As EventArgs) Handles txtEVB.TextChanged
+            CheckVersicherer()
+        End Sub
+
 #End Region
 
 #Region "Methods"
@@ -1975,6 +1979,9 @@ Namespace Beauftragung2
             txtKennzAlt1.BorderColor = Drawing.Color.Empty
             txtKennzAlt2.BorderColor = Drawing.Color.Empty
             lblKennzeichenAltInfo.Text = ""
+
+            txtSepaDatum.BorderColor = Drawing.Color.Empty
+            lblSepaDatumInfo.Text = ""
 
             lblSaveInfo.Text = ""
 
