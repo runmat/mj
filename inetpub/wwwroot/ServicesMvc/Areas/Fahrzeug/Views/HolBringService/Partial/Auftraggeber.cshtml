@@ -30,7 +30,7 @@
         @Html.FormTextBoxFor(m => m.Kunde, new { @class = "m-wrap ", col = "left" })
         @Html.FormTextBoxFor(m => m.KundeTel, new { @class = "m-wrap ", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small", col = "left" })
+        @Html.FormTextBoxFor(m => m.Kennnzeichen, new { @class = "m-wrap small uppercase", col = "left" })
         @Html.FormDropDownListFor(m => m.FahrzeugartId, globalData.Fahrzeugarten.ToSelectList(), new { @class = "m-wrap small", col = "right" })
 
         @Html.HiddenFor(m => m.BetriebName)

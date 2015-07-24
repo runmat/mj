@@ -7,6 +7,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 {
     public class Auftraggeber 
     {
+        string _kennzeichen;
+
         [LocalizedDisplay(LocalizeConstants.Auftragsersteller)]
         public string Auftragsersteller { get; set; }
 
@@ -42,7 +44,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         [Kennzeichen]
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [StringLength(10)]
-        public string Kennnzeichen { get; set; }
+        public string Kennnzeichen { get { return _kennzeichen.NotNullOrEmpty().ToUpper(); } set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); } }
     
         [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
         public int FahrzeugartId { get; set; }
