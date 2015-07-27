@@ -398,7 +398,8 @@ input[type="text"].grid-column-overall-filter,
 .grid-page-sizer,
 .select2-container.m-wrap a,
 .select2-search input,
-.FormDateRangePickerWrapper span.btn 
+.FormDateRangePickerWrapper span.btn,
+div.ms-selectable .ms-list, div.ms-selection .ms-list
 {
     border: 1px solid #96A0AD !important;
     border-radius:4px !important;
@@ -483,6 +484,58 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     display:none !important;
 }
 
+/* "Optionen Selektor" Listboxen (Dienstleistungs-Auswahl, etc) */
+.ms-container {
+    background: transparent url('/ServicesMvc/_Themes/AH2015/images/switch-2.png') no-repeat 50% 50%;
+    width: 800px;
+}
+.dienstleistungen-header span {
+    font-size: 18px;
+}
+.ms-container ul.ms-list {
+    overflow-y: scroll;
+}
+
+.ms-container .ms-selectable ul.ms-list li, .ms-container .ms-selection ul.ms-list li {
+    font-size: 18px;
+    padding: 7px;
+    display: table;
+    min-height:20px;
+}
+/* Linke Box ("nicht gewählt") */
+.ms-container .ms-selectable ul.ms-list li i.icon-chevron-right, .ms-container .ms-selectable ul.ms-list li span {
+    color: #2a4D89;
+}
+.ms-container .ms-selectable ul.ms-list li span{
+    float: left;
+    width: 298px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.ms-container .ms-selectable ul.ms-list li i.icon-ok {
+    clear:both;
+    float: left;
+}
+/* Rechte Box ("gewählt") */
+.ms-container .ms-selection ul.ms-list li {
+    background-color: #3BAFDA!important;
+}
+.ms-container .ms-selection ul.ms-list li i, .ms-container .ms-selection ul.ms-list li span {
+    color: white!important;
+}
+.ms-container .ms-selection ul.ms-list li span{
+    float: left;
+    width: 262px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.ms-container .ms-selection ul.ms-list li i.icon-ok {
+    clear:both;
+    float: left;
+}
+.ms-container .ms-selection ul.ms-list li i.icon-remove {
+    float: left;
+}
 
 
 .breadcrumbs a{

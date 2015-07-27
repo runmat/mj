@@ -15,25 +15,38 @@
         if (typeof (formWizardStepBar) == "undefined")
             return;
 
-        var widestStepWidth = 0;
+        if (IsIE())
+        {
+            $("#formWizard ul.row-fluid li").each(function () {
+                var e = $(this);
+                var w = containerWidth / _formWizardCurrentStepCount - 20;
+                e.css("width", w);
+            });
+        }
+        else
+        {
+            var widestStepWidth = 0;
 
-        $("#formWizard ul.row-fluid li .formWizardStepDesc").each(function () {
-            var e = $(this);
-            var eWidth = e.width();
+            $("#formWizard ul.row-fluid li .formWizardStepDesc").each(function () {
+                var e = $(this);
+                var eWidth = e.width();
 
-            var a = e.closest("a.step");
-            var aWidth = a.width();
+                var a = e.closest("a.step");
+                var aWidth = a.width();
 
-            var cWidth = (eWidth > aWidth ? eWidth : aWidth);
-            if (cWidth > widestStepWidth)
-                widestStepWidth = cWidth;
-        });
-        widestStepWidth += 30;
+                var cWidth = (eWidth > aWidth ? eWidth : aWidth);
+                if (cWidth > widestStepWidth)
+                    widestStepWidth = cWidth;
+            });
+            widestStepWidth += 30;
 
-        if (widestStepWidth < 100)
-            widestStepWidth = 100;
+            if (widestStepWidth < 100)
+                widestStepWidth = 100;
+        }
 
         var maxWidthAllSteps = _formWizardCurrentStepCount * widestStepWidth;
+
+        console.log(containerWidth + " - " + maxWidthAllSteps);
 
         if (containerWidth > maxWidthAllSteps)
             formWizardStepBar.removeClass("formWizard_StepCounts_flow");

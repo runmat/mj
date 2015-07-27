@@ -10,14 +10,10 @@ using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Models;
 using CkgDomainLogic.Uebfuehrg.Services;
 using GeneralTools.Models;
-using System.IO;
-using GeneralTools.Resources;
-using GeneralTools.Services;
 using Adresse = CkgDomainLogic.Uebfuehrg.Models.Adresse;
 using Fahrzeug = CkgDomainLogic.Uebfuehrg.Models.Fahrzeug;
 // ReSharper restore RedundantUsingDirective
@@ -31,13 +27,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
         {
             get { return CacheGet<IUebfuehrgDataService>(); }
         }
-
-        // ToDo: Umstellen von "Spiky Zulassungsfahrzeuge SQL" => auf "Kroschke Zulassungsfahrzeuge"
-        //[XmlIgnore]
-        //public IFahrzeugverwaltungDataService FahrzeugverwaltungDataService
-        //{
-        //    get { return CacheGet<IFahrzeugverwaltungDataService>(); }
-        //}
 
         public string BingMapsLicenseKey { get { return ConfigurationManager.AppSettings["BingMapsLicenseKey"]; } }
 
@@ -261,6 +250,24 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 index++;
             }
 
+            uiModel = new DienstleistungsAuswahl
+            {
+                FahrtTyp = "1",
+                FahrtIndex = "1",
+
+                UiIndex = index,
+                GroupName = "DIENSTLEISTUNGEN",
+                SubGroupName = "DIENSTLEISTUNGEN",
+                Header = "Dienstleistungen" + (AnzahlFahrzeugeGewuenscht > 1 ? " Fahrzeug 1" : ""),
+                HeaderShort = "Optionen" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
+                IsMandatory = false,
+
+                ViewName = "DienstleistungsAuswahl",
+                Bemerkungen = new Bemerkungen(),
+            };
+            list.Add(uiModel);
+            index++;
+
             uiModel = new Fahrzeug
                 {
                     FahrzeugIndex = "1",
@@ -354,24 +361,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     Telefon = "02131-977-411",
                     Email = "xxx@xxx.de",
 #endif
-                };
-            list.Add(uiModel);
-            index++;
-
-            uiModel = new DienstleistungsAuswahl
-                {
-                    FahrtTyp = "1",
-                    FahrtIndex = "1",
-
-                    UiIndex = index,
-                    GroupName = "DIENSTLEISTUNGEN",
-                    SubGroupName = "DIENSTLEISTUNGEN",
-                    Header = "Dienstleistungen" + (AnzahlFahrzeugeGewuenscht > 1 ? " Fahrzeug 1" : ""),
-                    HeaderShort = "Optionen" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
-                    IsMandatory = false,
-
-                    ViewName = "DienstleistungsAuswahl",
-                    Bemerkungen = new Bemerkungen(),
                 };
             list.Add(uiModel);
             index++;
