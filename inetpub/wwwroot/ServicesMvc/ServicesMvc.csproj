@@ -4513,6 +4513,9 @@
     <Content Include="Views\Fahrer\ProtokollUpload.cshtml" />
     <Content Include="Views\Fahrer\Partial\Upload\ProtokollUpload\UploadEdit.cshtml" />
     <Content Include="Views\Fahrer\Partial\Upload\UploadScripts.cshtml" />
+    <Content Include="Views\Fahrer\ProtokollArchivierung.cshtml" />
+    <Content Include="Views\Fahrer\Partial\ProtokollArchivierung\Grid.cshtml" />
+    <Content Include="Views\Fahrer\Partial\ProtokollArchivierung\ProtokollEdit.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

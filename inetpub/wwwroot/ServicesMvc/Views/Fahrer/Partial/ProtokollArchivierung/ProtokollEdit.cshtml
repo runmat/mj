@@ -1,0 +1,44 @@
+﻿@model CkgDomainLogic.Fahrer.Models.ProtokollEditModel
+
+<style type="text/css">
+     .pdfContentStyle { width: 150px; height: 150px; padding: 0.5em; }
+     .pdfContentStyle h3 { text-align: center; margin: 0; }
+     .ui-resizable-helper { border: 75px solid #EFEFEF; margin: -75px; }
+</style>
+
+<div id="DivProtokollEdit" class="margin-top-20">
+    @using (Ajax.BeginForm("ProtokollEdit", "Fahrer", null,
+                           new MvcAjaxOptions { UpdateTargetId = "DivProtokollEdit", OnComplete = "AjaxFormProtokollEditComplete();" },
+                           htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormProtokollEdit" }))
+    {
+        @Html.FormValidationSummary()
+        
+        <div id="pdfContentProtokollEdit" class="ui-widget-content pdfContentStyle"> 
+            <iframe id="pdfGenerated" src="ShowProtokollEditPdf" class="ui-widget-content" frameborder="no"  width="100%" height="100%" />
+        </div>
+        
+        <script>
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            $(function() {
+                $("#pdfContentProtokollEdit").resizable({
+                    helper: "ui-resizable-helper"
+                });
+
+                ResizePdfContainer();
+
+                $( window ).resize(function() {
+                    ResizePdfContainer();
+                });
+                
+                function ResizePdfContainer() {
+                    var width = $("#DivProtokollEdit").width();
+                    var height = $(window).height();
+                    $(".pdfContentStyle").css('width', width - 15 | 0);
+                    $(".pdfContentStyle").css('height', height * 0.35 | 0);
+                }
+            });
+
+        </script>
+    }
+</div>

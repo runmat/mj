@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,7 +13,6 @@ using CkgDomainLogic.General.Services;
 using DocumentTools.Services;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
 
@@ -31,6 +29,12 @@ namespace ServicesMvc.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, fahrerDataService);
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            ProtokollEditModel.GetViewModel = GetViewModel<FahrerViewModel>;
         }
 
 
@@ -77,6 +81,14 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult QmReport()
         {
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult ProtokollArchivierung()
+        {
+            ViewModel.LoadFahrerProtokolle();
+
             return View(ViewModel);
         }
 
@@ -287,6 +299,71 @@ namespace ServicesMvc.Controllers
         public ActionResult QmReportShow()
         {
             return PartialView("Partial/QmReport/Results", ViewModel);
+        }
+
+        #endregion
+
+
+        #region Protokollarchivierung
+
+        [GridAction]
+        public ActionResult FahrerProtokolleAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.FahrerProtokolleFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult ShowProtokollEdit(string fileName)
+        {
+            return PartialView("Partial/ProtokollArchivierung/ProtokollEdit", ViewModel.GetProtokollEditModel(fileName));
+        }
+
+        [HttpPost]
+        public ActionResult ProtokollEdit(ProtokollEditModel model)
+        {
+            if (ModelState.IsValid)
+                ViewModel.ProtokollArchivieren(model, ModelState);
+
+            return PartialView("Partial/ProtokollArchivierung/ProtokollEdit", model);
+        }
+
+        public ActionResult ShowProtokollEditPdf()
+        {
+            var contentDispostion = new System.Net.Mime.ContentDisposition
+            {
+                FileName = ViewModel.ProtokollEditFileName,
+                Inline = true,
+            };
+
+            Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
+
+            var pdf = ViewModel.GetProtokollEditPdf();
+
+            return File(pdf, "application/pdf");
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridFahrerProtokolle(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterFahrerProtokolle(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportFahrerProtokolleFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.FahrerProtokolleFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.DriverProtocols, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportFahrerProtokolleFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.FahrerProtokolleFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DriverProtocols, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
         }
 
         #endregion

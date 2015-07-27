@@ -6,6 +6,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.Fahrer.Models;
 using CkgDomainLogic.General.Services;
@@ -16,6 +17,7 @@ using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using SapORM.Contracts;
+using WebTools.Services;
 
 namespace CkgDomainLogic.Fahrer.ViewModels
 {
@@ -249,7 +251,10 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             if (auftrag == null)
                 return "";
 
-            return string.Format("{0}_{1}_P_{2}_{3}.pdf", LogonContext.KundenNr.PadLeft(10, '0'), auftrag.AuftragsNr.PadLeft(10, '0'), auftrag.ProtokollArt, auftrag.Fahrt);
+            if (auftrag.KundenNr.IsNullOrEmpty())
+                auftrag.KundenNr = LogonContext.KundenNr;
+
+            return auftrag.Filename;
         }
 
         private static string GetUploadedImageFileName(string auftragsNr, string imageIndex, string fahrerNr, string fahrtNr)
@@ -400,6 +405,128 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             return DataService.LoadQmReportFleetData(QmSelektor.DatumsBereich);
         }
+
+        #endregion
+
+
+        #region Protokollarchivierung
+
+        public List<SelectItem> QmCodes { get { return DataService.QmCodes; } }
+
+        public List<FahrerAuftragsProtokoll> FahrerProtokolle
+        {
+            get { return PropertyCacheGet(() => new List<FahrerAuftragsProtokoll>()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public string ProtokollEditFileName { get; private set; }
+
+        public void LoadFahrerProtokolle()
+        {
+            var verzeichnis = new DirectoryInfo(FotoUploadPath);
+            var dateien = verzeichnis.GetFiles(string.Format(FahrerAuftragsProtokoll.FahrerProtokollFilenamePattern, "*", "*", "*", "*"));
+
+            FahrerProtokolle.Clear();
+
+            foreach (var datei in dateien)
+            {
+                var teile = Path.GetFileNameWithoutExtension(datei.Name).NotNullOrEmpty().Split('_');
+
+                FahrerProtokolle.Add(new FahrerAuftragsProtokoll
+                {
+                    KundenNr = teile[0],
+                    AuftragsNr = teile[1],
+                    ProtokollArt = teile[2],
+                    Fahrt = teile[3]
+                });
+            }
+        }
+
+        public ProtokollEditModel GetProtokollEditModel(string fileName)
+        {
+            ProtokollEditFileName = fileName;
+            var prot = FahrerProtokolle.FirstOrDefault(p => p.Filename == ProtokollEditFileName);
+
+            if (prot == null)
+                return null;
+
+            var mailAdr = DataService.GetProtokollArchivierungMailAdressenAndReferenz(prot);
+
+            return new ProtokollEditModel { Protokoll = prot, MailAdressen = mailAdr };
+        }
+
+        public byte[] GetProtokollEditPdf()
+        {
+            var physPath = Path.Combine(FotoUploadPath, ProtokollEditFileName);
+            return File.ReadAllBytes(physPath);
+        }
+
+        public void ProtokollArchivieren(ProtokollEditModel model, ModelStateDictionary state)
+        {
+            var erg = DataService.SaveProtokollAndQmDaten(model);
+            if (!String.IsNullOrEmpty(erg))
+            {
+                state.AddModelError(string.Empty, erg);
+                return;
+            }
+            
+            erg = ArchiviereProtokoll(model);
+            if (!String.IsNullOrEmpty(erg))
+            {
+                state.AddModelError(string.Empty, erg);
+                return;
+            }
+
+            if (!SendeProtokollArchivierungsMail(model))
+                state.AddModelError(string.Empty, Localize.ErrorMailCouldNotBeSent);
+        }
+
+        private string ArchiviereProtokoll(ProtokollEditModel model)
+        {
+            var erg = "";
+
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+                erg = String.Format("{0}: {1}", Localize.Error, ex.Message);
+            }
+
+            return erg;
+        }
+
+        private bool SendeProtokollArchivierungsMail(ProtokollEditModel model)
+        {
+            if (model.MailAdressen.Any())
+            {
+                var mailBetreff = String.Format("Bestandsnummer: {0}", (String.IsNullOrEmpty(model.Protokoll.Referenz) ? model.Protokoll.VIN : model.Protokoll.Referenz));
+                var mailText = GeneralConfiguration.GetConfigValue("FahrerProtokollArchivierung", "MailText").Replace("{br}", Environment.NewLine);
+
+                var mailService = new SmtpMailService(AppSettings);
+
+                return mailService.SendMail(model.MailAdressenFlatString, mailBetreff, mailText);
+            }
+
+            return true;
+        }
+
+        #region Filter
+
+        [XmlIgnore]
+        public List<FahrerAuftragsProtokoll> FahrerProtokolleFiltered
+        {
+            get { return PropertyCacheGet(() => FahrerProtokolle); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void FilterFahrerProtokolle(string filterValue, string filterProperties)
+        {
+            FahrerProtokolleFiltered = FahrerProtokolle.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        #endregion
 
         #endregion
     }

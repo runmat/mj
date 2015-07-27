@@ -32,5 +32,11 @@ namespace CkgDomainLogic.Fahrer.Contracts
         List<QmFleetMonitor> QmFleetMonitorList { get; set; }
 
         bool LoadQmReportFleetData(DateRange dateRange);
+
+        List<SelectItem> QmCodes { get; }
+
+        string SaveProtokollAndQmDaten(ProtokollEditModel item);
+
+        List<string> GetProtokollArchivierungMailAdressenAndReferenz(FahrerAuftragsProtokoll protokoll);
     }
 }

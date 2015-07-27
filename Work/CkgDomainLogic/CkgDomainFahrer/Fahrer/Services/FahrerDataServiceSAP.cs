@@ -177,5 +177,67 @@ namespace CkgDomainLogic.Fahrer.Services
 
 
         #endregion
+
+
+        #region Protokollarchivierung
+
+        public List<SelectItem> QmCodes { get { return PropertyCacheGet(() => LoadQmCodes().ToList()); } }
+
+        private IEnumerable<SelectItem> LoadQmCodes()
+        {
+            var sapList = Z_DPM_QM_READ_QPCD.GT_OUTQPCD.GetExportListWithInitExecute(SAP, "I_KATALOGART, I_CODEGRUPPE", "P", "UEBER");
+
+            return AppModelMappings.Z_DPM_QM_READ_QPCD_GT_OUTQPCD_To_SelectItem.Copy(sapList);
+        }
+
+        public List<string> GetProtokollArchivierungMailAdressenAndReferenz(FahrerAuftragsProtokoll protokoll)
+        {
+            Z_V_UEBERF_AUFTR_REFERENZ.Init(SAP, "AUFNR", protokoll.AuftragsNr);
+
+            SAP.Execute();
+
+            var sapListAuftrag = Z_V_UEBERF_AUFTR_REFERENZ.T_AUFTRAEGE.GetExportList(SAP);
+            var sapListMail = Z_V_UEBERF_AUFTR_REFERENZ.T_SMTP.GetExportList(SAP);
+
+            if (sapListAuftrag.Any())
+                protokoll.Referenz = sapListAuftrag.First().ZZREFNR;
+
+            return sapListMail.Where(m => m.FAHRTNR == protokoll.Fahrt).Select(m => m.SMTP_ADDR).ToList();
+        }
+
+        public string SaveProtokollAndQmDaten(ProtokollEditModel item)
+        {
+            Z_V_UEBERF_AUFTR_PROTOKOLL_AB.Init(SAP);
+
+            SAP.SetImportParameter("AUFNR", item.Protokoll.AuftragsNr);
+            SAP.SetImportParameter("FAHRTNR", item.Protokoll.Fahrt);
+            SAP.SetImportParameter("WADAT_IST", item.UeberfuehrungsDatum);
+            SAP.SetImportParameter("ZZKATEGORIE", item.Protokoll.ProtokollArt);
+            SAP.SetImportParameter("VERARBEITUNG", " ");
+            SAP.SetImportParameter("ABHOL_DAT", item.AbholDatum);
+            SAP.SetImportParameter("ABHOL_ZEIT", item.AbholUhrzeit);
+            SAP.SetImportParameter("UEBERGABE_DAT", item.UebergabeDatum);
+            SAP.SetImportParameter("KMSTAND", item.Kilometerstand);
+            SAP.SetImportParameter("UNTERSCHR_VORH", item.UnterschriftVorhanden.BoolToX());
+
+            if (!String.IsNullOrEmpty(item.QmCode))
+            {
+                var qmList = new List<Z_V_UEBERF_AUFTR_PROTOKOLL_AB.GT_IMP_QM> {
+                    new Z_V_UEBERF_AUFTR_PROTOKOLL_AB.GT_IMP_QM {
+                        CHASSIS_NUM = item.Protokoll.VIN,
+                        COFEHL = item.QmCode,
+                        GRFEHL = "UEBER",
+                        I_MASS_TEXT = item.QmBemerkung,
+                        LICENSE_NUM = item.Protokoll.Kennzeichen
+                    }
+                };
+
+                SAP.ApplyImport(qmList);
+            }
+
+            return SAP.ExecuteAndCatchErrors(() => SAP.Execute());
+        }
+
+        #endregion
     }
 }

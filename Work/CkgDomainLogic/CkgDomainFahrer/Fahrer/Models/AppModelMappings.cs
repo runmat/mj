@@ -183,6 +183,22 @@ namespace CkgDomainLogic.Fahrer.Models
             }
         }
 
+        // ReSharper disable InconsistentNaming
+        public static ModelMapping<Z_DPM_QM_READ_QPCD.GT_OUTQPCD, SelectItem> Z_DPM_QM_READ_QPCD_GT_OUTQPCD_To_SelectItem
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_QM_READ_QPCD.GT_OUTQPCD, SelectItem>(
+                    new Dictionary<string, string>(),
+                    (s, d) =>
+                    {
+                        d.Key = s.CODEGRUPPE;
+                        d.Text = s.TEXTCODEGRUPPE;
+                    }));
+            }
+        }
+
         #endregion
 
 

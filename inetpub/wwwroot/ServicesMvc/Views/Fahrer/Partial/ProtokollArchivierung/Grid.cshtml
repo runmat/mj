@@ -1,0 +1,30 @@
+﻿@using CkgDomainLogic.Fahrer.Models
+
+@{ var gridName = "GridFahrerProtokolle"; }
+
+@(Html.Telerik()
+    .Grid<FahrerAuftragsProtokoll>()
+    .Name(gridName)
+    .XAjaxDataBinding("FahrerProtokolleAjaxBinding", "Fahrer")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Filename).Title("").Filterable(false).Sortable(false)
+            .ClientTemplate(
+                "<button onclick='ShowProtokollEdit(\"<#= data.Filename #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.EditProtocol + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+            ); 
+        columns.XBound(c => c.Filename);
+        columns.XBound(c => c.KundenNr);
+        columns.XBound(c => c.AuftragsNrFriendly);
+        columns.XBound(c => c.ProtokollArt);
+        columns.XBound(c => c.Fahrt);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrerProtokolle"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Filename))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFahrerProtokolleFilteredExcel", "Fahrer");
+        commands.FilteredDataCommand("ExportFahrerProtokolleFilteredPDF", "Fahrer");
+    })
+)
