@@ -374,8 +374,8 @@ namespace CkgDomainLogic.Finance.Models
                             destination.Uebernahmedatum = source.DAT_VERSAUFTR;
                             destination.Versandart = source.VERS_ART;
                             destination.Versanddatum = source.ZZTMPDT;
-                            destination.Versandgrund = source.VERS_GRUND;
-                            destination.VersandgrundText = source.VERSGRU_TEXT;
+                            destination.Versandgrund = source.VERSANDGRUND;
+                            destination.VersandgrundText = source.VERS_GRUND;
                             destination.Vertragsart = source.ZVERT_ART;
                             destination.Zb2Nummer = source.ZBRIEF;
                         }));

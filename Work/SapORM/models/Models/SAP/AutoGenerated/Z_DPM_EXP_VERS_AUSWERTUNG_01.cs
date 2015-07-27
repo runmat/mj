@@ -129,8 +129,6 @@ namespace SapORM.Models
 
 			public DateTime? ZZTMPDT { get; set; }
 
-			public string VERSGRU_TEXT { get; set; }
-
 			public string ANFORDERUNGSWEG { get; set; }
 
 			public static GT_OUT Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -186,7 +184,6 @@ namespace SapORM.Models
 					ZVERT_ART = (string)row["ZVERT_ART"],
 					ENDG_VERS = (string.IsNullOrEmpty(row["ENDG_VERS"].ToString())) ? null : (DateTime?)row["ENDG_VERS"],
 					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
-					VERSGRU_TEXT = (string)row["VERSGRU_TEXT"],
 					ANFORDERUNGSWEG = (string)row["ANFORDERUNGSWEG"],
 
 					SAPConnection = sapConnection,
