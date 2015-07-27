@@ -99,7 +99,8 @@
             var wkennz = $(this).val();
             $.ajax({
                 type: "POST",
-                url: "SetKennz",
+                // url: "SetKennz",
+                url: "SetFinValue",
                 data: { fin: fin, field: field, kennz: wkennz },
                 loadingShow: false,
                 success: function (result) {
@@ -123,7 +124,8 @@
             var wkennz = $(this).val();
             $.ajax({
                 type: "POST",
-                url: "SetKennz",
+                //url: "SetKennz",
+                url: "SetFinValue",
                 data: { fin: fin, field: field, kennz: wkennz },
                 loadingShow: false,
                 success: function (result) {

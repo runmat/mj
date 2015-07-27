@@ -200,9 +200,11 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public JsonResult SetKennz(string fin, string field, string kennz)
+        // public JsonResult SetKennz(string fin, string field, string kennz)
+        public JsonResult SetFinValue(string fin, string field, string kennz)
         {
-            var result = ViewModel.SetKennz(fin, field, kennz.ToUpper());
+            // var result = ViewModel.SetKennz(fin, field, kennz.ToUpper());
+            var result = ViewModel.SetFinValue(fin, field, kennz.ToUpper());
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 

@@ -309,13 +309,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         /// <summary>
-        /// Setzt das Kennzeichen für ein angegebenes Fahrzeug
+        /// Setzt eine Variable für ein angegebenes Fahrzeug
         /// </summary>
         /// <param name="fin"></param>
         /// <param name="field"></param>
         /// <param name="kennz"></param>
         /// <returns>Null = gespeichert</returns>
-        public string SetKennz(string fin, string field, string kennz)
+        // public string SetKennz(string fin, string field, string kennz)
+        public string SetFinValue(string fin, string field, string kennz)
         {
             try
             {
@@ -335,6 +336,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                     case "kennzeichen": // Massenabmeldung
                         FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = kennz);
+                        break;
+                    case "vorhandeneskennzreservieren": // Massenabmeldung                        
+                        var value = Convert.ToBoolean(kennz);
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.VorhandenesKennzReservieren = value);
                         break;
                 }
                 return null;
@@ -952,7 +957,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
 
-                    singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.Kennzeichen;      // 20150723 MMA Falls "Kennzeichen" nicht benötigt, wieder rausnehmen
+                    // singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.Kennzeichen;      // 20150723 MMA Falls "Kennzeichen" nicht benötigt, wieder rausnehmen
+                    // 20150727 MMA #removeme# Welches Feld muss hier im Falle einer Massenabmeldung als Kennzeichen gefüllt werden?
+
 
                     zulassungenToSave.Add(singleZulassung);
                 }
