@@ -13,8 +13,59 @@
     {
         @Html.FormValidationSummary()
         
-        <div id="pdfContentProtokollEdit" class="ui-widget-content pdfContentStyle"> 
-            <iframe id="pdfGenerated" src="ShowProtokollEditPdf" class="ui-widget-content" frameborder="no"  width="100%" height="100%" />
+        <div class="row-fluid"> 
+            <div class="span6">
+                
+                @using (Html.PortletBox(Localize.PDF, "icon-eye-open"))
+                {
+                    <div id="pdfContentProtokollEdit" class="ui-widget-content pdfContentStyle"> 
+                        <iframe id="pdfGenerated" src="ShowProtokollEditPdf" class="ui-widget-content" frameborder="no"  width="100%" height="100%" />
+                    </div>
+                }
+
+            </div>
+            <div class="span6">
+                
+                @using (Html.PortletBox(Localize.ProtocolData, "icon-book"))
+                {
+                    @Html.HiddenFor(m => m.Protokoll.KundenNr)
+                    @Html.HiddenFor(m => m.Protokoll.AuftragsNr)
+                    @Html.HiddenFor(m => m.Protokoll.IstSonstigerAuftrag)
+                    @Html.HiddenFor(m => m.Protokoll.Fahrt)
+                    @Html.HiddenFor(m => m.Protokoll.WunschLieferDatum)
+                    @Html.HiddenFor(m => m.Protokoll.Kennzeichen)
+                    @Html.HiddenFor(m => m.Protokoll.VIN)
+                    @Html.HiddenFor(m => m.Protokoll.ProtokollArt)
+                    @Html.HiddenFor(m => m.Protokoll.ProtokollArt2)
+                    @Html.HiddenFor(m => m.Protokoll.OrtStart)
+                    @Html.HiddenFor(m => m.Protokoll.OrtZiel)
+                    @Html.HiddenFor(m => m.Protokoll.Referenz)
+                    
+                    @Html.FormDatePickerFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap" })
+                    @Html.FormDatePickerFor(m => m.AbholDatum, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap", maxlength = "4" })
+                    @Html.FormDatePickerFor(m => m.UebergabeDatum, new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.Kilometerstand, new { @class = "m-wrap" })
+                    @Html.FormCheckBoxFor(m => m.UnterschriftVorhanden, new { @class = "m-wrap" })
+                    
+                    <h4 class="form-section">@Localize.QM</h4>
+                    
+                    @Html.FormDropDownListFor(m => m.QmCode, Model.QmCodeList.ToSelectList(true), new { @class = "m-wrap" })
+                    @Html.FormTextBoxFor(m => m.QmBemerkung, new { @class = "m-wrap", maxlength = "40" })
+
+                    <h4 class="form-section">@Localize.EmailAddressee</h4>
+                    
+                    @Html.HiddenFor(m => m.MailAdressen)
+
+                    @Html.FormTextBlockFor(m => m.MailAdressen, new { @class = "m-wrap" })
+                }
+
+            </div>
+        </div>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
+            <button type="button" class="btn" onclick="AjaxFormProtokollEditClose();">@Localize.Cancel</button>
         </div>
         
         <script>

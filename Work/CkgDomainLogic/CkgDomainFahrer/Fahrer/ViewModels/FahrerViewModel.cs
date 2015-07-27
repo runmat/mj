@@ -452,7 +452,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
             var mailAdr = DataService.GetProtokollArchivierungMailAdressenAndReferenz(prot);
 
-            return new ProtokollEditModel { Protokoll = prot, MailAdressen = mailAdr };
+            return new ProtokollEditModel { Protokoll = prot, MailAdressen = String.Join(";", mailAdr) };
         }
 
         public byte[] GetProtokollEditPdf()

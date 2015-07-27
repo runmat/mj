@@ -38,13 +38,14 @@ namespace CkgDomainLogic.Fahrer.Models
         [XmlIgnore]
         public List<SelectItem> QmCodeList { get { return GetViewModel == null ? new List<SelectItem>() : GetViewModel().QmCodes; } }
 
+        [LocalizedDisplay(LocalizeConstants.QmCode)]
         public string QmCode { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.QmComment)]
         public string QmBemerkung { get; set; }
 
-        public List<string> MailAdressen { get; set; }
-
-        public string MailAdressenFlatString { get { return String.Join(";", MailAdressen); } }
+        [LocalizedDisplay(LocalizeConstants.EmailAddressee)]
+        public string MailAdressen { get; set; }
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrerViewModel> GetViewModel { get; set; }
@@ -52,7 +53,7 @@ namespace CkgDomainLogic.Fahrer.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             DateTime tmpDat;
-            if (!String.IsNullOrEmpty(AbholUhrzeit) && !DateTime.TryParseExact(AbholUhrzeit, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
+            if (!String.IsNullOrEmpty(AbholUhrzeit) && !DateTime.TryParseExact(AbholUhrzeit, "HHmm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
                 yield return new ValidationResult(Localize.TimeInvalid, new[] { "AbholUhrzeit" });
         }
     }

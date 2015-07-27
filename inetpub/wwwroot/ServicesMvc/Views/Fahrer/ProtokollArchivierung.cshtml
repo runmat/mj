@@ -53,7 +53,29 @@
     }
 
     function ShowFahrerProtokoll(fileName) {
-        
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetFahrzeugHistoriePartial",
+            loadingShow: true,
+            data: { fileName: fileName },
+            success: function (result) {
+                ShowEquiHistorieDetail(result);
+            }
+        });
+    }
+    
+    function ShowProtokollEdit(result) {
+        $("#divFahrerProtokolleDetail").html(result);
+        $("#divFahrerProtokolleGrid").slideUp();
+        $("#divFahrerProtokolleDetail").slideDown();
+        setTimeout('LoadingHide()', 1000);
+        FormPreparePrivateAjax();
+    }
+
+    function AjaxFormProtokollEditClose() {
+        $("#divFahrerProtokolleDetail").slideUp(function () { $("#divFahrerProtokolleGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
+        $("#divFahrerProtokolleGrid").slideDown();
     }
 
 </script>
