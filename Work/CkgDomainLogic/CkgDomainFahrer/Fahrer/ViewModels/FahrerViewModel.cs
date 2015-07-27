@@ -178,13 +178,16 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public List<string> UploadedImageFiles { get { return PropertyCacheGet(() => GetUploadedImageFiles()); } }
                                                                                                                                     // ReSharper restore ConvertClosureToMethodGroup
 
-        public void LoadFahrerAuftragsFahrten()
+        public void LoadFahrerAuftragsFahrten(ModelStateDictionary state)
         {
             if (ModeProtokoll)
             {
                 FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsProtokolle().ToList();
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll { IstSonstigerAuftrag = true, ProtokollArt = "SONSTIGES" });
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll());
+
+                if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollArt.Contains("_")))
+                    state.AddModelError(string.Empty, Localize.ErrorNoUnderscoresAllowedInProtocolTypes);
             }
             else
             {
@@ -436,8 +439,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                 {
                     KundenNr = teile[0],
                     AuftragsNr = teile[1],
-                    ProtokollArt = teile[2],
-                    Fahrt = teile[3]
+                    ProtokollArt = teile[3],
+                    Fahrt = teile[4]
                 });
             }
         }
@@ -499,14 +502,14 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         private bool SendeProtokollArchivierungsMail(ProtokollEditModel model)
         {
-            if (model.MailAdressen.Any())
+            if (!String.IsNullOrEmpty(model.MailAdressen))
             {
                 var mailBetreff = String.Format("Bestandsnummer: {0}", (String.IsNullOrEmpty(model.Protokoll.Referenz) ? model.Protokoll.VIN : model.Protokoll.Referenz));
                 var mailText = GeneralConfiguration.GetConfigValue("FahrerProtokollArchivierung", "MailText").Replace("{br}", Environment.NewLine);
 
                 var mailService = new SmtpMailService(AppSettings);
 
-                return mailService.SendMail(model.MailAdressenFlatString, mailBetreff, mailText);
+                return mailService.SendMail(model.MailAdressen, mailBetreff, mailText);
             }
 
             return true;

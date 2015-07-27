@@ -67,7 +67,7 @@ namespace ServicesMvc.Controllers
         public ActionResult FotoUpload(string modeProtokoll)
         {
             ViewModel.SetParamProtokollMode(modeProtokoll);
-            ViewModel.LoadFahrerAuftragsFahrten();
+            ViewModel.LoadFahrerAuftragsFahrten(ModelState);
 
             return View(ViewModel);
         }
@@ -87,6 +87,7 @@ namespace ServicesMvc.Controllers
         [CkgApplication]
         public ActionResult ProtokollArchivierung()
         {
+            ViewModel.SetParamProtokollMode("1");
             ViewModel.LoadFahrerProtokolle();
 
             return View(ViewModel);

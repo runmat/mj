@@ -56,6 +56,22 @@ namespace CkgDomainLogic.Fahrer.Models
         [LocalizedDisplay(LocalizeConstants.Tour)]
         public string Fahrt { get; set; }
 
+        public string FahrtNr
+        {
+            get
+            {
+                switch (Fahrt)
+                {
+                    case "H":
+                        return "1";
+                    case "R":
+                        return "2";
+                    default:
+                        return "";
+                }
+            }
+        }
+
         [LocalizedDisplay(LocalizeConstants.DeliveryDate)]
         public DateTime? WunschLieferDatum { get; set; }
 

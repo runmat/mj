@@ -1,7 +1,5 @@
 ﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
 
-@Html.Partial("Partial/Common")
-
 <h3 class="page-title" id="headerTitle">@Localize.Fahrer_Protokollarchivierung<small></small></h3>
 
 <div id="divFahrerProtokolleGrid">
@@ -52,15 +50,15 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function ShowFahrerProtokoll(fileName) {
+    function ShowProtokollEditAjax(fileName) {
         $.ajax(
         {
             type: "POST",
-            url: "GetFahrzeugHistoriePartial",
+            url: "ShowProtokollEdit",
             loadingShow: true,
             data: { fileName: fileName },
             success: function (result) {
-                ShowEquiHistorieDetail(result);
+                ShowProtokollEdit(result);
             }
         });
     }

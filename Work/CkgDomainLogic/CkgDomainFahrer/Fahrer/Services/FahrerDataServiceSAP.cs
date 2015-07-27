@@ -210,7 +210,7 @@ namespace CkgDomainLogic.Fahrer.Services
             Z_V_UEBERF_AUFTR_PROTOKOLL_AB.Init(SAP);
 
             SAP.SetImportParameter("AUFNR", item.Protokoll.AuftragsNr);
-            SAP.SetImportParameter("FAHRTNR", item.Protokoll.Fahrt);
+            SAP.SetImportParameter("FAHRTNR", item.Protokoll.FahrtNr);
             SAP.SetImportParameter("WADAT_IST", item.UeberfuehrungsDatum);
             SAP.SetImportParameter("ZZKATEGORIE", item.Protokoll.ProtokollArt);
             SAP.SetImportParameter("VERARBEITUNG", " ");
