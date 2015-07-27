@@ -250,24 +250,6 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                 index++;
             }
 
-            uiModel = new DienstleistungsAuswahl
-            {
-                FahrtTyp = "1",
-                FahrtIndex = "1",
-
-                UiIndex = index,
-                GroupName = "DIENSTLEISTUNGEN",
-                SubGroupName = "DIENSTLEISTUNGEN",
-                Header = "Dienstleistungen" + (AnzahlFahrzeugeGewuenscht > 1 ? " Fahrzeug 1" : ""),
-                HeaderShort = "Optionen" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
-                IsMandatory = false,
-
-                ViewName = "DienstleistungsAuswahl",
-                Bemerkungen = new Bemerkungen(),
-            };
-            list.Add(uiModel);
-            index++;
-
             uiModel = new Fahrzeug
                 {
                     FahrzeugIndex = "1",
@@ -362,6 +344,24 @@ namespace CkgDomainLogic.Uebfuehrg.ViewModels
                     Email = "xxx@xxx.de",
 #endif
                 };
+            list.Add(uiModel);
+            index++;
+
+            uiModel = new DienstleistungsAuswahl
+            {
+                FahrtTyp = "1",
+                FahrtIndex = "1",
+
+                UiIndex = index,
+                GroupName = "DIENSTLEISTUNGEN",
+                SubGroupName = "DIENSTLEISTUNGEN",
+                Header = "Dienstleistungen" + (AnzahlFahrzeugeGewuenscht > 1 ? " Fahrzeug 1" : ""),
+                HeaderShort = "Optionen" + (AnzahlFahrzeugeGewuenscht > 1 ? " 1" : ""),
+                IsMandatory = false,
+
+                ViewName = "DienstleistungsAuswahl",
+                Bemerkungen = new Bemerkungen(),
+            };
             list.Add(uiModel);
             index++;
 

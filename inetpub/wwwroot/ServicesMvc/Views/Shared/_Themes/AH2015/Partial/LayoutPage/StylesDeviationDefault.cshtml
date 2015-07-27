@@ -494,6 +494,10 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
 }
 .ms-container ul.ms-list {
     overflow-y: scroll;
+    overflow-x: hidden;
+}
+.ms-container ul.ms-list li i {
+    float: none;
 }
 
 .ms-container .ms-selectable ul.ms-list li, .ms-container .ms-selection ul.ms-list li {
@@ -507,14 +511,11 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     color: #2a4D89;
 }
 .ms-container .ms-selectable ul.ms-list li span{
-    float: left;
+    display: table-cell;
     width: 298px;
-    overflow: hidden;
-    white-space: nowrap;
 }
 .ms-container .ms-selectable ul.ms-list li i.icon-ok {
-    clear:both;
-    float: left;
+    display: table-cell;
 }
 /* Rechte Box ("gewählt") */
 .ms-container .ms-selection ul.ms-list li {
@@ -524,17 +525,16 @@ input.m-wrap, button.m-wrap, select.m-wrap, textarea.m-wrap{
     color: white!important;
 }
 .ms-container .ms-selection ul.ms-list li span{
-    float: left;
+    display: table-cell;
     width: 262px;
-    overflow: hidden;
-    white-space: nowrap;
+    padding-left: 10px;
 }
 .ms-container .ms-selection ul.ms-list li i.icon-ok {
-    clear:both;
-    float: left;
+    display: table-cell;
 }
 .ms-container .ms-selection ul.ms-list li i.icon-remove {
-    float: left;
+    display: table-cell;
+    margin-left: 0;
 }
 
 
