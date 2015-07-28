@@ -26,7 +26,7 @@
                     columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennzAbm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
                     //columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennzAbm' data-fieldname='VorhandenesKennzReservieren' value='<#= data.VorhandenesKennzReservieren #>' />");
 
-                    columns.XBound("").ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzAbm' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='<#= data.FIN #>' onchange='alert($(this));' />").Filterable(false);
+                    columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzAbm' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='<#= data.FIN #>' onchange='alert($(this));' />").Filterable(false);
                     
                     // ResKennz oder Kennzeichen?
                 })

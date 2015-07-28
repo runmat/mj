@@ -33,7 +33,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 
-        public bool IsSelected { get; set; }    // ##MMA##
+        public bool IsSelected { get; set; } 
+
+        [LocalizedDisplay(LocalizeConstants.Action)]    // 20150728 MMA
+        public string Aktion { get; set; }
 
         #region Massenzulassung // MMA Für Massenzulassung erforderliche Properties
 
