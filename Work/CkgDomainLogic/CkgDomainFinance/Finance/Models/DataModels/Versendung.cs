@@ -150,9 +150,6 @@ namespace CkgDomainLogic.Finance.Models
         [LocalizedDisplay(LocalizeConstants.DateOfDispatch)]
         public DateTime? Versanddatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CauseOfDispatch)]
-        public string VersandgrundText { get; set; }
-
         [LocalizedDisplay(LocalizeConstants.WayOfRequest)]
         public string Anforderungsweg { get; set; }
     }

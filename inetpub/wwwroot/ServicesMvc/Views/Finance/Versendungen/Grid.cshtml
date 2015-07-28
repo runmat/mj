@@ -43,7 +43,6 @@
         columns.XBound(c => c.AnfordererInfo);
         columns.XBound(c => c.Aenderungsdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Uebernahmedatum).Format("{0:dd.MM.yyyy}");
-        columns.XBound(c => c.Uebermittlungsdatum).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.AnsprechpartnerName);
         columns.XBound(c => c.AnsprechpartnerVorname);
         columns.XBound(c => c.AnsprechpartnerAnrede);
@@ -51,7 +50,6 @@
         columns.XBound(c => c.Vertragsart);
         columns.XBound(c => c.EndgueltigerVersand).Format("{0:dd.MM.yyyy}");
         columns.XBound(c => c.Versanddatum).Format("{0:dd.MM.yyyy}");
-        columns.XBound(c => c.VersandgrundText);
         columns.XBound(c => c.Anforderungsweg);
     })
     .XAutoColumnConfiguration()
