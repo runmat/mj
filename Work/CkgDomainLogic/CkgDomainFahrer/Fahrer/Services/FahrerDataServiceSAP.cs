@@ -200,7 +200,12 @@ namespace CkgDomainLogic.Fahrer.Services
             var sapListMail = Z_V_UEBERF_AUFTR_REFERENZ.T_SMTP.GetExportList(SAP);
 
             if (sapListAuftrag.Any())
-                protokoll.Referenz = sapListAuftrag.First().ZZREFNR;
+            {
+                var item = sapListAuftrag.First();
+                protokoll.VIN = item.ZZFAHRG;
+                protokoll.Kennzeichen = item.ZZKENN;
+                protokoll.Referenz = item.ZZREFNR;
+            }
 
             return sapListMail.Where(m => m.FAHRTNR == protokoll.Fahrt).Select(m => m.SMTP_ADDR).ToList();
         }

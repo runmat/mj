@@ -1,7 +1,7 @@
 ﻿@model CkgDomainLogic.Fahrer.Models.ProtokollEditModel
 
 <style type="text/css">
-     .pdfContentStyle { width: 386px; height: 348px; padding: 0.5em; }
+     .pdfContentStyle { width: 390px; height: 480px; padding: 0.5em; }
 </style>
 
 <div id="DivProtokollEdit" class="margin-top-20">
@@ -13,50 +13,51 @@
         
         <div class="row-fluid"> 
             <div class="span6">
-                
-                @using (Html.PortletBox(Localize.PDF, "icon-file"))
-                {
-                    <div id="pdfContentProtokollEdit" class="ui-widget-content pdfContentStyle"> 
-                        <iframe id="pdfGenerated" src="ShowProtokollEditPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
-                    </div>
-                }
+
+                <div id="pdfContentProtokollEdit" class="ui-widget-content pdfContentStyle margin-left-5 margin-bottom-10"> 
+                    <iframe id="pdfGenerated" src="ShowProtokollEditPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
+                </div>
 
             </div>
             <div class="span6">
                 
-                @using (Html.PortletBox(Localize.ProtocolData, "icon-book"))
-                {
-                    @Html.HiddenFor(m => m.Protokoll.KundenNr)
-                    @Html.HiddenFor(m => m.Protokoll.AuftragsNr)
-                    @Html.HiddenFor(m => m.Protokoll.IstSonstigerAuftrag)
-                    @Html.HiddenFor(m => m.Protokoll.Fahrt)
-                    @Html.HiddenFor(m => m.Protokoll.WunschLieferDatum)
-                    @Html.HiddenFor(m => m.Protokoll.Kennzeichen)
-                    @Html.HiddenFor(m => m.Protokoll.VIN)
-                    @Html.HiddenFor(m => m.Protokoll.ProtokollArt)
-                    @Html.HiddenFor(m => m.Protokoll.ProtokollArt2)
-                    @Html.HiddenFor(m => m.Protokoll.OrtStart)
-                    @Html.HiddenFor(m => m.Protokoll.OrtZiel)
-                    @Html.HiddenFor(m => m.Protokoll.Referenz)
-                    
-                    @Html.FormDatePickerFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap small" })
-                    @Html.FormDatePickerFor(m => m.AbholDatum, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap xsmall", maxlength = "4" })
-                    @Html.FormDatePickerFor(m => m.UebergabeDatum, new { @class = "m-wrap small" })
-                    @Html.FormTextBoxFor(m => m.Kilometerstand, new { @class = "m-wrap xsmall" })
-                    @Html.FormCheckBoxFor(m => m.UnterschriftVorhanden, new { @class = "m-wrap" })
-                    
-                    @Html.FormNewLine()
-                    
-                    @Html.FormDropDownListFor(m => m.QmCode, Model.QmCodeList.ToSelectList(true), new { @class = "m-wrap" })
-                    @Html.FormTextBoxFor(m => m.QmBemerkung, new { @class = "m-wrap", maxlength = "40" })
+                @Html.HiddenFor(m => m.Protokoll.KundenNr)
+                @Html.HiddenFor(m => m.Protokoll.AuftragsNr)
+                @Html.HiddenFor(m => m.Protokoll.IstSonstigerAuftrag)
+                @Html.HiddenFor(m => m.Protokoll.Fahrt)
+                @Html.HiddenFor(m => m.Protokoll.WunschLieferDatum)
+                @Html.HiddenFor(m => m.Protokoll.ProtokollArt)
+                @Html.HiddenFor(m => m.Protokoll.ProtokollArt2)
+                @Html.HiddenFor(m => m.Protokoll.OrtStart)
+                @Html.HiddenFor(m => m.Protokoll.OrtZiel)
 
-                    @Html.FormNewLine()
-                    
-                    @Html.HiddenFor(m => m.MailAdressen)
+                @Html.HiddenFor(m => m.Protokoll.VIN)
+                @Html.FormTextBlockFor(m => m.Protokoll.VIN, new { @class = "m-wrap" }, labelText: Localize.ChassisNo)
 
-                    @Html.FormTextBlockFor(m => m.MailAdressen, new { @class = "m-wrap" })
-                }
+                @Html.HiddenFor(m => m.Protokoll.Kennzeichen)
+                @Html.FormTextBlockFor(m => m.Protokoll.Kennzeichen, new { @class = "m-wrap" })
+
+                @Html.HiddenFor(m => m.Protokoll.Referenz)
+                @Html.FormTextBlockFor(m => m.Protokoll.Referenz, new { @class = "m-wrap" })
+
+                @Html.FormNewLine()
+                    
+                @Html.FormDatePickerFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap small" })
+                @Html.FormDatePickerFor(m => m.AbholDatum, new { @class = "m-wrap small" })
+                @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap xsmall", maxlength = "4" })
+                @Html.FormDatePickerFor(m => m.UebergabeDatum, new { @class = "m-wrap small" })
+                @Html.FormTextBoxFor(m => m.Kilometerstand, new { @class = "m-wrap xsmall" })
+                @Html.FormCheckBoxFor(m => m.UnterschriftVorhanden, new { @class = "m-wrap" })
+                    
+                @Html.FormNewLine()
+                    
+                @Html.FormDropDownListFor(m => m.QmCode, Model.QmCodeList.ToSelectList(true), new { @class = "m-wrap" })
+                @Html.FormTextBoxFor(m => m.QmBemerkung, new { @class = "m-wrap", maxlength = "40" })
+
+                @Html.FormNewLine()
+                    
+                @Html.HiddenFor(m => m.MailAdressen)
+                @Html.FormTextBlockFor(m => m.MailAdressen, new { @class = "m-wrap" })
 
             </div>
         </div>
