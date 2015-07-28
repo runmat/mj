@@ -39,11 +39,11 @@
                     @Html.HiddenFor(m => m.Protokoll.OrtZiel)
                     @Html.HiddenFor(m => m.Protokoll.Referenz)
                     
-                    @Html.FormDatePickerFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap" })
-                    @Html.FormDatePickerFor(m => m.AbholDatum, new { @class = "m-wrap" })
-                    @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap", maxlength = "4" })
-                    @Html.FormDatePickerFor(m => m.UebergabeDatum, new { @class = "m-wrap" })
-                    @Html.FormTextBoxFor(m => m.Kilometerstand, new { @class = "m-wrap" })
+                    @Html.FormDatePickerFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap small" })
+                    @Html.FormDatePickerFor(m => m.AbholDatum, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap xsmall", maxlength = "4" })
+                    @Html.FormDatePickerFor(m => m.UebergabeDatum, new { @class = "m-wrap small" })
+                    @Html.FormTextBoxFor(m => m.Kilometerstand, new { @class = "m-wrap xsmall" })
                     @Html.FormCheckBoxFor(m => m.UnterschriftVorhanden, new { @class = "m-wrap" })
                     
                     @Html.FormNewLine()

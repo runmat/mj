@@ -443,6 +443,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                     Fahrt = teile[4]
                 });
             }
+
+            PropertyCacheClear(this, m => m.FahrerProtokolleFiltered);
         }
 
         public ProtokollEditModel GetProtokollEditModel(string fileName)
@@ -481,23 +483,43 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
 
             if (!SendeProtokollArchivierungsMail(model))
+            {
                 state.AddModelError(string.Empty, Localize.ErrorMailCouldNotBeSent);
+                return;
+            }
+
+            FahrerProtokolle.RemoveAll(p => p.Filename == model.Protokoll.Filename);
+            PropertyCacheClear(this, m => m.FahrerProtokolleFiltered);
         }
 
         private string ArchiviereProtokoll(ProtokollEditModel model)
         {
-            var erg = "";
-
             try
             {
+                var archivPfad = GeneralConfiguration.GetConfigValue("FahrerProtokollArchivierung", "ArchivPfad");
 
+                if (!archivPfad.EndsWith("\\"))
+                    archivPfad += "\\";
+
+                var archivPfadKunde = archivPfad + model.Protokoll.KundenNr + "\\";
+                if (!Directory.Exists(archivPfadKunde))
+                    Directory.CreateDirectory(archivPfadKunde);
+
+                var archivPfadKundeAuftrag = archivPfadKunde + model.Protokoll.AuftragsNr + "\\";
+                if (!Directory.Exists(archivPfadKundeAuftrag))
+                    Directory.CreateDirectory(archivPfadKundeAuftrag);
+
+                var quellPfad = Path.Combine(FotoUploadPath, model.Protokoll.Filename);
+                var zielPfad = Path.Combine(archivPfadKundeAuftrag, model.Protokoll.Filename);
+
+                File.Move(quellPfad, zielPfad);
+
+                return "";
             }
             catch (Exception ex)
             {
-                erg = String.Format("{0}: {1}", Localize.Error, ex.Message);
+                return String.Format("{0}: {1}", Localize.Error, ex.Message);
             }
-
-            return erg;
         }
 
         private bool SendeProtokollArchivierungsMail(ProtokollEditModel model)
