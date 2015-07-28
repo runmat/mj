@@ -80,7 +80,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public FahrzeuguebersichtSelektor FahrzeuguebersichtSelektor
         {
-            get { return PropertyCacheGet(() => new FahrzeuguebersichtSelektor { Statuskennung = (FahrzeugStatus.Any(s => s.StatusKey == "700") ? "700" : "") }); }
+            get { return PropertyCacheGet(() => new FahrzeuguebersichtSelektor()); }
             set { PropertyCacheSet(value); }
         }
 

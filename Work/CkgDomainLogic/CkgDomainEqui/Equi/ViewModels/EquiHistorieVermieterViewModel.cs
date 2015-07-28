@@ -32,7 +32,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public bool FahrzeugAnforderungenAnzeigen
         {
-            get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen").ToBool(); }
+            get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen", true).ToBool(); }
         }
 
         public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
