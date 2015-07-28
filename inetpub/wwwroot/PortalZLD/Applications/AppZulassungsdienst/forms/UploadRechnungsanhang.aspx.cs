@@ -129,6 +129,11 @@ namespace AppZulassungsdienst.forms
                 objNacherf.SelVorgang = "ANZ";
                 objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung
             }
+            if (rbAH_ON_NZ.Checked)
+            {
+                objNacherf.SelVorgang = "AONNZ";
+                objNacherf.SelStatus = "NZ,ON,OA,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Online- & Autohausvorgänge und normal Nacherfassung
+            }
 
             if (String.IsNullOrEmpty(txtStVavon.Text))
             {

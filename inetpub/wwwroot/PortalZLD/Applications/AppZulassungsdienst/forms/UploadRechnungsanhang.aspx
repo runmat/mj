@@ -26,7 +26,7 @@
                                 <table id="tab1" runat="server" cellpadding="0" cellspacing="0">
                                     <tbody>
                                         <tr class="formquery">
-                                            <td class="firstLeft active" colspan="4" width="100%">
+                                            <td class="firstLeft active" colspan="4">
                                                 <asp:Label ID="lblError" runat="server" CssClass="TextError"></asp:Label>
                                                 <asp:Label ID="lblMessage" runat="server" Font-Bold="True" Visible="False"></asp:Label>
                                             </td>
@@ -35,7 +35,7 @@
                                             <td class="firstLeft active" >
                                                 <asp:Label ID="lblDatum" runat="server">Zulassungdatum von:</asp:Label>
                                             </td>
-                                            <td class="firstLeft active" colspan="2">
+                                            <td class="firstLeft active" colspan="2" >
                                                 <asp:TextBox ID="txtZulDate" onKeyPress="return numbersonly(event, false)" runat="server" CssClass="TextBoxNormal" 
                                                     Width="75px" MaxLength="6"></asp:TextBox>
                                                 <asp:Label ID="txtZulDateFormate" Style="padding-left: 2px; font-weight: normal"
@@ -71,12 +71,10 @@
                                                 <asp:Label ID="Label3" runat="server">Vorgang:</asp:Label>
                                             </td>
                                             <td class="firstLeft active" colspan="3" >
-                                                <asp:RadioButton ID="rbNZ" Checked = "true" GroupName="Vorgang" runat="server" 
-                                                    Text="normale Vorgänge" />
+                                                <asp:RadioButton ID="rbAH_ON_NZ" GroupName="Vorgang" runat="server" Text="Normal, Online und Autohaus" Checked="True" />
+                                                <asp:RadioButton ID="rbNZ" GroupName="Vorgang" runat="server" Text="normale Vorgänge" />
                                                 <asp:RadioButton ID="rbON" GroupName="Vorgang" runat="server" Text="Online" />
-
                                                 <asp:RadioButton ID="rbAH" GroupName="Vorgang" runat="server" Text="Autohaus" />
-
                                                 <asp:RadioButton ID="rbAH_NZ" GroupName="Vorgang" runat="server" Text="Normal und Autohaus" />
                                             </td>
                                         </tr>                             
@@ -91,7 +89,7 @@
                                             <td class="firstLeft active">
                                                 <asp:Label ID="Label9" runat="server">bis:</asp:Label>
                                             </td>
-                                            <td class="firstLeft active" style="width: 100%;">
+                                            <td class="firstLeft active">
                                                 <asp:TextBox ID="txtStVaBis" runat="server" CssClass="TextBoxNormal TextUpperCase" MaxLength="8"
                                                     Width="75px"></asp:TextBox>
                                             </td>
