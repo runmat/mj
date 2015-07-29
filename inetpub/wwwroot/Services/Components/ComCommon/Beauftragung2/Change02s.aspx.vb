@@ -546,6 +546,11 @@ Namespace Beauftragung2
             SelectNextTab()
         End Sub
 
+        Private Sub txtEVB_TextChanged(sender As Object, e As EventArgs) Handles txtEVB.TextChanged
+            CheckVersicherer()
+            txtZulDatum.Focus()
+        End Sub
+
 #End Region
 
 #Region "Methods"
@@ -642,6 +647,8 @@ Namespace Beauftragung2
                     mBeauftragung.FahrzeugdatenNeeded = CChar(dRow("FAHRZ_ERF"))
                     mBeauftragung.FarbeNeeded = CChar(dRow("FARB_ERF"))
                     mBeauftragung.ZB1Needed = CChar(dRow("ZBINR_ERF"))
+                    mBeauftragung.VersicherungsnummerNeeded = CChar(dRow("VSU_NR_ERF"))
+                    mBeauftragung.SepaDatumNeeded = CChar(dRow("SEPA_DATE_ERF"))
                 End If
             End If      
         End Sub
@@ -792,6 +799,7 @@ Namespace Beauftragung2
                 End If
                 If txtEVB.Enabled Then
                     .EVB = txtEVB.Text.ToUpper()
+                    .Versicherungsnummer = txtVSU.Text
                 End If
                 .Zulassungsdatum = txtZulDatum.Text
                 .Bemerkung = txtDienstBemerkung.Text
@@ -819,6 +827,7 @@ Namespace Beauftragung2
                     .IBAN = txtIBAN.Text.ToUpper()
                     .SWIFT = txtSWIFT.Text.ToUpper()
                 End If
+                .SepaDatum = txtSepaDatum.Text
 
                 'Gutachten
                 If mBeauftragung.ArtGenehmigungSpeichern Then
@@ -892,6 +901,8 @@ Namespace Beauftragung2
                 .FahrzeugdatenNeeded = ""
                 .FarbeNeeded = ""
                 .ZB1Needed = ""
+                .VersicherungsnummerNeeded = ""
+                .SepaDatumNeeded = ""
 
                 .TypdatenMessage = ""
 
@@ -941,6 +952,8 @@ Namespace Beauftragung2
                 .AufbauArt = ""
                 .Farbe = ""
                 .ZB1Nummer = ""
+                .Versicherungsnummer = ""
+                .SepaDatum = ""
             End With
 
             Session("mBeauftragung2") = mBeauftragung
@@ -1586,6 +1599,9 @@ Namespace Beauftragung2
                 ElseIf txtEVB.Text.ToUpper().Contains("O") Or txtEVB.Text.ToUpper().Contains("I") Then
                     SetErrBehavior(txtEVB, lblEVBInfo, "eVB-Nummer darf keine O's und I's enthalten.")
                     booError = True
+                ElseIf Not CheckVersicherer() Then
+                    SetErrBehavior(txtEVB, lblEVBInfo, "Kein Versicherungsunternehmen zur eVB gefunden! Bitte prüfen Sie die eVB.")
+                    booError = True
                 End If
             End If
 
@@ -1684,6 +1700,16 @@ Namespace Beauftragung2
                             txtSWIFT.Text = strSwift
                         End If
                     End If
+                End If
+            End If
+
+            If txtSepaDatum.Enabled Then
+                If String.IsNullOrEmpty(txtSepaDatum.Text) Then
+                    SetErrBehavior(txtSepaDatum, lblSepaDatumInfo, "Datum Unterschrift SEPA fehlt.")
+                    booError = True
+                ElseIf Not IsDate(txtSepaDatum.Text) Then
+                    SetErrBehavior(txtSepaDatum, lblSepaDatumInfo, "Ungültiges Datum.")
+                    booError = True
                 End If
             End If
 
@@ -1954,6 +1980,9 @@ Namespace Beauftragung2
             txtKennzAlt1.BorderColor = Drawing.Color.Empty
             txtKennzAlt2.BorderColor = Drawing.Color.Empty
             lblKennzeichenAltInfo.Text = ""
+
+            txtSepaDatum.BorderColor = Drawing.Color.Empty
+            lblSepaDatumInfo.Text = ""
 
             lblSaveInfo.Text = ""
 
@@ -2565,6 +2594,12 @@ Namespace Beauftragung2
             txtSWIFT.Visible = blnEnableSepa
             lblSWIFTInfo.Visible = blnEnableSepa
 
+            Dim blnEnableSepaDatum As Boolean = (blnEnableSepa And mBeauftragung.SepaDatumNeeded = "J")
+            lblSepaDatum.Visible = blnEnableSepaDatum
+            txtSepaDatum.Visible = blnEnableSepaDatum
+            txtSepaDatum.Enabled = blnEnableSepaDatum
+            lblSepaDatumInfo.Visible = blnEnableSepaDatum
+
             Dim farbeSepa As Drawing.Color = IIf(blnEnableSepa, Drawing.Color.White, Drawing.Color.LightGray)
             Dim farbeNoSepa As Drawing.Color = IIf(blnEnableNoSepa, Drawing.Color.White, Drawing.Color.LightGray)
 
@@ -2582,6 +2617,8 @@ Namespace Beauftragung2
             lblIBANInfo.Text = String.Empty
             txtSWIFT.Text = String.Empty
             lblSWIFTInfo.Text = String.Empty
+            txtSepaDatum.Text = String.Empty
+            lblSepaDatumInfo.Text = String.Empty
         End Sub
 
         Private Sub EnableEvB()
@@ -2604,8 +2641,12 @@ Namespace Beauftragung2
                 txtEVB.BackColor = Drawing.Color.LightGray
             End If
 
+            trVersicherungsunternehmen.Visible = (doEnable AndAlso mBeauftragung.VersicherungsnummerNeeded = "J")
+
             txtEVB.Text = String.Empty
             lblEVBInfo.Text = String.Empty
+            txtVSU.Text = String.Empty
+            lblVersicherer.Text = String.Empty
         End Sub
 
         Private Sub EnableNaechsteHU()
@@ -2713,6 +2754,24 @@ Namespace Beauftragung2
             End If
 
         End Sub
+
+        Private Function CheckVersicherer() As Boolean
+            txtVSU.Text = ""
+            lblVersicherer.Text = ""
+
+            If mBeauftragung.VersicherungsnummerNeeded <> "J" Then
+                Return True
+            End If
+
+            Dim versicherer As DataRow() = mBeauftragung.Versicherungsunternehmen.Select("EVB2='" & txtEVB.Text.Substring(0, 2).ToUpper() & "'")
+            If versicherer.Length > 0 Then
+                txtVSU.Text = versicherer(0)("VSU_NR").ToString()
+                lblVersicherer.Text = versicherer(0)("NAME").ToString()
+                Return True
+            End If
+
+            Return False
+        End Function
 
 #End Region
 

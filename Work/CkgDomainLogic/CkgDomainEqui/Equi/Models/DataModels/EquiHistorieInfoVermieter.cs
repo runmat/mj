@@ -20,7 +20,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string BriefNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
+        [LocalizedDisplay(LocalizeConstants.ReferenceNo_VehicleHistory)]
         public string ReferenzNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.MessageNo)]
