@@ -36,6 +36,8 @@
 @Html.IeWarning(8)
 
 <form action="#" class="form-horizontal">
+    @Html.FormValidationSummary()
+
     @Html.FormDropDownListFor(m => m.SelectedFahrerAuftragsKey, Model.FahrerAuftragsFahrten.ToSelectList(), new { @class = "m-wrap xlarge" })
     
     @Html.SpanAlert("InfoMessage")

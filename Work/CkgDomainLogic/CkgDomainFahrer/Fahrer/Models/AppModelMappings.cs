@@ -193,8 +193,8 @@ namespace CkgDomainLogic.Fahrer.Models
                     new Dictionary<string, string>(),
                     (s, d) =>
                     {
-                        d.Key = s.CODEGRUPPE;
-                        d.Text = s.TEXTCODEGRUPPE;
+                        d.Key = s.CODE;
+                        d.Text = s.CODETEXT;
                     }));
             }
         }

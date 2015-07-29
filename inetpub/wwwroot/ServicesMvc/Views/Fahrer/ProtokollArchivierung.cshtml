@@ -71,11 +71,6 @@
         FormPreparePrivateAjax();
     }
 
-    function AjaxFormProtokollEditComplete() {
-        AjaxFormProtokollEditClose();
-        GridRefresh();
-    }
-
     function AjaxFormProtokollEditClose() {
         $("#divFahrerProtokolleDetail").slideUp(function () { $("#divFahrerProtokolleGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
         $("#divFahrerProtokolleGrid").slideDown();

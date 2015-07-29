@@ -35,9 +35,9 @@ namespace SapORM.Models
 
 			public string KATALOGTXT { get; set; }
 
-			public string CODEGRUPPE { get; set; }
+			public string CODE { get; set; }
 
-			public string TEXTCODEGRUPPE { get; set; }
+			public string CODETEXT { get; set; }
 
 			public static GT_OUTQPCD Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
@@ -45,8 +45,8 @@ namespace SapORM.Models
 				{
 					KATALOGART = (string)row["KATALOGART"],
 					KATALOGTXT = (string)row["KATALOGTXT"],
-					CODEGRUPPE = (string)row["CODEGRUPPE"],
-					TEXTCODEGRUPPE = (string)row["TEXTCODEGRUPPE"],
+					CODE = (string)row["CODE"],
+					CODETEXT = (string)row["CODETEXT"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

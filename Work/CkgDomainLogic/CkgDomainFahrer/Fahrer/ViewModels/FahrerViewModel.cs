@@ -186,7 +186,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll { IstSonstigerAuftrag = true, ProtokollArt = "SONSTIGES" });
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll());
 
-                if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollArt.Contains("_")))
+                if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollArt.NotNullOrEmpty().Contains("_")))
                     state.AddModelError(string.Empty, Localize.ErrorNoUnderscoresAllowedInProtocolTypes);
             }
             else
@@ -462,6 +462,9 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         public byte[] GetProtokollEditPdf()
         {
+            if (FahrerProtokolle.None(p => p.Filename == ProtokollEditFileName))
+                return new byte[0];
+
             var physPath = Path.Combine(FotoUploadPath, ProtokollEditFileName);
             return File.ReadAllBytes(physPath);
         }
@@ -511,6 +514,9 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
                 var quellPfad = Path.Combine(FotoUploadPath, model.Protokoll.Filename);
                 var zielPfad = Path.Combine(archivPfadKundeAuftrag, model.Protokoll.Filename);
+
+                if (File.Exists(zielPfad))
+                    File.Delete(zielPfad);
 
                 File.Move(quellPfad, zielPfad);
 
