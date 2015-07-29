@@ -301,6 +301,8 @@ namespace CkgDomainLogic.Autohaus.Services
                 var adressen = new List<Adressdaten>();
                 var zusBankdaten = new List<Bankdaten>();
 
+                var newAdressDaten = new Adressdaten(); // 20150723
+
                 foreach (var vorgang in zulassungen)
                 {
                     // Zusatzdienstleistungen (GT_POS_IN)
@@ -316,13 +318,19 @@ namespace CkgDomainLogic.Autohaus.Services
 
                     // Adressen (GT_ADRS_IN)
                     vorgang.BankAdressdaten.Adressdaten.BelegNr = vorgang.BelegNr;
-                    adressen.Add(vorgang.BankAdressdaten.Adressdaten);
+                    // adressen.Add(vorgang.BankAdressdaten.Adressdaten);
+                    newAdressDaten = ModelMapping.Copy(vorgang.BankAdressdaten.Adressdaten);    // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
+                    adressen.Add(newAdressDaten);
 
                     vorgang.Halter.BelegNr = vorgang.BelegNr;
-                    adressen.Add(vorgang.Halter);
+                    // adressen.Add(vorgang.Halter);
+                    newAdressDaten = ModelMapping.Copy(vorgang.Halter);                         // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
+                    adressen.Add(newAdressDaten);
 
                     vorgang.ZahlerKfzSteuer.Adressdaten.BelegNr = vorgang.BelegNr;
-                    adressen.Add(vorgang.ZahlerKfzSteuer.Adressdaten);
+                    // adressen.Add(vorgang.ZahlerKfzSteuer.Adressdaten);
+                    newAdressDaten = ModelMapping.Copy(vorgang.ZahlerKfzSteuer.Adressdaten);    // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
+                    adressen.Add(newAdressDaten);
 
                     vorgang.AuslieferAdressen.ForEach(a =>
                         {
@@ -333,18 +341,28 @@ namespace CkgDomainLogic.Autohaus.Services
                                 a.Adressdaten.Bemerkung = String.Join(";", a.ZugeordneteMaterialien);
                                 a.Adressdaten.Bemerkung = a.Adressdaten.Bemerkung.Replace("Sonstiges", String.Format("Sonstiges: {0}", tmpBem));
                             }
-                            adressen.Add(a.Adressdaten);
+                            // adressen.Add(a.Adressdaten);
+                            adressen.Add(ModelMapping.Copy(a.Adressdaten));                     // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
+
                         });
 
                     if (modusVersandzulassung)
                     {
                         vorgang.VersandAdresse.BelegNr = vorgang.BelegNr;
-                        adressen.Add(vorgang.VersandAdresse);
+                        // adressen.Add(vorgang.VersandAdresse);
+                        adressen.Add(ModelMapping.Copy(vorgang.VersandAdresse));                // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
                     }
 
                     // zus. Bankdaten (GT_BANK_IN)
-                    vorgang.ZahlerKfzSteuer.Bankdaten.BelegNr = vorgang.BelegNr;
-                    zusBankdaten.Add(vorgang.ZahlerKfzSteuer.Bankdaten);
+
+                    // MMA nachfolgender Block auskommentiert, da er identische BelegNummern in zusBankdaten erzeugt (Referenz und nicht Value)
+                    //vorgang.ZahlerKfzSteuer.Bankdaten.BelegNr = vorgang.BelegNr;
+                    //zusBankdaten.Add(vorgang.ZahlerKfzSteuer.Bankdaten);
+
+                    // MMA
+                    var bankdaten = ModelMapping.Copy(vorgang.ZahlerKfzSteuer.Bankdaten);
+                    bankdaten.BelegNr = vorgang.BelegNr;
+                    zusBankdaten.Add(bankdaten);
                 }
 
                 var bakList = AppModelMappings.Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_BAK_IN_From_Vorgang.CopyBack(zulassungen).ToList();
@@ -398,7 +416,9 @@ namespace CkgDomainLogic.Autohaus.Services
             foreach (var vorgang in zulassungen)
             {
                 var bnr = vorgang.BelegNr;
+
                 vorgang.Zusatzformulare.AddRange(fileNames.Where(f => f.Belegnummer == bnr));
+
                 if (auftragsListePath != null)
                     vorgang.Zusatzformulare.Add(auftragsListePath);
 

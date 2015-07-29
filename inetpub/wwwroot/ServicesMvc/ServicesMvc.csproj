@@ -2535,15 +2535,15 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
@@ -2556,6 +2556,8 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
+
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
