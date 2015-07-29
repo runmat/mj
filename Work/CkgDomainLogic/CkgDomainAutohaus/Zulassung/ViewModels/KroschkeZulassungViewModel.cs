@@ -42,6 +42,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FIN { get { return Zulassung.Fahrzeugdaten.FahrgestellNr; } }
 
+        #region Für Massenzulassung
+
+        //[XmlIgnore]
+        public List<FahrzeugAkteBestand> FinList { get; set; }
+        //[XmlIgnore]
+        public List<FahrzeugAkteBestand> FinListFiltered { get; set; }
+
+        #endregion
+
         [XmlIgnore]
         [LocalizedDisplay(LocalizeConstants.Holder)]
         public string HalterDatenAsString { get { return Zulassung.Halter.Adresse.GetAutoSelectString(); } }
@@ -62,6 +71,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 if (ModusVersandzulassung)
                     return Localize.MailOrderRegistration;
+
+                if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+                    return Localize.MassRegistration;
 
                 return Localize.Registration;
             }
@@ -176,9 +188,143 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             SkipBankAdressdaten = (!Zulassung.BankAdressdaten.Cpdkunde);
         }
-
         #endregion
 
+        #region Massenzulassung
+
+        /// <summary>
+        /// Überträgt die Liste der anzumeldenden Fahrzeuge in das ViewModel und
+        /// sorgt für Vorbelegung der relevanten Formulardaten, falls die entsprechenden 
+        /// Fahrzeug-Properties identische Werte haben.
+        /// </summary>
+        /// <param name="finList"></param>
+        /// <returns>True, wenn FinList mit Fahrzeugen vorhanden</returns>
+        public bool SetFinList(object finList)
+        {
+            FinList = (List<FahrzeugAkteBestand>)finList;
+            if (FinList == null)
+                return false;
+
+            FinList.ToList().ForEach(x => x.IsSelected = true);
+            FinListFiltered = FinList;
+
+            var firstFahrzeug = FinList.FirstOrDefault();
+            if (firstFahrzeug == null) 
+                return false;
+
+            #region Halterdaten evtl. vorbelegen, wenn bei allen Fahrzeugen gleich
+            var isEqual = true;
+            foreach (var fahrzeugAkteBestand in FinList)
+            {
+                if (ModelMapping.Differences(fahrzeugAkteBestand.SelectedHalter, firstFahrzeug.SelectedHalter).Any())
+                {
+                    isEqual = false;
+                    break;
+                }
+            }
+
+            if (isEqual)    // Wenn Halterdaten aller Fahrzeuge identisch, soll Vorbelegung erfolgen...
+                SetParamHalter(firstFahrzeug.Halter);
+
+            #endregion
+
+            Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+
+            return true;
+        }
+
+        /// <summary>
+        /// Setzt alle Kennzeichen auf Standardwerte. Nur für Massenzulassung benötigt.
+        /// </summary>
+        /// <param name="zulassungskreis"></param>
+        /// <returns></returns>
+        public string SetKreisAll(string zulassungskreis)
+        {
+            if (!Zulassung.Zulassungsdaten.IsMassenzulassung || zulassungskreis.IsNullOrEmpty())
+                return null;
+ 
+            try
+            {
+                zulassungskreis += "-";
+                FinList.ToList().ForEach(x => x.WunschKennz1 = zulassungskreis);
+                FinList.ToList().ForEach(x => x.WunschKennz2 = zulassungskreis);
+                FinList.ToList().ForEach(x => x.WunschKennz3 = zulassungskreis);
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.InnerException.ToString();
+            }
+        }
+
+        /// <summary>
+        /// Setzt die evb für ein einzelnes Fahrzeug oder für alle in der aktuellen FinList
+        /// </summary>
+        /// <param name="fin"></param>
+        /// <param name="evb"></param>
+        /// <returns>Null = gespeichert</returns>
+        public string SetEvb(string fin, string evb)
+        {
+            if (!Zulassung.Zulassungsdaten.IsMassenzulassung)   // Funktion nur für Massenzulassung benötigt
+                return null;
+
+            if (!string.IsNullOrEmpty(evb) && evb.Length != 7)
+                return Localize.EvbNumberLengthMustBe7;
+
+            try
+            {
+                if (fin.IsNullOrEmpty())
+                {
+                    // evb für ALLE Fahrzeuge setzen
+                    FinList.ToList().ForEach(x => x.Evb = evb);
+                }
+                else
+                {
+                    // evb nur für ein Fahrzeug setzen
+                    FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Evb = evb);
+                }
+                
+                return null; 
+            }
+            catch (Exception e)
+            {
+                return e.InnerException.ToString(); 
+            }
+        }
+
+        /// <summary>
+        /// Setzt das Wunschkennzeichen für ein angegebenes Fahrzeug
+        /// </summary>
+        /// <param name="fin"></param>
+        /// <param name="field"></param>
+        /// <param name="kennz"></param>
+        /// <returns>Null = gespeichert</returns>
+        public string SetWunschKennz(string fin, string field, string kennz)
+        {
+            try
+            {
+                switch (field.ToLower())
+                {
+                    case "wunschkennz1":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz1 = kennz);
+                        break;
+
+                    case "wunschkennz2":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz2 = kennz);
+                        break;
+
+                    case "wunschkennz3":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = kennz);
+                        break;
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                return e.InnerException.ToString();
+            }
+        }
+        #endregion
 
         #region Halter
 
@@ -254,6 +400,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             string zulassungsKennzeichen;
             LoadKfzKreisAusHalterAdresse(out zulassungsKreis, out zulassungsKennzeichen);
             Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
+
+            // MMA Falls Massenzulassung, dann den Zulassungskreis auch für alle Wunschkennzeichen setzen
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                this.SetKreisAll(zulassungsKreis);
+            }
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
                 Zulassung.Zulassungsdaten.Kennzeichen = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
@@ -747,16 +899,56 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (ModusAbmeldung && Abmeldearten.None())
                 return;
 
+            var zulassungenToSave = new List<Vorgang>();
+           
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                // Alle zuzulassenden Fahrzeuge durchlaufen
+                // foreach (var fahrzeugAkteBestand in FinList)
+                foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => x.IsSelected == true))
+                {
+                    var singleZulassung = ModelMapping.Copy(Zulassung); // Achtung: Kopiert nicht, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
+                    singleZulassung.Zulassungsdaten = ModelMapping.Copy(Zulassung.Zulassungsdaten); // Explizit Zulassungsdaten kopieren, damit keine Referenz erzeugt wird
+                    singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);     // Explizit Fahrzeugdaten kopieren, damit keine Referenz erzeugt wird
+                    
+                    // 20150723
+                    singleZulassung.ZahlerKfzSteuer = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer);
+                    singleZulassung.VersandAdresse = ModelMapping.Copy(Zulassung.VersandAdresse);
+
+                    // 20150722
+                    singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+                    singleZulassung.Halter = ModelMapping.Copy(Zulassung.Halter);
+                    singleZulassung.BankAdressdaten = ModelMapping.Copy(Zulassung.BankAdressdaten);
+
+                    // singleZulassung.Zusatzformulare = ModelMapping.Copy(Zulassung.Zusatzformulare);  // Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+                    singleZulassung.Zusatzformulare = new List<PdfFormular>();
+
+                    singleZulassung.Fahrzeugdaten.FahrgestellNr = fahrzeugAkteBestand.FIN;
+
+                    singleZulassung.Zulassungsdaten.EvbNr = fahrzeugAkteBestand.Evb;
+                    singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
+                    singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
+                    singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
+
+                    zulassungenToSave.Add(singleZulassung);
+                }
+            }
+            else
+            {
+                zulassungenToSave = zulassungen;
+            }
+            
             SaveDataToErpSystem = saveDataToSap;
             AuftragslisteAvailable = saveDataToSap;
 
             ZulassungenForReceipt = new List<Vorgang>();
-
-            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungen, saveDataToSap, saveFromShoppingCart, ModusAbmeldung, ModusVersandzulassung);
+            
+            SaveErrorMessage = ZulassungDataService.SaveZulassungen(zulassungenToSave, saveDataToSap, saveFromShoppingCart, ModusAbmeldung, ModusVersandzulassung);
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
-                ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
+                // ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
+                ZulassungenForReceipt = zulassungenToSave.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
 
                 if (ZulassungenForReceipt.ToListOrEmptyList().None() || ZulassungenForReceipt.First().Zusatzformulare.ToListOrEmptyList().None(z => z.IstAuftragsListe))
                     AuftragslisteAvailable = false;
@@ -764,5 +956,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         #endregion
+
+        public void FilterFinList(string filterValue, string filterProperties)
+        {
+            FinListFiltered = FinList.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
     }
 }

@@ -32,7 +32,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public bool FahrzeugAnforderungenAnzeigen
         {
-            get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen").ToBool(); }
+            get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen", true).ToBool(); }
         }
 
         public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
@@ -49,7 +49,15 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public void LoadHistorie(string fahrgestellNr)
         {
-            EquipmentHistorie = DataService.GetEquiHistorie(fahrgestellNr);
+            if (!String.IsNullOrEmpty(fahrgestellNr))
+            {
+                EquipmentHistorie = DataService.GetEquiHistorie(fahrgestellNr);
+            }
+            else if (HistorieInfos.Count == 1)
+            {
+                var item = HistorieInfos[0];
+                EquipmentHistorie = DataService.GetEquiHistorie(item.FahrgestellNr);
+            }
 
             LoadFahrzeugAnforderungen();
         }
