@@ -133,6 +133,14 @@
                                         </tr>
                                         <tr class="formquery">
                                             <td class="firstLeft active" style="height: 36px">
+                                                <asp:Label ID="Label11" runat="server">Spalte Zulassungsdatum:</asp:Label>
+                                            </td>
+                                            <td class="firstLeft active" colspan="3">
+                                                <asp:TextBox ID="txtSpalteZulassungsdatum" runat="server" CssClass="TextBoxNormal TextUpperCase" MaxLength="2" Width="40px"></asp:TextBox>
+                                            </td>
+                                        </tr>
+                                        <tr class="formquery">
+                                            <td class="firstLeft active" style="height: 36px">
                                                 <asp:Label ID="Label4" runat="server">Excel-Upload:</asp:Label>
                                             </td>
                                             <td class="firstLeft active" colspan="3">

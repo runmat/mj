@@ -167,7 +167,7 @@ namespace AppZulassungsdienst.forms
 
             if (String.IsNullOrEmpty(txtSpalteKennzeichen.Text))
             {
-                lblError.Text = "Bitte geben Sie an, in welcher Spalte der Excel-Tabelle die Kennzeichen stehen!";
+                lblError.Text = "Bitte geben Sie an, in welcher Spalte der Excel-Tabelle das Kennzeichen steht!";
                 return;
             }
 
@@ -177,17 +177,27 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
+            if (String.IsNullOrEmpty(txtSpalteZulassungsdatum.Text))
+            {
+                lblError.Text = "Bitte geben Sie an, in welcher Spalte der Excel-Tabelle das Zulassungsdatum steht!";
+                return;
+            }
+
             var uploadTemplate = new RechnungsanhangTemplates
                 {
                     DatenAbZeile = txtDatenAbZeile.Text.ToInt(0),
                     SpalteKennzeichen = txtSpalteKennzeichen.Text.ToUpper(),
-                    SpalteGebuehren = txtSpalteGebuehren.Text.ToUpper()
+                    SpalteGebuehren = txtSpalteGebuehren.Text.ToUpper(),
+                    SpalteZulassungsdatum = txtSpalteZulassungsdatum.Text.ToUpper()
                 };
 
             var uploadList = GetUploadData(upFile.PostedFile, uploadTemplate);
 
             if (uploadList == null)
                 return;
+
+            var doppelteKennzeichen = uploadList.GroupBy(u => u.Kennzeichen).Where(g => g.Count() > 1).Select(g => g.Key).ToList();
+            uploadList.RemoveAll(u => doppelteKennzeichen.Contains(u.Kennzeichen));
 
             objNacherf.LoadVorgaengeFromSap(objCommon.MaterialStamm);
 
@@ -271,6 +281,7 @@ namespace AppZulassungsdienst.forms
                 txtDatenAbZeile.Text = tmplt.DatenAbZeile.ToString();
                 txtSpalteKennzeichen.Text = tmplt.SpalteKennzeichen;
                 txtSpalteGebuehren.Text = tmplt.SpalteGebuehren;
+                txtSpalteZulassungsdatum.Text = tmplt.SpalteZulassungsdatum;
             }
         }
 
@@ -351,6 +362,7 @@ namespace AppZulassungsdienst.forms
 
                     var colIndexKennzeichen = ZLDCommon.GetTableColumnIndexFromExcelColumnName(uplDefinition.SpalteKennzeichen);
                     var colIndexGebuehren = ZLDCommon.GetTableColumnIndexFromExcelColumnName(uplDefinition.SpalteGebuehren);
+                    var colIndexZulassungsdatum = ZLDCommon.GetTableColumnIndexFromExcelColumnName(uplDefinition.SpalteZulassungsdatum);
 
                     for (var i = 0; i < tblTemp.Rows.Count; i++)
                     {
@@ -359,7 +371,8 @@ namespace AppZulassungsdienst.forms
                             list.Add(new RechnungsanhangDaten
                                 {
                                     Kennzeichen = tblTemp.Rows[i][colIndexKennzeichen].ToString().Replace(" ", ""),
-                                    Gebuehren = tblTemp.Rows[i][colIndexGebuehren].ToString().Replace(" ", "").Replace('.', ',').Replace("€", "")
+                                    Gebuehren = tblTemp.Rows[i][colIndexGebuehren].ToString().Replace(" ", "").Replace('.', ',').Replace("€", ""),
+                                    Zulassungsdatum = tblTemp.Rows[i][colIndexZulassungsdatum].ToString().Replace(" ", "").Replace("00:00:00", "")
                                 });
                         }
                     }

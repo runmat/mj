@@ -58,8 +58,9 @@ Partial Public Class RechnungsanhangTemplateMgmt
         lblID.Text = row("ID")
         txtBezeichnung.Text = row("Bezeichnung")
         txtDatenAbZeile.Text = row("DatenAbZeile")
-        txtSpaltenKennzeichen.Text = row("SpalteKennzeichen")
-        txtSpaltenGebuehren.Text = row("SpalteGebuehren")
+        txtSpalteKennzeichen.Text = row("SpalteKennzeichen")
+        txtSpalteGebuehren.Text = row("SpalteGebuehren")
+        txtSpalteZulassungsdatum.Text = row("SpalteZulassungsdatum")
 
         Return True
     End Function
@@ -68,8 +69,9 @@ Partial Public Class RechnungsanhangTemplateMgmt
         lblID.Text = "0"
         txtBezeichnung.Text = ""
         txtDatenAbZeile.Text = "1"
-        txtSpaltenKennzeichen.Text = "A"
-        txtSpaltenGebuehren.Text = "B"
+        txtSpalteKennzeichen.Text = "A"
+        txtSpalteGebuehren.Text = "B"
+        txtSpalteZulassungsdatum.Text = "C"
         'Buttons
         lbtnSave.Visible = True
         LockEdit(False)
@@ -81,10 +83,12 @@ Partial Public Class RechnungsanhangTemplateMgmt
         txtBezeichnung.BackColor = Drawing.Color.FromName(strBackColor)
         txtDatenAbZeile.Enabled = Not blnLock
         txtDatenAbZeile.BackColor = Drawing.Color.FromName(strBackColor)
-        txtSpaltenKennzeichen.Enabled = Not blnLock
-        txtSpaltenKennzeichen.BackColor = Drawing.Color.FromName(strBackColor)
-        txtSpaltenGebuehren.Enabled = Not blnLock
-        txtSpaltenGebuehren.BackColor = Drawing.Color.FromName(strBackColor)
+        txtSpalteKennzeichen.Enabled = Not blnLock
+        txtSpalteKennzeichen.BackColor = Drawing.Color.FromName(strBackColor)
+        txtSpalteGebuehren.Enabled = Not blnLock
+        txtSpalteGebuehren.BackColor = Drawing.Color.FromName(strBackColor)
+        txtSpalteZulassungsdatum.Enabled = Not blnLock
+        txtSpalteZulassungsdatum.BackColor = Drawing.Color.FromName(strBackColor)
     End Sub
 
     Private Sub EditEditMode(ByVal intTemplateId As Integer)
@@ -168,17 +172,22 @@ Partial Public Class RechnungsanhangTemplateMgmt
             Exit Sub
         End If
 
-        If String.IsNullOrEmpty(txtSpaltenKennzeichen.Text) Then
+        If String.IsNullOrEmpty(txtSpalteKennzeichen.Text) Then
             lblError.Text = "Kennzeichen-Spalte fehlt!"
             Exit Sub
         End If
 
-        If String.IsNullOrEmpty(txtSpaltenGebuehren.Text) Then
+        If String.IsNullOrEmpty(txtSpalteGebuehren.Text) Then
             lblError.Text = "Gebühren-Spalte fehlt!"
             Exit Sub
         End If
 
-        Dim errMsg As String = Rechnungsdatenanhang.SaveTemplate(m_User.App.Connectionstring, CInt(lblID.Text), txtBezeichnung.Text, CInt(txtDatenAbZeile.Text), txtSpaltenKennzeichen.Text.ToUpper(), txtSpaltenGebuehren.Text.ToUpper())
+        If String.IsNullOrEmpty(txtSpalteZulassungsdatum.Text) Then
+            lblError.Text = "Zulassungsdatum-Spalte fehlt!"
+            Exit Sub
+        End If
+
+        Dim errMsg As String = Rechnungsdatenanhang.SaveTemplate(m_User.App.Connectionstring, CInt(lblID.Text), txtBezeichnung.Text, CInt(txtDatenAbZeile.Text), txtSpalteKennzeichen.Text.ToUpper(), txtSpalteGebuehren.Text.ToUpper(), txtSpalteZulassungsdatum.Text.ToUpper())
         If Not String.IsNullOrEmpty(errMsg) Then
             lblError.Text = errMsg
         Else

@@ -49,6 +49,7 @@
                                                         <asp:BoundField DataField="DatenAbZeile" SortExpression="DatenAbZeile" HeaderText="Daten ab Zeile"/>
                                                         <asp:BoundField DataField="SpalteKennzeichen" SortExpression="SpalteKennzeichen" HeaderText="Spalte Kennzeichen"/>
                                                         <asp:BoundField DataField="SpalteGebuehren" SortExpression="SpalteGebuehren" HeaderText="Spalte Gebühren"/>
+                                                        <asp:BoundField DataField="SpalteZulassungsdatum" SortExpression="SpalteZulassungsdatum" HeaderText="Spalte Zulassungsdatum"/>
                                                         <asp:TemplateField HeaderText="Löschen">
                                                             <ItemTemplate>
                                                                 <asp:ImageButton runat="server" ImageUrl="/PortalZLD/Images/Papierkorb_01.gif" Width="16px" Height="16px" 
@@ -110,7 +111,7 @@
                                                                                 Spalte Kennzeichen (A..ZZ):
                                                                             </td>
                                                                             <td align="left" class="active">
-                                                                                <asp:TextBox ID="txtSpaltenKennzeichen" runat="server" CssClass="InputTextbox TextUpperCase" Width="40px" MaxLength="2"/>
+                                                                                <asp:TextBox ID="txtSpalteKennzeichen" runat="server" CssClass="InputTextbox TextUpperCase" Width="40px" MaxLength="2"/>
                                                                             </td>
                                                                         </tr>
                                                                         <tr class="formquery">
@@ -118,7 +119,15 @@
                                                                                 Spalte Gebühren (A..ZZ):
                                                                             </td>
                                                                             <td align="left" class="active">
-                                                                                <asp:TextBox ID="txtSpaltenGebuehren" runat="server" CssClass="InputTextbox TextUpperCase" Width="40px" MaxLength="2"/>
+                                                                                <asp:TextBox ID="txtSpalteGebuehren" runat="server" CssClass="InputTextbox TextUpperCase" Width="40px" MaxLength="2"/>
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="formquery">
+                                                                            <td class="firstLeft active" style="width: 200px">
+                                                                                Spalte Zulassungsdatum (A..ZZ):
+                                                                            </td>
+                                                                            <td align="left" class="active">
+                                                                                <asp:TextBox ID="txtSpalteZulassungsdatum" runat="server" CssClass="InputTextbox TextUpperCase" Width="40px" MaxLength="2"/>
                                                                             </td>
                                                                         </tr>
                                                                     </table>

@@ -113,22 +113,31 @@ Partial Public Class RechnungsanhangTemplateMgmt
     Protected WithEvents txtDatenAbZeile As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''txtSpaltenKennzeichen-Steuerelement
+    '''txtSpalteKennzeichen-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents txtSpaltenKennzeichen As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtSpalteKennzeichen As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''txtSpaltenGebuehren-Steuerelement
+    '''txtSpalteGebuehren-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents txtSpaltenGebuehren As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents txtSpalteGebuehren As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''txtSpalteZulassungsdatum-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtSpalteZulassungsdatum As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''lbtnSave-Steuerelement

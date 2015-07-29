@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AppZulassungsdienst.lib.Models;
 using System.Data;
@@ -1358,8 +1359,13 @@ namespace AppZulassungsdienst.lib
                 if (vorgang != null)
                 {
                     vorgang.GebuehrAmt = item.Gebuehren.ToDecimal(0);
+
                     if (!vorgang.Gebuehrenpaket.IsTrue())
                         vorgang.Gebuehr = item.Gebuehren.ToDecimal(0);
+
+                    DateTime tmpDate;
+                    if (!String.IsNullOrEmpty(item.Zulassungsdatum) && DateTime.TryParseExact(item.Zulassungsdatum, "dd.MM.yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDate))
+                        vorgang.Zulassungsdatum = tmpDate;
 
                     Vorgangsliste.Where(v => v.SapId == vorgang.SapId && v.WebBearbeitungsStatus != "L").ToList().ForEach(v => v.WebBearbeitungsStatus = "O");
 

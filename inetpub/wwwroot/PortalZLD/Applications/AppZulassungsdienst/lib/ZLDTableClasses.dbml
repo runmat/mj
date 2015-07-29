@@ -93,6 +93,7 @@
       <Column Name="DatenAbZeile" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="SpalteKennzeichen" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
       <Column Name="SpalteGebuehren" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
+      <Column Name="SpalteZulassungsdatum" Type="System.String" DbType="VarChar(2) NOT NULL" CanBeNull="false" />
     </Type>
   </Table>
 </Database>
