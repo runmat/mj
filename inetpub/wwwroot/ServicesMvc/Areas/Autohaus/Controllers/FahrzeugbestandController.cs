@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.ViewModels;
 using CkgDomainLogic.General.Contracts;
@@ -141,8 +142,38 @@ namespace ServicesMvc.Autohaus.Controllers
             return new EmptyResult();
         }
 
+        [HttpPost]
+        public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)  
+        {
+            int allSelectionCount, allCount = 0;
+            if (vin.IsNullOrEmpty())
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+            else
+                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
+
+            return Json(new
+            {
+                allSelectionCount,
+                allCount
+                //zulassungenAnzahlPdiTotal = 1, // ViewModel.FahrzeugeSelected,    
+                //zulassungenAnzahlGesamtTotal = 2, //  ViewModel.FahrzeugeTotal,   
+            });
+        }
+
         #endregion
 
+        /// <summary>
+        /// Für Massenzulassung
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MultiReg()
+        {
+            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestand.Where(x => x.IsSelected).ToList();   // Alle Fahrzeuge zurückgeben, die vom Benutzer selektiert wurden
+
+            TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
+
+            return RedirectToAction("IndexMultiReg", "Zulassung");
+        }
 
         #region Export
 

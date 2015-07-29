@@ -323,6 +323,15 @@
     function OnDataBound_GridFahrzeugSummary() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
+        
+        // Collapse groups by default
+        var groups = $(".t-grouping-row");
+        for (var i = 0; i < groups.length; i++) {
+            var group = groups[i];
+            if (group) {
+                $(this).data("tGrid").collapseGroup(group);
+            }
+        }
     }
 
     function OnColumnShowHide_GridFahrzeugSummary() {

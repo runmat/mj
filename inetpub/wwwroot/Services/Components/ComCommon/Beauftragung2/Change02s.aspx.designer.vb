@@ -1500,6 +1500,42 @@ Namespace Beauftragung2
         Protected WithEvents lblEVBInfo As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''trVersicherungsunternehmen-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trVersicherungsunternehmen As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
+        '''lblVSU-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents lblVSU As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''txtVSU-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents txtVSU As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''lblVersicherer-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents lblVersicherer As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
         '''lblZulDatum-Steuerelement
         '''</summary>
         '''<remarks>
@@ -1876,6 +1912,51 @@ Namespace Beauftragung2
         '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         '''</remarks>
         Protected WithEvents ddlKennzTyp As Global.System.Web.UI.WebControls.DropDownList
+
+        '''<summary>
+        '''lblSepaDatum-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents lblSepaDatum As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''txtSepaDatum-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents txtSepaDatum As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''txtSepaDatum_CalendarExtender-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents txtSepaDatum_CalendarExtender As Global.AjaxControlToolkit.CalendarExtender
+
+        '''<summary>
+        '''meetxtSepaDatum-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents meetxtSepaDatum As Global.AjaxControlToolkit.MaskedEditExtender
+
+        '''<summary>
+        '''lblSepaDatumInfo-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents lblSepaDatumInfo As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
         '''cbxWunschkennzFlag-Steuerelement

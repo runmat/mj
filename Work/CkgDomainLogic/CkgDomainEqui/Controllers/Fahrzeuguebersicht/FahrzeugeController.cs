@@ -1,8 +1,6 @@
-﻿using System;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web;
 using System.Linq;
-using System.Web.Routing;
 using MvcTools.Web;
 using System.Collections.Generic;
 using CkgDomainLogic.General.Controllers;
@@ -122,27 +120,6 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-        #endregion
-
-
-        #region History
-
-
-        [HttpPost]
-        public ActionResult ShowHistory(string fin)
-        {                                       
-            return RedirectToAction("GetHistorieVermieterByFinPartial",
-                new RouteValueDictionary(new { controller = "Equi", action = "GetHistorieVermieterByFinPartial", fahrgestellnummer = fin }));            
-        }
-             
-        public FileContentResult FahrzeughistorieVermieterPdf()
-        {
-            var formularPdfBytes = EquipmentHistorieVermieterViewModel.GetHistorieAsPdf();
-
-            return new FileContentResult(formularPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}_{1}.pdf", Localize.VehicleHistory, EquipmentHistorieVermieterViewModel.EquipmentHistorie.HistorieInfo.FahrgestellNr) };
-        }
-
-      
         #endregion
 
     } // class

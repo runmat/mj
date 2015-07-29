@@ -40,6 +40,8 @@ namespace AppRemarketing.lib
         public HistorieBelastungsanzeige Belastungsanzeige { get; private set; }
         public HistorieUebersicht Uebersicht { get; private set; }
         public HistorieLinks Links { get; private set; }
+        public DataView Vorschaden { get; private set; }
+
 
         #endregion
 
@@ -69,6 +71,7 @@ namespace AppRemarketing.lib
                 CommonData = myProxy.getExportTable("GT_DATEN");
                 Gutachten = myProxy.getExportTable("GT_GUTA");
                 Versand = myProxy.getExportTable("GT_VERS");
+
                 var lebb = myProxy.getExportTable("GT_LEB_B");
                 var lebt = myProxy.getExportTable("GT_LEB_T");
                 var addr = myProxy.getExportTable("GT_ADDR_B");
@@ -80,6 +83,7 @@ namespace AppRemarketing.lib
                 Lebenslauf = HistorieEintrag.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng).OrderBy(e => e.Date).Distinct().ToList();
                 Belastungsanzeige = HistorieBelastungsanzeige.Parse(belas);
                 Uebersicht = HistorieUebersicht.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng);
+                Vorschaden = new HistorieVorschaden(myProxy.getExportTable("GT_SCHADEN")).VorschadenView;
 
                 var fahrgestellNrRow = CommonData.Rows.Cast<DataRow>().FirstOrDefault();
                 var fahrgestellNr = fahrgestellNrRow!=null?fahrgestellNrRow["FAHRGNR"].ToString():string.Empty;
