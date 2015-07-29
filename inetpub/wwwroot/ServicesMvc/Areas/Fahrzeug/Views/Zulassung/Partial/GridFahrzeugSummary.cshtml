@@ -10,7 +10,7 @@
 
 <div id="GridFahrzeugSummaryWrapper">
     @(Html.XTelerik()
-        .XGrid<Fzg>()
+        .XGrid<Fzg>(ignoreAutoPersistsColumnsLoading:true)
         .Name(gridName)
         .XAjaxDataBinding("FahrzeugSummaryAjaxBinding", "Zulassung")
         .Columns(columns =>
@@ -30,7 +30,7 @@
 
         .XAutoColumnConfiguration()
         .ClientEvents(events => events.XAutoClientEvents(gridName))
-        .XPageSize(5)
+        .XPageSize(200)
             .ToolBar(commands =>
             {
                 commands.FilteredDataCommand("ExportFahrzeugeSummaryFilteredExcel", "Zulassung");

@@ -32,7 +32,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public bool FahrzeugAnforderungenAnzeigen
         {
-            get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen").ToBool(); }
+            get { return GetApplicationConfigValueForCustomer("FzgHistorieAnforderungenAnzeigen", true).ToBool(); }
         }
 
         public void LoadHistorieInfos(ref EquiHistorieSuchparameter suchparameter, ModelStateDictionary state)
@@ -47,16 +47,16 @@ namespace CkgDomainLogic.Equi.ViewModels
                 state.AddModelError("", Localize.NoDataFound);
         }
 
-        public void LoadHistorie(string equiNr, string meldungsNr)
+        public void LoadHistorie(string fahrgestellNr)
         {
-            if (!String.IsNullOrEmpty(equiNr))
+            if (!String.IsNullOrEmpty(fahrgestellNr))
             {
-                EquipmentHistorie = DataService.GetEquiHistorie(equiNr, meldungsNr);
+                EquipmentHistorie = DataService.GetEquiHistorie(fahrgestellNr);
             }
             else if (HistorieInfos.Count == 1)
             {
                 var item = HistorieInfos[0];
-                EquipmentHistorie = DataService.GetEquiHistorie(item.EquipmentNr, item.MeldungsNr);
+                EquipmentHistorie = DataService.GetEquiHistorie(item.FahrgestellNr);
             }
 
             LoadFahrzeugAnforderungen();
@@ -96,7 +96,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public byte[] GetHistorieAsPdf()
         {
-            return DataService.GetHistorieAsPdf(EquipmentHistorie.HistorieInfo.EquipmentNr, EquipmentHistorie.HistorieInfo.MeldungsNr);
+            return DataService.GetHistorieAsPdf(EquipmentHistorie.HistorieInfo.FahrgestellNr);
         }
 
         #region Filter

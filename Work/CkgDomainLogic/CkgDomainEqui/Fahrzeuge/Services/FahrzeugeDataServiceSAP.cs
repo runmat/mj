@@ -307,6 +307,7 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             SAP.Execute();
 
             var sapItemsData = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_WEB.GetExportList(SAP);
+            sapItemsData = sapItemsData.Where(s => s.ZZAKTSPERRE.NotNullOrEmpty().ToUpper() != "X").ToListOrEmptyList();
             var webItems = AppModelMappings.Z_M_EC_AVM_MELDUNGEN_PDI1_GT_WEB_ToFzg.Copy(sapItemsData).ToList();
 
             var sapItemsText = Z_M_EC_AVM_MELDUNGEN_PDI1.GT_TXT.GetExportList(SAP);

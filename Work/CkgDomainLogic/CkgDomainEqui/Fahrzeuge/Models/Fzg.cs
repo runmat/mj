@@ -33,8 +33,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         public string ModelID { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Model)]
+        [LocalizedDisplay(LocalizeConstants.ModelName)]
         public string Modell { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Model)]
+        public string ModellAsText
+        {
+            get { return string.Format("{0} / {1}", ModelID, Modell); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
@@ -112,12 +118,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Amount)]
         public int Amount { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Model)]
-        public string ModellAsText
-        {
-            get { return string.Format("{0} / {1}",ModelID, Modell); }
-        }
-
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNummer { get; set; }
 
@@ -126,8 +126,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 return string.Format("{0} / {1}{2}{3}{4}{5}",
-                        ModelID, Modell, Fahrgestellnummer.PrependIfNotNull(", FIN "), Zb2Nummer.PrependIfNotNull(", ZBII "),
-                        AuftragsNummer.FormatIfNotNull(", <strong>Beleg-Nr {this}</strong>"),
+                        ModelID, Modell, Fahrgestellnummer.PrependIfNotNull(", FIN "), Zb2Nummer.PrependIfNotNull(", ZBII "), Pdi.PrependIfNotNull(", "),
                         (IsValid ? "" :  ValidationMessage.PrependIfNotNull("<br/>"))
                     );
             }
