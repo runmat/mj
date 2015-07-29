@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
+using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
@@ -50,12 +51,29 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
+        // public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string massenzulassung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
 
             ViewModel.DataInit();
+
+            #region Massenzulassung
+            if (massenzulassung == "1")
+            {
+                if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+                {
+                    return RedirectToAction("Index");
+                }
+
+                var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+                if (firstFahrzeug == null)
+                {
+                    return Content("Kein Fahrzeug ausgewählt.");
+                }
+            }
+            #endregion
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
@@ -63,10 +81,140 @@ namespace ServicesMvc.Autohaus.Controllers
             ShoppingCartLoadAndCacheItems();
             ShoppingCartTryEditItemAsViewModel();
 
-            //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");
+            //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
             return View("Index", ViewModel);
         }
+
+        #region Massenzulassung
+
+        // ##MMA##
+        [CkgApplication]
+        public ActionResult IndexMultiReg()
+        {
+            ViewModel.SetParamAbmeldung(null);
+            ViewModel.DataInit();
+
+            if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+            if (firstFahrzeug == null)
+            {
+                return Content("Kein Fahrzeug ausgewählt.");
+            }    
+            
+            ShoppingCartLoadAndCacheItems();
+            ShoppingCartTryEditItemAsViewModel();
+
+            return View("Index", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugShowGrid()
+        {
+            ViewModel.DataMarkForRefreshHalterAdressen();
+
+            return PartialView("Partial/FahrzeugAuswahlGrid", ViewModel.FinList);
+        }
+
+        public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.FinList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Holder, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult FahrzeugAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.FinList.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Holder, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        // 20150618 MMA ITA8076 Massenzulassung
+        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
+        {
+            ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
+            allCount = ViewModel.FinList.Count();
+        }
+
+        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var fzg = ViewModel.FinList.FirstOrDefault(f => f.FIN == vin);
+            if (fzg == null)
+                return;
+            fzg.IsSelected = select;
+            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
+        }
+
+        [GridAction]
+        public ActionResult FahrzeugAuswahlAjaxBinding()
+        {
+            var items = ViewModel.FinListFiltered;
+            return View(new GridModel(items));
+        }
+
+        [GridAction]
+        public ActionResult FahrzeugAuswahlSelectedAjaxBinding()
+        {
+            var items = ViewModel.FinList.Where(x => x.IsSelected);
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public JsonResult FahrzeugAuswahlSelectionChanged(string vin, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0;
+            if (vin.IsNullOrEmpty())
+                SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+            else
+                SelectFahrzeug(vin, isChecked, out allSelectionCount);
+            return Json(new
+            {
+                allSelectionCount,
+                allCount,
+                zulassungenAnzahlPdiTotal = ViewModel.FinList.Count(x => x.IsSelected), 
+                zulassungenAnzahlGesamtTotal = ViewModel.FinList.Count   
+            });
+        }
+
+        [HttpPost]
+        public JsonResult SetKreisAll(string zulassungsKreis)
+        {
+            var result = ViewModel.SetKreisAll(zulassungsKreis);
+            return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
+        }
+
+        [HttpPost]
+        public JsonResult SetEvb(string fin, string evb)
+        {
+            var result = ViewModel.SetEvb(fin, evb.ToUpper());
+            return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
+        }
+
+        [HttpPost]
+        public JsonResult SetWunschKennz(string fin, string field, string kennz)
+        {
+            var result = ViewModel.SetWunschKennz(fin, field, kennz.ToUpper());
+            return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterFinList(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        #endregion
 
         [CkgApplication]
         public ActionResult Abmeldung(string fin, string halterNr)
@@ -398,6 +546,19 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
         {
+            //var viewModel = AdressenPflegeViewModel;
+            //viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
+            //if (ModelState.IsValid)
+            //    model = viewModel.SaveItem(model, ModelState.AddModelError);
+            //model.IsValid = ModelState.IsValid;
+            //model.InsertModeTmp = viewModel.InsertMode;
+
+            // if (!ViewModel.FinList.Any(x => x.IsSelected))
+            if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung && !ViewModel.FinList.Any(x => x.IsSelected))
+            {
+                ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
+            }
+
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);
@@ -496,7 +657,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Receipt()
         {
+
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
+
             ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
@@ -505,6 +668,8 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Summary()
         {
+            TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
 
@@ -573,18 +738,6 @@ namespace ServicesMvc.Autohaus.Controllers
         #region ZusatzformularAsPdf
         public FileContentResult ZusatzformularAsPdf(string id, string typ)
         {
-            // 20150528 MMA Folgender Block auskommentiert...
-            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
-            //if (zulassung == null)
-            //    return new FileContentResult(new byte[1], "");
-            //var zusatzFormular = zulassung.Zusatzformulare.FirstOrDefault(z => z.Typ == typ);
-            //if (zusatzFormular == null)
-            //    return new FileContentResult(new byte[1], ""); 
-            //var auftragPdfBytes = System.IO.File.ReadAllBytes(zusatzFormular.DateiPfad);
-            // var dateiPfad = "";
-            // var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
-            // return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(zusatzFormular.DateiPfad) };
-
             var dateiPfad = "";
             var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
 

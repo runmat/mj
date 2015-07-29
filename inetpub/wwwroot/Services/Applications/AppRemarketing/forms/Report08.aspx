@@ -213,6 +213,10 @@
                                                         <HeaderStyle Width="85px" />
                                                         <ItemStyle HorizontalAlign="Right" />
                                                     </telerik:GridBoundColumn>
+                                                    <telerik:GridBoundColumn DataField="Modell" SortExpression="Modell" >
+                                                        <HeaderStyle Width="100px" />
+                                                        <ItemStyle Wrap="false" />
+                                                    </telerik:GridBoundColumn>
                                                 </Columns>
                                             </MasterTableView>
                                         </telerik:RadGrid>
