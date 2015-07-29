@@ -1,20 +1,18 @@
 ﻿using System;
-using System.Data;
 using System.Globalization;
 using System.Web.UI;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using Telerik.Web.UI;
 using System.Configuration;
-using System.IO;
 using AppRemarketing.lib;
 
 namespace AppRemarketing.forms
 {
-    public partial class Change15 : System.Web.UI.Page
+    public partial class Change15 : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
+        private User m_User;
+        private App m_App;
         private Schadensgutachten m_Schadensgutachten;
 
         protected void Page_Load(object sender, EventArgs e)
@@ -46,12 +44,12 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -74,33 +72,46 @@ namespace AppRemarketing.forms
 
             foreach (UploadedFile uFile in RadAsyncUpload1.UploadedFiles)
             {
-                string dateiname = uFile.GetName();
-                string nameOhneEndung = uFile.GetNameWithoutExtension();
+                var nameOhneEndung = uFile.GetNameWithoutExtension();
 
-                DataRow newRow = m_Schadensgutachten.tblUploads.NewRow();
-                newRow["FAHRGESTELLNUMMER"] = nameOhneEndung;
+                var newRow = m_Schadensgutachten.tblUploads.NewRow();
+                newRow["FAHRGESTELLNUMMER"] = uFile.GetNameWithoutExtension();
 
                 if ((nameOhneEndung.Length != 17) || (nameOhneEndung.Contains(" ")))
-                {
                     newRow["STATUS"] = "Dateiname hat falsches Format";
-                }
                 else
-                {
-                    try
-                    {
-                        uFile.SaveAs(ablagePfad + dateiname);
-                        newRow["STATUS"] = "OK";
-                    }
-                    catch (Exception ex)
-                    {
-                        newRow["STATUS"] = "FEHLER: " + ex.Message;
-                    }
-                }
+                    newRow["STATUS"] = "OK";
 
                 m_Schadensgutachten.tblUploads.Rows.Add(newRow);
             }
 
             m_Schadensgutachten.setUploaddatum(Session["AppID"].ToString(), Session.SessionID, this);
+
+            if (m_Schadensgutachten.Status == 0)
+            {
+                foreach (UploadedFile uFile in RadAsyncUpload1.UploadedFiles)
+                {
+                    var dateiname = uFile.GetName();
+
+                    var rows = m_Schadensgutachten.tblUploads.Select("FAHRGESTELLNUMMER='" + uFile.GetNameWithoutExtension() + "' AND STATUS = 'OK'");
+                    if (rows.Length > 0)
+                    {
+                        try
+                        {
+                            uFile.SaveAs(ablagePfad + dateiname);
+                            rows[0]["STATUS"] = "OK";
+                        }
+                        catch (Exception ex)
+                        {
+                            rows[0]["STATUS"] = "FEHLER: " + ex.Message;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                lblError.Text = "Fehler beim Speichern der Daten in SAP: " + m_Schadensgutachten.Message;
+            }
 
             Session["objSchadensgutachten"] = m_Schadensgutachten;
 

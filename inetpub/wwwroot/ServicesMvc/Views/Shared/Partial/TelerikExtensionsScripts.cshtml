@@ -23,7 +23,6 @@
         }
 
         if (gridDataBoundFirstTime) {
-            grid.css("opacity", 0.1);
             GridCaptionHintShowAsWait(grid);
         }
 
@@ -41,21 +40,24 @@
 
             if (gridDataBoundFirstTime) {
                 GridCaptionHintHide(grid);
-                grid.animate({ opacity: "1.0" }, 300);
             }
 
-            try {
+            try 
+            {
                 var doPersist = _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns;
                 if (_filteredData_suppress_AutoPersistColumns)
                     doPersist = false;
-                console.log(doPersist);
+
                 FilteredData_Grid_PrepareAllCommandHrefs(grid, doPersist);
                 _filteredData_force_Grid_OnColumnReorder = false;
                 _filteredData_suppress_AutoPersistColumns = false;
-            } catch (e) {
+            } 
+            catch (e) 
+            {
                 _filteredData_force_Grid_OnColumnReorder = false;
                 _filteredData_suppress_AutoPersistColumns = false;
             }
+
         }, 1000);
     }
 

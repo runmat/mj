@@ -19,22 +19,11 @@ namespace ServicesMvc.Controllers
         {
             return View(EquipmentHistorieVermieterViewModel);
         }
-               
-        public ActionResult GetHistorieVermieterByFinPartial(string fahrgestellnummer)
-        {
-            var model = new EquiHistorieSuchparameter { FahrgestellNr = fahrgestellnummer };
-            EquipmentHistorieVermieterViewModel.LoadHistorieInfos(ref model, ModelState);
-
-            if (EquipmentHistorieVermieterViewModel.HistorieInfos != null && EquipmentHistorieVermieterViewModel.HistorieInfos.Any())
-                EquipmentHistorieVermieterViewModel.LoadHistorie(EquipmentHistorieVermieterViewModel.HistorieInfos[0].FahrgestellNr);
-        
-            return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);
-        }
 
         [HttpPost]
-        public ActionResult GetFahrzeugHistorieVermieterPartial(string fahrgestellNr)
+        public ActionResult GetFahrzeugHistorieVermieterPartial(string fahrgestellnummer)
         {
-            EquipmentHistorieVermieterViewModel.LoadHistorie(fahrgestellNr);
+            EquipmentHistorieVermieterViewModel.LoadHistorie(fahrgestellnummer);
 
             return PartialView("Historie/HistorieVermieterDetail", EquipmentHistorieVermieterViewModel.EquipmentHistorie);
         }
