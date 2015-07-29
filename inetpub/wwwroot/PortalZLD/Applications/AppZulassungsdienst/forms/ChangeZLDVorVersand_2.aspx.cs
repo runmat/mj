@@ -1310,8 +1310,10 @@ namespace AppZulassungsdienst.forms
                     Mail.Attachments.Dispose();
                     Mail.Dispose();
                 }
-
-                lblError.Text = "Für den zuständigen Zulassungsdienst wurde keine E-Mailadresse hinterlegt. <br /> Bitte informieren Sie den Zulassungsdienst telefonisch! <br />";
+                else
+                {
+                    lblError.Text = "Für den zuständigen Zulassungsdienst wurde keine E-Mailadresse hinterlegt. <br /> Bitte informieren Sie den Zulassungsdienst telefonisch! <br />";
+                }
             }
             catch (Exception ex)
             {

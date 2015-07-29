@@ -68,7 +68,8 @@
     $(function () {
         $("#AbholungDatum").datepicker({
             beforeShowDay: function (date) {
-                var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6); // Keine Wochenenden
+                // var dateIsSelectable = !(date.getDay() == 0 || date.getDay() == 6); // Keine Wochenenden
+                var dateIsSelectable = !(date.getDay() == 0); // Keine Wochenenden
                 if (dateIsSelectable) // Datum ab heute
                     dateIsSelectable = (date >= Date.today());
 

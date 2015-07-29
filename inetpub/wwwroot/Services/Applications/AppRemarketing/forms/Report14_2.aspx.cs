@@ -9,22 +9,22 @@ namespace AppRemarketing.forms
 {
     public partial class Report14_2 : System.Web.UI.Page
     {
-        private User m_User;
-        private App m_App;
-        private Historie m_report;
-        private ABEDaten Typ;
+        private User _mUser;
+        private App _mApp;
+        private Historie _mReport;
+        private ABEDaten _typ;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            m_User = Common.GetUser(this);
+            _mUser = Common.GetUser(this);
 
-            Common.FormAuth(this, m_User);
+            Common.FormAuth(this, _mUser);
 
-            m_App = new App(m_User);
+            _mApp = new App(_mUser);
 
             Common.GetAppIDFromQueryString(this);
 
-            lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
+            lblHead.Text = (string)_mUser.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
             if (!IsPostBack)
             {
@@ -39,108 +39,108 @@ namespace AppRemarketing.forms
 
         private void Fill()
         {
-            m_report = (Historie)Session["Historie"];
+            _mReport = (Historie)Session["Historie"];
 
             //Oberste Zeile Übersicht
-            lblFahrgestellnummerShow.Text = (String)m_report.CommonData.Rows[0]["FAHRGNR"];
-            lblKennzeichenShow.Text = (String)m_report.CommonData.Rows[0]["KENNZ"];
-            lblBriefnummerShow.Text = (String)m_report.CommonData.Rows[0]["BRIEFNR"];
+            lblFahrgestellnummerShow.Text = (String)_mReport.CommonData.Rows[0]["FAHRGNR"];
+            lblKennzeichenShow.Text = (String)_mReport.CommonData.Rows[0]["KENNZ"];
+            lblBriefnummerShow.Text = (String)_mReport.CommonData.Rows[0]["BRIEFNR"];
             //Ereignisart nur anzeigen, wenn gesetzt
-            string strEreignisText = (string)m_report.CommonData.Rows[0]["EREIGNIS_TEXT"];
+            string strEreignisText = (string)_mReport.CommonData.Rows[0]["EREIGNIS_TEXT"];
             if ((String.IsNullOrEmpty(strEreignisText)) || (strEreignisText.Equals("Kein Eintrag")))
             {
                 lblEreignisartShow.Text = "";
             }
             else
             {
-                lblEreignisartShow.Text = (string)m_report.CommonData.Rows[0]["EREIGNIS_TEXT"];
+                lblEreignisartShow.Text = (string)_mReport.CommonData.Rows[0]["EREIGNIS_TEXT"];
             }
 
             //Brief- und Schlüsseldaten
-            lblEingangBriefShow.Text = CheckDate(m_report.CommonData.Rows[0]["EGZB2DAT"].ToString());
-            lblEingangSchlueShow.Text = CheckDate(m_report.CommonData.Rows[0]["EGZWSLDAT"].ToString());
+            lblEingangBriefShow.Text = CheckDate(_mReport.CommonData.Rows[0]["EGZB2DAT"].ToString());
+            lblEingangSchlueShow.Text = CheckDate(_mReport.CommonData.Rows[0]["EGZWSLDAT"].ToString());
 
-            if (m_report.Versand.Rows.Count > 0)
+            if (_mReport.Versand.Rows.Count > 0)
             {
-                lblVersandBriefShow.Text = CheckDate(m_report.Versand.Rows[0]["B_VERSAUFTR_DAT"].ToString());
-                lblVersandSchlueShow.Text = CheckDate(m_report.Versand.Rows[0]["T_VERSAUFTR_DAT"].ToString());
+                lblVersandBriefShow.Text = CheckDate(_mReport.Versand.Rows[0]["B_VERSAUFTR_DAT"].ToString());
+                lblVersandSchlueShow.Text = CheckDate(_mReport.Versand.Rows[0]["T_VERSAUFTR_DAT"].ToString());
 
-                lblExBelegNrShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["BELNR"]);
-                lblRechBetragShow.Text = m_report.Versand.Rows[0]["BETRAG_RE"].ToString();
-                lblBelegdatumShow.Text = CheckDate(m_report.Versand.Rows[0]["BELDT"].ToString());
-                lblValutaShow.Text = CheckDate(m_report.Versand.Rows[0]["VALDT"].ToString());
-                lblFreigabedatumShow.Text = CheckDate(m_report.Versand.Rows[0]["RELDT"].ToString());
-                lblZahlungsartShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["DZLART"]);
+                lblExBelegNrShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["BELNR"]);
+                lblRechBetragShow.Text = _mReport.Versand.Rows[0]["BETRAG_RE"].ToString();
+                lblBelegdatumShow.Text = CheckDate(_mReport.Versand.Rows[0]["BELDT"].ToString());
+                lblValutaShow.Text = CheckDate(_mReport.Versand.Rows[0]["VALDT"].ToString());
+                lblFreigabedatumShow.Text = CheckDate(_mReport.Versand.Rows[0]["RELDT"].ToString());
+                lblZahlungsartShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["DZLART"]);
 
-                lblHaendlerShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["RDEALER"]);
-                lblHaName1Show.Text = FillWithSpace((String)m_report.Versand.Rows[0]["NAME1_ZF"]);
-                lblHaName2Show.Text = FillWithSpace((String)m_report.Versand.Rows[0]["NAME2_ZF"]);
-                lblHaName3Show.Text = FillWithSpace((String)m_report.Versand.Rows[0]["NAME3_ZF"]);
-                lblHaStrasseShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["STREET_ZF"]);
-                lblHaPLZShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["POST_CODE1_ZF"]);
-                lblHaOrtShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["CITY1_ZF"]);
-                lblHaLandShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["LAND_BEZ_ZF"]);
+                lblHaendlerShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["RDEALER"]);
+                lblHaName1Show.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["NAME1_ZF"]);
+                lblHaName2Show.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["NAME2_ZF"]);
+                lblHaName3Show.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["NAME3_ZF"]);
+                lblHaStrasseShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["STREET_ZF"]);
+                lblHaPLZShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["POST_CODE1_ZF"]);
+                lblHaOrtShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["CITY1_ZF"]);
+                lblHaLandShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["LAND_BEZ_ZF"]);
 
-                lblBaName1Show.Text = FillWithSpace((String)m_report.Versand.Rows[0]["NAME1_BANK"]);
-                lblBaName2Show.Text = FillWithSpace((String)m_report.Versand.Rows[0]["NAME2_BANK"]);
-                lblBaName3Show.Text = FillWithSpace((String)m_report.Versand.Rows[0]["NAME3_BANK"]);
-                lblBaStrasseShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["STREET_BANK"]);
-                lblBaPLZShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["POST_CODE1_BANK"]);
-                lblBaOrtShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["CITY1_BANK"]);
-                lblBaLandShow.Text = FillWithSpace((String)m_report.Versand.Rows[0]["LAND_BEZ_BANK"]);
+                lblBaName1Show.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["NAME1_BANK"]);
+                lblBaName2Show.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["NAME2_BANK"]);
+                lblBaName3Show.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["NAME3_BANK"]);
+                lblBaStrasseShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["STREET_BANK"]);
+                lblBaPLZShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["POST_CODE1_BANK"]);
+                lblBaOrtShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["CITY1_BANK"]);
+                lblBaLandShow.Text = FillWithSpace((String)_mReport.Versand.Rows[0]["LAND_BEZ_BANK"]);
             }
 
             //Typdaten
-            String Space = "";
-            String KUNNR = m_User.KUNNR.ToString();
-            String ZDAD = "ZDAD";
+            String space = "";
+            String kunnr = _mUser.KUNNR;
+            String zdad = "ZDAD";
 
-            Typ = new ABEDaten(ref m_User, ref m_App, (string)Session["AppID"], Session.SessionID, "", ref KUNNR, ref ZDAD, ref Space, ref Space);
+            _typ = new ABEDaten(ref _mUser, ref _mApp, (string)Session["AppID"], Session.SessionID, "", ref kunnr, ref zdad, ref space, ref space);
 
-            Typ.FillDatenABE((string)Session["AppID"], Session.SessionID.ToString(), this.Page, m_report.CommonData.Rows[0]["EQUNR"].ToString());
+            _typ.FillDatenABE((string)Session["AppID"], Session.SessionID, Page, _mReport.CommonData.Rows[0]["EQUNR"].ToString());
 
-            lbl_0.Text = Typ.ABE_Daten.ZZKLARTEXT_TYP;
-            lbl_1.Text = Typ.ABE_Daten.ZZHERST_TEXT;
-            lbl_2.Text = Typ.ABE_Daten.ZZHERSTELLER_SCH;
-            lbl_3.Text = Typ.ABE_Daten.ZZHANDELSNAME;
-            lbl_4.Text = Typ.ABE_Daten.ZZGENEHMIGNR;
-            lbl_5.Text = Typ.ABE_Daten.ZZGENEHMIGDAT;
-            lbl_6.Text = Typ.ABE_Daten.ZZFHRZKLASSE_TXT;
-            lbl_7.Text = Typ.ABE_Daten.ZZTEXT_AUFBAU;
-            lbl_8.Text = Typ.ABE_Daten.ZZFABRIKNAME;
-            lbl_9.Text = Typ.ABE_Daten.ZZVARIANTE;
-            lbl_10.Text = Typ.ABE_Daten.ZZVERSION;
-            lbl_11.Text = Typ.ABE_Daten.ZZHUBRAUM.TrimStart('0');
-            lbl_13.Text = Typ.ABE_Daten.ZZNENNLEISTUNG.TrimStart('0');
-            lbl_14.Text = Typ.ABE_Daten.ZZBEIUMDREH.TrimStart('0');
-            lbl_12.Text = Typ.ABE_Daten.ZZHOECHSTGESCHW;
-            lbl_19.Text = Typ.ABE_Daten.ZZSTANDGERAEUSCH.TrimStart('0');
-            lbl_20.Text = Typ.ABE_Daten.ZZFAHRGERAEUSCH.TrimStart('0');
-            lbl_15.Text = Typ.ABE_Daten.ZZKRAFTSTOFF_TXT;
-            lbl_16.Text = Typ.ABE_Daten.ZZCODE_KRAFTSTOF;
-            lbl_21.Text = Typ.ABE_Daten.ZZFASSVERMOEGEN;
-            lbl_17.Text = Typ.ABE_Daten.ZZCO2KOMBI;
-            lbl_18.Text = Typ.ABE_Daten.ZZSLD + " / " + Typ.ABE_Daten.ZZNATIONALE_EMIK;
-            lbl_22.Text = Typ.ABE_Daten.ZZABGASRICHTL_TG;
-            lbl_23.Text = Typ.ABE_Daten.ZZANZACHS.TrimStart('0');
-            lbl_24.Text = Typ.ABE_Daten.ZZANTRIEBSACHS.TrimStart('0');
-            lbl_26.Text = Typ.ABE_Daten.ZZANZSITZE.TrimStart('0');
-            var achslast = new[] { Typ.ABE_Daten.ZZACHSL_A1_STA.TrimStart('0'), Typ.ABE_Daten.ZZACHSL_A2_STA.TrimStart('0'), Typ.ABE_Daten.ZZACHSL_A3_STA.TrimStart('0') }.Where(a => !string.IsNullOrEmpty(a)).ToArray();
+            lbl_0.Text = _typ.ABE_Daten.ZZKLARTEXT_TYP;
+            lbl_1.Text = _typ.ABE_Daten.ZZHERST_TEXT;
+            lbl_2.Text = _typ.ABE_Daten.ZZHERSTELLER_SCH;
+            lbl_3.Text = _typ.ABE_Daten.ZZHANDELSNAME;
+            lbl_4.Text = _typ.ABE_Daten.ZZGENEHMIGNR;
+            lbl_5.Text = _typ.ABE_Daten.ZZGENEHMIGDAT;
+            lbl_6.Text = _typ.ABE_Daten.ZZFHRZKLASSE_TXT;
+            lbl_7.Text = _typ.ABE_Daten.ZZTEXT_AUFBAU;
+            lbl_8.Text = _typ.ABE_Daten.ZZFABRIKNAME;
+            lbl_9.Text = _typ.ABE_Daten.ZZVARIANTE;
+            lbl_10.Text = _typ.ABE_Daten.ZZVERSION;
+            lbl_11.Text = _typ.ABE_Daten.ZZHUBRAUM.TrimStart('0');
+            lbl_13.Text = _typ.ABE_Daten.ZZNENNLEISTUNG.TrimStart('0');
+            lbl_14.Text = _typ.ABE_Daten.ZZBEIUMDREH.TrimStart('0');
+            lbl_12.Text = _typ.ABE_Daten.ZZHOECHSTGESCHW;
+            lbl_19.Text = _typ.ABE_Daten.ZZSTANDGERAEUSCH.TrimStart('0');
+            lbl_20.Text = _typ.ABE_Daten.ZZFAHRGERAEUSCH.TrimStart('0');
+            lbl_15.Text = _typ.ABE_Daten.ZZKRAFTSTOFF_TXT;
+            lbl_16.Text = _typ.ABE_Daten.ZZCODE_KRAFTSTOF;
+            lbl_21.Text = _typ.ABE_Daten.ZZFASSVERMOEGEN;
+            lbl_17.Text = _typ.ABE_Daten.ZZCO2KOMBI;
+            lbl_18.Text = _typ.ABE_Daten.ZZSLD + " / " + _typ.ABE_Daten.ZZNATIONALE_EMIK;
+            lbl_22.Text = _typ.ABE_Daten.ZZABGASRICHTL_TG;
+            lbl_23.Text = _typ.ABE_Daten.ZZANZACHS.TrimStart('0');
+            lbl_24.Text = _typ.ABE_Daten.ZZANTRIEBSACHS.TrimStart('0');
+            lbl_26.Text = _typ.ABE_Daten.ZZANZSITZE.TrimStart('0');
+            var achslast = new[] { _typ.ABE_Daten.ZZACHSL_A1_STA.TrimStart('0'), _typ.ABE_Daten.ZZACHSL_A2_STA.TrimStart('0'), _typ.ABE_Daten.ZZACHSL_A3_STA.TrimStart('0') }.Where(a => !string.IsNullOrEmpty(a)).ToArray();
             lbl_25.Text = string.Join(", ", achslast);
-            var bereifung = new[]{Typ.ABE_Daten.ZZBEREIFACHSE1 ,Typ.ABE_Daten.ZZBEREIFACHSE2 ,Typ.ABE_Daten.ZZBEREIFACHSE3}.Where(b => !string.IsNullOrEmpty(b)).ToArray();
+            var bereifung = new[]{_typ.ABE_Daten.ZZBEREIFACHSE1 ,_typ.ABE_Daten.ZZBEREIFACHSE2 ,_typ.ABE_Daten.ZZBEREIFACHSE3}.Where(b => !string.IsNullOrEmpty(b)).ToArray();
             lbl_27.Text = string.Join(", ", bereifung);
-            lbl_28.Text = Typ.ABE_Daten.ZZZULGESGEW.TrimStart('0');
-            lbl_29.Text = Typ.ABE_Daten.ZZTYP_SCHL;
+            lbl_28.Text = _typ.ABE_Daten.ZZZULGESGEW.TrimStart('0');
+            lbl_29.Text = _typ.ABE_Daten.ZZTYP_SCHL;
             lbl_30.Text = string.Join("<br>", new[] { 
-                Typ.ABE_Daten.ZZBEMER1, Typ.ABE_Daten.ZZBEMER2, Typ.ABE_Daten.ZZBEMER3, Typ.ABE_Daten.ZZBEMER4, 
-                Typ.ABE_Daten.ZZBEMER5, Typ.ABE_Daten.ZZBEMER6, Typ.ABE_Daten.ZZBEMER7, Typ.ABE_Daten.ZZBEMER8, 
-                Typ.ABE_Daten.ZZBEMER9, Typ.ABE_Daten.ZZBEMER10, Typ.ABE_Daten.ZZBEMER11, Typ.ABE_Daten.ZZBEMER12, 
-                Typ.ABE_Daten.ZZBEMER13, Typ.ABE_Daten.ZZBEMER14 });
-            lbl_31.Text = Typ.ABE_Daten.ZZLAENGEMIN.TrimStart('0');
-            lbl_32.Text = Typ.ABE_Daten.ZZBREITEMIN.TrimStart('0');
-            lbl_33.Text = Typ.ABE_Daten.ZZHOEHEMIN;
+                _typ.ABE_Daten.ZZBEMER1, _typ.ABE_Daten.ZZBEMER2, _typ.ABE_Daten.ZZBEMER3, _typ.ABE_Daten.ZZBEMER4, 
+                _typ.ABE_Daten.ZZBEMER5, _typ.ABE_Daten.ZZBEMER6, _typ.ABE_Daten.ZZBEMER7, _typ.ABE_Daten.ZZBEMER8, 
+                _typ.ABE_Daten.ZZBEMER9, _typ.ABE_Daten.ZZBEMER10, _typ.ABE_Daten.ZZBEMER11, _typ.ABE_Daten.ZZBEMER12, 
+                _typ.ABE_Daten.ZZBEMER13, _typ.ABE_Daten.ZZBEMER14 });
+            lbl_31.Text = _typ.ABE_Daten.ZZLAENGEMIN.TrimStart('0');
+            lbl_32.Text = _typ.ABE_Daten.ZZBREITEMIN.TrimStart('0');
+            lbl_33.Text = _typ.ABE_Daten.ZZHOEHEMIN;
 
-            lbl_00.Text = Typ.ABE_Daten.ZZFARBE + " (" + Typ.ABE_Daten.Farbziffer + ")";
+            lbl_00.Text = _typ.ABE_Daten.ZZFARBE + " (" + _typ.ABE_Daten.Farbziffer + ")";
             lbl_55.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
             lbl_91.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
             lbl_92.Text = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
@@ -163,7 +163,7 @@ namespace AppRemarketing.forms
             lbl_91.Visible = false;
             lbl_55.Visible = false;
 
-            switch (Typ.ABE_Daten.Farbziffer)
+            switch (_typ.ABE_Daten.Farbziffer)
             {
                 case "0":
                     lbl_99.Visible = true;
@@ -198,28 +198,32 @@ namespace AppRemarketing.forms
             }
 
             // Lebenslauf
-            LebenslaufRepeater.DataSource = m_report.Lebenslauf;
+            LebenslaufRepeater.DataSource = _mReport.Lebenslauf;
             LebenslaufRepeater.DataBind();
+
+            //Vorschäden
+            VorschadenRepeater.DataSource = _mReport.Vorschaden;
+            VorschadenRepeater.DataBind();
 
             // -> im aspx gebundene Felder befüllen (z.B. Belastungsanzeige)
             Page.DataBind();
         }
 
-        private String CheckDate(String ConDate)
+        private String CheckDate(String conDate)
         {
-            if (ConDate.Length > 0)
+            if (conDate.Length > 0)
             {
-                return ConDate.Substring(0, 10);
+                return conDate.Substring(0, 10);
             }
 
             return "&nbsp;";
         }
 
-        private String FillWithSpace(String ConString)
+        private String FillWithSpace(String conString)
         {
-            if (ConString.Length > 0)
+            if (conString.Length > 0)
             {
-                return ConString;
+                return conString;
             }
 
             return "&nbsp;";
@@ -236,7 +240,7 @@ namespace AppRemarketing.forms
 
                 if (!ClientScript.IsStartupScriptRegistered("clientScript"))
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "clientScript", strscript);
+                    ClientScript.RegisterStartupScript(GetType(), "clientScript", strscript);
                 }
 
                 return;
@@ -245,13 +249,13 @@ namespace AppRemarketing.forms
             Response.Redirect("Report14.aspx?AppID=" + (string)Session["AppID"]);
         }
 
-        protected HistorieBelastungsanzeige Belastungsanzeige { get { return m_report == null ? null : m_report.Belastungsanzeige; } }
-        protected HistorieUebersicht Uebersicht { get { return m_report == null ? null : m_report.Uebersicht; } }
-        protected HistorieLinks Links { get { return m_report == null ? null : m_report.Links; } }
+        protected HistorieBelastungsanzeige Belastungsanzeige { get { return _mReport == null ? null : _mReport.Belastungsanzeige; } }
+        protected HistorieUebersicht Uebersicht { get { return _mReport == null ? null : _mReport.Uebersicht; } }
+        protected HistorieLinks Links { get { return _mReport == null ? null : _mReport.Links; } }
 
         protected void ShowBelastungsanzeige(object sender, EventArgs e)
         {
-            m_report = (Historie)Session["Historie"];
+            _mReport = (Historie)Session["Historie"];
             if (Links == null) return;
 
             Links.OpenBelastungsanzeige(ShowReportHelper, this);
@@ -259,7 +263,7 @@ namespace AppRemarketing.forms
 
         protected void ShowSchadensgutachten(object sender, EventArgs e)
         {
-            m_report = (Historie)Session["Historie"];
+            _mReport = (Historie)Session["Historie"];
             if (Links == null) return;
 
             Links.OpenSchadensgutachten(ShowReportHelper, this);
@@ -267,7 +271,7 @@ namespace AppRemarketing.forms
 
         protected void ShowRechnung(object sender, EventArgs e)
         {
-            m_report = (Historie)Session["Historie"];
+            _mReport = (Historie)Session["Historie"];
             if (Links == null) return;
 
             Links.OpenRechnung(ShowReportHelper, this);
