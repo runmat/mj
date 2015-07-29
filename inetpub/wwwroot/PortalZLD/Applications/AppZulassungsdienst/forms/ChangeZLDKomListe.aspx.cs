@@ -714,7 +714,7 @@ namespace AppZulassungsdienst.forms
 
                 if (objKompletterf.CheckBenutzerOnline(ddlUser.SelectedValue) == "False")
                 {
-                    objKompletterf.LoadVorgaengeFromSql(objCommon.KundenStamm, ddlSuche.SelectedValue);
+                    objKompletterf.LoadVorgaengeFromSql(objCommon.KundenStamm, ddlUser.SelectedValue);
 
                     Session["objKompletterf"] = objKompletterf;
                     Fillgrid();

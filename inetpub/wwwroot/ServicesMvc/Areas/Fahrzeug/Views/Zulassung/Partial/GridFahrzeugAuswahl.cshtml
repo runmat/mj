@@ -54,3 +54,90 @@
         commands.FilteredDataCommand("ExportFahrzeugeFilteredPDF", "Zulassung");
     })
 )
+
+<script>
+
+    function OnSelectionChange_GridFahrzeugAuswahl(cb) {
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                ShowHideNextButton();
+                if (_selectedItemsCount == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
+
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Fahrzeug' + (_selectedItemsCount == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                ShowHideNextButton();
+
+                FilterGrid("GridFahrzeugAkteBestand");
+            }
+        });
+    }
+
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+
+    function RefreshZulassungenCountForDateAndPdi(zulassungenAnzahlGesamtTotal, zulassungenAnzahlPdiTotal) {
+        if (zulassungenAnzahlGesamtTotal == 0)
+            $("#zulassungenAnzahlGesamtTotal").addClass("hide");
+        else {
+            $("#zulassungenAnzahlGesamtTotal").html("@Localize.RegistrationAmountForThisDay: " + zulassungenAnzahlGesamtTotal);
+            $("#zulassungenAnzahlGesamtTotal").removeClass("hide");
+        }
+
+        if (zulassungenAnzahlPdiTotal == 0)
+            $("#zulassungenAnzahlPdiTotal").addClass("hide");
+        else {
+            $("#zulassungenAnzahlPdiTotal").html("@Localize.RegistrationAmountForThisDayAndPdi: " + zulassungenAnzahlPdiTotal);
+            $("#zulassungenAnzahlPdiTotal").removeClass("hide");
+        }
+    }
+
+    function SyncInfoFahrzeugAkteBestandGrid() {
+
+    }
+
+    function ShowHideNextButton() {
+        if (_selectedItemsCount > 0) {
+            $('#btnMassRegistration').removeClass('hide');
+        } else {
+            $('#btnMassRegistration').addClass('hide');
+        }
+    }
+    
+</script>

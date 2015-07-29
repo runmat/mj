@@ -1,35 +1,32 @@
 ﻿using System;
 using System.Data;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using AppRemarketing.lib;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using CKG.Base.Business;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
-using AppRemarketing.lib;
 
 namespace AppRemarketing.forms
 {
-    public partial class Report08 : System.Web.UI.Page
+    public partial class Report08 : Page
     {
-        private CKG.Base.Kernel.Security.User m_User;
-        private CKG.Base.Kernel.Security.App m_App;
-        private bool isExcelExportConfigured;
-        private Carport m_Report;
+        private User _mUser;
+        private App _mApp;
+        private bool _isExcelExportConfigured;
+        private Carport _mReport;
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            m_User = Common.GetUser(this);
-            Common.FormAuth(this, m_User);
+            _mUser = Common.GetUser(this);
+            Common.FormAuth(this, _mUser);
 
-            m_App = new App(m_User);
+            _mApp = new App(_mUser);
             Common.GetAppIDFromQueryString(this);
 
-            lblHead.Text = (string)m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
+            lblHead.Text = (string)_mUser.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
             lblError.Text = "";
 
             try
@@ -39,24 +36,23 @@ namespace AppRemarketing.forms
                     Common.TranslateTelerikColumns(rgGrid1);
 
                     var persister = new GridSettingsPersister(rgGrid1, GridSettingsType.All);
-                    Session["rgGrid1_original"] = persister.LoadForUser(m_User, (string)Session["AppID"], GridSettingsType.All.ToString());
+                    Session["rgGrid1_original"] = persister.LoadForUser(_mUser, (string)Session["AppID"], GridSettingsType.All.ToString());
 
                     Session["Carport"] = null;
 
-                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName + ".xls";
+                    String strFileName = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + _mUser.UserName + ".xls";
 
-                    // String strFileName; // = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".xls";
-                    m_Report = new Carport(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, strFileName);
-                    Session.Add("Carport", m_Report);
-                    m_Report.SessionID = this.Session.SessionID;
-                    m_Report.AppID = (string)Session["AppID"];
+                    _mReport = new Carport(ref _mUser, _mApp, (string)Session["AppID"], Session.SessionID, strFileName);
+                    Session.Add("Carport", _mReport);
+                    _mReport.SessionID = Session.SessionID;
+                    _mReport.AppID = (string)Session["AppID"];
                     FillVermieter();
 
                     FillDate();
                     
-                    FillHC();
+                    FillHc();
 
-                    if (!IsHC())
+                    if (!IsHc())
                     {
                         tr_HC.Visible = true;
                     }
@@ -65,10 +61,10 @@ namespace AppRemarketing.forms
                 {
                     if ((Session["Carport"] != null))
                     {
-                        m_Report = (Carport)Session["Carport"];
+                        _mReport = (Carport)Session["Carport"];
                     }
                 }
-                if (IsAV())
+                if (IsAv())
                 {
                     tr_Vermieter.Visible = false;
                 }
@@ -79,12 +75,12 @@ namespace AppRemarketing.forms
             }
         }
 
-        private void Page_PreRender(object sender, System.EventArgs e)
+        private void Page_PreRender(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
 
-        private void Page_Unload(object sender, System.EventArgs e)
+        private void Page_Unload(object sender, EventArgs e)
         {
             Common.SetEndASPXAccess(this);
         }
@@ -119,72 +115,65 @@ namespace AppRemarketing.forms
 
             if ((txtDatumVon.Text.Length > 0) && (txtDatumBis.Text.Length > 0))
             {
-                DateTime DateFrom = DateTime.Parse(txtDatumVon.Text).Date;
-                DateTime DateTo = DateTime.Parse(txtDatumBis.Text).Date;
+                DateTime dateFrom = DateTime.Parse(txtDatumVon.Text).Date;
+                DateTime dateTo = DateTime.Parse(txtDatumBis.Text).Date;
 
-                if (DateTo < DateFrom)
+                if (dateTo < dateFrom)
                 {
                     lblError.Text = "Datum von ist größer als Datum bis.";
                     return;
                 }
             }
 
-            m_Report.AVNr = "";
-            if (IsAV())
+            _mReport.AVNr = "";
+            if (IsAv())
             {
-                m_Report.AVNr = m_User.Groups[0].GroupName.ToString();
+                _mReport.AVNr = _mUser.Groups[0].GroupName;
             }
-            else if (m_User.Groups[0].GroupName.ToString().Substring(0, 2) == "VW" || IsHC())
+            else if (_mUser.Groups[0].GroupName.Substring(0, 2) == "VW" || IsHc())
             {
-                m_Report.AVNr = (string)ddlVermieter.SelectedValue;
+                _mReport.AVNr = ddlVermieter.SelectedValue;
             }
-            if (m_Report.AVNr == "")
+            if (_mReport.AVNr == "")
             {
                 lblError.Text = "Gruppe nicht eindeutig!";
                 return;
             }
 
-            m_Report.AVName = (string)ddlVermieter.SelectedItem.Text;
-            m_Report.Kennzeichen = txtKennzeichen.Text;
-            m_Report.Fahrgestellnummer = txtFahrgestellnummer.Text;
-            m_Report.Inventarnummer = txtInventarnummer.Text;
-            m_Report.Vertragsjahr = txtVertragsjahr.Text;
+            _mReport.AVName = ddlVermieter.SelectedItem.Text;
+            _mReport.Kennzeichen = txtKennzeichen.Text;
+            _mReport.Fahrgestellnummer = txtFahrgestellnummer.Text;
+            _mReport.Inventarnummer = txtInventarnummer.Text;
+            _mReport.Vertragsjahr = txtVertragsjahr.Text;
 
-            if (!IsHC())
+            if (!IsHc())
             {
-                if (ddlHC.SelectedValue != "00")
-                {
-                    m_Report.CarportNr = ddlHC.SelectedValue;
-                }
-                else
-                {
-                    m_Report.CarportNr = null;
-                }
+                _mReport.CarportNr = ddlHC.SelectedValue != "00" ? ddlHC.SelectedValue : null;
             }
             else
             {
-                m_Report.CarportNr = m_User.Groups[0].GroupName.ToString().Substring(2, 2);
+                _mReport.CarportNr = _mUser.Groups[0].GroupName.Substring(2, 2);
             }
 
-            m_Report.DatumVon = txtDatumVon.Text;
-            m_Report.DatumBis = txtDatumBis.Text;
+            _mReport.DatumVon = txtDatumVon.Text;
+            _mReport.DatumBis = txtDatumBis.Text;
 
-            m_Report.Show((string)Session["AppID"], (string)Session.SessionID, this);
+            _mReport.Show((string)Session["AppID"], Session.SessionID, this);
 
-            if (m_Report.Status == 0)
+            if (_mReport.Status == 0)
             {
-                Session["Carport"] = m_Report;
+                Session["Carport"] = _mReport;
                 Fillgrid();
             }
             else
             {
-                lblError.Text = m_Report.Message;
+                lblError.Text = _mReport.Message;
             }
         }
 
         private void Fillgrid()
         {
-            if (m_Report.Result.Rows.Count == 0)
+            if (_mReport.Result.Rows.Count == 0)
             {
                 SearchMode();
                 lblError.Text = "Keine Dokumente zur Anzeige gefunden.";
@@ -209,16 +198,9 @@ namespace AppRemarketing.forms
 
         protected void rgGrid1_NeedDataSource(object sender, GridNeedDataSourceEventArgs e)
         {
-            if (m_Report.Result != null)
-            {
-                rgGrid1.DataSource = m_Report.Result.DefaultView;
-            }
-            else
-            {
-                rgGrid1.DataSource = null;
-            }
+            rgGrid1.DataSource = _mReport.Result != null ? _mReport.Result.DefaultView : null;
         }
-        
+
         protected void NewSearch_Click(object sender, ImageClickEventArgs e)
         {
             SearchMode();
@@ -236,67 +218,73 @@ namespace AppRemarketing.forms
 
         private void FillVermieter()
         {
-            m_Report.getVermieter((string)Session["AppID"], (string)Session.SessionID, this);
+            _mReport.getVermieter((string)Session["AppID"], Session.SessionID, this);
 
-            if (m_Report.Status > 0)
+            if (_mReport.Status > 0)
             {
-                lblError.Text = m_Report.Message;
+                lblError.Text = _mReport.Message;
             }
             else
             {
-                if (m_Report.Vermieter.Rows.Count > 0)
+                if (_mReport.Vermieter.Rows.Count > 0)
                 {
-                    ListItem litVermiet;
-                    litVermiet = new ListItem();
-                    litVermiet.Text = "- alle -";
-                    litVermiet.Value = "00";
+                    var litVermiet = new ListItem
+                    {
+                        Text = "- alle -",
+                        Value = "00"
+                    };
                     ddlVermieter.Items.Add(litVermiet);
 
-                    foreach (DataRow drow in m_Report.Vermieter.Rows)
+                    foreach (DataRow drow in _mReport.Vermieter.Rows)
                     {
-                        litVermiet = new ListItem();
-                        litVermiet.Text = (string)drow["POS_KURZTEXT"] + " " + (string)drow["POS_TEXT"];
-                        litVermiet.Value = (string)drow["POS_KURZTEXT"];
+                        litVermiet = new ListItem
+                        {
+                            Text = (string) drow["POS_KURZTEXT"] + " " + (string) drow["POS_TEXT"],
+                            Value = (string) drow["POS_KURZTEXT"]
+                        };
                         ddlVermieter.Items.Add(litVermiet);
                     }
                 }
             }
         }
 
-        private void FillHC()
+        private void FillHc()
         {
-            HC mHC = new HC(ref m_User, m_App, (string)Session["AppID"], (string)Session.SessionID, "");
+            HC mHc = new HC(ref _mUser, _mApp, (string)Session["AppID"], Session.SessionID, "");
 
-            mHC.getHC((string)Session["AppID"], (string)Session.SessionID, this);
+            mHc.getHC((string)Session["AppID"], Session.SessionID, this);
 
-            if (mHC.Status > 0)
+            if (mHc.Status > 0)
             {
-                lblError.Text = mHC.Message;
+                lblError.Text = mHc.Message;
             }
             else
             {
-                if (mHC.Hereinnahmecenter.Rows.Count > 0)
+                if (mHc.Hereinnahmecenter.Rows.Count > 0)
                 {
-                    ListItem litHC;
-                    litHC = new ListItem();
-                    litHC.Text = "- alle -";
-                    litHC.Value = "00";
-                    ddlHC.Items.Add(litHC);
-
-                    foreach (DataRow drow in mHC.Hereinnahmecenter.Rows)
+                    var litHc = new ListItem
                     {
-                        litHC = new ListItem();
-                        litHC.Text = (string)drow["POS_KURZTEXT"] + " " + (string)drow["POS_TEXT"];
-                        litHC.Value = (string)drow["POS_KURZTEXT"];
-                        ddlHC.Items.Add(litHC);
+                        Text = "- alle -",
+                        Value = "00"
+                    };
+                    ddlHC.Items.Add(litHc);
+
+                    foreach (DataRow drow in mHc.Hereinnahmecenter.Rows)
+                    {
+                        litHc = new ListItem
+                        {
+                            Text = (string) drow["POS_KURZTEXT"] + " " + (string) drow["POS_TEXT"],
+                            Value = (string) drow["POS_KURZTEXT"]
+                        };
+                        ddlHC.Items.Add(litHc);
                     }
                 }
             }
         }
 
-        private bool IsHC()
+        private bool IsHc()
         {
-            if (m_User.Groups[0].GroupName.ToString().Substring(0, 2) == "HC")
+            if (_mUser.Groups[0].GroupName.Substring(0, 2) == "HC")
             {
                 return true;
             }
@@ -306,9 +294,9 @@ namespace AppRemarketing.forms
             }
         }
 
-        private bool IsAV()
+        private bool IsAv()
         {
-            if (m_User.Groups[0].GroupName.ToString().Substring(0, 2) == "AV")
+            if (_mUser.Groups[0].GroupName.Substring(0, 2) == "AV")
             {
                 return true;
             }
@@ -327,7 +315,7 @@ namespace AppRemarketing.forms
         private void StoreGridSettings(RadGrid grid, GridSettingsType settingsType)
         {
             var persister = new GridSettingsPersister(grid, settingsType);
-            persister.SaveForUser(m_User, (string)Session["AppID"], settingsType.ToString());
+            persister.SaveForUser(_mUser, (string)Session["AppID"], settingsType.ToString());
         }
 
         protected void rgGrid1_ItemCreated(object sender, GridItemEventArgs e)
@@ -336,16 +324,19 @@ namespace AppRemarketing.forms
             {
                 var gcitem = e.Item as GridCommandItem;
 
-                var rbutton = gcitem.FindControl("RefreshButton") ?? gcitem.FindControl("RebindGridButton");
-                if (rbutton == null) return;
+                if (gcitem != null)
+                {
+                    var rbutton = gcitem.FindControl("RefreshButton") ?? gcitem.FindControl("RebindGridButton");
+                    if (rbutton == null) return;
 
-                var rbutton_parent = rbutton.Parent;
+                    var rbuttonParent = rbutton.Parent;
 
-                var saveLayoutButton = new Button() { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
-                rbutton_parent.Controls.AddAt(0, saveLayoutButton);
+                    var saveLayoutButton = new Button() { ToolTip = "Layout speichern", CommandName = "SaveGridLayout", CssClass = "rgSaveLayout" };
+                    rbuttonParent.Controls.AddAt(0, saveLayoutButton);
 
-                var resetLayoutButton = new Button() { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
-                rbutton_parent.Controls.AddAt(1, resetLayoutButton);
+                    var resetLayoutButton = new Button() { ToolTip = "Layout zurücksetzen", CommandName = "ResetGridLayout", CssClass = "rgResetLayout" };
+                    rbuttonParent.Controls.AddAt(1, resetLayoutButton);
+                }
             }
         }
 
@@ -387,13 +378,14 @@ namespace AppRemarketing.forms
 
         protected void rgGrid1_ItemDataBound(object sender, GridItemEventArgs e)
         {
-            if (m_User.Applications.Select("AppName = 'Report14'").Length > 0)
+            if (_mUser.Applications.Select("AppName = 'Report14'").Length > 0)
             {
-                string strHistoryLink = "Report14.aspx?AppID=" + m_User.Applications.Select("AppName = 'Report14'")[0]["AppID"].ToString() + "&VIN=";
+                string strHistoryLink = "Report14.aspx?AppID=" + _mUser.Applications.Select("AppName = 'Report14'")[0]["AppID"] + "&VIN=";
 
-                if (e.Item is GridDataItem)
+                var dataItem = e.Item as GridDataItem;
+                if (dataItem != null)
                 {
-                    GridDataItem item = e.Item as GridDataItem;
+                    GridDataItem item = dataItem;
                     HyperLink lnkFahrgestellnummer = (HyperLink)item.FindControl("lnkHistorie");
                     if (lnkFahrgestellnummer != null)
                     {
@@ -405,7 +397,7 @@ namespace AppRemarketing.forms
 
         protected void rgGrid1_ExcelMLExportRowCreated(object sender, GridExportExcelMLRowCreatedArgs e)
         {
-            Helper.radGridExcelMLExportRowCreated(ref isExcelExportConfigured, ref e);
+            Helper.radGridExcelMLExportRowCreated(ref _isExcelExportConfigured, ref e);
         }
 
         protected void rgGrid1_ExcelMLExportStylesCreated(object sender, GridExportExcelMLStyleCreatedArgs e)
