@@ -250,6 +250,9 @@
 
     function CheckSessionTimeout() {
 
+        // 29.07.15: Due to SGW memory issues temporarily deacivated
+        return;
+
         $.ajax({
             type: "POST",
             url: "/ServicesMvc/DomainCommon/CheckLogonTimeout",
