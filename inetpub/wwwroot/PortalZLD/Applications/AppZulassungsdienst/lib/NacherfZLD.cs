@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using AppZulassungsdienst.lib.Models;
 using System.Data;
@@ -31,6 +32,8 @@ namespace AppZulassungsdienst.lib
 
         public List<ZLDVorgangUINacherfassung> Vorgangsliste { get; private set; }
 
+        public List<RechnungsanhangTemplates> RechnungUploadTemplates { get; private set; } 
+
         public DataTable BestLieferanten { get; set; }
         public DataTable tblBarquittungen { get; set; }
         public DataTable AHVersandListe { get; set; }
@@ -38,21 +41,17 @@ namespace AppZulassungsdienst.lib
         private DataTable _tblPrintDataForPdf;
         public DataTable tblPrintDataForPdf
         {
-            get
-            {
-                if (_tblPrintDataForPdf == null)
-                    _tblPrintDataForPdf = ZLDCommon.CreatePrintTable();
-
-                return _tblPrintDataForPdf;
-            }
+            get { return _tblPrintDataForPdf ?? (_tblPrintDataForPdf = ZLDCommon.CreatePrintTable()); }
         }
 
         // Selektion
         public String SelMatnr { get; set; }
         public String SelDatum { get; set; }
+        public String SelDatumBis { get; set; }
         public String SelID { get; set; }
         public String SelKunde { get; set; }
         public String SelKreis { get; set; }
+        public String SelKreisBis { get; set; }
         public String SelLief { get; set; }
         public String SelStatus { get; set; }
         public String SelVorgang { get; set; }
@@ -61,6 +60,7 @@ namespace AppZulassungsdienst.lib
         public bool SelAenderungAngenommene { get; set; }
         public bool SelSofortabrechnung { get; set; }
         public bool SelEditDurchzufVersZul { get; set; }
+        public bool SelUploadRechnungsanhaenge { get; set; }
         public string SelGroupTourID { get; set; }
         public String SelDZVKBUR { get; set; }
 
@@ -154,7 +154,7 @@ namespace AppZulassungsdienst.lib
                     Z_ZLD_MOB_EXPORT_ANGENOMMENE.Init(SAP);
                 else
                     Z_ZLD_EXPORT_NACHERF2.Init(SAP);
-
+                
                 SAP.SetImportParameter("I_KUNNR", (String.IsNullOrEmpty(SelKunde) ? "" : SelKunde.ToSapKunnr()));
                 SAP.SetImportParameter("I_VKORG", VKORG);
                 SAP.SetImportParameter("I_VKBUR", VKBUR);
@@ -179,6 +179,14 @@ namespace AppZulassungsdienst.lib
 
                     if (!String.IsNullOrEmpty(SelGroupTourID))
                         SAP.SetImportParameter("I_GRUPPE", SelGroupTourID.PadLeft0(10));
+                }
+
+                if (SelUploadRechnungsanhaenge)
+                {
+                    if (!String.IsNullOrEmpty(SelDatumBis))
+                        SAP.SetImportParameter("I_ZZZLDAT_BIS", SelDatumBis);
+                    if (!String.IsNullOrEmpty(SelKreisBis))
+                        SAP.SetImportParameter("I_KREISKZ_BIS", SelKreisBis);
                 }
 
                 CallBapi();
@@ -1323,6 +1331,51 @@ namespace AppZulassungsdienst.lib
                     }
                 }
             }
+        }
+
+        public void LoadRechnungsanhangTemplatesFromSql()
+        {
+            ClearError();
+
+            try
+            {
+                var zldDataContext = new ZLDTableClassesDataContext();
+
+                RechnungUploadTemplates = zldDataContext.RechnungsanhangTemplates.OrderBy(r => r.Bezeichnung).ToList();
+            }
+            catch (Exception ex)
+            {
+                RaiseError(9999, ex.Message);
+            }
+        }
+
+        public int InsertGebuehrenFromUploadData(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, List<RechnungsanhangDaten> uploadList)
+        {
+            var anzGefunden = 0;
+
+            foreach (var item in uploadList)
+            {
+                var vorgang = Vorgangsliste.FirstOrDefault(v => v.Kennzeichen == item.Kennzeichen && v.PositionsNr == "10" && v.WebBearbeitungsStatus != "L");
+                if (vorgang != null)
+                {
+                    vorgang.GebuehrAmt = item.Gebuehren.ToDecimal(0);
+
+                    if (!vorgang.Gebuehrenpaket.IsTrue())
+                        vorgang.Gebuehr = item.Gebuehren.ToDecimal(0);
+
+                    DateTime tmpDate;
+                    if (!String.IsNullOrEmpty(item.Zulassungsdatum) && DateTime.TryParseExact(item.Zulassungsdatum, "dd.MM.yyyy", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDate))
+                        vorgang.Zulassungsdatum = tmpDate;
+
+                    Vorgangsliste.Where(v => v.SapId == vorgang.SapId && v.WebBearbeitungsStatus != "L").ToList().ForEach(v => v.WebBearbeitungsStatus = "O");
+
+                    anzGefunden++;
+                }
+            }
+
+            ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, false);
+
+            return anzGefunden;
         }
 
         #endregion

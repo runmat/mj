@@ -311,6 +311,14 @@
     <Compile Include="Kernel\UserList.vb">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="lib\Rechnungsdatenanhang.vb" />
+    <Compile Include="RechnungsanhangTemplateMgmt.aspx.designer.vb">
+      <DependentUpon>RechnungsanhangTemplateMgmt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="RechnungsanhangTemplateMgmt.aspx.vb">
+      <DependentUpon>RechnungsanhangTemplateMgmt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="lib\Aktuelles.vb" />
     <Compile Include="lib\BapiOverViewClass.vb" />
     <Compile Include="lib\Crypt.vb" />
@@ -509,6 +517,7 @@
     <Content Include="Groupmanagement.aspx" />
     <Content Include="jve_LogMessage2.aspx" />
     <Content Include="jve_ZugriffsHistorie.aspx" />
+    <Content Include="RechnungsanhangTemplateMgmt.aspx" />
     <Content Include="LogBapi2Report.aspx" />
     <Content Include="LogMessage.aspx" />
     <Content Include="LogSchwellwert.aspx" />
