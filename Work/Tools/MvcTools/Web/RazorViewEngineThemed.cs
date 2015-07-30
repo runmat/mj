@@ -58,6 +58,23 @@ namespace MvcTools.Web
                 HttpContext.Current.Session["pvm"] = "1";
         }
 
+        public static void EnforceTheme(string theme)
+        {
+            if (HttpContext.Current.Session != null)
+            {
+                HttpContext.Current.Session["theme"] = theme;
+                var logonContext = (ILogonContext)SessionHelper.GetSessionObject("LogonContext");
+                if (logonContext != null)
+                    logonContext.CurrentLayoutTheme = theme;
+            }
+        }
+
+        public static void TrySetThemeFromAppsettingsToSession()
+        {
+            var layoutTheme = System.Configuration.ConfigurationManager.AppSettings["CurrentLayoutTheme"];
+            if (layoutTheme != null && layoutTheme.ToString().IsNotNullOrEmpty())
+                EnforceTheme(layoutTheme);
+        }
 
         public static void TrySetThemeFromRequestToSession()
         {
