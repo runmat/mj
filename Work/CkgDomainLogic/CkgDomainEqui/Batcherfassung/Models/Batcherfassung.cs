@@ -66,11 +66,9 @@ namespace CkgDomainLogic.FzgModelle.Models
         public string Bemerkung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumberFrom)]
-        [Length(20)]
         public string AuftragsnummerVon { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumberUntil)]
-        [Length(20)]
         public string AuftragsnummerBis { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]

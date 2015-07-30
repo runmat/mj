@@ -145,9 +145,37 @@
                 // Funkennzeichen
                 // --> keine Prüfung
                 break;
+            case "573":
+                // Abmeldung
+                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}H?$/; 
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
             case "574":
                 // Dauerkennz. Neuzul.
                 expr = /^[A-ZÄÖÜ]{1,3}-\d{1,18}$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            case "584":
+                // Abmeldung außerhalb
+                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}H?$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            case "588":
+                // Gebrauchtzulassung
+                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}H?$/;
+                if (!expr.test(strKennz)) {
+                    return false;
+                }
+                break;
+            case "589":
+                // Gebrauchtzul. von außerhalb
+                expr = /^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}H?$/;
                 if (!expr.test(strKennz)) {
                     return false;
                 }
