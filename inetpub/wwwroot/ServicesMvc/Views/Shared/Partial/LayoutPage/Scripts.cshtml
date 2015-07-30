@@ -166,6 +166,10 @@
 
         $(formIdSelector + ".datepicker").each(function () {
             var datePicker = $(this);
+            
+            if (datePicker.children("input").hasClass("hasDatepicker"))
+                return;
+
             datePicker.children("input").datepicker("destroy");
             datePicker.children("input").datepicker();
             
@@ -232,9 +236,12 @@
 
     function CheckSessionTimeout() {
 
+        // 29.07.15: Due to SGW memory issues temporarily deacivated
+        return;
+
         $.ajax({
             type: "POST",
-            url: "CheckLogonTimeout",
+            url: "/ServicesMvc/DomainCommon/CheckLogonTimeout",
             success: function (result) {
 
                 if (typeof (result.timeoutOccurred) !== "undefined" && result.timeoutOccurred) {

@@ -2,6 +2,7 @@
 using CKG.Base.Business;
 using CKG.Base.Common;
 using System.Data;
+using GeneralTools.Models;
 
 namespace AppRemarketing.lib
 {
@@ -108,6 +109,8 @@ namespace AppRemarketing.lib
             m_strClassAndMethod = "Schadensgutachten.setUploaddatum";
             m_strAppID = strAppID;
             m_strSessionID = strSessionID;
+            m_intStatus = 0;
+            m_strMessage = String.Empty;
             try
             {
                 DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_DPM_REM_SET_SCHADENDAT_PDF", ref m_objApp, ref m_objUser, ref page);
@@ -130,8 +133,25 @@ namespace AppRemarketing.lib
 
                 myProxy.callBapi();
 
-                WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
+                m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
+                if (m_intStatus != 0)
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
 
+                DataTable exTable = myProxy.getExportTable("GT_OUT");
+
+                foreach (DataRow exRow in exTable.Rows)
+                {
+                    DataRow uploadRow = tblUploads.Select("FAHRGESTELLNUMMER = '" + exRow["FAHRGNR"] + "'")[0];
+
+                    if (!String.IsNullOrEmpty(exRow["BEM"].ToString()))
+                    {
+                        uploadRow["STATUS"] = exRow["BEM"];
+                    }
+                }
+
+                tblUploads.AcceptChanges();
+
+                WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }
             catch (Exception ex)
             {
@@ -144,7 +164,6 @@ namespace AppRemarketing.lib
                 }
 
                 WriteLogEntry(false, "KUNNR=" + m_objUser.KUNNR + "," + m_strMessage.Replace("<br>", " "), ref m_tblResult);
-
             }
         }
 

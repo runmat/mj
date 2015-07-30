@@ -36,6 +36,7 @@ Namespace Beauftragung2
         Private mOrteZurPlz As DataTable
         Private mAutohausVorgangListe As DataTable
         Private mFarben As DataTable
+        Private mVersicherungsunternehmen As DataTable
 
         Private mKunnr As String
         Private mStVANr As String
@@ -121,6 +122,8 @@ Namespace Beauftragung2
         Private mFahrzeugdatenNeeded As String
         Private mFarbeNeeded As String
         Private mZB1Needed As String
+        Private mVersicherungsnummerNeeded As String
+        Private mSepaDatumNeeded As String
 
         Private mSelKundennr As String
         Private mSelKennzeichen As String
@@ -142,6 +145,9 @@ Namespace Beauftragung2
         Private mAufbauArt As String
         Private mFarbe As String
         Private mZB1Nummer As String
+
+        Private mVersicherungsnummer As String
+        Private mSepaDatum As String
 
 #End Region
 
@@ -1119,6 +1125,48 @@ Namespace Beauftragung2
             End Set
         End Property
 
+        Public Property VersicherungsnummerNeeded() As String
+            Get
+                Return mVersicherungsnummerNeeded
+            End Get
+            Set(value As String)
+                mVersicherungsnummerNeeded = value
+            End Set
+        End Property
+
+        Public Property SepaDatumNeeded() As String
+            Get
+                Return mSepaDatumNeeded
+            End Get
+            Set(value As String)
+                mSepaDatumNeeded = value
+            End Set
+        End Property
+
+        Public Property Versicherungsnummer() As String
+            Get
+                Return mVersicherungsnummer
+            End Get
+            Set(value As String)
+                mVersicherungsnummer = value
+            End Set
+        End Property
+
+        Public Property SepaDatum() As String
+            Get
+                Return mSepaDatum
+            End Get
+            Set(value As String)
+                mSepaDatum = value
+            End Set
+        End Property
+
+        Public ReadOnly Property Versicherungsunternehmen() As DataTable
+            Get
+                Return mVersicherungsunternehmen
+            End Get
+        End Property
+
 #End Region
 
 #Region " Methods"
@@ -1149,6 +1197,7 @@ Namespace Beauftragung2
                     mDienstleistungen = myProxy.getExportTable("GT_ONLMAT")
                     mZusatzdienstleistungen = myProxy.getExportTable("GT_MAT")
                     mPrueforganisationen = myProxy.getExportTable("GT_WERTE")
+                    mVersicherungsunternehmen = myProxy.getExportTable("GT_VERSICHERER")
 
                     'Kundennamen aufbereiten
                     For Each dRow As DataRow In mKunden.Rows
@@ -1269,7 +1318,7 @@ Namespace Beauftragung2
                     belegRow("ZZKENN") = Kennzeichen
 
                     If Zulassungsdatum Is Nothing Then
-                        belegRow("ZZZLDAT") = String.Empty 'System.DBNull.Value
+                        belegRow("ZZZLDAT") = String.Empty
                     Else
                         belegRow("ZZZLDAT") = Zulassungsdatum
                     End If
@@ -1355,6 +1404,9 @@ Namespace Beauftragung2
                     belegRow("ZZCODE_AUFBAU") = AufbauArt
                     belegRow("FARBE1") = Farbe
                     belegRow("ZB1_NR") = ZB1Nummer
+
+                    belegRow("VSU_NR") = IIf(mVersicherungsnummerNeeded = "J", mVersicherungsnummer, "")
+                    belegRow("SEPA_DATE") = IIf(mSepaDatumNeeded = "J", SepaDatum, DBNull.Value)
 
                     belegTable.Rows.Add(belegRow)
                     belegTable.AcceptChanges()

@@ -127,9 +127,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         {
             get
             {
-                return string.Format("{0} / {1}{2}{3}{4}{5}{6}",
+                return string.Format("{0} / {1}{2}{3}{4}{5}",
                         ModelID, Modell, Fahrgestellnummer.PrependIfNotNull(", FIN "), Zb2Nummer.PrependIfNotNull(", ZBII "), Pdi.PrependIfNotNull(", "),
-                        AuftragsNummer.FormatIfNotNull(", <strong>Beleg-Nr {this}</strong>"),
                         (IsValid ? "" :  ValidationMessage.PrependIfNotNull("<br/>"))
                     );
             }

@@ -26,14 +26,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 
         [LocalizedDisplay(LocalizeConstants.Contactperson)]
         [StringLength(50)]
+        [Required]
         public string Ansprechpartner { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Phone)]
         [StringLength(30)]
         public string AnsprechpartnerTel { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Customer)]
+        [LocalizedDisplay(LocalizeConstants.CustomerHolBring)]
         [StringLength(50)]
+        [Required]
         public string Kunde { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Phone)]
@@ -47,6 +49,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string Kennnzeichen { get { return _kennzeichen.NotNullOrEmpty().ToUpper(); } set { _kennzeichen = value.NotNullOrEmpty().ToUpper(); } }
     
         [LocalizedDisplay(LocalizeConstants.VehicleSpecies)]
+        [Required]
         public int FahrzeugartId { get; set; }
         public string Fahrzeugart { get; set; }
 

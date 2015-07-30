@@ -2,13 +2,22 @@
 @{
     var gridName = "GridFahrzeugAkteBestand";
 }
-
+<h4>
+    <span>@Localize.PleaseChooseOneOrMoreVehicles</span>
+    <span id="FahrzeugAuswahlCount" class="alert alert-success margin-left-15 hide">
+        <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+    </span>
+</h4>
 @(Html.Telerik()
     .Grid<FahrzeugAkteBestand>()
     .Name(gridName)
     .XAjaxDataBinding("FahrzeugAkteBestandAjaxBinding", "Fahrzeugbestand")
     .Columns(columns =>
         {
+            columns.XBound("")
+                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
+                .Filterable(false);
             columns.XBound(c => c.FinID).Title("").Filterable(false).Groupable(false).Sortable(false)
                 .ClientTemplate(
                       "<a href='#' onclick='return FahrzeugShowAjax(\"<#= data.FIN #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>" +
@@ -17,7 +26,7 @@
                 .HeaderTemplate(
                       "<a href='#' onclick='return FahrzeugCreateAjax();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></a>"
                 );
-            columns.XBoundAllExcept(m => m.Bemerkung);
+            columns.XBoundAllExcept(m => m.Bemerkung, m => m.IsSelected, m => m.Zb2Nr, m => m.WunschKennz1, m => m.WunschKennz2, m => m.WunschKennz3, m => m.ResKennz, m => m.ReservationName, m => m.ReservationNr, m => m.Evb);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
@@ -26,3 +35,93 @@
     .XToolBar("Fahrzeugbestand")
 )
 
+<div class="form-actions clearfix">
+    <a href="MultiReg"><button id="btnMassRegistration" class="btn blue hide">Massenzulassung</button></a>    
+</div>
+
+<script>
+    
+    function OnSelectionChange_GridFahrzeugAuswahl(cb) {
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                ShowHideNextButton();
+                if (_selectedItemsCount == 0) {
+                    $("#FahrzeugAuswahlCount").addClass('hide');
+                    return;
+                }
+
+                $("#FahrzeugAuswahlCount").removeClass('hide');
+                $("#FahrzeugAuswahlCount > span").html('Sie haben ' + _selectedItemsCount + ' Fahrzeug' + (_selectedItemsCount == 1 ? '' : 'e') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "FahrzeugAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                _selectedItemsCount = result.allSelectionCount;
+                GridFahrzeugAuswahl_MultiSelectUpdate(_selectedItemsCount);
+                RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
+                ShowHideNextButton();
+
+                FilterGrid("GridFahrzeugAkteBestand");
+            }
+        });
+    }
+
+    function GridFahrzeugAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#FahrzeugAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#FahrzeugAuswahlCount").removeClass('hide');
+        $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+
+    function RefreshZulassungenCountForDateAndPdi(zulassungenAnzahlGesamtTotal, zulassungenAnzahlPdiTotal) {
+        if (zulassungenAnzahlGesamtTotal == 0)
+            $("#zulassungenAnzahlGesamtTotal").addClass("hide");
+        else {
+            $("#zulassungenAnzahlGesamtTotal").html("@Localize.RegistrationAmountForThisDay: " + zulassungenAnzahlGesamtTotal);
+            $("#zulassungenAnzahlGesamtTotal").removeClass("hide");
+        }
+
+        if (zulassungenAnzahlPdiTotal == 0)
+            $("#zulassungenAnzahlPdiTotal").addClass("hide");
+        else {
+            $("#zulassungenAnzahlPdiTotal").html("@Localize.RegistrationAmountForThisDayAndPdi: " + zulassungenAnzahlPdiTotal);
+            $("#zulassungenAnzahlPdiTotal").removeClass("hide");
+        }
+    }
+
+    function SyncInfoFahrzeugAkteBestandGrid() {
+        
+    }
+
+    function ShowHideNextButton() {
+        if (_selectedItemsCount > 1) {
+            $('#btnMassRegistration').removeClass('hide');
+        } else {
+            $('#btnMassRegistration').addClass('hide');
+        }
+    }
+    
+</script>
