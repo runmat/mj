@@ -71,8 +71,8 @@
 
         $.ajax({
             type: "POST",
-            url: "ShowHistory",
-            data: { fin: fin },
+            url: "/ServicesMvc/Equi/GetFahrzeugHistorieVermieterPartial",
+            data: { fahrgestellnummer: fin },
             loadingShow: true,
             success: function (result) {
                 ShowEquiHistorieVermieterDetail(result);
