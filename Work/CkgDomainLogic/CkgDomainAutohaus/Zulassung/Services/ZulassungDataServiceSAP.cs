@@ -288,11 +288,11 @@ namespace CkgDomainLogic.Autohaus.Services
 
                 Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
-                SAP.SetImportParameter("I_TELNR", ((ILogonContextDataService)LogonContext).UserInfo.Telephone);
-                SAP.SetImportParameter("I_FESTE_REFERENZEN", "X");
+                SAP.SetImportParameter("I_AUFRUF", "2");
+                SAP.SetImportParameter("I_TELNR", LogonContext.UserInfo.Telephone);
 
                 if (saveDataToSap)
-                    SAP.SetImportParameter("I_SPEICHERN", "X");
+                    SAP.SetImportParameter("I_SPEICHERN", "A");
 
                 SAP.SetImportParameter("I_FORMULAR", "X");
                 SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");

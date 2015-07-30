@@ -63,7 +63,6 @@ else
                 <div class="receipt-no">@Localize.Receipt #@zulassung.BelegNr</div>
                 <div class="receipt-fin">@Localize.VIN @zulassung.Fahrzeugdaten.FahrgestellNr</div>
                 <div class="receipt-download-buttons">
-                    <a href="SummaryAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.YourOrderAsPdfFile' data-placement="top"> @Localize.PdfDownload <i class="icon-download-alt"></i></a>
                     @if (zulassung.KundenformularPdf != null)
                     {
                         <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
