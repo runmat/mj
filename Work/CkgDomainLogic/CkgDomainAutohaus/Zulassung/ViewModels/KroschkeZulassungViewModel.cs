@@ -198,6 +198,23 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Massenzulassung
 
+        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
+        {
+            FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            allSelectionCount = FinList.Count(c => c.IsSelected);
+            allCount = FinListFiltered.Count();
+        }
+
+        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var fzg = FinList.FirstOrDefault(f => f.FIN == vin);
+            if (fzg == null)
+                return;
+            fzg.IsSelected = select;
+            allSelectionCount = FinList.Count(c => c.IsSelected);
+        }
+
         /// <summary>
         /// Überträgt die Liste der anzumeldenden Fahrzeuge in das ViewModel und
         /// sorgt für Vorbelegung der relevanten Formulardaten, falls die entsprechenden 

@@ -2571,7 +2571,6 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />

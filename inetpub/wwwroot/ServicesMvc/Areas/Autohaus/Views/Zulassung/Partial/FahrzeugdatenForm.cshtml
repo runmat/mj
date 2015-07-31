@@ -21,23 +21,7 @@
             return;
         }
     }
-    
-//    function OnDataBound_GridFahrzeugAuswahl() {
-//        alert(6);
-//        FilteredData_Grid_OnDataBound($(this));
-//        $('.tooltips').tooltip();
-//        // prepare multi row selection
-//        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahlZulassung");
-//    }
-//    function OnColumnReorder_GridFahrzeugAuswahl() {
-//        alert(5);
-//        FilteredData_Grid_OnColumnReorder($(this));
-//    }
-//    function OnColumnShowHide_GridFahrzeugAuswahl() {
-//        alert(4);
-//        FilteredData_Grid_OnColumnShowHide($(this));
-//    }
-    
+   
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
         Grid_FormatMultiRowSelected(cb);
         $.ajax({
@@ -51,7 +35,6 @@
         });
     }
     
-    // function GridFahrzeugAuswahl_OnAllSelectionChange(check) {        
     function OnAllSelectionChange_GridFahrzeugAuswahl(check) {        
         $.ajax({
             type: "POST",
@@ -81,10 +64,6 @@
     $(function() {        
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
     });
-    
-//    function OnLoad_GridFahrzeugAuswahl() {
-//        alert("OnLoad_GridFahrzeugAuswahl");
-//    }
     
     function OnDataBound_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnDataBound($(this));
@@ -154,7 +133,6 @@
                         <i class="icon-check"></i><span class="padding-left-5 bold"></span>
                     </span>
                 </h4>
-            
                 var gridName = "GridFahrzeugAuswahl";
                 @(Html.Telerik()
                       .Grid<FahrzeugAkteBestand>()
@@ -162,21 +140,18 @@
                       .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
                       .Columns(columns =>
                       {
-                          columns.XBound(c => c.Aktion)
-                        .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                        .HeaderTemplate(
-                            "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='OnAllSelectionChange_GridFahrzeugAuswahl(true)' /></span>" +
-                            "<i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='OnAllSelectionChange_GridFahrzeugAuswahl(false)'></i>"
+                        columns.XBound(c => c.Aktion)
+                            .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                            .HeaderTemplate(
+                                "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='OnAllSelectionChange_GridFahrzeugAuswahl(true)' /></span>" +
+                                "<i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='OnAllSelectionChange_GridFahrzeugAuswahl(false)'></i>"
                         ).Filterable(false);
-                          //columns.XBound("")
-                          //       .ClientTemplate("<input type='checkbox' class='checker' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                          //       .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='OnAllSelectionChange_GridFahrzeugAuswahl($(this).is(\":checked\"))' />")
-                          //       .Filterable(false);
-                          columns.XBound(c => c.FIN);
-                          columns.XBound(c => c.HandelsName);
+                         columns.XBound(c => c.FIN);
+                         columns.XBound(c => c.HandelsName);
                          columns.XBound(c => c.FahrzeugArt);
                       })
                       .XPageSize(10)
+                      .XAutoColumnConfiguration()
                       .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
                       .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                       .XToolBar(gridName)

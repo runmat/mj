@@ -15,10 +15,6 @@
     .XAjaxDataBinding("FahrzeugAkteBestandAjaxBinding", "Fahrzeugbestand")
     .Columns(columns =>
         {
-            //columns.XBound("")
-            //    .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-            //    .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='OnAllSelectionChange_GridFahrzeugAuswahl($(this).is(\":checked\"))' />")
-            //    .Filterable(false);
             columns.XBound(c => c.Aktion)
                 .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
                 .HeaderTemplate(
@@ -33,10 +29,9 @@
                 .HeaderTemplate(
                       "<button onclick='FahrzeugCreateAjax();' class='btn mini black tooltips' data-original-title='" + Localize.VehicleCreate + "' data-placement='right'><i class='halflings-icon white plus'></i></button>"
                 );
-            columns.XBoundAllExcept(m => m.Bemerkung, m => m.VorhandenesKennzReservieren, m => m.IsSelected, m => m.Zb2Nr, m => m.WunschKennz1, m => m.WunschKennz2, m => m.WunschKennz3, m => m.ResKennz, m => m.ReservationName, m => m.ReservationNr, m => m.Evb);
+            columns.XBoundAllExcept(m => m.Bemerkung, m => m.CocVorhanden, m => m.VorhandenesKennzReservieren, m => m.IsSelected, m => m.Zb2Nr, m => m.WunschKennz1, m => m.WunschKennz2, m => m.WunschKennz3, m => m.ResKennz, m => m.ReservationName, m => m.ReservationNr, m => m.Evb);
         })
     .XAutoColumnConfiguration()
-    // .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
     .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
@@ -68,7 +63,6 @@
 
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
         Grid_FormatMultiRowSelected(cb);
-
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
@@ -102,7 +96,7 @@
                 RefreshZulassungenCountForDateAndPdi(result.zulassungenAnzahlGesamtTotal, result.zulassungenAnzahlPdiTotal);
                 ShowHideNextButton();
 
-                FilterGrid("GridFahrzeugAkteBestand");
+                FilterGrid("@gridName");
             }
         });
     }

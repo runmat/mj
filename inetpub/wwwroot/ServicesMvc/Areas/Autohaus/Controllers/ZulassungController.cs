@@ -86,7 +86,7 @@ namespace ServicesMvc.Autohaus.Controllers
             return View("Index", ViewModel);
         }
 
-        #region Massenzulassung
+        #region Massenzulassung       
 
         // ##MMA##
         [CkgApplication]
@@ -136,24 +136,6 @@ namespace ServicesMvc.Autohaus.Controllers
             return new EmptyResult();
         }
 
-        // 20150618 MMA ITA8076 Massenzulassung
-        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
-        {
-            ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-            allCount = ViewModel.FinList.Count();
-        }
-
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
-        {
-            allSelectionCount = 0;
-            var fzg = ViewModel.FinList.FirstOrDefault(f => f.FIN == vin);
-            if (fzg == null)
-                return;
-            fzg.IsSelected = select;
-            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-        }
-
         [GridAction]
         public ActionResult FahrzeugAuswahlAjaxBinding()
         {
@@ -173,9 +155,9 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             int allSelectionCount, allCount = 0;
             if (vin.IsNullOrEmpty())
-                SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
             else
-                SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
             return Json(new
             {
                 allSelectionCount,
@@ -200,20 +182,11 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        // public JsonResult SetKennz(string fin, string field, string kennz)
         public JsonResult SetFinValue(string fin, string field, string kennz)
         {
-            // var result = ViewModel.SetKennz(fin, field, kennz.ToUpper());
             var result = ViewModel.SetFinValue(fin, field, kennz.ToUpper());
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
-
-        //[HttpPost]
-        //public JsonResult SetAbmKennz(string fin, string field, string kennz)
-        //{
-        //    var result = ViewModel.SetKennz(fin, field, kennz.ToUpper());
-        //    return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
-        //}
 
         [HttpPost]
         public ActionResult FilterGridFahrzeugAuswahl(string filterValue, string filterColumns)
