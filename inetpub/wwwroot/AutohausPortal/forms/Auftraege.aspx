@@ -143,91 +143,80 @@
                 <PagerSettings Visible="False" />
                 <RowStyle CssClass="ItemStyle" />
                 <Columns>
-                    <asp:TemplateField SortExpression="ID" Visible="false">
-                        <ItemTemplate>
-                            <asp:Label ID="lblID" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.ID") %>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
-                    <asp:TemplateField SortExpression="id_pos" Visible="false">
-                        <ItemTemplate>
-                            <asp:Label ID="lblid_pos" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.id_pos") %>'></asp:Label>
-                        </ItemTemplate>
-                    </asp:TemplateField>
                     <asp:TemplateField SortExpression="Status" HeaderText="Status" Visible="false">
                         <ItemTemplate>
-                            <asp:Label ID="lblStatus" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Status") %>'></asp:Label>
+                            <asp:Label ID="lblStatus" runat="server" Text='<%# Eval("Status") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="id_sap" HeaderText="ID">
+                    <asp:TemplateField SortExpression="ZULBELN" HeaderText="ID">
                         <HeaderStyle Width="80px" />
                         <ItemStyle Wrap="false" />
                         <HeaderTemplate>
                         <div class="formselects">
                             <asp:CheckBox ID="chkAuswahlAll" CssClass="tableCheckbox checkall" runat="server" /></div>
-                            <asp:LinkButton ID="col_ID" runat="server" CommandName="Sort" CommandArgument="id_sap">ID</asp:LinkButton>
+                            <asp:LinkButton ID="col_ID" runat="server" CommandName="Sort" CommandArgument="ZULBELN">ID</asp:LinkButton>
                         </HeaderTemplate>
                         <ItemTemplate><div class="formselects">
                             <asp:CheckBox ID="chkAuswahl" CssClass="tableCheckbox" runat="server" /></div>
-                            <asp:Label ID="lblName" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.id_sap") %>' style="padding-bottom: 9px" CssClass="HighlightOnHover"></asp:Label>
+                            <asp:Label ID="lblName" runat="server" Text='<%# Eval("ZULBELN") %>' style="padding-bottom: 9px" CssClass="HighlightOnHover"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="kundenname" HeaderText="Kundennr.">
                         <HeaderTemplate>
                             <asp:LinkButton ID="col_kundenname" runat="server" CommandName="Sort" CommandArgument="kundenname">Kundennr.</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:Label ID="lblkundenname" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.kundenname") %>'></asp:Label>
+                            <asp:Label ID="lblkundenname" runat="server" Text='<%# Eval("kundenname") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="Matbez" HeaderText="Dienstleistung">
                         <HeaderTemplate>
                             <asp:LinkButton ID="colMatbez" runat="server" CommandName="Sort" CommandArgument="Matbez">Dienstleistung</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:Label ID="lblMatbez" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Matbez") %>'></asp:Label>
+                            <asp:Label ID="lblMatbez" runat="server" Text='<%# Eval("Matbez") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="Zulassungsdatum" HeaderText="Zul.datum">
+                    <asp:TemplateField SortExpression="ZZZLDAT" HeaderText="Zul.datum">
                         <HeaderTemplate>
-                            <asp:LinkButton ID="col_Zulassungsdatum" runat="server" CommandName="Sort" CommandArgument="Zulassungsdatum">Zul.datum</asp:LinkButton></HeaderTemplate>
+                            <asp:LinkButton ID="col_Zulassungsdatum" runat="server" CommandName="Sort" CommandArgument="ZZZLDAT">Zul.datum</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:Label ID="lblZulassungsdatum" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Zulassungsdatum", "{0:d}") %>'></asp:Label>
+                            <asp:Label ID="lblZulassungsdatum" runat="server" Text='<%# Eval("ZZZLDAT", "{0:d}") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="Referenz1" HeaderText="Referenz1">
+                    <asp:TemplateField SortExpression="ZZREFNR1" HeaderText="Referenz1">
                         <HeaderTemplate>
-                            <asp:LinkButton ID="col_Referenz1" runat="server" CommandName="Sort" CommandArgument="Referenz1">Referenz1</asp:LinkButton></HeaderTemplate>
+                            <asp:LinkButton ID="col_Referenz1" runat="server" CommandName="Sort" CommandArgument="ZZREFNR1">Referenz1</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:Label ID="lblReferenz1" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Referenz1") %>'></asp:Label>
+                            <asp:Label ID="lblReferenz1" runat="server" Text='<%# Eval("ZZREFNR1") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="Referenz2" HeaderText="Referenz2">
+                    <asp:TemplateField SortExpression="ZZREFNR2" HeaderText="Referenz2">
                         <HeaderTemplate>
-                            <asp:LinkButton ID="col_Referenz2" runat="server" CommandName="Sort" CommandArgument="Referenz2">Referenz2</asp:LinkButton></HeaderTemplate>
+                            <asp:LinkButton ID="col_Referenz2" runat="server" CommandName="Sort" CommandArgument="ZZREFNR2">Referenz2</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:Label ID="lblReferenz2" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Referenz2") %>'></asp:Label>
+                            <asp:Label ID="lblReferenz2" runat="server" Text='<%# Eval("ZZREFNR2") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="Kennzeichen" HeaderText="Kennzeichen">
+                    <asp:TemplateField SortExpression="ZZKENN" HeaderText="Kennzeichen">
                         <HeaderTemplate>
-                            <asp:LinkButton ID="col_Kennzeichen" runat="server" CommandName="Sort" CommandArgument="Kennzeichen">Kennzeichen</asp:LinkButton></HeaderTemplate>
+                            <asp:LinkButton ID="col_Kennzeichen" runat="server" CommandName="Sort" CommandArgument="ZZKENN">Kennzeichen</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:Label ID="lblKennzeichen" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Kennzeichen") %>'></asp:Label>
+                            <asp:Label ID="lblKennzeichen" runat="server" Text='<%# Eval("ZZKENN") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
-                    <asp:TemplateField SortExpression="Vorerfasser" HeaderText="Erfasser">
+                    <asp:TemplateField SortExpression="VE_ERNAM" HeaderText="Erfasser">
                         <HeaderTemplate>
-                            <asp:LinkButton ID="col_Vorerfasser" runat="server" CommandName="Sort" CommandArgument="Vorerfasser">Erfasser</asp:LinkButton></HeaderTemplate>
+                            <asp:LinkButton ID="col_Vorerfasser" runat="server" CommandName="Sort" CommandArgument="VE_ERNAM">Erfasser</asp:LinkButton></HeaderTemplate>
                         <ItemTemplate>
-                            <asp:Label ID="lblVorerfasser" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.Vorerfasser") %>'></asp:Label>
+                            <asp:Label ID="lblVorerfasser" runat="server" Text='<%# Eval("VE_ERNAM") %>'></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField>
                         <HeaderStyle Width="75px" />
                         <ItemTemplate>
                             <asp:LinkButton ID="lbtnEdit" CssClass="editbutton" CommandName="Bearbeiten" Text="Edit"
-                                runat="server" ToolTip="Bearbeiten" Visible='<%# DataBinder.Eval(Container, "DataItem.toDelete").ToString() != "X" %>'
-                                CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'></asp:LinkButton>
+                                            runat="server" ToolTip="Bearbeiten" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'/>
                             <asp:LinkButton ID="lbtnDel" CssClass="deletebutton" CommandName="Loeschen"
-                                Text="Delete" runat="server" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'></asp:LinkButton>
+                                            Text="Delete" runat="server" CommandArgument='<%# ((GridViewRow)Container).RowIndex %>'/>
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>

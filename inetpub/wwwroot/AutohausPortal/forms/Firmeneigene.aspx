@@ -266,7 +266,6 @@
                                 <asp:TextBox CssClass="formtext" ID="txtReferenz4" runat="server" Style="width: 277px;
                                     text-transform: uppercase;" MaxLength="20"></asp:TextBox>
                                 <div class="formfeld_end"></div>
-                                                                    <asp:CheckBox ID="cbxSave" runat="server" Enabled="False" Text="saved" Visible="False" />
                             </div>
                             <!--formulardaten zeile2-->
                         </div>                        <!--formulardaten-->

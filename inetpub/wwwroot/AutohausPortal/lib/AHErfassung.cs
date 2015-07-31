@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Configuration;
+using System.Data.SqlClient;
 using System.Web.UI;
 using CKG.Base.Common;
 using System.Data;
 using CKG.Base.Business;
-using System.Configuration;
+using GeneralTools.Models;
 
 namespace AutohausPortal.lib
 {   
@@ -15,141 +16,113 @@ namespace AutohausPortal.lib
     /// </summary>
     public class AHErfassung : DatenimportBase
     {
-        #region Declarations
-
-        Int64 id_Kopf;
-        
-        #endregion
-
         #region Properties
 
         public DataTable tblEingabeListe { get; set; }
-        public DataTable KopfTabelle { get; set; }
-        public DataTable Positionen { get; set; }
         public DataTable tblFehler { get; set; }
         public DataTable tblPrint { get; set; }
         public DataTable tblPrintKundenformulare { get; set; }
 
-        public String VKORG { get; set; }
-        public String VKBUR { get; set; }
+        public string VKORG { get; set; }
+        public string VKBUR { get; set; }
 
+        public long id_sap { get; set; }
+        public bool IsNewVorgang { get { return (id_sap == 0); } }
 
-        public Int64 id_sap { get; set; }
-        public Int64 KopfID { get; set; }
-
-        public Boolean Abgerechnet { get; set; }
-        public String Kundenname { get; set; }
-        public String Kunnr { get; set; }
-        public String Ref1 { get; set; }
-
-        public String Ref2 { get; set; }
-        public String Ref3 { get; set; }
-        public String Ref4 { get; set; }
-        public String KreisKennz { get; set; }
-        public String Kreis { get; set; }
-        public Boolean WunschKenn { get; set; }
-        public Boolean Reserviert { get; set; }
-        public String ReserviertKennz { get; set; }
-        public Boolean Feinstaub { get; set; }
-        public String ZulDate { get; set; }
-        public String Kennzeichen { get; set; }
+        public string Kundenname { get; set; }
+        public string Kunnr { get; set; }
+        public string Ref1 { get; set; }
+        public string Ref2 { get; set; }
+        public string Ref3 { get; set; }
+        public string Ref4 { get; set; }
+        public string KreisKennz { get; set; }
+        public string Kreis { get; set; }
+        public bool WunschKenn { get; set; }
+        public bool Reserviert { get; set; }
+        public string ReserviertKennz { get; set; }
+        public bool Feinstaub { get; set; }
+        public string ZulDate { get; set; }
+        public string Kennzeichen { get; set; }
         public string WunschKZ2 { get; set; }
         public string WunschKZ3 { get; set; }
-        public String Kennztyp { get; set; }
-        public String KennzForm { get; set; }
-        public Boolean EinKennz { get; set; }
-        public String EVB { get; set; }
-        public String Fahrzeugart { get; set; }
+        public string Kennztyp { get; set; }
+        public string KennzForm { get; set; }
+        public bool EinKennz { get; set; }
+        public string EVB { get; set; }
+        public string Fahrzeugart { get; set; }
 
-        public Boolean EC { get; set; }
-        public Boolean Bar { get; set; }
-        public Boolean saved { get; set; }
-        public Boolean bearbeitet { get; set; }
-        public String Vorgang { get; set; }
-        public Int16 toSave { get; set; }
-        public String toDelete { get; set; }
-        public String KundennrWE { get; set; }
-        public String Partnerrolle { get; set; }
-        public String Name1 { get; set; }
-        public String Name2 { get; set; }
-        public String PLZ { get; set; }
-        public String Ort { get; set; }
-        public String Strasse { get; set; }
-        public String SWIFT { get; set; }
-        public String IBAN { get; set; }
-        public String Bankkey { get; set; }
-        public String Kontonr { get; set; }
-        public String Inhaber { get; set; }
-        public String Geldinstitut { get; set; }
-        public Boolean EinzugErm { get; set; }
-        public Boolean Rechnung { get; set; }
-        public Boolean Barzahlung { get; set; }
+        public string Vorgang { get; set; }
+        public string Name1 { get; set; }
+        public string Name2 { get; set; }
+        public string PLZ { get; set; }
+        public string Ort { get; set; }
+        public string Strasse { get; set; }
+        public string SWIFT { get; set; }
+        public string IBAN { get; set; }
+        public string Bankkey { get; set; }
+        public string Kontonr { get; set; }
+        public string Inhaber { get; set; }
+        public string Geldinstitut { get; set; }
+        public bool EinzugErm { get; set; }
+        public bool Rechnung { get; set; }
+        public bool Barzahlung { get; set; }
         public DataTable BestLieferanten { get; set; }
-        public String Altkenn { get; set; }
+        public string Altkenn { get; set; }
+
+        public String IDCount { get; set; }
+
         public bool ZBII_ALT_NEU { get; set; }
         public bool VorhKennzReserv { get; set; }
-        public String Lieferant_ZLD { get; set; }
-        public String FrachtNrHin { get; set; }
-        public String FrachtNrBack { get; set; }
-        public String Vorfuehr{ get; set; }
-        
-        public Boolean Barkunde { get; set; }
+        public string Lieferant_ZLD { get; set; }
+        public string FrachtNrHin { get; set; }
+        public string FrachtNrBack { get; set; }
+        public string Vorfuehr { get; set; }
 
-        public String IsZLD { get; set; }
+        public string Name1Hin { get; set; }
+        public string Name2Hin { get; set; }
+        public string StrasseHin { get; set; }
+        public string PLZHin { get; set; }
+        public string OrtHin { get; set; }
+        public string DocRueck1 { get; set; }
+        public string NameRueck1 { get; set; }
+        public string NameRueck2 { get; set; }
+        public string StrasseRueck { get; set; }
+        public string PLZRueck { get; set; }
+        public string OrtRueck { get; set; }
+        public string Doc2Rueck { get; set; }
+        public string Name1Rueck2 { get; set; }
+        public string Name2Rueck2 { get; set; }
+        public string Strasse2Rueck { get; set; }
+        public string PLZ2Rueck { get; set; }
+        public string Ort2Rueck {get;set;}
 
-        public String NeueKundenNr { get; set; }
+        public string Bemerkung { get; set; }
+        public string Notiz { get; set; }
+        public string InternRef { get; set; }
+        public string VkKurz { get; set; }
 
-        public String NeueKundenName { get; set; }
-        public String KennzTeil1 { get; set; }
-        public String IDCount{get;set;}
-        public String Name1Hin { get; set; }
-        public String Name2Hin { get; set; }
-        public String StrasseHin { get; set; }
-        public String PLZHin { get; set; }
-        public String OrtHin { get; set; }
-        public String DocRueck1 { get; set; }
-        public String NameRueck1 { get; set; }
-        public String NameRueck2 { get; set; }
-        public String StrasseRueck { get; set; }
-        public String PLZRueck { get; set; }
+        public string StillDate { get; set; }
+        public string TuvAu { get; set; }
+        public string ZollVers { get; set; }
+        public string ZollVersDauer { get; set; }
 
-        public String OrtRueck { get; set; }
-        public String Doc2Rueck { get; set; }
-        public String Name1Rueck2 { get; set; }
-        public String Name2Rueck2 { get; set; }
-        public String Strasse2Rueck { get; set; }
-        public String PLZ2Rueck { get; set; }
+        public bool KennzUebernahme { get; set; }
+        public bool Serie { get; set; }
+        public bool Saison { get; set; }
+        public bool ZusatzKZ { get; set; }
+        public bool MussReserviert { get; set; }
+        public bool KennzVorhanden { get; set; }
+        public string KurzZeitKennz { get; set; }
+        public string NrLangText { get; set; }
+        public string LangText { get; set; }
 
-        public String Ort2Rueck {get;set;}
+        public string SaisonBeg { get; set; }
+        public string SaisonEnd { get; set; }
 
-        public String Bemerkung { get; set; }
-        public String Notiz { get; set; }
-        public String InternRef { get; set; }
-        public String VkKurz { get; set; }
+        public string NrMaterial { get; set; }
+        public string Material { get; set; }
 
-        public String StillDate { get; set; }
-        public String TuvAu { get; set; }
-        public String ZollVers { get; set; }
-        public String ZollVersDauer { get; set; }
-
-        public Boolean KennzUebernahme { get; set; }
-        public Boolean Serie { get; set; }
-        public Boolean Saison { get; set; }
-        public Boolean ZusatzKZ { get; set; }
-        public Boolean MussReserviert { get; set; }
-        public Boolean KennzVorhanden { get; set; }
-        public String KurzZeitKennz { get; set; }
-        public String NrLangText { get; set; }
-        public String LangText { get; set; }
-
-        public String SaisonBeg { get; set; }
-        public String SaisonEnd { get; set; }
-
-        public String NrMaterial { get; set; }
-        public String Material { get; set; }
-
-        public String AppID { get; set; }
-        public String Haltedauer { get; set; }
+        public string Haltedauer { get; set; }
 
         public DataTable Kundenadresse { get; set; }
 
@@ -163,40 +136,34 @@ namespace AutohausPortal.lib
 
         #endregion
         
-        #region Contructor
-        /// <summary>
-        /// Kontruktor
-        /// </summary>
-        /// <param name="objUser">Userobjekt</param>
-        /// <param name="objApp">Anwendungsobjekt</param>
-        /// <param name="sVorgang">Vorgang z.B. Kennzeichenbestellung</param>
-        public AHErfassung(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, String sVorgang)
+        #region Constructor
+
+        public AHErfassung(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp, string sVorgang, string sMaterialNr)
             : base(ref objUser, objApp, "")
         {
-
             Vorgang = sVorgang;
-            CreatePosTable();
+            NrMaterial = sMaterialNr;
+            Material = (ZLDCommon.Materialliste.ContainsKey(NrMaterial) ? ZLDCommon.Materialliste[NrMaterial] : "");
         } 
+
         #endregion
 
         #region Methods
 
-        /// <summary>
-        /// Läd die neu generierte Belegnummer aus SAP
-        /// </summary>
-        /// <param name="strAppID"></param>
-        /// <param name="strSessionID"></param>
-        /// <param name="page"></param>
-        public void GiveSapID(String strAppID, String strSessionID, Page page)
+        private void Init(string methodName, string appId, string sessionId)
         {
-
-            m_strClassAndMethod = "VoerfZLD.GiveSapID";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
+            m_strClassAndMethod = String.Format("AHErfassung.{0}", methodName);
+            m_strAppID = appId;
+            m_strSessionID = sessionId;
             m_intStatus = 0;
             m_strMessage = String.Empty;
-            Int32 tempID = 0;
-            if (m_blnGestartet == false)
+        }
+
+        public void GiveSapID(String strAppID, String strSessionID, Page page)
+        {
+            Init("GiveSapID", strAppID, strSessionID);
+
+            if (!m_blnGestartet)
             {
                 m_blnGestartet = true;
                 try
@@ -205,14 +172,9 @@ namespace AutohausPortal.lib
 
                     myProxy.callBapi();
 
-                    Int32.TryParse(myProxy.getExportParameter("E_BELN").ToString(), out tempID);
-                    id_sap = tempID;
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
+                    id_sap = myProxy.getExportParameter("E_BELN").ToLong(0);
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
                 catch (Exception ex)
                 {
@@ -224,7 +186,7 @@ namespace AutohausPortal.lib
                             break;
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }
@@ -232,1300 +194,364 @@ namespace AutohausPortal.lib
             }
         }
 
-        /// <summary>
-        /// erstellt die Positionstabelle
-        /// </summary>
-        private void CreatePosTable()
+        public void LoadVorgaengeFromSap(String strAppID, String strSessionID, Page page, DataTable tblKundenStamm)
         {
-            Positionen = new DataTable();
-            Positionen.Columns.Add("id_Kopf", typeof(Int32));
-            Positionen.Columns.Add("id_pos", typeof(Int32));
-            Positionen.Columns.Add("Menge", typeof(String));
-            Positionen.Columns.Add("Matnr", typeof(String));
-            Positionen.Columns.Add("Matbez", typeof(String));
-        }
+            Init("LoadVorgaengeFromSap", strAppID, strSessionID);
 
-        /// <summary>
-        /// Speichert die eingebenen Daten in den SQL Tabellen
-        /// </summary>
-        /// <param name="strAppID"></param>
-        /// <param name="strSessionID"></param>
-        /// <param name="page"></param>
-        /// <param name="tblKundenStamm"></param>
-        public void InsertDB_ZLD(String strAppID, String strSessionID, Page page, DataTable tblKundenStamm)
-        {
-            m_intStatus = 0;
-            m_strMessage = "";
-            dboZLDAutohausDataContext ZLD_Data = new dboZLDAutohausDataContext();
-            try
+            if (!m_blnGestartet)
             {
-                m_intStatus = 0;
-                m_strMessage = "";
-                bool createKopf = false;
-                GiveSapID(strAppID, strSessionID, page);
-                if (id_sap != 0)
+                m_blnGestartet = true;
+
+                try
                 {
-                    ZLD_Data.Connection.Open();
-
-                    {
-                        ZLDKopfTabelle tblKopf = new ZLDKopfTabelle();
-                        tblKopf.id_sap = id_sap;
-                        tblKopf.id_user = m_objUser.UserID;
-                        tblKopf.id_session = strSessionID;
-                        tblKopf.abgerechnet = false;
-                        tblKopf.username = m_objUser.UserName;
-
-                        //Kunden- und Fahrzeugdaten
-                        tblKopf.kundenname = Kundenname;
-                        tblKopf.kundennr = Kunnr;
-                        tblKopf.EVB = EVB;
-                        tblKopf.Feinstaub = Feinstaub;
-                        DataRow[] KundeRow = tblKundenStamm.Select("KUNNR='" + Kunnr + "'");
-
-                        if (KundeRow.Length == 1)
-                        {
-                            tblKopf.KunnrLF = KundeRow[0]["KUNNR_LF"].ToString();
-                        }
-                        //Kunden- und Fahrzeugdaten
-
-                        //Referenzen
-                        tblKopf.referenz1 = Ref1;
-                        tblKopf.referenz2 = Ref2;
-                        tblKopf.referenz3 = Ref3;
-                        tblKopf.referenz4 = Ref4;
-                        //Referenzen
-
-                        //Zulassungsdaten
-                        tblKopf.KreisKZ = KreisKennz;
-                        tblKopf.KreisBez = Kreis;
-                        tblKopf.WunschKenn = WunschKenn;
-                        tblKopf.Reserviert = Reserviert;
-                        tblKopf.ReserviertKennz = ReserviertKennz;
-                        tblKopf.Fahrz_Art = Fahrzeugart;
-                        tblKopf.Kurzzeitkennz = KurzZeitKennz;
-
-                        DateTime tmpDate;
-                        DateTime.TryParse(ZulDate, out tmpDate);
-                        tblKopf.Zulassungsdatum = tmpDate;
-                        tblKopf.Kennzeichen = Kennzeichen;
-                        tblKopf.WunschKZ2 = WunschKZ2;
-                        tblKopf.WunschKZ3 = WunschKZ3;
-                        tblKopf.OhneGruenenVersSchein = BoolToX(OhneGruenenVersSchein);
-                        String sKennz = Kennzeichen;
-                        String sKennzKZ = "";
-                        String sKennzABC = "";
-                        String[] sArr = sKennz.Split('-');
-                        if (sArr.Length == 1)
-                        {
-                            sKennzKZ = sArr[0];
-                        }
-                        if (sArr.Length == 2)
-                        {
-                            sKennzKZ = sArr[0];
-                            sKennzABC = sArr[1];
-                        }
-                        if (sArr.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
-                        {
-                            sKennzKZ = sArr[0];
-                            sKennzABC = sArr[1] + "-" + sArr[2];
-                        }
-                        //tblKopf.KennKZ = sKennzKZ;
-                        tblKopf.KennABC = sKennzABC;
-                        tblKopf.KennzForm = KennzForm;
-                        tblKopf.EinKennz = EinKennz;
-                        tblKopf.VorhKennzReserv = VorhKennzReserv;
-                        tblKopf.ZBII_ALT_NEU = ZBII_ALT_NEU;
-                        tblKopf.KennzVH = KennzVorhanden;
-                        tblKopf.KennzAlt = Altkenn;
-                        tblKopf.Vorfuehrung = Vorfuehr;
-                        tblKopf.KennzUebernahme = BoolToX(KennzUebernahme);
-                        tblKopf.Serie = BoolToX(Serie);
-                        if (IsDate(StillDate))
-                        {
-                            DateTime.TryParse(StillDate, out tmpDate);
-                            tblKopf.Still_Datum = tmpDate;                        
-                        }
-
-                        if (IsDate(Haltedauer))
-                        {
-                            DateTime.TryParse(Haltedauer, out tmpDate);
-                            tblKopf.Haltedauer = tmpDate;
-                        }
-
-                        tblKopf.SaisonKZ = BoolToX(Saison);
-                        tblKopf.ZusatzKZ = BoolToX(ZusatzKZ);
-                        tblKopf.SaisonBeg = SaisonBeg;
-                        tblKopf.SaisonEnd = SaisonEnd;
-                        tblKopf.Tuev_AU = TuvAu;
-                        tblKopf.ZollVers = ZollVers;
-                        tblKopf.ZollVers_Dauer = ZollVersDauer;
-                        tblKopf.MussResWerden = BoolToX(MussReserviert);
-                        tblKopf.KennzVH = KennzVorhanden;
-                        //Zulassungsdaten
-                        
-                        //Langtext
-                        tblKopf.Langtextnr = NrLangText;
-
-      
-                        // Bemerkung/Notizen
-                        tblKopf.Bemerkung = Bemerkung;
-                        tblKopf.VKKurz = VkKurz;
-                        tblKopf.interneRef = InternRef;
-                        tblKopf.KundenNotiz = Notiz;
-
-                        //Intern
-                        tblKopf.Vorerfasser = m_objUser.UserName;
-                        tblKopf.VorerfDatum = DateTime.Now;
-                        tblKopf.saved = saved;
-                        tblKopf.toDelete = "";
-                        tblKopf.bearbeitet = false;
-                        tblKopf.Vorgang = Vorgang;
-                        tblKopf.testuser = m_objUser.IsTestUser;
-                        tblKopf.Filiale = m_objUser.Reference;
-                        tblKopf.AppID = AppID;
-                        //Intern
-                        
-                        //Bankdaten
-                        tblKopf.Inhaber = Inhaber;
-                        tblKopf.IBAN = IBAN;
-
-                        if ((!String.IsNullOrEmpty(Geldinstitut)) && (Geldinstitut.Length > 40))
-                        {
-                            tblKopf.Geldinstitut = Geldinstitut.Substring(0, 40);
-                        }
-                        else { tblKopf.Geldinstitut = Geldinstitut; }
-
-                        tblKopf.SWIFT = SWIFT;
-                        tblKopf.BankKey = Bankkey;
-                        tblKopf.Kontonr = Kontonr;
-                        tblKopf.EinzugErm = EinzugErm;
-                        tblKopf.Rechnung = Rechnung;
-                        tblKopf.Barzahlung = Barzahlung;
-
-                        //Bankdaten
-
-                        ZLD_Data.ZLDKopfTabelle.InsertOnSubmit(tblKopf);
-                        ZLD_Data.SubmitChanges();
-                        KopfID = tblKopf.id;
-                        createKopf = true;
-                        try
-                        {
-
-                            ZLDPositionsTabelle tblPos = new ZLDPositionsTabelle();
-                            tblPos.id_Kopf = KopfID;
-                            tblPos.id_pos = 1;
-                            tblPos.Menge = "1";
-                            tblPos.Matnr = NrMaterial;
-                            tblPos.Matbez = Material;
-                            ZLD_Data.ZLDPositionsTabelle.InsertOnSubmit(tblPos);
-
-
-                            ZLDKundenadresse tblKunnadresse = new ZLDKundenadresse();
-                            tblKunnadresse.id_Kopf = KopfID;
-                            tblKunnadresse.Partnerrolle = Partnerrolle;
-                            tblKunnadresse.Name1 = Name1;
-                            tblKunnadresse.Name2 = Name2;
-                            tblKunnadresse.Strasse = Strasse;
-                            tblKunnadresse.Ort = Ort;
-                            tblKunnadresse.PLZ = PLZ;
-                            ZLD_Data.ZLDKundenadresse.InsertOnSubmit(tblKunnadresse);
-                            ZLD_Data.SubmitChanges();
-
-                        }
-                        catch (Exception ex)
-                        {
-                            m_intStatus = 9999;
-                            m_strMessage = ex.Message;
-                            if (createKopf)
-                            {
-                                dboZLDAutohausDataContext ZLD_DataKopf = new dboZLDAutohausDataContext();
-                                var tblKopftoDel = (from k in ZLD_DataKopf.ZLDKopfTabelle
-                                                    where k.id == KopfID
-                                                    select k).Single();
-
-                                ZLD_DataKopf.ZLDKopfTabelle.DeleteOnSubmit(tblKopftoDel);
-                                ZLD_DataKopf.SubmitChanges();
-
-                            }
-                        }
-                    }
-
-                }
-                else
-                {
-                    m_intStatus = 9999;
-                    m_strMessage = "Fehler beim exportieren der Belegnummer!";
-                }
-
-            }
-            catch (Exception ex)
-            {
-
-                m_intStatus = 9999;
-                m_strMessage = ex.Message;
-            }
-            finally
-            {
-                if (ZLD_Data.Connection.State == ConnectionState.Open) { ZLD_Data.Connection.Close(); }
-            }
-
-        }
-
-        /// <summary>
-        /// Speichert die eingebenen Daten in den SQL Tabellen
-        /// Mehrere Vorgänge (tblAbmeldung)
-        /// </summary>
-        /// <param name="strAppID"></param>
-        /// <param name="strSessionID"></param>
-        /// <param name="page"></param>
-        /// <param name="tblKundenStamm"></param>
-        /// <param name="tblAbmeldung">Abmeldungen</param>
-        /// <returns>generierte Kopf-IDs</returns>
-        public List<long> InsertDB_ZLDAbmeldung(String strAppID, String strSessionID, Page page, DataTable tblKundenStamm, DataTable tblAbmeldung)
-        {
-            m_intStatus = 0;
-            m_strMessage = "";
-            var ergList = new List<long>();
-            dboZLDAutohausDataContext ZLD_Data = new dboZLDAutohausDataContext();
-            try
-            {
-                m_intStatus = 0;
-                m_strMessage = "";
-                ZLD_Data.Connection.Open();
-                foreach (DataRow matRow in tblAbmeldung.Rows)
-                {
-                    bool createKopf = false;
-                    GiveSapID(strAppID, strSessionID, page);
-                    if (id_sap != 0)
-                    {
-                        ZLDKopfTabelle tblKopf = new ZLDKopfTabelle();
-                        tblKopf.id_sap = id_sap;
-                        tblKopf.id_user = m_objUser.UserID;
-                        tblKopf.id_session = strSessionID;
-                        tblKopf.abgerechnet = false;
-                        tblKopf.username = m_objUser.UserName;
-
-                        //Kunden- und Fahrzeugdaten
-                        tblKopf.kundenname = Kundenname;
-                        tblKopf.kundennr = Kunnr;
-                        tblKopf.EVB = EVB;
-                        tblKopf.Feinstaub = Feinstaub;
-                        DataRow[] KundeRow = tblKundenStamm.Select("KUNNR='" + Kunnr + "'");
-
-                        if (KundeRow.Length == 1)
-                        {
-                            tblKopf.KunnrLF = KundeRow[0]["KUNNR_LF"].ToString();
-                        }
-                        //Kunden- und Fahrzeugdaten
-
-                        //Referenzen (werden teilweise bei Anzahl >1 je Vorgang erfasst, deshalb die nachfolgende Fallunterscheidung)
-                        tblKopf.referenz1 = Ref1;
-                        if ((tblAbmeldung.Rows.Count > 1) && (matRow.Table.Columns.Contains("REF2")))
-                        {
-                            tblKopf.referenz2 = matRow["REF2"].ToString();
-                            tblKopf.referenz3 = matRow["REF3"].ToString();
-                            tblKopf.referenz4 = matRow["REF4"].ToString();
-                        }
-                        else
-                        {
-                            tblKopf.referenz2 = Ref2;
-                            tblKopf.referenz3 = Ref3;
-                            tblKopf.referenz4 = Ref4;
-                        }
-                        //Referenzen
-
-                        //Zulassungsdaten
-                        tblKopf.KreisKZ = KreisKennz;
-                        tblKopf.KreisBez = Kreis;
-                        tblKopf.WunschKenn = WunschKenn;
-                        tblKopf.Reserviert = Reserviert;
-                        tblKopf.ReserviertKennz = ReserviertKennz;
-                        tblKopf.Fahrz_Art = Fahrzeugart;
-
-                        DateTime tmpDate;
-                        DateTime.TryParse(ZulDate, out tmpDate);
-                        tblKopf.Zulassungsdatum = tmpDate;
-
-                        if (tblAbmeldung.Columns.Contains("KennzFun"))
-                        {
-
-                            if (matRow["KennzFun"].ToString().Length > 0)
-                            { tblKopf.Kennzeichen = matRow["KennzFun"].ToString(); }
-                            else
-                            {
-                                tblKopf.Kennzeichen = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
-                                String sKennz = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
-                                String sKennzKZ = "";
-                                String sKennzABC = "";
-                                String[] sArr = sKennz.Split('-');
-                                if (sArr.Length == 1)
-                                {
-                                    sKennzKZ = sArr[0];
-                                }
-                                if (sArr.Length == 2)
-                                {
-                                    sKennzKZ = sArr[0];
-                                    sKennzABC = sArr[1];
-                                }
-                                if (sArr.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
-                                {
-                                    sKennzKZ = sArr[0];
-                                    sKennzABC = sArr[1] + "-" + sArr[2];
-                                }
-                                // tblKopf.KennKZ = sKennzKZ;
-                                tblKopf.KennABC = sKennzABC;
-                            }
-                        }
-                        else
-                        {
-                            tblKopf.Kennzeichen = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
-                            String sKennz = matRow["Kennz1"].ToString() + "-" + matRow["Kennz2"].ToString();
-                            String sKennzKZ = "";
-                            String sKennzABC = "";
-                            String[] sArr = sKennz.Split('-');
-                            if (sArr.Length == 1)
-                            {
-                                sKennzKZ = sArr[0];
-                            }
-                            if (sArr.Length == 2)
-                            {
-                                sKennzKZ = sArr[0];
-                                sKennzABC = sArr[1];
-                            }
-                            if (sArr.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
-                            {
-                                sKennzKZ = sArr[0];
-                                sKennzABC = sArr[1] + "-" + sArr[2];
-                            }
-                            // tblKopf.KennKZ = sKennzKZ;
-                            tblKopf.KennABC = sKennzABC;
-                        }
-
-                        tblKopf.KennzForm = KennzForm;
-                        if (tblAbmeldung.Columns.Contains("Kennzform")) { tblKopf.KennzForm = matRow["Kennzform"].ToString(); }
-
-                        tblKopf.EinKennz = EinKennz;
-                        if (tblAbmeldung.Columns.Contains("EinKennz")) { tblKopf.EinKennz = (Boolean)matRow["EinKennz"]; }
-
-                        tblKopf.VorhKennzReserv = false;
-                        if (tblAbmeldung.Columns.Contains("KennzVorhanden")) { tblKopf.VorhKennzReserv = (Boolean)matRow["KennzVorhanden"]; }
-                        tblKopf.ZBII_ALT_NEU = ZBII_ALT_NEU;
-                        tblKopf.KennzVH = KennzVorhanden;
-                        tblKopf.KennzAlt = Altkenn;
-                        tblKopf.Vorfuehrung = Vorfuehr;
-                        tblKopf.KennzUebernahme = BoolToX(KennzUebernahme);
-                        tblKopf.Serie = BoolToX(Serie);
-                        if (IsDate(StillDate))
-                        {
-                            DateTime.TryParse(StillDate, out tmpDate);
-                            tblKopf.Still_Datum = tmpDate;
-                        }
-                        if (IsDate(Haltedauer))
-                        {
-                            DateTime.TryParse(Haltedauer, out tmpDate);
-                            tblKopf.Haltedauer = tmpDate;
-                        }
-                        tblKopf.SaisonKZ = BoolToX(Saison);
-                        tblKopf.ZusatzKZ = BoolToX(ZusatzKZ);
-                        tblKopf.SaisonBeg = SaisonBeg;
-                        tblKopf.SaisonEnd = SaisonEnd;
-                        tblKopf.Tuev_AU = TuvAu;
-                        tblKopf.ZollVers = ZollVers;
-                        tblKopf.ZollVers_Dauer = ZollVersDauer;
-                        tblKopf.MussResWerden = BoolToX(MussReserviert);
-                        //Zulassungsdaten
-                        tblKopf.Langtextnr = "";
-
-                        // Bemerkung/Notizen
-                        tblKopf.Bemerkung = Bemerkung;
-                        tblKopf.VKKurz = VkKurz;
-                        tblKopf.interneRef = InternRef;
-                        tblKopf.KundenNotiz = Notiz;
-
-                        //Intern
-                        tblKopf.Vorerfasser = m_objUser.UserName;
-                        tblKopf.VorerfDatum = DateTime.Now;
-                        tblKopf.saved = saved;
-                        tblKopf.toDelete = "";
-                        tblKopf.bearbeitet = false;
-                        tblKopf.Vorgang = Vorgang;
-                        tblKopf.testuser = m_objUser.IsTestUser;
-                        tblKopf.Filiale = m_objUser.Reference;
-                        tblKopf.AppID = AppID;
-                        //Intern
-
-                        //Bankdaten
-                        tblKopf.Inhaber = Inhaber;
-                        tblKopf.IBAN = IBAN;
-
-                        if ((!String.IsNullOrEmpty(Geldinstitut)) && (Geldinstitut.Length > 40))
-                        {
-                            tblKopf.Geldinstitut = Geldinstitut.Substring(0, 40);
-                        }
-                        else { tblKopf.Geldinstitut = Geldinstitut; }
-
-                        tblKopf.SWIFT = SWIFT;
-                        tblKopf.BankKey = Bankkey;
-                        tblKopf.Kontonr = Kontonr;
-                        tblKopf.EinzugErm = EinzugErm;
-                        tblKopf.Rechnung = Rechnung;
-                        tblKopf.Barzahlung = Barzahlung;
-
-                        //Bankdaten
-
-                        ZLD_Data.ZLDKopfTabelle.InsertOnSubmit(tblKopf);
-                        ZLD_Data.SubmitChanges();
-                        KopfID = tblKopf.id;
-                        createKopf = true;
-                        try
-                        {
-
-                            ZLDPositionsTabelle tblPos = new ZLDPositionsTabelle();
-                            tblPos.id_Kopf = KopfID;
-                            tblPos.id_pos = 1;
-                            tblPos.Menge = "1";
-                            tblPos.Matnr = NrMaterial;
-                            tblPos.Matbez = Material;
-                            ZLD_Data.ZLDPositionsTabelle.InsertOnSubmit(tblPos);
-
-
-                            ZLDKundenadresse tblKunnadresse = new ZLDKundenadresse();
-                            tblKunnadresse.id_Kopf = KopfID;
-                            tblKunnadresse.Partnerrolle = Partnerrolle;
-                            tblKunnadresse.Name1 = Name1;
-                            tblKunnadresse.Name2 = Name2;
-                            tblKunnadresse.Strasse = Strasse;
-                            tblKunnadresse.Ort = Ort;
-                            tblKunnadresse.PLZ = PLZ;
-                            ZLD_Data.ZLDKundenadresse.InsertOnSubmit(tblKunnadresse);
-                            ZLD_Data.SubmitChanges();
-
-                        }
-                        catch (Exception ex)
-                        {
-                            m_intStatus = 9999;
-                            m_strMessage = ex.Message;
-                            if (createKopf == true)
-                            {
-                                dboZLDAutohausDataContext ZLD_DataKopf = new dboZLDAutohausDataContext();
-                                var tblKopftoDel = (from k in ZLD_DataKopf.ZLDKopfTabelle
-                                                    where k.id == KopfID
-                                                    select k).Single();
-
-                                ZLD_DataKopf.ZLDKopfTabelle.DeleteOnSubmit(tblKopftoDel);
-                                ZLD_DataKopf.SubmitChanges();
-
-                            }
-                        }
-
-                        ergList.Add(KopfID);
-                    }
-                    else
-                    {
-                        m_intStatus = 9999;
-                        m_strMessage = "Fehler beim exportieren der Belegnummer!";
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-
-                m_intStatus = 9999;
-                m_strMessage = ex.Message;
-            }
-            finally
-            {
-                if (ZLD_Data.Connection.State == ConnectionState.Open) { ZLD_Data.Connection.Close(); }
-            }
-
-            return ergList;
-        }
-
-        /// <summary>
-        /// setzt das Löschkennzeichen in der Kopf- und Positionstabelle
-        /// </summary>
-        /// <param name="IDRecordset">ID SQL</param>
-        /// <param name="LoeschKZ"></param>
-        /// <param name="PosID">nur bei PosID = 10</param>
-        public void UpdateDB_LoeschKennzeichen(Int32 IDRecordset, String LoeschKZ, Int32 PosID)
-        {
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection();
-
-            try
-            {
-                connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"].ToString();
-                connection.Open();
-                System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand();
-                String query = "";
-
-                if (PosID == 10)
-                {
-                    if (LoeschKZ == "L")
-                    { query = ", toDelete='X'"; }
-                    else
-                    { query = ", toDelete=''"; }
-
-                }
-
-                String str = "Update ZLDKopfTabelle Set id_user='" + m_objUser.UserID + "', " +
-                             " username='" + m_objUser.UserName + "', " +
-                             "bearbeitet= 1 " + query +
-                             " Where id = " + IDRecordset;
-
-                command = new System.Data.SqlClient.SqlCommand();
-                command.Connection = connection;
-                command.CommandType = CommandType.Text;
-                command.CommandText = str;
-                command.ExecuteNonQuery();
-
-
-                str = "Update ZLDPositionsTabelle Set Posloesch='" + LoeschKZ + "'";
-                if (PosID != 10 && PosID != 0)
-                {
-                    str += " Where id_Kopf = " + IDRecordset + " AND id_pos = " + PosID;
-                }
-                else
-                {
-                    str += " Where id_Kopf = " + IDRecordset;
-                }
-
-                command = new System.Data.SqlClient.SqlCommand();
-                command.Connection = connection;
-                command.CommandType = CommandType.Text;
-                command.CommandText = str;
-                command.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                m_intStatus = -9999;
-                m_strMessage = ex.Message;
-            }
-            finally
-            {
-                connection.Close();
-            }
-
-        }
-
-        /// <summary>
-        /// Setzt den Vorgang auf abgerechnet(SQL-Tabelle)
-        /// </summary>
-        /// <param name="IDRecordset">ID SQL</param>
-        public void SetAbgerechnet(Int32 IDRecordset)
-        {
-            m_intStatus = 0;
-            m_strMessage = "";
-            dboZLDAutohausDataContext ZLD_DataContext = new dboZLDAutohausDataContext();
-            try
-            {
-                m_intStatus = 0;
-                m_strMessage = "";
-
-                var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
-                               where k.id == IDRecordset
-                               select k).Single();
-
-                tblKopf.abgerechnet = true;
-                ZLD_DataContext.Connection.Open();
-                ZLD_DataContext.SubmitChanges();
-                ZLD_DataContext.Connection.Close();
-            }
-            catch (Exception ex)
-            {
-                m_intStatus = -9999;
-                m_strMessage = ex.Message;
-            }
-            finally
-            {
-                if (ZLD_DataContext != null)
-                {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        ///  Löscht den Vorgang in der SQL-Tabelle
-        /// </summary>
-        /// <param name="IDRecordset">ID SQL</param>
-        public void DeleteRecordSet(Int32 IDRecordset)
-        {
-            m_intStatus = 0;
-            m_strMessage = "";
-            dboZLDAutohausDataContext ZLD_DataContext = new dboZLDAutohausDataContext();
-            try
-            {
-                m_intStatus = 0;
-                m_strMessage = "";
-
-                var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
-                               where k.id == IDRecordset
-                               select k).Single();
-
-
-                ZLD_DataContext.Connection.Open();
-                ZLD_DataContext.ZLDKopfTabelle.DeleteOnSubmit(tblKopf);
-                ZLD_DataContext.SubmitChanges();
-                ZLD_DataContext.Connection.Close();
-            }
-            catch (Exception ex)
-            {
-                m_intStatus = -9999;
-                m_strMessage = ex.Message;
-            }
-            finally
-            {
-                if (ZLD_DataContext != null)
-                {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Speicher eines bereits erfassten Vorganges
-        /// </summary>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="tblKunde">Kundentabelle</param>
-        public void UpdateDB_ZLD(String strSessionID, DataTable tblKunde)
-        {
-            dboZLDAutohausDataContext ZLD_DataContext = new dboZLDAutohausDataContext();
-            try
-            {
-                m_intStatus = 0;
-                m_strMessage = "";
-                var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
-                               where k.id == id_Kopf
-                               select k).Single();
-
-                tblKopf.id_sap = id_sap;
-                tblKopf.id_user = m_objUser.UserID;
-                tblKopf.id_session = strSessionID;
-                tblKopf.abgerechnet = false;
-                tblKopf.username = m_objUser.UserName;
-
-                //Kunden- und Fahrzeugdaten
-                tblKopf.kundenname = Kundenname;
-                tblKopf.kundennr = Kunnr;
-                tblKopf.EVB = EVB;
-                tblKopf.Feinstaub = Feinstaub;
-                DataRow[] KundeRow = tblKunde.Select("KUNNR='" + Kunnr + "'");
-
-                if (KundeRow.Length == 1)
-                {
-                    tblKopf.KunnrLF = KundeRow[0]["KUNNR_LF"].ToString();
-                }
-                //Kunden- und Fahrzeugdaten
-
-                //Referenzen
-                tblKopf.referenz1 = Ref1;
-                tblKopf.referenz2 = Ref2;
-                tblKopf.referenz3 = Ref3;
-                tblKopf.referenz4 = Ref4;
-                //Referenzen
-
-                //Zulassungsdaten
-                tblKopf.KreisKZ = KreisKennz;
-                tblKopf.KreisBez = Kreis;
-                tblKopf.WunschKenn = WunschKenn;
-                tblKopf.Reserviert = Reserviert;
-                tblKopf.ReserviertKennz = ReserviertKennz;
-                tblKopf.Fahrz_Art = Fahrzeugart;
-                tblKopf.Kurzzeitkennz = KurzZeitKennz;
-
-                DateTime tmpDate;
-                DateTime.TryParse(ZulDate, out tmpDate);
-                tblKopf.Zulassungsdatum = tmpDate;
-                tblKopf.Kennzeichen = Kennzeichen;
-                tblKopf.WunschKZ2 = WunschKZ2;
-                tblKopf.WunschKZ3 = WunschKZ3;
-                tblKopf.OhneGruenenVersSchein = BoolToX(OhneGruenenVersSchein);
-                String sKennz = Kennzeichen;
-                String sKennzKZ = "";
-                String sKennzABC = "";
-                String[] sArr = sKennz.Split('-');
-                if (sArr.Length == 1)
-                {
-                    sKennzKZ = sArr[0];
-                }
-                if (sArr.Length == 2)
-                {
-
-                    sKennzKZ = sArr[0];
-                    sKennzABC = sArr[1];
-                }
-                if (sArr.Length == 3)// Sonderlocke für Behördenfahrzeuge z.B. BWL-4-4444
-                {
-                    sKennzKZ = sArr[0];
-                    sKennzABC = sArr[1] + "-" + sArr[2];
-                }
-                //tblKopf.KennKZ = sKennzKZ;
-                tblKopf.KennABC = sKennzABC;
-                tblKopf.KennzForm = KennzForm;
-                tblKopf.EinKennz = EinKennz;
-                tblKopf.VorhKennzReserv = VorhKennzReserv;
-                tblKopf.ZBII_ALT_NEU = ZBII_ALT_NEU;
-                tblKopf.KennzVH = false;
-                tblKopf.KennzAlt = Altkenn;
-                tblKopf.Vorfuehrung = Vorfuehr;
-                tblKopf.KennzUebernahme = BoolToX(KennzUebernahme);
-                tblKopf.Serie = BoolToX(Serie);
-                if (IsDate(StillDate))
-                {
-                    DateTime.TryParse(StillDate, out tmpDate);
-                    tblKopf.Still_Datum = tmpDate;
-                }
-                if (IsDate(Haltedauer))
-                {
-                    DateTime.TryParse(Haltedauer, out tmpDate);
-                    tblKopf.Haltedauer = tmpDate;
-                }
-                tblKopf.SaisonKZ = BoolToX(Saison);
-                tblKopf.ZusatzKZ = BoolToX(ZusatzKZ);
-                tblKopf.SaisonBeg = SaisonBeg;
-                tblKopf.SaisonEnd = SaisonEnd;
-                tblKopf.Tuev_AU = TuvAu;
-                tblKopf.ZollVers = ZollVers;
-                tblKopf.ZollVers_Dauer = ZollVersDauer;
-                tblKopf.MussResWerden = BoolToX(MussReserviert);
-                tblKopf.KennzVH = KennzVorhanden;
-                //Zulassungsdaten
-                tblKopf.Langtextnr = NrLangText;
-                // Bemerkung/Notizen
-                tblKopf.Bemerkung = Bemerkung;
-                tblKopf.VKKurz = VkKurz;
-                tblKopf.interneRef = InternRef;
-                tblKopf.KundenNotiz = Notiz;
-
-                //Intern
-                tblKopf.saved = saved;
-                tblKopf.bearbeitet = true;
-                //Intern
-
-                //Bankdaten
-                tblKopf.Inhaber = Inhaber;
-                tblKopf.IBAN = IBAN;
-
-                if ((!String.IsNullOrEmpty(Geldinstitut)) && (Geldinstitut.Length > 40))
-                {
-                    tblKopf.Geldinstitut = Geldinstitut.Substring(0, 40);
-                }
-                else { tblKopf.Geldinstitut = Geldinstitut; }
-
-                tblKopf.SWIFT = SWIFT;
-                tblKopf.BankKey = Bankkey;
-                tblKopf.Kontonr = Kontonr;
-                tblKopf.EinzugErm = EinzugErm;
-                tblKopf.Rechnung = Rechnung;
-                tblKopf.Barzahlung = Barzahlung;
-
-                ZLD_DataContext.Connection.Open();
-                ZLD_DataContext.SubmitChanges();
-                id_Kopf = tblKopf.id;
-                ZLD_DataContext.Connection.Close();
-
-                ZLD_DataContext = new dboZLDAutohausDataContext();
-                ZLD_DataContext.Connection.Open();
-                
-                var tblPos = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                where p.id_Kopf == id_Kopf && p.id_pos == 1
-                                select p).Single();
-
-                tblPos.Matnr = NrMaterial;
-                tblPos.Matbez = Material;
-                ZLD_DataContext.SubmitChanges();
-                            
-                ZLD_DataContext = new dboZLDAutohausDataContext();
-                var tblKunnadresse = (from k in ZLD_DataContext.ZLDKundenadresse
-                                        where k.id_Kopf == id_Kopf
-                                        select k).Single();
-
-                tblKunnadresse.Partnerrolle = Partnerrolle;
-                tblKunnadresse.Name1 = Name1;
-                tblKunnadresse.Name2 = Name2;
-                tblKunnadresse.Ort = Ort;
-                tblKunnadresse.PLZ = PLZ;
-                tblKunnadresse.Strasse = Strasse;
-                ZLD_DataContext.SubmitChanges();
-
-            }
-            catch (Exception ex)
-            {
-                m_intStatus = 9999;
-                m_strMessage = ex.Message;
-            }
-            finally
-            {
-                if (ZLD_DataContext != null)
-                {
-                    if (ZLD_DataContext.Connection.State == ConnectionState.Open)
-                    {
-                        ZLD_DataContext.Connection.Close();
-                        ZLD_DataContext.Dispose();
-                    }
-                }
-            }
-        }
-
-        /// <summary>
-        /// Laden eines Vorgange anhand der ID für die Eingabemasken
-        /// Aufruf FillDataSet()
-        /// Laden der Daten aus den Datasets in die Klasseneigenschaften
-        /// </summary>
-        /// <param name="IDRecordset">ID SQL</param>
-        public void LoadDB_ZLDRecordset(Int32 IDRecordset)
-        {
-            m_intStatus = 0;
-            m_strMessage = "";
-            DataSet ds = new DataSet();
-            FillDataSet(IDRecordset, ref ds);
-            try
-            {
-                DataTable tmpKopf = ds.Tables[0];
-                DataTable tmpPos = ds.Tables[1];
-                DataTable tmpKunde = ds.Tables[2];
-
-                KopfTabelle = new DataTable();
-                KopfTabelle = tmpKopf;
-
-                id_Kopf = (Int64)KopfTabelle.Rows[0]["id"];
-                id_sap = (Int64)KopfTabelle.Rows[0]["id_sap"];
-                Abgerechnet = (Boolean)KopfTabelle.Rows[0]["abgerechnet"];
-                Kundenname = KopfTabelle.Rows[0]["kundenname"].ToString();
-                Kunnr = KopfTabelle.Rows[0]["kundennr"].ToString();
-                Ref1 = KopfTabelle.Rows[0]["referenz1"].ToString();
-                Ref2 = KopfTabelle.Rows[0]["referenz2"].ToString();
-                Ref3 = KopfTabelle.Rows[0]["referenz3"].ToString();
-                Ref4 = KopfTabelle.Rows[0]["referenz4"].ToString();
-                KreisKennz = KopfTabelle.Rows[0]["KreisKZ"].ToString();
-                Kreis = KopfTabelle.Rows[0]["KreisBez"].ToString();
-                WunschKenn = (Boolean)KopfTabelle.Rows[0]["WunschKenn"];
-                Reserviert = (Boolean)KopfTabelle.Rows[0]["Reserviert"];
-                ReserviertKennz = KopfTabelle.Rows[0]["ReserviertKennz"].ToString();
-                EVB = KopfTabelle.Rows[0]["EVB"].ToString();
-
-                KennzUebernahme = XToBool(KopfTabelle.Rows[0]["KennzUebernahme"].ToString());
-                Serie = XToBool(KopfTabelle.Rows[0]["Serie"].ToString());
-                MussReserviert = XToBool(KopfTabelle.Rows[0]["MussResWerden"].ToString());
-                KennzVorhanden = (Boolean)KopfTabelle.Rows[0]["KennzVH"];
-                Fahrzeugart = KopfTabelle.Rows[0]["Fahrz_Art"].ToString();
-                Saison = XToBool(KopfTabelle.Rows[0]["SaisonKZ"].ToString());
-                SaisonBeg = KopfTabelle.Rows[0]["SaisonBeg"].ToString();
-                SaisonEnd = KopfTabelle.Rows[0]["SaisonEnd"].ToString();
-                ZusatzKZ = XToBool(KopfTabelle.Rows[0]["ZusatzKZ"].ToString());
-                ZollVers = KopfTabelle.Rows[0]["ZollVers"].ToString();
-                ZollVersDauer = KopfTabelle.Rows[0]["ZollVers_Dauer"].ToString();
-                EinKennz = (Boolean)KopfTabelle.Rows[0]["EinKennz"];
-                Altkenn = KopfTabelle.Rows[0]["KennzAlt"].ToString();
-                VorhKennzReserv = (Boolean)KopfTabelle.Rows[0]["VorhKennzReserv"];
-                ZBII_ALT_NEU = (Boolean)KopfTabelle.Rows[0]["ZBII_ALT_NEU"];
-                Feinstaub = (Boolean)KopfTabelle.Rows[0]["Feinstaub"];
-                ZulDate = KopfTabelle.Rows[0]["Zulassungsdatum"].ToString();
-                if (IsDate(ZulDate)) { ZulDate = ((DateTime)KopfTabelle.Rows[0]["Zulassungsdatum"]).ToShortDateString(); }
-                StillDate = KopfTabelle.Rows[0]["Still_Datum"].ToString();
-                if (IsDate(StillDate)) { StillDate = ((DateTime)KopfTabelle.Rows[0]["Still_Datum"]).ToShortDateString(); }
-                Kennzeichen = KopfTabelle.Rows[0]["Kennzeichen"].ToString();
-                WunschKZ2 = KopfTabelle.Rows[0]["WunschKZ2"].ToString();
-                WunschKZ3 = KopfTabelle.Rows[0]["WunschKZ3"].ToString();
-                OhneGruenenVersSchein = XToBool(KopfTabelle.Rows[0]["OhneGruenenVersSchein"].ToString());
-                Bemerkung = KopfTabelle.Rows[0]["Bemerkung"].ToString();
-                KennzForm = KopfTabelle.Rows[0]["KennzForm"].ToString();
-                EinKennz = (Boolean)KopfTabelle.Rows[0]["EinKennz"];
-                NrLangText = KopfTabelle.Rows[0]["Langtextnr"].ToString();
-                LangText = "";
-                TuvAu = KopfTabelle.Rows[0]["Tuev_AU"].ToString();
-                Haltedauer = KopfTabelle.Rows[0]["Haltedauer"].ToString();
-                if (IsDate(Haltedauer)) { Haltedauer = ((DateTime)KopfTabelle.Rows[0]["Haltedauer"]).ToShortDateString(); }
-                saved = (Boolean)KopfTabelle.Rows[0]["saved"];
-                toDelete = KopfTabelle.Rows[0]["toDelete"].ToString();
-
-                VkKurz = KopfTabelle.Rows[0]["VKKurz"].ToString();
-                Notiz = KopfTabelle.Rows[0]["KundenNotiz"].ToString();
-                InternRef = KopfTabelle.Rows[0]["interneRef"].ToString();
-
-                bearbeitet = (Boolean)KopfTabelle.Rows[0]["bearbeitet"];
-                Vorgang = KopfTabelle.Rows[0]["Vorgang"].ToString();
-
-                SWIFT = KopfTabelle.Rows[0]["SWIFT"].ToString();
-                IBAN = KopfTabelle.Rows[0]["IBAN"].ToString();
-                Bankkey = KopfTabelle.Rows[0]["Bankkey"].ToString();
-                Kontonr = KopfTabelle.Rows[0]["Kontonr"].ToString();
-                Inhaber = KopfTabelle.Rows[0]["Inhaber"].ToString();
-                Geldinstitut = KopfTabelle.Rows[0]["Geldinstitut"].ToString();
-                EinzugErm = (Boolean)KopfTabelle.Rows[0]["EinzugErm"];
-                Rechnung = (Boolean)KopfTabelle.Rows[0]["Rechnung"];
-                Barzahlung = (Boolean)KopfTabelle.Rows[0]["Barzahlung"];
-                
-                Positionen = new DataTable();
-                Positionen = tmpPos;
-                NrMaterial = Positionen.Rows[0]["Matnr"].ToString();
-                Material = Positionen.Rows[0]["Matbez"].ToString();
-                
-                Kundenadresse = new DataTable();
-                Kundenadresse = tmpKunde;
-                KundennrWE = Kundenadresse.Rows[0]["Kundennr"].ToString();
-                Name1 = Kundenadresse.Rows[0]["Name1"].ToString();
-                Name2 = Kundenadresse.Rows[0]["Name2"].ToString();
-                PLZ = Kundenadresse.Rows[0]["PLZ"].ToString();
-                Ort = Kundenadresse.Rows[0]["Ort"].ToString();
-                Strasse = Kundenadresse.Rows[0]["Strasse"].ToString();
-            }
-            catch (Exception ex)
-            {
-                m_strMessage = ex.Message;
-            }         
-        }
-
-        /// <summary>
-        /// Laden eines Vorgange anhand der ID für die Eingabemasken
-        /// Speicherung der Records in einem Dataset
-        /// Aufgerufen von LoadDB_ZLDRecordset()
-        /// </summary>
-        /// <param name="RecordID">ID SQL</param>
-        /// <param name="ds">Dataset mit den Tabellen ZLDKopfTabelle, ZLDPositionsTabelle, ZLDKundenadresse</param>
-        private void FillDataSet(Int32 RecordID, ref DataSet ds)
-        {
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection();
-
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"].ToString();
-            System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand();
-            System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
-
-            connection.Open();
-
-            string selectString = "SELECT * FROM ZLDKopfTabelle as KopfTabelle where id=" + RecordID;
-            if (!SendForAll)
-            {
-                selectString += " AND id_user=" + m_objUser.UserID;
-            }
-            selectString += "; " + "SELECT * FROM ZLDPositionsTabelle As PositionsTabelle where id_Kopf=" + RecordID +
-                            "; " + "SELECT * FROM ZLDKundenadresse as Kundenadresse where id_Kopf=" + RecordID + "; ";
-
-            adapter = new System.Data.SqlClient.SqlDataAdapter(selectString, connection);
-
-            adapter.TableMappings.Add("ZLDKopfTabelle", "KopfTabelle");
-            adapter.TableMappings.Add("ZLDPositionsTabelle", "PositionsTabelle");
-            adapter.TableMappings.Add("ZLDKundenadresse", "Kundenadresse");
-            adapter.Fill(ds);
-            DataTable tmpKopf, tmpPos, tmpAdresse;
-            tmpKopf = ds.Tables[0];
-            tmpPos = ds.Tables[1];
-            tmpAdresse = ds.Tables[2];
-
-            connection.Close();
-
-        }
-
-        /// <summary>
-        /// Laden der in der SQL-Tabelle angelegten Vorgänge für die Übersicht(Aufträge.aspx)
-        /// </summary>
-        public void LadeVorerfassungDB_ZLD()
-        {
-            m_intStatus = 0;
-            m_strMessage = "";
-            System.Data.SqlClient.SqlConnection connection = new System.Data.SqlClient.SqlConnection();
-            connection.ConnectionString = ConfigurationManager.AppSettings["Connectionstring"].ToString();
-            try
-            {
-                tblEingabeListe = new DataTable();
-
-                System.Data.SqlClient.SqlCommand command = new System.Data.SqlClient.SqlCommand();
-                System.Data.SqlClient.SqlDataAdapter adapter = new System.Data.SqlClient.SqlDataAdapter();
-
-
-                command.CommandText =
-                    " SELECT     dbo.ZLDKopfTabelle.*, dbo.ZLDPositionsTabelle.id_pos, dbo.ZLDPositionsTabelle.Matnr, dbo.ZLDPositionsTabelle.Matbez" +
-                    " FROM         dbo.ZLDKopfTabelle " +
-                    " INNER JOIN dbo.ZLDPositionsTabelle ON dbo.ZLDKopfTabelle.id = dbo.ZLDPositionsTabelle.id_Kopf " +
-                    " INNER JOIN dbo.WebMember ON dbo.ZLDKopfTabelle.id_user = dbo.WebMember.UserID ";
-                if (SendForAll)
-                {
-                    // Für Benutzer, deren Organisation das Tag "SendForAll" enthält, alle erfassten Aufträge des VkBurs bzw. der Gruppe anzeigen
-                    command.CommandText += " WHERE Filiale = @filiale AND GroupID = @GroupID AND testuser = @testuser AND abgerechnet = 0";
-                    command.Parameters.AddWithValue("@filiale", m_objUser.Reference);
-                    command.Parameters.AddWithValue("@GroupID", m_objUser.GroupID);
-                }
-                else
-                {
-                    command.CommandText += " WHERE id_User = @id_User AND testuser = @testuser AND abgerechnet = 0";
-                    command.Parameters.AddWithValue("@id_User", m_objUser.UserID);
-                }
-                command.Parameters.AddWithValue("@testuser", m_objUser.IsTestUser);
-                command.CommandText += " ORDER BY dbo.ZLDKopfTabelle.id_sap asc,dbo.ZLDKopfTabelle.kundenname, dbo.ZLDPositionsTabelle.id_pos, referenz1 asc, Kennzeichen";
-                connection.Open();
-                command.Connection = connection;
-                command.CommandType = CommandType.Text;
-                adapter.SelectCommand = command;
-                adapter.Fill(tblEingabeListe);
-
-                tblEingabeListe.Columns.Add("Status", typeof(String));
-                foreach (DataRow rowListe in tblEingabeListe.Rows)
-                {
-                    rowListe["Status"] = "";
-                }
-                if (tblEingabeListe.Rows.Count == 0)
-                {
-                    m_intStatus = 9999;
-                    m_strMessage = "Keine Daten gefunden!";
-                }
-                else
-                {
-                    command.Parameters.Clear();
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_EXPORT_WARENKORB", ref m_objApp, ref m_objUser, ref page);
 
                     if (SendForAll)
                     {
-                        command.CommandText = "SELECT Count (ID) FROM dbo.ZLDKopfTabelle" +
-                            " INNER JOIN dbo.WebMember ON dbo.ZLDKopfTabelle.id_user = dbo.WebMember.UserID " +
-                            " WHERE Filiale = @filiale AND GroupID = @GroupID AND testuser = @testuser";
-                        command.Parameters.AddWithValue("@filiale", m_objUser.Reference);
-                        command.Parameters.AddWithValue("@GroupID", m_objUser.GroupID);
+                        myProxy.setImportParameter("I_VKBUR", m_objUser.Reference.Substring(4, 4));
+                        myProxy.setImportParameter("I_WEBGOUP_ID", m_objUser.GroupID.ToString());
                     }
                     else
                     {
-                        command.CommandText = "SELECT Count (ID) FROM dbo.ZLDKopfTabelle" +
-                            " WHERE id_User = @id_User AND testuser = @testuser";
-                        command.Parameters.AddWithValue("@id_User", m_objUser.UserID);
-                    }
-                    command.Parameters.AddWithValue("@testuser", m_objUser.IsTestUser);
-                    command.CommandType = CommandType.Text;
-                    IDCount = command.ExecuteScalar().ToString();
-                }
-            }
-            catch (Exception ex)
-            {
-                m_intStatus = 9999;
-                m_strMessage = "Fehler beim Laden der Eingabeliste: " + ex.Message;
-            }
-            finally
-            {
-                connection.Close();
-            }
-        }
-
-        /// <summary>
-        /// Speichern der markierten Daten(toSave=1) in SAP aus den SQL-Tabellen
-        /// Bapi Z_ZLD_AH_IMPORT_ERFASSUNG1
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Aufträge.aspx</param>
-        /// <param name="tblStvaStamm">Stvastamm zur Ergänzung der Daten(KREISBEZ)</param>
-        public void SaveZLDVorerfassung(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm)
-        {
-            m_strClassAndMethod = "VoerfZLD.SaveZLDVorerfassung";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-            tblFehler = null;
-            if (m_blnGestartet == false)
-            {
-                m_blnGestartet = true;
-                dboZLDAutohausDataContext ZLD_DataContext = new dboZLDAutohausDataContext();
-                try
-                {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
-
-                    myProxy.setImportParameter("I_SPEICHERN", "X");
-                    myProxy.setImportParameter("I_TELNR", m_objUser.PhoneEmployee);
-
-                    DataTable importAuftrag = myProxy.getImportTable("GT_BAK_IN");
-                    DataTable importPos = myProxy.getImportTable("GT_POS_IN");
-                    DataTable importAdresse = myProxy.getImportTable("GT_ADRS_IN");
-
-                    Int64 LastID = 0;
-
-                    foreach (DataRow SaveRow in tblEingabeListe.Rows)
-                    {
-                        if (SaveRow["toSave"].ToString() == "1")
-                        {
-                            Int64 tmpID = (Int64)SaveRow["id"];
-                            if (LastID != tmpID)
-                            {
-                                var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
-                                               where k.id == tmpID
-                                               select k).Single();
-                                String isCPD = "";
-                                DataRow importRowAuftrag = importAuftrag.NewRow();
-                                importRowAuftrag["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
-                                importRowAuftrag["VKORG"] = VKORG;
-                                importRowAuftrag["VKBUR"] = VKBUR;
-                                importRowAuftrag["BLTYP"] = tblKopf.Vorgang;
-                                importRowAuftrag["KUNNR"] = tblKopf.kundennr.PadLeft(10, '0');
-                                importRowAuftrag["ZZREFNR1"] = tblKopf.referenz1;
-                                importRowAuftrag["ZZREFNR2"] = tblKopf.referenz2;
-                                importRowAuftrag["ZZREFNR3"] = tblKopf.referenz3;
-                                importRowAuftrag["ZZREFNR4"] = tblKopf.referenz4;
-                                importRowAuftrag["KREISKZ"] = tblKopf.KreisKZ;
-                                DataRow[] RowStva = tblStvaStamm.Select("KREISKZ='" + tblKopf.KreisKZ + "'");
-                                if (RowStva.Length == 1)
-                                {
-                                    importRowAuftrag["KREISBEZ"] = RowStva[0]["KREISBEZ"];
-                                }
-                                else
-                                {
-                                    importRowAuftrag["KREISBEZ"] = tblKopf.KreisBez;
-                                }
-                                importRowAuftrag["WUNSCHKENN_JN"] = BoolToX((Boolean)tblKopf.WunschKenn);
-                                importRowAuftrag["RESERVKENN_JN"] = BoolToX((Boolean)tblKopf.Reserviert);
-                                importRowAuftrag["RESERVKENN"] = tblKopf.ReserviertKennz;
-                                importRowAuftrag["FEINSTAUB"] = BoolToX((Boolean)tblKopf.Feinstaub);
-                                importRowAuftrag["ZZZLDAT"] = tblKopf.Zulassungsdatum;
-                                importRowAuftrag["ZZKENN"] = tblKopf.Kennzeichen;
-                                importRowAuftrag["WU_KENNZ2"] = tblKopf.WunschKZ2;
-                                importRowAuftrag["WU_KENNZ3"] = tblKopf.WunschKZ3;
-                                importRowAuftrag["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
-
-                                importRowAuftrag["KENNZTYP"] = "";
-                                importRowAuftrag["KENNZFORM"] = tblKopf.KennzForm;
-                                importRowAuftrag["EINKENN_JN"] = BoolToX((Boolean)tblKopf.EinKennz);
-                                importRowAuftrag["BEMERKUNG"] = tblKopf.Bemerkung;
-                                importRowAuftrag["VK_KUERZEL"] = tblKopf.VKKurz;
-                                importRowAuftrag["KUNDEN_REF"] = tblKopf.interneRef;
-                                importRowAuftrag["KUNDEN_NOTIZ"] = tblKopf.KundenNotiz;
-                                importRowAuftrag["KENNZ_VH"] = BoolToX((Boolean)tblKopf.KennzVH);
-                               
-                                importRowAuftrag["ALT_KENNZ"] = tblKopf.KennzAlt;
-                                importRowAuftrag["ZBII_ALT_NEU"] = tblKopf.ZBII_ALT_NEU == true ? importRowAuftrag["ZBII_ALT_NEU"] = "N" : importRowAuftrag["ZBII_ALT_NEU"] = "A";
-                                // importRowAuftrag["ZBII_ALT_NEU"] = BoolToX((Boolean)tblKopf.ZBII_ALT_NEU);
-                                importRowAuftrag["VH_KENNZ_RES"] = BoolToX((Boolean)tblKopf.VorhKennzReserv);
-                                if (IsDate(tblKopf.Still_Datum.ToString()))
-                                {
-                                    importRowAuftrag["STILL_DAT"] = tblKopf.Still_Datum;
-                                }
-
-                                importRowAuftrag["MNRESW"] = tblKopf.MussResWerden;
-                                importRowAuftrag["ZZEVB"] = tblKopf.EVB;
-                                importRowAuftrag["KENNZ_UEBERNAHME"] = tblKopf.KennzUebernahme;
-                                importRowAuftrag["SERIE"] = tblKopf.Serie;
-                                importRowAuftrag["SAISON_KNZ"] = tblKopf.SaisonKZ;
-                                importRowAuftrag["SAISON_BEG"] = tblKopf.SaisonBeg;
-                                importRowAuftrag["SAISON_END"] = tblKopf.SaisonEnd;
-                                importRowAuftrag["ZUSKENNZ"] = tblKopf.ZusatzKZ;
-                                importRowAuftrag["TUEV_AU"] = tblKopf.Tuev_AU;
-                                importRowAuftrag["KURZZEITVS"] = tblKopf.Kurzzeitkennz;
-                                importRowAuftrag["ZOLLVERS"] = tblKopf.ZollVers;
-                                importRowAuftrag["ZOLLVERS_DAUER"] = tblKopf.ZollVers_Dauer;
-                                importRowAuftrag["FAHRZ_ART"] = tblKopf.Fahrz_Art;
-                                importRowAuftrag["VORFUEHR"] = tblKopf.Vorfuehrung;
-                                importRowAuftrag["LTEXT_NR"] = tblKopf.Langtextnr;
-                                //  TODO !!! 
-                                if (IsDate(tblKopf.Haltedauer.ToString()))
-                                {
-                                    importRowAuftrag["HALTE_DAUER"] = tblKopf.Haltedauer;
-                                }
-                                //  TODO !!! 
-
-                                // ggf. Original-Erfassername erhalten
-                                if ((SendForAll) && (!String.IsNullOrEmpty(tblKopf.Vorerfasser)))
-                                {
-                                    importRowAuftrag["VE_ERNAM"] = tblKopf.Vorerfasser;
-                                }
-                                else
-                                {
-                                    importRowAuftrag["VE_ERNAM"] = m_objUser.UserName;
-                                }
-                                
-                                if (tblKopf.SWIFT != null) { importRowAuftrag["SWIFT"] = tblKopf.SWIFT; }
-                                if (tblKopf.IBAN != null) { importRowAuftrag["IBAN"] = tblKopf.IBAN; }
-                                if (tblKopf.BankKey != null) { importRowAuftrag["BANKL"] = tblKopf.BankKey; }
-                                if (tblKopf.Kontonr != null) { importRowAuftrag["BANKN"] = tblKopf.Kontonr; }
-                                if (tblKopf.Geldinstitut != null) { importRowAuftrag["EBPP_ACCNAME"] = tblKopf.Geldinstitut; }
-                                if (tblKopf.Inhaber != null) { importRowAuftrag["KOINH"] = tblKopf.Inhaber; }
-                                if (tblKopf.EinzugErm != null) { importRowAuftrag["EINZ_JN"] = BoolToX((Boolean)tblKopf.EinzugErm); }
-                                if (tblKopf.Rechnung != null) { importRowAuftrag["RECH_JN"] = BoolToX((Boolean)tblKopf.Rechnung); }
-                                if (tblKopf.Barzahlung != null) { importRowAuftrag["BARZ_JN"] = BoolToX((Boolean)tblKopf.Barzahlung); }
-
-                                importRowAuftrag["BEB_STATUS"] = "1";
-
-                                DataRow importRow;
-
-                                //----------------
-
-
-                                var tblPosCount = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                                   where p.id_Kopf == tmpID
-                                                   select p);
-
-                                Int32 ROWCOUNT = 10;
-                                foreach (var PosRow in tblPosCount)
-                                {   importRow = importPos.NewRow();
-                                    importRow["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
-                                    importRow["LFDNR"] = (ROWCOUNT).ToString().PadLeft(6, '0');
-                                    importRow["MENGE"] = PosRow.Menge != "" ? importRow["MENGE"] = PosRow.Menge : importRow["MENGE"] = "1";
-                                    //if (tblKopf.ZBII_ALT_NEU == true && PosRow.Matnr == "573")
-                                    //{
-                                    //    importRowAuftrag["KREISKZ"] = "3";
-                                    //}
-                                    importRow["MATNR"] = PosRow.Matnr.PadLeft(18, '0'); 
-                                    importPos.Rows.Add(importRow);
-                                    ROWCOUNT += 10;
-
-                                }
-
-
-                                importAuftrag.Rows.Add(importRowAuftrag);
-
-                                var tblKunnadresse = (from k in ZLD_DataContext.ZLDKundenadresse
-                                                      where k.id_Kopf == tmpID
-                                                      select k).Single();
-                                if (tblKunnadresse.Name1 != null)
-                                {
-                                    if (tblKunnadresse.Name1.Length > 0)
-                                    {
-                                        importRow = importAdresse.NewRow();
-
-                                        importRow["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
-                                        if (tblKunnadresse.Name1 != null) { importRow["NAME1"] = tblKunnadresse.Name1; }
-                                        if (tblKunnadresse.Name2 != null) { importRow["NAME2"] = tblKunnadresse.Name2; }
-                                        if (tblKunnadresse.PLZ != null) { importRow["PLZ"] = tblKunnadresse.PLZ; }
-                                        if (tblKunnadresse.Ort != null) { importRow["CITY1"] = tblKunnadresse.Ort; }
-                                        if (tblKunnadresse.Strasse != null) { importRow["STREET"] = tblKunnadresse.Strasse; }
-
-                                        importAdresse.Rows.Add(importRow);
-                                    }
-                                }
-
-                                LastID = tmpID;
-                            }
-                        }
+                        myProxy.setImportParameter("I_WEBUSER_ID", m_objUser.UserID.ToString());
                     }
 
                     myProxy.callBapi();
 
+                    tblEingabeListe = myProxy.getExportTable("GT_BAK");
+                    IDCount = tblEingabeListe.Rows.Count.ToString();
+                    var tblPos = myProxy.getExportTable("GT_POS");
+                    var tblAdrs = myProxy.getExportTable("GT_ADRS");
+
+                    tblEingabeListe.Columns.Add("Status", typeof(String));
+                    tblEingabeListe.Columns.Add("toSave", typeof(String));
+                    tblEingabeListe.Columns.Add("kundenname", typeof(String));
+                    tblEingabeListe.Columns.Add("Matbez", typeof(String));
+                    tblEingabeListe.Columns.Add("Matnr", typeof(String));
+                    tblEingabeListe.Columns.Add("NAME1", typeof(String));
+                    tblEingabeListe.Columns.Add("NAME2", typeof(String));
+                    tblEingabeListe.Columns.Add("PLZ", typeof(String));
+                    tblEingabeListe.Columns.Add("CITY1", typeof(String));
+                    tblEingabeListe.Columns.Add("STREET", typeof(String));
+
+                    foreach (DataRow row in tblEingabeListe.Rows)
+                    {
+                        var kundeRows = tblKundenStamm.Select("KUNNR = '" + row["KUNNR"].ToString() + "'");
+                        if (kundeRows.Length > 0)
+                        {
+                            row["kundenname"] = String.Format("{0} ~ {1}", kundeRows[0]["NAME1"], kundeRows[0]["KUNNR"].ToString().TrimStart('0'));
+                        }
+
+                        var posRows = tblPos.Select("ZULBELN = '" + row["ZULBELN"].ToString() + "'");
+                        if (posRows.Length > 0)
+                        {
+                            row["Matnr"] = posRows[0]["MATNR"];
+                            if (ZLDCommon.Materialliste.ContainsKey(row["Matnr"].ToString().TrimStart('0')))
+                                row["Matbez"] = ZLDCommon.Materialliste[row["Matnr"].ToString().TrimStart('0')];
+                        }
+
+                        var adrsRows = tblAdrs.Select("ZULBELN = '" + row["ZULBELN"].ToString() + "'");
+                        if (adrsRows.Length > 0)
+                        {
+                            ModelMapping.Copy(adrsRows[0], row);
+                        }
+                    }
+
+                    if (tblEingabeListe.Rows.Count == 0)
+                    {
+                        m_intStatus = 9999;
+                        m_strMessage = "Keine Daten gefunden!";
+                    }
+
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+                }
+                catch (Exception ex)
+                {
+                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                    {
+                        default:
+                            m_intStatus = -5555;
+                            m_strMessage = "Es ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            break;
+                    }
+                }
+                finally
+                {
+                    m_blnGestartet = false;
+                }
+            }
+        }
+
+        public void SelectVorgang(long sapId)
+        {
+            Init("SelectVorgang", "", "");
+
+            try
+            {
+                var rows = tblEingabeListe.Select("ZULBELN = '" + sapId.ToString().PadLeft(10, '0') + "'");
+
+                if (rows.Length == 0)
+                {
+                    m_intStatus = 9999;
+                    m_strMessage = "Fehler beim Laden des Vorgangs";
+                    return;
+                }
+
+                var row = rows[0];
+
+                id_sap = (long)row["ZULBELN"];
+                AppID = row["APPID"].ToString();
+                Kundenname = row["kundenname"].ToString();
+                Kunnr = row["kundennr"].ToString();
+                Ref1 = row["ZZREFNR1"].ToString();
+                Ref2 = row["ZZREFNR2"].ToString();
+                Ref3 = row["ZZREFNR3"].ToString();
+                Ref4 = row["ZZREFNR4"].ToString();
+                KreisKennz = row["KREISKZ"].ToString();
+                Kreis = row["KREISBEZ"].ToString();
+                WunschKenn = row["WUNSCHKENN_JN"].ToString().XToBool();
+                Reserviert = row["RESERVKENN_JN"].ToString().XToBool();
+                ReserviertKennz = row["RESERVKENN"].ToString();
+                EVB = row["ZZEVB"].ToString();
+                KennzUebernahme = row["KENNZ_UEBERNAHME"].ToString().XToBool();
+                Serie = row["SERIE"].ToString().XToBool();
+                MussReserviert = row["MNRESW"].ToString().XToBool();
+                KennzVorhanden = row["KENNZ_VH"].ToString().XToBool();
+                Fahrzeugart = row["FAHRZ_ART"].ToString();
+                Saison = row["SAISON_KNZ"].ToString().XToBool();
+                SaisonBeg = row["SAISON_BEG"].ToString();
+                SaisonEnd = row["SAISON_END"].ToString();
+                ZusatzKZ = row["ZUSKENNZ"].ToString().XToBool();
+                ZollVers = row["ZOLLVERS"].ToString();
+                ZollVersDauer = row["ZOLLVERS_DAUER"].ToString();
+                EinKennz = row["EINKENN_JN"].ToString().XToBool();
+                Altkenn = row["ALT_KENNZ"].ToString();
+                VorhKennzReserv = row["VH_KENNZ_RES"].ToString().XToBool();
+                ZBII_ALT_NEU = (row["ZBII_ALT_NEU"].ToString() == "N");
+                Feinstaub = row["FEINSTAUB"].ToString().XToBool();
+                ZulDate = row["ZZZLDAT"].ToString();
+                if (ZulDate.IsDate()) { ZulDate = ((DateTime)row["ZZZLDAT"]).ToShortDateString(); }
+                StillDate = row["STILL_DAT"].ToString();
+                if (StillDate.IsDate()) { StillDate = ((DateTime)row["STILL_DAT"]).ToShortDateString(); }
+                Kennzeichen = row["ZZKENN"].ToString();
+                WunschKZ2 = row["WU_KENNZ2"].ToString();
+                WunschKZ3 = row["WU_KENNZ3"].ToString();
+                OhneGruenenVersSchein = row["O_G_VERSSCHEIN"].ToString().XToBool();
+                Bemerkung = row["BEMERKUNG"].ToString();
+                KennzForm = row["KENNZFORM"].ToString();
+                NrLangText = row["LTEXT_NR"].ToString();
+                LangText = "";
+                TuvAu = row["TUEV_AU"].ToString();
+                Haltedauer = row["HALTE_DAUER"].ToString();
+                if (Haltedauer.IsDate()) { Haltedauer = ((DateTime)row["HALTE_DAUER"]).ToShortDateString(); }
+                VkKurz = row["VK_KUERZEL"].ToString();
+                Notiz = row["KUNDEN_NOTIZ"].ToString();
+                InternRef = row["KUNDEN_REF"].ToString();
+                Vorgang = row["BLTYP"].ToString();
+                SWIFT = row["SWIFT"].ToString();
+                IBAN = row["IBAN"].ToString();
+                Bankkey = row["BANKL"].ToString();
+                Kontonr = row["BANKN"].ToString();
+                Inhaber = row["KOINH"].ToString();
+                Geldinstitut = row["EBPP_ACCNAME"].ToString();
+                EinzugErm = row["EINZ_JN"].ToString().XToBool();
+                Rechnung = row["RECH_JN"].ToString().XToBool();
+                Barzahlung = row["BARZ_JN"].ToString().XToBool();
+                NrMaterial = row["Matnr"].ToString();
+                Material = row["Matbez"].ToString();
+                Kunnr = row["KUNNR"].ToString();
+                Name1 = row["NAME1"].ToString();
+                Name2 = row["NAME2"].ToString();
+                PLZ = row["PLZ"].ToString();
+                Ort = row["CITY1"].ToString();
+                Strasse = row["STREET"].ToString();
+            }
+            catch (Exception ex)
+            {
+                m_intStatus = 9999;
+                m_strMessage = ex.Message;
+            }
+        }
+
+        public void DeleteVorgang(String strAppID, String strSessionID, Page page, long sapId)
+        {
+            Init("SelectVorgang", "", "");
+
+            if (!m_blnGestartet)
+            {
+                m_blnGestartet = true;
+                try
+                {
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_WARENKORB_DELETE", ref m_objApp, ref m_objUser, ref page);
+
+                    myProxy.setImportParameter("I_ZULBELN", sapId.ToString().PadLeft(10, '0'));
+
+                    myProxy.callBapi();
+
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+                }
+                catch (Exception ex)
+                {
+                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                    {
+                        default:
+                            m_intStatus = -9999;
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            break;
+                    }
+                }
+                finally { m_blnGestartet = false; }
+            }
+        }
+
+        public void SaveVorgangToSap(String strAppID, String strSessionID, Page page, bool cpdFormular, bool zusatzFormulare)
+        {
+            GiveSapID(strAppID, strSessionID, page);
+            if (id_sap == 0)
+            {
+                m_intStatus = 9999;
+                m_strMessage = "Fehler beim exportieren der Belegnummer!";
+                return;
+            }
+
+            Init("SaveVorgangToSap", strAppID, strSessionID);
+
+            tblFehler = null;
+            if (!m_blnGestartet)
+            {
+                m_blnGestartet = true;
+
+                try
+                {
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
+
+                    myProxy.setImportParameter("I_AUFRUF", "1");
+                    myProxy.setImportParameter("I_SPEICHERN", "S");
+                    myProxy.setImportParameter("I_TELNR", m_objUser.PhoneEmployee);
+
+                    if (cpdFormular)
+                        myProxy.setImportParameter("I_FORMULAR", "X");
+
+                    if (zusatzFormulare)
+                        myProxy.setImportParameter("I_ZUSATZFORMULARE", "X");
+
+                    DataTable impBak = myProxy.getImportTable("GT_BAK_IN");
+                    DataTable impPos = myProxy.getImportTable("GT_POS_IN");
+                    DataTable impAdrs = myProxy.getImportTable("GT_ADRS_IN");
+
+                    var impBakRow = impBak.NewRow();
+
+                    impBakRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                    impBakRow["APPID"] = AppID;
+                    impBakRow["WEBUSER_ID"] = m_objUser.UserID;
+                    impBakRow["WEBGOUP_ID"] = m_objUser.GroupID;
+                    impBakRow["VKORG"] = VKORG;
+                    impBakRow["VKBUR"] = VKBUR;
+                    impBakRow["BLTYP"] = Vorgang;
+                    impBakRow["KUNNR"] = Kunnr.PadLeft(10, '0');
+                    impBakRow["ZZREFNR1"] = Ref1;
+                    impBakRow["ZZREFNR2"] = Ref2;
+                    impBakRow["ZZREFNR3"] = Ref3;
+                    impBakRow["ZZREFNR4"] = Ref4;
+                    impBakRow["KREISKZ"] = KreisKennz;
+                    impBakRow["KREISBEZ"] = Kreis;
+                    impBakRow["WUNSCHKENN_JN"] = WunschKenn.BoolToX();
+                    impBakRow["RESERVKENN_JN"] = Reserviert.BoolToX();
+                    impBakRow["RESERVKENN"] = ReserviertKennz;
+                    impBakRow["FEINSTAUB"] = Feinstaub.BoolToX();
+                    impBakRow["ZZZLDAT"] = ZulDate.ToNullableDateTime();
+                    impBakRow["ZZKENN"] = Kennzeichen;
+                    impBakRow["WU_KENNZ2"] = WunschKZ2;
+                    impBakRow["WU_KENNZ3"] = WunschKZ3;
+                    impBakRow["O_G_VERSSCHEIN"] = OhneGruenenVersSchein.BoolToX();
+                    impBakRow["KENNZTYP"] = "";
+                    impBakRow["KENNZFORM"] = KennzForm;
+                    impBakRow["EINKENN_JN"] = EinKennz.BoolToX();
+                    impBakRow["BEMERKUNG"] = Bemerkung;
+                    impBakRow["VK_KUERZEL"] = VkKurz;
+                    impBakRow["KUNDEN_REF"] = InternRef;
+                    impBakRow["KUNDEN_NOTIZ"] = Notiz;
+                    impBakRow["KENNZ_VH"] = KennzVorhanden.BoolToX();
+                    impBakRow["ALT_KENNZ"] = Altkenn;
+                    impBakRow["ZBII_ALT_NEU"] = (ZBII_ALT_NEU ? "N" : "A");
+                    impBakRow["VH_KENNZ_RES"] = VorhKennzReserv.BoolToX();
+                    impBakRow["STILL_DAT"] = StillDate.ToNullableDateTime();
+                    impBakRow["MNRESW"] = MussReserviert.BoolToX();
+                    impBakRow["ZZEVB"] = EVB;
+                    impBakRow["KENNZ_UEBERNAHME"] = KennzUebernahme.BoolToX();
+                    impBakRow["SERIE"] = Serie;
+                    impBakRow["SAISON_KNZ"] = Saison.BoolToX();
+                    impBakRow["SAISON_BEG"] = SaisonBeg;
+                    impBakRow["SAISON_END"] = SaisonEnd;
+                    impBakRow["ZUSKENNZ"] = ZusatzKZ.BoolToX();
+                    impBakRow["TUEV_AU"] = TuvAu;
+                    impBakRow["KURZZEITVS"] = KurzZeitKennz;
+                    impBakRow["ZOLLVERS"] = ZollVers;
+                    impBakRow["ZOLLVERS_DAUER"] = ZollVersDauer;
+                    impBakRow["FAHRZ_ART"] = Fahrzeugart;
+                    impBakRow["VORFUEHR"] = Vorfuehr;
+                    impBakRow["LTEXT_NR"] = NrLangText;
+                    impBakRow["HALTE_DAUER"] = Haltedauer.ToNullableDateTime();
+                    impBakRow["VE_ERNAM"] = m_objUser.UserName;
+                    impBakRow["SWIFT"] = SWIFT;
+                    impBakRow["IBAN"] = IBAN;
+                    impBakRow["BANKL"] = Bankkey;
+                    impBakRow["BANKN"] = Kontonr;
+                    impBakRow["EBPP_ACCNAME"] = Geldinstitut;
+                    impBakRow["KOINH"] = Inhaber;
+                    impBakRow["EINZ_JN"] = EinzugErm.BoolToX();
+                    impBakRow["RECH_JN"] = Rechnung.BoolToX();
+                    impBakRow["BARZ_JN"] = Barzahlung.BoolToX();
+
+                    impBak.Rows.Add(impBakRow);
+
+                    var impPosRow = impPos.NewRow();
+
+                    impPosRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                    impPosRow["LFDNR"] = "000010";
+                    impPosRow["MENGE"] = "1";
+                    impPosRow["MATNR"] = NrMaterial.PadLeft(18, '0');
+
+                    impPos.Rows.Add(impPosRow);
+
+                    if (!String.IsNullOrEmpty(Name1))
+                    {
+                        var impAdrsRow = impAdrs.NewRow();
+
+                        impAdrsRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                        impAdrsRow["NAME1"] = Name1;
+                        impAdrsRow["NAME2"] = Name2;
+                        impAdrsRow["PLZ"] = PLZ;
+                        impAdrsRow["CITY1"] = Ort;
+                        impAdrsRow["STREET"] = Strasse;
+
+                        impAdrs.Rows.Add(impAdrsRow);
+                    }
+
+                    myProxy.callBapi();
 
                     tblFehler = myProxy.getExportTable("GT_ERROR");
                     tblPrint = myProxy.getExportTable("GT_FILENAME");
 
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
+                    KundenformularPDF = (cpdFormular ? myProxy.getExportParameterByte("E_PDF") : null);
 
+                    tblPrintKundenformulare = (zusatzFormulare ? myProxy.getExportTable("GT_FILENAME") : null);
+
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
 
                     if (tblFehler.Rows.Count > 0)
                     {
-
                         m_intStatus = -9999;
                         m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
 
                         foreach (DataRow rowError in tblFehler.Rows)
                         {
-                            Int32 id_sap;
-                            Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
-                            Int32 id_Pos;
-                            Int32.TryParse(rowError["LFDNR"].ToString(), out id_Pos);
-                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + id_sap );
-                            if (rowListe.Length == 1)
+                            var idSap = rowError["ZULBELN"].ToString().ToInt(0);
+                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idSap);
+                            if (rowListe.Length > 0)
                             {
                                 rowListe[0]["Status"] = rowError["MESSAGE"];
                             }
@@ -1538,22 +564,322 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -5555;
-                            m_strMessage = m_strMessage = "Es ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Es ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }
                 finally
                 {
                     m_blnGestartet = false;
+                }
+            }
+        }
 
-                    if (ZLD_DataContext != null)
+        public void SaveVorgaengeToSap(String strAppID, String strSessionID, Page page, DataTable tblVorgaenge, bool cpdFormular, bool zusatzFormulare)
+        {
+            if (tblVorgaenge == null || tblVorgaenge.Rows.Count == 0)
+                return;
+
+            var idList = new Dictionary<int, long>();
+
+            for (var i = 0; i < tblVorgaenge.Rows.Count; i++)
+            {
+                GiveSapID(strAppID, strSessionID, page);
+                if (id_sap == 0)
+                {
+                    m_intStatus = 9999;
+                    m_strMessage = "Fehler beim exportieren der Belegnummer!";
+                    return;
+                }
+
+                idList.Add(i, id_sap);
+            }
+            
+            Init("SaveVorgangToSap", strAppID, strSessionID);
+
+            tblFehler = null;
+            if (!m_blnGestartet)
+            {
+                m_blnGestartet = true;
+
+                try
+                {
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
+
+                    myProxy.setImportParameter("I_AUFRUF", "1");
+                    myProxy.setImportParameter("I_SPEICHERN", "S");
+                    myProxy.setImportParameter("I_TELNR", m_objUser.PhoneEmployee);
+
+                    if (cpdFormular)
+                        myProxy.setImportParameter("I_FORMULAR", "X");
+
+                    if (zusatzFormulare)
+                        myProxy.setImportParameter("I_ZUSATZFORMULARE", "X");
+
+                    DataTable impBak = myProxy.getImportTable("GT_BAK_IN");
+                    DataTable impPos = myProxy.getImportTable("GT_POS_IN");
+                    DataTable impAdrs = myProxy.getImportTable("GT_ADRS_IN");
+
+                    foreach (var sapId in idList)
                     {
-                        if (ZLD_DataContext.Connection.State == ConnectionState.Open)
+                        var vRow = tblVorgaenge.Rows[sapId.Key];
+
+                        var impBakRow = impBak.NewRow();
+
+                        impBakRow["ZULBELN"] = sapId.Value.ToString().PadLeft(10, '0');
+                        impBakRow["APPID"] = AppID;
+                        impBakRow["WEBUSER_ID"] = m_objUser.UserID;
+                        impBakRow["WEBGOUP_ID"] = m_objUser.GroupID;
+                        impBakRow["VKORG"] = VKORG;
+                        impBakRow["VKBUR"] = VKBUR;
+                        impBakRow["BLTYP"] = Vorgang;
+                        impBakRow["KUNNR"] = Kunnr.PadLeft(10, '0');
+                        impBakRow["ZZREFNR1"] = Ref1;
+
+                        // Referenzen werden teilweise bei Anzahl >1 je Vorgang erfasst, deshalb die nachfolgende Fallunterscheidung
+                        if (tblVorgaenge.Columns.Contains("REF2"))
                         {
-                            ZLD_DataContext.Connection.Close();
-                            ZLD_DataContext.Dispose();
+                            impBakRow["ZZREFNR2"] = vRow["REF2"].ToString();
+                            impBakRow["ZZREFNR3"] = vRow["REF3"].ToString();
+                            impBakRow["ZZREFNR4"] = vRow["REF4"].ToString();
+                        }
+                        else
+                        {
+                            impBakRow["ZZREFNR2"] = Ref2;
+                            impBakRow["ZZREFNR3"] = Ref3;
+                            impBakRow["ZZREFNR4"] = Ref4;
+                        }
+
+                        impBakRow["KREISKZ"] = KreisKennz;
+                        impBakRow["KREISBEZ"] = Kreis;
+                        impBakRow["WUNSCHKENN_JN"] = WunschKenn.BoolToX();
+                        impBakRow["RESERVKENN_JN"] = Reserviert.BoolToX();
+                        impBakRow["RESERVKENN"] = ReserviertKennz;
+                        impBakRow["FEINSTAUB"] = Feinstaub.BoolToX();
+                        impBakRow["ZZZLDAT"] = ZulDate.ToNullableDateTime();
+
+                        if (tblVorgaenge.Columns.Contains("KennzFun") && !String.IsNullOrEmpty(vRow["KennzFun"].ToString()))
+                        {
+                            impBakRow["ZZKENN"] = vRow["KennzFun"].ToString();
+                        }
+                        else
+                        {
+                            impBakRow["ZZKENN"] = vRow["Kennz1"].ToString() + "-" + vRow["Kennz2"].ToString();
+                        }
+
+                        impBakRow["WU_KENNZ2"] = WunschKZ2;
+                        impBakRow["WU_KENNZ3"] = WunschKZ3;
+                        impBakRow["O_G_VERSSCHEIN"] = OhneGruenenVersSchein.BoolToX();
+                        impBakRow["KENNZTYP"] = "";
+
+                        impBakRow["KENNZFORM"] = (tblVorgaenge.Columns.Contains("Kennzform") ? vRow["Kennzform"].ToString() : KennzForm);
+
+                        impBakRow["EINKENN_JN"] = (tblVorgaenge.Columns.Contains("EinKennz") ? (bool)vRow["EinKennz"] : EinKennz).BoolToX();
+
+                        impBakRow["BEMERKUNG"] = Bemerkung;
+                        impBakRow["VK_KUERZEL"] = VkKurz;
+                        impBakRow["KUNDEN_REF"] = InternRef;
+                        impBakRow["KUNDEN_NOTIZ"] = Notiz;
+
+                        impBakRow["KENNZ_VH"] = KennzVorhanden.BoolToX();
+                        impBakRow["ALT_KENNZ"] = Altkenn;
+                        impBakRow["ZBII_ALT_NEU"] = (ZBII_ALT_NEU ? "N" : "A");
+
+                        impBakRow["VH_KENNZ_RES"] = (tblVorgaenge.Columns.Contains("KennzVorhanden") ? (bool)vRow["KennzVorhanden"] : VorhKennzReserv).BoolToX();
+
+                        impBakRow["STILL_DAT"] = StillDate.ToNullableDateTime();
+                        impBakRow["MNRESW"] = MussReserviert.BoolToX();
+                        impBakRow["ZZEVB"] = EVB;
+                        impBakRow["KENNZ_UEBERNAHME"] = KennzUebernahme.BoolToX();
+                        impBakRow["SERIE"] = Serie;
+                        impBakRow["SAISON_KNZ"] = Saison.BoolToX();
+                        impBakRow["SAISON_BEG"] = SaisonBeg;
+                        impBakRow["SAISON_END"] = SaisonEnd;
+                        impBakRow["ZUSKENNZ"] = ZusatzKZ.BoolToX();
+                        impBakRow["TUEV_AU"] = TuvAu;
+                        impBakRow["KURZZEITVS"] = KurzZeitKennz;
+                        impBakRow["ZOLLVERS"] = ZollVers;
+                        impBakRow["ZOLLVERS_DAUER"] = ZollVersDauer;
+                        impBakRow["FAHRZ_ART"] = Fahrzeugart;
+                        impBakRow["VORFUEHR"] = Vorfuehr;
+                        impBakRow["LTEXT_NR"] = NrLangText;
+                        impBakRow["HALTE_DAUER"] = Haltedauer.ToNullableDateTime();
+                        impBakRow["VE_ERNAM"] = m_objUser.UserName;
+                        impBakRow["SWIFT"] = SWIFT;
+                        impBakRow["IBAN"] = IBAN;
+                        impBakRow["BANKL"] = Bankkey;
+                        impBakRow["BANKN"] = Kontonr;
+                        impBakRow["EBPP_ACCNAME"] = Geldinstitut;
+                        impBakRow["KOINH"] = Inhaber;
+                        impBakRow["EINZ_JN"] = EinzugErm.BoolToX();
+                        impBakRow["RECH_JN"] = Rechnung.BoolToX();
+                        impBakRow["BARZ_JN"] = Barzahlung.BoolToX();
+
+                        impBak.Rows.Add(impBakRow);
+
+                        var impPosRow = impPos.NewRow();
+
+                        impPosRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                        impPosRow["LFDNR"] = "000010";
+                        impPosRow["MENGE"] = "1";
+                        impPosRow["MATNR"] = NrMaterial.PadLeft(18, '0');
+
+                        impPos.Rows.Add(impPosRow);
+
+                        if (!String.IsNullOrEmpty(Name1))
+                        {
+                            var impAdrsRow = impAdrs.NewRow();
+
+                            impAdrsRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                            impAdrsRow["NAME1"] = Name1;
+                            impAdrsRow["NAME2"] = Name2;
+                            impAdrsRow["PLZ"] = PLZ;
+                            impAdrsRow["CITY1"] = Ort;
+                            impAdrsRow["STREET"] = Strasse;
+
+                            impAdrs.Rows.Add(impAdrsRow);
                         }
                     }
+
+                    myProxy.callBapi();
+
+                    tblFehler = myProxy.getExportTable("GT_ERROR");
+                    tblPrint = myProxy.getExportTable("GT_FILENAME");
+
+                    KundenformularPDF = (cpdFormular ? myProxy.getExportParameterByte("E_PDF") : null);
+
+                    tblPrintKundenformulare = (zusatzFormulare ? myProxy.getExportTable("GT_FILENAME") : null);
+
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+
+                    if (tblFehler.Rows.Count > 0)
+                    {
+                        m_intStatus = -9999;
+                        m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+
+                        foreach (DataRow rowError in tblFehler.Rows)
+                        {
+                            var idSap = rowError["ZULBELN"].ToString().ToInt(0);
+                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idSap);
+                            if (rowListe.Length > 0)
+                            {
+                                rowListe[0]["Status"] = rowError["MESSAGE"];
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                    {
+                        default:
+                            m_intStatus = -5555;
+                            m_strMessage = "Es ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            break;
+                    }
+                }
+                finally
+                {
+                    m_blnGestartet = false;
+                }
+            }
+        }
+
+        public void SendVorgaengeToSap(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm)
+        {
+            Init("SendVorgaengeToSap", strAppID, strSessionID);
+
+            tblFehler = null;
+            if (!m_blnGestartet)
+            {
+                m_blnGestartet = true;
+
+                try
+                {
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
+
+                    myProxy.setImportParameter("I_AUFRUF", "1");
+                    myProxy.setImportParameter("I_SPEICHERN", "A");
+                    myProxy.setImportParameter("I_TELNR", m_objUser.PhoneEmployee);
+
+                    DataTable impBak = myProxy.getImportTable("GT_BAK_IN");
+                    DataTable impPos = myProxy.getImportTable("GT_POS_IN");
+                    DataTable impAdrs = myProxy.getImportTable("GT_ADRS_IN");
+
+                    foreach (DataRow SaveRow in tblEingabeListe.Rows)
+                    {
+                        if (SaveRow["toSave"].ToString() == "1")
+                        {
+                            DataRow impBakRow = impBak.NewRow();
+
+                            if (ModelMapping.Copy(SaveRow, impBakRow))
+                            {
+                                impBak.Rows.Add(impBakRow);
+
+                                var impPosRow = impPos.NewRow();
+
+                                impPosRow["ZULBELN"] = SaveRow["ZULBELN"];
+                                impPosRow["LFDNR"] = "000010";
+                                impPosRow["MENGE"] = "1";
+                                impPosRow["MATNR"] = SaveRow["Matnr"];
+
+                                impPos.Rows.Add(impPosRow);
+
+                                if (!String.IsNullOrEmpty(SaveRow["NAME1"].ToString()))
+                                {
+                                    var impAdrsRow = impAdrs.NewRow();
+
+                                    impAdrsRow["ZULBELN"] = SaveRow["ZULBELN"];
+                                    impAdrsRow["NAME1"] = SaveRow["NAME1"];
+                                    impAdrsRow["NAME2"] = SaveRow["NAME2"];
+                                    impAdrsRow["PLZ"] = SaveRow["PLZ"];
+                                    impAdrsRow["CITY1"] = SaveRow["CITY1"];
+                                    impAdrsRow["STREET"] = SaveRow["STREET"];
+
+                                    impAdrs.Rows.Add(impAdrsRow);
+                                }
+                            }
+                        }
+                    }
+
+                    myProxy.callBapi();
+
+                    tblFehler = myProxy.getExportTable("GT_ERROR");
+                    tblPrint = myProxy.getExportTable("GT_FILENAME");
+
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
+
+                    if (tblFehler.Rows.Count > 0)
+                    {
+                        m_intStatus = -9999;
+                        m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+
+                        foreach (DataRow rowError in tblFehler.Rows)
+                        {
+                            var idSap = rowError["ZULBELN"].ToString().ToInt(0);
+                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idSap);
+                            if (rowListe.Length > 0)
+                            {
+                                rowListe[0]["Status"] = rowError["MESSAGE"];
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    switch (HelpProcedures.CastSapBizTalkErrorMessage(ex.Message))
+                    {
+                        default:
+                            m_intStatus = -5555;
+                            m_strMessage = "Es ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            break;
+                    }
+                }
+                finally
+                {
+                    m_blnGestartet = false;
                 }
             }
         }
@@ -1566,26 +892,21 @@ namespace AutohausPortal.lib
         /// <param name="strAppID">AppID</param>
         /// <param name="strSessionID">SessionID</param>
         /// <param name="page">AbmeldungAHZul.aspx.cs</param>
-        /// <param name="VKORG">Verkaufsorganisation</param>
-        /// <param name="VKBUR">Verkaufsbüro</param>
-        public void GetAbmeldungAH(String strAppID, String strSessionID, Page page, String VKORG, String VKBUR)
+        /// <param name="vkOrg">Verkaufsorganisation</param>
+        /// <param name="vkBur">Verkaufsbüro</param>
+        public void GetAbmeldungAH(String strAppID, String strSessionID, Page page, String vkOrg, String vkBur)
         {
+            Init("GetAbmeldungAH", strAppID, strSessionID);
 
-            m_strClassAndMethod = "ZLD_Suche.GetAbmeldungAH";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
+            if (!m_blnGestartet)
             {
                 m_blnGestartet = true;
                 try
                 {
                     DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_AF_ABM_LISTE", ref m_objApp, ref m_objUser, ref page);
 
-                    myProxy.setImportParameter("I_VKORG", VKORG);
-                    myProxy.setImportParameter("I_VKBUR", VKBUR);
+                    myProxy.setImportParameter("I_VKORG", vkOrg);
+                    myProxy.setImportParameter("I_VKBUR", vkBur);
                     myProxy.setImportParameter("I_GRUPPE", m_objUser.Groups[0].GroupName);
                     myProxy.setImportParameter("I_KUNNR", "");
                     myProxy.callBapi();
@@ -1600,12 +921,8 @@ namespace AutohausPortal.lib
                         aRow["NAME1"] = aRow["NAME1"].ToString() + " ~ " + aRow["KUNNR"].ToString();
                         aRow["Auswahl"] = "";
                     }
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
                 catch (Exception ex)
                 {
@@ -1613,7 +930,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }
@@ -1630,14 +947,9 @@ namespace AutohausPortal.lib
         /// <param name="page">AbmeldungAHZul.aspx.cs</param>
         public void SaveAbmeldungAH(String strAppID, String strSessionID, Page page)
         {
+            Init("SaveAbmeldungAH", strAppID, strSessionID);
 
-            m_strClassAndMethod = "ZLD_Suche.GetAbmeldungAH";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-
-            if (m_blnGestartet == false)
+            if (!m_blnGestartet)
             {
                 m_blnGestartet = true;
                 try
@@ -1650,7 +962,6 @@ namespace AutohausPortal.lib
                     {
                         if (aRow["Auswahl"].ToString() != "") 
                         {
-
                             DataRow RowSap = SAPAbmeldedaten.NewRow();
                             RowSap["ZULBELN"] = aRow["ZULBELN"].ToString().PadLeft(10,'0');
                             RowSap["AUSWAHL"] = aRow["AUSWAHL"];
@@ -1664,19 +975,15 @@ namespace AutohausPortal.lib
 
                     DataTable SAPReturn = myProxy.getExportTable("GT_ABM");
                     tblPrint = myProxy.getExportTable("GT_FILENAME");
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC").ToString(), out subrc);
-                    m_intStatus = subrc;
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE").ToString();
-                    m_strMessage = sapMessage;
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                     if (SAPReturn.Rows.Count > 0)
                     {
                         foreach (DataRow rowError in SAPReturn.Rows)
                         {
-                            Int32 id_sap;
-                            Int32.TryParse(rowError["ZULBELN"].ToString(), out id_sap);
-                            DataRow[] rowListe = Abmeldedaten.Select("ZULBELN=" + id_sap);
+                            Int32 sapId;
+                            Int32.TryParse(rowError["ZULBELN"].ToString(), out sapId);
+                            DataRow[] rowListe = Abmeldedaten.Select("ZULBELN=" + sapId);
                             if (rowListe.Length == 1)
                             {
                                 if (rowError["MESSAGE"].ToString() != "") { rowListe[0]["Status"] = rowError["MESSAGE"]; }
@@ -1691,7 +998,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }
@@ -1699,212 +1006,37 @@ namespace AutohausPortal.lib
             }
         }
 
-        /// <summary>
-        /// Vorläufigen Vorgang an SAP geben, um dort div. Kundenformulare zu generieren
-        /// Bapi Z_ZLD_AH_IMPORT_ERFASSUNG1
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Aufträge.aspx</param>
-        /// <param name="tblStvaStamm">Stvastamm zur Ergänzung der Daten(KREISBEZ)</param>
-        /// <param name="cpdFormular"></param>
-        /// <param name="zusatzFormulare"></param>
-        public void CreateKundenformulare(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm, bool cpdFormular, bool zusatzFormulare)
+        public string GetAnzahlAuftraege(String strAppID, String strSessionID, Page page)
         {
-            CreateKundenformulare(strAppID, strSessionID, page, tblStvaStamm, cpdFormular, zusatzFormulare, new List<long> { KopfID });
-        }
+            Init("GetAnzahlAuftraege", strAppID, strSessionID);
 
-        /// <summary>
-        /// Vorläufige Vorgänge an SAP geben, um dort div. Kundenformulare zu generieren
-        /// Bapi Z_ZLD_AH_IMPORT_ERFASSUNG1
-        /// </summary>
-        /// <param name="strAppID">AppID</param>
-        /// <param name="strSessionID">SessionID</param>
-        /// <param name="page">Aufträge.aspx</param>
-        /// <param name="tblStvaStamm">Stvastamm zur Ergänzung der Daten(KREISBEZ)</param>
-        /// <param name="cpdFormular"></param>
-        /// <param name="zusatzFormulare"></param>
-        /// <param name="idListe">IDs der Vorgänge</param>
-        public void CreateKundenformulare(String strAppID, String strSessionID, Page page, DataTable tblStvaStamm, bool cpdFormular, bool zusatzFormulare, List<long> idListe)
-        {
-            m_strClassAndMethod = "AHErfassung.CreateKundenformulare";
-            m_strAppID = strAppID;
-            m_strSessionID = strSessionID;
-            m_intStatus = 0;
-            m_strMessage = String.Empty;
-            tblFehler = null;
-            if (m_blnGestartet == false)
+            var anzahl = "0";
+
+            if (!m_blnGestartet)
             {
                 m_blnGestartet = true;
-                dboZLDAutohausDataContext ZLD_DataContext = new dboZLDAutohausDataContext();
+
                 try
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_IMPORT_ERFASSUNG1", ref m_objApp, ref m_objUser, ref page);
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_EXPORT_WARENKORB", ref m_objApp, ref m_objUser, ref page);
 
-                    myProxy.setImportParameter("I_TELNR", m_objUser.PhoneEmployee);
-
-                    if (cpdFormular)
-                        myProxy.setImportParameter("I_FORMULAR", "X");
-
-                    if (zusatzFormulare)
-                        myProxy.setImportParameter("I_ZUSATZFORMULARE", "X");
-
-                    DataTable importAuftrag = myProxy.getImportTable("GT_BAK_IN");
-                    DataTable importPos = myProxy.getImportTable("GT_POS_IN");
-                    DataTable importAdresse = myProxy.getImportTable("GT_ADRS_IN");
-
-                    foreach (var item in idListe)
+                    if (SendForAll)
                     {
-                        var vorgid = item;
-
-                        var tblKopf = (from k in ZLD_DataContext.ZLDKopfTabelle
-                                       where k.id == vorgid
-                                       select k).Single();
-
-                        DataRow importRowAuftrag = importAuftrag.NewRow();
-                        importRowAuftrag["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
-                        importRowAuftrag["VKORG"] = VKORG;
-                        importRowAuftrag["VKBUR"] = VKBUR;
-                        importRowAuftrag["BLTYP"] = tblKopf.Vorgang;
-                        importRowAuftrag["KUNNR"] = tblKopf.kundennr.PadLeft(10, '0');
-                        importRowAuftrag["ZZREFNR1"] = tblKopf.referenz1;
-                        importRowAuftrag["ZZREFNR2"] = tblKopf.referenz2;
-                        importRowAuftrag["ZZREFNR3"] = tblKopf.referenz3;
-                        importRowAuftrag["ZZREFNR4"] = tblKopf.referenz4;
-                        importRowAuftrag["KREISKZ"] = tblKopf.KreisKZ;
-                        DataRow[] RowStva = tblStvaStamm.Select("KREISKZ='" + tblKopf.KreisKZ + "'");
-                        if (RowStva.Length == 1)
-                        {
-                            importRowAuftrag["KREISBEZ"] = RowStva[0]["KREISBEZ"];
-                        }
-                        else
-                        {
-                            importRowAuftrag["KREISBEZ"] = tblKopf.KreisBez;
-                        }
-                        importRowAuftrag["WUNSCHKENN_JN"] = BoolToX((Boolean)tblKopf.WunschKenn);
-                        importRowAuftrag["RESERVKENN_JN"] = BoolToX((Boolean)tblKopf.Reserviert);
-                        importRowAuftrag["RESERVKENN"] = tblKopf.ReserviertKennz;
-                        importRowAuftrag["FEINSTAUB"] = BoolToX((Boolean)tblKopf.Feinstaub);
-                        importRowAuftrag["ZZZLDAT"] = tblKopf.Zulassungsdatum;
-                        importRowAuftrag["ZZKENN"] = tblKopf.Kennzeichen;
-                        importRowAuftrag["WU_KENNZ2"] = tblKopf.WunschKZ2;
-                        importRowAuftrag["WU_KENNZ3"] = tblKopf.WunschKZ3;
-                        importRowAuftrag["O_G_VERSSCHEIN"] = tblKopf.OhneGruenenVersSchein;
-
-                        importRowAuftrag["KENNZTYP"] = "";
-                        importRowAuftrag["KENNZFORM"] = tblKopf.KennzForm;
-                        importRowAuftrag["EINKENN_JN"] = BoolToX((Boolean)tblKopf.EinKennz);
-                        importRowAuftrag["BEMERKUNG"] = tblKopf.Bemerkung;
-                        importRowAuftrag["VK_KUERZEL"] = tblKopf.VKKurz;
-                        importRowAuftrag["KUNDEN_REF"] = tblKopf.interneRef;
-                        importRowAuftrag["KUNDEN_NOTIZ"] = tblKopf.KundenNotiz;
-                        importRowAuftrag["KENNZ_VH"] = BoolToX((Boolean)tblKopf.KennzVH);
-
-                        importRowAuftrag["ALT_KENNZ"] = tblKopf.KennzAlt;
-                        importRowAuftrag["ZBII_ALT_NEU"] = tblKopf.ZBII_ALT_NEU == true ? importRowAuftrag["ZBII_ALT_NEU"] = "N" : importRowAuftrag["ZBII_ALT_NEU"] = "A";
-                        importRowAuftrag["VH_KENNZ_RES"] = BoolToX((Boolean)tblKopf.VorhKennzReserv);
-                        if (IsDate(tblKopf.Still_Datum.ToString()))
-                        {
-                            importRowAuftrag["STILL_DAT"] = tblKopf.Still_Datum;
-                        }
-
-                        importRowAuftrag["MNRESW"] = tblKopf.MussResWerden;
-                        importRowAuftrag["ZZEVB"] = tblKopf.EVB;
-                        importRowAuftrag["KENNZ_UEBERNAHME"] = tblKopf.KennzUebernahme;
-                        importRowAuftrag["SERIE"] = tblKopf.Serie;
-                        importRowAuftrag["SAISON_KNZ"] = tblKopf.SaisonKZ;
-                        importRowAuftrag["SAISON_BEG"] = tblKopf.SaisonBeg;
-                        importRowAuftrag["SAISON_END"] = tblKopf.SaisonEnd;
-                        importRowAuftrag["ZUSKENNZ"] = tblKopf.ZusatzKZ;
-                        importRowAuftrag["TUEV_AU"] = tblKopf.Tuev_AU;
-                        importRowAuftrag["KURZZEITVS"] = tblKopf.Kurzzeitkennz;
-                        importRowAuftrag["ZOLLVERS"] = tblKopf.ZollVers;
-                        importRowAuftrag["ZOLLVERS_DAUER"] = tblKopf.ZollVers_Dauer;
-                        importRowAuftrag["FAHRZ_ART"] = tblKopf.Fahrz_Art;
-                        importRowAuftrag["VORFUEHR"] = tblKopf.Vorfuehrung;
-                        importRowAuftrag["LTEXT_NR"] = tblKopf.Langtextnr;
-
-                        if (IsDate(tblKopf.Haltedauer.ToString()))
-                        {
-                            importRowAuftrag["HALTE_DAUER"] = tblKopf.Haltedauer;
-                        }
-
-                        // ggf. Original-Erfassername erhalten
-                        if ((SendForAll) && (!String.IsNullOrEmpty(tblKopf.Vorerfasser)))
-                        {
-                            importRowAuftrag["VE_ERNAM"] = tblKopf.Vorerfasser;
-                        }
-                        else
-                        {
-                            importRowAuftrag["VE_ERNAM"] = m_objUser.UserName;
-                        }
-
-                        if (tblKopf.SWIFT != null) { importRowAuftrag["SWIFT"] = tblKopf.SWIFT; }
-                        if (tblKopf.IBAN != null) { importRowAuftrag["IBAN"] = tblKopf.IBAN; }
-                        if (tblKopf.BankKey != null) { importRowAuftrag["BANKL"] = tblKopf.BankKey; }
-                        if (tblKopf.Kontonr != null) { importRowAuftrag["BANKN"] = tblKopf.Kontonr; }
-                        if (tblKopf.Geldinstitut != null) { importRowAuftrag["EBPP_ACCNAME"] = tblKopf.Geldinstitut; }
-                        if (tblKopf.Inhaber != null) { importRowAuftrag["KOINH"] = tblKopf.Inhaber; }
-                        if (tblKopf.EinzugErm != null) { importRowAuftrag["EINZ_JN"] = BoolToX((Boolean)tblKopf.EinzugErm); }
-                        if (tblKopf.Rechnung != null) { importRowAuftrag["RECH_JN"] = BoolToX((Boolean)tblKopf.Rechnung); }
-                        if (tblKopf.Barzahlung != null) { importRowAuftrag["BARZ_JN"] = BoolToX((Boolean)tblKopf.Barzahlung); }
-
-                        importRowAuftrag["BEB_STATUS"] = "1";
-
-                        DataRow importRow;
-
-                        var tblPosCount = (from p in ZLD_DataContext.ZLDPositionsTabelle
-                                           where p.id_Kopf == vorgid
-                                           select p);
-
-                        Int32 ROWCOUNT = 10;
-                        foreach (var PosRow in tblPosCount)
-                        {
-                            importRow = importPos.NewRow();
-                            importRow["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
-                            importRow["LFDNR"] = (ROWCOUNT).ToString().PadLeft(6, '0');
-                            importRow["MENGE"] = PosRow.Menge != "" ? importRow["MENGE"] = PosRow.Menge : importRow["MENGE"] = "1";
-                            importRow["MATNR"] = PosRow.Matnr.PadLeft(18, '0');
-                            importPos.Rows.Add(importRow);
-                            ROWCOUNT += 10;
-                        }
-
-                        importAuftrag.Rows.Add(importRowAuftrag);
-
-                        var tblKunnadresse = (from k in ZLD_DataContext.ZLDKundenadresse
-                                              where k.id_Kopf == vorgid
-                                              select k).Single();
-
-                        if (tblKunnadresse.Name1 != null)
-                        {
-                            if (tblKunnadresse.Name1.Length > 0)
-                            {
-                                importRow = importAdresse.NewRow();
-
-                                importRow["ZULBELN"] = tblKopf.id_sap.ToString().PadLeft(10, '0');
-                                if (tblKunnadresse.Name1 != null) { importRow["NAME1"] = tblKunnadresse.Name1; }
-                                if (tblKunnadresse.Name2 != null) { importRow["NAME2"] = tblKunnadresse.Name2; }
-                                if (tblKunnadresse.PLZ != null) { importRow["PLZ"] = tblKunnadresse.PLZ; }
-                                if (tblKunnadresse.Ort != null) { importRow["CITY1"] = tblKunnadresse.Ort; }
-                                if (tblKunnadresse.Strasse != null) { importRow["STREET"] = tblKunnadresse.Strasse; }
-
-                                importAdresse.Rows.Add(importRow);
-                            }
-                        }
+                        myProxy.setImportParameter("I_VKBUR", m_objUser.Reference.Substring(4, 4));
+                        myProxy.setImportParameter("I_WEBGOUP_ID", m_objUser.GroupID.ToString());
+                    }
+                    else
+                    {
+                        myProxy.setImportParameter("I_WEBUSER_ID", m_objUser.UserID.ToString());
                     }
 
                     myProxy.callBapi();
 
-                    KundenformularPDF = (cpdFormular ? myProxy.getExportParameterByte("E_PDF") : null);
+                    var tblTmp = myProxy.getExportTable("GT_BAK");
+                    anzahl = tblTmp.Rows.Count.ToString();
 
-                    tblPrintKundenformulare = (zusatzFormulare ? myProxy.getExportTable("GT_FILENAME") : null);
-
-                    Int32 subrc;
-                    Int32.TryParse(myProxy.getExportParameter("E_SUBRC"), out subrc);
-                    String sapMessage;
-                    sapMessage = myProxy.getExportParameter("E_MESSAGE");
-                    m_strMessage = sapMessage;
-
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
                 catch (Exception ex)
                 {
@@ -1912,7 +1044,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -5555;
-                            m_strMessage = "Beim Erstellen der Kundenformulare ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Es ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }
@@ -1921,69 +1053,10 @@ namespace AutohausPortal.lib
                     m_blnGestartet = false;
                 }
             }
+
+            return anzahl;
         }
 
         #endregion
-        
-        #region Helper
-
-        public static string toShortDateStr(string dat)
-        {
-            DateTime datum = default(DateTime);
-
-            try
-            {
-                datum = Convert.ToDateTime(dat.Substring(0, 2) + "." + dat.Substring(2, 2) + "." + DateTime.Now.Year.ToString().Substring(0, 2) + dat.Substring(4, 2));
-            }
-            catch (Exception ex)
-            {
-                return string.Empty;
-            }
-            return datum.ToShortDateString();
-        }
-
-        public static bool IsDate(String inValue)
-        {
-            bool result;
-            DateTime myDT;
-
-            try
-            {
-                result = DateTime.TryParse(inValue, out myDT);
-
-            }
-            catch (FormatException e)
-            {
-                result = false;
-            }
-
-            return result;
-        }
-
-        public static bool IsNumeric(string Value)
-        {
-            try
-            {
-                Convert.ToInt32(Value);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-        public static String BoolToX(Boolean inValue)
-        {
-            return (inValue ? "X" : "");
-        }
-
-        public static Boolean XToBool(String inValue)
-        {
-            return (inValue == "X");
-        } 
-
-        #endregion
-
     }
 }
