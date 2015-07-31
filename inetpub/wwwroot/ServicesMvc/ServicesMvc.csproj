@@ -929,7 +929,6 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
-
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
@@ -2905,6 +2904,9 @@
     <Content Include="Views\Login\_Themes\AH2015\Partial\LoginForm.cshtml" />
     <Content Include="Views\Login\_Themes\AH2015\Kontakt.cshtml" />
     <Content Include="Views\Login\_Themes\AH2015\Impressum.cshtml" />
+    <Content Include="Views\Shared\Partial\LayoutPageHeaderHint.cshtml" />
+    <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationAllLayoutPages.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationAllLayoutPages.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

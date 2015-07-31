@@ -71,7 +71,7 @@ namespace MvcTools.Web
 
         public static void TrySetThemeFromAppsettingsToSession()
         {
-            var layoutTheme = System.Configuration.ConfigurationManager.AppSettings["CurrentLayoutTheme"];
+            var layoutTheme = System.Configuration.ConfigurationManager.AppSettings["DefaultLayoutTheme"];
             if (layoutTheme != null && layoutTheme.ToString().IsNotNullOrEmpty())
                 EnforceTheme(layoutTheme);
         }
