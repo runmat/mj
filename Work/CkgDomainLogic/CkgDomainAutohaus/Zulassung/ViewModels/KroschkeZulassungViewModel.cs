@@ -279,9 +279,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             try
             {
                 zulassungskreis += "-";
-                FinList.ToList().ForEach(x => x.WunschKennz1 = zulassungskreis);
-                FinList.ToList().ForEach(x => x.WunschKennz2 = zulassungskreis);
-                FinList.ToList().ForEach(x => x.WunschKennz3 = zulassungskreis);
+                FinList.ToList().Where(x => x.WunschKennz1.IsNullOrEmpty()).ToList().ForEach(x => x.WunschKennz1 = zulassungskreis);
+                FinList.ToList().Where(x => x.WunschKennz2.IsNullOrEmpty()).ToList().ForEach(x => x.WunschKennz2 = zulassungskreis);
+                FinList.ToList().Where(x => x.WunschKennz3.IsNullOrEmpty()).ToList().ForEach(x => x.WunschKennz3 = zulassungskreis);
                 return null;
             }
             catch (Exception e)
@@ -448,6 +448,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 SetKreisAll(zulassungsKreis);
+
+                foreach (var fahrzeugAkteBestand in FinList.Where(x => x.Evb.IsNullOrEmpty())) // 20150731 und EVB für alle Fahrzeuge setzen, sofern leer...
+                {
+                    fahrzeugAkteBestand.Evb = model.EvbNr;
+                }
             }
 
             if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
@@ -944,23 +949,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var zulassungenToSave = new List<Vorgang>();
            
-            // if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung)
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
-                // foreach (var fahrzeugAkteBestand in FinList)
                 foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => x.IsSelected == true))
                 {
-                    var singleZulassung = ModelMapping.Copy(Zulassung); // Achtung: Kopiert nicht, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
+                    var singleZulassung = ModelMapping.Copy(Zulassung);     // Achtung: Kopiert nicht zuverlässig, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
                     singleZulassung.Zulassungsdaten = ModelMapping.Copy(Zulassung.Zulassungsdaten); // Explizit Zulassungsdaten kopieren, damit keine Referenz erzeugt wird
                     singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);     // Explizit Fahrzeugdaten kopieren, damit keine Referenz erzeugt wird
                     
-                    // 20150723
                     singleZulassung.ZahlerKfzSteuer = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer);
                     singleZulassung.VersandAdresse = ModelMapping.Copy(Zulassung.VersandAdresse);
 
-                    // 20150722
-                    singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+                    singleZulassung.AuslieferAdressen = new List<AuslieferAdresse>();               // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
                     singleZulassung.Halter = ModelMapping.Copy(Zulassung.Halter);
                     singleZulassung.BankAdressdaten = ModelMapping.Copy(Zulassung.BankAdressdaten);
 
@@ -991,7 +992,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
-                // ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
                 ZulassungenForReceipt = zulassungenToSave.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
 
                 if (ZulassungenForReceipt.ToListOrEmptyList().None() || ZulassungenForReceipt.First().Zusatzformulare.ToListOrEmptyList().None(z => z.IstAuftragsListe))
