@@ -974,10 +974,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
 
-                    // singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.Kennzeichen;      // 20150723 MMA Falls "Kennzeichen" nicht benötigt, wieder rausnehmen
-                    // 20150727 MMA #removeme# Welches Feld muss hier im Falle einer Massenabmeldung als Kennzeichen gefüllt werden?
-
-
                     zulassungenToSave.Add(singleZulassung);
                 }
             }

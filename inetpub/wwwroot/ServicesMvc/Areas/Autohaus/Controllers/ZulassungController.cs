@@ -177,14 +177,16 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public JsonResult SetEvb(string fin, string evb)
         {
-            var result = ViewModel.SetEvb(fin, evb.ToUpper());
+            // var result = ViewModel.SetEvb(fin, evb.ToUpper());
+            var result = ViewModel.SetEvb(fin, evb);
             return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
         [HttpPost]
-        public JsonResult SetFinValue(string fin, string field, string kennz)
+        // public JsonResult SetFinValue(string fin, string field, string kennz)
+        public JsonResult SetFinValue(string fin, string field, string value)
         {
-            var result = ViewModel.SetFinValue(fin, field, kennz.ToUpper());
+            var result = ViewModel.SetFinValue(fin, field, value.ToUpper());
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 

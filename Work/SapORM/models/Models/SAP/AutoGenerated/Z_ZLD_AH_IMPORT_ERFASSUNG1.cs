@@ -161,6 +161,16 @@ namespace SapORM.Models
 
 			public string BRIEFNR { get; set; }
 
+			public Int32? WEBUSER_ID { get; set; }
+
+			public Int32? WEBGOUP_ID { get; set; }
+
+			public string ETIKETT { get; set; }
+
+			public string FZGTYP { get; set; }
+
+			public string FARBE { get; set; }
+
 			public static GT_BAK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BAK_IN
@@ -230,6 +240,11 @@ namespace SapORM.Models
 					KENNZ_UEBERNAHME = (string)row["KENNZ_UEBERNAHME"],
 					ZZREFNR5 = (string)row["ZZREFNR5"],
 					BRIEFNR = (string)row["BRIEFNR"],
+					WEBUSER_ID = (string.IsNullOrEmpty(row["WEBUSER_ID"].ToString())) ? null : (Int32?)Convert.ToInt32(row["WEBUSER_ID"]),
+					WEBGOUP_ID = (string.IsNullOrEmpty(row["WEBGOUP_ID"].ToString())) ? null : (Int32?)Convert.ToInt32(row["WEBGOUP_ID"]),
+					ETIKETT = (string)row["ETIKETT"],
+					FZGTYP = (string)row["FZGTYP"],
+					FARBE = (string)row["FARBE"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

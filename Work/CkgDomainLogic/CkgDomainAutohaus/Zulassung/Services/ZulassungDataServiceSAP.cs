@@ -289,11 +289,17 @@ namespace CkgDomainLogic.Autohaus.Services
                 Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
                 SAP.SetImportParameter("I_TELNR", ((ILogonContextDataService)LogonContext).UserInfo.Telephone);
-                SAP.SetImportParameter("I_FESTE_REFERENZEN", "X");
+                //SAP.SetImportParameter("I_FESTE_REFERENZEN", "X");    // 20150731 MMA Auskommentiert, da im neuen BAPI nicht mehr verwendet
 
+                // 20150731 MMA Folgender Block auskommentiert, da neues BAPI...
+                //if (saveDataToSap)
+                //    SAP.SetImportParameter("I_SPEICHERN", "X");
+
+                // 20150731 MMA
                 if (saveDataToSap)
-                    SAP.SetImportParameter("I_SPEICHERN", "X");
-
+                    SAP.SetImportParameter("I_SPEICHERN", "A");     // A = Absenden, S = Warenkorb
+                SAP.SetImportParameter("I_AUFRUF", "2");
+                
                 SAP.SetImportParameter("I_FORMULAR", "X");
                 SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
                     

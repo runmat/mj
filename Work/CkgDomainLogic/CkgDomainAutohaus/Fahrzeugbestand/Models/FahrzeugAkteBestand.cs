@@ -67,6 +67,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         #endregion
 
         #region Massenabmeldung
+        [LocalizedDisplay(LocalizeConstants.ReserveExistingLicenseNo)]
         public bool VorhandenesKennzReservieren { get; set; }
         #endregion
 

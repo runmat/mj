@@ -2,14 +2,17 @@
 @using CkgDomainLogic.Fahrzeugbestand.Models
 @model Zulassungsdaten
 
+<script>
+    function OnDataBound_GridFahrzeugAuswahlAbmeldung() {
+        App.initUniform();
+    }
+</script>
+
 @if (Model.IsMassenabmeldung)
 {
     @Html.HiddenFor(m => m.ZulassungsartMatNr)
     @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
     @Html.HiddenFor(m => m.Zulassungskreis)
-    
-@*    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-    @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" }, labelHidden: true)*@
 
     using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
     {
@@ -23,14 +26,11 @@
                     columns.XBound(c => c.FIN);
                     columns.XBound(c => c.FahrzeugArt);
                     columns.XBound(c => c.HandelsName);
-                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennzAbm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
-                    //columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennzAbm' data-fieldname='VorhandenesKennzReservieren' value='<#= data.VorhandenesKennzReservieren #>' />");
-
-                    columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzAbm' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='<#= data.FIN #>' onchange='alert($(this));' />").Filterable(false);
-                    
-                    // ResKennz oder Kennzeichen?
+                    columns.XBound(c => c.Kennzeichen).ClientTemplate("<input id='Kennzeichen_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennzabm' data-fieldname='Kennzeichen' value='<#= data.Kennzeichen #>' />");
+                    columns.XBound(c => c.VorhandenesKennzReservieren).ClientTemplate("<input id='VorhandenesKennzReservieren_<#= data.FIN #>' type='checkbox' class='editkennzres' data-fieldname='VorhandenesKennzReservieren' <# if (data.VorhandenesKennzReservieren) { #> checked <# } #> value='True' />").Filterable(false);
                 })
                 .XAutoColumnConfiguration()
+                .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName))
                 .XPageSize(10)
                 .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
         )
@@ -46,3 +46,4 @@ else
     @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
     @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" }, labelHidden: true)
 }
+

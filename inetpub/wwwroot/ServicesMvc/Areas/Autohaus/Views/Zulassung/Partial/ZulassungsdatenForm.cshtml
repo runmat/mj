@@ -23,7 +23,7 @@
         $.ajax({
             type: "POST",
             url: "SetEvb",
-            data: { fin: fin, evb: evb },
+            data: { fin: fin, evb: evb.toUpperCase() },
             loadingShow: false,
             success: function(result) {
                     
@@ -64,44 +64,11 @@
         });
     }
 
-    $(function () {
-
-        $('#Zulassungskreis').off('change').on('change').change(function() {
-            var zulassungskreis = $(this).val();
-            SetZulassungskreis(zulassungskreis);
-        });
-
-        $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
-            var tagObj = $(this);
-            var evb = $(this).val();
-            SetEvb("", evb, tagObj);
-        });
-
-        $(document).off('change', '.editevb');
-        $(document).on('change', '.editevb', function () {              // Auswirkung auf ein Fahrzeug                    
-            var tagObj = $(this);
-            var evb = $(this).val();
-            var tr = $(this).closest('tr');
-            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-            var dataItem = grid.dataItem(tr);
-            var fin = dataItem["FIN"];
-            SetEvb(fin, evb, tagObj);
-        });
-
-        // Kennzeichenänderung bei Massenzulassung
-        $(document).off('change', '.editkennz');
-        $(document).on('change', '.editkennz', function () {            // Auswirkung auf ein Fahrzeug
-            var tr = $(this).closest('tr');
-            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-            var dataItem = grid.dataItem(tr);
-            var fin = dataItem["FIN"];
-            var field = $(this).data('fieldname');
-            var wkennz = $(this).val();
-            $.ajax({
+    function SetFinValue(fin, field, value) {
+        $.ajax({
                 type: "POST",
-                // url: "SetKennz",
                 url: "SetFinValue",
-                data: { fin: fin, field: field, kennz: wkennz },
+                data: { fin: fin, field: field, value: value },
                 loadingShow: false,
                 success: function (result) {
                     if (result.ok == true) {
@@ -111,36 +78,8 @@
                     }
                 }
             });
-        });
-        
-        // Kennzeichenänderung bei Massenabmeldung
-        $(document).off('change', '.editkennzAbm');
-        $(document).on('change', '.editkennzAbm', function () {            // Auswirkung auf ein Fahrzeug
-            var tr = $(this).closest('tr');
-            var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
-            var dataItem = grid.dataItem(tr);
-            var fin = dataItem["FIN"];
-            var field = $(this).data('fieldname');
-            var wkennz = $(this).val();
-            $.ajax({
-                type: "POST",
-                //url: "SetKennz",
-                url: "SetFinValue",
-                data: { fin: fin, field: field, kennz: wkennz },
-                loadingShow: false,
-                success: function (result) {
-                    if (result.ok == true) {
-                    }
-                    if (result.ok == false) {
-                        alert(result.message);
-                    }
-                }
-            });
-        });
-        
-
-    });
-
+    }
+    
     function AjaxFormZulassungsdatenComplete() {
         FormPrepareAjax();
 
@@ -148,10 +87,76 @@
             AjaxRequestNextStep();
             return;
         }
-    }        
-    
+    }   
+
+    $(function () {
+        $('#Zulassungskreis').off('change').on('change').change(function() {
+            var zulassungskreis = $(this).val();
+            SetZulassungskreis(zulassungskreis);
+        });        
+    });
+
+    @if (Model.IsMassenzulassung || Model.IsMassenabmeldung)
+    {
+        <text>
+            $(function () {
+                $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
+                    var tagObj = $(this);
+                    var evb = $(this).val();
+                    SetEvb("", evb, tagObj);
+                });
+
+                $(document).off('change', '.editevb');
+                $(document).on('change', '.editevb', function () {              // Auswirkung auf ein Fahrzeug                    
+                    var tagObj = $(this);
+                    var evb = $(this).val();
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    SetEvb(fin, evb, tagObj);
+                });
+        
+                // Kennzeichenänderung bei Massenzulassung
+                $(document).off('change', '.editkennz');
+                $(document).on('change', '.editkennz', function () {            // Auswirkung auf ein Fahrzeug
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    var field = $(this).data('fieldname');
+                    var wkennz = $(this).val();
+                    SetFinValue(fin, field, wkennz.toUpperCase());
+                });
+        
+                // Kennzeichenänderung bei Massenabmeldung
+                $(document).off('change', '.editkennzabm');
+                $(document).on('change', '.editkennzabm', function () {            // Auswirkung auf ein Fahrzeug
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    var field = $(this).data('fieldname');
+                    var wkennz = $(this).val();
+                    SetFinValue(fin, field, wkennz.toUpperCase());
+                });
+        
+                // "Vorhandenes Kennzeichen reservieren"-Checkbox bei Massenabmeldung
+                $(document).off('change', '.editkennzres');
+                $(document).on('change', '.editkennzres', function () {            // Auswirkung auf ein Fahrzeug
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    var field = $(this).data('fieldname');
+                    var value = $(this).prop('checked');
+                    SetFinValue(fin, field, value);
+                });
+        });
+        </text>
+    }
+
     CheckKennzeichenReserviert();
-    
     ShowHideMindesthaltedauer();    // 20150528 MMA
     ShowHideWunschkennzeichenUrl(); // 20150602 MMA
 </script>
