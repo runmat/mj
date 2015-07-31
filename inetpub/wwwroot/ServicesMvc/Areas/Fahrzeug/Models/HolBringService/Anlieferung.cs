@@ -11,21 +11,25 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
 {
     public class Anlieferung  
     {
-        [LocalizedDisplay(LocalizeConstants.Customer)]
+        [LocalizedDisplay(LocalizeConstants.CustomerHolBring)]
         [StringLength(50)]
+        [Required]
         public string AnlieferungKunde { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.StreetHouseNo)]
         [StringLength(50)]
+        [Required]
         public string AnlieferungStrasseHausNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PostCode)]
         [StringLength(5)]
+        [Required]
         public string AnlieferungPlz { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.City)]
         [AddressPostcodeCityMapping("AnlieferungPlz", "Land")]
         [StringLength(30)]
+        [Required]
         public string AnlieferungOrt { get; set; }
         
         public string Land { get { return "DE"; } }
@@ -50,7 +54,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models.HolBringService
         public string AnlieferungBisUhrzeitMinuten { get; set; }
 
         [StringLength(200)]
-        [LocalizedDisplay(LocalizeConstants.Comment)]
+        [LocalizedDisplay(LocalizeConstants.AdditionalInformations)]
         public string AnlieferungHinweis { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Mobilitaetsfahrzeug)]
