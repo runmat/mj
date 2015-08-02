@@ -13,12 +13,24 @@
     }
     .maintenance-message-wrapper {
         display: block;
+        margin-left: 5px;
     }
     .maintenance-message-wrapper span {
         height: 15px;
         display: table-cell;
         white-space: nowrap;
         padding: 2px;
+    }
+    .maintenance-message-wrapper span.label i.icon-bell {
+        margin: 5px !important;
+    }
+    .maintenance-message-wrapper span.message-title {
+        padding-left: 8px !important;
+    }
+    #header_notification_bar ul.dropdown-menu {
+        min-width: 433px !important;
+        max-width: 433px !important;
+        width: 433px !important;
     }
 
     .PasswordHint {
