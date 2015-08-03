@@ -22,7 +22,17 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         {
             get { return PropertyCacheGet(() => DataService.GetDashboardItems(LogonContext.UserName).ToList()); }
         }
-        
+
+        public List<IDashboardItem> VisibleSortedDashboardItems
+        {
+            get { return DashboardItems.Where(item => item.IsUserVisible).OrderBy(item => item.UserSort).ToList(); }
+        }
+
+        public List<IDashboardItem> HiddenDashboardItems
+        {
+            get { return DashboardItems.Where(item => !item.IsUserVisible).ToList(); }
+        }
+
         public void DataInit()
         {
             DataMarkForRefresh();
@@ -35,7 +45,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public void DashboardItemsSave(string commaSeparatedIds)
         {
-            DataService.SaveGetDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
+            DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
 
         public object GetBarChartData(string id)

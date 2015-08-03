@@ -169,8 +169,12 @@
                     self._removeWidgetFromWidgetDefinitions(this.id);
                     $(this).remove();
                     $(".sDashboard-overlay").hide();
+                    console.log("remove widget " + this.id);
+                    try {
+                        DashboardWidgetEventRemove(this.id.replace(/id_/g, ""));
+                    }
+                    catch (e) { }
                 });
-                console.log("remove widget");
             });
 
             //table row click
@@ -395,7 +399,11 @@
 					);
             }
 
-            console.log("add widget programmatically");
+            console.log("added widget " + widgetDefinition.widgetId);
+            try {
+                DashboardWidgetEventAdd(widgetDefinition.widgetId.replace(/id_/g, ""));
+            }
+            catch (e) { }
         },
         //remove a widget from the dashboard
         removeWidget: function (widgetId) {
@@ -410,8 +418,6 @@
                 this.element.find("li" + idSelector).remove();
                 //remove the dom element from the widgetDefinition
                 this._removeWidgetFromWidgetDefinitions(widgetId);
-
-                console.log("remove widget programmatically");
             }
         },
 

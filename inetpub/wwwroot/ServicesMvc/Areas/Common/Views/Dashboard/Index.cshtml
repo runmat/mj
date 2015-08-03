@@ -11,18 +11,14 @@
             <i class="icon-angle-down"></i>
         </a>
         <ul class="dropdown-menu">
-        
-            <li><a href="javascript:ChangePassword()"><i class="icon-bar-chart"></i> Chart 1 sadfdsaf sdsdf sdf dsf sdfds sdf d asdsaf dfds fsd fsd </a></li>
-
-            <li class="divider"></li>
-        
-            <li><a href="javascript:UserLogout()"><i class="icon-bar-chart"></i> Chart 2</a></li>
-
+            @foreach (var dashBoardItem in Model.HiddenDashboardItems)
+            {
+                <li><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
+            }
         </ul>
     </li> 
 
-    <a class="margin-left-50" href="#" onclick="return AddWidget(9);">Add Widget</a> 
-    <a class="margin-left-10" href="#" onclick="return Save();">Save</a> 
+    <a class="margin-left-10" href="#" onclick="return SaveDashboardItems();">Save</a> 
 </h3>
 
 
@@ -33,7 +29,7 @@
 <script type="text/javascript">
     var _dashboardJson = [];
 </script>
-@foreach (var dashBoardItem in Model.DashboardItems.Where(d => d.ID != 9))
+@foreach (var dashBoardItem in Model.VisibleSortedDashboardItems)
 {
     <script type="text/javascript">
         _dashboardJson.push(
@@ -128,20 +124,7 @@
                 success: function (result) {
 
                     _dashboardData.data = result.data.data;
-                    //console.log(result.data.labels);
                     _dashboardData.options = jQuery.parseJSON(result.options);
-
-                    if (typeof (_dashboardData.options.pie) !== 'undefined') {
-                        //console.log(_dashboardData.options);
-//                        console.log(_dashboardData.data);
-//                        _dashboardData.data =
-//                        [
-//                            { data: [[0,250]], label: "CSI" },
-//                            { data: [[1, 150]], label: "Tesla" },
-//                            { data: [[2, 50]], label: "Avis" }
-//                        ];
-//                        console.log(_dashboardData.data);
-                    }
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
@@ -154,12 +137,17 @@
             });
     }
 
-    function Save() {
+    function SaveDashboardItems() {
+
+        var commaSeparatedIds = $.map($("#myDashboard li"), function (item) {
+            return $(item).attr("id").replace(/id_/g, "");
+        }).join(",");
+
         $.ajax(
             {
                 type: "POST",
                 url: "DashboardItemsSave",
-                data: { commaSeparatedIds: "1,2,3" },
+                data: { commaSeparatedIds: commaSeparatedIds },
                 loadingShow: false,
                 success: function (result) {
                 }
@@ -168,11 +156,18 @@
         return false;
     }
 
-    function AddWidget(rawWidgetId) {
+    function ShowDashboardItem(id, title) {
+
+        AddWidget(id, title);
+
+        return false;
+    }
+
+    function AddWidget(rawWidgetId, widgetTitle) {
 
         $("#myDashboard").sDashboard("addWidget",
             {
-                widgetTitle: "Just Added ;-)",
+                widgetTitle: widgetTitle,
                 widgetId: "id_" + rawWidgetId,
                 widgetType: "chart",
                 enableRefresh: true,
@@ -198,7 +193,7 @@
                 success: function (result) {
                     _dashboardData.data = result.data.data;
                     _dashboardData.options = jQuery.parseJSON(result.options);
-                    console.log(_dashboardData.data);
+                    //console.log(_dashboardData.data);
                     $(widgetId + " .sDashboard-refresh-icon").trigger("click");
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
@@ -206,6 +201,14 @@
             });
 
         return false;
+    }
+
+    function DashboardWidgetEventAdd(id) {
+        SaveDashboardItems();
+    }
+
+    function DashboardWidgetEventRemove(id) {
+        SaveDashboardItems();
     }
 
 </script>

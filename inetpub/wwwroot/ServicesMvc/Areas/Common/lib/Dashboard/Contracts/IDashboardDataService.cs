@@ -6,8 +6,6 @@ namespace CkgDomainLogic.General.Contracts
     {
         IList<IDashboardItem> GetDashboardItems(string userName);
 
-        void ApplyVisibilityAndSortAnnotatorItems(string userName, IList<IDashboardItem> items, IList<int> itemIds);
-
-        void SaveGetDashboardItems(IList<IDashboardItem> items, string userName, string commaSeparatedIds);
+        void SaveDashboardItems(IList<IDashboardItem> items, string userName, string commaSeparatedIds);
     }
 }
