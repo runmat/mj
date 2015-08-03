@@ -20,49 +20,17 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public List<IDashboardItem> DashboardItems
         {
-            get { return PropertyCacheGet(() => FilterItemsAvailableForUser(DataService.GetDashboardItems(LogonContext.UserName))); }
+            get { return PropertyCacheGet(() => DataService.GetDashboardItems().ToList()); }
         }
-
-        public List<IDashboardItem> VisibleSortedDashboardItems
-        {
-            get { return DashboardItems.Where(item => item.IsUserVisible).OrderBy(item => item.UserSort).ToList(); }
-        }
-
-        public List<IDashboardItem> HiddenDashboardItems
-        {
-            get { return DashboardItems.Where(item => !item.IsUserVisible).ToList(); }
-        }
-
+        
         public void DataInit()
         {
             DataMarkForRefresh();
-
-            DashboardSessionSaveAllItems(DashboardItems);
         }
 
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.DashboardItems);
-        }
-
-        List<IDashboardItem> FilterItemsAvailableForUser(IList<IDashboardItem> items)
-        {
-            if (LogonContext.UserApps == null)
-                return items.ToList();
-
-            return items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
-        }
-
-        static bool UserAppUrlContainsUrl(string userAppUrl, string url)
-        {
-            var translatedAppUrl = LogonContextHelper.ExtractUrlFromUserApp(userAppUrl);
-            url = url.ToLower().SubstringTry(4);
-            return translatedAppUrl.ToLower().Contains(url);
-        }
-
-        public void DashboardItemsSave(string commaSeparatedIds)
-        {
-            DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
 
         public object GetBarChartData(string id)

@@ -3,9 +3,7 @@ using System.Configuration;
 using System.Linq;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Database.Models;
-using CkgDomainLogic.General.Models;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Services
@@ -31,7 +29,7 @@ namespace CkgDomainLogic.General.Services
 
         public IEnumerable<DashboardItem> GetDashboardItems()
         {
-            return Database.SqlQuery<DashboardItem>("SELECT * FROM DashboardItem where ChartJsonOptions is not null order by InitialSort");
+            return Database.SqlQuery<DashboardItem>("SELECT * FROM DashboardItem where ChartJsonOptions is not null order by Sort");
         }
 
 
@@ -41,21 +39,21 @@ namespace CkgDomainLogic.General.Services
                     ?? DashboardItemsUser.Add(new DashboardItemUser { UserName = userName });
         }
 
-        public IEnumerable<IDashboardItemAnnotator> DashboardAnnotatorItemsUserGet(string userName)
+        public IEnumerable<DashboardItemUser> DashboardItemsUserGet(string userName)
         {
             var item = GetDashboardItemUser(userName);
 
-            if (item.AnnotatorItemsXml == null)
-                return new List<DashboardItemAnnotator>();
+            if (item.ItemsXml == null)
+                return new List<DashboardItemUser>();
 
-            return XmlService.XmlDeserializeFromString<List<DashboardItemAnnotator>>(item.AnnotatorItemsXml);
+            return XmlService.XmlDeserializeFromString<List<DashboardItemUser>>(item.ItemsXml);
         }
 
-        public void DashboardAnnotatorItemsUserSave(string userName, IEnumerable<IDashboardItemAnnotator> userItems)
+        public void DashboardItemsUserSave(string userName, IEnumerable<DashboardItemUser> userItems)
         {
             var item = GetDashboardItemUser(userName);
 
-            item.AnnotatorItemsXml = (userItems == null ? null : XmlService.XmlSerializeToString(userItems.Cast<DashboardItemAnnotator>().ToList()));
+            item.ItemsXml = XmlService.XmlSerializeToString(userItems);
             SaveChanges();
         }
     }

@@ -11,13 +11,5 @@
         string RelatedSelectorModel { get; set; }
 
         string ChartJsonOptions { get; set; }
-        
-        int? InitialSort { get; set; }
-
-        int UserSort { get; }
-
-        bool IsUserVisible { get; }
-
-        IDashboardItemAnnotator ItemAnnotator { get; set; }
     }
 }

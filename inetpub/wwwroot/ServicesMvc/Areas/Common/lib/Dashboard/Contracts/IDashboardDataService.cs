@@ -4,8 +4,10 @@ namespace CkgDomainLogic.General.Contracts
 {
     public interface IDashboardDataService
     {
-        IList<IDashboardItem> GetDashboardItems(string userName);
+        IEnumerable<IDashboardItem> GetDashboardItems();
 
-        void SaveDashboardItems(IList<IDashboardItem> items, string userName, string commaSeparatedIds);
+        IEnumerable<IDashboardItemUser> GetDashboardItemsUser();
+
+        void SaveDashboardItemsUser(IEnumerable<IDashboardItemUser> userItems);
     }
 }
