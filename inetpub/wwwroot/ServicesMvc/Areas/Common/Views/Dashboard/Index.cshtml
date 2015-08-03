@@ -6,19 +6,19 @@
 
     <li class="dropdown user dashboard-dropdown-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            <span class="badge">1</span>
+            <span id="badgeVisibleItemsCount" class="badge">@Model.HiddenDashboardItems.Count</span>
             <i class="icon-bar-chart"></i>
             <i class="icon-angle-down"></i>
         </a>
         <ul class="dropdown-menu">
-            @foreach (var dashBoardItem in Model.HiddenDashboardItems)
+            @foreach (var dashBoardItem in Model.DashboardItems)
             {
-                <li><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
+                var cssClass = (dashBoardItem.IsUserVisible ? "hide" : "");
+                
+                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
             }
         </ul>
     </li> 
-
-    <a class="margin-left-10" href="#" onclick="return SaveDashboardItems();">Save</a> 
 </h3>
 
 
@@ -52,6 +52,8 @@
 
 <script type="text/javascript">
 
+    var _dashboardChainIndex = 0;
+
     function FormPreparePrivate() {
         FormPrepareDashboard();
     }
@@ -71,26 +73,12 @@
 
         DashboardChainInit();
 
-        BindDashboardEvents();
-
         $(".badge").click(function () {
             $(".badge").toggle("highlight", function () {
                 $(".badge").show();
             });
         });
     }
-
-    function BindDashboardEvents() {
-        //widget order changes event example
-        $("#myDashboard").bind("sdashboardorderchanged", function (e, data) {
-            console.log("Sorted Array");
-            console.log("+++++++++++++++++++++++++");
-            console.log(data.sortedDefinitions);
-            console.log("+++++++++++++++++++++++++");
-        });
-    }
-
-    var _dashboardChainIndex = 0;
 
     function DashboardChainInit() {
         
@@ -150,6 +138,8 @@
                 data: { commaSeparatedIds: commaSeparatedIds },
                 loadingShow: false,
                 success: function (result) {
+                    //alert(result.visibleItemsCount);
+                    $("#badgeVisibleItemsCount").html(result.hiddenItemsCount);
                 }
             });
 
@@ -204,10 +194,16 @@
     }
 
     function DashboardWidgetEventAdd(id) {
+        $("#li_dropdown_" + id).hide();
         SaveDashboardItems();
     }
 
     function DashboardWidgetEventRemove(id) {
+        $("#li_dropdown_" + id).show();
+        SaveDashboardItems();
+    }
+    
+    function DashboardWidgetEventOrderChanged(id) {
         SaveDashboardItems();
     }
 

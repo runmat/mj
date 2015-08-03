@@ -41,7 +41,7 @@ namespace ServicesMvc.Common.Controllers
         {
             ViewModel.DashboardItemsSave(commaSeparatedIds);
 
-            return new EmptyResult();
+            return Json(new { hiddenItemsCount = ViewModel.HiddenDashboardItems.Count });
         }
     }
 }

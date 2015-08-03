@@ -124,6 +124,21 @@ namespace CkgDomainLogic.Autohaus.Services
             return null;
         }
 
+        public void GetZulassungskreisUndKennzeichen(Vorgang zulassung, out string kreis, out string kennzeichen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void GetZulassungsKennzeichen(string kreis, out string kennzeichen)
+        {
+            throw new NotImplementedException();
+        }
+
+        public string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung)
+        {
+            throw new NotImplementedException();
+        }
+
         private static IEnumerable<Domaenenfestwert> LoadFahrzeugartenFromSap()
         {
             return null;
