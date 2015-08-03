@@ -11,5 +11,9 @@
         string RelatedSelectorModel { get; set; }
 
         string ChartJsonOptions { get; set; }
+
+        bool IsUserVisible { get; set; }
+
+        int UserSort { get; set; }
     }
 }
