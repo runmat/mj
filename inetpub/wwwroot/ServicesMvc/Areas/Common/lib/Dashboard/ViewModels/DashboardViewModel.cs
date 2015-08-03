@@ -33,6 +33,11 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             PropertyCacheClear(this, m => m.DashboardItems);
         }
 
+        public void DashboardItemsSave(string commaSeparatedIds)
+        {
+            DataService.SaveGetDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
+        }
+
         public object GetBarChartData(string id)
         {
             var dbId = id.Replace("id_", "").Replace("#", "");
