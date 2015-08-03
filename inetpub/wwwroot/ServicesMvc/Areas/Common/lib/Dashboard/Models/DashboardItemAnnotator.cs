@@ -1,8 +1,6 @@
-﻿using CkgDomainLogic.General.Contracts;
-
-namespace CkgDomainLogic.General.Models
+﻿namespace CkgDomainLogic.General.Models
 {
-    public class DashboardItemAnnotator : IDashboardItemAnnotator
+    public class DashboardItemAnnotator
     {
         public int ItemID { get; set; }
 

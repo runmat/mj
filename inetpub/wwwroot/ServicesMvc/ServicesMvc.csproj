@@ -2444,9 +2444,9 @@
     <Compile Include="Areas\Autohaus\Controllers\ZulassungController.cs" />
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItem.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemUser.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\IDashboardItemAnnotator.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemUser.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemAnnotator.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />

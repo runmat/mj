@@ -95,7 +95,6 @@
     <Compile Include="DomainCommon\ViewModels\AdressenPflegeViewModel.cs" />
     <Compile Include="General\Contracts\DashboardItem\IDashboardItem.cs" />
     <Compile Include="General\Contracts\ILogonContextDataServiceAutohaus.cs" />
-    <Compile Include="General\Contracts\DashboardItem\IDashboardItemUser.cs" />
     <Compile Include="General\Contracts\DashboardItem\IDashboardItemAnnotator.cs" />
     <Compile Include="General\Controllers\Attributes\CkgAuthorizeAttribute.cs" />
     <Compile Include="General\Controllers\Attributes\CkgApplicationAttribute.cs" />

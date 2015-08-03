@@ -17,16 +17,6 @@ namespace CkgDomainLogic.DomainCommon.Services
             return ct.GetDashboardItems();
         }
 
-        public IEnumerable<IDashboardItemUser> GetDashboardItemsUser()
-        {
-            return null;
-        }
-
-        public void SaveDashboardItemsUser(IEnumerable<IDashboardItemUser> userItems)
-        {
-            
-        }
-
         private static DashboardSqlDbContext CreateDbContext()
         {
             return new DashboardSqlDbContext();
