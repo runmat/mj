@@ -90,6 +90,40 @@
         FormDateRangePickerInit();
 
         InitResponsiveControlWidths();
+
+        FormInitKennzeichenTextboxes();
+    }
+
+    function FormInitKennzeichenTextboxes() {
+
+        // special fix only for IE for issue 
+        // "lowercase text input with special fonts":
+
+        if (!IsIE())
+            return;
+
+        $('input.kennzeichen').each(function () {
+            var that = $(this);
+            that.bind('keyup', function (e) {
+                //console.log(e.which);
+                if (e.which >= 97 && e.which <= 122) {
+                    var newKey = e.which - 32;
+                    e.keyCode = newKey;
+                    e.charCode = newKey;
+                }
+                if (e.which < 40 || e.which == 46) 
+                    return;
+
+                // save current caret position
+                var start = this.selectionStart, end = this.selectionEnd;
+
+                that.val((that.val()).toUpperCase());
+
+                // restore current caret position
+                this.setSelectionRange(start, end);
+            });
+        });
+
     }
 
     function FormInitValidationErrorStyles() {
