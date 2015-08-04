@@ -171,6 +171,10 @@ namespace SapORM.Models
 
 			public string FARBE { get; set; }
 
+			public string APPID { get; set; }
+
+			public string BEAUFTRAGUNGSART { get; set; }
+
 			public static GT_BAK_IN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BAK_IN
@@ -245,6 +249,8 @@ namespace SapORM.Models
 					ETIKETT = (string)row["ETIKETT"],
 					FZGTYP = (string)row["FZGTYP"],
 					FARBE = (string)row["FARBE"],
+					APPID = (string)row["APPID"],
+					BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

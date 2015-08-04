@@ -89,7 +89,7 @@ namespace SapORM.Models
 
 			public string ZL_LIFNR { get; set; }
 
-			public string VK_KUERZE { get; set; }
+			public string VK_KUERZEL { get; set; }
 
 			public string KUNDEN_REF { get; set; }
 
@@ -165,6 +165,16 @@ namespace SapORM.Models
 
 			public Int32? WEBGOUP_ID { get; set; }
 
+			public string ETIKETT { get; set; }
+
+			public string FZGTYP { get; set; }
+
+			public string FARBE { get; set; }
+
+			public string APPID { get; set; }
+
+			public string BEAUFTRAGUNGSART { get; set; }
+
 			public static GT_BAK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BAK
@@ -198,7 +208,7 @@ namespace SapORM.Models
 					ZL_RL_FRBNR_HIN = (string)row["ZL_RL_FRBNR_HIN"],
 					ZL_RL_FRBNR_ZUR = (string)row["ZL_RL_FRBNR_ZUR"],
 					ZL_LIFNR = (string)row["ZL_LIFNR"],
-					VK_KUERZE = (string)row["VK_KUERZE"],
+					VK_KUERZEL = (string)row["VK_KUERZEL"],
 					KUNDEN_REF = (string)row["KUNDEN_REF"],
 					KUNDEN_NOTIZ = (string)row["KUNDEN_NOTIZ"],
 					KENNZ_VH = (string)row["KENNZ_VH"],
@@ -236,6 +246,11 @@ namespace SapORM.Models
 					BRIEFNR = (string)row["BRIEFNR"],
 					WEBUSER_ID = (string.IsNullOrEmpty(row["WEBUSER_ID"].ToString())) ? null : (Int32?)Convert.ToInt32(row["WEBUSER_ID"]),
 					WEBGOUP_ID = (string.IsNullOrEmpty(row["WEBGOUP_ID"].ToString())) ? null : (Int32?)Convert.ToInt32(row["WEBGOUP_ID"]),
+					ETIKETT = (string)row["ETIKETT"],
+					FZGTYP = (string)row["FZGTYP"],
+					FARBE = (string)row["FARBE"],
+					APPID = (string)row["APPID"],
+					BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

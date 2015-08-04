@@ -139,7 +139,27 @@
                 alert(jqXhr.responseText);
             }
         });
-    } 
+    }
+
+    function ShoppingCartZulassungItemEdit(id, zulParams) {
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartZulassungTryEditItem",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+
+                window.location.href = "/ServicesMvc/Autohaus/Zulassung/ZulassungFromShoppingCart" + zulParams;
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
+            }
+        });
+    }
 
     function ShoppingCartSubmitFinished(result) {
         $(".form-wizard").html(result);

@@ -263,6 +263,132 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BAK, Vorgang> Z_ZLD_AH_EXPORT_WARENKORB_GT_BAK_To_Vorgang
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BAK, Vorgang>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BelegNr = s.ZULBELN;
+                        d.BeauftragungsArt = s.BEAUFTRAGUNGSART;
+                        d.VkOrg = s.VKORG;
+                        d.VkBur = s.VKBUR;
+                        d.Vorerfasser = s.VE_ERNAM;
+                        d.VorgangsStatus = s.BEB_STATUS;
+
+                        // Rechnungsdaten
+                        d.Rechnungsdaten.KundenNr = s.KUNNR;
+
+                        // Bank-/Adressdaten
+                        d.BankAdressdaten.Bankdaten.Zahlungsart = (s.EINZ_JN.XToBool() ? "E" : s.RECH_JN.XToBool() ? "R" : s.BARZ_JN.XToBool() ? "B" : "");
+                        d.BankAdressdaten.Bankdaten.Kontoinhaber = s.KOINH;
+                        d.BankAdressdaten.Bankdaten.Iban = s.IBAN;
+                        d.BankAdressdaten.Bankdaten.Swift = s.SWIFT;
+                        d.BankAdressdaten.Bankdaten.KontoNr = s.BANKN;
+                        d.BankAdressdaten.Bankdaten.Bankleitzahl = s.BANKL;
+                        d.BankAdressdaten.Bankdaten.Geldinstitut = s.EBPP_ACCNAME;
+
+                        // Fahrzeug
+                        d.Fahrzeugdaten.AuftragsNr = s.ZZREFNR5;
+                        d.Fahrzeugdaten.FahrgestellNr = s.ZZREFNR2;
+                        d.Fahrzeugdaten.Zb2Nr = s.BRIEFNR;
+                        d.Fahrzeugdaten.FahrzeugartId = s.FAHRZ_ART;
+                        d.Fahrzeugdaten.VerkaeuferKuerzel = s.VK_KUERZE;
+                        d.Fahrzeugdaten.Kostenstelle = s.ZZREFNR3;
+                        d.Fahrzeugdaten.BestellNr = s.ZZREFNR4;
+
+                        // Zulassung
+                        d.Zulassungsdaten.Zulassungsdatum = s.ZZZLDAT;
+                        d.Zulassungsdaten.Abmeldedatum = s.ZZZLDAT;
+
+                        d.Zulassungsdaten.Zulassungskreis = s.KREISKZ;
+                        d.Zulassungsdaten.ZulassungskreisBezeichnung = s.KREISBEZ;
+                        d.Zulassungsdaten.EvbNr = s.ZZEVB;
+
+                        d.Zulassungsdaten.VorhandenesKennzeichenReservieren = s.VH_KENNZ_RES.XToBool();
+                        d.Zulassungsdaten.KennzeichenReserviert = s.RESERVKENN_JN.XToBool();
+                        d.Zulassungsdaten.ReservierungsNr = s.RESERVKENN;
+
+                        d.Zulassungsdaten.Kennzeichen = s.ZZKENN;
+                        d.Zulassungsdaten.Wunschkennzeichen2 = s.WU_KENNZ2;
+                        d.Zulassungsdaten.Wunschkennzeichen3 = s.WU_KENNZ3;
+
+                        // Versandzulassung
+                        d.VersandAdresse.Adresse.KundenNr = s.ZL_LIFNR;
+
+                        // Optionen/Dienstleistungen
+                        d.OptionenDienstleistungen.NurEinKennzeichen = s.EINKENN_JN.XToBool();
+                        d.OptionenDienstleistungen.Saisonkennzeichen = s.SAISON_KNZ.XToBool();
+                        d.OptionenDienstleistungen.SaisonBeginn = s.SAISON_BEG;
+                        d.OptionenDienstleistungen.SaisonEnde = s.SAISON_END;
+                        d.OptionenDienstleistungen.Bemerkung = s.BEMERKUNG;
+                        d.OptionenDienstleistungen.KennzeichenVorhanden = s.KENNZ_VH.XToBool();
+                        d.OptionenDienstleistungen.HaltedauerBis = s.HALTE_DAUER;
+                        d.OptionenDienstleistungen.AltesKennzeichen = s.ALT_KENNZ; 
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_ADRS, Adressdaten> Z_ZLD_AH_EXPORT_WARENKORB_GT_ADRS_To_Adressdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_ADRS, Adressdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Adresse.KundenNr = s.KUNNR;
+                        d.Partnerrolle = s.PARVW;
+                        d.BelegNr = s.ZULBELN;
+                        d.Adresse.Name1 = s.NAME1;
+                        d.Adresse.Name2 = s.NAME2;
+                        d.Adresse.Strasse = s.STREET;
+                        d.Adresse.PLZ = s.PLZ;
+                        d.Adresse.Ort = s.CITY1;
+                        d.Bemerkung = s.BEMERKUNG;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_POS, Zusatzdienstleistung> Z_ZLD_AH_EXPORT_WARENKORB_GT_POS_To_Zusatzdienstleistung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_POS, Zusatzdienstleistung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BelegNr = s.ZULBELN;
+                        d.PositionsNr = s.LFDNR;
+                        d.MaterialNr = s.MATNR;
+                        d.Menge = s.MENGE;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BANK, Bankdaten> Z_ZLD_AH_EXPORT_WARENKORB_GT_BANK_To_Bankdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BANK, Bankdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Partnerrolle = s.PARVW;
+                        d.BelegNr = s.ZULBELN;
+                        d.Zahlungsart = (s.EINZ_JN.XToBool() ? "E" : s.RECH_JN.XToBool() ? "R" : "");
+                        d.Kontoinhaber = s.KOINH;
+                        d.Iban = s.IBAN;
+                        d.Swift = s.SWIFT;
+                        d.KontoNr = s.BANKN;
+                        d.Bankleitzahl = s.BANKL;
+                        d.Geldinstitut = s.EBPP_ACCNAME;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -278,6 +404,7 @@ namespace CkgDomainLogic.Autohaus.Models
                     , (s, d) =>
                         {
                             d.ZULBELN = s.BelegNr;
+                            d.BEAUFTRAGUNGSART = s.BeauftragungsArt;
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
                             d.VE_ERNAM = s.Vorerfasser;

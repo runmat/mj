@@ -51,12 +51,12 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string massenzulassung = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string massenzulassung = "", string zulassungFromShoppingCart = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
 
-            ViewModel.DataInit();
+            ViewModel.DataInit(zulassungFromShoppingCart);
 
             #region Massenzulassung
             if (massenzulassung == "1")
@@ -76,9 +76,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
-
-            ShoppingCartLoadAndCacheItems();
-            ShoppingCartTryEditItemAsViewModel();
 
             //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
@@ -105,9 +102,6 @@ namespace ServicesMvc.Autohaus.Controllers
                 return Content("Kein Fahrzeug ausgewählt.");
             }    
             
-            ShoppingCartLoadAndCacheItems();
-            ShoppingCartTryEditItemAsViewModel();
-
             return View("Index", ViewModel);
         }
 
@@ -648,18 +642,13 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: false, saveFromShoppingCart: false);
 
-            ShoppingCartItemSave();
-
             return PartialView("Partial/Receipt", ViewModel);
         }
 
         [HttpPost]
         public ActionResult Receipt()
         {
-
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
-
-            ShoppingCartItemRemove(ViewModel.ObjectKey);
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -809,59 +798,88 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #region Shopping Cart 
 
-        private const string ShoppingCartPersistanceKey = "KroschkeZulassung";
-
         protected override IEnumerable ShoppingCartLoadItems()
         {
-            return ShoppingCartLoadGenericItems<KroschkeZulassungViewModel>(ShoppingCartPersistanceKey)
-                    .Where(item => item.ModusAbmeldung == ViewModel.ModusAbmeldung);
-        }
-
-        protected void ShoppingCartTryEditItemAsViewModel()
-        {
-            var objectKey = ShoppingCartPopEditItemKey();
-            if (objectKey == null)
-                return;
-
-            var vm = ShoppingCartGetItem(objectKey) as KroschkeZulassungViewModel;
-            if (vm == null)
-                return;
-
-            InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
-            vm.DataMarkForRefresh();
-            ViewModel = vm;
-        }
-
-        private void ShoppingCartItemSave()
-        {
-            ShoppingCartSaveItem(ShoppingCartPersistanceKey, ViewModel);
+            return ViewModel.LoadZulassungenFromShoppingCart();
         }
 
         protected override void ShoppingCartFilterItems(string filterValue, string filterProperties)
         {
-            ShoppingCartFilterGenericItems<KroschkeZulassungViewModel>(filterValue, filterProperties);
+            ShoppingCartFilterGenericItems<Vorgang>(filterValue, filterProperties);
         }
+
+        [HttpPost]
+        public new ActionResult ShoppingCartItemEdit(string id)
+        {
+            var item = ShoppingCartItems.Cast<Vorgang>().FirstOrDefault(v => v.BelegNr == id);
+
+            if (item == null)
+                return Json(new { ok = false, message = string.Format("{0}: {1}", Localize.Error, Localize.RecordNotFound) });
+
+            ViewModel.Zulassung = item;
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public new ActionResult ShoppingCartItemRemove(string id)
+        {
+            var erg = ViewModel.DeleteShoppingCartVorgang(id);
+
+            ShoppingCartLoadAndCacheItems();
+
+            if (erg.IsNotNullOrEmpty())
+                return Json(new { ok = false, message = string.Format("{0}: {1}", Localize.Error, erg) });
+
+            return new EmptyResult();
+        }
+
+        //[GridAction]
+        //public ActionResult ShoppingCartZulassungAjaxBinding()
+        //{
+        //    return View(new GridModel(ViewModel.ZulassungenFromShoppingCartFiltered));
+        //}
+
+        //[HttpPost]
+        //public ActionResult ShoppingCartZulassungTryEditItem(string id)
+        //{
+        //    if (!ViewModel.SelectShoppingCartVorgang(id))
+        //        return Json(new { ok = false, message = string.Format("{0}: {1}", Localize.Error, Localize.RecordNotFound) });
+
+        //    return new EmptyResult();
+        //}
 
         [HttpPost]
         public override ActionResult ShoppingCartSelectedItemsSubmit()
         {
-            var warenkorb = ShoppingCartItems.Cast<KroschkeZulassungViewModel>().Where(item => item.IsSelected).ToListOrEmptyList();
-            foreach (var vm in warenkorb)
-            {
-                InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
-                vm.DataMarkForRefresh();
-            }
+            var warenkorb = ShoppingCartItems.Cast<Vorgang>().Where(item => item.IsSelected).ToListOrEmptyList();
 
-            ViewModel.Save(warenkorb.Select(wk => wk.Zulassung).ToListOrEmptyList(), saveDataToSap: true, saveFromShoppingCart: true);
-
-            if (ViewModel.SaveErrorMessage.IsNullOrEmpty())
-            {
-                foreach (var vm in warenkorb)
-                    ShoppingCartItemRemove(vm.ObjectKey);
-            }
+            ViewModel.Save(warenkorb, saveDataToSap: true, saveFromShoppingCart: true);
 
             return PartialView("Partial/Receipt", ViewModel);
         }
+
+        [CkgApplication]
+        public ActionResult ZulassungFromShoppingCart(string id, string abmeldung = "", string versandzulassung = "")
+        {
+            return Index("", "", zulassungFromShoppingCart: "1");
+        }
+
+        //public ActionResult ShoppingCartZulassungExportFilteredExcel(int page, string orderBy, string filterBy)
+        //{
+        //    var dt = ViewModel.ZulassungenFromShoppingCartFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+        //    new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.OrdersInShoppingCart, dt);
+
+        //    return new EmptyResult();
+        //}
+
+        //public ActionResult ShoppingCartZulassungExportFilteredPDF(int page, string orderBy, string filterBy)
+        //{
+        //    var dt = ViewModel.ZulassungenFromShoppingCartFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+        //    new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.OrdersInShoppingCart, dt, landscapeOrientation: true);
+
+        //    return new EmptyResult();
+        //}
 
         #endregion
     }

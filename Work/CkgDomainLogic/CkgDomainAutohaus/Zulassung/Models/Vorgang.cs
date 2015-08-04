@@ -16,6 +16,23 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.ReceiptNo)]
         public string BelegNr { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.OrderType)]
+        public string BeauftragungsArt { get; set; }
+
+        public string ZulassungFromShoppingCartParameters
+        {
+            get
+            {
+                if (BeauftragungsArt == "VERSANDZULASSUNG")
+                    return "?versandzulassung=1";
+
+                if (BeauftragungsArt == "ABMELDUNG")
+                    return "?abmeldung=1";
+
+                return "";
+            }
+        }
+
         public string VkOrg { get; set; }
 
         public string VkBur { get; set; }
@@ -106,7 +123,9 @@ namespace CkgDomainLogic.Autohaus.Models
                         new SelectItem("Z9", Localize.DeliveryAddress + " 3")
                     };
             }
-        } 
+        }
+
+        public bool IsSelected { get; set; }
 
         public Vorgang()
         {

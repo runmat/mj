@@ -450,6 +450,7 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_AH_EXPORT_WARENKORB").WriteOrmForExportTableStructures("I_VKBUR, I_WEBGOUP_ID, I_WEBUSER_ID", "4837", "0", "0");
             //new FunctionReflector("Z_ZLD_EXPORT_AH_WARENKORB").WriteOrmForExportTableStructures("I_VKBUR", "4837");
             //new FunctionReflector("Z_ZLD_IMPORT_AH_WARENKORB").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_DELETE_AH_WARENKORB").WriteOrmForExportTableStructures();
 
 
             //CoCTest();
