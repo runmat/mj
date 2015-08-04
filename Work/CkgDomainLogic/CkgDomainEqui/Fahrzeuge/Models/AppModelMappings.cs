@@ -214,11 +214,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Durchfuehrung = sap.PICKDAT;
                         business.Versand = sap.ZZTMPDT;
 
-                        var halterName1 = "Göster Halmacken";
-                        var halterName2 = "";
-                        var halterStrasse = "Walterstr. 34";
-                        var halterPlz = "22941";
-                        var halterOrt = "Bargteheide";
+                        var halterName1 = sap.NAME1_ZH;
+                        var halterName2 = sap.NAME2_ZH;
+                        var halterStrasse = sap.STREET_ZH.FormatIfNotNull("{this}{0}", sap.HOUSE_NUM1_ZH.PrependIfNotNull(" "));
+                        var halterPlz = sap.POST_CODE1_ZH;
+                        var halterOrt = sap.CITY1_ZH;
                         business.HalterAdresse = string.Format(
                             "{0}{1}{2}{3}{4}",
                             halterName1, halterName2.PrependIfNotNull(", "), 
