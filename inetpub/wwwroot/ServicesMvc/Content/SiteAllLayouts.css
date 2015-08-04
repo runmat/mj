@@ -1327,3 +1327,7 @@ opacity: 0;
 
 .user-messages-title {  }
 
+input[type="text"].m-wrap.kennzeichen,
+span.kennzeichen{
+  text-transform: uppercase;
+}
