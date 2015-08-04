@@ -177,12 +177,14 @@ namespace AppZulassungsdienst.forms
                 objNacherf.SelVorgang = "A";
                 objNacherf.SelStatus = "AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge       
                 objNacherf.SelFlieger = false;
+                objNacherf.SelNochNichtAbgesendete = chkNochNichtAbgesendete.Checked;
             }
             else if (objNacherf.SelAenderungAngenommene)
             {
                 objNacherf.SelVorgang = "A";
                 objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung       
                 objNacherf.SelFlieger = false;
+                objNacherf.SelNochNichtAbgesendete = false;
             }
             else
             {
@@ -202,6 +204,7 @@ namespace AppZulassungsdienst.forms
                     objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung
                 }
                 objNacherf.SelFlieger = chkFlieger.Checked;
+                objNacherf.SelNochNichtAbgesendete = false;
             }
 
             objNacherf.SelDZVKBUR = "";
@@ -217,7 +220,11 @@ namespace AppZulassungsdienst.forms
             if (objNacherf.Vorgangsliste.Any())
             {
                 Session["objNacherf"] = objNacherf;
-                Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString());
+
+                if (objNacherf.SelNochNichtAbgesendete)
+                    Response.Redirect("NochNichtAbgesendeteVorgaengeListe.aspx?AppID=" + Session["AppID"].ToString());
+                else
+                    Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString());
             }
             else
             {
@@ -310,12 +317,13 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void ShowHideControls()
         {
-            trKundengruppe.Visible = (objNacherf.SelAnnahmeAH ||objNacherf.SelAenderungAngenommene);
+            trKundengruppe.Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
             trTour.Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
             trStva.Visible = !objNacherf.SelSofortabrechnung;
             trDienstleistung.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
             trVorgang.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
             trFlieger.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
+            trNochNichtAbgesendete.Visible = objNacherf.SelAnnahmeAH;
         }
 
         #endregion

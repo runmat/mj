@@ -676,6 +676,41 @@ namespace AppZulassungsdienst.lib.Models
         //Z_ZLD_STO_STORNO_LISTE.GT_LISTE
         //Z_ZLD_STO_STORNOGRUENDE.GT_GRUENDE
 
+        static public ModelMapping<Z_ZLD_EXPORT_AH_WARENKORB.GT_BAK, NochNichtAbgesendeterVorgang> Z_ZLD_EXPORT_AH_WARENKORB_GT_BAK_To_NochNichtAbgesendeterVorgang
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_EXPORT_AH_WARENKORB.GT_BAK, NochNichtAbgesendeterVorgang>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Bemerkung = s.BEMERKUNG;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.KundenNr = s.KUNNR.NotNullOrEmpty().TrimStart('0');
+                        d.MaterialName = s.NAKTX;
+                        d.Name1 = s.NAME1;
+                        d.Referenz1 = s.ZZREFNR1;
+                        d.Referenz2 = s.ZZREFNR2;
+                        d.SapId = s.ZULBELN.NotNullOrEmpty().TrimStart('0');
+                        d.Zulassungsdatum = s.ZZZLDAT;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_IMPORT_AH_WARENKORB.GT_BAK, NochNichtAbgesendeterVorgang> Z_ZLD_IMPORT_AH_WARENKORB_GT_BAK_To_NochNichtAbgesendeterVorgang
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_IMPORT_AH_WARENKORB.GT_BAK, NochNichtAbgesendeterVorgang>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.FehlerText = s.MESSAGE;
+                        d.SapId = s.ZULBELN.NotNullOrEmpty().TrimStart('0');
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -1175,6 +1210,20 @@ namespace AppZulassungsdienst.lib.Models
 
         //Z_ZLD_SAVE_TAGGLEICHE_MELDUNG.IS_TG_MELDUNG
         //Z_ZLD_SETNEW_DEBI_ERL.GT_KUNDEN
+
+        static public ModelMapping<Z_ZLD_IMPORT_AH_WARENKORB.GT_BAK, NochNichtAbgesendeterVorgang> Z_ZLD_IMPORT_AH_WARENKORB_GT_BAK_From_NochNichtAbgesendeterVorgang
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_IMPORT_AH_WARENKORB.GT_BAK, NochNichtAbgesendeterVorgang>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
+                    }));
+            }
+        }
 
         #endregion
     }

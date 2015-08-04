@@ -373,6 +373,33 @@ namespace AppZulassungsdienst.forms {
         protected global::System.Web.UI.WebControls.CheckBox chkFlieger;
         
         /// <summary>
+        /// trNochNichtAbgesendete-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trNochNichtAbgesendete;
+        
+        /// <summary>
+        /// Label3-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Label3;
+        
+        /// <summary>
+        /// chkNochNichtAbgesendete-Steuerelement
+        /// </summary>
+        /// <remarks>
+        /// Automatisch generiertes Feld
+        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.CheckBox chkNochNichtAbgesendete;
+        
+        /// <summary>
         /// Queryfooter-Steuerelement
         /// </summary>
         /// <remarks>

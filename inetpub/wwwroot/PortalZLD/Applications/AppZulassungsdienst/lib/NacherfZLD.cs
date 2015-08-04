@@ -31,6 +31,8 @@ namespace AppZulassungsdienst.lib
 
         public List<ZLDVorgangUINacherfassung> Vorgangsliste { get; private set; }
 
+        public List<NochNichtAbgesendeterVorgang> NochNichtAbgesendeteVorgaenge { get; private set; }
+
         public DataTable BestLieferanten { get; set; }
         public DataTable tblBarquittungen { get; set; }
         public DataTable AHVersandListe { get; set; }
@@ -63,6 +65,7 @@ namespace AppZulassungsdienst.lib
         public bool SelEditDurchzufVersZul { get; set; }
         public string SelGroupTourID { get; set; }
         public String SelDZVKBUR { get; set; }
+        public bool SelNochNichtAbgesendete { get; set; }
 
         public String Name1Hin { get; set; }
         public String Name2Hin { get; set; }
@@ -140,6 +143,14 @@ namespace AppZulassungsdienst.lib
         }
 
         public void LoadVorgaengeFromSap(List<Materialstammdaten> materialStamm)
+        {
+            if (SelNochNichtAbgesendete)
+                LoadNochNichtAbgesendeteVorgaengeFromSap();
+            else
+                LoadVorgaengeFromSapInner(materialStamm);
+        }
+
+        private void LoadVorgaengeFromSapInner(List<Materialstammdaten> materialStamm)
         {
             MatError = 0;
             MatErrorText = "";
@@ -1323,6 +1334,80 @@ namespace AppZulassungsdienst.lib
                     }
                 }
             }
+        }
+
+        public void LoadNochNichtAbgesendeteVorgaengeFromSap()
+        {
+            ExecuteSapZugriff(() =>
+            {
+                var sapList = Z_ZLD_EXPORT_AH_WARENKORB.GT_BAK.GetExportListWithInitExecute(SAP, "I_VKBUR", VKBUR);
+
+                NochNichtAbgesendeteVorgaenge = AppModelMappings.Z_ZLD_EXPORT_AH_WARENKORB_GT_BAK_To_NochNichtAbgesendeterVorgang.Copy(sapList).ToList();
+            });
+        }
+
+        public void SelectNochNichtAbgesendetenVorgang(string sapId, bool newStatus)
+        {
+            ClearError();
+
+            try
+            {
+                var vg = NochNichtAbgesendeteVorgaenge.FirstOrDefault(v => v.SapId == sapId);
+                if (vg != null)
+                    vg.IsSelected = newStatus;
+            }
+            catch (Exception ex)
+            {
+                RaiseError(9999, ex.Message);
+            }
+        }
+
+        public void SelectNochNichtAbgesendeteVorgaenge()
+        {
+            ClearError();
+
+            try
+            {
+                var newStatus = NochNichtAbgesendeteVorgaenge.None(v => v.IsSelected);
+
+                NochNichtAbgesendeteVorgaenge.ForEach(v => v.IsSelected = newStatus);
+            }
+            catch (Exception ex)
+            {
+                RaiseError(9999, ex.Message);
+            }
+        }
+
+        public void SendNochNichtAbgesendeteVorgaengeToSap()
+        {
+            var selektierteVorgaenge = NochNichtAbgesendeteVorgaenge.Where(v => v.IsSelected);
+
+            if (selektierteVorgaenge.None())
+                return;
+
+            ExecuteSapZugriff(() =>
+            {
+                Z_ZLD_IMPORT_AH_WARENKORB.Init(SAP);
+
+                var vorgaenge = AppModelMappings.Z_ZLD_IMPORT_AH_WARENKORB_GT_BAK_From_NochNichtAbgesendeterVorgang.CopyBack(selektierteVorgaenge);
+                SAP.ApplyImport(vorgaenge);
+
+                CallBapi();
+
+                var ergListe = AppModelMappings.Z_ZLD_IMPORT_AH_WARENKORB_GT_BAK_To_NochNichtAbgesendeterVorgang.Copy(Z_ZLD_IMPORT_AH_WARENKORB.GT_BAK.GetExportList(SAP)).ToList();
+
+                foreach (var erg in ergListe)
+                {
+                    var vg = NochNichtAbgesendeteVorgaenge.FirstOrDefault(v => v.SapId == erg.SapId);
+                    if (vg != null)
+                    {
+                        if (!String.IsNullOrEmpty(erg.FehlerText))
+                            vg.FehlerText = erg.FehlerText;
+                        else
+                            vg.FehlerText = "OK";
+                    }
+                }
+            });
         }
 
         #endregion
