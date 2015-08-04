@@ -2906,6 +2906,8 @@
     <Content Include="Views\Shared\Partial\LayoutPageHeaderHint.cshtml" />
     <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationAllLayoutPages.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationAllLayoutPages.cshtml" />
+    <Content Include="Views\Shared\Partial\ImpressumCkg.cshtml" />
+    <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

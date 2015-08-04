@@ -1,4 +1,7 @@
-﻿@{
+﻿@using GeneralTools.Contracts
+@{
+    var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
+
     ViewBag.BodyCssClass = "login";
     Layout = "~/Views/Shared/_LayoutSimple.cshtml";
 }
@@ -10,7 +13,7 @@
 <div class="content">
     <h3 class="page-title">@Localize.Contact </h3>
 
-    @Html.Partial("Partial/Kontakt")
+    @Html.Partial(appSettings.AppOwnerKontaktPartialViewName)
 
     <div class="forget-password">
         <h4><a href="~/Login/Index" id="forget-password"> <i class="icon-chevron-right"></i> @Localize.Login</a></h4>

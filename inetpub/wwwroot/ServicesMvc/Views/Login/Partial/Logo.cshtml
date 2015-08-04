@@ -1,10 +1,12 @@
-﻿@{
+﻿@using GeneralTools.Contracts
+@{
     ViewBag.HeaderIconCssClass = "hide";
+    var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
 }
 
 <div class="logo-header">
     <div class="logo text">
-        <span class="logo-title">DAD</span> <span class="logo-name">Deutscher Auto Dienst</span>
+        <span class="logo-name">@appSettings.AppOwnerName</span> <span class="logo-name">@appSettings.AppOwnerFullName</span>
     </div>
     <div class="language-flags">
         @Html.Partial("Partial/UserLanguageSwitch", new ViewDataDictionary(ViewData))
