@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="ZLDTableClasses">
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 12.875, 8.75" name="ZLDTableClasses">
   <DataContextMoniker Name="/ZLDTableClassesDataContext" />
   <nestedChildShapes>
     <classShape Id="fb5a3b9e-0382-46dc-946c-40fc97ccca53" absoluteBounds="2.125, 1, 2, 2.1554996744791666">
@@ -26,26 +26,32 @@
         <elementListCompartment Id="384798d9-fd8e-42f5-b7b9-f72a8f76a638" absoluteBounds="5.515, 1.21, 1.9700000000000002, 6.0184326171875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
       </nestedChildShapes>
     </classShape>
-    <associationConnector edgePoints="[(5.5 : 2.07774983723958); (4.125 : 2.07774983723958)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 2.07774983723958); (4.125 : 2.07774983723958)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf/ZLDVorgangKopf_ZLDVorgangAdresse" />
       <nodes>
         <classShapeMoniker Id="88534ebc-d693-4659-a949-80e39b04e5b5" />
         <classShapeMoniker Id="fb5a3b9e-0382-46dc-946c-40fc97ccca53" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(5.5 : 5.14505126953125); (4.125 : 5.14505126953125)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(5.5 : 5.14505126953125); (4.125 : 5.14505126953125)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf/ZLDVorgangKopf_ZLDVorgangBank" />
       <nodes>
         <classShapeMoniker Id="88534ebc-d693-4659-a949-80e39b04e5b5" />
         <classShapeMoniker Id="37e2721f-ee2b-41c7-a2c5-4d4db5212acc" />
       </nodes>
     </associationConnector>
-    <associationConnector edgePoints="[(7.5 : 4.01040771484375); (8.75 : 4.01040771484375)]" fixedFrom="Algorithm" fixedTo="Algorithm">
+    <associationConnector edgePoints="[(7.5 : 4.01040771484375); (8.75 : 4.01040771484375)]" fixedFrom="NotFixed" fixedTo="NotFixed">
       <AssociationMoniker Name="/ZLDTableClassesDataContext/ZLDVorgangKopf/ZLDVorgangKopf_ZLDVorgangPosition" />
       <nodes>
         <classShapeMoniker Id="88534ebc-d693-4659-a949-80e39b04e5b5" />
         <classShapeMoniker Id="74e9224b-f8a1-4e6e-96e2-dae7bc3cd550" />
       </nodes>
     </associationConnector>
+    <classShape Id="397e46c9-9f51-48c1-a049-2355db8dc33b" absoluteBounds="10.625, 6.5, 2, 1.9631982421875">
+      <DataClassMoniker Name="/ZLDTableClassesDataContext/RechnungsanhangTemplates" />
+      <nestedChildShapes>
+        <elementListCompartment Id="34ebb3bc-fa31-407c-95ae-7425044710e3" absoluteBounds="10.64, 6.96, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
   </nestedChildShapes>
 </ordesignerObjectsDiagram>

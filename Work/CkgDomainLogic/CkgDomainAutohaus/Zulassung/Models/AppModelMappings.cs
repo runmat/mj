@@ -154,16 +154,21 @@ namespace CkgDomainLogic.Autohaus.Models
             switch (d.Status.NotNullOrEmpty().ToUpper())
             {
                 case "AR":
-                    d.Preis = s.PREIS_DL.NullIf0();
-                    d.PreisGebuehr = s.PREIS_GB.NullIf0();
-                    d.PreisSteuer = s.PREIS_ST.NullIf0();
-                    d.PreisKz = s.PREIS_KZ.NullIf0();
+                    d.Preis = PreisCentToEuro(s.PREIS_DL);
+                    d.PreisGebuehr = PreisCentToEuro(s.PREIS_GB);
+                    d.PreisSteuer = PreisCentToEuro(s.PREIS_ST);
+                    d.PreisKz = PreisCentToEuro(s.PREIS_KZ);
                     break;
 
                 case "D":
-                    d.PreisGebuehr = s.PREIS_GB.NullIf0();
+                    d.PreisGebuehr = PreisCentToEuro(s.PREIS_GB);
                     break;
             }
+        }
+
+        private static decimal? PreisCentToEuro(decimal? centPreis)
+        {
+            return ((decimal?)(centPreis.GetValueOrDefault() / 100)).NullIf0();
         }
 
         static public ModelMapping<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME, PdfFormular> Z_ZLD_AH_AUSGABE_ZULFORMS_GT_FILENAME_To_PdfFormular
