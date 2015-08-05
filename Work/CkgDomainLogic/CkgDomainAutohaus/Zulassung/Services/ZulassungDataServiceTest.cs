@@ -161,6 +161,16 @@ namespace CkgDomainLogic.Autohaus.Services
             throw new NotImplementedException();
         }
 
+        public List<Vorgang> LoadVorgaengeForShoppingCart()
+        {
+            throw new NotImplementedException();
+        }
+
+        public string DeleteVorgangFromShoppingCart(string belegNr)
+        {
+            throw new NotImplementedException();
+        }
+
         private static IEnumerable<Domaenenfestwert> LoadFahrzeugartenFromSap()
         {
             return null;

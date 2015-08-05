@@ -16,23 +16,24 @@
             columns.XBound("")
                 .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.ObjectKey #>' onchange='OnSelectionChange_GridShoppingCart($(this))' />")
                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridShoppingCart_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                .Filterable(false); 
+                .Filterable(false);
             columns.XBound(c => c.BelegNr).Width(145).Title("").Filterable(false).Sortable(false)
                     .ClientTemplate(
                             "<button onclick='return ShoppingCartZulassungItemEdit(\"<#= data.BelegNr #>\", \"<#= data.ZulassungFromShoppingCartParameters #>\");' class='btn mini blue tooltips margin-right-10' data-original-title='" + Localize.ItemEdit + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>" +
-                            "<button onclick='return ShoppingCartItemRemove(\"<#= data.BelegNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
+                            "<button onclick='return ShoppingCartZulassungItemRemove(\"<#= data.BelegNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.ItemDelete + "' data-placement='right'><i class='halflings-icon white remove'></i></button>"
                 );
 
             columns.XBound(c => c.BeauftragungsArt);
-            columns.XBound(c => c.Fahrzeugdaten.FahrgestellNr);
+            columns.XBound(c => c.FahrgestellNr);
             columns.XBound(c => c.HalterName);
-            columns.XBound(c => (c.BeauftragungsArt == "ABMELDUNG" ? c.Zulassungsdaten.Abmeldedatum : c.Zulassungsdaten.Zulassungsdatum));
+            columns.XBound(c => c.Zulassungsdatum).Format("{0:dd.MM.yyyy}");
+            columns.XBound(c => c.Abmeldedatum).Format("{0:dd.MM.yyyy}");
             columns.XBound(c => c.Vorerfasser);
         })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.Zulassungsdaten.Zulassungsdatum).Descending())
+    .XSort(sortOrder => sortOrder.Add(c => c.Zulassungsdatum).Descending())
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ShoppingCartExportFilteredExcel", currentController).HtmlAttributes(new { @class = "hide btn mini gray tooltips a_btn_mini excel", data_original_title = "Excel Export", data_placement = "right" });

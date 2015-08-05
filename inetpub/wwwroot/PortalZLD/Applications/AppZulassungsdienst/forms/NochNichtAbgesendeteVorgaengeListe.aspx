@@ -42,11 +42,13 @@
                                         <tr>
                                             <td>
                                                 <asp:GridView ID="gvZuldienst" Width="100%" runat="server" AutoGenerateColumns="False"
-                                                    CellPadding="0" CellSpacing="0" GridLines="None" DataKeyNames="SapId,PositionsNr"
+                                                    CellPadding="0" CellSpacing="0" GridLines="None" DataKeyNames="SapId"
                                                     AllowSorting="true" AllowPaging="false" CssClass="GridView" PageSize="1000" 
                                                     onsorting="gvZuldienst_Sorting" onrowcommand="gvZuldienst_RowCommand">
                                                     <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
                                                     <PagerSettings Visible="False" />
+                                                    <RowStyle Height="24px"/>
+                                                    <AlternatingRowStyle Height="24px"/>
                                                     <Columns> 
                                                         <asp:TemplateField HeaderText="Status" Visible="false">
                                                             <ItemTemplate>
@@ -60,6 +62,7 @@
                                                             <ItemTemplate>
                                                                 <asp:Label ID="lblIsSelected" runat="server" Text='<%# ((bool)Eval("IsSelected") ? "X" : "") %>'/>
                                                             </ItemTemplate>
+                                                            <ItemStyle HorizontalAlign="Center" />
                                                         </asp:TemplateField>
                                                         <asp:TemplateField SortExpression="SapId" HeaderText="ID">
                                                             <HeaderTemplate>
@@ -77,12 +80,12 @@
                                                                 <asp:Label ID="lblKundennr" runat="server" Text='<%# Eval("KundenNr") %>'/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
-                                                        <asp:TemplateField SortExpression="KundenName" HeaderText="Name">
+                                                        <asp:TemplateField SortExpression="Name1" HeaderText="Name">
                                                             <HeaderTemplate>
-                                                                <asp:LinkButton ID="col_Kundenname" runat="server" CommandName="Sort" CommandArgument="KundenName">Name</asp:LinkButton>
+                                                                <asp:LinkButton ID="col_Kundenname" runat="server" CommandName="Sort" CommandArgument="Name1">Name</asp:LinkButton>
                                                             </HeaderTemplate>
                                                             <ItemTemplate>
-                                                                <asp:Label ID="lblKundenname" runat="server" Text='<%# Eval("KundenName") %>'/>
+                                                                <asp:Label ID="lblKundenname" runat="server" Text='<%# Eval("Name1") %>'/>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
                                                         <asp:TemplateField SortExpression="MaterialName" HeaderText="Dienstleistung">
@@ -143,8 +146,8 @@
                         </ContentTemplate>
                     </asp:UpdatePanel>
                     <div id="dataFooter">
-                        <asp:LinkButton ID="cmdOK" runat="server" CssClass="TablebuttonLarge" Width="128px" onclick="cmdOK_Click">» alle übernehmen</asp:LinkButton>
-                        <asp:LinkButton ID="cmdSend" runat="server" CssClass="Tablebutton" Width="78px" onclick="cmdSend_Click" >» Absenden</asp:LinkButton>   
+                        <asp:LinkButton ID="cmdOK" runat="server" CssClass="TablebuttonLarge" Width="128px" Height="16px" onclick="cmdOK_Click">» alle übernehmen</asp:LinkButton>
+                        <asp:LinkButton ID="cmdSend" runat="server" CssClass="Tablebutton" Width="78px" Height="16px" onclick="cmdSend_Click" >» Absenden</asp:LinkButton>   
                 </div>
             </div>
         </div>

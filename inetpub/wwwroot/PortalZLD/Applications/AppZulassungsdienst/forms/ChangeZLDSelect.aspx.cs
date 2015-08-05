@@ -217,14 +217,15 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            if (objNacherf.Vorgangsliste.Any())
-            {
-                Session["objNacherf"] = objNacherf;
+            Session["objNacherf"] = objNacherf;
 
-                if (objNacherf.SelNochNichtAbgesendete)
-                    Response.Redirect("NochNichtAbgesendeteVorgaengeListe.aspx?AppID=" + Session["AppID"].ToString());
-                else
-                    Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString());
+            if (objNacherf.SelNochNichtAbgesendete && objNacherf.NochNichtAbgesendeteVorgaenge.Any())
+            {
+                Response.Redirect("NochNichtAbgesendeteVorgaengeListe.aspx?AppID=" + Session["AppID"].ToString());
+            }
+            else if (!objNacherf.SelNochNichtAbgesendete && objNacherf.Vorgangsliste.Any())
+            {
+                Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString());
             }
             else
             {

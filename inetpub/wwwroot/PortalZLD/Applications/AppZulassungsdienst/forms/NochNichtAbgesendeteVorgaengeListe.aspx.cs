@@ -88,7 +88,11 @@ namespace AppZulassungsdienst.forms
                     Label lblID = (Label)gvZuldienst.Rows[Index].FindControl("lblsapID");
                     Label lblIsSelected = (Label)gvZuldienst.Rows[Index].FindControl("lblIsSelected");
 
-                    objNacherf.SelectNochNichtAbgesendetenVorgang(lblID.Text, lblIsSelected.Text.XToBool());
+                    var newValue = !lblIsSelected.Text.XToBool();
+
+                    objNacherf.SelectNochNichtAbgesendetenVorgang(lblID.Text, newValue);
+
+                    lblIsSelected.Text = newValue.BoolToX();
 
                     if (objNacherf.ErrorOccured)
                     {
@@ -124,7 +128,7 @@ namespace AppZulassungsdienst.forms
 
         protected void lb_zurueck_Click(object sender, EventArgs e)
         {
-            Response.Redirect("ChangeZLDSelect.aspx?AppID=" + Session["AppID"].ToString());
+            Response.Redirect("ChangeZLDSelect.aspx?A=true&AppID=" + Session["AppID"].ToString());
         }
 
         protected void cmdSend_Click(object sender, EventArgs e)

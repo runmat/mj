@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data.SqlClient;
 using System.Web.UI;
 using CKG.Base.Common;
 using System.Data;
@@ -236,13 +234,16 @@ namespace AutohausPortal.lib
 
                     foreach (DataRow row in tblEingabeListe.Rows)
                     {
-                        var kundeRows = tblKundenStamm.Select("KUNNR = '" + row["KUNNR"].ToString() + "'");
+                        row["ZULBELN"] = row["ZULBELN"].ToString().TrimStart('0');
+                        row["KUNNR"] = row["KUNNR"].ToString().TrimStart('0');
+
+                        var kundeRows = tblKundenStamm.Select("KUNNR = '" + row["KUNNR"] + "'");
                         if (kundeRows.Length > 0)
                         {
-                            row["kundenname"] = String.Format("{0} ~ {1}", kundeRows[0]["NAME1"], kundeRows[0]["KUNNR"].ToString().TrimStart('0'));
+                            row["kundenname"] = kundeRows[0]["NAME1"].ToString();
                         }
 
-                        var posRows = tblPos.Select("ZULBELN = '" + row["ZULBELN"].ToString() + "'");
+                        var posRows = tblPos.Select("ZULBELN = '" + row["ZULBELN"].ToString().PadLeft(10, '0') + "'");
                         if (posRows.Length > 0)
                         {
                             row["Matnr"] = posRows[0]["MATNR"];
@@ -250,7 +251,7 @@ namespace AutohausPortal.lib
                                 row["Matbez"] = ZLDCommon.Materialliste[row["Matnr"].ToString().TrimStart('0')];
                         }
 
-                        var adrsRows = tblAdrs.Select("ZULBELN = '" + row["ZULBELN"].ToString() + "'");
+                        var adrsRows = tblAdrs.Select("ZULBELN = '" + row["ZULBELN"].ToString().PadLeft(10, '0') + "'");
                         if (adrsRows.Length > 0)
                         {
                             ModelMapping.Copy(adrsRows[0], row);
@@ -263,7 +264,7 @@ namespace AutohausPortal.lib
                         m_strMessage = "Keine Daten gefunden!";
                     }
 
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
                 catch (Exception ex)
@@ -289,7 +290,7 @@ namespace AutohausPortal.lib
 
             try
             {
-                var rows = tblEingabeListe.Select("ZULBELN = '" + sapId.ToString().PadLeft(10, '0') + "'");
+                var rows = tblEingabeListe.Select("ZULBELN = '" + sapId.ToString() + "'");
 
                 if (rows.Length == 0)
                 {
@@ -300,10 +301,10 @@ namespace AutohausPortal.lib
 
                 var row = rows[0];
 
-                id_sap = (long)row["ZULBELN"];
+                id_sap = row["ZULBELN"].ToString().ToLong(0);
                 AppID = row["APPID"].ToString();
                 Kundenname = row["kundenname"].ToString();
-                Kunnr = row["kundennr"].ToString();
+                Kunnr = row["KUNNR"].ToString();
                 Ref1 = row["ZZREFNR1"].ToString();
                 Ref2 = row["ZZREFNR2"].ToString();
                 Ref3 = row["ZZREFNR3"].ToString();
@@ -320,8 +321,8 @@ namespace AutohausPortal.lib
                 KennzVorhanden = row["KENNZ_VH"].ToString().XToBool();
                 Fahrzeugart = row["FAHRZ_ART"].ToString();
                 Saison = row["SAISON_KNZ"].ToString().XToBool();
-                SaisonBeg = row["SAISON_BEG"].ToString();
-                SaisonEnd = row["SAISON_END"].ToString();
+                SaisonBeg = row["SAISON_BEG"].ToString().TrimStart('0');
+                SaisonEnd = row["SAISON_END"].ToString().TrimStart('0');
                 ZusatzKZ = row["ZUSKENNZ"].ToString().XToBool();
                 ZollVers = row["ZOLLVERS"].ToString();
                 ZollVersDauer = row["ZOLLVERS_DAUER"].ToString();
@@ -383,13 +384,17 @@ namespace AutohausPortal.lib
                 m_blnGestartet = true;
                 try
                 {
-                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_AH_WARENKORB_DELETE", ref m_objApp, ref m_objUser, ref page);
+                    DynSapProxyObj myProxy = DynSapProxy.getProxy("Z_ZLD_DELETE_AH_WARENKORB", ref m_objApp, ref m_objUser, ref page);
 
-                    myProxy.setImportParameter("I_ZULBELN", sapId.ToString().PadLeft(10, '0'));
+                    DataTable impBak = myProxy.getImportTable("GT_BAK");
+
+                    var newRow = impBak.NewRow();
+                    newRow["ZULBELN"] = sapId.ToString().PadLeft(10, '0');
+                    impBak.Rows.Add(newRow);
 
                     myProxy.callBapi();
 
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
                 catch (Exception ex)
@@ -408,14 +413,17 @@ namespace AutohausPortal.lib
 
         public void SaveVorgangToSap(String strAppID, String strSessionID, Page page, bool cpdFormular, bool zusatzFormulare)
         {
-            GiveSapID(strAppID, strSessionID, page);
-            if (id_sap == 0)
+            if (IsNewVorgang)
             {
-                m_intStatus = 9999;
-                m_strMessage = "Fehler beim exportieren der Belegnummer!";
-                return;
+                GiveSapID(strAppID, strSessionID, page);
+                if (id_sap == 0)
+                {
+                    m_intStatus = 9999;
+                    m_strMessage = "Fehler beim exportieren der Belegnummer!";
+                    return;
+                }
             }
-
+            
             Init("SaveVorgangToSap", strAppID, strSessionID);
 
             tblFehler = null;
@@ -445,8 +453,8 @@ namespace AutohausPortal.lib
 
                     impBakRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
                     impBakRow["APPID"] = AppID;
-                    impBakRow["WEBUSER_ID"] = m_objUser.UserID;
-                    impBakRow["WEBGOUP_ID"] = m_objUser.GroupID;
+                    impBakRow["WEBUSER_ID"] = m_objUser.UserID.ToString();
+                    impBakRow["WEBGOUP_ID"] = m_objUser.GroupID.ToString();
                     impBakRow["VKORG"] = VKORG;
                     impBakRow["VKBUR"] = VKBUR;
                     impBakRow["BLTYP"] = Vorgang;
@@ -461,7 +469,7 @@ namespace AutohausPortal.lib
                     impBakRow["RESERVKENN_JN"] = Reserviert.BoolToX();
                     impBakRow["RESERVKENN"] = ReserviertKennz;
                     impBakRow["FEINSTAUB"] = Feinstaub.BoolToX();
-                    impBakRow["ZZZLDAT"] = ZulDate.ToNullableDateTime();
+                    impBakRow["ZZZLDAT"] = ZulDate.ToDateTimeOrDbNull();
                     impBakRow["ZZKENN"] = Kennzeichen;
                     impBakRow["WU_KENNZ2"] = WunschKZ2;
                     impBakRow["WU_KENNZ3"] = WunschKZ3;
@@ -477,14 +485,14 @@ namespace AutohausPortal.lib
                     impBakRow["ALT_KENNZ"] = Altkenn;
                     impBakRow["ZBII_ALT_NEU"] = (ZBII_ALT_NEU ? "N" : "A");
                     impBakRow["VH_KENNZ_RES"] = VorhKennzReserv.BoolToX();
-                    impBakRow["STILL_DAT"] = StillDate.ToNullableDateTime();
+                    impBakRow["STILL_DAT"] = StillDate.ToDateTimeOrDbNull();
                     impBakRow["MNRESW"] = MussReserviert.BoolToX();
                     impBakRow["ZZEVB"] = EVB;
                     impBakRow["KENNZ_UEBERNAHME"] = KennzUebernahme.BoolToX();
-                    impBakRow["SERIE"] = Serie;
+                    impBakRow["SERIE"] = Serie.BoolToX();
                     impBakRow["SAISON_KNZ"] = Saison.BoolToX();
-                    impBakRow["SAISON_BEG"] = SaisonBeg;
-                    impBakRow["SAISON_END"] = SaisonEnd;
+                    impBakRow["SAISON_BEG"] = (String.IsNullOrEmpty(SaisonBeg) ? "" : SaisonBeg.PadLeft(2, '0'));
+                    impBakRow["SAISON_END"] = (String.IsNullOrEmpty(SaisonEnd) ? "" : SaisonEnd.PadLeft(2, '0'));
                     impBakRow["ZUSKENNZ"] = ZusatzKZ.BoolToX();
                     impBakRow["TUEV_AU"] = TuvAu;
                     impBakRow["KURZZEITVS"] = KurzZeitKennz;
@@ -493,7 +501,7 @@ namespace AutohausPortal.lib
                     impBakRow["FAHRZ_ART"] = Fahrzeugart;
                     impBakRow["VORFUEHR"] = Vorfuehr;
                     impBakRow["LTEXT_NR"] = NrLangText;
-                    impBakRow["HALTE_DAUER"] = Haltedauer.ToNullableDateTime();
+                    impBakRow["HALTE_DAUER"] = Haltedauer.ToDateTimeOrDbNull();
                     impBakRow["VE_ERNAM"] = m_objUser.UserName;
                     impBakRow["SWIFT"] = SWIFT;
                     impBakRow["IBAN"] = IBAN;
@@ -512,7 +520,7 @@ namespace AutohausPortal.lib
                     impPosRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
                     impPosRow["LFDNR"] = "000010";
                     impPosRow["MENGE"] = "1";
-                    impPosRow["MATNR"] = NrMaterial.PadLeft(18, '0');
+                    impPosRow["MATNR"] = NrMaterial;
 
                     impPos.Rows.Add(impPosRow);
 
@@ -539,23 +547,16 @@ namespace AutohausPortal.lib
 
                     tblPrintKundenformulare = (zusatzFormulare ? myProxy.getExportTable("GT_FILENAME") : null);
 
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
 
-                    if (tblFehler.Rows.Count > 0)
+                    if (m_intStatus != 0)
                     {
-                        m_intStatus = -9999;
-                        m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+                        if (String.IsNullOrEmpty(m_strMessage))
+                            m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
 
-                        foreach (DataRow rowError in tblFehler.Rows)
-                        {
-                            var idSap = rowError["ZULBELN"].ToString().ToInt(0);
-                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idSap);
-                            if (rowListe.Length > 0)
-                            {
-                                rowListe[0]["Status"] = rowError["MESSAGE"];
-                            }
-                        }
+                        if (tblFehler.Rows.Count > 0)
+                            m_strMessage += " (" + tblFehler.Rows[0]["MESSAGE"].ToString() + ")";
                     }
                 }
                 catch (Exception ex)
@@ -628,8 +629,8 @@ namespace AutohausPortal.lib
 
                         impBakRow["ZULBELN"] = sapId.Value.ToString().PadLeft(10, '0');
                         impBakRow["APPID"] = AppID;
-                        impBakRow["WEBUSER_ID"] = m_objUser.UserID;
-                        impBakRow["WEBGOUP_ID"] = m_objUser.GroupID;
+                        impBakRow["WEBUSER_ID"] = m_objUser.UserID.ToString();
+                        impBakRow["WEBGOUP_ID"] = m_objUser.GroupID.ToString();
                         impBakRow["VKORG"] = VKORG;
                         impBakRow["VKBUR"] = VKBUR;
                         impBakRow["BLTYP"] = Vorgang;
@@ -656,7 +657,7 @@ namespace AutohausPortal.lib
                         impBakRow["RESERVKENN_JN"] = Reserviert.BoolToX();
                         impBakRow["RESERVKENN"] = ReserviertKennz;
                         impBakRow["FEINSTAUB"] = Feinstaub.BoolToX();
-                        impBakRow["ZZZLDAT"] = ZulDate.ToNullableDateTime();
+                        impBakRow["ZZZLDAT"] = ZulDate.ToDateTimeOrDbNull();
 
                         if (tblVorgaenge.Columns.Contains("KennzFun") && !String.IsNullOrEmpty(vRow["KennzFun"].ToString()))
                         {
@@ -687,14 +688,14 @@ namespace AutohausPortal.lib
 
                         impBakRow["VH_KENNZ_RES"] = (tblVorgaenge.Columns.Contains("KennzVorhanden") ? (bool)vRow["KennzVorhanden"] : VorhKennzReserv).BoolToX();
 
-                        impBakRow["STILL_DAT"] = StillDate.ToNullableDateTime();
+                        impBakRow["STILL_DAT"] = StillDate.ToDateTimeOrDbNull();
                         impBakRow["MNRESW"] = MussReserviert.BoolToX();
                         impBakRow["ZZEVB"] = EVB;
                         impBakRow["KENNZ_UEBERNAHME"] = KennzUebernahme.BoolToX();
-                        impBakRow["SERIE"] = Serie;
+                        impBakRow["SERIE"] = Serie.BoolToX();
                         impBakRow["SAISON_KNZ"] = Saison.BoolToX();
-                        impBakRow["SAISON_BEG"] = SaisonBeg;
-                        impBakRow["SAISON_END"] = SaisonEnd;
+                        impBakRow["SAISON_BEG"] = (String.IsNullOrEmpty(SaisonBeg) ? "" : SaisonBeg.PadLeft(2, '0'));
+                        impBakRow["SAISON_END"] = (String.IsNullOrEmpty(SaisonEnd) ? "" : SaisonEnd.PadLeft(2, '0'));
                         impBakRow["ZUSKENNZ"] = ZusatzKZ.BoolToX();
                         impBakRow["TUEV_AU"] = TuvAu;
                         impBakRow["KURZZEITVS"] = KurzZeitKennz;
@@ -703,7 +704,7 @@ namespace AutohausPortal.lib
                         impBakRow["FAHRZ_ART"] = Fahrzeugart;
                         impBakRow["VORFUEHR"] = Vorfuehr;
                         impBakRow["LTEXT_NR"] = NrLangText;
-                        impBakRow["HALTE_DAUER"] = Haltedauer.ToNullableDateTime();
+                        impBakRow["HALTE_DAUER"] = Haltedauer.ToDateTimeOrDbNull();
                         impBakRow["VE_ERNAM"] = m_objUser.UserName;
                         impBakRow["SWIFT"] = SWIFT;
                         impBakRow["IBAN"] = IBAN;
@@ -750,21 +751,19 @@ namespace AutohausPortal.lib
 
                     tblPrintKundenformulare = (zusatzFormulare ? myProxy.getExportTable("GT_FILENAME") : null);
 
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
 
-                    if (tblFehler.Rows.Count > 0)
+                    if (m_intStatus != 0)
                     {
-                        m_intStatus = -9999;
-                        m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+                        if (String.IsNullOrEmpty(m_strMessage))
+                            m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
 
-                        foreach (DataRow rowError in tblFehler.Rows)
+                        if (tblFehler.Rows.Count > 0)
                         {
-                            var idSap = rowError["ZULBELN"].ToString().ToInt(0);
-                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idSap);
-                            if (rowListe.Length > 0)
+                            foreach (DataRow errRow in tblFehler.Rows)
                             {
-                                rowListe[0]["Status"] = rowError["MESSAGE"];
+                                m_strMessage += " (" + errRow["ZULBELN"].ToString() + ": " + errRow["MESSAGE"].ToString() + ")";
                             }
                         }
                     }
@@ -807,38 +806,40 @@ namespace AutohausPortal.lib
                     DataTable impPos = myProxy.getImportTable("GT_POS_IN");
                     DataTable impAdrs = myProxy.getImportTable("GT_ADRS_IN");
 
-                    foreach (DataRow SaveRow in tblEingabeListe.Rows)
+                    var saveRows = tblEingabeListe.Select("toSave = '1'");
+
+                    foreach (DataRow SaveRow in saveRows)
                     {
-                        if (SaveRow["toSave"].ToString() == "1")
+                        DataRow impBakRow = impBak.NewRow();
+
+                        if (ModelMapping.Copy(SaveRow, impBakRow))
                         {
-                            DataRow impBakRow = impBak.NewRow();
+                            impBakRow["ZULBELN"] = SaveRow["ZULBELN"].ToString().PadLeft(10, '0');
+                            impBakRow["KUNNR"] = SaveRow["KUNNR"].ToString().PadLeft(10, '0');
 
-                            if (ModelMapping.Copy(SaveRow, impBakRow))
+                            impBak.Rows.Add(impBakRow);
+
+                            var impPosRow = impPos.NewRow();
+
+                            impPosRow["ZULBELN"] = SaveRow["ZULBELN"].ToString().PadLeft(10, '0');
+                            impPosRow["LFDNR"] = "000010";
+                            impPosRow["MENGE"] = "1";
+                            impPosRow["MATNR"] = SaveRow["Matnr"];
+
+                            impPos.Rows.Add(impPosRow);
+
+                            if (!String.IsNullOrEmpty(SaveRow["NAME1"].ToString()))
                             {
-                                impBak.Rows.Add(impBakRow);
+                                var impAdrsRow = impAdrs.NewRow();
 
-                                var impPosRow = impPos.NewRow();
+                                impAdrsRow["ZULBELN"] = SaveRow["ZULBELN"].ToString().PadLeft(10, '0');
+                                impAdrsRow["NAME1"] = SaveRow["NAME1"];
+                                impAdrsRow["NAME2"] = SaveRow["NAME2"];
+                                impAdrsRow["PLZ"] = SaveRow["PLZ"];
+                                impAdrsRow["CITY1"] = SaveRow["CITY1"];
+                                impAdrsRow["STREET"] = SaveRow["STREET"];
 
-                                impPosRow["ZULBELN"] = SaveRow["ZULBELN"];
-                                impPosRow["LFDNR"] = "000010";
-                                impPosRow["MENGE"] = "1";
-                                impPosRow["MATNR"] = SaveRow["Matnr"];
-
-                                impPos.Rows.Add(impPosRow);
-
-                                if (!String.IsNullOrEmpty(SaveRow["NAME1"].ToString()))
-                                {
-                                    var impAdrsRow = impAdrs.NewRow();
-
-                                    impAdrsRow["ZULBELN"] = SaveRow["ZULBELN"];
-                                    impAdrsRow["NAME1"] = SaveRow["NAME1"];
-                                    impAdrsRow["NAME2"] = SaveRow["NAME2"];
-                                    impAdrsRow["PLZ"] = SaveRow["PLZ"];
-                                    impAdrsRow["CITY1"] = SaveRow["CITY1"];
-                                    impAdrsRow["STREET"] = SaveRow["STREET"];
-
-                                    impAdrs.Rows.Add(impAdrsRow);
-                                }
+                                impAdrs.Rows.Add(impAdrsRow);
                             }
                         }
                     }
@@ -848,22 +849,23 @@ namespace AutohausPortal.lib
                     tblFehler = myProxy.getExportTable("GT_ERROR");
                     tblPrint = myProxy.getExportTable("GT_FILENAME");
 
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
 
-                    if (tblFehler.Rows.Count > 0)
+                    foreach (DataRow SaveRow in saveRows)
                     {
-                        m_intStatus = -9999;
-                        m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
-
-                        foreach (DataRow rowError in tblFehler.Rows)
+                        var errRows = tblFehler.Select("ZULBELN = '" + SaveRow["ZULBELN"].ToString().PadLeft(10, '0') + "'");
+                        if (errRows.Length > 0)
                         {
-                            var idSap = rowError["ZULBELN"].ToString().ToInt(0);
-                            DataRow[] rowListe = tblEingabeListe.Select("id_sap=" + idSap);
-                            if (rowListe.Length > 0)
-                            {
-                                rowListe[0]["Status"] = rowError["MESSAGE"];
-                            }
+                            SaveRow["Status"] = errRows[0]["MESSAGE"].ToString();
+
+                            m_intStatus = -9999;
+                            if (String.IsNullOrEmpty(m_strMessage))
+                                m_strMessage = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
+                        }
+                        else
+                        {
+                            SaveRow["Status"] = "OK";
                         }
                     }
                 }
@@ -921,7 +923,7 @@ namespace AutohausPortal.lib
                         aRow["NAME1"] = aRow["NAME1"].ToString() + " ~ " + aRow["KUNNR"].ToString();
                         aRow["Auswahl"] = "";
                     }
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
                 catch (Exception ex)
@@ -975,7 +977,7 @@ namespace AutohausPortal.lib
 
                     DataTable SAPReturn = myProxy.getExportTable("GT_ABM");
                     tblPrint = myProxy.getExportTable("GT_FILENAME");
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                     if (SAPReturn.Rows.Count > 0)
                     {
@@ -1035,7 +1037,7 @@ namespace AutohausPortal.lib
                     var tblTmp = myProxy.getExportTable("GT_BAK");
                     anzahl = tblTmp.Rows.Count.ToString();
 
-                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt();
+                    m_intStatus = myProxy.getExportParameter("E_SUBRC").ToInt(0);
                     m_strMessage = myProxy.getExportParameter("E_MESSAGE");
                 }
                 catch (Exception ex)

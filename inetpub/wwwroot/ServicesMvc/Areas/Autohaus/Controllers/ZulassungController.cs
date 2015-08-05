@@ -77,6 +77,8 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
 
+            ShoppingCartLoadAndCacheItems();
+
             //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
             return View("Index", ViewModel);
@@ -88,7 +90,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [CkgApplication]
         public ActionResult IndexMultiReg()
         {
-            ViewModel.SetParamAbmeldung(null);
+            ViewModel.SetParamAbmeldung("");
+            ViewModel.SetParamVersandzulassung("");
+
             ViewModel.DataInit();
 
             if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
@@ -100,7 +104,9 @@ namespace ServicesMvc.Autohaus.Controllers
             if (firstFahrzeug == null)
             {
                 return Content("Kein Fahrzeug ausgewählt.");
-            }    
+            }
+
+            ShoppingCartLoadAndCacheItems();
             
             return View("Index", ViewModel);
         }
@@ -642,6 +648,8 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: false, saveFromShoppingCart: false);
 
+            ShoppingCartLoadAndCacheItems();
+
             return PartialView("Partial/Receipt", ViewModel);
         }
 
@@ -649,6 +657,8 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Receipt()
         {
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
+
+            ShoppingCartLoadAndCacheItems();
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -809,7 +819,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public new ActionResult ShoppingCartItemEdit(string id)
+        public ActionResult ShoppingCartZulassungItemEdit(string id)
         {
             var item = ShoppingCartItems.Cast<Vorgang>().FirstOrDefault(v => v.BelegNr == id);
 
@@ -822,7 +832,7 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
-        public new ActionResult ShoppingCartItemRemove(string id)
+        public ActionResult ShoppingCartZulassungItemRemove(string id)
         {
             var erg = ViewModel.DeleteShoppingCartVorgang(id);
 
@@ -833,21 +843,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return new EmptyResult();
         }
-
-        //[GridAction]
-        //public ActionResult ShoppingCartZulassungAjaxBinding()
-        //{
-        //    return View(new GridModel(ViewModel.ZulassungenFromShoppingCartFiltered));
-        //}
-
-        //[HttpPost]
-        //public ActionResult ShoppingCartZulassungTryEditItem(string id)
-        //{
-        //    if (!ViewModel.SelectShoppingCartVorgang(id))
-        //        return Json(new { ok = false, message = string.Format("{0}: {1}", Localize.Error, Localize.RecordNotFound) });
-
-        //    return new EmptyResult();
-        //}
 
         [HttpPost]
         public override ActionResult ShoppingCartSelectedItemsSubmit()
@@ -864,22 +859,6 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             return Index("", "", zulassungFromShoppingCart: "1");
         }
-
-        //public ActionResult ShoppingCartZulassungExportFilteredExcel(int page, string orderBy, string filterBy)
-        //{
-        //    var dt = ViewModel.ZulassungenFromShoppingCartFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
-        //    new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.OrdersInShoppingCart, dt);
-
-        //    return new EmptyResult();
-        //}
-
-        //public ActionResult ShoppingCartZulassungExportFilteredPDF(int page, string orderBy, string filterBy)
-        //{
-        //    var dt = ViewModel.ZulassungenFromShoppingCartFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
-        //    new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.OrdersInShoppingCart, dt, landscapeOrientation: true);
-
-        //    return new EmptyResult();
-        //}
 
         #endregion
     }

@@ -161,9 +161,9 @@ namespace SapORM.Models
 
 			public string BRIEFNR { get; set; }
 
-			public Int32? WEBUSER_ID { get; set; }
+			public string WEBUSER_ID { get; set; }
 
-			public Int32? WEBGOUP_ID { get; set; }
+			public string WEBGOUP_ID { get; set; }
 
 			public string ETIKETT { get; set; }
 
@@ -244,8 +244,8 @@ namespace SapORM.Models
 					KENNZ_UEBERNAHME = (string)row["KENNZ_UEBERNAHME"],
 					ZZREFNR5 = (string)row["ZZREFNR5"],
 					BRIEFNR = (string)row["BRIEFNR"],
-					WEBUSER_ID = (string.IsNullOrEmpty(row["WEBUSER_ID"].ToString())) ? null : (Int32?)Convert.ToInt32(row["WEBUSER_ID"]),
-					WEBGOUP_ID = (string.IsNullOrEmpty(row["WEBGOUP_ID"].ToString())) ? null : (Int32?)Convert.ToInt32(row["WEBGOUP_ID"]),
+					WEBUSER_ID = (string)row["WEBUSER_ID"],
+					WEBGOUP_ID = (string)row["WEBGOUP_ID"],
 					ETIKETT = (string)row["ETIKETT"],
 					FZGTYP = (string)row["FZGTYP"],
 					FARBE = (string)row["FARBE"],

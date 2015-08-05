@@ -144,7 +144,7 @@
     function ShoppingCartZulassungItemEdit(id, zulParams) {
         $.ajax({
             type: "POST",
-            url: "ShoppingCartZulassungTryEditItem",
+            url: "ShoppingCartZulassungItemEdit",
             data: { id: id },
             loadingShow: true,
             success: function (result) {
@@ -153,12 +153,35 @@
                     return;
                 }
 
-                window.location.href = "/ServicesMvc/Autohaus/Zulassung/ZulassungFromShoppingCart" + zulParams;
+                var targetUrl = "/ServicesMvc/Autohaus/Zulassung/ZulassungFromShoppingCart" + zulParams;
+                location.assign(targetUrl);
             },
             error: function (jqXhr, exception) {
                 alert(jqXhr.responseText);
             }
         });
+    }
+
+    function ShoppingCartZulassungItemRemove(id) {
+
+        if (!confirm('@Localize.ItemDeleteConfirm.ToJavascriptString()'))
+            return false;
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartZulassungItemRemove",
+            data: { id: id },
+            loadingShow: false,
+            success: function () {
+                FilterGrid("GridShoppingCart");
+                ShoppingCartMenuRefreshCount();
+
+                _gridShoppingCart_MultiSelectItemCount--;
+                GridShoppingCart_MultiSelectItemCountRefresh();
+            }
+        });
+
+        return false;
     }
 
     function ShoppingCartSubmitFinished(result) {

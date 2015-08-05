@@ -290,7 +290,10 @@ namespace CkgDomainLogic.Autohaus.Services
                 SAP.SetImportParameter("I_AUFRUF", "2");
                 SAP.SetImportParameter("I_TELNR", LogonContext.UserInfo.Telephone);
                 SAP.SetImportParameter("I_SPEICHERN", (saveDataToSap ? "A" : "S"));
-                SAP.SetImportParameter("I_FORMULAR", "X");
+
+                if (!saveFromShoppingCart && zulassungen.Count == 1 && zulassungen[0].BankAdressdaten.Cpdkunde)
+                    SAP.SetImportParameter("I_FORMULAR", "X");
+
                 SAP.SetImportParameter("I_ZUSATZFORMULARE", "X");
                     
                 var positionen = new List<Zusatzdienstleistung>();
@@ -308,7 +311,13 @@ namespace CkgDomainLogic.Autohaus.Services
                         Menge = "1"
                     });
                     vorgang.OptionenDienstleistungen.AlleDienstleistungen.ForEach(dl => dl.BelegNr = vorgang.BelegNr);
-                    positionen.AddRange(vorgang.OptionenDienstleistungen.GewaehlteDienstleistungen);
+                    var posNr = 20;
+                    foreach (var zusatzDl in vorgang.OptionenDienstleistungen.GewaehlteDienstleistungen)
+                    {
+                        zusatzDl.PositionsNr = posNr.ToString();
+                        positionen.Add(zusatzDl);
+                        posNr += 10;
+                    }
 
                     // Adressen (GT_ADRS_IN)
                     vorgang.BankAdressdaten.Adressdaten.BelegNr = vorgang.BelegNr;
@@ -332,8 +341,21 @@ namespace CkgDomainLogic.Autohaus.Services
                             if (a.ZugeordneteMaterialien.AnyAndNotNull())
                             {
                                 var tmpBem = a.Adressdaten.Bemerkung;
-                                a.Adressdaten.Bemerkung = String.Join(";", a.ZugeordneteMaterialien);
-                                a.Adressdaten.Bemerkung = a.Adressdaten.Bemerkung.Replace("Sonstiges", String.Format("Sonstiges: {0}", tmpBem));
+
+                                var matTexte = new List<string>();
+                                foreach (var matKey in a.ZugeordneteMaterialien)
+                                {
+                                    var matItem = AuslieferAdresse.AlleMaterialien.FirstOrDefault(m => m.Key == matKey);
+
+                                    if (matKey == "Sonstiges")
+                                        matTexte.Add(String.Format("{0}: {1}", Localize.DeliveryAdr_Sonstiges, tmpBem));
+                                    else if (matItem != null)
+                                        matTexte.Add(matItem.Text);
+                                    else
+                                        matTexte.Add(matKey);
+                                }
+
+                                a.Adressdaten.Bemerkung = String.Join(";", matTexte);
                             }
                             // adressen.Add(a.Adressdaten);
                             adressen.Add(ModelMapping.Copy(a.Adressdaten));                     // ModelMapping.Copy erforderlich, da ansonsten nur Referenz übergeben wird
@@ -418,7 +440,6 @@ namespace CkgDomainLogic.Autohaus.Services
 
                 if (!saveFromShoppingCart && vorgang.BankAdressdaten.Cpdkunde)
                 {
-                    // NICHT Warenkorb (=> immer nur Einzel-Vorgang, also zulassungen.Count == 1)
                     try { vorgang.KundenformularPdf = SAP.GetExportParameterByte("E_PDF"); }
                     catch { vorgang.KundenformularPdf = null; }
                 }
@@ -549,13 +570,17 @@ namespace CkgDomainLogic.Autohaus.Services
 
             SAP.Execute();
 
-            var sapItems = Z_ZLD_AH_EXPORT_WARENKORB.GT_BAK.GetExportList(SAP);
+            var sapBakItems = Z_ZLD_AH_EXPORT_WARENKORB.GT_BAK.GetExportList(SAP);
 
-            var adrsListe = AppModelMappings.Z_ZLD_AH_EXPORT_WARENKORB_GT_ADRS_To_Adressdaten.Copy(Z_ZLD_AH_EXPORT_WARENKORB.GT_ADRS.GetExportList(SAP));
-            var posListe = AppModelMappings.Z_ZLD_AH_EXPORT_WARENKORB_GT_POS_To_Zusatzdienstleistung.Copy(Z_ZLD_AH_EXPORT_WARENKORB.GT_POS.GetExportList(SAP));
-            var bankListe = AppModelMappings.Z_ZLD_AH_EXPORT_WARENKORB_GT_BANK_To_Bankdaten.Copy(Z_ZLD_AH_EXPORT_WARENKORB.GT_BANK.GetExportList(SAP));
+            var sapAdrsItems = Z_ZLD_AH_EXPORT_WARENKORB.GT_ADRS.GetExportList(SAP);
+            var sapPosItems = Z_ZLD_AH_EXPORT_WARENKORB.GT_POS.GetExportList(SAP);
+            var sapBankItems = Z_ZLD_AH_EXPORT_WARENKORB.GT_BANK.GetExportList(SAP);
 
-            foreach (var item in sapItems)
+            var adrsListe = AppModelMappings.Z_ZLD_AH_EXPORT_WARENKORB_GT_ADRS_To_Adressdaten.Copy(sapAdrsItems);
+            var posListe = AppModelMappings.Z_ZLD_AH_EXPORT_WARENKORB_GT_POS_To_Zusatzdienstleistung.Copy(sapPosItems);
+            var bankListe = AppModelMappings.Z_ZLD_AH_EXPORT_WARENKORB_GT_BANK_To_Bankdaten.Copy(sapBankItems);
+
+            foreach (var item in sapBakItems)
             {
                 var vorgang = AppModelMappings.Z_ZLD_AH_EXPORT_WARENKORB_GT_BAK_To_Vorgang.Copy(item);
 
@@ -589,6 +614,27 @@ namespace CkgDomainLogic.Autohaus.Services
                         {
                             auslieferAdrsVg.Adressdaten = auslieferAdrs;
                             auslieferAdrsVg.Adressdaten.Adresse.Land = "DE";
+
+                            var bemerkungOrig = auslieferAdrs.Bemerkung;
+                            auslieferAdrs.Bemerkung = "";
+
+                            var matTexte = bemerkungOrig.NotNullOrEmpty().Split(';');
+                            foreach (var matText in matTexte)
+                            {
+                                var matItem = AuslieferAdresse.AlleMaterialien.FirstOrDefault(m => m.Text == matText);
+
+                                if (matText.StartsWith(Localize.DeliveryAdr_Sonstiges))
+                                {
+                                    auslieferAdrsVg.ZugeordneteMaterialien.Add("Sonstiges");
+                                    auslieferAdrsVg.Adressdaten.Bemerkung =
+                                        matText.Replace(Localize.DeliveryAdr_Sonstiges, "")
+                                               .TrimStart(new char[] {' ', ':'});
+                                }
+                                else if (matItem != null)
+                                {
+                                    auslieferAdrsVg.ZugeordneteMaterialien.Add(matItem.Key);
+                                }
+                            }
                         }
                     }
 

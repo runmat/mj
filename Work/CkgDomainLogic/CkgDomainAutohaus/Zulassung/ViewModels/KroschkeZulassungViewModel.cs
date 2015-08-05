@@ -197,6 +197,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             SkipBankAdressdaten = (!Zulassung.BankAdressdaten.Cpdkunde);
         }
+
         #endregion
 
 
@@ -334,6 +335,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return e.InnerException.ToString();
             }
         }
+
         #endregion
 
 
@@ -396,21 +398,44 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             Zulassung.Halter.Adresse = model;
 
-            Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
-            Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Kennung = "ZAHLERKFZSTEUER";
-            Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Typ = "ZahlerKfzSteuer";
+            if (Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Name1.IsNullOrEmpty())
+            {
+                Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
+                Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Kennung = "ZAHLERKFZSTEUER";
+                Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Typ = "ZahlerKfzSteuer";
+            }
 
             if (Zulassung.BankAdressdaten.Cpdkunde)
             {
-                Zulassung.BankAdressdaten.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
-                Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = String.Format("{0}{1}", Zulassung.Halter.Adresse.Name1,
-                    (Zulassung.Halter.Adresse.Name2.IsNullOrEmpty() ? "" : " " + Zulassung.Halter.Adresse.Name2));
+                if (Zulassung.BankAdressdaten.Adressdaten.Adresse.Name1.IsNullOrEmpty())
+                    Zulassung.BankAdressdaten.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
+
+                if (Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber.IsNullOrEmpty())
+                    Zulassung.BankAdressdaten.Bankdaten.Kontoinhaber = String.Format("{0}{1}", Zulassung.Halter.Adresse.Name1, (Zulassung.Halter.Adresse.Name2.IsNullOrEmpty() ? "" : " " + Zulassung.Halter.Adresse.Name2));
             }
 
             string zulassungsKreis;
-            string zulassungsKennzeichen;
-            LoadKfzKreisAusHalterAdresse(out zulassungsKreis, out zulassungsKennzeichen);
-            Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
+            
+            if (Zulassung.Zulassungsdaten.Zulassungskreis.IsNullOrEmpty())
+            {
+                string zulassungsKennzeichen;
+
+                LoadKfzKreisAusHalterAdresse(out zulassungsKreis, out zulassungsKennzeichen);
+                Zulassung.Zulassungsdaten.Zulassungskreis = zulassungsKreis;
+
+                if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
+                    Zulassung.Zulassungsdaten.Kennzeichen = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
+
+                if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen2))
+                    Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
+
+                if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
+                    Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
+            }
+            else
+            {
+                zulassungsKreis = Zulassung.Zulassungsdaten.Zulassungskreis;
+            }
 
             // MMA Falls Massenzulassung, dann den Zulassungskreis auch für alle Wunschkennzeichen setzen
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
@@ -418,20 +443,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 this.SetKreisAll(zulassungsKreis);
             }
 
-            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Kennzeichen))
-                Zulassung.Zulassungsdaten.Kennzeichen = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
-
-            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen2))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen2 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
-
-            if (!KennzeichenIsValid(Zulassung.Zulassungsdaten.Wunschkennzeichen3))
-                Zulassung.Zulassungsdaten.Wunschkennzeichen3 = ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen);
-
             // 20150602 MMA Gegebenenfalls verfügbare externe Wunschkennzeichen-Reservierungs-Url ermitteln 
-             Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
+            Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
             Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
-
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
@@ -543,7 +558,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 && Zulassung.Halter.Adresse.StrasseHausNr == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.StrasseHausNr
                 && Zulassung.Halter.Adresse.PLZ == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.PLZ
                 && Zulassung.Halter.Adresse.Ort == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Ort
-                && Zulassung.Halter.Adresse.Land == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Land)
+                && Zulassung.Halter.Adresse.Land == Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Land
+                && Zulassung.BankAdressdaten.Bankdaten.Iban.IsNullOrEmpty())
             {
                 Zulassung.BankAdressdaten.Bankdaten.KontoNr = Zulassung.ZahlerKfzSteuer.Bankdaten.KontoNr;
                 Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = Zulassung.ZahlerKfzSteuer.Bankdaten.Bankleitzahl;
@@ -551,7 +567,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.BankAdressdaten.Bankdaten.Swift = Zulassung.ZahlerKfzSteuer.Bankdaten.Swift;
                 Zulassung.BankAdressdaten.Bankdaten.Geldinstitut = Zulassung.ZahlerKfzSteuer.Bankdaten.Geldinstitut;
             }
-            else
+            else if (!Zulassung.BankAdressdaten.Cpdkunde)
             {
                 Zulassung.BankAdressdaten.Bankdaten.KontoNr = "";
                 Zulassung.BankAdressdaten.Bankdaten.Bankleitzahl = "";
@@ -895,10 +911,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void DataMarkForRefresh()
         {
-            Zulassung.Kunden = Kunden;
-
-            ZulassungDataService.MarkForRefresh();
-            Zulassung.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
+            InitZulassung(Zulassung);
 
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
             Adresse.Laender = LaenderList;
@@ -913,6 +926,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PropertyCacheClear(this, m => m.StepFriendlyNames);
         }
 
+        private void InitZulassung(Vorgang zul)
+        {
+            zul.Kunden = Kunden;
+
+            ZulassungDataService.MarkForRefresh();
+            zul.OptionenDienstleistungen.InitDienstleistungen(ZulassungDataService.Zusatzdienstleistungen);
+        }
+
         public void Save(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart)
         {
             if (!ModusAbmeldung && Zulassungsarten.None())
@@ -920,6 +941,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (ModusAbmeldung && Abmeldearten.None())
                 return;
+
+            zulassungen.ForEach(z =>
+                {
+                    z.WebGroupId = LogonContext.Group.GroupID.ToString();
+                    z.WebUserId = LogonContext.UserID;
+                });
 
             if (!saveFromShoppingCart)
                 zulassungen.ForEach(z => z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG" : ModusAbmeldung ? "ABMELDUNG" : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG" : "ZULASSUNG"));
@@ -971,7 +998,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             if (SaveErrorMessage.IsNullOrEmpty())
             {
-                // ZulassungenForReceipt = zulassungen.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
                 ZulassungenForReceipt = zulassungenToSave.Select(zulassung => ModelMapping.Copy(zulassung)).ToListOrEmptyList();
 
                 if (ZulassungenForReceipt.ToListOrEmptyList().None() || ZulassungenForReceipt.First().Zusatzformulare.ToListOrEmptyList().None(z => z.IstAuftragsListe))
@@ -984,41 +1010,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Shopping Cart
 
-        //[XmlIgnore, ScriptIgnore]
-        //public List<Vorgang> ZulassungenFromShoppingCart { get { return PropertyCacheGet(() => LoadZulassungenFromShoppingCart().ToList()); } }
-
-        //[XmlIgnore, ScriptIgnore]
-        //public List<Vorgang> ZulassungenFromShoppingCartFiltered
-        //{
-        //    get { return PropertyCacheGet(() => ZulassungenFromShoppingCart); }
-        //    private set { PropertyCacheSet(value); }
-        //}
-
         public IEnumerable<Vorgang> LoadZulassungenFromShoppingCart()
         {
-            return ZulassungDataService.LoadVorgaengeForShoppingCart();
+            var liste = ZulassungDataService.LoadVorgaengeForShoppingCart();
+
+            liste.ForEach(InitZulassung);
+
+            return liste;
         }
-
-        //public bool SelectShoppingCartVorgang(string belegNr)
-        //{
-        //    if (ZulassungenFromShoppingCart.Any(z => z.BelegNr == belegNr))
-        //    {
-        //        Zulassung = ZulassungenFromShoppingCart.First(z => z.BelegNr == belegNr);
-        //        return true;
-        //    }
-
-        //    return false;
-        //}
 
         public string DeleteShoppingCartVorgang(string belegNr)
         {
             return ZulassungDataService.DeleteVorgangFromShoppingCart(belegNr);
         }
-
-        //public void FilterZulassungenFromShoppingCart(string filterValue, string filterProperties)
-        //{
-        //    ZulassungenFromShoppingCartFiltered = ZulassungenFromShoppingCart.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        //}
 
         #endregion
 

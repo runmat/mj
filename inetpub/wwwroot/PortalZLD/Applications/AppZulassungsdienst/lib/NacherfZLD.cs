@@ -1383,7 +1383,10 @@ namespace AppZulassungsdienst.lib
             var selektierteVorgaenge = NochNichtAbgesendeteVorgaenge.Where(v => v.IsSelected);
 
             if (selektierteVorgaenge.None())
+            {
+                RaiseError(9999, "Es sind keine Vorgänge markiert");
                 return;
+            }
 
             ExecuteSapZugriff(() =>
             {

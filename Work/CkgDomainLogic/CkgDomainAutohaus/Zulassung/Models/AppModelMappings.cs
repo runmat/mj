@@ -273,6 +273,8 @@ namespace CkgDomainLogic.Autohaus.Models
                     {
                         d.BelegNr = s.ZULBELN;
                         d.BeauftragungsArt = s.BEAUFTRAGUNGSART;
+                        d.WebGroupId = s.WEBGOUP_ID;
+                        d.WebUserId = s.WEBUSER_ID;
                         d.VkOrg = s.VKORG;
                         d.VkBur = s.VKBUR;
                         d.Vorerfasser = s.VE_ERNAM;
@@ -295,7 +297,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.FahrgestellNr = s.ZZREFNR2;
                         d.Fahrzeugdaten.Zb2Nr = s.BRIEFNR;
                         d.Fahrzeugdaten.FahrzeugartId = s.FAHRZ_ART;
-                        d.Fahrzeugdaten.VerkaeuferKuerzel = s.VK_KUERZE;
+                        d.Fahrzeugdaten.VerkaeuferKuerzel = s.VK_KUERZEL;
                         d.Fahrzeugdaten.Kostenstelle = s.ZZREFNR3;
                         d.Fahrzeugdaten.BestellNr = s.ZZREFNR4;
 
@@ -405,6 +407,8 @@ namespace CkgDomainLogic.Autohaus.Models
                         {
                             d.ZULBELN = s.BelegNr;
                             d.BEAUFTRAGUNGSART = s.BeauftragungsArt;
+                            d.WEBGOUP_ID = s.WebGroupId;
+                            d.WEBUSER_ID = s.WebUserId;
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
                             d.VE_ERNAM = s.Vorerfasser;

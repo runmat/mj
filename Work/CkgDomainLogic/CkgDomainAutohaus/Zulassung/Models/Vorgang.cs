@@ -16,8 +16,12 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.ReceiptNo)]
         public string BelegNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.OrderType)]
+        [LocalizedDisplay(LocalizeConstants._Auftragsart)]
         public string BeauftragungsArt { get; set; }
+
+        public string WebGroupId { get; set; }
+
+        public string WebUserId { get; set; }
 
         public string ZulassungFromShoppingCartParameters
         {
@@ -26,7 +30,7 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "VERSANDZULASSUNG")
                     return "?versandzulassung=1";
 
-                if (BeauftragungsArt == "ABMELDUNG")
+                if (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG")
                     return "?abmeldung=1";
 
                 return "";
@@ -48,6 +52,9 @@ namespace CkgDomainLogic.Autohaus.Models
         public List<AuslieferAdresse> AuslieferAdressen { get; set; }
 
         public Fahrzeugdaten Fahrzeugdaten { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.VIN)]
+        public string FahrgestellNr {get { return Fahrzeugdaten.FahrgestellNr; } }
 
         public Adressdaten Halter { get; set; }
 
@@ -100,6 +107,12 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public Zulassungsdaten Zulassungsdaten { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
+        public DateTime? Zulassungsdatum { get { return (BeauftragungsArt == "ABMELDUNG" ? null : Zulassungsdaten.Zulassungsdatum); } }
+
+        [LocalizedDisplay(LocalizeConstants.CancellationDate)]
+        public DateTime? Abmeldedatum { get { return (BeauftragungsArt == "ABMELDUNG" ? Zulassungsdaten.Zulassungsdatum : null); } }
+
         public OptionenDienstleistungen OptionenDienstleistungen { get; set; }
 
         [XmlIgnore]
@@ -138,6 +151,7 @@ namespace CkgDomainLogic.Autohaus.Models
             Halter = new Adressdaten("HALTER") { Partnerrolle = "ZH"};
             ZahlerKfzSteuer = new BankAdressdaten("Z6", false, "ZAHLERKFZSTEUER");
             VersandAdresse = new Adressdaten("") { Partnerrolle = "ZZ" };
+            Zulassungsdaten = new Zulassungsdaten();
             OptionenDienstleistungen = new OptionenDienstleistungen();
         }
 

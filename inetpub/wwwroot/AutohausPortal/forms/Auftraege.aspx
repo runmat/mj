@@ -137,7 +137,7 @@
                 </div>
             </div>
             <asp:GridView ID="gvZuldienst" Width="100%" runat="server" AutoGenerateColumns="False"
-                CellPadding="0" CellSpacing="0" GridLines="None" AllowSorting="true" AllowPaging="True"  DataKeyNames="ID"
+                CellPadding="0" CellSpacing="0" GridLines="None" AllowSorting="true" AllowPaging="True"  DataKeyNames="ZULBELN"
                 CssClass="GridView" PageSize="300" OnRowCommand="gvZuldienst_RowCommand" OnSorting="gvZuldienst_Sorting" OnRowDataBound="gvZuldienst_RowDataBound">
                 <HeaderStyle CssClass="GridTableHead" ForeColor="White" />
                 <PagerSettings Visible="False" />
@@ -158,7 +158,7 @@
                         </HeaderTemplate>
                         <ItemTemplate><div class="formselects">
                             <asp:CheckBox ID="chkAuswahl" CssClass="tableCheckbox" runat="server" /></div>
-                            <asp:Label ID="lblName" runat="server" Text='<%# Eval("ZULBELN") %>' style="padding-bottom: 9px" CssClass="HighlightOnHover"></asp:Label>
+                            <asp:Label ID="lblID" runat="server" Text='<%# Eval("ZULBELN") %>' style="padding-bottom: 9px" CssClass="HighlightOnHover"></asp:Label>
                         </ItemTemplate>
                     </asp:TemplateField>
                     <asp:TemplateField SortExpression="kundenname" HeaderText="Kundennr.">

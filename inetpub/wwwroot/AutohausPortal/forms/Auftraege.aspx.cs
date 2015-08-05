@@ -215,7 +215,6 @@ namespace AutohausPortal.forms
                     if (rowListe.Length > 0)
                     {
                         lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
-
                     }
                     rowListe = objVorerf.tblEingabeListe.Select("Status = 'OK'");
 
@@ -236,7 +235,7 @@ namespace AutohausPortal.forms
                         downloaddoc.Visible = true;
                         downloaddoc.VisibleOnPageLoad = true;
                     }
-                    Fillgrid(0, "", "Status = 'OK' OR Status <>''  ");
+                    Fillgrid(0, "", "Status <> ''");
                     gvZuldienst.Columns[0].Visible = true;
                     gvZuldienst.Columns[1].Visible = false;
                     gvZuldienst.Columns[9].Visible = false;
@@ -248,7 +247,7 @@ namespace AutohausPortal.forms
                     lblMessage.Visible = true;
                     lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                     lblMessage.Text = "Datensätze gespeichert. Keine Fehler aufgetreten.";
-                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status = ''");
+                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status = 'OK'");
 
                     if (rowListe.Length > 0)
                     {
@@ -299,7 +298,7 @@ namespace AutohausPortal.forms
 
                 if (chkAuswahl != null && chkAuswahl.Checked) 
                 {
-                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ID = " + lblID.Text);
+                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ZULBELN = '" + lblID.Text + "'");
                     if (rowListe.Length == 1)
                     { 
                         rowListe[0]["toSave"] = 1;
@@ -337,7 +336,7 @@ namespace AutohausPortal.forms
             objVorerf = (AHErfassung )Session["objVorerf"];
             if (e.CommandName == "Bearbeiten")
             {
-                DataRow [] drow = objVorerf.tblEingabeListe.Select("ID=" + ID.Text);
+                DataRow [] drow = objVorerf.tblEingabeListe.Select("ZULBELN = '" + ID.Text + "'");
                 if (drow.Length==0){ lblError.Text = "Es ist ein Fehler aufgetreten. Der Vorgang konnte nicht geladen werden"; return;}
                 DataTable AppTable = m_User.Applications.Copy();
                 DataRow[] appRows;
@@ -346,11 +345,8 @@ namespace AutohausPortal.forms
             }
             if (e.CommandName == "Loeschen")
             {
-                Label lblIDPos = (Label)gvZuldienst.Rows[Index].FindControl("lblid_pos");
                 Int32 IDSatz;
-                Int32 IDPos;
                 Int32.TryParse(ID.Text, out IDSatz);
-                Int32.TryParse(lblIDPos.Text, out IDPos);
 
                 hfID.Value = ID.Text;
 
@@ -368,7 +364,7 @@ namespace AutohausPortal.forms
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 // auch ID-Label auf Click reagieren lassen -> Auswahl-Checkbox entspr. umschalten
-                Label lbl = (Label) e.Row.FindControl("lblName");
+                Label lbl = (Label) e.Row.FindControl("lblID");
                 lbl.Attributes["onclick"] = "ChangeCheckState(" + (e.Row.RowIndex + 1).ToString() + ");";
             }
         }
@@ -384,7 +380,7 @@ namespace AutohausPortal.forms
             Int32 id;
             Int32.TryParse(hfID.Value, out id);
             objVorerf.DeleteVorgang(Session["AppID"].ToString(), Session.SessionID, this, id);
-            DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ID = " + id);
+            DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ZULBELN = '" + id.ToString() + "'");
             if (rowListe.Length > 0)
             {
                 foreach (DataRow dRow in rowListe)
@@ -438,7 +434,7 @@ namespace AutohausPortal.forms
                 {
                     Int32 id;
                     Int32.TryParse(dRow["id"].ToString(), out id);
-                    DataRow[] rowPos = objVorerf.tblEingabeListe.Select("id = " + id);
+                    DataRow[] rowPos = objVorerf.tblEingabeListe.Select("ZULBELN = '" + id.ToString() + "'");
                     foreach (DataRow dRowsToDel in rowPos)
                     {
                         objVorerf.tblEingabeListe.Rows.Remove(dRowsToDel);
