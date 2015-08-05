@@ -124,6 +124,8 @@ namespace CkgDomainLogic.Fahrer.Models
                     new Dictionary<string, string>(),
                     (s, d) =>
                     {
+                        d.KundenNr = s.KUNNR_AG;
+
                         d.AuftragsNr = s.VBELN;
                         d.Referenz = s.ZZREFNR;
 
@@ -137,6 +139,13 @@ namespace CkgDomainLogic.Fahrer.Models
 
                         d.ProtokollArt = s.ZZPROTKAT1;
                         d.ProtokollArt2 = s.ZZPROTKAT2;
+
+                        d.ProtokollName = s.ZZPOSPROTKAT1.NotNullOr(
+                                            s.ZZPOSPROTKAT2.NotNullOr(
+                                                s.ZZPOSPROTKAT3.NotNullOr(
+                                                    s.ZZPROTKAT1.NotNullOr(
+                                                        s.ZZPROTKAT2.NotNullOr(
+                                                            s.ZZPROTKAT3)))));
                     }
                     ));
             }

@@ -24,15 +24,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
     public class FahrerViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IFahrerDataService DataService { get { return CacheGet<IFahrerDataService>(); } }
-
+        public IFahrerDataService DataService => CacheGet<IFahrerDataService>();
 
         #region Verfügbarkeitsmeldung
 
-        public IEnumerable ExcelDownloadFahrerMeldungenData
-        {
-            get { return FahrerBelegung.FahrerTagBelegungen; }
-        }
+        public IEnumerable ExcelDownloadFahrerMeldungenData => FahrerBelegung.FahrerTagBelegungen;
 
         public string ExcelDownloadFahrerMeldungenJsonColumns
         {
@@ -75,16 +71,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public string FahrerAuftragsStatusFilter { get { return PropertyCacheGet(() => "NEW"); } set { PropertyCacheSet(value); } }
         
         [XmlIgnore]
-        public string FahrerAuftragsStatusTypen
-        {
-            get
-            {
-                return string.Format("{0},{1};{2},{3};{4},{5}",
-                                        "NEW", Localize.NewOrders, 
-                                        "OK", Localize.AcceptedOrders, 
-                                        "NO", Localize.RefusedOrders);
-            }
-        }
+        public string FahrerAuftragsStatusTypen =>
+            $"{"NEW"},{Localize.NewOrders};{"OK"},{Localize.AcceptedOrders};{"NO"},{Localize.RefusedOrders}";
 
         public List<FahrerAuftrag> FahrerAuftraege
         {
@@ -160,7 +148,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
         }
 
-        public bool IstSonstigerAuftrag { get { return SelectedFahrerAuftrag != null && SelectedFahrerAuftrag.IstSonstigerAuftrag; } }
+        public bool IstSonstigerAuftrag => SelectedFahrerAuftrag != null && SelectedFahrerAuftrag.IstSonstigerAuftrag;
 
         public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrten
         {
@@ -168,13 +156,13 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             set { PropertyCacheSet(value); }
         }
 
-        public string FotoUploadPathVirtual { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathVirtual"]); } }
-        public string FotoUploadPath { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPath"]); } }
-        public string FotoUploadPathBackup { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathBackup"]); } }
+        public string FotoUploadPathVirtual => GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathVirtual"]);
+        public string FotoUploadPath => GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPath"]);
+        public string FotoUploadPathBackup => GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathBackup"]);
 
-        public string FotoUploadPathThumbnails { get { return Path.Combine(FotoUploadPath, "_tb"); } }
-        public string FotoUploadPathThumbnailsVirtual { get { return Path.Combine(FotoUploadPathVirtual, "_tb"); } }
-                                                                                                                                    // ReSharper disable ConvertClosureToMethodGroup
+        public string FotoUploadPathThumbnails => Path.Combine(FotoUploadPath, "_tb");
+        public string FotoUploadPathThumbnailsVirtual => Path.Combine(FotoUploadPathVirtual, "_tb");
+        // ReSharper disable ConvertClosureToMethodGroup
         public List<string> UploadedImageFiles { get { return PropertyCacheGet(() => GetUploadedImageFiles()); } }
                                                                                                                                     // ReSharper restore ConvertClosureToMethodGroup
 
@@ -264,7 +252,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             var imageMask = imageIndex.ToInt() == -1 ? "*" : imageIndex.ToInt().ToString("0000");
 
-            return string.Format("{0}-{1}-{2}-{3}", auftragsNr.TrimStart('0'), imageMask, fahrerNr.TrimStart('0'), fahrtNr);
+            return $"{auftragsNr.TrimStart('0')}-{imageMask}-{fahrerNr.TrimStart('0')}-{fahrtNr}";
         }
 
         private string GetFotoOrProtocolPath(string path)
@@ -274,7 +262,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
             var slash = (path.Contains("/") ? "/" : "\\");
 
-            return string.Format("{0}{1}{2}", path, slash, "Protokolle");
+            return $"{path}{slash}{"Protokolle"}";
         }
 
         public List<string> GetUploadedImageFiles()
@@ -286,9 +274,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             if (auftrag == null)
                 return new List<string>();
 
-            var existingImageFiles = Directory.GetFiles(FotoUploadPath, string.Format("{0}.{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt), 
-                                               "*"));
+            var existingImageFiles = Directory.GetFiles(FotoUploadPath,
+                $"{GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt)}.{"*"}");
 
             return existingImageFiles.ToListOrEmptyList().OrderBy(GetImageIndexFromFileName).Select(Path.GetFileName).ToList();
         }
@@ -297,9 +284,8 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             var auftrag = SelectedFahrerAuftrag;
             var uploadImageIndex = (GetImageIndexFromFileName(UploadedImageFiles.LastOrDefault()) + 1).ToString();
-            var serverFileName = string.Format("{0}{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt), 
-                                               Path.GetExtension(clientFileName));
+            var serverFileName =
+                $"{GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt)}{Path.GetExtension(clientFileName)}";
 
             TryDirectoryCreateAndRaiseError(FotoUploadPath);
             var destinationFileName = Path.Combine(FotoUploadPath, serverFileName);
@@ -393,11 +379,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         }
 
         [LocalizedDisplay(LocalizeConstants.CountVotedRides)]
-        public int QmFahrerRankingCount { get { return DataService.QmFahrerRankingCount; } }
+        public int QmFahrerRankingCount => DataService.QmFahrerRankingCount;
 
-        public List<QmFahrer> QmFahrerList { get { return DataService.QmFahrerList; } }
+        public List<QmFahrer> QmFahrerList => DataService.QmFahrerList;
 
-        public List<QmFleetMonitor> QmFleetMonitorList { get { return DataService.QmFleetMonitorList; } }
+        public List<QmFleetMonitor> QmFleetMonitorList => DataService.QmFleetMonitorList;
 
 
         public void Validate(Action<string, string> addModelError)
@@ -414,7 +400,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         #region Protokollarchivierung
 
-        public List<SelectItem> QmCodes { get { return DataService.QmCodes; } }
+        public List<SelectItem> QmCodes => DataService.QmCodes;
 
         public List<FahrerAuftragsProtokoll> FahrerProtokolle
         {
@@ -472,14 +458,14 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public void ProtokollArchivieren(ProtokollEditModel model, ModelStateDictionary state)
         {
             var erg = DataService.SaveProtokollAndQmDaten(model);
-            if (!String.IsNullOrEmpty(erg))
+            if (!string.IsNullOrEmpty(erg))
             {
                 state.AddModelError(string.Empty, erg);
                 return;
             }
             
             erg = ArchiviereProtokoll(model);
-            if (!String.IsNullOrEmpty(erg))
+            if (!string.IsNullOrEmpty(erg))
             {
                 state.AddModelError(string.Empty, erg);
                 return;
@@ -524,15 +510,16 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
             catch (Exception ex)
             {
-                return String.Format("{0}: {1}", Localize.Error, ex.Message);
+                return $"{Localize.Error}: {ex.Message}";
             }
         }
 
         private bool SendeProtokollArchivierungsMail(ProtokollEditModel model)
         {
-            if (!String.IsNullOrEmpty(model.MailAdressen))
+            if (!string.IsNullOrEmpty(model.MailAdressen))
             {
-                var mailBetreff = String.Format("Bestandsnummer: {0}", (String.IsNullOrEmpty(model.Protokoll.Referenz) ? model.Protokoll.VIN : model.Protokoll.Referenz));
+                var mailBetreff =
+                    $"Bestandsnummer: {(string.IsNullOrEmpty(model.Protokoll.Referenz) ? model.Protokoll.VIN : model.Protokoll.Referenz)}";
                 var mailText = GeneralConfiguration.GetConfigValue("FahrerProtokollArchivierung", "MailText").Replace("{br}", Environment.NewLine);
 
                 var mailService = new SmtpMailService(AppSettings);

@@ -17,7 +17,7 @@ namespace CkgDomainLogic.Fahrer.Models
         public string AuftragsNr { get; set; }
 
         [GridHidden]
-        public string AuftragsNrFriendly { get { return AuftragsNr.NotNullOrEmpty().TrimStart('0'); } }
+        public string AuftragsNrFriendly => AuftragsNr.NotNullOrEmpty().TrimStart('0');
 
         [GridHidden]
         public string UniqueKey
@@ -27,7 +27,7 @@ namespace CkgDomainLogic.Fahrer.Models
                 if (IstSonstigerAuftrag)
                     return "SONSTIGER-AUFTRAG";
 
-                return string.Format("{0}-{1}", AuftragsNr.NotNullOrEmpty(), Fahrt.NotNullOrEmpty());
+                return $"{AuftragsNr.NotNullOrEmpty()}-{Fahrt.NotNullOrEmpty()}";
             }
         }
 
@@ -47,7 +47,7 @@ namespace CkgDomainLogic.Fahrer.Models
 
                 return new List<string>
                 {
-                    AuftragsNrFriendly.PrependIfNotNull("#"), Fahrt.FormatIfNotNull("Fahrt {this}"), OrtStart, OrtZiel, Kennzeichen, ProtokollArt
+                    AuftragsNrFriendly.PrependIfNotNull("#"), Fahrt.FormatIfNotNull("Fahrt {this}"), OrtStart, OrtZiel, Kennzeichen, ProtokollArt, ProtokollName
                 }
                 .JoinIfNotNull(", ");
             }
@@ -89,6 +89,8 @@ namespace CkgDomainLogic.Fahrer.Models
         [LocalizedDisplay(LocalizeConstants._Protokollart)]
         public string ProtokollArt2 { get; set; }
 
+        public string ProtokollName { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.CityStart)]
         public string OrtStart { get; set; }
 
@@ -98,9 +100,9 @@ namespace CkgDomainLogic.Fahrer.Models
         [LocalizedDisplay(LocalizeConstants.Reference)]
         public string Referenz { get; set; }
 
-        public static string FahrerProtokollFilenamePattern { get { return "{0}_{1}_P_{2}_{3}.pdf"; } }
+        public static string FahrerProtokollFilenamePattern => "{0}_{1}_P_{2}_{3}.pdf";
 
         [LocalizedDisplay(LocalizeConstants.FileName)]
-        public string Filename { get { return string.Format(FahrerProtokollFilenamePattern, KundenNr.PadLeft(10, '0'), AuftragsNr.PadLeft(10, '0'), ProtokollArt, Fahrt); } }
+        public string Filename => string.Format(FahrerProtokollFilenamePattern, KundenNr.PadLeft(10, '0'), AuftragsNr.PadLeft(10, '0'), ProtokollArt, Fahrt);
     }
 }
