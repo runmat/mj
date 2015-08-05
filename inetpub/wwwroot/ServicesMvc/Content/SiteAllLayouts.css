@@ -1240,3 +1240,8 @@ div.controls-width-400 .controls {
 .form-horizontal.reduced-margin .control-group {
   margin-bottom: 5px;
 }
+
+input[type="text"].m-wrap.kennzeichen,
+span.kennzeichen{
+  text-transform: uppercase;
+}

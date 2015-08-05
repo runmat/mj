@@ -410,7 +410,7 @@ namespace AppZulassungsdienst.lib
             {
                 var itemValue = (string)prop.GetValue(item, null);
 
-                if (useStringLike)
+                if (useStringLike && filterProperty != "WebBearbeitungsStatus")
                 {
                     blnResult = (itemValue.NotNullOrEmpty().ToLower().Contains(filterValue.NotNullOrEmpty().ToLower()));
                 }
@@ -717,6 +717,14 @@ namespace AppZulassungsdienst.lib
             tblWordData.Columns.Add("Lieferuhrzeit", typeof(String));
 
             return tblWordData;
+        }
+
+        public static int GetTableColumnIndexFromExcelColumnName(string excelColumnName)
+        {
+            if (excelColumnName.Length > 1)
+                return (26 * (excelColumnName[0] - 'A' + 1) + excelColumnName[1] - 'A');
+
+            return excelColumnName[0] - 'A';
         }
 
         #endregion

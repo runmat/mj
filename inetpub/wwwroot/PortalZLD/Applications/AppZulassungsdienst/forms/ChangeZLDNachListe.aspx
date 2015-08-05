@@ -75,6 +75,7 @@
                                                     <asp:ListItem Text="Amt" Value="Landkreis"></asp:ListItem>
                                                     <asp:ListItem Text="Zulassungsdatum(ttmmjj)" Value="Zulassungsdatum"></asp:ListItem>
                                                     <asp:ListItem Text="ID" Value="SapId"></asp:ListItem>
+                                                    <asp:ListItem Text="Status" Value="WebBearbeitungsStatus"></asp:ListItem>
 												</asp:DropDownList>                                                
 											</td>
 											<td class="firstLeft active">
