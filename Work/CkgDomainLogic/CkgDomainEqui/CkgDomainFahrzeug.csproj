@@ -292,6 +292,8 @@
     <Compile Include="WFM\Contracts\IWfmDataService.cs" />
     <Compile Include="WFM\Models\AppModelmappings.cs" />
     <Compile Include="WFM\Models\WfmDokument.cs" />
+    <Compile Include="WFM\Models\WfmDurchlaufSingle.cs" />
+    <Compile Include="WFM\Models\WfmDurchlaufStatistik.cs" />
     <Compile Include="WFM\Models\WfmToDo.cs" />
     <Compile Include="WFM\Models\WfmDokumentInfo.cs" />
     <Compile Include="WFM\Models\WfmInfo.cs" />

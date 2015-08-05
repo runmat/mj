@@ -9,7 +9,8 @@ namespace CkgDomainLogic.WFM.Models
     public enum SelektionsModus
     {
         Abmeldevorgaenge,
-        KlaerfallWorkplace
+        KlaerfallWorkplace,
+        Durchlauf
     }
 
     public class WfmAuftragSelektor : Store 
