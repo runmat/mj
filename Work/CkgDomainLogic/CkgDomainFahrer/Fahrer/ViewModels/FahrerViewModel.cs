@@ -24,11 +24,14 @@ namespace CkgDomainLogic.Fahrer.ViewModels
     public class FahrerViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
-        public IFahrerDataService DataService => CacheGet<IFahrerDataService>();
+        public IFahrerDataService DataService { get { return CacheGet<IFahrerDataService>(); } }
 
         #region Verfügbarkeitsmeldung
 
-        public IEnumerable ExcelDownloadFahrerMeldungenData => FahrerBelegung.FahrerTagBelegungen;
+        public IEnumerable ExcelDownloadFahrerMeldungenData
+        {
+            get { return FahrerBelegung.FahrerTagBelegungen; }
+        }
 
         public string ExcelDownloadFahrerMeldungenJsonColumns
         {
@@ -71,10 +74,16 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public string FahrerAuftragsStatusFilter { get { return PropertyCacheGet(() => "NEW"); } set { PropertyCacheSet(value); } }
         
         [XmlIgnore]
-        public string FahrerAuftragsStatusTypen => string.Format("{0},{1};{2},{3};{4},{5}",
-            "NEW", Localize.NewOrders,
-            "OK", Localize.AcceptedOrders,
-            "NO", Localize.RefusedOrders);
+        public string FahrerAuftragsStatusTypen
+        {
+            get
+            {
+                return string.Format("{0},{1};{2},{3};{4},{5}",
+                                        "NEW", Localize.NewOrders, 
+                                        "OK", Localize.AcceptedOrders, 
+                                        "NO", Localize.RefusedOrders);
+            }
+        }
 
         public List<FahrerAuftrag> FahrerAuftraege
         {
@@ -150,7 +159,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
         }
 
-        public bool IstSonstigerAuftrag => SelectedFahrerAuftrag != null && SelectedFahrerAuftrag.IstSonstigerAuftrag;
+        public bool IstSonstigerAuftrag { get { return SelectedFahrerAuftrag != null && SelectedFahrerAuftrag.IstSonstigerAuftrag; } }
 
         public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrten
         {
@@ -158,12 +167,12 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             set { PropertyCacheSet(value); }
         }
 
-        public string FotoUploadPathVirtual => GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathVirtual"]);
-        public string FotoUploadPath => GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPath"]);
-        public string FotoUploadPathBackup => GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathBackup"]);
+        public string FotoUploadPathVirtual { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathVirtual"]); } }
+        public string FotoUploadPath { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPath"]); } }
+        public string FotoUploadPathBackup { get { return GetFotoOrProtocolPath(ConfigurationManager.AppSettings["FahrerFotoUploadPathBackup"]); } }
 
-        public string FotoUploadPathThumbnails => Path.Combine(FotoUploadPath, "_tb");
-        public string FotoUploadPathThumbnailsVirtual => Path.Combine(FotoUploadPathVirtual, "_tb");
+        public string FotoUploadPathThumbnails { get { return Path.Combine(FotoUploadPath, "_tb"); } }
+        public string FotoUploadPathThumbnailsVirtual { get { return Path.Combine(FotoUploadPathVirtual, "_tb"); } }
         // ReSharper disable ConvertClosureToMethodGroup
         public List<string> UploadedImageFiles { get { return PropertyCacheGet(() => GetUploadedImageFiles()); } }
                                                                                                                                     // ReSharper restore ConvertClosureToMethodGroup
@@ -383,11 +392,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         }
 
         [LocalizedDisplay(LocalizeConstants.CountVotedRides)]
-        public int QmFahrerRankingCount => DataService.QmFahrerRankingCount;
+        public int QmFahrerRankingCount { get { return DataService.QmFahrerRankingCount; } }
 
-        public List<QmFahrer> QmFahrerList => DataService.QmFahrerList;
+        public List<QmFahrer> QmFahrerList { get { return DataService.QmFahrerList; } }
 
-        public List<QmFleetMonitor> QmFleetMonitorList => DataService.QmFleetMonitorList;
+        public List<QmFleetMonitor> QmFleetMonitorList { get { return DataService.QmFleetMonitorList; } }
 
 
         public void Validate(Action<string, string> addModelError)
@@ -404,7 +413,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         #region Protokollarchivierung
 
-        public List<SelectItem> QmCodes => DataService.QmCodes;
+        public List<SelectItem> QmCodes { get { return DataService.QmCodes; } }
 
         public List<FahrerAuftragsProtokoll> FahrerProtokolle
         {
