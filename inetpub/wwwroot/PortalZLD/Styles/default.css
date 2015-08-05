@@ -3056,3 +3056,8 @@ a[disabled], a:active[disabled], a:hover[disabled], a:visited[disabled]
 .TextUpperCase {
     text-transform: uppercase;
 }
+
+.dataFooter {
+    margin-bottom:31px;
+    margin-top:10px;
+}

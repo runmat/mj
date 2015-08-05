@@ -59,6 +59,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [XmlIgnore]
         public List<AbmeldeHistorie> AbmeldeHistorien { get; private set; }
 
+        public bool HalterAdresseGridVisible 
+        { 
+            get
+            {
+                return GetApplicationConfigValueForCustomer("AbgemeldeteFahrzeuge2_HalterAdresseInGridAnzeigen").ToBool();
+            } 
+        }
+
 
         public void DataInit()
         {
