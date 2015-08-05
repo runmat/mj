@@ -27,7 +27,7 @@ namespace CkgDomainLogic.Fahrer.Models
                 if (IstSonstigerAuftrag)
                     return "SONSTIGER-AUFTRAG";
 
-                return $"{AuftragsNr.NotNullOrEmpty()}-{Fahrt.NotNullOrEmpty()}";
+                return string.Format("{0}-{1}", AuftragsNr.NotNullOrEmpty(), Fahrt.NotNullOrEmpty());
             }
         }
 
@@ -47,7 +47,7 @@ namespace CkgDomainLogic.Fahrer.Models
 
                 return new List<string>
                 {
-                    AuftragsNrFriendly.PrependIfNotNull("#"), Fahrt.FormatIfNotNull("Fahrt {this}"), OrtStart, OrtZiel, Kennzeichen, ProtokollArt, ProtokollName
+                    AuftragsNrFriendly.PrependIfNotNull("#"), Fahrt.FormatIfNotNull("Fahrt {this}"), OrtStart, OrtZiel, Kennzeichen, ProtokollName
                 }
                 .JoinIfNotNull(", ");
             }
@@ -103,6 +103,6 @@ namespace CkgDomainLogic.Fahrer.Models
         public static string FahrerProtokollFilenamePattern => "{0}_{1}_P_{2}_{3}.pdf";
 
         [LocalizedDisplay(LocalizeConstants.FileName)]
-        public string Filename => string.Format(FahrerProtokollFilenamePattern, KundenNr.PadLeft(10, '0'), AuftragsNr.PadLeft(10, '0'), ProtokollArt, Fahrt);
+        public string Filename => string.Format(FahrerProtokollFilenamePattern, KundenNr.PadLeft(10, '0'), AuftragsNr.PadLeft(10, '0'), ProtokollName, Fahrt);
     }
 }

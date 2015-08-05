@@ -71,8 +71,10 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public string FahrerAuftragsStatusFilter { get { return PropertyCacheGet(() => "NEW"); } set { PropertyCacheSet(value); } }
         
         [XmlIgnore]
-        public string FahrerAuftragsStatusTypen =>
-            $"{"NEW"},{Localize.NewOrders};{"OK"},{Localize.AcceptedOrders};{"NO"},{Localize.RefusedOrders}";
+        public string FahrerAuftragsStatusTypen => string.Format("{0},{1};{2},{3};{4},{5}",
+            "NEW", Localize.NewOrders,
+            "OK", Localize.AcceptedOrders,
+            "NO", Localize.RefusedOrders);
 
         public List<FahrerAuftrag> FahrerAuftraege
         {
@@ -252,7 +254,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             var imageMask = imageIndex.ToInt() == -1 ? "*" : imageIndex.ToInt().ToString("0000");
 
-            return $"{auftragsNr.TrimStart('0')}-{imageMask}-{fahrerNr.TrimStart('0')}-{fahrtNr}";
+            return string.Format("{0}-{1}-{2}-{3}", auftragsNr.TrimStart('0'), imageMask, fahrerNr.TrimStart('0'), fahrtNr);
         }
 
         private string GetFotoOrProtocolPath(string path)
@@ -262,7 +264,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
             var slash = (path.Contains("/") ? "/" : "\\");
 
-            return $"{path}{slash}{"Protokolle"}";
+            return string.Format("{0}{1}{2}", path, slash, "Protokolle");
         }
 
         public List<string> GetUploadedImageFiles()
@@ -274,8 +276,9 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             if (auftrag == null)
                 return new List<string>();
 
-            var existingImageFiles = Directory.GetFiles(FotoUploadPath,
-                $"{GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt)}.{"*"}");
+            var existingImageFiles = Directory.GetFiles(FotoUploadPath, string.Format("{0}.{1}",
+                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt),
+                                               "*"));
 
             return existingImageFiles.ToListOrEmptyList().OrderBy(GetImageIndexFromFileName).Select(Path.GetFileName).ToList();
         }
@@ -284,8 +287,9 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             var auftrag = SelectedFahrerAuftrag;
             var uploadImageIndex = (GetImageIndexFromFileName(UploadedImageFiles.LastOrDefault()) + 1).ToString();
-            var serverFileName =
-                $"{GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt)}{Path.GetExtension(clientFileName)}";
+            var serverFileName = string.Format("{0}{1}",
+                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt),
+                                               Path.GetExtension(clientFileName));
 
             TryDirectoryCreateAndRaiseError(FotoUploadPath);
             var destinationFileName = Path.Combine(FotoUploadPath, serverFileName);
@@ -510,7 +514,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
             catch (Exception ex)
             {
-                return $"{Localize.Error}: {ex.Message}";
+                return string.Format("{0}: {1}", Localize.Error, ex.Message);
             }
         }
 
@@ -518,8 +522,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             if (!string.IsNullOrEmpty(model.MailAdressen))
             {
-                var mailBetreff =
-                    $"Bestandsnummer: {(string.IsNullOrEmpty(model.Protokoll.Referenz) ? model.Protokoll.VIN : model.Protokoll.Referenz)}";
+                var mailBetreff = string.Format("Bestandsnummer: {0}", (String.IsNullOrEmpty(model.Protokoll.Referenz) ? model.Protokoll.VIN : model.Protokoll.Referenz));
                 var mailText = GeneralConfiguration.GetConfigValue("FahrerProtokollArchivierung", "MailText").Replace("{br}", Environment.NewLine);
 
                 var mailService = new SmtpMailService(AppSettings);
