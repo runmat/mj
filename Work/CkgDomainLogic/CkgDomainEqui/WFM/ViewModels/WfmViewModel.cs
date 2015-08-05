@@ -73,6 +73,9 @@ namespace CkgDomainLogic.WFM.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.AuftraegeFiltered);
+            PropertyCacheClear(this, m => m.DurchlaufDetailsFiltered);
+            PropertyCacheClear(this, m => m.DurchlaufStatistikenFiltered);
+
             DataMarkForRefreshDetails();
         }
 
@@ -267,6 +270,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         #endregion
         
+
         #region Aufgaben
 
         [XmlIgnore]
@@ -315,28 +319,62 @@ namespace CkgDomainLogic.WFM.ViewModels
             return message;
         }
 
+        #endregion
 
-        
+
         #region Durchlauf
 
-
-        private void InitFeldnamenForDurchlauf()
+        [XmlIgnore]
+        public List<WfmDurchlaufSingle> DurchlaufDetails
         {
-            PropertyCacheClear(this, m => m.Feldnamen);
-
-            Feldnamen = DataService.GetFeldnamen();
-
-            Selektor.Selektionsfeld1Name = (Feldnamen.Any(f => f.Feldname == "SELEKTION1") ? Feldnamen.First(f => f.Feldname == "SELEKTION1").Anzeigename : "");
-            Selektor.Selektionsfeld2Name = (Feldnamen.Any(f => f.Feldname == "SELEKTION2") ? Feldnamen.First(f => f.Feldname == "SELEKTION2").Anzeigename : "");
-            Selektor.Selektionsfeld3Name = (Feldnamen.Any(f => f.Feldname == "SELEKTION3") ? Feldnamen.First(f => f.Feldname == "SELEKTION3").Anzeigename : "");
-
-            Selektor.Referenz1Name = (Feldnamen.Any(f => f.Feldname == "REFERENZ1") ? Feldnamen.First(f => f.Feldname == "REFERENZ1").Anzeigename : "");
-            Selektor.Referenz2Name = (Feldnamen.Any(f => f.Feldname == "REFERENZ2") ? Feldnamen.First(f => f.Feldname == "REFERENZ2").Anzeigename : "");
-            Selektor.Referenz3Name = (Feldnamen.Any(f => f.Feldname == "REFERENZ3") ? Feldnamen.First(f => f.Feldname == "REFERENZ3").Anzeigename : "");
+            get { return PropertyCacheGet(() => new List<WfmDurchlaufSingle>()); }
+            private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<WfmDurchlaufSingle> DurchlaufDetailsFiltered
+        {
+            get { return PropertyCacheGet(() => DurchlaufDetails); }
+            private set { PropertyCacheSet(value); }
+        }
 
-        #endregion
+        [XmlIgnore]
+        public List<WfmDurchlaufStatistik> DurchlaufStatistiken
+        {
+            get { return PropertyCacheGet(() => new List<WfmDurchlaufStatistik>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<WfmDurchlaufStatistik> DurchlaufStatistikenFiltered
+        {
+            get { return PropertyCacheGet(() => DurchlaufStatistiken); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void LoadDurchlauf(ModelStateDictionary state)
+        {
+            DataMarkForRefresh();
+
+            DataService.GetDurchlauf(Selektor, (details, statistiken) =>
+            {
+                DurchlaufDetails = details.ToListOrEmptyList();
+                DurchlaufStatistiken = statistiken.ToListOrEmptyList();
+            });
+
+            if (DurchlaufDetails.None())
+                state.AddModelError("", Localize.NoDataFound);
+        }
+
+        public void FilterDurchlaufDetails(string filterValue, string filterProperties)
+        {
+            DurchlaufDetailsFiltered = DurchlaufDetails.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterDurchlaufStatistiken(string filterValue, string filterProperties)
+        {
+            DurchlaufStatistikenFiltered = DurchlaufStatistiken.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
 
         #endregion
     }

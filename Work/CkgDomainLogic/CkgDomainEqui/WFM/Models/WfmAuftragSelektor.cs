@@ -88,6 +88,12 @@ namespace CkgDomainLogic.WFM.Models
         [LocalizedDisplay(LocalizeConstants.Date)]
         public DateRange SolldatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) { IsSelected = false }); } set { PropertyCacheSet(value); } }
 
+        [LocalizedDisplay(LocalizeConstants.CreateDate)]
+        public DateRange AnlageDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months) { IsSelected = true }); } set { PropertyCacheSet(value); } }
+
+        [LocalizedDisplay(LocalizeConstants.FinishDate)]
+        public DateRange ErledigtDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.LastMonth) { IsSelected = false }); } set { PropertyCacheSet(value); } }
+
         public List<SelectItem> AlleToDoWer
         {
             get

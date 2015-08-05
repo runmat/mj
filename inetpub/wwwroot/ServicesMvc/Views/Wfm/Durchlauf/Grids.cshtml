@@ -1,0 +1,40 @@
+﻿@using CkgDomainLogic.WFM.Models
+@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+@{ var gridName = "GridDurchlaufStatistik"; }
+
+@(Html.XTelerik()
+    .XGrid<WfmDurchlaufStatistik>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("DurchlaufStatistikAjaxBinding", "Wfm")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDurchlaufStatistikenFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportDurchlaufStatistikenFilteredPDF", "Wfm");
+    })
+)
+
+@{ gridName = "GridDurchlaufDetails"; }
+
+@(Html.XTelerik()
+    .XGrid<WfmDurchlaufSingle>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("DurchlaufDetailsAjaxBinding", "Wfm")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.ErledigtDatum).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDurchlaufDetailsFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportDurchlaufDetailsFilteredPDF", "Wfm");
+    })
+)
+

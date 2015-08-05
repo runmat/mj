@@ -1,0 +1,92 @@
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+<h3 class="page-title" id="headerTitle">@Model.Title <small></small></h3>
+
+@Html.SpanAlert("spanAlertDurchlauf")
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Durchlauf/Suche", Model.Selektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrids"></div>
+}
+
+<style type="text/css">
+    
+    .tbNoteForToDo, #txtNewInformation {
+        background-color: white!important;
+    }
+    
+    .wmf-uebersicht-section-abmeldeart-standard {
+        display: inline-block;
+        margin-left: 20px;
+    }
+    
+</style>
+
+<script type="text/javascript">
+
+    var _ladeHinweis = '@Localize.LoadingData';
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowDurchlaufSearchResult(result) {
+        SearchFormHide(function() {
+            $("#divGrids").html(result);
+
+            GridAllColumnFilterApplyToGrid("GridDurchlaufDetails");
+            GridAllColumnFilterApplyToGrid("GridDurchlaufStatistik");
+
+            $("#divGrids").slideDown();
+        });
+    }
+
+    function TryGridsRefresh() {
+        // Refresh grid only
+        try {
+            FilterGridPreservePage("GridDurchlaufDetails");
+            FilterGridPreservePage("GridDurchlaufStatistik");
+        }
+        catch(e){}
+    }
+
+
+    function OnDataBound_GridDurchlaufDetails() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridDurchlaufDetails() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridDurchlaufDetails() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function OnDataBound_GridDurchlaufStatistik() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridDurchlaufStatistik() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridDurchlaufStatistik() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

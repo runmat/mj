@@ -40,6 +40,11 @@
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -2557,7 +2562,6 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
-
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
@@ -4498,6 +4502,9 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
+    <Content Include="Views\Wfm\Durchlauf.cshtml" />
+    <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
+    <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
