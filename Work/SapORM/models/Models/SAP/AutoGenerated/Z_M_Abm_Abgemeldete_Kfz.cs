@@ -127,6 +127,20 @@ namespace SapORM.Models
 
 			public DateTime? ZZTMPDT { get; set; }
 
+			public string BELNR { get; set; }
+
+			public string NAME1_ZH { get; set; }
+
+			public string NAME2_ZH { get; set; }
+
+			public string STREET_ZH { get; set; }
+
+			public string HOUSE_NUM1_ZH { get; set; }
+
+			public string POST_CODE1_ZH { get; set; }
+
+			public string CITY1_ZH { get; set; }
+
 			public static AUSGABE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new AUSGABE
@@ -179,6 +193,13 @@ namespace SapORM.Models
 					ZSTATUS = (string)row["ZSTATUS"],
 					PICKDAT = (string.IsNullOrEmpty(row["PICKDAT"].ToString())) ? null : (DateTime?)row["PICKDAT"],
 					ZZTMPDT = (string.IsNullOrEmpty(row["ZZTMPDT"].ToString())) ? null : (DateTime?)row["ZZTMPDT"],
+					BELNR = (string)row["BELNR"],
+					NAME1_ZH = (string)row["NAME1_ZH"],
+					NAME2_ZH = (string)row["NAME2_ZH"],
+					STREET_ZH = (string)row["STREET_ZH"],
+					HOUSE_NUM1_ZH = (string)row["HOUSE_NUM1_ZH"],
+					POST_CODE1_ZH = (string)row["POST_CODE1_ZH"],
+					CITY1_ZH = (string)row["CITY1_ZH"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

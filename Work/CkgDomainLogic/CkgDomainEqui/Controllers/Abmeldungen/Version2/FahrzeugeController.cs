@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
-using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
 {
-    public partial class FahrzeugeController : CkgDomainController
+    public partial class FahrzeugeController
     {               
        
         [CkgApplication]
