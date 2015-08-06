@@ -81,6 +81,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [GridHidden]
         public string HistorieCssClass { get { return HistorieAvailable ? "" : "hide"; } }
 
+        [LocalizedDisplay(LocalizeConstants.Holder)]
+        public string HalterAdresse { get; set; }
+
 
         [GridExportIgnore]
         [LocalizedDisplay(LocalizeConstants.Action)]
