@@ -306,7 +306,7 @@ namespace CkgDomainLogic.Autohaus.Services
                     positionen.Add(new Zusatzdienstleistung
                     {
                         BelegNr = vorgang.BelegNr,
-                        PositionsNr = "10",
+                        PositionsNr = "000010",
                         MaterialNr = vorgang.Zulassungsdaten.ZulassungsartMatNr,
                         Menge = "1"
                     });
@@ -314,7 +314,7 @@ namespace CkgDomainLogic.Autohaus.Services
                     var posNr = 20;
                     foreach (var zusatzDl in vorgang.OptionenDienstleistungen.GewaehlteDienstleistungen)
                     {
-                        zusatzDl.PositionsNr = posNr.ToString();
+                        zusatzDl.PositionsNr = posNr.ToString().PadLeft0(6);
                         positionen.Add(zusatzDl);
                         posNr += 10;
                     }
@@ -647,15 +647,16 @@ namespace CkgDomainLogic.Autohaus.Services
                 }
 
                 var posItems = posListe.Where(p => p.BelegNr == vorgang.BelegNr);
-                if (posItems.Any(p => p.PositionsNr == "10"))
+                if (posItems.Any(p => p.PositionsNr == "000010"))
                 {
-                    vorgang.Zulassungsdaten.ZulassungsartMatNr = posItems.First(p => p.PositionsNr == "10").MaterialNr;
+                    vorgang.Zulassungsdaten.ZulassungsartMatNr = posItems.First(p => p.PositionsNr == "000010").MaterialNr;
+                    vorgang.OptionenDienstleistungen.ZulassungsartMatNr = vorgang.Zulassungsdaten.ZulassungsartMatNr;
 
-                    var kennzGroesse = vorgang.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.MatNr == vorgang.Zulassungsdaten.ZulassungsartMatNr.ToInt() && k.Groesse == item.KENNZFORM);
+                    var kennzGroesse = vorgang.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == item.KENNZFORM);
                     if (kennzGroesse != null)
                         vorgang.OptionenDienstleistungen.KennzeichenGroesseId = kennzGroesse.Id;
 
-                    vorgang.OptionenDienstleistungen.GewaehlteDienstleistungenString = String.Join(",", posItems.Where(p => p.PositionsNr != "10").Select(p => p.MaterialNr));
+                    vorgang.OptionenDienstleistungen.GewaehlteDienstleistungenString = String.Join(",", posItems.Where(p => p.PositionsNr != "000010").Select(p => p.MaterialNr.TrimStart('0')));
                 }
 
                 var bankItems = bankListe.Where(b => b.BelegNr == vorgang.BelegNr);

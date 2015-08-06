@@ -654,7 +654,7 @@ namespace CkgDomainLogic.General.Controllers
         // <Multi Selection>
         //
 
-        public void ShoppingCartItemSelect(string objectKey, bool select, out int allSelectionCount)
+        public virtual void ShoppingCartItemSelect(string objectKey, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;
             var item = ShoppingCartItemsFilteredAsStore.FirstOrDefault(f => f.ObjectKey == objectKey);
@@ -665,7 +665,7 @@ namespace CkgDomainLogic.General.Controllers
             allSelectionCount = ShoppingCartItemsFilteredAsStore.Count(c => c.IsSelected);
         }
 
-        public void ShoppingCartItemsSelect(bool select, out int allSelectionCount, out int allCount)
+        public virtual void ShoppingCartItemsSelect(bool select, out int allSelectionCount, out int allCount)
         {
             ShoppingCartItemsFilteredAsStore.ForEach(f => f.IsSelected = select);
 

@@ -40,7 +40,7 @@ namespace CkgDomainLogic.Autohaus.Models
         }
 
         [XmlIgnore]
-        public List<Zusatzdienstleistung> GewaehlteDienstleistungen { get { return AvailableDienstleistungen.Where(dl => GewaehlteDienstleistungenString.Split(',').Contains(dl.ID)).ToList(); } }
+        public List<Zusatzdienstleistung> GewaehlteDienstleistungen { get { return AvailableDienstleistungen.Where(dl => GewaehlteDienstleistungenString.Split(',').Contains(dl.MaterialNr)).ToList(); } }
 
         [XmlIgnore]
         public List<Zusatzdienstleistung> NichtGewaehlteDienstleistungen { get { return AvailableDienstleistungen.Except(AlleDienstleistungen).ToList(); } }
@@ -51,7 +51,7 @@ namespace CkgDomainLogic.Autohaus.Models
                 AlleDienstleistungen = dienstleistungen;
 
             if (GewaehlteDienstleistungenString.IsNullOrEmpty())
-                GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.ID).ToList());
+                GewaehlteDienstleistungenString = string.Join(",", AvailableDienstleistungen.Where(dl => dl.IstGewaehlt).Select(dl => dl.MaterialNr).ToList());
             else
                 SetGewaehlteDienstleistungen();
         }

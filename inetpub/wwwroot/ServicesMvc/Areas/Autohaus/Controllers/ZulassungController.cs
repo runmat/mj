@@ -807,6 +807,25 @@ namespace ServicesMvc.Autohaus.Controllers
             ShoppingCartFilterGenericItems<Vorgang>(filterValue, filterProperties);
         }
 
+        public override void ShoppingCartItemSelect(string objectKey, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var item = ShoppingCartItems.Cast<Vorgang>().FirstOrDefault(f => f.BelegNr == objectKey);
+            if (item == null)
+                return;
+
+            item.IsSelected = select;
+            allSelectionCount = ShoppingCartItems.Cast<Vorgang>().Count(c => c.IsSelected);
+        }
+
+        public override void ShoppingCartItemsSelect(bool select, out int allSelectionCount, out int allCount)
+        {
+            ShoppingCartItems.Cast<Vorgang>().ToList().ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = ShoppingCartItems.Cast<Vorgang>().Count(c => c.IsSelected);
+            allCount = ShoppingCartItems.Cast<Vorgang>().Count();
+        }
+
         [HttpPost]
         public ActionResult ShoppingCartZulassungItemEdit(string id)
         {

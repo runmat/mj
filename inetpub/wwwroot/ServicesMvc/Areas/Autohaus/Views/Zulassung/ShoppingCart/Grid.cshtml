@@ -14,7 +14,7 @@
     .Columns(columns =>
         {
             columns.XBound("")
-                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.ObjectKey #>' onchange='OnSelectionChange_GridShoppingCart($(this))' />")
+                .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.BelegNr #>' onchange='OnSelectionChange_GridShoppingCart($(this))' />")
                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridShoppingCart_OnAllSelectionChange($(this).is(\":checked\"))' />")
                 .Filterable(false);
             columns.XBound(c => c.BelegNr).Width(145).Title("").Filterable(false).Sortable(false)

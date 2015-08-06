@@ -108,10 +108,10 @@ namespace CkgDomainLogic.Autohaus.Models
         public Zulassungsdaten Zulassungsdaten { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateTime? Zulassungsdatum { get { return (BeauftragungsArt == "ABMELDUNG" ? null : Zulassungsdaten.Zulassungsdatum); } }
+        public DateTime? Zulassungsdatum { get { return (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG" ? null : Zulassungsdaten.Zulassungsdatum); } }
 
         [LocalizedDisplay(LocalizeConstants.CancellationDate)]
-        public DateTime? Abmeldedatum { get { return (BeauftragungsArt == "ABMELDUNG" ? Zulassungsdaten.Zulassungsdatum : null); } }
+        public DateTime? Abmeldedatum { get { return (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG" ? Zulassungsdaten.Zulassungsdatum : null); } }
 
         public OptionenDienstleistungen OptionenDienstleistungen { get; set; }
 

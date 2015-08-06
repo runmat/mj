@@ -993,17 +993,15 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 {
                     z.WebGroupId = LogonContext.Group.GroupID.ToString();
                     z.WebUserId = LogonContext.UserID;
+                    if (z.BeauftragungsArt.IsNullOrEmpty())
+                    {
+                        z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG"
+                                              : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
+                                              : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
+                                              : ModusAbmeldung ? "ABMELDUNG"
+                                              : "ZULASSUNG");
+                    }
                 });
-
-            if (!saveFromShoppingCart)
-            {
-                zulassungen.ForEach(z => z.BeauftragungsArt =
-                    (ModusVersandzulassung ? "VERSANDZULASSUNG"
-                    : ModusAbmeldung ? "ABMELDUNG"
-                    : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
-                    : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
-                    : "ZULASSUNG"));
-            }
 
             var zulassungenToSave = new List<Vorgang>();
            
