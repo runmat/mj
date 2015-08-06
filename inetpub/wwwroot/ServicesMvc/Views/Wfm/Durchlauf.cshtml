@@ -25,6 +25,10 @@
         margin-left: 20px;
     }
     
+    #GridDurchlaufStatistik table {
+        width: 100% !important;
+    }
+
 </style>
 
 <script type="text/javascript">
@@ -46,7 +50,38 @@
             GridAllColumnFilterApplyToGrid("GridDurchlaufDetails");
             GridAllColumnFilterApplyToGrid("GridDurchlaufStatistik");
 
+            GridDurchlaufStatistikPrepare();
+
             $("#divGrids").slideDown();
+        });
+    }
+
+    function GridDurchlaufStatistikRenameColumnTitle(columnTitle) {
+        var text = columnTitle;
+
+        text = text.replace(/Durchschnitt/g, "Ø");
+        text = text.replace(/Anz/g, "");
+        text = text.replace(/Ges/g, "Anz. Ges.");
+        text = text.replace(/Std/g, "Std.");
+        text = text.replace(/Klaer/g, "Klär.");
+
+        text = text.replace(/Le10/g, " < 10");
+        text = text.replace(/1120/g, " 11-20");
+        text = text.replace(/2130/g, " 21-30");
+        text = text.replace(/3140/g, " 31-40");
+        text = text.replace(/Gt40/g, " > 40");
+
+        return text;
+    }
+
+    function GridDurchlaufStatistikPrepare() {
+        $("#GridDurchlaufStatistik .dataTables_length").html("<h4>Statistik:</h4>");
+        $("#GridDurchlaufStatistik .dataTables_filter").hide();
+        $("#GridDurchlaufStatistik .t-grid-pager").addClass("hide");
+        $("#GridDurchlaufStatistik .t-grid-header .t-header .t-link").css("padding-right", "10px");
+
+        $.each($("#GridDurchlaufStatistik thead tr th .t-link"), function (index, elem) {
+            $(elem).html(GridDurchlaufStatistikRenameColumnTitle($(elem).html()));
         });
     }
 
@@ -76,6 +111,11 @@
 
 
     function OnDataBound_GridDurchlaufStatistik() {
+
+        $.each($("#GridDurchlaufStatistik").data("tGrid").columns, function (index, elem) {
+            elem.title = GridDurchlaufStatistikRenameColumnTitle(elem.title);
+        });
+
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();

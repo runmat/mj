@@ -89,10 +89,10 @@ namespace CkgDomainLogic.WFM.Models
         public DateRange SolldatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) { IsSelected = false }); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
-        public DateRange AnlageDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months) { IsSelected = true }); } set { PropertyCacheSet(value); } }
+        public DateRange AnlageDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.LastMonth) { IsSelected = false }); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.FinishDate)]
-        public DateRange ErledigtDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.LastMonth) { IsSelected = false }); } set { PropertyCacheSet(value); } }
+        public DateRange ErledigtDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months) { IsSelected = true }); } set { PropertyCacheSet(value); } }
 
         public List<SelectItem> AlleToDoWer
         {
@@ -109,5 +109,21 @@ namespace CkgDomainLogic.WFM.Models
 
         [LocalizedDisplay(LocalizeConstants.ToDoWho)]
         public string ToDoWer { get; set; }
+
+        public List<SelectItem> AlleAbmeldeartenDurchlauf
+        {
+            get
+            {
+                return PropertyCacheGet(() => new List<SelectItem>
+                {
+                    new SelectItem("ALLE", Localize.All),
+                    new SelectItem("KLAERFALL", Localize.ClarificationCase),
+                    new SelectItem("STANDARD", Localize.Standard),
+                });
+            }
+        }
+
+        [LocalizedDisplay(LocalizeConstants.DeRegistrationType)]
+        public string AbmeldeartDurchlauf { get { return PropertyCacheGet(() => "ALLE"); } set { PropertyCacheSet(value); } }
     }
 }

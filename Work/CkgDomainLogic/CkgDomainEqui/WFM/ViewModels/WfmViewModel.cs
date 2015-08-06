@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
@@ -84,21 +85,6 @@ namespace CkgDomainLogic.WFM.ViewModels
             PropertyCacheClear(this, m => m.InformationenFiltered);
             PropertyCacheClear(this, m => m.DokumenteFiltered);
             PropertyCacheClear(this, m => m.AufgabenFiltered);
-        }
-
-        private void InitFeldnamen()
-        {
-            PropertyCacheClear(this, m => m.Feldnamen);
-
-            Feldnamen = DataService.GetFeldnamen();
-
-            Selektor.Selektionsfeld1Name = (Feldnamen.Any(f => f.Feldname == "SELEKTION1") ? Feldnamen.First(f => f.Feldname == "SELEKTION1").Anzeigename : "");
-            Selektor.Selektionsfeld2Name = (Feldnamen.Any(f => f.Feldname == "SELEKTION2") ? Feldnamen.First(f => f.Feldname == "SELEKTION2").Anzeigename : "");
-            Selektor.Selektionsfeld3Name = (Feldnamen.Any(f => f.Feldname == "SELEKTION3") ? Feldnamen.First(f => f.Feldname == "SELEKTION3").Anzeigename : "");
-
-            Selektor.Referenz1Name = (Feldnamen.Any(f => f.Feldname == "REFERENZ1") ? Feldnamen.First(f => f.Feldname == "REFERENZ1").Anzeigename : "");
-            Selektor.Referenz2Name = (Feldnamen.Any(f => f.Feldname == "REFERENZ2") ? Feldnamen.First(f => f.Feldname == "REFERENZ2").Anzeigename : "");
-            Selektor.Referenz3Name = (Feldnamen.Any(f => f.Feldname == "REFERENZ3") ? Feldnamen.First(f => f.Feldname == "REFERENZ3").Anzeigename : "");
         }
 
         public void LoadAuftraege(ModelStateDictionary state)
@@ -374,6 +360,41 @@ namespace CkgDomainLogic.WFM.ViewModels
         public void FilterDurchlaufStatistiken(string filterValue, string filterProperties)
         {
             DurchlaufStatistikenFiltered = DurchlaufStatistiken.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        #endregion
+
+
+        #region Misc
+
+        public string GetHeaderText(string columnName)
+        {
+            return GetFeldname(columnName);
+        }
+
+        public bool HeaderTextAvailable(string columnName)
+        {
+            return GetHeaderText(columnName).IsNotNullOrEmpty();
+        }
+
+        private string GetFeldname(string columnName)
+        {
+            return Feldnamen.Any(f => f.Feldname == columnName) ? Feldnamen.First(f => f.Feldname == columnName).Anzeigename : "";
+        }
+
+        private void InitFeldnamen()
+        {
+            PropertyCacheClear(this, m => m.Feldnamen);
+
+            Feldnamen = DataService.GetFeldnamen();
+
+            Selektor.Selektionsfeld1Name = GetFeldname("SELEKTION1");
+            Selektor.Selektionsfeld2Name = GetFeldname("SELEKTION2"); 
+            Selektor.Selektionsfeld3Name = GetFeldname("SELEKTION3");
+
+            Selektor.Referenz1Name = GetFeldname("REFERENZ1");
+            Selektor.Referenz2Name = GetFeldname("REFERENZ2");
+            Selektor.Referenz3Name = GetFeldname("REFERENZ3");
         }
 
         #endregion

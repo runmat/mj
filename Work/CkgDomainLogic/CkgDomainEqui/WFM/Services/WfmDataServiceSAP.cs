@@ -334,7 +334,11 @@ namespace CkgDomainLogic.WFM.Services
             if (!string.IsNullOrEmpty(selector.Selektionsfeld1Name))
                 SAP.SetImportParameter("I_SELEKTION1", selector.Selektionsfeld1.BoolToX());
 
-            SAP.SetImportParameter("I_ABMART_STD", "X");
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld2Name))
+                SAP.SetImportParameter("I_SELEKTION2", selector.Selektionsfeld2.BoolToX());
+
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld3Name))
+                SAP.SetImportParameter("I_SELEKTION3", selector.Selektionsfeld3.BoolToX());
 
             if (selector.AnlageDatumVonBis.IsSelected)
             {
@@ -347,6 +351,12 @@ namespace CkgDomainLogic.WFM.Services
                 SAP.SetImportParameter("I_ERLEDIGT_VON", selector.ErledigtDatumVonBis.StartDate);
                 SAP.SetImportParameter("I_ERLEDIGT_BIS", selector.ErledigtDatumVonBis.EndDate);
             }
+
+            if (selector.AbmeldeartDurchlauf == "ALLE" || selector.AbmeldeartDurchlauf == "KLAERFALL")
+                SAP.SetImportParameter("I_ABMART_KLAER", "X");
+
+            if (selector.AbmeldeartDurchlauf == "ALLE" || selector.AbmeldeartDurchlauf == "STANDARD")
+                SAP.SetImportParameter("I_ABMART_STD", "X");
 
 
             SAP.Execute();
