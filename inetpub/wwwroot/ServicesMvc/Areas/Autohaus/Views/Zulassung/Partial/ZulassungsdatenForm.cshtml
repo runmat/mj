@@ -1,9 +1,6 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @using CkgDomainLogic.Fahrzeugbestand.Models
 @model Zulassungsdaten
-@{
-    var materialList = (List<Material>)ViewData["MaterialList"];
-}
 
 <style>
     .fontUnderline {
@@ -26,7 +23,7 @@
         $.ajax({
             type: "POST",
             url: "SetEvb",
-            data: { fin: fin, evb: evb },
+            data: { fin: fin, evb: evb.toUpperCase() },
             loadingShow: false,
             success: function(result) {
                     
@@ -67,42 +64,11 @@
         });
     }
 
-    $(function () {
-
-        $('#Zulassungskreis').off('change').on('change').change(function() {
-            var zulassungskreis = $(this).val();
-            SetZulassungskreis(zulassungskreis);
-        });
-
-        $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
-            var tagObj = $(this);
-            var evb = $(this).val();
-            SetEvb("", evb, tagObj);
-        });
-
-        $(document).off('change', '.editevb');
-        $(document).on('change', '.editevb', function () {              // Auswirkung auf ein Fahrzeug                    
-            var tagObj = $(this);
-            var evb = $(this).val();
-            var tr = $(this).closest('tr');
-            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-            var dataItem = grid.dataItem(tr);
-            var fin = dataItem["FIN"];
-            SetEvb(fin, evb, tagObj);
-        });
-
-        $(document).off('change', '.editkennz');
-        $(document).on('change', '.editkennz', function () {            // Auswirkung auf ein Fahrzeug
-            var tr = $(this).closest('tr');
-            var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
-            var dataItem = grid.dataItem(tr);
-            var fin = dataItem["FIN"];
-            var field = $(this).data('fieldname');
-            var wkennz = $(this).val();
-            $.ajax({
+    function SetFinValue(fin, field, value) {
+        $.ajax({
                 type: "POST",
-                url: "SetWunschKennz",
-                data: { fin: fin, field: field, kennz: wkennz },
+                url: "SetFinValue",
+                data: { fin: fin, field: field, value: value },
                 loadingShow: false,
                 success: function (result) {
                     if (result.ok == true) {
@@ -112,9 +78,8 @@
                     }
                 }
             });
-        });
-    });
-
+    }
+    
     function AjaxFormZulassungsdatenComplete() {
         FormPrepareAjax();
 
@@ -122,10 +87,76 @@
             AjaxRequestNextStep();
             return;
         }
-    }        
-            
-    CheckKennzeichenReserviert();
+    }   
 
+    $(function () {
+        $('#Zulassungskreis').off('change').on('change').change(function() {
+            var zulassungskreis = $(this).val();
+            SetZulassungskreis(zulassungskreis);
+        });        
+    });
+
+    @if (Model.IsMassenzulassung || Model.IsMassenabmeldung)
+    {
+        <text>
+            $(function () {
+                $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
+                    var tagObj = $(this);
+                    var evb = $(this).val();
+                    SetEvb("", evb, tagObj);
+                });
+
+                $(document).off('change', '.editevb');
+                $(document).on('change', '.editevb', function () {              // Auswirkung auf ein Fahrzeug                    
+                    var tagObj = $(this);
+                    var evb = $(this).val();
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    SetEvb(fin, evb, tagObj);
+                });
+        
+                // Kennzeichenänderung bei Massenzulassung
+                $(document).off('change', '.editkennz');
+                $(document).on('change', '.editkennz', function () {            // Auswirkung auf ein Fahrzeug
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlZulassung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    var field = $(this).data('fieldname');
+                    var wkennz = $(this).val();
+                    SetFinValue(fin, field, wkennz.toUpperCase());
+                });
+        
+                // Kennzeichenänderung bei Massenabmeldung
+                $(document).off('change', '.editkennzabm');
+                $(document).on('change', '.editkennzabm', function () {            // Auswirkung auf ein Fahrzeug
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    var field = $(this).data('fieldname');
+                    var wkennz = $(this).val();
+                    SetFinValue(fin, field, wkennz.toUpperCase());
+                });
+        
+                // "Vorhandenes Kennzeichen reservieren"-Checkbox bei Massenabmeldung
+                $(document).off('change', '.editkennzres');
+                $(document).on('change', '.editkennzres', function () {            // Auswirkung auf ein Fahrzeug
+                    var tr = $(this).closest('tr');
+                    var grid = $("#GridFahrzeugAuswahlAbmeldung").data("tGrid");
+                    var dataItem = grid.dataItem(tr);
+                    var fin = dataItem["FIN"];
+                    var field = $(this).data('fieldname');
+                    var value = $(this).prop('checked');
+                    SetFinValue(fin, field, value);
+                });
+        });
+        </text>
+    }
+
+    CheckKennzeichenReserviert();
     ShowHideMindesthaltedauer();    // 20150528 MMA
     ShowHideWunschkennzeichenUrl(); // 20150602 MMA
 </script>
@@ -137,6 +168,7 @@
     {
         @Html.FormValidationSummary()
         @Html.HiddenFor(m => m.IsMassenzulassung)
+        @Html.HiddenFor(m => m.IsMassenabmeldung)
         @Html.HiddenFor(m => m.ModusAbmeldung)
         @Html.HiddenFor(m => m.ModusVersandzulassung)
         @Html.HiddenFor(m => m.ZulassungskreisBezeichnung)
@@ -144,79 +176,14 @@
 
         if (Model.ModusAbmeldung)
         {
-            @Html.HiddenFor(m => m.ZulassungsartMatNr)
-            @Html.FormDatePickerFor(m => m.Abmeldedatum, new { @class = "m-wrap small" })
-            @Html.HiddenFor(m => m.Zulassungskreis)
-
-            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-            @Html.FormCheckBoxFor(m => m.VorhandenesKennzeichenReservieren, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+            @Html.Partial("Partial/ZulassungsdatenFormAbmeldung", Model)
         }
         else
         {
-            @Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
-            @Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 }) // 20150528 
-        
-            @Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
-
-            @Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" },
-                                postControlHtml: @<text>
-                                                        <a href="#" onclick="return LoadKfzKreisAusHalterAdresse()" class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5"></i> @Localize.LoadDistrictFromOwnerAddress</a>
-                                                        @Html.SpanAlert("kfzKreisHint")
-                                                    </text>)
-
-            @Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })
-            <div id="divWkzLink">
-                <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline"><i class="margin-right-5"></i> @Localize.AssignKennzeichen</a>
-            </div>
-
-            if (Model.IsMassenzulassung)
-            {
-
-                using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
-                {
-                    var gridName = "GridFahrzeugAuswahlZulassung";
-                    @(Html.Telerik()
-                          .Grid<FahrzeugAkteBestand>()
-                          .Name(gridName)
-                          .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
-                          .Columns(columns =>
-                          {
-                              columns.XBound(c => c.FIN);
-                              columns.XBound(c => c.FahrzeugArt);
-                              columns.XBound(c => c.HandelsName);
-                              columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz1' value='<#= data.WunschKennz1 #>' />");
-                              columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");
-                              columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz' data-fieldname='WunschKennz3' value='<#= data.WunschKennz3 #>' />");
-                              columns.XBound(c => c.ResKennz);
-                              columns.XBound(c => c.ReservationNr);
-                              columns.XBound(c => c.ReservationName);
-                              columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
-                          })
-                          .XAutoColumnConfiguration()
-                          .XPageSize(10)
-                          .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
-                    )
-                }
-            }
-            else
-            {
-                @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-                @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
-
-                @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-                @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
-
-                @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
-                @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
-            }
+            @Html.Partial("Partial/ZulassungsdatenFormAnmeldung", Model)
         }
                 
         @Html.FormRequiredFieldsSummary()
         
     }
 </div>
-<script type="text/javascript">
-            
-
-
-</script>

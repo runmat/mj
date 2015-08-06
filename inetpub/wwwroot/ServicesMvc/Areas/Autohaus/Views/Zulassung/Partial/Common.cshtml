@@ -612,35 +612,34 @@
         return false;
     }
 
-
-
-    // 20150722 FahrzeugdatenForm-Grid
-    function OnSelectionChange_GridFahrzeugAuswahlX(cb) {
-        alert("OnSelectionChange_GridFahrzeugAuswahlX");
-        Grid_FormatMultiRowSelected(cb);
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vin: cb.val(), isChecked: cb.is(':checked') },
-            loadingShow: false,
-            success: function (result) {
-                UpdateGridInfo(result.allSelectionCount);
-            }
-        });
-    }
-    function OnAllSelectionChange_GridFahrzeugAuswahlX(check) {
-        alert("GridFahrzeugAuswahl_OnAllSelectionChange");
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vin: "", isChecked: check },
-            loadingShow: true,
-            success: function (result) {
-                UpdateGridInfo(result.allSelectionCount);
-                FilterGrid("GridFahrzeugAuswahl");
-            }
-        });
-    }
+//    // 20150722 FahrzeugdatenForm-Grid
+//    function OnSelectionChange_GridFahrzeugAuswahlX(cb) {
+//        alert("OnSelectionChange_GridFahrzeugAuswahlX");
+//        Grid_FormatMultiRowSelected(cb);
+//        $.ajax({
+//            type: "POST",
+//            url: "FahrzeugAuswahlSelectionChanged",
+//            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+//            loadingShow: false,
+//            success: function (result) {
+//                UpdateGridInfo(result.allSelectionCount);
+//            }
+//        });
+//    }
+//    function OnAllSelectionChange_GridFahrzeugAuswahlX(check) {
+//        alert("OnAllSelectionChange_GridFahrzeugAuswahlX");
+//        $.ajax({
+//            type: "POST",
+//            url: "FahrzeugAuswahlSelectionChanged",
+//            data: { vin: "", isChecked: check },
+//            loadingShow: true,
+//            success: function (result) {
+//                UpdateGridInfo(result.allSelectionCount);
+//                FilterGrid("GridFahrzeugAuswahl");
+//            }
+//        });
+//    }
+    
     function UpdateGridInfo(count) {
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
@@ -653,22 +652,19 @@
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
     }
- 
 
-    function OnDataBound_GridFahrzeugAuswahlX() {
-        // alert("OnDataBound");
-        FilteredData_Grid_OnDataBound($(this));
-        jQuery('.tooltips').tooltip();
-        LoadingHide();
-    }
-    function OnColumnShowHide_GridFahrzeugAuswahlX() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-    function OnColumnReorder_GridFahrzeugAuswahlX() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-    
-
+//    function OnDataBound_GridFahrzeugAuswahlX() {
+//        alert("OnDataBound_GridFahrzeugAuswahlX");
+//        FilteredData_Grid_OnDataBound($(this));
+//        jQuery('.tooltips').tooltip();
+//        LoadingHide();
+//    }
+//    function OnColumnShowHide_GridFahrzeugAuswahlX() {
+//        FilteredData_Grid_OnColumnShowHide($(this));
+//    }
+//    function OnColumnReorder_GridFahrzeugAuswahlX() {
+//        FilteredData_Grid_OnColumnReorder($(this));
+//    }
     
 </script>
 

@@ -66,6 +66,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get
             {
+                if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
+                    return Localize.MassCancellation;
+
                 if (ModusAbmeldung)
                     return Localize.Cancellation;
 
@@ -74,6 +77,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung)
                     return Localize.MassRegistration;
+
+                if (Zulassung.Zulassungsdaten.IsMassenabmeldung)
+                    return Localize.MassCancellation;
 
                 return Localize.Registration;
             }
@@ -203,6 +209,23 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Massenzulassung
 
+        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
+        {
+            FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
+            allSelectionCount = FinList.Count(c => c.IsSelected);
+            allCount = FinListFiltered.Count();
+        }
+
+        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var fzg = FinList.FirstOrDefault(f => f.FIN == vin);
+            if (fzg == null)
+                return;
+            fzg.IsSelected = select;
+            allSelectionCount = FinList.Count(c => c.IsSelected);
+        }
+
         /// <summary>
         /// Überträgt die Liste der anzumeldenden Fahrzeuge in das ViewModel und
         /// sorgt für Vorbelegung der relevanten Formulardaten, falls die entsprechenden 
@@ -239,7 +262,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             #endregion
 
+            // Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+            if (ModusAbmeldung)     // 20150723
+            {
+                Zulassung.Zulassungsdaten.IsMassenzulassung = false;
+                Zulassung.Zulassungsdaten.IsMassenabmeldung = true;
+            }
+            else
+            {
             Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+                Zulassung.Zulassungsdaten.IsMassenabmeldung = false;
+            }
 
             return true;
         }
@@ -257,9 +290,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             try
             {
                 zulassungskreis += "-";
-                FinList.ToList().ForEach(x => x.WunschKennz1 = zulassungskreis);
-                FinList.ToList().ForEach(x => x.WunschKennz2 = zulassungskreis);
-                FinList.ToList().ForEach(x => x.WunschKennz3 = zulassungskreis);
+                FinList.ToList().Where(x => x.WunschKennz1.IsNullOrEmpty()).ToList().ForEach(x => x.WunschKennz1 = zulassungskreis);
+                FinList.ToList().Where(x => x.WunschKennz2.IsNullOrEmpty()).ToList().ForEach(x => x.WunschKennz2 = zulassungskreis);
+                FinList.ToList().Where(x => x.WunschKennz3.IsNullOrEmpty()).ToList().ForEach(x => x.WunschKennz3 = zulassungskreis);
                 return null;
             }
             catch (Exception e)
@@ -304,13 +337,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         }
 
         /// <summary>
-        /// Setzt das Wunschkennzeichen für ein angegebenes Fahrzeug
+        /// Setzt eine Variable für ein angegebenes Fahrzeug
         /// </summary>
         /// <param name="fin"></param>
         /// <param name="field"></param>
         /// <param name="kennz"></param>
         /// <returns>Null = gespeichert</returns>
-        public string SetWunschKennz(string fin, string field, string kennz)
+        // public string SetKennz(string fin, string field, string kennz)
+        public string SetFinValue(string fin, string field, string kennz)
         {
             try
             {
@@ -326,6 +360,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                     case "wunschkennz3":
                         FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = kennz);
+                        break;
+
+                    case "kennzeichen": // Massenabmeldung
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = kennz);
+                        break;
+                    case "vorhandeneskennzreservieren": // Massenabmeldung                        
+                        var value = Convert.ToBoolean(kennz);
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.VorhandenesKennzReservieren = value);
                         break;
                 }
                 return null;
@@ -440,7 +482,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // MMA Falls Massenzulassung, dann den Zulassungskreis auch für alle Wunschkennzeichen setzen
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
-                this.SetKreisAll(zulassungsKreis);
+                SetKreisAll(zulassungsKreis);
+
+                foreach (var fahrzeugAkteBestand in FinList.Where(x => x.Evb.IsNullOrEmpty())) // 20150731 und EVB für alle Fahrzeuge setzen, sofern leer...
+                {
+                    fahrzeugAkteBestand.Evb = model.EvbNr;
+                }
             }
 
             // 20150602 MMA Gegebenenfalls verfügbare externe Wunschkennzeichen-Reservierungs-Url ermitteln 
@@ -953,20 +1000,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             var zulassungenToSave = new List<Vorgang>();
            
-            if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung)
             {
                 // Alle zuzulassenden Fahrzeuge durchlaufen
                 foreach (var fahrzeugAkteBestand in FinListFiltered.Where(x => x.IsSelected))
                 {
-                    var singleZulassung = ModelMapping.Copy(Zulassung); // Achtung: Kopiert nicht, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
+                    var singleZulassung = ModelMapping.Copy(Zulassung);     // Achtung: Kopiert nicht zuverlässig, sondern legt eine Referenz von Zulassung.Zulassungsdaten an
                     singleZulassung.Zulassungsdaten = ModelMapping.Copy(Zulassung.Zulassungsdaten); // Explizit Zulassungsdaten kopieren, damit keine Referenz erzeugt wird
                     singleZulassung.Fahrzeugdaten = ModelMapping.Copy(Zulassung.Fahrzeugdaten);     // Explizit Fahrzeugdaten kopieren, damit keine Referenz erzeugt wird
                     
-                    // 20150723
                     singleZulassung.ZahlerKfzSteuer = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer);
                     singleZulassung.VersandAdresse = ModelMapping.Copy(Zulassung.VersandAdresse);
 
-                    // 20150722
                     singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
                     singleZulassung.Halter = ModelMapping.Copy(Zulassung.Halter);
                     singleZulassung.BankAdressdaten = ModelMapping.Copy(Zulassung.BankAdressdaten);

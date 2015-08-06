@@ -24,7 +24,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusAbmeldung { get; set; }
 
-        public bool IsMassenzulassung { get; set; }     // MMA
+        public bool IsMassenzulassung { get; set; }     
+        public bool IsMassenabmeldung { get; set; }     
 
         public bool ModusVersandzulassung { get; set; }
 

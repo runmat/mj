@@ -3,6 +3,10 @@
 @model Fahrzeugdaten
 @{
     var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über Ajax.BeginForm hinweg durchgeschleift
+    var isMassenabmeldung = Convert.ToBoolean(ViewData["IsMassenabmeldung"]) || Convert.ToBoolean(Request["IsMassenabmeldung"]);   
+    
+    if (isMassenzulassung) { Model.FahrgestellNr = "MASSENZULASSUNG"; }
+    if (isMassenabmeldung) { Model.FahrgestellNr = "MASSENABMELDUNG"; }
 }
 <script>
     
@@ -17,20 +21,7 @@
             return;
         }
     }
-    function OnDataBound_GridFahrzeugAuswahl() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-        // prepare multi row selection
-        App.initUniform();
-        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahlZulassung");
-    }
-    function OnColumnReorder_GridFahrzeugAuswahl() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-    function OnColumnShowHide_GridFahrzeugAuswahl() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-    
+   
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
         Grid_FormatMultiRowSelected(cb);
         $.ajax({
@@ -44,7 +35,7 @@
         });
     }
     
-    function GridFahrzeugAuswahl_OnAllSelectionChange(check) {
+    function OnAllSelectionChange_GridFahrzeugAuswahl(check) {        
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
@@ -57,7 +48,7 @@
         });
     }
     
-    function UpdateGridInfo(count) {
+    function UpdateGridInfo(count) {        
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
@@ -70,28 +61,34 @@
         $.uniform.update($("#uncheckAllRecords"));
     }
 
-    $(function() {
+    $(function() {        
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
     });
     
-    function OnLoad_GridFahrzeugAuswahl() {
-        alert("OnLoad_GridFahrzeugAuswahl");
+    function OnDataBound_GridFahrzeugAuswahl() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridFahrzeugAuswahl");
     }
+    function OnRowDataBound_GridFahrzeugAuswahl(e) {
+        $(e.row).addClass((e.row.sectionRowIndex % 2 == 0) ? "t-grid-selected" : "t-grid-selected-alt");
+    }
+
 </script>
 
-<div id="DivFahrzeugdaten" class="margin-top-20">
-    
+<div id="DivFahrzeugdaten" class="margin-top-20">    
     @using (Ajax.BeginForm("FahrzeugdatenForm", "Zulassung", null,
                            new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugdaten", OnComplete = "AjaxFormFahrzeugdatenComplete();" },
                            htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormFahrzeugdaten" }))
     {
         @Html.FormValidationSummary()
 
-        if (isMassenzulassung)
+        if (isMassenzulassung || isMassenabmeldung)
         {
-            Model.FahrgestellNr = "MASSENZULASSUNG";
-            
-            @Html.Hidden("IsMassenzulassung", "true")            
+            @Html.Hidden("IsMassenzulassung", isMassenzulassung)
+            @Html.Hidden("IsMassenabmeldung", isMassenabmeldung)
             @Html.HiddenFor(m => m.Zb2Nr, new { @class = "m-wrap medium uppercase" })
             @Html.HiddenFor(m => m.FahrgestellNr, new { @class = "m-wrap medium uppercase", maxlength = 17 })
 
@@ -107,8 +104,6 @@
             }
             
             @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
-        
-            
         }
         else
         {
@@ -129,7 +124,7 @@
         }
     }
     
-    @if (isMassenzulassung)
+    @if (isMassenzulassung || isMassenabmeldung)
     {
         using (@Html.PortletBox("Fahrzeugauswahl", "icon-table", "light-grey", false))
             {
@@ -138,7 +133,6 @@
                         <i class="icon-check"></i><span class="padding-left-5 bold"></span>
                     </span>
                 </h4>
-            
                 var gridName = "GridFahrzeugAuswahl";
                 @(Html.Telerik()
                       .Grid<FahrzeugAkteBestand>()
@@ -146,15 +140,19 @@
                       .XAjaxDataBinding("FahrzeugAuswahlAjaxBinding", "Zulassung")    // Vorausgewählte Fahrzeugliste anzeigen
                       .Columns(columns =>
                       {
-                          columns.XBound("")
-                                 .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
-                                 .HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridFahrzeugAuswahl_OnAllSelectionChange($(this).is(\":checked\"))' />")
-                                 .Filterable(false);
-                          columns.XBound(c => c.FIN);
-                          columns.XBound(c => c.HandelsName);
-                          columns.XBound(c => c.FahrzeugArt);
+                        columns.XBound(c => c.Aktion)
+                            .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.FIN #>' onchange='OnSelectionChange_GridFahrzeugAuswahl($(this))' />")
+                            .HeaderTemplate(
+                                "<span class='tooltips' data-original-title='" + Localize.MultiSelectCheckAllFilteredItems + "' data-placement='right'><input type='checkbox' id='checkAllRecords' onchange='OnAllSelectionChange_GridFahrzeugAuswahl(true)' /></span>" +
+                                "<i class='icon-remove cursor-pointer tooltips' data-original-title='" + Localize.MultiSelectUncheckAllFilteredItems + "' data-placement='right' id='uncheckAllRecords' onclick='OnAllSelectionChange_GridFahrzeugAuswahl(false)'></i>"
+                        ).Filterable(false);
+                         columns.XBound(c => c.FIN);
+                         columns.XBound(c => c.HandelsName);
+                         columns.XBound(c => c.FahrzeugArt);
                       })
                       .XPageSize(10)
+                      .XAutoColumnConfiguration()
+                      .ClientEvents(events => events.OnDataBound("OnDataBound_" + gridName).OnRowDataBound("OnRowDataBound_" + gridName))
                       .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
                       .XToolBar(gridName)
                           )

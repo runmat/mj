@@ -1,7 +1,9 @@
 ﻿@using CkgDomainLogic.Fahrzeugbestand.Models
 @model GeneralSummary
 
-@{ var isMassenzulassung = (bool)TempData["IsMassenzulassung"];}
+@{ var isMassenzulassung = (bool)TempData["IsMassenzulassung"];
+   var isMassenabmeldung = (bool) TempData["IsMassenabmeldung"];
+   }
 
 <h4>@Model.Header</h4>
 
@@ -20,6 +22,7 @@
     }
 </div>
 
+@*@if (isMassenzulassung)*@
 @if (isMassenzulassung)
 {
 <div id="divPortletFahrzeugauswahl">
@@ -41,6 +44,31 @@
                       columns.XBound(c => c.ReservationNr);
                       columns.XBound(c => c.ReservationName);
                       columns.XBound(c => c.Evb);
+                  })
+              .XAutoColumnConfiguration()
+              .XPageSize(10)
+              .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+              )
+    }
+</div>
+}
+
+@if (isMassenabmeldung)
+{
+<div id="divPortletFahrzeugauswahl">
+    @using (@Html.PortletBox(Localize.Vehicles, "icon-table", "light-grey", false))
+    {
+        var gridName = "GridFahrzeugAnzeige";
+        @(Html.Telerik()
+              .Grid<FahrzeugAkteBestand>()
+              .Name(gridName)
+              .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+              .Columns(columns =>
+                  {
+                      columns.XBound(c => c.FIN);
+                      columns.XBound(c => c.FahrzeugArt);
+                      columns.XBound(c => c.HandelsName);
+                      columns.XBound(c => c.Kennzeichen);
                   })
               .XAutoColumnConfiguration()
               .XPageSize(10)

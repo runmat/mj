@@ -58,21 +58,21 @@ namespace ServicesMvc.Autohaus.Controllers
 
             ViewModel.DataInit(zulassungFromShoppingCart);
 
-            #region Massenzulassung
-            if (massenzulassung == "1")
-            {
-                if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
-                {
-                    return RedirectToAction("Index");
-                }
+            //#region Massenzulassung
+            //if (massenzulassung == "1")
+            //{
+            //    if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+            //    {
+            //        return RedirectToAction("Index");
+            //    }
 
-                var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
-                if (firstFahrzeug == null)
-                {
-                    return Content("Kein Fahrzeug ausgewählt.");
-                }
-            }
-            #endregion
+            //    var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+            //    if (firstFahrzeug == null)
+            //    {
+            //        return Content("Kein Fahrzeug ausgewählt.");
+            //    }
+            //}
+            //#endregion
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
@@ -135,24 +135,6 @@ namespace ServicesMvc.Autohaus.Controllers
             return new EmptyResult();
         }
 
-        // 20150618 MMA ITA8076 Massenzulassung
-        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
-        {
-            ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-            allCount = ViewModel.FinList.Count();
-        }
-
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
-        {
-            allSelectionCount = 0;
-            var fzg = ViewModel.FinList.FirstOrDefault(f => f.FIN == vin);
-            if (fzg == null)
-                return;
-            fzg.IsSelected = select;
-            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-        }
-
         [GridAction]
         public ActionResult FahrzeugAuswahlAjaxBinding()
         {
@@ -172,9 +154,9 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             int allSelectionCount, allCount = 0;
             if (vin.IsNullOrEmpty())
-                SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
             else
-                SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
             return Json(new
             {
                 allSelectionCount,
@@ -194,14 +176,16 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public JsonResult SetEvb(string fin, string evb)
         {
-            var result = ViewModel.SetEvb(fin, evb.ToUpper());
+            // var result = ViewModel.SetEvb(fin, evb.ToUpper());
+            var result = ViewModel.SetEvb(fin, evb);
             return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
         [HttpPost]
-        public JsonResult SetWunschKennz(string fin, string field, string kennz)
+        // public JsonResult SetFinValue(string fin, string field, string kennz)
+        public JsonResult SetFinValue(string fin, string field, string value)
         {
-            var result = ViewModel.SetWunschKennz(fin, field, kennz.ToUpper());
+            var result = ViewModel.SetFinValue(fin, field, value.ToUpper());
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
@@ -211,6 +195,33 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.FilterFinList(filterValue, filterColumns);
 
             return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Massenabmeldung
+
+        [CkgApplication]
+        public ActionResult IndexMultiCancellation()
+        {
+            ViewModel.SetParamAbmeldung("x");
+            ViewModel.DataInit();
+
+            if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+            if (firstFahrzeug == null)
+            {
+                return Content("Kein Fahrzeug ausgewählt.");
+            }
+
+            ShoppingCartLoadAndCacheItems();
+            ShoppingCartTryEditItemAsViewModel();
+
+            return View("Index", ViewModel);
         }
 
         #endregion
@@ -545,15 +556,7 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
         {
-            //var viewModel = AdressenPflegeViewModel;
-            //viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
-            //if (ModelState.IsValid)
-            //    model = viewModel.SaveItem(model, ModelState.AddModelError);
-            //model.IsValid = ModelState.IsValid;
-            //model.InsertModeTmp = viewModel.InsertMode;
-
-            // if (!ViewModel.FinList.Any(x => x.IsSelected))
-            if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung && !ViewModel.FinList.Any(x => x.IsSelected))
+            if ((ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung || ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung) && !ViewModel.FinList.Any(x => x.IsSelected))
             {
                 ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
             }
@@ -562,6 +565,9 @@ namespace ServicesMvc.Autohaus.Controllers
             {
                 ViewModel.SetFahrzeugdaten(model);
             }
+
+            ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+            ViewData["isMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
         }
@@ -605,8 +611,6 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.LoadKfzKennzeichenFromKreis(zulassungsKreis, out zulassungsKennzeichen);
 
             var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
-
-            // return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
 
             // 20150502 MMA Zusätzlich Zulassungsstellen-Url für Wunschkennzeichenreservierung zurückgeben
             return Json(new
@@ -667,6 +671,7 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Summary()
         {
             TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+            TempData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
 
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
