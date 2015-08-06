@@ -945,10 +945,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             else
             {
-                ModusAbmeldung = (Zulassung.BeauftragungsArt == "ABMELDUNG");
-                ModusVersandzulassung = (Zulassung.BeauftragungsArt == "VERSANDZULASSUNG");
-                Zulassung.Zulassungsdaten.ModusAbmeldung = ModusAbmeldung;
-                Zulassung.Zulassungsdaten.ModusVersandzulassung = ModusVersandzulassung;
+                ModusAbmeldung = Zulassung.Zulassungsdaten.ModusAbmeldung;
+                ModusVersandzulassung = Zulassung.Zulassungsdaten.ModusVersandzulassung;
             }
 
             SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;

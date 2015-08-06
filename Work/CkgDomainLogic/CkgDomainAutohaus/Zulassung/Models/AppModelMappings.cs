@@ -307,6 +307,9 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.BestellNr = s.ZZREFNR4;
 
                         // Zulassung
+                        d.Zulassungsdaten.ModusAbmeldung = (s.BEAUFTRAGUNGSART == "ABMELDUNG" || s.BEAUFTRAGUNGSART == "MASSENABMELDUNG");
+                        d.Zulassungsdaten.ModusVersandzulassung = (s.BEAUFTRAGUNGSART == "VERSANDZULASSUNG");
+
                         d.Zulassungsdaten.Zulassungsdatum = s.ZZZLDAT;
                         d.Zulassungsdaten.Abmeldedatum = s.ZZZLDAT;
 
