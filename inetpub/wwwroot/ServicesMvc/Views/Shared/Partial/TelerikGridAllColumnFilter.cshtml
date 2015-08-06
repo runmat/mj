@@ -87,13 +87,16 @@
 
         // build grid page sizer
         setTimeout(function () {
-            var grid = $("#" + gridName).data("tGrid");
-            $("#" + gridName + " .grid-page-sizer").val(grid.pageSize);
-            $("#" + gridName + " .grid-page-sizer").change(function () {
-                var thatGrid = $("#" + gridName).data("tGrid");
-                thatGrid.pageSize = $(this).val();
-                thatGrid.pageTo(1);
-            });
+            try {
+                var grid = $("#" + gridName).data("tGrid");
+                $("#" + gridName + " .grid-page-sizer").val(grid.pageSize);
+                $("#" + gridName + " .grid-page-sizer").change(function () {
+                    var thatGrid = $("#" + gridName).data("tGrid");
+                    thatGrid.pageSize = $(this).val();
+                    thatGrid.pageTo(1);
+                });
+            }
+            catch (e) { }
         }, 500);
 
         $("#" + gridName + " .grid-column-overall-quick-filter-reset").click(function () {
