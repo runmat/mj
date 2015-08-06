@@ -177,6 +177,10 @@ namespace AppZulassungsdienst.forms
             {
                 Response.Redirect("ChangeZLDSelect.aspx?AppID=" + Session["AppID"].ToString() + "&B=true&S=true");
             }
+            else if (objNacherf.SelUploadRechnungsanhaenge)
+            {
+                Response.Redirect("UploadRechnungsanhang.aspx?AppID=" + Session["AppID"].ToString());
+            }
             else if (objNacherf.SelVorgang == "VZ" || objNacherf.SelVorgang == "VE" || objNacherf.SelVorgang == "AV" || objNacherf.SelVorgang == "AX")
             {
                 Response.Redirect("ChangeSelectVersand.aspx?AppID=" + Session["AppID"].ToString());
