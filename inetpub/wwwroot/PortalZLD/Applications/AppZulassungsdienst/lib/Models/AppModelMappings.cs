@@ -687,7 +687,7 @@ namespace AppZulassungsdienst.lib.Models
                         d.Bemerkung = s.BEMERKUNG;
                         d.Kennzeichen = s.ZZKENN;
                         d.KundenNr = s.KUNNR.NotNullOrEmpty().TrimStart('0');
-                        d.MaterialName = s.NAKTX;
+                        d.MaterialName = s.MAKTX;
                         d.Name1 = s.NAME1;
                         d.Referenz1 = s.ZZREFNR1;
                         d.Referenz2 = s.ZZREFNR2;

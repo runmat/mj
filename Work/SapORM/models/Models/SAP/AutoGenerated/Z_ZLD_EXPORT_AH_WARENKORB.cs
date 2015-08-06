@@ -37,7 +37,7 @@ namespace SapORM.Models
 
 			public string NAME1 { get; set; }
 
-			public string NAKTX { get; set; }
+			public string MAKTX { get; set; }
 
 			public DateTime? ZZZLDAT { get; set; }
 
@@ -56,7 +56,7 @@ namespace SapORM.Models
 					ZULBELN = (string)row["ZULBELN"],
 					KUNNR = (string)row["KUNNR"],
 					NAME1 = (string)row["NAME1"],
-					NAKTX = (string)row["NAKTX"],
+					MAKTX = (string)row["MAKTX"],
 					ZZZLDAT = (string.IsNullOrEmpty(row["ZZZLDAT"].ToString())) ? null : (DateTime?)row["ZZZLDAT"],
 					ZZREFNR1 = (string)row["ZZREFNR1"],
 					ZZREFNR2 = (string)row["ZZREFNR2"],
