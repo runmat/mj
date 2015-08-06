@@ -181,7 +181,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get
             {
-                if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+                if (Zulassung.Zulassungsdaten.IsMassenzulassung || Zulassung.Zulassungsdaten.IsMassenabmeldung)
                     return ZulassungDataService.Kunden.Where(k => !k.Cpdkunde).ToList();
 
                 return ZulassungDataService.Kunden;
@@ -270,7 +270,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
             else
             {
-            Zulassung.Zulassungsdaten.IsMassenzulassung = true;
+                Zulassung.Zulassungsdaten.IsMassenzulassung = true;
                 Zulassung.Zulassungsdaten.IsMassenabmeldung = false;
             }
 
@@ -996,7 +996,14 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 });
 
             if (!saveFromShoppingCart)
-                zulassungen.ForEach(z => z.BeauftragungsArt = (ModusVersandzulassung ? "VERSANDZULASSUNG" : ModusAbmeldung ? "ABMELDUNG" : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG" : "ZULASSUNG"));
+            {
+                zulassungen.ForEach(z => z.BeauftragungsArt =
+                    (ModusVersandzulassung ? "VERSANDZULASSUNG"
+                    : ModusAbmeldung ? "ABMELDUNG"
+                    : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
+                    : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
+                    : "ZULASSUNG"));
+            }
 
             var zulassungenToSave = new List<Vorgang>();
            

@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
-using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
@@ -51,28 +50,12 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string massenzulassung = "", string zulassungFromShoppingCart = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
 
             ViewModel.DataInit(zulassungFromShoppingCart);
-
-            //#region Massenzulassung
-            //if (massenzulassung == "1")
-            //{
-            //    if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
-            //    {
-            //        return RedirectToAction("Index");
-            //    }
-
-            //    var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
-            //    if (firstFahrzeug == null)
-            //    {
-            //        return Content("Kein Fahrzeug ausgewählt.");
-            //    }
-            //}
-            //#endregion
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
@@ -205,6 +188,8 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult IndexMultiCancellation()
         {
             ViewModel.SetParamAbmeldung("x");
+            ViewModel.SetParamVersandzulassung("");
+
             ViewModel.DataInit();
 
             if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
@@ -219,7 +204,6 @@ namespace ServicesMvc.Autohaus.Controllers
             }
 
             ShoppingCartLoadAndCacheItems();
-            ShoppingCartTryEditItemAsViewModel();
 
             return View("Index", ViewModel);
         }
