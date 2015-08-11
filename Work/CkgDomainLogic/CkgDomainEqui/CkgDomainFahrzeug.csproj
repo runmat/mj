@@ -318,6 +318,7 @@
     <Compile Include="Zanf\Contracts\IZanfReportDataService.cs" />
     <Compile Include="Zanf\Contracts\IZulassungsunterlagenDataService.cs" />
     <Compile Include="Zanf\Models\AppModelMappings.cs" />
+    <Compile Include="Zanf\Models\DataModels\ZanfAdresse.cs" />
     <Compile Include="Zanf\Models\DataModels\ZulassungsUnterlagen.cs" />
     <Compile Include="Zanf\Models\UIModels\ZulassungsUnterlagenSuchparameter.cs" />
     <Compile Include="Zanf\Models\UIModels\ZulassungsAnforderungSuchparameter.cs" />

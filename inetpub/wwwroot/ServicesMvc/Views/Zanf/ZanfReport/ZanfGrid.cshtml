@@ -4,23 +4,28 @@
 
 @{ var gridName = "GridZulassungsAnforderungen"; }
 
-@(Html.Telerik()
-    .Grid<ZulassungsAnforderung>()
+@(Html.XTelerik()
+    .XGrid<ZulassungsAnforderung>()
     .Name(gridName)
     .XAjaxDataBinding("ZulassungsAnforderungenAjaxBinding", "Zanf")
     .Columns(columns =>
     {
-        columns.XBound(c => c.KundenreferenzNr);
-        columns.XBound(c => c.FahrgestellNr);
-        columns.XBound(c => c.AnforderungsNr);
         columns.XBound(c => c.AuftragsNr);
-        columns.XBound(c => c.Anlagedatum).Format("{0:dd.MM.yyyy}");
-        columns.XBound(c => c.Ausfuehrungsdatum).Format("{0:dd.MM.yyyy}");
-        columns.XBound(c => c.Klaerfall);
+        columns.XBound(c => c.Dienstleistung);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.ReferenzNr);
+        columns.XBound(c => c.AuftragsDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.ZulassungsDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.AdresseHalter);
+        columns.XBound(c => c.AdresseHalterAlt);
+        columns.XBound(c => c.AdresseHaendler);
+        columns.XBound(c => c.User);
+        columns.XBound(c => c.Status);
         columns.XBound(c => c.KlaerfallText);
-        columns.XBound(c => c.AnforderungsNr).Width(100).Title("").Filterable(false).Sortable(false)
+        columns.XBound(c => c.Action1).Width(100).Filterable(false).Sortable(false)
             .ClientTemplate(
-                "<button onclick='ShowZanfKlaerfalltext(\"<#= data.AnforderungsNr #>\",\"<#= data.HauptpositionsNr #>\",\"<#= data.AuftragsNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='top'><i class='halflings-icon white search'></i></button>"
+                "<button onclick='ShowZanfKlaerfalltext(\"<#= data.AnforderungsNr #>\",\"<#= data.AuftragsNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='top'><i class='halflings-icon white search'></i></button>"
             )
         ;
     })
