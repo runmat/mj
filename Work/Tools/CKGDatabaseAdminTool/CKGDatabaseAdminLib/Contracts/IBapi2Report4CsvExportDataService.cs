@@ -6,6 +6,6 @@ namespace CKGDatabaseAdminLib.Contracts
 {
     public interface IBapi2Report4CsvExportDataService : ICkgGeneralDataService
     {
-        Dictionary<string, Bapi2Report4CsvExport> ListItems { get; }
+        List<Bapi2Report4CsvExport> ListItems { get; }
     }
 }

@@ -13,9 +13,8 @@ namespace CkgDomainLogic.FzgModelle.Models
 {
     public class BatcherfassungSelektor : Store 
     {
-        // TODO -> Last 2 years lt. Spez gefordert
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
-        public DateRange AnlageDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last6Months, true)); } set { PropertyCacheSet(value); } }
+        public DateRange AnlageDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last6Months)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.UnitnumberFrom)]
         public string UnitNummerVon { get; set; }
