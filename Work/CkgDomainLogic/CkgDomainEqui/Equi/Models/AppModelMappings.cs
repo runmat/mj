@@ -609,7 +609,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.FahrgestellNr = s.CHASSIS_NUM;
                         d.Kennzeichen = s.LICENSE_NUM;
                         d.MeldungsNr = s.QMNUM;
-                        d.ReferenzNr = s.ZZREFERENZ1;
+                        d.Referenz1 = s.ZZREFERENZ1;
                         d.VertragsNr = s.LIZNR;
                     }));
             }
