@@ -147,6 +147,10 @@ namespace SapORM.Models
 
 			public string VERLUST_ZB1 { get; set; }
 
+			public string Z_FARBE { get; set; }
+
+			public string MA_VORGANG { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -209,6 +213,8 @@ namespace SapORM.Models
 					STATUS = (string)row["STATUS"],
 					FOLGE_TASK_ID = (string)row["FOLGE_TASK_ID"],
 					VERLUST_ZB1 = (string)row["VERLUST_ZB1"],
+					Z_FARBE = (string)row["Z_FARBE"],
+					MA_VORGANG = (string)row["MA_VORGANG"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

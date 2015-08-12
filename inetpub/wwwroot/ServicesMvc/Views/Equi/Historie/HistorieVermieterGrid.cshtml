@@ -12,7 +12,7 @@
                 "<a href='#' class='link tooltips' data-original-title='" + Localize.VehicleHistory + "' data-placement='right' onclick='ShowEquiHistorieVermieterAjax(\"<#= data.FahrgestellNr #>\");'><#= data.FahrgestellNr #></a>"
             );
         columns.XBound(c => c.BriefNr);
-        columns.XBound(c => c.ReferenzNr);
+        columns.XBound(c => c.Referenz1);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridEquiHistorieInfosVermieter"))
