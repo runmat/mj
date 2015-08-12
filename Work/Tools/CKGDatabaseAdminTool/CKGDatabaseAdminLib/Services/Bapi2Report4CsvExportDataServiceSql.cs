@@ -8,7 +8,7 @@ namespace CKGDatabaseAdminLib.Services
 {
     public class Bapi2Report4CsvExportDataServiceSql : CkgGeneralDataService, IBapi2Report4CsvExportDataService
     {
-        public Dictionary<string, Bapi2Report4CsvExport> ListItems { get { return _dataContext.GetBapi2Report4CsvExportAggregatedItems(); } }
+        public List<Bapi2Report4CsvExport> ListItems { get { return _dataContext.GetBapi2Report4CsvExportAggregatedItems(); } }
 
         private DatabaseContext _dataContext;
 
@@ -21,7 +21,7 @@ namespace CKGDatabaseAdminLib.Services
         {
             _dataContext = new DatabaseContext(connectionString);
 
-            _dataContext.Bapi2Report4CsvExportItemsRaw.Load();
+            _dataContext.Bapi2ReportItemsRaw.Load();
         }
     }
 }
