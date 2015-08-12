@@ -81,6 +81,7 @@
     <Compile Include="Contracts\IGitBranchInfoDataService.cs" />
     <Compile Include="Contracts\IBapiApplicationDataService.cs" />
     <Compile Include="DbContext.cs" />
+    <Compile Include="Models\Bapi2Report4CsvExport.cs" />
     <Compile Include="Models\BapiCheckAbweichung.cs" />
     <Compile Include="Models\DbModels\Application.cs">
       <SubType>Code</SubType>
@@ -89,7 +90,7 @@
     <Compile Include="Models\DbModels\ColumnTranslation.cs" />
     <Compile Include="Models\DbModels\DbModelBase.cs" />
     <Compile Include="Models\DbModels\BAPI.cs" />
-    <Compile Include="Models\DbModels\Bapi2Report4CsvExport.cs" />
+    <Compile Include="Models\DbModels\Bapi2Report.cs" />
     <Compile Include="Models\DbModels\BapiCheckItem.cs" />
     <Compile Include="Models\DbModels\GitBranchInfo.cs" />
     <Compile Include="Models\DbModels\ApplicationConfig.cs" />
