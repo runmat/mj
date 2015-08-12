@@ -14,18 +14,14 @@ namespace Bapi2Report_CsvExport
         static void Main(string[] args)
         {
             if (args == null || args.Length == 0 || String.IsNullOrEmpty(args[0]))
-            {
                 throw new Exception("Es wurde keine Datenbankverbindung angegeben (Verbindungsdefinitionen in Config.xml). USAGE: Bapi2Report_CsvExport.exe <DBCONNECTIONNAME>");
-            }
 
             var configName = args[0];
 
             // XML-Konfiguration einlesen
             var connString = GetConnectionStringFromConfig(configName);
             if (String.IsNullOrEmpty(connString))
-            {
                 throw new Exception("Die Config-Datei konnte nicht gelesen werden.");
-            }
 
             var dateipfad = ConfigurationManager.AppSettings["CsvOutputFolder"];
             var trenner = ConfigurationManager.AppSettings["CsvDivider"];
@@ -36,27 +32,15 @@ namespace Bapi2Report_CsvExport
             try
             {
                 if (String.IsNullOrEmpty(dateipfad))
-                {
                     throw new Exception("Konfigurations-Variable 'CsvOutputFolder' ist nicht gesetzt!");
-                }
 
-                using (StreamWriter writer = new StreamWriter(dateipfad + configName + ".csv", false, Encoding.Default))
+                using (var writer = new StreamWriter(dateipfad + configName + ".csv", false, Encoding.Default))
                 {
                     IBapi2Report4CsvExportDataService DataService = new Bapi2Report4CsvExportDataServiceSql(connString);
 
-                    foreach (var item in DataService.ListItems.Values)
+                    foreach (var item in DataService.ListItems)
                     {
-                        var friendlyName = (String.IsNullOrEmpty(item.AppFriendlyName) ? "" : item.AppFriendlyName.Replace(";", "").Replace("\r", "").Replace("\n", ""));
-
-                        writer.WriteLine(
-                            item.KUNNR + "-" + item.Customername + "-" + friendlyName
-                            + trenner + item.KUNNR
-                            + trenner + item.Customername
-                            + trenner + friendlyName
-                            + trenner + item.AppName
-                            + trenner + item.AppURL
-                            + trenner + (String.IsNullOrEmpty(item.BAPI) ? "" : item.BAPI.ToUpper())
-                            );
+                        writer.WriteLine(item.ToString(trenner));
                     }
 
                     writer.Close();
@@ -84,12 +68,12 @@ namespace Bapi2Report_CsvExport
 
             try
             {
-                using (StreamReader strReader = new StreamReader("Config.xml"))
+                using (var strReader = new StreamReader("Config.xml"))
                 {
-                    XmlSerializer xmlSerializer = new XmlSerializer(typeof(List<DbConnection>));
+                    var xmlSerializer = new XmlSerializer(typeof(List<DbConnection>));
                     var connections = (List<DbConnection>)xmlSerializer.Deserialize(strReader);
 
-                    foreach (DbConnection conn in connections)
+                    foreach (var conn in connections)
                     {
                         if (conn.Name.ToUpper() == configName.ToUpper())
                         {
@@ -99,7 +83,7 @@ namespace Bapi2Report_CsvExport
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 erg = "";
             }
