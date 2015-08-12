@@ -294,10 +294,10 @@ Public Class UserManagement
                 lnkCustomerManagement.Visible = False 'Link fuer die Kundenverwaltung ausblenden
                 lblCustomer.Text = m_User.Customer.CustomerName 'Customer des angemeldeten Benutzers
                 trCustomer.Visible = False 'Customer-Auswahl im Edit-bereich ausblenden
-                dgSearchResult.Columns(6).Visible = False 'Spalte "Test-Zugang" ausblenden
+                dgSearchResult.Columns(10).Visible = False 'Spalte "Test-Zugang" ausblenden
                 trTestUser.Visible = False '"Test-Zugang" aus dem Edit-Bereich ausblenden
-                dgSearchResult.Columns(8).Visible = False 'Spalte "Passwort läuft nie ab" ausblenden
-                dgSearchResult.Columns(5).Visible = False 'Spalte "Customer-Admin" ausblenden
+                dgSearchResult.Columns(13).Visible = False 'Spalte "Passwort läuft nie ab" ausblenden
+                dgSearchResult.Columns(9).Visible = False 'Spalte "Customer-Admin" ausblenden
                 trCustomerAdmin0.Visible = False 'Customer-Admin im Editbereich ausblenden
                 trCustomerAdmin1.Visible = False 'Customer-Admin im Editbereich ausblenden
                 trCustomerAdmin2.Visible = False 'Customer-Admin im Editbereich ausblenden
@@ -322,7 +322,7 @@ Public Class UserManagement
                 If Not m_User.Customer.ShowOrganization Then
                     lnkOrganizationManagement.Visible = False
                     trSelectOrganization.Visible = False
-                    dgSearchResult.Columns(4).Visible = False 'Spalte "Organisation" ausblenden
+                    dgSearchResult.Columns(6).Visible = False 'Spalte "Organisation" ausblenden
                     trOrganization.Visible = False
                     trOrganizationAdministrator.Visible = False
                 End If
@@ -331,7 +331,7 @@ Public Class UserManagement
                     'Wenn nicht Customer-Admin:
                     lnkOrganizationManagement.Visible = False
                     lnkGroupManagement.Visible = False
-                    dgSearchResult.Columns(4).Visible = False 'Spalte "Organisation" ausblenden
+                    dgSearchResult.Columns(6).Visible = False 'Spalte "Organisation" ausblenden
                     trGroup.Visible = False 'Gruppenauswahl im Edit-Bereich ausblenden
                     trOrganization.Visible = False 'Organisationsauswahl im Edit-Bereich ausblenden
                     trOrganizationAdministrator.Visible = False 'OrganisationAdmin-Auswahl im Edit-Bereich ausblenden
@@ -606,7 +606,7 @@ Public Class UserManagement
 
             For Each Item In dgSearchResult.Items
 
-                If Item.Cells(16).Text = m_User.UserName Then
+                If Item.Cells(18).Text = m_User.UserName Then
                     lnkButton = New LinkButton()
 
                     lnkButton = Item.Cells(1).Controls(0)
@@ -616,7 +616,7 @@ Public Class UserManagement
                     Item.Cells(1).ForeColor = System.Drawing.Color.Gray
                     lnkButton.Dispose()
 
-                    Item.Cells(15).Controls.Clear()
+                    Item.Cells(17).Controls.Clear()
 
                 End If
             Next
