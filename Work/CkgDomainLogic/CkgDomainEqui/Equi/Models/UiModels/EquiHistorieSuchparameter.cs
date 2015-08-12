@@ -21,11 +21,14 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.ContractNo_VehicleHistory)]
         public string VertragsNr { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Reference1_VehicleHistory)]
+        public string Referenz1 { get; set; }
+
         public int AnzahlTreffer { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if ((String.IsNullOrEmpty(Kennzeichen)) && (String.IsNullOrEmpty(FahrgestellNr)) && (String.IsNullOrEmpty(BriefNr)) && (String.IsNullOrEmpty(VertragsNr)))
+            if ((String.IsNullOrEmpty(Kennzeichen)) && (String.IsNullOrEmpty(FahrgestellNr)) && (String.IsNullOrEmpty(BriefNr)) && (String.IsNullOrEmpty(VertragsNr)) && (String.IsNullOrEmpty(Referenz1)))
                 yield return new ValidationResult(Localize.AtLeastOneSearchCriterionRequired, new[] { "FahrgestellNr" });
         }
     }
