@@ -10,7 +10,6 @@ using CkgDomainLogic.WFM.Models;
 using CkgDomainLogic.WFM.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Models;
-using MvcTools.Models;
 using Telerik.Web.Mvc;
 
 namespace ServicesMvc.Controllers
@@ -366,6 +365,12 @@ namespace ServicesMvc.Controllers
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Statistics, dt, landscapeOrientation: true);
 
             return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult GetChartData()
+        {
+            return Json(ViewModel.GetChartData());
         }
 
         #endregion

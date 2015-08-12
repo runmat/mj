@@ -331,13 +331,13 @@ namespace CkgDomainLogic.WFM.Services
         {
             Z_WFM_CALC_DURCHLAUFZEIT_01.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
-            if (!string.IsNullOrEmpty(selector.Selektionsfeld1Name))
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld1Name) || selector.Selektionsfeld1)
                 SAP.SetImportParameter("I_SELEKTION1", selector.Selektionsfeld1.BoolToX());
 
-            if (!string.IsNullOrEmpty(selector.Selektionsfeld2Name))
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld2Name) || selector.Selektionsfeld2)
                 SAP.SetImportParameter("I_SELEKTION2", selector.Selektionsfeld2.BoolToX());
 
-            if (!string.IsNullOrEmpty(selector.Selektionsfeld3Name))
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld3Name) || selector.Selektionsfeld3)
                 SAP.SetImportParameter("I_SELEKTION3", selector.Selektionsfeld3.BoolToX());
 
             if (selector.AnlageDatumVonBis.IsSelected)

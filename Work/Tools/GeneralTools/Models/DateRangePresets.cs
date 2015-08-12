@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace GeneralTools.Models
 {
-    public enum DateRangeType { None, LastYear, Last3Months, LastMonth, CurrentMonth, Last6Months, Last90Days, Last60Days, Last30Days, Last7Days, Today, Yesterday }
+    public enum DateRangeType { None, CurrentYear, LastYear, Last3Months, LastMonth, CurrentMonth, Last6Months, Last90Days, Last60Days, Last30Days, Last7Days, Today, Yesterday }
 
     public class DateRangeCore
     {
@@ -22,6 +22,14 @@ namespace GeneralTools.Models
         {
             Presets = new Dictionary<DateRangeType, DateRangeCore>
                 {
+                    {
+                        DateRangeType.CurrentYear, new DateRangeCore
+                        {
+                            RangeType = DateRangeType.None,
+                            StartDate = new DateTime(DateTime.Today.Year, 1, 1),
+                            EndDate = new DateTime(DateTime.Today.Year, 12, 31),
+                        }
+                    },
                     {
                         DateRangeType.LastYear, new DateRangeCore
                         {

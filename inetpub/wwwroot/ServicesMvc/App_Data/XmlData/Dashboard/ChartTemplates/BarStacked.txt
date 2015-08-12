@@ -2,15 +2,11 @@
 	"bars": 
 	{
 		"show" : true,
-		"stacked": false,
+		"stacked": true,
 		"horizontal" : false,
 		"shadowSize" : 0,
 		"barWidth" : 0.5
 	},
-    "mouse": {
-        "track": true,
-        "relative": true
-    },
 	"xaxis": 
 	{
 		"min": 0,

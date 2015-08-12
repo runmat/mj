@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.WFM.Contracts;
@@ -118,6 +119,41 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             AuftraegeFiltered = Auftraege.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+
+        #region Misc
+
+        public string GetHeaderText(string columnName)
+        {
+            return GetFeldname(columnName);
+        }
+
+        public bool HeaderTextAvailable(string columnName)
+        {
+            return GetHeaderText(columnName).IsNotNullOrEmpty();
+        }
+
+        private string GetFeldname(string columnName)
+        {
+            return Feldnamen.Any(f => f.Feldname == columnName) ? Feldnamen.First(f => f.Feldname == columnName).Anzeigename : "";
+        }
+
+        private void InitFeldnamen()
+        {
+            PropertyCacheClear(this, m => m.Feldnamen);
+
+            Feldnamen = DataService.GetFeldnamen();
+
+            Selektor.Selektionsfeld1Name = GetFeldname("SELEKTION1");
+            Selektor.Selektionsfeld2Name = GetFeldname("SELEKTION2"); 
+            Selektor.Selektionsfeld3Name = GetFeldname("SELEKTION3");
+
+            Selektor.Referenz1Name = GetFeldname("REFERENZ1");
+            Selektor.Referenz2Name = GetFeldname("REFERENZ2");
+            Selektor.Referenz3Name = GetFeldname("REFERENZ3");
+        }
+
+        #endregion
 
 
         #region Übersicht/Storno
@@ -348,7 +384,7 @@ namespace CkgDomainLogic.WFM.ViewModels
                 DurchlaufStatistiken = statistiken.ToListOrEmptyList();
             });
 
-            if (DurchlaufDetails.None())
+            if (DurchlaufDetails.None() && state != null)
                 state.AddModelError("", Localize.NoDataFound);
         }
 
@@ -362,39 +398,69 @@ namespace CkgDomainLogic.WFM.ViewModels
             DurchlaufStatistikenFiltered = DurchlaufStatistiken.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        #endregion
-
-
-        #region Misc
-
-        public string GetHeaderText(string columnName)
+        public object GetChartData()
         {
-            return GetFeldname(columnName);
+            if (DurchlaufStatistiken.None())
+            {
+                Selektor = new WfmAuftragSelektor
+                {
+                    Selektionsfeld1 = true, AbmeldeartDurchlauf = "ALLE", ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
+                };
+
+                LoadDurchlauf(null);
+            }
+
+            var items = DurchlaufDetails
+                .Where(i => i.DurchlaufzeitTage.ToInt() > 0)
+                .ToListOrEmptyList();
+
+            var data = GetBarChartGroupedItemsWithLabels(items);
+
+            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar");
         }
 
-        public bool HeaderTextAvailable(string columnName)
+        public static ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items) 
         {
-            return GetHeaderText(columnName).IsNotNullOrEmpty();
-        }
+            Func<WfmDurchlaufSingle, string> xAxisKeyLabel = (groupKey => groupKey.XaxisLabel);
+            Func<WfmDurchlaufSingle, string> xAxisKey = (groupKey => groupKey.XaxisLabel + ", " + groupKey.ErledigtDatum.ToFirstDayOfMonth().ToString("MM"));
 
-        private string GetFeldname(string columnName)
-        {
-            return Feldnamen.Any(f => f.Feldname == columnName) ? Feldnamen.First(f => f.Feldname == columnName).Anzeigename : "";
-        }
+            var xAxisListLabel = items
+                .OrderBy(item => item.XaxisSortDurchlaufzeitTageDannMonat)
+                .GroupBy(xAxisKeyLabel)
+                .Select(k => k.Key).ToListOrEmptyList();
 
-        private void InitFeldnamen()
-        {
-            PropertyCacheClear(this, m => m.Feldnamen);
+            var xAxisList = items
+                .OrderBy(item => item.XaxisSortDurchlaufzeitTageDannMonat)
+                .GroupBy(xAxisKey)
+                .Select(k => k.Key).ToListOrEmptyList();
+            var xAxisLabels = xAxisList.ToArray();
 
-            Feldnamen = DataService.GetFeldnamen();
+            var data = new object[xAxisListLabel.Count];
+            for (int i = 0; i < data.Length; i++)
+            {
+                var monthItems = items.Where(monthItem => xAxisKeyLabel(monthItem) == xAxisListLabel[i]);
 
-            Selektor.Selektionsfeld1Name = GetFeldname("SELEKTION1");
-            Selektor.Selektionsfeld2Name = GetFeldname("SELEKTION2"); 
-            Selektor.Selektionsfeld3Name = GetFeldname("SELEKTION3");
+                var tageDiesesMonatsGesamt = monthItems
+                    .Sum(g => g.DurchlaufzeitTage.ToInt());
 
-            Selektor.Referenz1Name = GetFeldname("REFERENZ1");
-            Selektor.Referenz2Name = GetFeldname("REFERENZ2");
-            Selektor.Referenz3Name = GetFeldname("REFERENZ3");
+                var subArray = monthItems
+                    .OrderBy(item => item.XaxisSortDurchlaufzeitTageDannMonat)
+                    .GroupBy(group => xAxisList.IndexOf(xAxisKey(group)))
+                    .Select(g => new[] { g.Key, g.Sum(item => item.DurchlaufzeitTage.ToInt()) * 100.0 / tageDiesesMonatsGesamt })
+                    .ToArray();
+
+                data[i] = new
+                {
+                    data = subArray,
+                    label = monthItems.First().ErledigtDatum.ToFirstDayOfMonth().ToString("MM")
+                };
+            }
+
+            return new ChartItemsPackage
+            {
+                data = data,
+                labels = xAxisLabels
+            };
         }
 
         #endregion

@@ -1,4 +1,5 @@
 ﻿using System;
+using GeneralTools.Models;
 
 namespace CkgDomainLogic.WFM.Models
 {
@@ -33,5 +34,66 @@ namespace CkgDomainLogic.WFM.Models
         public DateTime? AnlageDatum { get; set; }
 
         public DateTime? ErledigtDatum { get; set; }
+
+
+        public string XaxisLabel
+        {
+            get
+            {
+                var tage = DurchlaufzeitTage.ToInt();
+                if (tage < 0)
+                    return "";
+
+                if (tage < 10)
+                    return "< 10";
+                if (tage < 20)
+                    return "10 - 20";
+                if (tage < 30)
+                    return "20 - 30";
+                if (tage < 40)
+                    return "30 - 40";
+                if (tage >= 40)
+                    return "> 40";
+
+                return "";
+            }
+        }
+
+        public int XaxisLabelSort
+        {
+            get
+            {
+                var tage = DurchlaufzeitTage.ToInt();
+                if (tage < 0)
+                    return 0;
+
+                var ofset = 0;
+
+                if (tage < 10)
+                    ofset = 1;
+                if (tage < 20)
+                    ofset = 2;
+                if (tage < 30)
+                    ofset = 3;
+                if (tage < 40)
+                    ofset = 4;
+                if (tage >= 40)
+                    ofset = 5;
+
+                return ofset;
+            }
+        }
+
+        public DateTime XaxisSortDurchlaufzeitTageDannMonat
+        {
+            get
+            {
+                var tage = DurchlaufzeitTage.ToInt();
+                if (tage < 0)
+                    return DateTime.MinValue;
+
+                return ErledigtDatum.ToFirstDayOfMonth().AddDays(XaxisLabelSort);
+            }
+        }
     }
 }
