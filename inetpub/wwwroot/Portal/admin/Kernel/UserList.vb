@@ -50,9 +50,11 @@ Namespace Kernel
                                                                "FailedLogins, " & _
                                                                "AccountIsLockedOut, " & _
                                                                "LoggedOn, " & _
-                                                               "CreatedBy " & _
+                                                               "CreatedBy, " & _
+                                                               "mail, " & _
+                                                               "telephone " & _
                                                                "FROM vwWebUserWebMember " & _
-                                                       "WHERE UserName LIKE @UserName " , cn)
+                                                       "WHERE UserName LIKE @UserName ", cn)
                                                        '" AND Reference LIKE @Reference "
 
             daUser.SelectCommand.Parameters.AddWithValue("@UserName", Replace(strUserFilter, "*", "%"))
