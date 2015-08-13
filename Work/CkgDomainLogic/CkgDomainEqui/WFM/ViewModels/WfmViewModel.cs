@@ -421,45 +421,48 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public static ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items) 
         {
-            Func<WfmDurchlaufSingle, string> xAxisKeyLabel = (groupKey => groupKey.XaxisLabel);
-            Func<WfmDurchlaufSingle, string> xAxisKey = (groupKey => groupKey.XaxisLabel + ", " + groupKey.ErledigtDatum.ToFirstDayOfMonth().ToString("MM"));
+            var xAxisMonthDates = items
+                .OrderBy(it => it.ErledigtDatum).GroupBy(g => g.ErledigtDatum.ToFirstDayOfMonth()).Select(it => it.Key).ToArray();
 
-            var xAxisListLabel = items
-                .OrderBy(item => item.XaxisSortDurchlaufzeitTageDannMonat)
-                .GroupBy(xAxisKeyLabel)
-                .Select(k => k.Key).ToListOrEmptyList();
+            var xAxisGroups = items
+                .OrderBy(it => it.XaxisLabelSort).GroupBy(g => g.XaxisLabel).Select(it => it.Key).ToArray();
 
-            var xAxisList = items
-                .OrderBy(item => item.XaxisSortDurchlaufzeitTageDannMonat)
-                .GroupBy(xAxisKey)
-                .Select(k => k.Key).ToListOrEmptyList();
-            var xAxisLabels = xAxisList.ToArray();
-
-            var data = new object[xAxisListLabel.Count];
-            for (int i = 0; i < data.Length; i++)
+            var data = new object[xAxisMonthDates.Length];
+            for (int month = 0; month < xAxisMonthDates.Length; month++)
             {
-                var monthItems = items.Where(monthItem => xAxisKeyLabel(monthItem) == xAxisListLabel[i]);
+                var groupArray = new object[xAxisGroups.Length];
 
+                var monthItems = items.Where(monthItem => monthItem.ErledigtDatum.ToFirstDayOfMonth() == xAxisMonthDates[month]);
                 var tageDiesesMonatsGesamt = monthItems
                     .Sum(g => g.DurchlaufzeitTage.ToInt());
 
-                var subArray = monthItems
-                    .OrderBy(item => item.XaxisSortDurchlaufzeitTageDannMonat)
-                    .GroupBy(group => xAxisList.IndexOf(xAxisKey(group)))
-                    .Select(g => new[] { g.Key, g.Sum(item => item.DurchlaufzeitTage.ToInt()) * 100.0 / tageDiesesMonatsGesamt })
-                    .ToArray();
-
-                data[i] = new
+                for (int group = 0; group < xAxisGroups.Length; group++)
                 {
-                    data = subArray,
-                    label = monthItems.First().ErledigtDatum.ToFirstDayOfMonth().ToString("MM")
+                    var groupMonthItems = monthItems.Where(monthItem => monthItem.XaxisLabel == xAxisGroups[group]);
+                    var tageDiesesMonatsUndGruppeGesamt = groupMonthItems
+                        .Sum(g => g.DurchlaufzeitTage.ToInt());
+
+                    var tageDiesesMonatsUndGruppeProzent = 0.0;
+                    if (tageDiesesMonatsGesamt > 0)
+                        tageDiesesMonatsUndGruppeProzent = tageDiesesMonatsUndGruppeGesamt * 100.0 / tageDiesesMonatsGesamt;
+
+                    var gapStartX = 0.5;
+                    var gapGroupX = group * 1.0;
+                    var incGroupX = group * xAxisMonthDates.Length + gapGroupX;
+                    groupArray[group] = new double[2] { gapStartX + incGroupX + month, tageDiesesMonatsUndGruppeProzent };
+                }
+
+                data[month] = new
+                {
+                    data = groupArray,
+                    label = xAxisMonthDates[month].ToString("MM")
                 };
             }
 
             return new ChartItemsPackage
             {
                 data = data,
-                labels = xAxisLabels
+                labels = xAxisMonthDates.Select(it=> it.ToString("MM").PrependIfNotNull("*")).ToArray()
             };
         }
 

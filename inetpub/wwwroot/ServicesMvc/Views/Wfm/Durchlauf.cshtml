@@ -225,6 +225,7 @@
 
                 var chartData = result.data.data;
                 var chartOptions = jQuery.parseJSON(result.options);
+                chartOptions.xaxis.ticks = [[1.5, 'Walter'], [5.5, 'Zabel'], [9.5, 'Göster']];
 
                 var container = document.getElementById("chart");
 

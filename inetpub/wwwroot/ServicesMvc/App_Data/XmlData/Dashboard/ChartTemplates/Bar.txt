@@ -15,6 +15,7 @@
 	{
 		"min": 0,
 		"autoscaleMargin": 1,
+		"noTicks": 2,
 		"ticks": @ticks
 	},   
 	"yaxis": 
