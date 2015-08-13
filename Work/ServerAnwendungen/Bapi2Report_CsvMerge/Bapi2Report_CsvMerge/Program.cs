@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
 using System.Text;
+using CKGDatabaseAdminLib.Models;
+using GeneralTools.Models;
 
 namespace Bapi2Report_CsvMerge
 {
@@ -13,6 +15,7 @@ namespace Bapi2Report_CsvMerge
             var quellordner = ConfigurationManager.AppSettings["CsvSourceDirectory"];
             var zieldatei = ConfigurationManager.AppSettings["CsvDestinationPath"];
             var kopfzeile = ConfigurationManager.AppSettings["CsvKopfzeile"];
+            var trenner = ConfigurationManager.AppSettings["CsvDivider"];
             var warten = ConfigurationManager.AppSettings["WaitAfterCompletion"];
 
             Console.WriteLine("Starte Csv-Merge aus " + quellordner + " nach " + zieldatei + "...");
@@ -25,34 +28,36 @@ namespace Bapi2Report_CsvMerge
                 if (String.IsNullOrEmpty(zieldatei))
                     throw new Exception("Konfigurations-Variable 'CsvDestinationPath' ist nicht gesetzt!");
 
-                var alleZeilen = new List<string>();
+                var allItems = new List<Bapi2Report4CsvExport>();
 
                 var quelldateien = Directory.GetFiles(quellordner);
 
                 foreach (var quelldatei in quelldateien)
                 {
-                    using (StreamReader reader = new StreamReader(quelldatei, Encoding.Default))
+                    using (var reader = new StreamReader(quelldatei, Encoding.Default))
                     {
                         string inputZeile;
 
                         while ((inputZeile = reader.ReadLine()) != null)
                         {
-                            if (!alleZeilen.Contains(inputZeile))
-                                alleZeilen.Add(inputZeile);
+                            var newItem = new Bapi2Report4CsvExport(inputZeile, trenner);
+
+                            if (allItems.None(i => i.UniqueGeckoKey == newItem.UniqueGeckoKey))
+                                allItems.Add(newItem);
                         }
 
                         reader.Close();
                     }
                 }
 
-                using (StreamWriter writer = new StreamWriter(zieldatei, false, Encoding.Default))
+                using (var writer = new StreamWriter(zieldatei, false, Encoding.Default))
                 {
                     if (!String.IsNullOrEmpty(kopfzeile))
                         writer.WriteLine(kopfzeile);
 
-                    foreach (var outputZeile in alleZeilen)
+                    foreach (var item in allItems)
                     {
-                        writer.WriteLine(outputZeile);
+                        writer.WriteLine(item.ToString(trenner));
                     }
 
                     writer.Close();
