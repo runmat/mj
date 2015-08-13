@@ -94,7 +94,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.RegistrationStop)]
         public bool Zulassungssperre { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Comment)]
+        [LocalizedDisplay(LocalizeConstants.BlockingNotice)]
         public string Bemerkung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.KeyReceipt)]

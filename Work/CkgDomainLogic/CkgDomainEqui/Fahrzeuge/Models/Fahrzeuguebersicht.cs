@@ -102,7 +102,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
-        [LocalizedDisplay(LocalizeConstants.Comment)]
+        [LocalizedDisplay(LocalizeConstants.BlockingNotice)]
         public string BemerkungSperre { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.TrailerHitch)]
