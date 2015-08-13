@@ -1,83 +1,16 @@
 ﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
 
-<!-- load flotr2 charting library -->
-<!--[if IE]>
-<script language="javascript" type="text/javascript" src="@Url.Content("~/Scripts/flotr2/flotr2.ie.min.js")"></script>
-<![endif]-->
-<script src="@Url.Content("~/Scripts/flotr2/flotr2.js")" type="text/javascript"> </script>
+@Html.ChartToolsFlotr2()
 
 <style type="text/css">
     .chart-div {
-        width: 1000px;
-        height: 500px;
-        margin-bottom: 20px;
+        width: 700px;
+        height: 250px;
+        margin: 10px 0 0 0;
     }
 </style>
 
 <h3 class="page-title" id="headerTitle">@Model.Title <small></small></h3>
-
-<script type="text/javascript">
-
-    function TestChart() {
-
-        var container = document.getElementById("chart");
-
-        var
-          horizontal = false,                       // Show horizontal bars
-          d1 = [],                                  // First data series
-          d2 = [],                                  // Second data series
-          point,                                    // Data point variable declaration
-          i;
-        
-        for (i = 0; i < 4; i+=1.5) {
-
-            if (horizontal) {
-                point = [Math.ceil(Math.random() * 10), i];
-            } else {
-                point = [i, Math.ceil(Math.random() * 10)];
-            }
-
-            d1.push(point);
-
-            if (horizontal) {
-                point = [Math.ceil(Math.random() * 10), i + 0.5];
-            } else {
-                point = [i + 0.5, Math.ceil(Math.random() * 10)];
-            }
-
-            d2.push(point);
-        };
-
-        // Draw the graph
-        Flotr.draw(
-          container,
-          [d1, d2],
-          {
-              bars: {
-                  show: true,
-                  horizontal: horizontal,
-                  shadowSize: 0,
-                  barWidth: 0.5
-              },
-              mouse: {
-                  track: true,
-                  relative: true
-              },
-              xaxis: {
-                  showLabels: true
-              },
-              yaxis: {
-                min: 0,
-                autoscaleMargin: 1
-              }
-         }
-        );
-    }
-
-    //TestChart();
-
-</script>
-
 
 
 @Html.SpanAlert("spanAlertDurchlauf")
@@ -223,10 +156,11 @@
                 var chartOptions = jQuery.parseJSON(result.options);
 
                 chartOptions.bars.barWidth = 1.0;
+                chartOptions.xaxis.min = 0;
                 chartOptions.yaxis.tickFormatter = function (yVal) { return yVal + "%"; };
                 chartOptions.mouse.trackFormatter = function (point) {
                     var groupLabel = point.series.label;
-                    return point.y.replace(/\./g, ",") + "% (" + groupLabel + ")";
+                    return point.y.replace(/\./g, ",") + "% " + groupLabel;
                 };
 
                 // Draw the graph

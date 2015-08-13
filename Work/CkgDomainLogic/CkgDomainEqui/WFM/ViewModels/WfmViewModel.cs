@@ -400,26 +400,12 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public object GetChartData()
         {
-            if (DurchlaufStatistiken.None())
-            {
-                Selektor = new WfmAuftragSelektor
-                {
-                    Selektionsfeld1 = true, AbmeldeartDurchlauf = "ALLE", ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
-                };
-
-                LoadDurchlauf(null);
-            }
-
-            var items = DurchlaufDetails
-                .Where(i => i.DurchlaufzeitTage.ToInt() > 0)
-                .ToListOrEmptyList();
-
-            var data = GetBarChartGroupedItemsWithLabels(items);
+            var data = GetBarChartGroupedItemsWithLabels(DurchlaufDetails);
 
             return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar");
         }
 
-        public static ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items) 
+        public ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items) 
         {
             var xAxisMonthDates = items
                 .OrderBy(it => it.ErledigtDatum).GroupBy(g => g.ErledigtDatum.ToFirstDayOfMonth()).Select(it => it.Key).ToArray();
@@ -427,6 +413,7 @@ namespace CkgDomainLogic.WFM.ViewModels
             var xAxisGroups = items
                 .OrderBy(it => it.XaxisLabelSort).GroupBy(g => g.XaxisLabel).Select(it => it.Key).ToArray();
 
+            var xAxisStart = 3.5;
             var data = new object[xAxisMonthDates.Length];
             for (int month = 0; month < xAxisMonthDates.Length; month++)
             {
@@ -438,26 +425,27 @@ namespace CkgDomainLogic.WFM.ViewModels
                 for (int group = 0; group < xAxisGroups.Length; group++)
                 {
                     var groupMonthItems = monthItems.Where(monthItem => monthItem.XaxisLabel == xAxisGroups[group]);
-                    var tageDiesesMonatsUndGruppeGesamt = groupMonthItems
-                        .Sum(g => g.DurchlaufzeitTage.ToInt());
+                    var tageDiesesMonatsUndGruppeGesamt = groupMonthItems.Sum(g => g.DurchlaufzeitTage.ToInt());
 
                     var tageDiesesMonatsUndGruppeProzent = 0.0;
                     if (tageDiesesMonatsGesamt > 0)
                         tageDiesesMonatsUndGruppeProzent = tageDiesesMonatsUndGruppeGesamt * 100.0 / tageDiesesMonatsGesamt;
 
-                    double gapStartX = 0.5, incGroupX = group * xAxisMonthDates.Length + group;
-                    groupArray[group] = new double[2] { gapStartX + incGroupX + month, tageDiesesMonatsUndGruppeProzent };
+                    double incGroupX = group * xAxisMonthDates.Length + group;
+                    groupArray[group] = new double[2] { xAxisStart + incGroupX + month, tageDiesesMonatsUndGruppeProzent };
                 }
 
-                data[month] = new
-                {
-                    data = groupArray,
-                    label = xAxisMonthDates[month].ToString("MMMM yyyy")
-                };
+                data[month] = new { data = groupArray, label = xAxisMonthDates[month].ToString("MMMM yyyy") };
             }
 
-            double tickStart = 1.5, tickInc = xAxisMonthDates.Length + 1, tickPos = 0.0;
-            var ticksArray = xAxisGroups.Select(group => new ChartItemsTick { Pos = tickStart + (tickInc * tickPos++), Label = group }).ToArray();
+            double tickOfset = (xAxisMonthDates.Length / 2);
+            double tickStart = xAxisStart + tickOfset;
+            double tickInc = xAxisMonthDates.Length + 1, tickPos = 0.0;
+            var ticksArray = xAxisGroups.Select(group => new ChartItemsTick
+            {
+                Pos = tickStart + (tickInc * tickPos++),
+                Label = string.Format("{0} {1}", Selektor.AbmeldeartDurchlauf.AppendIfNotNullAndNot("Alle", "."), group)
+            }).ToArray();
 
             return new ChartItemsPackage
             {

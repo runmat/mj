@@ -116,14 +116,14 @@ namespace CkgDomainLogic.WFM.Models
             {
                 return PropertyCacheGet(() => new List<SelectItem>
                 {
-                    new SelectItem("ALLE", Localize.All),
-                    new SelectItem("KLAERFALL", Localize.ClarificationCase),
-                    new SelectItem("STANDARD", Localize.Standard),
+                    new SelectItem("Alle", Localize.All),
+                    new SelectItem("Klär", Localize.ClarificationCase),
+                    new SelectItem("Std", Localize.Standard),
                 });
             }
         }
 
         [LocalizedDisplay(LocalizeConstants.DeRegistrationType)]
-        public string AbmeldeartDurchlauf { get { return PropertyCacheGet(() => "ALLE"); } set { PropertyCacheSet(value); } }
+        public string AbmeldeartDurchlauf { get { return PropertyCacheGet(() => "Alle"); } set { PropertyCacheSet(value); } }
     }
 }

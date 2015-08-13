@@ -4528,6 +4528,7 @@
     <Content Include="Views\Wfm\Durchlauf.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
+    <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

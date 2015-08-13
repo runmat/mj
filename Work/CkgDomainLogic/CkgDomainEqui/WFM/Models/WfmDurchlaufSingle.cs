@@ -46,13 +46,13 @@ namespace CkgDomainLogic.WFM.Models
 
                 if (tage < 10)
                     return "< 10";
-                if (tage < 20)
+                else if (tage < 20)
                     return "10 - 20";
-                if (tage < 30)
+                else if (tage < 30)
                     return "20 - 30";
-                if (tage < 40)
+                else if (tage < 40)
                     return "30 - 40";
-                if (tage >= 40)
+                else if (tage >= 40)
                     return "> 40";
 
                 return "";
@@ -71,13 +71,13 @@ namespace CkgDomainLogic.WFM.Models
 
                 if (tage < 10)
                     ofset = 1;
-                if (tage < 20)
+                else if (tage < 20)
                     ofset = 2;
-                if (tage < 30)
+                else if (tage < 30)
                     ofset = 3;
-                if (tage < 40)
+                else if (tage < 40)
                     ofset = 4;
-                if (tage >= 40)
+                else if (tage >= 40)
                     ofset = 5;
 
                 return ofset;

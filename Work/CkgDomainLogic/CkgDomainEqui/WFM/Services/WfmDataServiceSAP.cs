@@ -352,10 +352,10 @@ namespace CkgDomainLogic.WFM.Services
                 SAP.SetImportParameter("I_ERLEDIGT_BIS", selector.ErledigtDatumVonBis.EndDate);
             }
 
-            if (selector.AbmeldeartDurchlauf == "ALLE" || selector.AbmeldeartDurchlauf == "KLAERFALL")
+            if (selector.AbmeldeartDurchlauf == "Alle" || selector.AbmeldeartDurchlauf == "Klär")
                 SAP.SetImportParameter("I_ABMART_KLAER", "X");
 
-            if (selector.AbmeldeartDurchlauf == "ALLE" || selector.AbmeldeartDurchlauf == "STANDARD")
+            if (selector.AbmeldeartDurchlauf == "Alle" || selector.AbmeldeartDurchlauf == "Std")
                 SAP.SetImportParameter("I_ABMART_STD", "X");
 
 
