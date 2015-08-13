@@ -438,7 +438,7 @@ namespace CkgDomainLogic.WFM.ViewModels
                 data[month] = new { data = groupArray, label = xAxisMonthDates[month].ToString("MMMM yyyy") };
             }
 
-            double tickOfset = (xAxisMonthDates.Length / 2);
+            double tickOfset = (xAxisMonthDates.Length / 2.0) - 0.5;
             double tickStart = xAxisStart + tickOfset;
             double tickInc = xAxisMonthDates.Length + 1, tickPos = 0.0;
             var ticksArray = xAxisGroups.Select(group => new ChartItemsTick
