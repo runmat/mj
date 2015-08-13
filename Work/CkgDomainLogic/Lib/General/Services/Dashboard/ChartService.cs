@@ -93,13 +93,25 @@ namespace CkgDomainLogic.General.Services
 
             var options = File.ReadAllText(chartOptionsFileName);
 
-            if (options.NotNullOrEmpty().Contains("@ticks") && data.labels != null)
+            if (options.NotNullOrEmpty().Contains("@ticks"))
             {
                 // label array json format, as string: "[[0,\"label 1\"], [1,\"label 2\"], [2,\"label 3\"]]"
-                var labelArray = data.labels;
-                options = options.Replace("@ticks",
-                    string.Format("[{0}]",
-                        string.Join(",", labelArray.Select(s => string.Format("[{0},\"{1}\"]", labelArray.ToList().IndexOf(s), s)))));
+
+                if (data.ticks != null)
+                {
+                    options = options.Replace("@ticks",
+                        string.Format("[{0}]",
+                            string.Join(",", data.ticks.Select(s => string.Format("[{0},\"{1}\"]", s.Pos.ToString().Replace(",", "."), s.Label)))));
+                }
+                else
+                    if (data.labels != null)
+                    {
+                        var labelArray = data.labels;
+
+                        options = options.Replace("@ticks",
+                            string.Format("[{0}]",
+                                string.Join(",", labelArray.Select(s => string.Format("[{0},\"{1}\"]", labelArray.ToList().IndexOf(s), s)))));
+                    }
             }
 
             return new { data, options };

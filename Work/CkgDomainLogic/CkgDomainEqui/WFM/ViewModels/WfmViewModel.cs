@@ -433,8 +433,7 @@ namespace CkgDomainLogic.WFM.ViewModels
                 var groupArray = new object[xAxisGroups.Length];
 
                 var monthItems = items.Where(monthItem => monthItem.ErledigtDatum.ToFirstDayOfMonth() == xAxisMonthDates[month]);
-                var tageDiesesMonatsGesamt = monthItems
-                    .Sum(g => g.DurchlaufzeitTage.ToInt());
+                var tageDiesesMonatsGesamt = monthItems.Sum(g => g.DurchlaufzeitTage.ToInt());
 
                 for (int group = 0; group < xAxisGroups.Length; group++)
                 {
@@ -446,23 +445,23 @@ namespace CkgDomainLogic.WFM.ViewModels
                     if (tageDiesesMonatsGesamt > 0)
                         tageDiesesMonatsUndGruppeProzent = tageDiesesMonatsUndGruppeGesamt * 100.0 / tageDiesesMonatsGesamt;
 
-                    var gapStartX = 0.5;
-                    var gapGroupX = group * 1.0;
-                    var incGroupX = group * xAxisMonthDates.Length + gapGroupX;
+                    double gapStartX = 0.5, incGroupX = group * xAxisMonthDates.Length + group;
                     groupArray[group] = new double[2] { gapStartX + incGroupX + month, tageDiesesMonatsUndGruppeProzent };
                 }
 
                 data[month] = new
                 {
                     data = groupArray,
-                    label = xAxisMonthDates[month].ToString("MM")
+                    label = xAxisMonthDates[month].ToString("MMMM yyyy")
                 };
             }
 
+            double tickStart = 1.5, tickInc = xAxisMonthDates.Length + 1, tickPos = 0.0;
+            var ticksArray = xAxisGroups.Select(group => new ChartItemsTick { Pos = tickStart + (tickInc * tickPos++), Label = group }).ToArray();
+
             return new ChartItemsPackage
             {
-                data = data,
-                labels = xAxisMonthDates.Select(it=> it.ToString("MM").PrependIfNotNull("*")).ToArray()
+                data = data, labels = null, ticks = ticksArray
             };
         }
 

@@ -83,17 +83,5 @@ namespace CkgDomainLogic.WFM.Models
                 return ofset;
             }
         }
-
-        public DateTime XaxisSortDurchlaufzeitTageDannMonat
-        {
-            get
-            {
-                var tage = DurchlaufzeitTage.ToInt();
-                if (tage < 0)
-                    return DateTime.MinValue;
-
-                return ErledigtDatum.ToFirstDayOfMonth().AddDays(XaxisLabelSort);
-            }
-        }
     }
 }

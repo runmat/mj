@@ -16,9 +16,6 @@
 
 <h3 class="page-title" id="headerTitle">@Model.Title <small></small></h3>
 
-
-<div id="chart" class="chart-div"></div>
-
 <script type="text/javascript">
 
     function TestChart() {
@@ -133,6 +130,8 @@
 
             GridDurchlaufStatistikPrepare();
 
+            ShowChart();
+
             $("#divGrids").slideDown();
         });
     }
@@ -219,19 +218,20 @@
             data: { },
             loadingShow: false,
             success: function (result) {
-                
-                console.log(result.data.data);
-                console.log(result.options);
 
                 var chartData = result.data.data;
                 var chartOptions = jQuery.parseJSON(result.options);
-                chartOptions.xaxis.ticks = [[1.5, 'Walter'], [5.5, 'Zabel'], [9.5, 'Göster']];
 
-                var container = document.getElementById("chart");
+                chartOptions.bars.barWidth = 1.0;
+                chartOptions.yaxis.tickFormatter = function (yVal) { return yVal + "%"; };
+                chartOptions.mouse.trackFormatter = function (point) {
+                    var groupLabel = point.series.label;
+                    return point.y.replace(/\./g, ",") + "% (" + groupLabel + ")";
+                };
 
                 // Draw the graph
                 Flotr.draw(
-                  container,
+                  document.getElementById("chart"),
                   chartData,
                   chartOptions
                 );
@@ -239,7 +239,7 @@
         });
     }
 
-    ShowChart();
+    //ShowChart();
 
 
 </script>
