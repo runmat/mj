@@ -563,6 +563,9 @@ Namespace Beauftragung2
             mBeauftragung.LoadDadVorgang(txtDadAuftrag.Text.Trim(), Me)
             If mBeauftragung.Status = 0 Then
                 Session("mBeauftragung2") = mBeauftragung
+
+                RestoreSelectedValues()
+
                 lblError.Text = "Daten wurden erfolgreich aus DAD-Vorgang geladen."
             Else
                 lblError.Text = "Fehler beim Laden des Vorgangs (" & mBeauftragung.Message & ")"

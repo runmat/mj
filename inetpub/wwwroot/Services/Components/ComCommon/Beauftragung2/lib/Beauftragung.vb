@@ -2030,64 +2030,97 @@ Namespace Beauftragung2
 
                     myProxy.callBapi()
 
-                    Dim tblVorgang As DataTable = myProxy.getExportTable("GS_DAD_ORDER")
-                    Dim tblZusDL As DataTable = myProxy.getExportTable("GT_MAT")
+                    Dim subrc As String = myProxy.getExportParameter("E_SUBRC")
 
-                    If tblVorgang.Rows.Count = 0 Then
-                        Throw New Exception("Vorgang nicht vorhanden")
-                    End If
+                    If subrc <> "0" Then
+                        ErrorText = myProxy.getExportParameter("E_MESSAGE")
+                        m_intStatus = -5555
+                        m_strMessage = "Fehler beim Laden.<br>(" & ErrorText & ")"
 
-                    Dim dRow As DataRow = tblVorgang.Rows(0)
+                    Else
+                        Dim tblVorgang As DataTable = myProxy.getExportTable("GS_DAD_ORDER")
+                        Dim tblZusDL As DataTable = myProxy.getExportTable("GT_MAT")
 
-                    DadVorgang = True
-
-                    'Halterdaten
-                    Dim anredeDad As String = dRow("ZH_TITLE").ToString()
-                    Select Case anredeDad
-                        Case "0001"
-                            'Frau
-                            HalterAnrede = "2"
-                        Case "0002"
-                            'Herr
-                            HalterAnrede = "1"
-                        Case "0003"
-                            'Firma
-                            HalterAnrede = "0"
-                    End Select
-                    Haltername1 = dRow("ZH_NAME1").ToString()
-                    Haltername2 = dRow("ZH_NAME2").ToString()
-                    HalterStrasse = dRow("ZH_STREET").ToString()
-                    HalterHausnr = dRow("ZH_HOUSE_NUM1").ToString()
-                    HalterPLZ = dRow("ZH_POST_CODE1").ToString()
-                    HalterOrt = dRow("ZH_CITY1").ToString()
-                    HalterReferenz = dRow("ZZREFNR1").ToString()
-                    Bestellnummer = dRow("ZZREFNR2").ToString()
-
-                    'Fahrzeugdaten
-                    Hersteller = dRow("ZZHERSTELLER_SCH").ToString()
-                    Typ = dRow("ZZTYP_SCHL").ToString()
-                    VarianteVersion = dRow("ZZVVS_SCHLUESSEL").ToString()
-                    TypPruef = dRow("ZZTYP_VVS_PRUEF").ToString()
-                    Fahrgestellnummer = dRow("CHASSIS_NUM").ToString()
-                    FahrgestellnummerPruef = dRow("ZPRFZ").ToString()
-                    Briefnummer = dRow("TIDNR").ToString()
-
-                    'Dienstleistung
-                    EVB = dRow("ZZVSNR").ToString()
-                    Zulassungsdatum = dRow("ZZZLDAT").ToString()
-                    Kennzeichen = dRow("ZZKENN").ToString()
-
-                    Wunschkennzeichen = (dRow("WUNSCHKENN_JN").ToString() = "X")
-
-                    'Zusatzdienstleistungen
-                    For Each dlRow As DataRow In Zusatzdienstleistungen.Rows
-                        Dim sapRows As DataRow() = tblZusDL.Select("MATNR='" & dlRow("MATNR").ToString() & "'")
-                        If sapRows.Length > 0 Then
-                            dlRow("AUSWAHL") = "X"
-                        Else
-                            dlRow("AUSWAHL") = ""
+                        If tblVorgang.Rows.Count = 0 Then
+                            Throw New Exception("Vorgang nicht vorhanden")
                         End If
-                    Next
+
+                        Dim dRow As DataRow = tblVorgang.Rows(0)
+
+                        'Grunddaten
+                        DadVorgang = True
+
+                        Dim kdRows As DataRow() = Kunden.Select("KUNNR='" & dRow("KUNNR").ToString() & "'")
+                        If kdRows.Length > 0 Then
+                            Kundennr = dRow("KUNNR").ToString().TrimStart("0"c)
+                        End If
+
+                        If dRow("ZZKENN").ToString().Contains("-"c) Then
+                            Dim amt As String = dRow("ZZKENN").ToString().Split("-"c)(0)
+
+                            Dim stvaRows As DataRow() = Kreise.Select("ZKFZKZ='" & amt & "'")
+                            If stvaRows.Length > 0 Then
+                                StVANr = amt
+
+                                For Each sapRow As DataRow In tblZusDL.Rows
+                                    Dim dlRows As DataRow() = Dienstleistungen.Select("AMT='" & StVANr & "' AND MATNR='" & sapRow("MATNR").ToString() & "'")
+                                    If dlRows.Length > 0 Then
+                                        Materialnummer = sapRow("MATNR").ToString().TrimStart("0"c)
+                                        Exit For
+                                    End If
+                                Next
+                            End If
+                        End If
+
+                        'Halterdaten
+                        Dim anredeDad As String = dRow("ZH_TITLE").ToString()
+                        Select Case anredeDad
+                            Case "0001"
+                                'Frau
+                                HalterAnrede = "2"
+                            Case "0002"
+                                'Herr
+                                HalterAnrede = "1"
+                            Case "0003"
+                                'Firma
+                                HalterAnrede = "0"
+                        End Select
+                        Haltername1 = dRow("ZH_NAME1").ToString()
+                        Haltername2 = dRow("ZH_NAME2").ToString()
+                        HalterStrasse = dRow("ZH_STREET").ToString()
+                        HalterHausnr = dRow("ZH_HOUSE_NUM1").ToString()
+                        HalterPLZ = dRow("ZH_POST_CODE1").ToString()
+                        HalterOrt = dRow("ZH_CITY1").ToString()
+                        HalterReferenz = dRow("ZZREFNR1").ToString()
+                        Bestellnummer = dRow("ZZREFNR2").ToString()
+
+                        'Fahrzeugdaten
+                        Hersteller = dRow("ZZHERSTELLER_SCH").ToString()
+                        Typ = dRow("ZZTYP_SCHL").ToString()
+                        VarianteVersion = dRow("ZZVVS_SCHLUESSEL").ToString()
+                        TypPruef = dRow("ZZTYP_VVS_PRUEF").ToString()
+                        Fahrgestellnummer = dRow("CHASSIS_NUM").ToString()
+                        FahrgestellnummerPruef = dRow("ZPRFZ").ToString()
+                        Briefnummer = dRow("TIDNR").ToString()
+
+                        'Dienstleistung
+                        EVB = dRow("ZZVSNR").ToString()
+                        Zulassungsdatum = dRow("ZZZLDAT").ToString()
+                        Kennzeichen = dRow("ZZKENN").ToString()
+
+                        Wunschkennzeichen = (dRow("WUNSCHKENN_JN").ToString() = "X")
+
+                        'Zusatzdienstleistungen
+                        For Each dlRow As DataRow In Zusatzdienstleistungen.Rows
+                            Dim sapRows As DataRow() = tblZusDL.Select("MATNR='" & dlRow("MATNR").ToString() & "'")
+                            If sapRows.Length > 0 Then
+                                dlRow("AUSWAHL") = "X"
+                            Else
+                                dlRow("AUSWAHL") = ""
+                            End If
+                        Next
+
+                    End If
 
                 Catch ex As Exception
                     m_intStatus = -9999
