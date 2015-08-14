@@ -147,7 +147,8 @@
                     </asp:UpdatePanel>
                     <div id="dataFooter">
                         <asp:LinkButton ID="cmdOK" runat="server" CssClass="TablebuttonLarge" Width="128px" Height="16px" onclick="cmdOK_Click">» alle übernehmen</asp:LinkButton>
-                        <asp:LinkButton ID="cmdSend" runat="server" CssClass="Tablebutton" Width="78px" Height="16px" onclick="cmdSend_Click" >» Absenden</asp:LinkButton>   
+                        <asp:LinkButton ID="cmdSend" runat="server" CssClass="Tablebutton" Width="78px" Height="16px" onclick="cmdSend_Click">» Absenden</asp:LinkButton>
+                        <asp:LinkButton ID="cmdContinue" runat="server" CssClass="Tablebutton" Width="78px" Height="16px" onclick="cmdContinue_Click" Visible="false">» Weiter</asp:LinkButton>
                 </div>
             </div>
         </div>

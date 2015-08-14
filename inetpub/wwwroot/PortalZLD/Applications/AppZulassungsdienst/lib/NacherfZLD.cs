@@ -1466,6 +1466,20 @@ namespace AppZulassungsdienst.lib
             });
         }
 
+        public void DeleteNochNichtAbgesendeteVorgaengeOkFromList()
+        {
+            ClearError();
+
+            try
+            {
+                NochNichtAbgesendeteVorgaenge.RemoveAll(v => v.FehlerText == "OK");
+            }
+            catch (Exception ex)
+            {
+                RaiseError(9999, ex.Message);
+            }
+        }
+
         #endregion
     }
 }

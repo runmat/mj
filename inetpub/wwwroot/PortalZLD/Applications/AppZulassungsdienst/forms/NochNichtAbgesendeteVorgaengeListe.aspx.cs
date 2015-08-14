@@ -165,7 +165,37 @@ namespace AppZulassungsdienst.forms
 
                 cmdOK.Enabled = false;
                 cmdSend.Enabled = false;
+                cmdContinue.Visible = true;
             }
+        }
+
+        protected void cmdContinue_Click(object sender, EventArgs e)
+        {
+            objNacherf.DeleteNochNichtAbgesendeteVorgaengeOkFromList();
+
+            if (objNacherf.NochNichtAbgesendeteVorgaenge.Count == 0)
+            {
+                Fillgrid(0, "");
+                Result.Visible = false;
+                cmdSend.Enabled = false;
+                cmdOK.Enabled = false;
+                lblError.Text = "Keine Daten zur bestehenden Selektion vorhanden!";
+            }
+            else
+            {
+                Result.Visible = true;
+                cmdSend.Enabled = true;
+                cmdOK.Enabled = true;
+                Fillgrid(0, "");
+            }
+            cmdContinue.Visible = false;
+
+            // Status
+            gvZuldienst.Columns[0].Visible = false;
+            // Übernehmen
+            gvZuldienst.Columns[10].Visible = true;
+
+            lblMessage.Visible = false;
         }
 
         #endregion
