@@ -254,7 +254,11 @@ namespace AutohausPortal.lib
                         var adrsRows = tblAdrs.Select("ZULBELN = '" + row["ZULBELN"].ToString().PadLeft(10, '0') + "'");
                         if (adrsRows.Length > 0)
                         {
-                            ModelMapping.Copy(adrsRows[0], row);
+                            row["NAME1"] = adrsRows[0]["NAME1"];
+                            row["NAME2"] = adrsRows[0]["NAME2"];
+                            row["PLZ"] = adrsRows[0]["PLZ"];
+                            row["CITY1"] = adrsRows[0]["CITY1"];
+                            row["STREET"] = adrsRows[0]["STREET"];
                         }
                     }
 
@@ -720,7 +724,7 @@ namespace AutohausPortal.lib
 
                         var impPosRow = impPos.NewRow();
 
-                        impPosRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                        impPosRow["ZULBELN"] = sapId.Value.ToString().PadLeft(10, '0');
                         impPosRow["LFDNR"] = "000010";
                         impPosRow["MENGE"] = "1";
                         impPosRow["MATNR"] = NrMaterial.PadLeft(18, '0');
@@ -731,7 +735,7 @@ namespace AutohausPortal.lib
                         {
                             var impAdrsRow = impAdrs.NewRow();
 
-                            impAdrsRow["ZULBELN"] = id_sap.ToString().PadLeft(10, '0');
+                            impAdrsRow["ZULBELN"] = sapId.Value.ToString().PadLeft(10, '0');
                             impAdrsRow["NAME1"] = Name1;
                             impAdrsRow["NAME2"] = Name2;
                             impAdrsRow["PLZ"] = PLZ;
