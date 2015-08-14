@@ -1393,7 +1393,20 @@ namespace AppZulassungsdienst.lib
         {
             ExecuteSapZugriff(() =>
             {
-                var sapList = Z_ZLD_EXPORT_AH_WARENKORB.GT_BAK.GetExportListWithInitExecute(SAP, "I_VKBUR", VKBUR);
+                Z_ZLD_EXPORT_AH_WARENKORB.Init(SAP);
+
+                SAP.SetImportParameter("I_KUNNR", (String.IsNullOrEmpty(SelKunde) ? "" : SelKunde.ToSapKunnr()));
+                SAP.SetImportParameter("I_VKORG", VKORG);
+                SAP.SetImportParameter("I_VKBUR", VKBUR);
+                SAP.SetImportParameter("I_ZZZLDAT", SelDatum);
+                SAP.SetImportParameter("I_ZULBELN", (String.IsNullOrEmpty(SelID) ? "" : SelID.PadLeft0(10)));
+
+                SAP.SetImportParameter("I_KREISKZ", SelKreis);
+
+                if (!String.IsNullOrEmpty(SelGroupTourID))
+                    SAP.SetImportParameter("I_GRUPPE", SelGroupTourID.PadLeft0(10));
+
+                var sapList = Z_ZLD_EXPORT_AH_WARENKORB.GT_BAK.GetExportListWithExecute(SAP);
 
                 NochNichtAbgesendeteVorgaenge = AppModelMappings.Z_ZLD_EXPORT_AH_WARENKORB_GT_BAK_To_NochNichtAbgesendeterVorgang.Copy(sapList).ToList();
             });
