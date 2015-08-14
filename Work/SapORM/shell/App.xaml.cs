@@ -244,7 +244,7 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG, I_VERKZ, I_WEB_USER", "10026883", "N", "CARLM");
             //new FunctionReflector("Z_DPM_LIST_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG", "10026883");
 
-//new FunctionReflector("Z_dpm_Read_Prot_Telefonate_01").WriteOrmForExportTableStructures("I_AG", "10026883");
+            //new FunctionReflector("Z_dpm_Read_Prot_Telefonate_01").WriteOrmForExportTableStructures("I_AG", "10026883");
             //new FunctionReflector("Z_DPM_UPLOAD_GRUDAT_TIP_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10065502");
 
 
@@ -325,7 +325,7 @@ namespace SapORM
             //new FunctionReflector("Z_M_BAPIRDZ").WriteOrmForExportTableStructures("IZKFZKZ", "UN");
 
             //new FunctionReflector("Z_M_KLAERFAELLEVW").WriteOrmForExportTableStructures("I_KUNNR", "0000336070");      
-            new FunctionReflector("Z_WFM_READ_AUFTRAEGE_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_WFM_READ_AUFTRAEGE_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
             //new FunctionReflector("Z_WFM_READ_KONVERTER_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
 
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
@@ -446,6 +446,9 @@ namespace SapORM
 
 
             //new FunctionReflector("Z_DPM_FFD_DATEN_OHNE_DOKUMENTE").WriteOrmForExportTableStructures("I_KUNNR_AG", "324562");
+
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_SEL").WriteOrmForExportTableStructures("I_ZLDAT", "14.08.2015");
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_DRU").WriteOrmForExportTableStructures();
 
 
             //CoCTest();
