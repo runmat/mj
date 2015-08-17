@@ -587,9 +587,12 @@ namespace CkgDomainLogic.Autohaus.Services
                 var adrsItems = adrsListe.Where(a => a.BelegNr == vorgang.BelegNr);
                 if (adrsItems.Any())
                 {
-                    var adrsRE = adrsItems.FirstOrDefault(a => a.Partnerrolle == "RE");
-                    if (adrsRE != null)
-                        vorgang.BankAdressdaten.Adressdaten = adrsRE;
+                    var adrsAG = adrsItems.FirstOrDefault(a => a.Partnerrolle == "AG");
+                    if (adrsAG != null)
+                    {
+                        vorgang.BankAdressdaten.Adressdaten = adrsAG;
+                        vorgang.BankAdressdaten.Adressdaten.Adresse.Land = "DE";
+                    }
 
                     var adrsZH = adrsItems.FirstOrDefault(a => a.Partnerrolle == "ZH");
                     if (adrsZH != null)
@@ -662,11 +665,18 @@ namespace CkgDomainLogic.Autohaus.Services
                 var bankItems = bankListe.Where(b => b.BelegNr == vorgang.BelegNr);
                 if (bankItems.Any())
                 {
+                    var bankAG = bankItems.FirstOrDefault(b => b.Partnerrolle == "AG");
+                    if (bankAG != null)
+                    {
+                        vorgang.BankAdressdaten.Bankdaten = bankAG;
+                        vorgang.BankAdressdaten.Bankdaten.KontoinhaberErforderlich = true;
+                    }
+
                     var bankZ6 = bankItems.FirstOrDefault(b => b.Partnerrolle == "Z6");
                     if (bankZ6 != null)
                     {
                         vorgang.ZahlerKfzSteuer.Bankdaten = bankZ6;
-                        vorgang.ZahlerKfzSteuer.Bankdaten.KontoinhaberErforderlich = vorgang.ZahlerKfzSteuer.DatenFuerCpd;
+                        vorgang.ZahlerKfzSteuer.Bankdaten.KontoinhaberErforderlich = false;
                     }
                 }
 

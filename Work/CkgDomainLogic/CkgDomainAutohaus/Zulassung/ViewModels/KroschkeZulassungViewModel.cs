@@ -440,7 +440,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             Zulassung.Halter.Adresse = model;
 
-            if (Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Name1.IsNullOrEmpty())
+            if (!ModusAbmeldung && Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Name1.IsNullOrEmpty())
             {
                 Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse = ModelMapping.Copy(Zulassung.Halter.Adresse);
                 Zulassung.ZahlerKfzSteuer.Adressdaten.Adresse.Kennung = "ZAHLERKFZSTEUER";
@@ -493,7 +493,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             // 20150602 MMA Gegebenenfalls verfügbare externe Wunschkennzeichen-Reservierungs-Url ermitteln 
             Zulassung.Zulassungsdaten.WunschkennzeichenReservierenUrl = LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
-            Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
+            if (Zulassung.Zulassungsdaten.EvbNr.IsNullOrEmpty())
+                Zulassung.Zulassungsdaten.EvbNr = model.EvbNr;  // 20150617 MMA EvbNr aus Halteradresse als Vorlage holen
         }
 
         public string ZulassungsKennzeichenLinkeSeite(string kennzeichen)
@@ -815,10 +816,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             Zulassung.OptionenDienstleistungen.ZulassungsartMatNr = zulDat.ZulassungsartMatNr;
 
-            var tempKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
-            if (tempKg != null)
-                Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = tempKg.Id;
+            var defaultKg = Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.FirstOrDefault(k => k.Groesse == "520x114");
+            if (defaultKg != null)
+            {
+                if (Zulassung.OptionenDienstleistungen.KennzeichenGroesseId == 0
+                    || Zulassung.OptionenDienstleistungen.KennzeichengroesseListForMatNr.None(k => k.Id == Zulassung.OptionenDienstleistungen.KennzeichenGroesseId))
+                {
+                    Zulassung.OptionenDienstleistungen.KennzeichenGroesseId = defaultKg.Id;
+                }
 
+                Zulassung.OptionenDienstleistungen.KennzeichenSondergroesse = (Zulassung.OptionenDienstleistungen.KennzeichenGroesseId != defaultKg.Id);
+            }
+            
             // 20150602 MMA
             Zulassung.Zulassungsdaten.MindesthaltedauerDays = model.MindesthaltedauerDays;  // Identisch mit SAP-Feld HALTE_DAUER
 
