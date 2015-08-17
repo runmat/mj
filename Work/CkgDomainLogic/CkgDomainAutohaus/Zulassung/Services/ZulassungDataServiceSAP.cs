@@ -288,7 +288,7 @@ namespace CkgDomainLogic.Autohaus.Services
                 Z_ZLD_AH_IMPORT_ERFASSUNG1.Init(SAP);
 
                 SAP.SetImportParameter("I_AUFRUF", "2");
-                SAP.SetImportParameter("I_TELNR", LogonContext.UserInfo.Telephone);
+                SAP.SetImportParameter("I_TELNR", LogonContext.UserInfo.Telephone2);
                 SAP.SetImportParameter("I_SPEICHERN", (saveDataToSap ? "A" : "S"));
 
                 if (!saveFromShoppingCart && zulassungen.Count == 1 && zulassungen[0].BankAdressdaten.Cpdkunde)
@@ -566,7 +566,7 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             var liste = new List<Vorgang>();
 
-            Z_ZLD_AH_EXPORT_WARENKORB.Init(SAP, "I_WEBUSER_ID", LogonContext.UserID);
+            Z_ZLD_AH_EXPORT_WARENKORB.Init(SAP, "I_WEBUSER_ID, I_AUFRUF", LogonContext.UserID, "2");
 
             SAP.Execute();
 

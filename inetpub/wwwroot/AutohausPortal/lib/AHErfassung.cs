@@ -214,6 +214,8 @@ namespace AutohausPortal.lib
                         myProxy.setImportParameter("I_WEBUSER_ID", m_objUser.UserID.ToString());
                     }
 
+                    myProxy.setImportParameter("I_AUFRUF", "1");
+
                     myProxy.callBapi();
 
                     tblEingabeListe = myProxy.getExportTable("GT_BAK");
