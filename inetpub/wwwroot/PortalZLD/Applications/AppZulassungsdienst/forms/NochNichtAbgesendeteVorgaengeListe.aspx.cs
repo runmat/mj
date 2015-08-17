@@ -156,7 +156,6 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                tab1.Height = "250px";
                 lblMessage.Visible = true;
                 lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                 lblMessage.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten.";
@@ -183,6 +182,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
+                tab1.Visible = false;
                 Result.Visible = true;
                 cmdSend.Enabled = true;
                 cmdOK.Enabled = true;
