@@ -321,7 +321,7 @@
                                                 HeaderStyle-Width="40px">
                                                 <HeaderStyle Width="40px"></HeaderStyle>
                                             </telerik:GridBoundColumn>
-                                            <telerik:GridBoundColumn DataField="telephone" SortExpression="telephone" HeaderText="Telefon"
+                                            <telerik:GridBoundColumn DataField="telephone2" SortExpression="telephone2" HeaderText="Telefon"
                                                 HeaderStyle-Width="40px">
                                                 <HeaderStyle Width="40px"></HeaderStyle>
                                             </telerik:GridBoundColumn>
