@@ -40,6 +40,13 @@ namespace AppZulassungsdienst.forms
                 objCommon.getSAPDatenStamm();
                 objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
+
+                if (objCommon.Kundengruppen == null)
+                    objCommon.GetGruppen_Touren("K");
+
+                if (objCommon.Touren == null)
+                    objCommon.GetGruppen_Touren("T");
+
                 Session["objCommon"] = objCommon;
             }
             else
