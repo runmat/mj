@@ -1189,7 +1189,9 @@ namespace AppZulassungsdienst.forms
                     return;
                 }
 
-                kopfdaten.Zulassungsdatum = txtZulDate.Text.ToNullableDateTime("ddMMyy");
+                var neuesZulDat = txtZulDate.Text.ToNullableDateTime("ddMMyy");
+                var blnZulDatChanged = (kopfdaten.Zulassungsdatum != neuesZulDat);
+                kopfdaten.Zulassungsdatum = neuesZulDat;
 
                 var kennz = txtKennz1.Text.ToUpper() + "-" + txtKennz2.Text.ToUpper();
                 // Kennzeichen geändert? dann wieder für die 
@@ -1271,19 +1273,23 @@ namespace AppZulassungsdienst.forms
                     {
                         kopfdaten.Bearbeitungsstatus = "2";
                         kopfdaten.MobilUser = "";
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "O"));
+                        if (!blnZulDatChanged)
+                            objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "O"));
                     }
                 }
                 else
                 {
-                    objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
+                    if (objNacherf.SelAnnahmeAH)
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "A"));
+                    else if (!blnZulDatChanged)
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "O"));
                 }
 
                 objNacherf.SaveVorgangToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
 
                 // Bei Änderung von StVa, Zulassungsdatum oder Flieger-Flag Vorgang aus Selektion ausschliessen
                 if ((!String.IsNullOrEmpty(objNacherf.SelKreis) && kopfdaten.Landkreis != objNacherf.SelKreis)
-                    || (!String.IsNullOrEmpty(objNacherf.SelDatum) && kopfdaten.Zulassungsdatum.ToString("dd.MM.yyyy") != objNacherf.SelDatum)
+                    || blnZulDatChanged
                     || (objNacherf.SelFlieger && !kopfdaten.Flieger.IsTrue()))
                 {
                     objNacherf.Vorgangsliste.RemoveAll(vg => vg.SapId == kopfdaten.SapId);
