@@ -108,7 +108,8 @@
             items: { src: this.container },
             type: 'inline',
             removalDelay: 300,
-            mainClass: 'my-mfp-zoom-in'
+            mainClass: 'my-mfp-zoom-in',
+            closeOnBgClick: false
         });
 
         if (hasOptions) {
@@ -312,29 +313,8 @@
             this.cb(this.startDate, this.endDate);
         },
 
-        move: function () {
-            //var parentOffset = {
-            //    top: this.parentEl.offset().top - this.parentEl.scrollTop(),
-            //    left: this.parentEl.offset().left - this.parentEl.scrollLeft()
-            //};
-            //if (this.opens == 'left') {
-            //    this.container.css({
-            //        top: this.element.offset().top + this.element.outerHeight(),
-            //        right: $(window).width() - this.element.offset().left - this.element.outerWidth() - parentOffset.left,
-            //        left: 'auto'
-            //    });
-            //} else {
-            //    this.container.css({
-            //        top: this.element.offset().top + this.element.outerHeight(),
-            //        left: this.element.offset().left - parentOffset.left,
-            //        right: 'auto'
-            //    });
-            //}
-        },
-
         show: function (e) {
             this.container.show();
-            this.move();
 
             if (e) {
                 e.stopPropagation();
