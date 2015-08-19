@@ -45,5 +45,7 @@ namespace CkgDomainLogic.WFM.Models
 
         [LocalizedDisplay(LocalizeConstants.InfoText)]
         public string Text { get; set; }
+
+        public bool NeueInfoDad { get; set; }
     }
 }

@@ -325,8 +325,17 @@ namespace SapORM
             //new FunctionReflector("Z_M_BAPIRDZ").WriteOrmForExportTableStructures("IZKFZKZ", "UN");
 
             //new FunctionReflector("Z_M_KLAERFAELLEVW").WriteOrmForExportTableStructures("I_KUNNR", "0000336070");      
-            new FunctionReflector("Z_WFM_READ_AUFTRAEGE_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_WFM_READ_AUFTRAEGE_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
             //new FunctionReflector("Z_WFM_READ_KONVERTER_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_WFM_STORNO_AUFTRAG_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0");
+            //new FunctionReflector("Z_WFM_READ_INFO_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0");
+            //new FunctionReflector("Z_WFM_WRITE_INFO_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_WFM_LIST_DOKU_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0");
+            //new FunctionReflector("Z_WFM_READ_DOKU_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF, I_AR_OBJECT", "0000340725", "0", "0");
+            //new FunctionReflector("Z_WFM_WRITE_DOKU_01").WriteOrmForExportTableStructures("I_AG, I_VORG_NR_ABM_AUF", "0000340725", "0");
+            //new FunctionReflector("Z_WFM_READ_TODO_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_WFM_SET_STATUS_01").WriteOrmForExportTableStructures("I_AG", "0000340725");
+            //new FunctionReflector("Z_WFM_WRITE_TODO_02").WriteOrmForExportTableStructures("I_AG, I_FUNKTIONSNAME, I_VORG_NR_ABM_AUF", "0000340725", "0", "0");
 
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures("I_KUNNR", "0000219853");
 

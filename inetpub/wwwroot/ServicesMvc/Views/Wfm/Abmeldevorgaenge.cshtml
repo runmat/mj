@@ -68,6 +68,15 @@
         LoadingHide();
     }
 
+    function OnRowDataBound_GridAuftraege(e) {
+        var farbFlag = e.dataItem["FarbFlag"].toString().toLowerCase();
+
+        var tr = $(e.row);
+
+        if (farbFlag == "1")
+            tr.addClass("bg-red");
+    }
+
     function OnLoad_GridAuftraege() {
         $('.t-no-data td').text(_ladeHinweis);
     }
@@ -132,6 +141,15 @@
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
+    }
+
+    function OnRowDataBound_GridInformationen(e) {
+        var neueInfo = e.dataItem["NeueInfoDad"].toString().toLowerCase();
+
+        var tr = $(e.row);
+
+        if (neueInfo == "true")
+            tr.addClass("bg-green");
     }
 
     function OnColumnShowHide_GridInformationen() {
