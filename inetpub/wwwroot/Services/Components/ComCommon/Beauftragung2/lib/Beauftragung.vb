@@ -2027,6 +2027,7 @@ Namespace Beauftragung2
                     Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_ZLD_GET_DAD_SD_ORDER", m_objApp, m_objUser, page)
 
                     myProxy.setImportParameter("I_VBELN", strAuftragsNr)
+                    myProxy.setImportParameter("I_VKBUR", mVerkaufsbuero)
 
                     myProxy.callBapi()
 
