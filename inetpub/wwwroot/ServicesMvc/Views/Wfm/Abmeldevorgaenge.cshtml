@@ -27,6 +27,10 @@
         margin-left: 20px;
     }
     
+    .zeile-hellrot {
+        background-color: #eb6d6d;
+    }
+    
 </style>
 
 <script type="text/javascript">
@@ -74,7 +78,7 @@
         var tr = $(e.row);
 
         if (farbFlag == "1")
-            tr.addClass("bg-red");
+            tr.addClass("zeile-hellrot");
     }
 
     function OnLoad_GridAuftraege() {
@@ -141,15 +145,6 @@
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
-    }
-
-    function OnRowDataBound_GridInformationen(e) {
-        var neueInfo = e.dataItem["NeueInfoDad"].toString().toLowerCase();
-
-        var tr = $(e.row);
-
-        if (neueInfo == "true")
-            tr.addClass("bg-green");
     }
 
     function OnColumnShowHide_GridInformationen() {

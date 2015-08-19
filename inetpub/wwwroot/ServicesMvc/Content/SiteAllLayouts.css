@@ -1269,3 +1269,11 @@ span.kennzeichen{
 .font-grey {
   color: #555555 !important;
 }
+
+.info-icon 
+{
+    width: 16px;
+    height: 16px;
+    float: right;
+    background: url(/ServicesMvc/Images/information.png) center no-repeat !important;
+}

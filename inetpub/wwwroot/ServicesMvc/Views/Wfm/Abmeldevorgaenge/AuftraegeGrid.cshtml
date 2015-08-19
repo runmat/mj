@@ -12,7 +12,7 @@
     {
         columns.XBound(c => c.Action).Width(100).Filterable(false).Sortable(false).ClientTemplate(
                 "<button onclick='ShowAuftragsDetailAjax(\"<#= data.VorgangsNrAbmeldeauftrag #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
-                + "<span class='margin-left-10 bold font-green tooltips' data-original-title='" + Localize.NewInformation + "' data-placement='right'><#= data.NeueInfoDad ? \"*\" : \"\" #></span>"
+                + "<i class='info-icon tooltips <#= data.NeueInfoDad ? \"\" : \"hide\" #>' data-original-title='" + Localize.NewInformation + "' data-placement='right'></i>"
         );
         
         columns.XBound(c => c.VorgangsNrAbmeldeauftrag);

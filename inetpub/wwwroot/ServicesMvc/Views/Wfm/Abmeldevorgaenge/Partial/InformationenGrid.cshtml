@@ -13,10 +13,9 @@
         columns.XBound(c => c.ToDoWer);
         columns.XBound(c => c.Text);
         columns.XBound(c => c.User);
-        columns.XBound(c => c.NeueInfoDad).Visible(false);
     })
     .XAutoColumnConfiguration()
-    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_GridInformationen"))
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.LaufendeNr).Ascending())
     .ToolBar(commands =>
