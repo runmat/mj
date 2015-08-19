@@ -14,7 +14,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
-        [Kennzeichen]
+        [KennzeichenPartial]
         public string Kennzeichen
         {
             get { return PropertyCacheGet(() => "").NotNullOrEmpty().ToUpper(); }

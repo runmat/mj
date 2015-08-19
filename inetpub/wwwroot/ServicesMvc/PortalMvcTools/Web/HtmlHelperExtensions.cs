@@ -14,6 +14,7 @@ using MvcTools.Models;
 using MvcTools.Web;
 using System.Web.Mvc.Ajax;
 using PortalMvcTools.Models;
+using CkgDomainLogic.General.Contracts;
 
 namespace PortalMvcTools.Web
 {
@@ -324,7 +325,7 @@ namespace PortalMvcTools.Web
             if (property == null)
                 return controlHtmlAttributesDict;
 
-            var attribute = property.GetCustomAttributes(typeof(KennzeichenAttribute), true).OfType<KennzeichenAttribute>().FirstOrDefault();
+            var attribute = property.GetCustomAttributes(typeof(IKennzeichenAttribute), true).OfType<IKennzeichenAttribute>().FirstOrDefault();
             if (attribute == null)
                 return controlHtmlAttributesDict;
 

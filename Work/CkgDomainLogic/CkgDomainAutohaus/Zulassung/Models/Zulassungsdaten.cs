@@ -77,7 +77,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string EvbNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo)]
-        [Kennzeichen]
+        [KennzeichenPartial]
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }
