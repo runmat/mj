@@ -263,7 +263,7 @@ namespace SoapRuecklaeuferschnittstelle
                 var gtTransps = Z_DPM_IMP_DAT_RUECKL_01.GT_TRANSP.GetExportList(sap);
 
                 var logOutput = String.Format("GT_DAT: {0}, GT_REP: {1}, GT_TRANSP: {2}", gtdatExportList.GetListAsString(), gtReps.GetListAsString(), gtTransps.GetListAsString());
-                logService.LogWebServiceTraffic("SAP-Input", logOutput, ConfigurationManager.AppSettings["LogTableName"]);
+                logService.LogWebServiceTraffic("SAP-Output", logOutput, ConfigurationManager.AppSettings["LogTableName"]);
 
                 var toReturn = RuecklaeuferschnittstelleUtils.RuecklaeuferschnittstelleFromSap(gtdatExportList, gtReps, gtTransps);
                 return toReturn;
@@ -331,7 +331,7 @@ namespace SoapRuecklaeuferschnittstelle
                     var gtTranspExportList = Z_DPM_IMP_DAT_RUECKL_01.GT_TRANSP.GetExportList(sap);
 
                     var logOutput = String.Format("GT_DAT: {0}, GT_REP: {1}, GT_TRANSP: {2}", gtDatExportList.GetListAsString(), gtRepExportList.GetListAsString(), gtTranspExportList.GetListAsString());
-                    logService.LogWebServiceTraffic("SAP-Input", logOutput, ConfigurationManager.AppSettings["LogTableName"]);
+                    logService.LogWebServiceTraffic("SAP-Output", logOutput, ConfigurationManager.AppSettings["LogTableName"]);
 
                     // Wenn auf SAP Seite kein Satz ermittelt wurde, einen "leeren" Satz mit Fehlercode zurückgeben
                     if (gtDatExportList.Any() == false)
