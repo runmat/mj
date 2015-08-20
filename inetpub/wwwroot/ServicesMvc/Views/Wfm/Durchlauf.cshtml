@@ -3,10 +3,24 @@
 @Html.ChartToolsFlotr2()
 
 <style type="text/css">
+    .chart-div-wrapper {
+        display: inline-block;
+        top: auto;
+        height: auto;
+    }
     .chart-div {
-        width: 700px;
+        display: inline-block;
+        position: relative;
+        margin: 10px 10px 0 10px;
+        width: 650px;
         height: 250px;
-        margin: 10px 0 0 0;
+        z-index: 9998;
+    }
+    .chart-div.sub {
+        display: block;
+        width: 450px;
+        height: 120px;
+        z-index: 9997;
     }
 </style>
 
@@ -63,7 +77,7 @@
 
             GridDurchlaufStatistikPrepare();
 
-            ShowChart();
+            ShowCharts();
 
             $("#divGrids").slideDown();
         });
@@ -142,13 +156,20 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function ShowChart() {
+    function ShowCharts() {
+        for (var i = 1; i <= 3; i++) 
+            showBusy($("#chart-" + i), 0, 0);
         
+        ShowChart(1);
+    }
+
+    function ShowChart(chartID) {
+
         $.ajax(
         {
             type: "POST",
             url: "GetChartData",
-            data: { },
+            data: { chartID: chartID },
             loadingShow: false,
             success: function (result) {
 
@@ -160,20 +181,25 @@
                 chartOptions.yaxis.tickFormatter = function (yVal) { return yVal + "%"; };
                 chartOptions.mouse.trackFormatter = function (point) {
                     var groupLabel = point.series.label;
-                    return point.y.replace(/\./g, ",") + "% " + groupLabel;
+                    return point.y.replace(/\./g, ",") + "% im " + groupLabel;
                 };
+                console.log(chartOptions);
+                if (chartID > 1)
+                    chartOptions.legend.show = false;
+
+                hideBusy($("#chart-" + chartID));
 
                 // Draw the graph
                 Flotr.draw(
-                  document.getElementById("chart"),
+                  document.getElementById("chart-" + chartID),
                   chartData,
                   chartOptions
                 );
+
+                if (chartID < 3)
+                    setTimeout(function () { ShowChart(chartID+1); }, 100);
             }
         });
     }
-
-    //ShowChart();
-
 
 </script>

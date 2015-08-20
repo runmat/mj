@@ -368,9 +368,9 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetChartData()
+        public ActionResult GetChartData(int chartID)
         {
-            return Json(ViewModel.GetChartData());
+            return Json(ViewModel.GetChartData(chartID));
         }
 
         #endregion

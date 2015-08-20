@@ -3,6 +3,7 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using System.Linq;
 
 namespace CkgDomainLogic.WFM.Models
 {
@@ -121,6 +122,15 @@ namespace CkgDomainLogic.WFM.Models
                     new SelectItem("Std", Localize.Standard),
                 });
             }
+        }
+
+        public string GetAlleAbmeldeartenDurchlaufNextKeyFor(string key)
+        {
+            var item = AlleAbmeldeartenDurchlauf.First(d => d.Key == key);
+            var index = AlleAbmeldeartenDurchlauf.IndexOf(item);
+            index = (index + 1) % AlleAbmeldeartenDurchlauf.Count;
+
+            return AlleAbmeldeartenDurchlauf[index].Key;
         }
 
         [LocalizedDisplay(LocalizeConstants.DeRegistrationType)]

@@ -23,5 +23,9 @@
 		"min": 0,
 		"autoscaleMargin": 1,
 		"tickDecimals": 0
+	},
+	"legend": 
+	{
+		"show": true
 	}
 }

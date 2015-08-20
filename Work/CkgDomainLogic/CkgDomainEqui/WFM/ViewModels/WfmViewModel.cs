@@ -398,9 +398,19 @@ namespace CkgDomainLogic.WFM.ViewModels
             DurchlaufStatistikenFiltered = DurchlaufStatistiken.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        public object GetChartData()
+        public object GetChartData(int chartID)
         {
-            var data = GetBarChartGroupedItemsWithLabels(DurchlaufDetails);
+            List<WfmDurchlaufSingle> items = DurchlaufDetails;
+            if (chartID > 1)
+            {
+                Selektor.AbmeldeartDurchlauf = Selektor.GetAlleAbmeldeartenDurchlaufNextKeyFor(Selektor.AbmeldeartDurchlauf);
+
+                LoadDurchlauf(null);
+
+                items = DurchlaufDetails;
+            }
+
+            var data = GetBarChartGroupedItemsWithLabels(items);
 
             return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar");
         }
