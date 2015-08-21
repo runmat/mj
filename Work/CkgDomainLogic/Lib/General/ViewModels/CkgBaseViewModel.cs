@@ -100,8 +100,18 @@ namespace CkgDomainLogic.General.ViewModels
 
         protected void DashboardSessionSaveCurrentReportSelector<T>(T reportSelector) where T : class
         {
-            var callingMethod = new StackFrame(1, true).GetMethod();
-            var dashboardItemsLoadMethodAttribute = callingMethod.GetCustomAttributes(true).OfType<DashboardItemsLoadMethodAttribute>().FirstOrDefault();
+            int framesToSkip = 1, maxFramesToSkip = 99;
+            DashboardItemsLoadMethodAttribute dashboardItemsLoadMethodAttribute = null;
+
+            while (dashboardItemsLoadMethodAttribute == null && framesToSkip < maxFramesToSkip)
+            {
+                var callingMethod = new StackFrame(framesToSkip, true).GetMethod();
+                if (callingMethod == null)
+                    return;
+
+                dashboardItemsLoadMethodAttribute = callingMethod.GetCustomAttributes(true).OfType<DashboardItemsLoadMethodAttribute>().FirstOrDefault();
+                framesToSkip++;
+            }
             if (dashboardItemsLoadMethodAttribute == null)
                 return;
 

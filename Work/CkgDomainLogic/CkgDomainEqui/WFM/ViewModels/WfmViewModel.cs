@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Serialization;
@@ -163,7 +162,7 @@ namespace CkgDomainLogic.WFM.ViewModels
             };
 
             Selektor.Selektionsfeld1Name = GetFeldname("SELEKTION1");
-            Selektor.Selektionsfeld2Name = GetFeldname("SELEKTION2"); 
+            Selektor.Selektionsfeld2Name = GetFeldname("SELEKTION2");
             Selektor.Selektionsfeld3Name = GetFeldname("SELEKTION3");
 
             Selektor.Referenz1Name = GetFeldname("REFERENZ1");
@@ -289,11 +288,11 @@ namespace CkgDomainLogic.WFM.ViewModels
             }
 
             var neuesDok = new WfmDokument
-                {
-                    DocumentType = SelectedDokArt,
-                    FileName = file.FileName,
-                    FileBytes = fileBytes,
-                };
+            {
+                DocumentType = SelectedDokArt,
+                FileName = file.FileName,
+                FileBytes = fileBytes,
+            };
 
             var neueDokInfo = DataService.SaveDokument(AktuellerAuftragVorgangsNr, neuesDok);
             if (neueDokInfo.ObjectId == null)
@@ -309,7 +308,7 @@ namespace CkgDomainLogic.WFM.ViewModels
         }
 
         #endregion
-        
+
 
         #region Aufgaben
 
@@ -338,7 +337,7 @@ namespace CkgDomainLogic.WFM.ViewModels
                 return false;
 
             var hoechsteNummer = Aufgaben.Select(a => a.LaufendeNr.ToInt()).Max();
-            
+
             return (hoechsteNummer == lfdNr);
         }
 
@@ -416,7 +415,7 @@ namespace CkgDomainLogic.WFM.ViewModels
             DurchlaufStatistikenFiltered = DurchlaufStatistiken.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        private ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items) 
+        private ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items)
         {
             var xAxisMonthDates = items
                 .OrderBy(it => it.ErledigtDatum).GroupBy(g => g.ErledigtDatum.ToFirstDayOfMonth()).Select(it => it.Key).ToArray();
@@ -460,7 +459,9 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             return new ChartItemsPackage
             {
-                data = data, labels = null, ticks = ticksArray
+                data = data,
+                labels = null,
+                ticks = ticksArray
             };
         }
 
@@ -471,9 +472,24 @@ namespace CkgDomainLogic.WFM.ViewModels
             return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar", "WfmDurchlaufzeiten");
         }
 
+        private ChartItemsPackage GetExpliciteChartDataForDashboard(string abmeldeArt)
+        {
+            Selektor = new WfmAuftragSelektor
+            {
+                ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
+                AbmeldeartDurchlauf = abmeldeArt
+            };
+            DashboardSessionSaveCurrentReportSelector(Selektor);
+
+            LoadDurchlauf(null);
+
+            return GetRawChartData(DurchlaufDetails);
+        }
+
 
         #region Chart Functions, accessed from extern
 
+        [HttpPost]
         public object GetChartData(int chartID)
         {
             List<WfmDurchlaufSingle> items = DurchlaufDetails;
@@ -492,46 +508,19 @@ namespace CkgDomainLogic.WFM.ViewModels
         [DashboardItemsLoadMethod("WFM_Durchlaufzeiten_Alle")]
         public ChartItemsPackage NameNotRelevant01()
         {
-            Selektor = new WfmAuftragSelektor
-            {
-                ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
-                AbmeldeartDurchlauf = "Alle"
-            };
-            DashboardSessionSaveCurrentReportSelector(Selektor);
-
-            LoadDurchlauf(null);
-
-            return GetRawChartData(DurchlaufDetails);
+            return GetExpliciteChartDataForDashboard("Alle");
         }
 
         [DashboardItemsLoadMethod("WFM_Durchlaufzeiten_Klaer")]
-        public ChartItemsPackage NameNotRelevant03()
+        public ChartItemsPackage NameNotRelevant02()
         {
-            Selektor = new WfmAuftragSelektor
-            {
-                ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
-                AbmeldeartDurchlauf = "Klär"
-            };
-            DashboardSessionSaveCurrentReportSelector(Selektor);
-
-            LoadDurchlauf(null);
-
-            return GetRawChartData(DurchlaufDetails);
+            return GetExpliciteChartDataForDashboard("Klär");
         }
 
         [DashboardItemsLoadMethod("WFM_Durchlaufzeiten_Std")]
-        public ChartItemsPackage NameNotRelevant02()
+        public ChartItemsPackage NameNotRelevant03()
         {
-            Selektor = new WfmAuftragSelektor
-            {
-                ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
-                AbmeldeartDurchlauf = "Std"
-            };
-            DashboardSessionSaveCurrentReportSelector(Selektor);
-
-            LoadDurchlauf(null);
-
-            return GetRawChartData(DurchlaufDetails);
+            return GetExpliciteChartDataForDashboard("Std");
         }
 
         #endregion
