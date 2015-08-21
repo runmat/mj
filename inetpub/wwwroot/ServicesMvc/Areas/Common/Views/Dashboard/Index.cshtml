@@ -114,7 +114,6 @@
                 success: function (result) {
 
                     _ChartPrepareJsonResult(result);
-
                     _dashboardData.data = _chartData;
                     _dashboardData.options = _chartOptions;
 
@@ -196,9 +195,11 @@
                 data: { id: "id_" + rawWidgetId },
                 loadingShow: false,
                 success: function (result) {
-                    _dashboardData.data = result.data.data;
-                    _dashboardData.options = jQuery.parseJSON(result.options);
-                    //console.log(_dashboardData.data);
+
+                    _ChartPrepareJsonResult(result);
+                    _dashboardData.data = _chartData;
+                    _dashboardData.options = _chartOptions;
+
                     $(widgetId + " .sDashboard-refresh-icon").trigger("click");
                     SetupWidgetToolbar(widgetId);
                     hideBusy(busyHintDiv);
