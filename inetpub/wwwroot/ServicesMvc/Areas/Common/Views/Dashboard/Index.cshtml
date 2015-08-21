@@ -28,7 +28,7 @@
 
 @foreach (var dashBoardItem in Model.DashboardItems)
 {
-    <a class="margin-right-10" target="report_@dashBoardItem.ID" href="ShowReportForDashboardItem/@dashBoardItem.ID">Report @dashBoardItem.ID</a>
+    <a class="margin-right-10" target="report_@dashBoardItem.ID" href="ShowReportForDashboardItem?id=@dashBoardItem.ID&timestamp=@DateTime.Now.Ticks">Report @dashBoardItem.ID</a>
 }
 
 <ul id="myDashboard">
