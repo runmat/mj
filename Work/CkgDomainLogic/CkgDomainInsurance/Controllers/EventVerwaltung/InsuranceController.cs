@@ -116,7 +116,7 @@ namespace ServicesMvc.Controllers
             if (TryUpdateModel(itemCloned))
             {
                 ModelMapping.Copy(itemCloned, itemToUpdate); 
-                EventsViewModel.SchadenfallStatusWertSave(itemToUpdate);
+                EventsViewModel.SchadenfallStatusWertSave(itemToUpdate, ModelState.AddModelError);
             }
 
             return View(new GridModel(EventsViewModel.SchadenfallCurrentStatusWerteWithNulls));
