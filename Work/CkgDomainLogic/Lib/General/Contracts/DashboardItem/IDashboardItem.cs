@@ -11,7 +11,9 @@
         string RelatedSelectorModel { get; set; }
 
         string ChartJsonOptions { get; set; }
-        
+
+        string ChartJsonDataCustomizingScriptFunction { get; set; }
+
         int? InitialSort { get; set; }
 
         int UserSort { get; }

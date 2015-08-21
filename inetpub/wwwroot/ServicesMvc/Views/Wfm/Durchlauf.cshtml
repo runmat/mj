@@ -173,27 +173,18 @@
             loadingShow: false,
             success: function (result) {
 
-                var chartData = result.data.data;
-                var chartOptions = jQuery.parseJSON(result.options);
-
-                chartOptions.bars.barWidth = 1.0;
-                chartOptions.xaxis.min = 0;
-                chartOptions.yaxis.tickFormatter = function (yVal) { return yVal + "%"; };
-                chartOptions.mouse.trackFormatter = function (point) {
-                    var groupLabel = point.series.label;
-                    return point.y.replace(/\./g, ",") + "% im " + groupLabel;
-                };
-                console.log(chartOptions);
+                _ChartPrepareJsonResult(result);
+                
                 if (chartID > 1)
-                    chartOptions.legend.show = false;
+                    _chartOptions.legend.show = false;
 
                 hideBusy($("#chart-" + chartID));
 
                 // Draw the graph
                 Flotr.draw(
                   document.getElementById("chart-" + chartID),
-                  chartData,
-                  chartOptions
+                  _chartData,
+                  _chartOptions
                 );
 
                 if (chartID < 3)

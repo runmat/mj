@@ -11,12 +11,30 @@ using CkgDomainLogic.WFM.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
+using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.WFM.Contracts;
+using GeneralTools.Contracts;
 
 namespace ServicesMvc.Controllers
 {
-    public partial class WfmController 
+    public partial class WfmController : CkgDomainController
     {
+        public override string DataContextKey { get { return "WflViewModel"; } }
+
         public WfmViewModel ViewModel { get { return GetViewModel<WfmViewModel>(); } }
+
+        public WfmController(IAppSettings appSettings, ILogonContextDataService logonContext, IWfmDataService wflDataService)
+            : base(appSettings, logonContext)
+        {
+            InitViewModel(ViewModel, appSettings, logonContext, wflDataService);
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            WfmAuftrag.GetViewModel = GetViewModel<WfmViewModel>;
+            WfmToDo.GetViewModel = GetViewModel<WfmViewModel>;
+        }
 
         [CkgApplication]
         public ActionResult Abmeldevorgaenge()

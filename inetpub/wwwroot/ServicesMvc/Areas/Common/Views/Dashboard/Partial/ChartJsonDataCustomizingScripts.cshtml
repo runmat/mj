@@ -1,0 +1,44 @@
+﻿
+
+<script type="text/javascript">
+
+    var _chartData = null;
+    var _chartOptions = null;
+
+    function _ChartPrepareJsonResult(result) {
+        _chartData = result.data;
+        _chartOptions = jQuery.parseJSON(result.options);
+
+        console.log("_ChartPrepareJsonResult");
+        console.log(_chartOptions);
+
+        if (result.customscriptfunction != "")
+            eval(result.customscriptfunction + "();");
+    }
+
+
+    //
+    // <custom functions>
+    //
+
+    function WfmDurchlaufzeiten() {
+
+        console.log("WfmDurchlaufzeiten");
+
+        _chartOptions.bars.barWidth = 1.0;
+        _chartOptions.xaxis.min = 0;
+        _chartOptions.yaxis.tickFormatter = function (yVal) { return yVal + "%"; };
+        _chartOptions.mouse.trackFormatter = function (point) {
+            var groupLabel = point.series.label;
+            if (typeof (point.y) != "undefined")
+                return point.y.replace(/\./g, ",") + "% im " + groupLabel;
+        };
+
+    }
+
+
+    //
+    // </custom functions>
+    //
+
+</script>

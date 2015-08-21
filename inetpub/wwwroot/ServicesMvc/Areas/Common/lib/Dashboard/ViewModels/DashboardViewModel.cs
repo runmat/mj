@@ -65,7 +65,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
 
-        public object GetBarChartData(string id)
+        public object GetChartData(string id)
         {
             var dbId = id.Replace("id_", "").Replace("#", "");
             var dashboardItem = DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
@@ -75,7 +75,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
             var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.Title);
             
-            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions);
+            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions, dashboardItem.ChartJsonDataCustomizingScriptFunction);
         }
     }
 }

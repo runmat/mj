@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.WFM.Models.AppModelMappings;
@@ -329,6 +331,15 @@ namespace CkgDomainLogic.WFM.Services
 
         public void GetDurchlauf(WfmAuftragSelektor selector, Action<IEnumerable<WfmDurchlaufSingle>, IEnumerable<WfmDurchlaufStatistik>> getDataAction)
         {
+            var detailsFileName = string.Format("WfmDetails_{0}.xml", selector.AbmeldeartDurchlauf);
+
+            var webItemsDetailsTest = XmlService.XmlDeserializeFromFile<List<WfmDurchlaufSingle>>(Path.Combine(AppSettings.DataPath, detailsFileName));
+            var webItemsStatistikenTest = XmlService.XmlDeserializeFromFile<List<WfmDurchlaufStatistik>>(Path.Combine(AppSettings.DataPath, "WfmStatistiken.xml"));
+
+            getDataAction(webItemsDetailsTest, webItemsStatistikenTest);
+            return;
+
+
             Z_WFM_CALC_DURCHLAUFZEIT_01.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
             if (!string.IsNullOrEmpty(selector.Selektionsfeld1Name) || selector.Selektionsfeld1)
@@ -364,9 +375,11 @@ namespace CkgDomainLogic.WFM.Services
 
             var sapItemsDetails = Z_WFM_CALC_DURCHLAUFZEIT_01.ET_OUT.GetExportList(SAP);
             var webItemsDetails = AppModelMappings.Z_WFM_CALC_DURCHLAUFZEIT_01_ET_OUT_To_WfmDurchlaufSingle.Copy(sapItemsDetails);
+            //XmlService.XmlSerializeToFile(webItemsDetails.ToList(), Path.Combine(AppSettings.DataPath, @"WfmDetails.xml"));
 
             var sapItemsStatistiken = Z_WFM_CALC_DURCHLAUFZEIT_01.ES_STATISTIK.GetExportList(SAP);
             var webItemsStatistiken = AppModelMappings.Z_WFM_CALC_DURCHLAUFZEIT_01_ES_STATISTIK_To_WfmDurchlaufStatistik.Copy(sapItemsStatistiken);
+            //XmlService.XmlSerializeToFile(webItemsStatistiken.ToList(), Path.Combine(AppSettings.DataPath, @"WfmStatistiken.xml"));
 
             getDataAction(webItemsDetails, webItemsStatistiken);
         }

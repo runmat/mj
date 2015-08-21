@@ -19,6 +19,8 @@ namespace CkgDomainLogic.General.Database.Models
 
         public int? InitialSort { get; set; }
 
+        public string ChartJsonDataCustomizingScriptFunction { get; set; }
+
         [NotMapped]
         public int UserSort { get { return ItemAnnotator == null ? 0 : ItemAnnotator.UserSort; } }
 

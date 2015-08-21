@@ -17,6 +17,7 @@ using MvcTools.Web;
 
 namespace CkgDomainLogic.WFM.ViewModels
 {
+    [DashboardProviderViewModel]
     public class WfmViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
@@ -53,7 +54,17 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public WfmAuftrag AktuellerAuftrag { get { return Auftraege.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == AktuellerAuftragVorgangsNr); } }
 
-        public string Title { get { return (Selektor.Modus == SelektionsModus.KlaerfallWorkplace ? Localize.Wfm_KlaerfallWorkplace : Localize.Wfm_Abmeldevorgaenge); } }
+        public string Title
+        {
+            get
+            {
+                if (Selektor.Modus == SelektionsModus.KlaerfallWorkplace) return Localize.Wfm_KlaerfallWorkplace;
+                if (Selektor.Modus == SelektionsModus.Abmeldevorgaenge) return Localize.Wfm_Abmeldevorgaenge;
+                if (Selektor.Modus == SelektionsModus.Durchlauf) return Localize.Wfm_Durchlaufzeiten;
+
+                return "";
+            }
+        }
 
         public string DokArten { get { return "VER;SIP;SOS"; } }
 
@@ -67,7 +78,9 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public void DataInit(SelektionsModus modus)
         {
-            Selektor = new WfmAuftragSelektor { Modus = modus, ToDoWer = "" };
+            Selektor.Modus = modus;
+            Selektor.ToDoWer = "";
+
             InitFeldnamen();
             DataMarkForRefresh();
         }
@@ -142,7 +155,12 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             PropertyCacheClear(this, m => m.Feldnamen);
 
-            Feldnamen = DataService.GetFeldnamen();
+            //Feldnamen = DataService.GetFeldnamen();
+            Feldnamen = new List<WfmAuftragFeldname>
+            {
+                new WfmAuftragFeldname { Feldname = "SELEKTION1", Anzeigename = "P" },
+                new WfmAuftragFeldname { Feldname = "SELEKTION2", Anzeigename = "T" },
+            };
 
             Selektor.Selektionsfeld1Name = GetFeldname("SELEKTION1");
             Selektor.Selektionsfeld2Name = GetFeldname("SELEKTION2"); 
@@ -398,24 +416,7 @@ namespace CkgDomainLogic.WFM.ViewModels
             DurchlaufStatistikenFiltered = DurchlaufStatistiken.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
-        public object GetChartData(int chartID)
-        {
-            List<WfmDurchlaufSingle> items = DurchlaufDetails;
-            if (chartID > 1)
-            {
-                Selektor.AbmeldeartDurchlauf = Selektor.GetAlleAbmeldeartenDurchlaufNextKeyFor(Selektor.AbmeldeartDurchlauf);
-
-                LoadDurchlauf(null);
-
-                items = DurchlaufDetails;
-            }
-
-            var data = GetBarChartGroupedItemsWithLabels(items);
-
-            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar");
-        }
-
-        public ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items) 
+        private ChartItemsPackage GetBarChartGroupedItemsWithLabels(List<WfmDurchlaufSingle> items) 
         {
             var xAxisMonthDates = items
                 .OrderBy(it => it.ErledigtDatum).GroupBy(g => g.ErledigtDatum.ToFirstDayOfMonth()).Select(it => it.Key).ToArray();
@@ -462,6 +463,78 @@ namespace CkgDomainLogic.WFM.ViewModels
                 data = data, labels = null, ticks = ticksArray
             };
         }
+
+        private ChartItemsPackage GetRawChartData(List<WfmDurchlaufSingle> items)
+        {
+            var data = GetBarChartGroupedItemsWithLabels(items);
+
+            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, "bar", "WfmDurchlaufzeiten");
+        }
+
+
+        #region Chart Functions, accessed from extern
+
+        public object GetChartData(int chartID)
+        {
+            List<WfmDurchlaufSingle> items = DurchlaufDetails;
+            if (chartID > 1)
+            {
+                Selektor.AbmeldeartDurchlauf = Selektor.GetAlleAbmeldeartenDurchlaufNextKeyFor(Selektor.AbmeldeartDurchlauf);
+
+                LoadDurchlauf(null);
+
+                items = DurchlaufDetails;
+            }
+
+            return GetRawChartData(items);
+        }
+
+        [DashboardItemsLoadMethod("WFM_Durchlaufzeiten_Alle")]
+        public ChartItemsPackage NameNotRelevant01()
+        {
+            Selektor = new WfmAuftragSelektor
+            {
+                ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
+                AbmeldeartDurchlauf = "Alle"
+            };
+            DashboardSessionSaveCurrentReportSelector(Selektor);
+
+            LoadDurchlauf(null);
+
+            return GetRawChartData(DurchlaufDetails);
+        }
+
+        [DashboardItemsLoadMethod("WFM_Durchlaufzeiten_Klaer")]
+        public ChartItemsPackage NameNotRelevant03()
+        {
+            Selektor = new WfmAuftragSelektor
+            {
+                ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
+                AbmeldeartDurchlauf = "Klär"
+            };
+            DashboardSessionSaveCurrentReportSelector(Selektor);
+
+            LoadDurchlauf(null);
+
+            return GetRawChartData(DurchlaufDetails);
+        }
+
+        [DashboardItemsLoadMethod("WFM_Durchlaufzeiten_Std")]
+        public ChartItemsPackage NameNotRelevant02()
+        {
+            Selektor = new WfmAuftragSelektor
+            {
+                ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
+                AbmeldeartDurchlauf = "Std"
+            };
+            DashboardSessionSaveCurrentReportSelector(Selektor);
+
+            LoadDurchlauf(null);
+
+            return GetRawChartData(DurchlaufDetails);
+        }
+
+        #endregion
 
         #endregion
     }

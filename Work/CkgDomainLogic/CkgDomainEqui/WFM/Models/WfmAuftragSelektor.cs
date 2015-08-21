@@ -87,13 +87,13 @@ namespace CkgDomainLogic.WFM.Models
         public SelektionsModus Modus { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Date)]
-        public DateRange SolldatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) { IsSelected = false }); } set { PropertyCacheSet(value); } }
+        public DateRange SolldatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
-        public DateRange AnlageDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.LastMonth) { IsSelected = false }); } set { PropertyCacheSet(value); } }
+        public DateRange AnlageDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.LastMonth)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.FinishDate)]
-        public DateRange ErledigtDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months) { IsSelected = true }); } set { PropertyCacheSet(value); } }
+        public DateRange ErledigtDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months, true)); } set { PropertyCacheSet(value); } }
 
         public List<SelectItem> AlleToDoWer
         {

@@ -2501,6 +2501,7 @@
     <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Areas\Fahrzeug\ViewModels\HolBringServiceViewModel.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
+    <Compile Include="Controllers\WfmController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2593,6 +2594,7 @@
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

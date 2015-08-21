@@ -29,10 +29,10 @@ namespace CkgDomainLogic.General.Services
             for (var k = 0; k < groupArray.Count(); k++)
             {
                 data[k] = new
-                    {
-                        data = new [] { groupArray[k] },
-                        label = xAxisLabels[k]
-                    };
+                {
+                    data = new[] { groupArray[k] },
+                    label = xAxisLabels[k]
+                };
             }
 
             return new ChartItemsPackage
@@ -85,36 +85,39 @@ namespace CkgDomainLogic.General.Services
         }
 
 
-        public static object PrepareChartDataAndOptions(ChartItemsPackage data, string dataPath, string chartTemplate)
+        public static ChartItemsPackage PrepareChartDataAndOptions(ChartItemsPackage data, string dataPath, string chartTemplate, string chartJsonDataCustomizingScriptFunction)
         {
             var chartOptionsFileName = Path.Combine(dataPath, "DashBoard", "ChartTemplates", string.Format("{0}.txt", chartTemplate));
             if (!File.Exists(chartOptionsFileName))
-                return new { };
+                return data;
 
-            var options = File.ReadAllText(chartOptionsFileName);
+            var optionsAsText = File.ReadAllText(chartOptionsFileName);
 
-            if (options.NotNullOrEmpty().Contains("@ticks"))
+            if (optionsAsText.NotNullOrEmpty().Contains("@ticks"))
             {
                 // label array json format, as string: "[[0,\"label 1\"], [1,\"label 2\"], [2,\"label 3\"]]"
 
                 if (data.ticks != null)
                 {
-                    options = options.Replace("@ticks",
+                    optionsAsText = optionsAsText.Replace("@ticks",
                         string.Format("[{0}]",
                             string.Join(",", data.ticks.Select(s => string.Format("[{0},\"{1}\"]", s.Pos.ToString().Replace(",", "."), s.Label)))));
                 }
-                else
+                else 
                     if (data.labels != null)
                     {
                         var labelArray = data.labels;
 
-                        options = options.Replace("@ticks",
+                        optionsAsText = optionsAsText.Replace("@ticks",
                             string.Format("[{0}]",
                                 string.Join(",", labelArray.Select(s => string.Format("[{0},\"{1}\"]", labelArray.ToList().IndexOf(s), s)))));
                     }
             }
 
-            return new { data, options };
+            data.options = optionsAsText;
+            data.customscriptfunction = chartJsonDataCustomizingScriptFunction.NotNullOrEmpty();
+
+            return data;
         }
     }
 }
