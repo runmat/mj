@@ -177,22 +177,5 @@ namespace CkgDomainLogic.General.ViewModels
         }
 
         #endregion
-
-        protected string GetApplicationConfigValueForCustomer(string configValue, bool considerGroupId = false)
-        {
-            if (LogonContext == null || LogonContext.Customer == null)
-                return "";
-
-            var appId = LogonContext.GetAppIdCurrent();
-            var customerId = LogonContext.Customer.CustomerID;
-            var groupId = (considerGroupId ? LogonContext.Group.GroupID : 0);
-
-            return ApplicationConfiguration.GetApplicationConfigValue(configValue, appId.ToString(), customerId, groupId);
-        }
-
-        protected bool GetApplicationConfigBoolValueForCustomer(string configValue, bool considerGroupId = false)
-        {
-            return GetApplicationConfigValueForCustomer(configValue, considerGroupId).ToBool();
-        }
     }
 }

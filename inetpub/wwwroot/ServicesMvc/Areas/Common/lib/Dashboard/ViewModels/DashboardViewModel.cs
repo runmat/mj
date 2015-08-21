@@ -36,6 +36,8 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public void DataInit()
         {
             DataMarkForRefresh();
+
+            DashboardSessionSaveAllItems(DashboardItems);
         }
 
         public void DataMarkForRefresh()
