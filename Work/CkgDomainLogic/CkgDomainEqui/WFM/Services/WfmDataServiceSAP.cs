@@ -331,15 +331,6 @@ namespace CkgDomainLogic.WFM.Services
 
         public void GetDurchlauf(WfmAuftragSelektor selector, Action<IEnumerable<WfmDurchlaufSingle>, IEnumerable<WfmDurchlaufStatistik>> getDataAction)
         {
-            var detailsFileName = string.Format("WfmDetails_{0}.xml", selector.AbmeldeartDurchlauf);
-
-            var webItemsDetailsTest = XmlService.XmlDeserializeFromFile<List<WfmDurchlaufSingle>>(Path.Combine(AppSettings.DataPath, detailsFileName));
-            var webItemsStatistikenTest = XmlService.XmlDeserializeFromFile<List<WfmDurchlaufStatistik>>(Path.Combine(AppSettings.DataPath, "WfmStatistiken.xml"));
-
-            getDataAction(webItemsDetailsTest, webItemsStatistikenTest);
-            return;
-
-
             Z_WFM_CALC_DURCHLAUFZEIT_01.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
 
             if (!string.IsNullOrEmpty(selector.Selektionsfeld1Name) || selector.Selektionsfeld1)

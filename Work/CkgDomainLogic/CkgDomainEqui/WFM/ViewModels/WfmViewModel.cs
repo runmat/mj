@@ -154,12 +154,7 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             PropertyCacheClear(this, m => m.Feldnamen);
 
-            //Feldnamen = DataService.GetFeldnamen();
-            Feldnamen = new List<WfmAuftragFeldname>
-            {
-                new WfmAuftragFeldname { Feldname = "SELEKTION1", Anzeigename = "P" },
-                new WfmAuftragFeldname { Feldname = "SELEKTION2", Anzeigename = "T" },
-            };
+            Feldnamen = DataService.GetFeldnamen();
 
             Selektor.Selektionsfeld1Name = GetFeldname("SELEKTION1");
             Selektor.Selektionsfeld2Name = GetFeldname("SELEKTION2");
