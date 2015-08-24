@@ -173,9 +173,9 @@ namespace CkgDomainLogic.General.Services
 
             return UserApps
                 .Where(ua => GetAppTypeFriendlyName(ua.AppType).IsNotNullOrEmpty())
-                    .OrderBy(ua => ua.AppTypeRank).ThenBy(ua => ua.AppRank)
-                        .GroupBy(ua => ua.AppType)
-                            .Select(ua2 => UserApps.FirstOrDefault(uaGroup => uaGroup.AppType == ua2.Key))
+                    .GroupBy(ua => ua.AppType)
+                        .Select(ua2 => UserApps.FirstOrDefault(uaGroup => uaGroup.AppType == ua2.Key))
+                            .OrderBy(ua => ua.AppTypeRank)
                                 .ToList();
         }
 
