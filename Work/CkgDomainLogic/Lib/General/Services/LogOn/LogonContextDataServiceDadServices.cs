@@ -165,6 +165,7 @@ namespace CkgDomainLogic.General.Services
                     if (appType != null)
                     {
                         ua.AppTypeRank = appType.Rank;
+                        ua.AppTypeCssClass = appType.ButtonPath;
                         ua.AppTypeFriendlyName = GetAppTypeFriendlyName(appType.AppType);
                     }
                     RewriteUrlToLogPageVisit(ua);

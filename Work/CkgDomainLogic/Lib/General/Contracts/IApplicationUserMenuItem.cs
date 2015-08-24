@@ -25,6 +25,8 @@ namespace CkgDomainLogic.General.Contracts
 
         string AppTypeFriendlyName { get; set; }
 
+        string AppTypeCssClass { get; set; }
+
         #endregion
     }
 }

@@ -401,6 +401,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="assets\img\bg\1.jpg" />
     <Content Include="assets\img\bg\2.jpg" />
+    <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.svg" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
@@ -957,6 +958,11 @@
     <Content Include="Content\fonts\pt_sans-webfont.eot" />
     <Content Include="Content\fonts\pt_sans-webfont.ttf" />
     <Content Include="Content\fonts\pt_sans-webfont.woff" />
+    <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.eot" />
+    <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.ttf" />
+    <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.woff" />
+    <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.woff2" />
+    <Content Include="assets\plugins\font-awesome\font\v2\FontAwesome.otf" />
     <None Include="Documents\Templates\UploadBriefversand.csv" />
     <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
     <Content Include="Documents\Templates\UploadFzgUebersichtFilter.xls" />
@@ -2908,6 +2914,8 @@
     <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPage\StylesDeviationAllLayoutPages.cshtml" />
     <Content Include="Views\Shared\Partial\ImpressumCkg.cshtml" />
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
+    <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
