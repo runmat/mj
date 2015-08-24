@@ -1,0 +1,64 @@
+﻿@using CkgDomainLogic.General.Contracts
+@using ServicesMvc
+@{
+    var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
+}
+
+<script type="text/javascript">
+
+    var _appFavoritesEditMode = @((logonContext != null && logonContext.AppFavoritesEditMode).ToString().ToLower()) ;
+
+    function OnMenuItemClick(a, appId, ignoreAppFavoritesEditSwitchOneFavorite) {
+        if (_appFavoritesEditMode) {
+            if (ignoreAppFavoritesEditSwitchOneFavorite)
+                return false;
+            
+            return AppFavoritesEditSwitchOneFavorite(a, appId);
+        }
+
+        return true;
+    }
+    
+</script>
+
+
+<li class="@MvcApplication.GetActiveMenuItemCssClass()">
+    <a href="~/">
+        <i class="icon-star-o"></i> 
+        <span class="title">Home</span>
+        <span class="selected"></span>
+    </a>
+</li>
+
+@if (logonContext != null)
+{
+    foreach (var menuGroup in logonContext.GetMenuItemGroups())
+    {
+        <li class="@MvcApplication.GetActiveMenuGroupCssClass(menuGroup.AppType)">
+            <a href="javascript:;">
+                <i class="@menuGroup.AppTypeCssClass"></i>
+
+                <span class="title">@logonContext.TranslateMenuAppType(menuGroup)</span>
+					
+                <span class="arrow "></span>
+            </a>
+		    <ul class="sub-menu">
+                @foreach (var menuItem in logonContext.GetMenuItems(menuGroup.AppType))
+                {
+                    var appFavoriteClassName = logonContext.AppFavoritesEditMode && menuItem.AppIsMvcFavorite ? "app-favorite" : "";
+		            <li class="@MvcApplication.GetActiveMenuItemCssClass(menuItem.AppName)">
+		                <a class="@appFavoriteClassName" onclick="return OnMenuItemClick(this, @menuItem.AppID, false);" href="@logonContext.GetUserEncrytpedUrl(menuItem)">@logonContext.TranslateMenuAppName(@menuItem)</a>
+                    </li>
+                }
+		    </ul>
+		</li>
+    }
+
+    <li class="@MvcApplication.GetActiveMenuItemCssClass("/DomainCommon/Kontakt")">
+        <a href="~/DomainCommon/Kontakt">
+            <i class="icon-comments-o"></i> 
+            <span class="title">@Localize.ContactPersons</span>
+            <span class="selected"></span>
+        </a>
+    </li>
+}
