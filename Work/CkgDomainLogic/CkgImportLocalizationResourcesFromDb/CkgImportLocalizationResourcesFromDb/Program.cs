@@ -21,6 +21,8 @@ namespace CkgImportLocalizationResourcesFromDb
             var destinationDbServer = (args[0].Length <= 4 ? "Dad" : "") + args[0].ToUpper();
             CopyTranslationDataTable(destinationDbServer, "TranslatedResource");
             CopyTranslationDataTable(destinationDbServer, "TranslatedResourceCustom");
+
+            SetTimeOfLastResourceUpdate(destinationDbServer);
         }
 
         private static void CopyTranslationDataTable(string destinationDbServer, string tableName)
@@ -120,6 +122,26 @@ namespace CkgImportLocalizationResourcesFromDb
             var dirName = Path.GetDirectoryName(outputFileName);
             if (dirName != null && !Directory.Exists(dirName))
                 Directory.CreateDirectory(dirName);
+        }
+
+        private static void SetTimeOfLastResourceUpdate(string destinationDbServer)
+        {
+            var sourceDbContext = new DomainDbContext(ConfigurationManager.AppSettings["DadTest"]);
+            var destinationDbContext = new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer]);
+
+            Console.WriteLine();
+            Console.WriteLine("  Setze 'TimeOfLastResourceUpdate' in Tabelle 'Config' auf TEST ...");
+            Console.WriteLine();
+
+            sourceDbContext.Database.ExecuteSqlCommand("update Config set [Value] = '" + DateTime.Now.ToString("yyyyMMddHHmmss") + "' where [Context] = 'Localization' and [Key] = 'TimeOfLastResourceUpdate'");
+            sourceDbContext.SaveChanges();
+
+            Console.WriteLine();
+            Console.WriteLine("  Setze 'TimeOfLastResourceUpdate' in Tabelle 'Config' auf {0} ...", destinationDbServer);
+            Console.WriteLine();
+
+            destinationDbContext.Database.ExecuteSqlCommand("update Config set [Value] = '" + DateTime.Now.ToString("yyyyMMddHHmmss") + "' where [Context] = 'Localization' and [Key] = 'TimeOfLastResourceUpdate'");
+            destinationDbContext.SaveChanges();
         }
     }
 }
