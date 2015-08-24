@@ -5147,3 +5147,15 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 .padding-5 { padding: 5px; }
 .padding-10 { padding: 10px; }
 
+
+
+.icon-star-o:before {  content: "\f006"; }
+
+.icon-random:before {  content: "\f074"; }
+.icon-university:before {  content: "\f19c"; }
+.icon-stack-overflow:before {  content: "\f16c"; }
+.icon-registered:before {  content: "\f25d"; }
+
+.icon-comments-o:before {  content: "\f0e6"; }
+
+
