@@ -543,7 +543,10 @@
     }    
     
     function HandleResponsiveControlWidths() {
-        $(".portlet").each(function () {
+        
+        try { HandleResponsiveControlWidthsForTheme(); } catch(e) {}
+
+        $(".portlet").each(function() {
             var p = $(this);
 
             var pWidth = parseInt(p.css("width"), 10);
