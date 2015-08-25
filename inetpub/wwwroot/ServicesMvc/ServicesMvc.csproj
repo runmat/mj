@@ -446,6 +446,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarMouseover.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarStacked.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Pie.txt" />

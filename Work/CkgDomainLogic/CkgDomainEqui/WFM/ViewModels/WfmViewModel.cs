@@ -57,9 +57,15 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             get
             {
-                if (Selektor.Modus == SelektionsModus.KlaerfallWorkplace) return Localize.Wfm_KlaerfallWorkplace;
-                if (Selektor.Modus == SelektionsModus.Abmeldevorgaenge) return Localize.Wfm_Abmeldevorgaenge;
-                if (Selektor.Modus == SelektionsModus.Durchlauf) return Localize.Wfm_Durchlaufzeiten;
+                switch (Selektor.Modus)
+                {
+                    case SelektionsModus.KlaerfallWorkplace:
+                        return Localize.Wfm_KlaerfallWorkplace;
+                    case SelektionsModus.Abmeldevorgaenge:
+                        return Localize.Wfm_Abmeldevorgaenge;
+                    case SelektionsModus.Durchlauf:
+                        return Localize.Wfm_Durchlaufzeiten;
+                }
 
                 return "";
             }
@@ -131,6 +137,61 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             AuftraegeFiltered = Auftraege.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+        private ChartItemsPackage AuftraegeForChart(string abmeldeStatus)
+        {
+            var selector = new WfmAuftragSelektor
+            {
+                Selektionsfeld1 = true,
+                Selektionsfeld1Name = "X",
+                Abmeldestatus = abmeldeStatus == null ? new List<string>() : new List <string> { abmeldeStatus },
+                SolldatumVonBis = new DateRange(DateRangeType.CurrentYear, true)
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            var items = DataService.GetAbmeldeauftraege(selector)
+                                    .Where(data => data.Solldatum.GetValueOrDefault() > DateTime.MinValue)
+                                    .OrderBy(data => data.Solldatum)
+                                    .ToListOrEmptyList();
+            
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
+            Func<WfmAuftrag, DateTime> xAxisKeyModel = (groupKey => groupKey.Solldatum.ToFirstDayOfMonth());
+
+            return ChartService.GetBarChartGroupedStackedItemsWithLabels(
+                items,
+                xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
+                xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
+                );
+        }
+
+
+        #region Chart Functions, accessed from extern
+
+        [DashboardItemsLoadMethod("WFM_Auftraege_DiesesJahr_Alle")]
+        public ChartItemsPackage NameNotRelevant11()
+        {
+            return AuftraegeForChart(null);
+        }
+
+        [DashboardItemsLoadMethod("WFM_Auftraege_DiesesJahr_InArbeit")]
+        public ChartItemsPackage NameNotRelevant12()
+        {
+            return AuftraegeForChart("1");
+        }
+
+        [DashboardItemsLoadMethod("WFM_Auftraege_DiesesJahr_Abgemeldet")]
+        public ChartItemsPackage NameNotRelevant13()
+        {
+            return AuftraegeForChart("2");
+        }
+
+        [DashboardItemsLoadMethod("WFM_Auftraege_DiesesJahr_Storniert")]
+        public ChartItemsPackage NameNotRelevant14()
+        {
+            return AuftraegeForChart("3");
+        }
+
+        #endregion
 
 
         #region Misc
@@ -437,14 +498,14 @@ namespace CkgDomainLogic.WFM.ViewModels
                         tageDiesesMonatsUndGruppeProzent = tageDiesesMonatsUndGruppeGesamt * 100.0 / tageDiesesMonatsGesamt;
 
                     double incGroupX = group * xAxisMonthDates.Length + group;
-                    groupArray[group] = new double[2] { xAxisStart + incGroupX + month, tageDiesesMonatsUndGruppeProzent };
+                    groupArray[group] = new[] { xAxisStart + incGroupX + month, tageDiesesMonatsUndGruppeProzent };
                 }
 
                 data[month] = new { data = groupArray, label = xAxisMonthDates[month].ToString("MMMM yyyy") };
             }
 
-            double tickOfset = (xAxisMonthDates.Length / 2.0) - 0.5;
-            double tickStart = xAxisStart + tickOfset;
+            var tickOfset = (xAxisMonthDates.Length / 2.0) - 0.5;
+            var tickStart = xAxisStart + tickOfset;
             double tickInc = xAxisMonthDates.Length + 1, tickPos = 0.0;
             var ticksArray = xAxisGroups.Select(group => new ChartItemsTick
             {
@@ -471,6 +532,8 @@ namespace CkgDomainLogic.WFM.ViewModels
         {
             Selektor = new WfmAuftragSelektor
             {
+                Selektionsfeld1 = true,
+                Selektionsfeld1Name = "X",
                 ErledigtDatumVonBis = new DateRange(DateRangeType.Last3Months, true),
                 AbmeldeartDurchlauf = abmeldeArt
             };
@@ -487,7 +550,7 @@ namespace CkgDomainLogic.WFM.ViewModels
         [HttpPost]
         public object GetChartData(int chartID)
         {
-            List<WfmDurchlaufSingle> items = DurchlaufDetails;
+            var items = DurchlaufDetails;
             if (chartID > 1)
             {
                 Selektor.AbmeldeartDurchlauf = Selektor.GetAlleAbmeldeartenDurchlaufNextKeyFor(Selektor.AbmeldeartDurchlauf);
