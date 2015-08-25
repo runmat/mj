@@ -1010,7 +1010,7 @@ Footer
 }
 
 .footer .go-top { 
-  display: block;
+  display: inline-block;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
@@ -1026,6 +1026,13 @@ Footer
   color: #666;
   font-size: 22px;
   margin-bottom: 5px; 
+}
+.footer .link.teamviewer {
+}
+.footer .link img {
+   margin-top: -10px;
+   margin-right: 3px;
+   width: 25px;
 }
 
 /********************
@@ -5154,7 +5161,7 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 .icon-random:before {  content: "\f074"; }
 .icon-university:before {  content: "\f19c"; }
 .icon-stack-overflow:before {  content: "\f16c"; }
-.icon-registered:before {  content: "\f25d"; }
+.icon-bookmark-o:before {  content: "\f097"; }
 
 .icon-comments-o:before {  content: "\f0e6"; }
 
