@@ -593,7 +593,7 @@
     
     function HandleResponsiveControlWidths() {
         
-        HandleResponsiveControlWidthsForTheme();
+        try { HandleResponsiveControlWidthsForTheme(); } catch(e) {}
 
         $(".portlet").each(function() {
             var p = $(this);
