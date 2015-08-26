@@ -28,7 +28,7 @@
 
 @foreach (var dashBoardItem in Model.DashboardItems)
 {
-    <a class="margin-right-10" target="report_@dashBoardItem.ID" href="ShowReportForDashboardItem?id=@dashBoardItem.ID&token=@Guid.NewGuid()">Report @dashBoardItem.ID</a>
+    <a class="hide margin-right-10" id="report_href_@dashBoardItem.ID" target="report_@dashBoardItem.ID" href="ShowReportForDashboardItem?id=@dashBoardItem.ID&token=@Guid.NewGuid()">Report @dashBoardItem.ID</a>
 }
 
 <ul id="myDashboard">
@@ -208,11 +208,10 @@
     }
     
     function SetupWidgetToolbar(widgetId) {
-        var printButton = $("<div class='dashboard-toolbar-div' title='Report öffnen'><i class='icon-print'></i></div>");
-        printButton.on("click", function () {
-            $("#li_dropdown_" + id).attr("onclick");
-            alert(id);
-        });
+        var rawId = widgetId.replace(/#id_/g, "");
+        var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-print'></i></a>");
+        printButton.attr("href", $("#report_href_" + rawId).attr("href"));
+        printButton.attr("target", $("#report_href_" + rawId).attr("target"));
         printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-circle-remove-icon"));
     }
 
