@@ -164,11 +164,10 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
-        [HttpPost]
-        // public JsonResult SetFinValue(string fin, string field, string kennz)
+        [HttpPost]        
         public JsonResult SetFinValue(string fin, string field, string value)
-        {
-            var result = ViewModel.SetFinValue(fin, field, value.ToUpper());
+        {            
+            var result = ViewModel.SetFinValue(fin, field, value);
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
@@ -551,7 +550,8 @@ namespace ServicesMvc.Autohaus.Controllers
             }
 
             ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
-            ViewData["isMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
+            ViewData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
+            ViewData["FahrzeugfarbenList"] = ViewModel.Fahrzeugfarben;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
         }

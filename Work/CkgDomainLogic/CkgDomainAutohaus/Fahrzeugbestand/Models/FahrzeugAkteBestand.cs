@@ -38,6 +38,12 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [LocalizedDisplay(LocalizeConstants.Action)]    // 20150728 MMA
         public string Aktion { get; set; }
 
+        // ITA8251  Kennzeichenetiketten in der Zulassung
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe { get; set; }
+        [LocalizedDisplay(LocalizeConstants.CarModel)]
+        public string FzgModell { get; set; }
+
         #region Massenzulassung // MMA Für Massenzulassung erforderliche Properties
 
         [Length(5)]

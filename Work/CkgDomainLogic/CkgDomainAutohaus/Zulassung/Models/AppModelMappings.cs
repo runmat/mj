@@ -336,7 +336,13 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.OptionenDienstleistungen.Bemerkung = s.BEMERKUNG;
                         d.OptionenDienstleistungen.KennzeichenVorhanden = s.KENNZ_VH.XToBool();
                         d.OptionenDienstleistungen.HaltedauerBis = s.HALTE_DAUER;
-                        d.OptionenDienstleistungen.AltesKennzeichen = s.ALT_KENNZ; 
+                        d.OptionenDienstleistungen.AltesKennzeichen = s.ALT_KENNZ;
+
+                        // 20150826 MMA
+                        d.Fahrzeugdaten.HasEtikett = s.ETIKETT.XToBool();
+                        d.Fahrzeugdaten.Farbe = s.FARBE;
+                        d.Fahrzeugdaten.FzgModell = s.FZGTYP;
+
                     }));
             }
         }
@@ -480,7 +486,13 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.BEMERKUNG = s.OptionenDienstleistungen.Bemerkung;
                             d.KENNZ_VH = s.OptionenDienstleistungen.KennzeichenVorhanden.BoolToX();
                             d.HALTE_DAUER = s.OptionenDienstleistungen.HaltedauerBis;
-                            d.ALT_KENNZ = s.OptionenDienstleistungen.AltesKennzeichen; 
+                            d.ALT_KENNZ = s.OptionenDienstleistungen.AltesKennzeichen;
+
+                            // 20150826 MMA
+                            d.ETIKETT = s.Fahrzeugdaten.HasEtikett.BoolToX();
+                            d.FARBE = s.Fahrzeugdaten.Farbe;
+                            d.FZGTYP = s.Fahrzeugdaten.FzgModell;
+
                         }));
             }
         }

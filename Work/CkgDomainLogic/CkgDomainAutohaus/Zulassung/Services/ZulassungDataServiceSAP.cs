@@ -31,7 +31,8 @@ namespace CkgDomainLogic.Autohaus.Services
         public List<Zulassungskreis> Zulassungskreise { get { return PropertyCacheGet(() => LoadZulassungskreiseFromSap().ToList()); } }
 
         public List<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> ZulassungskreisKennzeichen { get { return PropertyCacheGet(() => LoadZulassungskreisKennzeichenFromSap().ToList()); } }
-        
+
+        public List<Domaenenfestwert> GetFahrzeugfarben { get { return PropertyCacheGet(() => LoadFahrzeugfarbenFromSap().ToList()); } }
 
         private static ZulassungSqlDbContext CreateDbContext()
         {
@@ -95,6 +96,13 @@ namespace CkgDomainLogic.Autohaus.Services
             var sapList = Z_DPM_DOMAENENFESTWERTE.GT_WEB.GetExportListWithInitExecute(SAP, "DOMNAME, DDLANGUAGE, SORTIEREN", "ZZLD_FAHRZ_ART", "DE", "X");
 
             return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList);
+        }
+
+        private IEnumerable<Domaenenfestwert> LoadFahrzeugfarbenFromSap()
+        {
+            var sapList = Z_DPM_DOMAENENFESTWERTE.GT_WEB.GetExportListWithInitExecute(SAP, "DOMNAME, DDLANGUAGE", "ZFARBE", "DE");
+
+            return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList).ToList();
         }
 
         private IEnumerable<Material> LoadZulassungsAbmeldeArtenFromSap()

@@ -335,39 +335,94 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return e.InnerException.ToString(); 
             }
         }
+       
+        // public string SetKennz(string fin, string field, string kennz)
+        //public string SetFinValue(string fin, string field, string kennz)
+        //{
+        //    try
+        //    {
+        //        switch (field.ToLower())
+        //        {
+        //            case "wunschkennz1":
+        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz1 = kennz);
+        //                break;
+
+        //            case "wunschkennz2":
+        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz2 = kennz);
+        //                break;
+
+        //            case "wunschkennz3":
+        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = kennz);
+        //                break;
+
+        //            case "kennzeichen": // Massenabmeldung
+        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = kennz);
+        //                break;
+
+        //            case "vorhandeneskennzreservieren": // Massenabmeldung                        
+        //                var value = Convert.ToBoolean(kennz);
+        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.VorhandenesKennzReservieren = value);
+        //                break;
+
+        //            case "fzgmodell":
+        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.FzgModell = value);
+        //                break;
+
+        //            case "farbe":
+        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Farbe = value);
+        //                break;
+
+        //        }
+        //        return null;
+        //    }
+        //    catch (Exception e)
+        //    {
+        //        return e.InnerException.ToString();
+        //    }
+        //}
 
         /// <summary>
         /// Setzt eine Variable für ein angegebenes Fahrzeug
         /// </summary>
         /// <param name="fin"></param>
         /// <param name="field"></param>
-        /// <param name="kennz"></param>
-        /// <returns>Null = gespeichert</returns>
-        // public string SetKennz(string fin, string field, string kennz)
-        public string SetFinValue(string fin, string field, string kennz)
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public string SetFinValue(string fin, string field, string value)
         {
             try
             {
                 switch (field.ToLower())
                 {
                     case "wunschkennz1":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz1 = kennz);
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz1 = value);
                         break;
 
                     case "wunschkennz2":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz2 = kennz);
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz2 = value);
                         break;
 
                     case "wunschkennz3":
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = kennz);
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = value);
                         break;
 
                     case "kennzeichen": // Massenabmeldung
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = kennz);
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = value);
                         break;
+
                     case "vorhandeneskennzreservieren": // Massenabmeldung                        
-                        var value = Convert.ToBoolean(kennz);
-                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.VorhandenesKennzReservieren = value);
+                        var boolValue = Convert.ToBoolean(value);
+                        FinList.Where(x => x.FIN == fin)
+                               .ToList()
+                               .ForEach(x => x.VorhandenesKennzReservieren = boolValue);
+                        break;
+
+                    case "fzgmodell":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.FzgModell = value);
+                        break;
+
+                    case "farbe":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Farbe = value);
                         break;
                 }
                 return null;
@@ -770,6 +825,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             Zulassung.Fahrzeugdaten.Kostenstelle = model.Kostenstelle;
             Zulassung.Fahrzeugdaten.BestellNr = model.BestellNr;
 
+            // 20150826 MMA
+            Zulassung.Fahrzeugdaten.HasEtikett = model.HasEtikett;
+            if (!model.HasEtikett)
+            {
+                model.FzgModell = null;
+                model.Farbe = null;
+            }
+            Zulassung.Fahrzeugdaten.FzgModell = model.FzgModell;
+            Zulassung.Fahrzeugdaten.Farbe = model.Farbe;    
+
             if (Zulassung.Fahrzeugdaten.IstAnhaenger || Zulassung.Fahrzeugdaten.IstMotorrad)
                 Zulassung.OptionenDienstleistungen.NurEinKennzeichen = true;
         }
@@ -784,6 +849,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         [XmlIgnore, ScriptIgnore]
         public List<Material> Abmeldearten { get { return PropertyCacheGet(() => ZulassungDataService.Abmeldearten); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Domaenenfestwert> Fahrzeugfarben { get { return PropertyCacheGet(() => ZulassungDataService.GetFahrzeugfarben); } }
 
         public void SetZulassungsdaten(Zulassungsdaten model, ModelStateDictionary state)
         {
@@ -1037,6 +1105,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.WunschKennz1;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
+
+                    // 20150826 MMA                    
+                    singleZulassung.Fahrzeugdaten.Farbe = fahrzeugAkteBestand.Farbe;
+                    singleZulassung.Fahrzeugdaten.FzgModell = fahrzeugAkteBestand.FzgModell;
 
                     zulassungenToSave.Add(singleZulassung);
                 }

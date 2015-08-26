@@ -332,6 +332,10 @@
         if (typeof (rowBackgroundSelectionDisabled) == 'undefined' || !rowBackgroundSelectionDisabled)
             $("#" + gridName + " table tbody tr").click(function (e) {
                 var clickedElement = e.target;
+                
+                if (clickedElement.type == "text")  // 20150813 MMA Prevent row selection if selected cell contains a text field
+                    return;
+                
                 var tr = $(this);
                 tr.find('td input[type=checkbox]').each(function () {
                     if (this == clickedElement)

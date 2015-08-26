@@ -64,21 +64,21 @@
         });
     }
 
-    function SetFinValue(fin, field, value) {
-        $.ajax({
-                type: "POST",
-                url: "SetFinValue",
-                data: { fin: fin, field: field, value: value },
-                loadingShow: false,
-                success: function (result) {
-                    if (result.ok == true) {
-                    }
-                    if (result.ok == false) {
-                        alert(result.message);
-                    }
-                }
-            });
-    }
+//    function SetFinValue(fin, field, value) {
+//        $.ajax({
+//                type: "POST",
+//                url: "SetFinValue",
+//                data: { fin: fin, field: field, value: value },
+//                loadingShow: false,
+//                success: function (result) {
+//                    if (result.ok == true) {
+//                    }
+//                    if (result.ok == false) {
+//                        alert(result.message);
+//                    }
+//                }
+//            });
+//    }
     
     function AjaxFormZulassungsdatenComplete() {
         FormPrepareAjax();
@@ -93,7 +93,9 @@
         $('#Zulassungskreis').off('change').on('change').change(function() {
             var zulassungskreis = $(this).val();
             SetZulassungskreis(zulassungskreis);
-        });        
+        });  
+        
+        InitEvbVersInfo("EvbNr", "EvbInfo"); // Anzeige der Versichererdaten gem. EVB
     });
 
     @if (Model.IsMassenzulassung || Model.IsMassenabmeldung)
@@ -157,10 +159,6 @@
         
         </text>
     }
-
-    $(function() {
-        InitEvbVersInfo("EvbNr", "EvbInfo"); // Anzeige der Versichererdaten gem. EVB
-    });
 
     CheckKennzeichenReserviert();
     ShowHideMindesthaltedauer();    // 20150528 MMA

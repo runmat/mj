@@ -171,6 +171,8 @@ namespace CkgDomainLogic.Autohaus.Services
             throw new NotImplementedException();
         }
 
+        public List<Domaenenfestwert> GetFahrzeugfarben { get; private set; }
+
         private static IEnumerable<Domaenenfestwert> LoadFahrzeugartenFromSap()
         {
             return null;

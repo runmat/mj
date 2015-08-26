@@ -40,6 +40,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         string DeleteVorgangFromShoppingCart(string belegNr);
 
+        List<Domaenenfestwert> GetFahrzeugfarben { get; }
 
         #region Zulassungs Report
 

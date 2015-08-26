@@ -37,6 +37,12 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.ZB2)]
         public string Zb2Nr { get; set; }
 
+        public bool HasEtikett { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe { get; set; }
+        [LocalizedDisplay(LocalizeConstants.CarModel)]
+        public string FzgModell { get; set; }
+
         [Required]
         [LocalizedDisplay(LocalizeConstants.VehicleType)]
         public string FahrzeugartId { get; set; }
