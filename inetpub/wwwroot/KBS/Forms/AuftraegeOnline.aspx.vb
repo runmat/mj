@@ -118,9 +118,9 @@ Public Class AuftraegeOnline
         mObjOnline.SendAuftraege()
 
         If Not mObjOnline.ErrorOccured Then
-            lblError.Text = "Aufträge erfolgreich gespeichert"
             Session("mObjOnline") = mObjOnline
             FillGrid()
+            lblError.Text = "Aufträge erfolgreich gespeichert"
         Else
             lblError.Text = "Fehler beim Speichern der Aufträge: " & mObjOnline.ErrorMessage
         End If
