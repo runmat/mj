@@ -299,3 +299,10 @@ li.ui-sortable-placeholder {
 .dashboard-dropdown-menu a.dropdown-toggle i.icon-bar-chart {
     margin-left: 8px;
 }
+
+.dashboard-toolbar-div {
+    display: inline;
+    float: right;
+    cursor: pointer!important;
+    font-size: 1.25em!important;
+}

@@ -120,6 +120,7 @@
                     busyHintDiv.hide();
 
                     $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    SetupWidgetToolbar(widgetId);
 
                     _dashboardChainIndex++;
                     setTimeout(function () { DashboardChainExecute(dashboardWidgets); }, 200);
@@ -166,7 +167,7 @@
     }
 
     function AddWidget(rawWidgetId, widgetTitle) {
-
+        
         $("#myDashboard").sDashboard("addWidget",
             {
                 widgetTitle: widgetTitle,
@@ -197,12 +198,22 @@
                     _dashboardData.options = jQuery.parseJSON(result.options);
                     //console.log(_dashboardData.data);
                     $(widgetId + " .sDashboard-refresh-icon").trigger("click");
+                    SetupWidgetToolbar(widgetId);
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
                 }
             });
 
         return false;
+    }
+    
+    function SetupWidgetToolbar(widgetId) {
+        var printButton = $("<div class='dashboard-toolbar-div' title='Report öffnen'><i class='icon-print'></i></div>");
+        printButton.on("click", function () {
+            $("#li_dropdown_" + id).attr("onclick");
+            alert(id);
+        });
+        printButton.insertAfter($(widgetId + " .sDashboardWidgetHeader .sDashboard-circle-remove-icon"));
     }
 
     function DashboardWidgetEventAdd(id) {
