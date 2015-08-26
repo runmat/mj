@@ -64,6 +64,8 @@
                     <div>
                         <asp:UpdatePanel runat="server" ID="UP1">
                             <Triggers>
+                                <asp:PostBackTrigger ControlID="cmdGetDadAuftrag" />
+                                <asp:PostBackTrigger ControlID="lbtAcceptBasisdaten" />
                                 <asp:PostBackTrigger ControlID="lbCreate" />
                             </Triggers>
                             <ContentTemplate>
@@ -86,7 +88,7 @@
                                             <td class="firstLeft active" nowrap="nowrap" style="width: 130px">
                                                 <asp:Label ID="lblKunde" runat="server" Text="Kunde*"></asp:Label>
                                             </td>
-                                            <td class="active" align="left" nowrap="nowrap" style="width: 103%">
+                                            <td class="active" align="left" nowrap="nowrap" style="width: 103%" colspan="2">
                                                 <asp:TextBox ID="txtKunnr" runat="server" Width="75px" CssClass="InputSolid" TabIndex="1"></asp:TextBox>
                                                 <asp:DropDownList runat="server" ID="ddlKunde" CssClass="InputSolid" TabIndex="2" EnableViewState="False"/>
                                                 <asp:Image ID="imgKunde" runat="server" ImageUrl="../../../Images/ok_10.jpg" Height="18px"
@@ -98,9 +100,9 @@
                                             <td class="firstLeft active" nowrap="nowrap">
                                                 <asp:Label ID="lblKreise" runat="server" Text="StVA"></asp:Label>
                                             </td>
-                                            <td class="active">
+                                            <td class="active" colspan="2">
                                                 <asp:TextBox ID="txtStva" runat="server" Width="75px" TabIndex="3"
-                                                    CssClass="InputSolid TextUpperCase"></asp:TextBox>
+                                                    CssClass="InputSolid TextUpperCase" colspan="2"></asp:TextBox>
                                                 <asp:DropDownList runat="server" ID="ddlStva" CssClass="InputSolid" TabIndex="4"/>
                                                 <asp:Image ID="imgKreise" runat="server" ImageUrl="../../../Images/ok_10.jpg" Height="18px"
                                                     Width="18px" Visible="False" />
@@ -111,7 +113,7 @@
                                             <td class="firstLeft active" nowrap="nowrap">
                                                 <asp:Label ID="lblDienstleistung" runat="server" Text="Dienstleistung"></asp:Label>
                                             </td>
-                                            <td class="active" style="width: 100%" nowrap="nowrap">
+                                            <td class="active" style="width: 100%" nowrap="nowrap" colspan="2">
                                                 <asp:TextBox ID="txtDienstleistung" runat="server" Width="75px" TabIndex="5"
                                                     CssClass="InputSolid"></asp:TextBox>
                                                 <asp:DropDownList ID="ddlDienstleistung" runat="server" TabIndex="6"
@@ -120,6 +122,21 @@
                                                 <asp:Image ID="imgDienstleistung" runat="server" ImageUrl="../../../Images/ok_10.jpg" Height="18px"
                                                     Width="18px" Visible="False" />
                                                 <asp:Label ID="lblDienstleisungInfo" runat="server" CssClass="TextError"></asp:Label>
+                                            </td>
+                                        </tr>
+                                        <tr class="formquery" runat="server" id="trDadAuftrag">
+                                            <td class="firstLeft active" nowrap="nowrap">
+                                                <asp:Label ID="lblDadAuftrag" runat="server" Text="DAD-Auftrag: Barcode"></asp:Label>
+                                            </td>
+                                            <td class="active" nowrap="nowrap" style="width: 80px">
+                                                <asp:TextBox ID="txtDadAuftrag" runat="server" Width="75px" TabIndex="7"
+                                                    CssClass="InputSolid"></asp:TextBox>
+                                                <cc1:FilteredTextBoxExtender runat="server" ID="fteDadAuftrag" 
+                                                    TargetControlID="txtDadAuftrag" InvalidChars="|}" FilterMode="InvalidChars"/>
+                                            </td>
+                                            <td class="active" style="width: 100%" nowrap="nowrap">
+                                                <asp:LinkButton ID="cmdGetDadAuftrag" runat="server" CssClass="TablebuttonMiddle" Height="16px"
+                                                    Width="100px" >» Daten holen</asp:LinkButton>
                                             </td>
                                         </tr>
                                         <tr class="formquery">

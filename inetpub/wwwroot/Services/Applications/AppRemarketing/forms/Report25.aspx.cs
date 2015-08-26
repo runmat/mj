@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Common;
@@ -7,6 +9,9 @@ using AppRemarketing.lib;
 using CKG.Base.Kernel.Security;
 using System.Configuration;
 using System.Data;
+using GeneralTools.Models;
+using GeneralTools.Services;
+using SmartSoft.PdfLibrary;
 using Telerik.Web.UI;
 using Telerik.Web.UI.GridExcelBuilder;
 
@@ -676,6 +681,15 @@ namespace AppRemarketing.forms
 
                     InfoPopup.Show();
                     break;
+
+                case "RepKalk":
+                    var cmdArgs = e.CommandArgument.ToString().Split('_');
+                    var fin = cmdArgs[0];
+                    var anz = cmdArgs[1];
+
+                    ShowRepKalk(fin, anz.ToInt(0));
+
+                    break;
             }
         }
 
@@ -717,6 +731,46 @@ namespace AppRemarketing.forms
             {
                 rgGrid2.DataSource = null;
             }
+        }
+
+        private void ShowRepKalk(string fin, int anz)
+        {
+            var repKalkUrl = ApplicationConfiguration.GetApplicationConfigValue("RepKalkUrl", "0", m_User.Customer.CustomerId, m_User.GroupID);
+            var filesByte = new List<byte[]>();
+            
+            using (var clnt = new WebClient())
+            {
+                for (var i = 0; i < anz; i++)
+                {
+                    var downloadUrl = String.Format("{0}?fin={1}&nummer={2}", repKalkUrl, fin, (i + 1).ToString());
+                    var downloadFile = clnt.DownloadData(downloadUrl);
+                    if (downloadFile != null)
+                        filesByte.Add(downloadFile);
+                }
+            }
+
+            if (filesByte.Count == 0)
+            {
+                lblError.Text = "Das Dokument wurde nicht gefunden.";
+                return;
+            }
+
+            var pdfBytes = PdfMerger.MergeFiles(filesByte, false);
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + "RepKalk_" + fin + ".pdf");
+            Response.AddHeader("Expires", "0");
+            Response.AddHeader("Pragma", "cache");
+            Response.AddHeader("Cache-Control", "private");
+            Response.BinaryWrite(pdfBytes);
+            if (Response.IsClientConnected)
+            {
+                Response.Flush();
+            }
+            Response.End();
         }
     }
 }

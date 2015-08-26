@@ -280,16 +280,21 @@ namespace MvcTools.Web
         }
 
 
-        public static MvcHtmlString SpanAlert(this HtmlHelper html, string spanID, string additionalCssClass="")
+        public static MvcHtmlString SpanAlert(this HtmlHelper html, string spanID, string additionalCssClass = "")
         {
             html.ViewBag.SpanID = spanID;
             html.ViewBag.AdditionalCssClass = additionalCssClass;
             return html.Partial("Partial/SpanAlert");
         }
 
+        public static MvcHtmlString ChartToolsFlotr2(this HtmlHelper html)
+        {
+            return html.Partial("Partial/ChartToolsFlotr2");
+        }
+
         #endregion
 
-        
+
         #region TextBlock
 
         public static MvcHtmlString TextBlockFor<TModel, TProperty>(this HtmlHelper<TModel> htmlHelper, Expression<Func<TModel, TProperty>> expression, IDictionary<string, object> htmlAttributes)

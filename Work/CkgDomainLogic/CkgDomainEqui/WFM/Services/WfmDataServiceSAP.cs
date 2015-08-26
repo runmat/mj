@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.WFM.Models.AppModelMappings;
@@ -22,26 +24,29 @@ namespace CkgDomainLogic.WFM.Services
         {
             Z_WFM_READ_KONVERTER_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            return AppModelMappings.Z_WFM_READ_KONVERTER_01_GT_DATEN_To_WfmAuftragFeldname.Copy(Z_WFM_READ_KONVERTER_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
+            var sapItems = Z_WFM_READ_KONVERTER_01.GT_DATEN.GetExportListWithExecute(SAP)
+                .Where(sap => sap.TABNAME.NotNullOrEmpty().ToUpper() == "ZABMVWL");
+
+            return AppModelMappings.Z_WFM_READ_KONVERTER_01_GT_DATEN_To_WfmAuftragFeldname.Copy(sapItems).ToList();
         }
 
         public List<WfmAuftrag> GetAbmeldeauftraege(WfmAuftragSelektor selector)
         {
             Z_WFM_READ_AUFTRAEGE_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            if (!String.IsNullOrEmpty(selector.Selektionsfeld1Name))
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld1Name))
                 SAP.SetImportParameter("I_SELEKTION1", selector.Selektionsfeld1.BoolToX());
 
-            if (!String.IsNullOrEmpty(selector.Selektionsfeld2Name))
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld2Name))
                 SAP.SetImportParameter("I_SELEKTION2", selector.Selektionsfeld2.BoolToX());
 
-            if (!String.IsNullOrEmpty(selector.Selektionsfeld3Name))
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld3Name))
                 SAP.SetImportParameter("I_SELEKTION3", selector.Selektionsfeld3.BoolToX());
 
-            if (!String.IsNullOrEmpty(selector.FahrgestellNr))
+            if (!string.IsNullOrEmpty(selector.FahrgestellNr))
                 SAP.SetImportParameter("I_FIN", selector.FahrgestellNr.ToUpper());
 
-            if (!String.IsNullOrEmpty(selector.Kennzeichen))
+            if (!string.IsNullOrEmpty(selector.Kennzeichen))
                 SAP.SetImportParameter("I_KENNZ", selector.Kennzeichen.ToUpper());
 
             if (selector.Modus == SelektionsModus.KlaerfallWorkplace)
@@ -55,25 +60,25 @@ namespace CkgDomainLogic.WFM.Services
                 }
             }
 
-            if (!String.IsNullOrEmpty(selector.KundenAuftragsNr))
+            if (!string.IsNullOrEmpty(selector.KundenAuftragsNr))
             {
                 var kdAufNrList = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_KDAUF_From_KundenAuftragsNrSelektion.CopyBack(new List<KundenAuftragsNrSelektion> { new KundenAuftragsNrSelektion { KundenAuftragsNrVon = selector.KundenAuftragsNr } });
                 SAP.ApplyImport(kdAufNrList);
             }
 
-            if (!String.IsNullOrEmpty(selector.Referenz1))
+            if (!string.IsNullOrEmpty(selector.Referenz1))
             {
                 var ref1List = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_REF1_From_Referenz1Selektion.CopyBack(new List<Referenz1Selektion> { new Referenz1Selektion { Referenz1Von = selector.Referenz1 } });
                 SAP.ApplyImport(ref1List);
             }
 
-            if (!String.IsNullOrEmpty(selector.Referenz2))
+            if (!string.IsNullOrEmpty(selector.Referenz2))
             {
                 var ref2List = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_REF2_From_Referenz2Selektion.CopyBack(new List<Referenz2Selektion> { new Referenz2Selektion { Referenz2Von = selector.Referenz2 } });
                 SAP.ApplyImport(ref2List);
             }
 
-            if (!String.IsNullOrEmpty(selector.Referenz3))
+            if (!string.IsNullOrEmpty(selector.Referenz3))
             {
                 var ref3List = AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_SEL_REF3_From_Referenz3Selektion.CopyBack(new List<Referenz3Selektion> { new Referenz3Selektion { Referenz3Von = selector.Referenz3 } });
                 SAP.ApplyImport(ref3List);
@@ -93,6 +98,7 @@ namespace CkgDomainLogic.WFM.Services
 
             return AppModelMappings.Z_WFM_READ_AUFTRAEGE_01_GT_DATEN_To_WfmAuftrag.Copy(Z_WFM_READ_AUFTRAEGE_01.GT_DATEN.GetExportListWithExecute(SAP)).ToList();
         }
+
 
         #region Übersicht/Storno
 
@@ -119,6 +125,7 @@ namespace CkgDomainLogic.WFM.Services
 
 
         #endregion
+
 
         #region Informationen
 
@@ -150,6 +157,7 @@ namespace CkgDomainLogic.WFM.Services
         }
 
         #endregion
+
 
         #region Dokumente
 
@@ -209,6 +217,7 @@ namespace CkgDomainLogic.WFM.Services
         }
 
         #endregion
+
 
         #region Aufgaben
 
@@ -313,6 +322,60 @@ namespace CkgDomainLogic.WFM.Services
                 SAP.ApplyImport(list);
                 SAP.Execute();
             }
+        }
+
+        #endregion
+
+
+        #region Durchlauf
+
+        public void GetDurchlauf(WfmAuftragSelektor selector, Action<IEnumerable<WfmDurchlaufSingle>, IEnumerable<WfmDurchlaufStatistik>> getDataAction)
+        {
+            Z_WFM_CALC_DURCHLAUFZEIT_01.Init(SAP, "I_KUNNR", LogonContext.KundenNr.ToSapKunnr());
+
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld1Name) || selector.Selektionsfeld1)
+                SAP.SetImportParameter("I_SELEKTION1", selector.Selektionsfeld1.BoolToX());
+
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld2Name) || selector.Selektionsfeld2)
+                SAP.SetImportParameter("I_SELEKTION2", selector.Selektionsfeld2.BoolToX());
+
+            if (!string.IsNullOrEmpty(selector.Selektionsfeld3Name) || selector.Selektionsfeld3)
+                SAP.SetImportParameter("I_SELEKTION3", selector.Selektionsfeld3.BoolToX());
+
+            if (selector.AnlageDatumVonBis.IsSelected)
+            {
+                SAP.SetImportParameter("I_ANLAGE_VON", selector.AnlageDatumVonBis.StartDate);
+                SAP.SetImportParameter("I_ANLAGE_BIS", selector.AnlageDatumVonBis.EndDate);
+            }
+
+            if (selector.ErledigtDatumVonBis.IsSelected)
+            {
+                SAP.SetImportParameter("I_ERLEDIGT_VON", selector.ErledigtDatumVonBis.StartDate);
+                SAP.SetImportParameter("I_ERLEDIGT_BIS", selector.ErledigtDatumVonBis.EndDate);
+            }
+
+            if (selector.AbmeldeartDurchlauf == "Alle" || selector.AbmeldeartDurchlauf == "Klär")
+                SAP.SetImportParameter("I_ABMART_KLAER", "X");
+
+            if (selector.AbmeldeartDurchlauf == "Alle" || selector.AbmeldeartDurchlauf == "Std")
+                SAP.SetImportParameter("I_ABMART_STD", "X");
+
+            if (selector.DurchlaufzeitInTagen)
+                SAP.SetImportParameter("I_ZEIT_IN_WERKTAGEN", "X");
+
+
+            SAP.Execute();
+
+
+            var sapItemsDetails = Z_WFM_CALC_DURCHLAUFZEIT_01.ET_OUT.GetExportList(SAP);
+            var webItemsDetails = AppModelMappings.Z_WFM_CALC_DURCHLAUFZEIT_01_ET_OUT_To_WfmDurchlaufSingle.Copy(sapItemsDetails);
+            //XmlService.XmlSerializeToFile(webItemsDetails.ToList(), Path.Combine(AppSettings.DataPath, @"WfmDetails.xml"));
+
+            var sapItemsStatistiken = Z_WFM_CALC_DURCHLAUFZEIT_01.ES_STATISTIK.GetExportList(SAP);
+            var webItemsStatistiken = AppModelMappings.Z_WFM_CALC_DURCHLAUFZEIT_01_ES_STATISTIK_To_WfmDurchlaufStatistik.Copy(sapItemsStatistiken);
+            //XmlService.XmlSerializeToFile(webItemsStatistiken.ToList(), Path.Combine(AppSettings.DataPath, @"WfmStatistiken.xml"));
+
+            getDataAction(webItemsDetails, webItemsStatistiken);
         }
 
         #endregion
