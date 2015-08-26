@@ -32,7 +32,7 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [OutputCache(NoStore = true, Duration = 0, VaryByParam = "None")]
-        public ActionResult ShowReportForDashboardItem(int id, string timestamp)
+        public ActionResult ShowReportForDashboardItem(int id, string token)
         {
             var redirectUrl = ViewModel.DashboardPrepareReportForItem(id);
 
