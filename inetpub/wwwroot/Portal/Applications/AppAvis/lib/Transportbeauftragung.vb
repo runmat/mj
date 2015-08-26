@@ -321,6 +321,11 @@ Public Class Transportbeauftragung
 
         ' Auslastungsstatistik
         tblSAPBestand = GetBestandFromSap("C")
+
+        If tblSAPBestand IsNot Nothing AndAlso tblSAPBestand.Rows.Count > 0 Then
+            strSpediteur = tblSAPBestand.Rows(0)("SPEDITEUR").ToString()
+        End If
+
         FillAuslastung()
 
         ' Bearbeitungsliste erstellen
@@ -836,11 +841,11 @@ Public Class Transportbeauftragung
         For Each row As DataRow In Rows
             Dim newRow = PosTable.NewRow()
             For Each col As DataColumn In PosTable.Columns
-                If col.ColumnName = "BEAUFDAT" Then
+                If col.ColumnName = "BEAUFDAT" AndAlso Not String.IsNullOrEmpty(DatumBeauftragung) Then
                     newRow(col.ColumnName) = DatumBeauftragung
-                ElseIf col.ColumnName = "UHRZEIT" Then
+                ElseIf col.ColumnName = "UHRZEIT" AndAlso Not String.IsNullOrEmpty(UhrzeitBeauftragung) Then
                     newRow(col.ColumnName) = UhrzeitBeauftragung
-                ElseIf col.ColumnName = "SPEDITEUR" Then
+                ElseIf col.ColumnName = "SPEDITEUR" AndAlso Not String.IsNullOrEmpty(strSpediteur) Then
                     newRow(col.ColumnName) = strSpediteur
                 Else
                     newRow(col.ColumnName) = row(col.ColumnName)
