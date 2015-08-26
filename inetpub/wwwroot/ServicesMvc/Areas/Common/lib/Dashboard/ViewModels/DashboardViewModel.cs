@@ -1,12 +1,8 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
 
@@ -47,10 +43,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         List<IDashboardItem> FilterItemsAvailableForUser(IList<IDashboardItem> items)
         {
-            if (LogonContext.UserApps == null)
-                return items.ToList();
-
-            return items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
+            return (LogonContext.UserApps == null) 
+                            ? items.ToList() 
+                            : items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
         }
 
         static bool UserAppUrlContainsUrl(string userAppUrl, string url)
@@ -73,7 +68,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (dashboardItem == null)
                 return new { };
 
-            var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.Title);
+            var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
             
             return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions, dashboardItem.ChartJsonDataCustomizingScriptFunction);
         }

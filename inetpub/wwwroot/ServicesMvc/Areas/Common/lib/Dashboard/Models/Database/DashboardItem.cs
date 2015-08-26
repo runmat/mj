@@ -9,6 +9,9 @@ namespace CkgDomainLogic.General.Database.Models
         [Key]
         public int ID { get; set; }
 
+        public string ItemKey { get; set; }
+
+        [NotMapped]
         public string Title { get; set; }
 
         public string RelatedAppUrl { get; set; }

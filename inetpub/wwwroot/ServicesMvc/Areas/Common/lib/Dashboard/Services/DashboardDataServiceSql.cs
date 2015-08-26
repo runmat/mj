@@ -18,6 +18,8 @@ namespace CkgDomainLogic.DomainCommon.Services
             var items = ct.GetDashboardItems().Cast<IDashboardItem>().ToList();
             PrepareAnnotatorItems(ct, items, userName);
 
+            items.ForEach(item => item.Title = Localize.TranslateResourceKey(item.ItemKey));
+
             return items.OrderBy(item => item.UserSort).ToList();
         }
 

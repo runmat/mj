@@ -4,6 +4,8 @@
     {
         int ID { get; set; }
 
+        string ItemKey { get; set; }
+
         string Title { get; set; }
 
         string RelatedAppUrl { get; set; }

@@ -236,6 +236,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.Referenz2 = s.REFERENZ2;
                         d.Referenz3 = s.REFERENZ3;
                         d.FahrgestellNr = s.FAHRG;
+                        d.Kennzeichen = s.KENNZ;
                         d.DurchlaufzeitStunden = s.DURCHLAUFZEIT_STUNDEN;
                         d.DurchlaufzeitTage = s.DURCHLAUFZEIT_TAGE;
                         d.AnlageDatum = s.ANLAGEDATUM;

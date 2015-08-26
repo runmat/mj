@@ -2,7 +2,7 @@
 
 @Html.Partial("Partial/Common")
 
-<h3 class="page-title">Dashboard <small>Sample</small>
+<h3 class="page-title">Dashboard <small>Charts</small>
 
     <li class="dropdown user dashboard-dropdown-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -19,7 +19,7 @@
             {
                 var cssClass = (dashBoardItem.IsUserVisible ? "hide" : "");
                 
-                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
+                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
             }
 
         </ul>
@@ -42,7 +42,7 @@
     <script type="text/javascript">
         _dashboardJson.push(
             {
-                widgetKey: "@dashBoardItem.Title",
+                widgetKey: "@dashBoardItem.ItemKey",
                 widgetTitle: "@dashBoardItem.Title",
                 widgetId: "id_@dashBoardItem.ID",
                 widgetType: "chart",
@@ -161,18 +161,18 @@
         return false;
     }
 
-    function ShowDashboardItem(id, title) {
+    function ShowDashboardItem(id, key, title) {
 
-        AddWidget(id, title);
+        AddWidget(id, key, title);
 
         return false;
     }
 
-    function AddWidget(rawWidgetId, widgetTitle) {
+    function AddWidget(rawWidgetId, widgetKey, widgetTitle) {
 
         $("#myDashboard").sDashboard("addWidget",
             {
-                widgetKey: widgetTitle,
+                widgetKey: widgetKey,
                 widgetTitle: widgetTitle,
                 widgetId: "id_" + rawWidgetId,
                 widgetType: "chart",

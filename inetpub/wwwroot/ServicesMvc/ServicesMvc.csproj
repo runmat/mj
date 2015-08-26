@@ -721,6 +721,8 @@
     <Content Include="assets\img\flags\zw.png" />
     <Content Include="assets\plugins\flot\jquery.flot.axislabels.js" />
     <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.1.custom.min.js" />
+    <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
+    <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="assets\plugins\uniform\images\sprite.png" />
     <Content Include="Content\fileupload\blueimp-gallery.min.css" />
     <Content Include="Content\fileupload\bootstrap.min.css" />
