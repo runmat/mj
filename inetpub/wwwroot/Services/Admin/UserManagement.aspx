@@ -306,7 +306,7 @@
                                             <telerik:GridBoundColumn DataField="FirstName" SortExpression="FirstName" HeaderText="Vorname"/>
                                             <telerik:GridBoundColumn DataField="LastName" SortExpression="LastName" HeaderText="Nachname"/>
                                             <telerik:GridBoundColumn DataField="mail" SortExpression="mail" HeaderText="Email"/>
-                                            <telerik:GridBoundColumn DataField="telephone" SortExpression="telephone" HeaderText="Telefon"/>
+                                            <telerik:GridBoundColumn DataField="telephone2" SortExpression="telephone2" HeaderText="Telefon"/>
                                             <telerik:GridTemplateColumn DataField="CustomerName" HeaderText="Firmenname">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="col_CustomerName" CssClass="TableLinkHead" CommandArgument="CustomerName"
