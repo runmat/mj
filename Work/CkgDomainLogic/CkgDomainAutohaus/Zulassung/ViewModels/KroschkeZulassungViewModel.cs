@@ -985,6 +985,13 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 Zulassung.OptionenDienstleistungen.AltesKennzeichen = model.AltesKennzeichen.NotNullOrEmpty().ToUpper();
             else
                 Zulassung.OptionenDienstleistungen.AltesKennzeichen = "";
+
+            // 20150826 MMA Kennzeichenlabel
+            //if (Zulassung.Fahrzeugdaten.HasEtikett)
+            //    Zulassung.OptionenDienstleistungen.Kennzeichenlabel = true;
+            //else
+            //    Zulassung.OptionenDienstleistungen.Kennzeichenlabel = false;
+            Zulassung.OptionenDienstleistungen.Kennzeichenlabel = Zulassung.Fahrzeugdaten.HasEtikett;
         }
 
         #endregion

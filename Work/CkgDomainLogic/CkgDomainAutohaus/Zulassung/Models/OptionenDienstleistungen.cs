@@ -67,6 +67,9 @@ namespace CkgDomainLogic.Autohaus.Models
         [DisplayName("")]
         public int? KennzeichenGroesseId { get; set; }
 
+        // 20150826 MMA
+        public bool Kennzeichenlabel { get; set; }
+
         public Kennzeichengroesse Kennzeichengroesse
         {
             get
@@ -164,6 +167,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
             if (Saisonkennzeichen)
                 s += String.Format("<br/>{0}: {1}-{2}", Localize.SeasonalLicensePlate, SaisonBeginn, SaisonEnde);
+
+            // 20150826 MMA
+            if (Kennzeichenlabel)
+                s += String.Format("<br/>{0}", Localize.Etikettendruck);
 
             s += String.Format("<br/>{0}: {1}", Localize.Comment, Bemerkung);
 

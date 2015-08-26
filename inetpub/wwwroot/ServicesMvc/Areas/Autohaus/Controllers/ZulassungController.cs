@@ -547,6 +547,13 @@ namespace ServicesMvc.Autohaus.Controllers
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);
+
+                // 20150826 MMA Falls kein Kennzeichenlabel, etwaig gesetzte Werte auf null setzen...
+                if (!model.HasEtikett)
+                {
+                    model.Farbe = null;
+                    model.FzgModell = null;
+                }
             }
 
             ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
