@@ -327,7 +327,6 @@
         },
 
         hide: function (e) {
-            console.log(e);
 
             this.container.hide();
             //$(document).off('mousedown', this.hide);
