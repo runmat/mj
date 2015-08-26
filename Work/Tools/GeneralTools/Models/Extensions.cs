@@ -234,6 +234,17 @@ namespace GeneralTools.Models
             return string.Format("{0}{1}", s, append);
         }
 
+        public static string AppendIfNotNullAndNot(this string s, string what, string append)
+        {
+            if (s.IsNullOrEmpty() || append.IsNullOrEmpty())
+                return "";
+
+            if (what == s)
+                return s;
+
+            return string.Format("{0}{1}", s, append);
+        }
+
         public static string ReplaceIfNotNull(this string s, string replace)
         {
             if (s.IsNullOrEmpty() || replace.IsNullOrEmpty())

@@ -67,6 +67,10 @@ namespace SapORM.Models
 
 			public string AUFGABE_FOLGE_TASK { get; set; }
 
+			public string BESTAETIGEN { get; set; }
+
+			public string MA_AUFGABE { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -89,6 +93,8 @@ namespace SapORM.Models
 					STATUS = (string)row["STATUS"],
 					FOLGE_TASK_ID = (string)row["FOLGE_TASK_ID"],
 					AUFGABE_FOLGE_TASK = (string)row["AUFGABE_FOLGE_TASK"],
+					BESTAETIGEN = (string)row["BESTAETIGEN"],
+					MA_AUFGABE = (string)row["MA_AUFGABE"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

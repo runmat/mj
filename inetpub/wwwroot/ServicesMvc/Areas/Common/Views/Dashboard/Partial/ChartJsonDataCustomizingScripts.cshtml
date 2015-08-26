@@ -1,0 +1,65 @@
+﻿
+
+<script type="text/javascript">
+
+    var _chartData = null;
+    var _chartOptions = null;
+
+    function _ChartPrepareJsonResult(result, widgetKey) {
+        _chartData = result.data;
+        _chartOptions = jQuery.parseJSON(result.options);
+
+        //console.log("_ChartPrepareJsonResult");
+        //console.log(_chartOptions);
+
+        if (result.customscriptfunction != "")
+            eval(result.customscriptfunction + "('" + widgetKey + "');");
+    }
+
+
+    //
+    // <custom functions>
+    //
+
+    function WfmDurchlaufzeiten(widgetKey) {
+
+        //console.log("WfmDurchlaufzeiten");
+
+        _chartOptions.bars.barWidth = 1.0;
+        _chartOptions.xaxis.min = 0;
+        _chartOptions.yaxis.tickFormatter = function (yVal) { return yVal + "%"; };
+        _chartOptions.mouse.trackFormatter = function (point) {
+            var groupLabel = point.series.label;
+            if (typeof (point.y) != "undefined")
+                return point.y.replace(/\./g, ",") + "% im " + groupLabel;
+        };
+
+    }
+
+    function WfmAuftraege(widgetKey) {
+
+        var colors = [];
+
+        if (widgetKey === "WFM_Auftraege_DiesesJahr_Alle")
+            colors = ["#0000BB"];
+        if (widgetKey === "WFM_Auftraege_DiesesJahr_InArbeit")
+            colors = ["#C0C000"];
+        if (widgetKey === "WFM_Auftraege_DiesesJahr_Abgemeldet")
+            colors = ["#900000"];
+        if (widgetKey === "WFM_Auftraege_DiesesJahr_Storniert")
+            colors = ["#E00000"];
+
+        _chartOptions.colors = colors;
+
+        _chartOptions.mouse.trackFormatter = function (point) {
+            if (typeof (point.y) != "undefined")
+                return point.y.replace(/\.0/g, "") + "";
+        };
+    }
+
+
+    //
+    // </custom functions>
+    //
+
+</script>
