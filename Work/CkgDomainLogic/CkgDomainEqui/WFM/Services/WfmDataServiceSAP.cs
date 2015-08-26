@@ -360,6 +360,9 @@ namespace CkgDomainLogic.WFM.Services
             if (selector.AbmeldeartDurchlauf == "Alle" || selector.AbmeldeartDurchlauf == "Std")
                 SAP.SetImportParameter("I_ABMART_STD", "X");
 
+            if (selector.DurchlaufzeitInTagen)
+                SAP.SetImportParameter("I_ZEIT_IN_WERKTAGEN", "X");
+
 
             SAP.Execute();
 

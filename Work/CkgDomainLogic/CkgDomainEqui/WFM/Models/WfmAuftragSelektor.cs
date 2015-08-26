@@ -108,6 +108,9 @@ namespace CkgDomainLogic.WFM.Models
             }
         }
 
+        [LocalizedDisplay(LocalizeConstants.TimeInWorkingDays)]
+        public bool DurchlaufzeitInTagen { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ToDoWho)]
         public string ToDoWer { get; set; }
 

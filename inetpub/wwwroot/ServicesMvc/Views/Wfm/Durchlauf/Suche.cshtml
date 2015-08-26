@@ -33,6 +33,8 @@
 
             @Html.FormRadioButtonListFor(m => m.AbmeldeartDurchlauf, Model.AlleAbmeldeartenDurchlauf.ToSelectList())
 
+            @Html.FormCheckBoxFor(m => m.DurchlaufzeitInTagen, new { @class = "m-wrap" }, labelHidden: true)
+
 
             @Html.FormRequiredFieldsSummary()
 
