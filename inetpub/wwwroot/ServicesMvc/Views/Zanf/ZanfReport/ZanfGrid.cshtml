@@ -10,6 +10,7 @@
     .XAjaxDataBinding("ZulassungsAnforderungenAjaxBinding", "Zanf")
     .Columns(columns =>
     {
+        columns.XBound(c => c.AnforderungsNr);
         columns.XBound(c => c.AuftragsNr);
         columns.XBound(c => c.Dienstleistung);
         columns.XBound(c => c.FahrgestellNr);
