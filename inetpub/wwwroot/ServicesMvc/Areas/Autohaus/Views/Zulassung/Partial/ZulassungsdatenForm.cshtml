@@ -99,6 +99,7 @@
     @if (Model.IsMassenzulassung || Model.IsMassenabmeldung)
     {
         <text>
+            
             $(function () {
                 $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
                     var tagObj = $(this);
@@ -151,10 +152,15 @@
                     var field = $(this).data('fieldname');
                     var value = $(this).prop('checked');
                     SetFinValue(fin, field, value);
-                });
+                });                
         });
+        
         </text>
     }
+
+    $(function() {
+        InitEvbVersInfo("EvbNr", "EvbInfo"); // Anzeige der Versichererdaten gem. EVB
+    });
 
     CheckKennzeichenReserviert();
     ShowHideMindesthaltedauer();    // 20150528 MMA

@@ -222,5 +222,14 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         }
 
         #endregion
+
+        #region EVB-Prüfung -> Rückgabe der Versicherung
+        public string GetEvbInstantInfo(string evb)
+        {
+            var result = AdressenDataService.GetEvbVersInfo(evb);
+            return result;
+        }
+        #endregion
+
     }
 }

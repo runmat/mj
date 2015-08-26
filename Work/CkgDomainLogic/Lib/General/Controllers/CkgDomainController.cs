@@ -961,5 +961,20 @@ namespace CkgDomainLogic.General.Controllers
 
         #endregion
 
+        #region EVB-Prüfung -> Rückgabe der Versicherung
+        [HttpPost]
+        public JsonResult GetEvbVersInfo(string evb)
+        {
+            if (evb.IsNullOrEmpty() || evb.Length < 2)
+                return null;
+
+            evb = evb.Substring(0, 2).ToUpper();
+
+            var viewModel = AdressenPflegeViewModel;
+            var result = viewModel.GetEvbInstantInfo(evb);
+
+            return Json(new { message = result });
+        }
+        #endregion
     }
 }
