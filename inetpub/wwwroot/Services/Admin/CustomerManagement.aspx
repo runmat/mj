@@ -175,10 +175,6 @@
                                                     </asp:GridView>
                                                 </td>
                                             </tr>
-                                            <tr id="trConfirm" runat="server">
-                                                <td>
-                                                </td>
-                                            </tr>
                                             <tr>
                                                 <td>
                                                     &nbsp;&nbsp;
@@ -194,7 +190,6 @@
                         </div>
                         <div id="Input" runat="server" style="display: none">
                             <div id="adminInput" style="padding-top: 10px">
-                                <asp:PlaceHolder ID="plhConfirm" runat="server"></asp:PlaceHolder>
                                 <ajaxToolkit:TabContainer runat="server" ID="Tabs" ActiveTabIndex="3" Width="100%"
                                     CssClass="ajax__tab_xp" BorderStyle="None">
                                     <%-- Height="500px"--%>
@@ -1075,20 +1070,22 @@
                                                 font-size: 10px; padding-bottom: 0" border="0">
                                                 <tr class="formquery">
                                                     <td class="active" colspan="2">
-                                                        <table style="border: none; padding-bottom: 0">
-                                                            <tr>
-                                                                <td style="width: 70%">
-                                                                    nicht zugewiesen
-                                                                </td>
-                                                                <td style="width: 20%">
-                                                                    <asp:TextBox runat="server" ID="txtFilterUnassignedApps" />
-                                                                </td>
-                                                                <td style="width: 10%">
-                                                                    <asp:LinkButton class="Tablebutton" ID="lbtFilterUnassignedApps" runat="server" Text="Suchen&amp;nbsp;&amp;#187; "
-                                                                        CssClass="Tablebutton" Height="16px" Width="78px"></asp:LinkButton>
-                                                                </td>
-                                                            </tr>
-                                                        </table>
+                                                        <asp:Panel runat="server" DefaultButton="lbtFilterUnassignedApps">
+                                                            <table style="border: none; padding-bottom: 0">
+                                                                <tr>
+                                                                    <td style="width: 70%">
+                                                                        nicht zugewiesen
+                                                                    </td>
+                                                                    <td style="width: 20%">
+                                                                        <asp:TextBox runat="server" ID="txtFilterUnassignedApps" />
+                                                                    </td>
+                                                                    <td style="width: 10%">
+                                                                        <asp:LinkButton class="Tablebutton" ID="lbtFilterUnassignedApps" runat="server" Text="Suchen&amp;nbsp;&amp;#187; "
+                                                                            CssClass="Tablebutton" Height="16px" Width="78px"></asp:LinkButton>
+                                                                    </td>
+                                                                </tr>
+                                                            </table>
+                                                        </asp:Panel>
                                                         <div style="width: 100%; max-width: 892px; margin-top: 5px">        
                                                             <telerik:RadGrid ID="rgAppUnAssigned" runat="server" AllowSorting="True" 
                                                                 AutoGenerateColumns="False" GridLines="None" Culture="de-DE"   
@@ -1346,9 +1343,6 @@
                                     <asp:LinkButton class="Tablebutton" ID="lbtnDelete" runat="server" Text="Löschen&amp;nbsp;&amp;#187; "
                                         CssClass="Tablebutton" Height="16px" Width="78px" Visible="False"></asp:LinkButton>
                                     &nbsp;
-                                    <asp:LinkButton class="Tablebutton" ID="lbtnConfirm" runat="server" Text="Bestätigen&amp;nbsp;&amp;#187; "
-                                        CssClass="Tablebutton" Height="16px" Width="78px" Visible="False"></asp:LinkButton>
-                                    &nbsp;
                                     <asp:LinkButton class="Tablebutton" ID="lbtnSave" runat="server" Text="Speichern&amp;nbsp;&amp;#187; "
                                         CssClass="Tablebutton" Height="16px" Width="78px"></asp:LinkButton>
                                     &nbsp;
@@ -1376,6 +1370,23 @@
                                                 CssClass="Tablebutton" Height="16px" Width="78px" Visible="true"></asp:LinkButton>
                                             &nbsp;
                                             <asp:LinkButton class="Tablebutton" ID="lbtnCancelOptions" runat="server" Text="Abbrechen"
+                                                CssClass="Tablebutton" Height="16px" Width="78px" Visible="true"></asp:LinkButton>
+                                        </div>
+                                    </asp:Panel>
+                                    <asp:Button ID="btnFake2" runat="server" Text="" Style="display: none" />
+                                    <ajaxToolkit:ModalPopupExtender ID="confirmWindow" runat="server" TargetControlID="btnFake2"
+                                        PopupControlID="mb2" BackgroundCssClass="modalBackground" DropShadow="true" X="550" Y="250">
+                                    </ajaxToolkit:ModalPopupExtender>
+                                    <asp:Panel ID="mb2" runat="server" Width="385px" Height="200px" BackColor="White"
+                                        BorderColor="#999999" BorderStyle="Solid" BorderWidth="1" Style="display: none">
+                                        <div style="padding-left: 10px; padding-top: 5px;">
+                                            <asp:PlaceHolder ID="plhConfirm" runat="server"></asp:PlaceHolder>
+                                        </div>
+                                        <div style="padding-left: 10px; padding-top: 15px;">
+                                            <asp:LinkButton class="Tablebutton" ID="lbtnConfirm" runat="server" Text="Bestätigen&amp;nbsp;&amp;#187; "
+                                                CssClass="Tablebutton" Height="16px" Width="78px" Visible="true"></asp:LinkButton>
+                                            &nbsp;
+                                            <asp:LinkButton class="Tablebutton" ID="lbtnCancelConfirm" runat="server" Text="Ändern"
                                                 CssClass="Tablebutton" Height="16px" Width="78px" Visible="true"></asp:LinkButton>
                                         </div>
                                     </asp:Panel>
