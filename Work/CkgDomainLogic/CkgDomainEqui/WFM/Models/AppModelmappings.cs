@@ -44,6 +44,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.Erfasst = s.ERFASST;
                         d.Erfassungsdatum = s.ERDAT_ZCARPK;
                         d.FahrgestellNr = s.FAHRG;
+                        d.FarbFlag = s.Z_FARBE;
                         d.FolgetaskId = s.FOLGE_TASK_ID;
                         d.Istdatum = s.IST_DATUM;
                         d.Istzeit = s.IST_ZEIT.ToTimeString();
@@ -59,6 +60,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.NeuanforderungEmpfaenger = s.EMPF_NEUANFORD;
                         d.NeuanforderungUser = s.NAUANF_USER;
                         d.NeuanforderungZlsDatum = s.NAUANF_ZLS;
+                        d.NeueInfoDad = s.NEW_INFO_DAD.XToBool();
                         d.Referenz1 = s.REFERENZ1;
                         d.Referenz2 = s.REFERENZ2;
                         d.Referenz3 = s.REFERENZ3;
@@ -101,6 +103,7 @@ namespace CkgDomainLogic.WFM.Models
                         d.VorgangsNrAbmeldeauftrag = s.VORG_NR_ABM_AUF;
                         d.Datum = s.DATUM;
                         d.LaufendeNr = s.LFD_NR;
+                        d.NeueInfoDad = s.NEW_INFO_DAD.XToBool();
                         d.Text = s.TEXT;
                         d.ToDoWer = s.TODO_WER;
                         d.User = s.ZUSER;
@@ -302,6 +305,7 @@ namespace CkgDomainLogic.WFM.Models
                     {
                         d.VORG_NR_ABM_AUF = s.VorgangsNrAbmeldeauftrag;
                         d.TEXT = s.Text;
+                        d.NEW_INFO_KU = "X";
                     }));
             }
         }

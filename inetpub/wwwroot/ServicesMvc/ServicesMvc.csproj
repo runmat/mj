@@ -744,6 +744,7 @@
     <Content Include="Images\fahrer\8.png" />
     <Content Include="Images\fahrer\9.png" />
     <Content Include="Images\icons\icon-bell-white.png" />
+    <Content Include="Images\information.png" />
     <Content Include="Images\maps\deutschland.svg" />
     <Content Include="Images\metronic\excel.png" />
     <Content Include="Images\metronic\pdf.png" />
@@ -2557,7 +2558,6 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
-
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />

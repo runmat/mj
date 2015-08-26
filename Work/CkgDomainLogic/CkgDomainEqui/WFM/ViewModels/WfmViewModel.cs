@@ -189,7 +189,7 @@ namespace CkgDomainLogic.WFM.ViewModels
                 VorgangsNrAbmeldeauftrag = AktuellerAuftragVorgangsNr,
                 Text = neueInfo,
                 Datum = DateTime.Today,
-                Zeit = DateTime.Now.ToString("HHmmss"),
+                Zeit = DateTime.Now.ToString("HH:mm:ss"),
                 LaufendeNr = (Informationen.None() ? 1 : Informationen.Max(i => i.LaufendeNr.ToInt(0)) + 1).ToString(),
                 User = LogonContext.UserName
             };
