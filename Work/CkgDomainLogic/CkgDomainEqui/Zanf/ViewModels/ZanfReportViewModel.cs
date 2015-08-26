@@ -18,19 +18,6 @@ namespace CkgDomainLogic.Zanf.ViewModels
         [XmlIgnore]
         public List<ZulassungsAnforderung> ZulassungsAnforderungen { get { return DataService.ZulassungsAnforderungen; } }
 
-        [XmlIgnore]
-        public List<ZulassungsAnforderung> ZulassungsAnforderungenForGrid
-        {
-            get
-            {
-                var liste = ZulassungsAnforderungenFiltered.Clone();
-
-                liste.ForEach(item => item.KlaerfallText = (item.KlaerfallText.Contains("<br/>") ? item.KlaerfallText.Split(new[] { "<br/>" }, StringSplitOptions.None)[0] : item.KlaerfallText));
-                
-                return liste;
-            }
-        }
-
         public void LoadZulassungsAnforderungen(ZulassungsAnforderungSuchparameter suchparameter, ModelStateDictionary state)
         {
             DataService.Suchparameter = suchparameter;
@@ -41,10 +28,10 @@ namespace CkgDomainLogic.Zanf.ViewModels
                 state.AddModelError(String.Empty, Localize.NoDataFound);
         }
 
-        public ZulassungsAnforderung GetItem(string anforderungsNr, string hauptpositionsNr, string auftragsNr)
+        public ZulassungsAnforderung GetItem(string anforderungsNr, string auftragsNr)
         {
             if (anforderungsNr.IsNotNullOrEmpty())
-                return ZulassungsAnforderungen.Find(z => z.AnforderungsNr == anforderungsNr && z.HauptpositionsNr == hauptpositionsNr);
+                return ZulassungsAnforderungen.Find(z => z.AnforderungsNr == anforderungsNr);
 
             return ZulassungsAnforderungen.Find(z => z.AuftragsNr == auftragsNr);
         }
