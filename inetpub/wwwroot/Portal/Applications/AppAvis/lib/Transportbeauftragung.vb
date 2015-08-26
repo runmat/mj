@@ -687,7 +687,7 @@ Public Class Transportbeauftragung
     ''' <returns>Liefert den gefilterten Bestand</returns>
     Public Function GetFilterBestandMail() As DataView
         Dim dv As DataView = tblSAPWaitingForEmail.DefaultView
-        dv.RowFilter = "AUF_NEUW_TRANSP = " + strAuftragsnummer
+        dv.RowFilter = "AUF_NEUW_TRANSP = '" + strAuftragsnummer + "'"
         Return dv
     End Function
     
