@@ -187,6 +187,66 @@ namespace CkgDomainLogic.WFM.Models
             }
         }
 
+        static public ModelMapping<Z_WFM_CALC_DURCHLAUFZEIT_01.ES_STATISTIK, WfmDurchlaufStatistik> Z_WFM_CALC_DURCHLAUFZEIT_01_ES_STATISTIK_To_WfmDurchlaufStatistik
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_CALC_DURCHLAUFZEIT_01.ES_STATISTIK, WfmDurchlaufStatistik>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.DurchschnittDauer = s.DURCHSCHNITT_DAUER;
+
+                        d.AnzGes = s.ANZ_GES;
+
+                        d.AnzStdLe10 = s.ANZ_STD_LE_10;
+                        d.AnzStd1120 = s.ANZ_STD_11_20;
+                        d.AnzStd2130 = s.ANZ_STD_21_30;
+                        d.AnzStd3140 = s.ANZ_STD_31_40;
+                        d.AnzStdGt40 = s.ANZ_STD_GT_40;
+
+                        d.AnzKlaerLe10 = s.ANZ_KLAER_LE_10;
+                        d.AnzKlaer1120 = s.ANZ_KLAER_11_20;
+                        d.AnzKlaer2130 = s.ANZ_KLAER_21_30;
+                        d.AnzKlaer3140 = s.ANZ_KLAER_31_40;
+                        d.AnzKlaerGt40 = s.ANZ_KLAER_GT_40;
+
+                        d.AnzAlleLe10 = s.ANZ_ALLE_LE_10;
+                        d.AnzAlle1120 = s.ANZ_ALLE_11_20;
+                        d.AnzAlle2130 = s.ANZ_ALLE_21_30;
+                        d.AnzAlle3140 = s.ANZ_ALLE_31_40;
+                        d.AnzAlleGt40 = s.ANZ_ALLE_GT_40;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_WFM_CALC_DURCHLAUFZEIT_01.ET_OUT, WfmDurchlaufSingle> Z_WFM_CALC_DURCHLAUFZEIT_01_ET_OUT_To_WfmDurchlaufSingle
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_WFM_CALC_DURCHLAUFZEIT_01.ET_OUT, WfmDurchlaufSingle>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.KundenNr = s.KUNNR;
+                        d.VorgNrAbmAuf = s.VORG_NR_ABM_AUF;
+                        d.ErledigtDatum = s.ERLEDIGT_DATUM;
+                        d.AbmeldeArt = s.ABMELDEART;
+                        d.Selektion1 = s.SELEKTION1;
+                        d.Selektion2 = s.SELEKTION2;
+                        d.Selektion3 = s.SELEKTION3;
+                        d.Referenz1 = s.REFERENZ1;
+                        d.Referenz2 = s.REFERENZ2;
+                        d.Referenz3 = s.REFERENZ3;
+                        d.FahrgestellNr = s.FAHRG;
+                        d.Kennzeichen = s.KENNZ;
+                        d.DurchlaufzeitStunden = s.DURCHLAUFZEIT_STUNDEN;
+                        d.DurchlaufzeitTage = s.DURCHLAUFZEIT_TAGE;
+                        d.AnlageDatum = s.ANLAGEDATUM;
+                    }));
+            }
+        }
+
         #endregion
 
         #region ToSap

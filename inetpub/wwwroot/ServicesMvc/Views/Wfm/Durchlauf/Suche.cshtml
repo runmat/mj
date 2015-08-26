@@ -1,0 +1,73 @@
+﻿@model CkgDomainLogic.WFM.Models.WfmAuftragSelektor
+
+<div id="divDurchlaufSuche">
+    @using (Ajax.BeginForm("LoadDurchlauf", "Wfm", null,
+        new MvcAjaxOptions("divDurchlaufSuche") { OnComplete = "ShowDurchlaufGrids();" }, new { id = "DurchlaufSearchForm" }))
+    {    
+        <div class="form-horizontal" id="searchForm">
+            
+            @Html.FormValidationSummary()
+
+            @Html.HiddenFor(m => m.Modus)
+
+            
+            @Html.HiddenFor(m => m.Selektionsfeld1Name)
+            @if (!string.IsNullOrEmpty(Model.Selektionsfeld1Name))
+            {
+                @Html.FormCheckBoxFor(m => m.Selektionsfeld1, new {@class = "m-wrap"}, labelHidden: true, labelText: Model.Selektionsfeld1Name)
+            }
+            
+            @Html.HiddenFor(m => m.Selektionsfeld2Name)
+            @if (!string.IsNullOrEmpty(Model.Selektionsfeld2Name))
+            {
+                @Html.FormCheckBoxFor(m => m.Selektionsfeld2, new { @class = "m-wrap" }, labelHidden: true, labelText: Model.Selektionsfeld2Name)
+            }
+            
+            @Html.HiddenFor(m => m.Selektionsfeld3Name)
+            @if (!string.IsNullOrEmpty(Model.Selektionsfeld3Name))
+            {
+                @Html.FormCheckBoxFor(m => m.Selektionsfeld3, new { @class = "m-wrap" }, labelHidden: true, labelText: Model.Selektionsfeld3Name)
+            }
+
+            @Html.FormDateRangePickerFor(m => m.ErledigtDatumVonBis, new { @class = "m-wrap" })
+
+            @Html.FormRadioButtonListFor(m => m.AbmeldeartDurchlauf, Model.AlleAbmeldeartenDurchlauf.ToSelectList())
+
+
+            @Html.FormRequiredFieldsSummary()
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue'><i class='icon-search margin-right-5'></i>@Localize.SearchAsVerb</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowDurchlaufGrids() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowDurchlaufGrids",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowDurchlaufSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

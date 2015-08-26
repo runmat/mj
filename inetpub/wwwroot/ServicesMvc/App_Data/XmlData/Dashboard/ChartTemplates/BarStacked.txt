@@ -1,0 +1,22 @@
+﻿{
+	"bars": 
+	{
+		"show" : true,
+		"stacked": true,
+		"horizontal" : false,
+		"shadowSize" : 0,
+		"barWidth" : 0.5
+	},
+	"xaxis": 
+	{
+		"min": 0,
+		"autoscaleMargin": 1,
+		"ticks": @ticks
+	},   
+	"yaxis": 
+	{
+		"min": 0,
+		"autoscaleMargin": 1,
+		"tickDecimals": 0
+	}
+}
