@@ -749,20 +749,11 @@ Partial Public Class CustomerManagement
     End Sub
 
     Private Sub ConfirmMode(ByVal confirmOn As Boolean)
-        trConfirm.Visible = confirmOn
-        lbtnConfirm.Visible = confirmOn
         LockEdit(confirmOn)
         lbtnSave.Enabled = Not confirmOn
-        If confirmOn Then
-            lbtnCancel.Text = " &#149;&nbsp;Ändern"
-        Else
-            lbtnCancel.Text = " &#149;&nbsp;Abbrechen"
-        End If
     End Sub
 
     Private Sub EditEditMode(ByVal intCustomerId As Integer)
-        trConfirm.Visible = False
-        lbtnConfirm.Visible = False
         If Not FillEdit(intCustomerId) Then
             LockEdit(True)
             lbtnSave.Enabled = False
@@ -773,8 +764,6 @@ Partial Public Class CustomerManagement
     End Sub
 
     Private Sub EditDeleteMode(ByVal intGroupId As Integer)
-        trConfirm.Visible = False
-        lbtnConfirm.Visible = False
         If Not FillEdit(intGroupId) Then
             lbtnDelete.Enabled = False
         Else
@@ -789,8 +778,6 @@ Partial Public Class CustomerManagement
 
     Private Sub SearchMode(Optional ByVal blnSearchMode As Boolean = True, Optional ByVal blnNewSearch As Boolean = False)
         'gewünschte Expand/Collapse-Stati für die Seitenabschnitte in hidden fields setzen, werden dann von JQuery ausgewertet
-        trConfirm.Visible = False
-        lbtnConfirm.Visible = False
         If blnSearchMode Then
             If blnNewSearch Then
                 ihExpandstatusSearchFilterArea.Value = "1"
@@ -1529,13 +1516,8 @@ Partial Public Class CustomerManagement
     End Sub
 
     Private Sub lbtnCancel_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnCancel.Click
-        If InStr(lbtnCancel.Text, "ndern") < 0 Or lbtnCancel.Text = " &#149;&nbsp;Abbrechen" Or lbtnCancel.Text = "Verwerfen&nbsp;&#187;" Then
-            ClearEdit()
-            Search(True, True)
-        Else
-            ConfirmMode(False)
-            Bilderwahl_Switch(True)
-        End If
+        ClearEdit()
+        Search(True, True)
     End Sub
 
     Private Sub lbtnNew_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnNew.Click
@@ -1660,6 +1642,8 @@ Partial Public Class CustomerManagement
         End If
 
         ConfirmMode(True)
+
+        confirmWindow.Show()
     End Sub
 
     Private Sub lbtnDelete_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnDelete.Click
@@ -1855,6 +1839,12 @@ Partial Public Class CustomerManagement
                 cn.Close()
             End If
         End Try
+    End Sub
+
+    Private Sub lbtnCancelConfirm_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtnCancelConfirm.Click
+        ConfirmMode(False)
+        Bilderwahl_Switch(True)
+        confirmWindow.Hide()
     End Sub
 
     Private Sub btnNewIpAddress_Click(ByVal sender As Object, ByVal e As EventArgs) Handles btnNewIpAddress.Click
@@ -2247,7 +2237,6 @@ Partial Public Class CustomerManagement
     Protected Sub lbtFilterUnassignedApps_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbtFilterUnassignedApps.Click
         rgAppUnAssigned.Rebind()
     End Sub
-
 
     Sub HandleCheckBoxesAppIsMvcIsDefaultFavorite(ByVal sender As Object)
 

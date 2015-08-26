@@ -32,15 +32,6 @@ Partial Public Class Report06s
     Protected WithEvents lblHead As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
-    '''NewSearch-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents NewSearch As Global.System.Web.UI.WebControls.ImageButton
-
-    '''<summary>
     '''Panel1-Steuerelement
     '''</summary>
     '''<remarks>
@@ -156,7 +147,6 @@ Partial Public Class Report06s
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lnkCreateExcel1 As Global.System.Web.UI.WebControls.LinkButton
-
 
     '''<summary>
     '''gvBestand-Steuerelement

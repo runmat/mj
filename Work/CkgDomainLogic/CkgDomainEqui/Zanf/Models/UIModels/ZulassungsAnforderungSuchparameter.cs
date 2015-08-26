@@ -1,30 +1,43 @@
-﻿using System;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Zanf.Models
 {
-    public class ZulassungsAnforderungSuchparameter
+    public class ZulassungsAnforderungSuchparameter : Store, IValidatableObject
     {
-        [LocalizedDisplay(LocalizeConstants.RequestNo)]
-        public string AnforderungsNr { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Selection)]
+        [FormPersistable]
+        public string Auswahl { get; set; }
+
+        public string AuswahlOptionen { get { return string.Format("A,{0};O,{1};D,{2};K,{3}", Localize.All, Localize.Open, Localize.Executed, Localize.ClarificationCases); } }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        [FormPersistable]
         public string FahrgestellNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.OrderID)]
-        public string AuftragsNr { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.CustomerReferenceNo)]
-        public string KundenreferenzNr { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
+        [FormPersistable]
+        public string ReferenzNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CreateDate)]
-        public DateTime? Anlagedatum { get; set; }
+        [FormPersistable]
+        public DateRange AnlageDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days, true)); } set { PropertyCacheSet(value); } }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateTime? Ausfuehrungsdatum { get; set; }
+        [FormPersistable]
+        public DateRange AusfuehrungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
 
-        [LocalizedDisplay(LocalizeConstants.OnlyClarificationCases)]
-        public bool NurKlaerfaelle { get; set; }
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (AnlageDatumRange.IsSelected && AnlageDatumRange.StartDate.HasValue && AnlageDatumRange.EndDate.HasValue && AnlageDatumRange.StartDate.Value > AnlageDatumRange.EndDate.Value)
+                yield return new ValidationResult(Localize.DateRangeInvalid, new[] { "AnlageDatumRange" });
+
+            if (AusfuehrungsDatumRange.IsSelected && AusfuehrungsDatumRange.StartDate.HasValue && AusfuehrungsDatumRange.EndDate.HasValue && AusfuehrungsDatumRange.StartDate.Value > AusfuehrungsDatumRange.EndDate.Value)
+                yield return new ValidationResult(Localize.DateRangeInvalid, new[] { "AusfuehrungsDatumRange" });
+        }
     }
 }

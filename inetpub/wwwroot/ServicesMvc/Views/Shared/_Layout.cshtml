@@ -24,13 +24,14 @@
         @Html.Partial("Partial/LayoutPage/Styles")
         @Html.Partial("Partial/LayoutPage/ScriptsPreload")
 
-        <link href="~/content/SiteAllLayouts.css?v=20150804" rel="stylesheet" type="text/css" />
-        <link href="~/content/Site.css?v=20150804" rel="stylesheet" type="text/css" />
+        <link href="~/content/SiteAllLayouts.css?v=20150819" rel="stylesheet" type="text/css" />
+        <link href="~/content/Site.css?v=20150819" rel="stylesheet" type="text/css" />
     </head>
     <body class="fixed-top">
         @Html.Partial("Partial/TelerikGridDummy")
         @Html.Partial("Partial/LayoutPage/Scripts")
-        
+        @Html.Partial("~/Areas/Common/Views/Dashboard/Partial/ChartJsonDataCustomizingScripts.cshtml")
+
         <img class="loading hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
         <img class="loading2 hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
 

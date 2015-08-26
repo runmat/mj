@@ -46,9 +46,16 @@
             if (!_modelStateValid)
                 SearchResultsHide();
         }
-        catch(e) {}
+        catch (e) { }
     }
-    
+
+    function SearchResultsExpliciteTryHide() {
+        try {
+            SearchResultsHide();
+        }
+        catch (e) { }
+    }
+
 </script>
 
 <div id="FormSearchBox" class="portlet box light-grey">
