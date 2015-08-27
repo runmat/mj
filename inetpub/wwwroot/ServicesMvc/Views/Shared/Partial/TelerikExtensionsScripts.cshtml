@@ -106,14 +106,14 @@
         if (typeof (autoPersistColumns) != 'undefined' && autoPersistColumns)
             autoPersistInDb = true;
 
-        GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, autoPersistInDb);
+        GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, autoPersistInDb, grid.attr("id"));
     }
 
     function getFilteredData_DisableDataBound() {
         return _filteredData_DisableDataBound;
     }
 
-    function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, autoPersistInDb) {
+    function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, autoPersistInDb, gridName) {
 
         if (_filteredData_DisableDataBound)
             return;
@@ -132,7 +132,8 @@
                         orderBy: orderBy,
                         filterBy: filterBy,
                         groupBy: groupBy,
-                        autoPersistInDb: autoPersistInDb
+                        autoPersistInDb: autoPersistInDb,
+                        gridName: gridName
                     },
                     loadingShow: false,
                     success: function (result) {
