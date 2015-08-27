@@ -239,15 +239,6 @@ Partial Public Class CustomerManagement
     Protected WithEvents dgSearchResult As Global.System.Web.UI.WebControls.GridView
 
     '''<summary>
-    '''trConfirm-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trConfirm As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
     '''Input-Steuerelement
     '''</summary>
     '''<remarks>
@@ -255,15 +246,6 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents Input As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
-    '''plhConfirm-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents plhConfirm As Global.System.Web.UI.WebControls.PlaceHolder
 
     '''<summary>
     '''Tabs-Steuerelement
@@ -1616,15 +1598,6 @@ Partial Public Class CustomerManagement
     Protected WithEvents lbtnDelete As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
-    '''lbtnConfirm-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lbtnConfirm As Global.System.Web.UI.WebControls.LinkButton
-
-    '''<summary>
     '''lbtnSave-Steuerelement
     '''</summary>
     '''<remarks>
@@ -1704,6 +1677,60 @@ Partial Public Class CustomerManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lbtnCancelOptions As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''btnFake2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents btnFake2 As Global.System.Web.UI.WebControls.Button
+
+    '''<summary>
+    '''confirmWindow-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents confirmWindow As Global.AjaxControlToolkit.ModalPopupExtender
+
+    '''<summary>
+    '''mb2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents mb2 As Global.System.Web.UI.WebControls.Panel
+
+    '''<summary>
+    '''plhConfirm-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents plhConfirm As Global.System.Web.UI.WebControls.PlaceHolder
+
+    '''<summary>
+    '''lbtnConfirm-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbtnConfirm As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lbtnCancelConfirm-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbtnCancelConfirm As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
     '''RadScriptBlock1-Steuerelement
