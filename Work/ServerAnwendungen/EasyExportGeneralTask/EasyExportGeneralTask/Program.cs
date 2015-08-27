@@ -1515,6 +1515,8 @@ namespace EasyExportGeneralTask
         /// </summary>
         private static void QueryDaimlerFleet()
         {
+            bool blnErrorOccured = false;
+
             try
             {
                 S.AP.Init("Z_DPM_EXP_ABMELDUNGEN_DF_01", "I_KUNNRS", taskConfiguration.Kundennummer);
@@ -1524,7 +1526,7 @@ namespace EasyExportGeneralTask
                     S.AP.SetImportParameter("I_QMDAT", taskConfiguration.Abfragedatum.ToShortDateString());
                 }
 
-                DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_OUT");
+                DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_OUT_JOB");
 
                 // EasyArchiv-Query initialisieren
                 clsQueryClass Weblink = new clsQueryClass();
@@ -1532,6 +1534,11 @@ namespace EasyExportGeneralTask
 
                 foreach (DataRow row in tblSapResults.Rows)
                 {
+                    if (blnErrorOccured)
+                    {
+                        break;
+                    }
+
                     result.clear();
 
                     string queryexpression = ".1001=" + row["CHASSIS_NUM"] + " & .110=ZB1";
@@ -1568,6 +1575,14 @@ namespace EasyExportGeneralTask
                         if (!String.IsNullOrEmpty(status))
                         {
                             Console.WriteLine(status);
+                        }
+
+                        if (taskConfiguration.DatumInSapSetzen)
+                        {
+                            if (!SetActionDate("", row["QMNUM"].ToString(), true))
+                            {
+                                blnErrorOccured = true;
+                            }
                         }
                     }
                 }
@@ -1721,15 +1736,24 @@ namespace EasyExportGeneralTask
         /// </summary>
         /// <param name="strManum"></param>
         /// <param name="strQmnum"></param>
+        /// <param name="qmel"></param>
         /// <returns></returns>
-        private static bool SetActionDate(string strManum, string strQmnum)
+        private static bool SetActionDate(string strManum, string strQmnum, bool qmel = false)
         {
             try
             {
-                S.AP.Init("Z_M_Uebermittlungsdatum_Lp");
+                if (qmel)
+                {
+                    S.AP.Init("Z_M_Uebermittlungsdatum_Mel_Lp");
+                }
+                else
+                {
+                    S.AP.Init("Z_M_Uebermittlungsdatum_Lp");
 
-                S.AP.SetImportParameter("I_KUNNR", taskConfiguration.Kundennummer);
-                S.AP.SetImportParameter("I_MANUM", strManum);
+                    S.AP.SetImportParameter("I_KUNNR", taskConfiguration.Kundennummer);
+                    S.AP.SetImportParameter("I_MANUM", strManum);
+                }
+
                 S.AP.SetImportParameter("I_QMNUM", strQmnum);
                 S.AP.SetImportParameter("I_ZZUEBER", DateTime.Today);
 

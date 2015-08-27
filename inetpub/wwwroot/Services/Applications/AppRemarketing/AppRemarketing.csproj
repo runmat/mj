@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\QuickEasy.dll</HintPath>
     </Reference>
+    <Reference Include="SmartSoft.PdfLibrary">
+      <HintPath>..\..\..\..\..\Work\GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">

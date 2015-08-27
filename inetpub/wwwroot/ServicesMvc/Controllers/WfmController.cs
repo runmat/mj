@@ -11,12 +11,30 @@ using CkgDomainLogic.WFM.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Models;
 using Telerik.Web.Mvc;
+using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.WFM.Contracts;
+using GeneralTools.Contracts;
 
 namespace ServicesMvc.Controllers
 {
-    public partial class WfmController 
+    public partial class WfmController : CkgDomainController
     {
+        public override string DataContextKey { get { return "WflViewModel"; } }
+
         public WfmViewModel ViewModel { get { return GetViewModel<WfmViewModel>(); } }
+
+        public WfmController(IAppSettings appSettings, ILogonContextDataService logonContext, IWfmDataService wflDataService)
+            : base(appSettings, logonContext)
+        {
+            InitViewModel(ViewModel, appSettings, logonContext, wflDataService);
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            WfmAuftrag.GetViewModel = GetViewModel<WfmViewModel>;
+            WfmToDo.GetViewModel = GetViewModel<WfmViewModel>;
+        }
 
         [CkgApplication]
         public ActionResult Abmeldevorgaenge()
@@ -32,6 +50,14 @@ namespace ServicesMvc.Controllers
             ViewModel.DataInit(SelektionsModus.KlaerfallWorkplace);
 
             return View("Abmeldevorgaenge", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult Durchlauf()
+        {
+            ViewModel.DataInit(SelektionsModus.Durchlauf);
+
+            return View(ViewModel);
         }
 
         [HttpPost]
@@ -78,6 +104,7 @@ namespace ServicesMvc.Controllers
             return ViewModel.AuftraegeFiltered;
         }
 
+
         #region Übersicht/Storno
 
         [HttpPost]
@@ -105,6 +132,7 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
+
 
         #region Informationen
 
@@ -150,6 +178,7 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
+
 
         #region Dokumente
 
@@ -211,6 +240,7 @@ namespace ServicesMvc.Controllers
 
         #endregion
 
+
         #region Aufgaben
 
         [GridAction]
@@ -264,5 +294,104 @@ namespace ServicesMvc.Controllers
         }
 
         #endregion
+
+
+        #region Durchlauf
+
+        [HttpPost]
+        public ActionResult LoadDurchlauf(WfmAuftragSelektor model)
+        {
+            ViewModel.Selektor = model;
+
+            if (ModelState.IsValid)
+                ViewModel.LoadDurchlauf(ModelState);
+
+            return PartialView("Durchlauf/Suche", ViewModel.Selektor);
+        }
+
+        [HttpPost]
+        public ActionResult ShowDurchlaufGrids()
+        {
+            return PartialView("Durchlauf/Grids", ViewModel);
+        }
+
+
+        [GridAction]
+        public ActionResult DurchlaufDetailsAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.DurchlaufDetailsFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridDurchlaufDetails(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterDurchlaufDetails(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportDurchlaufDetailsFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var gridCurrentSettings = GridSettingsPerName["GridDurchlaufDetails"];
+
+            var dt = ViewModel.DurchlaufDetailsFiltered.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Details, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportDurchlaufDetailsFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var gridCurrentSettings = GridSettingsPerName["GridDurchlaufDetails"];
+
+            var dt = ViewModel.DurchlaufDetailsFiltered.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Details, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+
+        [GridAction]
+        public ActionResult DurchlaufStatistikAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.DurchlaufStatistikenFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridDurchlaufStatistik(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterDurchlaufStatistiken(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportDurchlaufStatistikenFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var gridCurrentSettings = GridSettingsPerName["GridDurchlaufStatistik"];
+
+            var dt = ViewModel.DurchlaufStatistikenFiltered.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Statistics, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportDurchlaufStatistikenFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var gridCurrentSettings = GridSettingsPerName["GridDurchlaufStatistik"];
+
+            var dt = ViewModel.DurchlaufStatistikenFiltered.GetGridFilteredDataTable(orderBy, filterBy, gridCurrentSettings.Columns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Statistics, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult GetChartData(int chartID)
+        {
+            return Json(ViewModel.GetChartData(chartID));
+        }
+
+        #endregion
+
     }
 }
