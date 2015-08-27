@@ -29,7 +29,7 @@
                         <telerik:RadGrid ID="rgGrid1" runat="server" AllowSorting="True" AllowPaging="True"
                             AutoGenerateColumns="False" GridLines="None" Culture="de-DE" Skin="Default" PageSize="5">
                             <ClientSettings AllowKeyboardNavigation="true" >
-                                <Scrolling ScrollHeight="480px" AllowScroll="True" UseStaticHeaders="True" />
+                                <Scrolling ScrollHeight="400px" AllowScroll="True" UseStaticHeaders="True" />
                             </ClientSettings>
                             <ItemStyle CssClass="ItemStyle" />
                             <AlternatingItemStyle CssClass="ItemStyle" />
