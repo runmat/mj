@@ -135,6 +135,10 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Referenz1 = s.ZZREFNR2;
                         d.Referenz1 = s.ZZREFNR3;
                         d.Referenz1 = s.ZZREFNR4;
+                        d.Preis = s.PREIS_DL;
+                        d.PreisGebuehr = s.PREIS_GB;
+                        d.PreisSteuer = s.PREIS_ST;
+                        d.PreisKz = s.PREIS_KZ;
 
                         SetStatus(s, d);
 
