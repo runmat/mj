@@ -115,7 +115,7 @@ namespace SapORM.Contracts
         }
 
         /// <summary>
-        /// returns HH:MM
+        /// returns HH:mm:ss or HH:mm
         /// </summary>
         public static string ToTimeString(this string str)
         {
@@ -124,7 +124,10 @@ namespace SapORM.Contracts
             if (str.Length < 4)
                 return str;
 
-            return string.Format("{0}:{1}", str.Left(2), str.Substring(2, 2));
+            if (str.Length < 6)
+                return string.Format("{0}:{1}", str.Left(2), str.Substring(2, 2));
+
+            return string.Format("{0}:{1}:{2}", str.Left(2), str.Substring(2, 2), str.Substring(4, 2));
         }
     }
 }
