@@ -3,13 +3,15 @@ using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
+using System.Linq;
 
 namespace CkgDomainLogic.WFM.Models
 {
     public enum SelektionsModus
     {
         Abmeldevorgaenge,
-        KlaerfallWorkplace
+        KlaerfallWorkplace,
+        Durchlauf
     }
 
     public class WfmAuftragSelektor : Store 
@@ -85,7 +87,13 @@ namespace CkgDomainLogic.WFM.Models
         public SelektionsModus Modus { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Date)]
-        public DateRange SolldatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days) { IsSelected = false }); } set { PropertyCacheSet(value); } }
+        public DateRange SolldatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
+
+        [LocalizedDisplay(LocalizeConstants.CreateDate)]
+        public DateRange AnlageDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.LastMonth)); } set { PropertyCacheSet(value); } }
+
+        [LocalizedDisplay(LocalizeConstants.FinishDate)]
+        public DateRange ErledigtDatumVonBis { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last3Months, true)); } set { PropertyCacheSet(value); } }
 
         public List<SelectItem> AlleToDoWer
         {
@@ -100,7 +108,35 @@ namespace CkgDomainLogic.WFM.Models
             }
         }
 
+        [LocalizedDisplay(LocalizeConstants.TimeInWorkingDays)]
+        public bool DurchlaufzeitInTagen { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.ToDoWho)]
         public string ToDoWer { get; set; }
+
+        public List<SelectItem> AlleAbmeldeartenDurchlauf
+        {
+            get
+            {
+                return PropertyCacheGet(() => new List<SelectItem>
+                {
+                    new SelectItem("Alle", Localize.All),
+                    new SelectItem("Klär", Localize.ClarificationCase),
+                    new SelectItem("Std", Localize.Standard),
+                });
+            }
+        }
+
+        public string GetAlleAbmeldeartenDurchlaufNextKeyFor(string key)
+        {
+            var item = AlleAbmeldeartenDurchlauf.First(d => d.Key == key);
+            var index = AlleAbmeldeartenDurchlauf.IndexOf(item);
+            index = (index + 1) % AlleAbmeldeartenDurchlauf.Count;
+
+            return AlleAbmeldeartenDurchlauf[index].Key;
+        }
+
+        [LocalizedDisplay(LocalizeConstants.DeRegistrationType)]
+        public string AbmeldeartDurchlauf { get { return PropertyCacheGet(() => "Alle"); } set { PropertyCacheSet(value); } }
     }
 }

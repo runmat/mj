@@ -118,8 +118,6 @@
     <Compile Include="Controllers\HistorieVermieter\EquiController.cs" />
     <Compile Include="Controllers\SperrenVerschieben\FahrzeugeController.cs" />
     <Compile Include="Controllers\StatusEinsteuerungController.cs" />
-    <Compile Include="Controllers\WfmController.cs" />
-    <Compile Include="Controllers\WFM\WfmController.cs" />
     <Compile Include="Controllers\ModellIdController.cs" />
     <Compile Include="Controllers\ZulaufEinsteuerung\FahrzeugeController.cs" />
     <Compile Include="Controllers\Treuhandbestand\FahrzeugeController.cs" />
@@ -292,6 +290,8 @@
     <Compile Include="WFM\Contracts\IWfmDataService.cs" />
     <Compile Include="WFM\Models\AppModelmappings.cs" />
     <Compile Include="WFM\Models\WfmDokument.cs" />
+    <Compile Include="WFM\Models\WfmDurchlaufSingle.cs" />
+    <Compile Include="WFM\Models\WfmDurchlaufStatistik.cs" />
     <Compile Include="WFM\Models\WfmToDo.cs" />
     <Compile Include="WFM\Models\WfmDokumentInfo.cs" />
     <Compile Include="WFM\Models\WfmInfo.cs" />
@@ -318,6 +318,7 @@
     <Compile Include="Zanf\Contracts\IZanfReportDataService.cs" />
     <Compile Include="Zanf\Contracts\IZulassungsunterlagenDataService.cs" />
     <Compile Include="Zanf\Models\AppModelMappings.cs" />
+    <Compile Include="Zanf\Models\DataModels\ZanfAdresse.cs" />
     <Compile Include="Zanf\Models\DataModels\ZulassungsUnterlagen.cs" />
     <Compile Include="Zanf\Models\UIModels\ZulassungsUnterlagenSuchparameter.cs" />
     <Compile Include="Zanf\Models\UIModels\ZulassungsAnforderungSuchparameter.cs" />

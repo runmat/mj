@@ -11,6 +11,7 @@ using GeneralTools.Contracts;
 using GeneralTools.Services;
 using GeneralTools.Models;
 using MvcTools.Web;
+using System.Web;
 
 namespace CkgDomainLogic.General.ViewModels
 {
@@ -99,8 +100,18 @@ namespace CkgDomainLogic.General.ViewModels
 
         protected void DashboardSessionSaveCurrentReportSelector<T>(T reportSelector) where T : class
         {
-            var callingMethod = new StackFrame(1, true).GetMethod();
-            var dashboardItemsLoadMethodAttribute = callingMethod.GetCustomAttributes(true).OfType<DashboardItemsLoadMethodAttribute>().FirstOrDefault();
+            int framesToSkip = 1, maxFramesToSkip = 99;
+            DashboardItemsLoadMethodAttribute dashboardItemsLoadMethodAttribute = null;
+
+            while (dashboardItemsLoadMethodAttribute == null && framesToSkip < maxFramesToSkip)
+            {
+                var callingMethod = new StackFrame(framesToSkip, true).GetMethod();
+                if (callingMethod == null)
+                    return;
+
+                dashboardItemsLoadMethodAttribute = callingMethod.GetCustomAttributes(true).OfType<DashboardItemsLoadMethodAttribute>().FirstOrDefault();
+                framesToSkip++;
+            }
             if (dashboardItemsLoadMethodAttribute == null)
                 return;
 
@@ -133,6 +144,9 @@ namespace CkgDomainLogic.General.ViewModels
 
         private void DashboardTryInitCurrentReportSelector()
         {
+            if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Request.HttpMethod.NotNullOrEmpty().ToUpper().Contains("POST"))
+                return;
+
             var dashboardItemKey = SessionHelper.GetSessionValue("DashboardCurrentReportSelectorKey", "");
             if (dashboardItemKey.IsNullOrEmpty())
                 return;
@@ -145,7 +159,7 @@ namespace CkgDomainLogic.General.ViewModels
             if (reportSelectorType == null)
                 return;
 
-            const int totalSecondsReportSelectorExpiration = 30;
+            const int totalSecondsReportSelectorExpiration = 120;
             var secondsElapsed = Math.Abs((DateTime.Now - DashboardSessionGetCurrentReportSelectorTimeStamp()).TotalSeconds);
             if (secondsElapsed > totalSecondsReportSelectorExpiration)
                 return;

@@ -19,20 +19,6 @@
                     </div>
                    
                             <div id="paginationQuery">
-                                <table cellpadding="0" cellspacing="0">
-                                    <tbody>
-                                        <tr>
-                                            <td class="active">
-                                                Neue Abfrage starten
-                                            </td>
-                                            <td align="right">
-                                                <div id="queryImage">
-                                                    <asp:ImageButton ID="NewSearch" runat="server" ImageUrl="/Services/Images/queryArrow.gif" />
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
                             </div>
                             <asp:Panel ID="Panel1" runat="server">
                                 <div id="TableQuery" style="margin-bottom: 10px">

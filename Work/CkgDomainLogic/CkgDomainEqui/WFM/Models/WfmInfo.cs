@@ -31,7 +31,7 @@ namespace CkgDomainLogic.WFM.Models
                 var tmpDat = Datum;
 
                 if (tmpDat.HasValue
-                    && DateTime.TryParseExact(Zeit, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpZeit))
+                    && DateTime.TryParseExact(Zeit, "HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpZeit))
                 {
                     return tmpDat.Value.AddHours(tmpZeit.Hour).AddMinutes(tmpZeit.Minute).AddSeconds(tmpZeit.Second);
                 }
@@ -45,5 +45,7 @@ namespace CkgDomainLogic.WFM.Models
 
         [LocalizedDisplay(LocalizeConstants.InfoText)]
         public string Text { get; set; }
+
+        public bool NeueInfoDad { get; set; }
     }
 }

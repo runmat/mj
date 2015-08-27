@@ -223,6 +223,10 @@ namespace CkgDomainLogic.WFM.Models
         [LocalizedDisplay(LocalizeConstants.NextTaskId)]
         public string FolgetaskId { get; set; }
 
+        public string FarbFlag { get; set; }
+
+        public bool NeueInfoDad { get; set; }
+
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<WfmViewModel> GetViewModel { get; set; }
