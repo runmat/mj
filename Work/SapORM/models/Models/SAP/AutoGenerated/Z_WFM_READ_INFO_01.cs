@@ -47,6 +47,8 @@ namespace SapORM.Models
 
 			public string TEXT { get; set; }
 
+			public string NEW_INFO_DAD { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -59,6 +61,7 @@ namespace SapORM.Models
 					ZEIT = (string)row["ZEIT"],
 					TODO_WER = (string)row["TODO_WER"],
 					TEXT = (string)row["TEXT"],
+					NEW_INFO_DAD = (string)row["NEW_INFO_DAD"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

@@ -2,16 +2,19 @@
 Imports CKG.Base.Kernel.Security
 Imports CKG.Base.Kernel
 Partial Public Class Report06s
-    Inherits System.Web.UI.Page
+    Inherits Page
 
 #Region "Declarations"
+
     Private m_App As App
     Private m_User As User
-    Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
+    Protected WithEvents GridNavigation1 As Services.GridNavigation
+
 #End Region
 
 #Region "Events"
-    Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+
+    Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
         m_User = GetUser(Me)
         FormAuth(Me, m_User)
         GetAppIDFromQueryString(Me)
@@ -23,14 +26,12 @@ Partial Public Class Report06s
 
             m_App = New App(m_User)
 
-
             lblError.Text = ""
 
             If IsPostBack = False Then
 
                 FillDropdowns()
             End If
-
 
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
@@ -42,36 +43,45 @@ Partial Public Class Report06s
             Dim TempAusgabeTable As DataTable = CType(Session("UserDataTable"), DataTable).Clone
             Dim AusgabeTable As DataTable = CType(Session("UserDataTable"), DataTable).Copy
             Dim col2 As DataColumn
-            Dim sColName As String = ""
+            Dim sColName As String
 
             'Zugeordnete Anwendungen
             Dim Checked As Boolean = True
             Dim TempTable As New DataTable
+            Dim TableAppsPerGroup As New DataTable
             Dim GetData As New UserGroupApp
-            Dim Row As DataRow
+            Dim nRow As DataRow
 
             Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
             cn.Open()
 
             Select Case Checked
                 Case rdbAnwendung.Checked
-
-                    TempTable.Columns.Add("Anwendungen", System.Type.GetType("System.String"))
-
-                    Row = TempTable.NewRow
-
-                    Row("Anwendungen") = ddlAnwendung.SelectedItem.Text
-
-                    TempTable.Rows.Add(Row)
-
+                    TempTable.Columns.Add("Anwendungen", Type.GetType("System.String"))
                     TempTable.AcceptChanges()
+
+                    nRow = TempTable.NewRow
+                    nRow("Anwendungen") = ddlAnwendung.SelectedItem.Text
+                    TempTable.Rows.Add(nRow)
 
                 Case rdbGruppe.Checked
                     TempTable = GetData.GetApplicationsPerGroup(CInt(ddlGruppe.SelectedValue), cn)
+
+                    Dim grpName As String = ddlGruppe.SelectedItem.Text
+
+                    TableAppsPerGroup.Columns.Add(grpName, Type.GetType("System.String"))
+                    TableAppsPerGroup.AcceptChanges()
+
+                    For Each dRow As DataRow In TempTable.Rows
+                        nRow = TableAppsPerGroup.NewRow()
+                        nRow(grpName) = dRow("AppFriendlyName")
+                        TableAppsPerGroup.Rows.Add(nRow)
+                    Next
+
                     TempTable.Columns.Remove("AppID")
                     TempTable.Columns("AppFriendlyName").ColumnName = "Anwendungen"
                     TempTable.AcceptChanges()
-
+                    
                 Case rdbAlle.Checked
                     TempTable = GetData.GetApplications(m_User.Customer.CustomerId, cn)
 
@@ -79,20 +89,50 @@ Partial Public Class Report06s
                     TempTable.Columns("AppFriendlyName").ColumnName = "Anwendungen"
                     TempTable.AcceptChanges()
 
+                    Dim dictGroupApps As New Dictionary(Of String, List(Of String))
+                    Dim maxCount As Integer = 0
+
+                    For Each grp As ListItem In ddlGruppe.Items
+                        TableAppsPerGroup.Columns.Add(grp.Text, Type.GetType("System.String"))
+
+                        Dim tmpAppTable As DataTable = GetData.GetApplicationsPerGroup(CInt(grp.Value), cn)
+                        Dim lstApps As New List(Of String)()
+                        For Each grpApp As DataRow In tmpAppTable.Rows
+                            lstApps.Add(grpApp("AppFriendlyName").ToString())
+                        Next
+                        dictGroupApps.Add(grp.Text, lstApps)
+
+                        If lstApps.Count > maxCount Then
+                            maxCount = lstApps.Count
+                        End If
+                    Next
+
+                    TableAppsPerGroup.AcceptChanges()
+
+                    For i As Integer = 0 To (maxCount - 1)
+                        nRow = TableAppsPerGroup.NewRow()
+
+                        For Each grp As ListItem In ddlGruppe.Items
+                            If dictGroupApps(grp.Text).Count > i Then
+                                nRow(grp.Text) = dictGroupApps(grp.Text)(i)
+                            End If
+                        Next
+
+                        TableAppsPerGroup.Rows.Add(nRow)
+                    Next
+
             End Select
 
+            Dim Found As Boolean
 
-            Dim FieldControl As DataControlField
-            Dim Found As Boolean = False
+            AusgabeTable.Columns.Add("Temp", Type.GetType("System.String"))
 
-            AusgabeTable.Columns.Add("Temp", System.Type.GetType("System.String"))
+            For Each dRow As DataRow In AusgabeTable.Rows
 
-            For Each Row In AusgabeTable.Rows
-
-                If CBool(Row("AccountIsLockedOut")) = False Then
-                    Row("Temp") = "nein"
+                If CBool(dRow("AccountIsLockedOut")) = False Then
+                    dRow("Temp") = "nein"
                 Else
-                    Row("Temp") = "ja"
+                    dRow("Temp") = "ja"
                 End If
 
             Next
@@ -106,8 +146,7 @@ Partial Public Class Report06s
 
                 Found = False
 
-
-                For Each FieldControl In gvBestand.Columns
+                For Each FieldControl As DataControlField In gvBestand.Columns
 
                     If col2.ColumnName.ToUpper = FieldControl.SortExpression.ToUpper Then
                         Found = True
@@ -121,7 +160,6 @@ Partial Public Class Report06s
 
                     End If
 
-
                 Next
 
                 If Found = False Then
@@ -132,19 +170,19 @@ Partial Public Class Report06s
                 AusgabeTable.AcceptChanges()
             Next
 
-
             Dim DataSetUser As New DataSet
 
             AusgabeTable.TableName = "User"
             TempTable.TableName = "Anwendungen"
+            TableAppsPerGroup.TableName = "Gruppe"
 
             DataSetUser.Tables.Add(AusgabeTable)
             DataSetUser.Tables.Add(TempTable)
+            DataSetUser.Tables.Add(TableAppsPerGroup)
 
             Dim excelFactory As New DocumentGeneration.ExcelDocumentFactory()
             Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
-            excelFactory.CreateDocumentAndSendAsResponse(strFileName, DataSetUser, Me.Page)
-
+            excelFactory.CreateDocumentAndSendAsResponse(strFileName, DataSetUser, Page)
 
         Catch ex As Exception
             lblError.Text = "Beim Laden der Seite ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
@@ -190,7 +228,6 @@ Partial Public Class Report06s
         Response.Redirect("/Services/(S(" + Session.SessionID + "))/Start/Selection.aspx")
     End Sub
 
-
     Protected Sub rdbAnwendung_CheckedChanged(ByVal sender As Object, ByVal e As EventArgs) Handles rdbAnwendung.CheckedChanged
         If rdbAnwendung.Checked = True Then
             ddlAnwendung.Enabled = True
@@ -232,13 +269,14 @@ Partial Public Class Report06s
         ModalPopupExtender2.Show()
     End Sub
 
-    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.PreRender
+    Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.PreRender
         SetEndASPXAccess(Me)
     End Sub
 
-    Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles MyBase.Unload
+    Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles MyBase.Unload
         SetEndASPXAccess(Me)
     End Sub
+
     Private Sub GridNavigation1_PagerChanged(ByVal PageIndex As Integer) Handles GridNavigation1.PagerChanged
         gvBestand.PageIndex = PageIndex
         FillGrid(PageIndex)
@@ -248,13 +286,12 @@ Partial Public Class Report06s
         FillGrid(0)
     End Sub
 
-    Private Sub gvBestand_RowEditing(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewEditEventArgs) Handles gvBestand.RowEditing
+    Private Sub gvBestand_RowEditing(ByVal sender As Object, ByVal e As GridViewEditEventArgs) Handles gvBestand.RowEditing
         Dim row As GridViewRow = gvBestand.Rows(e.NewEditIndex)
 
         Dim lbl As Label
 
         lbl = CType(row.FindControl("lblGroup"), Label)
-
 
         lblGruppe.Text = "Anwendungen der Gruppe " & lbl.Text
 
@@ -265,15 +302,13 @@ Partial Public Class Report06s
         Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
         cn.Open()
 
-
         Dim TempTable As DataTable = GetData.GetApplicationsPerGroup(CInt(lbl.Text), cn)
-
 
         grvAnwendungen.DataSource = TempTable.DefaultView
         grvAnwendungen.DataBind()
     End Sub
 
-    Private Sub gvBestand_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles gvBestand.Sorting
+    Private Sub gvBestand_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles gvBestand.Sorting
         FillGrid(gvBestand.PageIndex, e.SortExpression)
     End Sub
 
@@ -307,28 +342,19 @@ Partial Public Class Report06s
 
     End Sub
 
-
     Private Sub FillGrid(ByVal PageIndex As Int32, Optional ByVal Sort As String = "")
 
-
-        Dim UserDataTable As New DataTable
         Dim Direction As String = String.Empty
 
         If IsNothing(Session("UserDataTable")) = False Then
 
-            UserDataTable = CType(Session("UserDataTable"), DataTable)
+            Dim UserDataTable As DataTable = CType(Session("UserDataTable"), DataTable)
 
             If UserDataTable.Rows.Count > 0 Then
 
-
                 gvBestand.Visible = True
-                'ddlPageSize.Visible = True
-
-                'tdExcel.Visible = True
 
                 Result.Visible = True
-
-                Dim TempPageIndex As Int32 = PageIndex
 
                 If Sort.Trim(" "c).Length > 0 Then
                     PageIndex = 0
@@ -396,13 +422,6 @@ Partial Public Class Report06s
 
     End Sub
 
-
 #End Region
 
-    Protected Sub NewSearch_Click(ByVal sender As Object, ByVal e As System.Web.UI.ImageClickEventArgs) Handles NewSearch.Click
-        'lbCreate.Visible = True
-        'tab1.Visible = True
-        'Queryfooter.Visible = True
-        'Result.Visible = False
-    End Sub
 End Class

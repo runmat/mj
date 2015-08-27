@@ -1,0 +1,311 @@
+/*
+ * jquery sDashboard (2.0)
+ * Copyright 2012, Model N, Inc
+ * Distributed under MIT license.
+ * https://github.com/ModelN/sDashboard
+ */
+
+/*dashboard css*/
+.sDashboard {
+	list-style-type: none;
+	margin: 0;
+	padding-left: 10px;
+	padding-top: 10px;
+	width: 100%;
+	height: 100%;
+	font-family : Helvetica Neue, Helvetica, Arial, sans-serif;
+	font-size : 13px;
+	/*overflow: auto;*/
+}
+
+.sDashboard li {
+	margin: 3px 3px 3px 0;
+	padding: 1px;
+	float: left;
+	height: 223px !important;
+	width: 400px !important;
+}
+.sDashboardWidgetContentBusyHint 
+ {
+    border: 0;
+	height: 140px !important;
+	width: 400px !important;
+    margin-left: -10px;
+    margin-bottom: 100px;
+ }
+ 
+/*dashboard widget css*/
+.sDashboardWidget {
+	/*margin: 0 1em 1em 0;*/
+	border: 1px solid #CBCBCB;
+	background-color: #fff;
+	-webkit-transition: border-color 0.3s;
+	-moz-transition: border-color 0.3s;
+	transition: border-color 0.3s;
+}
+.sDashboardWidget:hover {
+	border: 1px solid #AFAFAF;
+	-webkit-transition: border-color 0.3s;
+	-moz-transition: border-color 0.3s;
+	transition: border-color 0.3s;
+}
+
+/*dashboard widget header css*/
+.sDashboardWidgetHeader {
+	margin: 0.3em;
+	padding: 2px 0.2em 2px 1em;
+	cursor: move;
+	border: 0;
+	border-bottom: 1px solid #CBCBCB;
+	color: #000;
+	font-weight: bold;
+}
+
+/*dashboard widget content css*/
+.sDashboardWidgetContent {
+	margin: 0.3em;
+	padding: 0.4em;
+    padding-top: 20px;
+	height: 160px;
+	overflow-x: hidden;
+	overflow-y: hidden;
+}
+
+.sDashboardWidgetContentMaximized {
+	margin: 0.3em;
+	padding: 0.4em;
+	height: 90%;
+}
+
+/*for centering trick see  : http://css-tricks.com/quick-css-trick-how-to-center-an-object-exactly-in-the-center/*/
+.sDashboardWidgetContainerMaximized {
+	z-index: 9999;
+	position: fixed;
+	width: 800px;
+	height: 450px;
+	left: 50%;
+	top: 50%;
+	margin-top: -225px;
+	margin-left: -400px;
+}
+
+
+
+/*dashboard table widget css*/
+.sDashboardTableView {
+	width: 100%;
+	height: 95%;
+	overflow: auto;
+}
+
+
+.sDashboardTableView tbody tr:nth-child(odd)		{ background-color:#F5F5F5; }
+.sDashboardTableView tbody tr:nth-child(even)		{ background-color:#FFFFFF; }
+
+.sDashboardTableView tbody tr:nth-child(odd):hover,
+.sDashboardTableView tbody tr:nth-child(even):hover
+{
+	background-color: #FCEFA1;
+	cursor: pointer;
+}
+
+
+.dataTables_length, 
+.dataTables_info{
+	float:left;
+}
+
+.dataTables_filter,
+.dataTables_paginate{
+	float:right;
+}
+
+
+/*dashboard chart view css*/
+.sDashboardChart {
+	/*	width: 200px;
+	 height: 180px;*/
+	width: 100%;
+	height: 95%;
+	/*	cursor: pointer;*/
+}
+
+.sDashboardChartClickable {
+	cursor: pointer;
+}
+.sDashboardChartSelectable {
+	width: 100%;
+	height: 95%;
+	cursor: crosshair;
+}
+
+/*jquery sortable placeholder styles */
+.ui-sortable-placeholder {
+	border: 0px dotted black;
+	margin: 3px 3px 3px 0;
+	padding: 1px;
+	visibility: visible !important;
+	height: 227px !important;
+	width: 400px !important;
+}
+.ui-sortable-placeholder * {
+	visibility: hidden;
+}
+
+li.ui-sortable-placeholder {
+	background-color: #FCEFA1;
+}
+
+/*icons*/
+.sDashboard-icon {
+	margin: 0 5px 0 5px;
+	float: right;
+	background: url('icon-sprite.PNG') no-repeat;
+	width: 20px;
+	height: 20px;
+}
+
+.sDashboard-icon:hover {
+	cursor: pointer;
+}
+
+.sDashboard-icon.sDashboard-circle-plus-icon {
+	background-position: -2px -3px;
+}
+.sDashboard-icon.sDashboard-circle-minus-icon {
+	background-position: -2px -29px;
+}
+.sDashboard-icon.sDashboard-circle-remove-icon {
+	background-position: -2px -55px;
+}
+
+.sDashboard-icon.sDashboard-plus-icon {
+	background-position: -3px -83px;
+}
+.sDashboard-icon.sDashboard-minus-icon {
+	background-position: -2px -109px;
+}
+.sDashboard-icon.sDashboard-remove-icon {
+	background-position: -3px -135px;
+}
+
+
+.sDashboard-icon.sDashboard-trash-icon {
+	background-position: -4px -159px;
+}
+.sDashboard-icon.sDashboard-refresh-icon {
+	background-position: -3px -186px;
+}
+.sDashboard-icon.sDashboard-maximize-icon {
+	background-position: -2px -212px;
+}
+
+.sDashboard-icon.sDashboard-minimize-icon {
+	background-position: -2px -236px;
+}
+
+/*clear fix*/
+
+.sDashboard-clearfix:before, .sDashboard-clearfix:after {
+	content: "";
+	display: table;
+}
+.sDashboard-clearfix:after {
+	clear: both;
+}
+.sDashboard-clearfix {
+	zoom: 1; /* For IE 6/7 (trigger hasLayout) */
+}
+
+/*overlay*/
+
+.sDashboard-overlay {
+	opacity: 0.5;
+	position: absolute;
+	top: 0;
+	left: 0;
+	background-color: #000;
+	width: 100%;
+	z-index: 9998;/*z-index one less than window maximized css*/
+}
+/*.sDashboard-overlay {
+ width: 100%;
+ height: 100%;
+ background: rgba(0, 0, 0, 0.1);
+ background-size: 100% 100%;
+ position: fixed;
+ }*/
+ 
+ .sDashboard-icon.sDashboard-circle-plus-icon, .sDashboard-icon.sDashboard-refresh-icon {
+     display: none;
+ }
+ 
+ 
+ 
+.dashboard-dropdown-menu 
+{
+    display: inline-block;
+    color: #666;
+    font-size: 12pt;
+	padding: 5px 15px 5px 15px;
+	margin:0 0 0 20px;
+	padding:0;
+}
+.dashboard-dropdown-menu * {
+    color: #666!important;
+	text-decoration:none!important;
+}
+.dashboard-dropdown-menu li {
+    color: #666;
+	text-decoration:none;
+	margin:0;
+    /*border-radius: 20px !important;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);*/
+}
+.dashboard-dropdown-menu i.icon-angle-down {
+    font-size: 1.2em;
+}
+
+.dashboard-dropdown-menu span.badge {
+    padding-top: 6px;
+    padding-bottom: 4px;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-left: 22px;
+    font-size: 16px!important;
+    font-weight: normal;
+    height: 16px;
+    width: 16px;
+    background-color: #ffb848;
+    border-radius: 16px !important;
+    text-shadow: none!important;
+    float: none;
+    text-align: center;
+    box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.25);
+    color: white!important;
+}
+.dashboard-dropdown-menu ul.dropdown-menu i.icon-bar-chart {
+    margin-right: 10px;
+}
+.dashboard-dropdown-menu ul.dropdown-menu li a {
+    padding-right: 10px;
+}
+.dashboard-dropdown-menu ul.dropdown-menu {
+    margin-top: 8px;
+}
+.dashboard-dropdown-menu .dropdown-toggle {
+    background-color: transparent!important;
+}
+.dashboard-dropdown-menu a.dropdown-toggle i.icon-bar-chart {
+    margin-left: 8px;
+}
+
+a.dashboard-toolbar-item, a.dashboard-toolbar-item:hover {
+    display: inline;
+    float: right;
+    cursor: pointer!important;
+    font-size: 1.25em!important;
+    color: black!important;
+    font-style: normal!important;
+    text-decoration: none!important;
+}

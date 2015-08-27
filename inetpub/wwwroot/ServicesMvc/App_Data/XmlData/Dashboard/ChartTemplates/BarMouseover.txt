@@ -1,0 +1,32 @@
+﻿{
+	"colors" : ["#000000"],
+	"bars": 
+	{
+		"show" : true,
+		"stacked": false,
+		"horizontal" : false,
+		"shadowSize" : 0,
+		"barWidth" : 0.5
+	},
+    "mouse": {
+        "track": true,
+        "relative": true
+    },
+	"xaxis": 
+	{
+		"min": 0,
+		"autoscaleMargin": 1,
+		"noTicks": 2,
+		"ticks": @ticks
+	},   
+	"yaxis": 
+	{
+		"min": 0,
+		"autoscaleMargin": 1,
+		"tickDecimals": 0
+	},
+	"legend": 
+	{
+		"show": true
+	}
+}
