@@ -297,6 +297,10 @@
     }
 
     function GridCaptionHintShowAsWait(grid) {
+
+        if (IsIE())
+            return;
+
         var waitHint = GridCaptionGetWaitHintElement(grid);
 
         waitHint.removeClass("alert-success");
