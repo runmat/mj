@@ -304,16 +304,10 @@ Namespace Treuhand
                     End If
                 End If
 
-                'Adresszusatz / Ansprechpartner (Pflicht, wenn Versanddatum erfasst)
+                'Adresszusatz / Ansprechpartner (Optional)
                 strName2 = dRow("Name2").ToString()
-                If blnVersanddatumGesetzt Then
-                    If String.IsNullOrEmpty(strName2) OrElse strName2.Trim().Length > 40 Then
-                        Return False
-                    End If
-                Else
-                    If Not String.IsNullOrEmpty(strName2) AndAlso strName2.Trim().Length > 40 Then
-                        Return False
-                    End If
+                If Not String.IsNullOrEmpty(strName2) AndAlso strName2.Trim().Length > 40 Then
+                    Return False
                 End If
 
                 'Postfach (Strasse oder Postfach Pflicht, wenn Versanddatum erfasst -> Prüfung s.u.)
@@ -449,20 +443,12 @@ Namespace Treuhand
                 End If
             End If
 
-            'Adresszusatz / Ansprechpartner (Pflicht, wenn Versanddatum erfasst)
+            'Adresszusatz / Ansprechpartner (Optional)
             txtBox = CType(item.FindControl("txtName2"), TextBox)
-            If blnVersanddatumGesetzt Then
-                If Not String.IsNullOrEmpty(txtBox.Text) AndAlso txtBox.Text.Trim().Length <= 40 Then
-                    SetGridError(txtBox, False)
-                Else
-                    SetGridError(txtBox, True, "Pflichtfeld (max. 40 Stellen)")
-                End If
+            If String.IsNullOrEmpty(txtBox.Text) OrElse txtBox.Text.Trim().Length <= 40 Then
+                SetGridError(txtBox, False)
             Else
-                If String.IsNullOrEmpty(txtBox.Text) OrElse txtBox.Text.Trim().Length <= 40 Then
-                    SetGridError(txtBox, False)
-                Else
-                    SetGridError(txtBox, True, "Falsches Format (max. 40 Stellen)")
-                End If
+                SetGridError(txtBox, True, "Falsches Format (max. 40 Stellen)")
             End If
 
             'Postfach (Strasse oder Postfach Pflicht, wenn Versanddatum erfasst -> Prüfung s.u.)
