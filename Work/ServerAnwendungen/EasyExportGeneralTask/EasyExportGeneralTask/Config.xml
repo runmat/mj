@@ -452,7 +452,7 @@
         <!--Sollen die Arbeitsverzeichnisse vor dem Durchlauf geleert werden?-->
         <VerzeichnisseLeeren>false</VerzeichnisseLeeren>
         <!--Soll die Funktion SetActionDate aufgerufen werden? (sofern im jeweiligen Ablauf überhaupt möglich)-->
-        <DatumInSapSetzen>false</DatumInSapSetzen>
+        <DatumInSapSetzen>true</DatumInSapSetzen>
         <!--Sollen Mails (damit sind nicht die Error-Mails gemeint) versendet werden?-->
         <MailsSenden>false</MailsSenden>
         <!--Empfänger für Mails (damit sind nicht die Error-Mails gemeint)-->

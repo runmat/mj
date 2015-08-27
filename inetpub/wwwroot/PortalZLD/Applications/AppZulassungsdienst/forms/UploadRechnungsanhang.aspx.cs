@@ -346,9 +346,12 @@ namespace AppZulassungsdienst.forms
                     foreach (DataRow sheet in schemaTable.Rows)
                     {
                         var tableName = sheet["Table_Name"].ToString();
-                        OleDbCommand objCmdSelect = new OleDbCommand("SELECT * FROM [" + tableName + "]", objConn);
-                        OleDbDataAdapter objAdapter1 = new OleDbDataAdapter(objCmdSelect);
-                        objAdapter1.Fill(objDataset1, tableName);
+                        if (!tableName.EndsWith("_"))
+                        {
+                            OleDbCommand objCmdSelect = new OleDbCommand("SELECT * FROM [" + tableName + "]", objConn);
+                            OleDbDataAdapter objAdapter1 = new OleDbDataAdapter(objCmdSelect);
+                            objAdapter1.Fill(objDataset1, tableName);
+                        }
                     }
 
                     var tblTemp = objDataset1.Tables[0];

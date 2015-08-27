@@ -572,6 +572,60 @@ Partial Public Class UserManagement
     Protected WithEvents trEditUser As Global.System.Web.UI.HtmlControls.HtmlTableRow
 
     '''<summary>
+    '''trCustomer-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trCustomer As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''ddlCustomer-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlCustomer As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''trGroup-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trGroup As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''ddlGroups-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlGroups As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
+    '''trOrganization-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trOrganization As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''ddlOrganizations-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents ddlOrganizations As Global.System.Web.UI.WebControls.DropDownList
+
+    '''<summary>
     '''txtUserName-Steuerelement
     '''</summary>
     '''<remarks>
@@ -642,6 +696,15 @@ Partial Public Class UserManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents txtLastName As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''txtStore-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtStore As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''trReference-Steuerelement
@@ -725,13 +788,40 @@ Partial Public Class UserManagement
     Protected WithEvents txtReference3 As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''txtStore-Steuerelement
+    '''trMail-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents txtStore As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents trMail As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''txtMail-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtMail As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''trPhone-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents trPhone As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''txtPhone-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents txtPhone As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''trTestUser-Steuerelement
@@ -750,24 +840,6 @@ Partial Public Class UserManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents cbxTestUser As Global.System.Web.UI.WebControls.CheckBox
-
-    '''<summary>
-    '''trCustomer-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trCustomer As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''ddlCustomer-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ddlCustomer As Global.System.Web.UI.WebControls.DropDownList
 
     '''<summary>
     '''txtValidFrom-Steuerelement
@@ -842,42 +914,6 @@ Partial Public Class UserManagement
     Protected WithEvents cbxFirstLevelAdmin As Global.System.Web.UI.WebControls.RadioButton
 
     '''<summary>
-    '''trGroup-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trGroup As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''ddlGroups-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ddlGroups As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
-    '''trOrganization-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trOrganization As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''ddlOrganizations-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents ddlOrganizations As Global.System.Web.UI.WebControls.DropDownList
-
-    '''<summary>
     '''trOrganizationAdministrator-Steuerelement
     '''</summary>
     '''<remarks>
@@ -894,42 +930,6 @@ Partial Public Class UserManagement
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents cbxOrganizationAdmin As Global.System.Web.UI.WebControls.CheckBox
-
-    '''<summary>
-    '''trMail-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trMail As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''txtMail-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents txtMail As Global.System.Web.UI.WebControls.TextBox
-
-    '''<summary>
-    '''trPhone-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents trPhone As Global.System.Web.UI.HtmlControls.HtmlTableRow
-
-    '''<summary>
-    '''txtPhone-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents txtPhone As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
     '''hlUserHistory-Steuerelement
