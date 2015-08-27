@@ -20,7 +20,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         public List<IDashboardItem> DashboardItems
         {
-            get { return PropertyCacheGet(() => DataService.GetDashboardItems(LogonContext.UserName).ToList()); }
+            get { return PropertyCacheGet(() => FilterItemsAvailableForUser(DataService.GetDashboardItems(LogonContext.UserName))); }
         }
 
         public List<IDashboardItem> VisibleSortedDashboardItems
@@ -43,6 +43,21 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.DashboardItems);
+        }
+
+        List<IDashboardItem> FilterItemsAvailableForUser(IList<IDashboardItem> items)
+        {
+            if (LogonContext.UserApps == null)
+                return items.ToList();
+
+            return items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
+        }
+
+        static bool UserAppUrlContainsUrl(string userAppUrl, string url)
+        {
+            var translatedAppUrl = LogonContextHelper.ExtractUrlFromUserApp(userAppUrl);
+            url = url.ToLower().SubstringTry(4);
+            return translatedAppUrl.ToLower().Contains(url);
         }
 
         public void DashboardItemsSave(string commaSeparatedIds)
