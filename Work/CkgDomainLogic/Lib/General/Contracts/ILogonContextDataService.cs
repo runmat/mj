@@ -21,6 +21,8 @@ namespace CkgDomainLogic.General.Contracts
 
         User User { get; set; }
 
+        string UserNameForDisplay { get; set; }
+
         WebUserInfo UserInfo { get; set; }
 
         LogonLevel UserLogonLevel { get; set; }
@@ -59,6 +61,8 @@ namespace CkgDomainLogic.General.Contracts
         void TryLogonUser(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
 
         string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
+        
+        string GetEmailAddressForUser();
 
         void CheckIfPasswordResetAllowed(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError);
 

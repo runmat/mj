@@ -1,0 +1,58 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model AbgemeldeteFahrzeugeViewModel
+
+<h3 class="page-title" id="headerTitle">Abgemeldete Fahrzeuge</h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Abmeldungen/SucheFahrzeuge2", Model.AbgemeldeteFahrzeugeSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divHistorie"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {       
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();       
+    }
+
+    
+
+    function ShowAbgemeldeteFahrzeugeSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridAbgemeldeteFahrzeuge");
+        //alert('1');
+        $("#divGrid").slideDown();
+        $("#divHistorie").html('');
+        //alert('2');
+    }
+
+
+    function OnDataBound_GridAbgemeldeteFahrzeuge() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridAbgemeldeteFahrzeuge() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAbgemeldeteFahrzeuge() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+  
+
+</script>

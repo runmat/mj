@@ -21,6 +21,7 @@ using System.IO;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using SapORM.Contracts;
+using WebTools.Services;
 
 namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
 {
@@ -68,9 +69,20 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         public List<Adresse> KaeuferForSelection { get { return PropertyCacheGet(() => GetPartnerAdressenForSelection("KAEUFER")); } }
 
 
-        public void DataInit()
+        public void DataInit(string partnerId, string fzgId)
         {
             DataMarkForRefresh();
+
+            if (!String.IsNullOrEmpty(partnerId))
+            {
+                var partnerIdClear = CryptoMd5.Decrypt(partnerId);
+
+                if (FahrzeugAkteBestandSelektor.HalterForSelection.Any(h => h.KundenNr.NotNullOrEmpty().TrimStart('0') == partnerIdClear.TrimStart('0')))
+                    FahrzeugAkteBestandSelektor.Halter = partnerIdClear.ToSapKunnr();
+            }
+
+            if (!String.IsNullOrEmpty(fzgId))
+                FahrzeugAkteBestandSelektor.FIN = CryptoMd5.Decrypt(fzgId);
         }
 
         public override void DataMarkForRefresh()

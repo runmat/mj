@@ -1,5 +1,6 @@
 ﻿Imports CKG.Base.Business
 Imports CKG.Base.Common
+Imports GeneralTools.Models
 
 <Serializable()> Public Class Briefversand
     Inherits Base.Business.BankBase
@@ -649,7 +650,7 @@ Imports CKG.Base.Common
                 Dim sapRow As DataRow
 
 
-                If upload = False Then
+                If Not upload Then
 
                     If Len(_mStrFahrgestellnr & _mStrKennzeichen & _mStrLVnr & _mStrZbiiNr & _mStrRef1 & _mStrRef2) > 0 Then
                         sapRow = sapTable.NewRow
@@ -677,6 +678,13 @@ Imports CKG.Base.Common
 
                 End If
 
+                'Auswahl für ZZREFERENZ1 ggf. übersteuern, wenn im User entsprechend konfiguriert
+                Dim strRef1 As String = m_objUser.GetUserReferenceValueByReferenceType(Referenzfeldtyp.ZZREFERENZ1)
+                If Not String.IsNullOrEmpty(strRef1) Then
+                    For Each dRow As DataRow In sapTable.Rows
+                        dRow("ZZREFERENZ1") = strRef1
+                    Next
+                End If
 
                 myProxy.callBapi()
 
@@ -727,7 +735,7 @@ Imports CKG.Base.Common
                     End If
 
                     If strKunnr = "0010026883" Then
-                        getVertragsdaten(page, rowTemp)
+                        GetVertragsdaten(page, rowTemp)
                     End If
 
                     tblTemp2.AcceptChanges()
@@ -761,7 +769,7 @@ Imports CKG.Base.Common
                     End If
 
                     If strKunnr = "0010026883" Then
-                        getVertragsdaten(page, rowTemp)
+                        GetVertragsdaten(page, rowTemp)
                     End If
 
                     tblTemp.AcceptChanges()
@@ -1025,7 +1033,7 @@ Imports CKG.Base.Common
 
                 _mTblVersandOptions = myProxy.getExportTable("GT_OUT_DL")
 
- 
+
                 _mTblVersandOptions.Columns.Add("Selected", GetType(System.String))
                 _mTblVersandOptions.Columns.Add("Description", GetType(System.String))
                 _mTblVersandOptions.Columns("Description").DefaultValue = ""
@@ -1381,9 +1389,7 @@ Imports CKG.Base.Common
         End If
     End Sub
 
-    Public Sub AnfordernAusAutorisierung(ByVal strAppId As String, _
-                  ByVal strSessionId As String, _
-                  ByVal page As Page)
+    Public Sub AnfordernAusAutorisierung(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page, ByVal autUser As String)
 
         m_strClassAndMethod = "Briefversand.Anfordern"
         m_strAppID = strAppId
@@ -1449,6 +1455,11 @@ Imports CKG.Base.Common
 
                         sapRow("ERNAM") = Left(m_objUser.UserName, 12)
                         sapRow("LIZNR") = fahrzeugrow("Leasingnummer").ToString
+
+                        Dim jetzt As DateTime = DateTime.Now
+                        sapRow("USER_AUTOR") = autUser
+                        sapRow("DATUM_AUTOR") = jetzt.ToShortDateString()
+                        sapRow("UZEIT_AUTOR") = jetzt.ToString("HHmmss")
 
                         sapTable.Rows.Add(sapRow)
 

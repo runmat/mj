@@ -1,0 +1,31 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{ var gridName = "GridFahrzeugzulaeufe"; }
+
+@(Html.Telerik()
+    .Grid<Fahrzeugzulauf>()
+    .Name(gridName)
+    .XAjaxDataBinding("FahrzeugzulaeufeAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.ZulaufDatumDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.ZulaufDatumUhrzeitFormatted);
+        columns.XBound(c => c.EingangZb2).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.EingangPdi).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Hersteller);
+        columns.XBound(c => c.ModellId);
+        columns.XBound(c => c.Modell);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.UnitNrMitPruefziffer);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFahrzeugzulaeufe"))
+    .XPageSize(10)
+    .XSort()
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFahrzeugzulaeufeFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportFahrzeugzulaeufeFilteredPDF", "Fahrzeuge");
+    })
+)
+

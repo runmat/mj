@@ -1,22 +1,20 @@
-﻿Imports CKG.Base.Kernel
-Imports CKG.Base.Kernel.Common.Common
-Imports System.Text.RegularExpressions
+﻿Imports CKG.Base.Kernel.Common.Common
 Imports CKG.Base.Business
 
 Namespace Beauftragung2
 
     Partial Public Class Report01s_2
-        Inherits System.Web.UI.Page
+        Inherits Page
 
         Private m_App As Base.Kernel.Security.App
         Private m_User As Base.Kernel.Security.User
-        Protected WithEvents GridNavigation1 As Global.CKG.Services.GridNavigation
+        Protected WithEvents GridNavigation1 As Services.GridNavigation
         Private m_objTable As DataTable
         Private m_objExcel As DataTable
         Private legende As String
         Private csv As String
 
-        Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
             Try
                 m_User = GetUser(Me)
                 FormAuth(Me, m_User)
@@ -64,7 +62,7 @@ Namespace Beauftragung2
                         Dim excelFactory As New Base.Kernel.DocumentGeneration.ExcelDocumentFactory()
                         Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName & ".csv"
 
-                        excelFactory.CreateDocumentAndWriteToFilesystem(ConfigurationManager.AppSettings("ExcelPath") & strFileName, Me.m_objExcel, Me.Page, , , , , False)
+                        excelFactory.CreateDocumentAndWriteToFilesystem(ConfigurationManager.AppSettings("ExcelPath") & strFileName, m_objExcel, Page, , , , , False)
                         lnkShowCSV.NavigateUrl = "/Portal/Temp/Excel/" & strFileName
 
                     Else
@@ -91,6 +89,7 @@ Namespace Beauftragung2
                 lblError.Visible = True
             End Try
         End Sub
+
         Private Sub FillGrid(ByVal intPageIndex As Int32, Optional ByVal strSort As String = "")
             If m_objTable.Rows.Count = 0 Then
                 GridView1.Visible = False
@@ -100,8 +99,7 @@ Namespace Beauftragung2
                 GridView1.Visible = True
                 lblNoData.Visible = False
 
-                Dim tmpDataView As New DataView()
-                tmpDataView = m_objTable.DefaultView
+                Dim tmpDataView As DataView = m_objTable.DefaultView
 
                 Dim intTempPageIndex As Int32 = intPageIndex
                 Dim strTempSort As String = ""
@@ -207,7 +205,7 @@ Namespace Beauftragung2
                 Dim excelFactory As New Base.Kernel.DocumentGeneration.ExcelDocumentFactory()
                 Dim strFileName As String = Format(Now, "yyyyMMdd_HHmmss_") & m_User.UserName
 
-                excelFactory.CreateDocumentAndSendAsResponse(strFileName, Me.m_objExcel, Me.Page)
+                excelFactory.CreateDocumentAndSendAsResponse(strFileName, m_objExcel, Page, True, True, False, 90, 0.4, 0.4, 0.6, 0.6)
 
             Catch ex As Exception
                 lblError.Text = "Fehler beim Erstellen der Excel-Datei: " + ex.Message
@@ -215,7 +213,7 @@ Namespace Beauftragung2
             End Try
         End Sub
 
-        Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As System.Web.UI.WebControls.GridViewSortEventArgs) Handles GridView1.Sorting
+        Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView1.Sorting
             FillGrid(GridView1.PageIndex, e.SortExpression)
         End Sub
 
@@ -227,34 +225,19 @@ Namespace Beauftragung2
             FillGrid(0)
         End Sub
 
-        Private Sub lbBack_Click(ByVal sender As Object, ByVal e As System.EventArgs) Handles lbBack.Click
+        Private Sub lbBack_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbBack.Click
             Response.Redirect("Report01s.aspx?AppID=" & Session("AppID").ToString, False)
         End Sub
 
-        Private Sub Page_PreRender(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreRender
+        Private Sub Page_PreRender(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreRender
             SetEndASPXAccess(Me)
             HelpProcedures.FixedGridViewCols(GridView1)
         End Sub
 
-        Private Sub Page_Unload(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Unload
+        Private Sub Page_Unload(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Unload
             SetEndASPXAccess(Me)
         End Sub
+
     End Class
 
 End Namespace
-
-' ************************************************
-' $History: Report01s_2.aspx.vb $
-' 
-' *****************  Version 3  *****************
-' User: Fassbenders  Date: 18.02.11   Time: 14:29
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 2  *****************
-' User: Fassbenders  Date: 14.12.09   Time: 15:02
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 14.12.09   Time: 11:00
-' Created in $/CKAG2/Services/Components/ComCommon/Beauftragung
-' 

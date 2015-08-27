@@ -181,6 +181,7 @@ namespace AppZulassungsdienst.forms
                 Int32 Index;
                 Label lblID;
                 Label lblIDPos;
+                Label lblLoeschKZ;
 
                 switch (e.CommandName)
                 {
@@ -220,6 +221,10 @@ namespace AppZulassungsdienst.forms
 
                         lblID = (Label)GridView1.Rows[Index].FindControl("lblsapID");
                         lblIDPos = (Label)GridView1.Rows[Index].FindControl("lblid_pos");
+                        lblLoeschKZ = (Label)GridView1.Rows[Index].FindControl("lblPosLoesch");
+
+                        if (lblLoeschKZ.Text == "L")
+                            throw new Exception("Bitte entfernen Sie zuerst das Löschkennzeichen!");
 
                         var newLoeschkz = "O";
 
@@ -236,7 +241,7 @@ namespace AppZulassungsdienst.forms
                             if (GridView1.DataKeys[row.RowIndex] != null && GridView1.DataKeys[row.RowIndex]["SapId"].ToString() == lblID.Text)
                             {
                                 Label IDPos = (Label)row.FindControl("lblid_pos");
-                                Label lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
+                                lblLoeschKZ = (Label)row.FindControl("lblPosLoesch");
                                 lblLoeschKZ.Text = newLoeschkz;
                                 if (IDPos.Text != lblIDPos.Text && IDPos.Text != "10")
                                 {
@@ -888,7 +893,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId).ThenBy(v => v.PositionsNr).ToList();
+                    GridView1.DataSource = srcList.OrderBy(v => v.Belegart).ThenBy(v => v.KundenNrAsSapKunnr).ThenBy(v => v.SapId.ToLong(0)).ThenBy(v => v.PositionsNr.ToInt(0)).ToList();
                 }
 
                 GridView1.PageIndex = intTempPageIndex;
@@ -1326,7 +1331,7 @@ namespace AppZulassungsdienst.forms
             {
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                if (item.Gebuehr.HasValue && mat != null && proofGebMat(mat.MaterialNr))
+                if (item.WebBearbeitungsStatus != "L" && item.Gebuehr.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                 {
                     var valueToAdd = item.Gebuehr.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 
@@ -1363,7 +1368,7 @@ namespace AppZulassungsdienst.forms
                 {
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == item.MaterialNr);
 
-                    if (item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
+                    if (item.WebBearbeitungsStatus != "L" && item.GebuehrAmt.HasValue && mat != null && proofGebMat(mat.MaterialNr))
                     {
                         var valueToAdd = item.GebuehrAmt.GetValueOrDefault(0) * item.Menge.GetValueOrDefault(0);
 

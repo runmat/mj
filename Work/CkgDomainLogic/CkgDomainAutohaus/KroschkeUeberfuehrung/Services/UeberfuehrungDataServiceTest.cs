@@ -62,6 +62,8 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
 
         public List<FahrzeugStatus> FahrzeugStatusWerte { get; private set; }
 
+        public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
+
         private List<WebUploadProtokoll> _webUploadProtokolle;
         public List<WebUploadProtokoll> WebUploadProtokolle
         {

@@ -41,22 +41,23 @@
     });
 
     var _prepareGridFromPersistedStateFinished = @((gridColumnNameList == null).ToString().ToLower());
-
+    
     function GridPrepareFromSelectorPersistedState(grid) {
-        
+
         if (_prepareGridFromPersistedStateFinished)
             return;
-        
+
         _prepareGridFromPersistedStateFinished = true;
         
         var settingsColumns = @Html.Raw(gridColumnNameList ?? "[]");
+        settingsColumns = GridEnsureValidColums(grid, settingsColumns);
         var orderBy = '@gridSettings.OrderBy.NotNullOrEmpty()';
         var groupBy = '@gridGrouping';
         var filterBy = '@gridSettings.FilterBy.NotNullOrEmpty().ToJavascriptString()';
-
-
+        
         _filteredData_DisableDataBound = true;
         
+
         //
         // 1. hide columns
         //
@@ -66,14 +67,15 @@
         for (var i = 0; i < hiddenColumns.length; i++) {
             grid.hideColumn(hiddenColumns[i].member);
         }
-
+        
 
         //
         // 2. reorder columns
         //
         for (i = settingsColumns.length - 1; i >= 0; i--) {
             var column = grid.columnFromMember(settingsColumns[i]);
-            grid.reorderColumn(0, column);
+            if (typeof (column) != 'undefined')
+                grid.reorderColumn(0, column);
         }
         
 
@@ -127,5 +129,5 @@
         _filteredData_DisableDataBound = false;
         grid.pageTo(1);
     }
-
+    
 </script>

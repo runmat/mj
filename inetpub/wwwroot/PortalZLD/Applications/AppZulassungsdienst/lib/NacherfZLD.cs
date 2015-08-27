@@ -35,6 +35,18 @@ namespace AppZulassungsdienst.lib
         public DataTable tblBarquittungen { get; set; }
         public DataTable AHVersandListe { get; set; }
 
+        private DataTable _tblPrintDataForPdf;
+        public DataTable tblPrintDataForPdf
+        {
+            get
+            {
+                if (_tblPrintDataForPdf == null)
+                    _tblPrintDataForPdf = ZLDCommon.CreatePrintTable();
+
+                return _tblPrintDataForPdf;
+            }
+        }
+
         // Selektion
         public String SelMatnr { get; set; }
         public String SelDatum { get; set; }
@@ -46,6 +58,7 @@ namespace AppZulassungsdienst.lib
         public String SelVorgang { get; set; }
         public bool SelFlieger { get; set; }
         public bool SelAnnahmeAH { get; set; }
+        public bool SelAenderungAngenommene { get; set; }
         public bool SelSofortabrechnung { get; set; }
         public bool SelEditDurchzufVersZul { get; set; }
         public string SelGroupTourID { get; set; }
@@ -137,6 +150,8 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     Z_ZLD_EXPORT_SOFORT_ABRECH2.Init(SAP);
+                else if (SelAenderungAngenommene)
+                    Z_ZLD_MOB_EXPORT_ANGENOMMENE.Init(SAP);
                 else
                     Z_ZLD_EXPORT_NACHERF2.Init(SAP);
 
@@ -176,11 +191,25 @@ namespace AppZulassungsdienst.lib
                     var sapPositionen = Z_ZLD_EXPORT_SOFORT_ABRECH2.GT_EX_POS.GetExportList(SAP);
                     var sapKundendaten = Z_ZLD_EXPORT_SOFORT_ABRECH2.GT_EX_KUNDE.GetExportList(SAP);
 
-                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId).ToList();
-                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId).ToList();
-                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId).ToList();
-                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId).ThenBy(p => p.PositionsNr).ToList();
+                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId.ToLong(0)).ToList();
+                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId.ToLong(0)).ToList();
+                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId.ToLong(0)).ToList();
+                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId.ToLong(0)).ThenBy(p => p.PositionsNr.ToInt(0)).ToList();
                     _lstKundendaten = AppModelMappings.Z_ZLD_EXPORT_SOFORT_ABRECH2_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
+                }
+                else if (SelAenderungAngenommene)
+                {
+                    var sapKopfdaten = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BAK.GetExportList(SAP);
+                    var sapBankdaten = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_BANK.GetExportList(SAP);
+                    var sapAdressen = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_ADRS.GetExportList(SAP);
+                    var sapPositionen = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_POS.GetExportList(SAP);
+                    var sapKundendaten = Z_ZLD_MOB_EXPORT_ANGENOMMENE.GT_EX_KUNDE.GetExportList(SAP);
+
+                    _lstKopfdaten = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId).ToList();
+                    _lstBankdaten = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId).ToList();
+                    _lstAdressen = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId).ToList();
+                    _lstPositionen = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId).ThenBy(p => p.PositionsNr).ToList();
+                    _lstKundendaten = AppModelMappings.Z_ZLD_MOB_EXPORT_ANGENOMMENE_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
                 }
                 else
                 {
@@ -190,10 +219,10 @@ namespace AppZulassungsdienst.lib
                     var sapPositionen = Z_ZLD_EXPORT_NACHERF2.GT_EX_POS.GetExportList(SAP);
                     var sapKundendaten = Z_ZLD_EXPORT_NACHERF2.GT_EX_KUNDE.GetExportList(SAP);
 
-                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId).ToList();
-                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId).ToList();
-                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId).ToList();
-                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId).ThenBy(p => p.PositionsNr).ToList();
+                    _lstKopfdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten).OrderBy(k => k.SapId.ToLong(0)).ToList();
+                    _lstBankdaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten).OrderBy(b => b.SapId.ToLong(0)).ToList();
+                    _lstAdressen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdressen).OrderBy(a => a.SapId.ToLong(0)).ToList();
+                    _lstPositionen = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.SapId.ToLong(0)).ThenBy(p => p.PositionsNr.ToInt(0)).ToList();
                     _lstKundendaten = AppModelMappings.Z_ZLD_EXPORT_NACHERF2_GT_EX_KUNDE_To_Kundenname.Copy(sapKundendaten).ToList();
                 }
 
@@ -227,7 +256,7 @@ namespace AppZulassungsdienst.lib
                     var kopfdaten = item;
                     var bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == kopfdaten.SapId, new ZLDBankdaten());
                     var adresse = _lstAdressen.FirstOrDefault(a => a.SapId == kopfdaten.SapId, new ZLDAdressdaten());
-                    var positionen = _lstPositionen.Where(p => p.SapId == kopfdaten.SapId).OrderBy(p => p.PositionsNr).ToList();
+                    var positionen = _lstPositionen.Where(p => p.SapId == kopfdaten.SapId).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
 
                     AddVorgangToVorgangsliste(kopfdaten, bankdaten, adresse, positionen);
                 }
@@ -312,7 +341,7 @@ namespace AppZulassungsdienst.lib
                 AktuellerVorgang.Kopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == sapId, new ZLDKopfdaten());
                 AktuellerVorgang.Bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == sapId, new ZLDBankdaten());
                 AktuellerVorgang.Adressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == sapId, new ZLDAdressdaten());
-                AktuellerVorgang.Positionen = _lstPositionen.Where(p => p.SapId == sapId).OrderBy(p => p.PositionsNr).ToList();
+                AktuellerVorgang.Positionen = _lstPositionen.Where(p => p.SapId == sapId).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             }
             catch (Exception ex)
             {
@@ -528,8 +557,10 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
 
+                if (String.IsNullOrEmpty(AktuellerVorgang.Bankdaten.Partnerrolle)) AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
+
                 AktuellerVorgang.Adressdaten.KundenNr = kopfdaten.KundenNr;
-                AktuellerVorgang.Adressdaten.Partnerrolle = "AG";
+                if (String.IsNullOrEmpty(AktuellerVorgang.Adressdaten.Partnerrolle)) AktuellerVorgang.Adressdaten.Partnerrolle = "AG";
 
                 foreach (var p in AktuellerVorgang.Positionen)
                 {
@@ -551,6 +582,9 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
+
+                if (SelAenderungAngenommene)
+                    SAP.SetImportParameter("I_AENDERUNG_ANGENOMMENE", "X");
 
                 var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(kopfdatenRel);
                 SAP.ApplyImport(kopfListe);
@@ -618,7 +652,7 @@ namespace AppZulassungsdienst.lib
             {
                 Vorgangsliste.ForEach(vg => vg.FehlerText = "");
 
-                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, blnAnnahmeAhSenden);
+                ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, blnAnnahmeAhSenden || SelAenderungAngenommene);
 
                 List<string> idList;
 
@@ -641,11 +675,17 @@ namespace AppZulassungsdienst.lib
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
 
+                    var bankd = bankdatenRel.FirstOrDefault(b => b.SapId == kopf.SapId);
+                    if (bankd != null)
+                    {
+                        if (String.IsNullOrEmpty(bankd.Partnerrolle)) bankd.Partnerrolle = "AG";
+                    }
+
                     var adresse = adressdatenRel.FirstOrDefault(a => a.SapId == kopf.SapId);
                     if (adresse != null)
                     {
                         adresse.KundenNr = kopf.KundenNr;
-                        adresse.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adresse.Partnerrolle)) adresse.Partnerrolle = "AG";
                     }
 
                     foreach (var p in _lstPositionen.Where(p => p.SapId == kopf.SapId))
@@ -671,6 +711,23 @@ namespace AppZulassungsdienst.lib
 
                             p.WebBearbeitungsStatus = "";
                         }
+                        else if (SelAenderungAngenommene)
+                        {
+                            if (p.PositionsNr == "10")
+                            {
+                                switch (p.WebBearbeitungsStatus)
+                                {
+                                    case "L":
+                                        kopf.Bearbeitungsstatus = "L";
+                                        break;
+                                    default:
+                                        kopf.Bearbeitungsstatus = "A";
+                                        break;
+                                }
+                            }
+
+                            p.WebBearbeitungsStatus = "";
+                        }
 
                         if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
                             p.Loeschkennzeichen = "L";
@@ -684,6 +741,9 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     SAP.SetImportParameter("I_SOFORTABRECHNUNG", "X");
+
+                if (SelAenderungAngenommene)
+                    SAP.SetImportParameter("I_AENDERUNG_ANGENOMMENE", "X");
 
                 var kopfListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_IMP_BAK_From_ZLDKopfdaten.CopyBack(_lstKopfdaten.Where(k => idList.Contains(k.SapId)).ToList());
                 SAP.ApplyImport(kopfListe);
@@ -713,7 +773,7 @@ namespace AppZulassungsdienst.lib
             });
         }
 
-        public void SendVorgaengeToSap(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, string userName, string userVorname, string userNachname, bool versandZul = false)
+        public void SendVorgaengeToSap(List<Materialstammdaten> materialStamm, List<Stva> stvaStamm, string userName, string userVorname, string userNachname, bool versandZulDurchf = false)
         {
             ClearError();
 
@@ -749,7 +809,7 @@ namespace AppZulassungsdienst.lib
                 {
                     var kopf = item;
 
-                    if (!SelSofortabrechnung)
+                    if (!SelSofortabrechnung && !versandZulDurchf)
                     {
                         if (kopf.Belegart == "VZ" || kopf.Belegart == "VE" || kopf.Belegart == "AV" || kopf.Belegart == "AX")
                         {
@@ -761,11 +821,17 @@ namespace AppZulassungsdienst.lib
                     kopf.Erfassungsdatum = DateTime.Now;
                     kopf.Erfasser = userName;
 
+                    var bankd = bankdatenRel.FirstOrDefault(b => b.SapId == kopf.SapId);
+                    if (bankd != null)
+                    {
+                        if (String.IsNullOrEmpty(bankd.Partnerrolle)) bankd.Partnerrolle = "AG";
+                    }
+
                     var adresse = adressdatenRel.FirstOrDefault(a => a.SapId == kopf.SapId);
                     if (adresse != null)
                     {
                         adresse.KundenNr = kopf.KundenNr;
-                        adresse.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adresse.Partnerrolle)) adresse.Partnerrolle = "AG";
                     }
 
                     foreach (var p in _lstPositionen.Where(p => p.SapId == kopf.SapId))
@@ -806,7 +872,7 @@ namespace AppZulassungsdienst.lib
                     var webUserListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_IMP_WEBUSER_DATEN_From_Userdaten.CopyBack(new List<Userdaten> { uDaten });
                     SAP.ApplyImport(webUserListe);
                 }
-                else if (versandZul)
+                else if (versandZulDurchf)
                 {
                     Z_ZLD_IMP_NACHERF_DZLD2.Init(SAP);
 
@@ -839,7 +905,7 @@ namespace AppZulassungsdienst.lib
 
                 if (SelSofortabrechnung)
                     fehlerListe = AppModelMappings.Z_ZLD_IMPORT_SOFORT_ABRECH2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMPORT_SOFORT_ABRECH2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
-                else if (versandZul)
+                else if (versandZulDurchf)
                     fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF_DZLD2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF_DZLD2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
                 else
                     fehlerListe = AppModelMappings.Z_ZLD_IMP_NACHERF2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_IMP_NACHERF2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
@@ -858,7 +924,7 @@ namespace AppZulassungsdienst.lib
                 {
                     SofortabrechnungVerzeichnis = SAP.GetExportParameter("G_SA_PFAD");
                 }
-                else if (!versandZul)
+                else if (!versandZulDurchf)
                 {
                     tblBarquittungen = SAP.GetExportTable("GT_BARQ");
                 }
@@ -915,7 +981,7 @@ namespace AppZulassungsdienst.lib
                 AktuellerVorgang.Kopfdaten = AppModelMappings.Z_ZLD_GET_ORDER2_GS_EX_BAK_To_ZLDKopfdaten.Copy(sapKopfdaten);
                 AktuellerVorgang.Bankdaten = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_BANK_To_ZLDBankdaten.Copy(sapBankdaten);
                 AktuellerVorgang.Adressdaten = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_ADRS_To_ZLDAdressdaten.Copy(sapAdresse);
-                AktuellerVorgang.Positionen = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.PositionsNr).ToList();
+                AktuellerVorgang.Positionen = AppModelMappings.Z_ZLD_GET_ORDER2_GT_EX_POS_To_ZLDPosition.Copy(sapPositionen).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             });
         }
 
@@ -947,7 +1013,10 @@ namespace AppZulassungsdienst.lib
                 kopfdaten.Erfassungsdatum = DateTime.Now;
                 kopfdaten.Erfasser = userName;
 
+                if (String.IsNullOrEmpty(AktuellerVorgang.Bankdaten.Partnerrolle)) AktuellerVorgang.Bankdaten.Partnerrolle = "AG";
+
                 AktuellerVorgang.Adressdaten.KundenNr = kopfdaten.KundenNr;
+                if (String.IsNullOrEmpty(AktuellerVorgang.Adressdaten.Partnerrolle)) AktuellerVorgang.Adressdaten.Partnerrolle = "AG";
 
                 var adressListeWeb = new List<ZLDAdressdaten> { AktuellerVorgang.Adressdaten };
 
@@ -1110,7 +1179,7 @@ namespace AppZulassungsdienst.lib
             var tmpKopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == AktuellerVorgang.Kopfdaten.SapId);
             var tmpBankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == AktuellerVorgang.Kopfdaten.SapId);
             var tmpAdressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == AktuellerVorgang.Kopfdaten.SapId);
-            var tmpPositionen = _lstPositionen.Where(p => p.SapId == AktuellerVorgang.Kopfdaten.SapId).OrderBy(p => p.PositionsNr).ToList();
+            var tmpPositionen = _lstPositionen.Where(p => p.SapId == AktuellerVorgang.Kopfdaten.SapId).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
 
             if (tmpKopfdaten != null)
                 ModelMapping.Copy(AktuellerVorgang.Kopfdaten, tmpKopfdaten);

@@ -259,6 +259,8 @@ namespace AppZulassungsdienst.lib
                     var kopfdaten = ModelMapping.Copy<ZLDVorgangKopf, ZLDKopfdaten>(tmpKopf);
                     var positionen = ModelMapping.Copy<ZLDVorgangPosition, ZLDPosition>(tmpPositionen).ToList();
 
+                    positionen.ForEach(p => p.WebBearbeitungsStatus = (tmpKopf.WebBearbeitungsStatus == "L" ? "L" : ""));
+
                     AddVorgangToVorgangsliste(kopfdaten, positionen, kundenStamm);
                 }
             }
@@ -328,19 +330,12 @@ namespace AppZulassungsdienst.lib
 
                 if (posNr == "10")
                 {
-                    // Hauptposition -> kompletten Vorgang löschen
-                    Vorgangsliste.RemoveAll(v => v.SapId == sapId);
-
-                    var vorgangToDel = zldDataContext.ZLDVorgangKopf.FirstOrDefault(k => k.SapId == sapId);
-                    if (vorgangToDel != null)
-                    {
-                        zldDataContext.ZLDVorgangKopf.DeleteOnSubmit(vorgangToDel);
-                        zldDataContext.SubmitChanges();
-                    }
+                    // Hauptposition -> Löschkennzeichen für kompletten Vorgang setzen
+                    Vorgangsliste.Where(v => v.SapId == sapId).ToList().ForEach(v => v.WebBearbeitungsStatus = (v.WebBearbeitungsStatus == "L" ? "" : "L"));
                 }
                 else
                 {
-                    // Unterposition -> nur Unterposition löschen
+                    // Unterposition -> Unterposition löschen
                     Vorgangsliste.RemoveAll(v => v.SapId == sapId && v.PositionsNr == posNr);
 
                     var positionToDel = zldDataContext.ZLDVorgangPosition.FirstOrDefault(p => p.SapId == sapId && p.PositionsNr == posNr);
@@ -740,16 +735,20 @@ namespace AppZulassungsdienst.lib
 
                     kopfdaten.Erfassungsdatum = DateTime.Now;
                     kopfdaten.Erfasser = userName;
+                    kopfdaten.Loeschkennzeichen = (tmpKopf.WebBearbeitungsStatus == "L" ? "L" : "");
 
                     kopfListeWeb.Add(kopfdaten);
 
                     if (!String.IsNullOrEmpty(bankdaten.Kontoinhaber))
+                    {
+                        if (String.IsNullOrEmpty(bankdaten.Partnerrolle)) bankdaten.Partnerrolle = "AG";
                         bankListeWeb.Add(bankdaten);
+                    }
 
                     if (!String.IsNullOrEmpty(adressdaten.Name1))
                     {
                         adressdaten.KundenNr = kopfdaten.KundenNr;
-                        adressdaten.Partnerrolle = "AG";
+                        if (String.IsNullOrEmpty(adressdaten.Partnerrolle)) adressdaten.Partnerrolle = "AG";
                         adressListeWeb.Add(adressdaten);
                     }
 
@@ -757,6 +756,9 @@ namespace AppZulassungsdienst.lib
                     positionen.RemoveAll(p => p.WebMaterialart == "K" && (!p.Preis.HasValue || p.Preis == 0));
                     positionen.Where(p => p.WebMaterialart == "D").ToList().ForEach(p => p.MaterialName = p.CombineBezeichnungMenge());
                     positionen.ForEach(p => p.WebBearbeitungsStatus = "");
+                    if (kopfdaten.Loeschkennzeichen == "L")
+                        positionen.ForEach(p => p.Loeschkennzeichen = "L");
+
                     posListeWeb.AddRange(positionen);
                 }
 
@@ -776,7 +778,7 @@ namespace AppZulassungsdienst.lib
 
                 CallBapi();
 
-                // sind in den Auträgen Barkunden dabei kommen aus SAP Pfade 
+                // sind in den Aufträgen Barkunden dabei kommen aus SAP Pfade 
                 // zu den Barquittungen in diese Tabelle
                 tblBarquittungen = SAP.GetExportTable("GT_BARQ");
 

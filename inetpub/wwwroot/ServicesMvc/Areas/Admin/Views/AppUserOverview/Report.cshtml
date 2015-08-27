@@ -1,0 +1,79 @@
+﻿@using CkgDomainLogic.AppUserOverview.ViewModels
+@using GeneralTools.Resources
+@model AppUserOverviewViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.ApplicationsWithCustomers <small>@Localize.Report</small></h3>
+
+@using (Html.FormSearchBox())
+{
+     @Html.Partial("~/Areas/Admin/Views/AppUserOverview/Partial/SucheAppUserOverview.cshtml", Model.AppUserOverviewSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divHistorie"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    $(function () {
+        $('#searchForm').submit();  // initiate form submit after DOM is ready
+    });
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowAppUserOverview() {
+
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowAppUserOverview",
+            loadingShow: true,
+            success: function (result) {
+
+                SearchResultsTryHide();
+
+                if (_modelStateValid) {
+                    ShowAppUserOverviewSearchResult(result);
+                }
+
+                LoadingHide();
+            }
+        });
+    }
+
+    function ShowAppUserOverviewSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridAppUserOverview");
+
+        $("#divGrid").slideDown();
+        $("#divHistorie").html('');
+    }
+
+    function OnDataBound_GridAppUserOverview() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridAppUserOverview() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridAppUserOverview() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+</script>

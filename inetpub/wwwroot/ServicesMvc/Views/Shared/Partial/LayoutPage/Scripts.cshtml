@@ -54,10 +54,13 @@
 
         LoadingHide();
 
-        FormPrepareLayoutPrivate();
-
-        FormPreparePrivate();
-
+        try 
+        {
+            FormPrepareLayoutPrivate();
+            FormPreparePrivate();
+        }
+        catch(e){}
+        
         PrepareCheckSessionTimeout();
 
         FormInitJQueryExtensions();
@@ -397,7 +400,7 @@
         LoadingHide();
 
         var grid = $("#" + gridName).data("tGrid");
-
+       
         $.ajax({
             type: "POST",
             url: "Filter" + gridName,
@@ -405,7 +408,7 @@
                 filterValue: tb.val(),
                 filterColumns: GridGetFilterColumns(grid)
             },
-            success: function (result) {
+            success: function (result) {               
                 LoadingHide();
                 setTimeout(function() {
                     grid.pageTo(page);
@@ -432,7 +435,10 @@
     
     function GridColumnTranslationInit(gridName) {
         var grid = $("#" + gridName).data("tGrid");
-        //alert(grid);
+
+        if (typeof(grid) == 'undefined')
+            return;
+        
         $.each(grid.hiddenColumnsOnStartup, function() {
             grid.hideColumn(this);
         });

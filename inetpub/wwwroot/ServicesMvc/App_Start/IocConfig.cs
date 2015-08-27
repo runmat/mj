@@ -18,6 +18,8 @@ using CkgDomainLogic.Fahrzeugbestand.Contracts;
 using CkgDomainLogic.Fahrzeugbestand.Services;
 using CkgDomainLogic.Finance.Contracts;
 using CkgDomainLogic.Finance.Services;
+using CkgDomainLogic.FzgModelle.Contracts;
+using CkgDomainLogic.FzgModelle.Services;
 using CkgDomainLogic.Insurance.Contracts;
 using CkgDomainLogic.Insurance.Services;
 using CkgDomainLogic.General.Contracts;
@@ -33,6 +35,10 @@ using CkgDomainLogic.Leasing.Contracts;
 using CkgDomainLogic.Leasing.Services;
 using CkgDomainLogic.Strafzettel.Contracts;
 using CkgDomainLogic.Strafzettel.Services;
+
+using CkgDomainLogic.AppUserOverview.Contracts; // MaihoferM
+using CkgDomainLogic.AppUserOverview.Services;  // MaihoferM
+
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
@@ -118,7 +124,13 @@ namespace ServicesMvc
             builder.RegisterType(grunddatenEquiBestandDataService).As<IEquiGrunddatenDataService>().InstancePerLifetimeScope();
             builder.RegisterType<EquiHistorieDataServiceSAP>().As<IEquiHistorieDataService>().InstancePerLifetimeScope();
             builder.RegisterType<FahrzeugeDataServiceSAP>().As<IFahrzeugeDataService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<HolBringServiceDataServiceSAP>().As<IHolBringServiceDataService>().InstancePerLifetimeScope(); // ITA8163
+
             builder.RegisterType<StrafzettelDataServiceSAP>().As<IStrafzettelDataService>().InstancePerLifetimeScope();
+
+            builder.RegisterType<AppUserOverviewDataService>().As<IAppUserOverviewDataService>().InstancePerLifetimeScope(); // MaihoferM
+
             builder.RegisterType<FehlteilEtikettenDataServiceSAP>().As<IFehlteilEtikettenDataService>().InstancePerLifetimeScope();
             
             builder.RegisterType<CocTypenDataServiceSAP>().As<ICocTypenDataService>().InstancePerHttpRequest();
@@ -126,6 +138,9 @@ namespace ServicesMvc
             builder.RegisterType<AdressenDataServiceSAP>().As<IAdressenDataService>().InstancePerHttpRequest();
             builder.RegisterType<BriefVersandDataServiceSAP>().As<IBriefVersandDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungDataServiceSAP>().As<IZulassungDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<HolBringServiceDataServiceSAP>().As<IHolBringServiceDataService>().InstancePerHttpRequest();   // ITA6183
+
             builder.RegisterType<InfoCenterDataService>().As<IInfoCenterDataService>().InstancePerHttpRequest();
             builder.RegisterType<LeasingZB1KopienDataServiceSAP>().As<ILeasingZB1KopienDataService>().InstancePerHttpRequest();
             builder.RegisterType<LeasingUnzugelFzgDataServiceSAP>().As<ILeasingUnzugelFzgDataService>().InstancePerHttpRequest();
@@ -177,16 +192,34 @@ namespace ServicesMvc
             builder.RegisterType<FinanceAnzeigePruefpunkteDataServiceSAP>().As<IFinanceAnzeigePruefpunkteDataService>().InstancePerLifetimeScope();
             builder.RegisterType<FinancePruefschritteDataServiceSAP>().As<IFinancePruefschritteDataService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceTest>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<CkgDomainLogic.Autohaus.Services.ZulassungDataServiceSAP>().As<CkgDomainLogic.Autohaus.Contracts.IZulassungDataService>().InstancePerLifetimeScope();
             builder.RegisterType<UploadFahrzeugdatenDataServiceSap>().As<IUploadFahrzeugdatenDataService>().InstancePerHttpRequest();
             builder.RegisterType<DashboardDataServiceSql>().As<IDashboardDataService>().InstancePerLifetimeScope();
+            builder.RegisterType<GridAdminDataServiceSql>().As<IGridAdminDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<UserReportingDataServiceSql>().As<IUserReportingDataService>().InstancePerLifetimeScope();
             builder.RegisterType<ZanfReportDataServiceSAP>().As<IZanfReportDataService>().InstancePerHttpRequest();
             builder.RegisterType<ZulassungsunterlagenDataServiceSap>().As<IZulassungsunterlagenDataService>().InstancePerHttpRequest();
             builder.RegisterType<NichtDurchfuehrbZulDataServiceSAP>().As<INichtDurchfuehrbZulDataService>().InstancePerHttpRequest();
+            builder.RegisterType<EquiHistorieVermieterDataServiceSAP>().As<IEquiHistorieVermieterDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FahrzeugzulaeufeDataServiceSAP>().As<IFahrzeugzulaeufeDataService>().InstancePerHttpRequest();
 
             builder.RegisterType<WfmDataServiceSAP>().As<IWfmDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<ModellIdDataServiceSAP>().As<IModellIdDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<FinanceTempZb2VersandDataServiceSAP>().As<IFinanceTempZb2VersandDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceTempVersandZweitschluesselDataServiceSAP>().As<IFinanceTempZb2VersandZweitschluesselDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceFehlendeSchluesseltueteDataServiceSAP>().As<IFinanceFehlendeSchluesseltueteDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceCarporteingaengeOhneEHDataServiceSAP>().As<IFinanceCarporteingaengeOhneEHDataService>().InstancePerHttpRequest();
+            builder.RegisterType<TreuhandDataServiceSAP>().As<ITreuhandDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FahrzeugvoravisierungDataServiceSAP>().As<IFahrzeugvoravisierungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<DispositionslisteDataServiceSAP>().As<IDispositionslisteDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ZulaufEinsteuerungDataServiceSAP>().As<IZulaufEinsteuerungDataService>().InstancePerHttpRequest();           
+            builder.RegisterType<FahrzeuguebersichtDataServiceSAP>().As<IFahrzeuguebersichtDataService>().InstancePerHttpRequest();
+            builder.RegisterType<BatcherfassungDataServiceSAP>().As<IBatcherfassungDataService>().InstancePerHttpRequest();             
+            builder.RegisterType<FahrzeugSperrenVerschiebenDataServiceSAP>().As<IFahrzeugSperrenVerschiebenDataService>().InstancePerHttpRequest();
+            builder.RegisterType<StatusEinsteuerungDataServiceSAP>().As<IStatusEinsteuerungDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

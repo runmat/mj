@@ -4,7 +4,6 @@ Option Strict On
 Imports System
 Imports CKG.Base.Kernel
 Imports CKG.Base.Business
-Imports CKG.Base.Common
 
 Public Class ec_01
     REM § Status-Report, Kunde: ALD, BAPI: Z_V_Ueberf_Auftr_Kund_Port,
@@ -13,22 +12,24 @@ Public Class ec_01
     Inherits Base.Business.DatenimportBase ' FFD_Bank_Datenimport
 
 #Region " Declarations"
+
     Private tblHersteller As DataTable
     Private tblVerwendung As DataTable
     Private tblModell As DataTable
     Private tblUnitnummern As DataTable
+    Private tblBatche As DataTable
 
     Private strModelId As String
     Private strModellBezeichnung As String
     Private strSippCode As String
     Private strHersteller As String
     Private strHerstellerBezeichnung As String
-    Private lngBatchId As Long
+    Private strBatchId As String
     Private strDatumEinsteuerung As String
-    Private intAnzahlKfz As Integer
+    Private strAnzahlKfz As String
     Private strUnitnrVon As String
     Private strUnitnrBis As String
-    Private intLaufzeit As Integer
+    Private strLaufzeit As String
     Private blnLaufzeitbindung As Boolean
     Private strBemerkungen As String
     Private strAuftragsnrVon As String
@@ -40,10 +41,21 @@ Public Class ec_01
     Private blnAnhaengerkupplung As Boolean
     Private blnSecurityFleet As Boolean
     Private blnNavigationssystem As Boolean
-    Private intSelectedRow As Integer
-    Private strSelectionId As String
     Private blnLeasing As Boolean
     Private strKennzeichenSerie As String
+
+    Private strFilterBatchIdVon As String
+    Private strFilterBatchIdBis As String
+    Private strFilterUnitnrVon As String
+    Private strFilterUnitnrBis As String
+    Private strFilterModelIdVon As String
+    Private strFilterModelIdBis As String
+    Private strFilterEinsteuerungVon As String
+    Private strFilterEinsteuerungBis As String
+    Private strFilterErfasser As String
+    Private strFilterAnlagedatumVon As String
+    Private strFilterAnlagedatumBis As String
+
 #End Region
 
 #Region " Properties"
@@ -73,6 +85,12 @@ Public Class ec_01
         Set(value As DataTable)
             tblUnitnummern = value
         End Set
+    End Property
+
+    ReadOnly Property Batche() As DataTable
+        Get
+            Return tblBatche
+        End Get
     End Property
 
     Property ModelID() As String
@@ -129,12 +147,12 @@ Public Class ec_01
         End Set
     End Property
 
-    Property BarchId() As Long
+    Property BatchId() As String
         Get
-            Return lngBatchId
+            Return strBatchId
         End Get
-        Set(ByVal Value As Long)
-            lngBatchId = Value
+        Set(ByVal Value As String)
+            strBatchId = Value
         End Set
     End Property
 
@@ -147,12 +165,12 @@ Public Class ec_01
         End Set
     End Property
 
-    Property AnzahlFahrzeuge() As Integer
+    Property AnzahlFahrzeuge() As String
         Get
-            Return intAnzahlKfz
+            Return strAnzahlKfz
         End Get
-        Set(ByVal Value As Integer)
-            intAnzahlKfz = Value
+        Set(ByVal Value As String)
+            strAnzahlKfz = Value
         End Set
     End Property
 
@@ -174,12 +192,12 @@ Public Class ec_01
         End Set
     End Property
 
-    Property Laufzeit() As Integer
+    Property Laufzeit() As String
         Get
-            Return intLaufzeit
+            Return strLaufzeit
         End Get
-        Set(ByVal Value As Integer)
-            intLaufzeit = Value
+        Set(ByVal Value As String)
+            strLaufzeit = Value
         End Set
     End Property
 
@@ -200,7 +218,6 @@ Public Class ec_01
             blnLeasing = Value
         End Set
     End Property
-
 
     Property Bemerkungen() As String
         Get
@@ -292,144 +309,229 @@ Public Class ec_01
         End Set
     End Property
 
-    Property Selection() As Integer
+    Public Property FilterBatchIdVon() As String
         Get
-            Return intSelectedRow
+            Return strFilterBatchIdVon
         End Get
-        Set(ByVal Value As Integer)
-            intSelectedRow = Value
+        Set(value As String)
+            strFilterBatchIdVon = value
         End Set
     End Property
 
-    Property SelectionId() As String
+    Public Property FilterBatchIdBis() As String
         Get
-            Return strSelectionId
+            Return strFilterBatchIdBis
         End Get
-        Set(ByVal Value As String)
-            strSelectionId = Value
+        Set(value As String)
+            strFilterBatchIdBis = value
+        End Set
+    End Property
+
+    Public Property FilterUnitnrVon() As String
+        Get
+            Return strFilterUnitnrVon
+        End Get
+        Set(value As String)
+            strFilterUnitnrVon = value
+        End Set
+    End Property
+
+    Public Property FilterUnitnrBis() As String
+        Get
+            Return strFilterUnitnrBis
+        End Get
+        Set(value As String)
+            strFilterUnitnrBis = value
+        End Set
+    End Property
+
+    Public Property FilterModelIdVon() As String
+        Get
+            Return strFilterModelIdVon
+        End Get
+        Set(value As String)
+            strFilterModelIdVon = value
+        End Set
+    End Property
+
+    Public Property FilterModelIdBis() As String
+        Get
+            Return strFilterModelIdBis
+        End Get
+        Set(value As String)
+            strFilterModelIdBis = value
+        End Set
+    End Property
+
+    Public Property FilterEinsteuerungVon() As String
+        Get
+            Return strFilterEinsteuerungVon
+        End Get
+        Set(value As String)
+            strFilterEinsteuerungVon = value
+        End Set
+    End Property
+
+    Public Property FilterEinsteuerungBis() As String
+        Get
+            Return strFilterEinsteuerungBis
+        End Get
+        Set(value As String)
+            strFilterEinsteuerungBis = value
+        End Set
+    End Property
+
+    Public Property FilterErfasser() As String
+        Get
+            Return strFilterErfasser
+        End Get
+        Set(value As String)
+            strFilterErfasser = value
+        End Set
+    End Property
+
+    Public Property FilterAnlagedatumVon() As String
+        Get
+            Return strFilterAnlagedatumVon
+        End Get
+        Set(value As String)
+            strFilterAnlagedatumVon = value
+        End Set
+    End Property
+
+    Public Property FilterAnlagedatumBis() As String
+        Get
+            Return strFilterAnlagedatumBis
+        End Get
+        Set(value As String)
+            strFilterAnlagedatumBis = value
         End Set
     End Property
 
 #End Region
 
 #Region " Methods"
+
     Public Sub New(ByRef objUser As Base.Kernel.Security.User, ByVal objApp As Base.Kernel.Security.App, ByVal strFilename As String)
         MyBase.New(objUser, objApp, strFilename)
-        createResultTable()
-        intSelectedRow = -1
     End Sub
 
-    Public Sub saveData(ByVal strAppID As String, ByVal strSessionID As String, ByVal row As DataRow, ByVal page As Page)
+    Public Sub loadData(ByVal strAppID As String, ByVal strSessionID As String)
+        m_strClassAndMethod = "ec_01.loadData"
+        m_strAppID = strAppID
+        m_strSessionID = strSessionID
+        m_intStatus = 0
+
+        Try
+            S.AP.Init("Z_M_EC_AVM_BATCH_SELECT")
+
+            If Not String.IsNullOrEmpty(strFilterBatchIdVon) OrElse Not String.IsNullOrEmpty(strFilterBatchIdBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterUnitnrVon) OrElse Not String.IsNullOrEmpty(strFilterUnitnrBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterModelIdVon) OrElse Not String.IsNullOrEmpty(strFilterModelIdBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterEinsteuerungVon) OrElse Not String.IsNullOrEmpty(strFilterEinsteuerungBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterAnlagedatumVon) OrElse Not String.IsNullOrEmpty(strFilterAnlagedatumBis) _
+                OrElse Not String.IsNullOrEmpty(strFilterErfasser) Then
+
+                Dim SAPTable As DataTable = S.AP.GetImportTable("GT_IN")
+
+                Dim SAPTableRow As DataRow = SAPTable.NewRow()
+
+                With SAPTableRow
+                    If Not String.IsNullOrEmpty(strFilterBatchIdVon) Then .Item("ZBATCH_ID_VON") = strFilterBatchIdVon
+                    If Not String.IsNullOrEmpty(strFilterBatchIdBis) Then .Item("ZBATCH_ID_BIS") = strFilterBatchIdBis
+                    If Not String.IsNullOrEmpty(strFilterUnitnrVon) Then .Item("ZUNIT_NR_VON") = strFilterUnitnrVon
+                    If Not String.IsNullOrEmpty(strFilterUnitnrBis) Then .Item("ZUNIT_NR_BIS") = strFilterUnitnrBis
+                    If Not String.IsNullOrEmpty(strFilterModelIdVon) Then .Item("ZMODEL_ID_VON") = strFilterModelIdVon
+                    If Not String.IsNullOrEmpty(strFilterModelIdBis) Then .Item("ZMODEL_ID_BIS") = strFilterModelIdBis
+                    If Not String.IsNullOrEmpty(strFilterEinsteuerungVon) Then .Item("ZPURCH_MTH_VON") = strFilterEinsteuerungVon
+                    If Not String.IsNullOrEmpty(strFilterEinsteuerungBis) Then .Item("ZPURCH_MTH_BIS") = strFilterEinsteuerungBis
+                    If Not String.IsNullOrEmpty(strFilterAnlagedatumVon) Then .Item("ERDAT_VON") = strFilterAnlagedatumVon
+                    If Not String.IsNullOrEmpty(strFilterAnlagedatumBis) Then .Item("ERDAT_BIS") = strFilterAnlagedatumBis
+                    If Not String.IsNullOrEmpty(strFilterErfasser) Then .Item("ZERNAM") = strFilterErfasser
+                End With
+
+                SAPTable.Rows.Add(SAPTableRow)
+
+            End If
+
+            tblBatche = S.AP.GetExportTableWithExecute("GT_OUT")
+
+            For Each row As DataRow In tblBatche.Rows
+                row("ZANZAHL") = row("ZANZAHL").ToString().TrimStart("0"c)
+                row("ZAUFNR_VON") = row("ZAUFNR_VON").ToString().TrimStart("0"c)
+                row("ZAUFNR_BIS") = row("ZAUFNR_BIS").ToString().TrimStart("0"c)
+            Next
+
+        Catch ex As Exception
+            Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
+                Case "NO_DATA"
+                    m_intStatus = -1234
+                    m_strMessage = "Fehler: Keine Daten gefunden!"
+                Case Else
+                    m_intStatus = -9999
+                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) & ")"
+            End Select
+        End Try
+    End Sub
+
+    Public Sub saveData(ByVal strAppID As String, ByVal strSessionID As String)
         m_strClassAndMethod = "ec_01.saveData"
         m_strAppID = strAppID
         m_strSessionID = strSessionID
         m_intStatus = 0
 
         Try
+            S.AP.Init("Z_M_EC_AVM_BATCH_INSERT", "WEB_USER", Left(m_objUser.UserName, 12))
 
-            ' Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_M_Ec_Avm_Batch_Insert", m_objApp, m_objUser, Page)
-            S.AP.Init("Z_M_Ec_Avm_Batch_Insert")
-
-            'Dim SAPTable As DataTable = myProxy.getImportTable("ZBATCH_IN")
             Dim SAPTable As DataTable = S.AP.GetImportTable("ZBATCH_IN")
-            Dim SAPTableRow As DataRow
 
-            SAPTableRow = SAPTable.NewRow
+            Dim SAPTableRow As DataRow = SAPTable.NewRow()
 
             With SAPTableRow
-                .Item("Zbatch_Id") = row("BatchId").ToString
-                .Item("Zmodel_Id") = row("ModelId").ToString
-                .Item("Zsipp_Code") = row("SippCode").ToString
-                .Item("Zmake") = row("HerstellerBezeichnung").ToString
-                .Item("Zmod_Descr") = row("ModellBezeichnung").ToString
-                .Item("Zpurch_Mth") = row("DatumEinsteuerung").ToString
-                .Item("Zanzahl") = row("AnzahlFahrzeuge").ToString
-                .Item("Zunit_Nr_Von") = row("UnitNrVon").ToString
-                .Item("Zunit_Nr_Bis") = row("UnitNrBis").ToString
+                .Item("Zbatch_Id") = strBatchId
+                .Item("Zmodel_Id") = strModelId
+                .Item("Zsipp_Code") = strSippCode
+                .Item("Zmake") = strHerstellerBezeichnung
+                .Item("Zmod_Descr") = strModellBezeichnung
+                .Item("Zpurch_Mth") = strDatumEinsteuerung
+                .Item("Zanzahl") = strAnzahlKfz
+                .Item("Zunit_Nr_Von") = strUnitnrVon
+                .Item("Zunit_Nr_Bis") = strUnitnrBis
 
-                If KennzeichenSerie.IndexOf("(") > -1 Then
+                If KennzeichenSerie.Contains("(") Then
                     .Item("Zsonderserie") = KennzeichenSerie.Substring(KennzeichenSerie.IndexOf("(") + 1, 1)
                 Else
                     .Item("Zsonderserie") = ""
                 End If
 
-                '§§§ JVE 19.09.2006 Korrektur!
-                If (CType(row("Fahrzeuggruppe"), Boolean) = True) Then
-                    '.Zfzg_Group = "LKW"
-                    .Item("Zfzg_Group") = "PKW"
-                Else
-                    '.Zfzg_Group = "PKW"
-                    .Item("Zfzg_Group") = "LKW"
-                End If
-                '------------------------------
-
-                .Item("Zlaufzeit") = row("Laufzeit").ToString
-
-                If (CType(row("LaufzeitBindung"), Boolean) = True) Then
-                    .Item("Zlzbindung") = "X"
-                Else
-                    .Item("Zlzbindung") = ""
-                End If
-
-                .Item("Zaufnr_Von") = row("AuftragsNrVon").ToString
-                .Item("Zaufnr_Bis") = row("AuftragsNrBis").ToString
-
-                If (CType(row("Winterbereifung"), Boolean) = True) Then
-                    .Item("Zms_Reifen") = "X"
-                Else
-                    .Item("Zms_Reifen") = ""
-                End If
-
-
-
-
-                If (CType(row("SecurFleet"), Boolean) = True) Then
-                    .Item("Zsecu_Fleet") = "X"
-                Else
-                    .Item("Zsecu_Fleet") = ""
-                End If
-
-                If (CType(row("Leasing"), Boolean) = True) Then
-                    .Item("Zleasing") = "X"
-                Else
-                    .Item("Zleasing") = ""
-                End If
-
-                If (CType(row("NavigationsSystem"), Boolean) = True) Then
-                    .Item("Znavi") = "X"
-                Else
-                    .Item("Znavi") = ""
-                End If
-
-                If (CType(row("Anhaengerkupplung"), Boolean) = True) Then
-                    .Item("ZAHK") = "X"
-                Else
-                    .Item("ZAHK") = ""
-                End If
-
-
-                .Item("Zverwendung") = row("Verwendungszweck").ToString
-
-                .Item("Zbemerkung") = row("Bemerkungen").ToString
-                .Item("Zernam") = Left(m_objUser.UserName, 11)
+                .Item("Zfzg_Group") = IIf(blnFahrzeuggruppe, "PKW", "LKW")
+                .Item("Zlaufzeit") = strLaufzeit
+                .Item("Zlzbindung") = IIf(blnLaufzeitbindung, "X", "")
+                .Item("Zaufnr_Von") = strAuftragsnrVon
+                .Item("Zaufnr_Bis") = strAuftragsnrBis
+                .Item("Zms_Reifen") = IIf(blnWinterbereifung, "X", "")
+                .Item("Zsecu_Fleet") = IIf(blnSecurityFleet, "X", "")
+                .Item("Zleasing") = IIf(blnLeasing, "X", "")
+                .Item("Znavi") = IIf(blnNavigationssystem, "X", "")
+                .Item("ZAHK") = IIf(blnAnhaengerkupplung, "X", "")
+                .Item("Zverwendung") = strVerwendungszweck
+                .Item("Zbemerkung") = strBemerkungen
             End With
+
             SAPTable.Rows.Add(SAPTableRow)
 
             If tblUnitnummern IsNot Nothing Then
-                Dim unitNrTable As DataTable = S.AP.GetImportTable("GT_IN") 'myProxy.getImportTable("GT_IN")
+                Dim unitNrTable As DataTable = S.AP.GetImportTable("GT_IN")
                 Dim unitNrTableRow As DataRow
                 For Each zeile As DataRow In tblUnitnummern.Rows
-                    unitNrTableRow = unitNrTable.NewRow
-                    unitNrTableRow.Item("ZUNIT_NR") = zeile("ZUNIT_NR").ToString
+                    unitNrTableRow = unitNrTable.NewRow()
+                    unitNrTableRow.Item("ZUNIT_NR") = zeile("ZUNIT_NR").ToString()
                     unitNrTable.Rows.Add(unitNrTableRow)
                 Next
             End If
 
-            'myProxy.callBapi()
             S.AP.Execute()
 
-            'Report-Logeintrag (ok)
-            WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblResult, False)
         Catch ex As Exception
             Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
                 Case "FALS_INTERVALL"
@@ -478,28 +580,18 @@ Public Class ec_01
                     m_intStatus = -9999
                     m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) & ")"
             End Select
-
-            WriteLogEntry(False, "KUNNR=" & m_objUser.KUNNR & "," & Replace(m_strMessage, "<br>", " "), m_tblResult, False)
         End Try
 
     End Sub
 
-    Public Sub getData(ByVal strAppID As String, ByVal strSessionID As String, ByVal page As Page)
-        m_strClassAndMethod = "ec_01.getData"
+    Public Sub getStammdaten(ByVal strAppID As String, ByVal strSessionID As String)
+        m_strClassAndMethod = "ec_01.getStammdaten"
         m_strAppID = strAppID
         m_strSessionID = strSessionID
+        m_intStatus = 0
 
         Try
-            'Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_M_Ec_Avm_Herst_Vwzweck_Modid", m_objApp, m_objUser, page)
-            S.AP.InitExecute("Z_M_Ec_Avm_Herst_Vwzweck_Modid")
-            Dim row As DataRow
-
-            'myProxy.callBapi()
-
-            'Tabellen formatieren
-            'tblHersteller = myProxy.getExportTable("GT_HERST")
-            'tblVerwendung = myProxy.getExportTable("GT_VERW")
-            'tblModell = myProxy.getExportTable("GT_MODELID")
+            S.AP.InitExecute("Z_M_EC_AVM_HERST_VWZWECK_MODID")
 
             tblHersteller = S.AP.GetExportTable("GT_HERST")
             tblVerwendung = S.AP.GetExportTable("GT_VERW")
@@ -508,13 +600,11 @@ Public Class ec_01
             'Sipp-Code zusammensetzen
             tblModell.Columns.Add("Sipp", GetType(System.String))
 
-            For Each row In tblModell.Rows
+            For Each row As DataRow In tblModell.Rows
                 row("Sipp") = CStr(row("SIPP1")) & CStr(row("SIPP2")) & CStr(row("SIPP3")) & CStr(row("SIPP4"))
             Next
             tblModell.AcceptChanges()
 
-            'Report-Logeintrag (ok)
-            WriteLogEntry(True, "KUNNR=" & m_objUser.KUNNR, m_tblResult, False)
         Catch ex As Exception
             Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
                 Case "NO_DATA"
@@ -526,245 +616,10 @@ Public Class ec_01
             End Select
             tblHersteller = Nothing
             tblVerwendung = Nothing
-
-            WriteLogEntry(False, "KUNNR=" & m_objUser.KUNNR & "," & Replace(m_strMessage, "<br>", " "), m_tblResult, False)
         End Try
-    End Sub
-
-    Public Sub getRowData(ByRef status As String)
-        Dim row As DataRow()
-
-        status = String.Empty
-        row = ResultTable.Select("RowId='" & strSelectionId & "'")     'Zeile suchen....
-        If (row.Length = 0) Then
-            status = "Datensatz konnte nicht geladen werden."
-        Else
-            strModelId = CType(row(0)("ModelId"), String)
-            strModellBezeichnung = CType(row(0)("ModellBezeichnung"), String)
-            strSippCode = CType(row(0)("SippCode"), String)
-            strHersteller = CType(row(0)("Hersteller"), String)
-            strHerstellerBezeichnung = CType(row(0)("HerstellerBezeichnung"), String)
-            lngBatchId = CType(row(0)("BatchId"), Long)
-            strDatumEinsteuerung = CType(row(0)("DatumEinsteuerung"), String)
-            intAnzahlKfz = CType(row(0)("AnzahlFahrzeuge"), Integer)
-            strUnitnrVon = CType(row(0)("UnitNrVon"), String)
-            strUnitnrBis = CType(row(0)("UnitNrBis"), String)
-            intLaufzeit = CType(row(0)("Laufzeit"), Integer)
-            blnLaufzeitbindung = CType(row(0)("LaufzeitBindung"), Boolean)
-            strBemerkungen = CType(row(0)("Bemerkungen"), String)
-            strAuftragsnrVon = CType(row(0)("AuftragsNrVon"), String)
-            strAuftragsnrBis = CType(row(0)("AuftragsNrBis"), String)
-            strVerwendungszweck = CType(row(0)("Verwendungszweck"), String)
-            strVerwendungszweckBezeichnung = CType(row(0)("VerwendungszweckBezeichnung"), String)
-            blnFahrzeuggruppe = CType(row(0)("Fahrzeuggruppe"), Boolean)
-            blnWinterbereifung = CType(row(0)("Winterbereifung"), Boolean)
-            blnSecurityFleet = CType(row(0)("SecurFleet"), Boolean)
-            blnLeasing = CType(row(0)("Leasing"), Boolean)
-
-            KennzeichenSerie = CType(row(0)("Kennzeichenserie"), String)
-            blnNavigationssystem = CType(row(0)("NavigationsSystem"), Boolean)
-            blnAnhaengerkupplung = CType(row(0)("Anhaengerkupplung"), Boolean)
-
-            Dim strUnitnummern As String = CType(row(0)("Unitnummern"), String)
-            If Not String.IsNullOrEmpty(strUnitnummern) Then
-                tblUnitnummern.Clear()
-                Dim teile As String() = strUnitnummern.Split(","c)
-                Dim unitnrRow As DataRow
-                For Each unitnr As String In teile
-                    unitnrRow = tblUnitnummern.NewRow
-                    unitnrRow.Item("ZUNIT_NR") = unitnr.Trim
-                    tblUnitnummern.Rows.Add(unitnrRow)
-                Next
-                tblUnitnummern.AcceptChanges()
-            End If
-        End If
-    End Sub
-
-    Public Sub addNewRow()
-        Dim row As DataRow
-
-        row = ResultTable.NewRow()
-
-        row("RowId") = m_objUser.UserID & "." & Now.Year & Right("00" & Now.Month, 2) & Right("00" & Now.Hour, 2) & Right("00" & Now.Minute, 2) & Right("00" & Now.Second, 2)
-        row("ModelId") = strModelId
-        row("ModellBezeichnung") = strModellBezeichnung
-        row("SippCode") = strSippCode
-        row("Hersteller") = strHersteller
-        row("HerstellerBezeichnung") = strHerstellerBezeichnung
-        row("BatchId") = lngBatchId
-        row("DatumEinsteuerung") = strDatumEinsteuerung
-        row("AnzahlFahrzeuge") = intAnzahlKfz
-        row("UnitNrVon") = strUnitnrVon
-        row("UnitNrBis") = strUnitnrBis
-        row("Laufzeit") = intLaufzeit
-        row("LaufzeitBindung") = blnLaufzeitbindung
-        row("Bemerkungen") = strBemerkungen
-        row("AuftragsNrVon") = strAuftragsnrVon
-        row("AuftragsNrBis") = strAuftragsnrBis
-        row("Verwendungszweck") = strVerwendungszweck
-        row("VerwendungszweckBezeichnung") = strVerwendungszweckBezeichnung
-        row("Fahrzeuggruppe") = blnFahrzeuggruppe
-        row("Winterbereifung") = blnWinterbereifung
-        row("Leasing") = blnLeasing
-        row("SecurFleet") = blnSecurityFleet
-        row("Selection") = intSelectedRow
-        row("Kennzeichenserie") = KennzeichenSerie
-        row("NavigationsSystem") = blnNavigationssystem
-        row("Anhaengerkupplung") = blnAnhaengerkupplung
-
-        Dim strUnitnummern As String = ""
-        If tblUnitnummern IsNot Nothing AndAlso tblUnitnummern.Rows.Count > 0 Then
-            For Each zeile As DataRow In tblUnitnummern.Rows
-                strUnitnummern &= zeile.Item("ZUNIT_NR").ToString & ","
-            Next
-            strUnitnummern.Trim(","c)
-        End If
-        row("Unitnummern") = strUnitnummern
-
-        ResultTable.Rows.Add(row)
-
-    End Sub
-
-    Public Sub updateExistingRow(ByRef status As String)
-        Dim row As DataRow()
-
-        status = String.Empty
-
-        Try
-            row = ResultTable.Select("RowId='" & strSelectionId & "'")     'Zeile suchen....
-
-            If (row.Length = 0) Then
-                status = "Datensatz konnte nicht ermittelt werden."
-            Else
-                row(0).BeginEdit()
-
-                row(0)("ModelId") = strModelId
-                row(0)("ModellBezeichnung") = strModellBezeichnung
-                row(0)("SippCode") = strSippCode
-                row(0)("Hersteller") = strHersteller
-                row(0)("HerstellerBezeichnung") = strHerstellerBezeichnung
-                row(0)("BatchId") = lngBatchId
-                row(0)("DatumEinsteuerung") = strDatumEinsteuerung
-                row(0)("AnzahlFahrzeuge") = intAnzahlKfz
-                row(0)("UnitNrVon") = strUnitnrVon
-                row(0)("UnitNrBis") = strUnitnrBis
-                row(0)("Laufzeit") = intLaufzeit
-                row(0)("LaufzeitBindung") = blnLaufzeitbindung
-                row(0)("Bemerkungen") = strBemerkungen
-                row(0)("AuftragsNrVon") = strAuftragsnrVon
-                row(0)("AuftragsNrBis") = strAuftragsnrBis
-                row(0)("Verwendungszweck") = strVerwendungszweck
-                row(0)("VerwendungszweckBezeichnung") = strVerwendungszweckBezeichnung
-                row(0)("Fahrzeuggruppe") = blnFahrzeuggruppe
-                row(0)("Winterbereifung") = blnWinterbereifung
-                row(0)("Leasing") = blnLeasing
-                row(0)("SecurFleet") = blnSecurityFleet
-                row(0)("Selection") = intSelectedRow
-                row(0)("Kennzeichenserie") = KennzeichenSerie
-                row(0)("NavigationsSystem") = blnNavigationssystem
-                row(0)("Anhaengerkupplung") = blnNavigationssystem
-
-                Dim strUnitnummern As String = ""
-                If tblUnitnummern IsNot Nothing AndAlso tblUnitnummern.Rows.Count > 0 Then
-                    For Each zeile As DataRow In tblUnitnummern.Rows
-                        strUnitnummern &= zeile.Item("ZUNIT_NR").ToString & ","
-                    Next
-                    strUnitnummern.Trim(","c)
-                End If
-                row(0)("Unitnummern") = strUnitnummern
-
-                row(0).EndEdit()
-
-                ResultTable.AcceptChanges()
-            End If
-        Catch ex As Exception
-            status = "Datensatz konnte nicht aktualisiert werden."
-        End Try
-    End Sub
-
-    ''' <summary>
-    ''' Erzeugt die ErgebnisTabelle
-    ''' </summary>
-    ''' <remarks></remarks>
-    Private Sub createResultTable()
-        ResultTable = New DataTable()
-
-        With ResultTable.Columns
-            .Add("RowId", System.Type.GetType("System.String"))
-
-            .Add("ModelId", System.Type.GetType("System.String"))
-            .Add("ModellBezeichnung", System.Type.GetType("System.String"))
-            .Add("SippCode", System.Type.GetType("System.String"))
-            .Add("Hersteller", System.Type.GetType("System.String"))
-            .Add("HerstellerBezeichnung", System.Type.GetType("System.String"))
-            .Add("BatchId", System.Type.GetType("System.Int32"))
-            .Add("DatumEinsteuerung", System.Type.GetType("System.String"))
-            .Add("AnzahlFahrzeuge", System.Type.GetType("System.Int32"))
-            .Add("UnitNrVon", System.Type.GetType("System.String"))
-            .Add("UnitNrBis", System.Type.GetType("System.String"))
-            .Add("Unitnummern", System.Type.GetType("System.String"))
-            .Add("Laufzeit", System.Type.GetType("System.Int32"))
-            .Add("LaufzeitBindung", System.Type.GetType("System.Boolean"))
-            .Add("Bemerkungen", System.Type.GetType("System.String"))
-            .Add("AuftragsNrVon", System.Type.GetType("System.String"))
-            .Add("AuftragsNrBis", System.Type.GetType("System.String"))
-            .Add("Verwendungszweck", System.Type.GetType("System.String"))
-            .Add("VerwendungszweckBezeichnung", System.Type.GetType("System.String"))
-            .Add("Fahrzeuggruppe", System.Type.GetType("System.Boolean"))
-            .Add("Winterbereifung", System.Type.GetType("System.Boolean"))
-            .Add("SecurFleet", System.Type.GetType("System.Boolean"))
-            .Add("Selection", System.Type.GetType("System.Int32"))
-            .Add("Status", System.Type.GetType("System.String"))
-            .Add("Leasing", System.Type.GetType("System.Boolean"))
-            .Add("Kennzeichenserie", System.Type.GetType("System.String"))
-            .Add("NavigationsSystem", System.Type.GetType("System.Boolean"))
-            .Add("Anhaengerkupplung", System.Type.GetType("System.Boolean"))
-        End With
     End Sub
 
 #End Region
+
 End Class
 
-' ************************************************
-' $History: ec_01.vb $
-' 
-' *****************  Version 5  *****************
-' User: Fassbenders  Date: 11.04.11   Time: 14:49
-' Updated in $/CKAG/Applications/appec/Lib
-' 
-' *****************  Version 4  *****************
-' User: Fassbenders  Date: 4.02.10    Time: 16:13
-' Updated in $/CKAG/Applications/appec/Lib
-' BUGFIX KGa ZERNAM max 11 Stellen
-' 
-' *****************  Version 3  *****************
-' User: Jungj        Date: 25.06.09   Time: 16:04
-' Updated in $/CKAG/Applications/appec/Lib
-' ITA 2918 Z_M_Herstellergroup, Z_M_EC_AVM_BATCH_update,
-' Z_M_EC_AVM_HERST_VWZWECK_MODID, Z_M_EC_AVM_BATCH_INSERT,
-' Z_M_EC_AVM_BATCH_ANSICHT
-' 
-' *****************  Version 2  *****************
-' User: Jungj        Date: 16.04.08   Time: 11:54
-' Updated in $/CKAG/Applications/appec/Lib
-' 
-' *****************  Version 11  *****************
-' User: Jungj        Date: 7.04.08    Time: 13:26
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Lib
-' ITA 1818
-' 
-' *****************  Version 10  *****************
-' User: Jungj        Date: 29.01.08   Time: 9:50
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Lib
-' ITA 1655 Done
-' 
-' *****************  Version 9  *****************
-' User: Uha          Date: 2.07.07    Time: 17:23
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Lib
-' Verbindung ASPX-Logging mit BAPI-Logging
-' 
-' *****************  Version 8  *****************
-' User: Uha          Date: 7.03.07    Time: 11:02
-' Updated in $/CKG/Applications/AppEC/AppECWeb/Lib
-' 
-' ************************************************

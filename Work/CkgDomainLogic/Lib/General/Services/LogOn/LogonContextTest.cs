@@ -18,6 +18,8 @@ namespace CkgDomainLogic.General.Services
     {
         public string CurrentGridColumns { get; set; }
 
+        public string UserNameForDisplay { get; set; }
+
         public ILocalizationService LocalizationService { get; private set; }
 
         public List<IMaintenanceSecurityRuleDataProvider> MaintenanceCoreMessages { get { return new List<IMaintenanceSecurityRuleDataProvider>(); } }
@@ -355,6 +357,11 @@ namespace CkgDomainLogic.General.Services
         public int GetAppIdCurrent()
         {
             return LogonContextHelper.GetAppIdCurrent(UserApps);
+        }
+
+        public string GetEmailAddressForUser()
+        {
+            return "";
         }
     }
 }

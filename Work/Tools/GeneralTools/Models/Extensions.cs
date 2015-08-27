@@ -8,6 +8,7 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using GeneralTools.Services;
 
 namespace GeneralTools.Models
@@ -92,6 +93,18 @@ namespace GeneralTools.Models
             var ienum = type.GetInterface(typeof(IEnumerable<>).Name);
             return ienum != null ? ienum.GetGenericArguments()[0] : null;
         }
+
+        public static T FirstOrDefault<T>(this IEnumerable<T> source, T defaultValue) where T : class
+        {
+            var item = source.FirstOrDefault();
+            return (item ?? defaultValue);
+    }
+
+        public static T FirstOrDefault<T>(this IEnumerable<T> source, Func<T, bool> predicate, T defaultValue) where T : class
+        {
+            var item = source.FirstOrDefault(predicate);
+            return (item ?? defaultValue);
+        }
     }
 
     public static class ListExtensions
@@ -157,6 +170,23 @@ namespace GeneralTools.Models
 
     public static class StringExtensions
     {
+        public static string ReplaceHtmlTags(this string s, bool replaceBrWithCrLf = true)
+        {
+            var brRelevantTags = @"<p>|</p>|<br>|<br />|<br/>";
+
+            if (!replaceBrWithCrLf)
+                s = Regex.Replace(s, brRelevantTags, "@br@", RegexOptions.IgnoreCase);
+            else
+                s = Regex.Replace(s, brRelevantTags, "\r\n", RegexOptions.IgnoreCase);
+
+            s = Regex.Replace(s, @"<.+?>", string.Empty);
+
+            if (!replaceBrWithCrLf)
+                s = s.Replace("@br@", "<br />");
+
+            return s;
+        }
+
         public static string Crop(this string s, int len)
         {
             if (len == 0)
@@ -292,6 +322,11 @@ namespace GeneralTools.Models
             return s.NotNullOrEmpty("");
         }
 
+        public static string ToLowerAndNotEmpty(this string s)
+        {
+            return s.NotNullOrEmpty().ToLower();
+        }
+
         public static string NotNullOr(this string s, string alternativeValue)
         {
             return s.IsNotNullOrEmpty() ? s : alternativeValue;
@@ -385,6 +420,22 @@ namespace GeneralTools.Models
             int tmp;
             if (!Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp))
                 return defaultValue;
+            return tmp;
+        }
+
+        public static decimal ToDecimal(this string stringValue, decimal defaultValue = -1)
+        {
+            decimal tmp;
+            if (!Decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return defaultValue;
+            return tmp;
+        }
+
+        public static decimal? ToNullableDecimal(this string stringValue)
+        {
+            decimal tmp;
+            if (!Decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return null;
             return tmp;
         }
 
@@ -513,6 +564,32 @@ namespace GeneralTools.Models
         public static bool ToBool(this string stringValue)
         {
             return (stringValue.NotNullOrEmpty().ToUpper() == "TRUE");
+        }
+
+        public static bool IsInteger(this string stringValue)
+        {
+            int tmp;
+            return Int32.TryParse(stringValue.NotNullOrEmpty(), out tmp);
+        }
+
+        public static double ToDouble(this string stringValue, double defaultValue = -1)
+        {
+            double tmp;
+            if (!double.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                return defaultValue;
+            return tmp;
+        }
+
+        public static bool IsDecimal(this string stringValue)
+        {
+            decimal tmp;
+            return Decimal.TryParse(stringValue.NotNullOrEmpty(), out tmp);
+        }
+
+        public static bool IsDate(this string stringValue)
+        {
+            DateTime tmp;
+            return DateTime.TryParse(stringValue.NotNullOrEmpty(), out tmp);
         }
     }
 
@@ -653,10 +730,10 @@ namespace GeneralTools.Models
             return type.GetProperties(BindingFlags.Public | BindingFlags.Instance)
                 .Where(property => property.GetCustomAttributes(true)
                     .Any(p => p.GetType() == attributeType));
-        }
+    }
 
         public static PropertyInfo GetPropertyWithAttribute(this Type type, Type attributeType)
-        {
+    {
             return type.GetPropertiesWithAttribute(attributeType).FirstOrDefault();
         }
 
@@ -709,16 +786,6 @@ namespace GeneralTools.Models
 
     public static class DateTimeExtensions
     {
-        public static string NotNullOrEmptyToString(this DateTime? dt)
-        {
-            return dt == null ? null : dt.GetValueOrDefault().ToString("d");
-        }
-
-        public static string NotNullOrEmptyToString(this DateTime? dt, string formatString)
-        {
-            return dt == null ? null : dt.GetValueOrDefault().ToString(formatString);
-        }
-
         public static DateTime MoveToFirstDay(this DateTime dt)
         {
             return new DateTime(dt.Year, dt.Month, 1);
@@ -742,6 +809,24 @@ namespace GeneralTools.Models
         public static string ToShortDateTimeString(this DateTime dt)
         {
             return dt.ToString("dd.MM.yy HH:mm");
+        }
+    }
+
+    public static class NullableDateTimeExtensions
+    {
+        public static string NotNullOrEmptyToString(this DateTime? dt)
+        {
+            return dt == null ? null : dt.GetValueOrDefault().ToString("d");
+        }
+
+        public static string NotNullOrEmptyToString(this DateTime? dt, string formatString)
+        {
+            return dt == null ? null : dt.GetValueOrDefault().ToString(formatString);
+        }
+
+        public static string ToString(this DateTime? dt, string formatString)
+        {
+            return (dt.HasValue ? dt.Value.ToString(formatString) : "");
         }
     }
 
@@ -802,6 +887,30 @@ namespace GeneralTools.Models
         public static string BoolToX(this bool boolValue)
         {
             return boolValue.ToCustomString("X", "");
+        }
+    }
+
+    public static class NullableBoolExtensions
+    {
+        public static string BoolToX(this bool? boolValue)
+        {
+            return (boolValue == true).ToCustomString("X", "");
+}
+
+        public static bool IsTrue(this bool? boolValue)
+        {
+            return (boolValue == true);
+        }
+    }
+
+    public static class NullableDecimalExtensions
+    {
+        public static string ToString(this decimal? decimalValue, string format)
+        {
+            if (!decimalValue.HasValue)
+                return "";
+
+            return decimalValue.Value.ToString(format);
         }
     }
 }

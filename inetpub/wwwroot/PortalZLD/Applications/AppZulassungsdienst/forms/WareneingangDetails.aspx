@@ -33,6 +33,14 @@
                                         <asp:Label ID="lblBelegnummer" runat="server" Visible="false"></asp:Label>
                                     </td>
                                 </tr>
+                                <tr id="TrLiefernr" runat="server">
+                                    <td>
+                                        Lieferscheinnummer:
+                                    </td>
+                                    <td width="100%">
+                                        <asp:TextBox ID="txtLieferscheinnummer" runat="server" MaxLength="16"></asp:TextBox>
+                                    </td>
+                                </tr>
                                 <tr id="TrBelegdatum" runat="server">
                                     <td>
                                         Wareneingangsdatum:
@@ -152,10 +160,10 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:RadioButton GroupName="Abgeschlossen" ID="rbPositionAbgeschlossenJA" runat="server"
-                                                                Text="Ja" Checked='<%# (Eval("PositionAbgeschlossen")=="J") %>' />
+                                                                Text="Ja" Checked='<%# (Eval("PositionAbgeschlossen").ToString() == "J") %>' />
                                                             &nbsp;
                                                             <asp:RadioButton ID="rbPositionAbgeschlossenNEIN" GroupName="Abgeschlossen" runat="server"
-                                                                Text="Nein" Checked='<%# (Eval("PositionAbgeschlossen")=="N") %>' />
+                                                                Text="Nein" Checked='<%# (Eval("PositionAbgeschlossen").ToString() == "N") %>' />
                                                         </ItemTemplate>
                                                     </asp:TemplateField>
                                                 </Columns>

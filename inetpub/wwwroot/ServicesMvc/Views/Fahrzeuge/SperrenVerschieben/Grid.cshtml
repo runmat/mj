@@ -1,0 +1,86 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeugSperrenVerschiebenViewModel
+
+@{ var gridName = "GridFzgSperrenVerschieben"; }
+
+@if (Model.EditMode)
+{
+    <h4 class="margin-bottom-20">
+        @Localize.PleaseChooseOneOrMoreVehicles: 
+        <span id="FzgSperrenVerschiebenCount" class="alert alert-success margin-left-15 hide">
+            <i class="icon-check"></i><span class="padding-left-5 bold"></span>
+        </span>
+    </h4> 
+    
+    <div id="divFzgSperrenVerschiebenFilter" class="form-horizontal label-width-150">
+        @Html.FormRadioButtonListFor(m => m.FahrzeugSelektor.Auswahl, Model.FahrzeugSelektor.AuswahlOptionen.ToSelectList())
+        
+        <div id="divFilterNurBemerkung">
+            @Html.FormCheckBoxFor(m => m.FahrzeugSelektor.NurMitBemerkung, labelHidden: true)
+        </div>
+    </div>
+}
+
+@(Html.Telerik()
+    .Grid<Fahrzeuguebersicht>()
+    .Name(gridName)
+    .XAjaxDataBinding("FzgSperrenVerschiebenAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.IsSelected)
+            .ClientTemplate("<input type='checkbox' <# if (!data.IsViewModelEditMode || (data.IsViewModelUpload && !data.UploadedFound)) { #> disabled <# } #> name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='OnSelectionChange_GridFzgSperrenVerschieben($(this))' />")
+            .HeaderTemplate("<input type='checkbox' " + (Model.EditMode ? "" : "disabled") + " id='uncheckAllRecords' onchange='GridFzgSperrenVerschieben_OnAllSelectionChange($(this).is(\":checked\"))' />")
+            .Filterable(false);
+
+        columns.XBound(c => c.Bearbeitungsstatus).Visible(!Model.EditMode);
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Gesperrt);
+        columns.XBound(c => c.EingangFahrzeugDatum);
+        columns.XBound(c => c.EingangZb2Datum);
+        columns.XBound(c => c.Farbe);
+        columns.XBound(c => c.Carport);
+        columns.XBound(c => c.Carportname);
+        columns.XBound(c => c.ModelID);
+        columns.XBound(c => c.Unitnummer);
+        columns.XBound(c => c.Hersteller);
+        columns.XBound(c => c.Modell);
+        columns.XBound(c => c.BemerkungSperre);
+        columns.XBound(c => c.BemerkungExtern);
+        columns.XBound(c => c.BemerkungIntern);
+        columns.XBound(c => c.Anhaengerkupplung);
+        columns.XBound(c => c.Navi);
+        columns.XBound(c => c.Winterreifen);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridFzgSperrenVerschieben").OnRowDataBound("OnRowDataBound_GridFzgSperrenVerschieben"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Fahrgestellnummer).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportFzgSperrenVerschiebenFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportFzgSperrenVerschiebenFilteredPDF", "Fahrzeuge");
+    })
+)
+
+<div class="form-actions">
+    @if (Model.EditMode)
+    {
+        <button type="button" id="btnFzgSperren" class="btn blue hide" onclick=" FzgSperren(true); ">@Localize.Lock</button>
+        <button type="button" id="btnFzgEntsperren" class="btn blue hide" onclick=" FzgSperren(false); ">@Localize.Unlock</button>
+        <button type="button" id="btnFzgVerschieben" class="btn blue hide" onclick=" FzgVerschieben(); ">@Localize.Relocate</button>
+        <button type="button" id="btnFzgTextErfassen" class="btn blue hide" onclick=" FzgTextErfassen(); ">@Localize.EnterText</button>
+    }
+    else
+    {
+        <button type="button" id="btnRestartSperrenVerschieben" class="btn blue" onclick=" LocationReloadWithoutQueryString(); ">@Localize.Continue</button>
+    }
+</div>
+
+<script type="text/javascript">
+    $('#divFzgSperrenVerschiebenFilter').on('change', ':radio', function (e) {
+        FilterFzgSperrenVerschiebenData();
+    });    
+    $('#divFzgSperrenVerschiebenFilter').on('change', ':checkbox', function (e) {
+        FilterFzgSperrenVerschiebenData();
+    });
+</script>

@@ -292,6 +292,8 @@ namespace CkgDomainLogic.Equi.Models
                         d.Pickdatum = s.PICKDAT;
                         d.Referenz1 = s.ZZREFERENZ1;
                         d.Referenz2 = s.ZZREFERENZ2;
+                        d.Erstzulassungsdatum = s.REPLA_DATE;
+                        d.Ummeldedatum = s.ZZZLDAT;
                     }));
             }
         }
@@ -493,10 +495,29 @@ namespace CkgDomainLogic.Equi.Models
                     {
                         d.HaendlerNr = s.ZZHAENR;
                         d.FahrgestellNr = s.ZZFAHRG;
-                        d.OrderNr = s.ZZORDER;
+                        d.VertragsNr = s.ZZORDER;
                         d.Anlagedatum = s.ERDAT;
                         d.AnlagedatumKlaerfall = s.ANLAGEDAT_KLAERF;
                         d.EingangsdatumZb2 = s.ZB2EINGDAT;
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_DPM_FFD_DATEN_OHNE_DOKUMENTE.GT_WEB, KlaerfallVhc> Z_DPM_FFD_DATEN_OHNE_DOKUMENTE_GT_WEB_To_KlaerfallVhc
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FFD_DATEN_OHNE_DOKUMENTE.GT_WEB, KlaerfallVhc>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.HaendlerNr = s.ZZHAENR;
+                        d.FahrgestellNr = s.ZZFAHRG;
+                        d.VertragsNr = s.ZZVTGNR;
+                        d.Anlagedatum = s.ERDAT;
+                        d.Plancode = s.PLANCODE;
                     }));
             }
         }
@@ -575,6 +596,233 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS, EquiHistorieInfoVermieter> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EQUIS_To_EquiHistorieInfoVermieter
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS, EquiHistorieInfoVermieter>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BriefNr = s.TIDNR;
+                        d.EquipmentNr = s.EQUNR;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.MeldungsNr = s.QMNUM;
+                        d.ReferenzNr = s.ZZREFERENZ1;
+                        d.VertragsNr = s.LIZNR;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER, EquiHistorieVermieter> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_UEBER_To_EquiHistorieVermieter
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_UEBER, EquiHistorieVermieter>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Abmeldedatum = s.EXPIRY_DATE;
+                        d.BriefNr = s.TIDNR;
+                        d.Erstzulassungsdatum = s.REPLA_DATE;
+                        d.Farbcode = s.ZFARBE;
+                        d.Farbe = s.ZFARBTXT;
+                        d.Hersteller = s.ZZHERST_TEXT;
+                        d.Modell = s.ZZMODELL;
+                        d.Referenz1 = s.ZZREFERENZ1;
+                        d.Referenz2 = s.ZZREFERENZ2;
+                        d.VertragsNr = s.LIZNR;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EINST, EquiEinsteuerung> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_EINST_To_EquiEinsteuerung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EINST, EquiEinsteuerung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.AbsenderZb2Hausnummer = s.HOUSE_NUM1_ZP;
+                        d.AbsenderZb2Name1 = s.NAME1_ZP;
+                        d.AbsenderZb2Name2 = s.NAME2_ZP;
+                        d.AbsenderZb2Ort = s.CITY1_ZP;
+                        d.AbsenderZb2Plz = s.POST_CODE1_ZP;
+                        d.AbsenderZb2Strasse = s.STREET_ZP;
+                        d.BeauftragungZulassung = s.QMDAT;
+                        d.Bemerkung = s.ZBEMERKUNG;
+                        d.HalterHausnummer = s.HOUSE_NUM1_ZH;
+                        d.HalterName1 = s.NAME1_ZH;
+                        d.HalterName2 = s.NAME2_ZH;
+                        d.HalterOrt = s.CITY1_ZH;
+                        d.HalterPlz = s.POST_CODE1_ZH;
+                        d.HalterStrasse = s.STREET_ZH;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.ModellId = s.ZZMODELL;
+                        d.ModellName = s.ZZBEZEI;
+                        d.PdiBereit = s.ZZDAT_BER;
+                        d.PdiEingang = s.ZZDAT_EIN;
+                        d.PdiName = s.PDINAME;
+                        d.PdiNr = s.KUNPDI;
+                        d.PdiOrt = s.PDIORT;
+                        d.SchluesselEingang = s.EINGANG_EQT;
+                        d.Zb2Eingang = s.EINGANG_ZB2;
+                        d.Zulassungsdatum = s.REPLA_DATE;
+                        d.Zulassungssperre = s.ZZAKTSPERRE.XToBool();
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_AUSST, EquiAussteuerung> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_AUSST_To_EquiAussteuerung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_AUSST, EquiAussteuerung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Abmeldebeauftragung = s.ERDAT_ABMK;
+                        d.Abmeldedatum = s.EXPIRY_DATE;
+                        d.Abmeldedurchfuehrung = s.DATUM_ABMZ;
+                        d.AnzahlKennzeichenVorhanden = s.PSCHILD;
+                        d.CarportId = s.CARPORT;
+                        d.CarportName = s.PDINAME;
+                        d.Mindesthaltedatum = s.ZZABMDAT;
+                        d.Unfallfahrzeug = s.UNFALLFZG.XToBool();
+                        d.Zb1Vorhanden = s.PSCHEIN.XToBool();
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TYPEN, EquiTypdaten> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_TYPEN_To_EquiTypdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TYPEN, EquiTypdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Abgasrichtlinie = s.ZZABGASRICHTL_TG;
+                        d.AnzahlAchsen = s.ZZANZACHS.TrimStart('0');
+                        d.AnzahlAntriebsachsen = s.ZZANTRIEBSACHS.TrimStart('0');
+                        d.AnzahlSitze = s.ZZANZSITZE.TrimStart('0');
+                        d.Aufbauart = s.ZZTEXT_AUFBAU;
+                        d.Bemerkungen = String.Join(Environment.NewLine,
+                            s.ZZBEMER1,
+                            s.ZZBEMER2,
+                            s.ZZBEMER3,
+                            s.ZZBEMER4,
+                            s.ZZBEMER5,
+                            s.ZZBEMER6,
+                            s.ZZBEMER7,
+                            s.ZZBEMER8,
+                            s.ZZBEMER9,
+                            s.ZZBEMER10,
+                            s.ZZBEMER11,
+                            s.ZZBEMER12,
+                            s.ZZBEMER13,
+                            s.ZZBEMER14).TrimEnd('\r', '\n');
+                        d.BereifungAchse1 = s.ZZBEREIFACHSE1;
+                        d.BereifungAchse2 = s.ZZBEREIFACHSE2;
+                        d.BereifungAchse3 = s.ZZBEREIFACHSE3;
+                        d.Breite = s.ZZBREITEMIN.TrimStart('0');
+                        d.Co2Emission = s.ZZCO2KOMBI;
+                        d.Fabrikname = s.ZZFABRIKNAME;
+                        d.Fahrgeraeusch = s.ZZFAHRGERAEUSCH.TrimStart('0');
+                        d.Fahrzeugklasse = s.ZZFHRZKLASSE_TXT;
+                        d.FassungsvermoegenTank = s.ZZFASSVERMOEGEN;
+                        d.GenehmigungsNr = s.ZZGENEHMIGNR;
+                        d.Genehmigungsdatum = s.ZZGENEHMIGDAT.ToNullableDateTime();
+                        d.Handelsname = s.ZZHANDELSNAME;
+                        d.HerstSchluessel = s.ZZHERSTELLER_SCH;
+                        d.Hersteller = s.ZZHERST_TEXT;
+                        d.Hoechstgeschwindigkeit = s.ZZHOECHSTGESCHW;
+                        d.Hoehe = s.ZZHOEHEMIN.TrimStart('0');
+                        d.Hubraum = s.ZZHUBRAUM.TrimStart('0');
+                        d.Kraftstoffart = s.ZZKRAFTSTOFF_TXT;
+                        d.Kraftstoffcode = s.ZZCODE_KRAFTSTOF;
+                        d.Laenge = s.ZZLAENGEMIN.TrimStart('0');
+                        d.Leistung = s.ZZNENNLEISTUNG.TrimStart('0');
+                        d.MaxAchslastAchse1 = s.ZZACHSL_A1_STA.TrimStart('0');
+                        d.MaxAchslastAchse2 = s.ZZACHSL_A2_STA.TrimStart('0');
+                        d.MaxAchslastAchse3 = s.ZZACHSL_A3_STA.TrimStart('0');
+                        d.NationaleEmissionsklasseCode = s.ZZSLD;
+                        d.NationaleEmissionsklasse = s.ZZNATIONALE_EMIK;
+                        d.Standgeraeusch = s.ZZSTANDGERAEUSCH.TrimStart('0');
+                        d.Typ = s.ZZKLARTEXT_TYP;
+                        d.TypSchluessel = s.ZZTYP_SCHL;
+                        d.UmdrehungenProMin = s.ZZBEIUMDREH.TrimStart('0');
+                        d.Variante = s.ZZVARIANTE;
+                        d.Version = s.ZZVERSION;
+                        d.ZulGesamtgewicht = s.ZZZULGESGEW.TrimStart('0');
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLZB2, EquiMeldungsdaten> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_LLZB2_To_EquiMeldungsdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLZB2, EquiMeldungsdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BeauftragtDurch = s.QMNAM;
+                        d.Durchfuehrungsdatum = s.STRMN;
+                        d.Erfassungsdatum = s.ERDAT;
+                        d.Vorgang = s.KURZTEXT;
+                        d.Meldungsnummer = s.QMNUM;
+                        d.Hausnummer = s.HOUSE_NUM1_Z5;
+                        d.Name1 = s.NAME1_Z5;
+                        d.Name2 = s.NAME2_Z5;
+                        d.Ort = s.CITY1_Z5;
+                        d.Plz = s.POST_CODE1_Z5;
+                        d.Strasse = s.STREET_Z5;
+                        d.Versandart = s.ZZDIEN1;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLSCH, EquiMeldungsdaten> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_LLSCH_To_EquiMeldungsdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_LLSCH, EquiMeldungsdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BeauftragtDurch = s.QMNAM;
+                        d.Durchfuehrungsdatum = s.STRMN;
+                        d.Erfassungsdatum = s.ERDAT;
+                        d.Vorgang = s.KURZTEXT;
+                        d.Meldungsnummer = s.QMNUM;
+                        d.Hausnummer = s.HOUSE_NUM1_Z5;
+                        d.Name1 = s.NAME1_Z5;
+                        d.Name2 = s.NAME2_Z5;
+                        d.Ort = s.CITY1_Z5;
+                        d.Plz = s.POST_CODE1_Z5;
+                        d.Strasse = s.STREET_Z5;
+                        d.Versandart = s.ZZDIEN1;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TUETE, EquiTueteninhalt> Z_DPM_FAHRZEUGHISTORIE_AVM_GT_TUETE_To_EquiTueteninhalt
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_FAHRZEUGHISTORIE_AVM.GT_TUETE, EquiTueteninhalt>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Anzahl = s.ANZAHL.ToNullableInt();
+                        d.Bezeichnung = s.ATBEZ;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -634,5 +882,45 @@ namespace CkgDomainLogic.Equi.Models
         }
         
         #endregion
+
+
+        #region Load/Save from/to Repository
+
+
+        public static ModelMapping<Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB, FahrzeugAnforderung> Z_DPM_AVM_DOKUMENT_KOPIE_GT_WEB_To_FahrzeugAnforderung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_AVM_DOKUMENT_KOPIE.GT_WEB, FahrzeugAnforderung>(
+                    new Dictionary<string, string>
+                    {
+                        {"CHASSIS_NUM", "Fahrgestellnummer"},
+                        {"LICENSE_NUM", "Kennzeichen"},
+                        {"EMAIL1", "EmailAnlageUser"},
+                        {"EMAIL2", "EmailExtern"},
+                        {"DOK_TYP", "DokTyp"},
+                        {"ERNAM", "AnlageUser"},
+                        {"ERDAT", "AnlageDatum"},
+                        {"FREITEXT", "Bemerkung"},
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, SelectItem> Z_DPM_READ_AUFTR_006_GT_OUT_To_SelectItem
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, SelectItem>(
+                    new Dictionary<string, string>()
+                    , (sap, business) =>
+                    {
+                        business.Key = sap.POS_KURZTEXT;
+                        business.Text = sap.POS_TEXT;
+                    }));
+            }
+        }
+
+        #endregion
+
     }
 }

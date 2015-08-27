@@ -6,6 +6,7 @@ using System.Linq;
 using System.Transactions;
 using CkgDomainLogic.General.Database.Models;
 using CkgDomainLogic.General.Models.DataModels;
+using CkgDomainLogic.Zulassung.MobileErfassung.Models;
 using GeneralTools.Services;
 using GeneralTools.Models;
 
@@ -70,6 +71,11 @@ namespace CkgDomainLogic.General.Database.Services
             return Database.SqlQuery<Customer>("SELECT * FROM Customer WHERE CustomerID = {0}", customerID).FirstOrDefault();
         }
 
+        public List<Customer> GetAllCustomer()
+        {
+            return Database.SqlQuery<Customer>("SELECT * FROM Customer").ToListOrEmptyList();
+        }
+
         public string GetEmailAddressFromUserName(string userName)
         {
             return Database.SqlQuery<string>("select mail from vwWebUser inner join WebUserInfo on vwWebUser.UserID = WebUserInfo.id_user where Username = {0}", userName).FirstOrDefault();
@@ -83,6 +89,11 @@ namespace CkgDomainLogic.General.Database.Services
         public User GetUserFromPasswordToken(string passwordRequestKey)
         {
             return Database.SqlQuery<User>("select * from vwWebUser where PasswordChangeRequestKey = {0}", passwordRequestKey).FirstOrDefault();
+        }
+
+        public List<User> GetUserForCustomer(Customer customer)
+        {
+            return Database.SqlQuery<User>("select * from vwWebUser where CustomerID = {0}", customer.CustomerID).ToListOrEmptyList();
         }
 
         public User GetUser(string userName)
@@ -316,10 +327,6 @@ namespace CkgDomainLogic.General.Database.Services
         {
             var type = dataContext.GetType();
 
-            //var firstInterface = type.GetInterfaces().FirstOrDefault();
-            //if (firstInterface != null)
-            //    type = firstInterface;
-
             var contextKey = type.GetFullTypeName();
             var data = XmlService.XmlSerializeToString(dataContext);
 
@@ -547,6 +554,71 @@ namespace CkgDomainLogic.General.Database.Services
                 return defaultResources.ToList();
             }
         }
+
+        public TranslatedResource TranslatedResourceLoad(string resourceKey)
+        {
+            var t = Database.SqlQuery<TranslatedResource>("SELECT * FROM TranslatedResource WHERE Resource = {0}", resourceKey).FirstOrDefault();
+            return (t ?? new TranslatedResource { Resource = resourceKey });
+        }
+
+        public TranslatedResourceCustom TranslatedResourceCustomerLoad(string resourceKey, int customerID)
+        {
+            var t = Database.SqlQuery<TranslatedResourceCustom>("SELECT * FROM TranslatedResourceCustom WHERE Resource = {0} and CustomerID = {1}", resourceKey, customerID).FirstOrDefault();
+            return (t ?? new TranslatedResourceCustom { Resource = resourceKey, CustomerID = customerID });
+        }
+
+        public void TranslatedResourceUpdate(TranslatedResource r)
+        {
+            Database.ExecuteSqlCommand(
+                " if not exists(select Resource from TranslatedResource where Resource = {0}) " +
+                "   insert into TranslatedResource (Resource, en, de) select {0}, {1}, {2}", r.Resource, r.en, r.de);
+
+            Database.ExecuteSqlCommand(
+                " update TranslatedResource set " +
+                "  en = {0}, " +
+                "  en_kurz = {1}, " +
+                "  de = {2}, " +
+                "  de_kurz = {3}, " +
+                "  fr = {4}, " +
+                "  fr_kurz = {5} " +
+                " where Resource = {6}",
+                    r.en, r.en_kurz,
+                    r.de, r.de_kurz,
+                    r.fr, r.fr_kurz,
+                    r.Resource);
+        }
+
+        public void TranslatedResourceCustomerUpdate(TranslatedResourceCustom r)
+        {
+            if (r.de.IsNullOrEmpty() || r.en.IsNullOrEmpty())
+                return;
+
+            Database.ExecuteSqlCommand(
+                " if not exists (select Resource from TranslatedResourceCustom where Resource = {0} and CustomerID = {1}) " +
+                "   insert into TranslatedResourceCustom (Resource, CustomerID, en, de) select {0}, {1}, {2}, {3}",
+                r.Resource, r.CustomerID, r.en, r.de);
+
+            Database.ExecuteSqlCommand(
+                " update TranslatedResourceCustom set " +
+                "  en = {0}, " +
+                "  en_kurz = {1}, " +
+                "  de = {2}, " +
+                "  de_kurz = {3}, " +
+                "  fr = {4}, " +
+                "  fr_kurz = {5} " +
+                " where Resource = {6} and CustomerID = {7}",
+                    r.en, r.en_kurz,
+                    r.de, r.de_kurz,
+                    r.fr, r.fr_kurz,
+                    r.Resource, r.CustomerID);
+        }
+
+        public void TranslatedResourceCustomerDelete(TranslatedResourceCustom r)
+        {
+            Database.ExecuteSqlCommand(
+                " delete from TranslatedResourceCustom where Resource = {0} and CustomerID = {1}",
+                    r.Resource, r.CustomerID);
+        }
         
         #endregion
 
@@ -705,6 +777,15 @@ namespace CkgDomainLogic.General.Database.Services
                     User.CustomerID, grundId).ToList();
 
             return (ergs.Count > 0 ? ergs[0] : "");
+        }
+
+        #endregion
+
+        #region ZLD (Mobile)
+
+        public CkgUserInfo GetCkgUserInfo(string username)
+        {
+            return Database.SqlQuery<CkgUserInfo>("SELECT * FROM vwCkgUser WHERE Username = {0}", username).FirstOrDefault();
         }
 
         #endregion

@@ -1,0 +1,34 @@
+﻿@using CkgDomainLogic.Finance.Models
+@using CkgDomainLogic.Finance.ViewModels
+@model TempZb2VersandViewModel 
+
+@{ var gridName = "TempZb2VersandGrid"; }
+
+
+@(Html.Telerik()
+        .Grid<TempZb2Versand>()
+    .Name(gridName)   
+        .XAjaxDataBinding("TempZb2VersandAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Kennzeichen);       
+        columns.XBound(c => c.Fahrgestellnummer);
+        columns.XBound(c => c.Zb2Nummer);
+        //columns.XBound(c => c.Name);
+        //columns.XBound(c => c.Strasse);
+        //columns.XBound(c => c.Ort);
+        //columns.XBound(c => c.Postleitzahl);
+        columns.XBound(c => c.Versandadresse);
+        columns.XBound(c => c.Versanddatum).Format("{0:dd.MM.yyyy}");                
+        columns.XBound(c => c.Versandgrund);               
+    })
+    .XAutoColumnConfiguration()
+                .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_TempZb2VersandGrid"))
+    .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportTempZb2VersandFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportTempZb2VersandFilteredPDF", "Finance");
+    })
+)

@@ -1,0 +1,27 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{
+    var gridName = "GridAbgemeldeteFahrzeuge";
+}
+
+<a class="a_btn_mini new"></a>
+
+@(Html.XTelerik()
+    .XGrid<AbgemeldetesFahrzeug>()
+    .Name(gridName)   
+    .XAjaxDataBinding("AbgemeldeteFahrzeugeAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.Bound(fahrzeug => fahrzeug.AbmeldeDatum);
+        columns.Bound(fahrzeug => fahrzeug.Kennzeichen);
+        columns.Bound(fahrzeug => fahrzeug.Fahrgestellnummer);
+        columns.Bound(fahrzeug => fahrzeug.Briefnummer);
+        columns.Bound(fahrzeug => fahrzeug.Durchfuehrung).Format("{0:dd.MM.yyyy}"); 
+        columns.Bound(fahrzeug => fahrzeug.Versand).Format("{0:dd.MM.yyyy}");     
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AbmeldeDatum).Descending())
+    .XToolBar("Fahrzeuge")
+)
+

@@ -60,7 +60,10 @@ namespace AppZulassungsdienst.forms
                 {
                     var sapId = Request.QueryString["id"];
                     if (Request.QueryString["Back"] == null)
+                    {
                         objNacherf.LoadAHVersandVorgangDetailFromSap(sapId);
+                        objNacherf.tblPrintDataForPdf.Clear();
+                    }
 
                     Session["objNacherf"] = objNacherf;
 
@@ -358,7 +361,7 @@ namespace AppZulassungsdienst.forms
             txtBemerk.Text = kopfdaten.Bemerkung;
 
             // Dropdowns und dazugehörige Textboxen füllen
-            GridView1.DataSource = objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr).ToList();
+            GridView1.DataSource = objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
             GridView1.DataBind();
 
             DataView tmpDView = new DataView(objCommon.tblKennzGroesse, "Matnr = 598", "Matnr", DataViewRowState.CurrentRows);
@@ -409,6 +412,8 @@ namespace AppZulassungsdienst.forms
             chkRechnung.Checked = bankdaten.Rechnung.IsTrue();
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
             {
                 txtGeldinstitut.Text = bankdaten.Geldinstitut;
@@ -510,7 +515,18 @@ namespace AppZulassungsdienst.forms
                 }
 
             }
+
             checkDate();
+
+            CheckZulstOffen();
+        }
+
+        private void CheckZulstOffen()
+        {
+            var errMsg = objCommon.CheckZulstGeoeffnet(txtStVa.Text, ZLDCommon.toShortDateStr(txtZulDate.Text));
+
+            if (!String.IsNullOrEmpty(errMsg))
+                lblError.Text = String.Format("Bitte wählen Sie ein gültiges Zulassungsdatum! ({0})", errMsg);
         }
 
         /// <summary>
@@ -849,6 +865,8 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+                hfBankleitzahl.Value = objCommon.Bankschluessel;
+                hfKontonummer.Value = objCommon.Kontonr;
             }
             else if (cpdMitEinzug)
             {
@@ -876,10 +894,11 @@ namespace AppZulassungsdienst.forms
             var bankdaten = objNacherf.AktuellerVorgang.Bankdaten;
 
             bankdaten.SapId = objNacherf.AktuellerVorgang.Kopfdaten.SapId;
+            bankdaten.Partnerrolle = "AG";
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
-            bankdaten.Bankleitzahl = objCommon.Bankschluessel;
-            bankdaten.KontoNr = objCommon.Kontonr;
+            bankdaten.Bankleitzahl = hfBankleitzahl.Value;
+            bankdaten.KontoNr = hfKontonummer.Value;
             bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
@@ -900,6 +919,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             txtGeldinstitut.Text = (String.IsNullOrEmpty(bankdaten.Geldinstitut) ? "Wird automatisch gefüllt!" : bankdaten.Geldinstitut);
             txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             chkEinzug.Checked = bankdaten.Einzug.IsTrue();

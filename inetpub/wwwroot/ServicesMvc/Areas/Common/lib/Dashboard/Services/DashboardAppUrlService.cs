@@ -75,7 +75,7 @@ namespace CkgDomainLogic.General.Services
             var urlParts = appUrl.Split('/');
             area = "";
             var index = -1;
-            if (urlParts.Count() > 1)
+            if (urlParts.Count() > 2)
                 area = urlParts[++index];
             controller = urlParts[++index];
             action = urlParts[++index];

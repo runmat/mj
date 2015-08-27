@@ -43,6 +43,8 @@ namespace SapORM.Models
 
 			public string GRUND_PFLICHT { get; set; }
 
+			public string DATUM_CHG { get; set; }
+
 			public string TXT40 { get; set; }
 
 			public static GT_GRUENDE Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
@@ -55,6 +57,7 @@ namespace SapORM.Models
 					AMT_CHG = (string)row["AMT_CHG"],
 					KENNZ_CHG = (string)row["KENNZ_CHG"],
 					GRUND_PFLICHT = (string)row["GRUND_PFLICHT"],
+					DATUM_CHG = (string)row["DATUM_CHG"],
 					TXT40 = (string)row["TXT40"],
 
 					SAPConnection = sapConnection,

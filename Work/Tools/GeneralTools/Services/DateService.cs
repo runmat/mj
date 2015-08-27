@@ -31,5 +31,10 @@ namespace GeneralTools.Services
 
             return Feiertage.FirstOrDefault(f => f.Datum == datum);
         }
+
+        public static bool IstFeiertag(DateTime? datum)
+        {
+            return (GetFeiertag(datum) != null);
+        }
     }
 }

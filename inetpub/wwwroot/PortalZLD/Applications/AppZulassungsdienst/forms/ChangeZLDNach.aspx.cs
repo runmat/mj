@@ -104,7 +104,7 @@ namespace AppZulassungsdienst.forms
 
             proofdifferentHauptMatnr(ref tblData);
 
-            GetDiensleitungData(ref tblData, false);
+            GetDiensleitungDataforPrice(ref tblData);
 
             kopfdaten.BarzahlungKunde = chkBar.Checked;
 
@@ -140,7 +140,7 @@ namespace AppZulassungsdienst.forms
             hfKunnr.Value = txtKunnr.Text;
 
             UpdateDlTableWithPrizes(ref tblData);
-            
+
             DataView tmpDataView = new DataView(tblData) {RowFilter = "IsNull(PosLoesch,'') <> 'L'"};
             GridView1.DataSource = tmpDataView;
             GridView1.DataBind();
@@ -223,9 +223,9 @@ namespace AppZulassungsdienst.forms
             Int32 NewPosID;
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
 
-            var maxPosId = objNacherf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr);
+            var maxPosId = (objNacherf.AktuellerVorgang.Positionen.Any() ? objNacherf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0)) : 0);
 
-            NewPosID = Math.Max(NewPosID, maxPosId.ToInt(0));
+            NewPosID = Math.Max(NewPosID, maxPosId);
 
             DataRow tblRow = tblData.NewRow();
             tblRow["Search"] = "";
@@ -285,7 +285,7 @@ namespace AppZulassungsdienst.forms
                     else
                     {
                         if (objNacherf.AktuellerVorgang.Positionen.Any(p => p.PositionsNr == idpos))
-                            objNacherf.AktuellerVorgang.Positionen.Where(p => p.PositionsNr == idpos || p.UebergeordnetePosition == idpos).ToList().ForEach(p => p.Loeschkennzeichen = "L");
+                            objNacherf.AktuellerVorgang.Positionen.Where(p => p.PositionsNr == idpos || p.UebergeordnetePosition == idpos).ToList().ForEach(p => p.WebBearbeitungsStatus = "L");
 
                         tblRows[0]["PosLoesch"] = "L";
                     }
@@ -502,6 +502,7 @@ namespace AppZulassungsdienst.forms
         protected void cmdNewDLPrice_Click(object sender, EventArgs e)
         {
             lblError.Text = "";
+
             DataTable tblData = (DataTable)Session["tblDienst"];
 
             cmdCreate.Enabled = true;
@@ -561,9 +562,9 @@ namespace AppZulassungsdienst.forms
             Int32 NewPosID;
             Int32.TryParse(tblData.Rows[tblData.Rows.Count - 1]["ID_POS"].ToString(), out NewPosID);
 
-            var maxPosId = objNacherf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr);
+            var maxPosId = (objNacherf.AktuellerVorgang.Positionen.Any() ? objNacherf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0)) : 0);
 
-            NewPosID = Math.Max(NewPosID, maxPosId.ToInt(0));
+            NewPosID = Math.Max(NewPosID, maxPosId);
 
             bool found = false;
             for (int i = 0; i < tblData.Rows.Count; i++)
@@ -784,7 +785,7 @@ namespace AppZulassungsdienst.forms
 
             DataTable tblData = CreatePosTable();
 
-            foreach (var item in objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr))
+            foreach (var item in objNacherf.AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D").OrderBy(p => p.PositionsNr.ToInt(0)))
             {
                 DataRow tblRow = tblData.NewRow();
 
@@ -796,7 +797,7 @@ namespace AppZulassungsdienst.forms
                 tblRow["NewPos"] = false;
                 tblRow["Menge"] = item.Menge.ToString("F0");
                 tblRow["Preis"] = item.Preis.GetValueOrDefault(0);
-                tblRow["PosLoesch"] = item.Loeschkennzeichen;
+                tblRow["PosLoesch"] = (item.Loeschkennzeichen == "L" ? "L" : item.WebBearbeitungsStatus);
 
                 var gebuehrenPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == item.PositionsNr && p.WebMaterialart == "G");
 
@@ -876,6 +877,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             if (!String.IsNullOrEmpty(bankdaten.Geldinstitut))
             {
                 txtGeldinstitut.Text = bankdaten.Geldinstitut;
@@ -926,7 +929,7 @@ namespace AppZulassungsdienst.forms
                     txtBox.Attributes.Add("onblur", "SetDDLValue(this," + ddl.ClientID + "," + lblID_POS.ClientID + "," + lblOldMatnr.ClientID + ")");
                 }
 
-                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS =" + lblID_POS.Text);
+                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS='" + lblID_POS.Text + "'");
                 if (dRows.Length == 0)
                 {
                     txtBox.Text = tblData.Rows[i]["Search"].ToString();
@@ -1034,6 +1037,14 @@ namespace AppZulassungsdienst.forms
                 return false;
             }
 
+            if (!checkDlGrid(tblData))
+                return false;
+
+            return checkDate();
+        }
+
+        private Boolean checkDlGrid(DataTable tblData)
+        {
             var normalColor = System.Drawing.ColorTranslator.FromHtml("#bfbfbf");
             var errorColor = System.Drawing.ColorTranslator.FromHtml("#BC2B2B");
 
@@ -1077,7 +1088,7 @@ namespace AppZulassungsdienst.forms
                 }
             }
 
-            return checkDate();
+            return true;
         }
 
         /// <summary>
@@ -1217,7 +1228,7 @@ namespace AppZulassungsdienst.forms
                 }
 
                 DataTable tblData = (DataTable)Session["tblDienst"];
-                if (GetDiensleitungData(ref tblData, true))
+                if (GetDiensleitungData(ref tblData))
                 {
                     lblError.Text = "Dienstleistung geändert! Bitte auf Preis finden gehen!";
                     Session["tblDienst"] = tblData;
@@ -1246,19 +1257,26 @@ namespace AppZulassungsdienst.forms
                     return;
                 }
 
-                if (!kopfdaten.Flieger.IsTrue())
+                if (!objNacherf.SelAnnahmeAH && !objNacherf.SelSofortabrechnung && !objNacherf.SelAenderungAngenommene
+                    && !kopfdaten.Flieger.IsTrue() && kopfdaten.Bearbeitungsstatus == "F")
                 {
-                    if (kopfdaten.Bearbeitungsstatus == "F")
+                    // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist, außer es wurde Dl. 656 gewählt
+                    if (objNacherf.AktuellerVorgang.Positionen.None(p => p.PositionsNr == "10" && p.MaterialNr == "656"))
                     {
-                        // Nachbearbeitete fehlgeschlagene (Flieger) wieder auf "Angenommen" setzen, wenn Flieger-Flag raus ist
                         kopfdaten.Bearbeitungsstatus = "A";
                         kopfdaten.MobilUser = "";
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = "");
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : ""));
                     }
                     else
                     {
-                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.Loeschkennzeichen == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
+                        kopfdaten.Bearbeitungsstatus = "2";
+                        kopfdaten.MobilUser = "";
+                        objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : "O"));
                     }
+                }
+                else
+                {
+                    objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
                 }
 
                 objNacherf.SaveVorgangToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
@@ -1300,7 +1318,9 @@ namespace AppZulassungsdienst.forms
                 Label lblID_POS = (Label)gvRow.FindControl("lblID_POS");
                 Label lblDLBezeichnung = (Label)gvRow.FindControl("lblDLBezeichnung");
 
-                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS =" + lblID_POS.Text);
+                var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
+
+                DataRow[] dRows = tblData.Select("IsNull(PosLoesch,'') <> 'L' AND ID_POS='" + lblID_POS.Text + "'");
 
                 DataRow targetRow;
                 if (dRows.Length == 0)
@@ -1311,7 +1331,7 @@ namespace AppZulassungsdienst.forms
                 targetRow["Search"] = txtBox.Text;
                 targetRow["Value"] = ddl.SelectedValue;
                 targetRow["Text"] = ddl.SelectedItem.Text;
-                targetRow["Menge"] = txtMenge.Text;
+                targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
 
                 txtBox = (TextBox)gvRow.FindControl("txtPreis");
                 targetRow["Preis"] = txtBox.Text.ToDecimal(0);
@@ -1728,6 +1748,8 @@ namespace AppZulassungsdienst.forms
 
                 txtSWIFT.Text = objCommon.SWIFT;
                 txtGeldinstitut.Text = objCommon.Bankname;
+                hfBankleitzahl.Value = objCommon.Bankschluessel;
+                hfKontonummer.Value = objCommon.Kontonr;
             }
             else if (cpdMitEinzug)
             {
@@ -1811,7 +1833,7 @@ namespace AppZulassungsdienst.forms
         /// <param name="neuePositionen"></param>
         private void NewPosOhneGebMat(DataRow dRow, ref List<ZLDPosition> neuePositionen)
         {
-            var NewPosID = (neuePositionen.Any() ? neuePositionen.Max(p => p.PositionsNr).ToInt(0) : objNacherf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr).ToInt(0));
+            var NewPosID = (neuePositionen.Any() ? neuePositionen.Max(p => p.PositionsNr.ToInt(0)) : (objNacherf.AktuellerVorgang.Positionen.Any() ? objNacherf.AktuellerVorgang.Positionen.Max(p => p.PositionsNr.ToInt(0)) : 0));
 
             var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
@@ -1954,62 +1976,58 @@ namespace AppZulassungsdienst.forms
 
             List<ZLDPosition> neuePos = new List<ZLDPosition>();
 
-            foreach (DataRow tblRow in tblData.Rows)
+            var positionen = objNacherf.AktuellerVorgang.Positionen;
+
+            var dlPositionen = positionen.Where(p => p.WebMaterialart == "D" && p.WebBearbeitungsStatus != "L").OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
+
+            var i = 0;
+            foreach (DataRow dRow in tblData.Rows)
             {
-                var dRow = tblRow;
+                var materialNr = dRow["Value"].ToString();
 
-                if (dRow["Value"].ToString() != "0")
+                if (dRow["PosLoesch"].ToString() != "L" && materialNr != "0")
                 {
-                    var positionen = objNacherf.AktuellerVorgang.Positionen;
-
-                    var selPos = positionen.FirstOrDefault(p => p.PositionsNr == dRow["ID_POS"].ToString());
-                    if (selPos != null)
+                    if (dlPositionen.Count > i)
                     {
-                        if (selPos.WebMaterialart == "D")
+                        var dlPos = dlPositionen[i];
+
+                        if (dlPos.MaterialNr != materialNr && dRow["ID_POS"].ToString() == "10")
                         {
-                            if (selPos.MaterialNr != dRow["Value"].ToString() && dRow["ID_POS"].ToString() == "10")
+                            blnChangeMatnr = true;
+                            var neueHpPos = NewHauptPosition(dRow);//neue Hauptposition aufbauen
+                            foreach (var item in neueHpPos)// in die bestehende Positionstabelle schieben
                             {
-                                blnChangeMatnr = true;
-                                var neueHpPos = NewHauptPosition(dRow);//neue Hauptposition aufbauen
-                                foreach (var item in neueHpPos)// in die bestehende Positionstabelle schieben
+                                var pos = positionen.FirstOrDefault(p => p.PositionsNr == item.PositionsNr);
+                                if (pos != null)
                                 {
-                                    var pos = positionen.FirstOrDefault(p => p.PositionsNr == item.PositionsNr);
-                                    if (pos != null)
-                                    {
-                                        var idx = positionen.IndexOf(pos);
-                                        positionen[idx] = item;
-                                    }
-                                }
-                                if (neueHpPos.Count < positionen.Count)
-                                {
-                                    foreach (var delPos in positionen.Where(p => neueHpPos.None(np => np.PositionsNr == p.PositionsNr)))
-                                    {
-                                        delPos.Loeschkennzeichen = "L";
-                                    }
+                                    var idx = positionen.IndexOf(pos);
+                                    positionen[idx] = item;
                                 }
                             }
-                            else if (selPos.MaterialNr == dRow["Value"].ToString() && dRow["ID_POS"].ToString() == "10")
+                            if (neueHpPos.Count(p => p.UebergeordnetePosition == "10") < positionen.Count(p => p.UebergeordnetePosition == "10"))
                             {
-                                // eingegebene Preise übernehmen
-                                selPos.Preis = dRow["Preis"].ToString().ToDecimal(0);
-                                selPos.SdRelevant = (bool)dRow["SdRelevant"];
-                            }
-                            else if (selPos.MaterialNr != dRow["Value"].ToString() && dRow["ID_POS"].ToString() != "10")
-                            {
-                                // alle zur alten Hauptposition gehörenden Unterpositionen wenn sie unterschiedlich sind löschen
-                                selPos.Loeschkennzeichen = "L";
-
-                                foreach (var delPos in positionen.Where(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString()))
+                                foreach (var delPos in positionen.Where(p => p.UebergeordnetePosition == "10" && neueHpPos.None(np => np.PositionsNr == p.PositionsNr)))
                                 {
-                                    delPos.Loeschkennzeichen = "L";
+                                    delPos.WebBearbeitungsStatus = "L";
                                 }
-
-                                // und die neue Unterposition einfügen ohne Geb.-Positionen, wird später in der Preisfindung aufgebaut
-                                NewPosOhneGebMat(dRow, ref neuePos);
                             }
                         }
-                        else if (blnChangeMatnr && selPos.MaterialNr != dRow["Value"].ToString())
+                        else if (dlPos.MaterialNr == materialNr && dRow["ID_POS"].ToString() == "10")
                         {
+                            // eingegebene Preise übernehmen
+                            dlPos.Preis = dRow["Preis"].ToString().ToDecimal(0);
+                            dlPos.SdRelevant = (bool)dRow["SdRelevant"];
+                        }
+                        else if (dlPos.MaterialNr != materialNr && dRow["ID_POS"].ToString() != "10")
+                        {
+                            // alte Position inkl. Unterpositionen löschen
+                            foreach (var delPos in positionen.Where(p => p.UebergeordnetePosition == dlPos.PositionsNr))
+                            {
+                                delPos.WebBearbeitungsStatus = "L";
+                            }
+                            dlPos.WebBearbeitungsStatus = "L";
+
+                            // und die neue Unterposition einfügen ohne Geb.-Positionen, wird später in der Preisfindung aufgebaut
                             NewPosOhneGebMat(dRow, ref neuePos);
                         }
                     }
@@ -2020,6 +2038,8 @@ namespace AppZulassungsdienst.forms
 
                         NewPosOhneGebMat(dRow, ref neuePos);
                     }
+
+                    i++;
                 }
             }
             // Gibt es neue Positionen dann ab in die Preisfindung
@@ -2043,42 +2063,52 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
+        /// Dienstleistungsdaten für die Preisfindung sammeln.
+        /// </summary>
+        /// <param name="tblData">interne Dienstleistungstabelle</param>
+        private void GetDiensleitungDataforPrice(ref DataTable tblData)
+        {
+            GetDiensleitungData(ref tblData, false);
+        }
+
+        /// <summary>
         /// Dienstleistungsdaten für die Speicherung sammeln.
         /// </summary>
         /// <param name="tblData">Gridtabelle</param>
-        /// <param name="exitIfHauptdlChanged"></param>
-        private Boolean GetDiensleitungData(ref DataTable tblData, bool exitIfHauptdlChanged)
+        /// <param name="exitIfDlChanged"></param>
+        private Boolean GetDiensleitungData(ref DataTable tblData, bool exitIfDlChanged = true)
         {
-            proofDienstGrid(ref tblData);
-
             var positionen = objNacherf.AktuellerVorgang.Positionen;
 
-            foreach (DataRow item in tblData.Rows)
+            var dlPositionen = positionen.Where(p => p.WebMaterialart == "D" && p.WebBearbeitungsStatus != "L").OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
+
+            var i = 0;
+            foreach (DataRow dRow in tblData.Rows)
             {
-                var dRow = item;
                 var materialNr = dRow["Value"].ToString();
 
-                if (materialNr != "0")
+                if (dRow["PosLoesch"].ToString() != "L" && materialNr != "0")
                 {
                     var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
-                    var pos = positionen.FirstOrDefault(p => p.PositionsNr == dRow["ID_POS"].ToString());
-                    if (pos != null)
+                    if (dlPositionen.Count > i)
                     {
-                        if (pos.MaterialNr != materialNr)
-                        {
-                            pos.MaterialNr = materialNr;
+                        var dlPos = dlPositionen[i];
 
-                            if (exitIfHauptdlChanged)
+                        if (dlPos.MaterialNr != materialNr)
+                        {
+                            if (exitIfDlChanged)
                                 return true;
+
+                            dlPos.MaterialNr = materialNr;
                         }
 
-                        var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == pos.MaterialNr);
+                        var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == dlPos.MaterialNr);
 
-                        pos.MaterialName = matbez;
-                        pos.Preis = dRow["Preis"].ToString().ToDecimal(0);
-                        pos.Menge = dRow["Menge"].ToString().ToDecimal(1);
-                        pos.Loeschkennzeichen = dRow["PosLoesch"].ToString();
+                        dlPos.MaterialName = matbez;
+                        dlPos.Preis = dRow["Preis"].ToString().ToDecimal(0);
+                        dlPos.Menge = dRow["Menge"].ToString().ToDecimal(1);
+                        dlPos.WebBearbeitungsStatus = dRow["PosLoesch"].ToString();
 
                         var gebuehrenPos = positionen.FirstOrDefault(p => p.UebergeordnetePosition == dRow["ID_POS"].ToString() && p.WebMaterialart == "G");
                         if (gebuehrenPos != null && mat != null)
@@ -2112,10 +2142,8 @@ namespace AppZulassungsdienst.forms
                             steuerPos.Preis = txtSteuer.Text.ToDecimal(0);
                         }
                     }
-                    else
-                    {
-                        System.Diagnostics.Debug.WriteLine("grrr");
-                    }
+
+                    i++;
                 }
             }
 
@@ -2167,10 +2195,11 @@ namespace AppZulassungsdienst.forms
             var bankdaten = objNacherf.AktuellerVorgang.Bankdaten;
 
             bankdaten.SapId = objNacherf.AktuellerVorgang.Kopfdaten.SapId;
+            bankdaten.Partnerrolle = "AG";
             bankdaten.SWIFT = txtSWIFT.Text;
             bankdaten.IBAN = (String.IsNullOrEmpty(txtIBAN.Text) ? "" : txtIBAN.Text.ToUpper());
-            bankdaten.Bankleitzahl = objCommon.Bankschluessel;
-            bankdaten.KontoNr = objCommon.Kontonr;
+            bankdaten.Bankleitzahl = hfBankleitzahl.Value;
+            bankdaten.KontoNr = hfKontonummer.Value;
             bankdaten.Geldinstitut = (txtGeldinstitut.Text != "Wird automatisch gefüllt!" ? txtGeldinstitut.Text : "");
             bankdaten.Kontoinhaber = txtKontoinhaber.Text;
             bankdaten.Einzug = chkEinzug.Checked;
@@ -2191,6 +2220,8 @@ namespace AppZulassungsdienst.forms
 
             txtSWIFT.Text = bankdaten.SWIFT;
             txtIBAN.Text = bankdaten.IBAN;
+            hfBankleitzahl.Value = bankdaten.Bankleitzahl;
+            hfKontonummer.Value = bankdaten.KontoNr;
             txtGeldinstitut.Text = (String.IsNullOrEmpty(bankdaten.Geldinstitut) ? "Wird automatisch gefüllt!" : bankdaten.Geldinstitut);
             txtKontoinhaber.Text = bankdaten.Kontoinhaber;
             chkEinzug.Checked = bankdaten.Einzug.IsTrue();
@@ -2213,7 +2244,7 @@ namespace AppZulassungsdienst.forms
                         tblRow["Value"] = pos.MaterialNr;
                         tblRow["OldValue"] = pos.MaterialNr;
                         tblRow["Text"] = pos.MaterialName;
-                        tblRow["PosLoesch"] = pos.Loeschkennzeichen;
+                        tblRow["PosLoesch"] = (pos.Loeschkennzeichen == "L" ? "L" : pos.WebBearbeitungsStatus);
                         tblRow["Preis"] = pos.Preis.GetValueOrDefault(0);
 
                         var gebuehrPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");
@@ -2251,11 +2282,13 @@ namespace AppZulassungsdienst.forms
                         break;
 
                     case "K":
-                        txtPreisKennz.Text = pos.Preis.ToString("f");
+                        if (pos.UebergeordnetePosition == "10")
+                            txtPreisKennz.Text = pos.Preis.ToString("f");
                         break;
 
                     case "S":
-                        txtSteuer.Text = pos.Preis.ToString("f");
+                        if (pos.UebergeordnetePosition == "10")
+                            txtSteuer.Text = pos.Preis.ToString("f");
                         break;
                 }
             }

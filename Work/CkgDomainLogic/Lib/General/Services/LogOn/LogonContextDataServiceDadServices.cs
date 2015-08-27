@@ -43,7 +43,11 @@ namespace CkgDomainLogic.General.Services
         {
             var returnUrl = HttpUtility.UrlDecode(urlEncodedReturnUrl).NotNullOrEmpty().ToLower();
 
-            if (ReturnUrl.IsNullOrEmpty() && ! returnUrl.Contains(GetSubDomainPath("login")))
+            if (ReturnUrl.IsNullOrEmpty()
+                && !returnUrl.Contains(GetSubDomainPath("login"))
+                && !returnUrl.EndsWith("undefined")
+                && !returnUrl.EndsWith("checklogontimeout")
+                )
                 ReturnUrl = urlEncodedReturnUrl;
 
             if (   ConfigurationManager.AppSettings["ForceResponsiveLayout"].NotNullOrEmpty().ToLower() == "true" 
@@ -228,15 +232,18 @@ namespace CkgDomainLogic.General.Services
             LogonUser(loginModel.UserName);
         }
 
+        public override string GetEmailAddressForUser()
+        {
+            var dbContext = CreateDbContext(UserName);
+
+            return dbContext.GetEmailAddressFromUserName(dbContext.UserName);
+        }
+
         public override string TryGetEmailAddressFromUsername(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
         {
             var dbContext = CreateDbContext(loginModel.UserName);
-            //if (dbContext.User == null)
-            //    addModelError(m => m.UserName, Localize.LoginUserDoesNotExist);
 
             var email = dbContext.GetEmailAddressFromUserName(dbContext.UserName);
-            //if (email.IsNullOrEmpty())
-            //    addModelError(m => m.UserName, Localize.UserInvalidEmail);
 
             return email;
         }

@@ -9,11 +9,20 @@ Imports CKG.Base.Kernel.Security
 
 Namespace Beauftragung2
 
+    Public Enum HalterErfOptionen
+        Ja
+        Nein
+        JaOhneGeburtsort
+        JaOhneGeburtsdatum
+        JaOhneGeburtsortUndGeburtsdatum
+        JaNurName1
+    End Enum
+
     Public Class Beauftragung2
         Inherits DatenimportBase
 
 #Region "Declarations"
-        Private connection As SqlClient.SqlConnection
+
         Private mVerkaufsorganisation As String
         Private mVerkaufsbuero As String
         Private mGruppe As String
@@ -98,7 +107,8 @@ Namespace Beauftragung2
         Private mNPaUsed As Boolean = False
         Private mErrText As String
         Private mSapId As String
-        Private mHalterNeeded As String
+        Private mHalterNeeded As HalterErfOptionen
+        Private mHalterMerken As Boolean
         Private mTypDatenNeeded As Char
         Private mNaechsteHU As String
         Private mArtGenehmigung As String
@@ -797,12 +807,21 @@ Namespace Beauftragung2
             End Set
         End Property
 
-        Public Property HalterNeeded As String
+        Public Property HalterNeeded As HalterErfOptionen
             Get
                 Return mHalterNeeded
             End Get
-            Set(value As String)
+            Set(value As HalterErfOptionen)
                 mHalterNeeded = value
+            End Set
+        End Property
+
+        Public Property HalterMerken As Boolean
+            Get
+                Return mHalterMerken
+            End Get
+            Set(value As Boolean)
+                mHalterMerken = value
             End Set
         End Property
 
@@ -1104,23 +1123,14 @@ Namespace Beauftragung2
 
 #Region " Methods"
 
-        Public Sub New(ByRef objUser As User, ByRef objApp As App, ByVal appId As String, ByVal sessionId As String, ByVal fileName As String)
+        Public Sub New(ByRef objUser As User, ByRef objApp As App, ByVal strAppId As String, ByVal strSessionId As String, ByVal fileName As String)
             MyBase.New(objUser, objApp, fileName)
-            m_strAppID = appId
-            m_strSessionID = sessionId
+            m_strAppID = strAppId
+            m_strSessionID = strSessionId
         End Sub
 
-        ''' <summary>
-        ''' Lädt sämtliche Stammdaten (Kunden, StVAs, DLs, ZusatzDLs, Prüforgs)
-        ''' </summary>
-        ''' <param name="appId"></param>
-        ''' <param name="sessionId"></param>
-        ''' <param name="page"></param>
-        ''' <remarks></remarks>
-        Public Overloads Sub Fill(ByVal appId As String, ByVal sessionId As String, ByVal page As Page)
+        Public Overloads Sub Fill(ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.FILL"
-            m_strAppID = appId
-            m_strSessionID = sessionId
 
             If Not m_blnGestartet Then
                 m_blnGestartet = True
@@ -1178,18 +1188,23 @@ Namespace Beauftragung2
             End If
         End Sub
 
-        Public Overloads Sub FillUebersicht2(ByVal appId As String, ByVal sessionId As String, ByVal page As Page)
-
+        Public Overloads Sub FillUebersicht2(ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.FillUebersicht"
-            m_strAppID = appId
-            m_strSessionID = sessionId
+
+            m_intStatus = 0
+            m_strMessage = ""
+
             If Not m_blnGestartet Then
                 m_blnGestartet = True
 
                 Try
                     Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_ZLD_ZULASSUNGSDATEN_ONL", m_objApp, m_objUser, page)
 
+                    myProxy.setImportParameter("VKORG", Verkaufsorganisation)
+                    myProxy.setImportParameter("VKBUR", Verkaufsbuero)
+                    If Not String.IsNullOrEmpty(SelKundennr) AndAlso SelKundennr.TrimStart("0"c).Length > 0 Then
                     myProxy.setImportParameter("KUNNR", SelKundennr.PadLeft(10, "0"c))
+                    End If
                     myProxy.setImportParameter("ZZREFNR", SelReferenz)
                     myProxy.setImportParameter("ZZKENN", SelKennzeichen)
                     myProxy.setImportParameter("ZZZLDAT_VON", SelZuldatVon)
@@ -1208,9 +1223,8 @@ Namespace Beauftragung2
                         If dr("ZZSTATUSDATUM").ToString.Length = 0 Then
                             dr("ZZSTATUSUHRZEIT") = ""
                         End If
-
-                        tempTable.AcceptChanges()
                     Next
+                        tempTable.AcceptChanges()
 
                     CreateOutPut(tempTable, appId)
 
@@ -1231,11 +1245,9 @@ Namespace Beauftragung2
             End If
         End Sub
 
-        Public Function Save2(ByVal strAppId As String, ByVal strSessionId As String, ByVal page As Page) As Boolean
-
+        Public Function Save2(ByVal page As Page) As Boolean
             m_strClassAndMethod = "Beauftragung.Save2"
-            m_strAppID = strAppId
-            m_strSessionID = strSessionId
+
             m_intStatus = 0
             m_strMessage = ""
 
@@ -1430,8 +1442,7 @@ Namespace Beauftragung2
 
         Public Function CheckVin(ByVal fahrgnr As String, ByVal pruefziffer As String, ByVal page As Page) As Integer
             m_strClassAndMethod = "Beauftragung.CheckVin"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             If Not m_blnGestartet Then
                 m_blnGestartet = True
 
@@ -1466,8 +1477,6 @@ Namespace Beauftragung2
                                      ByVal page As Page) As DataTable
 
             m_strClassAndMethod = "Beauftragung.FillTypdaten"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
 
             Dim tempTable As New DataTable
 
@@ -1506,8 +1515,7 @@ Namespace Beauftragung2
 
         Public Function CheckGrosskundennummer(ByVal kba As String, ByVal grosskundennummer As String, ByVal page As Page) As String
             m_strClassAndMethod = "Beauftragung.CheckGrosskundennummer"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             Dim returnValue As String = ""
 
             If Not m_blnGestartet Then
@@ -1542,8 +1550,6 @@ Namespace Beauftragung2
 
         Public Sub FillGrosskunden(ByVal kba As String, ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.FillGrosskunden"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
 
             If Not m_blnGestartet Then
                 m_blnGestartet = True
@@ -1576,8 +1582,6 @@ Namespace Beauftragung2
 
         Public Sub GetOrteZurPlz(ByVal plz As String, ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.GetOrteZurPlz"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
 
             If Not m_blnGestartet Then
                 m_blnGestartet = True
@@ -1603,8 +1607,7 @@ Namespace Beauftragung2
 
         Public Function CheckHerstellerFahrgestellnummer(ByVal herst As String, ByVal vin As String, ByVal page As Page) As Boolean
             m_strClassAndMethod = "Beauftragung.CheckHerstellerFahrgestellnummer"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             Dim blnSuccess As Boolean = False
 
             If Not m_blnGestartet Then
@@ -1640,8 +1643,7 @@ Namespace Beauftragung2
 
         Public Function CheckBarcode(ByVal barcode As String, ByVal page As Page) As String
             m_strClassAndMethod = "Beauftragung.CheckBarcode"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             Dim returnValue As String = ""
 
             If Not m_blnGestartet Then
@@ -1675,32 +1677,23 @@ Namespace Beauftragung2
         End Function
 
         Public Function SetNewZulassungsID(ByVal idSap As Int32) As Int32
-            Dim command2 As New SqlClient.SqlCommand()
-            OpenConnection()
-            With command2
-                .Connection = connection
-                .CommandType = CommandType.Text
-                .Parameters.Clear()
-            End With
-            command2.CommandText = "SELECT PValue FROM Parameters WHERE  (PName = 'HoechsteZulassungsID')"
-            If idSap > CType(command2.ExecuteScalar, Int32) Then
-                command2.CommandText = "UPDATE Parameters SET PValue = " & idSap.ToString & " WHERE  (PName = 'HoechsteZulassungsID')"
-                command2.ExecuteNonQuery()
-            End If
-            CloseConnection()
+            Using conn As New SqlClient.SqlConnection(ConfigurationManager.AppSettings("Connectionstring"))
+                conn.Open()
+
+                Using cmd As SqlClient.SqlCommand = conn.CreateCommand()
+                    cmd.CommandType = CommandType.Text
+                    cmd.CommandText = "SELECT PValue FROM Parameters WHERE  (PName = 'HoechsteZulassungsID')"
+                    If idSap > CType(cmd.ExecuteScalar, Int32) Then
+                        cmd.CommandText = "UPDATE Parameters SET PValue = " & idSap.ToString & " WHERE  (PName = 'HoechsteZulassungsID')"
+                        cmd.ExecuteNonQuery()
+                    End If
+                End Using
+
+                conn.Close()
+            End Using
+
             Return idSap
         End Function
-
-        Private Sub OpenConnection()
-            connection = New SqlClient.SqlConnection()
-            connection.ConnectionString = ConfigurationManager.AppSettings("Connectionstring")
-            connection.Open()
-        End Sub
-
-        Private Sub CloseConnection()
-            connection.Close()
-            connection.Dispose()
-        End Sub
 
         Private Function EncrData(ByVal textToEncrypt As String) As String
 
@@ -1809,17 +1802,9 @@ Namespace Beauftragung2
             Return False
         End Function
 
-        ''' <summary>
-        ''' IBAN prüfen und daraus SWIFT ermitteln. Bapi: Z_FI_CONV_IBAN_2_BANK_ACCOUNT
-        ''' </summary>
-        ''' <param name="strIBAN"></param>
-        ''' <param name="page"></param>
-        ''' <returns>SWIFT</returns>
-        ''' <remarks></remarks>
         Public Function GetSWIFT(ByVal strIBAN As String, ByVal page As Page) As String
             m_strClassAndMethod = "Beauftragung.GetSWIFT"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             Dim strSWIFT As String = ""
 
             If Not m_blnGestartet Then
@@ -1858,8 +1843,7 @@ Namespace Beauftragung2
 
         Public Sub LoadAutohausVorgangListe(ByVal strID As String, ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.LoadAutohausVorgangListe"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             m_intStatus = 0
 
             If Not m_blnGestartet Then
@@ -1891,8 +1875,7 @@ Namespace Beauftragung2
 
         Public Sub LoadAutohausVorgangDetails(ByVal strID As String, ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.LoadAutohausVorgangDetails"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             m_intStatus = 0
 
             If Not m_blnGestartet Then
@@ -1986,8 +1969,7 @@ Namespace Beauftragung2
 
         Public Sub ResetAutohausVorgang(ByVal strID As String, ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.ResetAutohausVorgang"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
+
             m_intStatus = 0
 
             If Not m_blnGestartet Then
@@ -2011,8 +1993,6 @@ Namespace Beauftragung2
 
         Public Sub FillFarben(ByVal page As Page)
             m_strClassAndMethod = "Beauftragung.FillFarben"
-            m_strAppID = AppID
-            m_strSessionID = SessionID
 
             If Not m_blnGestartet Then
                 m_blnGestartet = True
@@ -2041,160 +2021,3 @@ Namespace Beauftragung2
     End Class
 
 End Namespace
-
-' ************************************************
-' $History: Beauftragung.vb $
-' 
-' *****************  Version 38  *****************
-' User: Fassbenders  Date: 12.05.11   Time: 15:04
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 37  *****************
-' User: Fassbenders  Date: 12.05.11   Time: 10:00
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 36  *****************
-' User: Fassbenders  Date: 11.05.11   Time: 16:34
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 35  *****************
-' User: Fassbenders  Date: 10.05.11   Time: 17:12
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 34  *****************
-' User: Fassbenders  Date: 10.05.11   Time: 16:44
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 33  *****************
-' User: Dittbernerc  Date: 10.05.11   Time: 16:41
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 32  *****************
-' User: Fassbenders  Date: 9.05.11    Time: 19:25
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 31  *****************
-' User: Fassbenders  Date: 6.05.11    Time: 14:59
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 30  *****************
-' User: Fassbenders  Date: 6.05.11    Time: 14:12
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 29  *****************
-' User: Dittbernerc  Date: 5.05.11    Time: 15:24
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 28  *****************
-' User: Dittbernerc  Date: 21.04.11   Time: 11:36
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 27  *****************
-' User: Fassbenders  Date: 15.04.11   Time: 13:53
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 26  *****************
-' User: Fassbenders  Date: 2.03.11    Time: 8:53
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 25  *****************
-' User: Fassbenders  Date: 22.02.11   Time: 17:34
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 24  *****************
-' User: Fassbenders  Date: 31.01.11   Time: 15:15
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 23  *****************
-' User: Fassbenders  Date: 31.01.11   Time: 8:53
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 22  *****************
-' User: Fassbenders  Date: 12.01.11   Time: 14:50
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 21  *****************
-' User: Fassbenders  Date: 10.01.11   Time: 15:07
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 20  *****************
-' User: Fassbenders  Date: 6.10.10    Time: 14:53
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 19  *****************
-' User: Fassbenders  Date: 17.06.10   Time: 11:18
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 18  *****************
-' User: Fassbenders  Date: 10.06.10   Time: 15:04
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 17  *****************
-' User: Fassbenders  Date: 26.02.10   Time: 16:45
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 16  *****************
-' User: Fassbenders  Date: 23.02.10   Time: 14:45
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 15  *****************
-' User: Fassbenders  Date: 17.02.10   Time: 13:12
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 14  *****************
-' User: Fassbenders  Date: 17.02.10   Time: 10:19
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 13  *****************
-' User: Fassbenders  Date: 3.02.10    Time: 19:34
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 12  *****************
-' User: Fassbenders  Date: 14.12.09   Time: 15:02
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 11  *****************
-' User: Fassbenders  Date: 9.12.09    Time: 14:22
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' ITA: 3383
-' 
-' *****************  Version 10  *****************
-' User: Fassbenders  Date: 7.12.09    Time: 12:49
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 9  *****************
-' User: Fassbenders  Date: 2.12.09    Time: 14:21
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 8  *****************
-' User: Fassbenders  Date: 1.12.09    Time: 13:26
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 7  *****************
-' User: Fassbenders  Date: 26.11.09   Time: 14:44
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 6  *****************
-' User: Fassbenders  Date: 25.11.09   Time: 16:24
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 5  *****************
-' User: Fassbenders  Date: 20.11.09   Time: 14:32
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 4  *****************
-' User: Fassbenders  Date: 17.11.09   Time: 17:56
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 3  *****************
-' User: Fassbenders  Date: 17.11.09   Time: 8:35
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 2  *****************
-' User: Fassbenders  Date: 13.11.09   Time: 15:52
-' Updated in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 
-' *****************  Version 1  *****************
-' User: Fassbenders  Date: 11.11.09   Time: 13:21
-' Created in $/CKAG2/Services/Components/ComCommon/Beauftragung/lib
-' 

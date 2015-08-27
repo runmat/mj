@@ -31,8 +31,8 @@ Public Class Change09_KBS
     Private Sub txtEAN_TextChanged(ByVal sender As Object, ByVal e As EventArgs) Handles txtEAN.TextChanged
         Dim SapMenge As String = ""
         If Not mObjInventur.getEANFromSAPKBSERP(txtEAN.Text, txtMaterialnummer.Text, lblArtikelbezeichnung.Text, SapMenge) Then
-            If mObjInventur.E_MESSAGE.Length > 0 Then
-                lblError.Text = mObjInventur.E_MESSAGE
+            If mObjInventur.ErrorOccured Then
+                lblError.Text = mObjInventur.ErrorMessage
             Else
                 lblError.Text = "Artikel nicht vorhanden"
             End If
@@ -73,7 +73,9 @@ Public Class Change09_KBS
                 With mObjInventur
 
                     mObjInventur.SetMengeMaterialKBSERP(txtMaterialnummer.Text, txtMenge.Text, sAdd)
-                    If mObjInventur.E_MESSAGE.Length = 0 Then
+                    If mObjInventur.ErrorOccured Then
+                        lblError.Text = mObjInventur.ErrorMessage
+                    Else
                         If sAdd = "X" Then
                             Dim iMengeAdd As Integer = 0
                             Try
@@ -94,8 +96,6 @@ Public Class Change09_KBS
                         lblSapMenge.Text = ""
                         lblArtikelbezeichnung.Text = "(wird automatisch ausgefüllt)"
                         SetFocus(txtEAN)
-                    Else
-                        lblError.Text = mObjInventur.E_MESSAGE
                     End If
 
                 End With
@@ -209,8 +209,10 @@ Public Class Change09_KBS
                 With mObjInventur
 
                     mObjInventur.SetMengeMaterialKBSERP(lblMaterial.Text, txtEditMenge.Text, "")
-                    If mObjInventur.E_MESSAGE.Length = 0 Then
-
+                    If mObjInventur.ErrorOccured Then
+                        lblError.Text = mObjInventur.ErrorMessage
+                        mpeBestellungsCheck.Show()
+                    Else
                         mObjInventur.AddHistorieEntry(lblEANShow.Text, lblArtikelbez.Text, lblMaterial.Text, txtEditMenge.Text, txtEditMenge.Text, "überschrieben")
                         FillGrid()
                         lblEANShow.Text = ""
@@ -219,9 +221,6 @@ Public Class Change09_KBS
                         lblArtikelbez.Text = ""
                         SetFocus(txtEAN)
                         mpeBestellungsCheck.Hide()
-                    Else
-                        lblError.Text = mObjInventur.E_MESSAGE
-                        mpeBestellungsCheck.Show()
                     End If
 
                 End With
@@ -241,7 +240,10 @@ Public Class Change09_KBS
                 With mObjInventur
 
                     mObjInventur.SetMengeMaterialKBSERP(lblMaterial.Text, txtEditMenge.Text, "X")
-                    If mObjInventur.E_MESSAGE.Length = 0 Then
+                    If mObjInventur.ErrorOccured Then
+                        lblError.Text = mObjInventur.ErrorMessage
+                        mpeBestellungsCheck.Show()
+                    Else
                         Dim iMengeAdd As Integer = 0
                         Try
                             iMengeAdd = CInt(lblErfMenge.Text) + CInt(txtMenge.Text)
@@ -258,9 +260,6 @@ Public Class Change09_KBS
                         lblArtikelbez.Text = ""
                         SetFocus(txtEAN)
                         mpeBestellungsCheck.Hide()
-                    Else
-                        lblError.Text = mObjInventur.E_MESSAGE
-                        mpeBestellungsCheck.Show()
                     End If
 
                 End With

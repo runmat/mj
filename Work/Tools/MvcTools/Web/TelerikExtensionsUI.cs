@@ -5,6 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Web.Mvc;
+using System.Web.Mvc.Html;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
 using MvcTools.Web;
@@ -214,7 +215,7 @@ namespace Telerik.Web.Mvc.UI
                     throw new NotSupportedException(
                         "Grids die in irgendeiner Weise peristierbar sein sollen, " +
                         "==> müssen für alle Spalten einen 'Title' haben!    " +
-                        "Spalten ohne Titel: " + string.Join(", ", gridColumns.Select(dc => dc.Member))
+                        "Spalten ohne Titel: " + string.Join(", ", columnsWithoutTitle.Select(dc => dc.Member))
                         );
                 }
 
@@ -243,6 +244,11 @@ namespace Telerik.Web.Mvc.UI
         public static GridBuilder<T> XPageSize<T>(this GridBuilder<T> builder, int pageSize) where T : class
         {
             return builder.Pageable(paging => paging.PageSize(pageSize));
+        }
+
+        public static GridBuilder<T> XSort<T>(this GridBuilder<T> builder) where T : class
+        {
+            return builder.Sortable(s => s.Enabled(true));
         }
 
         public static GridBuilder<T> XSort<T>(this GridBuilder<T> builder, Action<GridSortDescriptorFactory<T>> sortConfigurator) where T : class
@@ -307,7 +313,10 @@ namespace Telerik.Web.Mvc.UI
                 columnFormat = displayFormatAttribute.DataFormatString;
 
             if (!columnVisibleOnStart)
-                columnFormat = "X~" + columnFormat;
+            {
+                //columnFormat = "X~" + columnFormat;
+                column.Hidden(true);
+            }
 
             var gridResponsiveVisibleAttribute = typeof(TModel).GetAttributeFrom<GridResponsiveVisibleAttribute>(propertyName);
             if (gridResponsiveVisibleAttribute != null)
@@ -381,7 +390,7 @@ namespace Telerik.Web.Mvc.UI
             SessionHelper.SetSessionObject(string.Format("Telerik_Grid_{0}", type.Name), grid);
         }
 
-        public GridBuilder<T> XGrid<T>() where T : class
+        public GridBuilder<T> XGrid<T>(bool ignoreAutoPersistsColumnsLoading = false) where T : class
         {
             var gridBuilder = GridBuilder<T>.Create(Register(() =>
                 {
@@ -392,7 +401,11 @@ namespace Telerik.Web.Mvc.UI
 
                     SaveGridToSession(grid, typeof (T));
 
-                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns(typeof(T)));
+                    if (!ignoreAutoPersistsColumnsLoading)
+                        HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridCurrentLoadAutoPersistColumns(typeof(T)));
+
+                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormReportGeneratorSettings());
+                    HtmlHelper.ViewContext.Writer.Write(HtmlHelper.FormGridSettingsAdministration(typeof(T)));
                     
                     return grid;
                 }));

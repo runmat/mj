@@ -1,0 +1,56 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+
+
+@{ var gridName = "GridTreuhandverwaltungFreigabe"; }
+
+
+@(Html.Telerik()
+    .Grid<Treuhandbestand>()  
+        .Name(gridName)   
+        .XAjaxDataBinding("TreuhandverwaltungAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound("")
+            //.HeaderTemplate("<input type='checkbox' id='uncheckAllRecords' onchange='GridTreuhandverwaltungFreigabe_OnAllSelectionChange($(this).is(\":checked\"))' />")
+            .ClientTemplate("<input type='checkbox' name='checkedRecords' <# if (data.IsSelected) { #> checked <# } #> value='<#= data.Fahrgestellnummer #>' onchange='GridTreuhandverwaltungFreigabe_OnSelectionChange($(this))' />")
+            .Filterable(false).Width(20);
+       //columns.XBound(c => c.Ablehnungsgrund)
+       //.ClientTemplate("<input type='textarea' rows=3 cols=20 id='ta_1' />")    
+       //.Filterable(false);
+
+       columns.XBound("").Title("").Filterable(false).Groupable(false).Sortable(false)
+              .ClientTemplate(
+                    "<button onclick='AjaxFormKommentarEdit(\"<#= data.Fahrgestellnummer #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Autohaus_Fahrzeugakte + "' data-placement='right'><i class='halflings-icon white pencil'></i></button>"
+              );
+        
+        columns.XBound(c => c.Ablehnender);
+        columns.XBound(c => c.Ablehnungsgrund);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.Fahrgestellnummer);       
+        columns.XBound(c => c.NameAG);
+        columns.XBound(c => c.AGNummer);
+        columns.XBound(c => c.NameTG);
+        columns.XBound(c => c.TGNummer);
+        columns.XBound(c => c.Vertragsnummer);             
+        columns.XBound(c => c.Versandadresse);
+        columns.XBound(c => c.Referenz);               
+    })
+
+    .XAutoColumnConfiguration()
+                        .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridTreuhandverwaltung"))
+    .XPageSize(10)
+        .XSort(sortOrder => sortOrder.Add(c => c.Kennzeichen))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportTreuhandverwaltungFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportTreuhandverwaltungFilteredPDF", "Fahrzeuge");
+    })
+)
+
+
+<div class="form-horizontal">
+    <div id="formActions" class="form-actions hide">       
+            <button type="button" id="FreigabeButton" class="btn green" onclick="FahrzeugeFreigeben(); "> @Localize.Free <i class="m-icon-swapright m-icon-white"></i></button>       
+            <button type="button" id="AblehnenButton" class="btn green" onclick="FreigabeAblehnen(); "> @Localize.Refuse <i class="m-icon-swapright m-icon-white"></i></button>       
+    </div>
+</div>

@@ -38,7 +38,7 @@ namespace AppZulassungsdienst.forms
             }
             else
             {
-                lblError.Text = "Feher beim Laden der Artikel!";
+                lblError.Text = "Fehler beim Laden der Artikel!";
                 lbAbsenden.Visible = false;
                 return;
             }
@@ -47,7 +47,8 @@ namespace AppZulassungsdienst.forms
             {
                 lblBestellnummerLieferant.Text = objWareneingang.Lieferant;
                 Fillgrid(0, "");
-                GridView1.Columns[9].Visible = false;
+                TrLiefernr.Visible = (!objWareneingang.IstUmlagerung);
+                GridView1.Columns[9].Visible = (!objWareneingang.IstUmlagerung);
             }
         }
 
@@ -138,17 +139,26 @@ namespace AppZulassungsdienst.forms
                 {
                     tmpValid = false;
                 }
-                else
-                {
-                    tmpPosition["PositionAbgeschlossen"] = "J";
-                    tmpValid = true;
-                }
+            }
+
+            if (!objWareneingang.IstUmlagerung && String.IsNullOrEmpty(txtLieferscheinnummer.Text))
+            {
+                tmpValid = false;
+                txtLieferscheinnummer.BorderColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                txtLieferscheinnummer.BorderColor = System.Drawing.Color.Empty;
             }
 
             if (!txtBelegdatum.Text.IsDate())
             {
                 tmpValid = false;
                 txtBelegdatum.BorderColor = System.Drawing.Color.Red;
+            }
+            else
+            {
+                txtBelegdatum.BorderColor = System.Drawing.Color.Empty;
             }
 
             Fillgrid(0, "");
@@ -182,6 +192,18 @@ namespace AppZulassungsdienst.forms
                     else
                     {
                         tmpRow.BorderColor = System.Drawing.Color.Empty;
+                    }
+
+                    if (objWareneingang.IstUmlagerung)
+                    {
+                        if (tmpPosition["PositionVollstaendig"].ToString() == "0" && tmpPosition["PositionLieferMenge"] == DBNull.Value)
+                        {
+                            tmpRow.BackColor = System.Drawing.Color.Red;
+                        }
+                        else
+                        {
+                            tmpRow.BorderColor = System.Drawing.Color.Empty;
+                        }
                     }
                 }
                 lblError.Text = "Bitte prüfen Sie rot markierte Positionen";
@@ -422,9 +444,17 @@ namespace AppZulassungsdienst.forms
                 else
                     tmpPosition["PositionLieferMenge"] = DBNull.Value;
 
-                CheckBox tmpChkBox = (CheckBox)tmprow.FindControl("chkVollstaendig");
+                var sVollAll = (((CheckBox) tmprow.FindControl("chkVollstaendig")).Checked ? "X" : "0");
+                var sVollRowJa = (((RadioButton) tmprow.FindControl("rbPositionAbgeschlossenJA")).Checked ? "J" : "");
+                if (String.IsNullOrEmpty(sVollRowJa))
+                    sVollRowJa = (((RadioButton)tmprow.FindControl("rbPositionAbgeschlossenNEIN")).Checked ? "N" : "");
 
-                tmpPosition["PositionVollstaendig"] = (tmpChkBox.Checked ? "X" : "0");
+                tmpPosition["PositionVollstaendig"] = sVollAll;
+
+                if (sVollAll == "X")
+                    sVollRowJa = "J";
+
+                tmpPosition["PositionAbgeschlossen"] = sVollRowJa;
 
                 objWareneingang.Bestellpositionen.AcceptChanges();
             }
@@ -435,7 +465,11 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void doSubmit()
         {
-            objWareneingang.sendUmlToSAP(txtBelegdatum.Text);
+            if (objWareneingang.IstUmlagerung)
+                objWareneingang.sendUmlToSAP(txtBelegdatum.Text);
+            else
+                objWareneingang.sendOrderCheckToSAP(txtLieferscheinnummer.Text, txtBelegdatum.Text);
+
             MPEWareneingangsbuchungResultat.Show();
 
             if (objWareneingang.ErrorOccured)

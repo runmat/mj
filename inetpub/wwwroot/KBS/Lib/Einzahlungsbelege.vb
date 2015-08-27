@@ -1,29 +1,11 @@
-﻿
+﻿Imports KBSBase
+
 Public Class Einzahlungsbelege
-    Private mE_SUBRC As Integer
-    Private mE_MESSAGE As String
+    Inherits ErrorHandlingClass
 
     Private mstrKostStelle As String
     Private mstrMenge As String
-    Dim SAPExc As SAPExecutor.SAPExecutor
 
-    Public Property E_SUBRC() As Integer
-        Get
-            Return mE_SUBRC
-        End Get
-        Set(ByVal Value As Integer)
-            mE_SUBRC = Value
-        End Set
-    End Property
-
-    Public Property E_MESSAGE() As String
-        Get
-            Return mE_MESSAGE
-        End Get
-        Set(ByVal Value As String)
-            mE_MESSAGE = Value
-        End Set
-    End Property
     Public Property KostStelle() As String
         Get
             KostStelle = mstrKostStelle
@@ -32,6 +14,7 @@ Public Class Einzahlungsbelege
             mstrKostStelle = value
         End Set
     End Property
+
     Public Property Menge() As String
         Get
             Menge = mstrMenge
@@ -41,41 +24,20 @@ Public Class Einzahlungsbelege
         End Set
     End Property
 
-    Public Sub New()
-
-    End Sub
-
     Public Sub ChangeERP()
-
-        E_MESSAGE = ""
-        E_SUBRC = 0
-
-        Dim tblSAP As New DataTable()
-        tblSAP.Columns.Add("MATNR", String.Empty.GetType)
-        tblSAP.Columns.Add("MENGE", String.Empty.GetType)
-        tblSAP.Columns.Add("VKP", String.Empty.GetType)
-
-        SAPExc = New SAPExecutor.SAPExecutor(KBS_BASE.SAPConnectionString)
+        ClearErrorState()
 
         Try
+            S.AP.Init("Z_FIL_EFA_PO_EINZAHLUNGSBELEGE", "I_KOSTL, I_MENGE", mstrKostStelle.PadLeft(10, "0"c), mstrMenge)
 
-            Dim dt As DataTable = SAPExecutor.SAPExecutor.getSAPExecutorTable()
+            S.AP.Execute()
 
-            dt.Rows.Add(New Object() {"I_KOSTL", False, Right("0000000000" & mstrKostStelle, 10), 10})
-            dt.Rows.Add(New Object() {"I_MENGE", False, mstrMenge})
-
-            SAPExc.ExecuteERP("Z_FIL_EFA_PO_EINZAHLUNGSBELEGE", dt)
-
-            If (SAPExc.ErrorOccured) Then
-                E_SUBRC = SAPExc.E_SUBRC
-                E_MESSAGE = SAPExc.E_MESSAGE
+            If S.AP.ResultCode <> 0 Then
+                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
 
         Catch ex As Exception
-            E_MESSAGE = ex.Message
-        Finally
-
+            RaiseError("9999", ex.Message)
         End Try
-
     End Sub
 End Class

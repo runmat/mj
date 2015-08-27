@@ -25,6 +25,8 @@ namespace CkgDomainLogic.Logs.Contracts
 
         List<WebServiceTrafficLogTable> GetWebServiceTrafficLogTables();
 
+        List<ErrorLogItem> GetErrorLogItems(ErrorLogItemSelector errorLogItemSelector);
+
 
         List<MpApplicationTranslated> Applications { get; }
 

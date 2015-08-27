@@ -527,7 +527,7 @@
                                             <RowStyle CssClass="ItemStyle" />
                                             <Columns>
                                                 <asp:BoundField DataField="Lieferant" HeaderText="Lieferant" ItemStyle-Wrap="False" />
-                                                <asp:BoundField DataField="ERDAT" HeaderText="Erfasst" />
+                                                <asp:BoundField DataField="ERDAT" HeaderText="Erfasst" DataFormatString="{0:dd.MM.yyyy}" />
                                                 <asp:TemplateField>
                                                     <ItemTemplate>
                                                         <asp:LinkButton ID="ibAusparkenTable" runat="server" Text="Ausparken" Height="16px"

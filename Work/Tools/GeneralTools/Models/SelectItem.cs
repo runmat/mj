@@ -10,6 +10,10 @@
 
         public string Group { get; set; }
 
+        public SelectItem()
+        {
+        }
+
         public SelectItem(string key, string text)
         {
             Key = key;

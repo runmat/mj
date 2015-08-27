@@ -49,15 +49,37 @@ namespace AppZulassungsdienst.lib
         public List<GruppeTour> Kundengruppen { get; private set; }
         public List<Kundenadresse> KundenZurGruppe { get; private set; }
 
-        public String Kundename { get; set; }
+        // Gruppen, Touren
         public String Bezeichnung { get; set; }
         public String GroupOrTourID { get; set; }
+
+        // SEPA
         public String SWIFT { get; set; }
         public String IBAN { get; set; }
         public String Bankname { get; set; }
         public String Bankschluessel { get; set; }
         public String BLZ { get; set; }
         public String Kontonr { get; set; }
+
+        // 48h-Versandzulassung
+        public bool Ist48hZulassung { get; private set; }
+        public string LieferUhrzeitBis { get; private set; }
+        public string LieferUhrzeitBisFormatted {
+            get
+            {
+                var liefUhrzeit = LieferUhrzeitBis;
+
+                if (!String.IsNullOrEmpty(liefUhrzeit) && liefUhrzeit.Length > 5)
+                    liefUhrzeit = String.Format("{0}:{1} Uhr", liefUhrzeit.Substring(0, 2), liefUhrzeit.Substring(2, 2));
+
+                return liefUhrzeit;
+            }
+        }
+        public string AbwName1 { get; private set; }
+        public string AbwName2 { get; private set; }
+        public string AbwStrasse { get; private set; }
+        public string AbwPlz { get; private set; }
+        public string AbwOrt { get; private set; }
 
         #endregion
 
@@ -261,7 +283,11 @@ namespace AppZulassungsdienst.lib
 
                     CallBapi();
 
-                    Bankname = SAP.GetExportParameter("E_BANKA");
+                    var bName = SAP.GetExportParameter("E_BANKA");
+                    if (bName.IsNotNullOrEmpty() && bName.Length > 40)
+                        bName = bName.Substring(0, 40);
+
+                    Bankname = bName;
                     Bankschluessel = SAP.GetExportParameter("E_BANK_NUMBER");
                     SWIFT = SAP.GetExportParameter("E_SWIFT");
                     Kontonr = SAP.GetExportParameter("E_BANK_ACCOUNT");
@@ -421,7 +447,7 @@ namespace AppZulassungsdienst.lib
 
                 decimal tmpDec;
 
-                if (Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                if (Decimal.TryParse(filterValue.NotNullOrEmpty().Replace('.', ','), out tmpDec))
                 {
                     blnResult = (itemValue == tmpDec);
                 }
@@ -432,7 +458,7 @@ namespace AppZulassungsdienst.lib
 
                 decimal tmpDec;
 
-                if (itemValue.HasValue && Decimal.TryParse(filterValue.NotNullOrEmpty().Replace(',', '.'), out tmpDec))
+                if (itemValue.HasValue && Decimal.TryParse(filterValue.NotNullOrEmpty().Replace('.', ','), out tmpDec))
                 {
                     blnResult = (itemValue == tmpDec);
                 }
@@ -520,6 +546,177 @@ namespace AppZulassungsdienst.lib
             }
 
             return "";
+        }
+
+        public string CheckZulstGeoeffnet(string kreisKz, string zulDatum)
+        {
+            var ret = "";
+
+            ExecuteSapZugriff(() =>
+            {
+                Z_ZLD_ZULST_OPEN.Init(SAP);
+
+                SAP.SetImportParameter("I_KREISKZ", kreisKz);
+                SAP.SetImportParameter("I_DATUM", zulDatum);
+
+                CallBapi();
+
+                if (ErrorOccured)
+                    ret = SAP.ResultMessage;
+            });
+
+            return ret;
+        }
+
+        public string Check48hMoeglich(string kreisKz, string zulDatum, string lieferantenNr)
+        {
+            var ret = "";
+
+            ExecuteSapZugriff(() =>
+            {
+                Z_ZLD_CHECK_48H.Init(SAP);
+
+                SAP.SetImportParameter("I_KREISKZ", kreisKz);
+                SAP.SetImportParameter("I_LIFNR", lieferantenNr);
+                SAP.SetImportParameter("I_DATUM_AUSFUEHRUNG", zulDatum);
+
+                CallBapi();
+
+                if (ErrorOccured)
+                {
+                    ret = SAP.ResultMessage;
+                }
+                else
+                {
+                    var checkResults = Z_ZLD_CHECK_48H.ES_VERSAND_48H.GetExportList(SAP);
+                    if (checkResults.Any())
+                    {
+                        var item = checkResults.First();
+                        Ist48hZulassung = item.Z48H.XToBool();
+                        LieferUhrzeitBis = item.LIFUHRBIS;
+                        AbwName1 = item.NAME1;
+                        AbwName2 = item.NAME2;
+                        AbwStrasse = item.STREET;
+                        AbwPlz = item.POST_CODE1;
+                        AbwOrt = item.CITY1;
+                    }
+                }
+            });
+
+            return ret;
+        }
+
+        public static DataTable CreatePrintTable()
+        {
+            DataTable tblWordData = new DataTable();
+
+            tblWordData.Columns.Add("KreisKennz", typeof(String));
+            tblWordData.Columns.Add("Kunnr", typeof(String));
+            tblWordData.Columns.Add("Name1", typeof(String));
+            tblWordData.Columns.Add("KreisBez", typeof(String));
+            tblWordData.Columns.Add("Reserviert", typeof(Boolean));
+            tblWordData.Columns.Add("Feinstaub", typeof(String));
+            tblWordData.Columns.Add("Kennzeichen", typeof(String));
+            tblWordData.Columns.Add("RNr", typeof(String));
+            tblWordData.Columns.Add("WunschKennz", typeof(Boolean));
+            tblWordData.Columns.Add("EinKennz", typeof(Boolean));
+            tblWordData.Columns.Add("HandRegistOrg", typeof(Boolean));
+            tblWordData.Columns.Add("HandRegistKopie", typeof(Boolean));
+            tblWordData.Columns.Add("GewerbeOrg", typeof(Boolean));
+            tblWordData.Columns.Add("GewerbeKopie", typeof(Boolean));
+            tblWordData.Columns.Add("PersoOrg", typeof(Boolean));
+            tblWordData.Columns.Add("PersoKopie", typeof(Boolean));
+            tblWordData.Columns.Add("Anzahl", typeof(String));
+            tblWordData.Columns.Add("ReisepassOrg", typeof(Boolean));
+            tblWordData.Columns.Add("ReisepassKopie", typeof(Boolean));
+            tblWordData.Columns.Add("ZulVollOrg", typeof(Boolean));
+            tblWordData.Columns.Add("ZulVollKopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("EinzugOrg", typeof(Boolean));
+            tblWordData.Columns.Add("EinzugKopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("eVBOrg", typeof(Boolean));
+            tblWordData.Columns.Add("eVBKopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("ZulBeschein1Org", typeof(Boolean));
+            tblWordData.Columns.Add("ZulBeschein1Kopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("ZulBeschein2Org", typeof(Boolean));
+            tblWordData.Columns.Add("ZulBeschein2Kopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("CoCOrg", typeof(Boolean));
+            tblWordData.Columns.Add("CoCKopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("HUOrg", typeof(Boolean));
+            tblWordData.Columns.Add("HUKopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("AUOrg", typeof(Boolean));
+            tblWordData.Columns.Add("AUKopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("Frei1Org", typeof(Boolean));
+            tblWordData.Columns.Add("Frei1Kopie", typeof(Boolean));
+
+            tblWordData.Columns.Add("Frei2Org", typeof(Boolean));
+            tblWordData.Columns.Add("Frei2Kopie", typeof(Boolean));
+            tblWordData.Columns.Add("Frei1Text", typeof(String));
+            tblWordData.Columns.Add("Frei2Text", typeof(String));
+            tblWordData.Columns.Add("Frei3Text", typeof(String));
+            tblWordData.Columns.Add("KennzJa_Nein", typeof(Boolean));
+            tblWordData.Columns.Add("KopieGebuehr", typeof(Boolean));
+            tblWordData.Columns.Add("Postexpress", typeof(Boolean));
+            tblWordData.Columns.Add("normPostweg", typeof(Boolean));
+            tblWordData.Columns.Add("FrachtBack", typeof(String));
+            tblWordData.Columns.Add("FrachtHin", typeof(String));
+
+            tblWordData.Columns.Add("HandelsregFa", typeof(String));
+            tblWordData.Columns.Add("Gewerb", typeof(String));
+            tblWordData.Columns.Add("PersoName", typeof(String));
+            tblWordData.Columns.Add("Reisepass", typeof(String));
+            tblWordData.Columns.Add("EVB", typeof(String));
+
+            tblWordData.Columns.Add("Lief", typeof(String));
+            tblWordData.Columns.Add("KstLief", typeof(String));
+            tblWordData.Columns.Add("Name1Lief", typeof(String));
+            tblWordData.Columns.Add("Name2Lief", typeof(String));
+            tblWordData.Columns.Add("StrasseLief", typeof(String));
+            tblWordData.Columns.Add("OrtLief", typeof(String));
+            tblWordData.Columns.Add("TelLief", typeof(String));
+            tblWordData.Columns.Add("FaxLief", typeof(String));
+
+            tblWordData.Columns.Add("KstFil", typeof(String));
+            tblWordData.Columns.Add("Name1Fil", typeof(String));
+            tblWordData.Columns.Add("Name2Fil", typeof(String));
+            tblWordData.Columns.Add("StrasseFil", typeof(String));
+            tblWordData.Columns.Add("OrtFil", typeof(String));
+            tblWordData.Columns.Add("TelFil", typeof(String));
+            tblWordData.Columns.Add("FaxFil", typeof(String));
+
+            tblWordData.Columns.Add("Frei3", typeof(Boolean));
+            tblWordData.Columns.Add("ID", typeof(String));
+            tblWordData.Columns.Add("KennzSonder", typeof(String));
+            tblWordData.Columns.Add("Referenz1", typeof(String));
+            tblWordData.Columns.Add("Referenz2", typeof(String));
+            tblWordData.Columns.Add("ErfDatum", typeof(String));
+            tblWordData.Columns.Add("Zuldat", typeof(String));
+            tblWordData.Columns.Add("Bemerkung", typeof(String));
+
+            // Adressen für Rücksendung
+
+            tblWordData.Columns.Add("DocRueck", typeof(String));
+            tblWordData.Columns.Add("RueckName1", typeof(String));
+            tblWordData.Columns.Add("RueckName2", typeof(String));
+            tblWordData.Columns.Add("RueckStrasse", typeof(String));
+            tblWordData.Columns.Add("RueckOrtPLZ", typeof(String));
+
+            tblWordData.Columns.Add("DocRueck2", typeof(String));
+            tblWordData.Columns.Add("Rueck2Name1", typeof(String));
+            tblWordData.Columns.Add("Rueck2Name2", typeof(String));
+            tblWordData.Columns.Add("Rueck2Strasse", typeof(String));
+            tblWordData.Columns.Add("Rueck2OrtPLZ", typeof(String));
+
+            tblWordData.Columns.Add("Lieferuhrzeit", typeof(String));
+
+            return tblWordData;
         }
 
         #endregion

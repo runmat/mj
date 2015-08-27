@@ -7,6 +7,9 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
 namespace AutohausPortal.Start {
     
     
@@ -19,7 +22,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxLogin_TEST;
+        protected CheckBox cbxLogin_TEST;
         
         /// <summary>
         /// cbxLogin_PROD-Steuerelement
@@ -28,7 +31,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxLogin_PROD;
+        protected CheckBox cbxLogin_PROD;
         
         /// <summary>
         /// litAlert-Steuerelement
@@ -37,7 +40,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Literal litAlert;
+        protected Literal litAlert;
         
         /// <summary>
         /// lblError-Steuerelement
@@ -46,7 +49,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label lblError;
+        protected Label lblError;
         
         /// <summary>
         /// StandardLogin-Steuerelement
@@ -55,7 +58,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl StandardLogin;
+        protected HtmlGenericControl StandardLogin;
         
         /// <summary>
         /// txtUsername-Steuerelement
@@ -64,7 +67,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtUsername;
+        protected TextBox txtUsername;
         
         /// <summary>
         /// txtPassword-Steuerelement
@@ -73,7 +76,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtPassword;
+        protected TextBox txtPassword;
         
         /// <summary>
         /// lbtnHelpCenter-Steuerelement
@@ -82,7 +85,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lbtnHelpCenter;
+        protected LinkButton lbtnHelpCenter;
         
         /// <summary>
         /// lnkPasswortVergessen-Steuerelement
@@ -91,7 +94,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkPasswortVergessen;
+        protected LinkButton lnkPasswortVergessen;
         
         /// <summary>
         /// cmdLogin-Steuerelement
@@ -100,7 +103,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdLogin;
+        protected Button cmdLogin;
         
         /// <summary>
         /// divStandardLogin_bottom-Steuerelement
@@ -109,7 +112,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divStandardLogin_bottom;
+        protected HtmlGenericControl divStandardLogin_bottom;
         
         /// <summary>
         /// divKontakt-Steuerelement
@@ -118,7 +121,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divKontakt;
+        protected HtmlGenericControl divKontakt;
         
         /// <summary>
         /// MessageLabel-Steuerelement
@@ -127,7 +130,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label MessageLabel;
+        protected Label MessageLabel;
         
         /// <summary>
         /// divAnrede-Steuerelement
@@ -136,7 +139,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divAnrede;
+        protected HtmlGenericControl divAnrede;
         
         /// <summary>
         /// ddlAnrede-Steuerelement
@@ -145,7 +148,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.DropDownList ddlAnrede;
+        protected DropDownList ddlAnrede;
         
         /// <summary>
         /// divKontoinhaber-Steuerelement
@@ -154,7 +157,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divKontoinhaber;
+        protected HtmlGenericControl divKontoinhaber;
         
         /// <summary>
         /// txtWebUserName-Steuerelement
@@ -163,7 +166,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtWebUserName;
+        protected TextBox txtWebUserName;
         
         /// <summary>
         /// divBankkonto-Steuerelement
@@ -172,7 +175,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBankkonto;
+        protected HtmlGenericControl divBankkonto;
         
         /// <summary>
         /// txtName-Steuerelement
@@ -181,7 +184,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtName;
+        protected TextBox txtName;
         
         /// <summary>
         /// divBankschluessel-Steuerelement
@@ -190,7 +193,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divBankschluessel;
+        protected HtmlGenericControl divBankschluessel;
         
         /// <summary>
         /// txtVorname-Steuerelement
@@ -199,7 +202,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtVorname;
+        protected TextBox txtVorname;
         
         /// <summary>
         /// divGeldinstitut-Steuerelement
@@ -208,7 +211,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divGeldinstitut;
+        protected HtmlGenericControl divGeldinstitut;
         
         /// <summary>
         /// txtFirma-Steuerelement
@@ -217,7 +220,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtFirma;
+        protected TextBox txtFirma;
         
         /// <summary>
         /// div1-Steuerelement
@@ -226,7 +229,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div1;
+        protected HtmlGenericControl div1;
         
         /// <summary>
         /// txtTelefon-Steuerelement
@@ -235,7 +238,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtTelefon;
+        protected TextBox txtTelefon;
         
         /// <summary>
         /// div2-Steuerelement
@@ -244,7 +247,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div2;
+        protected HtmlGenericControl div2;
         
         /// <summary>
         /// txtEmail-Steuerelement
@@ -253,7 +256,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtEmail;
+        protected TextBox txtEmail;
         
         /// <summary>
         /// divProblemTrenner-Steuerelement
@@ -262,7 +265,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProblemTrenner;
+        protected HtmlGenericControl divProblemTrenner;
         
         /// <summary>
         /// divProblem-Steuerelement
@@ -271,7 +274,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divProblem;
+        protected HtmlGenericControl divProblem;
         
         /// <summary>
         /// txtProblem-Steuerelement
@@ -280,7 +283,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox txtProblem;
+        protected TextBox txtProblem;
         
         /// <summary>
         /// imgCatcha1-Steuerelement
@@ -289,7 +292,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage imgCatcha1;
+        protected HtmlImage imgCatcha1;
         
         /// <summary>
         /// imgCatcha2-Steuerelement
@@ -298,7 +301,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlImage imgCatcha2;
+        protected HtmlImage imgCatcha2;
         
         /// <summary>
         /// cmdRefresh-Steuerelement
@@ -307,7 +310,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdRefresh;
+        protected Button cmdRefresh;
         
         /// <summary>
         /// div3-Steuerelement
@@ -316,7 +319,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl div3;
+        protected HtmlGenericControl div3;
         
         /// <summary>
         /// CodeNumberTextBox-Steuerelement
@@ -325,7 +328,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox CodeNumberTextBox;
+        protected TextBox CodeNumberTextBox;
         
         /// <summary>
         /// cmdSend-Steuerelement
@@ -334,7 +337,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdSend;
+        protected Button cmdSend;
         
         /// <summary>
         /// divKontakt_bottom-Steuerelement
@@ -343,7 +346,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divKontakt_bottom;
+        protected HtmlGenericControl divKontakt_bottom;
         
         /// <summary>
         /// divRepeater-Steuerelement
@@ -352,7 +355,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divRepeater;
+        protected HtmlGenericControl divRepeater;
         
         /// <summary>
         /// Repeater1-Steuerelement
@@ -361,7 +364,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater Repeater1;
+        protected Repeater Repeater1;
         
         /// <summary>
         /// divRepeater_bottom-Steuerelement
@@ -370,7 +373,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divRepeater_bottom;
+        protected HtmlGenericControl divRepeater_bottom;
         
         /// <summary>
         /// DoubleLogin2-Steuerelement
@@ -379,7 +382,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl DoubleLogin2;
+        protected HtmlGenericControl DoubleLogin2;
         
         /// <summary>
         /// cmdContinue1-Steuerelement
@@ -388,7 +391,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdContinue1;
+        protected Button cmdContinue1;
         
         /// <summary>
         /// cmdBack1-Steuerelement
@@ -397,7 +400,7 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button cmdBack1;
+        protected Button cmdBack1;
         
         /// <summary>
         /// divDoubleLogin2_bottom-Steuerelement
@@ -406,6 +409,6 @@ namespace AutohausPortal.Start {
         /// Automatisch generiertes Feld
         /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl divDoubleLogin2_bottom;
+        protected HtmlGenericControl divDoubleLogin2_bottom;
     }
 }

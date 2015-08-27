@@ -133,6 +133,8 @@
     <Content Include="Forms\Feinstaubplakette.aspx" />
     <Content Include="Forms\InfocenterNeuAdmin.aspx" />
     <Content Include="Forms\InfocenterNeu.aspx" />
+    <Content Include="Forms\Zulassungsdienstsuche_2.aspx" />
+    <Content Include="Forms\Zulassungsdienstsuche.aspx" />
     <Content Include="Forms\TaggleicheMeldungDAD.aspx" />
     <Content Include="Forms\ReportLetztePlatinenbestellungen.aspx" />
     <Content Include="Forms\KVPBewertung.aspx" />
@@ -155,6 +157,7 @@
     <Content Include="Images\DaumenHoch.png" />
     <Content Include="Images\DaumenRunter.png" />
     <Content Include="Images\delete01.jpg" />
+    <Content Include="Images\Drucker04_08.jpg" />
     <Content Include="Images\email.png" />
     <Content Include="Images\email_go.png" />
     <Content Include="Images\empty.gif" />
@@ -409,6 +412,20 @@
       <DependentUpon>InfocenterNeu.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Forms\Zulassungsdienstsuche_2.aspx.designer.vb">
+      <DependentUpon>Zulassungsdienstsuche_2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Zulassungsdienstsuche_2.aspx.vb">
+      <DependentUpon>Zulassungsdienstsuche_2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Zulassungsdienstsuche.aspx.designer.vb">
+      <DependentUpon>Zulassungsdienstsuche.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Zulassungsdienstsuche.aspx.vb">
+      <DependentUpon>Zulassungsdienstsuche.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Forms\TaggleicheMeldungDAD.aspx.designer.vb">
       <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
     </Compile>
@@ -498,7 +515,6 @@
     </Compile>
     <Compile Include="Lib\Bestellung.vb" />
     <Compile Include="Lib\Einzahlungsbelege.vb" />
-    <Compile Include="Lib\ErrorHandlingClass.vb" />
     <Compile Include="Lib\Filialbuch\Ausgang.vb" />
     <Compile Include="Lib\Filialbuch\Eingang.vb" />
     <Compile Include="Lib\Filialbuch\FilialbuchClass.vb" />
@@ -511,8 +527,8 @@
     <Compile Include="Lib\KBS_BASE.vb" />
     <Compile Include="Lib\ComCommon.vb" />
     <Compile Include="Lib\InventurSonstigeLagerware.vb" />
+    <Compile Include="Lib\ZLD_Suche.vb" />
     <Compile Include="Lib\KVP.vb" />
-    <Compile Include="Lib\Logging.vb" />
     <Compile Include="Lib\LongStringToSap.vb" />
     <Compile Include="Lib\MeldungDAD.vb" />
     <Compile Include="Lib\offBestellungen.vb" />
@@ -747,17 +763,13 @@
       <Project>{61754467-E566-43DC-A8D4-1684994DF069}</Project>
       <Name>KBSBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Work\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
       <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
       <Name>GeneralTools</Name>
-    </ProjectReference>
-    <ProjectReference Include="D:\++Projekte\PM_Common_Functions\PM_Common_Functions\PM_Common_Functions.csproj">
-      <Project>{FD6DFE46-E1EA-4BF8-AC20-CE5EA82FE085}</Project>
-      <Name>PM_Common_Functions</Name>
-    </ProjectReference>
-    <ProjectReference Include="SapExecutor\SapExecutor.csproj">
-      <Project>{C209B8CE-195A-4C9D-9397-C3B63BE585F6}</Project>
-      <Name>SapExecutor</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

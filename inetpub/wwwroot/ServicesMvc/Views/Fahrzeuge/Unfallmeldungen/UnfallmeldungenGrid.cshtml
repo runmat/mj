@@ -1,0 +1,33 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@{
+    var gridName = "GridUnfallmeldungen"; 
+}
+
+@(Html.Telerik()
+    .Grid<Unfallmeldung>()
+    .Name(gridName)      
+        .XAjaxDataBinding("UnfallmeldungenAjaxBinding", "Fahrzeuge")
+        .Columns(columns =>
+            {
+                columns.XBound(m => m.AnlageDatum);
+                columns.XBound(m => m.WebUser);
+                columns.XBound(m => m.Kennzeichen);
+                columns.XBound(m => m.Fahrgestellnummer);
+                columns.XBound(m => m.ErstzulassungDatum);
+                columns.XBound(m => m.KennzeicheneingangsDatum);
+                columns.XBound(m => m.AbmeldeDatum);
+                columns.XBound(m => m.StationsCode);
+                columns.XBound(m => m.Mahnstufe);
+            })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AbmeldeDatum).Descending())
+    .XToolBar("Fahrzeuge")
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportReportUnfallmeldungenFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportReportUnfallmeldungenFilteredPDF", "Fahrzeuge");
+    })
+)
+

@@ -1,0 +1,54 @@
+﻿@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model UnfallmeldungenViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.ZBII_Bestand_Unfallmeldungen_Mit_Abmeldung</h3>
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Unfallmeldungen/UnfallmeldungenSuche", Model.UnfallmeldungenSelektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrid"></div>
+    <div id="divHistorie"></div>
+}
+
+<script type="text/javascript">
+
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {        
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();        
+    }
+
+
+    function ShowUnfallmeldungenSearchResult(result) {
+        SearchFormHide();
+        $("#divGrid").html(result);
+
+        // move our grid filter form into grid's toolbar:
+        GridAllColumnFilterApplyToGrid("GridUnfallmeldungen");
+        $("#divGrid").slideDown();       
+    }
+
+
+    function OnDataBound_GridUnfallmeldungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridUnfallmeldungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUnfallmeldungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+       
+    
+</script>
