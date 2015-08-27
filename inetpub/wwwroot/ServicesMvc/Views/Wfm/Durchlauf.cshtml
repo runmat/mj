@@ -1,0 +1,196 @@
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+@Html.ChartToolsFlotr2()
+
+<style type="text/css">
+    .chart-div-wrapper {
+        display: inline-block;
+        top: auto;
+        height: auto;
+    }
+    .chart-div {
+        display: inline-block;
+        position: relative;
+        margin: 10px 10px 0 10px;
+        width: 650px;
+        height: 250px;
+        z-index: 9998;
+    }
+    .chart-div.sub {
+        display: block;
+        width: 450px;
+        height: 120px;
+        z-index: 9997;
+    }
+</style>
+
+<h3 class="page-title" id="headerTitle">@Model.Title <small></small></h3>
+
+
+@Html.SpanAlert("spanAlertDurchlauf")
+
+@using (Html.FormSearchBox())
+{
+    @Html.Partial("Durchlauf/Suche", Model.Selektor)
+}
+
+@using (Html.FormSearchResultsGrid())
+{
+    <div id="divGrids"></div>
+}
+
+<style type="text/css">
+    
+    .tbNoteForToDo, #txtNewInformation {
+        background-color: white!important;
+    }
+    
+    .wmf-uebersicht-section-abmeldeart-standard {
+        display: inline-block;
+        margin-left: 20px;
+    }
+    
+    #GridDurchlaufStatistik table {
+        width: 100% !important;
+    }
+
+</style>
+
+<script type="text/javascript">
+
+    var _ladeHinweis = '@Localize.LoadingData';
+    var _modelStateValid = 'false';
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function ShowDurchlaufSearchResult(result) {
+        SearchFormHide(function() {
+            $("#divGrids").html(result);
+
+            GridAllColumnFilterApplyToGrid("GridDurchlaufDetails");
+            GridAllColumnFilterApplyToGrid("GridDurchlaufStatistik");
+
+            GridDurchlaufStatistikPrepare();
+
+            ShowCharts();
+
+            $("#divGrids").slideDown();
+        });
+    }
+
+    function GridDurchlaufStatistikRenameColumnTitle(columnTitle) {
+        var text = columnTitle;
+
+        text = text.replace(/Durchschnitt/g, "Ø");
+        text = text.replace(/Anz/g, "");
+        text = text.replace(/Ges/g, "Anz. Ges.");
+        text = text.replace(/Std/g, "Std.");
+        text = text.replace(/Klaer/g, "Klär.");
+
+        text = text.replace(/Le10/g, " < 10");
+        text = text.replace(/1120/g, " 11-20");
+        text = text.replace(/2130/g, " 21-30");
+        text = text.replace(/3140/g, " 31-40");
+        text = text.replace(/Gt40/g, " > 40");
+
+        return text;
+    }
+
+    function GridDurchlaufStatistikPrepare() {
+        $("#GridDurchlaufStatistik .dataTables_length").html("<h4>Statistik:</h4>");
+        $("#GridDurchlaufStatistik .dataTables_filter").hide();
+        $("#GridDurchlaufStatistik .t-grid-pager").addClass("hide");
+        $("#GridDurchlaufStatistik .t-grid-header .t-header .t-link").css("padding-right", "10px");
+
+        $.each($("#GridDurchlaufStatistik thead tr th .t-link"), function (index, elem) {
+            $(elem).html(GridDurchlaufStatistikRenameColumnTitle($(elem).html()));
+        });
+    }
+
+    function TryGridsRefresh() {
+        // Refresh grid only
+        try {
+            FilterGridPreservePage("GridDurchlaufDetails");
+            FilterGridPreservePage("GridDurchlaufStatistik");
+        }
+        catch(e){}
+    }
+
+
+    function OnDataBound_GridDurchlaufDetails() {
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridDurchlaufDetails() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridDurchlaufDetails() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+
+    function OnDataBound_GridDurchlaufStatistik() {
+
+        $.each($("#GridDurchlaufStatistik").data("tGrid").columns, function (index, elem) {
+            elem.title = GridDurchlaufStatistikRenameColumnTitle(elem.title);
+        });
+
+        FilteredData_Grid_OnDataBound($(this));
+        jQuery('.tooltips').tooltip();
+        LoadingHide();
+    }
+
+    function OnColumnShowHide_GridDurchlaufStatistik() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridDurchlaufStatistik() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function ShowCharts() {
+        for (var i = 1; i <= 3; i++) 
+            showBusy($("#chart-" + i), 0, 0);
+        
+        ShowChart(1);
+    }
+
+    function ShowChart(chartID) {
+
+        $.ajax(
+        {
+            type: "POST",
+            url: "GetChartData",
+            data: { chartID: chartID },
+            loadingShow: false,
+            success: function (result) {
+
+                _ChartPrepareJsonResult(result);
+                
+                if (chartID > 1)
+                    _chartOptions.legend.show = false;
+
+                hideBusy($("#chart-" + chartID));
+
+                // Draw the graph
+                Flotr.draw(
+                  document.getElementById("chart-" + chartID),
+                  _chartData,
+                  _chartOptions
+                );
+
+                if (chartID < 3)
+                    setTimeout(function () { ShowChart(chartID+1); }, 100);
+            }
+        });
+    }
+
+</script>

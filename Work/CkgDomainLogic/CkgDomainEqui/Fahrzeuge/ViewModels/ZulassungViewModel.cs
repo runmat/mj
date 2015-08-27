@@ -206,6 +206,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             PropertyCacheClear(this, m => m.Fahrzeuge);
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+
+            PropertyCacheClear(this, m => m.FahrzeugeGroupByPdi);
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModel);
             PropertyCacheClear(this, m => m.FahrzeugeGroupByModelId);
 

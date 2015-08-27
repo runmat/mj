@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfWfmDurchlaufStatistik xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <WfmDurchlaufStatistik>
+    <DurchschnittDauer>11,34</DurchschnittDauer>
+    <AnzGes>758</AnzGes>
+    <AnzStdLe10>370</AnzStdLe10>
+    <AnzStd1120>362</AnzStd1120>
+    <AnzStd2130>19</AnzStd2130>
+    <AnzStd3140>5</AnzStd3140>
+    <AnzStdGt40>2</AnzStdGt40>
+    <AnzKlaerLe10>0</AnzKlaerLe10>
+    <AnzKlaer1120>0</AnzKlaer1120>
+    <AnzKlaer2130>0</AnzKlaer2130>
+    <AnzKlaer3140>0</AnzKlaer3140>
+    <AnzKlaerGt40>0</AnzKlaerGt40>
+    <AnzAlleLe10>370</AnzAlleLe10>
+    <AnzAlle1120>362</AnzAlle1120>
+    <AnzAlle2130>19</AnzAlle2130>
+    <AnzAlle3140>5</AnzAlle3140>
+    <AnzAlleGt40>2</AnzAlleGt40>
+  </WfmDurchlaufStatistik>
+</ArrayOfWfmDurchlaufStatistik>

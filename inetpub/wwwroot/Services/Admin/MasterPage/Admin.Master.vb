@@ -103,7 +103,7 @@ Partial Public Class Admin
             End With
             Me.Head1.Controls.Add(New LiteralControl(strCSSLink))
 
-            If HttpContext.Current.Request.UserAgent IsNot Nothing AndAlso HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10") Then
+            If HttpContext.Current.Request.UserAgent IsNot Nothing AndAlso (HttpContext.Current.Request.UserAgent.ToLower().Contains("msie 10") OrElse HttpContext.Current.Request.UserAgent.ToLower().Contains("rv:11.0")) Then
                 Me.Head1.Controls.AddAt(0, New LiteralControl("<META content=""IE=9,chrome=1"" http-equiv=""X-UA-Compatible"">"))
             End If
 
