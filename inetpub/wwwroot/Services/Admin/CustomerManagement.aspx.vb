@@ -61,7 +61,6 @@ Partial Public Class CustomerManagement
             lblMessage.Text = ""
 
             If Not IsPostBack Then
-                txtFilterCustomerName.Focus()
                 FillForm()
                 Tabs.ActiveTabIndex = 0
             End If
