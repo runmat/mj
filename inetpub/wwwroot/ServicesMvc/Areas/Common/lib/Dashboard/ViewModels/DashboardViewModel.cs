@@ -1,12 +1,8 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System.Collections.Generic;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using GeneralTools.Models;
 using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.General.Services;
 
@@ -47,10 +43,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
 
         List<IDashboardItem> FilterItemsAvailableForUser(IList<IDashboardItem> items)
         {
-            if (LogonContext.UserApps == null)
-                return items.ToList();
-
-            return items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
+            return (LogonContext.UserApps == null) 
+                            ? items.ToList() 
+                            : items.Where(item => LogonContext.UserApps.Any(userApp => UserAppUrlContainsUrl(userApp.AppURL, item.RelatedAppUrl))).ToList();
         }
 
         static bool UserAppUrlContainsUrl(string userAppUrl, string url)
@@ -65,7 +60,7 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             DataService.SaveDashboardItems(DashboardItems, LogonContext.UserName, commaSeparatedIds);
         }
 
-        public object GetBarChartData(string id)
+        public object GetChartData(string id)
         {
             var dbId = id.Replace("id_", "").Replace("#", "");
             var dashboardItem = DashboardItems.FirstOrDefault(item => item.ID == dbId.ToInt());
@@ -73,25 +68,9 @@ namespace CkgDomainLogic.DomainCommon.ViewModels
             if (dashboardItem == null)
                 return new { };
 
-            var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.Title);
-
-            var chartOptionsFileName = Path.Combine(AppSettings.DataPath, "DashBoard", "ChartTemplates",
-                                        string.Format("{0}.txt", dashboardItem.ChartJsonOptions));
-            if (!File.Exists(chartOptionsFileName))
-                return new { };
-
-            var options = File.ReadAllText(chartOptionsFileName);
-
-            if (options.NotNullOrEmpty().Contains("@ticks") && data.labels != null)
-            {
-                // label array json format, as string: "[[0,\"label 1\"], [1,\"label 2\"], [2,\"label 3\"]]"
-                var labelArray = data.labels;
-                options = options.Replace("@ticks",
-                    string.Format("[{0}]",
-                        string.Join(",", labelArray.Select(s => string.Format("[{0},\"{1}\"]", labelArray.ToList().IndexOf(s), s)))));
-            }
-
-            return new { data, options };
+            var data = DashboardAppUrlService.InvokeViewModelForAppUrl(dashboardItem.RelatedAppUrl, dashboardItem.ItemKey);
+            
+            return ChartService.PrepareChartDataAndOptions(data, AppSettings.DataPath, dashboardItem.ChartJsonOptions, dashboardItem.ChartJsonDataCustomizingScriptFunction);
         }
     }
 }

@@ -14,5 +14,7 @@ namespace GeneralTools.Models
         public IHtmlString FooterAsHtml { get { return new HtmlString(string.IsNullOrEmpty(Footer) ? "" : Footer); } }
 
         public List<GeneralEntity> Items { get; set; }
+
+        public bool IsMassenzulassung { get; set; } // MMA
     }
 }

@@ -1240,3 +1240,40 @@ div.controls-width-400 .controls {
 .form-horizontal.reduced-margin .control-group {
   margin-bottom: 5px;
 }
+
+input[type="text"].m-wrap.kennzeichen,
+span.kennzeichen{
+  text-transform: uppercase;
+}
+
+.font-blue {
+  color: #4b8df8 !important;
+}
+
+.font-red {
+  color: #e02222 !important;
+}
+
+.font-yellow {
+  color: #ffb848 !important;
+}
+
+.font-green {
+  color: #35aa47 !important;
+}
+
+.font-purple {
+  color: #852b99 !important;
+}
+
+.font-grey {
+  color: #555555 !important;
+}
+
+.info-icon 
+{
+    width: 16px;
+    height: 16px;
+    float: right;
+    background: url(/ServicesMvc/Images/information.png) center no-repeat !important;
+}

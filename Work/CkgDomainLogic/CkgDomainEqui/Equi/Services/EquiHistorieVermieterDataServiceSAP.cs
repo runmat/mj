@@ -41,7 +41,10 @@ namespace CkgDomainLogic.Equi.Services
                 SAP.SetImportParameter("I_TIDNR", Suchparameter.BriefNr.ToUpper());
 
             if (!String.IsNullOrEmpty(Suchparameter.VertragsNr))
-                SAP.SetImportParameter("I_REFERENZ1", Suchparameter.VertragsNr.ToUpper());
+                SAP.SetImportParameter("I_LIZNR", Suchparameter.VertragsNr.ToUpper());
+
+            if (!String.IsNullOrEmpty(Suchparameter.Referenz1))
+                SAP.SetImportParameter("I_REFERENZ1", Suchparameter.Referenz1);
 
             var sapList = Z_DPM_FAHRZEUGHISTORIE_AVM.GT_EQUIS.GetExportListWithExecute(SAP);
 

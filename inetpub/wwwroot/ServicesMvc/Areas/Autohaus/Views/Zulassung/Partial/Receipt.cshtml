@@ -57,6 +57,8 @@ else
         
         @foreach (var zulassung in Model.ZulassungenForReceipt)
         {
+            var zulassungBelegNr = zulassung.BelegNr;   // MMA
+            
             <div class="receipt-row">
                 <div class="receipt-no">@Localize.Receipt #@zulassung.BelegNr</div>
                 <div class="receipt-fin">@Localize.VIN @zulassung.Fahrzeugdaten.FahrgestellNr</div>
@@ -67,7 +69,8 @@ else
                         <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
                     }
             
-                    @foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
+                    @*@foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))*@
+                    @foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe && p.Belegnummer == zulassungBelegNr))
                     {
                         <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
                     }
@@ -92,8 +95,19 @@ else
 }
 
 <script type="text/javascript">
+
     try { FormWizardShowHideSaveButton(false); } catch (e) { }
 
     if ($(".formWizardStepSpanGeneral").length == 0)
         $(".restart-with-new-order").show();
+
+    function LocationReloadWithoutQueryString() {
+        var isMassenzulassung = '@Model.Zulassung.Zulassungsdaten.IsMassenzulassung';
+        if (isMassenzulassung == "True") {
+            window.location = "../Fahrzeugbestand/index";
+        } else {
+            window.location = window.location.pathname;
+        }
+    }
+    
 </script>

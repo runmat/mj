@@ -273,9 +273,8 @@
                                         <Columns>
                                             <asp:BoundColumn Visible="False" DataField="UserID" SortExpression="UserID" HeaderText="UserID">
                                             </asp:BoundColumn>
-                                            <asp:ButtonColumn DataTextField="UserName" SortExpression="UserName" HeaderText="Benutzername"
-                                                CommandName="Edit"></asp:ButtonColumn>
-                                           
+                                            <asp:ButtonColumn DataTextField="UserName" SortExpression="UserName" HeaderText="Benutzername" CommandName="Edit">  
+                                            </asp:ButtonColumn>
                                             <asp:TemplateColumn SortExpression="CustomerName" HeaderText="col_CustomerName">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="col_CustomerName" CommandArgument="CustomerName" CommandName="Sort"
@@ -286,26 +285,25 @@
                                                     </asp:Label>
                                                 </ItemTemplate>
                                             </asp:TemplateColumn>
-                                            
-                                           
-                                           
-                                                <asp:TemplateColumn SortExpression="AccountingArea" HeaderText="col_AccountingArea">
-                                                    <headertemplate>
+                                            <asp:TemplateColumn SortExpression="AccountingArea" HeaderText="col_AccountingArea">
+                                                <HeaderTemplate>
                                                     <asp:LinkButton ID="col_AccountingArea" CommandArgument="AccountingArea" CommandName="Sort"
                                                         runat="server">col_AccountingArea</asp:LinkButton>
-                                                </headertemplate>
-                                                    <itemtemplate>
+                                                </HeaderTemplate>
+                                                <ItemTemplate>
                                                     <asp:Label ID="Label51x" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.AccountingArea") %>'>
                                                     </asp:Label>
-                                                </itemtemplate>
-                                                </asp:TemplateColumn>
-                                            
-                                           
-                                                                                     <asp:BoundColumn DataField="Reference" SortExpression="Reference" HeaderText="Kunden-&lt;br&gt;referenz">
+                                                </ItemTemplate>
+                                            </asp:TemplateColumn>
+                                            <asp:BoundColumn DataField="Reference" SortExpression="Reference" HeaderText="Kunden-&lt;br&gt;referenz">
                                             </asp:BoundColumn>
                                             <asp:BoundColumn DataField="GroupName" SortExpression="GroupName" HeaderText="Gruppe">
                                             </asp:BoundColumn>
                                             <asp:BoundColumn DataField="OrganizationName" SortExpression="OrganizationName" HeaderText="Organisation">
+                                            </asp:BoundColumn>
+                                            <asp:BoundColumn DataField="mail" SortExpression="mail" HeaderText="EMail">
+                                            </asp:BoundColumn>
+                                            <asp:BoundColumn DataField="telephone" SortExpression="telephone" HeaderText="Telefon">
                                             </asp:BoundColumn>
                                             <asp:TemplateColumn SortExpression="CustomerAdmin" HeaderText="Firmen-&lt;br&gt;Admin">
                                                 <ItemStyle HorizontalAlign="Center"></ItemStyle>

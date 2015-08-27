@@ -40,6 +40,11 @@
     </FileUpgradeFlags>
     <OldToolsVersion>4.0</OldToolsVersion>
     <UpgradeBackupLocation />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -441,8 +446,18 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </None>
+    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarMouseover.txt" />
+    <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarStacked.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Pie.txt" />
+    <Content Include="apple-touch-icon-120x120-precomposed.png" />
+    <Content Include="apple-touch-icon-120x120.png" />
+    <Content Include="apple-touch-icon-152x152-precomposed.png" />
+    <Content Include="apple-touch-icon-152x152.png" />
+    <Content Include="apple-touch-icon-76x76-precomposed.png" />
+    <Content Include="apple-touch-icon-76x76.png" />
+    <Content Include="apple-touch-icon-precomposed.png" />
+    <Content Include="apple-touch-icon.png" />
     <Content Include="Areas\Common\Content\Dashboard\datatables\jquery.dataTables.js" />
     <Content Include="Areas\Common\Content\Dashboard\exampleData.js" />
     <Content Include="Areas\Common\Content\Dashboard\flotr2\flotr2.ie.min.js" />
@@ -452,14 +467,6 @@
     <Content Include="Areas\Common\Content\Dashboard\jquery-sDashboard.js" />
     <Content Include="Areas\Common\Content\Dashboard\sDashboard.css" />
     <Content Include="Areas\Common\Content\Dashboard\touchpunch\jquery.ui.touch-punch.js" />
-    <Content Include="apple-touch-icon-120x120-precomposed.png" />
-    <Content Include="apple-touch-icon-120x120.png" />
-    <Content Include="apple-touch-icon-152x152-precomposed.png" />
-    <Content Include="apple-touch-icon-152x152.png" />
-    <Content Include="apple-touch-icon-76x76-precomposed.png" />
-    <Content Include="apple-touch-icon-76x76.png" />
-    <Content Include="apple-touch-icon-precomposed.png" />
-    <Content Include="apple-touch-icon.png" />
     <Content Include="assets\css\pages\login-soft.css" />
     <Content Include="assets\img\avatar_small.png" />
     <Content Include="assets\img\bg-white-lock-header.png" />
@@ -714,6 +721,8 @@
     <Content Include="assets\img\flags\zw.png" />
     <Content Include="assets\plugins\flot\jquery.flot.axislabels.js" />
     <Content Include="assets\plugins\jquery-ui\jquery-ui-1.10.1.custom.min.js" />
+    <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
+    <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="assets\plugins\uniform\images\sprite.png" />
     <Content Include="Content\fileupload\blueimp-gallery.min.css" />
     <Content Include="Content\fileupload\bootstrap.min.css" />
@@ -753,6 +762,7 @@
     <Content Include="Images\fahrer\8.png" />
     <Content Include="Images\fahrer\9.png" />
     <Content Include="Images\icons\icon-bell-white.png" />
+    <Content Include="Images\information.png" />
     <Content Include="Images\maps\deutschland.svg" />
     <Content Include="Images\metronic\excel.png" />
     <Content Include="Images\metronic\pdf.png" />
@@ -778,6 +788,8 @@
     <Content Include="Scripts\fileupload\main.js" />
     <Content Include="Scripts\fileupload\tmpl.min.js" />
     <Content Include="Scripts\fileupload\vendor\jquery.ui.widget.js" />
+    <Content Include="Scripts\flotr2\flotr2.ie.min.js" />
+    <Content Include="Scripts\flotr2\flotr2.js" />
     <Content Include="Scripts\form-daterange-picker.js" />
     <Content Include="assets\scripts\login-soft.js" />
     <Content Include="assets_v2\css\animate.css" />
@@ -2467,13 +2479,13 @@
     <Compile Include="Areas\Common\Controllers\DashboardController.cs" />
     <Compile Include="Areas\Common\Controllers\GridAdminController.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Contracts\IDashboardDataService.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemAnnotator.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItem.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Models\Database\DashboardItemUser.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Models\DashboardItemAnnotator.cs" />
+    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
-    <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardAppUrlService.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
@@ -2493,6 +2505,7 @@
     <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Areas\Fahrzeug\ViewModels\HolBringServiceViewModel.cs" />
     <Compile Include="Controllers\StrafzettelController.cs" />
+    <Compile Include="Controllers\WfmController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2553,17 +2566,15 @@
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerForm.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZahlerKfzSteuerAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\_ViewStart.cshtml" />
-    <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
-    <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Edit.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\ReportSolution.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\CustomerUserSelection.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Test.cshtml" />
     <Content Include="Areas\Common\Views\GridAdmin\Partial\Common.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\BankdatenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressen.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenForm.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\AuslieferAdressenAuswahlGrid.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\_ViewStart.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\Zulassung\Index.cshtml" />
@@ -2576,6 +2587,7 @@
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\AppUserOverviewGrid.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Partial\SucheAppUserOverview.cshtml" />
     <Content Include="Areas\Admin\Views\AppUserOverview\Report.cshtml" />
+    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\FahrzeugAuswahlGrid.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Index.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Common.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Auftraggeber.cshtml" />
@@ -2584,6 +2596,9 @@
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Upload.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\Overview.cshtml" />
     <Content Include="Areas\Fahrzeug\Views\HolBringService\Partial\SendMail.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Index.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
+    <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -4516,6 +4531,10 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
+    <Content Include="Views\Wfm\Durchlauf.cshtml" />
+    <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
+    <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
+    <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

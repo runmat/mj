@@ -52,6 +52,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Work\GAC\QuickEasy.dll</HintPath>
     </Reference>
+    <Reference Include="SmartSoft.PdfLibrary">
+      <HintPath>..\..\..\..\..\Work\GAC\SmartSoft.PdfLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -476,6 +479,7 @@
     <Compile Include="lib\HistorieEintrag.cs" />
     <Compile Include="lib\HistorieLinks.cs" />
     <Compile Include="lib\HistorieUebersicht.cs" />
+    <Compile Include="lib\HistorieVorschaden.cs" />
     <Compile Include="lib\UebergabeTUEV.cs" />
     <Compile Include="lib\Reifenversand.cs" />
     <Compile Include="lib\Rechnungsdaten.cs" />

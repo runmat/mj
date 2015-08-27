@@ -2,7 +2,7 @@
 
 @Html.Partial("Partial/Common")
 
-<h3 class="page-title">Dashboard <small>Sample</small>
+<h3 class="page-title">Dashboard <small>Charts</small>
 
     <li class="dropdown user dashboard-dropdown-menu">
         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
@@ -19,7 +19,7 @@
             {
                 var cssClass = (dashBoardItem.IsUserVisible ? "hide" : "");
                 
-                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
+                <li id="li_dropdown_@dashBoardItem.ID" class="@cssClass"><a href="#" onclick="return ShowDashboardItem(@dashBoardItem.ID, '@dashBoardItem.ItemKey', '@dashBoardItem.Title')"><i class="icon-bar-chart"></i> @dashBoardItem.Title </a></li>
             }
 
         </ul>
@@ -42,6 +42,7 @@
     <script type="text/javascript">
         _dashboardJson.push(
             {
+                widgetKey: "@dashBoardItem.ItemKey",
                 widgetTitle: "@dashBoardItem.Title",
                 widgetId: "id_@dashBoardItem.ID",
                 widgetType: "chart",
@@ -73,7 +74,7 @@
     var _dashboardData = { data: null, options: null };
 
     function FormPrepareDashboard() {
-	    
+
         //basic initialization example
         $("#myDashboard").sDashboard({
             dashboardData: _dashboardJson
@@ -83,12 +84,12 @@
     }
 
     function DashboardChainInit() {
-        
+
         var dashboardWidgets = $("#myDashboard li");
         _dashboardChainIndex = 0;
-        
+
         $.each(dashboardWidgets, function (i, elem) {
-            var widgetId = "#" + $(elem).attr("id"); 
+            var widgetId = "#" + $(elem).attr("id");
             var busyHintDiv = $(widgetId + " .sDashboardWidgetContentBusyHint");
             showBusy(busyHintDiv, 0, 0);
         });
@@ -108,13 +109,14 @@
         $.ajax(
             {
                 type: "POST",
-                url: "GetBarChartData",
+                url: "GetChartData",
                 data: { id: widgetId },
                 loadingShow: false,
                 success: function (result) {
 
-                    _dashboardData.data = result.data.data;
-                    _dashboardData.options = jQuery.parseJSON(result.options);
+                    _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
+                    _dashboardData.data = _chartData;
+                    _dashboardData.options = _chartOptions;
 
                     hideBusy(busyHintDiv);
                     busyHintDiv.hide();
@@ -159,17 +161,18 @@
         return false;
     }
 
-    function ShowDashboardItem(id, title) {
+    function ShowDashboardItem(id, key, title) {
 
-        AddWidget(id, title);
+        AddWidget(id, key, title);
 
         return false;
     }
 
-    function AddWidget(rawWidgetId, widgetTitle) {
-        
+    function AddWidget(rawWidgetId, widgetKey, widgetTitle) {
+
         $("#myDashboard").sDashboard("addWidget",
             {
+                widgetKey: widgetKey,
                 widgetTitle: widgetTitle,
                 widgetId: "id_" + rawWidgetId,
                 widgetType: "chart",
@@ -190,13 +193,15 @@
         $.ajax(
             {
                 type: "POST",
-                url: "GetBarChartData",
+                url: "GetChartData",
                 data: { id: "id_" + rawWidgetId },
                 loadingShow: false,
                 success: function (result) {
-                    _dashboardData.data = result.data.data;
-                    _dashboardData.options = jQuery.parseJSON(result.options);
-                    //console.log(_dashboardData.data);
+
+                    _ChartPrepareJsonResult(result, $(widgetId).data("widgetDefinition").widgetKey);
+                    _dashboardData.data = _chartData;
+                    _dashboardData.options = _chartOptions;
+
                     $(widgetId + " .sDashboard-refresh-icon").trigger("click");
                     SetupWidgetToolbar(widgetId);
                     hideBusy(busyHintDiv);
@@ -206,7 +211,7 @@
 
         return false;
     }
-    
+
     function SetupWidgetToolbar(widgetId) {
         var rawId = widgetId.replace(/#id_/g, "");
         var printButton = $("<a class='dashboard-toolbar-item' href='#' title='Report öffnen'><i class='icon-print'></i></a>");
@@ -224,7 +229,7 @@
         $("#li_dropdown_" + id).show();
         SaveDashboardItems(true);
     }
-    
+
     function DashboardWidgetEventOrderChanged(id) {
         SaveDashboardItems(false);
     }

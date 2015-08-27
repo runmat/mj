@@ -213,6 +213,16 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Kennzeichen = sap.ZZKENN;                        
                         business.Durchfuehrung = sap.PICKDAT;
                         business.Versand = sap.ZZTMPDT;
+
+                        var halterName1 = sap.NAME1_ZH;
+                        var halterName2 = sap.NAME2_ZH;
+                        var halterStrasse = sap.STREET_ZH.FormatIfNotNull("{this}{0}", sap.HOUSE_NUM1_ZH.PrependIfNotNull(" "));
+                        var halterPlz = sap.POST_CODE1_ZH;
+                        var halterOrt = sap.CITY1_ZH;
+                        business.HalterAdresse = string.Format(
+                            "{0}{1}{2}{3}{4}",
+                            halterName1, halterName2.PrependIfNotNull(", "), 
+                            halterStrasse.PrependIfNotNull(", "), halterPlz.PrependIfNotNull(", "), halterOrt.PrependIfNotNull(" "));
                     }));
             }
         }
@@ -345,7 +355,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.KraftstoffArt = sap.ZZKRAFTSTOFF_TXT;
                         business.ZulassungBereit = sap.ZULBEREIT.XToBool();
                         business.ZulassungsSperre = sap.ZZAKTSPERRE.XToBool();
-                        business.AbmeldeDatum = sap.ZZDAT_BER;
+                        business.AbmeldeDatum = sap.EXPIRY_DATE;
                         business.VersandDatum = sap.ZZTMPDT;
 
                         business.Lieferant = sap.NAME1_ZP;
@@ -431,6 +441,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         business.Reifen = sap.ZZREIFEN;
                         business.Navi = sap.ZZNAVI;
                         business.Ahk = sap.ZAHK;
+                        business.BemerkungSperre = sap.ZBEMERKUNG;
                         business.BemerkungIntern = sap.BEMERKUNG_INTERN;
                         business.BemerkungExtern = sap.BEMERKUNG_EXTERN;
                         business.AuftragsNummer = sap.ZZREF1;

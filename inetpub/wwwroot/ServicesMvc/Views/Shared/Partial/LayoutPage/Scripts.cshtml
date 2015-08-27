@@ -26,14 +26,16 @@
 <script type="text/javascript" src="~/assets/plugins/chosen-bootstrap/chosen/chosen.jquery.min.js"></script>
 
 <script type="text/javascript" src="~/assets/plugins/bootstrap-daterangepicker/date.js"></script>
-<script type="text/javascript" src="~/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script> 
+<script type="text/javascript" src="~/assets/plugins/bootstrap-daterangepicker/daterangepicker.js?v=20150826"></script> 
 <script src="~/scripts/form-daterange-picker.js?v=20150126" type="text/javascript"></script>        
 
 <script src="~/assets/scripts/multi-select.js" type="text/javascript"></script>        
+
+<script type="text/javascript" src="~/assets/plugins/magnific-popup/magnific-popup.js"></script>
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
-<script src="~/assets/scripts/app.js" type="text/javascript"></script>
+<script src="~/assets/scripts/app.js?v=20150826" type="text/javascript"></script>
 <script src="~/assets/scripts/index.js" type="text/javascript"></script>        
 
 <script src="~/scripts/spin.js?v=20150126" type="text/javascript"></script>        
@@ -164,6 +166,10 @@
 
         $(formIdSelector + ".datepicker").each(function () {
             var datePicker = $(this);
+            
+            if (datePicker.children("input").hasClass("hasDatepicker"))
+                return;
+
             datePicker.children("input").datepicker("destroy");
             datePicker.children("input").datepicker();
             
@@ -246,9 +252,12 @@
 
     function CheckSessionTimeout() {
 
+        // 29.07.15: Due to SGW memory issues temporarily deacivated
+        return;
+
         $.ajax({
             type: "POST",
-            url: "CheckLogonTimeout",
+            url: "/ServicesMvc/DomainCommon/CheckLogonTimeout",
             success: function (result) {
 
                 if (typeof (result.timeoutOccurred) !== "undefined" && result.timeoutOccurred) {
@@ -536,7 +545,10 @@
     }    
     
     function HandleResponsiveControlWidths() {
-        $(".portlet").each(function () {
+        
+        try { HandleResponsiveControlWidthsForTheme(); } catch(e) {}
+
+        $(".portlet").each(function() {
             var p = $(this);
 
             var pWidth = parseInt(p.css("width"), 10);

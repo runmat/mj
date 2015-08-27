@@ -24,7 +24,7 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
                 ZanfReportViewModel.LoadZulassungsAnforderungen(model, ModelState);
 
-            return PartialView("ZanfReport/ZanfSuche", model);
+            return PersistablePartialView("ZanfReport/ZanfSuche", model);
         }
 
         [HttpPost]
@@ -36,13 +36,13 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult ZulassungsAnforderungenAjaxBinding()
         {
-            return View(new GridModel(ZanfReportViewModel.ZulassungsAnforderungenForGrid));
+            return View(new GridModel(ZanfReportViewModel.ZulassungsAnforderungenFiltered));
         }
 
         [HttpPost]
-        public ActionResult ShowZanfKlaerfalltext(string anforderungsNr, string hauptpositionsNr, string auftragsNr)
+        public ActionResult ShowZanfKlaerfalltext(string anforderungsNr, string auftragsNr)
         {
-            return PartialView("ZanfReport/ZanfKlaerfalltext", ZanfReportViewModel.GetItem(anforderungsNr, hauptpositionsNr, auftragsNr));
+            return PartialView("ZanfReport/ZanfKlaerfalltext", ZanfReportViewModel.GetItem(anforderungsNr, auftragsNr));
         }
 
         [HttpPost]

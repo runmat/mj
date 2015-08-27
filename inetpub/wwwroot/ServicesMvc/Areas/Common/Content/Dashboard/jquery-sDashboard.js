@@ -206,6 +206,7 @@
         _constructWidget: function (widgetDefinition) {
             //create an outer list item
             var widget = $("<li/>").attr("id", widgetDefinition.widgetId);
+            widget.data("widgetDefinition", widgetDefinition);
             //create a widget container
             var widgetContainer = $("<div/>").addClass("sDashboardWidget");
 

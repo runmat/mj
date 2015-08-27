@@ -52,6 +52,7 @@ namespace CkgDomainLogic.FzgModelle.Models
         [LocalizedDisplay(LocalizeConstants.DeliveryMonth)]
         [Required]
         [Length(7)]
+        [RegularExpression("^(0[1-9]|1[0-2])\\.2\\d{3}$", ErrorMessage = "Eingegebener Liefermonat muss dem Format MM.JJJJ entsprechen!")]
         public string Liefermonat { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PeriodOfValidityDays)]
@@ -66,11 +67,9 @@ namespace CkgDomainLogic.FzgModelle.Models
         public string Bemerkung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumberFrom)]
-        [Length(20)]
         public string AuftragsnummerVon { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumberUntil)]
-        [Length(20)]
         public string AuftragsnummerBis { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]

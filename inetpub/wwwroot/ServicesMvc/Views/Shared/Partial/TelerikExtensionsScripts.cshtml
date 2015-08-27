@@ -23,7 +23,6 @@
         }
 
         if (gridDataBoundFirstTime) {
-            grid.css("opacity", 0.1);
             GridCaptionHintShowAsWait(grid);
         }
 
@@ -41,21 +40,24 @@
 
             if (gridDataBoundFirstTime) {
                 GridCaptionHintHide(grid);
-                grid.animate({ opacity: "1.0" }, 300);
             }
 
-            try {
+            try 
+            {
                 var doPersist = _filteredData_force_Grid_OnColumnReorder ? _filteredData_force_Grid_OnColumnReorder : autoPersistColumns;
                 if (_filteredData_suppress_AutoPersistColumns)
                     doPersist = false;
-                console.log(doPersist);
+
                 FilteredData_Grid_PrepareAllCommandHrefs(grid, doPersist);
                 _filteredData_force_Grid_OnColumnReorder = false;
                 _filteredData_suppress_AutoPersistColumns = false;
-            } catch (e) {
+            } 
+            catch (e) 
+            {
                 _filteredData_force_Grid_OnColumnReorder = false;
                 _filteredData_suppress_AutoPersistColumns = false;
             }
+
         }, 1000);
     }
 
@@ -104,14 +106,14 @@
         if (typeof (autoPersistColumns) != 'undefined' && autoPersistColumns)
             autoPersistInDb = true;
 
-        GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, autoPersistInDb);
+        GridSettingsPersist(jsonColumnsString, dataGrid.orderBy, dataGrid.filterBy, dataGrid.groupBy, autoPersistInDb, grid.attr("id"));
     }
 
     function getFilteredData_DisableDataBound() {
         return _filteredData_DisableDataBound;
     }
 
-    function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, autoPersistInDb) {
+    function GridSettingsPersist(jsonColumnsString, orderBy, filterBy, groupBy, autoPersistInDb, gridName) {
 
         if (_filteredData_DisableDataBound)
             return;
@@ -130,7 +132,8 @@
                         orderBy: orderBy,
                         filterBy: filterBy,
                         groupBy: groupBy,
-                        autoPersistInDb: autoPersistInDb
+                        autoPersistInDb: autoPersistInDb,
+                        gridName: gridName
                     },
                     loadingShow: false,
                     success: function (result) {

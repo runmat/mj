@@ -36,6 +36,7 @@ Namespace Beauftragung2
         Private mOrteZurPlz As DataTable
         Private mAutohausVorgangListe As DataTable
         Private mFarben As DataTable
+        Private mVersicherungsunternehmen As DataTable
 
         Private mKunnr As String
         Private mStVANr As String
@@ -121,6 +122,8 @@ Namespace Beauftragung2
         Private mFahrzeugdatenNeeded As String
         Private mFarbeNeeded As String
         Private mZB1Needed As String
+        Private mVersicherungsnummerNeeded As String
+        Private mSepaDatumNeeded As String
 
         Private mSelKundennr As String
         Private mSelKennzeichen As String
@@ -137,11 +140,17 @@ Namespace Beauftragung2
         Private mGutachtenNrSpeichern As Boolean = False
 
         Private mAutohausvorgang As Boolean = False
+        Private mDadVorgang As Boolean = False
 
         Private mFahrzeugklasse As String
         Private mAufbauArt As String
         Private mFarbe As String
         Private mZB1Nummer As String
+
+        Private mVersicherungsnummer As String
+        Private mSepaDatum As String
+
+        Private mFormular As Byte()
 
 #End Region
 
@@ -1056,6 +1065,15 @@ Namespace Beauftragung2
             End Set
         End Property
 
+        Public Property DadVorgang() As Boolean
+            Get
+                Return mDadVorgang
+            End Get
+            Set(ByVal value As Boolean)
+                mDadVorgang = value
+            End Set
+        End Property
+
         Public Property FahrzeugdatenNeeded() As String
             Get
                 Return mFahrzeugdatenNeeded
@@ -1119,6 +1137,54 @@ Namespace Beauftragung2
             End Set
         End Property
 
+        Public Property VersicherungsnummerNeeded() As String
+            Get
+                Return mVersicherungsnummerNeeded
+            End Get
+            Set(value As String)
+                mVersicherungsnummerNeeded = value
+            End Set
+        End Property
+
+        Public Property SepaDatumNeeded() As String
+            Get
+                Return mSepaDatumNeeded
+            End Get
+            Set(value As String)
+                mSepaDatumNeeded = value
+            End Set
+        End Property
+
+        Public Property Versicherungsnummer() As String
+            Get
+                Return mVersicherungsnummer
+            End Get
+            Set(value As String)
+                mVersicherungsnummer = value
+            End Set
+        End Property
+
+        Public Property SepaDatum() As String
+            Get
+                Return mSepaDatum
+            End Get
+            Set(value As String)
+                mSepaDatum = value
+            End Set
+        End Property
+
+        Public ReadOnly Property Versicherungsunternehmen() As DataTable
+            Get
+                Return mVersicherungsunternehmen
+            End Get
+        End Property
+
+        Public ReadOnly Property Formular() As Byte()
+            Get
+                Return mFormular
+            End Get
+        End Property
+
 #End Region
 
 #Region " Methods"
@@ -1149,6 +1215,7 @@ Namespace Beauftragung2
                     mDienstleistungen = myProxy.getExportTable("GT_ONLMAT")
                     mZusatzdienstleistungen = myProxy.getExportTable("GT_MAT")
                     mPrueforganisationen = myProxy.getExportTable("GT_WERTE")
+                    mVersicherungsunternehmen = myProxy.getExportTable("GT_VERSICHERER")
 
                     'Kundennamen aufbereiten
                     For Each dRow As DataRow In mKunden.Rows
@@ -1231,7 +1298,6 @@ Namespace Beauftragung2
                 Catch ex As Exception
                     m_intStatus = -9999
                     Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
-                        'ToDo ErrMessage
                         Case "NO_DATA"
                             m_strMessage = "Es konnten keine Daten ermittelt werden."
                         Case "NO_INTERVAL"
@@ -1269,7 +1335,7 @@ Namespace Beauftragung2
                     belegRow("ZZKENN") = Kennzeichen
 
                     If Zulassungsdatum Is Nothing Then
-                        belegRow("ZZZLDAT") = String.Empty 'System.DBNull.Value
+                        belegRow("ZZZLDAT") = String.Empty
                     Else
                         belegRow("ZZZLDAT") = Zulassungsdatum
                     End If
@@ -1356,6 +1422,9 @@ Namespace Beauftragung2
                     belegRow("FARBE1") = Farbe
                     belegRow("ZB1_NR") = ZB1Nummer
 
+                    belegRow("VSU_NR") = IIf(mVersicherungsnummerNeeded = "J", mVersicherungsnummer, "")
+                    belegRow("SEPA_DATE") = IIf(mSepaDatumNeeded = "J", SepaDatum, DBNull.Value)
+
                     belegTable.Rows.Add(belegRow)
                     belegTable.AcceptChanges()
 
@@ -1405,8 +1474,10 @@ Namespace Beauftragung2
                         ErrorText = myProxy.getExportParameter("E_MESSAGE")
                         m_intStatus = -5555
                         m_strMessage = "Fehler beim Speichern.<br>(" & ErrorText & ")"
+                        mFormular = Nothing
                     Else
                         mSapId = myProxy.getExportParameter("E_ZULBELN")
+                        mFormular = myProxy.getExportParameterByte("E_PDF")
                         Dim errorTable As DataTable = myProxy.getExportTable("ET_FEHLER")
 
                         If errorTable.Rows.Count > 0 Then
@@ -1458,11 +1529,7 @@ Namespace Beauftragung2
 
                 Catch ex As Exception
                     m_intStatus = -9999
-                    Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
-                        'ToDo ErrMessage
-                        Case Else
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-                    End Select
+                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                 Finally
                     m_blnGestartet = False
                 End Try
@@ -1499,11 +1566,7 @@ Namespace Beauftragung2
 
                 Catch ex As Exception
                     m_intStatus = -9999
-                    Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
-                        'ToDo ErrMessage
-                        Case Else
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-                    End Select
+                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                 Finally
                     m_blnGestartet = False
                 End Try
@@ -1626,12 +1689,7 @@ Namespace Beauftragung2
 
                 Catch ex As Exception
                     m_intStatus = -9999
-                    Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
-                        'ToDo ErrMessage
-                        Case Else
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-                    End Select
-
+                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                 Finally
                     m_blnGestartet = False
                 End Try
@@ -1661,12 +1719,7 @@ Namespace Beauftragung2
 
                 Catch ex As Exception
                     m_intStatus = -9999
-                    Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
-                        'ToDo ErrMessage
-                        Case Else
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-                    End Select
-
+                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                 Finally
                     m_blnGestartet = False
                 End Try
@@ -1826,12 +1879,7 @@ Namespace Beauftragung2
 
                 Catch ex As Exception
                     m_intStatus = -9999
-                    Select Case HelpProcedures.CastSapBizTalkErrorMessage(ex.Message)
-                        'ToDo ErrMessage
-                        Case Else
-                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
-                    End Select
-
+                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
                 Finally
                     m_blnGestartet = False
                 End Try
@@ -1957,6 +2005,123 @@ Namespace Beauftragung2
                             dlRow("AUSWAHL") = ""
                         End If
                     Next
+
+                Catch ex As Exception
+                    m_intStatus = -9999
+                    m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" & ex.Message & ")"
+                Finally
+                    m_blnGestartet = False
+                End Try
+            End If
+        End Sub
+
+        Public Sub LoadDadVorgang(ByVal strAuftragsNr As String, ByVal page As Page)
+            m_strClassAndMethod = "Beauftragung.LoadDadVorgang"
+
+            m_intStatus = 0
+
+            If Not m_blnGestartet Then
+                m_blnGestartet = True
+
+                Try
+                    Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_ZLD_GET_DAD_SD_ORDER", m_objApp, m_objUser, page)
+
+                    myProxy.setImportParameter("I_VBELN", strAuftragsNr)
+                    myProxy.setImportParameter("I_VKBUR", mVerkaufsbuero)
+
+                    myProxy.callBapi()
+
+                    Dim subrc As String = myProxy.getExportParameter("E_SUBRC")
+
+                    If subrc <> "0" Then
+                        ErrorText = myProxy.getExportParameter("E_MESSAGE")
+                        m_intStatus = -5555
+                        m_strMessage = "Fehler beim Laden.<br>(" & ErrorText & ")"
+
+                    Else
+                        Dim tblVorgang As DataTable = myProxy.getExportTable("GS_DAD_ORDER")
+                        Dim tblZusDL As DataTable = myProxy.getExportTable("GT_MAT")
+
+                        If tblVorgang.Rows.Count = 0 Then
+                            Throw New Exception("Vorgang nicht vorhanden")
+                        End If
+
+                        Dim dRow As DataRow = tblVorgang.Rows(0)
+
+                        'Grunddaten
+                        DadVorgang = True
+
+                        Dim kdRows As DataRow() = Kunden.Select("KUNNR='" & dRow("KUNNR").ToString() & "'")
+                        If kdRows.Length > 0 Then
+                            Kundennr = dRow("KUNNR").ToString().TrimStart("0"c)
+                        End If
+
+                        If dRow("ZZKENN").ToString().Contains("-"c) Then
+                            Dim amt As String = dRow("ZZKENN").ToString().Split("-"c)(0)
+
+                            Dim stvaRows As DataRow() = Kreise.Select("ZKFZKZ='" & amt & "'")
+                            If stvaRows.Length > 0 Then
+                                StVANr = amt
+
+                                For Each sapRow As DataRow In tblZusDL.Rows
+                                    Dim dlRows As DataRow() = Dienstleistungen.Select("AMT='" & StVANr & "' AND MATNR='" & sapRow("MATNR").ToString() & "'")
+                                    If dlRows.Length > 0 Then
+                                        Materialnummer = sapRow("MATNR").ToString().TrimStart("0"c)
+                                        Exit For
+                                    End If
+                                Next
+                            End If
+                        End If
+
+                        'Halterdaten
+                        Dim anredeDad As String = dRow("ZH_TITLE").ToString()
+                        Select Case anredeDad
+                            Case "0001"
+                                'Frau
+                                HalterAnrede = "2"
+                            Case "0002"
+                                'Herr
+                                HalterAnrede = "1"
+                            Case "0003"
+                                'Firma
+                                HalterAnrede = "0"
+                        End Select
+                        Haltername1 = dRow("ZH_NAME1").ToString()
+                        Haltername2 = dRow("ZH_NAME2").ToString()
+                        HalterStrasse = dRow("ZH_STREET").ToString()
+                        HalterHausnr = dRow("ZH_HOUSE_NUM1").ToString()
+                        HalterPLZ = dRow("ZH_POST_CODE1").ToString()
+                        HalterOrt = dRow("ZH_CITY1").ToString()
+                        HalterReferenz = dRow("ZZREFNR1").ToString()
+                        Bestellnummer = dRow("ZZREFNR2").ToString()
+
+                        'Fahrzeugdaten
+                        Hersteller = dRow("ZZHERSTELLER_SCH").ToString()
+                        Typ = dRow("ZZTYP_SCHL").ToString()
+                        VarianteVersion = dRow("ZZVVS_SCHLUESSEL").ToString()
+                        TypPruef = dRow("ZZTYP_VVS_PRUEF").ToString()
+                        Fahrgestellnummer = dRow("CHASSIS_NUM").ToString()
+                        FahrgestellnummerPruef = dRow("ZPRFZ").ToString()
+                        Briefnummer = dRow("TIDNR").ToString()
+
+                        'Dienstleistung
+                        EVB = dRow("ZZVSNR").ToString()
+                        Zulassungsdatum = dRow("ZZZLDAT").ToString()
+                        Kennzeichen = dRow("ZZKENN").ToString()
+
+                        Wunschkennzeichen = (dRow("WUNSCHKENN_JN").ToString() = "X")
+
+                        'Zusatzdienstleistungen
+                        For Each dlRow As DataRow In Zusatzdienstleistungen.Rows
+                            Dim sapRows As DataRow() = tblZusDL.Select("MATNR='" & dlRow("MATNR").ToString() & "'")
+                            If sapRows.Length > 0 Then
+                                dlRow("AUSWAHL") = "X"
+                            Else
+                                dlRow("AUSWAHL") = ""
+                            End If
+                        Next
+
+                    End If
 
                 Catch ex As Exception
                     m_intStatus = -9999

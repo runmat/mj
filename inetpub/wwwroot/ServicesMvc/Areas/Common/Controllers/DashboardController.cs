@@ -40,9 +40,9 @@ namespace ServicesMvc.Common.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetBarChartData(string id)
+        public ActionResult GetChartData(string id)
         {
-            return Json(ViewModel.GetBarChartData(id));
+            return Json(ViewModel.GetChartData(id));
         }
 
         [HttpPost]

@@ -4,6 +4,7 @@ using System.Linq;
 using CKG.Base.Business;
 using CKG.Base.Common;
 using System.Data;
+using GeneralTools.Models;
 
 namespace AppRemarketing.lib
 {
@@ -40,6 +41,8 @@ namespace AppRemarketing.lib
         public HistorieBelastungsanzeige Belastungsanzeige { get; private set; }
         public HistorieUebersicht Uebersicht { get; private set; }
         public HistorieLinks Links { get; private set; }
+        public DataView Vorschaden { get; private set; }
+
 
         #endregion
 
@@ -69,6 +72,7 @@ namespace AppRemarketing.lib
                 CommonData = myProxy.getExportTable("GT_DATEN");
                 Gutachten = myProxy.getExportTable("GT_GUTA");
                 Versand = myProxy.getExportTable("GT_VERS");
+
                 var lebb = myProxy.getExportTable("GT_LEB_B");
                 var lebt = myProxy.getExportTable("GT_LEB_T");
                 var addr = myProxy.getExportTable("GT_ADDR_B");
@@ -80,6 +84,7 @@ namespace AppRemarketing.lib
                 Lebenslauf = HistorieEintrag.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng).OrderBy(e => e.Date).Distinct().ToList();
                 Belastungsanzeige = HistorieBelastungsanzeige.Parse(belas);
                 Uebersicht = HistorieUebersicht.Parse(CommonData, daten2, addr, Gutachten, lebt, lebb, schaden, belas, rechng);
+                Vorschaden = new HistorieVorschaden(myProxy.getExportTable("GT_SCHADEN")).VorschadenView;
 
                 var fahrgestellNrRow = CommonData.Rows.Cast<DataRow>().FirstOrDefault();
                 var fahrgestellNr = fahrgestellNrRow!=null?fahrgestellNrRow["FAHRGNR"].ToString():string.Empty;
@@ -95,6 +100,9 @@ namespace AppRemarketing.lib
                 rechng = myProxy.getExportTable("GT_OUT");
                 var rechngRow = rechng.Rows.Cast<DataRow>().FirstOrDefault(r => ((string)r["Status"]) == "Rechnung");
 
+                var maxGutaNr = (Gutachten.Rows.Count > 0 ? Gutachten.Rows.Cast<DataRow>().Max(r => r["LFDNR"].ToString().ToInt(0)) : 0);
+                var anzRepKalk = (maxGutaNr > 0 ? Gutachten.Rows.Cast<DataRow>().First(r => r["LFDNR"].ToString().ToInt(0) == maxGutaNr)["REPKALK"].ToString().ToInt(0) : 0);
+
                 Links = new HistorieLinks(
                         strAppID,
                         m_objUser.Customer.CustomerId,
@@ -102,7 +110,8 @@ namespace AppRemarketing.lib
                         Gutachten.Rows.Cast<DataRow>().Select(r => r["GUTA"].ToString()).ToArray(), 
                         rechngRow != null ? rechngRow["RENNR"].ToString() : string.Empty,
                         belas.Rows.Count > 0,
-                        Belastungsanzeige != null ? Belastungsanzeige.Date : null);
+                        Belastungsanzeige != null ? Belastungsanzeige.Date : null,
+                        anzRepKalk);
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }

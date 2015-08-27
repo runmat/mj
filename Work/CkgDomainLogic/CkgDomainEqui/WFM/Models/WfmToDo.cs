@@ -57,7 +57,7 @@ namespace CkgDomainLogic.WFM.Models
                 var tmpDat = Startdatum;
 
                 if (tmpDat.HasValue
-                    && DateTime.TryParseExact(Startzeit, "HHmmss", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpZeit))
+                    && DateTime.TryParseExact(Startzeit, "HH:mm:ss", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpZeit))
                 {
                     return tmpDat.Value.AddHours(tmpZeit.Hour).AddMinutes(tmpZeit.Minute).AddSeconds(tmpZeit.Second);
                 }
