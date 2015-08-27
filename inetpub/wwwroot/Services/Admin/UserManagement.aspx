@@ -253,7 +253,7 @@
                                         <Excel Format="ExcelML"></Excel>
                                     </ExportSettings>
                                     <ClientSettings AllowKeyboardNavigation="True">
-                                        <Scrolling AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="3"></Scrolling>
+                                        <Scrolling AllowScroll="True" UseStaticHeaders="True" FrozenColumnsCount="4"></Scrolling>
                                         <Resizing AllowColumnResize="true" ClipCellContentOnResize="False"></Resizing>
                                     </ClientSettings>
                                     <MasterTableView CommandItemDisplay="Top" Summary="UserManagement" TableLayout="Auto"
@@ -273,8 +273,7 @@
                                         <ExpandCollapseColumn Visible="True" FilterControlAltText="Filter ExpandColumn column">
                                         </ExpandCollapseColumn>
                                         <Columns>
-                                            <telerik:GridTemplateColumn DataField="UserID" Visible="false" HeaderText="UserID"
-                                                HeaderStyle-Font-Underline="true" HeaderStyle-Width="40px">
+                                            <telerik:GridTemplateColumn DataField="UserID" Visible="false" HeaderText="UserID">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="col_UserID" CommandArgument="UserID" CommandName="Sort" runat="server">UserID</asp:LinkButton>
                                                 </HeaderTemplate>
@@ -282,11 +281,9 @@
                                                     <asp:Label ID="lblUserID" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.UserID") %>'>
                                                     </asp:Label>
                                                 </ItemTemplate>
-                                                <HeaderStyle Font-Underline="True"></HeaderStyle>
                                                 <ItemStyle Font-Underline="True" ForeColor="#000099" Wrap="False" />
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridTemplateColumn DataField="UserName" HeaderStyle-Wrap="false" HeaderText="Benutzer"
-                                                HeaderStyle-Width="40px">
+                                            <telerik:GridTemplateColumn DataField="UserName" HeaderText="Benutzer">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="UserName" CommandArgument="UserName" CommandName="Sort" runat="server">Benutzer</asp:LinkButton>
                                                 </HeaderTemplate>
@@ -294,11 +291,9 @@
                                                     <asp:LinkButton Font-Underline="true" ForeColor="DarkBlue" Text='<%# DataBinder.Eval(Container.DataItem, "UserName") %>'
                                                         runat="server" ID="lbUserName" CommandName="Edit" />
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                                 <ItemStyle Font-Underline="true" ForeColor="DarkBlue" />
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridTemplateColumn UniqueName="SelfAdministration" DataField="SelfAdministration" Visible="false" HeaderStyle-Wrap="true"
-                                                HeaderText="Adm" HeaderStyle-Width="40px">
+                                            <telerik:GridTemplateColumn UniqueName="SelfAdministration" DataField="SelfAdministration" Visible="false" HeaderText="Adm">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="SelfAdministration" CommandArgument="SelfAdministration" CommandName="Sort"
                                                         runat="server">Adm</asp:LinkButton>
@@ -307,25 +302,12 @@
                                                     <asp:Image ID="imgSRSelfAdministration" runat="server" AlternateText='<%# GetSelfAdministrationImageURL(DataBinder.Eval(Container.DataItem, "SelfAdministration")) %>' 
                                                         ImageUrl='<%# GetSelfAdministrationImageURL(DataBinder.Eval(Container.DataItem, "SelfAdministration")) %>' Height="16px" Width="16px" />
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn DataField="FirstName" SortExpression="FirstName" HeaderText="Vorname"
-                                                HeaderStyle-Width="40px">
-                                                <HeaderStyle Width="40px"></HeaderStyle>
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridBoundColumn DataField="LastName" SortExpression="LastName" HeaderText="Nachname"
-                                                HeaderStyle-Width="40px">
-                                                <HeaderStyle Width="40px"></HeaderStyle>
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridBoundColumn DataField="mail" SortExpression="mail" HeaderText="Email"
-                                                HeaderStyle-Width="40px">
-                                                <HeaderStyle Width="40px"></HeaderStyle>
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridBoundColumn DataField="telephone" SortExpression="telephone" HeaderText="Telefon"
-                                                HeaderStyle-Width="40px">
-                                                <HeaderStyle Width="40px"></HeaderStyle>
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridTemplateColumn DataField="CustomerName" HeaderText="Firmenname" HeaderStyle-Width="40px">
+                                            <telerik:GridBoundColumn DataField="FirstName" SortExpression="FirstName" HeaderText="Vorname"/>
+                                            <telerik:GridBoundColumn DataField="LastName" SortExpression="LastName" HeaderText="Nachname"/>
+                                            <telerik:GridBoundColumn DataField="mail" SortExpression="mail" HeaderText="Email"/>
+                                            <telerik:GridBoundColumn DataField="telephone2" SortExpression="telephone2" HeaderText="Telefon"/>
+                                            <telerik:GridTemplateColumn DataField="CustomerName" HeaderText="Firmenname">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="col_CustomerName" CssClass="TableLinkHead" CommandArgument="CustomerName"
                                                         CommandName="Sort" Text="Firmenname" runat="server">Firmenname</asp:LinkButton>
@@ -334,17 +316,10 @@
                                                     <asp:Label ID="Label51" runat="server" CssClass="TableLabel" Text='<%# DataBinder.Eval(Container, "DataItem.CustomerName") %>'>
                                                     </asp:Label>
                                                 </ItemTemplate>
-                                                <HeaderStyle Width="40px"></HeaderStyle>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn DataField="GroupName" SortExpression="GroupName" HeaderText="Gruppe">
-                                                <HeaderStyle Width="40px" />
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridBoundColumn DataField="OrganizationName" SortExpression="OrganizationName"
-                                                HeaderText="Orga.">
-                                                <HeaderStyle Width="50px" />
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridTemplateColumn DataField="AccountIsLockedOut" HeaderStyle-Wrap="true"
-                                                HeaderText="Konto gesperrt" HeaderStyle-Width="40px">
+                                            <telerik:GridBoundColumn DataField="GroupName" SortExpression="GroupName" HeaderText="Gruppe"/>
+                                            <telerik:GridBoundColumn DataField="OrganizationName" SortExpression="OrganizationName" HeaderText="Orga."/>
+                                            <telerik:GridTemplateColumn DataField="AccountIsLockedOut" HeaderText="Konto gesperrt">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="AccountIsLockedOut" CommandArgument="AccountIsLockedOut" CommandName="Sort"
                                                         runat="server">Konto gesperrt</asp:LinkButton>
@@ -353,10 +328,8 @@
                                                     <asp:CheckBox ID="cbxSRAccountIsLockedOut" runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "AccountIsLockedOut") %>'
                                                         Enabled="False"></asp:CheckBox>
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridTemplateColumn DataField="AccountingArea" HeaderStyle-Wrap="true" HeaderText="Buchungskreis"
-                                                HeaderStyle-Width="40px">
+                                            <telerik:GridTemplateColumn DataField="AccountingArea" HeaderText="Buchungskreis">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="AccountingArea" CommandArgument="AccountingArea" CommandName="Sort"
                                                         runat="server">Buchungskreis</asp:LinkButton>
@@ -365,13 +338,9 @@
                                                     <asp:Label ID="Label51x" runat="server" CssClass="TableLabel" Text='<%# DataBinder.Eval(Container, "DataItem.AccountingArea") %>'>
                                                     </asp:Label>
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn DataField="Reference" SortExpression="Reference" HeaderText="Referenz">
-                                                <HeaderStyle Width="50px" />
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridTemplateColumn DataField="CustomerAdmin" HeaderStyle-Wrap="true" HeaderText="Firmenadmin"
-                                                HeaderStyle-Width="40px">
+                                            <telerik:GridBoundColumn DataField="Reference" SortExpression="Reference" HeaderText="Referenz"/>
+                                            <telerik:GridTemplateColumn DataField="CustomerAdmin" HeaderText="Firmenadmin" HeaderStyle-Width="40px">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="CustomerAdmin" CommandArgument="CustomerAdmin" CommandName="Sort"
                                                         runat="server">Firmenadmin</asp:LinkButton>
@@ -380,10 +349,8 @@
                                                     <asp:CheckBox ID="cbxSRCustomerAdmin" runat="server" Enabled="False" Checked='<%# DataBinder.Eval(Container.DataItem, "CustomerAdmin") %>'>
                                                     </asp:CheckBox>
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridTemplateColumn DataField="TestUser" HeaderStyle-Wrap="true" HeaderText="Test"
-                                                HeaderStyle-Width="40px">
+                                            <telerik:GridTemplateColumn DataField="TestUser" HeaderText="Test">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="TestUser" CommandArgument="TestUser" CommandName="Sort" runat="server">Test</asp:LinkButton>
                                                 </HeaderTemplate>
@@ -391,17 +358,10 @@
                                                     <asp:CheckBox ID="cbxSRTestUser" runat="server" Checked='<%# DataBinder.Eval(Container.DataItem, "TestUser") %>'
                                                         Enabled="False"></asp:CheckBox>
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange"
-                                                HeaderText="Passwort geändert">
-                                                <HeaderStyle Width="50px" />
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridBoundColumn DataField="LastLogin" SortExpression="LastLogin" HeaderText="letztes Login">
-                                                <HeaderStyle Width="50px" />
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridTemplateColumn DataField="PwdNeverExpires" HeaderStyle-Wrap="true" HeaderText="Passwort läuft nie ab:"
-                                                HeaderStyle-Width="40px">
+                                            <telerik:GridBoundColumn DataField="LastPwdChange" SortExpression="LastPwdChange" HeaderText="Passwort geändert"/>
+                                            <telerik:GridBoundColumn DataField="LastLogin" SortExpression="LastLogin" HeaderText="letztes Login"/>
+                                            <telerik:GridTemplateColumn DataField="PwdNeverExpires" HeaderText="Passwort läuft nie ab:">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="PwdNeverExpires" CommandArgument="PwdNeverExpires" CommandName="Sort"
                                                         runat="server">Passwort läuft ab</asp:LinkButton>
@@ -410,13 +370,9 @@
                                                     <asp:CheckBox ID="cbxSRPwdNeverExpires" runat="server" Checked='<%# not(DataBinder.Eval(Container.DataItem, "PwdNeverExpires")) %>'
                                                         Enabled="False"></asp:CheckBox>
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px" />
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn DataField="FailedLogins" SortExpression="FailedLogins" HeaderText="Anmeld.- Fehlvers.">
-                                                <HeaderStyle Width="50px" />
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridTemplateColumn DataField="LoggedOn" HeaderStyle-Wrap="true" HeaderText="Angemeldet"
-                                                HeaderStyle-Width="40px">
+                                            <telerik:GridBoundColumn DataField="FailedLogins" SortExpression="FailedLogins" HeaderText="Anmeld.- Fehlvers."/>
+                                            <telerik:GridTemplateColumn DataField="LoggedOn" HeaderText="Angemeldet">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton ID="LoggedOn" CommandArgument="LoggedOn" CommandName="Sort" runat="server">Angemeldet</asp:LinkButton>
                                                 </HeaderTemplate>
@@ -428,11 +384,9 @@
                                                     <asp:TextBox ID="TextBox1" runat="server" Text='<%# DataBinder.Eval(Container, "DataItem.LoggedOn") %>'>
                                                     </asp:TextBox>
                                                 </EditItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn DataField="URLRemoteLoginKey" SortExpression="URLRemoteLoginKey" HeaderText="RemoteLoginKey">
-                                            </telerik:GridBoundColumn>
-                                            <telerik:GridTemplateColumn HeaderStyle-Wrap="false" HeaderText="Löschen" HeaderStyle-Width="40px">
+                                            <telerik:GridBoundColumn DataField="URLRemoteLoginKey" SortExpression="URLRemoteLoginKey" HeaderText="RemoteLoginKey"/>
+                                            <telerik:GridTemplateColumn HeaderText="Löschen">
                                                 <HeaderTemplate>
                                                     <asp:LinkButton Visible="true" ID="Löschen" CommandArgument="Löschen" CommandName="Sort"
                                                         runat="server">Löschen</asp:LinkButton>
@@ -441,13 +395,9 @@
                                                     <asp:ImageButton runat="server" ID="cmdDelete" CommandName="Del" ImageUrl="../../Images/Papierkorb_01.gif"
                                                         Width="15px" Height="15px" />
                                                 </ItemTemplate>
-                                                <HeaderStyle Wrap="True" Width="50px"></HeaderStyle>
                                                 <ItemStyle HorizontalAlign="Center" VerticalAlign="Middle" />
                                             </telerik:GridTemplateColumn>
-                                            <telerik:GridBoundColumn Visible="False" DataField="CreatedBy" SortExpression="CreatedBy"
-                                                HeaderText="CreatedBy">
-                                                <HeaderStyle Width="50px" />
-                                            </telerik:GridBoundColumn>
+                                            <telerik:GridBoundColumn Visible="False" DataField="CreatedBy" SortExpression="CreatedBy" HeaderText="CreatedBy"/>
                                         </Columns>
                                         <EditFormSettings EditFormType="Template" EditColumn-EditFormColumnIndex="0">
                                         </EditFormSettings>
@@ -479,8 +429,34 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <table id="tblLeft" style="border-color: #ffffff; padding-right: 50px;" cellspacing="0"
-                                                            cellpadding="0">
+                                                        <table id="tblLeft" style="border-color: #ffffff; padding-right: 50px;" cellspacing="0" cellpadding="0">
+                                                            <tr class="formquery" id="trCustomer" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Firma:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlCustomer" runat="server" AutoPostBack="True" CssClass="DropDowns">
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trGroup" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Gruppe:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlGroups" runat="server" CssClass="DropDowns">
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trOrganization" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Organisation:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlOrganizations" runat="server" CssClass="DropDowns">
+                                                                    </asp:DropDownList>
+                                                                </td>
+                                                            </tr>
                                                             <tr class="formquery">
                                                                 <td class="firstLeft active">
                                                                     Benutzername:
@@ -519,6 +495,14 @@
                                                                     <asp:TextBox ID="txtLastName" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
+                                                            <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Filiale:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:TextBox ID="txtStore" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
                                                             <tr id="trReference" runat="server" class="formquery">
                                                                 <td class="firstLeft active">
                                                                     <asp:Label ID="lblReferenceType" runat="server" Font-Bold="True" />
@@ -543,12 +527,20 @@
                                                                     <asp:TextBox ID="txtReference3" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery">
+                                                            <tr class="formquery" id="trMail" runat="server">
                                                                 <td class="firstLeft active">
-                                                                    Filiale:
+                                                                    E-Mail (x@y.z):
                                                                 </td>
                                                                 <td class="active">
-                                                                    <asp:TextBox ID="txtStore" runat="server" CssClass="InputTextbox"></asp:TextBox>
+                                                                    <asp:TextBox ID="txtMail" runat="server" MaxLength="75" CssClass="InputTextbox"></asp:TextBox>
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery" id="trPhone" runat="server">
+                                                                <td class="firstLeft active">
+                                                                    Telefon:
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:TextBox ID="txtPhone" runat="server" MaxLength="75" CssClass="InputTextbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
                                                             <tr id="trTestUser" runat="server" class="formquery">
@@ -558,15 +550,6 @@
                                                                 <td class="active">
                                                                     <span>
                                                                         <asp:CheckBox ID="cbxTestUser" runat="server"></asp:CheckBox></span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="formquery" id="trCustomer" runat="server">
-                                                                <td class="firstLeft active">
-                                                                    Firma:
-                                                                </td>
-                                                                <td class="active">
-                                                                    <asp:DropDownList ID="ddlCustomer" runat="server" AutoPostBack="True" CssClass="DropDowns">
-                                                                    </asp:DropDownList>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery" runat="server">
@@ -615,24 +598,6 @@
                                                                             AutoPostBack="true" /></span>
                                                                 </td>
                                                             </tr>
-                                                            <tr class="formquery" id="trGroup" runat="server">
-                                                                <td class="firstLeft active">
-                                                                    Gruppe:
-                                                                </td>
-                                                                <td class="active">
-                                                                    <asp:DropDownList ID="ddlGroups" runat="server" CssClass="DropDowns">
-                                                                    </asp:DropDownList>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="formquery" id="trOrganization" runat="server">
-                                                                <td class="firstLeft active">
-                                                                    Organisation:
-                                                                </td>
-                                                                <td class="active">
-                                                                    <asp:DropDownList ID="ddlOrganizations" runat="server" CssClass="DropDowns">
-                                                                    </asp:DropDownList>
-                                                                </td>
-                                                            </tr>
                                                             <tr class="formquery" id="trOrganizationAdministrator" runat="server">
                                                                 <td class="firstLeft active">
                                                                     Organisationadministrator:
@@ -640,22 +605,6 @@
                                                                 <td class="active">
                                                                     <span>
                                                                         <asp:CheckBox ID="cbxOrganizationAdmin" runat="server" AutoPostBack="true"></asp:CheckBox></span>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="formquery" id="trMail" runat="server">
-                                                                <td class="firstLeft active">
-                                                                    E-Mail (x@y.z):
-                                                                </td>
-                                                                <td class="active">
-                                                                    <asp:TextBox ID="txtMail" runat="server" MaxLength="75" CssClass="InputTextbox"></asp:TextBox>
-                                                                </td>
-                                                            </tr>
-                                                            <tr class="formquery" id="trPhone" runat="server">
-                                                                <td class="firstLeft active">
-                                                                    Telefon:
-                                                                </td>
-                                                                <td class="active">
-                                                                    <asp:TextBox ID="txtPhone" runat="server" MaxLength="75" CssClass="InputTextbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery">
@@ -853,7 +802,7 @@
                                                             <tr id="trMasterUser" runat="server" class="formquery" visible="false">
                                                                 <td style="padding-left: 10px;">
                                                                     <asp:LinkButton ID="lbtnOpenMasterUserOptions" runat="server" Text="Master-User&amp;nbsp;&amp;#187; "
-                                                                        CssClass="Tablebutton" Height="16px" Width="90px" />
+                                                                        CssClass="TablebuttonLarge" Height="16px" Width="128px" />
                                                                 </td>
                                                                 <td>&nbsp;</td>
                                                             </tr>

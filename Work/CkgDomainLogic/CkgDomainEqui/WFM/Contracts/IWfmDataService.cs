@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.WFM.Models;
 
@@ -10,6 +11,7 @@ namespace CkgDomainLogic.WFM.Contracts
 
         List<WfmAuftrag> GetAbmeldeauftraege(WfmAuftragSelektor selector);
 
+
         #region Übersicht/Storno
 
         string StornoAuftrag(int vorgangNr);
@@ -18,6 +20,7 @@ namespace CkgDomainLogic.WFM.Contracts
 
         #endregion
 
+
         #region Informationen
 
         List<WfmInfo> GetInfos(string vorgangsNr);
@@ -25,6 +28,7 @@ namespace CkgDomainLogic.WFM.Contracts
         string SaveNeueInformation(WfmInfo neueInfo);
 
         #endregion
+
 
         #region Dokumente
 
@@ -36,11 +40,19 @@ namespace CkgDomainLogic.WFM.Contracts
 
         #endregion
 
+
         #region Aufgaben
 
         List<WfmToDo> GetToDos(string vorgangsNr);
 
         string ConfirmToDo(int vorgangsNr, int lfdNr, string remark);
+
+        #endregion
+
+
+        #region Durchlauf
+
+        void GetDurchlauf(WfmAuftragSelektor selector, Action<IEnumerable<WfmDurchlaufSingle>, IEnumerable<WfmDurchlaufStatistik>> getDataAction);
 
         #endregion
     }

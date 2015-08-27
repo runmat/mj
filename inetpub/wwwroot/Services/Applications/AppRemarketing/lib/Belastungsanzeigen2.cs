@@ -86,6 +86,7 @@ namespace AppRemarketing.lib
                         Belastungsanzeigen.MakeShortDate(Row, "HCEINGDAT", "GUTAUFTRAGDAT", "GUTADAT");
                        
                         Row["Auswahl"] = "0";
+                        Row["REPKALK"] = Row["REPKALK"].ToString().TrimStart('0');
                     }
                 }
 
