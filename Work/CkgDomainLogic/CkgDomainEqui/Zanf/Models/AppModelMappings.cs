@@ -8,22 +8,53 @@ namespace CkgDomainLogic.Zanf.Models
     {
         #region FromSap
 
-        static public ModelMapping<Z_ZANF_READ_KLAERF_01.GT_DATEN, ZulassungsAnforderung> Z_ZANF_READ_KLAERF_01_GT_DATEN_To_ZulassungsAnforderung
+        static public ModelMapping<Z_ZANF_READ_DATEN_01.GT_DATEN, ZulassungsAnforderung> Z_ZANF_READ_DATEN_01_GT_DATEN_To_ZulassungsAnforderung
         {
             get
             {
-                return EnsureSingleton(() => new ModelMapping<Z_ZANF_READ_KLAERF_01.GT_DATEN, ZulassungsAnforderung>(
+                return EnsureSingleton(() => new ModelMapping<Z_ZANF_READ_DATEN_01.GT_DATEN, ZulassungsAnforderung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.AnforderungsNr = s.ORDERID;
+                        d.AuftragsNr = s.VBELN;
+                        d.Dienstleistung = s.KTEXT;
+                        d.FahrgestellNr = s.ZZFAHRG;
+                        d.ReferenzNr = s.ZZREFNR;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.AuftragsDatum = s.ERDAT;
+                        d.ZulassungsDatum = s.ADATUM;
+                        d.Status = s.PKTEXT;
+                        d.EquiNr = s.EQUNR;
+                        d.User = s.ZUSER;
+                        d.HalterAlt.Name1 = s.NAME1_ZH_OLD;
+                        d.HalterAlt.Name2 = s.NAME2_ZH_OLD;
+                        d.HalterAlt.Strasse = s.STREET_ZH_OLD;
+                        d.HalterAlt.Hausnummer = s.HOUSE_NUM1_ZH_OLD;
+                        d.HalterAlt.Plz = s.POST_CODE1_ZH_OLD;
+                        d.HalterAlt.Ort = s.CITY1_ZH_OLD;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZANF_READ_DATEN_01.GT_ADRESS, ZanfAdresse> Z_ZANF_READ_DATEN_01_GT_ADRESS_To_ZanfAdresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZANF_READ_DATEN_01.GT_ADRESS, ZanfAdresse>(
                     new Dictionary<string, string>()
                     , (s, d) =>
                         {
                             d.AnforderungsNr = s.ORDERID;
-                            d.Anlagedatum = s.ERDAT;
                             d.AuftragsNr = s.VBELN;
-                            d.Ausfuehrungsdatum = s.ADATUM;
-                            d.FahrgestellNr = s.ZZFAHRG;
-                            d.HauptpositionsNr = s.HPPOS;
-                            d.Klaerfall = s.KLAERF.XToBool();
-                            d.KundenreferenzNr = s.ZZREFNR;
+                            d.Partnerrolle = s.PARVW;
+                            d.Anrede = s.TITLE;
+                            d.Name1 = s.NAME1;
+                            d.Name2 = s.NAME2;
+                            d.Strasse = s.STREET;
+                            d.Hausnummer = s.HOUSE_NUM1;
+                            d.Plz = s.POST_CODE1;
+                            d.Ort = s.CITY1;
                         }));
             }
         }
