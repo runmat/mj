@@ -12,8 +12,9 @@ namespace AppRemarketing.lib
         private string _appId;
         private int _customerId;
         private DateTime? _datumBelastungsanzeige;
+        public int AnzahlRepKalk { get; private set; }
 
-        public HistorieLinks(string appId, int customerId, string fahrgestellNr, string[] gutas, string rechnungsNr, bool hasBelastungsanzeige, DateTime? datumBelastungsanzeige)
+        public HistorieLinks(string appId, int customerId, string fahrgestellNr, string[] gutas, string rechnungsNr, bool hasBelastungsanzeige, DateTime? datumBelastungsanzeige, int anzahlRepKalk)
         {
             _appId = appId;
             _customerId = customerId;
@@ -23,6 +24,7 @@ namespace AppRemarketing.lib
             HasRechnung = !string.IsNullOrEmpty(rechnungsNr);
             HasBelastungsanzeige = hasBelastungsanzeige;
             _datumBelastungsanzeige = datumBelastungsanzeige;
+            AnzahlRepKalk = anzahlRepKalk;
         }
 
         public string FahrgestellNr { get; private set; }
@@ -32,6 +34,7 @@ namespace AppRemarketing.lib
         public bool HasTuevGutachten { get; private set; }
         public bool HasSchadensgutachten { get { return (!String.IsNullOrEmpty(UploaddatumSchadensgutachten)); } }
         public bool HasRechnung { get; set; }
+        public bool HasRepKalk { get { return (AnzahlRepKalk > 0); } }
 
         public void OpenBelastungsanzeige(Literal destLiteral, System.Web.UI.Page page)
         {

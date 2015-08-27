@@ -1,0 +1,70 @@
+﻿@using CkgDomainLogic.WFM.Models
+@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
+
+
+<div class="chart-div-wrapper">
+    <div id="chart-1" class="chart-div"></div>
+    <div class="chart-div-wrapper">
+        <div id="chart-2" class="chart-div sub"></div>
+        <div id="chart-3" class="chart-div sub"></div>
+    </div>
+</div>
+
+
+@{ var gridName = "GridDurchlaufStatistik"; }
+
+@(Html.XTelerik()
+    .XGrid<WfmDurchlaufStatistik>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("DurchlaufStatistikAjaxBinding", "Wfm")
+    .Columns(columns => columns.XBoundAll())
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(1)
+    .Groupable(g => g.Enabled(false))
+    .Filterable(f => f.Enabled(false))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDurchlaufStatistikenFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportDurchlaufStatistikenFilteredPDF", "Wfm");
+    })
+    )
+
+    @{ gridName = "GridDurchlaufDetails"; }
+
+    <h4 class="margin-left-10">Details:</h4>
+    @(Html.XTelerik()
+    .XGrid<WfmDurchlaufSingle>()
+    .Name(gridName)
+
+    .XAjaxDataBinding("DurchlaufDetailsAjaxBinding", "Wfm")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.KundenNr);
+        columns.XBound(c => c.VorgNrAbmAuf);
+        columns.XBound(c => c.AbmeldeArt);
+        columns.XBound(c => c.Selektion1).Title(Model.GetHeaderText("SELEKTION1")).Visible(Model.HeaderTextAvailable("SELEKTION1"));
+        columns.XBound(c => c.Selektion2).Title(Model.GetHeaderText("SELEKTION2")).Visible(Model.HeaderTextAvailable("SELEKTION2"));
+        columns.XBound(c => c.Selektion3).Title(Model.GetHeaderText("SELEKTION3")).Visible(Model.HeaderTextAvailable("SELEKTION3"));
+        columns.XBound(c => c.Referenz1).Title(Model.GetHeaderText("REFERENZ1")).Visible(Model.HeaderTextAvailable("REFERENZ1"));
+        columns.XBound(c => c.Referenz2).Title(Model.GetHeaderText("REFERENZ2")).Visible(Model.HeaderTextAvailable("REFERENZ2"));
+        columns.XBound(c => c.Referenz3).Title(Model.GetHeaderText("REFERENZ3")).Visible(Model.HeaderTextAvailable("REFERENZ3"));
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.DurchlaufzeitStunden);
+        columns.XBound(c => c.DurchlaufzeitTage);
+        columns.XBound(c => c.AnlageDatum);
+        columns.XBound(c => c.ErledigtDatum);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.ErledigtDatum).Descending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDurchlaufDetailsFilteredExcel", "Wfm");
+        commands.FilteredDataCommand("ExportDurchlaufDetailsFilteredPDF", "Wfm");
+    })
+    )
+

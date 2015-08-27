@@ -55,6 +55,7 @@ Namespace Beauftragung2
 
                 If Session("mBeauftragung2") IsNot Nothing Then
                     mBeauftragung = CType(Session("mBeauftragung2"), Beauftragung2)
+                    trDadAuftrag.Visible = (Not mBeauftragung.Autohausvorgang)
                 Else
                     mBeauftragung = New Beauftragung2(m_User, m_App, Session("AppID").ToString, Session.SessionID.ToString, "")
                     FillBeauftragung()
@@ -125,6 +126,8 @@ Namespace Beauftragung2
         End Sub
 
         Protected Sub lbtAcceptBasisdaten_Click(sender As Object, e As EventArgs) Handles lbtAcceptBasisdaten.Click
+            lblError.Text = ""
+
             If ddlKunde.SelectedValue = "0" Then
                 lblKundeInfo.Text = "Kein gültiger Kunde gewählt!"
                 Return
@@ -188,6 +191,8 @@ Namespace Beauftragung2
                 'ggf. Daten vom Autohaus-Vorgang übernehmen
                 If mBeauftragung.Autohausvorgang Then
                     RestoreAutohausVorgang()
+                ElseIf mBeauftragung.DadVorgang Then
+                    RestoreDadVorgang()
                 Else
                     If mBeauftragung.MaterialnummerAlt = ddlDienstleistung.SelectedValue AndAlso mBeauftragung.StVANrAlt = ddlStva.SelectedValue AndAlso mBeauftragung.HalterMerken Then
                         'Wenn Dienstleistung und Amt unverändert, ggf. Halterdaten merken/wiederherstellen
@@ -451,18 +456,14 @@ Namespace Beauftragung2
         End Sub
 
         Private Sub lbtPDF_Click(ByVal sender As Object, ByVal e As ImageClickEventArgs) Handles lbtPDF.Click
-            Dim selectPath As String
-            If cbxEinzug.Checked = False Then
-                selectPath = "\Components\ComCommon\documents\Zulassungsantrag.doc"
-            Else
-                selectPath = "\Components\ComCommon\documents\Zulassungsantrag2.doc"
-            End If
-
-            Dim tblData As DataTable = Base.Kernel.Common.DataTableHelper.ObjectToDataTable(mBeauftragung)
-            Dim imageHt As New Hashtable()
-            imageHt.Add("Logo", m_User.Customer.LogoImage)
-            Dim docFactory As New Base.Kernel.DocumentGeneration.WordDocumentFactory(tblData, imageHt)
-            docFactory.CreateDocument("Zulassungsantrag_" & m_User.UserName, Page, selectPath)
+            Response.Clear()
+            Response.ClearContent()
+            Response.ClearHeaders()
+            Response.ContentType = "Application/pdf"
+            Response.AppendHeader("Content-Disposition", "attachment; filename=" + "Zulassungsantrag_" & m_User.UserName & ".pdf")
+            Response.BinaryWrite(mBeauftragung.Formular)
+            If (Response.IsClientConnected) Then Response.Flush()
+            Response.End()
         End Sub
 
         Protected Sub ddlAnrede_SelectedIndexChanged(ByVal sender As Object, ByVal e As EventArgs) Handles ddlAnrede.SelectedIndexChanged
@@ -551,6 +552,26 @@ Namespace Beauftragung2
             txtZulDatum.Focus()
         End Sub
 
+        Protected Sub cmdGetDadAuftrag_Click(sender As Object, e As EventArgs) Handles cmdGetDadAuftrag.Click
+            Dim strAuftragsNr As String = txtDadAuftrag.Text.Trim()
+
+            If String.IsNullOrEmpty(strAuftragsNr) Then
+                lblError.Text = "Bitte geben Sie einen Barcode an!"
+                Exit Sub
+            End If
+
+            mBeauftragung.LoadDadVorgang(txtDadAuftrag.Text.Trim(), Me)
+            If mBeauftragung.Status = 0 Then
+                Session("mBeauftragung2") = mBeauftragung
+
+                RestoreSelectedValues()
+
+                lblError.Text = "Daten wurden erfolgreich aus DAD-Vorgang geladen."
+            Else
+                lblError.Text = "Fehler beim Laden des Vorgangs (" & mBeauftragung.Message & ")"
+            End If
+        End Sub
+
 #End Region
 
 #Region "Methods"
@@ -561,7 +582,7 @@ Namespace Beauftragung2
             Session("mBeauftragung2") = mBeauftragung
         End Sub
 
-        Private Sub ApplyNewStva()
+        Private Sub ApplyNewStva(Optional ByVal blnSaveNewValue As Boolean = True)
             'Dienstleistungen initial füllen (abhängig vom gewählten Amt)
             FilterDienstleistungen()
 
@@ -572,7 +593,7 @@ Namespace Beauftragung2
             End If
 
             imgKreise.Visible = ddlStva.SelectedValue <> "0"
-            mBeauftragung.StVANr = ddlStva.SelectedValue
+            If blnSaveNewValue Then mBeauftragung.StVANr = ddlStva.SelectedValue
             RefreshDienstleistungsdaten()
             Session("mBeauftragung2") = mBeauftragung
         End Sub
@@ -650,7 +671,7 @@ Namespace Beauftragung2
                     mBeauftragung.VersicherungsnummerNeeded = CChar(dRow("VSU_NR_ERF"))
                     mBeauftragung.SepaDatumNeeded = CChar(dRow("SEPA_DATE_ERF"))
                 End If
-            End If      
+            End If
         End Sub
 
         Private Sub ApplyNewGrosskunde()
@@ -936,6 +957,7 @@ Namespace Beauftragung2
                 .ErrorText = ""
                 .SapId = ""
                 .Autohausvorgang = False
+                .DadVorgang = False
                 .HalterNeeded = HalterErfOptionen.Nein
                 .HalterMerken = False
                 .TypDatenNeeded = ""
@@ -1298,11 +1320,10 @@ Namespace Beauftragung2
                 If dRow("ZDEFAULT").ToString() = "X" Then
                     defaultStva = dRow("ZKFZKZ").ToString()
                     txtStva.Text = defaultStva
-                    Exit For
                 End If
             Next
             ddlStva.SelectedValue = defaultStva
-            ApplyNewStva()
+            ApplyNewStva(False)
 
             'KennzeichenTyp füllen
             ddlKennzTyp.Items.Clear()
@@ -1484,9 +1505,9 @@ Namespace Beauftragung2
 
                 End If
 
-                End If
+            End If
 
-                Return booError
+            Return booError
 
         End Function
 
@@ -2031,7 +2052,7 @@ Namespace Beauftragung2
             txtOrt.Text = ""
             ddlOrt.Enabled = True
 
-            If Not mBeauftragung.Autohausvorgang Then
+            If Not mBeauftragung.Autohausvorgang AndAlso Not mBeauftragung.DadVorgang Then
                 txtReferenz.Text = ""
                 txtBestellnr.Text = ""
             End If
@@ -2160,6 +2181,7 @@ Namespace Beauftragung2
                 ddlStva.SelectedValue = mBeauftragung.StVANr
                 txtStva.Text = mBeauftragung.StVANr
             End If
+            ApplyNewStva()
             If Not String.IsNullOrEmpty(mBeauftragung.Materialnummer) Then
                 ddlDienstleistung.SelectedValue = mBeauftragung.Materialnummer
                 txtDienstleistung.Text = mBeauftragung.Materialnummer
@@ -2181,15 +2203,8 @@ Namespace Beauftragung2
                 trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
                 trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
                 trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
-                txtName.Focus()
-                Select Case .HalterAnrede
-                    Case "Firma"
-                        ddlAnrede.SelectedValue = "0"
-                    Case "Herr"
-                        ddlAnrede.SelectedValue = "1"
-                    Case "Frau"
-                        ddlAnrede.SelectedValue = "2"
-                End Select
+                ddlAnrede.SelectedValue = .HalterAnrede
+                SetHalter()
                 txtName.Text = .Haltername1
                 txtName2.Text = .Haltername2
                 txtGeburtstag.Text = .Geburtstag
@@ -2245,6 +2260,67 @@ Namespace Beauftragung2
                     lItem.Selected = (.Zusatzdienstleistungen.Select("MATNR='" & lItem.Value.PadLeft(18, "0"c) & "'")(0)("AUSWAHL").ToString() = "X")
                 Next
 
+                txtName.Focus()
+
+            End With
+        End Sub
+
+        Private Sub RestoreDadVorgang()
+            With mBeauftragung
+
+                'Halterdaten
+                rblHalterauswahl.SelectedValue = "Halter"
+                trGrossKunde.Visible = False
+                txtGrosskundennummer.Text = ""
+                divHalter.Visible = True
+                trAnrede.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                trName.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
+                trName2.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                trGeburtsort.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum)
+                trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
+                trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
+                ddlAnrede.SelectedValue = .HalterAnrede
+                SetHalter()
+                txtName.Text = .Haltername1
+                txtName2.Text = .Haltername2
+                txtStrasse.Text = .HalterStrasse
+                txtHausnummer.Text = .HalterHausnr
+                txtPLZ.Text = .HalterPLZ
+                txtOrt.Text = .HalterOrt
+                txtReferenz.Text = .HalterReferenz
+                txtBestellnr.Text = .Bestellnummer
+
+                'Fahrzeugdaten
+                txtHersteller.Text = .Hersteller
+                txtTyp.Text = .Typ
+                txtVarianteVersion.Text = .VarianteVersion
+                txtTypPruef.Text = .TypPruef
+                txtFahrgestellnummer.Text = .Fahrgestellnummer
+                txtFinPruef.Text = .FahrgestellnummerPruef
+                txtBriefnummer.Text = .Briefnummer
+
+                'Dienstleistung
+                txtEVB.Text = .EVB
+                txtZulDatum.Text = .Zulassungsdatum
+                If Not String.IsNullOrEmpty(.Kennzeichen) AndAlso .Kennzeichen.Contains("-"c) Then
+                    txtKennz1.Text = .Kennzeichen.Substring(0, .Kennzeichen.IndexOf("-"c))
+                    txtKennz2.Text = .Kennzeichen.Substring(.Kennzeichen.IndexOf("-"c) + 1)
+                End If
+                If Not String.IsNullOrEmpty(.AltKennzeichen) AndAlso .AltKennzeichen.Contains("-"c) Then
+                    txtKennzAlt1.Text = .AltKennzeichen.Substring(0, .AltKennzeichen.IndexOf("-"c))
+                    txtKennzAlt2.Text = .AltKennzeichen.Substring(.AltKennzeichen.IndexOf("-"c) + 1)
+                End If
+
+                cbxWunschkennzFlag.Checked = .Wunschkennzeichen
+
+                'Zusatzdiensleistungen
+                For Each lItem As ListItem In cblZusatzDL.Items
+                    lItem.Selected = (.Zusatzdienstleistungen.Select("MATNR='" & lItem.Value.PadLeft(18, "0"c) & "'")(0)("AUSWAHL").ToString() = "X")
+                Next
+
+                txtName.Focus()
+
             End With
         End Sub
 
@@ -2268,14 +2344,8 @@ Namespace Beauftragung2
                     rblHalterauswahl.SelectedValue = "Halter"
                     trGrossKunde.Visible = False
                     divHalter.Visible = True
-                    trAnrede.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
-                    trName.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein)
-                    trName2.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
-                    trGeburtsort.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsdatum)
-                    trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
-                    trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
-                    trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
                     ddlAnrede.SelectedValue = .HalterAnrede
+                    SetHalter()
                     txtName.Text = .Haltername1
                     txtName2.Text = .Haltername2
                     txtGeburtstag.Text = .Geburtstag

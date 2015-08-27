@@ -355,6 +355,9 @@ var App = function () {
             } else {
                 item.removeClass("expand").addClass("collapse");
                 el.slideDown(200);
+
+                //alert('click caption');
+                try { SearchResultsExpliciteTryHide(); } catch(e) {}
             }
         }
     };

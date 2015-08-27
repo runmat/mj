@@ -53,6 +53,13 @@ namespace CkgDomainLogic.General.Controllers
             set { SessionHelper.SetSessionValue("GridCurrentSettings", value); }
         }
 
+        protected Dictionary<string, GridSettings> GridSettingsPerName
+        {
+            get { return SessionHelper.GetSessionObject("GridSettingsPerName", () => new Dictionary<string, GridSettings>()); }
+            set { SessionHelper.SetSessionValue("GridSettingsPerName", value); }
+        }
+
+
         protected string GridCurrentColumns
         {
             get { return GridCurrentSettings.Columns; }
@@ -230,8 +237,7 @@ namespace CkgDomainLogic.General.Controllers
             return Json(new { message = "ok" });
         }
 
-        [HttpPost]
-        public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy, bool autoPersistInDb)
+        public ActionResult GridSettingsPersist(string jsonColumns, string orderBy, string filterBy, string groupBy, bool autoPersistInDb, string gridName)
         {
             GridCurrentSettings = new GridSettings
                 {
@@ -244,6 +250,10 @@ namespace CkgDomainLogic.General.Controllers
 
             if (autoPersistInDb && PersistableSelectorObjectKeyCurrent.IsNullOrEmpty())
                 GridCurrentSettingsAutoPersist = GridCurrentSettings;
+
+            if (!GridSettingsPerName.ContainsKey(gridName))
+                GridSettingsPerName.Add(gridName, new GridSettings());
+            GridSettingsPerName[gridName] = GridCurrentSettings;
 
             return Json(new { message = "ok" });
         }

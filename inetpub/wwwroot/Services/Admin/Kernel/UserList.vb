@@ -147,6 +147,7 @@ Namespace Kernel
                                                                 "LastName, " & _
                                                                 "mail, " & _
                                                                 "telephone, " & _
+                                                                "telephone2, " & _
                                                                "CustomerID, " & _
                                                                "CustomerName, " & _
                                                                "ISNULL(SelfAdministration, 0) SelfAdministration, " & _

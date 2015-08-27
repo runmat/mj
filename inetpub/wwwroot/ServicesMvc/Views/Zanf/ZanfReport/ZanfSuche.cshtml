@@ -7,21 +7,20 @@
     {    
         <div class="form-horizontal" id="searchForm">
             
-            @Html.ValidationSummary()
+            @Html.FormValidationSummary()
             
-            @Html.FormTextBoxFor(m => m.KundenreferenzNr, new { @class = "m-wrap uppercase", col = "left" })
-            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "right" })
+            @Html.FormRadioButtonListFor(m => m.Auswahl, Model.AuswahlOptionen.ToSelectList())
             
-            @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.AnforderungsNr, new { @class = "m-wrap", col = "right" })
-            
-            @Html.FormDatePickerFor(m => m.Anlagedatum, new { @class = "m-wrap small", col = "left" })
-            @Html.FormDatePickerFor(m => m.Ausfuehrungsdatum, new { @class = "m-wrap small", col = "right" })
+            @Html.FormDateRangePickerFor(m => m.AnlageDatumRange, new { col = "left" })
+            @Html.FormDateRangePickerFor(m => m.AusfuehrungsDatumRange, new { col = "right" })
 
-            @Html.FormCheckBoxFor(m => m.NurKlaerfaelle)
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.ReferenzNr, new { @class = "m-wrap uppercase", col = "right" })
 
             <div class="form-actions">
                 <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;@Localize.SearchAsVerb</button>
+                
+                @Html.FormPersistenceMenu(Model)
             </div>
         </div>  
         
