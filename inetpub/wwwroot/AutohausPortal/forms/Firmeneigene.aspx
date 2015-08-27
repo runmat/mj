@@ -56,8 +56,8 @@
             }
         }
         function SetEinkennzeichenRepeater(ddlFahrzeugart) {
-            var myindex = ddlFahrzeugart.selectedIndex
-            var SelValue = ddlFahrzeugart.options[myindex].value
+            var myindex = ddlFahrzeugart.selectedIndex;
+            var SelValue = ddlFahrzeugart.options[myindex].value;
             var txtAnzahl = $("#ctl00_ContentPlaceHolder1_txtAnzahl");
             for (var i2 = 0; i2 < parseInt(txtAnzahl.val()); i2++) 
             {
@@ -66,11 +66,12 @@
                 if (ctrl.length == 1) { ctrl = "0" + ctrl; }
                 var chkEinKennz = $("#ctl00_ContentPlaceHolder1_Repeater1_ctl" + ctrl + "_chkEinKennz");
                 if (SelValue == 3 || SelValue == 5) {
-                    $(chkEinKennz).attr('checked', 'true');
-                    $(chkEinKennz).parent().addClass('ez-checked')
+                    $(chkEinKennz).attr('checked', true);
+                    $(chkEinKennz).parent().addClass('ez-checked');
+                } else {
+                    $(chkEinKennz).attr('checked', false);
+                    $(chkEinKennz).parent().removeClass('ez-checked');
                 }
-                else
-                { $(chkEinKennz).attr('checked', 'false'); $(chkEinKennz).parent().removeClass('ez-checked'); }
            
             }
         }

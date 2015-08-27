@@ -1,9 +1,11 @@
 ﻿
+Imports CKG.Base.Kernel.Security
 
 Partial Public Class Confirmation
     Inherits Page
 
 #Region "Events"
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
 
         lbtnPortal.PostBackUrl = ConfigurationManager.AppSettings("ServerURL")
@@ -15,9 +17,11 @@ Partial Public Class Confirmation
         End If
 
     End Sub
+
 #End Region
 
 #Region "Methods"
+
     '----------------------------------------------------------------------
     ' Methode:      ValidateKey
     ' Autor:        Sfa
@@ -36,7 +40,7 @@ Partial Public Class Confirmation
         cn.Open()
 
         Dim cmdKey As SqlClient.SqlDataAdapter
-        cmdKey = New SqlClient.SqlDataAdapter("SELECT WebUser.UserID,WebUserUpload.ID, mail, Confirmed,MailSend,WebUserUpload.Password,ValidFrom " & _
+        cmdKey = New SqlClient.SqlDataAdapter("SELECT WebUser.UserID,WebUserUpload.ID,Confirmed,MailSend " & _
                                               "FROM WebUserUpload INNER JOIN WebUser ON " & _
                                               "WebUserUpload.UserID = WebUser.UserID INNER JOIN " & _
                                               "WebUserInfo ON WebUserUpload.UserID = WebUserInfo.id_user " & _
@@ -50,20 +54,15 @@ Partial Public Class Confirmation
 
             If CBool(tempTable.Rows(0)("Confirmed").ToString) = False Then
                 'Mail mit dem Benutzernamen wurde bereits versendet.
-                'Weitere Mail mit Passwort versenden und Bestätigung eintragen.
+                'Weitere Mail mit Passwort-Link versenden und Bestätigung eintragen.
 
-                Dim validFrom As String = tempTable.Rows(0)("ValidFrom").ToString
+                Dim tmpUser As New User(CInt(tempTable.Rows(0)("UserID")))
+                Dim errorMessage As String
 
-                If validFrom.Length > 0 Then
-                    validFrom = CDate(validFrom).ToShortDateString.ToString()
-                End If
-
-                If SendMail(tempTable.Rows(0)("mail").ToString, _
-                            tempTable.Rows(0)("Password").ToString, _
-                            validFrom) = True Then
+                If tmpUser IsNot Nothing AndAlso tmpUser.SendPasswordResetMail(errorMessage, CKG.Base.Kernel.Security.User.PasswordMailMode.Neu) Then
 
                     SetConfirmed(tempTable.Rows(0)("ID").ToString, tempTable.Rows(0)("UserID").ToString, 0)
-                    lblAusgabe.Text = "Vielen Dank für Ihre Bestätigung. Sie erhalten in Kürze eine Mail mit Ihrem Passwort."
+                    lblAusgabe.Text = "Vielen Dank für Ihre Bestätigung. Sie erhalten in Kürze eine Mail mit dem Link zum Generieren Ihres Passworts."
                     lbtnPortal.Visible = True
                 Else
                     lblError.Text = "Fehler: Die Mail konnte nicht versendet werden."
@@ -111,55 +110,7 @@ Partial Public Class Confirmation
         cmdKey.Dispose()
 
     End Sub
-    '----------------------------------------------------------------------
-    ' Methode:      SendMail
-    ' Autor:        Sfa
-    ' Beschreibung: Schlüssel gefunden. Passwort an User versenden
-    ' Erstellt am:  20.04.2009
-    ' ITA:          2709
-    '----------------------------------------------------------------------
-    Private Function SendMail(ByVal mail As String, ByRef password As String, ByRef validFrom As String) As Boolean
 
-        Dim smtpMailServer As String = ConfigurationManager.AppSettings("SmtpMailServer")
-        Dim smtpMailSender As String = ConfigurationManager.AppSettings("SmtpMailSender")
-        Dim smtpMailBody As String = ConfigurationManager.AppSettings("SmtpMailBody")
-        Dim smtpMailBodyDateInfo As String = ConfigurationManager.AppSettings("SmtpMailBodyDateInfo")
-        Dim subject As String = "Ihr persönliches Kennwort"
-
-        Dim decrypt As New Security
-
-        If Not decrypt.PsDecrypt(password) = String.Empty Then
-            password = decrypt.PsDecrypt(password)
-        End If
-
-
-        smtpMailBody = Replace(smtpMailBody, "#PW#", password)
-
-        If Not String.IsNullOrEmpty(validFrom) Then
-            If validFrom.Length > 0 Then
-
-                validFrom = Left(validFrom, 10)
-                smtpMailBodyDateInfo = Replace(smtpMailBodyDateInfo, "#ValidFrom#", validFrom)
-
-                smtpMailBody = Replace(smtpMailBody, "#ValidFromText#", vbCrLf & smtpMailBodyDateInfo & vbCrLf)
-            End If
-        End If
-
-        smtpMailBody = Replace(smtpMailBody, "#ValidFromText#", String.Empty)
-
-
-        Try
-            Dim client As New Net.Mail.SmtpClient(smtpMailServer)
-            client.Send(smtpMailSender, mail, subject, smtpMailBody)
-
-        Catch ex As Exception
-            Return False
-        End Try
-
-        Return True
-
-
-    End Function
     '----------------------------------------------------------------------
     ' Methode:      SetConfirmed
     ' Autor:        Sfa
@@ -179,7 +130,7 @@ Partial Public Class Confirmation
         cmdUpdate.Parameters.Add(sqlParam)
 
 
-        cmdUpdate.Parameters("@ID").Value = CInt(WebUserUploadiD)
+        cmdUpdate.Parameters("@ID").Value = CInt(webUserUploadiD)
         cmdUpdate.ExecuteNonQuery()
 
         cmdUpdate.Parameters("@ID").Value = CInt(userId)
@@ -224,6 +175,7 @@ Partial Public Class Confirmation
 
 
     End Function
+
 #End Region
 
 End Class
