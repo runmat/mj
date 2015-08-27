@@ -194,6 +194,7 @@ Web.config
 *.DotSettings
 *.tss
 AppSettings.config
+
 # GAC mitnehmen
 !inetpub/wwwroot/nPa/GAC/*
 !inetpub/wwwroot/Services/GAC/*
@@ -270,3 +271,6 @@ Work/GAC/System.Web.Helpers.dll
 Work/GAC/System.Web.Razor.dll
 Work/GAC/System.Web.WebPages.Deployment.dll
 Work/GAC/System.Web.WebPages.dll
+inetpub/wwwroot/ServicesMvc/packages/*
+inetpub/wwwroot/Services/packages/*
+inetpub/wwwroot/Portal/packages/*
