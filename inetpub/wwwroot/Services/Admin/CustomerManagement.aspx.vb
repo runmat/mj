@@ -1135,6 +1135,7 @@ Partial Public Class CustomerManagement
         ddlMvcSelectionType.Items.Add(New ListItem(""))
         ddlMvcSelectionType.Items.Add(New ListItem("Anwendungs-Favoriten", "Favorites"))
         ddlMvcSelectionType.Items.Add(New ListItem("Selection URL", "Url"))
+        ddlMvcSelectionType.Items.Add(New ListItem("Dashboard", "Dashboard"))
 
     End Sub
 
