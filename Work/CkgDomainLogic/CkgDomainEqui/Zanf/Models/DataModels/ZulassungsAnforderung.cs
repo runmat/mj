@@ -4,33 +4,70 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Zanf.Models
 {
-    public class ZulassungsAnforderung : ICloneable
+    [GridColumnsAutoPersist]
+    public class ZulassungsAnforderung
     {
         [LocalizedDisplay(LocalizeConstants.RequestNo)]
         public string AnforderungsNr { get; set; }
 
-        public string HauptpositionsNr { get; set; }
+        [LocalizedDisplay(LocalizeConstants.OrderID)]
+        public string AuftragsNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Service)]
+        public string Dienstleistung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         public string FahrgestellNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Order)]
-        public string AuftragsNr { get; set; }
+        [LocalizedDisplay(LocalizeConstants.ReferenceNo)]
+        public string ReferenzNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CustomerReferenceNo)]
-        public string KundenreferenzNr { get; set; }
+        [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        public string Kennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CreateDate)]
-        public DateTime? Anlagedatum { get; set; }
+        [LocalizedDisplay(LocalizeConstants.OrderDate)]
+        public DateTime? AuftragsDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateTime? Ausfuehrungsdatum { get; set; }
+        public DateTime? ZulassungsDatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ClarificationCase)]
-        public bool Klaerfall { get; set; }
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string Status { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Comment)]
+        [LocalizedDisplay(LocalizeConstants.EquipmentNo)]
+        public string EquiNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.User)]
+        public string User { get; set; }
+
+        public ZanfAdresse HalterAlt { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CarOwnerOld)]
+        public string AdresseHalterAlt { get { return HalterAlt.Adresse; } }
+
+        public ZanfAdresse Halter { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.CarOwner)]
+        public string AdresseHalter { get { return Halter.Adresse; } }
+
+        public ZanfAdresse Haendler { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Dealer)]
+        public string AdresseHaendler { get { return Haendler.Adresse; } }
+
+        [LocalizedDisplay(LocalizeConstants.ClarificationCaseText)]
         public string KlaerfallText { get; set; }
+
+        [GridExportIgnore]
+        [LocalizedDisplay(LocalizeConstants.Action)]
+        public string Action1 { get; set; }
+
+        public ZulassungsAnforderung()
+        {
+            HalterAlt = new ZanfAdresse();
+            Halter = new ZanfAdresse();
+            Haendler = new ZanfAdresse();
+        }
 
         public object Clone()
         {

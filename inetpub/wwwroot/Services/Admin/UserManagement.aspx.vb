@@ -2981,14 +2981,14 @@ Partial Public Class UserManagement
 
             lblMasterUser.Text = "Der Masteruser wurde geändert."
             lblMasterUser.CssClass = ""
+            masterUserOptions.Hide()
         Else
             lblMasterUser.Text = changedUser.ErrorMessage
             lblMasterUser.CssClass = "TextError"
+            lbtnCancelMasterUser.Text = "Schließen"
+            lbtnMasterUser.Visible = False
+            masterUserOptions.Show()
         End If
-
-        lbtnCancelMasterUser.Text = "Schließen"
-        lbtnMasterUser.Visible = False
-        masterUserOptions.Show()
     End Sub
 
     Private Function FindMasterUser() As User

@@ -4,6 +4,7 @@ using System.Linq;
 using CKG.Base.Business;
 using CKG.Base.Common;
 using System.Data;
+using GeneralTools.Models;
 
 namespace AppRemarketing.lib
 {
@@ -99,6 +100,9 @@ namespace AppRemarketing.lib
                 rechng = myProxy.getExportTable("GT_OUT");
                 var rechngRow = rechng.Rows.Cast<DataRow>().FirstOrDefault(r => ((string)r["Status"]) == "Rechnung");
 
+                var maxGutaNr = (Gutachten.Rows.Count > 0 ? Gutachten.Rows.Cast<DataRow>().Max(r => r["LFDNR"].ToString().ToInt(0)) : 0);
+                var anzRepKalk = (maxGutaNr > 0 ? Gutachten.Rows.Cast<DataRow>().First(r => r["LFDNR"].ToString().ToInt(0) == maxGutaNr)["REPKALK"].ToString().ToInt(0) : 0);
+
                 Links = new HistorieLinks(
                         strAppID,
                         m_objUser.Customer.CustomerId,
@@ -106,7 +110,8 @@ namespace AppRemarketing.lib
                         Gutachten.Rows.Cast<DataRow>().Select(r => r["GUTA"].ToString()).ToArray(), 
                         rechngRow != null ? rechngRow["RENNR"].ToString() : string.Empty,
                         belas.Rows.Count > 0,
-                        Belastungsanzeige != null ? Belastungsanzeige.Date : null);
+                        Belastungsanzeige != null ? Belastungsanzeige.Date : null,
+                        anzRepKalk);
 
                 WriteLogEntry(true, "KUNNR=" + m_objUser.KUNNR, ref m_tblResult);
             }
