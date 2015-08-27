@@ -90,6 +90,28 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        {
+            d.Preis = null;
+            d.PreisGebuehr = null;
+            d.PreisSteuer = null;
+            d.PreisKz = null;
+
+            switch (d.Status.NotNullOrEmpty().ToUpper())
+            {
+                case "AR":
+                    d.Preis = s.PREIS_DL;
+                    d.PreisGebuehr = s.PREIS_GB;
+                    d.PreisSteuer = s.PREIS_ST;
+                    d.PreisKz = s.PREIS_KZ;
+                    break;
+
+                case "D":
+                    d.PreisGebuehr = s.PREIS_GB;
+                    break;
+            }
+        }
+
         static public ModelMapping<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME, PdfFormular> Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular
         {
             get
@@ -135,15 +157,13 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Referenz1 = s.ZZREFNR2;
                         d.Referenz1 = s.ZZREFNR3;
                         d.Referenz1 = s.ZZREFNR4;
-                        d.Preis = s.PREIS_DL;
-                        d.PreisGebuehr = s.PREIS_GB;
-                        d.PreisSteuer = s.PREIS_ST;
-                        d.PreisKz = s.PREIS_KZ;
 
                         SetStatus(s, d);
 
                         var resWunsch = s.RESWUNSCH.NotNullOrEmpty().ToUpper();
                         d.KennzeichenMerkmal = (resWunsch == "R" ? Localize.Reserved : (resWunsch == "W" ? Localize.PersonalisedNumberPlate : ""));
+
+                        SetPreise(s, d);
                     }));
             }
         }
