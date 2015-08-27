@@ -139,7 +139,7 @@ Public Class Online
             Dim impTable As DataTable = S.AP.GetImportTable("GT_IMP")
 
             For Each dRow As DataRow In selRows
-                If dRow("POSNR").ToString() = "1" Then
+                If dRow("POSNR").ToString() = "10" Then
                     Dim impRow As DataRow = impTable.NewRow()
                     impRow("PRAEG_ID") = dRow("PRAEG_ID").ToString()
                     impTable.Rows.Add(impRow)

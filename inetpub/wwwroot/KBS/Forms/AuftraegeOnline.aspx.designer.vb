@@ -86,15 +86,6 @@ Partial Public Class AuftraegeOnline
     Protected WithEvents rgGrid1 As Global.Telerik.Web.UI.RadGrid
 
     '''<summary>
-    '''lbAuswahlAlle-Steuerelement
-    '''</summary>
-    '''<remarks>
-    '''Automatisch generiertes Feld
-    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-    '''</remarks>
-    Protected WithEvents lbAuswahlAlle As Global.System.Web.UI.WebControls.LinkButton
-
-    '''<summary>
     '''lbAlleDokumente-Steuerelement
     '''</summary>
     '''<remarks>
@@ -102,6 +93,15 @@ Partial Public Class AuftraegeOnline
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents lbAlleDokumente As Global.System.Web.UI.WebControls.LinkButton
+
+    '''<summary>
+    '''lbAuswahlAlle-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents lbAuswahlAlle As Global.System.Web.UI.WebControls.LinkButton
 
     '''<summary>
     '''lbAbsenden-Steuerelement

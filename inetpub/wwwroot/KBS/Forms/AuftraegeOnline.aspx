@@ -45,7 +45,7 @@
                                         <HeaderStyle Width="55px" />
                                         <ItemStyle HorizontalAlign="Center" />
                                         <ItemTemplate>
-                                            <asp:CheckBox runat="server" ID="chkAuswahl" Visible='<%# Eval("POSNR").ToString() = "1" %>' Checked='<%# Eval("Auswahl") %>' OnCheckedChanged="chkAuswahl_OnCheckedChanged" AutoPostBack="True"/>
+                                            <asp:CheckBox runat="server" ID="chkAuswahl" Visible='<%# Eval("POSNR").ToString() = "10" %>' Checked='<%# Eval("Auswahl") %>' OnCheckedChanged="chkAuswahl_OnCheckedChanged" AutoPostBack="True"/>
                                         </ItemTemplate>
                                     </telerik:GridTemplateColumn>
                                     <telerik:GridBoundColumn DataField="PRAEG_ID" SortExpression="PRAEG_ID" Visible="False" >
@@ -78,7 +78,7 @@
                                         <HeaderStyle Width="30px" />
                                         <ItemTemplate>
                                             <asp:ImageButton ID="ImageButton1" runat="server" Width="16" Height="16" ImageUrl="~/Images/iconPDF.gif"
-                                                CommandName="showDocument" ToolTip="PDF herunterladen" Visible='<%# Eval("HasDocuments") AndAlso Eval("POSNR").ToString() = "1" %>' />
+                                                CommandName="showDocument" ToolTip="PDF herunterladen" Visible='<%# Eval("HasDocuments") AndAlso Eval("POSNR").ToString() = "10" %>' />
                                         </ItemTemplate>
                                     </telerik:GridTemplateColumn>
                                 </Columns>
