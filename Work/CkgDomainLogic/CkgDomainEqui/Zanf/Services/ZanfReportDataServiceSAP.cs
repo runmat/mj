@@ -20,7 +20,7 @@ namespace CkgDomainLogic.Zanf.Services
         public ZanfReportDataServiceSAP(ISapDataService sap)
             : base(sap)
         {
-            Suchparameter = new ZulassungsAnforderungSuchparameter { NurKlaerfaelle = true };
+            Suchparameter = new ZulassungsAnforderungSuchparameter { Auswahl = "A" };
         }
 
         public void MarkForRefreshZulassungsAnforderungen()
@@ -30,52 +30,83 @@ namespace CkgDomainLogic.Zanf.Services
 
         private IEnumerable<ZulassungsAnforderung> LoadZulassungsAnforderungenFromSap()
         {
-            Z_ZANF_READ_KLAERF_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
+            Z_ZANF_READ_DATEN_01.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            if (!String.IsNullOrEmpty(Suchparameter.AnforderungsNr))
-                SAP.SetImportParameter("I_ORDERID", Suchparameter.AnforderungsNr.PadLeft10());
+            if (Suchparameter.AnlageDatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("I_ERDAT_VON", Suchparameter.AnlageDatumRange.StartDate);
+                SAP.SetImportParameter("I_ERDAT_BIS", Suchparameter.AnlageDatumRange.EndDate);
+            }
+
+            if (Suchparameter.AusfuehrungsDatumRange.IsSelected)
+            {
+                SAP.SetImportParameter("I_ADATUM_VON", Suchparameter.AusfuehrungsDatumRange.StartDate);
+                SAP.SetImportParameter("I_ADATUM_BIS", Suchparameter.AusfuehrungsDatumRange.EndDate);
+            }
 
             if (!String.IsNullOrEmpty(Suchparameter.FahrgestellNr))
                 SAP.SetImportParameter("I_FAHRG", Suchparameter.FahrgestellNr.ToUpper());
 
-            if (!String.IsNullOrEmpty(Suchparameter.AuftragsNr))
-                SAP.SetImportParameter("I_VBELN", Suchparameter.AuftragsNr.PadLeft10());
+            if (!String.IsNullOrEmpty(Suchparameter.ReferenzNr))
+                SAP.SetImportParameter("I_REFNR", Suchparameter.ReferenzNr);
 
-            if (!String.IsNullOrEmpty(Suchparameter.KundenreferenzNr))
-                SAP.SetImportParameter("I_REFNR", Suchparameter.KundenreferenzNr);
+            switch (Suchparameter.Auswahl)
+            {
+                case "A":
+                    SAP.SetImportParameter("I_OFFEN", "X");
+                    SAP.SetImportParameter("I_ERL", "X");
+                    SAP.SetImportParameter("I_KLAERF", "X");
+                    break;
 
-            if (Suchparameter.Anlagedatum.HasValue)
-                SAP.SetImportParameter("I_ERDAT", Suchparameter.Anlagedatum);
+                case "O":
+                    SAP.SetImportParameter("I_OFFEN", "X");
+                    break;
 
-            if (Suchparameter.Ausfuehrungsdatum.HasValue)
-                SAP.SetImportParameter("I_ADATUM", Suchparameter.Ausfuehrungsdatum);
+                case "D":
+                    SAP.SetImportParameter("I_ERL", "X");
+                    break;
 
-            if (Suchparameter.NurKlaerfaelle)
-                SAP.SetImportParameter("I_KLAERF", "X");
+                case "K":
+                    SAP.SetImportParameter("I_KLAERF", "X");
+                    break;
+            }
 
             SAP.Execute();
 
-            var sapList = Z_ZANF_READ_KLAERF_01.GT_DATEN.GetExportList(SAP);
-
-            var webList = AppModelMappings.Z_ZANF_READ_KLAERF_01_GT_DATEN_To_ZulassungsAnforderung.Copy(sapList).ToList();
-
-            var textList = Z_ZANF_READ_KLAERF_01.GT_KLAERFALLTEXT.GetExportList(SAP);
-
-            foreach (var webItem in webList)
+            var zanfList = AppModelMappings.Z_ZANF_READ_DATEN_01_GT_DATEN_To_ZulassungsAnforderung.Copy(Z_ZANF_READ_DATEN_01.GT_DATEN.GetExportList(SAP)).ToList();
+            var textList = Z_ZANF_READ_DATEN_01.GT_KLAERFALLTEXT.GetExportList(SAP);
+            var adrsList = AppModelMappings.Z_ZANF_READ_DATEN_01_GT_ADRESS_To_ZanfAdresse.Copy(Z_ZANF_READ_DATEN_01.GT_ADRESS.GetExportList(SAP)).ToList();
+            
+            foreach (var item in zanfList)
             {
-                var zanf = webItem;
+                var zanf = item;
 
-                IEnumerable<string> zeilen;
+                List<string> textZeilen;
+                List<ZanfAdresse> adrsZeilen;
 
                 if (zanf.AnforderungsNr.IsNotNullOrEmpty())
-                    zeilen = textList.Where(t => t.ORDERID == zanf.AnforderungsNr && t.HPPOS == zanf.HauptpositionsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG);
+                {
+                    textZeilen = textList.Where(t => t.ORDERID == zanf.AnforderungsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG).ToList();
+                    adrsZeilen = adrsList.Where(t => t.AnforderungsNr == zanf.AnforderungsNr).ToList();
+                }
                 else
-                    zeilen = textList.Where(t => t.VBELN == zanf.AuftragsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG);
+                {
+                    textZeilen = textList.Where(t => t.VBELN == zanf.AuftragsNr).OrderBy(t => t.ZEILENNR).Select(t => t.BEMERKUNG).ToList();
+                    adrsZeilen = adrsList.Where(t => t.AuftragsNr == zanf.AuftragsNr).ToList();
+                }
 
-                zanf.KlaerfallText = String.Join("<br/>", zeilen);
+                zanf.KlaerfallText = String.Join("<br/>", textZeilen);
+
+                var halterAdresse = adrsZeilen.FirstOrDefault(a => a.Partnerrolle == "ZH");
+                if (halterAdresse != null)
+                    zanf.Halter = halterAdresse;
+
+                var haendlerAdresse = adrsZeilen.FirstOrDefault(a => a.Partnerrolle == "ZE");
+                if (haendlerAdresse != null)
+                    zanf.Haendler = haendlerAdresse;
             }
 
-            return webList;
+            return zanfList;
         }
     }
 }

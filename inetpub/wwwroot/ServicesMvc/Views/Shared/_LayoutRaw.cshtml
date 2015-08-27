@@ -8,12 +8,13 @@
         @Html.Partial("Partial/LayoutPage/Styles")
         @Html.Partial("Partial/LayoutPage/ScriptsPreload")
 
-        <link href="~/content/SiteAllLayouts.css?v=20150605" rel="stylesheet" type="text/css" />
-        <link href="~/content/SiteRaw.css?v=20150126" rel="stylesheet" type="text/css" />
+        <link href="~/content/SiteAllLayouts.css?v=20150819" rel="stylesheet" type="text/css" />
+        <link href="~/content/SiteRaw.css?v=20150819" rel="stylesheet" type="text/css" />
     </head>
     <body class="full-width-page">
         @Html.Partial("Partial/TelerikGridDummy")
         @Html.Partial("Partial/LayoutPage/Scripts")
+        @Html.Partial("~/Areas/Common/Views/Dashboard/Partial/ChartJsonDataCustomizingScripts.cshtml")
 
         <img class="loading hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
 

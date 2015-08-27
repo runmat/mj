@@ -201,12 +201,15 @@
                                     &nbsp;
                                     <asp:HyperLink runat="server" ImageUrl="/services/images/TUEV.png" Height="20" Width="20" Visible='<%# Links.HasTuevGutachten %>' NavigateUrl='<%# Links.TuevGutachtenUrl %>' Target="_blank" style="vertical-align: middle" />&nbsp;
                                 </td>
+                                <td class="First">
+                                    <%# Links.HasRepKalk ? "RepKalk" : "Keine RepKalk"%>
+                                    &nbsp;
+                                    <asp:ImageButton runat="server" ImageUrl="/services/images/Tool.png" Height="20" Width="20" Visible='<%# Links.HasRepKalk %>' OnClick="ShowRepKalk" style="vertical-align: middle" ToolTip="Reparaturkostenkalkulation" />&nbsp;
+                                </td>
                                 <td class="First">                                    
                                     <%# Links.HasRechnung ? "Rechnung" : "Keine Rechnung"%>
                                     &nbsp;
                                     <asp:ImageButton runat="server" ImageUrl="/services/images/pdf-logo.png" Height="20" Width="20" Visible='<%# Links.HasRechnung %>' OnClick="ShowRechnung" style="vertical-align: middle" />&nbsp;
-                                </td>
-                                <td>
                                 </td>
                                 <td>
                                 </td>

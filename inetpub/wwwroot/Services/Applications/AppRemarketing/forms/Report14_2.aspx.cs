@@ -1,9 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using AppRemarketing.lib;
 using CKG.Base.Business;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
+using GeneralTools.Services;
+using SmartSoft.PdfLibrary;
 
 namespace AppRemarketing.forms
 {
@@ -275,6 +279,49 @@ namespace AppRemarketing.forms
             if (Links == null) return;
 
             Links.OpenRechnung(ShowReportHelper, this);
+        }
+
+        protected void ShowRepKalk(object sender, EventArgs e)
+        {
+            _mReport = (Historie)Session["Historie"];
+            if (Links == null) return;
+
+            var repKalkUrl = ApplicationConfiguration.GetApplicationConfigValue("RepKalkUrl", "0", _mUser.Customer.CustomerId, _mUser.GroupID);
+            var filesByte = new List<byte[]>();
+
+            using (var clnt = new WebClient())
+            {
+                for (var i = 0; i < Links.AnzahlRepKalk; i++)
+                {
+                    var downloadUrl = String.Format("{0}?fin={1}&nummer={2}", repKalkUrl, Links.FahrgestellNr, (i + 1).ToString());
+                    var downloadFile = clnt.DownloadData(downloadUrl);
+                    if (downloadFile != null)
+                        filesByte.Add(downloadFile);
+                }
+            }
+
+            if (filesByte.Count == 0)
+            {
+                lblError.Text = "Das Dokument wurde nicht gefunden.";
+                return;
+            }
+
+            var pdfBytes = PdfMerger.MergeFiles(filesByte, false);
+
+            Response.Clear();
+            Response.ClearContent();
+            Response.ClearHeaders();
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", "attachment; filename=" + "RepKalk_" + Links.FahrgestellNr + ".pdf");
+            Response.AddHeader("Expires", "0");
+            Response.AddHeader("Pragma", "cache");
+            Response.AddHeader("Cache-Control", "private");
+            Response.BinaryWrite(pdfBytes);
+            if (Response.IsClientConnected)
+            {
+                Response.Flush();
+            }
+            Response.End();
         }
     }
 }

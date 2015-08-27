@@ -222,6 +222,51 @@ Namespace Beauftragung2
         Protected WithEvents lblDienstleisungInfo As Global.System.Web.UI.WebControls.Label
 
         '''<summary>
+        '''trDadAuftrag-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents trDadAuftrag As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+        '''<summary>
+        '''lblDadAuftrag-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents lblDadAuftrag As Global.System.Web.UI.WebControls.Label
+
+        '''<summary>
+        '''txtDadAuftrag-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents txtDadAuftrag As Global.System.Web.UI.WebControls.TextBox
+
+        '''<summary>
+        '''fteDadAuftrag-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents fteDadAuftrag As Global.AjaxControlToolkit.FilteredTextBoxExtender
+
+        '''<summary>
+        '''cmdGetDadAuftrag-Steuerelement
+        '''</summary>
+        '''<remarks>
+        '''Automatisch generiertes Feld
+        '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+        '''</remarks>
+        Protected WithEvents cmdGetDadAuftrag As Global.System.Web.UI.WebControls.LinkButton
+
+        '''<summary>
         '''lbtAcceptBasisdaten-Steuerelement
         '''</summary>
         '''<remarks>
