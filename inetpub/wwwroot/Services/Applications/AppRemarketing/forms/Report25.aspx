@@ -220,7 +220,7 @@
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn Groupable="false">
-                                                        <HeaderStyle Width="75px" Font-Underline="false" />
+                                                        <HeaderStyle Width="135px" Font-Underline="false" />
                                                         <ItemStyle Wrap="false" />
                                                         <ItemTemplate>
                                                             <asp:Image ID="imgEmpty" runat="server" ImageUrl="/Services/images/blank.gif" Height="16"
@@ -239,15 +239,13 @@
                                                             <asp:ImageButton ID="ibtnpdf" runat="server" ImageUrl="/services/images/pdf-logo.png"
                                                                 Height="20" Width="20" CommandName="PDF" CommandArgument='<%# Eval("FAHRGNR") %>'
                                                                 ToolTip="Belastungsanzeige als PDF" />
-                                                        </ItemTemplate>
-                                                    </telerik:GridTemplateColumn>
-                                                    <telerik:GridTemplateColumn Groupable="false">
-                                                        <HeaderStyle Width="30px" Font-Underline="false" />
-                                                        <ItemTemplate>
                                                             <asp:HyperLink ID="lnkTuev" runat="server" Target="_blank" ImageUrl="/services/images/TUEV.png"
-                                                                Height="16px" Width="16px" ToolTip="Zum TÜV-Gutachten" 
+                                                                Height="20px" Width="20px" ToolTip="Zum TÜV-Gutachten" 
                                                                 Visible='<%# Eval("GUTA").ToString()=="TUEV" && Eval("FAHRGNR")!=null %>' 
-                                                                NavigateUrl='<%# "http://audi-ruecknahme.autoplus-portal.de/getDADFile?fin=" + Eval("FAHRGNR").ToString() %>' ></asp:HyperLink>
+                                                                NavigateUrl='<%# "http://audi-ruecknahme.autoplus-portal.de/getDADFile?fin=" + Eval("FAHRGNR").ToString() %>' />
+                                                            <asp:ImageButton ID="ibtnRepKalk" runat="server" ImageUrl="/services/images/Tool.png"
+                                                                Height="20" Width="20" CommandName="RepKalk" CommandArgument='<%# Eval("FAHRGNR").ToString() + "_" + Eval("REPKALK").ToString() %>'
+                                                                ToolTip="Reparaturkostenkalkulation" Visible='<%# !String.IsNullOrEmpty(Eval("REPKALK").ToString()) %>' />
                                                         </ItemTemplate>
                                                     </telerik:GridTemplateColumn>
                                                     <telerik:GridTemplateColumn DataField="FAHRGNR" SortExpression="FAHRGNR" GroupByExpression="FAHRGNR GROUP BY FAHRGNR" >

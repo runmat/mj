@@ -37,6 +37,10 @@ namespace SapORM.Models
 
 			public string ERR { get; set; }
 
+			public string NEW_INFO_DAD { get; set; }
+
+			public string NEW_INFO_KU { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -44,6 +48,8 @@ namespace SapORM.Models
 					VORG_NR_ABM_AUF = (string)row["VORG_NR_ABM_AUF"],
 					TEXT = (string)row["TEXT"],
 					ERR = (string)row["ERR"],
+					NEW_INFO_DAD = (string)row["NEW_INFO_DAD"],
+					NEW_INFO_KU = (string)row["NEW_INFO_KU"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,

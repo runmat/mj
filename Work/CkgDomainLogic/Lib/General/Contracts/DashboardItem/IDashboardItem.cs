@@ -4,6 +4,8 @@
     {
         int ID { get; set; }
 
+        string ItemKey { get; set; }
+
         string Title { get; set; }
 
         string RelatedAppUrl { get; set; }
@@ -11,7 +13,9 @@
         string RelatedSelectorModel { get; set; }
 
         string ChartJsonOptions { get; set; }
-        
+
+        string ChartJsonDataCustomizingScriptFunction { get; set; }
+
         int? InitialSort { get; set; }
 
         int UserSort { get; }

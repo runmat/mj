@@ -151,6 +151,10 @@ namespace SapORM.Models
 
 			public string MA_VORGANG { get; set; }
 
+			public string MA_AUFGABE { get; set; }
+
+			public string NEW_INFO_DAD { get; set; }
+
 			public static GT_DATEN Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_DATEN
@@ -215,6 +219,8 @@ namespace SapORM.Models
 					VERLUST_ZB1 = (string)row["VERLUST_ZB1"],
 					Z_FARBE = (string)row["Z_FARBE"],
 					MA_VORGANG = (string)row["MA_VORGANG"],
+					MA_AUFGABE = (string)row["MA_AUFGABE"],
+					NEW_INFO_DAD = (string)row["NEW_INFO_DAD"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
