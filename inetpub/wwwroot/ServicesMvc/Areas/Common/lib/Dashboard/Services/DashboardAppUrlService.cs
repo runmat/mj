@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Web.Mvc;
-using Autofac;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
-using ServicesMvc;
 
 namespace CkgDomainLogic.General.Services
 {

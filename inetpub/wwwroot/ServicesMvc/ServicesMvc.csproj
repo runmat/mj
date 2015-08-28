@@ -2504,7 +2504,6 @@
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Upload.cs" />
     <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Areas\Fahrzeug\ViewModels\HolBringServiceViewModel.cs" />
-    <Compile Include="Controllers\StrafzettelController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
