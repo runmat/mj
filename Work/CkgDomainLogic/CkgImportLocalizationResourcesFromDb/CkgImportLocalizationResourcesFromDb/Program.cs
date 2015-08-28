@@ -18,21 +18,29 @@ namespace CkgImportLocalizationResourcesFromDb
                 return;
             }
 
-            var destinationDbServer = (args[0].Length <= 4 ? "Dad" : "") + args[0].ToUpper();
-            CopyTranslationDataTable(destinationDbServer, "TranslatedResource");
-            CopyTranslationDataTable(destinationDbServer, "TranslatedResourceCustom");
+            var sourceDbServer = "DadTest";
+            foreach (var destinationDbServer in ConfigurationManager.AppSettings.AllKeys)
+            {
+                Console.WriteLine("*** Connection '{0}' ***", destinationDbServer);
 
-            SetTimeOfLastResourceUpdate(destinationDbServer);
+                SetTimeOfLastResourceUpdate(destinationDbServer);
+                CopyTranslationDataTable(sourceDbServer, destinationDbServer, "TranslatedResource");
+                CopyTranslationDataTable(sourceDbServer, destinationDbServer, "TranslatedResourceCustom");
+
+                Console.WriteLine();
+                Console.WriteLine();
+            }
         }
 
-        private static void CopyTranslationDataTable(string destinationDbServer, string tableName)
+        private static void CopyTranslationDataTable(string sourceDbServer, string destinationDbServer, string tableName)
         {
-            var sourceDbContext = new DomainDbContext(ConfigurationManager.AppSettings["DadTest"]);
+            if (destinationDbServer.ToLower() == sourceDbServer.ToLower())
+                return;
+
+            var sourceDbContext = new DomainDbContext(ConfigurationManager.AppSettings[sourceDbServer]);
             var destinationDbContext = new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer]); // new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer == "PROD" ? "ConnectionstringProdSystem" : "ConnectionstringDevSystem"]);
 
-            Console.WriteLine();
-            Console.WriteLine("  Tabelle '{0}' wird kopiert, bitte warten ...", tableName);
-            Console.WriteLine();
+            Console.WriteLine("Tabelle '{0}' wird kopiert ...", tableName);
 
             destinationDbContext.Database.ExecuteSqlCommand("delete from " + tableName);
             destinationDbContext.SaveChanges();
@@ -41,16 +49,16 @@ namespace CkgImportLocalizationResourcesFromDb
             else
                 sourceDbContext.TranslatedResourcesCustom.ToList().ForEach(sourceResource => destinationDbContext.TranslatedResourcesCustom.Add(ModelMapping.Copy(sourceResource)));
             destinationDbContext.SaveChanges();
+        }
 
-            Console.WriteLine();
-            Console.WriteLine();
-            Console.WriteLine("*****************************************************************************");
-            Console.WriteLine();
-            Console.WriteLine("  Erfolg!  Tabelle '{0}' kopiert von Server TEST => {1}", tableName, destinationDbServer);
-            Console.WriteLine();
-            Console.WriteLine("*****************************************************************************");
-            Console.WriteLine();
-            Thread.Sleep(200);
+        private static void SetTimeOfLastResourceUpdate(string destinationDbServer)
+        {
+            var destinationDbContext = new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer]);
+
+            Console.WriteLine("Setze 'TimeOfLastResourceUpdate' in Tabelle 'Config'");
+
+            destinationDbContext.Database.ExecuteSqlCommand("update Config set [Value] = '" + DateTime.Now.ToString("yyyyMMddHHmmss") + "' where [Context] = 'Localization' and [Key] = 'TimeOfLastResourceUpdate'");
+            destinationDbContext.SaveChanges();
         }
 
         private static void GenerateTranslationCsharpCode()
@@ -122,26 +130,6 @@ namespace CkgImportLocalizationResourcesFromDb
             var dirName = Path.GetDirectoryName(outputFileName);
             if (dirName != null && !Directory.Exists(dirName))
                 Directory.CreateDirectory(dirName);
-        }
-
-        private static void SetTimeOfLastResourceUpdate(string destinationDbServer)
-        {
-            var sourceDbContext = new DomainDbContext(ConfigurationManager.AppSettings["DadTest"]);
-            var destinationDbContext = new DomainDbContext(ConfigurationManager.AppSettings[destinationDbServer]);
-
-            Console.WriteLine();
-            Console.WriteLine("  Setze 'TimeOfLastResourceUpdate' in Tabelle 'Config' auf TEST ...");
-            Console.WriteLine();
-
-            sourceDbContext.Database.ExecuteSqlCommand("update Config set [Value] = '" + DateTime.Now.ToString("yyyyMMddHHmmss") + "' where [Context] = 'Localization' and [Key] = 'TimeOfLastResourceUpdate'");
-            sourceDbContext.SaveChanges();
-
-            Console.WriteLine();
-            Console.WriteLine("  Setze 'TimeOfLastResourceUpdate' in Tabelle 'Config' auf {0} ...", destinationDbServer);
-            Console.WriteLine();
-
-            destinationDbContext.Database.ExecuteSqlCommand("update Config set [Value] = '" + DateTime.Now.ToString("yyyyMMddHHmmss") + "' where [Context] = 'Localization' and [Key] = 'TimeOfLastResourceUpdate'");
-            destinationDbContext.SaveChanges();
         }
     }
 }
