@@ -21,10 +21,17 @@
     // <custom functions>
     //
 
+    function DefaultBarMouseover(widgetKey) {
+
+        _chartOptions.colors = ["#0000BB"];
+
+        _chartOptions.mouse.trackFormatter = function (point) {
+            if (typeof (point.y) != "undefined")
+                return point.y.replace(/\.0/g, "") + "";
+        };
+    }
+
     function WfmDurchlaufzeiten(widgetKey) {
-
-        //console.log("WfmDurchlaufzeiten");
-
         _chartOptions.bars.barWidth = 1.0;
         _chartOptions.xaxis.min = 0;
         _chartOptions.yaxis.tickFormatter = function (yVal) { return yVal + "%"; };

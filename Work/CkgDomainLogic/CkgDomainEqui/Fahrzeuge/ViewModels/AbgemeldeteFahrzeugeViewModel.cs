@@ -18,6 +18,7 @@ using GeneralTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
 {
+    [DashboardProviderViewModel]
     public class AbgemeldeteFahrzeugeViewModel : CkgBaseViewModel
     {
         [XmlIgnore]
@@ -118,6 +119,65 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void LoadHistorie(string fin)
         {
             AbmeldeHistorien = DataService.GetAbmeldeHistorien(fin);
+        }
+
+
+        [DashboardItemsLoadMethod("ReportAbmeldungenDiesesJahrBar")]
+        public ChartItemsPackage NameNotRelevant01()
+        {
+            var selector = new AbgemeldeteFahrzeugeSelektor
+            {
+                NurKlaerfaelle = true,
+                AbmeldeDatumRange = new DateRange(DateRangeType.CurrentYear, true)
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            var items = DataService.GetAbgemeldeteFahrzeuge(selector)
+                                    .Where(s => s.Betriebsnummer.IsNotNullOrEmpty())
+                                    .OrderBy(s => s.Betriebsnummer)
+                                    .ToList();
+
+
+            Func<AbgemeldetesFahrzeug, string> xAxisKeyModel = (groupKey => groupKey.Betriebsnummer);
+
+            return ChartService.GetBarChartGroupedStackedItemsWithLabels(
+                    items,
+                    xAxisKey => xAxisKeyModel(xAxisKey)
+                );
+        }
+
+        [DashboardItemsLoadMethod("ReportAbmeldungenDiesesJahrPie")]
+        public ChartItemsPackage NameNotRelevant04()
+        {
+            return AbmeldungenNachBetriebsnummer(new DateRange(DateRangeType.CurrentYear, true));
+        }
+
+        [DashboardItemsLoadMethod("ReportAbmeldungenLetztesJahrPie")]
+        public ChartItemsPackage NameNotRelevant05()
+        {
+            return AbmeldungenNachBetriebsnummer(new DateRange(DateRangeType.LastYear, true));
+        }
+
+        private ChartItemsPackage AbmeldungenNachBetriebsnummer(DateRange dateRange)
+        {
+            var selector = new AbgemeldeteFahrzeugeSelektor
+            {
+                NurKlaerfaelle = true,
+                AbmeldeDatumRange = dateRange
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            Func<AbgemeldetesFahrzeug, string> xAxisKeyModel = (groupKey => groupKey.Betriebsnummer);
+
+            var items = DataService.GetAbgemeldeteFahrzeuge(selector)
+                                    .Where(s => s.Betriebsnummer.IsNotNullOrEmpty())
+                                    .OrderBy(xAxisKeyModel)
+                                    .ToList();
+
+            return ChartService.GetPieChartGroupedItemsWithLabels(
+                    items,
+                    xAxisKey => xAxisKeyModel(xAxisKey)
+                );
         }
     }
 }
