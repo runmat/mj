@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using MvcTools.Web;
@@ -20,6 +22,25 @@ namespace ServicesMvc
     public class MvcApplication : HttpApplication
     {
         public static MvcApplication Instance { get; private set; }
+
+        private IEnumerable<Assembly> _ckgAssemblies;
+        private IEnumerable<Assembly> CkgAssemblies { get { return (_ckgAssemblies ?? (_ckgAssemblies = GetCkgAssemblies())); } }
+
+        private IEnumerable<Assembly> GetCkgAssemblies()
+        {
+            yield return typeof(MvcApplication).Assembly;
+
+            yield return Assembly.Load("CkgDomainLogic");
+            yield return Assembly.Load("CkgDomainCommon");
+            yield return Assembly.Load("CkgDomainCoc");
+            yield return Assembly.Load("CkgDomainFahrzeug");
+            yield return Assembly.Load("CkgDomainLeasing");
+            yield return Assembly.Load("CkgDomainArchive");
+            yield return Assembly.Load("CkgDomainFinance");
+            yield return Assembly.Load("CkgDomainInsurance");
+            yield return Assembly.Load("CkgDomainFahrer");
+            yield return Assembly.Load("CkgDomainAutohaus");
+        }
 
         protected void Application_Start()
         {
@@ -47,7 +68,8 @@ namespace ServicesMvc
             //
             // Autofac / IoC Integration:
             //
-            IocConfig.CreateAndRegisterIocContainerToMvc();
+            IocConfig.CreateAndRegisterIocContainerToMvc(CkgAssemblies);
+            DashboardAppUrlService.RegisterAssemblies(CkgAssemblies);
 
             //
             // combine our appsettings in our web.config with a "parent" web.config (i. e. of a ASP.NET WebForms Application)
