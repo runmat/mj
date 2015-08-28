@@ -335,51 +335,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return e.InnerException.ToString(); 
             }
         }
-       
-        // public string SetKennz(string fin, string field, string kennz)
-        //public string SetFinValue(string fin, string field, string kennz)
-        //{
-        //    try
-        //    {
-        //        switch (field.ToLower())
-        //        {
-        //            case "wunschkennz1":
-        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz1 = kennz);
-        //                break;
-
-        //            case "wunschkennz2":
-        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz2 = kennz);
-        //                break;
-
-        //            case "wunschkennz3":
-        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.WunschKennz3 = kennz);
-        //                break;
-
-        //            case "kennzeichen": // Massenabmeldung
-        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Kennzeichen = kennz);
-        //                break;
-
-        //            case "vorhandeneskennzreservieren": // Massenabmeldung                        
-        //                var value = Convert.ToBoolean(kennz);
-        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.VorhandenesKennzReservieren = value);
-        //                break;
-
-        //            case "fzgmodell":
-        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.FzgModell = value);
-        //                break;
-
-        //            case "farbe":
-        //                FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Farbe = value);
-        //                break;
-
-        //        }
-        //        return null;
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        return e.InnerException.ToString();
-        //    }
-        //}
 
         /// <summary>
         /// Setzt eine Variable für ein angegebenes Fahrzeug
@@ -1162,10 +1117,52 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #endregion
 
-
         public void FilterFinList(string filterValue, string filterProperties)
         {
             FinListFiltered = FinList.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+        public void ValidateFahrzeugdatenForm(Action<string, string> addModelError, Fahrzeugdaten fahrzeugdatenModel)
+        {
+
+            if (fahrzeugdatenModel.HasEtikett && Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                if (FinList.Any(x => x.IsSelected && x.Farbe.IsNullOrEmpty()))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
+
+                if (FinList.Any(x => x.IsSelected && x.FzgModell.IsNullOrEmpty()))
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
+            }
+            if (fahrzeugdatenModel.HasEtikett && !Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                if (fahrzeugdatenModel.Farbe.IsNullOrEmpty())
+                    addModelError("Farbe", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
+
+                if (fahrzeugdatenModel.FzgModell.IsNullOrEmpty())
+                    addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
+            }
+        }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public void ValidateEtikettenlabelFields()
+        //{
+        //    Zulassung.Fahrzeugdaten.Farbe = "valid";
+        //    Zulassung.Fahrzeugdaten.FzgModell = "valid";
+
+        //    if (FinList.Any(x => x.Farbe.IsNullOrEmpty()))
+        //        Zulassung.Fahrzeugdaten.Farbe = null;
+
+        //    if (FinList.Any(x => x.FzgModell.IsNullOrEmpty()))
+        //        Zulassung.Fahrzeugdaten.FzgModell = null;
+
+        //    //if (FinList.Any(x => x.Farbe.IsNullOrEmpty()) || FinList.Any(x => x.FzgModell.IsNullOrEmpty());)
+        //    //{
+            
+        //    // ModelState.AddModelError("SelectedGridAction", "Please select an option");
+        //    //    Zulassung.Fahrzeugdaten.Farbe
+        //    //}
+        //}
     }
 }

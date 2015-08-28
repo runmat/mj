@@ -203,7 +203,8 @@
             }
             
             @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">@Localize.HasEtikett</label></text>)
-            <div id="KennzeichenLabelFields" class="">
+            <div id="ValidationMsgHasEtikett"></div>
+            <div id="KennzeichenLabelFields">
                 @Html.FormTextBoxFor(m => m.Farbe, new { @class = "m-wrap medium colorautocomplete", col = "left" })
                 @Html.FormTextBoxFor(m => m.FzgModell, new { @class = "m-wrap medium", col = "right" })
             </div>
@@ -236,8 +237,8 @@
                           columns.XBound(c => c.HandelsName);
                           columns.XBound(c => c.FahrzeugArt);
 
-                          columns.XBound(c => c.FzgModell).ClientTemplate("<input id='FzModell_<#= data.FIN #>' type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />");
-                          columns.XBound(c => c.Farbe).ClientTemplate("<input id='Farbe_<#= data.FIN #>' type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />");
+                          columns.XBound(c => c.FzgModell).ClientTemplate("<input id='FzModell_<#= data.FIN #>' type='text' class='editvinvalue etikettcol' data-fieldname='FzgModell' value='<#= data.FzgModell #>' />").Title("Modell <span class='requiredField requiredFieldMarker'>*</span>");
+                          columns.XBound(c => c.Farbe).ClientTemplate("<input id='Farbe_<#= data.FIN #>' type='text' class='inputwidth colorautocomplete etikettcol' data-fieldname='Farbe' value='<#= data.Farbe #>' />").Title("Farbe <span class='requiredField requiredFieldMarker'>*</span>");
 
                       })
                       .XPageSize(10)

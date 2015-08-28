@@ -544,6 +544,9 @@ namespace ServicesMvc.Autohaus.Controllers
                 ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
             }
 
+            // 20150828 MMA Zusätzliche Validierung, wenn Kennzeichenetiketten und Massenzulassung gewählt...
+            ViewModel.ValidateFahrzeugdatenForm(ModelState.AddModelError, model);
+
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);
