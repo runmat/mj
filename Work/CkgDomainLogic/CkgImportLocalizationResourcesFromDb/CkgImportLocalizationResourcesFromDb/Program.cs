@@ -23,9 +23,9 @@ namespace CkgImportLocalizationResourcesFromDb
             {
                 Console.WriteLine("*** Connection '{0}' ***", destinationDbServer);
 
-                SetTimeOfLastResourceUpdate(destinationDbServer);
                 CopyTranslationDataTable(sourceDbServer, destinationDbServer, "TranslatedResource");
                 CopyTranslationDataTable(sourceDbServer, destinationDbServer, "TranslatedResourceCustom");
+                SetTimeOfLastResourceUpdate(destinationDbServer);
 
                 Console.WriteLine();
                 Console.WriteLine();
