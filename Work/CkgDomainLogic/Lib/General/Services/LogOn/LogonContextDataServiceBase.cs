@@ -107,7 +107,11 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
-        public string ReturnUrl { get { return SessionHelper.GetSessionString("ReturnUrl"); } set { SessionHelper.SetSessionValue("ReturnUrl", value); } }
+        public string ReturnUrl
+        {
+            get { return SessionHelper.GetSessionString("ReturnUrl"); }
+            set { SessionHelper.SetSessionValue("ReturnUrl", value); }
+        }
 
         // only for backward compatibility:
         public string CurrentGridColumns

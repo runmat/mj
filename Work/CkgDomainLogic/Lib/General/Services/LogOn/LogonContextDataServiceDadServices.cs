@@ -397,16 +397,7 @@ namespace CkgDomainLogic.General.Services
             return string.Format("/{0}/", subDomain.Trim().ToLower());
         }
 
-        public override string CustomerName
-        {
-            get
-            {
-                if (HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().ToLower().Contains("/charts/") && base.CustomerName.ToLower().StartsWith("zmjetest"))
-                    return "DAD Dashboards";
-
-                return base.CustomerName;
-            }
-        }
+        public override string CustomerName { get { return base.CustomerName; } }
 
         public void Clear()
         {
