@@ -175,12 +175,14 @@ namespace CkgDomainLogic.General.Services
             if (UserApps == null)
                 return new List<IApplicationUserMenuItem>();
 
-            return UserApps
+            var orderedList = UserApps
                 .Where(ua => GetAppTypeFriendlyName(ua.AppType).IsNotNullOrEmpty())
                     .GroupBy(ua => ua.AppType)
                         .Select(ua2 => UserApps.FirstOrDefault(uaGroup => uaGroup.AppType == ua2.Key))
                             .OrderBy(ua => ua.AppTypeRank)
                                 .ToList();
+
+            return orderedList;
         }
 
         public List<IApplicationUserMenuItem> GetMenuItems(string appType = null)
