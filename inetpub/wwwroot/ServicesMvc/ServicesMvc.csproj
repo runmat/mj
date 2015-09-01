@@ -4535,6 +4535,9 @@
     <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />
     <Content Include="Views\Shared\Partial\ChartToolsFlotr2.cshtml" />
+    <Content Include="Views\Leasing\UeberfaelligeRuecksendungen\Grid.cshtml" />
+    <Content Include="Views\Leasing\UeberfaelligeRuecksendungen\Suche.cshtml" />
+    <Content Include="Views\Leasing\ReportUeberfaelligeRuecksendungen.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

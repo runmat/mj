@@ -458,6 +458,9 @@ namespace SapORM
 
             //new FunctionReflector("Z_ZANF_READ_DATEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KLAERF", "329608", "X");
 
+            //new FunctionReflector("Z_M_FAELLIGE_EQUI_LP").WriteOrmForExportTableStructures("I_KUNNR", "336070");
+            //new FunctionReflector("Z_M_FAELLIGE_EQUI_UPDATE_LP").WriteOrmForExportTableStructures("I_KUNNR, I_EQUNR", "336070", "0");
+
 
             //CoCTest();
             //TeslaTest();
