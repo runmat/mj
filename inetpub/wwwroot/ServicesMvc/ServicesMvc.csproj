@@ -1002,17 +1002,39 @@
     <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.woff" />
     <Content Include="assets\plugins\font-awesome\font\v2\fontawesome-webfont.woff2" />
     <Content Include="assets\plugins\font-awesome\font\v2\FontAwesome.otf" />
-    <None Include="Documents\Templates\UploadBriefversand.csv" />
-    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
-    <Content Include="Documents\Templates\UploadFzgUebersichtFilter.xls" />
-    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
-    <None Include="Documents\Templates\UploadBriefversand.csv" />
-    <None Include="Documents\Templates\UploadFahrzeugdaten.xls" />
-    <Content Include="Documents\Templates\UploadFzgVoravisierungSonstigeHersteller.xls" />
-    <Content Include="Documents\Templates\UploadFzgVoravisierungVW.xls" />
-    <None Include="Documents\Templates\UploadSchluesselversand.csv" />
-    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls" />
+    <None Include="Documents\Templates\UploadBriefversand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\Templates\UploadFahrzeugdaten.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Documents\Templates\UploadFzgUebersichtFilter.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Documents\Templates\UploadSchluesselversand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Documents\Templates\UploadBriefversand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Documents\Templates\UploadFahrzeugdaten.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Documents\Templates\UploadFzgVoravisierungSonstigeHersteller.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\UploadFzgVoravisierungVW.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Documents\Templates\UploadSchluesselversand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Documents\Templates\Upload_Treuhand-Services.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Documents\Templates\UploadUnitnummern.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
