@@ -38,7 +38,9 @@ namespace CkgDomainLogic.Leasing.Models
         [LocalizedDisplay(LocalizeConstants.DueDate)]
         public DateTime? FaelligkeitsDatum { get; set; }
 
-        public bool FaelligkeitsDatumGesetzt { get { return (FaelligkeitsDatum.HasValue && FaelligkeitsDatum.Value.Year > 1900); } }
+        public bool FristVerlaengert { get; set; }
+
+        public bool FaelligkeitsDatumGesetzt { get { return ((FaelligkeitsDatum.HasValue && FaelligkeitsDatum.Value.Year > 1900) || FristVerlaengert); } }
 
         [LocalizedDisplay(LocalizeConstants.SalesUnit)]
         public string Vertriebseinheit { get; set; }

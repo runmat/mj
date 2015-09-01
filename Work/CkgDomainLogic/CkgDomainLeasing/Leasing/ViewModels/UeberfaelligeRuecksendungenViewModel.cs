@@ -39,6 +39,7 @@ namespace CkgDomainLogic.Leasing.ViewModels
         public void FristVerlaengern(string equiNr)
         {
             var item = UeberfaelligeRuecksendungen.Find(u => u.EquiNr == equiNr);
+            item.FristVerlaengert = true;
 
             DataService.SaveUeberfaelligeRuecksendung(item, true);
         }
