@@ -30,13 +30,12 @@ body {
 
 .requiredField 
 {
-    width: 12px;
-    display: inline-block;
-    padding-right: 0;
+    display: none;
 }
 .requiredFieldMarker {
     color: #b94a48;
     font-size: 1.1em;
+    display: inline-block!important;
 }
 .required-fields-summary {
     display: inline-block;
