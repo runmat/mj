@@ -5155,12 +5155,12 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 
 
 
-.icon-star-o:before {  content: "\f006"; }
+.icon-home:before {  content: "\f015"; }
 
-.icon-random:before {  content: "\f074"; }
-.icon-university:before {  content: "\f19c"; }
 .icon-stack-overflow:before {  content: "\f16c"; }
+.icon-map-signs:before {  content: "\f277"; }
 .icon-bookmark-o:before {  content: "\f097"; }
+.icon-car:before {  content: "\f1b9"; }
 
 .icon-comments-o:before {  content: "\f0e6"; }
 

@@ -27,4 +27,29 @@
 
     var _formWizardCurrentStepCount = 0;
     
+
+    function KennzeichenEnforceCleanUp(e) {
+        var evt = (e) ? e : window.event;
+        var key = (evt.keyCode) ? evt.keyCode : evt.which;
+
+        // 0-9
+        if (key >= 48 && key <= 57) {
+            return true;
+        }
+        // A-Z
+        if (key >= 65 && key <= 90) {
+            return true;
+        }
+        // a-z
+        if (key >= 97 && key <= 122) {
+            return true;
+        }
+        // ä,ö,ü,Ä,Ö,Ü,-
+        if (key == 132 || key == 148 || key == 129 || key == 142 || key == 153 || key == 154 || key == 45) {
+            return true;
+        }
+
+        // alle anderen Zeichen nicht zulassen
+        return false;
+    }
 </script>

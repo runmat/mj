@@ -624,7 +624,6 @@
  
 
     function OnDataBound_GridFahrzeugAuswahlX() {
-        // alert("OnDataBound");
         FilteredData_Grid_OnDataBound($(this));
         jQuery('.tooltips').tooltip();
         LoadingHide();
@@ -639,18 +638,6 @@
 
     
 </script>
-
-
-@*@(Html.Telerik().Window()
-    .Name("Adressen")
-    .Visible(false)
-    .Title("Auswahl Adressen")
-    .Modal(true)
-    .Draggable(true)
-    .Scrollable(false)
-    .Width(900)
-    .Height(700)
-    .Content(@<text><div id="InnerAdressen"></div></text>))*@
 
 <div id="InnerAdressen" class="white-popup mfp-hide">
 </div>

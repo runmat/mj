@@ -469,7 +469,7 @@
 
             var distance = result.resourceSets[0].resources[0].travelDistance;
             //console.log(distance);
-            $("#bingRouteHeaderDiv span.header-distance").html(distance.toFixed(2).replace(/\./, ",") + " Km");
+            $("#bingRouteHeaderDiv span.header-distance").html("ca. " + distance.toFixed(2).replace(/\./, ",") + " Km");
             $("#bingRouteHeaderDiv span.header-address").html("Ihre Route von " + _bingCurrentRouteStartAddress[_bingCurrentUiIndex] + " => " + _bingCurrentRouteEndAddress[_bingCurrentUiIndex]);
 
             _bingMakeRouteRequestCount++;

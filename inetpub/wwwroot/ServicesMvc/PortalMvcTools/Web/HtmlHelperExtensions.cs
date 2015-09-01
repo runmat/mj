@@ -318,7 +318,7 @@ namespace PortalMvcTools.Web
             return TypeMerger.MergeTypes(controlHtmlAttributes, new { maxlength = attribute.Length });
         }
 
-        static IDictionary<string, object> MergeKennzeichenClass<TModel, TValue>(Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributesDict)
+        static IDictionary<string, object> MergeKennzeichenAttributes<TModel, TValue>(Expression<Func<TModel, TValue>> expression, IDictionary<string, object> controlHtmlAttributesDict)
         {
             var propertyName = expression.GetPropertyName();
             var property = typeof(TModel).GetProperty(propertyName);
@@ -340,13 +340,15 @@ namespace PortalMvcTools.Web
                 controlHtmlAttributesDict["class"] = classPropertyValue;
             }
 
+            controlHtmlAttributesDict["onkeypress"] = "return KennzeichenEnforceCleanUp();";
+
             return controlHtmlAttributesDict;
         }
 
         public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
-            controlHtmlAttributesDict = MergeKennzeichenClass(expression, controlHtmlAttributesDict);
+            controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
@@ -366,7 +368,7 @@ namespace PortalMvcTools.Web
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
             controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
-            controlHtmlAttributesDict = MergeKennzeichenClass(expression, controlHtmlAttributesDict);
+            controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
@@ -405,7 +407,7 @@ namespace PortalMvcTools.Web
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
             controlHtmlAttributes = TypeMerger.MergeTypes(controlHtmlAttributes, new { placeholder = html.DisplayNameFor(expression).ToString() });
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textbox");
-            controlHtmlAttributesDict = MergeKennzeichenClass(expression, controlHtmlAttributesDict);
+            controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
