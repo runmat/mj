@@ -548,18 +548,21 @@ namespace PortalMvcTools.Web
         }
 
 
-        public static MvcHtmlString FormMultiSelectListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null)
+        public static MvcHtmlString FormMultiSelectListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, 
+                                                                object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
-            return html.FormMultiSelectListForInner(expression, selectList, controlHtmlAttributes);
+            return html.FormMultiSelectListForInner(expression, selectList, controlHtmlAttributes, null, preControlHtml, postControlHtml);
         }
 
         public static MvcHtmlString FormMultiSelectListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<string> selectList,
-                                                                object controlHtmlAttributes = null)
+                                                                object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
-            return html.FormMultiSelectListForInner(expression, selectList.ToMultiSelectList(), controlHtmlAttributes);
+            return html.FormMultiSelectListForInner(expression, selectList.ToMultiSelectList(), controlHtmlAttributes, null, preControlHtml, postControlHtml);
         }
 
-        private static MvcHtmlString FormMultiSelectListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, string labelText = null)
+        private static MvcHtmlString FormMultiSelectListForInner<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, 
+            object controlHtmlAttributes = null, string labelText = null, 
+            Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)
         {
             var controlHtmlAttributesDict = controlHtmlAttributes.MergePropertiesStrictly(new { multiple = "multiple", @class = "hide" });
             controlHtmlAttributesDict.Add("data-placeholder", "..."); // because of the hyphen it is necessary to add this attribute here and not right above
@@ -574,6 +577,8 @@ namespace PortalMvcTools.Web
                 ValidationMessageHtml = html.ValidationMessageFor(expression),
                 IconCssClass = "",
                 ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);

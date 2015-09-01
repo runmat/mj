@@ -5154,6 +5154,8 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 .padding-10 { padding: 10px; }
 
 
+.valign-top { vertical-align:top!important }
+.bigger { font-size: 1.2em; }
 
 .icon-home:before {  content: "\f015"; }
 
@@ -5164,4 +5166,5 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 
 .icon-comments-o:before {  content: "\f0e6"; }
 
+.icon-shopping-cart:before {  content: "\f07a"; }
 
