@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using CKG.Base.Kernel;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using AutohausPortal.lib;
 using System.Data;
 
 namespace AutohausPortal.forms

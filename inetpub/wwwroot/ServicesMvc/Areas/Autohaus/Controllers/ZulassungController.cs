@@ -6,7 +6,6 @@ using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.Contracts;
-using CkgDomainLogic.Fahrzeugbestand.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
@@ -51,35 +50,17 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        // public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "")
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string massenzulassung = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
 
-            ViewModel.DataInit();
-
-            #region Massenzulassung
-            if (massenzulassung == "1")
-            {
-                if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
-                if (firstFahrzeug == null)
-                {
-                    return Content("Kein Fahrzeug ausgewählt.");
-                }
-            }
-            #endregion
+            ViewModel.DataInit(zulassungFromShoppingCart);
 
             ViewModel.SetParamFahrzeugAkte(fin);
             ViewModel.SetParamHalter(halterNr);
 
             ShoppingCartLoadAndCacheItems();
-            ShoppingCartTryEditItemAsViewModel();
 
             //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
@@ -92,7 +73,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [CkgApplication]
         public ActionResult IndexMultiReg()
         {
-            ViewModel.SetParamAbmeldung(null);
+            ViewModel.SetParamAbmeldung("");
+            ViewModel.SetParamVersandzulassung("");
+
             ViewModel.DataInit();
 
             if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
@@ -104,11 +87,10 @@ namespace ServicesMvc.Autohaus.Controllers
             if (firstFahrzeug == null)
             {
                 return Content("Kein Fahrzeug ausgewählt.");
-            }    
-            
-            ShoppingCartLoadAndCacheItems();
-            ShoppingCartTryEditItemAsViewModel();
+            }
 
+            ShoppingCartLoadAndCacheItems();
+            
             return View("Index", ViewModel);
         }
 
@@ -136,24 +118,6 @@ namespace ServicesMvc.Autohaus.Controllers
             return new EmptyResult();
         }
 
-        // 20150618 MMA ITA8076 Massenzulassung
-        public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
-        {
-            ViewModel.FinList.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-            allCount = ViewModel.FinList.Count();
-        }
-
-        public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
-        {
-            allSelectionCount = 0;
-            var fzg = ViewModel.FinList.FirstOrDefault(f => f.FIN == vin);
-            if (fzg == null)
-                return;
-            fzg.IsSelected = select;
-            allSelectionCount = ViewModel.FinList.Count(c => c.IsSelected);
-        }
-
         [GridAction]
         public ActionResult FahrzeugAuswahlAjaxBinding()
         {
@@ -173,9 +137,9 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             int allSelectionCount, allCount = 0;
             if (vin.IsNullOrEmpty())
-                SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
+                ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
             else
-                SelectFahrzeug(vin, isChecked, out allSelectionCount);
+                ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
             return Json(new
             {
                 allSelectionCount,
@@ -195,14 +159,15 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public JsonResult SetEvb(string fin, string evb)
         {
-            var result = ViewModel.SetEvb(fin, evb.ToUpper());
+            // var result = ViewModel.SetEvb(fin, evb.ToUpper());
+            var result = ViewModel.SetEvb(fin, evb);
             return Json(result == null ? new {ok = true, message = Localize.SaveSuccessful} : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
-        [HttpPost]
-        public JsonResult SetWunschKennz(string fin, string field, string kennz)
-        {
-            var result = ViewModel.SetWunschKennz(fin, field, kennz.ToUpper());
+        [HttpPost]        
+        public JsonResult SetFinValue(string fin, string field, string value)
+        {            
+            var result = ViewModel.SetFinValue(fin, field, value);
             return Json(result == null ? new { ok = true, message = Localize.SaveSuccessful } : new { ok = false, message = string.Format("{0}: {1}", Localize.SaveFailed, result) });
         }
 
@@ -212,6 +177,34 @@ namespace ServicesMvc.Autohaus.Controllers
             ViewModel.FilterFinList(filterValue, filterColumns);
 
             return new EmptyResult();
+        }
+
+        #endregion
+
+        #region Massenabmeldung
+
+        [CkgApplication]
+        public ActionResult IndexMultiCancellation()
+        {
+            ViewModel.SetParamAbmeldung("x");
+            ViewModel.SetParamVersandzulassung("");
+
+            ViewModel.DataInit();
+
+            if (ViewModel.SetFinList(TempData["SelectedFahrzeuge"]) == false)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var firstFahrzeug = ViewModel.FinList.FirstOrDefault();
+            if (firstFahrzeug == null)
+            {
+                return Content("Kein Fahrzeug ausgewählt.");
+            }
+
+            ShoppingCartLoadAndCacheItems();
+
+            return View("Index", ViewModel);
         }
 
         #endregion
@@ -546,23 +539,29 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult FahrzeugdatenForm(Fahrzeugdaten model)
         {
-            //var viewModel = AdressenPflegeViewModel;
-            //viewModel.ValidateModel(model, viewModel.InsertMode, ModelState.AddModelError);
-            //if (ModelState.IsValid)
-            //    model = viewModel.SaveItem(model, ModelState.AddModelError);
-            //model.IsValid = ModelState.IsValid;
-            //model.InsertModeTmp = viewModel.InsertMode;
-
-            // if (!ViewModel.FinList.Any(x => x.IsSelected))
-            if (ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung && !ViewModel.FinList.Any(x => x.IsSelected))
+            if ((ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung || ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung) && !ViewModel.FinList.Any(x => x.IsSelected))
             {
                 ModelState.AddModelError(string.Empty, "Kein Fahrzeug gewählt");   // Localize.NoDataFound
             }
 
+            // 20150828 MMA Zusätzliche Validierung, wenn Kennzeichenetiketten und Massenzulassung gewählt...
+            ViewModel.ValidateFahrzeugdatenForm(ModelState.AddModelError, model);
+
             if (ModelState.IsValid)
             {
                 ViewModel.SetFahrzeugdaten(model);
+
+                // 20150826 MMA Falls kein Kennzeichenlabel, etwaig gesetzte Werte auf null setzen...
+                if (!model.HasEtikett)
+                {
+                    model.Farbe = null;
+                    model.FzgModell = null;
+                }
             }
+
+            ViewData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+            ViewData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
+            ViewData["FahrzeugfarbenList"] = ViewModel.Fahrzeugfarben;
 
             return PartialView("Partial/FahrzeugdatenForm", model);
         }
@@ -607,8 +606,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
             var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
-            // return Json(new { kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen) });
-
             // 20150502 MMA Zusätzlich Zulassungsstellen-Url für Wunschkennzeichenreservierung zurückgeben
             return Json(new
                 {
@@ -649,7 +646,7 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: false, saveFromShoppingCart: false);
 
-            ShoppingCartItemSave();
+            ShoppingCartLoadAndCacheItems();
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -657,10 +654,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult Receipt()
         {
-
             ViewModel.Save(new List<Vorgang> { ViewModel.Zulassung }, saveDataToSap: true, saveFromShoppingCart: false);
 
-            ShoppingCartItemRemove(ViewModel.ObjectKey);
+            ShoppingCartLoadAndCacheItems();
 
             return PartialView("Partial/Receipt", ViewModel);
         }
@@ -669,41 +665,10 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Summary()
         {
             TempData["IsMassenzulassung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenzulassung;
+            TempData["IsMassenabmeldung"] = ViewModel.Zulassung.Zulassungsdaten.IsMassenabmeldung;
 
             return PartialView("Partial/Summary", ViewModel.Zulassung.CreateSummaryModel());
         }
-
-        #region SummaryAsPdf
-        public FileContentResult SummaryAsPdf(string id)
-        {
-            //var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
-            //if (zulassung == null)
-            //    return new FileContentResult(new byte[1], "");
-            //var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
-            //var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
-
-            var summaryPdfBytes = SummaryAsPdfGetPdfBytes(id);
-
-            return new FileContentResult(summaryPdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.Overview) };
-        }
-        /// <summary>
-        /// 20150528 MMA PDF-Generierung ausgelagert, damit auch von AllDocumentsAsPdf nutzbar
-        /// </summary>
-        /// <returns></returns>
-        private byte[] SummaryAsPdfGetPdfBytes(string id)
-        {
-            var zulassung = ViewModel.ZulassungenForReceipt.FirstOrDefault(z => z.BelegNr == id);
-
-            if (zulassung == null)
-                return PdfDocumentFactory.HtmlToPdf(Localize.NoDataFound); 
-
-            var summaryHtml = this.RenderPartialViewToString("Partial/SummaryPdf", zulassung.CreateSummaryModel());
-
-            var summaryPdfBytes = PdfDocumentFactory.HtmlToPdf(summaryHtml);
-
-            return summaryPdfBytes;
-        }
-        #endregion
 
         #region KundenformularAsPdf
         public FileContentResult KundenformularAsPdf(string id)
@@ -738,7 +703,7 @@ namespace ServicesMvc.Autohaus.Controllers
         #region ZusatzformularAsPdf
         public FileContentResult ZusatzformularAsPdf(string id, string typ)
         {
-            var dateiPfad = "";
+            string dateiPfad;
             var zusatzformularPdfBytes = ZusatzformularAsPdfGetPdfBytes(id, typ, out dateiPfad);
 
             return new FileContentResult(zusatzformularPdfBytes, "application/pdf") { FileDownloadName = Path.GetFileName(dateiPfad) };
@@ -812,7 +777,6 @@ namespace ServicesMvc.Autohaus.Controllers
         /// 20150527 MMA Generate one PDF file with all downloadable documents
         /// </summary>
         /// <returns></returns>
-        // public FileContentResult AllDocumentsAsPdf(string id, string typ)
         public FileContentResult AllDocumentsAsPdf()
         {
             var pdfsToMerge = new List<byte[]>();
@@ -820,25 +784,17 @@ namespace ServicesMvc.Autohaus.Controllers
             // Anhand des ViewModels ermitteln, welche Dokumente verfügbar sind (analog Buttons-Anzeige in Receipt.cshtml)
             // Sollten neue Buttons bzw. Berichte im View eingebunden werden, muss dies hier ggfl. berücksichtigt werden.
 
-            // Falls Auftragsliste soll nicht im PDF stehen, daher deaktiviert...
-            //if (ViewModel.AuftragslisteAvailable)
-            //{
-            //    pdfsToMerge.Add(AuftragslisteGetPdfBytes());
-            //}
-
             foreach (var zulassung in ViewModel.ZulassungenForReceipt)
             {
-                pdfsToMerge.Add(SummaryAsPdfGetPdfBytes(zulassung.BelegNr));                                                    // <a href="SummaryAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.YourOrderAsPdfFile' data-placement="top"> @Localize.PdfDownload <i class="icon-download-alt"></i></a>
-
                 if (zulassung.KundenformularPdf != null)
                 {
-                    pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));                                         // <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
+                    pdfsToMerge.Add(KundenformularAsPdfGetPdfBytes(zulassung.BelegNr));
                 }
 
                 foreach (var pdfFormular in zulassung.Zusatzformulare.Where(p => !p.IstAuftragsListe))
                 {
-                    var dateiPfad = "";
-                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ, out dateiPfad));   // <a href="ZusatzformularAsPdf?id=@pdfFormular.Belegnummer&typ=@pdfFormular.Typ" class="btn blue tooltips margin-right-5 margin-bottom-5"> @pdfFormular.LabelForGui <i class="icon-download-alt"></i></a>
+                    string dateiPfad;
+                    pdfsToMerge.Add(ZusatzformularAsPdfGetPdfBytes(pdfFormular.Belegnummer, pdfFormular.Typ, out dateiPfad));
                 }
             }
 
@@ -851,58 +807,75 @@ namespace ServicesMvc.Autohaus.Controllers
 
         #region Shopping Cart 
 
-        private const string ShoppingCartPersistanceKey = "KroschkeZulassung";
-
         protected override IEnumerable ShoppingCartLoadItems()
         {
-            return ShoppingCartLoadGenericItems<KroschkeZulassungViewModel>(ShoppingCartPersistanceKey)
-                    .Where(item => item.ModusAbmeldung == ViewModel.ModusAbmeldung);
-        }
-
-        protected void ShoppingCartTryEditItemAsViewModel()
-        {
-            var objectKey = ShoppingCartPopEditItemKey();
-            if (objectKey == null)
-                return;
-
-            var vm = ShoppingCartGetItem(objectKey) as KroschkeZulassungViewModel;
-            if (vm == null)
-                return;
-
-            InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
-            vm.DataMarkForRefresh();
-            ViewModel = vm;
-        }
-
-        private void ShoppingCartItemSave()
-        {
-            ShoppingCartSaveItem(ShoppingCartPersistanceKey, ViewModel);
+            return ViewModel.LoadZulassungenFromShoppingCart();
         }
 
         protected override void ShoppingCartFilterItems(string filterValue, string filterProperties)
         {
-            ShoppingCartFilterGenericItems<KroschkeZulassungViewModel>(filterValue, filterProperties);
+            ShoppingCartFilterGenericItems<Vorgang>(filterValue, filterProperties);
+        }
+
+        public override void ShoppingCartItemSelect(string objectKey, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var item = ShoppingCartItems.Cast<Vorgang>().FirstOrDefault(f => f.BelegNr == objectKey);
+            if (item == null)
+                return;
+
+            item.IsSelected = select;
+            allSelectionCount = ShoppingCartItems.Cast<Vorgang>().Count(c => c.IsSelected);
+        }
+
+        public override void ShoppingCartItemsSelect(bool select, out int allSelectionCount, out int allCount)
+        {
+            ShoppingCartItems.Cast<Vorgang>().ToList().ForEach(f => f.IsSelected = select);
+
+            allSelectionCount = ShoppingCartItems.Cast<Vorgang>().Count(c => c.IsSelected);
+            allCount = ShoppingCartItems.Cast<Vorgang>().Count();
+        }
+
+        [HttpPost]
+        public ActionResult ShoppingCartZulassungItemEdit(string id)
+        {
+            var item = ShoppingCartItems.Cast<Vorgang>().FirstOrDefault(v => v.BelegNr == id);
+
+            if (item == null)
+                return Json(new { ok = false, message = string.Format("{0}: {1}", Localize.Error, Localize.RecordNotFound) });
+
+            ViewModel.Zulassung = item;
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public ActionResult ShoppingCartZulassungItemRemove(string id)
+        {
+            var erg = ViewModel.DeleteShoppingCartVorgang(id);
+
+            ShoppingCartLoadAndCacheItems();
+
+            if (erg.IsNotNullOrEmpty())
+                return Json(new { ok = false, message = string.Format("{0}: {1}", Localize.Error, erg) });
+
+            return new EmptyResult();
         }
 
         [HttpPost]
         public override ActionResult ShoppingCartSelectedItemsSubmit()
         {
-            var warenkorb = ShoppingCartItems.Cast<KroschkeZulassungViewModel>().Where(item => item.IsSelected).ToListOrEmptyList();
-            foreach (var vm in warenkorb)
-            {
-                InitViewModelExpicit(vm, AppSettings, LogonContext, ViewModel.PartnerDataService, ViewModel.ZulassungDataService, ViewModel.FahrzeugAkteBestandDataService);
-                vm.DataMarkForRefresh();
-            }
+            var warenkorb = ShoppingCartItems.Cast<Vorgang>().Where(item => item.IsSelected).ToListOrEmptyList();
 
-            ViewModel.Save(warenkorb.Select(wk => wk.Zulassung).ToListOrEmptyList(), saveDataToSap: true, saveFromShoppingCart: true);
-
-            if (ViewModel.SaveErrorMessage.IsNullOrEmpty())
-            {
-                foreach (var vm in warenkorb)
-                    ShoppingCartItemRemove(vm.ObjectKey);
-            }
+            ViewModel.Save(warenkorb, saveDataToSap: true, saveFromShoppingCart: true);
 
             return PartialView("Partial/Receipt", ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult ZulassungFromShoppingCart(string id, string abmeldung = "", string versandzulassung = "")
+        {
+            return Index("", "", zulassungFromShoppingCart: "1");
         }
 
         #endregion

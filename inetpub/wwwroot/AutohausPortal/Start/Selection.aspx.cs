@@ -5,6 +5,7 @@ using System.Data.SqlClient;
 using System.Text;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.WebControls;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
@@ -55,7 +56,7 @@ namespace AutohausPortal.Start
                         {
                             Response.Redirect("ChangePassword.aspx?pwdreq=true");
                         }
-                        catch (Exception DoNothing) {}
+                        catch (Exception) {}
                     }
                     else
                     {
@@ -63,7 +64,7 @@ namespace AutohausPortal.Start
                         {
                             Response.Redirect(ConfigurationManager.AppSettings["Exit"]);   
                         }
-                        catch (Exception DoNothing) { }                        
+                        catch (Exception) { }                        
                     }
                 }
                 if (m_User.LoggedOn == false) 
@@ -72,9 +73,9 @@ namespace AutohausPortal.Start
                     {
                         Response.Redirect(ConfigurationManager.AppSettings["Exit"]);
                     }
-                    catch (Exception DoNothing) { }                     
+                    catch (Exception) { }                     
                 }
-                if (m_User.SessionID != Session.SessionID.ToString())
+                if (m_User.SessionID != Session.SessionID)
                 {
                     if (!m_User.Customer.AllowMultipleLogin)
                     {
@@ -88,7 +89,7 @@ namespace AutohausPortal.Start
                     {
                         Response.Redirect("ChangePassword.aspx?pwdreq=true");
                     }
-                    catch (Exception DoNothing) { }
+                    catch (Exception) { }
                 }
                 else if (m_User.InitialPassword)
                 {
@@ -96,7 +97,7 @@ namespace AutohausPortal.Start
                     {
                         Response.Redirect("FirstLogin.aspx");
                     }
-                    catch (Exception DoNothing) { }
+                    catch (Exception) { }
                 }
                 if (m_User.Email.Length > 0 && m_User.Customer.ForcePasswordQuestion && m_User.QuestionID == -1)
                 {
@@ -104,7 +105,7 @@ namespace AutohausPortal.Start
                     {
                         Response.Redirect("ChangePassword.aspx?qstreq=true");
                     }
-                    catch (Exception DoNothing) { }
+                    catch (Exception) { }
                 }
 
                 if (m_User.HighestAdminLevel > AdminLevel.None && m_User.FirstLevelAdmin == false)
@@ -113,7 +114,7 @@ namespace AutohausPortal.Start
                     {
                             Response.Redirect("../Admin/AdministrationMenu.aspx");
                     }
-                    catch (Exception DoNothing) { }
+                    catch (Exception) { }
                 }
                 String strStartMethod = null;
                 Boolean blnStartMethod = false;
@@ -129,7 +130,7 @@ namespace AutohausPortal.Start
                             {
                                 Response.Redirect(strStartMethod, false);
                             }
-                            catch (Exception DoNothing)
+                            catch (Exception)
                             {
                             }
                             blnStartMethod = true;
@@ -197,6 +198,8 @@ namespace AutohausPortal.Start
                     MenuToolsSource.RowFilter = "AppType='Tools' AND AppInMenu=1";
 
                     ShowAnsprechpartner();
+
+                    ShowAnzahlAuftraege();
                 }
 	        }
 	        catch (Exception ex)
@@ -258,20 +261,23 @@ namespace AutohausPortal.Start
                 }
             }
         }
+
+        private void ShowAnzahlAuftraege()
+        {
+            var objVorerf = new AHErfassung(ref m_User, m_App, "", "");
+            HyperLink lnkMenge = (HyperLink)Master.FindControl("lnkMenge");
+            var menge = objVorerf.GetAnzahlAuftraege("", "", this);
+            Session["AnzahlAuftraege"] = menge;
+            lnkMenge.Text = menge;
+        }
         
         public string GetUrlString(string strAppUrl, string strAppID)
         {
             var paramlist = "";
 
             getAppParameters(strAppID, ref paramlist);
-            if (strAppUrl.Substring(0, 4) == "http")
-            {
-                strAppUrl = (strAppUrl);
-            }
-            else
-            {
+            if (strAppUrl.Substring(0, 4).ToLower() != "http")
                 strAppUrl = MVC.MvcPrepareUrl(strAppUrl, strAppID, m_User.UserName);
-            }
 
             return strAppUrl;
         }
@@ -300,7 +306,7 @@ namespace AutohausPortal.Start
                 }
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 paramlist = string.Empty;
                 return false;

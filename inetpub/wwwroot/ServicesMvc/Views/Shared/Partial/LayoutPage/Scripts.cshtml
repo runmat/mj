@@ -354,6 +354,10 @@
         if (typeof (rowBackgroundSelectionDisabled) == 'undefined' || !rowBackgroundSelectionDisabled)
             $("#" + gridName + " table tbody tr").click(function (e) {
                 var clickedElement = e.target;
+                
+                if (clickedElement.type == "text")  // 20150813 MMA Prevent row selection if selected cell contains a text field
+                    return;
+                
                 var tr = $(this);
                 tr.find('td input[type=checkbox]').each(function () {
                     if (this == clickedElement)
@@ -887,5 +891,34 @@
         window.location = window.location.pathname;
     }
 
-    
+    // Evb-Prüfung bzw. Versichereranzeige
+    function InitEvbVersInfo(evbFieldId, infoDivId) {
+        // Validierungen
+        var missingFields = false;
+        if ($('#' + evbFieldId).length == 0 || $('#' + infoDivId).length == 0)
+            return; // Nicht initiieren, falls eines der Felder fehlt. Erforderlich wg. Nutzung von Partials und ggf. zentralem InitEvbVersInfo-Aufruf in index-Datei
+
+        if(!$('#' + infoDivId).hasClass('evb-vers-info'))
+            $('#' + infoDivId).addClass('evb-vers-info');
+
+        // Sofortige Anzeige der Versicherungsdaten
+        ShowEvbVersInfo(evbFieldId, infoDivId);
+
+        // Anzeige der Versicherungsdaten nach Änderung des Evb-Feldes
+        $('body').off('change', '#' + evbFieldId);
+        $('body').on('change', '#' + evbFieldId, function() {
+            ShowEvbVersInfo(evbFieldId, infoDivId);
+        });
+    }
+    function ShowEvbVersInfo(evbFieldId, infoDivId) {
+        var evb = $('#' + evbFieldId).val();
+        $.ajax({
+            type: "POST",
+            url: "/ServicesMvc/DomainCommon/GetEvbVersInfo",
+            data: { evb: evb },
+            success: function (result) {
+                $('#' + infoDivId).html(result.message);
+            }
+        });
+    }
 </script>
