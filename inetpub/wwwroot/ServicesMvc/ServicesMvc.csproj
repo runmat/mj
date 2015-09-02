@@ -4531,6 +4531,10 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
+    <Content Include="Views\Finance\ReportVersendungen.cshtml" />
+    <Content Include="Views\Finance\Versendungen\Grid.cshtml" />
+    <Content Include="Views\Finance\Versendungen\Suche.cshtml" />
+    <Content Include="Views\Finance\Versendungen\GridSumme.cshtml" />
     <Content Include="Views\Wfm\Durchlauf.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Grids.cshtml" />
     <Content Include="Views\Wfm\Durchlauf\Suche.cshtml" />

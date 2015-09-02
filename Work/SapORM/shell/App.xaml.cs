@@ -244,7 +244,7 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG, I_VERKZ, I_WEB_USER", "10026883", "N", "CARLM");
             //new FunctionReflector("Z_DPM_LIST_ZZAKTSPERRE").WriteOrmForExportTableStructures("I_AG", "10026883");
 
-            //new FunctionReflector("Z_dpm_Read_Prot_Telefonate_01").WriteOrmForExportTableStructures("I_AG", "10026883");
+//new FunctionReflector("Z_dpm_Read_Prot_Telefonate_01").WriteOrmForExportTableStructures("I_AG", "10026883");
             //new FunctionReflector("Z_DPM_UPLOAD_GRUDAT_TIP_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "10065502");
 
 
@@ -456,6 +456,7 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_FFD_DATEN_OHNE_DOKUMENTE").WriteOrmForExportTableStructures("I_KUNNR_AG", "324562");
 
+            //new FunctionReflector("Z_DPM_EXP_VERS_AUSWERTUNG_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "324562");
             //new FunctionReflector("Z_ZANF_READ_DATEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KLAERF", "329608", "X");
 
 
