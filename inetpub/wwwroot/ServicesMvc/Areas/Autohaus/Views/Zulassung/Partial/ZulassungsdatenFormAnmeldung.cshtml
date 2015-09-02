@@ -14,8 +14,7 @@
                                     </i>@Localize.LoadDistrictFromOwnerAddress</a>
 @Html.SpanAlert("kfzKreisHint")
 </text>)
-@*@Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 })*@
-@Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml: @<text><div class="text-success" id="EvbInfo"></div></text>)
+@Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml: @<text><div class="alert" id="EvbInfo"></div></text>)
 <div id="divWkzLink">
     <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class=" white margin-left-10 margin-right-20 margin-bottom-10 fontBold fontUnderline">
         <i class="margin-right-5"></i>@Localize.AssignKennzeichen</a>

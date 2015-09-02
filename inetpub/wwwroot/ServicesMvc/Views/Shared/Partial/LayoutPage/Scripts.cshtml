@@ -917,7 +917,14 @@
             url: "/ServicesMvc/DomainCommon/GetEvbVersInfo",
             data: { evb: evb },
             success: function (result) {
-                $('#' + infoDivId).html(result.message);
+                $('#' + infoDivId).html("<span>" + result.message + "</span>");
+                if (result.isValid) {
+                    $('#' + infoDivId).removeClass("alert-warning");
+                    $('#' + infoDivId).addClass("alert-success");
+                } else {
+                    $('#' + infoDivId).removeClass("alert-success");
+                    $('#' + infoDivId).addClass("alert alert-warning");
+                }
             }
         });
     }

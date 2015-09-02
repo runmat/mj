@@ -183,7 +183,7 @@
             
             @Html.FormDropDownListFor(m => m.FahrzeugartId, Fahrzeugdaten.FahrzeugartList.ToSelectList(), new { @class = "m-wrap small" })
 
-            @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelColumns();" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">@Localize.HasEtikett</label></text>)
+            @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelColumns();" })
         }
         else
         {
@@ -202,7 +202,7 @@
                 @Html.FormTextBoxFor(m => m.Kostenstelle, new { @class = "m-wrap medium uppercase" })
             }
             
-            @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" }, labelHidden: true, postControlHtml: @<text><label class="checkbox">@Localize.HasEtikett</label></text>)
+            @Html.FormCheckBoxFor(m => m.HasEtikett, new { @class = "m-wrap", onChange = "ShowHideKennzLabelDiv();" })
             <div id="ValidationMsgHasEtikett"></div>
             <div id="KennzeichenLabelFields">
                 @Html.FormTextBoxFor(m => m.Farbe, new { @class = "m-wrap medium colorautocomplete", col = "left" })

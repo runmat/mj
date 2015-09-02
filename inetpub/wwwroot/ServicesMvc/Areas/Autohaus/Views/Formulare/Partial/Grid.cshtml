@@ -1,7 +1,12 @@
-﻿@using CkgDomainLogic.Autohaus.Models
+﻿@model CkgDomainLogic.Autohaus.ViewModels.FormulareViewModel
+@using CkgDomainLogic.Autohaus.Models
 @{
     var gridName = "GridFormulare";
+
+    var zulassungsKreisAsText = Model.Zulassungskreise.FirstOrDefault(m => m.KreisKz == Model.Selektor.Zulassungskreis).KreisBez;
 }
+
+<h4 class="margin-bottom-20">@Localize.RegistrationDistrict <span class="bold"> @zulassungsKreisAsText</span>:</h4>
 
 @(Html.XTelerik()
     .XGrid<PdfFormular>()

@@ -1124,45 +1124,23 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ValidateFahrzeugdatenForm(Action<string, string> addModelError, Fahrzeugdaten fahrzeugdatenModel)
         {
-
             if (fahrzeugdatenModel.HasEtikett && Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 if (FinList.Any(x => x.IsSelected && x.Farbe.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarColor, Localize.Required.ToLower()));       
 
                 if (FinList.Any(x => x.IsSelected && x.FzgModell.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    
             }
+
             if (fahrzeugdatenModel.HasEtikett && !Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 if (fahrzeugdatenModel.Farbe.IsNullOrEmpty())
-                    addModelError("Farbe", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));
+                    addModelError("Farbe", string.Format("{0} {1}", Localize.CarColor, Localize.Required.ToLower()));       
 
                 if (fahrzeugdatenModel.FzgModell.IsNullOrEmpty())
-                    addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    // ModelState.AddModelError("HasEtikett", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));
+                    addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    
             }
         }
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public void ValidateEtikettenlabelFields()
-        //{
-        //    Zulassung.Fahrzeugdaten.Farbe = "valid";
-        //    Zulassung.Fahrzeugdaten.FzgModell = "valid";
-
-        //    if (FinList.Any(x => x.Farbe.IsNullOrEmpty()))
-        //        Zulassung.Fahrzeugdaten.Farbe = null;
-
-        //    if (FinList.Any(x => x.FzgModell.IsNullOrEmpty()))
-        //        Zulassung.Fahrzeugdaten.FzgModell = null;
-
-        //    //if (FinList.Any(x => x.Farbe.IsNullOrEmpty()) || FinList.Any(x => x.FzgModell.IsNullOrEmpty());)
-        //    //{
-            
-        //    // ModelState.AddModelError("SelectedGridAction", "Please select an option");
-        //    //    Zulassung.Fahrzeugdaten.Farbe
-        //    //}
-        //}
     }
 }
