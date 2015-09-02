@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Web.Script.Serialization;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Zanf.Models
 {
+    [GridColumnsAutoPersist]
     public class ZulassungsAnforderung
     {
         [LocalizedDisplay(LocalizeConstants.RequestNo)]
         public string AnforderungsNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.OrderID)]
+        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Service)]
@@ -27,7 +29,7 @@ namespace CkgDomainLogic.Zanf.Models
         [LocalizedDisplay(LocalizeConstants.OrderDate)]
         public DateTime? AuftragsDatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
+        [LocalizedDisplay(LocalizeConstants.TargetedRegistrationDate)]
         public DateTime? ZulassungsDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
@@ -54,6 +56,10 @@ namespace CkgDomainLogic.Zanf.Models
         [LocalizedDisplay(LocalizeConstants.Dealer)]
         public string AdresseHaendler { get { return Haendler.Adresse; } }
 
+        [LocalizedDisplay(LocalizeConstants.ClarificationCaseText)]
+        public string KlaerfallTextPreview { get; set; }
+
+        [ScriptIgnore]
         [LocalizedDisplay(LocalizeConstants.ClarificationCaseText)]
         public string KlaerfallText { get; set; }
 
