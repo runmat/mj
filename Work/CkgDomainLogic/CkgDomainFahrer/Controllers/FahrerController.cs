@@ -344,6 +344,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
+        public JsonResult DeleteProtokoll()
+        {
+            var erg = ViewModel.ProtokollLoeschen();
+
+            return Json(String.IsNullOrEmpty(erg) ? new { ok = true, message = Localize.DeleteSuccessful } : new { ok = false, message = String.Format("{0}: {1}", Localize.DeleteFailed, erg) });
+        }
+
+        [HttpPost]
         public ActionResult FilterGridFahrerProtokolle(string filterValue, string filterColumns)
         {
             ViewModel.FilterFahrerProtokolle(filterValue, filterColumns);

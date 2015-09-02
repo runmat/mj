@@ -2,6 +2,8 @@
 
 <h3 class="page-title" id="headerTitle">@Localize.Fahrer_Protokollarchivierung<small></small></h3>
 
+@Html.SpanAlert("spanAlertProtokollArchivierung")
+
 <div id="divFahrerProtokolleGrid">
     @Html.Partial("Partial/ProtokollArchivierung/Grid", Model)
 </div>
@@ -74,6 +76,27 @@
     function AjaxFormProtokollEditClose() {
         $("#divFahrerProtokolleDetail").slideUp(function () { $("#divFahrerProtokolleGrid").delay(200).slideDown(); window.scrollTo(0, 0); });
         $("#divFahrerProtokolleGrid").slideDown();
+    }
+
+    function DeleteProtokoll() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "DeleteProtokoll",
+            loadingShow: true,
+            success: function (result) {
+                FormPreparePrivateAjax();
+                
+                if (result.ok == true) {
+                    AjaxFormProtokollEditClose();
+                    SpanAlertSuccess("spanAlertProtokollArchivierung", result.message, 3000);
+                    GridRefresh();
+                }
+                if (result.ok == false) {
+                    SpanAlertWarning("spanAlertProtokollArchivierung", result.message, 5000);
+                }
+            }
+        });
     }
 
 </script>

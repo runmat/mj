@@ -103,6 +103,6 @@ namespace CkgDomainLogic.Fahrer.Models
         public static string FahrerProtokollFilenamePattern { get { return "{0}_{1}_P_{2}_{3}.pdf"; } }
 
         [LocalizedDisplay(LocalizeConstants.FileName)]
-        public string Filename { get { return string.Format(FahrerProtokollFilenamePattern, KundenNr.PadLeft(10, '0'), AuftragsNr.PadLeft(10, '0'), ProtokollName, Fahrt); } }
+        public string Filename { get { return string.Format(FahrerProtokollFilenamePattern, KundenNr.PadLeft(10, '0'), AuftragsNr.PadLeft(10, '0'), ProtokollArt, Fahrt); } }
     }
 }

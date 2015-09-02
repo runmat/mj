@@ -434,12 +434,22 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             {
                 var teile = Path.GetFileNameWithoutExtension(datei.Name).NotNullOrEmpty().Split('_');
 
+                var protArt = teile[3];
+
+                if (teile.Length > 5)
+                {
+                    for (var i = 4; i < (teile.Length - 1); i++)
+                    {
+                        protArt += "_" + teile[i];
+                    }
+                }
+
                 FahrerProtokolle.Add(new FahrerAuftragsProtokoll
                 {
                     KundenNr = teile[0],
                     AuftragsNr = teile[1],
-                    ProtokollArt = teile[3],
-                    Fahrt = teile[4]
+                    ProtokollArt = protArt,
+                    Fahrt = teile[teile.Length - 1]
                 });
             }
 
@@ -540,6 +550,30 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             }
 
             return true;
+        }
+
+        public string ProtokollLoeschen()
+        {
+            try
+            {
+                var prot = FahrerProtokolle.FirstOrDefault(p => p.Filename == ProtokollEditFileName);
+
+                if (prot == null)
+                    return Localize.Error;
+
+                var dateiPfad = Path.Combine(FotoUploadPath, prot.Filename);
+
+                File.Delete(dateiPfad);
+
+                FahrerProtokolle.RemoveAll(p => p.Filename == ProtokollEditFileName);
+                PropertyCacheClear(this, m => m.FahrerProtokolleFiltered);
+
+                return "";
+            }
+            catch (Exception ex)
+            {
+                return String.Format("{0}: {1}", Localize.Error, ex.Message);
+            }
         }
 
         #region Filter
