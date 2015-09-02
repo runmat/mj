@@ -135,7 +135,7 @@ namespace VsSolutionPersister
             return Path.Combine(AppDataPath, item.Name);
         }
 
-        readonly string[] _filesToCopy = { "{0}.csproj.user", "{0}.tss", "{0}.suo", "{0}.v12.suo" };
+        readonly string[] _filesToCopy = { "{0}.csproj.user", "{0}.tss", "{0}.suo", "{0}.v12.suo", ".vs" };
 
         public void LoadSolutionItemFiles(SolutionItem item)
         {
@@ -145,8 +145,15 @@ namespace VsSolutionPersister
 
             for (var i = 0; i < _filesToCopy.Length; i++)
             {
-                var fileToCopy = string.Format(_filesToCopy[i], SolutionName);
-                FileService.TryFileCopy(Path.Combine(itemFolder, fileToCopy), Path.Combine(SolutionPath, fileToCopy));
+                if (_filesToCopy[i].Contains("{"))
+                {
+                    var fileToCopy = string.Format(_filesToCopy[i], SolutionName);
+                    FileService.TryFileCopy(Path.Combine(itemFolder, fileToCopy), Path.Combine(SolutionPath, fileToCopy));
+                }
+                else
+                {
+                    FileService.CopyDirectory(Path.Combine(itemFolder, _filesToCopy[i]), Path.Combine(SolutionPath, _filesToCopy[i]));
+                }
             }
         }
         public void SaveSolutionItemFiles(SolutionItem item)
@@ -160,8 +167,15 @@ namespace VsSolutionPersister
 
             for (var i = 0; i < _filesToCopy.Length; i++)
             {
-                var fileToCopy = string.Format(_filesToCopy[i], SolutionName);
-                FileService.TryFileCopy(Path.Combine(SolutionPath, fileToCopy), Path.Combine(itemFolder, fileToCopy));
+                if (_filesToCopy[i].Contains("{"))
+                {
+                    var fileToCopy = string.Format(_filesToCopy[i], SolutionName);
+                    FileService.TryFileCopy(Path.Combine(SolutionPath, fileToCopy), Path.Combine(itemFolder, fileToCopy));
+                }
+                else
+                {
+                    FileService.CopyDirectory(Path.Combine(SolutionPath, _filesToCopy[i]), Path.Combine(itemFolder, _filesToCopy[i]));
+                }
             }
         }
 
