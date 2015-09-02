@@ -53,7 +53,7 @@ namespace CkgDomainLogic.Fahrer.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             DateTime tmpDat;
-            if (!String.IsNullOrEmpty(AbholUhrzeit) && !DateTime.TryParseExact(AbholUhrzeit, "HHmm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
+            if (!String.IsNullOrEmpty(AbholUhrzeit) && !DateTime.TryParseExact(AbholUhrzeit, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
                 yield return new ValidationResult(Localize.TimeInvalid, new[] { "AbholUhrzeit" });
         }
     }

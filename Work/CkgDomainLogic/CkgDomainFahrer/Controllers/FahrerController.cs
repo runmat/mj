@@ -348,7 +348,7 @@ namespace ServicesMvc.Controllers
         {
             var erg = ViewModel.ProtokollLoeschen();
 
-            return Json(String.IsNullOrEmpty(erg) ? new { ok = true, message = Localize.DeleteSuccessful } : new { ok = false, message = String.Format("{0}: {1}", Localize.DeleteFailed, erg) });
+            return Json(String.IsNullOrEmpty(erg) ? new { ok = true, message = "" } : new { ok = false, message = String.Format("{0}: {1}", Localize.DeleteFailed, erg) });
         }
 
         [HttpPost]
