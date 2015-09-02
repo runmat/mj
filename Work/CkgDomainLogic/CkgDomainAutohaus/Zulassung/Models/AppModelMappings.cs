@@ -342,7 +342,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.Fahrzeugdaten.HasEtikett = s.ETIKETT.XToBool();
                         d.Fahrzeugdaten.Farbe = s.FARBE;
                         d.Fahrzeugdaten.FzgModell = s.FZGTYP;
-
+                        
                     }));
             }
         }
@@ -467,6 +467,8 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.RESERVKENN_JN = s.Zulassungsdaten.KennzeichenReserviert.BoolToX();
                             d.WUNSCHKENN_JN = s.Zulassungsdaten.WunschkennzeichenVorhanden.BoolToX();
                             d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;
+
+                            d.RES_NAME = s.Zulassungsdaten.ReservierungsName;
 
                             Func<string, string> formatKennzeichen = (kennzeichen => kennzeichen.NotNullOr(Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen)));
 

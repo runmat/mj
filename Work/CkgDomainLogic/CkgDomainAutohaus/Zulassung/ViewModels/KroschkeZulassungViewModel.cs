@@ -1080,6 +1080,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
 
+                    if (!fahrzeugAkteBestand.ResKennz.IsNullOrEmpty() ||
+                        !fahrzeugAkteBestand.ReservationNr.IsNullOrEmpty() ||
+                        !fahrzeugAkteBestand.ReservationName.IsNullOrEmpty())
+                    {                        
+                        singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.ResKennz;
+                        singleZulassung.Zulassungsdaten.ReservierungsNr = fahrzeugAkteBestand.ReservationNr;
+                        singleZulassung.Zulassungsdaten.ReservierungsName = fahrzeugAkteBestand.ReservationName;
+                        singleZulassung.Zulassungsdaten.KennzeichenReserviert = true;
+                    }
+
                     // 20150826 MMA                    
                     singleZulassung.Fahrzeugdaten.Farbe = fahrzeugAkteBestand.Farbe;
                     singleZulassung.Fahrzeugdaten.FzgModell = fahrzeugAkteBestand.FzgModell;
@@ -1162,9 +1172,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 var zulkreis = string.Format("{0}{1}",fahrzeugdatenModel.Zulassungskreis, "-");
                 var tmpFinList = FinList.Where(x => x.IsSelected);
      
-                // Alle entfernen, die leere Wunschkennzeichen oder nur zulkreis enthalten...
                 tmpFinList = tmpFinList.Where(x => ((!x.WunschKennz1.IsNullOrEmpty() && x.WunschKennz1 != zulkreis) || (!x.WunschKennz2.IsNullOrEmpty() && x.WunschKennz2 != zulkreis) || (!x.WunschKennz3.IsNullOrEmpty() && x.WunschKennz3 != zulkreis)));
-                // Alle entfernen, die Reservierungs-Infos enthalten...
                 tmpFinList = tmpFinList.Where(x => (!x.ResKennz.IsNullOrEmpty() || !x.ReservationNr.IsNullOrEmpty() || !x.ReservationName.IsNullOrEmpty()));
 
                 if (tmpFinList.Any())
