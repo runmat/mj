@@ -4,7 +4,6 @@ using GeneralTools.Resources;
 
 namespace CkgDomainLogic.Zanf.Models
 {
-    [GridColumnsAutoPersist]
     public class ZulassungsAnforderung
     {
         [LocalizedDisplay(LocalizeConstants.RequestNo)]
