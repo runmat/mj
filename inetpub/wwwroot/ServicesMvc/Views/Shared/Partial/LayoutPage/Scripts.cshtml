@@ -55,6 +55,7 @@
         //UIJQueryUI.InitParameters();
 
         FormInitStyles();
+        InitResponsiveControlWidths();
 
         LoadingHide();
 
@@ -75,6 +76,7 @@
         App.init(true);
 
         FormInitStyles(id);
+        InitResponsiveControlWidthsAjax();
 
         FormPrepareAjaxLayoutPrivate();
     }
@@ -88,10 +90,7 @@
         FormInitValidationErrorStyles();
 
         FormInitDatePicker(id);
-        //alert("FormDateRangePickerInit");
         FormDateRangePickerInit();
-
-        InitResponsiveControlWidths();
 
         FormInitKennzeichenTextboxes();
     }
@@ -554,25 +553,17 @@
         location.replace('/ServicesMvc/Login/ChangePasswordLoggedOn');
     }
 
+    function InitResponsiveControlWidthsAjax() {
+        HandleResponsiveControlWidths();
+    }
+    
     function InitResponsiveControlWidths() {
-        
-        setTimeout(function() {
-            HandleResponsiveControlWidths();
-            setTimeout(function() {
-                HandleResponsiveControlWidths();
-                setTimeout(function() {
-                    HandleResponsiveControlWidths();
-                    setTimeout(function() {
-                        HandleResponsiveControlWidths();
-                    }, 300);
-                }, 400);
-            }, 50);
-        }, 10);
+        InitResponsiveControlWidthsAjax();
 
         $('.page-sidebar').on('click', '.sidebar-toggler', function(e) {
             HandleResponsiveControlWidths();
         });
-        $(window).on('scroll', function(e) {
+        $(window).off('scroll').on('scroll', function(e) {
             HandleResponsiveControlWidths();
         });
 
@@ -587,12 +578,10 @@
         });
         
         $( window ).resize(function() {
-            setTimeout(function() {
-                HandleResponsiveControlWidths();
-            }, 500);
+            HandleResponsiveControlWidths();
         });
         
-        $('a.btn-navbar').off('click').on('click', function(e) {
+        $('a.btn-navbar').on('click', function(e) {
             MetronicSidebarEnforceOpen();
         });
     }    
@@ -646,6 +635,8 @@
                 e.css("width", eWidthReset);
             });
         });
+
+        console.log("HandleResponsiveControlWidths")
     }
     
     function FormInitJQueryExtensions() {
