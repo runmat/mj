@@ -4,7 +4,6 @@ using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AppZulassungsdienst.lib;
 using System.Data;
-using System.Web.UI.HtmlControls;
 using GeneralTools.Models;
 
 namespace AppZulassungsdienst.forms
@@ -59,33 +58,35 @@ namespace AppZulassungsdienst.forms
         /// <param name="e">EventArgs</param>
         protected void chkVollstaendig_CheckedChanged(object sender, EventArgs e)
         {
-            Boolean tmpBool;
-            CheckBox check = (CheckBox)sender;
-            GridViewRow tmpGridRow = (GridViewRow)(check.Parent.Parent);
-            Label tmpLabel = (Label)tmpGridRow.FindControl("lblEAN");
-            if (check.Checked)
+            var chkVollst = (CheckBox)sender;
+
+            var tmprow = chkVollst.Parent.Parent;
+
+            var lblEAN = (Label)tmprow.FindControl("lblEAN");
+            var txtMenge = (TextBox)tmprow.FindControl("txtPositionLieferMenge");
+            var rbJa = (RadioButton)tmprow.FindControl("rbPositionAbgeschlossenJA");
+            var rbNein = (RadioButton)tmprow.FindControl("rbPositionAbgeschlossenNEIN");
+
+            var tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
+
+            var vollst = chkVollst.Checked;
+
+            if (vollst)
             {
-                objWareneingang.Bestellpositionen.Select("Bestellposition='" + tmpLabel.Text + "'")[0]["PositionVollstaendig"] = "X";
-                objWareneingang.Bestellpositionen.Select("Bestellposition='" + tmpLabel.Text + "'")[0]["PositionAbgeschlossen"] = "J";
-                tmpBool = false;
+                tmpPosition["PositionVollstaendig"] = "X";
+                tmpPosition["PositionAbgeschlossen"] = "J";
+                rbJa.Checked = true;
+                tmpPosition["PositionLieferMenge"] = tmpPosition["BestellteMenge"];
+                txtMenge.Text = tmpPosition["BestellteMenge"].ToString();
             }
             else
             {
-                objWareneingang.Bestellpositionen.Select("Bestellposition='" + tmpLabel.Text + "'")[0]["PositionVollstaendig"] = "";
-                tmpBool = true;
+                tmpPosition["PositionVollstaendig"] = "";
             }
 
-            TextBox tmpTextbox;
-            RadioButton tmpRadio;
-
-            tmpTextbox = (TextBox)tmpGridRow.FindControl("txtPositionLieferMenge");
-            tmpTextbox.Enabled = tmpBool;
-            tmpRadio = (RadioButton)tmpGridRow.FindControl("rbPositionAbgeschlossenJA");
-            tmpRadio.Enabled = tmpBool;
-            tmpRadio.Checked = false;
-            tmpRadio = (RadioButton)tmpGridRow.FindControl("rbPositionAbgeschlossenNEIN");
-            tmpRadio.Enabled = tmpBool;
-            tmpRadio.Checked = false;
+            txtMenge.Enabled = !vollst;
+            rbJa.Enabled = !vollst;
+            rbNein.Enabled = !vollst;
         }
 
         /// <summary>
@@ -99,13 +100,11 @@ namespace AppZulassungsdienst.forms
             {
                 CheckBox tmpChkBox = (CheckBox)e.Row.FindControl("chkVollstaendig");
                 TextBox tmpTxtBox = (TextBox)e.Row.FindControl("txtPositionLieferMenge");
-                HtmlInputHidden tmphidden = (HtmlInputHidden)e.Row.FindControl("txtPositionLieferMenge2");
                 RadioButton tmprbJa = (RadioButton)e.Row.FindControl("rbPositionAbgeschlossenJA");
                 RadioButton tmprbNein = (RadioButton)e.Row.FindControl("rbPositionAbgeschlossenNEIN");
 
                 tmpChkBox.Attributes.Add("onclick", "javascript:checkedRow('" + tmpChkBox.ClientID + "' , '"
                                                 + tmpTxtBox.ClientID + "','" + tmprbJa.ClientID + "','" + tmprbNein.ClientID + "')");
-                tmpTxtBox.Attributes.Add("onkeyup", "javascript:MengeChanged('" + tmphidden.ClientID + "' , '" + tmpTxtBox.ClientID + "')");
             }
         }
 
@@ -130,16 +129,6 @@ namespace AppZulassungsdienst.forms
             Boolean tmpValid = true;
 
             Checkgrid();
-            foreach (GridViewRow tmpRow in GridView1.Rows)
-            {
-                Label lblEAN = (Label)tmpRow.FindControl("lblEAN");
-                DataRow tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
-
-                if (tmpPosition["PositionVollstaendig"].ToString() == "0" && tmpPosition["PositionLieferMenge"] == DBNull.Value)
-                {
-                    tmpValid = false;
-                }
-            }
 
             if (!objWareneingang.IstUmlagerung && String.IsNullOrEmpty(txtLieferscheinnummer.Text))
             {
@@ -163,49 +152,24 @@ namespace AppZulassungsdienst.forms
 
             Fillgrid(0, "");
 
+            foreach (GridViewRow tmpRow in GridView1.Rows)
+            {
+                Label lblEAN = (Label)tmpRow.FindControl("lblEAN");
+                DataRow tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
+
+                if ((tmpPosition["PositionAbgeschlossen"].ToString() == "" && !objWareneingang.IstUmlagerung) || tmpPosition["PositionLieferMenge"] == DBNull.Value)
+                {
+                    tmpValid = false;
+                    tmpRow.BackColor = System.Drawing.Color.Red;
+                }
+                else
+                {
+                    tmpRow.BorderColor = System.Drawing.Color.Empty;
+                }
+            }
+
             if (!tmpValid)
             {
-                foreach (GridViewRow tmpRow in GridView1.Rows)
-                {
-                    Label lblEAN = (Label)tmpRow.FindControl("lblEAN");
-                    DataRow tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
-
-                    if (tmpPosition["PositionAbgeschlossen"].ToString() == "N" && tmpPosition["PositionLieferMenge"] == DBNull.Value ||
-                        tmpPosition["PositionAbgeschlossen"].ToString() == "" && tmpPosition["PositionVollstaendig"].ToString() == "0")
-                    {
-                        tmpRow.BackColor = System.Drawing.Color.Red;
-                    }
-                    else if (tmpPosition["PositionVollstaendig"].ToString() == "0" && tmpPosition["PositionAbgeschlossen"].ToString() == "J"
-                        && tmpPosition["PositionLieferMenge"] == DBNull.Value)
-                    {
-                        tmpRow.BackColor = System.Drawing.Color.Red;
-                    }
-                    else
-                    {
-                        tmpRow.BorderColor = System.Drawing.Color.Empty;
-                    }
-
-                    if (tmpPosition["PositionAbgeschlossen"].ToString() == "0" && tmpPosition["PositionLieferMenge"] == DBNull.Value)
-                    {
-                        tmpRow.BackColor = System.Drawing.Color.Red;
-                    }
-                    else
-                    {
-                        tmpRow.BorderColor = System.Drawing.Color.Empty;
-                    }
-
-                    if (objWareneingang.IstUmlagerung)
-                    {
-                        if (tmpPosition["PositionVollstaendig"].ToString() == "0" && tmpPosition["PositionLieferMenge"] == DBNull.Value)
-                        {
-                            tmpRow.BackColor = System.Drawing.Color.Red;
-                        }
-                        else
-                        {
-                            tmpRow.BorderColor = System.Drawing.Color.Empty;
-                        }
-                    }
-                }
                 lblError.Text = "Bitte prüfen Sie rot markierte Positionen";
             }
             else
@@ -413,17 +377,6 @@ namespace AppZulassungsdienst.forms
                 GridView2.PageIndex = intTempPageIndex;
                 GridView2.DataSource = tmpDataView;
                 GridView2.DataBind();
-
-                foreach (GridViewRow tmpRow in GridView2.Rows)
-                {
-                    Label lblEAN = (Label)tmpRow.FindControl("lblEAN");
-                    DataRow tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
-                    if (tmpPosition["PositionLieferMenge"] == DBNull.Value)
-                    {
-                        Label lblLieferMenge = (Label)tmpRow.FindControl("lblLieferMenge");
-                        lblLieferMenge.Text = tmpPosition["BestellteMenge"].ToString();
-                    }
-                }
             }
         }
 
@@ -434,27 +387,21 @@ namespace AppZulassungsdienst.forms
         {
             foreach (GridViewRow tmprow in GridView1.Rows)
             {
-                Label lblEAN = (Label)tmprow.FindControl("lblEAN");
-                DataRow tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
-                HtmlInputHidden tmphidden = (HtmlInputHidden)tmprow.FindControl("txtPositionLieferMenge2");
-                String tmpMenge = tmphidden.Value;
+                var lblEAN = (Label)tmprow.FindControl("lblEAN");
+                var txtMenge = (TextBox)tmprow.FindControl("txtPositionLieferMenge");
+                var chkVollst = (CheckBox)tmprow.FindControl("chkVollstaendig");
+                var rbJa = (RadioButton)tmprow.FindControl("rbPositionAbgeschlossenJA");
+                var rbNein = (RadioButton)tmprow.FindControl("rbPositionAbgeschlossenNEIN");
 
-                if (!String.IsNullOrEmpty(tmpMenge))
-                    tmpPosition["PositionLieferMenge"] = tmpMenge;
+                var tmpPosition = objWareneingang.Bestellpositionen.Select("Bestellposition='" + lblEAN.Text + "'")[0];
+
+                if (!String.IsNullOrEmpty(txtMenge.Text))
+                    tmpPosition["PositionLieferMenge"] = txtMenge.Text;
                 else
                     tmpPosition["PositionLieferMenge"] = DBNull.Value;
 
-                var sVollAll = (((CheckBox) tmprow.FindControl("chkVollstaendig")).Checked ? "X" : "0");
-                var sVollRowJa = (((RadioButton) tmprow.FindControl("rbPositionAbgeschlossenJA")).Checked ? "J" : "");
-                if (String.IsNullOrEmpty(sVollRowJa))
-                    sVollRowJa = (((RadioButton)tmprow.FindControl("rbPositionAbgeschlossenNEIN")).Checked ? "N" : "");
-
-                tmpPosition["PositionVollstaendig"] = sVollAll;
-
-                if (sVollAll == "X")
-                    sVollRowJa = "J";
-
-                tmpPosition["PositionAbgeschlossen"] = sVollRowJa;
+                tmpPosition["PositionVollstaendig"] = (chkVollst.Checked ? "X" : "0");
+                tmpPosition["PositionAbgeschlossen"] = (rbJa.Checked || chkVollst.Checked ? "J" : rbNein.Checked ? "N" : "");
 
                 objWareneingang.Bestellpositionen.AcceptChanges();
             }

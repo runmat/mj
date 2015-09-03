@@ -13,10 +13,6 @@ namespace AutohausPortal.MasterPage
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            string strLogoPath = "";
-            string strLogoPath2 = "";
-            string strDocuPath = "";
-            string strTitle = null;
             HttpBrowserCapabilities bc = default(HttpBrowserCapabilities);
             bc = Request.Browser;
             String Version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();

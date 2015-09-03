@@ -10,7 +10,8 @@ using System.IO;
 using SmartSoft.PdfLibrary;
 
 namespace AutohausPortal.forms
-{   /// <summary>
+{
+    /// <summary>
     /// Druckdialog: hier werden die Aufträge gesammelt in einem PDF angezeigt 
     /// und können dann gedruckt werden. 
     /// Aufruf aus Auftraege.aspx

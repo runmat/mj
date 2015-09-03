@@ -10,6 +10,12 @@ namespace GeneralTools.Contracts
 
         string AppOwnerFullName { get; }
 
+        string AppOwnerNameAndFullName { get; }
+
+        string AppOwnerImpressumPartialViewName { get; }
+
+        string AppOwnerKontaktPartialViewName { get; }
+
         string AppCopyRight { get;  }
         
         bool IsClickDummyMode { get; }

@@ -1,0 +1,50 @@
+﻿@using CkgDomainLogic.Finance.Models
+@model VersendungenSuchparameter
+
+<div id="divSuche">
+    @using (Ajax.BeginForm("LoadVersendungen", "Finance", null,
+        new MvcAjaxOptions("divSuche") { OnComplete = "ShowVersendungen();" }))
+    {    
+        <div class="form-horizontal label-width-200" id="searchForm">
+            @Html.ValidationSummary()
+            
+            @Html.HiddenFor(m => m.IsSummaryReport)
+
+            @Html.FormDateRangePickerFor(m => m.ImportdatumRange, new { @class = "m-wrap" })
+            
+            @Html.FormDateRangePickerFor(m => m.VerarbeitungsdatumRange, new { @class = "m-wrap" })
+            
+            @Html.FormRadioButtonListFor(m => m.Vertragsart, VersendungenSuchparameter.Vertragsarten.ToSelectList())
+            
+            @Html.FormRadioButtonListFor(m => m.Versandart, VersendungenSuchparameter.Versandarten.ToSelectList())
+
+            <div class="space20"></div>
+
+            <div class="form-actions">
+                <button type="submit" class='btn blue margin-left-40'><i class='icon-search'></i>&nbsp;@Localize.Search</button>
+            </div>
+        </div>  
+        
+        <script type="text/javascript">
+            _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowVersendungen() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowVersendungen",
+            success: function (result) {
+                if (_modelStateValid == 'true') {
+                    ShowVersendungenSearchResult(result);
+                }
+            }
+        });
+    }
+
+</script>
