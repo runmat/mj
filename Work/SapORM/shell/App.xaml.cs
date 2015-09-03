@@ -462,6 +462,8 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_EXPORT_AH_WARENKORB").WriteOrmForExportTableStructures("I_VKBUR", "4837");
             //new FunctionReflector("Z_ZLD_IMPORT_AH_WARENKORB").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZLD_DELETE_AH_WARENKORB").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_SEL").WriteOrmForExportTableStructures("I_ZLDAT", "14.08.2015");
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_DRU").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZANF_READ_DATEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KLAERF", "329608", "X");
 
 

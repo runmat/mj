@@ -711,6 +711,27 @@ namespace AppZulassungsdienst.lib.Models
             }
         }
 
+        static public ModelMapping<Z_ZLD_AH_2015_ETIKETT_SEL.ET_BAK, Kennzeichenetikett> Z_ZLD_AH_2015_ETIKETT_SEL_ET_BAK_To_Kennzeichenetikett
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_2015_ETIKETT_SEL.ET_BAK, Kennzeichenetikett>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrzeugtyp = s.FZGTYP;
+                        d.Farbe = s.FARBE;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.KundenName = s.NAME;
+                        d.KundenNr = s.KUNNR.NotNullOrEmpty().TrimStart('0');
+                        d.Referenz1 = s.ZZREFNR1;
+                        d.Referenz2 = s.ZZREFNR2;
+                        d.SapId = s.ZULBELN.NotNullOrEmpty().TrimStart('0');
+                        d.Zulassungsdatum = s.ZZZLDAT;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -1216,6 +1237,20 @@ namespace AppZulassungsdienst.lib.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_ZLD_IMPORT_AH_WARENKORB.GT_BAK, NochNichtAbgesendeterVorgang>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.ZULBELN = (String.IsNullOrEmpty(s.SapId) ? "" : s.SapId.PadLeft0(10));
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_2015_ETIKETT_DRU.IT_BELN, Kennzeichenetikett> Z_ZLD_AH_2015_ETIKETT_DRU_IT_BELN_From_Kennzeichenetikett
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_2015_ETIKETT_DRU.IT_BELN, Kennzeichenetikett>(
                     new Dictionary<string, string>()
                     , null
                     , (s, d) =>
