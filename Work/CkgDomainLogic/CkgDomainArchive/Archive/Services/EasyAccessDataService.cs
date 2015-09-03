@@ -206,10 +206,10 @@ namespace CkgDomainLogic.Archive.Services
             if (!HasErrors)
             {
                 erg = m_easyAccess.getResult().getHitTable();
-                // Grid hat Probleme mit Spaltennamen, die mit "." beginnen
+                // Grid hat Probleme mit Spaltennamen, die Sonderzeichen enthalten
                 foreach (DataColumn col in erg.Columns)
                 {
-                    col.ColumnName = col.ColumnName.TrimStart('.').Replace("-", "");
+                    col.ColumnName = col.ColumnName.Replace(".", "").Replace("-", "").Replace("'", "").Replace("\"", "").Replace(",", "").Replace(";", "").Replace("/", "").Replace("\\", "").Replace(" ", "");
                 }
             }
 
