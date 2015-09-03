@@ -46,12 +46,13 @@
 
         var maxWidthAllSteps = _formWizardCurrentStepCount * widestStepWidth;
 
-        console.log(containerWidth + " - " + maxWidthAllSteps);
-
-        if (containerWidth > maxWidthAllSteps)
-            formWizardStepBar.removeClass("formWizard_StepCounts_flow");
+        if (containerWidth > maxWidthAllSteps) {
+            if (formWizardStepBar.hasClass("formWizard_StepCounts_flow"))
+                formWizardStepBar.removeClass("formWizard_StepCounts_flow");
+        }
         else
-            formWizardStepBar.addClass("formWizard_StepCounts_flow");
+            if (!formWizardStepBar.hasClass("formWizard_StepCounts_flow"))
+                formWizardStepBar.addClass("formWizard_StepCounts_flow");
 
     }
 
