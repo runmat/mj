@@ -1,6 +1,8 @@
 ﻿@using CkgDomainLogic.Autohaus.Models
 @using CkgDomainLogic.DomainCommon.Models
 @using CkgDomainLogic.Fahrzeugbestand.Models
+@using GeneralTools.Models;
+
 @model Fahrzeugdaten
 @{
     var isMassenzulassung = Convert.ToBoolean(ViewData["IsMassenzulassung"]) || Convert.ToBoolean(Request["IsMassenzulassung"]);    // MMA Info, ob Massenzulassung oder nicht, wird mit InputForm "IsMassenzulassung" über Ajax.BeginForm hinweg durchgeschleift
@@ -23,9 +25,9 @@
 </style>
 
 <script>
-    
+
     _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
-    
+
     var _selectedItemsCount = 0;
 
     function AjaxFormFahrzeugdatenComplete() {
@@ -35,7 +37,7 @@
             return;
         }
     }
-   
+
     function OnSelectionChange_GridFahrzeugAuswahl(cb) {
         Grid_FormatMultiRowSelected(cb);
         $.ajax({
@@ -48,8 +50,8 @@
             }
         });
     }
-    
-    function OnAllSelectionChange_GridFahrzeugAuswahl(check) {        
+
+    function OnAllSelectionChange_GridFahrzeugAuswahl(check) {
         $.ajax({
             type: "POST",
             url: "FahrzeugAuswahlSelectionChanged",
@@ -61,8 +63,8 @@
             }
         });
     }
-    
-    function UpdateGridInfo(count) {        
+
+    function UpdateGridInfo(count) {
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
             $("#uncheckAllRecords").attr("checked", false);
@@ -73,8 +75,8 @@
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
-    }   
-    
+    }
+
     function OnDataBound_GridFahrzeugAuswahl() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
@@ -91,13 +93,13 @@
     function ShowHideKennzLabelDiv() {
         var isSelected = $('#HasEtikett').is(':checked');
         var divObj = $('#KennzeichenLabelFields');
-        
+
         if (isSelected) {
             divObj.removeClass("hidden");
         } else {
             divObj.addClass("hidden");
         }
-    }       
+    }
 
     function ShowHideKennzLabelColumns() {
         var isSelected = $('#HasEtikett').is(':checked');
@@ -107,13 +109,24 @@
             grid.showColumn("Farbe");
         } else {
           grid.hideColumn("FzgModell");
-          grid.hideColumn("Farbe");  
+          grid.hideColumn("Farbe");
         }
     }
 
     function InitDefaultColorAutocomplete(tb) {
-        var items = @Html.Raw(Json.Encode(fahrzeugfarbenList.ToList().Select(a => a.Beschreibung)));
-        tb.autocomplete({ minLength: 0, source: items })
+        var items = @Html.Raw(Json.Encode(fahrzeugfarbenList.ToList().Select(a => a.Beschreibung.ToJavascriptString())));
+
+        tb.autocomplete({
+            minLength: 0,
+            source: items,
+            create: function () {
+                    $(this).data('ui-autocomplete')._renderItem = function (ul, item) {
+                        return $('<li>')
+                            .append('<a>' + FromJavascriptString(item.label) + '</a>')
+                            .appendTo(ul);
+                        };
+                }
+            })
             .focus(function(){
                 if ($(this).attr('state') != 'open') {
                     $(this).autocomplete("search");
@@ -122,21 +135,26 @@
             .blur(function() {
                 // Da Click auf Defaultfarbe das Feld nicht auf "dirty" setzt und somit auch der onChance-Event nicht ausgelöst wird, hier manuelle Verarbeitung...
                 var oldValue = $(this).data("oldValue");
-                var newValue = $(this).val();                
+                var newValue = $(this).val();
                 if (oldValue != newValue) {
                     var tr = $(this).closest('tr');
                     var grid = $("#GridFahrzeugAuswahl").data("tGrid");
-                    if (grid == undefined) return;
                     var dataItem = grid.dataItem(tr);
                     var fin = dataItem["FIN"];
                     var field = $(this).data('fieldname');
                     var value = $(this).val();
                     SetFinValue(fin, field, value);
-                }                
+                }
                 $(this).data("oldValue",$(this).val());
             });
+        tb.on("autocompleteselect", function (e, ui) {
+            e.preventDefault();
+
+            this.value = FromJavascriptString(ui.item.label);
+        });
     }
-    
+
+
     // Änderung eines Fahrzeugparameters bei Massenzulassung
     $(document).off('change', '.editvinvalue');
     $(document).on('change', '.editvinvalue', function () {            // Auswirkung auf ein Fahrzeug
@@ -149,14 +167,14 @@
         SetFinValue(fin, field, value);
     });
 
-    $(function() {        
+    $(function() {
         ShowHideKennzLabelDiv();
         InitDefaultColorAutocomplete($(".colorautocomplete"));
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
 
         $('#Farbe').show(); // Workaround
     });
-    
+
 </script>
 
 <div id="DivFahrzeugdaten" class="margin-top-20">    
