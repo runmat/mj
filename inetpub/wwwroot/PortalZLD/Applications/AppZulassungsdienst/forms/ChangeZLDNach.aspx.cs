@@ -1279,7 +1279,7 @@ namespace AppZulassungsdienst.forms
                     objNacherf.AktuellerVorgang.Positionen.ForEach(p => p.WebBearbeitungsStatus = (p.WebBearbeitungsStatus == "L" ? "L" : (objNacherf.SelAnnahmeAH ? "A" : "O")));
                 }
 
-                objNacherf.SaveVorgangToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
+                objNacherf.SaveVorgangToSap(objCommon.KundenStamm, m_User.UserName);
 
                 if (!objNacherf.SelUploadRechnungsanhaenge)
                 {
@@ -2054,7 +2054,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    objNacherf.GetPreiseNewPositionen(neuePos, objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
+                    objNacherf.GetPreiseNewPositionen(neuePos, objCommon.KundenStamm, objCommon.MaterialStamm);
                     if (objNacherf.ErrorOccured)
                     {
                         lblError.Text = "Fehler bei der Kommunikation. Daten konnten nicht aus SAP gezogen werden! " + objNacherf.Message;

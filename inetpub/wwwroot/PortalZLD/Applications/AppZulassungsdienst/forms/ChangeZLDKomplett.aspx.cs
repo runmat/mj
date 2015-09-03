@@ -573,7 +573,7 @@ namespace AppZulassungsdienst.forms
             GetDiensleitungDataforPrice(ref tblData);
 
             //Preise ermitteln
-            objKompletterf.GetPreise(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
+            objKompletterf.GetPreise(objCommon.KundenStamm, objCommon.MaterialStamm);
 
             if (objKompletterf.ErrorOccured)
             {
@@ -2073,7 +2073,7 @@ namespace AppZulassungsdienst.forms
                 }
                 else
                 {
-                    objKompletterf.GetPreiseNewPositionen(neuePos, objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
+                    objKompletterf.GetPreiseNewPositionen(neuePos, objCommon.KundenStamm, objCommon.MaterialStamm);
                     if (objKompletterf.ErrorOccured)
                     {
                         lblError.Text = "Fehler bei der Kommunikation. Daten konnten nicht aus SAP gezogen werden! " + objKompletterf.Message;
