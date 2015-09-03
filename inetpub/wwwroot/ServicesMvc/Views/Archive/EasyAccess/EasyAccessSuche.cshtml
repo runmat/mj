@@ -34,6 +34,11 @@
         
         <script type="text/javascript">
             _modelStateValid = '@ViewContext.ViewData.ModelState.IsValid.ToString().ToLower()';
+
+            $("#searchForm input[type=radio]").change(function () {
+                // Dynamische Eingabefelder aktualisieren
+                RefreshSearchArea();
+            });
         </script>
     }
 </div>
