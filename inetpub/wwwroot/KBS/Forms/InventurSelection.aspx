@@ -11,7 +11,7 @@
                 <div id="innerContentRight" style="width: 100%;">
                     <div id="innerContentRightHeading">
                         <h1>
-                            <asp:Label ID="lblHead" runat="server" Text="Jahresinventur"></asp:Label>&nbsp;
+                            <asp:Label ID="lblHead" runat="server" Text="Inventur"></asp:Label>&nbsp;
                         </h1>
                     </div>
                     <div id="paginationQuery">
