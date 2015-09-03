@@ -90,6 +90,28 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        {
+            d.Preis = null;
+            d.PreisGebuehr = null;
+            d.PreisSteuer = null;
+            d.PreisKz = null;
+
+            switch (d.Status.NotNullOrEmpty().ToUpper())
+            {
+                case "AR":
+                    d.Preis = s.PREIS_DL;
+                    d.PreisGebuehr = s.PREIS_GB;
+                    d.PreisSteuer = s.PREIS_ST;
+                    d.PreisKz = s.PREIS_KZ;
+                    break;
+
+                case "D":
+                    d.PreisGebuehr = s.PREIS_GB;
+                    break;
+            }
+        }
+
         static public ModelMapping<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME, PdfFormular> Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular
         {
             get
@@ -140,35 +162,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
                         var resWunsch = s.RESWUNSCH.NotNullOrEmpty().ToUpper();
                         d.KennzeichenMerkmal = (resWunsch == "R" ? Localize.Reserved : (resWunsch == "W" ? Localize.PersonalisedNumberPlate : ""));
+
+                        SetPreise(s, d);
                     }));
             }
-        }
-
-        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
-        {
-            d.Preis = null;
-            d.PreisGebuehr = null;
-            d.PreisSteuer = null;
-            d.PreisKz = null;
-
-            switch (d.Status.NotNullOrEmpty().ToUpper())
-            {
-                case "AR":
-                    d.Preis = PreisCentToEuro(s.PREIS_DL);
-                    d.PreisGebuehr = PreisCentToEuro(s.PREIS_GB);
-                    d.PreisSteuer = PreisCentToEuro(s.PREIS_ST);
-                    d.PreisKz = PreisCentToEuro(s.PREIS_KZ);
-                    break;
-
-                case "D":
-                    d.PreisGebuehr = PreisCentToEuro(s.PREIS_GB);
-                    break;
-            }
-        }
-
-        private static decimal? PreisCentToEuro(decimal? centPreis)
-        {
-            return ((decimal?)(centPreis.GetValueOrDefault() / 100)).NullIf0();
         }
 
         static public ModelMapping<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME, PdfFormular> Z_ZLD_AH_AUSGABE_ZULFORMS_GT_FILENAME_To_PdfFormular
@@ -245,8 +242,6 @@ namespace CkgDomainLogic.Autohaus.Models
                     d.StatusAsText = Localize.InWork;
                     break;
             }
-
-            SetPreise(s, d);
         }
 
         static public ModelMapping<Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF, Adresse> Z_ZLD_EXPORT_INFOPOOL_GT_EX_ZUSTLIEF_To_Adresse
