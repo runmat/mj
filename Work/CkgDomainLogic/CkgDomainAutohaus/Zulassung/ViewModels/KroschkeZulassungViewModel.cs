@@ -379,6 +379,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     case "farbe":
                         FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.Farbe = value);
                         break;
+
+                    case "reskennz":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.ResKennz = value);
+                        break;
+
+                    case "reservationnr":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.ReservationNr = value);
+                        break;
+
+                    case "reservationname":
+                        FinList.Where(x => x.FIN == fin).ToList().ForEach(x => x.ReservationName = value);
+                        break;
                 }
                 return null;
             }
@@ -1068,6 +1080,16 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen2 = fahrzeugAkteBestand.WunschKennz2;
                     singleZulassung.Zulassungsdaten.Wunschkennzeichen3 = fahrzeugAkteBestand.WunschKennz3;
 
+                    if (!fahrzeugAkteBestand.ResKennz.IsNullOrEmpty() ||
+                        !fahrzeugAkteBestand.ReservationNr.IsNullOrEmpty() ||
+                        !fahrzeugAkteBestand.ReservationName.IsNullOrEmpty())
+                    {                        
+                        singleZulassung.Zulassungsdaten.Kennzeichen = fahrzeugAkteBestand.ResKennz;
+                        singleZulassung.Zulassungsdaten.ReservierungsNr = fahrzeugAkteBestand.ReservationNr;
+                        singleZulassung.Zulassungsdaten.ReservierungsName = fahrzeugAkteBestand.ReservationName;
+                        singleZulassung.Zulassungsdaten.KennzeichenReserviert = true;
+                    }
+
                     // 20150826 MMA                    
                     singleZulassung.Fahrzeugdaten.Farbe = fahrzeugAkteBestand.Farbe;
                     singleZulassung.Fahrzeugdaten.FzgModell = fahrzeugAkteBestand.FzgModell;
@@ -1127,20 +1149,73 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             if (fahrzeugdatenModel.HasEtikett && Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 if (FinList.Any(x => x.IsSelected && x.Farbe.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarColor, Localize.Required.ToLower()));       
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       
 
                 if (FinList.Any(x => x.IsSelected && x.FzgModell.IsNullOrEmpty()))
-                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    
+                    addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));   
             }
 
             if (fahrzeugdatenModel.HasEtikett && !Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 if (fahrzeugdatenModel.Farbe.IsNullOrEmpty())
-                    addModelError("Farbe", string.Format("{0} {1}", Localize.CarColor, Localize.Required.ToLower()));       
+                    addModelError("Farbe", string.Format("{0} {1}", Localize.Color, Localize.Required.ToLower()));       
 
                 if (fahrzeugdatenModel.FzgModell.IsNullOrEmpty())
                     addModelError("FzgModell", string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));    
             }
         }
+
+        public void ValidateZulassungsdatenForm(Action<string, string> addModelError, Zulassungsdaten fahrzeugdatenModel)
+        {
+            if (Zulassung.Zulassungsdaten.IsMassenzulassung)
+            {
+                var zulkreis = string.Format("{0}{1}",fahrzeugdatenModel.Zulassungskreis, "-");
+                var tmpFinList = FinList.Where(x => x.IsSelected);
+     
+                tmpFinList = tmpFinList.Where(x => ((!x.WunschKennz1.IsNullOrEmpty() && x.WunschKennz1 != zulkreis) || (!x.WunschKennz2.IsNullOrEmpty() && x.WunschKennz2 != zulkreis) || (!x.WunschKennz3.IsNullOrEmpty() && x.WunschKennz3 != zulkreis)));
+                tmpFinList = tmpFinList.Where(x => (!x.ResKennz.IsNullOrEmpty() || !x.ReservationNr.IsNullOrEmpty() || !x.ReservationName.IsNullOrEmpty()));
+
+                if (tmpFinList.Any())
+                {
+                    addModelError(string.Empty,
+                                  string.Format("{0}",
+                                                "Bitte nur Wunschkennzeichen oder Reservierungs-Informationen eintragen."));
+                }
+                else
+                {
+                    foreach (var item in tmpFinList)
+                    {
+                        if (!item.ResKennz.IsNullOrEmpty() || !item.ReservationNr.IsNullOrEmpty() || !item.ReservationName.IsNullOrEmpty())
+                        {
+                            item.WunschKennz1 = null;
+                            item.WunschKennz2 = null;
+                            item.WunschKennz3 = null;
+                        }
+                    }
+                }
+            }
+        }
+
+        ///// <summary>
+        ///// 
+        ///// </summary>
+        //public void ValidateEtikettenlabelFields()
+        //{
+        //    Zulassung.Fahrzeugdaten.Farbe = "valid";
+        //    Zulassung.Fahrzeugdaten.FzgModell = "valid";
+
+        //    if (FinList.Any(x => x.Farbe.IsNullOrEmpty()))
+        //        Zulassung.Fahrzeugdaten.Farbe = null;
+
+        //    if (FinList.Any(x => x.FzgModell.IsNullOrEmpty()))
+        //        Zulassung.Fahrzeugdaten.FzgModell = null;
+
+        //    //if (FinList.Any(x => x.Farbe.IsNullOrEmpty()) || FinList.Any(x => x.FzgModell.IsNullOrEmpty());)
+        //    //{
+            
+        //    // ModelState.AddModelError("SelectedGridAction", "Please select an option");
+        //    //    Zulassung.Fahrzeugdaten.Farbe
+        //    //}
+        //}
     }
 }

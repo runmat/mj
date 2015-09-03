@@ -10,6 +10,12 @@
     .inputwidth {
         width: 100px;
     }
+    
+    .blockdisabled {
+        background-color: #F0F0F0 !important;
+        color: gray !important;
+    }
+    
 
     .evb-vers-info {
         margin-top: 5px !important;
@@ -17,6 +23,7 @@
         line-height: 20px;
         width: 360px;
     }
+
 </style>
 
 <script>
@@ -71,21 +78,6 @@
         });
     }
 
-//    function SetFinValue(fin, field, value) {
-//        $.ajax({
-//                type: "POST",
-//                url: "SetFinValue",
-//                data: { fin: fin, field: field, value: value },
-//                loadingShow: false,
-//                success: function (result) {
-//                    if (result.ok == true) {
-//                    }
-//                    if (result.ok == false) {
-//                        alert(result.message);
-//                    }
-//                }
-//            });
-//    }
     
     function AjaxFormZulassungsdatenComplete() {
         FormPrepareAjax();
@@ -107,8 +99,7 @@
 
     @if (Model.IsMassenzulassung || Model.IsMassenabmeldung)
     {
-        <text>
-            
+        <text>                        
             $(function () {
                 $("#EvbNr").off('change').on('change').change(function () {     // Auswirkung auf alle Fahrzeuge
                     var tagObj = $(this);
@@ -161,9 +152,37 @@
                     var field = $(this).data('fieldname');
                     var value = $(this).prop('checked');
                     SetFinValue(fin, field, value);
-                });                
-        });
-        
+                });
+
+                // Kennzeichenänderung bei Massenabmeldung
+                $(document).off('focus', '.blockwk');
+                $(document).on('focus', '.blockwk', function () {     
+                    var tr = $(this).closest('tr');
+                    tr.find('.blockrk').addClass('blockdisabled');
+                    tr.find('.blockwk').removeClass('blockdisabled');
+                });
+                $(document).off('focus', '.blockrk');
+                $(document).on('focus', '.blockrk', function () {    
+                    var tr = $(this).closest('tr');
+                    tr.find('.blockrk').removeClass('blockdisabled');
+                    tr.find('.blockwk').addClass('blockdisabled');
+                });
+        });      
+          
+        function OnRowDataBound_GridFahrzeugAuswahlZulassung(e) {
+        var fin = e.dataItem.FIN;
+        var resKennz = e.dataItem.ResKennz;
+        var reservationNr = e.dataItem.ReservationNr;
+        var reservationName = e.dataItem.ReservationName;
+        if (resKennz || reservationNr || reservationName) {
+            $('#WunschKennz1_' + fin).addClass('blockdisabled');
+            $('#WunschKennz2_' + fin).addClass('blockdisabled');
+            $('#WunschKennz3_' + fin).addClass('blockdisabled');
+            $('#ResKennz_' + fin).removeClass('blockdisabled');
+            $('#ReservationNr_' + fin).removeClass('blockdisabled');
+            $('#ReservationName_' + fin).removeClass('blockdisabled');
+        }
+    }           
         </text>
     }
 
@@ -198,3 +217,5 @@
         
     }
 </div>
+
+

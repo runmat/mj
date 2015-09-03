@@ -635,8 +635,6 @@
                 e.css("width", eWidthReset);
             });
         });
-
-        console.log("HandleResponsiveControlWidths")
     }
     
     function FormInitJQueryExtensions() {
@@ -901,13 +899,18 @@
             ShowEvbVersInfo(evbFieldId, infoDivId);
         });
     }
-    function ShowEvbVersInfo(evbFieldId, infoDivId) {
+    function ShowEvbVersInfo(evbFieldId, infoDivId) {        
         var evb = $('#' + evbFieldId).val();
         $.ajax({
             type: "POST",
             url: "/ServicesMvc/DomainCommon/GetEvbVersInfo",
             data: { evb: evb },
             success: function (result) {
+                if (result.isValid == undefined) {
+                    $('#' + infoDivId).hide();
+                    return;
+                }
+                $('#' + infoDivId).show();
                 $('#' + infoDivId).html("<span>" + result.message + "</span>");
                 if (result.isValid) {
                     $('#' + infoDivId).removeClass("alert-warning");
@@ -919,4 +922,24 @@
             }
         });
     }
+
+    function FromJavascriptString(s) {
+
+        var array = [];
+
+        array.push( { code:'e4', value: 'ä' } );
+        array.push( { code:'f6', value: 'ö' } );
+        array.push( { code:'fc', value: 'ü' } );
+        array.push( { code:'c4', value: 'Ä' } );
+        array.push( { code:'d6', value: 'Ö' } );
+        array.push( { code:'dc', value: 'Ü' } );
+        array.push( { code:'df', value: 'ß' } );
+
+        $.each(array, function(i, elem) {
+            s = s.replace('\\u00' + elem.code, elem.value);
+        });
+
+        return s;
+    }
+
 </script>
