@@ -474,6 +474,22 @@ namespace GeneralTools.Models
             return tmp;
         }
 
+        public static object ToDateTimeOrDbNull(this string stringValue, string format = null)
+        {
+            DateTime tmp;
+            if (!String.IsNullOrEmpty(format))
+            {
+                if (!DateTime.TryParseExact(stringValue.NotNullOrEmpty(), format, CultureInfo.CurrentCulture, DateTimeStyles.None, out tmp))
+                    return DBNull.Value;
+            }
+            else
+            {
+                if (!DateTime.TryParse(stringValue.NotNullOrEmpty(), out tmp))
+                    return DBNull.Value;
+            }
+            return tmp;
+        }
+
         public static DateTime ToFirstDayOfWeek(this DateTime? dateValue)
         {
             var date = dateValue.GetValueOrDefault();

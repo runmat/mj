@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Web.UI.WebControls;
-using CKG.Base;
 using CKG.Base.Business;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
-using AutohausPortal.lib;
 using System.Data;
 using System.Configuration;
 using System.IO;
-using System.Data.SqlClient;
 
 namespace AutohausPortal.forms
 {
@@ -116,7 +112,7 @@ namespace AutohausPortal.forms
                     Telerik.Web.UI.GridGroupHeaderItem item = (Telerik.Web.UI.GridGroupHeaderItem) e.Item;
                     string strText = item.DataCell.Text.Split(':')[1];
 
-                    int tmpInt = 0;
+                    int tmpInt;
                     if (Int32.TryParse(strText, out tmpInt))
                     {
                         DataRow docType = icDocs.DocumentTypes.Select("documentTypeId=" + tmpInt)[0];
@@ -143,7 +139,6 @@ namespace AutohausPortal.forms
                     {
                         string fName = lButton.Text;
                         string fType = gridRow["FileType"].Text;
-                        string fExtension = "." + fType;
                         string sPfad = fileSourcePath + fName + "." + fType;
 
                         if (File.Exists(sPfad))

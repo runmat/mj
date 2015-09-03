@@ -57,7 +57,7 @@ namespace AutohausPortal.Info
                         break;
                 }
             }
-            catch (Exception exError)
+            catch (Exception)
             {
 
 

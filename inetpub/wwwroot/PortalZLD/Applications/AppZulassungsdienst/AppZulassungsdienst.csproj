@@ -282,6 +282,13 @@
     <Compile Include="forms\UploadRechnungsanhang.aspx.designer.cs">
       <DependentUpon>UploadRechnungsanhang.aspx</DependentUpon>
     </Compile>
+    <Compile Include="forms\NochNichtAbgesendeteVorgaengeListe.aspx.cs">
+      <DependentUpon>NochNichtAbgesendeteVorgaengeListe.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="forms\NochNichtAbgesendeteVorgaengeListe.aspx.designer.cs">
+      <DependentUpon>NochNichtAbgesendeteVorgaengeListe.aspx</DependentUpon>
+    </Compile>
     <Compile Include="forms\TaggleicheMeldungDAD.aspx.cs">
       <DependentUpon>TaggleicheMeldungDAD.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -483,6 +490,7 @@
     <Compile Include="lib\Models\DataModels\Barabhebung.cs" />
     <Compile Include="lib\Models\DataModels\AmtDispos.cs" />
     <Compile Include="lib\Models\DataModels\RechnungsanhangDaten.cs" />
+    <Compile Include="lib\Models\DataModels\NochNichtAbgesendeterVorgang.cs" />
     <Compile Include="lib\Models\DataModels\Userdaten.cs" />
     <Compile Include="lib\Models\DataModels\ZLDFehler.cs" />
     <Compile Include="lib\Models\DataModels\Kundenname.cs" />
@@ -586,6 +594,7 @@
     <Content Include="forms\Infocenter.aspx" />
     <Content Include="forms\InfocenterAdmin.aspx" />
     <Content Include="forms\UploadRechnungsanhang.aspx" />
+    <Content Include="forms\NochNichtAbgesendeteVorgaengeListe.aspx" />
     <Content Include="forms\TaggleicheMeldungDAD.aspx" />
     <Content Include="forms\VorgangStatusaenderung.aspx" />
     <Content Include="forms\Auftragsnachbearbeitung.aspx" />
