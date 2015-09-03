@@ -126,6 +126,7 @@
                 if (oldValue != newValue) {
                     var tr = $(this).closest('tr');
                     var grid = $("#GridFahrzeugAuswahl").data("tGrid");
+                    if (grid == undefined) return;
                     var dataItem = grid.dataItem(tr);
                     var fin = dataItem["FIN"];
                     var field = $(this).data('fieldname');
@@ -152,6 +153,8 @@
         ShowHideKennzLabelDiv();
         InitDefaultColorAutocomplete($(".colorautocomplete"));
         GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+
+        $('#Farbe').show(); // Workaround
     });
     
 </script>

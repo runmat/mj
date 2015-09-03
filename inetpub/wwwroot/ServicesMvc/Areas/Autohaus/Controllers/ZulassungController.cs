@@ -579,6 +579,9 @@ namespace ServicesMvc.Autohaus.Controllers
         [HttpPost]
         public ActionResult ZulassungsdatenForm(Zulassungsdaten model)
         {
+
+            ViewModel.ValidateZulassungsdatenForm(ModelState.AddModelError, model);
+
             if (ModelState.IsValid)
             {
                 ViewModel.SetZulassungsdaten(model, ModelState);

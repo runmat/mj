@@ -899,13 +899,18 @@
             ShowEvbVersInfo(evbFieldId, infoDivId);
         });
     }
-    function ShowEvbVersInfo(evbFieldId, infoDivId) {
+    function ShowEvbVersInfo(evbFieldId, infoDivId) {        
         var evb = $('#' + evbFieldId).val();
         $.ajax({
             type: "POST",
             url: "/ServicesMvc/DomainCommon/GetEvbVersInfo",
             data: { evb: evb },
             success: function (result) {
+                if (result.isValid == undefined) {
+                    $('#' + infoDivId).hide();
+                    return;
+                }
+                $('#' + infoDivId).show();
                 $('#' + infoDivId).html("<span>" + result.message + "</span>");
                 if (result.isValid) {
                     $('#' + infoDivId).removeClass("alert-warning");

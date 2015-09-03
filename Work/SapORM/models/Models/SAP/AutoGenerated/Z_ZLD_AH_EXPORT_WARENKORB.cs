@@ -175,6 +175,10 @@ namespace SapORM.Models
 
 			public string BEAUFTRAGUNGSART { get; set; }
 
+			public string RES_NAME { get; set; }
+
+			public Int32? HALTEDAUER { get; set; }
+
 			public static GT_BAK Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_BAK
@@ -251,6 +255,8 @@ namespace SapORM.Models
 					FARBE = (string)row["FARBE"],
 					APPID = (string)row["APPID"],
 					BEAUFTRAGUNGSART = (string)row["BEAUFTRAGUNGSART"],
+					RES_NAME = (string)row["RES_NAME"],
+					HALTEDAUER = (string.IsNullOrEmpty(row["HALTEDAUER"].ToString())) ? null : (Int32?)Convert.ToInt32(row["HALTEDAUER"]),
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
