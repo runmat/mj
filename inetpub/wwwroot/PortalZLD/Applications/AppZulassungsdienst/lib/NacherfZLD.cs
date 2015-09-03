@@ -420,7 +420,7 @@ namespace AppZulassungsdienst.lib
                         // Kennzeichenposition
                         if (kunde != null && kunde.Pauschal)
                         {
-                            AktuellerVorgang.Positionen.RemoveAll(sp => sp.UebergeordnetePosition == p.PositionsNr && sp.WebMaterialart == "K");
+                            AktuellerVorgang.Positionen.Where(kp => kp.UebergeordnetePosition == p.PositionsNr && kp.WebMaterialart == "K").ToList().ForEach(kp => kp.WebBearbeitungsStatus = "L");
                         }
                         else
                         {
@@ -446,7 +446,7 @@ namespace AppZulassungsdienst.lib
 
                         // Steuerposition
                         if (p.PositionsNr != "10")
-                            AktuellerVorgang.Positionen.RemoveAll(sp => sp.UebergeordnetePosition == p.PositionsNr && sp.WebMaterialart == "S");
+                            AktuellerVorgang.Positionen.Where(sp => sp.UebergeordnetePosition == p.PositionsNr && sp.WebMaterialart == "S").ToList().ForEach(sp => sp.WebBearbeitungsStatus = "L");
                     }
                 }
 
@@ -626,7 +626,7 @@ namespace AppZulassungsdienst.lib
                 foreach (var p in AktuellerVorgang.Positionen)
                 {
                     if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
-                        p.Loeschkennzeichen = "L";
+                        p.WebBearbeitungsStatus = "L";
                 }
 
                 ApplyAktuellerVorgangChangesToBaseLists();
@@ -791,7 +791,7 @@ namespace AppZulassungsdienst.lib
                         }
 
                         if (p.WebMaterialart == "S" && p.UebergeordnetePosition != "10")
-                            p.Loeschkennzeichen = "L";
+                            p.WebBearbeitungsStatus = "L";
                     }
                 }
 
