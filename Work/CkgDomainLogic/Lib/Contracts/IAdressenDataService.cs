@@ -28,6 +28,6 @@ namespace CkgDomainLogic.DomainCommon.Contracts
 
         void DeleteAdresse(Adresse adresse);
 
-        string GetEvbVersInfo(string evb);
+        void GetEvbVersInfo(string evb, out string message, out bool isValid);
     }
 }

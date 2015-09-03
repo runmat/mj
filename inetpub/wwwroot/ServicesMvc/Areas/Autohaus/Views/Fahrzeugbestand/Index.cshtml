@@ -98,10 +98,14 @@
 
     function FahrzeugShowAjax(fin) {
         FahrzeugShowCreateAjax(fin);
+
+        return false;
     }
 
     function FahrzeugCreateAjax() {
         FahrzeugShowCreateAjax(null);
+
+        return false;
     }
     
     function FahrzeugShowCreateAjax(fin) {
@@ -150,6 +154,10 @@
             setTimeout('LoadingHide();', 500);
             scrollToTop();
             BreadcrumbsMovePrev();
+
+            setTimeout(function() {
+                HandleResponsiveControlWidths();
+            }, 1000);
         }, 150);
     }
 
@@ -304,6 +312,8 @@
                 alert(result.data);
             }
         });
+
+        return false;
     }
 
     function ShowPartnerAddressGrid(result) {

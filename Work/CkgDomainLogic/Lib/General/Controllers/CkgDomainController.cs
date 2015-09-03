@@ -981,9 +981,11 @@ namespace CkgDomainLogic.General.Controllers
             evb = evb.Substring(0, 2).ToUpper();
 
             var viewModel = AdressenPflegeViewModel;
-            var result = viewModel.GetEvbInstantInfo(evb);
+            string message;
+            bool isValid;
+            viewModel.GetEvbInstantInfo(evb, out message, out isValid);
 
-            return Json(new { message = result });
+            return Json(new { message = message, isValid = isValid });
         }
         #endregion
     }

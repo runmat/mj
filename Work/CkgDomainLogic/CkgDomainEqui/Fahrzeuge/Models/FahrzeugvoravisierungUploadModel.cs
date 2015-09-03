@@ -1,4 +1,5 @@
 ﻿using System;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -39,6 +40,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public DateTime? DatumZulassung { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [ImportIgnore()]

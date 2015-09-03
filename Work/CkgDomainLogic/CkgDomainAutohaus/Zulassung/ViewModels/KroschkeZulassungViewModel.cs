@@ -1146,7 +1146,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public void ValidateFahrzeugdatenForm(Action<string, string> addModelError, Fahrzeugdaten fahrzeugdatenModel)
         {
-
             if (fahrzeugdatenModel.HasEtikett && Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 if (FinList.Any(x => x.IsSelected && x.Farbe.IsNullOrEmpty()))
@@ -1155,6 +1154,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 if (FinList.Any(x => x.IsSelected && x.FzgModell.IsNullOrEmpty()))
                     addModelError(string.Empty, string.Format("{0} {1}", Localize.CarModel, Localize.Required.ToLower()));   
             }
+
             if (fahrzeugdatenModel.HasEtikett && !Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
                 if (fahrzeugdatenModel.Farbe.IsNullOrEmpty())

@@ -31,7 +31,9 @@
 
 <script src="~/assets/scripts/multi-select.js" type="text/javascript"></script>        
 
+
 <script type="text/javascript" src="~/assets/plugins/magnific-popup/magnific-popup.js"></script>
+
 <!-- END PAGE LEVEL PLUGINS -->
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
@@ -90,6 +92,40 @@
         FormDateRangePickerInit();
 
         InitResponsiveControlWidths();
+
+        FormInitKennzeichenTextboxes();
+    }
+
+    function FormInitKennzeichenTextboxes() {
+
+        // special fix only for IE for issue 
+        // "lowercase text input with special fonts":
+
+        if (!IsIE())
+            return;
+
+        $('input.kennzeichen').each(function () {
+            var that = $(this);
+            that.bind('keyup', function (e) {
+                //console.log(e.which);
+                if (e.which >= 97 && e.which <= 122) {
+                    var newKey = e.which - 32;
+                    e.keyCode = newKey;
+                    e.charCode = newKey;
+                }
+                if (e.which < 40 || e.which == 46) 
+                    return;
+
+                // save current caret position
+                var start = this.selectionStart, end = this.selectionEnd;
+
+                that.val((that.val()).toUpperCase());
+
+                // restore current caret position
+                this.setSelectionRange(start, end);
+            });
+        });
+
     }
 
     function FormInitValidationErrorStyles() {
@@ -193,22 +229,6 @@
         };
         $.datepicker.setDefaults($.datepicker.regional['de']);
     }
-    
-//    function FormProcessReadOnlyControls() {
-//        $(".checkbox").each(function () {
-//            var cbDiv = $(this);
-//            var readonlyInputAvailable = false;
-//            cbDiv.find("input[type=checkbox][readonly]").each(function () {
-//                //alert(cbDiv.attr('class'));
-//                readonlyInputAvailable = true;
-//                alert($(this).attr('readonly'));
-//                //cbDiv.click(function () { alert($(this).attr('readonly')); });
-//            });
-//            if (readonlyInputAvailable)
-//                alert('readonly');
-//        });  
-//    }
-
 
 
     //
@@ -233,11 +253,11 @@
     });
 
     function LoadingShow() {
-        App.blockUI($(".body-container"));
+        App.blockUI($(".page-content"));
     }
 
     function LoadingHide() {
-        App.unblockUI($(".body-container"));
+        App.unblockUI($(".page-content"));
     }
     
     //
@@ -536,16 +556,45 @@
 
     function InitResponsiveControlWidths() {
         
-        HandleResponsiveControlWidths();
-        
+        setTimeout(function() {
+            HandleResponsiveControlWidths();
+            setTimeout(function() {
+                HandleResponsiveControlWidths();
+                setTimeout(function() {
+                    HandleResponsiveControlWidths();
+                    setTimeout(function() {
+                        HandleResponsiveControlWidths();
+                    }, 300);
+                }, 400);
+            }, 50);
+        }, 10);
+
         $('.page-sidebar').on('click', '.sidebar-toggler', function(e) {
             HandleResponsiveControlWidths();
         });
-        
-        $( window ).resize(function() {
+        $(window).on('scroll', function(e) {
             HandleResponsiveControlWidths();
         });
+
+        $('#FormSearchBox .portlet-title, #FormSearchResults .portlet-title').on('click', function(e) {
+            setTimeout(function() {
+                HandleResponsiveControlWidths();
+            }, 500);
+        });
+        $('#FormSearchBox .portlet-title').on('click', function(e) {
+            if (!SearchFormIsCollapsed())
+                SearchResultsHide();
+        });
         
+        $( window ).resize(function() {
+            setTimeout(function() {
+                HandleResponsiveControlWidths();
+            }, 500);
+        });
+        
+        $('a.btn-navbar').off('click').on('click', function(e) {
+            MetronicSidebarEnforceOpen();
+        });
     }    
     
     function HandleResponsiveControlWidths() {
@@ -559,21 +608,21 @@
             var isSmallContainer = (p.parent().hasClass("span8"));
 
             var maxPageWidth = 900;
-            if (isSmallContainer) 
+            if (isSmallContainer)
                 maxPageWidth = 300;
 
-            p.children().find(".m-wrap,.chzn-container").each(function () {
-                
+            p.children().find(".m-wrap,.chzn-container").each(function() {
+
                 var e = $(this);
                 var eWidth = ((pWidth / 2) - 250);
-                
+
                 if ((isSmallContainer || eWidth > 150) && pWidth > maxPageWidth) {
 
                     if (eWidth < 120)
                         eWidth = 120;
                     if (eWidth > 450)
                         eWidth = 450;
-                    
+
                     if (e.hasClass("chzn-container"))
                         eWidth += 14;
                     if (e.hasClass("hasDatepicker"))
@@ -584,16 +633,16 @@
                         eWidth += 12;
 
                     e.css("width", eWidth);
-                    
+
                     e.find(".chzn-drop").css("width", eWidth - 3);
                     return;
                 }
 
                 var eWidthReset = "";
-                
+
                 if (e.hasClass("chzn-container"))
                     eWidthReset = "220";
-                
+
                 e.css("width", eWidthReset);
             });
         });
@@ -732,6 +781,16 @@
         var sideBarToggler = $(".sidebar-toggler");
         sideBarToggler.trigger("click");
     }
+        
+    function MetronicSidebarEnforceOpen() {
+        
+        var pageContainer = $(".page-container");
+        if (!pageContainer.hasClass("sidebar-closed"))
+            return;
+
+        var sideBarToggler = $(".sidebar-toggler");
+        sideBarToggler.trigger("click");
+    }
     
 
     //
@@ -858,7 +917,14 @@
             url: "/ServicesMvc/DomainCommon/GetEvbVersInfo",
             data: { evb: evb },
             success: function (result) {
-                $('#' + infoDivId).html(result.message);
+                $('#' + infoDivId).html("<span>" + result.message + "</span>");
+                if (result.isValid) {
+                    $('#' + infoDivId).removeClass("alert-warning");
+                    $('#' + infoDivId).addClass("alert-success");
+                } else {
+                    $('#' + infoDivId).removeClass("alert-success");
+                    $('#' + infoDivId).addClass("alert alert-warning");
+                }
             }
         });
     }

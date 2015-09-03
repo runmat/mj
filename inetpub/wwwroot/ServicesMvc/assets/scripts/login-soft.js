@@ -8,12 +8,10 @@ var Login = function () {
             
             $.backstretch([
 		        "/servicesmvc/assets/img/bg/1.jpg",
-            //"/servicesmvc/assets/img/bg/2.jpg",
-		        "/servicesmvc/assets/img/bg/3.jpg",
-		        "/servicesmvc/assets/img/bg/4.jpg"
+		        "/servicesmvc/assets/img/bg/2.jpg"
 		        ], {
-		            fade: 1000,
-		            duration: 8000
+		            fade: 1500,
+		            duration: 5000
 		        });
         }
     };

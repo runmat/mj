@@ -1,0 +1,245 @@
+﻿@model MvcTools.Models.FormWizardModel 
+
+<style type="text/css">
+
+    
+    /* <Breadcrumbs> */
+    
+    h4.wizard-header {
+      font-size: 18px;
+      font-weight: bold;    
+    }
+	
+    .form-wizard .steps .navbar-inner ul
+    {
+        box-sizing: border-box;
+        margin-left: 10px;
+	    overflow: hidden;
+        display: block;
+    }
+	
+    .form-wizard .steps .navbar-inner ul li{
+        box-sizing: border-box;
+	    float: left;
+        margin: 0 0px 0 15px;
+        list-style: none;
+        margin-bottom: 5px;
+    }
+    
+    .form-wizard .steps .navbar-inner ul li a {
+        box-sizing: border-box;
+        background-color: #ddd !important;
+        background-image: none !important;
+        filter: none !important;
+        border: 0px;
+        box-shadow: none !important;
+        
+        width: 100.0%;
+        text-align: center;
+        padding: .7em 1em;
+        float: left;
+        text-decoration: none;
+        color: #444;
+        text-shadow: 0 1px 0 rgba(255,255,255,.5);
+        position: relative;    
+    }	
+    
+    .form-wizard .steps .navbar-inner ul li a::before{
+	    content: "";
+	    position: absolute;
+	    top: 50%; 
+	    margin-top: -1.5em;   
+	    border-width: 1.5em 0 1.5em 1em;
+	    border-style: solid;
+	    border-color: #ddd #ddd #ddd transparent;
+	    left: -1em;
+    }
+
+    .form-wizard .steps .navbar-inner ul li a::after{
+	    content: "";
+	    position: absolute;
+	    top: 50%; 
+	    margin-top: -1.5em;   
+	    border-top: 1.5em solid transparent;
+	    border-bottom: 1.5em solid transparent;
+	    border-left: 1em solid #ddd;
+	    right: -1em;
+    }
+
+    .form-wizard .steps .navbar-inner ul li:nth-child(even).done a
+    {
+        color: white;
+        background-color: #6E8CBF !important;
+    }
+    .form-wizard .steps .navbar-inner ul li:nth-child(even).done a::before
+    {
+	    border-color: #6E8CBF #6E8CBF #6E8CBF transparent;
+    }
+    .form-wizard .steps .navbar-inner ul li:nth-child(even).done a::after
+    {
+	    border-left: 1em solid #6E8CBF;
+    }
+
+    .form-wizard .steps .navbar-inner ul li:nth-child(odd).done a
+    {
+        color: white;
+        background-color: #3AAFDA !important;
+    }
+    .form-wizard .steps .navbar-inner ul li:nth-child(odd).done a::before
+    {
+	    border-color: #3AAFDA #3AAFDA #3AAFDA transparent;
+    }
+    .form-wizard .steps .navbar-inner ul li:nth-child(odd).done a::after
+    {
+	    border-left: 1em solid #3AAFDA;
+    }
+    
+    .form-wizard .steps .navbar-inner ul li.active a
+    {
+        color: white;
+        background-color: #2a4D89 !important;
+    }
+    .form-wizard .steps .navbar-inner ul li.active a::before
+    {
+	    border-color: #2a4D89 #2a4D89 #2a4D89 transparent;
+    }
+    .form-wizard .steps .navbar-inner ul li.active a::after 
+    {
+	    border-left: 1em solid #2a4D89;
+    }
+    
+    /* </Breadcrumbs> */
+
+    
+    .step .formWizardStepDescWrapper {
+        display: inline;
+    }
+    .step .formWizardStepDesc {
+        font-size: 14px!important;
+        margin-bottom: 2px;
+    }
+    .active .step .formWizardStepDesc {
+        
+    }
+    
+	.form-wizard .step .formWizardStepDesc {
+	    display: inline-block;
+	}
+
+    .row-fluid .formWizardStepSpanGeneral {
+        display: block;
+    }
+    
+    .new-line {
+        padding-top: 5px!important;     
+    }
+    
+    
+    .row-fluid .formWizardStepSpan11 {
+      width: 9.14680851063829%;
+      *width: 9.19361702127659%;
+    }
+    .row-fluid .formWizardStepSpan10 {
+      width: 9.84680851063829%;
+      *width: 9.89361702127659%;
+    }
+    .row-fluid .formWizardStepSpan9 {
+      width: 11.04680851063829%;
+      *width: 11.09361702127659%;
+    }
+    .row-fluid .formWizardStepSpan8 {
+      width: 12.24680851063829%;
+      *width: 12.19361702127659%;
+    }
+    .row-fluid .formWizardStepSpan7 {
+      width: 10.84680851063829%;
+    }
+    .row-fluid .formWizardStepSpan6 {
+      width: 16.53617021276595%;
+      *width: 16.48297872340425%;
+    }
+    .row-fluid .formWizardStepSpan5 {
+      width: 19.404255319148934%;
+      *width: 19.351063829787233%;
+    }
+    .row-fluid .formWizardStepSpan4 {
+      width: 23.404255319148934%;
+      *width: 23.351063829787233%;
+    }
+    .row-fluid .formWizardStepSpan3 {
+      width: 32.914893617021278%;
+      *width: 32.861702127659576%;
+    }
+    .row-fluid .formWizardStepSpan2 {
+      width: 48.93617021276595%;
+      *width: 48.88297872340425%;
+    }
+
+
+    /* FLEXBOX */
+  .form-wizard .steps .navbar-inner ul{
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:-ms-flexbox;
+	display:flex;
+  	-webkit-flex-wrap: nowrap;
+  	    -ms-flex-wrap: nowrap;
+  	        flex-wrap: nowrap;
+    margin: 0;
+    overflow: visible;
+    }
+
+     .form-wizard .steps .navbar-inner ul.formWizard_StepCounts_flow{
+        -webkit-flex-wrap: wrap;
+  	    -ms-flex-wrap: wrap;
+  	        flex-wrap: wrap;
+     
+     }
+    
+    .form-wizard .steps .navbar-inner ul li{
+        width:100%;
+    }
+    .form-wizard .steps .navbar-inner ul li a {
+        min-height: 42px;
+    }
+
+    .form-wizard .steps .navbar-inner ul.formWizard_StepCounts_flow li{
+         width:auto;
+     }
+
+    .form-wizard .steps .navbar-inner ul li.active:first-child a::before{
+        border-color: #2a4d89;
+        border-radius: 4px 0 0 4px !important;
+    }
+
+    .form-wizard .steps .navbar-inner ul li.done:first-child a::before{
+        border-color: #3AAFDA ;
+        border-radius: 4px 0 0 4px !important;
+    }
+    
+    .form-wizard .steps .navbar-inner ul li:first-child a::before{
+        border-color: #ddd;
+        border-radius: 4px 0 0 4px !important;
+    }
+
+    .form-wizard .steps .navbar-inner ul li.active:last-child a::after{
+       border-radius: 0 4px 4px 0 !important; 
+    }
+    
+    .form-wizard .steps .navbar-inner ul li:last-child a{
+       border-radius: 0 4px 4px 0  !important;
+    }
+    .form-wizard .steps .navbar-inner ul li:last-child a::after{
+       border: none !important;
+    }
+    
+
+    .form-actions{
+        text-align: right;
+    }
+
+    .form-actions-top{
+        text-align: left;
+        padding-left: 172px !important;
+    }
+</style>

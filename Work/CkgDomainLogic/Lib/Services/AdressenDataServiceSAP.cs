@@ -194,7 +194,7 @@ namespace CkgDomainLogic.DomainCommon.Services
         #endregion
 
         #region EVB-Prüfung -> Rückgabe der Versicherung
-        public string GetEvbVersInfo(string evb)
+        public void GetEvbVersInfo(string evb, out string message, out bool isValid)
         {
             SAP.Init("Z_AHP_READ_VERSUNTERNEHMEN");
             SAP.SetImportParameter("I_EVB2", evb);
@@ -205,11 +205,13 @@ namespace CkgDomainLogic.DomainCommon.Services
 
             if (versicherung != null)
             {
-
-                return string.Format("{0}, {1}<br/>{2}", versicherung.NAME, versicherung.CITY1, versicherung.TEL_NUMBER);
+                message = string.Format("{0}, {1}<br/>{2}", versicherung.NAME, versicherung.CITY1, versicherung.TEL_NUMBER);
+                isValid = true;
+                return;
             }
 
-            return "Keine Versicherung gefunden, bitte EVB-Nummer prüfen.";
+            message = "Keine Versicherung gefunden, bitte EVB-Nummer prüfen.";
+            isValid = false;
         }
         #endregion
 

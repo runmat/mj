@@ -1,4 +1,5 @@
 ﻿using System;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -19,6 +20,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Fahrgestellnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNoSeries)]
