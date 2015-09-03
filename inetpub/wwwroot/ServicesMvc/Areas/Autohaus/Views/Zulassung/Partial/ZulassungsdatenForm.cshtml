@@ -94,6 +94,8 @@
         });  
         
         InitEvbVersInfo("EvbNr", "EvbInfo"); // Anzeige der Versichererdaten gem. EVB
+        
+        $('#Farbe').hide(); // Workaround
     });
 
     @if (Model.IsMassenzulassung || Model.IsMassenabmeldung)
