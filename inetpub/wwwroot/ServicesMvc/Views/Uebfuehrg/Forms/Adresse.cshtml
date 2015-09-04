@@ -5,14 +5,14 @@
 <div id="@Ajax.AutoFormWrapperDivID(Model.UiIndex)" class="margin-top-20">
     @using (Ajax.AutoForm(Model, "Uebfuehrg", Model.UiIndex))
     {
-        <div class="form-actions">
+        <div class="form-actions form-actions-top">
             <a href="#" onclick="return AjaxFormAdressenShowGrid('Uebfuehrg', @Model.UiIndex)" class="btn white tooltips margin-left-10" data-original-title="Wählen Sie eine Adresse über Ihren Adressenpool aus" data-placement="top"><i class="icon-search margin-right-5"></i> Adressen suchen</a>
             <a href="#" onclick="return AjaxFormAdresseEmpty(@Model.UiIndex, 'UebfuehrgAdresseGetAutoCompleteItems')" class="btn white tooltips margin-left-10" data-original-title="Leert das Adressformular (zur Eingabe einer neuen Adresse)" data-placement="top"><i class="icon-remove margin-right-5"></i> Formular leeren</a>
             
-            <a target="blank" href="#" onclick="return BingLocationMapShow(@Model.UiIndex)" class="route-info location btn blue tooltips margin-left-20 hide" data-original-title="Zeigt die Adresse auf der Karte (mit Bing-Key)" data-placement="top"><i class="halflings-icon white map-marker margin-right-5 margin-top-10"></i> Karte</a>
+            <a target="blank" href="#" onclick="return BingLocationMapShow(@Model.UiIndex)" class="route-info location btn blue tooltips margin-left-20 hide" data-original-title="Zeigt die Adresse auf der Karte" data-placement="top"><i class="halflings-icon white map-marker margin-right-5 margin-top-10"></i> Karte</a>
             @if (Model.ShowRouteInfo)
             {
-                <a target="blank" href="#" onclick="return BingRouteMapShow(@Model.UiIndex)" class="route-info map btn blue tooltips margin-left-10 hide" data-original-title="Zeigt Route + Entfernung Ihrer Fahrt (mit Bing-Key)" data-placement="top"><i class="halflings-icon white road margin-right-5 margin-top-10"></i> Routenplaner</a>
+                <a target="blank" href="#" onclick="return BingRouteMapShow(@Model.UiIndex)" class="route-info map btn blue tooltips margin-left-10 hide" data-original-title="Zeigt Route + Entfernung Ihrer Fahrt" data-placement="top"><i class="halflings-icon white road margin-right-5 margin-top-10"></i> Routenplaner</a>
             }
             
             <div class="hide">
@@ -40,35 +40,35 @@
 
         if (Model.TransportTypAvailable)
         {
-            @Html.FormDropDownListFor(m => m.TransportTyp, Model.ValideTransportTypen.ToSelectList(), new { @class = "m-wrap large" })
+            @Html.FormDropDownListFor(m => m.TransportTyp, Model.ValideTransportTypen.ToSelectList(), new { @class = "m-wrap medium" })
         }
         else
         {
             @Html.HiddenFor(m => m.TransportTyp)
         }
 
-        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Name1, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Name2, new { @class = "m-wrap medium", col = "right" })
         
-        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap large", col = "left" })
+        @Html.FormTextBoxFor(m => m.Strasse, new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.PLZ, new { @class = "m-wrap xsmall", col = "right" })
         
-        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap large", col = "left" })
-        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap large", col = "right" }) 
+        @Html.FormTextBoxFor(m => m.Ort, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormDropDownListFor(m => m.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium", col = "right" }) 
 
-        @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap large", col = "left" })
-        @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap large", col = "right" })
+        @Html.FormTextBoxFor(m => m.Ansprechpartner, new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Telefon, new { @class = "m-wrap medium", col = "right" })
 
         if (Model.UhrzeitwunschAvailable)
         {
             @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left" })
             @Html.FormDropDownListFor(m => m.Uhrzeitwunsch, Model.UhrzeitwunschOptions.ToSelectList(), new { @class = "m-wrap small", col = "right" }) 
-            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large" })
+            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap medium" })
         }
         else
         {
             @Html.FormDatePickerFor(m => m.Datum, new { @class = "m-wrap small", col = "left" })
-            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap large", col = "right" })
+            @Html.FormTextBoxFor(m => m.Email, new { @class = "m-wrap medium", col = "right" })
         }
 
         @Html.FormRequiredFieldsSummary()

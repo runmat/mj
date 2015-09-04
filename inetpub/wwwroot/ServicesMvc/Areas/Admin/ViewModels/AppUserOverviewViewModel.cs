@@ -3,28 +3,20 @@
 
 using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
-using System.Web.Mvc;
 
 using CkgDomainLogic.AppUserOverview.Contracts;
 using CkgDomainLogic.AppUserOverview.Models;
 
 using GeneralTools.Models;
-using System.IO;
-using CkgDomainLogic.General.Database.Services;
-using GeneralTools.Services;
 using ServicesMvc.AppUserOverview.Models;
 
 // ReSharper restore RedundantUsingDirective
 
 namespace CkgDomainLogic.AppUserOverview.ViewModels
 {
-    [DashboardProviderViewModel]
     public class AppUserOverviewViewModel : CkgBaseViewModel
     {
         [XmlIgnore]

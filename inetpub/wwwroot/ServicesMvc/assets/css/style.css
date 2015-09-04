@@ -332,10 +332,10 @@ Misc tools
 }
 
 .float-left {
-    float: left;
+    float: left !important;
 }
 .float-right {
-    float: right;
+    float: right !important;
 }
 
 .hide {
@@ -498,7 +498,7 @@ Page container
 }
 
 .fixed-top .page-container {
-  margin-top: 42px;  
+  /*margin-top: 42px;*/  
 }
 
 /***
@@ -1010,7 +1010,7 @@ Footer
 }
 
 .footer .go-top { 
-  display: block;
+  display: inline-block;
   text-decoration: none;
   color: #fff;
   cursor: pointer;
@@ -1026,6 +1026,12 @@ Footer
   color: #666;
   font-size: 22px;
   margin-bottom: 5px; 
+}
+.footer .link.teamviewer {
+}
+.footer .link img {
+   margin-top: -10px;
+   margin-right: 3px;
 }
 
 /********************
@@ -1381,7 +1387,9 @@ Portlets
 }
 
 .portlet-body .btn-group {
-  margin: 0px !important;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+  margin-left: 0px !important;
   padding: 0px !important;
   margin-bottom: 10px !important;
 }
@@ -5144,4 +5152,19 @@ Bootstrap Datepickers Restyle(in v1.2.4)
 .padding-4 { padding: 4px; }
 .padding-5 { padding: 5px; }
 .padding-10 { padding: 10px; }
+
+
+.valign-top { vertical-align:top!important }
+.bigger { font-size: 1.2em; }
+
+.icon-home:before {  content: "\f015"; }
+
+.icon-stack-overflow:before {  content: "\f16c"; }
+.icon-map-signs:before {  content: "\f277"; }
+.icon-bookmark-o:before {  content: "\f097"; }
+.icon-car:before {  content: "\f1b9"; }
+
+.icon-comments-o:before {  content: "\f0e6"; }
+
+.icon-shopping-cart:before {  content: "\f07a"; }
 

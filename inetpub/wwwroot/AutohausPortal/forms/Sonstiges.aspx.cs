@@ -1,23 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Common;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
+using GeneralTools.Models;
 using Telerik.Web.UI;
-using System.Web.UI.HtmlControls;
 namespace AutohausPortal.forms
 {
     /// <summary>
     /// Auftragseingabe für Sonstige Dienstleistungen. Benutzte Klassen AHErfassung und objCommon.
     /// </summary>
-    public partial class Sonstiges : System.Web.UI.Page
+    public partial class Sonstiges : Page
     {
         private User m_User;
         private App m_App;
@@ -39,24 +34,20 @@ namespace AutohausPortal.forms
         /// <param name="e">EventArgs</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
-                if (BackfromList != false)
+                if (BackfromList)
                 {
-                    Int32 id = 0;
                     if (Request.QueryString["id"] != null)
                     { IDKopf = Request.QueryString["id"].ToString(); }
                     else
                     { lblError.Text = "Fehler beim Laden des Vorganges!"; }
 
                     objVorerf = (AHErfassung)Session["objVorerf"];
-                    if (AHErfassung.IsNumeric(IDKopf))
-                    {
-                        Int32.TryParse(IDKopf, out id);
-                    }
+                    var id = IDKopf.ToLong(0);
                     if (id != 0)
                     {
-                        objVorerf.LoadDB_ZLDRecordset(id); // Vorgang laden
+                        objVorerf.SelectVorgang(id); // Vorgang laden
                         fillForm();
                         SelectValues();
                     }
@@ -64,9 +55,7 @@ namespace AutohausPortal.forms
                 }
                 else
                 {
-                    objVorerf = new AHErfassung(ref m_User, m_App, "AS");
-                    objVorerf.NrMaterial = "570";
-                    objVorerf.Material = "Sonstige Dienstleistung";
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AS", "570");
                     fillForm();
                 }
                 Session["objVorerf"] = objVorerf;
@@ -109,7 +98,7 @@ namespace AutohausPortal.forms
             BackfromList = false;
             if (Request.QueryString["B"] != null) { BackfromList = true; }
             AppIDListe = "";
-            if (BackfromList == true)
+            if (BackfromList)
             {
                 if (Request.QueryString["BackAppID"] != null)
                 { AppIDListe = Request.QueryString["BackAppID"].ToString(); }
@@ -123,7 +112,7 @@ namespace AutohausPortal.forms
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App);
-                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID.ToString(), this))
+                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID, this))
                 {
                     lblError.Visible = true;
                     lblError.Text = objCommon.Message;
@@ -147,7 +136,7 @@ namespace AutohausPortal.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">RadComboBoxItemsRequestedEventArgs</param>
-        protected void ddlKunnr1_ItemsRequested(object sender, Telerik.Web.UI.RadComboBoxItemsRequestedEventArgs e)
+        protected void ddlKunnr1_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
         {
 
             ddlKunnr1.Items.Clear();
@@ -266,7 +255,6 @@ namespace AutohausPortal.forms
                 if (!proofBankAndAddressData(istCpdKunde)) { return; }
 
                 objVorerf.Name1 = ucBankdatenAdresse.Name1;
-                objVorerf.Partnerrolle = objVorerf.Name1.Length > 0 ? objVorerf.Partnerrolle = "WE" : objVorerf.Partnerrolle = "";
                 objVorerf.Name2 = ucBankdatenAdresse.Name2;
                 objVorerf.Strasse = ucBankdatenAdresse.Strasse;
                 objVorerf.PLZ = ucBankdatenAdresse.Plz;
@@ -293,36 +281,35 @@ namespace AutohausPortal.forms
                 objVorerf.InternRef = RemoveDefault;
 
                 objVorerf.AppID = Session["AppID"].ToString();
-                if (cbxSave.Checked == false)
+
+                LongStringToSap LSTS = new LongStringToSap();
+
+                if (!objVorerf.IsNewVorgang)
                 {
-                    LongStringToSap LSTS = new LongStringToSap();
-                    if (objVorerf.LangText != "")
-                    {
-                        objVorerf.NrLangText = LSTS.InsertString(m_User, m_App, this, objVorerf.LangText, "");
-                    }
-                    objVorerf.saved = true;
-                    objVorerf.InsertDB_ZLD(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm);
-                    getAuftraege();
-                }
-                else
-                {
-                    LongStringToSap LSTS = new LongStringToSap();
                     if (objVorerf.NrLangText != "")
                     {
                         LSTS.UpdateString(m_User, m_App, this, objVorerf.LangText, objVorerf.NrLangText, "");
                     }
-                    objVorerf.saved = true;
-                    objVorerf.bearbeitet = true;
-                    objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
-                    ShowKundenformulare(istCpdKunde, true);
+                    objVorerf.SaveVorgangToSap(Session["AppID"].ToString(), Session.SessionID, this, istCpdKunde, true);
+                    ShowKundenformulare(true);
                     return;
                 }
+
+                
+                if (objVorerf.LangText != "")
+                {
+                    objVorerf.NrLangText = LSTS.InsertString(m_User, m_App, this, objVorerf.LangText, "");
+                }
+                objVorerf.SaveVorgangToSap(Session["AppID"].ToString(), Session.SessionID, this, istCpdKunde, true);
+
+                if (objVorerf.Status == 0)
+                    getAuftraege();
 
                 if (objVorerf.Status == 0)
                 {
                     lblMessage.Visible = true;
                     lblMessage.Text = "Datensatz unter ID " + objVorerf.id_sap + " gespeichert.";
-                    ShowKundenformulare(istCpdKunde);
+                    ShowKundenformulare();
                 }
                 else
                 {
@@ -334,23 +321,14 @@ namespace AutohausPortal.forms
             else { proofInserted(); }
         }
 
-        private void ShowKundenformulare(bool cpdFormular, bool redirect = false)
+        private void ShowKundenformulare(bool redirect = false)
         {
-            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, cpdFormular, true);
-            if (objVorerf.Status == 0)
-            {
-                Session["objVorerf"] = objVorerf;
-                Session["RedirectToAuftragsliste"] = redirect;
-                //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
-                RadWindow downloaddoc = RadWindowManager1.Windows[0];
-                downloaddoc.Visible = true;
-                downloaddoc.VisibleOnPageLoad = true;
-            }
-            else
-            {
-                lblMessage.Text += " (" + objVorerf.Message + ")";
-                if (redirect) { Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe); }
-            }
+            Session["objVorerf"] = objVorerf;
+            Session["RedirectToAuftragsliste"] = redirect;
+            //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
+            RadWindow downloaddoc = RadWindowManager1.Windows[0];
+            downloaddoc.Visible = true;
+            downloaddoc.VisibleOnPageLoad = true;
         }
 
         /// <summary>
@@ -403,7 +381,6 @@ namespace AutohausPortal.forms
                 }
 
                 //Zulassungskreise 
-                tmpDView = new DataView();
                 tmpDView = objCommon.tblStvaStamm.DefaultView;
                 tmpDView.Sort = "KREISTEXT";
                 tmpDView.RowFilter = "KREISKZ <> ''";
@@ -413,7 +390,6 @@ namespace AutohausPortal.forms
                 ddlStVa1.DataBind();
 
                 //Fahrzeugarten
-                tmpDView = new DataView();
                 tmpDView = objCommon.tblFahrzeugarten.DefaultView;
                 tmpDView.Sort = "DOMVALUE_L";
                 ddlFahrzeugart.DataSource = tmpDView;
@@ -438,7 +414,7 @@ namespace AutohausPortal.forms
             objVorerf.VKBUR = m_User.Reference.Substring(4, 4);
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
 
-            if (objVorerf.saved == false)
+            if (objVorerf.IsNewVorgang)
             {
                 ucBemerkungenNotizen.addAttributesKunRef();
             }
@@ -603,12 +579,9 @@ namespace AutohausPortal.forms
             }
             txtService2.Text = objVorerf.LangText;
 
-            cbxSave.Checked = objVorerf.saved;
-
-            if (objVorerf.saved == true)
+            if (!objVorerf.IsNewVorgang)
             {
                 cmdSave.Text = "Speichern/Liste";
-
             }
 
             ucBemerkungenNotizen.SelectValues(objVorerf);
@@ -672,12 +645,10 @@ namespace AutohausPortal.forms
         private Boolean checkDate()
         {
             Boolean bReturn = true;
-            String ZDat = "";
-
-            ZDat = txtDatum.Text;
-            if (ZDat != String.Empty)
+            String ZDat = txtDatum.Text;
+            if (!String.IsNullOrEmpty(ZDat))
             {
-                if (AHErfassung.IsDate(ZDat) == false)
+                if (!ZDat.IsDate())
                 {
                     divDatum.Attributes["class"] = "formfeld error";
                     lblError.Text = "Ungültiger Ausführungstermin: Falsches Format.";
@@ -799,7 +770,7 @@ namespace AutohausPortal.forms
             }
 
             ddlFahrzeugart.SelectedValue = "1";
-            objVorerf.saved = false;
+            objVorerf.id_sap = 0;
             Session["objVorerf"] = objVorerf;
         }
 
@@ -809,7 +780,9 @@ namespace AutohausPortal.forms
         private void getAuftraege()
         {
             HyperLink lnkMenge = (HyperLink)Master.FindControl("lnkMenge");
-            lnkMenge.Text = objCommon.getAnzahlAuftraege();
+            var menge = objVorerf.GetAnzahlAuftraege(Session["AppID"].ToString(), Session.SessionID, this);
+            Session["AnzahlAuftraege"] = menge;
+            lnkMenge.Text = menge;
         }
 
         /// <summary>
