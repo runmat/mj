@@ -184,17 +184,9 @@ namespace ServicesMvc.Fahrzeug.Controllers
 
         public ActionResult ShowGeneratedPdf()
         {
-            var contentDispostion = new System.Net.Mime.ContentDisposition
-            {
-                FileName = ViewModel.GetPdfFilename(),
-                Inline = true,
-            };
+            var pdfBytes = ViewModel.Overview.PdfGenerated;
 
-            Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
-
-            var pdf = ViewModel.Overview.PdfGenerated;
-
-            return File(pdf, "application/pdf");
+            return new FileContentResult(pdfBytes, "application/pdf");
         }
 
         public FileContentResult ShowUploadedPdf()
