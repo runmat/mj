@@ -316,6 +316,14 @@
             </summary>
             <param name="CubeName">Name of the Cube or Query Cube (e.g. 0D_DECU or 0D_DECU/VARDEMO01)</param>
         </member>
+        <member name="M:ERPConnect.BW.BWCube.CreateCube(System.String,System.Boolean)">
+            <summary>
+            Constructs a BWCube object with all its dimensions, properties and measures
+            For internal use only
+            </summary>
+            <param name="CubeName">Name of the Cube or Query Cube (e.g. 0D_DECU or 0D_DECU/VARDEMO01)</param>
+            <param name="SetBWDateFlags">Set true if it BW Date fields should be marked</param>
+        </member>
         <member name="M:ERPConnect.BW.BWCube.ToString">
             <summary>
             Returns an object description text
@@ -502,6 +510,11 @@
             The data type of the dimension (e.g. CHAR)
             </summary>
         </member>
+        <member name="P:ERPConnect.BW.Dimension.IsBWDate">
+            <summary>
+            True if it is a Field of type BW Date
+            </summary>
+        </member>
         <member name="P:ERPConnect.BW.Dimension.Decimals">
             <summary>
             The number of decimals digits (if the DataType is DEC)
@@ -627,6 +640,11 @@
         <member name="F:ERPConnect.BW.DimensionType.Measure">
             <summary>
             Measure
+            </summary>
+        </member>
+        <member name="F:ERPConnect.BW.DimensionType.NormalWithNoAggregation">
+            <summary>
+            Normal with no aggregation
             </summary>
         </member>
         <member name="T:ERPConnect.BW.Hierarchy">
@@ -1204,6 +1222,11 @@
             Number of rows to maximal retrieved.
             </summary>
         </member>
+        <member name="P:ERPConnect.BW.MDXExecuter.UseMemberUniqueNamesInsteadOfCaption">
+            <summary>
+            For internal use only! Do not use!!!!!
+            </summary>
+        </member>
         <member name="E:ERPConnect.BW.MDXExecuter.IncomingPackage">
             <summary>
             IncomingPackage is fired, when addtional data packages are fetched from SAP.
@@ -1520,6 +1543,15 @@
             </summary>
             <param name="functionName">The name of the function module</param>
         </member>
+        <member name="M:ERPConnect.RFCFunction.CreateFromDataDictionary(ERPConnect.R3Connection,System.String)">
+            <summary>
+            Fetches metadata from the data dictionary
+            and creates a new RFCFunction instance
+            </summary>
+            <param name="r3Connection">Connection for fetching metadata</param>
+            <param name="name">Name of the function module</param>
+            <returns>New RFCFunction instance</returns>
+        </member>
         <member name="M:ERPConnect.RFCFunction.Execute">
             <summary>
             Excecutes the function module
@@ -1631,6 +1663,14 @@
             </summary>
             <param name="Connection">R3Connection object</param>
         </member>
+        <member name="M:ERPConnect.BusinessObjectMethod.CreateFromDataDictionary(ERPConnect.R3Connection,System.String,System.String)">
+            <summary>
+            Fetches metadata from the data dictionary
+            and creates a new BusinessObjectMethod instance
+            </summary>
+            <param name="r3Connection">Connection for fetching metadata</param>
+            <returns>New BusinessObjectMethod instance</returns>
+        </member>
         <member name="M:ERPConnect.BusinessObjectMethod.Execute">
             <summary>
             Exectutes the BAPI
@@ -1729,6 +1769,14 @@
             <param name="language">Logon language</param>
             <param name="client">Logon client</param>
         </member>
+        <member name="M:ERPConnect.R3Connection.GetConnectionStringParameterValue(System.String,System.String)">
+            <summary>
+            Extracts the value of a parameter from a connection string
+            </summary>
+            <param name="connectionString">The connection string from which the value should be extracted</param>
+            <param name="parameterName">The name of the paramter of which the value should be extracted</param>
+            <returns>The value of the parameter</returns>
+        </member>
         <member name="M:ERPConnect.R3Connection.Open">
             <summary>
             Opens a connection to an SAP R/3 system. For opening via Load Balancing please set UsesLoadBalancing = true
@@ -1745,15 +1793,7 @@
             <summary>
             Opens a connection to an SAP R/3 system.
             </summary>
-            <param name="connectionString">Connection String</param>
-        </member>
-        <member name="M:ERPConnect.R3Connection.GetConnectionStringParameterValue(System.String,System.String)">
-            <summary>
-            Extracts the value of a parameter from a connection string
-            </summary>
-            <param name="connectionString">The connection string from which the value should be extracted</param>
-            <param name="parameterName">The name of the paramter of which the value should be extracted</param>
-            <returns>The value of the parameter</returns>
+            <param name="rfcConnectionString">Connection String</param>
         </member>
         <member name="M:ERPConnect.R3Connection.Close">
             <summary>
@@ -1762,27 +1802,38 @@
         </member>
         <member name="M:ERPConnect.R3Connection.OpenSSO(System.String,System.Boolean)">
             <summary>
-            Opens a connection with a SSO ticket instead of user credentials
+            Opens a connection and uses a SAP logon ticket for authentication
             </summary>
-            <param name="SSOTicket">SSO ticket</param>
-            <param name="UseLoadBalancing">true to enable load balancing</param>
+            <param name="ticket">SAP logon ticket</param>
+            <param name="loadBalancing">true to enable load balancing</param>
         </member>
         <member name="M:ERPConnect.R3Connection.OpenSSO(System.String)">
             <summary>
-            Opens a connection with a SSO ticket instead of user credentials
+            Opens a connection and uses a SAP logon ticket for authentication
             </summary>
-            <param name="SSOTicket">SSO ticket</param>
+            <param name="ticket">SAP logon ticket</param>
+        </member>
+        <member name="M:ERPConnect.R3Connection.GetSSOTicketRFC(System.Boolean)">
+            <summary>
+            Retrieves a SAP logon ticket using the classic RFC API
+            </summary>
+        </member>
+        <member name="M:ERPConnect.R3Connection.GetSSOTicketSusrCheckLogonData(System.Boolean)">
+            <summary>
+            Retrieves a SAP logon ticket by calling SUSR_CHECK_LOGON_DATA
+            </summary>
+            <remarks>NW library has no API for retrieving tickets</remarks>
         </member>
         <member name="M:ERPConnect.R3Connection.GetSSOTicket(System.Boolean)">
             <summary>
-            Logs on to SAP with the given user credentials and returns an SSO ticket
+            Authenticates with user and password and retrieves a SAP logon ticket
             </summary>
-            <param name="UseLoadBalancing">true / false depending if you want load balancing</param>
-            <returns></returns>
+            <param name="loadBalancing">true to enable load balancing</param>
+            <returns>SAP logon ticket</returns>
         </member>
         <member name="M:ERPConnect.R3Connection.GetSSOTicket">
             <summary>
-            Logs on to SAP with the given user credentials and returns an SSO ticket
+            Authenticates with user and password and retrieves a SAP logon ticket
             </summary>
             <returns>SSO ticket</returns>
         </member>
@@ -1790,7 +1841,7 @@
             <summary>
             Creates a function by the name of the SAP function module
             </summary>
-            <param name="Name">Name of the function module</param>
+            <param name="name">Name of the function module</param>
             <returns>A RFCFunction object</returns>
             <remarks>The following example demonstrates, how to logon, to create a function object and to execute the function</remarks>
             <example>
@@ -1867,8 +1918,8 @@
              <summary>
              Creates a new BusinessObjectMethod object.
              </summary>
-             <param name="BusinessObjectName">Name of the Business Object. case-sensitiv</param>
-             <param name="MethodName">Name of Business Object's method. case-sensitiv</param>
+             <param name="businessObjectName">Name of the Business Object. case-sensitiv</param>
+             <param name="methodName">Name of Business Object's method. case-sensitiv</param>
              <returns>A BusinessObjectMethod object</returns>
              <remarks>
              Please go to folder BAPIGetQty in your Examples folder for example source code. 
@@ -1888,6 +1939,15 @@
             Creates a new BWCube object. Please refer to the manual for a sample
             </summary>
             <param name="CubeName">Name of BW cube or BW query</param>
+            <returns>The created BWCube object</returns>
+        </member>
+        <member name="M:ERPConnect.R3Connection.CreateBWCube(System.String,System.Boolean)">
+            <summary>
+            Creates a new BWCube object. Please refer to the manual for a sample
+            For internal use only
+            </summary>
+            <param name="CubeName">Name of BW cube or BW query</param>
+            <param name="SetBWDateFlags">Set true if it Dats fields should be marked</param>
             <returns>The created BWCube object</returns>
         </member>
         <member name="M:ERPConnect.R3Connection.CreateIdoc(System.String,System.String)">
@@ -2074,6 +2134,11 @@
             Gets or sets the settings for SNC
             </summary>
         </member>
+        <member name="P:ERPConnect.R3Connection.X509Certificate">
+            <summary>
+            Gets or sets an X.509 client certificate
+            </summary>
+        </member>
         <member name="P:ERPConnect.R3Connection.Client">
             <summary>
             Gets / sets the logon client
@@ -2258,36 +2323,6 @@
             <param name="Date">Date YYYYMMDD</param>
             <returns>Converted System.DateTime</returns>
         </member>
-        <member name="F:ERPConnect.Converts.MissingBytesWorkaroundCount">
-            <summary>
-            The maximum number of bytes which are expected to be missing sometimes
-            at the end of table lines due to librfc32.dll bug
-            </summary>
-        </member>
-        <member name="M:ERPConnect.Converts.HexEncodingGetBytes(System.String,System.Int32@)">
-            <summary>
-            Creates a byte array from the hexadecimal string. Each two characters are combined
-            to create one byte. First two hexadecimal characters become first byte in returned array.
-            Non-hexadecimal characters are ignored. 
-            </summary>
-            <param name="hexString">string to convert to byte array</param>
-            <param name="discarded">number of characters in string ignored</param>
-            <returns>byte array, in the same left-to-right order as the hexString</returns>
-        </member>
-        <member name="M:ERPConnect.Converts.HexEncodingIsHexDigit(System.Char)">
-            <summary>
-            Returns true is c is a hexadecimal digit (A-F, a-f, 0-9)
-            </summary>
-            <param name="c">Character to test</param>
-            <returns>true if hex digit, false if not</returns>
-        </member>
-        <member name="M:ERPConnect.Converts.HexEncodingHexToByte(System.String)">
-            <summary>
-            Converts 1 or 2 character string into equivalant byte value
-            </summary>
-            <param name="hex">1 or 2 character string</param>
-            <returns>byte</returns>
-        </member>
         <member name="M:ERPConnect.Converts.TrimEndSpace(System.String)">
             <summary>
             Performance optimized method for removing spaces from the end of a string
@@ -2429,6 +2464,12 @@
             Saves the schema file of this IDoc type and enhancement to a XmlWriter object
             </summary>
             <param name="XmlWriter"></param>
+        </member>
+        <member name="M:ERPConnect.Idocs.Idoc.GetIdocSchemaString">
+            <summary>
+            Gets the IDoc schema as string 
+            </summary>
+            <returns>String with IDoc schema data</returns>
         </member>
         <member name="M:ERPConnect.Idocs.Idoc.LoadXMLData(System.String)">
              <summary>
@@ -3584,11 +3625,16 @@
             <param name="name">Name as provided in the function module</param>
             <param name="columns">ColumnCollection object for structured parameters</param>
         </member>
-        <member name="M:ERPConnect.RFCParameter.GetLength">
+        <member name="M:ERPConnect.RFCParameter.CreateFromDataDictionary(ERPConnect.RFCStructure,ERPConnect.R3Connection)">
             <summary>
-            Returns the Length of the parameter
+            Creates a new RFCParameter instance from a RFC_FUNINT structure,
+            which occurs e. g. in the PARAMS table in RFC_GET_FUNCTION_INTERFACE
             </summary>
-            <returns>Length of the parameter in bytes</returns>
+            <param name="rfcFunInt">RFC_FUNINT structure</param>
+            <param name="r3Connection">
+                Connection for fetching type information
+                of structures and tables</param>
+            <returns>New RFCParameter instance</returns>
         </member>
         <member name="M:ERPConnect.RFCParameter.RetrieveColumnsByStructure(ERPConnect.R3Connection,System.String)">
             <summary>
@@ -3596,6 +3642,12 @@
             </summary>
             <param name="Connection">R3Connection object</param>
             <param name="StructureName">Name of the DDIC structure</param>
+        </member>
+        <member name="M:ERPConnect.RFCParameter.GetLength">
+            <summary>
+            Returns the Length of the parameter
+            </summary>
+            <returns>Length of the parameter in bytes</returns>
         </member>
         <member name="M:ERPConnect.RFCParameter.IsStructure">
             <summary>
@@ -3928,11 +3980,14 @@
             <param name="name">Name of the table</param>
             <param name="columns">Columns of the table</param>
         </member>
-        <member name="M:ERPConnect.RFCTable.AddRow">
+        <member name="M:ERPConnect.RFCTable.CreateFromDataDictionary(ERPConnect.RFCStructure,ERPConnect.R3Connection)">
             <summary>
-            Adds a new row and returns the new RFCStructure object
+            Creates a new RFCTable instance from a RFC_FUNINT structure,
+            which occurs e. g. in the PARAMS table in RFC_GET_FUNCTION_INTERFACE
             </summary>
-            <returns>The new RFCStrucure object which represents the new row</returns>
+            <param name="rfcFunInt">RFC_FUNINT structure</param>
+            <param name="r3Connection">Connection for fetching more type information</param>
+            <returns>New RFCTable instance</returns>
         </member>
         <member name="M:ERPConnect.RFCTable.RetrieveColumnsByStructure(System.String,ERPConnect.R3Connection)">
             <summary>
@@ -3940,6 +3995,12 @@
             </summary>
             <param name="structureName">DDIC name of the structure</param>
             <param name="connection">R3Connection object</param>
+        </member>
+        <member name="M:ERPConnect.RFCTable.AddRow">
+            <summary>
+            Adds a new row and returns the new RFCStructure object
+            </summary>
+            <returns>The new RFCStrucure object which represents the new row</returns>
         </member>
         <member name="M:ERPConnect.RFCTable.ToADOTable">
             <summary>
@@ -4162,14 +4223,6 @@
             <param name="length">Length of the column</param>
             <param name="type">RFC type of the column</param>
         </member>
-        <member name="M:ERPConnect.RFCTableColumnCollection.PerformMissingBytesWorkaround(ERPConnect.RFC_TYPE_ELEMENT[])">
-            <summary>
-            Performs a workaround for a librfc32.dll bug which sometimes leads to 
-            missing bytes at the end of table lines
-            </summary>
-            <param name="elements">Elements of the table structure</param>
-            <returns>Modified elements of the table structure</returns>
-        </member>
         <member name="M:ERPConnect.RFCTableColumnCollection.GetAlignment(ERPConnect.RFCTYPE,System.Boolean)">
             <summary>
             Gets the alignment for a RFC type (which is the same as its size)
@@ -4354,6 +4407,15 @@
         </member>
         <member name="P:ERPConnect.NW.INWConnectionAttributes.Reserved">
             Reserved for later use
+        </member>
+        <member name="T:ERPConnect.Obfuscation">
+             <summary>
+             Obfuscation for storing sensitive data
+             <remarks>
+                 This is no encryption. 
+                 It only protects data from being read directly by humans.
+            </remarks>
+             </summary>
         </member>
         <member name="T:ERPConnect.Queries.Query">
             <summary>
@@ -5282,12 +5344,6 @@
             </summary>
             <param name="FunctionName">Name of the custom function module</param>
         </member>
-        <member name="M:ERPConnect.Utils.ReadTable.ActivateOHSExtraction(System.Int32)">
-            <summary>
-            Do never ever use this function!!!!!!
-            </summary>
-            <param name="RequestID"></param>
-        </member>
         <member name="M:ERPConnect.Utils.ReadTable.ActivateBackgroundExtraction(System.String,System.String)">
             <summary>
              Do never ever use this function!!!!!!
@@ -5322,6 +5378,11 @@
         <member name="P:ERPConnect.Utils.ReadTable.TableName">
             <summary>
             Name of the table to be read.
+            </summary>
+        </member>
+        <member name="P:ERPConnect.Utils.ReadTable.OrderBy">
+            <summary>
+            Do not use!!! For internal use only!!!
             </summary>
         </member>
         <member name="P:ERPConnect.Utils.ReadTable.UsePrimaryKeyPackaging">
@@ -5436,6 +5497,11 @@
             Returns the ReadTableField object at the given position
             </summary>
         </member>
+        <member name="T:ERPConnect.SAPCodepage6300">
+            <summary>
+            Represents a SAP codepage 6300 encoding, a blend of Latin 1 and Shift JIS
+            </summary>
+        </member>
         <member name="T:ERPConnect.RFCServer">
             <summary>
             RFCServer represents a running server, that can handle incoming RFC calls from a superposed SAP system
@@ -5445,6 +5511,15 @@
             <summary>
             Initializes a RFCServer object
             </summary>
+        </member>
+        <member name="M:ERPConnect.RFCServer.#ctor(System.Boolean)">
+            <summary>
+            Initializes a new instance of the RFCServer class
+            </summary>
+            <param name="nonUnicodeIsBigEndian">
+                Indicates, whether non-Unicode systems are treated
+                as big endian systems
+            </param>
         </member>
         <member name="M:ERPConnect.RFCServer.#ctor(System.String,System.String,System.String)">
             <summary>
@@ -5742,21 +5817,6 @@
             Gets or sets the name of the original column.
             </summary>
         </member>
-        <member name="T:ERPConnect.Linq.ERPCryptoHelper">
-            <summary>
-            Represents a helper class; for internal use.
-            </summary>
-        </member>
-        <member name="M:ERPConnect.Linq.ERPCryptoHelper.Encrypt(System.String,System.String)">
-            <summary>
-            Encrypts the given text using the password.
-            </summary>
-        </member>
-        <member name="M:ERPConnect.Linq.ERPCryptoHelper.Decrypt(System.String,System.String)">
-            <summary>
-            Decrypts the given text using the password.
-            </summary>
-        </member>
         <member name="T:ERPConnect.Linq.ERPDataContext">
             <summary>
             Represents the main entry point for the LINQ to ERP framework. 
@@ -5829,6 +5889,24 @@
             </summary>
             <param name="useMultibyteExtraction">Use multibyte extraction</param>
             <returns>A collection of objects.</returns>
+        </member>
+        <member name="M:ERPConnect.Linq.ERPDataContext.CommitWork">
+            <summary>
+            Commits work by calling BAPI_TRANSACTION_COMMIT. 
+            </summary>
+            <returns>Indicates the succes of processing the commit</returns>
+        </member>
+        <member name="M:ERPConnect.Linq.ERPDataContext.CommitWork(System.Boolean)">
+            <summary>
+            Commits work by calling BAPI_TRANSACTION_COMMIT. 
+            </summary>
+            <param name="wait">Defines that method should wait</param>
+            <returns>Indicates the succes of processing the commit</returns>
+        </member>
+        <member name="M:ERPConnect.Linq.ERPDataContext.RollbackWork">
+            <summary>
+            Rollbacks work by calling BAPI_TRANSACTION_ROLLBACK.
+            </summary>
         </member>
         <member name="P:ERPConnect.Linq.ERPDataContext.Connection">
             <summary>
