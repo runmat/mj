@@ -1,0 +1,26 @@
+﻿@model CkgDomainLogic.General.Contracts.ILogonContextDataService
+
+@if (Model != null)
+{
+    <ul class="nav pull-right">
+        @{ViewBag.HeaderIconCssClass = "icon-globe";}
+        @Html.Partial("Partial/UserLanguageSwitch")
+
+        @if (Model.MaintenanceInfo != null)
+        {
+            @Html.Partial("Partial/UserMenuMessagesDropdown", Model.MaintenanceInfo)
+        }
+
+        @Html.Partial("Partial/UserMenuUserInfoDropdown")
+
+        <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+        <li>
+            <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
+                <img src="~/assets/img/menu-toggler.png" alt="" />
+            </a>
+        </li>          
+        <!-- END RESPONSIVE MENU TOGGLER -->            
+
+        <li class="logout"><a href="javascript:UserLogout()">Log Out</a></li>
+    </ul>
+}

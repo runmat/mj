@@ -31,7 +31,8 @@ namespace ServicesMvc.Controllers
             IFinanceTempZb2VersandDataService tempZb2VersandDataService,
             IFinanceTempZb2VersandZweitschluesselDataService tempZb2VersandZweitschluesselService,
             IFinanceFehlendeSchluesseltueteDataService tempFehlendeSchluesseltueteDataService,
-            IFinanceCarporteingaengeOhneEHDataService tempCarporteingaengeOhneEHDataService
+            IFinanceCarporteingaengeOhneEHDataService tempCarporteingaengeOhneEHDataService,
+            IFinanceVersendungenDataService versendungenDataService
             )
             : base(appSettings, logonContext)
         {
@@ -49,7 +50,8 @@ namespace ServicesMvc.Controllers
             InitViewModel(TempZb2VersandViewModel, appSettings, logonContext, tempZb2VersandDataService);
             InitViewModel(TempVersandZweitschluesselViewModel, appSettings, logonContext, tempZb2VersandZweitschluesselService);
             InitViewModel(FehlendeSchluesseltueteViewModel, appSettings, logonContext, tempFehlendeSchluesseltueteDataService);
-            InitViewModel(CarporteingaengeOhneEHViewModel, appSettings, logonContext, tempCarporteingaengeOhneEHDataService);                 
+            InitViewModel(CarporteingaengeOhneEHViewModel, appSettings, logonContext, tempCarporteingaengeOhneEHDataService);
+            InitViewModel(VersendungenViewModel, appSettings, logonContext, versendungenDataService);    
         }
 
         public ActionResult Index(string un, string appID)
