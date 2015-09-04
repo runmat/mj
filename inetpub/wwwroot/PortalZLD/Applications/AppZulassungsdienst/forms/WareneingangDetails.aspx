@@ -110,8 +110,8 @@
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
                                                             <asp:CheckBox ID="chkVollstaendig" ToolTip="diese Position ist vollstaendig/unvollstaendig"
-                                                                CausesValidation="true" Checked='<%# (Eval("PositionVollstaendig")=="X") %>'
-                                                                runat="server" OnCheckedChanged="chkVollstaendig_CheckedChanged" />
+                                                                CausesValidation="true" Checked='<%# (Eval("PositionVollstaendig").ToString() == "X") %>'
+                                                                runat="server" OnCheckedChanged="chkVollstaendig_CheckedChanged" AutoPostBack="True" />
                                                         </ItemTemplate>
                                                         <HeaderStyle Width="60px" />
                                                     </asp:TemplateField>
@@ -138,8 +138,6 @@
                                                             <asp:LinkButton ID="colPositionLieferMenge" runat="server" CommandName="Sort" CommandArgument="PositionLieferMenge">gelieferte<br /> Menge</asp:LinkButton>
                                                         </HeaderTemplate>
                                                         <ItemTemplate>
-                                                            <input id="txtPositionLieferMenge2" runat="server" value='<%# Eval("PositionLieferMenge") %>'
-                                                                type="hidden" />
                                                             <asp:TextBox ID="txtPositionLieferMenge" onKeyPress="return numbersonly(event, false)"
                                                                 MaxLength="4" onFocus="Javascript:this.select();" Width="50px" Text='<%# Eval("PositionLieferMenge") %>'
                                                                 runat="server"></asp:TextBox>
