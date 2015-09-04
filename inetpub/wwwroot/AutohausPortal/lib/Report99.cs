@@ -84,7 +84,7 @@ namespace AutohausPortal.lib
                             break;
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             WriteLogEntry(false, "I_ZKFZKZ=" + strKennzeichen + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
                             break;
                     }

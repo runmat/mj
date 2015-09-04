@@ -1,0 +1,65 @@
+﻿@using CkgDomainLogic.Autohaus.Models
+@using CkgDomainLogic.Fahrzeugbestand.Models
+@model Zulassungsdaten
+
+@{
+    var materialList = (List<Material>)ViewData["MaterialList"];
+}
+@Html.FormDropDownListFor(m => m.ZulassungsartMatNr, materialList.ToSelectList(), new { @class = "m-wrap medium", onchange = "ShowHideMindesthaltedauer()", col = "left" })
+@Html.FormTextBoxFor(m => m.MindesthaltedauerDays, new { @class = "m-wrap small uppercase", col = "right", maxlength = 7 })
+@Html.FormDatePickerFor(m => m.Zulassungsdatum, new { @class = "m-wrap small" })
+@Html.FormTextBoxFor(m => m.Zulassungskreis, new { @class = "m-wrap xsmall uppercase", @onchange = "return ZulassungskreisOnChange();" },
+                                postControlHtml: 
+                                    @<text> <a href="#" onclick="return LoadKfzKreisAusHalterAdresse()"
+                                                class="btn white mini margin-left-10 margin-right-20"><i class="icon-chevron-left margin-right-5">
+                                                </i>@Localize.LoadDistrictFromOwnerAddress</a>
+                                            @Html.SpanAlert("kfzKreisHint")
+                                    </text>)
+@Html.FormTextBoxFor(m => m.EvbNr, new { @class = "m-wrap small uppercase", maxlength = 7 }, postControlHtml: @<text><div class="alert" id="EvbInfo"></div></text>)
+@if (Model.IsMassenzulassung)
+{
+    using (@Html.PortletBox("Detailangaben", "icon-table", "light-grey", false))
+    {
+        var gridName = "GridFahrzeugAuswahlZulassung";
+        @(Html.Telerik()
+                .Grid<FahrzeugAkteBestand>()
+                .Name(gridName)
+                .XAjaxDataBinding("FahrzeugAuswahlSelectedAjaxBinding", "Zulassung")
+                .Columns(columns =>
+                {
+                    columns.XBound(c => c.FIN);
+                    columns.XBound(c => c.FahrzeugArt);
+                    columns.XBound(c => c.HandelsName);
+                    columns.XBound(c => c.WunschKennz1).ClientTemplate("<input id='WunschKennz1_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz1' value='<#= data.WunschKennz1 #>' />");
+                    columns.XBound(c => c.WunschKennz2).ClientTemplate("<input id='WunschKennz2_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz2' value='<#= data.WunschKennz2 #>' />");
+                    columns.XBound(c => c.WunschKennz3).ClientTemplate("<input id='WunschKennz3_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz blockwk' data-fieldname='WunschKennz3' value='<#= data.WunschKennz3 #>' />");
+                    columns.XBound(c => c.ResKennz).ClientTemplate("<input id='ResKennz_<#= data.FIN #>' type='text' class='inputwidth uppercase editkennz blockrk blockdisabled' data-fieldname='ResKennz' value='<#= data.ResKennz #>' />");
+                    columns.XBound(c => c.ReservationNr).ClientTemplate("<input id='ReservationNr_<#= data.FIN #>' type='text' class='inputwidth editkennz blockrk blockdisabled' data-fieldname='ReservationNr' value='<#= data.ReservationNr #>' />");
+                    columns.XBound(c => c.ReservationName).ClientTemplate("<input id='ReservationName_<#= data.FIN #>' type='text' class='inputwidth editkennz blockrk blockdisabled' data-fieldname='ReservationName' value='<#= data.ReservationName #>' />");
+                    
+                    columns.XBound(c => c.Evb).ClientTemplate("<input type='text' class='inputwidth uppercase editevb' maxlength='7' value='<#= data.Evb #>' />");
+                })
+                .XAutoColumnConfiguration()
+                .ClientEvents(events => events.OnRowDataBound("OnRowDataBound_" + gridName))
+                .XPageSize(10)
+                .XSort(sortOrder => sortOrder.Add(c => c.FIN).Ascending())
+        )
+    }
+}
+else
+{
+    @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" },
+                        postControlHtml: 
+                            @<text>
+                                <span id="divWkzLink">
+                                    <a id="LinkWunschkennzeichen" href="@Model.WunschkennzeichenReservierenUrl" target="_blank" class="btn white mini margin-bottom-10"><i class="icon-shopping-cart margin-right-5"></i> @Localize.AssignKennzeichen</a>
+                                </span>
+                            </text>)
+    @Html.FormCheckBoxFor(m => m.KennzeichenReserviert, new { @class = "m-wrap", onchange = "CheckKennzeichenReserviert()", col = "right" }, labelHidden: true)
+
+    @Html.FormTextBoxFor(m => m.Wunschkennzeichen2, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+    @Html.FormTextBoxFor(m => m.ReservierungsName, new { @class = "m-wrap medium", col = "right" })
+
+    @Html.FormTextBoxFor(m => m.Wunschkennzeichen3, new { @class = "m-wrap medium uppercase", @onkeypress = "return CleanUpKennzeichen();", col = "left" })
+    @Html.FormTextBoxFor(m => m.ReservierungsNr, new { @class = "m-wrap medium", col = "right" })
+}

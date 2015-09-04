@@ -57,7 +57,7 @@ namespace AutohausPortal.MasterPage
                     DataTable appTable = m_User.Applications.Copy();
                     MVC.MvcPrepareDataRowsUrl(appTable, m_User.UserName);
 
-                    getAuftraege(conn);
+                    getAuftraege();
 
                     DataRow[] appRows = appTable.Select("AppName='Auftraege' AND AppInMenu=1");
                     if (appRows.Length > 0)
@@ -72,11 +72,11 @@ namespace AutohausPortal.MasterPage
             {
                 if (conn.State == ConnectionState.Open) { conn.Close(); }
             }
-
         }
-        private void getAuftraege(SqlConnection conn)
+
+        private void getAuftraege()
         {
-            lnkMenge.Text = ZLDCommon.getAnzahlAuftraege(m_User, conn);
+            lnkMenge.Text = Session["AnzahlAuftraege"].ToString();
         }
     }
 }

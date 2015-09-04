@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using CKG.Base.Kernel;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
-using System.Data;
 
 namespace AutohausPortal.forms
 {
@@ -16,7 +10,7 @@ namespace AutohausPortal.forms
     /// Selektion Dokumentenanforderung der Zulassungsstellen
     /// Benutzte Klassen: Report99.cs.
     /// </summary>
-    public partial class Dokumentenanforderung : System.Web.UI.Page
+    public partial class Dokumentenanforderung : Page
     {
         private User m_User;
         private App m_App;
@@ -38,6 +32,7 @@ namespace AutohausPortal.forms
             ScriptManager.RegisterStartupScript(this.Page, this.GetType(), "Form1",
             "<script type='text/javascript'>openform1();</script>", false);
         }
+
         /// <summary>
         /// cmdSearch_Click Ereignis. Aufruf von DoSubmit() wenn txtKennz gefüllt.
         /// </summary>
@@ -56,8 +51,7 @@ namespace AutohausPortal.forms
                 lblError.Text = "Bitte ein Ortskennzeichen eingeben.";
             }
         }
-
-    
+ 
         /// <summary>
         /// SAP- Aufruf(objSuche.Fill) mit Importparameter Kennzeichen. Bei positiven Ergebnis Weiterleitung zur Dokumentenanforderung_2.aspx.
         /// </summary>
@@ -67,7 +61,7 @@ namespace AutohausPortal.forms
             objSuche = new Report99(ref m_User, m_App, "");
             objSuche.PKennzeichen = txtKennz.Text.ToUpper();
 
-            objSuche.Fill(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
+            objSuche.Fill(Session["AppID"].ToString(), Session.SessionID, this);
 
             Session["objSuche"] = objSuche;
 

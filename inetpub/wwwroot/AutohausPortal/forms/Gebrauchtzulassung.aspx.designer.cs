@@ -85,15 +85,6 @@ namespace AutohausPortal.forms {
         protected global::System.Web.UI.WebControls.RadioButton rbNeinFeinstaub;
         
         /// <summary>
-        /// cbxSave-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox cbxSave;
-        
-        /// <summary>
         /// divEvb-Steuerelement
         /// </summary>
         /// <remarks>
