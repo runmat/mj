@@ -33,6 +33,9 @@ namespace CkgDomainLogic.General.Database.Models
         public int AppTypeRank { get; set; }
 
         [NotMapped]
+        public string AppTypeCssClass { get; set; }
+
+        [NotMapped]
         public string AppTypeFriendlyName { get; set; }
 
         #endregion

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -93,6 +94,37 @@ namespace GeneralTools.Models
             where T2 : class, new()
         {
             return srcEntities.Select(src => Copy(src, new T2(), onInit));
+        }
+
+        public static bool Copy(DataRow srcRow, DataRow dstRow)
+        {
+            var colsFound = false;
+
+            for (var i = 0; i < srcRow.Table.Columns.Count; i++)
+            {
+                var colName = srcRow.Table.Columns[i].ColumnName;
+
+                if (dstRow.Table.Columns.Contains(colName) && dstRow.Table.Columns[colName].DataType == srcRow.Table.Columns[colName].DataType)
+                {
+                    colsFound = true;
+                    dstRow[colName] = srcRow[colName];
+                }
+            }
+
+            return colsFound;
+        }
+
+        public static DataTable Copy(DataTable srcTable, DataTable dstTable)
+        {
+            foreach (DataRow row in srcTable.Rows)
+            {
+                var newRow = dstTable.NewRow();
+
+                if (Copy(row, newRow))
+                    dstTable.Rows.Add(newRow);
+            }
+
+            return dstTable;
         }
 
         private static void UpdateRecursivelyWithBaseClasses<T1, T2>(T1 source, T2 destination, char booleanStringConvertCharacter = 'X', Func<PropertyInfo, PropertyInfo, bool> additionalCopyConditionFunc = null)

@@ -181,10 +181,10 @@ namespace CkgDomainLogic.Fahrzeugbestand.ViewModels
         public void SelectFahrzeuge(bool select, Predicate<FahrzeugAkteBestand> filter, out int allSelectionCount, out int allCount)
         {
             FahrzeugeAkteBestandFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
-
-            allSelectionCount = FahrzeugeAkteBestandFiltered.Count(c => c.IsSelected);
+            allSelectionCount = FahrzeugeAkteBestand.Count(x => x.IsSelected);  
             allCount = FahrzeugeAkteBestandFiltered.Count();
         }
+
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
         {
             allSelectionCount = 0;

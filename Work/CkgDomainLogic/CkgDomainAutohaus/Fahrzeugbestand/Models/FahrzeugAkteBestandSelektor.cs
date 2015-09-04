@@ -5,6 +5,7 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -49,6 +50,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         public DateTime? AbmeldeDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Kennzeichen]
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }

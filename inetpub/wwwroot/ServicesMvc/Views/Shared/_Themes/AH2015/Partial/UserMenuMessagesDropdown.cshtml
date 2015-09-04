@@ -1,0 +1,30 @@
+﻿@model MaintenanceResult
+
+@if (Model != null && Model.MessagesAvailable)
+{
+    <!-- BEGIN NOTIFICATION DROPDOWN -->
+    <li class="dropdown" id="header_notification_bar">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <div class="glocke"> </div>
+            <span class="badge">@Model.AvailableMessages.Count</span>
+        </a>
+        <ul class="dropdown-menu extended notification">
+            <li>
+                <p>@string.Format(@Localize.MaintenanceYouHaveCountNotifications, @Model.AvailableMessages.Count):</p>
+            </li>
+            @foreach (var maintenanceMessage in Model.AvailableMessages.Where(m => !m.LogonDisabled))
+            {   
+                <li>
+                    <span class="message maintenance-message-wrapper">
+                        <span class="label label-warning"><i class="icon-bell"></i></span>
+                        <span class="message-title"> @maintenanceMessage.Title.ToHtml()</span>
+                    </span>
+                </li>
+            }
+            <li class="external">
+                <a href="~/DomainCommon/UserMessages">@Localize.MaintenanceSeeAllNotifications... <i class="icon-chevron-right margin-top-5"></i></a>
+            </li>
+        </ul>
+    </li>
+    <!-- END NOTIFICATION DROPDOWN -->
+}

@@ -1,0 +1,44 @@
+﻿@model MvcTools.Models.FormWizardModel 
+
+<script type="text/javascript">
+
+    function FormWizardOnInit() {
+
+        var fwTab = $('#formWizard ul');
+        fwTab.removeClass("nav");
+        fwTab.removeClass("nav-pills");
+
+        FormWizardOnStepChange();
+        var stepTitle = $('#formWizard .step-title');
+        stepTitle.closest(".portlet-title").addClass("hide");
+    }
+
+    function FormWizardOnStepChange() {
+
+        var header = $(".body-container .page-title");
+        var headerText = header.html();
+
+        var stepTitle = $('#formWizard .step-title');
+        var stepTitleText = stepTitle.html();
+        //console.log(stepTitle);
+
+        var stepDividerIndex = stepTitleText.indexOf("&nbsp;") + 6;
+        var stepSection = stepTitleText.substr(stepDividerIndex);
+        stepSection = stepSection.replace(/Schritt /g, "");
+
+        var headerDividerIndex = headerText.indexOf("&nbsp;");
+        var headerSection = headerText;
+        if (headerDividerIndex != -1)
+            headerSection = headerText.substr(0, headerDividerIndex);
+
+        //console.log("headerSection: " + headerSection);
+        //console.log("stepSection: " + stepSection);
+
+        var stepText = "&nbsp;" + stepSection;
+        
+        // move formwizard step title to closest h3 header
+        header.html(headerSection + " " + stepText);
+    }
+
+
+</script>

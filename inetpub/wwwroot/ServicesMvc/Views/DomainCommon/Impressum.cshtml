@@ -1,4 +1,12 @@
-﻿<h3 class="page-title">@Localize.Imprint </h3>
+﻿@using GeneralTools.Contracts
+@{
+    var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
+}
 
-@Html.Partial("Partial/Impressum")
+<h3 class="page-title">@Localize.Imprint </h3>
+
+@Html.Partial(appSettings.AppOwnerImpressumPartialViewName)
+
+
+
 
