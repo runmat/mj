@@ -133,6 +133,7 @@
     <Content Include="Forms\Feinstaubplakette.aspx" />
     <Content Include="Forms\InfocenterNeuAdmin.aspx" />
     <Content Include="Forms\InfocenterNeu.aspx" />
+    <Content Include="Forms\BestaetigungZulassungen.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche_2.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche.aspx" />
     <Content Include="Forms\TaggleicheMeldungDAD.aspx" />
@@ -412,6 +413,13 @@
       <DependentUpon>InfocenterNeu.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Forms\BestaetigungZulassungen.aspx.designer.vb">
+      <DependentUpon>BestaetigungZulassungen.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BestaetigungZulassungen.aspx.vb">
+      <DependentUpon>BestaetigungZulassungen.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Forms\Zulassungsdienstsuche_2.aspx.designer.vb">
       <DependentUpon>Zulassungsdienstsuche_2.aspx</DependentUpon>
     </Compile>
@@ -527,6 +535,7 @@
     <Compile Include="Lib\KBS_BASE.vb" />
     <Compile Include="Lib\ComCommon.vb" />
     <Compile Include="Lib\InventurSonstigeLagerware.vb" />
+    <Compile Include="Lib\Zulassungen.vb" />
     <Compile Include="Lib\ZLD_Suche.vb" />
     <Compile Include="Lib\KVP.vb" />
     <Compile Include="Lib\LongStringToSap.vb" />
