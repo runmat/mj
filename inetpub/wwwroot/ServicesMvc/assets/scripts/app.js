@@ -68,10 +68,10 @@ var App = function () {
 
         // remove sidebar toggler if window width smaller than 900(for table and phone mode)
         var _handleSidebar = function () {
-            if ($(window).width() < 900) {
-                $.cookie('sidebar-closed', null);
-                $('.page-container').removeClass("sidebar-closed");
-            }
+//            if ($(window).width() < 900) {
+//                $.cookie('sidebar-closed', null);
+//                $('.page-container').removeClass("sidebar-closed");
+//            }
         };
 
         // handle all elements which require to re-InitParametersialize on screen width change(on resize or on rotate mobile device)

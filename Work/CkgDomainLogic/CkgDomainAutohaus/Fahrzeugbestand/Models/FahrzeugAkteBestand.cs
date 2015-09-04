@@ -6,6 +6,7 @@ using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.Fahrzeugbestand.ViewModels;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -33,52 +34,49 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<FahrzeugbestandViewModel> GetViewModel { get; set; }
 
-        public bool IsSelected { get; set; }    // ##MMA##
+        public bool IsSelected { get; set; } 
+
+        [LocalizedDisplay(LocalizeConstants.Action)]    // 20150728 MMA
+        public string Aktion { get; set; }
+
+        // ITA8251  Kennzeichenetiketten in der Zulassung
+        [LocalizedDisplay(LocalizeConstants.Color)]
+        public string Farbe { get; set; }
+        [LocalizedDisplay(LocalizeConstants.CarModel)]
+        public string FzgModell { get; set; }
 
         #region Massenzulassung // MMA Für Massenzulassung erforderliche Properties
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
         public string Zb2Nr { get; set; }
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
         public string WunschKennz1 { get; set; }
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
         public string WunschKennz2 { get; set; }
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
         public string WunschKennz3 { get; set; }
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
-        public string ResKennz { get; set; }
+        public string ResKennz { get; set; }   
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
         public string ReservationNr { get; set; }
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
         public string ReservationName { get; set; }
 
-        // [LocalizedDisplay(LocalizeConstants.ManufacturerKey)]
-        //[Required]
         [Length(5)]
         public string Evb { get; set; }
 
         #endregion
 
+        #region Massenabmeldung
+        [LocalizedDisplay(LocalizeConstants.ReserveExistingLicenseNo)]
+        public bool VorhandenesKennzReservieren { get; set; }
+        #endregion
 
         #region Fahrzeug Akte
 
@@ -194,6 +192,7 @@ namespace CkgDomainLogic.Fahrzeugbestand.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [Length(15)]
+        [Kennzeichen]
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }

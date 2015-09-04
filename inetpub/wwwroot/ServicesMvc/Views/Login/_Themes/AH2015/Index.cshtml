@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title= "Login";
+    ViewBag.BodyCssClass = "login";
+    Layout = "~/Views/Shared/_LayoutSimple.cshtml";
+}
+@model LoginViewModel 
+
+
+@Html.Partial("Partial/Common") 
+
+<div class="loginhead">@Html.Partial("Partial/Logo")</div>
+
+
+<div class="content">
+    
+    @Html.Partial("Partial/MaintenanceHintsLogonDisabled", Model.MaintenanceInfo)
+
+    @if (!Model.MaintenanceInfo.LogonDisabled)
+    {
+        @Html.Partial("LoginForm", Model.LoginModel)
+
+        <script type="text/javascript">
+
+            var _modelIsValid = false;
+
+            function FormPreparePrivate() {
+                Login.init();
+            };
+
+            function FormPreparePrivateAjax() {
+                FormPrepareAjax();
+            }
+
+            function AjaxFormLoginComplete() {
+                FormPreparePrivateAjax();
+            }
+        </script>
+    }
+    @Html.Raw(Model.SslCertificateHtml)
+
+    <div class="space15"></div>
+
+    @Html.Partial("Partial/Footer") 
+</div>
+
+
+@Html.Partial("Partial/Scripts") 
+
