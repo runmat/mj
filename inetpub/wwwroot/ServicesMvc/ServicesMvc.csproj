@@ -426,9 +426,7 @@
     <Content Include="_Themes\AH2015\images\Logout.png" />
     <Content Include="_Themes\AH2015\images\test.jpg" />
     <Content Include="_Themes\AH2015\images\uniform\sprite.png" />
-    <None Include="Teamviewer-Support.zip">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Content Include="Teamviewer-Support.zip" />
     <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
