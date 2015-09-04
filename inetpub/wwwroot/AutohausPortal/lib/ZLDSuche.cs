@@ -213,7 +213,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             WriteLogEntry(false, "ZKFZKZ=" + m_strKennzeichen + ", POST_CODE1=" + m_strPLZ + ", NAME1=" + m_strZulassungspartner + ", REMARK=" + m_strZulassungspartnerNr + ", " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message), ref m_tblResult, false);
                             break;
                     }
@@ -554,7 +554,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }
@@ -611,7 +611,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
+                            m_strMessage = "Beim Erstellen des Reportes ist ein Fehler aufgetreten.<br>(" + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message) + ")";
                             break;
                     }
                 }

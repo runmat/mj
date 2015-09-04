@@ -53,7 +53,7 @@ namespace AutohausPortal.Start
                     btnChange.Enabled = false;
                     lblMessage.Text = "" ;                                       
                 }
-                m_User.Login(m_User.UserName, txtNewPwd.Text, Session.SessionID.ToString());
+                m_User.Login(m_User.UserName, txtNewPwd.Text, Session.SessionID);
                 Log(m_User.UserID.ToString(), "Eigenes Kennwort ändern", "APP");
                 if (m_User.Customer.ForcePasswordQuestion == true)
                 {

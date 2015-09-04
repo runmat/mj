@@ -70,7 +70,7 @@ namespace Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to A value is required for this field.
+        ///   Looks up a localized string similar to Field is required.
         /// </summary>
         internal static string PropertyValueRequired {
             get {

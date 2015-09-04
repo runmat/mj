@@ -1,14 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.IO;
 
 namespace AutohausPortal.forms
 {
-
     /// <summary>
     /// Senden der PDF als Response.BinaryWrite Stream
     /// </summary>
@@ -29,7 +23,6 @@ namespace AutohausPortal.forms
                 //Get the physical path to the file.
                 String FilePath = sPfad;
                 //Write the file directly to the HTTP output stream.
-                // Response.AddHeader("content-disposition", "attachment;filename=" + "kroschke.pdf")
                 String fname = sPfad.PadRight(sPfad.Length - sPfad.LastIndexOf("\\") - 1);
 
                 FileStream MyFileStream = new FileStream(FilePath, FileMode.Open);
@@ -48,7 +41,6 @@ namespace AutohausPortal.forms
                 Response.BinaryWrite(pdfStream);
                 Response.Flush();
                 Response.Close();
-                // Response.End();
                 if (Session["App_FileDelete"] != null)
                 {
                     File.Delete(sPfad);

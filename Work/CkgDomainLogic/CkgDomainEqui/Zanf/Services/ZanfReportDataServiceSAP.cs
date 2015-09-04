@@ -96,6 +96,7 @@ namespace CkgDomainLogic.Zanf.Services
                 }
 
                 zanf.KlaerfallText = String.Join("<br/>", textZeilen);
+                zanf.KlaerfallTextPreview = textZeilen.FirstOrDefault();
 
                 var halterAdresse = adrsZeilen.FirstOrDefault(a => a.Partnerrolle == "ZH");
                 if (halterAdresse != null)

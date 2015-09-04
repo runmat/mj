@@ -1,10 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
-using CKG.Base.Kernel;
 using CKG.Base.Kernel.Common;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
@@ -274,6 +268,7 @@ namespace AutohausPortal.forms
         {
             ClickLink("STVALNFORM");
         }
+
         /// <summary>
         /// Aufruf von ClickLink("STVALNFORM").Informationen zur Gebührenauslage auf der entspr. Seite der Zulassungsstelle.
         /// </summary>

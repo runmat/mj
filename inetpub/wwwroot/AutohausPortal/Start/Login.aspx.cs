@@ -70,7 +70,7 @@ namespace AutohausPortal.Start
                         String strDomainError  = "Die Anmeldung ist in der aktuellen Konfiguration nicht möglich.<br>Setzen Sie sich bitte mit Ihrer Kontaktperson bei der Christoph Kroschke GmbH in Verbindung.";
 
                         String strUserName = GetDomainUser(DeCryptedKey.ToUpper());
-                        if (m_User.Login(strUserName, Session.SessionID.ToString()))
+                        if (m_User.Login(strUserName, Session.SessionID))
                         {
                             FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
                         }
@@ -91,7 +91,7 @@ namespace AutohausPortal.Start
 
                         if (strIpStandardUser.Length > 0) 
                         {
-                            if (m_User.Login(strIpStandardUser, Session.SessionID.ToString()))
+                            if (m_User.Login(strIpStandardUser, Session.SessionID))
                             {
                                 FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
                             }
@@ -125,7 +125,7 @@ namespace AutohausPortal.Start
                 SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"].ToString());
                 SqlCommand command = conn.CreateCommand();
                 command.CommandText = "SELECT id FROM LogWebAccess WHERE idSession = @idSession";
-                command.Parameters.AddWithValue("@idSession", Session.SessionID.ToString());
+                command.Parameters.AddWithValue("@idSession", Session.SessionID);
                 
                 SqlDataAdapter da = new SqlDataAdapter(command);
                 conn.Open();
@@ -317,11 +317,10 @@ namespace AutohausPortal.Start
                 
 
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 if (Connection.State == ConnectionState.Open) {Connection.Close();}
                 return "";
-                lblError.Text = "Beim Laden der Anwendungen ist ein Fehler aufgetreten.<br>(" + ex.Message + ")";
             }
             return DomainUser;
         }
@@ -395,7 +394,7 @@ namespace AutohausPortal.Start
 
                 lnkPasswortVergessen.Text = "Passwort vergessen?";
                 lnkPasswortVergessen.Visible = false;
-                if (m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID.ToString(), blnPasswdlink))
+                if (m_User.Login(txtUsername.Text, txtPassword.Text, Session.SessionID, blnPasswdlink))
                 {
 
                     if (Request.QueryString["ReturnURL"] != null)
@@ -634,7 +633,7 @@ namespace AutohausPortal.Start
 
                 strReturn = Convert.ToString(result);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 strReturn = "";
             }
@@ -666,7 +665,7 @@ namespace AutohausPortal.Start
             {
                 iValue = Int32.Parse(sValue);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 iValue = -1;
             }
@@ -746,8 +745,8 @@ namespace AutohausPortal.Start
         protected void cmdContinue_Click(object sender, EventArgs e)
         {
             m_User.DoubleLoginTry = false;
-            m_User.SetLoggedOn(m_User.UserName, true, Session.SessionID.ToString());
-            m_User.SessionID = Session.SessionID.ToString();
+            m_User.SetLoggedOn(m_User.UserName, true, Session.SessionID);
+            m_User.SessionID = Session.SessionID;
             Session["objUser"] = m_User;
             FormsAuthentication.RedirectFromLoginPage(m_User.UserID.ToString(), false);
         }

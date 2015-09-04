@@ -1,0 +1,62 @@
+﻿@model PortalMvcTools.Models.FormOuterLayerModel
+
+<script type="text/javascript">
+
+    function SearchFormIsCollapsed() {
+        var searchFormToggleButton = $("#FormSearchBox .expand");
+        return (typeof (searchFormToggleButton.attr("class")) !== 'undefined');
+    }
+
+    function SearchFormIsExpanded() {
+        var searchFormToggleButton = $("#FormSearchBox .collapse");
+        return (typeof (searchFormToggleButton.attr("class")) !== 'undefined');
+    }
+
+    function SearchFormShowHide(cssClass) {
+        var searchFormToggleButton = $("#FormSearchBox ." + cssClass);
+        searchFormToggleButton.trigger("click");
+    }
+
+    function SearchFormShow() {
+        SearchFormShowHide("expand");
+    }
+
+    function SearchFormHide(continueWithFunction) {
+        SearchFormShowHide("collapse");
+
+        setTimeout(function () {
+            $("#FormSearchResults").show();
+
+            if (typeof(continueWithFunction) != 'undefined')
+                continueWithFunction();
+        }, 200);
+    }
+
+    function SearchFormToggle() {
+        if (SearchFormIsCollapsed())
+            $("#FormSearchResults").show();
+    }
+
+    function SearchResultsHide() {
+        $("#FormSearchResults").hide();
+    }
+
+    function SearchResultsTryHide() {
+        try {
+            if (!_modelStateValid)
+                SearchResultsHide();
+        }
+        catch(e) {}
+    }
+    
+</script>
+
+<div id="FormSearchBox" class="portlet box light-grey">
+    <div class="portlet-title">
+        <div class="caption"><i class="icon-search"></i>Auswahl JA!!!</div>
+        <div class="tools">
+            <a href="javascript:SearchFormToggle();" class="collapse"></a>
+        </div>
+    </div>
+    <div class="portlet-body form">
+

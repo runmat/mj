@@ -1,0 +1,64 @@
+﻿@using CkgDomainLogic.Finance.Models
+
+@{ var gridName = "GridVersendungen"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseVersendungenSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<Versendung>()
+    .Name(gridName)
+    .XAjaxDataBinding("VersendungenAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Anforderungsart);
+        columns.XBound(c => c.Versandgrund);
+        columns.XBound(c => c.Kontonummer);
+        columns.XBound(c => c.CIN);
+        columns.XBound(c => c.PAID);
+        columns.XBound(c => c.SicherheitsIdCMS);
+        columns.XBound(c => c.Anlagedatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Zb2Nummer);
+        columns.XBound(c => c.Versandart);
+        columns.XBound(c => c.EmpfaengerArt);
+        columns.XBound(c => c.EmpfaengerName);
+        columns.XBound(c => c.EmpfaengerVorname);
+        columns.XBound(c => c.EmpfaengerAnrede);
+        columns.XBound(c => c.EmpfaengerStrasse);
+        columns.XBound(c => c.EmpfaengerHausnummer);
+        columns.XBound(c => c.EmpfaengerPostleitzahl);
+        columns.XBound(c => c.EmpfaengerOrt);
+        columns.XBound(c => c.EmpfaengerLand);
+        columns.XBound(c => c.AuftraggeberId);
+        columns.XBound(c => c.AnfordererName);
+        columns.XBound(c => c.AnfordererVorname);
+        columns.XBound(c => c.AnfordererAnrede);
+        columns.XBound(c => c.AnfordererStrasse);
+        columns.XBound(c => c.AnfordererHausnummer);
+        columns.XBound(c => c.AnfordererPostleitzahl);
+        columns.XBound(c => c.AnfordererOrt);
+        columns.XBound(c => c.AnfordererLand);
+        columns.XBound(c => c.AnfordererMobil);
+        columns.XBound(c => c.AnfordererInfo);
+        columns.XBound(c => c.Aenderungsdatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Uebernahmedatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.AnsprechpartnerName);
+        columns.XBound(c => c.AnsprechpartnerVorname);
+        columns.XBound(c => c.AnsprechpartnerAnrede);
+        columns.XBound(c => c.AutorisierungsUser);
+        columns.XBound(c => c.Vertragsart);
+        columns.XBound(c => c.EndgueltigerVersand).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versanddatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Anforderungsweg);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.PAID).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportVersendungenFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportVersendungenFilteredPDF", "Finance");
+    })
+)
