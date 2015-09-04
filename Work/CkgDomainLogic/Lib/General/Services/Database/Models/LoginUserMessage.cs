@@ -76,7 +76,7 @@ namespace CkgDomainLogic.General.Database.Models
 
         public bool MaintenanceShowAndLetConfirmMessageAfterLogin
         {
-            get { return !MessageIsConfirmedByUser && MaintenanceShow && !(Title.NotNullOrEmpty().ToLower().Contains("dies ist der testserver")); }
+            get { return !MessageIsConfirmedByUser && MaintenanceShow && !(Title.NotNullOrEmpty().ToLower().Contains("achtung: dies ist der ")); }
         }
 
         #endregion

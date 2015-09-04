@@ -1,0 +1,10 @@
+﻿@{ 
+    var headerHintEntry = System.Configuration.ConfigurationManager.AppSettings["LayoutPageHeaderHint"];
+}
+
+@if (headerHintEntry != null)
+{
+    <div class="layout-page-header-hint">
+        @headerHintEntry.ToString()
+    </div>
+}

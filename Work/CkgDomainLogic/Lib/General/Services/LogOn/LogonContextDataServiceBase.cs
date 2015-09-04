@@ -95,6 +95,8 @@ namespace CkgDomainLogic.General.Services
 
         public bool MvcEnforceRawLayout { get; set; }
 
+        public string CurrentLayoutTheme { get; set; }
+
         protected static string WebRootPath
         {
             get
@@ -105,7 +107,11 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
-        public string ReturnUrl { get { return SessionHelper.GetSessionString("ReturnUrl"); } set { SessionHelper.SetSessionValue("ReturnUrl", value); } }
+        public string ReturnUrl
+        {
+            get { return SessionHelper.GetSessionString("ReturnUrl"); }
+            set { SessionHelper.SetSessionValue("ReturnUrl", value); }
+        }
 
         // only for backward compatibility:
         public string CurrentGridColumns
@@ -169,12 +175,14 @@ namespace CkgDomainLogic.General.Services
             if (UserApps == null)
                 return new List<IApplicationUserMenuItem>();
 
-            return UserApps
+            var orderedList = UserApps
                 .Where(ua => GetAppTypeFriendlyName(ua.AppType).IsNotNullOrEmpty())
-                    .OrderBy(ua => ua.AppTypeRank).ThenBy(ua => ua.AppRank)
-                        .GroupBy(ua => ua.AppType)
-                            .Select(ua2 => UserApps.FirstOrDefault(uaGroup => uaGroup.AppType == ua2.Key))
+                    .GroupBy(ua => ua.AppType)
+                        .Select(ua2 => UserApps.FirstOrDefault(uaGroup => uaGroup.AppType == ua2.Key))
+                            .OrderBy(ua => ua.AppTypeRank)
                                 .ToList();
+
+            return orderedList;
         }
 
         public List<IApplicationUserMenuItem> GetMenuItems(string appType = null)

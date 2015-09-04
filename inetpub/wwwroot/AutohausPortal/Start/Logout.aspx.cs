@@ -60,7 +60,7 @@ namespace AutohausPortal.Start
                     }
 
             }
-            catch (Exception DoNothing){}
+            catch (Exception){}
         }
         private String GiveIpStandardUser(Int32 intCust)
         {
@@ -83,7 +83,7 @@ namespace AutohausPortal.Start
                     strReturn = result.ToString();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             finally
@@ -116,7 +116,7 @@ namespace AutohausPortal.Start
 
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                
             }

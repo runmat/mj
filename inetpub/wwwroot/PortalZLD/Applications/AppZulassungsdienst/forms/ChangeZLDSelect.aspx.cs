@@ -40,6 +40,13 @@ namespace AppZulassungsdienst.forms
                 objCommon.getSAPDatenStamm();
                 objCommon.getSAPZulStellen();
                 objCommon.LadeKennzeichenGroesse();
+
+                if (objCommon.Kundengruppen == null)
+                    objCommon.GetGruppen_Touren("K");
+
+                if (objCommon.Touren == null)
+                    objCommon.GetGruppen_Touren("T");
+
                 Session["objCommon"] = objCommon;
             }
             else
@@ -177,12 +184,14 @@ namespace AppZulassungsdienst.forms
                 objNacherf.SelVorgang = "A";
                 objNacherf.SelStatus = "AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge       
                 objNacherf.SelFlieger = false;
+                objNacherf.SelNochNichtAbgesendete = chkNochNichtAbgesendete.Checked;
             }
             else if (objNacherf.SelAenderungAngenommene)
             {
                 objNacherf.SelVorgang = "A";
                 objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung       
                 objNacherf.SelFlieger = false;
+                objNacherf.SelNochNichtAbgesendete = false;
             }
             else
             {
@@ -202,6 +211,7 @@ namespace AppZulassungsdienst.forms
                     objNacherf.SelStatus = "NZ,AN,AA,AB,AG,AS,AU,AF,AK,AZ"; // alle Autohausvorgänge und normal Nacherfassung
                 }
                 objNacherf.SelFlieger = chkFlieger.Checked;
+                objNacherf.SelNochNichtAbgesendete = false;
             }
 
             objNacherf.SelDZVKBUR = "";
@@ -214,9 +224,14 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            if (objNacherf.Vorgangsliste.Any())
+            Session["objNacherf"] = objNacherf;
+
+            if (objNacherf.SelNochNichtAbgesendete && objNacherf.NochNichtAbgesendeteVorgaenge.Any())
             {
-                Session["objNacherf"] = objNacherf;
+                Response.Redirect("NochNichtAbgesendeteVorgaengeListe.aspx?AppID=" + Session["AppID"].ToString());
+            }
+            else if (!objNacherf.SelNochNichtAbgesendete && objNacherf.Vorgangsliste.Any())
+            {
                 Response.Redirect("ChangeZLDNach.aspx?AppID=" + Session["AppID"].ToString());
             }
             else
@@ -310,12 +325,13 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void ShowHideControls()
         {
-            trKundengruppe.Visible = (objNacherf.SelAnnahmeAH ||objNacherf.SelAenderungAngenommene);
+            trKundengruppe.Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
             trTour.Visible = (objNacherf.SelAnnahmeAH || objNacherf.SelAenderungAngenommene);
             trStva.Visible = !objNacherf.SelSofortabrechnung;
             trDienstleistung.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
             trVorgang.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene && !objNacherf.SelSofortabrechnung);
             trFlieger.Visible = (!objNacherf.SelAnnahmeAH && !objNacherf.SelAenderungAngenommene);
+            trNochNichtAbgesendete.Visible = objNacherf.SelAnnahmeAH;
         }
 
         #endregion
