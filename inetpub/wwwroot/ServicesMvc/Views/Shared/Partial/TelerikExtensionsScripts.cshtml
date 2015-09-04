@@ -11,6 +11,10 @@
 
     function FilteredData_Grid_OnDataBound(grid, autoPersistColumns) {
 
+        setTimeout(function () {
+            HandleResponsiveControlWidths();
+        }, 500);
+
         if (_filteredData_DisableDataBound)
             return;
 
@@ -28,6 +32,7 @@
 
 
         setTimeout(function () {
+            
             if (typeof (autoPersistColumns) == 'undefined') {
 
                 if (!_gridReportGeneratorMode)
@@ -297,6 +302,10 @@
     }
 
     function GridCaptionHintShowAsWait(grid) {
+
+        if (IsIE())
+            return;
+
         var waitHint = GridCaptionGetWaitHintElement(grid);
 
         waitHint.removeClass("alert-success");

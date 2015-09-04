@@ -90,6 +90,28 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
+        {
+            d.Preis = null;
+            d.PreisGebuehr = null;
+            d.PreisSteuer = null;
+            d.PreisKz = null;
+
+            switch (d.Status.NotNullOrEmpty().ToUpper())
+            {
+                case "AR":
+                    d.Preis = s.PREIS_DL;
+                    d.PreisGebuehr = s.PREIS_GB;
+                    d.PreisSteuer = s.PREIS_ST;
+                    d.PreisKz = s.PREIS_KZ;
+                    break;
+
+                case "D":
+                    d.PreisGebuehr = s.PREIS_GB;
+                    break;
+            }
+        }
+
         static public ModelMapping<Z_ZLD_AH_IMPORT_ERFASSUNG1.GT_FILENAME, PdfFormular> Z_ZLD_AH_IMPORT_ERFASSUNG1_GT_FILENAME_To_PdfFormular
         {
             get
@@ -140,35 +162,10 @@ namespace CkgDomainLogic.Autohaus.Models
 
                         var resWunsch = s.RESWUNSCH.NotNullOrEmpty().ToUpper();
                         d.KennzeichenMerkmal = (resWunsch == "R" ? Localize.Reserved : (resWunsch == "W" ? Localize.PersonalisedNumberPlate : ""));
+
+                        SetPreise(s, d);
                     }));
             }
-        }
-
-        private static void SetPreise(Z_ZLD_AH_ZULLISTE.GT_OUT s, ZulassungsReportModel d)
-        {
-            d.Preis = null;
-            d.PreisGebuehr = null;
-            d.PreisSteuer = null;
-            d.PreisKz = null;
-
-            switch (d.Status.NotNullOrEmpty().ToUpper())
-            {
-                case "AR":
-                    d.Preis = PreisCentToEuro(s.PREIS_DL);
-                    d.PreisGebuehr = PreisCentToEuro(s.PREIS_GB);
-                    d.PreisSteuer = PreisCentToEuro(s.PREIS_ST);
-                    d.PreisKz = PreisCentToEuro(s.PREIS_KZ);
-                    break;
-
-                case "D":
-                    d.PreisGebuehr = PreisCentToEuro(s.PREIS_GB);
-                    break;
-            }
-        }
-
-        private static decimal? PreisCentToEuro(decimal? centPreis)
-        {
-            return ((decimal?)(centPreis.GetValueOrDefault() / 100)).NullIf0();
         }
 
         static public ModelMapping<Z_ZLD_AH_AUSGABE_ZULFORMS.GT_FILENAME, PdfFormular> Z_ZLD_AH_AUSGABE_ZULFORMS_GT_FILENAME_To_PdfFormular
@@ -245,8 +242,6 @@ namespace CkgDomainLogic.Autohaus.Models
                     d.StatusAsText = Localize.InWork;
                     break;
             }
-
-            SetPreise(s, d);
         }
 
         static public ModelMapping<Z_ZLD_EXPORT_INFOPOOL.GT_EX_ZUSTLIEF, Adresse> Z_ZLD_EXPORT_INFOPOOL_GT_EX_ZUSTLIEF_To_Adresse
@@ -268,6 +263,145 @@ namespace CkgDomainLogic.Autohaus.Models
             }
         }
 
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BAK, Vorgang> Z_ZLD_AH_EXPORT_WARENKORB_GT_BAK_To_Vorgang
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BAK, Vorgang>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BelegNr = s.ZULBELN;
+                        d.BeauftragungsArt = s.BEAUFTRAGUNGSART;
+                        d.WebGroupId = s.WEBGOUP_ID;
+                        d.WebUserId = s.WEBUSER_ID;
+                        d.VkOrg = s.VKORG;
+                        d.VkBur = s.VKBUR;
+                        d.Vorerfasser = s.VE_ERNAM;
+                        d.VorgangsStatus = s.BEB_STATUS;
+
+                        // Rechnungsdaten
+                        d.Rechnungsdaten.KundenNr = s.KUNNR;
+
+                        // Bank-/Adressdaten
+                        d.BankAdressdaten.Bankdaten.Zahlungsart = (s.EINZ_JN.XToBool() ? "E" : s.RECH_JN.XToBool() ? "R" : s.BARZ_JN.XToBool() ? "B" : "");
+                        d.BankAdressdaten.Bankdaten.Kontoinhaber = s.KOINH;
+                        d.BankAdressdaten.Bankdaten.Iban = s.IBAN;
+                        d.BankAdressdaten.Bankdaten.Swift = s.SWIFT;
+                        d.BankAdressdaten.Bankdaten.KontoNr = s.BANKN;
+                        d.BankAdressdaten.Bankdaten.Bankleitzahl = s.BANKL;
+                        d.BankAdressdaten.Bankdaten.Geldinstitut = s.EBPP_ACCNAME;
+
+                        // Fahrzeug
+                        d.Fahrzeugdaten.AuftragsNr = s.ZZREFNR5;
+                        d.Fahrzeugdaten.FahrgestellNr = s.ZZREFNR2;
+                        d.Fahrzeugdaten.Zb2Nr = s.BRIEFNR;
+                        d.Fahrzeugdaten.FahrzeugartId = s.FAHRZ_ART;
+                        d.Fahrzeugdaten.VerkaeuferKuerzel = s.VK_KUERZEL;
+                        d.Fahrzeugdaten.Kostenstelle = s.ZZREFNR3;
+                        d.Fahrzeugdaten.BestellNr = s.ZZREFNR4;
+
+                        // Zulassung
+                        d.Zulassungsdaten.ModusAbmeldung = (s.BEAUFTRAGUNGSART == "ABMELDUNG" || s.BEAUFTRAGUNGSART == "MASSENABMELDUNG");
+                        d.Zulassungsdaten.ModusVersandzulassung = (s.BEAUFTRAGUNGSART == "VERSANDZULASSUNG");
+
+                        d.Zulassungsdaten.Zulassungsdatum = s.ZZZLDAT;
+                        d.Zulassungsdaten.Abmeldedatum = s.ZZZLDAT;
+
+                        d.Zulassungsdaten.Zulassungskreis = s.KREISKZ;
+                        d.Zulassungsdaten.ZulassungskreisBezeichnung = s.KREISBEZ;
+                        d.Zulassungsdaten.EvbNr = s.ZZEVB;
+
+                        d.Zulassungsdaten.VorhandenesKennzeichenReservieren = s.VH_KENNZ_RES.XToBool();
+                        d.Zulassungsdaten.KennzeichenReserviert = s.RESERVKENN_JN.XToBool();
+                        d.Zulassungsdaten.ReservierungsNr = s.RESERVKENN;
+                        d.Zulassungsdaten.ReservierungsName = s.RES_NAME;
+                        d.Zulassungsdaten.MindesthaltedauerDays = s.HALTEDAUER;
+
+                        d.Zulassungsdaten.Kennzeichen = s.ZZKENN;
+                        d.Zulassungsdaten.Wunschkennzeichen2 = s.WU_KENNZ2;
+                        d.Zulassungsdaten.Wunschkennzeichen3 = s.WU_KENNZ3;
+
+                        // Versandzulassung
+                        d.VersandAdresse.Adresse.KundenNr = s.ZL_LIFNR;
+
+                        // Optionen/Dienstleistungen
+                        d.OptionenDienstleistungen.NurEinKennzeichen = s.EINKENN_JN.XToBool();
+                        d.OptionenDienstleistungen.Saisonkennzeichen = s.SAISON_KNZ.XToBool();
+                        d.OptionenDienstleistungen.SaisonBeginn = s.SAISON_BEG;
+                        d.OptionenDienstleistungen.SaisonEnde = s.SAISON_END;
+                        d.OptionenDienstleistungen.Bemerkung = s.BEMERKUNG;
+                        d.OptionenDienstleistungen.KennzeichenVorhanden = s.KENNZ_VH.XToBool();
+                        d.OptionenDienstleistungen.HaltedauerBis = s.HALTE_DAUER;
+                        d.OptionenDienstleistungen.AltesKennzeichen = s.ALT_KENNZ;
+
+                        // 20150826 MMA
+                        d.Fahrzeugdaten.HasEtikett = s.ETIKETT.XToBool();
+                        d.Fahrzeugdaten.Farbe = s.FARBE;
+                        d.Fahrzeugdaten.FzgModell = s.FZGTYP;
+                        
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_ADRS, Adressdaten> Z_ZLD_AH_EXPORT_WARENKORB_GT_ADRS_To_Adressdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_ADRS, Adressdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Adresse.KundenNr = s.KUNNR;
+                        d.Partnerrolle = s.PARVW;
+                        d.BelegNr = s.ZULBELN;
+                        d.Adresse.Name1 = s.NAME1;
+                        d.Adresse.Name2 = s.NAME2;
+                        d.Adresse.Strasse = s.STREET;
+                        d.Adresse.PLZ = s.PLZ;
+                        d.Adresse.Ort = s.CITY1;
+                        d.Bemerkung = s.BEMERKUNG;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_POS, Zusatzdienstleistung> Z_ZLD_AH_EXPORT_WARENKORB_GT_POS_To_Zusatzdienstleistung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_POS, Zusatzdienstleistung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.BelegNr = s.ZULBELN;
+                        d.PositionsNr = s.LFDNR;
+                        d.MaterialNr = s.MATNR;
+                        d.Menge = s.MENGE;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BANK, Bankdaten> Z_ZLD_AH_EXPORT_WARENKORB_GT_BANK_To_Bankdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_AH_EXPORT_WARENKORB.GT_BANK, Bankdaten>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Partnerrolle = s.PARVW;
+                        d.BelegNr = s.ZULBELN;
+                        d.Zahlungsart = (s.EINZ_JN.XToBool() ? "E" : s.RECH_JN.XToBool() ? "R" : "");
+                        d.Kontoinhaber = s.KOINH;
+                        d.Iban = s.IBAN;
+                        d.Swift = s.SWIFT;
+                        d.KontoNr = s.BANKN;
+                        d.Bankleitzahl = s.BANKL;
+                        d.Geldinstitut = s.EBPP_ACCNAME;
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -283,6 +417,9 @@ namespace CkgDomainLogic.Autohaus.Models
                     , (s, d) =>
                         {
                             d.ZULBELN = s.BelegNr;
+                            d.BEAUFTRAGUNGSART = s.BeauftragungsArt;
+                            d.WEBGOUP_ID = s.WebGroupId;
+                            d.WEBUSER_ID = s.WebUserId;
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
                             d.VE_ERNAM = s.Vorerfasser;
@@ -327,6 +464,8 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.RESERVKENN_JN = s.Zulassungsdaten.KennzeichenReserviert.BoolToX();
                             d.WUNSCHKENN_JN = s.Zulassungsdaten.WunschkennzeichenVorhanden.BoolToX();
                             d.RESERVKENN = s.Zulassungsdaten.ReservierungsNr;
+                            d.RES_NAME = s.Zulassungsdaten.ReservierungsName;
+                            d.HALTEDAUER = s.Zulassungsdaten.MindesthaltedauerDays;
 
                             Func<string, string> formatKennzeichen = (kennzeichen => kennzeichen.NotNullOr(Zulassungsdaten.ZulassungsKennzeichenLinkeSeite(kennzeichen)));
 
@@ -346,7 +485,13 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.BEMERKUNG = s.OptionenDienstleistungen.Bemerkung;
                             d.KENNZ_VH = s.OptionenDienstleistungen.KennzeichenVorhanden.BoolToX();
                             d.HALTE_DAUER = s.OptionenDienstleistungen.HaltedauerBis;
-                            d.ALT_KENNZ = s.OptionenDienstleistungen.AltesKennzeichen; 
+                            d.ALT_KENNZ = s.OptionenDienstleistungen.AltesKennzeichen;
+
+                            // 20150826 MMA
+                            d.ETIKETT = s.Fahrzeugdaten.HasEtikett.BoolToX();
+                            d.FARBE = s.Fahrzeugdaten.Farbe;
+                            d.FZGTYP = s.Fahrzeugdaten.FzgModell;
+
                         }));
             }
         }

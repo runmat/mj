@@ -1,0 +1,28 @@
+﻿@using CkgDomainLogic.Finance.Models
+
+@{ var gridName = "GridVersendungen"; }
+
+<div class="form-actions PageTopMenu">
+    <button type="button" id="btnBackToSearch" class="btn blue mini" onclick="CloseVersendungenSearchResult();"><i class="icon-arrow-left"></i>&nbsp;@Localize.BackToSearch</button>
+</div>
+
+@(Html.Telerik()
+    .Grid<VersendungSummiert>()
+    .Name(gridName)
+    .XAjaxDataBinding("VersendungenSummiertAjaxBinding", "Finance")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Anforderungsart);
+        columns.XBound(c => c.Versandgrund);
+        columns.XBound(c => c.Summe);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.Anforderungsart).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportVersendungenFilteredExcel", "Finance");
+        commands.FilteredDataCommand("ExportVersendungenFilteredPDF", "Finance");
+    })
+)
