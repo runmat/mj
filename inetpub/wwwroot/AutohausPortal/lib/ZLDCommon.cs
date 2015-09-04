@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using CKG.Base.Common;
 using System.Data;
 using CKG.Base.Business;
@@ -128,6 +129,21 @@ namespace AutohausPortal.lib
             set;
         }
 
+        public static Dictionary<string, string> Materialliste = new Dictionary<string, string>
+                {
+                    {"598", "72h-Versandzulassung"},
+                    {"573", "Abmeldung vor Ort"},
+                    {"619", "Firmeneigene Zulassung"},
+                    {"588", "Gebrauchtzulassung"},
+                    {"25", "Euro-Kennzeichen geprägt"},
+                    {"6", "Fun-/Parkschilder"},
+                    {"592", "Kurzzeitzulassung"},
+                    {"593", "Neuzulassung"},
+                    {"570", "Sonstige Dienstleistung"},
+                    {"596", "Umkennzeichnung"},
+                    {"600", "Zollzulassung"}
+                };
+
         #endregion
 
         #region Contructor
@@ -139,7 +155,6 @@ namespace AutohausPortal.lib
         public ZLDCommon(ref CKG.Base.Kernel.Security.User objUser, CKG.Base.Kernel.Security.App objApp)
             : base(ref objUser, objApp, "")
         {
-
             tblKundenStamm = new DataTable();
             tblStvaStamm = new DataTable();
             tblKennzGroesse = new DataTable();
@@ -400,7 +415,7 @@ namespace AutohausPortal.lib
                     {
                         default:
                             m_intStatus = -9999;
-                            m_strMessage = m_strMessage = "Fehler bei der IBAN-Prüfung: " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
+                            m_strMessage = "Fehler bei der IBAN-Prüfung: " + HelpProcedures.CastSapBizTalkErrorMessage(ex.Message);
                             break;
                     }
                 }
@@ -452,89 +467,6 @@ namespace AutohausPortal.lib
                 }
                 finally { m_blnGestartet = false; }
             }
-        }
-
-        /// <summary>
-        /// Lädt Anzahl der angelegten Aufträge (für Anzeige in der Masterpage), statisch
-        /// </summary>
-        /// <param name="usr"></param>
-        /// <param name="conn"></param>
-        /// <returns></returns>
-        private static string ermittleAnzahlAuftraege(CKG.Base.Kernel.Security.User usr, SqlConnection conn)
-        {
-            string menge;
-
-            try
-            {
-                bool blnSendForAll = usr.Organization.OrganizationName.ToUpper().Contains(("SENDFORALL"));
-
-                SqlCommand command = new SqlCommand();
-
-                if (blnSendForAll)
-                {
-                    // Für Benutzer, deren Organisation das Tag "SendForAll" enthält, alle erfassten Aufträge des VkBurs bzw. der Gruppe anzeigen
-                    command.CommandText = "SELECT COUNT(*) FROM  dbo.ZLDKopfTabelle " +
-                        " INNER JOIN dbo.WebMember ON dbo.ZLDKopfTabelle.id_user = dbo.WebMember.UserID " +
-                        " WHERE     (Filiale = @filiale) AND (GroupID = @GroupID) AND (abgerechnet = 0)";
-                    command.Parameters.Add("@filiale", usr.Reference);
-                    command.Parameters.Add("@GroupID", usr.GroupID);
-                }
-                else
-                {
-                    command.CommandText = "SELECT COUNT(*) FROM  dbo.ZLDKopfTabelle " +
-                                    "WHERE     (id_user = @id_user) AND (abgerechnet = 0)";
-                    command.Parameters.Add("@id_user", usr.UserID);
-                }
-
-                command.Connection = conn;
-                menge = command.ExecuteScalar().ToString();
-            }
-            catch (Exception)
-            {
-                menge = "0";
-                throw;
-            }
-
-            return menge;
-        }
-
-        /// <summary>
-        /// Lädt Anzahl der angelegten Aufträge (für Anzeige in der Masterpage), ohne Parameter
-        /// </summary>
-        /// <returns></returns>
-        public string getAnzahlAuftraege()
-        {
-            string menge;
-
-            try
-            {
-                using (SqlConnection conn = new SqlConnection(ConfigurationManager.AppSettings["Connectionstring"].ToString()))
-                {
-                    conn.Open();
-
-                    menge = ermittleAnzahlAuftraege(m_objUser, conn);
-
-                    conn.Close();
-                }
-            }
-            catch (Exception)
-            {
-                menge = "0";
-                throw;
-            }
-
-            return menge;
-        }
-
-        /// <summary>
-        /// Lädt Anzahl der angelegten Aufträge (für Anzeige in der Masterpage), statisch, mit Übergabe von User und Connection
-        /// </summary>
-        /// <param name="usr"></param>
-        /// <param name="conn"></param>
-        /// <returns></returns>
-        public static string getAnzahlAuftraege(CKG.Base.Kernel.Security.User usr, SqlConnection conn)
-        {
-            return ermittleAnzahlAuftraege(usr, conn);
         }
 
         /// <summary>
@@ -661,6 +593,7 @@ namespace AutohausPortal.lib
         #endregion
 
         #region Helper
+
         /// <summary>
         /// Überprüft ob der eingegene Wert numerisch ist.
         /// </summary>
@@ -678,6 +611,7 @@ namespace AutohausPortal.lib
                 return false;
             }
         } 
+
         #endregion
     }
 }

@@ -150,13 +150,11 @@ namespace ServicesMvc.Autohaus.Controllers
                 ViewModel.SelectFahrzeuge(isChecked, f => true, out allSelectionCount, out allCount);
             else
                 ViewModel.SelectFahrzeug(vin, isChecked, out allSelectionCount);
-
+            
             return Json(new
             {
                 allSelectionCount,
                 allCount
-                //zulassungenAnzahlPdiTotal = 1, // ViewModel.FahrzeugeSelected,    
-                //zulassungenAnzahlGesamtTotal = 2, //  ViewModel.FahrzeugeTotal,   
             });
         }
 
@@ -173,6 +171,19 @@ namespace ServicesMvc.Autohaus.Controllers
             TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
 
             return RedirectToAction("IndexMultiReg", "Zulassung");
+        }
+
+        /// <summary>
+        /// Für Massenabmeldung
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult MultiCancellation()
+        {
+            var selectedFahrzeuge = ViewModel.FahrzeugeAkteBestand.Where(x => x.IsSelected).ToList();   // Alle Fahrzeuge zurückgeben, die vom Benutzer selektiert wurden
+
+            TempData["SelectedFahrzeuge"] = selectedFahrzeuge;
+
+            return RedirectToAction("IndexMultiCancellation", "Zulassung");
         }
 
         #region Export

@@ -75,6 +75,8 @@ namespace CkgDomainLogic.General.Services
 
         public bool MvcEnforceRawLayout { get; set; }
 
+        public string CurrentLayoutTheme { get; set; }
+
 
         public LogonContextTestAutohaus(ILocalizationService localizationService)
         {

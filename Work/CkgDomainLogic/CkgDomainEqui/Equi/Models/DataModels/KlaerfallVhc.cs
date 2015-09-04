@@ -24,7 +24,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
         public DateTime? EingangsdatumZb2 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Plancode)]
+        //[LocalizedDisplay(LocalizeConstants.Plancode)]
         public string Plancode { get; set; }
     }
 }
