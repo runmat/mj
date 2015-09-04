@@ -1,4 +1,5 @@
 ﻿using System;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
@@ -14,6 +15,7 @@ namespace CkgDomainLogic.Strafzettel.Models
         public string Aktenzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfReceipt)]

@@ -121,6 +121,6 @@
     <value>The value '{0}' is invalid for this field</value>
   </data>
   <data name="PropertyValueRequired" xml:space="preserve">
-    <value>A value is required for this field</value>
+    <value>Field is required</value>
   </data>
 </root>

@@ -293,7 +293,9 @@ namespace SapORM
 
             //Kroschke Zulassung
             //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
-            //new FunctionReflector("Z_ZLD_AH_IMPORT_ERFASSUNG1").WriteOrmForExportTableStructures();
+
+            //new FunctionReflector("Z_ZLD_AH_IMPORT_ERFASSUNG1").WriteOrmForExportTableStructures("I_SPEICHERN, I_AUFRUF", "S", "1");
+
             //new FunctionReflector("Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE").WriteOrmForExportTableStructures("I_KUNNR, I_VKORG, I_SPART", "00240045", "1010", "01");
             //new FunctionReflector("Z_ZLD_AH_MATERIAL").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZLD_AH_ZULST_BY_PLZ").WriteOrmForExportTableStructures();
@@ -462,6 +464,12 @@ namespace SapORM
             //new FunctionReflector("Z_V_UEBERF_AUFTR_REFERENZ").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_V_UEBERF_AUFTR_PROTOKOLL_AB").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_DPM_QM_READ_QPCD").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_EXPORT_WARENKORB").WriteOrmForExportTableStructures("I_VKBUR, I_WEBGOUP_ID, I_WEBUSER_ID", "4837", "0", "0");
+            //new FunctionReflector("Z_ZLD_EXPORT_AH_WARENKORB").WriteOrmForExportTableStructures("I_VKBUR", "4837");
+            //new FunctionReflector("Z_ZLD_IMPORT_AH_WARENKORB").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_DELETE_AH_WARENKORB").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_SEL").WriteOrmForExportTableStructures("I_ZLDAT", "14.08.2015");
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_DRU").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZANF_READ_DATEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KLAERF", "329608", "X");
 
 

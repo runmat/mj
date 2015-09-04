@@ -107,6 +107,7 @@
     <Compile Include="Models\GridSettings.cs" />
     <Compile Include="Web\AreaAutoRegistration.cs" />
     <Compile Include="Web\Attributes\NoCache.cs" />
+    <Compile Include="Web\RazorViewWithWrapperMarkers.cs" />
     <Compile Include="Web\ModelBinders\AnnotationsAndConventionsBasedModelMetaDataProvider.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\DataContextCapableController.cs" />
@@ -190,6 +191,7 @@
     <Compile Include="Web\SessionHelper.cs" />
     <Compile Include="Web\StringExtensions.cs" />
     <Compile Include="Web\TelerikExtensions.cs" />
+    <Compile Include="Web\RazorViewEngineThemed.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

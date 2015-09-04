@@ -1,12 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Web.Script.Serialization;
-using System.Xml.Serialization;
-using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 
