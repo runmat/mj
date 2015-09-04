@@ -1,27 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Common;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
+using GeneralTools.Models;
 using Telerik.Web.UI;
 using System.Web.UI.HtmlControls;
 
-
 namespace AutohausPortal.forms
-{
-    
+{  
     /// <summary>
     ///  Auftragseingabe Abmeldungen.
     ///  Benutzte Klassen AHErfassung und objCommon
     /// </summary>
-    public partial class Abmeldung : System.Web.UI.Page
+    public partial class Abmeldung : Page
     {
         private User m_User;
         private App m_App;
@@ -43,42 +37,33 @@ namespace AutohausPortal.forms
         /// <param name="e">EventArgs</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
-                if (BackfromList != false)
+                if (BackfromList)
                 {
-                    Int32 id = 0;
                     if (Request.QueryString["id"] != null)
                     { IDKopf = Request.QueryString["id"].ToString(); }
                     else
                     { lblError.Text = "Fehler beim Laden des Vorganges!"; }
 
                     objVorerf = (AHErfassung)Session["objVorerf"];
-                    if (AHErfassung.IsNumeric(IDKopf))
-                    {
-                        Int32.TryParse(IDKopf, out id);
-                    }
+                    var id = IDKopf.ToLong(0);
                     if (id != 0)
                     {
-                        objVorerf.LoadDB_ZLDRecordset(id); // Vorgang laden
+                        objVorerf.SelectVorgang(id); // Vorgang laden
                         fillForm();
                         SelectValues();
                         Session["objVorerf"] = objVorerf;
-
                     }
                     else { lblError.Text = "Fehler beim Laden des Vorganges!"; }
                 }
                 else
                 {
-                    objVorerf = new AHErfassung(ref m_User, m_App, "AA");
-                    objVorerf.NrMaterial = "573";
-                    objVorerf.Material = "Abmeldung vor Ort";
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AA", "573");
                     fillForm();
 
                     Session["objVorerf"] = objVorerf;
                 }
-
-
             }
             else if (Request.Params.Get("__EVENTTARGET") == "RadWindow1")
             {
@@ -131,7 +116,7 @@ namespace AutohausPortal.forms
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App);
-                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID.ToString(), this))
+                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID, this))
                 {
                     lblError.Visible = true;
                     lblError.Text = objCommon.Message;
@@ -155,7 +140,7 @@ namespace AutohausPortal.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">RadComboBoxItemsRequestedEventArgs</param>
-        protected void ddlKunnr1_ItemsRequested(object sender, Telerik.Web.UI.RadComboBoxItemsRequestedEventArgs e)
+        protected void ddlKunnr1_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
         {
 
             ddlKunnr1.Items.Clear();
@@ -286,7 +271,6 @@ namespace AutohausPortal.forms
                 if (!proofBankAndAddressData(istCpdKunde)) { return; }
 
                 objVorerf.Name1 = ucBankdatenAdresse.Name1;
-                objVorerf.Partnerrolle = objVorerf.Name1.Length > 0 ? objVorerf.Partnerrolle = "WE" : objVorerf.Partnerrolle = "";
                 objVorerf.Name2 = ucBankdatenAdresse.Name2;
                 objVorerf.Strasse = ucBankdatenAdresse.Strasse;
                 objVorerf.PLZ = ucBankdatenAdresse.Plz;
@@ -314,32 +298,29 @@ namespace AutohausPortal.forms
 
                 objVorerf.AppID = Session["AppID"].ToString();
 
-                if (cbxSave.Checked == false)
+                if (!objVorerf.IsNewVorgang)
                 {
-                    objVorerf.saved = true;
-                    objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
-                    getAuftraege();
-                }
-                else
-                {
-                    objVorerf.saved = true;
-                    objVorerf.bearbeitet = true;
                     if (controls != null && controls.Rows.Count == 1)
                     {
-                        //objVorerf.KreisKennz = controls.Rows[0]["Kennz1"].ToString();
                         objVorerf.Kennzeichen = controls.Rows[0]["Kennz1"].ToString() + "-" + controls.Rows[0]["Kennz2"].ToString();
                         objVorerf.VorhKennzReserv = (Boolean)controls.Rows[0]["KennzVorhanden"];
                     }
-                    else 
-                    { 
+                    else
+                    {
                         lblError.Text = "Das Kennzeichen konnte nicht gespeichert werden!";
                         return;
                     }
 
-                    objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
+                    objVorerf.SaveVorgangToSap(Session["AppID"].ToString(), Session.SessionID, this, istCpdKunde, false);
                     if (istCpdKunde) { ShowKundenformular(true); return; }
                     Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                    return;
                 }
+
+                objVorerf.SaveVorgaengeToSap(Session["AppID"].ToString(), Session.SessionID, this, controls, istCpdKunde, false);
+
+                if (objVorerf.Status == 0)
+                    getAuftraege();
 
                 if (objVorerf.Status == 0)
                 {
@@ -359,21 +340,12 @@ namespace AutohausPortal.forms
 
         private void ShowKundenformular(bool redirect = false)
         {
-            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, true, false);
-            if (objVorerf.Status == 0)
-            {
-                Session["objVorerf"] = objVorerf;
-                Session["RedirectToAuftragsliste"] = redirect;
-                //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
-                RadWindow downloaddoc = RadWindowManager1.Windows[0];
-                downloaddoc.Visible = true;
-                downloaddoc.VisibleOnPageLoad = true;
-            }
-            else
-            {
-                lblMessage.Text += " (" + objVorerf.Message + ")";
-                if (redirect) { Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe); }
-            }
+            Session["objVorerf"] = objVorerf;
+            Session["RedirectToAuftragsliste"] = redirect;
+            //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
+            RadWindow downloaddoc = RadWindowManager1.Windows[0];
+            downloaddoc.Visible = true;
+            downloaddoc.VisibleOnPageLoad = true;
         }
 
         /// <summary>
@@ -411,7 +383,7 @@ namespace AutohausPortal.forms
             DataTable controls = (DataTable)Session["tblControls"];
             CheckRepeater(ref controls);
             int iCount = 1;
-            if (AHErfassung.IsNumeric(txtAnzahl.Text))
+            if (txtAnzahl.Text.IsNumeric())
             {
                 int.TryParse(txtAnzahl.Text, out iCount);
             }
@@ -471,7 +443,6 @@ namespace AutohausPortal.forms
 
             foreach (RepeaterItem rItem in Repeater1.Items)
             {
-                Label lblID = (Label)rItem.FindControl("lblID");
                 HtmlGenericControl divRepReferenz2 = (HtmlGenericControl)rItem.FindControl("divRepReferenz2");
                 HtmlGenericControl divRepReferenz3 = (HtmlGenericControl)rItem.FindControl("divRepReferenz3");
                 HtmlGenericControl divRepReferenz4 = (HtmlGenericControl)rItem.FindControl("divRepReferenz4");
@@ -553,7 +524,6 @@ namespace AutohausPortal.forms
                 }
 
                 //Fahrzeugarten
-                tmpDView = new DataView();
                 tmpDView = objCommon.tblFahrzeugarten.DefaultView;
                 tmpDView.Sort = "DOMVALUE_L";
                 ddlFahrzeugart.DataSource = tmpDView;
@@ -574,17 +544,15 @@ namespace AutohausPortal.forms
         /// </summary>
         private void fillForm()
         {
-
             objVorerf.VKBUR = m_User.Reference.Substring(4, 4);
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
 
-            if (objVorerf.saved == false)
+            if (objVorerf.IsNewVorgang)
             {
                 ucBemerkungenNotizen.addAttributesKunRef();
             }
             ddlFahrzeugart.SelectedValue = "1";
             Create_tblKennz();
-
         }
 
         /// <summary>
@@ -594,13 +562,13 @@ namespace AutohausPortal.forms
         {
 
             DataTable controls = new DataTable();
-            controls.Columns.Add("ID", typeof(System.Int32));
-            controls.Columns.Add("Kennz1", typeof(System.String));
-            controls.Columns.Add("Kennz2", typeof(System.String));
-            controls.Columns.Add("KennzVorhanden", typeof(System.Boolean));
-            controls.Columns.Add("REF2", typeof(System.String));
-            controls.Columns.Add("REF3", typeof(System.String));
-            controls.Columns.Add("REF4", typeof(System.String));
+            controls.Columns.Add("ID", typeof(Int32));
+            controls.Columns.Add("Kennz1", typeof(String));
+            controls.Columns.Add("Kennz2", typeof(String));
+            controls.Columns.Add("KennzVorhanden", typeof(Boolean));
+            controls.Columns.Add("REF2", typeof(String));
+            controls.Columns.Add("REF3", typeof(String));
+            controls.Columns.Add("REF4", typeof(String));
 
             DataRow RowNew = controls.NewRow();
             RowNew["ID"] = 1;
@@ -823,16 +791,11 @@ namespace AutohausPortal.forms
             else
             {
                 Create_tblKennz();
-                controls = (DataTable)Session["tblControls"];
             }
 
-
-            cbxSave.Checked = objVorerf.saved;
-
-            if (objVorerf.saved == true)
+            if (!objVorerf.IsNewVorgang)
             {
                 cmdSave.Text = "Speichern/Liste";
-
             }
 
             ucBemerkungenNotizen.SelectValues(objVorerf);
@@ -892,12 +855,10 @@ namespace AutohausPortal.forms
         private Boolean checkDate()
         {
             Boolean bReturn = true;
-            String ZDat = "";
-
-            ZDat = txtDatum.Text;
-            if (ZDat != String.Empty)
+            String ZDat = txtDatum.Text;
+            if (!String.IsNullOrEmpty(ZDat))
             {
-                if (AHErfassung.IsDate(ZDat) == false)
+                if (!ZDat.IsDate())
                 {
                     divDatum.Attributes["class"] = "formfeld error";
                     lblError.Text = "Ungültiger Ausführungstermin: Falsches Format.";
@@ -1049,7 +1010,7 @@ namespace AutohausPortal.forms
                 }
             }
 
-            objVorerf.saved = false;
+            objVorerf.id_sap = 0;
             Session["objVorerf"] = objVorerf;
         }
 
@@ -1059,7 +1020,9 @@ namespace AutohausPortal.forms
         private void getAuftraege()
         {
             HyperLink lnkMenge = (HyperLink)Master.FindControl("lnkMenge");
-            lnkMenge.Text = objCommon.getAnzahlAuftraege();
+            var menge = objVorerf.GetAnzahlAuftraege(Session["AppID"].ToString(), Session.SessionID, this);
+            Session["AnzahlAuftraege"] = menge;
+            lnkMenge.Text = menge;
         }
 
         /// <summary>
@@ -1131,21 +1094,9 @@ namespace AutohausPortal.forms
                     DataRow[] KennzRow = KennzControls.Select("ID=" + lblID.Text);
                     if (KennzRow.Length == 1)
                     {
-                        // MCarl, 08.08.2014: Prüfung vorübergehend rausgenommen, bis SAP-seitig die Stammdaten aus ZULST_ALLEKENNZ ermittelt werden
-                        // *************************************************************************************************************************
-                        //if (txtKennz1.Text.Trim() != "")
-                        //{
-                        //    DataRow[] kennzStamm = objCommon.tblStvaStamm.Select("KREISKZ = '" + txtKennz1.Text.ToUpper().Trim() + "'");
-                        //    if (kennzStamm.Length == 0)
-                        //    {
-                        //        divKennz1.Attributes["class"] = "formfeld error"; bError = true;
-                        //    }
-                        //}
-                        //else
                         if (txtKennz1.Text.Trim() == "")
                         {
                             divKennz1.Attributes["class"] = "formfeld error"; bError = true;
-
                         }
                         if (txtKennz2.Text.Trim() == "")
                         { divKennz2.Attributes["class"] = "formfeld error"; bError = true; }

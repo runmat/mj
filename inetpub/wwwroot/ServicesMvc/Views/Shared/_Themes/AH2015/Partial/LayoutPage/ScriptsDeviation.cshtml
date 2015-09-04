@@ -1,0 +1,118 @@
+<script type="text/javascript">
+
+    function HandleResponsiveControlWidthsForTheme() {
+
+        HandleResponsiveBodyContainerForTheme();
+
+    }
+
+    function HandleResponsiveFormWizardStepBar(containerWidth) {
+
+        if (_formWizardCurrentStepCount == 0)
+            return;
+
+        var formWizardStepBar = $("#formWizard ul.row-fluid");
+        if (typeof (formWizardStepBar) == "undefined")
+            return;
+
+        if (IsIE())
+        {
+            $("#formWizard ul.row-fluid li").each(function () {
+                var e = $(this);
+                var w = containerWidth / _formWizardCurrentStepCount - 20;
+                e.css("width", w);
+            });
+        }
+        else
+        {
+            var widestStepWidth = 0;
+
+            $("#formWizard ul.row-fluid li .formWizardStepDesc").each(function () {
+                var e = $(this);
+                var eWidth = e.width();
+
+                var a = e.closest("a.step");
+                var aWidth = a.width();
+
+                var cWidth = (eWidth > aWidth ? eWidth : aWidth);
+                if (cWidth > widestStepWidth)
+                    widestStepWidth = cWidth;
+            });
+            widestStepWidth += 30;
+
+            if (widestStepWidth < 100)
+                widestStepWidth = 100;
+        }
+
+        var maxWidthAllSteps = _formWizardCurrentStepCount * widestStepWidth;
+
+        if (containerWidth > maxWidthAllSteps) {
+            if (formWizardStepBar.hasClass("formWizard_StepCounts_flow"))
+                formWizardStepBar.removeClass("formWizard_StepCounts_flow");
+        }
+        else
+            if (!formWizardStepBar.hasClass("formWizard_StepCounts_flow"))
+                formWizardStepBar.addClass("formWizard_StepCounts_flow");
+
+    }
+
+    function HandleResponsiveBodyContainerForTheme() {
+
+        $(".body-container").each(function () {
+            var e = $(this);
+            var sidebar = $(".page-sidebar");
+            var sidebarWidth = parseInt(sidebar.css("width"), 10);
+            if (sidebarWidth > 300)
+                sidebarWidth = 0;
+            var windowWidth = $(window).width();
+
+            var marginThis = e.css("margin-left");
+            //console.log("marginThis: " + marginThis);
+            var margin = parseInt(marginThis, 10) * 2;
+            //console.log("margin: " + margin);
+
+            var containerWidth = windowWidth - sidebarWidth - margin;
+
+            var tGridTable = e.find(".t-grid>table");
+            if (tGridTable.length > 0) {
+                tGridTable = $(tGridTable[0]);
+
+                //console.log("gridTable.width: " + tGridTable.width());
+                //console.log("container.width: " + containerWidth);
+
+                if (tGridTable.width() > 200 && tGridTable.width() >= containerWidth) {
+                    containerWidth = tGridTable.width() + (3 * margin);
+                }
+
+                //console.log(containerWidth);
+                //console.log(windowWidth);
+
+                var gridExportMenu = e.find(".outer-export-menu");
+                var tStatusText = e.find(".t-status-text");
+
+                if (containerWidth > windowWidth) {
+                    var scrollPosX = $(window).scrollLeft();
+
+                    var marg = 0;
+                    if (scrollPosX > 500)
+                        marg = 70;
+                    var gridExportMenuMarginRight = containerWidth - windowWidth + sidebarWidth + marg - scrollPosX;
+                    console.log(scrollPosX);
+                    //console.log(gridExportMenuMarginRight);
+
+                    gridExportMenu.css("margin-right", gridExportMenuMarginRight);
+                    tStatusText.css("margin-right", gridExportMenuMarginRight);
+                } else {
+                    gridExportMenu.css("margin-right", "");
+                    tStatusText.css("margin-right", "");
+                }
+            }
+
+            e.css("width", containerWidth);
+
+            HandleResponsiveFormWizardStepBar(containerWidth - margin);
+        });
+
+    }
+
+</script>

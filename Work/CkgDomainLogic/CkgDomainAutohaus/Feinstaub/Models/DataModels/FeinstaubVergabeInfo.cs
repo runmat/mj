@@ -1,4 +1,5 @@
 ﻿using System;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.Feinstaub.Models
@@ -6,6 +7,7 @@ namespace CkgDomainLogic.Feinstaub.Models
     public class FeinstaubVergabeInfo
     {
         [LocalizedDisplay("Kennzeichen")]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay("Erfassungsdatum")]

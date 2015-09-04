@@ -10,7 +10,8 @@ using CKG.Base.Kernel.Security;
 using SmartSoft.PdfLibrary;
 
 namespace AutohausPortal.forms
-{   /// <summary>
+{
+    /// <summary>
     /// Druckdialog für Kundenformulare
     /// </summary>
     public partial class PrintDialogKundenformulare : Page

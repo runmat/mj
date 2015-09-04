@@ -24,10 +24,10 @@
 @font-face {
   font-family:'FontAwesome';
   src:
-    url('../font/fontawesome-webfont.eot'),
-    url('../font/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
-    url('../font/fontawesome-webfont.woff') format('woff'),
-    url('../font/fontawesome-webfont.ttf') format('truetype');
+    url('../font/v2/fontawesome-webfont.eot'),
+    url('../font/v2/fontawesome-webfont.eot?#iefix') format('embedded-opentype'),
+    url('../font/v2/fontawesome-webfont.woff') format('woff'),
+    url('../font/v2/fontawesome-webfont.ttf') format('truetype');
   font-weight:normal;
   font-style:normal
 }

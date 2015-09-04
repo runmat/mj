@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System.Collections.Generic;
+using System.Reflection;
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
@@ -57,7 +58,6 @@ using SapORM.Contracts;
 using WebTools.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
-using System.Collections.Generic;
 
 namespace ServicesMvc
 {
@@ -90,7 +90,7 @@ namespace ServicesMvc
             var container = builder.Build();
             return container;
         }
-        
+
         public static void RegisterIocInterfacesAndTypes(this ContainerBuilder builder, ISapDataService sap = null)
         {
             builder.Register(c => sap ?? S.AP).InstancePerLifetimeScope();
@@ -212,6 +212,7 @@ namespace ServicesMvc
             builder.RegisterType<BatcherfassungDataServiceSAP>().As<IBatcherfassungDataService>().InstancePerHttpRequest();             
             builder.RegisterType<FahrzeugSperrenVerschiebenDataServiceSAP>().As<IFahrzeugSperrenVerschiebenDataService>().InstancePerHttpRequest();
             builder.RegisterType<StatusEinsteuerungDataServiceSAP>().As<IStatusEinsteuerungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<FinanceVersendungenDataServiceSAP>().As<IFinanceVersendungenDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

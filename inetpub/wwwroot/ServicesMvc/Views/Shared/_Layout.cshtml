@@ -3,6 +3,7 @@
 @{
     var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext");
     var appSettings = DependencyResolver.Current.GetService<IAppSettings>();
+    var telerikStyleSheetTheme = logonContext.CurrentLayoutTheme.NotNullOr("Simple");
 }
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -13,23 +14,30 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
         <title>
-            @if (logonContext != null)
-            {
-                @logonContext.CustomerName
-            }
+            @logonContext.CustomerName
         </title>
 
-        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik.Simple.css").Combined(true).Compress(true)))
+        <!-- BEGIN Telerik Style Sheets (Theme = @telerikStyleSheetTheme) -->
+        @(Html.Telerik().StyleSheetRegistrar().DefaultGroup(group => group.Add("telerik.common.css").Add("telerik." + telerikStyleSheetTheme + ".css").Combined(true).Compress(true)))
+        <!-- END Telerik Style Sheets -->
         
         @Html.Partial("Partial/LayoutPage/Styles")
+        
         @Html.Partial("Partial/LayoutPage/ScriptsPreload")
 
         <link href="~/content/SiteAllLayouts.css?v=20150819" rel="stylesheet" type="text/css" />
-        <link href="~/content/Site.css?v=20150819" rel="stylesheet" type="text/css" />
+        <link href="~/content/Site.css?v=20150901_1554" rel="stylesheet" type="text/css" />
+
+        @Html.Partial("Partial/LayoutPage/StylesDeviationAllLayoutPages")
+        @Html.Partial("Partial/LayoutPage/StylesDeviationDefault")
+        @Html.Partial("Partial/LayoutPage/StylesDeviationGrid")
     </head>
     <body class="fixed-top">
         @Html.Partial("Partial/TelerikGridDummy")
+
         @Html.Partial("Partial/LayoutPage/Scripts")
+        @Html.Partial("Partial/LayoutPage/ScriptsDeviation")
+        
         @Html.Partial("~/Areas/Common/Views/Dashboard/Partial/ChartJsonDataCustomizingScripts.cshtml")
 
         <img class="loading hide" src="~/assets/img/ajax-loading.gif" alt="Bitte einen Moment Geduld ...">
@@ -45,13 +53,10 @@
                         @Html.Partial("Partial/LayoutPageHeader", logonContext)
                     </a>
                     <!-- END LOGO -->
-                    <!-- BEGIN RESPONSIVE MENU TOGGLER -->
-                    <a href="javascript:;" class="btn-navbar collapsed" data-toggle="collapse" data-target=".nav-collapse">
-                        <img src="~/assets/img/menu-toggler.png" alt="" />
-                    </a>          
-                    <!-- END RESPONSIVE MENU TOGGLER -->            
                     <!-- BEGIN TOP NAVIGATION MENU -->              
+
                     @Html.Partial("Partial/UserMenu", logonContext)
+
                     <!-- END TOP NAVIGATION MENU --> 
                 </div>
             </div>
@@ -81,7 +86,6 @@
                         <!-- END RESPONSIVE QUICK SEARCH FORM -->
                     </li>
 				
-                	        		
                     @Html.Partial("Partial/Menus/AppMenu")
 
                 </ul>
@@ -96,7 +100,9 @@
                 <!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
                 <!-- BEGIN PAGE CONTAINER-->
                 <div class="container-fluid body-container">
+                	<!-- BEGIN Page Body -->
                     @RenderBody()
+                	<!-- BEGIN Page Body -->
                 </div>
                 <!-- END PAGE CONTAINER-->    
             </div>
@@ -109,6 +115,7 @@
             ~
             <a href="~/DomainCommon/Impressum">@Localize.Imprint</a>
             <div class="span pull-right">
+                <a class="link teamviewer" href="~/Teamviewer-Support.zip" title="Download Teamviewer"><img src="~/Images/teamviewer-icon.png" /></a>
                 <span class="go-top"><i class="icon-angle-up"></i></span>
             </div>
         </div>
@@ -124,11 +131,9 @@
         <script type="text/javascript">
 
             function FormPrepareLayoutPrivate() {
-                //alert('FormPrepareLayoutPrivate()');
             }
 
             function FormPrepareAjaxLayoutPrivate() {
-                //alert('FormPrepareAjaxLayoutPrivate()');
             }
         
         </script>

@@ -2203,7 +2203,7 @@ Namespace Beauftragung2
                 trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
                 trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
                 trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
-                ddlAnrede.SelectedValue = .HalterAnrede
+                If ddlAnrede.Items.FindByValue(.HalterAnrede) IsNot Nothing Then ddlAnrede.SelectedValue = .HalterAnrede
                 SetHalter()
                 txtName.Text = .Haltername1
                 txtName2.Text = .Haltername2
@@ -2280,7 +2280,7 @@ Namespace Beauftragung2
                 trGeburtstag.Visible = (mBeauftragung.HalterNeeded = HalterErfOptionen.Ja Or mBeauftragung.HalterNeeded = HalterErfOptionen.JaOhneGeburtsort)
                 trStrasse.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
                 trOrt.Visible = (mBeauftragung.HalterNeeded <> HalterErfOptionen.Nein And mBeauftragung.HalterNeeded <> HalterErfOptionen.JaNurName1)
-                ddlAnrede.SelectedValue = .HalterAnrede
+                If ddlAnrede.Items.FindByValue(.HalterAnrede) IsNot Nothing Then ddlAnrede.SelectedValue = .HalterAnrede
                 SetHalter()
                 txtName.Text = .Haltername1
                 txtName2.Text = .Haltername2
@@ -2344,7 +2344,7 @@ Namespace Beauftragung2
                     rblHalterauswahl.SelectedValue = "Halter"
                     trGrossKunde.Visible = False
                     divHalter.Visible = True
-                    ddlAnrede.SelectedValue = .HalterAnrede
+                    If ddlAnrede.Items.FindByValue(.HalterAnrede) IsNot Nothing Then ddlAnrede.SelectedValue = .HalterAnrede
                     SetHalter()
                     txtName.Text = .Haltername1
                     txtName2.Text = .Haltername2
