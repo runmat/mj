@@ -139,7 +139,50 @@
                 alert(jqXhr.responseText);
             }
         });
-    } 
+    }
+
+    function ShoppingCartZulassungItemEdit(id, zulParams) {
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartZulassungItemEdit",
+            data: { id: id },
+            loadingShow: true,
+            success: function (result) {
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+
+                var targetUrl = "/ServicesMvc/Autohaus/Zulassung/ZulassungFromShoppingCart" + zulParams;
+                location.assign(targetUrl);
+            },
+            error: function (jqXhr, exception) {
+                alert(jqXhr.responseText);
+            }
+        });
+    }
+
+    function ShoppingCartZulassungItemRemove(id) {
+
+        if (!confirm('@Localize.ItemDeleteConfirm.ToJavascriptString()'))
+            return false;
+
+        $.ajax({
+            type: "POST",
+            url: "ShoppingCartZulassungItemRemove",
+            data: { id: id },
+            loadingShow: false,
+            success: function () {
+                FilterGrid("GridShoppingCart");
+                ShoppingCartMenuRefreshCount();
+
+                _gridShoppingCart_MultiSelectItemCount--;
+                GridShoppingCart_MultiSelectItemCountRefresh();
+            }
+        });
+
+        return false;
+    }
 
     function ShoppingCartSubmitFinished(result) {
         $(".form-wizard").html(result);
@@ -166,8 +209,9 @@
             return;
         }
 
-        var detailWindow = $("#Adressen").data("tWindow");
-        detailWindow.center().close();
+        //var detailWindow = $("#Adressen").data("tWindow");
+        //detailWindow.center().close();
+        $(".mfp-close").trigger("click");
     }
 
     function OnDataBound_HalterAdressenAuswahlGrid() {
@@ -192,8 +236,9 @@
     function AjaxFormZahlerKfzSteuerComplete() {
         FormPrepareAjax();
 
-        var detailWindow = $("#Adressen").data("tWindow");
-        detailWindow.center().close();
+        //var detailWindow = $("#Adressen").data("tWindow");
+        //detailWindow.center().close();
+        $(".mfp-close").trigger("click");
 
         if (_modelIsValid) {
             AjaxRequestNextStep();
@@ -286,8 +331,9 @@
     function AjaxFormAuslieferAdressenComplete() {
         FormPrepareAjax();
 
-        var detailWindow = $("#Adressen").data("tWindow");
-        detailWindow.center().close();
+        //var detailWindow = $("#Adressen").data("tWindow");
+        //detailWindow.center().close();
+        $(".mfp-close").trigger("click");
 
         if (_modelIsValid) {
             AjaxRequestNextStep();
@@ -525,10 +571,18 @@
                 data: {},
                 loadingShow: true,
                 success: function (result) {
-                    var detailWindow = $("#Adressen").data("tWindow");
                     $("#InnerAdressen").html(result);
                     GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
-                    detailWindow.center().open();
+
+                    //var detailWindow = $("#Adressen").data("tWindow");
+                    //detailWindow.center().open();
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdressen") },
+                        type: 'inline',
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
                 }
             });
 
@@ -569,35 +623,34 @@
         return false;
     }
 
-
-
-    // 20150722 FahrzeugdatenForm-Grid
-    function OnSelectionChange_GridFahrzeugAuswahlX(cb) {
-        alert("OnSelectionChange_GridFahrzeugAuswahlX");
-        Grid_FormatMultiRowSelected(cb);
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vin: cb.val(), isChecked: cb.is(':checked') },
-            loadingShow: false,
-            success: function (result) {
-                UpdateGridInfo(result.allSelectionCount);
-            }
-        });
-    }
-    function OnAllSelectionChange_GridFahrzeugAuswahlX(check) {
-        alert("GridFahrzeugAuswahl_OnAllSelectionChange");
-        $.ajax({
-            type: "POST",
-            url: "FahrzeugAuswahlSelectionChanged",
-            data: { vin: "", isChecked: check },
-            loadingShow: true,
-            success: function (result) {
-                UpdateGridInfo(result.allSelectionCount);
-                FilterGrid("GridFahrzeugAuswahl");
-            }
-        });
-    }
+//    // 20150722 FahrzeugdatenForm-Grid
+//    function OnSelectionChange_GridFahrzeugAuswahlX(cb) {
+//        alert("OnSelectionChange_GridFahrzeugAuswahlX");
+//        Grid_FormatMultiRowSelected(cb);
+//        $.ajax({
+//            type: "POST",
+//            url: "FahrzeugAuswahlSelectionChanged",
+//            data: { vin: cb.val(), isChecked: cb.is(':checked') },
+//            loadingShow: false,
+//            success: function (result) {
+//                UpdateGridInfo(result.allSelectionCount);
+//            }
+//        });
+//    }
+//    function OnAllSelectionChange_GridFahrzeugAuswahlX(check) {
+//        alert("OnAllSelectionChange_GridFahrzeugAuswahlX");
+//        $.ajax({
+//            type: "POST",
+//            url: "FahrzeugAuswahlSelectionChanged",
+//            data: { vin: "", isChecked: check },
+//            loadingShow: true,
+//            success: function (result) {
+//                UpdateGridInfo(result.allSelectionCount);
+//                FilterGrid("GridFahrzeugAuswahl");
+//            }
+//        });
+//    }
+    
     function UpdateGridInfo(count) {
         if (count == 0) {
             $("#FahrzeugAuswahlCount").addClass('hide');
@@ -610,34 +663,21 @@
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
     }
- 
 
-    function OnDataBound_GridFahrzeugAuswahlX() {
-        // alert("OnDataBound");
-        FilteredData_Grid_OnDataBound($(this));
-        jQuery('.tooltips').tooltip();
-        LoadingHide();
-    }
-    function OnColumnShowHide_GridFahrzeugAuswahlX() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-    function OnColumnReorder_GridFahrzeugAuswahlX() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-    
-
+//    function OnDataBound_GridFahrzeugAuswahlX() {
+//        alert("OnDataBound_GridFahrzeugAuswahlX");
+//        FilteredData_Grid_OnDataBound($(this));
+//        jQuery('.tooltips').tooltip();
+//        LoadingHide();
+//    }
+//    function OnColumnShowHide_GridFahrzeugAuswahlX() {
+//        FilteredData_Grid_OnColumnShowHide($(this));
+//    }
+//    function OnColumnReorder_GridFahrzeugAuswahlX() {
+//        FilteredData_Grid_OnColumnReorder($(this));
+//    }
     
 </script>
 
-
-@(Html.Telerik().Window()
-    .Name("Adressen")
-    .Visible(false)
-    .Title("Auswahl Adressen")
-    .Modal(true)
-    .Draggable(true)
-    .Scrollable(false)
-    .Width(900)
-    .Height(700)
-    .Content(@<text><div id="InnerAdressen"></div></text>))
-
+<div id="InnerAdressen" class="white-popup mfp-hide">
+</div>

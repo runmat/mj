@@ -121,6 +121,6 @@
     <value>Der Wert '{0}' ist ungültig für dieses Feld</value>
   </data>
   <data name="PropertyValueRequired" xml:space="preserve">
-    <value>Für dieses Feld ist eine Eingabe notwendig </value>
+    <value>Eingabe ist notwendig </value>
   </data>
 </root>

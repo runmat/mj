@@ -1,16 +1,17 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using GeneralTools.Contracts;
+using CkgDomainLogic.General.Contracts;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.General.Models
 {
-    public class KennzeichenAttribute : RegularExpressionAttribute, IAttributeWithModelMappingConvert 
+    public class KennzeichenAttribute : RegularExpressionAttribute, IKennzeichenAttribute, IAttributeWithModelMappingConvert
     {
         public KennzeichenAttribute()
             : base("[A-Z]{1,3}-([A-Z]{1,2}[0-9]{1,4}$)*")
         {
-            this.ErrorMessageResourceType = typeof(CommonResources);
-            this.ErrorMessageResourceName = "InvalidLicenseNo";
+            ErrorMessageResourceType = typeof(CommonResources);
+            ErrorMessageResourceName = "InvalidLicenseNo";
         }
 
         /// <summary>

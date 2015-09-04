@@ -4,10 +4,13 @@
         <title>@ViewBag.Title</title>
         
         @Html.Partial("Partial/LayoutPage/Styles")
+        @Html.Partial("Partial/LayoutPage/StylesDeviationAllLayoutPages")
         @Html.Partial("Partial/LayoutPage/ScriptsPreload")
 
     </head>
     <body class="@ViewBag.BodyCssClass">
+        @Html.Partial("Partial/LayoutPageHeaderHint")
+
         <img class="loading hide" src="~/assets/img/bg-white.png" width="1" height="1" alt="">   <!-- we don't need the big loading image in this layout page...  -->    
 
         <script type="text/javascript">
@@ -16,6 +19,7 @@
         </script>
 
         @Html.Partial("Partial/LayoutPage/Scripts")
+        @Html.Partial("Partial/LayoutPage/ScriptsDeviation")
     
         @RenderBody()
 

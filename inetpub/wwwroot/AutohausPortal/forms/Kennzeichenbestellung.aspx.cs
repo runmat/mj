@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Common;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
+using GeneralTools.Models;
 using Telerik.Web.UI;
 using System.Web.UI.HtmlControls;
 
@@ -18,7 +14,7 @@ namespace AutohausPortal.forms
     /// <summary>
     /// Auftragseingabe für Kennzeichen- bzw. Funkennzeichenbestellung.
     /// </summary>
-    public partial class Kennzeichenbestellung : System.Web.UI.Page
+    public partial class Kennzeichenbestellung : Page
     {
         private User m_User;
         private App m_App;
@@ -30,6 +26,7 @@ namespace AutohausPortal.forms
         Boolean IsInAsync;
 
         #region Events
+
         /// <summary>
         /// Page_Load Ereignis
         /// Überprüfen ob der Benutzer von der Auftragsliste einen Vorgang aufruft
@@ -39,24 +36,20 @@ namespace AutohausPortal.forms
         /// <param name="e">EventArgs</param>
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (IsPostBack != true)
+            if (!IsPostBack)
             {
-                if (BackfromList != false)
+                if (BackfromList)
                 {
-                    Int32 id = 0;
                     if (Request.QueryString["id"] != null)
                     { IDKopf = Request.QueryString["id"].ToString(); }
                     else
                     { lblError.Text = "Fehler beim Laden des Vorganges!"; }
 
                     objVorerf = (AHErfassung)Session["objVorerf"];
-                    if (AHErfassung.IsNumeric(IDKopf))
-                    {
-                        Int32.TryParse(IDKopf, out id);
-                    }
+                    var id = IDKopf.ToLong(0);
                     if (id != 0)
                     {
-                        objVorerf.LoadDB_ZLDRecordset(id); // Vorgang laden
+                        objVorerf.SelectVorgang(id); // Vorgang laden
 
                         fillForm();
                         SelectValues();
@@ -67,9 +60,7 @@ namespace AutohausPortal.forms
                 }
                 else
                 {
-                    objVorerf = new AHErfassung(ref m_User, m_App, "AB");
-                    objVorerf.NrMaterial = "25";
-                    objVorerf.Material = "Euro-Kennzeichen geprägt";
+                    objVorerf = new AHErfassung(ref m_User, m_App, "AB", "25");
                     fillForm();
 
                     Session["objVorerf"] = objVorerf;
@@ -114,7 +105,7 @@ namespace AutohausPortal.forms
             BackfromList = false;
             if (Request.QueryString["B"] != null) { BackfromList = true; }
             AppIDListe = "";
-            if (BackfromList == true)
+            if (BackfromList)
             {
                 if (Request.QueryString["BackAppID"] != null)
                 { AppIDListe = Request.QueryString["BackAppID"].ToString(); }
@@ -128,7 +119,7 @@ namespace AutohausPortal.forms
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App);
-                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID.ToString(), this))
+                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID, this))
                 {
                     lblError.Visible = true;
                     lblError.Text = objCommon.Message;
@@ -152,7 +143,7 @@ namespace AutohausPortal.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">RadComboBoxItemsRequestedEventArgs</param>
-        protected void ddlKunnr1_ItemsRequested(object sender, Telerik.Web.UI.RadComboBoxItemsRequestedEventArgs e)
+        protected void ddlKunnr1_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
         {
 
             ddlKunnr1.Items.Clear();
@@ -280,7 +271,6 @@ namespace AutohausPortal.forms
                 if (!proofBankAndAddressData(istCpdKunde)) { return; }
 
                 objVorerf.Name1 = ucBankdatenAdresse.Name1;
-                objVorerf.Partnerrolle = objVorerf.Name1.Length > 0 ? objVorerf.Partnerrolle = "WE" : objVorerf.Partnerrolle = "";
                 objVorerf.Name2 = ucBankdatenAdresse.Name2;
                 objVorerf.Strasse = ucBankdatenAdresse.Strasse;
                 objVorerf.PLZ = ucBankdatenAdresse.Plz;
@@ -308,26 +298,19 @@ namespace AutohausPortal.forms
                 if (rbKennzPrae.Checked)
                 {
                     objVorerf.NrMaterial = "25";
-                    objVorerf.Material = "Euro-Kennzeichen geprägt";
+                    objVorerf.Material = ZLDCommon.Materialliste["25"];
                 }
                 else
                 {
                     objVorerf.NrMaterial = "6";
-                    objVorerf.Material = "Fun-/Parkschilder";
+                    objVorerf.Material = ZLDCommon.Materialliste["6"];
                 }
 
 
                 objVorerf.AppID = Session["AppID"].ToString();
-                if (cbxSave.Checked == false)
+
+                if (!objVorerf.IsNewVorgang)
                 {
-                    objVorerf.saved = true;
-                    objVorerf.InsertDB_ZLDAbmeldung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblKundenStamm, controls);
-                    getAuftraege();
-                }
-                else
-                {
-                    objVorerf.saved = true;
-                    objVorerf.bearbeitet = true;
                     if (controls != null && controls.Rows.Count == 1)
                     {
                         if (rbKennzFun.Checked)
@@ -340,7 +323,7 @@ namespace AutohausPortal.forms
                                                     controls.Rows[0]["Kennz2"].ToString().Replace(" ", String.Empty);
                         }
                         objVorerf.KennzForm = controls.Rows[0]["Kennzform"].ToString();
-                        objVorerf.EinKennz = (Boolean) controls.Rows[0]["EinKennz"];
+                        objVorerf.EinKennz = (Boolean)controls.Rows[0]["EinKennz"];
                     }
                     else
                     {
@@ -348,10 +331,16 @@ namespace AutohausPortal.forms
                         return;
                     }
 
-                    objVorerf.UpdateDB_ZLD(Session.SessionID.ToString(), objCommon.tblKundenStamm);
+                    objVorerf.SaveVorgangToSap(Session["AppID"].ToString(), Session.SessionID, this, true, false);
                     if (istCpdKunde) { ShowKundenformular(true); return; }
                     Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe);
+                    return;
                 }
+
+                objVorerf.SaveVorgaengeToSap(Session["AppID"].ToString(), Session.SessionID, this, controls, true, false);
+
+                if (objVorerf.Status == 0)
+                    getAuftraege();
 
                 if (objVorerf.Status == 0)
                 {
@@ -371,21 +360,12 @@ namespace AutohausPortal.forms
 
         private void ShowKundenformular(bool redirect = false)
         {
-            objVorerf.CreateKundenformulare(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm, true, false);
-            if (objVorerf.Status == 0)
-            {
-                Session["objVorerf"] = objVorerf;
-                Session["RedirectToAuftragsliste"] = redirect;
-                //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
-                RadWindow downloaddoc = RadWindowManager1.Windows[0];
-                downloaddoc.Visible = true;
-                downloaddoc.VisibleOnPageLoad = true;
-            }
-            else
-            {
-                lblMessage.Text += " (" + objVorerf.Message + ")";
-                if (redirect) { Response.Redirect("Auftraege.aspx?AppID=" + AppIDListe); }
-            }
+            Session["objVorerf"] = objVorerf;
+            Session["RedirectToAuftragsliste"] = redirect;
+            //Öffnen des Druckdialogs: PrintDialogKundenformulare.aspx
+            RadWindow downloaddoc = RadWindowManager1.Windows[0];
+            downloaddoc.Visible = true;
+            downloaddoc.VisibleOnPageLoad = true;
         }
 
         /// <summary>
@@ -415,7 +395,7 @@ namespace AutohausPortal.forms
            
             CheckRepeater(ref controls);
             int iCount = 1;
-            if (AHErfassung.IsNumeric(txtAnzahl.Text))
+            if (txtAnzahl.Text.IsNumeric())
             {
                 int.TryParse(txtAnzahl.Text, out iCount);
             }
@@ -438,11 +418,13 @@ namespace AutohausPortal.forms
                     RowNew["ID"] = controls.Rows.Count + 1;
                     DataRow[] Sonder = objCommon.tblSonderStva.Select("KREISKZ ='" + ddlStVa1.SelectedValue + "'");
 
-                    foreach (DataRow dRow in controls.Rows)
+                    if (Sonder.Length > 0)
                     {
-                        if (Sonder.Length > 0)
-                        { RowNew["Kennz1"] = Sonder[0]["ZKFZKZ"].ToString(); }
-                        else { RowNew["Kennz1"] = ddlStVa1.SelectedValue; }
+                        RowNew["Kennz1"] = Sonder[0]["ZKFZKZ"].ToString();
+                    }
+                    else
+                    {
+                        RowNew["Kennz1"] = ddlStVa1.SelectedValue;
                     }
 
                     RowNew["Kennz2"] = "";
@@ -475,7 +457,7 @@ namespace AutohausPortal.forms
                 HtmlGenericControl divKennz2 = (HtmlGenericControl)rItem.FindControl("divKennz2");
                 HtmlGenericControl divKennzFun = (HtmlGenericControl)rItem.FindControl("divKennzFun");
                 HtmlGenericControl divTrennKennz = (HtmlGenericControl)rItem.FindControl("divTrennKennz");
-                if (lblID != null && ddlKennzForm.Visible == true)
+                if (lblID != null && ddlKennzForm.Visible)
                 {
                     DataRow[] KennzRow = controls.Select("ID=" + lblID.Text);
                     if (KennzRow.Length == 1 && KennzRow[0]["KennzForm"].ToString().Length > 0)
@@ -483,7 +465,7 @@ namespace AutohausPortal.forms
                         ddlKennzForm.Items.FindByText(KennzRow[0]["KennzForm"].ToString()).Selected = true;
                     }
                 }
-                if (rbKennzFun.Checked == true)
+                if (rbKennzFun.Checked)
                 {
                     divKennzFun.Visible = true;
                     divKennz1.Visible = false;
@@ -576,6 +558,7 @@ namespace AutohausPortal.forms
             ShowRepeaterControls();
             proofInserted();
         }        
+
         #endregion
 
         #region Methods
@@ -614,7 +597,6 @@ namespace AutohausPortal.forms
                 }
 
                 //Zulassungskreise 
-                tmpDView = new DataView();
                 tmpDView = objCommon.tblStvaStamm.DefaultView;
                 tmpDView.Sort = "KREISTEXT";
                 tmpDView.RowFilter = "KREISKZ <> ''";
@@ -640,7 +622,7 @@ namespace AutohausPortal.forms
             objVorerf.VKBUR = m_User.Reference.Substring(4, 4);
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
 
-            if (objVorerf.saved == false)
+            if (objVorerf.IsNewVorgang)
             {
                 ucBemerkungenNotizen.addAttributesKunRef();
             }
@@ -655,13 +637,13 @@ namespace AutohausPortal.forms
         {
 
             DataTable controls = new DataTable();
-            controls.Columns.Add("ID", typeof(System.Int32));
-            controls.Columns.Add("Kennz1", typeof(System.String));
-            controls.Columns.Add("Kennz2", typeof(System.String));
-            controls.Columns.Add("KennzFun", typeof(System.String));
-            controls.Columns.Add("EinKennz", typeof(System.Boolean));
-            controls.Columns.Add("KennzSonder", typeof(System.Boolean));
-            controls.Columns.Add("KennzForm", typeof(System.String));
+            controls.Columns.Add("ID", typeof(Int32));
+            controls.Columns.Add("Kennz1", typeof(String));
+            controls.Columns.Add("Kennz2", typeof(String));
+            controls.Columns.Add("KennzFun", typeof(String));
+            controls.Columns.Add("EinKennz", typeof(Boolean));
+            controls.Columns.Add("KennzSonder", typeof(Boolean));
+            controls.Columns.Add("KennzForm", typeof(String));
 
             DataRow RowNew = controls.NewRow();
             RowNew["ID"] = 1;
@@ -798,35 +780,6 @@ namespace AutohausPortal.forms
             }
         }
 
-        ///// <summary>
-        ///// Ist es eine Kennzeichenbestellung oder werden Fun-Kennzeichen bestellt
-        ///// </summary>
-        ///// <param name="FindMatEuro">Darf die Gruppe Eurokennzeichen bestellen</param>
-        ///// <param name="FindMatFun">Darf die Gruppe Fun-Kennzeichen bestellen</param>
-        //private void SetMatRadio(Boolean FindMatEuro, Boolean FindMatFun)
-        //{
-        //    if (!FindMatEuro && !FindMatFun)
-        //    {
-        //        lblError.Text = "Sie sind für diese Anwendung nicht freigeschaltet!";
-        //        cmdSave.Visible = false;
-        //    }
-        //    else if (FindMatEuro && !FindMatFun)
-        //    {
-        //        rbKennzPrae.Checked = true;
-        //        rbKennzFun.Checked = false;
-        //        rbKennzFun.Visible = false;
-        //        lblKennzfun.Visible = false;
-        //    }
-        //    else if (FindMatFun && !FindMatEuro)
-        //    {
-        //        rbKennzFun.Checked = true;
-        //        rbKennzPrae.Checked = false;
-        //        rbKennzPrae.Visible = false;
-        //        lblKennzprea.Visible = false;
-        //    }
-
-        //}
-
         /// <summary>
         /// Einfügen der bereits vorhandenen Daten
         /// </summary>
@@ -905,22 +858,20 @@ namespace AutohausPortal.forms
                 RowNew["KennzFun"] = objVorerf.Kennzeichen;
                 RowNew["EinKennz"] = objVorerf.EinKennz;
                 //if (objVorerf.KennzForm != "520x114")
-                RowNew["KennzSonder"] = objVorerf.KennzForm != "520x114" ? true : false;
+                RowNew["KennzSonder"] = objVorerf.KennzForm != "520x114";
 
                 Repeater1.DataSource = controls;
                 Repeater1.DataBind();
                 foreach (RepeaterItem rItem in Repeater1.Items)
                 {
-                    DropDownList ddlKennzForm =
-                        (DropDownList)rItem.FindControl("ddlKennzForm");
-                    Label lblEinkz = (Label)rItem.FindControl("lblEinkz");
+                    DropDownList ddlKennzForm = (DropDownList)rItem.FindControl("ddlKennzForm");
                     HtmlGenericControl divKennz1 = (HtmlGenericControl)rItem.FindControl("divKennz1");
                     HtmlGenericControl divKennz2 = (HtmlGenericControl)rItem.FindControl("divKennz2");
                     HtmlGenericControl divKennzFun = (HtmlGenericControl)rItem.FindControl("divKennzFun");
                     HtmlGenericControl divTrennKennz = (HtmlGenericControl)rItem.FindControl("divTrennKennz");
 
                     ddlKennzForm.Items.FindByText(objVorerf.KennzForm).Selected = true;
-                    if (rbKennzFun.Checked == true)
+                    if (rbKennzFun.Checked)
                     {
                         divKennzFun.Visible = true;
                         divKennz1.Visible = false;
@@ -942,16 +893,11 @@ namespace AutohausPortal.forms
             else
             {
                 Create_tblKennz();
-                controls = (DataTable)Session["tblControls"];
             }
 
-
-            cbxSave.Checked = objVorerf.saved;
-
-            if (objVorerf.saved == true)
+            if (!objVorerf.IsNewVorgang)
             {
                 cmdSave.Text = "Speichern/Liste";
-
             }
 
             ucBemerkungenNotizen.SelectValues(objVorerf);
@@ -969,8 +915,6 @@ namespace AutohausPortal.forms
         /// </summary>     
         private void ValidateData()
         {
-            bool fehlerBankdaten = false;
-            bool fehlerBemerkung = false;
             lblError.Text = "";
 
             if (ddlKunnr1.SelectedValue == "")
@@ -1007,9 +951,9 @@ namespace AutohausPortal.forms
             String ZDat = "";
 
             ZDat = txtDatum.Text;
-            if (ZDat != String.Empty)
+            if (!String.IsNullOrEmpty(ZDat))
             {
-                if (AHErfassung.IsDate(ZDat) == false)
+                if (!ZDat.IsDate())
                 {
                     divDatum.Attributes["class"] = "formfeld error";
                     lblError.Text = "Ungültiger Ausführungstermin: Falsches Format.";
@@ -1143,7 +1087,7 @@ namespace AutohausPortal.forms
                 }
             }
 
-            objVorerf.saved = false;
+            objVorerf.id_sap = 0;
             ShowRepeaterControls();
             Session["objVorerf"] = objVorerf;
         }
@@ -1154,7 +1098,9 @@ namespace AutohausPortal.forms
         private void getAuftraege()
         {
             HyperLink lnkMenge = (HyperLink)Master.FindControl("lnkMenge");
-            lnkMenge.Text = objCommon.getAnzahlAuftraege();
+            var menge = objVorerf.GetAnzahlAuftraege(Session["AppID"].ToString(), Session.SessionID, this);
+            Session["AnzahlAuftraege"] = menge;
+            lnkMenge.Text = menge;
         }
 
         /// <summary>
@@ -1322,7 +1268,7 @@ namespace AutohausPortal.forms
                 
                 FillKennzFormDropdown(ddlKennzForm, tmpDView);
 
-                if (rbKennzFun.Checked == true)
+                if (rbKennzFun.Checked)
                 {
                     divKennzFun.Visible = true;
                     divKennz1.Visible = false;

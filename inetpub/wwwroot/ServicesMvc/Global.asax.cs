@@ -25,6 +25,11 @@ namespace ServicesMvc
         {
             Instance = this;
 
+            // register theme supporting web form view engine
+            ViewEngines.Engines.Clear();
+            ViewEngines.Engines.Add(new RazorViewEngineThemed());
+
+            // Register Areas (auto register)
             AreaAutoRegistration.RegisterAreasFolder(Assembly.GetAssembly(typeof(MvcApplication)));
 
             WebApiConfig.Register(GlobalConfiguration.Configuration);
@@ -76,12 +81,17 @@ namespace ServicesMvc
 
         protected void Application_BeginRequest()
         {
-            //this.SetCacheOff();
         }
 
         protected void Application_AcquireRequestState()
         {
             SetCulture();
+
+            //RazorViewEngineThemed.EnforcePartialViewMarkerMode();
+            RazorViewEngineThemed.TrySetThemeFromAppsettingsToSession();
+
+            RazorViewEngineThemed.TrySetPartialViewMarkerModeFromRequestToSession();
+            RazorViewEngineThemed.TrySetThemeFromRequestToSession();
         }
 
         static void SetCulture()
