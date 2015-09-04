@@ -197,18 +197,16 @@ namespace ServicesMvc.Fahrzeug.Controllers
             return File(pdf, "application/pdf");
         }
 
-        public ActionResult ShowUploadedPdf()
+        public FileContentResult ShowUploadedPdf()
         {
-            var contentDispostion = new System.Net.Mime.ContentDisposition
+            var pdfBytes = ViewModel.Overview.PdfUploaded;
+            if (pdfBytes == null)
             {
-                FileName = ViewModel.GetPdfFilename(),
-                Inline = true,
-            };
-            Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
+                const string html = "<html><p>Keine Datei gew&auml;hlt</p></html>";
+                pdfBytes = PdfDocumentFactory.HtmlToPdf(html);
+            }
 
-            var pdf = ViewModel.Overview.PdfUploaded;
-
-            return File(pdf ?? PdfDocumentFactory.HtmlToPdf("Keine Datei gewählt"), "application/pdf");
+            return new FileContentResult(pdfBytes, "application/pdf");
         }
 
         [HttpPost]
