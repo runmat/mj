@@ -159,20 +159,26 @@ namespace CkgDomainLogic.General.Services
 
             UserNameEncryptedToUrlEncoded = CryptoMd5.EncryptToUrlEncoded(User.Username);
             UserApps = dbContext.UserApps.Where(ua => ua.AppInMenu).Cast<IApplicationUserMenuItem>().ToList();
-            UserApps.ForEach(ua =>
-                {
-                    var appType = AppTypes.FirstOrDefault(at => at.AppType == ua.AppType);
-                    if (appType != null)
-                    {
-                        ua.AppTypeRank = appType.Rank;
-                        ua.AppTypeFriendlyName = GetAppTypeFriendlyName(appType.AppType);
-                    }
-                    RewriteUrlToLogPageVisit(ua);
-                });
+            UserAppsSetAppTypeRank();
 
             dbContext.SetLastLogin(DateTime.Now);
 
             return true;
+        }
+
+        void UserAppsSetAppTypeRank()
+        {
+            UserApps.ForEach(ua =>
+            {
+                var appType = AppTypes.FirstOrDefault(at => at.AppType == ua.AppType);
+                if (appType != null)
+                {
+                    ua.AppTypeRank = appType.Rank;
+                    ua.AppTypeCssClass = appType.ButtonPath;
+                    ua.AppTypeFriendlyName = GetAppTypeFriendlyName(appType.AppType);
+                }
+                RewriteUrlToLogPageVisit(ua);
+            });
         }
 
         public override void TryLogonUser(LoginModel loginModel, Action<Expression<Func<LoginModel, object>>, string> addModelError)
@@ -396,16 +402,7 @@ namespace CkgDomainLogic.General.Services
             return string.Format("/{0}/", subDomain.Trim().ToLower());
         }
 
-        public override string CustomerName
-        {
-            get
-            {
-                if (HttpContext.Current != null && HttpContext.Current.Request.Url.ToString().ToLower().Contains("/charts/") && base.CustomerName.ToLower().StartsWith("zmjetest"))
-                    return "DAD Dashboards";
-
-                return base.CustomerName;
-            }
-        }
+        public override string CustomerName { get { return base.CustomerName; } }
 
         public void Clear()
         {
@@ -427,6 +424,7 @@ namespace CkgDomainLogic.General.Services
             
             CreateDbContext().UserAppsRefresh();
             UserApps = CreateDbContext().UserApps.Where(ua => ua.AppInMenu).Cast<IApplicationUserMenuItem>().ToList();
+            UserAppsSetAppTypeRank();
 
             return UserApps.First(a => a.AppID == appID).AppIsMvcFavorite;
         }

@@ -32,7 +32,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\AutohausPortal.XML</DocumentationFile>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -515,11 +516,6 @@
       <DependentUpon>KontaktLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="lib\AHErfassung.cs" />
-    <Compile Include="lib\dboZLDAutohaus.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>dboZLDAutohaus.dbml</DependentUpon>
-    </Compile>
     <Compile Include="lib\LongStringToSap.cs" />
     <Compile Include="lib\Mvc.cs" />
     <Compile Include="lib\Report99.cs" />
@@ -653,18 +649,8 @@
     <None Include="Dokumentation\AutohausPortal\Autohausportal.chm" />
     <None Include="Dokumentation\AutohausPortal\DokuAH.doc" />
     <None Include="Images\checkbox-red.psd" />
-    <None Include="lib\dboZLDAutohaus.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>dboZLDAutohaus.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
     <Content Include="MasterPage\FormBig.Master" />
     <Content Include="NLog.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="lib\dboZLDAutohaus.dbml.layout">
-      <DependentUpon>dboZLDAutohaus.dbml</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\Work\Tools\GeneralTools\GeneralTools.csproj">
@@ -694,7 +680,7 @@
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>
-      <UserProperties BuildVersion_StartDate="2012/9/4" BuildVersion_BuildVersioningStyle="None.None.MonthAndDayStamp.TimeStamp" BuildVersion_ConfigurationName="Release" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_UpdateAssemblyVersion="True" />
+      <UserProperties BuildVersion_UpdateAssemblyVersion="True" BuildVersion_AssemblyInfoFilename="Properties\AssemblyInfo.cs" BuildVersion_ConfigurationName="Release" BuildVersion_BuildVersioningStyle="None.None.MonthAndDayStamp.TimeStamp" BuildVersion_StartDate="2012/9/4" />
     </VisualStudio>
   </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -30,13 +30,13 @@ body {
 
 .requiredField 
 {
-    width: 12px;
-    display: inline-block;
-    padding-right: 0;
+    display: none;
 }
 .requiredFieldMarker {
     color: #b94a48;
     font-size: 1.1em;
+    display: inline-block!important;
+    padding-left: 5px;
 }
 .required-fields-summary {
     display: inline-block;
@@ -253,7 +253,7 @@ body {
 /* Tablet device width */
 @media (min-width: 551px) and (max-width: 1200px) 
 {
-    .t-grid table { zoom: 1.2; }
+    .t-grid table { zoom: 1.0; }
 }   
     
 /* Workstation device width */
