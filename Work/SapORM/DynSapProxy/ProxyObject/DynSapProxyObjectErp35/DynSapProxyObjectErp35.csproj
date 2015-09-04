@@ -42,7 +42,7 @@
   <ItemGroup>
     <Reference Include="ERPConnect35, Version=4.2.4.0, Culture=neutral, PublicKeyToken=737201975e95eeee, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\GAC\ERPConnect35.dll</HintPath>
+      <HintPath>..\..\..\..\GAC\ErpConnect\4.27.8.2\ERPConnect35.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="System" />
