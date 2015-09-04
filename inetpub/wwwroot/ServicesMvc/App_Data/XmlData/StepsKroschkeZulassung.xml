@@ -5,7 +5,7 @@
             <string>Rechnungsdaten</string>
         </key>
         <value>
-            <string>Auftrag-&lt;br /&gt;geber</string>
+            <string>Auftrag&amp;shy;geber</string>
         </value>
     </item>
     <item>
@@ -21,7 +21,7 @@
             <string>ZahlerKfzSteuer</string>
         </key>
         <value>
-            <string>Zahler&lt;br /&gt;Kfz-Steuer</string>
+            <string>Zahler Kfz-Steuer</string>
         </value>
     </item>
     <item>
@@ -37,7 +37,7 @@
             <string>AuslieferAdressen</string>
         </key>
         <value>
-            <string>Ausliefer-&lt;br /&gt;adressen</string>
+            <string>Ausliefer&amp;shy;adressen</string>
         </value>
     </item>
     <item>

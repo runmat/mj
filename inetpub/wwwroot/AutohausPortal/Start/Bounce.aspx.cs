@@ -68,7 +68,7 @@ namespace AutohausPortal.Start
                 cmdWriteLog.ExecuteNonQuery();
                 cmdWriteLog.Dispose();
             }
-            catch (Exception ex)
+            catch (Exception)
             {
             }
             finally

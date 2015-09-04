@@ -67,6 +67,8 @@
                 alert(result.data);
             }
         });
+
+        return false;
     }
 
     function AddressNew() {
@@ -81,6 +83,8 @@
                 try { BreadcrumbsMoveNext('@Localize.NewAddress'); } catch (e) { }
             }
         });
+
+        return false;
     }
 
     function AddressRemove(id) {

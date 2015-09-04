@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
@@ -28,6 +29,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [FormPersistable]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.ZB2No)]

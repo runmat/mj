@@ -97,8 +97,7 @@
         }
 
         try {
-            var detailWindow = $("#Adressen").data("tWindow");
-            detailWindow.center().close();
+            $(".mfp-close").trigger("click");
         } catch(e) {
         }
     }
@@ -214,10 +213,16 @@
                 data: { uiIndex: uiIndex },
                 loadingShow: true,
                 success: function (result) {
-                    var detailWindow = $("#Adressen").data("tWindow");
                     $("#InnerAdressen").html(result);
                     GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
-                    detailWindow.center().open();
+
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdressen") },
+                        type: 'inline',
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
                 }
             });
 
@@ -247,7 +252,7 @@
     }
 
     function AjaxFormAdresseClose() {
-        $("#AdresseBearbeiten").data("tWindow").close();
+        $(".mfp-close").trigger("click");
     }
 
     function GridAdresseOnSelect(id, formID, addressType) {
@@ -255,8 +260,9 @@
         var form = $("#" + formID);
 
         if (typeof (form.attr('id')) != 'undefined') {
+
             AjaxFormAdresseClose();
-            $("#Adressen").data("tWindow").close();
+
             $("#" + formID + " input[name='TmpSelectionKey']").val(id);
             form.submit();
         }
@@ -463,7 +469,7 @@
 
             var distance = result.resourceSets[0].resources[0].travelDistance;
             //console.log(distance);
-            $("#bingRouteHeaderDiv span.header-distance").html(distance.toFixed(2).replace(/\./, ",") + " Km");
+            $("#bingRouteHeaderDiv span.header-distance").html("ca. " + distance.toFixed(2).replace(/\./, ",") + " Km");
             $("#bingRouteHeaderDiv span.header-address").html("Ihre Route von " + _bingCurrentRouteStartAddress[_bingCurrentUiIndex] + " => " + _bingCurrentRouteEndAddress[_bingCurrentUiIndex]);
 
             _bingMakeRouteRequestCount++;
@@ -554,8 +560,15 @@
         BingMapShowBusyIndicator("#bingLocationDivWrapper");
         BingInit();
         _bingCurrentUiIndex = id;
-        var detailWindow = $("#BingKarte").data("tWindow");
-        detailWindow.center().open();
+
+        $.magnificPopup.open({
+            items: { src: $("#bingLocationDivWrapper") },
+            type: 'inline',
+            alignTop: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
+
         _bingMakeLocationRequestCount = 0;
         _bingLocationMap.getCredentials(MakeGeocodeRequest);
         return false;
@@ -565,8 +578,15 @@
         BingMapShowBusyIndicator("#bingRouteDivWrapper");
         BingInit();
         _bingCurrentUiIndex = id;
-        var detailWindow = $("#BingRoute").data("tWindow");
-        detailWindow.center().open();
+
+        $.magnificPopup.open({
+            items: { src: $("#bingRouteDivWrapper") },
+            type: 'inline',
+            alignTop: true,
+            removalDelay: 300,
+            mainClass: 'my-mfp-zoom-in'
+        });
+
         _bingMakeRouteRequestCount = 0;
         _bingRouteMap.getCredentials(MakeRouteRequest);
         return false;
@@ -595,50 +615,8 @@
 <!-- </General geo location + route utilities> -->
 
 
+<div id="InnerAdressen" class="white-popup mfp-hide"></div>
 
-@(Html.Telerik().Window()
-    .Name("Adressen")
-    .Visible(false)
-    .Title("Auswahl Adressen")
-    .Modal(true)
-    .Draggable(true)
-    .Scrollable(false)
-    .Width(900)
-    .Height(700)
-    .Content(@<text><div id="InnerAdressen"></div></text>))
+<div id="bingLocationDivWrapper" class="white-popup mfp-hide"><div class="bing-header"></div><div class="bing-container"><div id="bingLocationHeaderDiv" class="bing-header"><span class="header-address"></span></div><div id="bingLocationDiv" class="bing-map"></div></div></div>
 
-@(Html.Telerik().Window()
-    .Name("AdresseBearbeiten")
-    .Visible(false)
-    .Title("Adresse bearbeiten")
-    .Modal(true)
-    .Draggable(true)
-    .Scrollable(false)
-    .Width(500)
-    .Height(550)
-    .Content(@<text><div id="InnerAdresseBearbeiten"></div></text>))
-    
-    
-@(Html.Telerik().Window()
-    .Name("BingKarte")
-    .Visible(false)
-    .Title("Kartenansicht")
-    .Modal(true)
-    .Draggable(true)
-    .Scrollable(false)
-    .Width(900)
-    .Height(700)
-    .ClientEvents(c => c.OnClose("LoadingHide()"))
-    .Content(@<text><div id="bingLocationDivWrapper"><div class="bing-header"></div><div class="bing-container"><div id="bingLocationHeaderDiv" class="bing-header"><span class="header-address"></span></div><div id="bingLocationDiv" class="bing-map"></div></div></div></text>))
-    
-@(Html.Telerik().Window()
-    .Name("BingRoute")
-    .Visible(false)
-    .Title("Route für Ihre Fahrt")
-    .Modal(true)
-    .Draggable(true)
-    .Scrollable(false)
-    .Width(900)
-    .Height(700)
-    .ClientEvents(c => c.OnClose("LoadingHide()"))
-    .Content(@<text><div id="bingRouteDivWrapper"><div class="bing-header"></div><div class="bing-container"><div id="bingRouteHeaderDiv" class="bing-header"><span class="header-distance"></span><span class="header-address"></span></div><div id="bingRouteDiv" class="bing-map"></div></div></div></text>))
+<div id="bingRouteDivWrapper" class="white-popup mfp-hide"><div class="bing-header"></div><div class="bing-container"><div id="bingRouteHeaderDiv" class="bing-header"><span class="header-distance"></span><span class="header-address"></span></div><div id="bingRouteDiv" class="bing-map"></div></div></div>

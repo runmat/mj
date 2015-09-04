@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using CkgDomainLogic.General.Models;
 using GeneralTools.Models;
 
 namespace CkgDomainLogic.Feinstaub.Models
@@ -8,6 +9,7 @@ namespace CkgDomainLogic.Feinstaub.Models
         [Required]
         [StringLength(20)]
         [LocalizedDisplay("Kennzeichen")]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [Required]
