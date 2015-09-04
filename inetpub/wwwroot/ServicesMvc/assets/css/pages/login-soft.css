@@ -4,7 +4,7 @@ Login page
 
 /* logo page */
 .login {
-  background-color: #99AABD !important;
+  background-color: #FDF9E8 !important;
 }
 
 .login .logo-header {
@@ -55,11 +55,11 @@ Login page
 }
 
 .login .content h3 {
-    color: #eee;
+    color: #060606;
     font-size: 1.8em;
 }
 .login .content h4  {
-    color: #eee;
+    color: #060606;
 }
 
 .login .content p,
@@ -96,10 +96,9 @@ Login page
 }
 
 .login .content .form-title {
-  font-weight: 600;
   margin-top: 35px;
   margin-bottom: 25px;
-  color: white;
+  color: black;
 }
 .login .content .form-title.smaller {
     font-size: 1.70em!important;
@@ -142,7 +141,7 @@ Login page
 }
 
 .login .content .create-account {
-  border-top: 1px dotted #eee;
+  border-top: 1px dotted #060606;
   padding-top: 10px;
   margin-top: 15px;
 }
@@ -178,7 +177,7 @@ Login page
   width: 270px;
   margin: 0 auto; 
   padding: 10px 10px 0 10px;
-  color: #eee;
+  color: #060606;
   font-size: 12px;
 }
 
@@ -208,13 +207,13 @@ Login page
 */
 
 input.m-wrap, select.m-wrap {
-    height: 16px!important;
+    height: 20px!important;
     padding: 2px;
 }
 
 
 #forget-password {
-    color: white!important;    
+    color: black!important;    
 }
 #forget-password i.icon-chevron-right {
     font-size: 0.85em;
@@ -223,7 +222,7 @@ input.m-wrap, select.m-wrap {
 .footer-link {
     float: right;
     font-size: 0.8em;
-    color: #dfdfdf;
+    color: #090909;
     display: block;
     line-height: 20px;
     margin-top: -5px;

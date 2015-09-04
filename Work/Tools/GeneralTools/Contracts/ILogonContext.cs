@@ -20,6 +20,8 @@
 
         bool MvcEnforceRawLayout { get; set; }
 
+        string CurrentLayoutTheme { get; set; }
+
         string GetLoginUrl(string urlEncodedReturnUrl);
 
         bool UserNameIsValid(string userID);

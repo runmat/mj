@@ -2,10 +2,10 @@
 
 @Html.Partial("Partial/Common")
 
-<div class="page-title">
+<h3 class="page-title">
     @Model.ApplicationTitle <small></small>
     @Html.Partial("ShoppingCart/Menu")
-</div>
+</h3>
 @Html.Partial("ShoppingCart/Common")
 
 <div class="form-wizard portlet app-view hidden-on-shopping-cart-opened">
@@ -15,3 +15,27 @@
     </div>
 </div>
 
+<style type="text/css">
+    .form-actions-top {
+        padding-left: 162px !important;
+    }
+</style>
+
+<script>
+    // 20150815 MMA Ausgelagert, da genutzt in ZulassungsdatenForm und FahrzeugdatenForm
+    function SetFinValue(fin, field, value) {
+        $.ajax({
+            type: "POST",
+            url: "SetFinValue",
+            data: { fin: fin, field: field, value: value },
+            loadingShow: false,
+            success: function (result) {
+                if (result.ok == true) {
+                }
+                if (result.ok == false) {
+                    alert(result.message);
+                }
+            }
+        });
+    };
+</script>

@@ -1,17 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
-using System.Web.UI.WebControls;
-using System.IO;
 
 namespace AutohausPortal.forms
 {
     /// <summary>
     /// Senden von Dateien an den Client
     /// </summary>
-    public partial class DownloadFile : System.Web.UI.Page
+    public partial class DownloadFile : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

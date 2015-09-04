@@ -80,6 +80,7 @@
     <Compile Include="Controllers\VersandsperreReport\FinanceController.cs" />
     <Compile Include="Controllers\Versandsperre\FinanceController.cs" />
     <Compile Include="Controllers\VersandZweitschluessel\FinanceController.cs" />
+    <Compile Include="Controllers\Versendungen\FinanceController.cs" />
     <Compile Include="Finance\Contracts\IFinanceCarporteingaengeOhneEHDataService.cs" />
     <Compile Include="Finance\Contracts\IFinanceFehlendeSchluesseltueteDataService.cs" />
     <Compile Include="Finance\Contracts\IFinanceTempZb2VersandDataService.cs" />
@@ -95,11 +96,14 @@
     <Compile Include="Finance\Contracts\IFinanceAnzeigePruefpunkteDataService.cs" />
     <Compile Include="Finance\Contracts\IFinancePruefschritteDataService.cs" />
     <Compile Include="Finance\Contracts\IFinanceMahnungenVorErsteingangDataService.cs" />
+    <Compile Include="Finance\Contracts\IFinanceVersendungenDataService.cs" />
     <Compile Include="Finance\Models\AppModelMappings.cs" />
     <Compile Include="Finance\Models\DataModels\AktivcheckTreffer.cs" />
     <Compile Include="Finance\Models\DataModels\Auftrag.cs" />
     <Compile Include="Finance\Models\DataModels\CarporteingaengeOhneEH.cs" />
     <Compile Include="Finance\Models\DataModels\FehlendeSchluesseltuete.cs" />
+    <Compile Include="Finance\Models\DataModels\VersendungSummiert.cs" />
+    <Compile Include="Finance\Models\DataModels\Versendung.cs" />
     <Compile Include="Finance\Models\DataModels\Mahnung.cs" />
     <Compile Include="Finance\Models\DataModels\Mahnstop.cs" />
     <Compile Include="Finance\Models\DataModels\TempVersandZweitschluessel.cs" />
@@ -113,6 +117,7 @@
     <Compile Include="Finance\Models\UIModels\AuftragSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\AuftragSucheSelektionsart.cs" />
     <Compile Include="Finance\Models\UIModels\AktivcheckEdit.cs" />
+    <Compile Include="Finance\Models\UIModels\VersendungenSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\MahnungVorErsteingangSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\MahnungSuchparameter.cs" />
     <Compile Include="Finance\Models\UIModels\MahnstopEdit.cs" />
@@ -138,6 +143,8 @@
     <Compile Include="Finance\Services\FinancePruefschritteDataServiceSAP.cs" />
     <Compile Include="Finance\Services\FinanceMahnungenVorErsteingangDataServiceSAP.cs" />
     <Compile Include="Finance\Services\FinanceTempVersandZweitschluesselDataServiceSAP.cs" />
+    <Compile Include="Finance\Services\FinanceVersendungenDataServiceSAP.cs" />
+    <Compile Include="Finance\ViewModels\FinanceVersendungenViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceAktivcheckViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceCarporteingaengeOhneEHViewModel.cs" />
     <Compile Include="Finance\ViewModels\FinanceFehlendeSchluesseltueteViewModel.cs" />

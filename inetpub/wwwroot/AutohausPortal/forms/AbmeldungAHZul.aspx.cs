@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Common;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
 using Telerik.Web.UI;
 
 namespace AutohausPortal.forms
@@ -50,7 +44,7 @@ namespace AutohausPortal.forms
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App);
-                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID.ToString(), this))
+                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID, this))
                 {
                     lblError.Visible = true;
                     lblError.Text = objCommon.Message;
@@ -71,14 +65,14 @@ namespace AutohausPortal.forms
             }
             else 
             {
-                objVorerf = new AHErfassung(ref m_User, m_App, "");
+                objVorerf = new AHErfassung(ref m_User, m_App, "", "");
             }
             
 
           if (IsPostBack == false)
             {
               // Laden der zum Abmelden bereiten Zulassungen
-                objVorerf.GetAbmeldungAH(Session["AppID"].ToString(), Session.SessionID.ToString(), this, m_User.Reference.Substring(0, 4), m_User.Reference.Substring(4, 4));
+                objVorerf.GetAbmeldungAH(Session["AppID"].ToString(), Session.SessionID, this, m_User.Reference.Substring(0, 4), m_User.Reference.Substring(4, 4));
                 Session["objVorerf"] = objVorerf;
                 if (objVorerf.Status != 0)
                 {
@@ -192,7 +186,7 @@ namespace AutohausPortal.forms
 
             if (checkToSave("A", ref errmsg))
             {
-                objVorerf.SaveAbmeldungAH(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
+                objVorerf.SaveAbmeldungAH(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objVorerf.Status != 0)
                 {
 
@@ -337,7 +331,7 @@ namespace AutohausPortal.forms
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
             if (checkToSave("L", ref errmsg))
             {
-                objVorerf.SaveAbmeldungAH(Session["AppID"].ToString(), Session.SessionID.ToString(), this);
+                objVorerf.SaveAbmeldungAH(Session["AppID"].ToString(), Session.SessionID, this);
                 if (objVorerf.Status != 0)
                 {
 

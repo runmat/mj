@@ -160,7 +160,6 @@
                                 <asp:RadioButton ID="rbNeinFeinstaub" GroupName="Auswahl" Checked="true" runat="server" /><div
                                     class="radiolabel">
                                     nein</div>
-                                <asp:CheckBox ID="cbxSave" runat="server" Enabled="False" Text="saved" Visible="False" />
                             </div>
                             <!--formulardaten zeile3-->
                             <div class="trenner">
