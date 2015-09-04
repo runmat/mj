@@ -109,9 +109,6 @@ namespace CkgDomainLogic.Insurance.Models
 
         [LocalizedDisplay(LocalizeConstants.CreateUser)]
         public string AnlageUser { get; set; }
-
-        //[XmlIgnore]
-        //static public List<SelectItem> Versicherungen { get; set; }
         
         [NotMapped]
         [ScriptIgnore]

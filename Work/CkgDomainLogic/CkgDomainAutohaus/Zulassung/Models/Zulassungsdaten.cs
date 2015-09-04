@@ -6,6 +6,7 @@ using System.Linq;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Autohaus.ViewModels;
+using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
@@ -24,7 +25,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusAbmeldung { get; set; }
 
-        public bool IsMassenzulassung { get; set; }     // MMA
+        public bool IsMassenzulassung { get; set; }     
+        public bool IsMassenabmeldung { get; set; }     
 
         public bool ModusVersandzulassung { get; set; }
 
@@ -76,6 +78,7 @@ namespace CkgDomainLogic.Autohaus.Models
         public string EvbNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.PersonalisedLicenseNo)]
+        [KennzeichenPartial]
         public string Kennzeichen
         {
             get { return _kennzeichen.NotNullOrEmpty().ToUpper(); }

@@ -1,0 +1,16 @@
+﻿@model CkgDomainLogic.General.Contracts.ILogonContextDataService
+<li class="dropdown user">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <span class="username">@(Model.UserNameForDisplay ?? Model.UserName) </span> 
+        <div class="userbild" style="background-image:url(/ServicesMvc/_Themes/AH2015/images/avatar.png);"> </div>
+    </a>
+    <ul class="dropdown-menu">
+        
+        <li><a href="javascript:ChangePassword()"><i class="icon-key"></i> @Localize.PasswordChange</a></li>
+
+        <li class="divider"></li>
+        
+        <li><a href="javascript:UserLogout()"><i class="icon-unlock"></i> Log Out</a></li>
+
+    </ul>
+</li>

@@ -23,7 +23,7 @@
         columns.XBound(c => c.AdresseHaendler);
         columns.XBound(c => c.User);
         columns.XBound(c => c.Status);
-        columns.XBound(c => c.KlaerfallText);
+        columns.XBound(c => c.KlaerfallTextPreview);
         columns.XBound(c => c.Action1).Width(100).Filterable(false).Sortable(false)
             .ClientTemplate(
                 "<button onclick='ShowZanfKlaerfalltext(\"<#= data.AnforderungsNr #>\",\"<#= data.AuftragsNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Details + "' data-placement='top'><i class='halflings-icon white search'></i></button>"

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Common;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
+using GeneralTools.Models;
 using Telerik.Web.UI;
 
 namespace AutohausPortal.forms
@@ -19,7 +15,7 @@ namespace AutohausPortal.forms
     /// Selektion Zulassungsstatistik. 
     /// Benutzte Klassen ZLD_Suche und ZLDCommon.
     /// </summary>
-    public partial class Zulassungsstatistik : System.Web.UI.Page
+    public partial class Zulassungsstatistik : Page
     {
         private User m_User;
         private App m_App;
@@ -48,7 +44,7 @@ namespace AutohausPortal.forms
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App);
-                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID.ToString(), this))
+                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID, this))
                 {
                     lblError.Visible = true;
                     lblError.Text = objCommon.Message;
@@ -168,13 +164,6 @@ namespace AutohausPortal.forms
             txtBox.Attributes.Add("onfocus", "if(this.value==this.defaultValue)this.value=''");
         }
 
-        private void removeAttributes(TextBox txtBox)
-        {
-            txtBox.Attributes.Remove("onblur");
-            txtBox.Attributes.Remove("onfocus");
-            disableDefaultValue(txtBox);
-        }
-
         /// <summary>
         /// entfernt den Vorschlagswert der Textbox, wenn Eingabe erfolgte
         /// </summary>
@@ -211,29 +200,25 @@ namespace AutohausPortal.forms
         /// <returns></returns>
         private Boolean checkZuldate ()
         { 
-            Boolean bReturn = false;
-            String ZDat = "";
             DateTime datZulVon;
             DateTime datZulBis;
-            
-            ZDat = txtZuldateVon.Text;
-            if (AHErfassung.IsDate(ZDat) == false)
+
+            String ZDat = txtZuldateVon.Text;
+            if (!ZDat.IsDate())
             {
                 divZulDateVon.Attributes["class"] = "formfeld error";
                 lblError.Text = "Bitte geben Sie ein Datum im Feld -Zulassungsdatum von:- ein.";
-                bReturn = true;
-                return bReturn;
+                return true;
             }
 
             DateTime.TryParse(ZDat, out datZulVon);
 
             ZDat = txtZuldateBis.Text;
-            if (AHErfassung.IsDate(ZDat) == false)
+            if (!ZDat.IsDate())
             {
                 divZulDateBis.Attributes["class"] = "formfeld error";
                 lblError.Text = "Bitte geben Sie ein Datum im Feld -Zulassungsdatum bis:- ein.";
-                bReturn = true;
-                return bReturn;
+                return true;
             }
 
             DateTime.TryParse(ZDat, out datZulBis);
@@ -243,8 +228,7 @@ namespace AutohausPortal.forms
                 divZulDateVon.Attributes["class"] = "formfeld error";
                 divZulDateBis.Attributes["class"] = "formfeld error";
                 lblError.Text ="Zulassungssdatum (von) muß kleiner oder gleich Zulassungsdatum (bis) sein!";
-                bReturn = true;
-                return bReturn;
+                return true;
             }
 
             if (datZulBis.Subtract(datZulVon).Days > 90)
@@ -252,10 +236,10 @@ namespace AutohausPortal.forms
                 divZulDateVon.Attributes["class"] = "formfeld error";
                 divZulDateBis.Attributes["class"] = "formfeld error";
                 lblError.Text = "Der angegebene Zeitraum umfasst mehr als 90 Tage!";
-                bReturn = true;
-                return bReturn;                
+                return true;                
             }
-            return bReturn;  
+
+            return false;  
         }
 
         /// <summary>
@@ -264,29 +248,25 @@ namespace AutohausPortal.forms
         /// <returns></returns>
         private Boolean checkBeaufdate()
         {
-            Boolean bReturn = false;
-            String BDat = "";
             DateTime datBeauftrVon;
             DateTime datBeauftrBis;
 
-            BDat = txtBeauftragtVon.Text;
-            if (AHErfassung.IsDate(BDat) == false)
+            String BDat = txtBeauftragtVon.Text;
+            if (!BDat.IsDate())
             {
                 divBDateVon.Attributes["class"] = "formfeld error";
                 lblError.Text = "Bitte geben Sie ein Datum im Feld -Beauftragungsdatum von:- ein.";
-                bReturn = true;
-                return bReturn;
+                return true;
             }
 
             DateTime.TryParse(BDat, out datBeauftrVon);
 
             BDat = txtBeauftragtBis.Text;
-            if (AHErfassung.IsDate(BDat) == false)
+            if (!BDat.IsDate())
             {
                 divBDateBis.Attributes["class"] = "formfeld error";
                 lblError.Text = "Bitte geben Sie ein Datum im Feld -Beauftragungsdatum bis:- ein.";
-                bReturn = true;
-                return bReturn;
+                return true;
             }
             DateTime.TryParse(BDat, out datBeauftrBis);
 
@@ -295,18 +275,17 @@ namespace AutohausPortal.forms
                 divBDateVon.Attributes["class"] = "formfeld error";
                 divBDateBis.Attributes["class"] = "formfeld error";
                 lblError.Text = "Beauftragungsdatum (von) muß kleiner oder gleich Beauftragungsdatum (bis) sein!";
-                bReturn = true;
-                return bReturn;
+                return true;
             }
             if (datBeauftrBis.Subtract(datBeauftrVon).Days > 90)
             {
                 divBDateVon.Attributes["class"] = "formfeld error";
                 divBDateBis.Attributes["class"] = "formfeld error";
                 lblError.Text = "Der angegebene Zeitraum umfasst mehr als 90 Tage!";
-                bReturn = true;
-                return bReturn;
+                return true;
             }
-            return bReturn;
+
+            return false;
         }
 
         /// <summary>
@@ -332,9 +311,9 @@ namespace AutohausPortal.forms
                                     Kunnr.Length   + Kennz1.Length  + Kennz2.Length ;
 
             if (inputLength == 0)
-            { return true;}
-            else{return false;}
+                return true;
 
+            return false;
         }
 
         /// <summary>
@@ -392,12 +371,14 @@ namespace AutohausPortal.forms
                 lblError.Text = "Bitte geben Sie ein vollständiges Kennzeichen ein!";
                 return;
             }
-            else if (txtKennz1.Text.ToUpper().Trim().Length == 0 && txtKennz2.Text.Trim().Length > 0)
+            
+            if (txtKennz1.Text.ToUpper().Trim().Length == 0 && txtKennz2.Text.Trim().Length > 0)
             {
                 lblError.Text = "Bitte geben Sie ein vollständiges Kennzeichen ein!";
                 return;
             }
-            else if (txtKennz1.Text.ToUpper().Trim().Length > 0 && txtKennz2.Text.Trim().Length > 0)
+            
+            if (txtKennz1.Text.ToUpper().Trim().Length > 0 && txtKennz2.Text.Trim().Length > 0)
             {
                 objZLDSuche.Kennz = txtKennz1.Text.ToUpper().Trim() + "-" + txtKennz2.Text.ToUpper().Trim();
             }
@@ -431,7 +412,7 @@ namespace AutohausPortal.forms
             if (rbDurch.Checked) { objZLDSuche.Liste = "2"; }
             if (rbOffen.Checked) { objZLDSuche.Liste = "3"; }
 
-            objZLDSuche.FillStatistik(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.VKORG, objCommon.VKBUR);
+            objZLDSuche.FillStatistik(Session["AppID"].ToString(), Session.SessionID, this, objCommon.VKORG, objCommon.VKBUR);
             Session["objZLDSuche"] = objZLDSuche;
             if (objZLDSuche.Status != 0)
             {
@@ -481,7 +462,7 @@ namespace AutohausPortal.forms
         /// </summary>
         /// <param name="sender">object</param>
         /// <param name="e">RadComboBoxItemsRequestedEventArgs</param>
-        protected void ddlKunnr1_ItemsRequested(object sender, Telerik.Web.UI.RadComboBoxItemsRequestedEventArgs e)
+        protected void ddlKunnr1_ItemsRequested(object sender, RadComboBoxItemsRequestedEventArgs e)
         {
 
             ddlKunnr1.Items.Clear();
@@ -538,6 +519,5 @@ namespace AutohausPortal.forms
             addAttributes(txtReferenz4); enableDefaultValue(txtReferenz4);
 
         }
-
     }
 }
