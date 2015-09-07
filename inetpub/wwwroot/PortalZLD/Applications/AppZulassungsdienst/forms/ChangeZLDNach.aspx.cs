@@ -2189,6 +2189,11 @@ namespace AppZulassungsdienst.forms
             return objCommon.proofGebMat(Matnr);
         }
 
+        protected bool proofBlTypOKPreisEditable(String IDPos)
+        {
+            return (IDPos != "10" || objNacherf.AktuellerVorgang.Kopfdaten.Belegart != "OK");
+        }
+
         private void SaveBankAdressdaten()
         {
             var adressdaten = objNacherf.AktuellerVorgang.Adressdaten;
