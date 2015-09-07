@@ -545,7 +545,7 @@ namespace AppZulassungsdienst.forms
             {
                 cmdCreate.Enabled = objNacherf.SelAnnahmeAH;
                 cmdNewDLPrice.Enabled = false;
-                cmdFindPrize.Enabled = !objNacherf.SelAnnahmeAH;
+                cmdFindPrize.Enabled = (!objNacherf.SelAnnahmeAH && objNacherf.AktuellerVorgang.Kopfdaten.Belegart != "OK");
             }
         }
 
@@ -706,11 +706,8 @@ namespace AppZulassungsdienst.forms
                 return;
             }
 
-            // Wenn Seite in besonderem Modus aufgerufen, dann best. Felder sperren
-            if (objNacherf.SelAnnahmeAH || objNacherf.SelSofortabrechnung || objNacherf.SelEditDurchzufVersZul)
-            {
-                disableEingabefelder();
-            }
+            // ggf. best. Felder sperren (je nach Aufrufmodus etc.)
+            disableEingabefelder();
         }
 
         private DataTable CreatePosTable()
@@ -1338,7 +1335,7 @@ namespace AppZulassungsdienst.forms
                     targetRow = dRows[0];
 
                 targetRow["Search"] = txtBox.Text;
-                targetRow["Value"] = ddl.SelectedValue;
+                targetRow["Value"] = txtBox.Text;
                 targetRow["Text"] = ddl.SelectedItem.Text;
                 targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
 
@@ -1793,7 +1790,7 @@ namespace AppZulassungsdienst.forms
         private void disableEingabefelder()
         {
             cmdNewDLPrice.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelEditDurchzufVersZul);
-            cmdFindPrize.Enabled = !objNacherf.SelAnnahmeAH;
+            cmdFindPrize.Enabled = (!objNacherf.SelAnnahmeAH && objNacherf.AktuellerVorgang.Kopfdaten.Belegart != "OK");
             txtBarcode.Enabled = !objNacherf.SelEditDurchzufVersZul;
             txtKunnr.Enabled = !objNacherf.SelEditDurchzufVersZul;
             ddlKunnr.Enabled = !objNacherf.SelEditDurchzufVersZul;

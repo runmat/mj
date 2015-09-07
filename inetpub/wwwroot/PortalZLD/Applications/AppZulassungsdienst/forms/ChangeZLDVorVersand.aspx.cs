@@ -1227,7 +1227,7 @@ namespace AppZulassungsdienst.forms
                 var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == ddl.SelectedValue);
 
                 tblData.Rows[i]["Search"] = txtBox.Text;
-                tblData.Rows[i]["Value"] = ddl.SelectedValue;
+                tblData.Rows[i]["Value"] = txtBox.Text;
                 tblData.Rows[i]["Text"] = ddl.SelectedItem.Text;
                 tblData.Rows[i]["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
                 if (ddl.SelectedValue == ZLDCommon.CONST_IDSONSTIGEDL)
