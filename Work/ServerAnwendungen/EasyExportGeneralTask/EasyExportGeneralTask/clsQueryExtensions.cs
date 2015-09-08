@@ -275,6 +275,11 @@ namespace EasyExportGeneralTask
                             strFahrgestellnummer = row["FIN"].ToString();
                             cls.SavePictureAutoinvest(ref LC, logDS, ref row, taskConfig);
                             break;
+
+                        case AblaufTyp.Europcar:
+                            strFahrgestellnummer = row["CHASSIS_NUM"].ToString();
+                            cls.SavePictureEuropcar(ref LC, logDS, ref row, taskConfig);
+                            break;
                     }
                 }
                 else
@@ -983,6 +988,41 @@ namespace EasyExportGeneralTask
 
                 Helper.SendEMail(mailBetreff, mailText, taskConfig.MailEmpfaenger, newFilePath);
             }
+        }
+
+        public static void SavePictureEuropcar(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig)
+        {
+            object iStatus;
+            object status = "";
+
+            Console.WriteLine("Wait... for " + row["CHASSIS_NUM"]);
+
+            if (File.Exists(row["Filepath"].ToString()))
+            {
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
+            }
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
+            {
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
+            }
+
+            string strSubj = String.Format("Dokumentenkopie {0} {1}", row["DOK_TYP"].ToString(), row["CHASSIS_NUM"].ToString());
+
+            Thread.Sleep(2000);
+
+            if (taskConfig.MailsSenden)
+            {
+                Helper.SendEMail(strSubj, "", row["EMAIL"].ToString(), row["Filepath"].ToString());
+            }
+
+            Thread.Sleep(2000);
+
+            File.Delete(row["Filepath"].ToString());
         }
     }
 }

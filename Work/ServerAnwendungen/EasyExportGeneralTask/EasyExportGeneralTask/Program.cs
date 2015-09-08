@@ -38,6 +38,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "DCBank" };
             //args = new[] { "DaimlerFleet" };
             //args = new[] { "SixtMobility" };
+            //args = new[] { "Europcar" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
@@ -276,6 +277,14 @@ namespace EasyExportGeneralTask
                     #region Autoinvest
 
                     QueryAutoinvest();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.Europcar:
+                    #region Europcar
+
+                    QueryEuropcar();
 
                     #endregion
                     break;
@@ -1728,6 +1737,98 @@ namespace EasyExportGeneralTask
             {
                 Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Verarbeitung abgebrochen:  " + ex.Message);
                 EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Verarbeitung abgebrochen:  " + ex.Message, EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für Europcar
+        /// </summary>
+        private static void QueryEuropcar()
+        {
+            bool blnErrorOccured = false;
+
+            try
+            {
+                S.AP.Init("Z_DPM_AVM_DOKUMENT_MAIL", "I_KUNNR_AG", taskConfiguration.Kundennummer);
+                DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_WEB");
+
+                // EasyArchiv-Query initialisieren
+                clsQueryClass Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                foreach (DataRow row in tblSapResults.Rows)
+                {
+                    if (blnErrorOccured)
+                    {
+                        break;
+                    }
+
+                    if (row["EMAIL"] == DBNull.Value)
+                    {
+                        throw new Exception("Es wurde keine Emailadresse in der Tabelle gefunden (CHASSIS_NUM=" + row["CHASSIS_NUM"] + ")");
+                    }
+
+                    result.clear();
+
+                    string queryexpression = ".1001=" + row["CHASSIS_NUM"] + " & .110=" + row["DOK_TYP"].ToString().Substring(0, 3);
+
+                    string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                    if (status == "Keine Daten gefunden.")
+                    {
+                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name,
+                            "Fehler beim EasyExport (Code 01): " + "Konnte Datei nicht finden. Querystring:" + queryexpression + " Status:" + status, EventLogEntryType.Warning);
+                        Helper.SendErrorEMail("Fehler bei " + "EasyExportGeneralTask_" + taskConfiguration.Name,
+                            "Fehler beim EasyExport (Code 01): " + "Konnte Datei nicht finden. Querystring:" + queryexpression + " / " + EventLogEntryType.Warning);
+                    }
+                    else
+                    {
+                        if (!String.IsNullOrEmpty(status))
+                        {
+                            throw new Exception(status);
+                        }
+
+                        int iIndex = 0;
+
+                        if (result.hitCounter > 1)
+                        {
+                            string strDate = "";
+
+                            for (int i = 0; i < result.hitList.Rows.Count; i++)
+                            {
+                                string datum = result.hitList.Rows[i][2].ToString();
+
+                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                {
+                                    strDate = datum;
+                                    iIndex = i;
+                                }
+                            }
+                        }
+
+                        status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex);
+
+                        if (!String.IsNullOrEmpty(status))
+                        {
+                            Console.WriteLine(status);
+                        }
+
+                        if (taskConfiguration.DatumInSapSetzen)
+                        {
+                            S.AP.InitExecute("Z_DPM_AVM_DOKUMENT_MAIL", "I_KUNNR_AG, I_CHASSIS_NUM", taskConfiguration.Kundennummer, row["CHASSIS_NUM"].ToString());
+
+                            if (S.AP.ResultCode != 0)
+                            {
+                                blnErrorOccured = true;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
             }
         }
 
