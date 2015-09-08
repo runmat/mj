@@ -104,8 +104,6 @@ namespace AppZulassungsdienst.forms
 
             proofdifferentHauptMatnr(ref tblData);
 
-            GetDiensleitungDataforPrice(ref tblData);
-
             kopfdaten.BarzahlungKunde = chkBar.Checked;
 
             kopfdaten.Landkreis = txtStVa.Text;
@@ -2072,15 +2070,6 @@ namespace AppZulassungsdienst.forms
         }
 
         /// <summary>
-        /// Dienstleistungsdaten für die Preisfindung sammeln.
-        /// </summary>
-        /// <param name="tblData">interne Dienstleistungstabelle</param>
-        private void GetDiensleitungDataforPrice(ref DataTable tblData)
-        {
-            GetDiensleitungData(ref tblData, false);
-        }
-
-        /// <summary>
         /// Dienstleistungsdaten für die Speicherung sammeln.
         /// </summary>
         /// <param name="tblData">Gridtabelle</param>
@@ -2105,12 +2094,7 @@ namespace AppZulassungsdienst.forms
                         var dlPos = dlPositionen[i];
 
                         if (dlPos.MaterialNr != materialNr)
-                        {
-                            if (exitIfDlChanged)
-                                return true;
-
-                            dlPos.MaterialNr = materialNr;
-                        }
+                            return true;
 
                         var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == dlPos.MaterialNr);
 
