@@ -1898,9 +1898,9 @@ namespace AppZulassungsdienst.forms
 
             foreach (DataRow dRow in tblData.Rows)
             {
-                var materialNr = dRow["Value"].ToString();
+                var materialNr = dRow["Search"].ToString();
 
-                if (materialNr != "0")
+                if (!String.IsNullOrEmpty(materialNr) && materialNr != "0")
                 {
                     var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
 
@@ -1936,9 +1936,9 @@ namespace AppZulassungsdienst.forms
             for (var i = 0; i < tblData.Rows.Count; i++)
             {
                 var dRow = tblData.Rows[i];
-                var materialNr = dRow["Value"].ToString();
+                var materialNr = dRow["Search"].ToString();
 
-                if (materialNr != "0")
+                if (!String.IsNullOrEmpty(materialNr) && materialNr != "0")
                 {
                     var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
@@ -2013,9 +2013,9 @@ namespace AppZulassungsdienst.forms
             for (var i = 0; i < tblData.Rows.Count; i++)
             {
                 var dRow = tblData.Rows[i];
-                var materialNr = dRow["Value"].ToString();
+                var materialNr = dRow["Search"].ToString();
 
-                if (materialNr != "0")
+                if (!String.IsNullOrEmpty(materialNr) && materialNr != "0")
                 {
                     if (dlPositionen.Count > i)
                     {
@@ -2095,7 +2095,7 @@ namespace AppZulassungsdienst.forms
             var NewPosID = 10;
             var NewUePosID = 10;
 
-            var materialNr = dRow["Value"].ToString();
+            var materialNr = dRow["Search"].ToString();
 
             var matbez = objCommon.GetMaterialNameFromDienstleistungRow(dRow);
 
@@ -2200,7 +2200,7 @@ namespace AppZulassungsdienst.forms
 
             NewPosID += 10;
 
-            var materialNr = dRow["Value"].ToString();
+            var materialNr = dRow["Search"].ToString();
 
             var mat = objCommon.MaterialStamm.FirstOrDefault(m => m.MaterialNr == materialNr);
 
