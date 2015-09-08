@@ -740,13 +740,13 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         , null
                         , (source, destination) =>
                         {
-                            destination.CHASSIS_NUM = source.Fahrgestellnummer;
-                            destination.LICENSE_NUM = source.Kennzeichen;
-                            destination.TIDNR = source.Zb2Nummer;
+                            destination.CHASSIS_NUM = source.Fahrgestellnummer.NotNullOrEmpty().ToUpper();
+                            destination.LICENSE_NUM = source.Kennzeichen.NotNullOrEmpty().ToUpper();
+                            destination.TIDNR = source.Zb2Nummer.NotNullOrEmpty().ToUpper();
                             destination.ZZMODELL = source.ModelID;
-                            destination.ZZREFERENZ1 = source.Unitnummer;
+                            destination.ZZREFERENZ1 = source.Unitnummer.NotNullOrEmpty().ToUpper();
                             destination.LIZNR = source.Auftragsnummer;
-                            destination.ZBATCH_ID = source.BatchId;
+                            destination.ZBATCH_ID = source.BatchId.NotNullOrEmpty().ToUpper();
                             destination.ZZSIPP = source.SIPPCode;
                             destination.ZZHERST_TEXT = source.Herstellerkennung;
                             destination.KUNPDI = source.Pdi;
