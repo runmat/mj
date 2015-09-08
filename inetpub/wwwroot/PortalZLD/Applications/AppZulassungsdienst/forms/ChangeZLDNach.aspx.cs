@@ -1335,7 +1335,7 @@ namespace AppZulassungsdienst.forms
                     targetRow = dRows[0];
 
                 targetRow["Search"] = txtBox.Text;
-                targetRow["Value"] = txtBox.Text;
+                targetRow["Value"] = ddl.SelectedValue;
                 targetRow["Text"] = ddl.SelectedItem.Text;
                 targetRow["Menge"] = ((mat != null && mat.MengeErlaubt) || txtMenge.Text == "1" ? txtMenge.Text : "1");
 
