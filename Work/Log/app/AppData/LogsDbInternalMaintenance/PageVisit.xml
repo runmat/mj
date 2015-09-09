@@ -16,7 +16,7 @@
         </Description>
 
         <Sql>
-          CREATE TABLE `[DestTableName]` (
+          CREATE TABLE IF NOT EXISTS `[DestTableName]` (
           `Id` bigint(20) NOT NULL AUTO_INCREMENT,
           `AppID` int(11) NOT NULL,
           `UserID` varchar(40) NOT NULL,
