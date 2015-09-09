@@ -32,7 +32,7 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.Server)]
         public string LogsConnection { get; set; }
 
-        public string AllLogsConnections { get { return "LogsTest,Test;LogsProd,Prod"; } }
+        public string AllLogsConnections { get { return "LogsTest,Test;LogsProd,Prod;LogsOnTest,Test ON;LogsOnProd,Prod ON"; } }
 
         [LocalizedDisplay(LocalizeConstants.OnlyUnusedApplications)]
         public bool OnlyUnusedApplications { get; set; }
