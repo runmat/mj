@@ -123,7 +123,8 @@ namespace EasyExportGeneralTask
         DCBank,
         DaimlerFleet,
         SixtMobility,
-        Autoinvest
+        Autoinvest,
+        Europcar
     }
 
     public class ArchivDefinition
