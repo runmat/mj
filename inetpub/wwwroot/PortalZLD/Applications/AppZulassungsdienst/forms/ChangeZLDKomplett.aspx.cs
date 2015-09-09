@@ -2023,20 +2023,19 @@ namespace AppZulassungsdienst.forms
 
                         if (dlPos.MaterialNr != materialNr && dRow["ID_POS"].ToString() == "10")
                         {
+                            // alte Haupt-DL inkl. Unterpositionen löschen
+                            positionen.RemoveAll(p => p.UebergeordnetePosition == "10");
+                            positionen.Remove(dlPos);
+
                             blnChangeMatnr = true;
                             var neueHpPos = NewHauptPosition(dRow);//neue Hauptposition aufbauen
                             foreach (var item in neueHpPos)// in die bestehende Positionstabelle schieben
                             {
-                                var pos = positionen.FirstOrDefault(p => p.PositionsNr == item.PositionsNr);
-                                if (pos != null)
-                                {
-                                    var idx = positionen.IndexOf(pos);
-                                    positionen[idx] = item;
-                                }
-                            }
-                            if (neueHpPos.Count(p => p.UebergeordnetePosition == "10") < positionen.Count(p => p.UebergeordnetePosition == "10"))
-                            {
-                                positionen.RemoveAll(p => p.UebergeordnetePosition == "10" && neueHpPos.None(np => np.PositionsNr == p.PositionsNr));
+                                // wenn PosNr schon vorhanden, hinten anhängen
+                                if (positionen.Any(p => p.PositionsNr == item.PositionsNr))
+                                    item.PositionsNr = (positionen.Max(p => p.PositionsNr.ToInt(0)) + 10).ToString();
+
+                                positionen.Add(item);
                             }
                         }
                         else if (dlPos.MaterialNr == materialNr && dRow["ID_POS"].ToString() == "10")

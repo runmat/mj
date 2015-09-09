@@ -245,8 +245,8 @@ namespace AppZulassungsdienst.forms
 
             // in den Fällen "Nachbearbeitung durchzuführeder Versandzulassungen" und 
             // "Neue AH-Vorgänge" Speichern ermöglichen, sonst immer Preisfindung erforderlich
-            cmdNewDLPrice.Enabled = (!objNacherf.SelEditDurchzufVersZul && !objNacherf.SelAnnahmeAH);
-            cmdCreate.Enabled = objNacherf.SelEditDurchzufVersZul || objNacherf.SelAnnahmeAH;
+            cmdNewDLPrice.Enabled = !objNacherf.SelEditDurchzufVersZul;
+            cmdCreate.Enabled = objNacherf.SelEditDurchzufVersZul;
 
             var txtBox = (TextBox)gvRow.FindControl("txtSearch");
             txtBox.Focus();
@@ -541,9 +541,8 @@ namespace AppZulassungsdienst.forms
         {
             if (ddlStVa.SelectedItem != null && String.Compare(objNacherf.AktuellerVorgang.Kopfdaten.Landkreis, ddlStVa.SelectedValue) != 0)
             {
-                cmdCreate.Enabled = objNacherf.SelAnnahmeAH;
                 cmdNewDLPrice.Enabled = false;
-                cmdFindPrize.Enabled = !objNacherf.SelAnnahmeAH;
+                cmdFindPrize.Enabled = objNacherf.AktuellerVorgang.Kopfdaten.Belegart != "OK";
             }
         }
 
@@ -606,8 +605,8 @@ namespace AppZulassungsdienst.forms
 
             // in den Fällen "Nachbearbeitung durchzuführeder Versandzulassungen" und 
             // "Neue AH-Vorgänge" Speichern ermöglichen, sonst immer Preisfindung erforderlich
-            cmdNewDLPrice.Enabled = (!objNacherf.SelEditDurchzufVersZul && !objNacherf.SelAnnahmeAH);
-            cmdCreate.Enabled = objNacherf.SelEditDurchzufVersZul || objNacherf.SelAnnahmeAH;
+            cmdNewDLPrice.Enabled = !objNacherf.SelEditDurchzufVersZul;
+            cmdCreate.Enabled = objNacherf.SelEditDurchzufVersZul;
         }
 
         #endregion
@@ -918,7 +917,7 @@ namespace AppZulassungsdienst.forms
                 ddl.DataBind();
 
                 txtBox.Attributes.Add("onkeyup", "FilterItems(this.value," + ddl.ClientID + "," + txtMenge.ClientID + "," + lblMenge.ClientID + ")");
-                if (objNacherf.SelAnnahmeAH || objNacherf.SelEditDurchzufVersZul)
+                if (objNacherf.SelEditDurchzufVersZul)
                 {
                     txtBox.Attributes.Add("onblur", "SetDDLValueWithoutDisablingButtons(this," + ddl.ClientID + ")");
                 }
@@ -1213,14 +1212,11 @@ namespace AppZulassungsdienst.forms
                     {
                         kopfdaten.KundenNr = txtKunnr.Text;
 
-                        if (!objNacherf.SelAnnahmeAH)
-                        {
                             lblError.Text = "Kunde geändert! Klicken Sie bitte auf 'Preis Finden'!";
                             cmdCreate.Enabled = false;
                             return;
                         }
                     }
-                }
                 else
                 {
                     lblError.Text = "Bitte Kunde auswählen!";
@@ -1790,8 +1786,8 @@ namespace AppZulassungsdienst.forms
         /// </summary>
         private void disableEingabefelder()
         {
-            cmdNewDLPrice.Enabled = (!objNacherf.SelAnnahmeAH && !objNacherf.SelEditDurchzufVersZul);
-            cmdFindPrize.Enabled = !objNacherf.SelAnnahmeAH;
+            cmdNewDLPrice.Enabled = !objNacherf.SelEditDurchzufVersZul;
+            cmdFindPrize.Enabled = objNacherf.AktuellerVorgang.Kopfdaten.Belegart != "OK";
             txtBarcode.Enabled = !objNacherf.SelEditDurchzufVersZul;
             txtKunnr.Enabled = !objNacherf.SelEditDurchzufVersZul;
             ddlKunnr.Enabled = !objNacherf.SelEditDurchzufVersZul;
@@ -2000,22 +1996,25 @@ namespace AppZulassungsdienst.forms
 
                         if (dlPos.MaterialNr != materialNr && dRow["ID_POS"].ToString() == "10")
                         {
+                            // alte Haupt-DL-Unterpositionen löschen
+                            positionen.Where(p => p.UebergeordnetePosition == "10").ToList().ForEach(up => up.WebBearbeitungsStatus = "L");
+
                             blnChangeMatnr = true;
                             var neueHpPos = NewHauptPosition(dRow);//neue Hauptposition aufbauen
                             foreach (var item in neueHpPos)// in die bestehende Positionstabelle schieben
                             {
-                                var pos = positionen.FirstOrDefault(p => p.PositionsNr == item.PositionsNr);
-                                if (pos != null)
+                                if (item.PositionsNr == "10")
                                 {
-                                    var idx = positionen.IndexOf(pos);
-                                    positionen[idx] = item;
+                                    // Haupt-DL aktualisieren
+                                    ModelMapping.Copy(item, dlPos);
                                 }
-                            }
-                            if (neueHpPos.Count(p => p.UebergeordnetePosition == "10") < positionen.Count(p => p.UebergeordnetePosition == "10"))
+                                else
                             {
-                                foreach (var delPos in positionen.Where(p => p.UebergeordnetePosition == "10" && neueHpPos.None(np => np.PositionsNr == p.PositionsNr)))
-                                {
-                                    delPos.WebBearbeitungsStatus = "L";
+                                    // wenn PosNr schon vorhanden, hinten anhängen
+                                    if (positionen.Any(p => p.PositionsNr == item.PositionsNr))
+                                        item.PositionsNr = (positionen.Max(p => p.PositionsNr.ToInt(0)) + 10).ToString();
+
+                                    positionen.Add(item);
                                 }
                             }
                         }
@@ -2228,6 +2227,8 @@ namespace AppZulassungsdienst.forms
             // ermittelte Preise ins Dienstleistungsgrid laden
             foreach (var pos in objNacherf.AktuellerVorgang.Positionen)
             {
+                var loeKz = (pos.Loeschkennzeichen == "L" ? "L" : pos.WebBearbeitungsStatus);
+
                 switch (pos.WebMaterialart)
                 {
                     case "D":
@@ -2237,10 +2238,10 @@ namespace AppZulassungsdienst.forms
                         tblRow["Value"] = pos.MaterialNr;
                         tblRow["OldValue"] = pos.MaterialNr;
                         tblRow["Text"] = pos.MaterialName;
-                        tblRow["PosLoesch"] = (pos.Loeschkennzeichen == "L" ? "L" : pos.WebBearbeitungsStatus);
+                        tblRow["PosLoesch"] = loeKz;
                         tblRow["Preis"] = pos.Preis.GetValueOrDefault(0);
 
-                        var gebuehrPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");
+                        var gebuehrPos = objNacherf.AktuellerVorgang.Positionen.FirstOrDefault(p => p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G" && p.Loeschkennzeichen != "L" && p.WebBearbeitungsStatus != "L");
 
                         tblRow["GebPreis"] = (gebuehrPos != null ? gebuehrPos.Preis.GetValueOrDefault(0) : 0);
                         tblRow["GebAmt"] = (gebuehrPos != null ? gebuehrPos.GebuehrAmt.GetValueOrDefault(0) : 0);
@@ -2275,12 +2276,12 @@ namespace AppZulassungsdienst.forms
                         break;
 
                     case "K":
-                        if (pos.UebergeordnetePosition == "10")
+                        if (pos.UebergeordnetePosition == "10" && loeKz != "L")
                             txtPreisKennz.Text = pos.Preis.ToString("f");
                         break;
 
                     case "S":
-                        if (pos.UebergeordnetePosition == "10")
+                        if (pos.UebergeordnetePosition == "10" && loeKz != "L")
                             txtSteuer.Text = pos.Preis.ToString("f");
                         break;
                 }

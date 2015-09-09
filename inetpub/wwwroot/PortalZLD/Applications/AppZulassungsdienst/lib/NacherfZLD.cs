@@ -357,10 +357,10 @@ namespace AppZulassungsdienst.lib
             {
                 ApplyVorgangslisteChangesToBaseLists(materialStamm, stvaStamm, false);
 
-                AktuellerVorgang.Kopfdaten = _lstKopfdaten.FirstOrDefault(k => k.SapId == sapId, new ZLDKopfdaten());
-                AktuellerVorgang.Bankdaten = _lstBankdaten.FirstOrDefault(b => b.SapId == sapId, new ZLDBankdaten());
-                AktuellerVorgang.Adressdaten = _lstAdressen.FirstOrDefault(a => a.SapId == sapId, new ZLDAdressdaten());
-                AktuellerVorgang.Positionen = _lstPositionen.Where(p => p.SapId == sapId).OrderBy(p => p.PositionsNr.ToInt(0)).ToList();
+                AktuellerVorgang.Kopfdaten = ModelMapping.Copy(_lstKopfdaten.FirstOrDefault(k => k.SapId == sapId, new ZLDKopfdaten()));
+                AktuellerVorgang.Bankdaten = ModelMapping.Copy(_lstBankdaten.FirstOrDefault(b => b.SapId == sapId, new ZLDBankdaten()));
+                AktuellerVorgang.Adressdaten = ModelMapping.Copy(_lstAdressen.FirstOrDefault(a => a.SapId == sapId, new ZLDAdressdaten()));
+                AktuellerVorgang.Positionen = ModelMapping.CopyList(_lstPositionen.Where(p => p.SapId == sapId).OrderBy(p => p.PositionsNr.ToInt(0))).ToList();
             }
             catch (Exception ex)
             {
