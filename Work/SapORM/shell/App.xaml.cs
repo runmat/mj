@@ -468,6 +468,7 @@ namespace SapORM
 
             //new FunctionReflector("Z_M_FAELLIGE_EQUI_LP").WriteOrmForExportTableStructures("I_KUNNR", "336070");
             //new FunctionReflector("Z_M_FAELLIGE_EQUI_UPDATE_LP").WriteOrmForExportTableStructures("I_KUNNR, I_EQUNR", "336070", "0");
+            //new FunctionReflector("Z_DPM_AVM_DOKUMENT_MAIL").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
 
 
             //CoCTest();
