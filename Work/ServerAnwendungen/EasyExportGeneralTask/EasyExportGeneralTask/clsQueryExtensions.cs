@@ -263,12 +263,12 @@ namespace EasyExportGeneralTask
                         case AblaufTyp.SixtMobility:
                             strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
                             strKennzeichen = row["KENNZEICHEN"].ToString();
-                            Z_M_EXPORTAENDERUNG_01.GT_WEB dataObj = null;
+                            Z_M_EXPORTAENDERUNG_01.GT_WEB dataObjSixtMobility = null;
                             if (additionalData != null)
                             {
-                                dataObj = (additionalData[0] as Z_M_EXPORTAENDERUNG_01.GT_WEB);
+                                dataObjSixtMobility = (additionalData[0] as Z_M_EXPORTAENDERUNG_01.GT_WEB);
                             }
-                            cls.SavePictureSixtMobility(ref LC, logDS, ref row, taskConfig, dataObj);
+                            cls.SavePictureSixtMobility(ref LC, logDS, ref row, taskConfig, dataObjSixtMobility);
                             break;
 
                         case AblaufTyp.Autoinvest:
@@ -277,8 +277,13 @@ namespace EasyExportGeneralTask
                             break;
 
                         case AblaufTyp.Europcar:
-                            strFahrgestellnummer = row["CHASSIS_NUM"].ToString();
-                            cls.SavePictureEuropcar(ref LC, logDS, ref row, taskConfig);
+                            strFahrgestellnummer = row["FAHRGESTELLNUMMER"].ToString();
+                            Z_DPM_AVM_DOKUMENT_MAIL.GT_WEB dataObjEuropcar = null;
+                            if (additionalData != null)
+                            {
+                                dataObjEuropcar = (additionalData[0] as Z_DPM_AVM_DOKUMENT_MAIL.GT_WEB);
+                            }
+                            cls.SavePictureEuropcar(ref LC, logDS, ref row, taskConfig, dataObjEuropcar);
                             break;
                     }
                 }
@@ -990,12 +995,12 @@ namespace EasyExportGeneralTask
             }
         }
 
-        public static void SavePictureEuropcar(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig)
+        public static void SavePictureEuropcar(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, Z_DPM_AVM_DOKUMENT_MAIL.GT_WEB item)
         {
             object iStatus;
             object status = "";
 
-            Console.WriteLine("Wait... for " + row["CHASSIS_NUM"]);
+            Console.WriteLine("Wait... for " + row["FAHRGESTELLNUMMER"]);
 
             if (File.Exists(row["Filepath"].ToString()))
             {
@@ -1011,13 +1016,13 @@ namespace EasyExportGeneralTask
                 throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
             }
 
-            string strSubj = String.Format("Dokumentenkopie {0} {1}", row["DOK_TYP"].ToString(), row["CHASSIS_NUM"].ToString());
+            string strSubj = String.Format("Dokumentenkopie {0} {1}", item.DOK_TYP, item.CHASSIS_NUM);
 
             Thread.Sleep(2000);
 
             if (taskConfig.MailsSenden)
             {
-                Helper.SendEMail(strSubj, "", row["EMAIL"].ToString(), row["Filepath"].ToString());
+                Helper.SendEMail(strSubj, "", item.EMAIL, row["Filepath"].ToString());
             }
 
             Thread.Sleep(2000);

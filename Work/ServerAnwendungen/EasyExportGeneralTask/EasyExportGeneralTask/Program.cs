@@ -1749,28 +1749,29 @@ namespace EasyExportGeneralTask
 
             try
             {
-                S.AP.Init("Z_DPM_AVM_DOKUMENT_MAIL", "I_KUNNR_AG", taskConfiguration.Kundennummer);
-                DataTable tblSapResults = S.AP.GetExportTableWithExecute("GT_WEB");
+                Z_DPM_AVM_DOKUMENT_MAIL.Init(S.AP, "I_KUNNR_AG", taskConfiguration.Kundennummer);
+
+                var sapResults = Z_DPM_AVM_DOKUMENT_MAIL.GT_WEB.GetExportListWithExecute(S.AP);
 
                 // EasyArchiv-Query initialisieren
                 clsQueryClass Weblink = new clsQueryClass();
                 Weblink.Configure(taskConfiguration);
 
-                foreach (DataRow row in tblSapResults.Rows)
+                foreach (var item in sapResults)
                 {
                     if (blnErrorOccured)
                     {
                         break;
                     }
 
-                    if (row["EMAIL"] == DBNull.Value)
+                    if (String.IsNullOrEmpty(item.EMAIL))
                     {
-                        throw new Exception("Es wurde keine Emailadresse in der Tabelle gefunden (CHASSIS_NUM=" + row["CHASSIS_NUM"] + ")");
+                        throw new Exception("Es wurde keine Emailadresse in der Tabelle gefunden (CHASSIS_NUM=" + item.CHASSIS_NUM + ")");
                     }
 
                     result.clear();
 
-                    string queryexpression = ".1001=" + row["CHASSIS_NUM"] + " & .110=" + row["DOK_TYP"].ToString().Substring(0, 3);
+                    string queryexpression = ".1001=" + item.CHASSIS_NUM + " & .110=" + item.DOK_TYP.Substring(0, 3);
 
                     string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
@@ -1806,7 +1807,7 @@ namespace EasyExportGeneralTask
                             }
                         }
 
-                        status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex);
+                        status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
 
                         if (!String.IsNullOrEmpty(status))
                         {
@@ -1815,7 +1816,7 @@ namespace EasyExportGeneralTask
 
                         if (taskConfiguration.DatumInSapSetzen)
                         {
-                            S.AP.InitExecute("Z_DPM_AVM_DOKUMENT_MAIL", "I_KUNNR_AG, I_CHASSIS_NUM", taskConfiguration.Kundennummer, row["CHASSIS_NUM"].ToString());
+                            S.AP.InitExecute("Z_DPM_AVM_DOKUMENT_MAIL", "I_KUNNR_AG, I_CHASSIS_NUM", taskConfiguration.Kundennummer, item.CHASSIS_NUM);
 
                             if (S.AP.ResultCode != 0)
                             {
