@@ -200,7 +200,7 @@ Partial Public Class Change10
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
-        Response.Redirect("../Selection.aspx")
+        Response.Redirect("../Forms/InventurSelection.aspx")
     End Sub
 
 End Class

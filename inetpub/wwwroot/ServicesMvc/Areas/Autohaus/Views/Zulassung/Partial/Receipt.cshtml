@@ -97,13 +97,15 @@ else
 
     try { FormWizardShowHideSaveButton(false); } catch (e) { }
 
-    if ($(".formWizardStepSpanGeneral").length == 0)
-        $(".restart-with-new-order").show();
+    // MCarl, 7.9.2015: Einblenden des Restart-Buttons vorübergehend deaktiviert, da aufgrund unterschiedlicher css-Klassen im neuen AH-Design
+    // dann 2 Restart-Buttons auftauchen
+//    if ($(".formWizardStepSpanGeneral").length == 0)
+//        $(".restart-with-new-order").show();
 
     function LocationReloadWithoutQueryString() {
         var isMassenzulassung = '@Model.Zulassung.Zulassungsdaten.IsMassenzulassung';
         var isMassenabmeldung = '@Model.Zulassung.Zulassungsdaten.IsMassenabmeldung';
-        if (isMassenzulassung == "True" || isMassenzulassung == "True") {
+        if (isMassenzulassung == "True" || isMassenabmeldung == "True") {
             window.location = "../Fahrzeugbestand/index";
         } else {
             window.location = window.location.pathname;
