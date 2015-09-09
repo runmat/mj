@@ -18,44 +18,52 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
         }
               
-        public List<Fahrzeuguebersicht> GetFahrzeuguebersicht(FahrzeuguebersichtSelektor selector)
+        public List<Fahrzeuguebersicht> GetFahrzeuguebersicht(FahrzeuguebersichtSelektor selector, List<Fahrzeuguebersicht> uploadItems = null)
         {
             Z_DPM_LIST_POOLS_001.Init(SAP, "I_KUNNR_AG", LogonContext.KundenNr.ToSapKunnr());
-                        
-            if (selector.EingangZb2DatumRange.IsSelected)
+
+            if (uploadItems != null)
             {
-                SAP.SetImportParameter("I_ERDAT_EQUI_VON", selector.EingangZb2DatumRange.StartDate);
-                SAP.SetImportParameter("I_ERDAT_EQUI_BIS", selector.EingangZb2DatumRange.EndDate);
+                var selItems = AppModelMappings.Z_DPM_LIST_POOLS_001_GT_WEB_From_Fahrzeuguebersicht.CopyBack(uploadItems);
+                SAP.ApplyImport(selItems);
             }
-
-            if (selector.EingangFahrzeugDatumRange.IsSelected)
+            else
             {
-                SAP.SetImportParameter("I_ZZDAT_EIN_VON", selector.EingangFahrzeugDatumRange.StartDate);
-                SAP.SetImportParameter("I_ZZDAT_EIN_BIS", selector.EingangFahrzeugDatumRange.EndDate);
+                if (selector.EingangZb2DatumRange.IsSelected)
+                {
+                    SAP.SetImportParameter("I_ERDAT_EQUI_VON", selector.EingangZb2DatumRange.StartDate);
+                    SAP.SetImportParameter("I_ERDAT_EQUI_BIS", selector.EingangZb2DatumRange.EndDate);
+                }
+
+                if (selector.EingangFahrzeugDatumRange.IsSelected)
+                {
+                    SAP.SetImportParameter("I_ZZDAT_EIN_VON", selector.EingangFahrzeugDatumRange.StartDate);
+                    SAP.SetImportParameter("I_ZZDAT_EIN_BIS", selector.EingangFahrzeugDatumRange.EndDate);
+                }
+
+                if (selector.BereitmeldungDatumRange.IsSelected)
+                {
+                    SAP.SetImportParameter("I_ZZDAT_BER_VON", selector.BereitmeldungDatumRange.StartDate);
+                    SAP.SetImportParameter("I_ZZDAT_BER_BIS", selector.BereitmeldungDatumRange.EndDate);
+                }
+
+                if (selector.ZulassungDatumRange.IsSelected)
+                {
+                    SAP.SetImportParameter("I_REPLA_DATE_VON", selector.ZulassungDatumRange.StartDate);
+                    SAP.SetImportParameter("I_REPLA_DATE_BIS", selector.ZulassungDatumRange.EndDate);
+                }
+
+                int i;
+                if (Int32.TryParse(selector.Statuskennung.NotNullOrEmpty(), out i) && i <= 700)
+                    SAP.SetImportParameter("I_SELECT", "X");
+
+                var selItem = AppModelMappings.Z_DPM_LIST_POOLS_001_GT_WEB_From_FahrzeuguebersichtSelektor.CopyBack(selector);
+                SAP.ApplyImport(new List<Z_DPM_LIST_POOLS_001.GT_WEB> { selItem });
             }
-
-            if (selector.BereitmeldungDatumRange.IsSelected)
-            {
-                SAP.SetImportParameter("I_ZZDAT_BER_VON", selector.BereitmeldungDatumRange.StartDate);
-                SAP.SetImportParameter("I_ZZDAT_BER_BIS", selector.BereitmeldungDatumRange.EndDate);
-            }
-
-            if (selector.ZulassungDatumRange.IsSelected)
-            {
-                SAP.SetImportParameter("I_REPLA_DATE_VON", selector.ZulassungDatumRange.StartDate);
-                SAP.SetImportParameter("I_REPLA_DATE_BIS", selector.ZulassungDatumRange.EndDate);
-            }
-
-            int i;
-            if (Int32.TryParse(selector.Statuskennung.NotNullOrEmpty(), out i) && i <= 700)
-                SAP.SetImportParameter("I_SELECT", "X");
-
+            
             SAP.Execute();
 
-            var sapItemsEquis = Z_DPM_LIST_POOLS_001.GT_WEB.GetExportList(SAP);
-            var webItemsEquis = AppModelMappings.Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht.Copy(sapItemsEquis).ToList();
-
-            return webItemsEquis;            
+            return AppModelMappings.Z_DPM_LIST_POOLS_001_GT_WEB_ToFahrzeuguebersicht.Copy(Z_DPM_LIST_POOLS_001.GT_WEB.GetExportList(SAP)).ToList();
         }
         
         public List<FahrzeuguebersichtPDI> GetPDIStandorte()
