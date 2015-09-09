@@ -1,0 +1,44 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model UploadAvislisteViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUploadSaveAvisliste"; }
+
+@if (Model.UploadItemsSaveErrorsOccurred)
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important bold"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsSaveErrorsOccurred)</span>
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+@(Html.Telerik()
+    .Grid<UploadAvisdaten>()
+    .Name(gridName)
+    .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
+    .XAjaxDataBinding("UploadSaveAvislisteAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DatensatzNr).Visible(false);
+        columns.XBound(c => c.SaveStatus).HtmlAttributes(new { @class = "fontBold fontItalic" });
+        columns.XBound(c => c.Carport);
+        columns.XBound(c => c.CarportName);
+        columns.XBound(c => c.MvaNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.FahrgestellNr);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUploadSaveAvislisteFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportUploadSaveAvislisteFilteredPDF", "Fahrzeuge");
+    })
+)

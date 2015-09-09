@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@using CkgDomainLogic.Fahrzeuge.ViewModels
+@model UploadAvislisteViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUploadAvisliste"; }
+
+@if (Model.SubmitMode)
+{
+    <h5>
+        <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>:</span>
+    </h5>
+    <script type="text/javascript">        _formWizardForceHideSubmitButton = false; </script>
+}
+else
+{
+    <h5>
+        <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>, @Localize.NowInAdditionPleaseCheckTheContent:</span>
+    </h5>
+    <script type="text/javascript">        _formWizardForceHideSubmitButton = true; </script>
+}
+
+@if (Model.UploadItemsUploadErrorsOccurred)
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <span class="label label-important bold"><i class="icon-bell"></i> @Html.DisplayNameFor(m => m.UploadItemsUploadErrorsOccurred)</span>
+            <i class=""></i>
+        </label>
+    </div>
+}
+
+@(Html.Telerik()
+    .Grid<UploadAvisdaten>()
+    .Name(gridName)
+    .Editable(editing => editing.Enabled(!Model.SubmitMode))
+    .DataKeys(d => d.Add(a => a.DatensatzNr).RouteKey("DatensatzNr"))
+    .XAjaxDataBindingWithUpdateAndDelete("UploadAvislisteAjaxBinding", "UploadAvislisteAjaxUpdateItem", "UploadAvislisteAjaxDeleteItem", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.Command(commands => commands.Edit()).Visible(!Model.SubmitMode);
+        columns.Command(commands => commands.Delete()).Visible(!Model.SubmitMode);
+        columns.XBound(c => c.DatensatzNr).Visible(false);
+        columns.XBound(c => c.ValidationStatus).Visible(!Model.SubmitMode).HtmlAttributes(new { @class = "fontBold fontItalic" });
+        columns.XBound(c => c.Carport);
+        columns.XBound(c => c.CarportName);
+        columns.XBound(c => c.MvaNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.FahrgestellNr);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DatensatzNr).Ascending())
+)
