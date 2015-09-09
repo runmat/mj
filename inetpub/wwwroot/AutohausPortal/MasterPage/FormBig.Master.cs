@@ -72,7 +72,10 @@ namespace AutohausPortal.MasterPage
 
         private void getAuftraege()
         {
-            lnkMenge.Text = Session["AnzahlAuftraege"].ToString();
+            if (Session["AnzahlAuftraege"] != null)
+                lnkMenge.Text = Session["AnzahlAuftraege"].ToString();
+            else
+                lnkMenge.Text = "0";
         }
     }
 }

@@ -7,28 +7,22 @@
 
 @using (Html.FormSearchBox())
 {
-    @Html.Partial("Fahrzeuguebersicht/FahrzeuguebersichtSuche", Model.FahrzeuguebersichtSelektor)                
+    @Html.Partial("Fahrzeuguebersicht/FahrzeuguebersichtSuche", Model.FahrzeuguebersichtSelektor)
 }
 
 @using (Html.FormSearchResultsGrid())
 {
-    <div id="divGrid"></div>        
+    <div id="divGrid"></div>
     <div id="divHistorieVermieterDetail"></div>
 }
 
-
 <script type="text/javascript">
-   
+
     var _modelStateValid = 'false';
     
-    //  -> u.s. FormWizard
-    //    function FormPreparePrivate() {
-    //        LoadingHide();     
-    //    }
-   
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
-        FormWizardInitPrivate();        
+        $(".t-status").hide();
     }
 
     function ShowFahrzeuguebersicht() {
@@ -44,7 +38,7 @@
                 SearchResultsTryHide();
 
                 if (_modelStateValid) {
-                    ShowFahrzeuguebersichtSearchResult(result);                   
+                    ShowFahrzeuguebersichtSearchResult(result);
                 }
 
                 LoadingHide();
@@ -97,36 +91,10 @@
 
     ///////////////// Excel upload ///////////////////
 
-    var _formWizardForceHideSubmitButton = false;
-
     function FormPreparePrivate() {
         LoadingHide();
-        FormWizardInitPrivate();     
     }
-
    
-    function FormWizardInitPrivate() {
-        FormWizard.Init(function () {
-            FormWizard.ActionsShow(false);
-        });
-      
-        FormWizard.OnPrev(function (step, maxSteps) {
-            if (step == 1)
-                FormWizard.ActionsShow(false);
-            return true;
-        });
-
-        FormWizard.OnSubmit(function () {
-            SubmitUpload();
-        });
-
-        FormWizard.OnRestart(function () {
-            //alert('Ok, let´s restart! :)');
-            LocationReloadWithoutQueryString();
-        });
-    }
-
-
     function UploadStart(e) {
 
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
@@ -152,7 +120,7 @@
             return;
         }
 
-        ShowGrid(false);
+        $("#FahrzeuguebersichtSearchForm").submit();
     }
 
     function UploadError(e) {
@@ -160,13 +128,4 @@
         alert('Fehler: Es gab ein Problem beim verarbeiten Ihrer Datei!');
     }
 
-    function ShowGrid() {
-        //FormWizard.SetTabHtml(2, result);
-        FormPreparePrivate();
-        FormWizard.ButtonNextInvoke();
-        if (_formWizardForceHideSubmitButton)
-            FormWizard.ButtonSubmitShow(false);
-    }
-   
-             
 </script>
