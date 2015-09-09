@@ -620,6 +620,7 @@ namespace AppZulassungsdienst.lib
                 CallBapi();
 
                 var fehlerListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_SAVE_DATA2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
+                var ergPosListe = Z_ZLD_SAVE_DATA2.GT_IMP_POS.GetExportList(SAP);
 
                 if (fehlerListe.Any(f => !String.IsNullOrEmpty(f.FehlerText) && f.FehlerText != "OK"))
                 {
@@ -635,6 +636,17 @@ namespace AppZulassungsdienst.lib
                             else
                                 pos.FehlerText = "OK";
                         }
+                    }
+                }
+
+                if (kopfdaten.Belegart == "OK")
+                {
+                    // Bei Belegart "OK" wurden die DL-Preise ggf. SAP-seitig angepasst
+                    foreach (var pos in AktuellerVorgang.Positionen.Where(p => p.WebMaterialart == "D"))
+                    {
+                        var ergPos = ergPosListe.FirstOrDefault(p => p.ZULBELN.TrimStart('0') == kopfdaten.SapId && p.ZULPOSNR.TrimStart('0') == pos.PositionsNr);
+                        if (ergPos != null)
+                            pos.Preis = ergPos.PREIS;
                     }
                 }
 
@@ -779,6 +791,7 @@ namespace AppZulassungsdienst.lib
                 CallBapi();
 
                 var fehlerListe = AppModelMappings.Z_ZLD_SAVE_DATA2_GT_EX_ERRORS_To_ZLDFehler.Copy(Z_ZLD_SAVE_DATA2.GT_EX_ERRORS.GetExportList(SAP)).ToList();
+                var ergPosListe = Z_ZLD_SAVE_DATA2.GT_IMP_POS.GetExportList(SAP);
 
                 foreach (var vg in Vorgangsliste.Where(vg => idList.Contains(vg.SapId)))
                 {
@@ -788,6 +801,14 @@ namespace AppZulassungsdienst.lib
                         vg.FehlerText = fehler.FehlerText;
                     else
                         vg.FehlerText = "OK";
+
+                    if (vg.Belegart == "OK")
+                    {
+                        // Bei Belegart "OK" wurden die DL-Preise ggf. SAP-seitig angepasst
+                        var ergPos = ergPosListe.FirstOrDefault(p => p.ZULBELN.TrimStart('0') == vg.SapId && p.ZULPOSNR.TrimStart('0') == vg.PositionsNr);
+                        if (ergPos != null)
+                            vg.Preis = ergPos.PREIS;
+                    }
                 }
             });
         }

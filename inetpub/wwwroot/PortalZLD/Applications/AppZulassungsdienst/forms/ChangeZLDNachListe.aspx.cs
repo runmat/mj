@@ -1773,6 +1773,8 @@ namespace AppZulassungsdienst.forms
 
                     calculateGebuehr();
                 }
+
+                Fillgrid();
             }
         }
 
