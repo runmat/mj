@@ -17,7 +17,7 @@ namespace CkgDomainLogic.Logs.Models
         [LocalizedDisplay(LocalizeConstants.Server)]
         public string LogsConnection { get; set; }
 
-        public string AllLogsConnections { get { return "LogsTest,Test;LogsProd,Prod;LogsCkgTest,Test CKG;LogsCkgProd,Prod CKG"; } }
+        public string AllLogsConnections { get { return "LogsTest,Test;LogsProd,Prod;LogsOnTest,Test ON;LogsOnProd,Prod ON;LogsCkgTest,Test CKG;LogsCkgProd,Prod CKG"; } }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
