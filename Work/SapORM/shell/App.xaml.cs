@@ -472,6 +472,8 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_DRU").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZANF_READ_DATEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KLAERF", "329608", "X");
 
+            //new FunctionReflector("Z_DPM_AVM_DOKUMENT_MAIL").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
+
 
             //CoCTest();
             //TeslaTest();
