@@ -11,20 +11,15 @@
 
             @Html.FormRadioButtonListFor(m => m.Akion, Model.Akionen.ToSelectList()) 
             
-            <div id="divExcelUpload" class="form-wizard-excel-upload hide">
+            <div id="divExcelUpload" class="hide">
                 <h3><small>&nbsp;</small></h3>
                               
                 <div id="ExcelUpload" class="portlet app-view">
-       
-                    @Html.FormWizard("icon-arrow-up", "Excel-Upload, ", new[] { "Excel Datei hochladen", "Fertig!" })                                       
-
-                    <div id="formWizardTab1" class="hide">      
-                        @Html.Partial("Fahrzeuguebersicht/FileUpload")                                                                                   
-                    </div>                   
-                </div>                  
+                    @Html.Partial("Fahrzeuguebersicht/FileUpload")
+                </div>
             </div>
 
-            <div id="divOptionalSearchparams">                            
+            <div id="divSearchparams">
                 @Html.FormTextBoxFor(m => m.Fahrgestellnummer, new { @class = "m-wrap uppercase", col = "left" })
                 @Html.FormTextBoxFor(m => m.Kennzeichen , new { @class = "m-wrap uppercase", col = "right" })
 
@@ -35,18 +30,20 @@
                 @Html.FormTextBoxFor(m => m.Auftragsnummer , new { @class = "m-wrap uppercase", col = "right" })
 
                 @Html.FormTextBoxFor(m => m.BatchId, new { @class = "m-wrap uppercase", col = "left" })
-                @Html.FormTextBoxFor(m => m.SIPPCode , new { @class = "m-wrap uppercase", col = "right" })                                                       
-            </div> 
-            
-            @Html.FormDateRangePickerFor(m => m.EingangZb2DatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.EingangFahrzeugDatumRange, new { col = "right" })
+                @Html.FormTextBoxFor(m => m.SIPPCode , new { @class = "m-wrap uppercase", col = "right" })
+                
+                @Html.FormDateRangePickerFor(m => m.EingangZb2DatumRange, new { col = "left" })
+                @Html.FormDateRangePickerFor(m => m.EingangFahrzeugDatumRange, new { col = "right" })
                            
-            @Html.FormDateRangePickerFor(m => m.BereitmeldungDatumRange, new { col = "left" })
-            @Html.FormDateRangePickerFor(m => m.ZulassungDatumRange, new { col = "right" })
+                @Html.FormDateRangePickerFor(m => m.BereitmeldungDatumRange, new { col = "left" })
+                @Html.FormDateRangePickerFor(m => m.ZulassungDatumRange, new { col = "right" })
                       
-            @Html.FormDropDownListFor(m => m.Herstellerkennung, FahrzeuguebersichtSelektor.FahrzeugHersteller, new { @class = "m-wrap" })         
-            @Html.FormDropDownListFor(m => m.Pdi, FahrzeuguebersichtSelektor.PdiStandorte, new { @class = "m-wrap" })
-            @Html.FormDropDownListFor(m => m.Statuskennung, FahrzeuguebersichtSelektor.FahrzeugStatus, new { @class = "m-wrap" })
+                @Html.FormDropDownListFor(m => m.Herstellerkennung, FahrzeuguebersichtSelektor.FahrzeugHersteller, new { @class = "m-wrap" })
+
+                @Html.FormDropDownListFor(m => m.Pdi, FahrzeuguebersichtSelektor.PdiStandorte, new { @class = "m-wrap" })
+
+                @Html.FormDropDownListFor(m => m.Statuskennung, FahrzeuguebersichtSelektor.FahrzeugStatus, new { @class = "m-wrap" })
+            </div> 
 
             <div class="form-actions">
                 <button type="submit" class='btn blue'><i class='icon-search margin-right-10'></i>@Localize.SearchAsVerb</button>
@@ -68,12 +65,12 @@
     
     function ShowElements() {       
         if ($(":radio[value='upload']").is(":checked")) {
-            $("#divOptionalSearchparams").addClass('hide');
+            $("#divSearchparams").addClass('hide');
             $("#divExcelUpload").slideDown(300);
         }
         else {
             $("#divExcelUpload").slideUp(300);
-            $("#divOptionalSearchparams").removeClass('hide');
+            $("#divSearchparams").removeClass('hide');
         }
     }
 
