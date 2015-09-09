@@ -139,8 +139,15 @@
                                                     <asp:Label ID="Label2" runat="server">Flieger:</asp:Label>
                                                 </td>
                                                 <td class="firstLeft active" colspan="2" >
-                                                    <asp:CheckBox ID="chkFlieger" runat="server" 
-                                                        />
+                                                    <asp:CheckBox ID="chkFlieger" runat="server" />
+                                                </td>
+                                            </tr> 
+                                            <tr class="formquery" id="trNochNichtAbgesendete" runat="server">
+                                                <td class="firstLeft active" style="height: 36px">
+                                                    <asp:Label ID="Label3" runat="server">Noch nicht abgesendete Vorgänge:</asp:Label>
+                                                </td>
+                                                <td class="firstLeft active" colspan="2" >
+                                                    <asp:CheckBox ID="chkNochNichtAbgesendete" runat="server" />
                                                 </td>
                                             </tr> 
                                             <tr class="formquery">

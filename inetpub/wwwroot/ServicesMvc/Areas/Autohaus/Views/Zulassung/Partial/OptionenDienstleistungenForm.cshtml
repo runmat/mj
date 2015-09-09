@@ -21,7 +21,7 @@
             <select multiple id="pre-selected-options" class="multiselect hide" name="pre-selected-options[]">
                 @foreach (var dl in Model.AvailableDienstleistungen)
                 {
-                    <option value="@dl.ID" @dl.SelectedAsString>@dl.Name</option>
+                    <option value="@dl.MaterialNr" @dl.SelectedAsString>@dl.Name</option>
                 }
             </select>
         </div>

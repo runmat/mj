@@ -1,4 +1,5 @@
-﻿using GeneralTools.Models;
+﻿using CkgDomainLogic.General.Models;
+using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
@@ -28,6 +29,7 @@ namespace CkgDomainLogic.Strafzettel.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [FormPersistable]
+        [Kennzeichen]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DateOfReceipt)]

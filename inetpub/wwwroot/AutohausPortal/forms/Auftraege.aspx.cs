@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using CKG.Base.Kernel.Security;
 using AutohausPortal.lib;
 using CKG.Base.Kernel.Common;
 using System.Data;
-using System.Data.SqlClient;
-using System.Configuration;
 using Telerik.Web.UI;
 
 namespace AutohausPortal.forms
@@ -17,7 +12,7 @@ namespace AutohausPortal.forms
     /// <summary>
     /// Übersicht der erfassten Vorgänge des Benutzers. Benutzte Klassen AHErfassung und objCommon.
     /// </summary>
-    public partial class Auftraege : System.Web.UI.Page
+    public partial class Auftraege : Page
     {
         private User m_User;
         private App m_App;
@@ -47,7 +42,7 @@ namespace AutohausPortal.forms
             if (Session["objCommon"] == null)
             {
                 objCommon = new ZLDCommon(ref m_User, m_App);
-                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID.ToString(), this))
+                if (!objCommon.Init(Session["AppID"].ToString(), Session.SessionID, this))
                 {
                     lblError.Visible = true;
                     lblError.Text = objCommon.Message;
@@ -58,22 +53,20 @@ namespace AutohausPortal.forms
             else
             {
                 objCommon = (ZLDCommon)Session["objCommon"];
-
             }
 
             if (Session["objVorerf"] != null)
             {
-
                 objVorerf = (AHErfassung)Session["objVorerf"];
             }
             else 
             {
-                objVorerf = new AHErfassung(ref m_User, m_App, "");
+                objVorerf = new AHErfassung(ref m_User, m_App, "", "");
             }
             
             if (!IsPostBack)
             {
-                objVorerf.LadeVorerfassungDB_ZLD();
+                objVorerf.LoadVorgaengeFromSap(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblKundenStamm);
                 Session["objVorerf"] = objVorerf;
                 if (objVorerf.Status != 0)
                 {
@@ -84,17 +77,17 @@ namespace AutohausPortal.forms
                 { 
                     Fillgrid(0, "", null); 
                 }   
-              }
-              else
-              {
-                  // beim AsyncPostBack Controls neu rendern
-                  Boolean IsInAsync = ScriptManager.GetCurrent(this).IsInAsyncPostBack;
-                  if (IsInAsync) 
-                  { 
-                    ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "initiate3",
-                        "initiate3();", true);
-                  }
-              }
+            }
+            else
+            {
+                // beim AsyncPostBack Controls neu rendern
+                Boolean IsInAsync = ScriptManager.GetCurrent(this).IsInAsyncPostBack;
+                if (IsInAsync) 
+                { 
+                ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "initiate3",
+                    "initiate3();", true);
+                }
+            }
         }
 
         /// <summary>
@@ -102,9 +95,9 @@ namespace AutohausPortal.forms
         /// </summary>
         /// <param name="intPageIndex">Int32</param>
         /// <param name="strSort">String</param>
+        /// <param name="Rowfilter"></param>
         private void Fillgrid(Int32 intPageIndex, String strSort, String Rowfilter)
         {
-
             DataView tmpDataView = new DataView();
             tmpDataView = objVorerf.tblEingabeListe.DefaultView;
             String strFilter = "";
@@ -177,10 +170,7 @@ namespace AutohausPortal.forms
                 gvZuldienst.DataBind();
 
                 // Erfasser nur anzeigen, wenn Benutzer alle Vorgänge des VkBurs bzw. der Gruppe bearbeitet
-                gvZuldienst.Columns[10].Visible = m_User.Organization.OrganizationName.ToUpper().Contains(("SENDFORALL"));
-
-                // lblAnzahl.Text = "Anzahl Vorgänge: " + objVorerf.IDCount;
-
+                gvZuldienst.Columns[8].Visible = m_User.Organization.OrganizationName.ToUpper().Contains(("SENDFORALL"));
             }
         }
 
@@ -211,23 +201,20 @@ namespace AutohausPortal.forms
             objVorerf.VKORG = m_User.Reference.Substring(0, 4);
             if (checkToSave())
             {
-                objVorerf.SaveZLDVorerfassung(Session["AppID"].ToString(), Session.SessionID.ToString(), this, objCommon.tblStvaStamm);
+                objVorerf.SendVorgaengeToSap(Session["AppID"].ToString(), Session.SessionID, this, objCommon.tblStvaStamm);
                 if (objVorerf.Status != 0)
                 {
-
                     if (objVorerf.Status == -5555)
                     {
                         lblError.Text = "Kommunikationfehler: Daten konnten nicht in SAP gespeichert werden!" + objVorerf.Message;
                         return;
                     }
                      
-
                     DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status <> 'OK' AND Status <>''");
 
                     if (rowListe.Length > 0)
                     {
                         lblError.Text = "Es konnten ein oder mehrere Aufträge nicht in SAP gespeichert werden";
-
                     }
                     rowListe = objVorerf.tblEingabeListe.Select("Status = 'OK'");
 
@@ -235,10 +222,7 @@ namespace AutohausPortal.forms
                     {
                         foreach (DataRow dRow in rowListe)
                         {
-                            Int32 id;
-                            Int32.TryParse(dRow["ID"].ToString(), out id);
-                            objVorerf.SetAbgerechnet(id);
-                            //objNacherf.tblEingabeListe.Rows.Remove(dRow);
+                            objVorerf.tblEingabeListe.Rows.Remove(dRow);
                         }
 
                         lblMessage.Visible = true;
@@ -251,11 +235,10 @@ namespace AutohausPortal.forms
                         downloaddoc.Visible = true;
                         downloaddoc.VisibleOnPageLoad = true;
                     }
-                    Fillgrid(0, "", "Status = 'OK' OR Status <>''  ");
+                    Fillgrid(0, "", "Status <> ''");
+                    gvZuldienst.Columns[0].Visible = true;
                     gvZuldienst.Columns[1].Visible = false;
-                    gvZuldienst.Columns[2].Visible = true;
-                    gvZuldienst.Columns[3].Visible = false;
-                    gvZuldienst.Columns[11].Visible = false;
+                    gvZuldienst.Columns[9].Visible = false;
                     cmdSave.Enabled = false;
                     cmdContinue.Visible = true;
                 }
@@ -264,28 +247,22 @@ namespace AutohausPortal.forms
                     lblMessage.Visible = true;
                     lblMessage.ForeColor = System.Drawing.ColorTranslator.FromHtml("#269700");
                     lblMessage.Text = "Datensätze gespeichert. Keine Fehler aufgetreten.";
-                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status = ''");
+                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("Status = 'OK'");
 
                     if (rowListe.Length > 0)
                     {
                         foreach (DataRow dRow in rowListe)
                         {
-                            Int32 id;
-                            Int32.TryParse(dRow["ID"].ToString(), out id);
                             if (dRow["toSave"].ToString() == "1")
                             {
-                                objVorerf.SetAbgerechnet(id);
                                 objVorerf.tblEingabeListe.Rows.Remove(dRow);
                             }
-
                         }
-
                     }
 
                     if (objVorerf.tblEingabeListe.Rows.Count > 0)
                     {
                         Fillgrid(0, "", null);
-
                     }
                     else 
                     {
@@ -299,14 +276,11 @@ namespace AutohausPortal.forms
                     RadWindow downloaddoc = RadWindowManager1.Windows[0];
                     downloaddoc.Visible = true;
                     downloaddoc.VisibleOnPageLoad = true;
-
                 }
-
             }
             else
             {
                 lblError.Text = "Sie haben keine Auträge zum Absenden markiert!";
-
             }
         }
 
@@ -324,14 +298,13 @@ namespace AutohausPortal.forms
 
                 if (chkAuswahl != null && chkAuswahl.Checked) 
                 {
-                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ID = " + lblID.Text);
+                    DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ZULBELN = '" + lblID.Text + "'");
                     if (rowListe.Length == 1)
                     { 
                         rowListe[0]["toSave"] = 1;
                         breturn = true;
                     }
                 }
-            
             }
             return breturn;
         }
@@ -363,7 +336,7 @@ namespace AutohausPortal.forms
             objVorerf = (AHErfassung )Session["objVorerf"];
             if (e.CommandName == "Bearbeiten")
             {
-                DataRow [] drow = objVorerf.tblEingabeListe.Select("ID=" + ID.Text);
+                DataRow [] drow = objVorerf.tblEingabeListe.Select("ZULBELN = '" + ID.Text + "'");
                 if (drow.Length==0){ lblError.Text = "Es ist ein Fehler aufgetreten. Der Vorgang konnte nicht geladen werden"; return;}
                 DataTable AppTable = m_User.Applications.Copy();
                 DataRow[] appRows;
@@ -372,13 +345,8 @@ namespace AutohausPortal.forms
             }
             if (e.CommandName == "Loeschen")
             {
-                //Label lblLoeschKZ = (Label)gvZuldienst.Rows[Index].FindControl("lblLoeschKZ");
-                Label lblIDPos = (Label)gvZuldienst.Rows[Index].FindControl("lblid_pos");
-                String Loeschkz = "";
                 Int32 IDSatz;
-                Int32 IDPos;
                 Int32.TryParse(ID.Text, out IDSatz);
-                Int32.TryParse(lblIDPos.Text, out IDPos);
 
                 hfID.Value = ID.Text;
 
@@ -396,7 +364,7 @@ namespace AutohausPortal.forms
             if (e.Row.RowType == DataControlRowType.DataRow)
             {
                 // auch ID-Label auf Click reagieren lassen -> Auswahl-Checkbox entspr. umschalten
-                Label lbl = (Label) e.Row.FindControl("lblName");
+                Label lbl = (Label) e.Row.FindControl("lblID");
                 lbl.Attributes["onclick"] = "ChangeCheckState(" + (e.Row.RowIndex + 1).ToString() + ");";
             }
         }
@@ -411,8 +379,8 @@ namespace AutohausPortal.forms
         {
             Int32 id;
             Int32.TryParse(hfID.Value, out id);
-            objVorerf.DeleteRecordSet(id);
-            DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ID = " + id);
+            objVorerf.DeleteVorgang(Session["AppID"].ToString(), Session.SessionID, this, id);
+            DataRow[] rowListe = objVorerf.tblEingabeListe.Select("ZULBELN = '" + id.ToString() + "'");
             if (rowListe.Length > 0)
             {
                 foreach (DataRow dRow in rowListe)
@@ -433,7 +401,6 @@ namespace AutohausPortal.forms
         /// <param name="e"></param>
         protected void cmdCloseDialog_Click(object sender, EventArgs e)
         {
-
             ScriptManager.RegisterStartupScript(phrJsRunner, phrJsRunner.GetType(), "jsCloseDialg", "closeDialog();", true);
         }
 
@@ -443,7 +410,9 @@ namespace AutohausPortal.forms
         private void getAuftraege()
         {
             HyperLink lnkMenge = (HyperLink)Master.FindControl("lnkMenge");
-            lnkMenge.Text = objCommon.getAnzahlAuftraege();
+            var menge = objVorerf.GetAnzahlAuftraege(Session["AppID"].ToString(), Session.SessionID, this);
+            Session["AnzahlAuftraege"] = menge;
+            lnkMenge.Text = menge;
         }
 
         /// <summary>
@@ -463,18 +432,14 @@ namespace AutohausPortal.forms
             {
                 foreach (DataRow dRow in rowListe)
                 {
-                    
                     Int32 id;
                     Int32.TryParse(dRow["id"].ToString(), out id);
-                    DataRow[] rowPos = objVorerf.tblEingabeListe.Select("id = " + id);
+                    DataRow[] rowPos = objVorerf.tblEingabeListe.Select("ZULBELN = '" + id.ToString() + "'");
                     foreach (DataRow dRowsToDel in rowPos)
                     {
                         objVorerf.tblEingabeListe.Rows.Remove(dRowsToDel);
-                    }
-                                       
+                    }                
                 }
-
-
             }
             String strFilter= "" ;
             objVorerf.tblEingabeListe.DefaultView.RowFilter = strFilter;
@@ -489,13 +454,12 @@ namespace AutohausPortal.forms
                 Fillgrid(0, "", null);
             }
             cmdContinue.Visible = false;
-            gvZuldienst.Columns[2].Visible = false;
-            gvZuldienst.Columns[3].Visible = true;
-            gvZuldienst.Columns[11].Visible = true;
+            gvZuldienst.Columns[0].Visible = false;
+            gvZuldienst.Columns[1].Visible = true;
+            gvZuldienst.Columns[9].Visible = true;
             RadWindow downloaddoc = RadWindowManager1.Windows[0];
             downloaddoc.Visible = false;
             downloaddoc.VisibleOnPageLoad = false ;
-        
         }
 
         protected void lnkCreateExcel_Click(object sender, EventArgs e)
@@ -535,8 +499,8 @@ namespace AutohausPortal.forms
             tblTemp.AcceptChanges();
             
             CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory excelFactory = new CKG.Base.Kernel.DocumentGeneration.ExcelDocumentFactory();
-            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", System.DateTime.Now) + m_User.UserName;
-            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page, false, null, 0, 0);
+            string filename = String.Format("{0:yyyyMMdd_HHmmss_}", DateTime.Now) + m_User.UserName;
+            excelFactory.CreateDocumentAndSendAsResponse(filename, tblTemp, this.Page);
         }
     }
 }

@@ -109,10 +109,10 @@ namespace CkgDomainLogic.DomainCommon.Models
         public bool IsDefaultPartner { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.EVB)]
-        public string EvbNr { get; set; }                   // MMA ITA 8127
+        public string EvbNr { get; set; }                   
 
-        [LocalizedDisplay(LocalizeConstants.SEP)]
-        public DateTime? Stichtagsabbuchung { get; set; }   // MMA ITA 8127 SEPA_STICHTAG
+        [LocalizedDisplay(LocalizeConstants.SepaBooking)]
+        public DateTime? Stichtagsabbuchung { get; set; }   
 
         [GridHidden]
         [LocalizedDisplay(LocalizeConstants.PartnerRolesToCreate)]

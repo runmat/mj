@@ -63,7 +63,6 @@ else
                 <div class="receipt-no">@Localize.Receipt #@zulassung.BelegNr</div>
                 <div class="receipt-fin">@Localize.VIN @zulassung.Fahrzeugdaten.FahrgestellNr</div>
                 <div class="receipt-download-buttons">
-                    <a href="SummaryAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.YourOrderAsPdfFile' data-placement="top"> @Localize.PdfDownload <i class="icon-download-alt"></i></a>
                     @if (zulassung.KundenformularPdf != null)
                     {
                         <a href="KundenformularAsPdf?id=@zulassung.BelegNr" class="btn blue tooltips margin-right-5 margin-bottom-5" data-original-title='@Localize.CustomerFormAsPdfFile' data-placement="top"> @Localize.CustomerForm <i class="icon-download-alt"></i></a>
@@ -98,12 +97,15 @@ else
 
     try { FormWizardShowHideSaveButton(false); } catch (e) { }
 
-    if ($(".formWizardStepSpanGeneral").length == 0)
-        $(".restart-with-new-order").show();
+    // MCarl, 7.9.2015: Einblenden des Restart-Buttons vorübergehend deaktiviert, da aufgrund unterschiedlicher css-Klassen im neuen AH-Design
+    // dann 2 Restart-Buttons auftauchen
+//    if ($(".formWizardStepSpanGeneral").length == 0)
+//        $(".restart-with-new-order").show();
 
     function LocationReloadWithoutQueryString() {
         var isMassenzulassung = '@Model.Zulassung.Zulassungsdaten.IsMassenzulassung';
-        if (isMassenzulassung == "True") {
+        var isMassenabmeldung = '@Model.Zulassung.Zulassungsdaten.IsMassenabmeldung';
+        if (isMassenzulassung == "True" || isMassenabmeldung == "True") {
             window.location = "../Fahrzeugbestand/index";
         } else {
             window.location = window.location.pathname;
