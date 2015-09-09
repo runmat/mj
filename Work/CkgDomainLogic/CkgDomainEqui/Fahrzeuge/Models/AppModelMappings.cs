@@ -731,6 +731,54 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, FahrzeuguebersichtSelektor> Z_DPM_LIST_POOLS_001_GT_WEB_From_FahrzeuguebersichtSelektor
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, FahrzeuguebersichtSelektor>(
+                        new Dictionary<string, string>()
+                        , null
+                        , (source, destination) =>
+                        {
+                            destination.CHASSIS_NUM = source.Fahrgestellnummer.NotNullOrEmpty().ToUpper();
+                            destination.LICENSE_NUM = source.Kennzeichen.NotNullOrEmpty().ToUpper();
+                            destination.TIDNR = source.Zb2Nummer.NotNullOrEmpty().ToUpper();
+                            destination.ZZMODELL = source.ModelID;
+                            destination.ZZREFERENZ1 = source.Unitnummer.NotNullOrEmpty().ToUpper();
+                            destination.LIZNR = source.Auftragsnummer;
+                            destination.ZBATCH_ID = source.BatchId.NotNullOrEmpty().ToUpper();
+                            destination.ZZSIPP = source.SIPPCode;
+                            destination.ZZHERST_TEXT = source.Herstellerkennung;
+                            destination.KUNPDI = source.Pdi;
+                        }
+                    ));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht> Z_DPM_LIST_POOLS_001_GT_WEB_From_Fahrzeuguebersicht
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, Fahrzeuguebersicht>(
+                        new Dictionary<string, string>()
+                        , null
+                        , (source, destination) =>
+                        {
+                            destination.CHASSIS_NUM = source.Fahrgestellnummer;
+                            destination.LICENSE_NUM = source.Kennzeichen;
+                            destination.TIDNR = source.Zb2Nummer;
+                            destination.ZZMODELL = source.ModelID;
+                            destination.ZZREFERENZ1 = source.Unitnummer;
+                            destination.LIZNR = source.Auftragsnummer;
+                            destination.ZBATCH_ID = source.BatchId;
+                            destination.ZZSIPP = source.SIPPCode;
+                            destination.ZZHERST_TEXT = source.Hersteller;
+                            destination.KUNPDI = source.Carport;
+                        }
+                    ));
+            }
+        }
+
         #endregion
     }
 }

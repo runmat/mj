@@ -26,15 +26,16 @@ namespace LogMaintenance
 
         static void Main()
         {
-            var success = false;
-
-            success = BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
+            var success = BusinessDataCopyService.CopyToLogsDb(Console.WriteLine);
             if (!success) Environment.Exit(-1);
 
             success = BusinessDataCopyService.MaintenanceLogsDb("Prod", Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
             if (!success) Environment.Exit(-1);
 
             success = BusinessDataCopyService.MaintenanceLogsDb("CkgProd", Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
+            if (!success) Environment.Exit(-1);
+
+            success = BusinessDataCopyService.MaintenanceLogsDb("OnProd", Console.WriteLine, LogsDbInternalMaintenanceXmlPath);
             if (!success) Environment.Exit(-1);
 
             // Liste der DB Suffixe die wir bearbeiten sollen
@@ -45,7 +46,8 @@ namespace LogMaintenance
                     "Dev",
                     "CkgTest",
                     "CkgProd",
-                    "CkgDev"
+                    "OnTest",
+                    "OnProd"
                 };
 
             var cleanUpAction = from db in logDbsNameSuffix
