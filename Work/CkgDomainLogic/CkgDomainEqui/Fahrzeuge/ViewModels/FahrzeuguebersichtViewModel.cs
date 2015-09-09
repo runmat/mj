@@ -99,112 +99,34 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             PropertyCacheClear(this, m => m.FahrzeuguebersichtsFiltered);
         }
 
-    
         public void LoadFahrzeuguebersicht(ModelStateDictionary state)
         {
-            if (FahrzeuguebersichtSelektor.Akion == "upload" && (UploadItems == null || UploadItems.Count == 0))
+            if (FahrzeuguebersichtSelektor.Akion == "upload")
             {
-                state.AddModelError(string.Empty, Localize.NoVehiclesUploaded);
-                return;
+                if (UploadItems == null || UploadItems.Count == 0)
+                {
+                    state.AddModelError(string.Empty, Localize.NoVehiclesUploaded);
+                    return;
+                }
+
+                Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor, UploadItems.Where(x => x.Fahrgestellnummer.IsNotNullOrEmpty()).ToList());
             }
-
-            Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor);
-
-            #region custom selector post load filter
-
-            if (FahrzeuguebersichtSelektor.Akion == "manuell")
+            else
             {
-                UploadItems = null;
-                CsvUploadFileName = String.Empty;
-
-                var customList = Fahrzeuguebersichts.Select(x => x).ToList();
-
-                if (FahrzeuguebersichtSelektor.Fahrgestellnummer.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Fahrgestellnummer == FahrzeuguebersichtSelektor.Fahrgestellnummer).ToList();
-
-                if (FahrzeuguebersichtSelektor.Kennzeichen.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Kennzeichen == FahrzeuguebersichtSelektor.Kennzeichen).ToList();
-
-                if (FahrzeuguebersichtSelektor.Unitnummer.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Unitnummer == FahrzeuguebersichtSelektor.Unitnummer).ToList();
-
-                if (FahrzeuguebersichtSelektor.Auftragsnummer.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Auftragsnummer == FahrzeuguebersichtSelektor.Auftragsnummer).ToList();
-
-                if (FahrzeuguebersichtSelektor.BatchId.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.BatchId == FahrzeuguebersichtSelektor.BatchId).ToList();
-
-                if (FahrzeuguebersichtSelektor.SIPPCode.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.SIPPCode == FahrzeuguebersichtSelektor.SIPPCode).ToList();
-
-                if (FahrzeuguebersichtSelektor.ModelID.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.ModelID == FahrzeuguebersichtSelektor.ModelID).ToList();
-
-                if (FahrzeuguebersichtSelektor.Zb2Nummer.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Zb2Nummer == FahrzeuguebersichtSelektor.Zb2Nummer).ToList();
-
-                if (FahrzeuguebersichtSelektor.Herstellerkennung.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Hersteller.Contains(FahrzeuguebersichtSelektor.Herstellerkennung.NotNullOrEmpty())).ToList();
-
-                if (FahrzeuguebersichtSelektor.Pdi.IsNotNullOrEmpty())
-                    customList = customList.Where(x => x.Carport == FahrzeuguebersichtSelektor.Pdi.NotNullOrEmpty()).ToList();
+                Fahrzeuguebersichts = DataService.GetFahrzeuguebersicht(FahrzeuguebersichtSelektor);
 
                 if (FahrzeuguebersichtSelektor.Statuskennung.IsNotNullOrEmpty())
                 {
                     if (FahrzeuguebersichtSelektor.Statuskennung.NotNullOrEmpty() != "700")
-                        customList = customList.Where(x => x.StatusKey.ToString() == FahrzeuguebersichtSelektor.Statuskennung).ToList();
+                        Fahrzeuguebersichts = Fahrzeuguebersichts.Where(x => x.StatusKey.ToString() == FahrzeuguebersichtSelektor.Statuskennung).ToList();
                     else
                     {
                         int i;
                         if (Int32.TryParse(FahrzeuguebersichtSelektor.Statuskennung.NotNullOrEmpty(), out i))
-                            customList = customList.Where(x => x.StatusKey <= 700).ToList();
+                            Fahrzeuguebersichts = Fahrzeuguebersichts.Where(x => x.StatusKey <= 700).ToList();
                     }
                 }
-
-                Fahrzeuguebersichts = customList;
             }
-                      
-            #endregion
-
-            #region custom excel upload filter
-
-            if (FahrzeuguebersichtSelektor.Akion == "upload" && UploadItems != null)
-            {
-                var filterList = Fahrzeuguebersichts.Intersect(UploadItems.Where(x => x.Fahrgestellnummer.IsNotNullOrEmpty()),
-                                new KeyEqualityComparer<Fahrzeuguebersicht>(s => s.Fahrgestellnummer)).ToList();
-
-                foreach (var item in filterList)
-                {
-                    var exclusionList = new List<bool>();
-
-                    if (UploadItems.Any(x => x.Kennzeichen.IsNotNullOrEmpty()))
-                        exclusionList.Add(UploadItems.All(x => x.Kennzeichen != item.Kennzeichen));
-
-                    if (UploadItems.Any(x => x.Zb2Nummer.IsNotNullOrEmpty()))
-                        exclusionList.Add(UploadItems.All(x => x.Zb2Nummer != item.Zb2Nummer));
-
-                    if (UploadItems.Any(x => x.ModelID.IsNotNullOrEmpty()))
-                        exclusionList.Add(UploadItems.All(x => x.ModelID != item.ModelID));
-
-                    if (UploadItems.Any(x => x.Unitnummer.IsNotNullOrEmpty()))
-                        exclusionList.Add(UploadItems.All(x => x.Unitnummer != item.Unitnummer));
-
-                    if (UploadItems.Any(x => x.Auftragsnummer.IsNotNullOrEmpty()))
-                        exclusionList.Add(UploadItems.All(x => x.Auftragsnummer != item.Auftragsnummer));
-
-                    if (UploadItems.Any(x => x.BatchId.IsNotNullOrEmpty()))
-                        exclusionList.Add(UploadItems.All(x => x.BatchId != item.BatchId));
-
-                    if (UploadItems.Any(x => x.SIPPCode.IsNotNullOrEmpty()))
-                        exclusionList.Add(UploadItems.All(x => x.SIPPCode != item.SIPPCode));
-
-                    item.IsFilteredByExcelUpload = exclusionList.Any(x => x);
-                }
-
-                Fahrzeuguebersichts = filterList.Where(c => c.IsFilteredByExcelUpload == false).ToList();
-            }
-
-            #endregion
 
             if (Fahrzeuguebersichts.None())
                 state.AddModelError(string.Empty, Localize.NoDataFound);
@@ -244,7 +166,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 return false;
 
             IEnumerable<Fahrzeuguebersicht> list = new ExcelDocumentFactory().ReadToDataTable(CsvUploadServerFileName,
-                                                                                            true, "", CreateInstanceFromDatarow, ',').ToList();
+                                                                                            true, "", CreateInstanceFromDatarow, ',', false, true).ToList();
             
             FileService.TryFileDelete(CsvUploadServerFileName);
             if (list.None())

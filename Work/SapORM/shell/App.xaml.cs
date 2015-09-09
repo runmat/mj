@@ -468,6 +468,7 @@ namespace SapORM
 
             //new FunctionReflector("Z_FIL_ZUL_EXPORT_ORDER").WriteOrmForExportTableStructures("I_VKBUR", "5036");
             //new FunctionReflector("Z_FIL_ZUL_IMPORT_STATUS").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_DPM_AVM_DOKUMENT_MAIL").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
 
 
             //CoCTest();
