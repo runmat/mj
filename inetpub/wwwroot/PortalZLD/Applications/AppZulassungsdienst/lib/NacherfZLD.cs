@@ -1358,7 +1358,7 @@ namespace AppZulassungsdienst.lib
                         dlPos.WebBearbeitungsStatus = pos.WebBearbeitungsStatus;
 
                         // eingegebene Preise auf die entspr. Unterpositionen verteilen
-                        var gebuehrenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G");
+                        var gebuehrenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "G" && p.Loeschkennzeichen != "L");
                         if (gebuehrenPos != null)
                         {
                             if (setLoeschkennzeichen)
@@ -1369,7 +1369,7 @@ namespace AppZulassungsdienst.lib
                             gebuehrenPos.Gebuehrenpaket = pos.Gebuehrenpaket;
                         }
 
-                        var steuerPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "S");
+                        var steuerPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "S" && p.Loeschkennzeichen != "L");
                         if (steuerPos != null)
                         {
                             if (setLoeschkennzeichen)
@@ -1378,7 +1378,7 @@ namespace AppZulassungsdienst.lib
                             steuerPos.Preis = pos.Steuer;
                         }
 
-                        var kennzeichenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "K");
+                        var kennzeichenPos = _lstPositionen.FirstOrDefault(p => p.SapId == pos.SapId && p.UebergeordnetePosition == pos.PositionsNr && p.WebMaterialart == "K" && p.Loeschkennzeichen != "L");
                         if (kennzeichenPos != null)
                         {
                             if (setLoeschkennzeichen)

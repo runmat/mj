@@ -1996,8 +1996,8 @@ namespace AppZulassungsdienst.forms
 
                         if (dlPos.MaterialNr != materialNr && dRow["ID_POS"].ToString() == "10")
                         {
-                            // alte Haupt-DL-Unterpositionen löschen
-                            positionen.Where(p => p.UebergeordnetePosition == "10").ToList().ForEach(up => up.WebBearbeitungsStatus = "L");
+                            // alte Haupt-DL-Unterpositionen löschen (hier ausnahmsweise direkt per LoeschKz)
+                            positionen.Where(p => p.UebergeordnetePosition == "10").ToList().ForEach(up => up.Loeschkennzeichen = "L");
 
                             blnChangeMatnr = true;
                             var neueHpPos = NewHauptPosition(dRow);//neue Hauptposition aufbauen
