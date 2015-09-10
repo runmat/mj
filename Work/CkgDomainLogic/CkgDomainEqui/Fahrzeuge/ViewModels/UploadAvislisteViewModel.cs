@@ -4,7 +4,6 @@ using System.Data;
 using System.IO;
 using System.Linq;
 using System.Xml.Serialization;
-using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
@@ -25,7 +24,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public bool UploadItemsUploadErrorsOccurred { get { return UploadItems.Any(item => !item.IsValid); } }
 
         [LocalizedDisplay(LocalizeConstants.ErrorsOccuredOnSaving)]
-        public bool UploadItemsSaveErrorsOccurred { get { return UploadItems.Any(item => item.SaveStatus == Localize.SaveFailed); } }
+        public bool UploadItemsSaveErrorsOccurred { get { return UploadItems.Any(item => !String.IsNullOrEmpty(item.SaveStatus) && item.SaveStatus != "OK"); } }
 
         public bool SaveFailed { get; set; }
 
@@ -37,11 +36,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.UploadItems);
-            PropertyCacheClear(this, m => m.UploadItemsFiltered);
-            SubmitMode = false;
         }
-
-        public bool SubmitMode { get; set; }
 
         public bool ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
         {
@@ -92,13 +87,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void ValidateUploadItems()
         {
             DataService.ValidateAvislisteCsvUpload();
-            if (!UploadItemsUploadErrorsOccurred)
-                SubmitMode = true;
-        }
-
-        public void ResetSubmitMode()
-        {
-            SubmitMode = false;
         }
 
         public UploadAvisdaten GetDatensatzById(int id)
@@ -131,22 +119,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             SaveResultMessage = DataService.SaveAvislisteCsvUpload();
             SaveFailed = !String.IsNullOrEmpty(SaveResultMessage);
+
+            UploadItems.RemoveAll(u => u.SaveStatus == "OK");
         }
-
-        #region Filter
-
-        [XmlIgnore]
-        public List<UploadAvisdaten> UploadItemsFiltered
-        {
-            get { return PropertyCacheGet(() => UploadItems); }
-            private set { PropertyCacheSet(value); }
-        }
-
-        public void FilterUploadItems(string filterValue, string filterProperties)
-        {
-            UploadItemsFiltered = UploadItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
-        }
-
-        #endregion
     }
 }

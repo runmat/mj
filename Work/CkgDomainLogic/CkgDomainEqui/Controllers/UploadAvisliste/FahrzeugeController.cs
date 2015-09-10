@@ -5,7 +5,6 @@ using System.Web.Mvc;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using CkgDomainLogic.General.Services;
-using DocumentTools.Services;
 using GeneralTools.Models;
 using MvcTools.Web;
 using Telerik.Web.Mvc;
@@ -50,19 +49,13 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult UploadAvislisteShowGrid()
         {
-            return PartialView("UploadAvisliste/Grid", UploadAvislisteViewModel);
+            return PartialView("UploadAvisliste/UploadGrid", UploadAvislisteViewModel);
         }
 
         [GridAction]
         public ActionResult UploadAvislisteAjaxBinding()
         {
             return View(new GridModel(UploadAvislisteViewModel.UploadItems));
-        }
-
-        [GridAction]
-        public ActionResult UploadSaveAvislisteAjaxBinding()
-        {
-            return View(new GridModel(UploadAvislisteViewModel.UploadItemsFiltered));
         }
 
         [GridAction]
@@ -94,18 +87,16 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadAvislisteResetSubmitMode()
-        {
-            UploadAvislisteViewModel.ResetSubmitMode();
-
-            return PartialView("UploadAvisliste/UploadGrid", UploadAvislisteViewModel);
-        }
-
-        [HttpPost]
         public ActionResult UploadAvislisteSubmit()
         {
             UploadAvislisteViewModel.SaveUploadItems();
 
+            return Json(new { success = !UploadAvislisteViewModel.SaveFailed, message = UploadAvislisteViewModel.SaveResultMessage });
+        }
+
+        [HttpPost]
+        public ActionResult UploadAvislisteShowReceipt()
+        {
             return PartialView("UploadAvisliste/Receipt", UploadAvislisteViewModel);
         }
 
@@ -119,34 +110,6 @@ namespace ServicesMvc.Controllers
         {
             var pfad = Server.MapPath(Url.Content("/ServicesMvc/Documents/Templates/UploadAvisliste.xls"));
             return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadAvisliste.xls");
-        }
-
-        [HttpPost]
-        public ActionResult FilterGridUploadSaveAvisliste(string filterValue, string filterColumns)
-        {
-            UploadAvislisteViewModel.FilterUploadItems(filterValue, filterColumns);
-
-            return new EmptyResult();
-        }
-
-        #endregion
-
-        #region Export
-
-        public ActionResult ExportUploadSaveAvislisteFilteredExcel(int page, string orderBy, string filterBy)
-        {
-            var dt = UploadAvislisteViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("UploadAvisliste", dt);
-
-            return new EmptyResult();
-        }
-
-        public ActionResult ExportUploadSaveAvislisteFilteredPdf(int page, string orderBy, string filterBy)
-        {
-            var dt = UploadAvislisteViewModel.UploadItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
-            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("UploadAvisliste", dt, landscapeOrientation: true);
-
-            return new EmptyResult();
         }
 
         #endregion

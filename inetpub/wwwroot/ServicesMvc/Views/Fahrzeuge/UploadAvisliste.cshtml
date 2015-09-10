@@ -36,18 +36,11 @@
         });
 
         FormWizard.OnPrev(function (step, maxSteps) {
-            if (step == 1) {
-                if (_formWizardForceHideSubmitButton == false) {
-                    ResetSubmitMode();
-                    return false;
-                }
-                FormWizard.ActionsShow(false);
-            }
             return true;
         });
 
         FormWizard.OnSubmit(function () {
-            SubmitUpload();
+            return SubmitUpload();
         });
 
         FormWizard.OnRestart(function () {
@@ -63,11 +56,6 @@
     }
 
     function OnDataBound_GridUploadAvisliste() {
-        FilteredData_Grid_OnDataBound($(this));
-        $('.tooltips').tooltip();
-    }
-
-    function OnDataBound_GridUploadSaveAvisliste() {
         FilteredData_Grid_OnDataBound($(this));
         $('.tooltips').tooltip();
     }
@@ -90,15 +78,7 @@
         FilteredData_Grid_OnColumnShowHide($(this));
     }
 
-    function OnColumnShowHide_GridUploadSaveAvisliste() {
-        FilteredData_Grid_OnColumnShowHide($(this));
-    }
-
     function OnColumnReorder_GridUploadAvisliste() {
-        FilteredData_Grid_OnColumnReorder($(this));
-    }
-
-    function OnColumnReorder_GridUploadSaveAvisliste() {
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
@@ -110,8 +90,8 @@
         // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
         var fileName = e.files[0].name;
 
-        if (fileName.toLowerCase().indexOf('.csv') <= 0) {
-            alert('@Localize.FileUploadOnlyCsvLegal');
+        if (fileName.toLowerCase().indexOf('.csv') < 0 && fileName.toLowerCase().indexOf('.xls') < 0) {
+            alert('@Localize.FileUploadOnlyXlsCsvLegal.ToJavascriptString()');
             return false;
         }
 
@@ -137,10 +117,10 @@
     function UploadError(e) {
         e.preventDefault();
         setTimeout("LoadingHide()", 1000);
-        alert('@Localize.ErrorFileCouldNotBeSaved');
+        alert('@Localize.ErrorFileCouldNotBeSaved.ToJavascriptString()');
     }
 
-    function ShowGrid() {
+    function ShowGrid(invokeNext) {
         $.ajax({
             type: "POST",
             url: "UploadAvislisteShowGrid",
@@ -154,7 +134,9 @@
                 FormWizard.SetTabHtml(2, result);
                 window.scrollTo(0, 0);
                 FormPreparePrivateAjax();
-                FormWizard.ButtonNextInvoke();
+                if (invokeNext) {
+                    FormWizard.ButtonNextInvoke();
+                }
                 SetButtonVisibility();
             }
         });
@@ -182,6 +164,24 @@
             loadingShow: true,
             success: function (result) {
                 setTimeout("LoadingHide()", 1000);
+                if (!result.success) {
+                    ShowGrid(false);
+                    return false;
+                }
+
+                ShowReceipt();
+                return true;
+            }
+        });
+    }
+
+    function ShowReceipt() {
+        $.ajax({
+            type: "POST",
+            url: "UploadAvislisteShowReceipt",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
                 FormWizard.SetTabHtml(3, result);
                 window.scrollTo(0, 0);
                 GridAllColumnFilterApplyToGrid("GridUploadSaveAvisliste");
@@ -205,7 +205,7 @@
             }
         });
     }
-
+    
     function SetButtonVisibility() {
         if (_formWizardForceHideSubmitButton) {
             FormWizard.ButtonSubmitShow(false);

@@ -48,11 +48,11 @@ namespace CkgDomainLogic.Fahrzeuge.Services
                 }
                 else
                 {
-                    item.SaveStatus = Localize.OK;
+                    item.SaveStatus = "OK";
                 } 
             }
 
-            return "";
+            return (UploadItems.Any(u => u.SaveStatus != "OK") ? Localize.ErrorsOccuredOnSaving : "");
         }
 
         private void ValidateSingleUploadItem(UploadAvisdaten item)

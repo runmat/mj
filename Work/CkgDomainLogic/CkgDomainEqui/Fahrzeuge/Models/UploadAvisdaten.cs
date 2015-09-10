@@ -36,12 +36,15 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string MvaNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
-	    public string ValidationStatus
+	    public string Status
 	    {
 	        get
 	        {
                 if (!String.IsNullOrEmpty(ValidationErrorsJson) && ValidationErrorsJson != "[]")
-                    return Localize.Error;
+                    return Localize.ErrorCheckInput;
+
+	            if (!String.IsNullOrEmpty(SaveStatus) && SaveStatus != "OK")
+	                return SaveStatus;
 
                 return Localize.OK;
 	        }

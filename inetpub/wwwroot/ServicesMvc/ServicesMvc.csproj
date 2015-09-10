@@ -2994,7 +2994,6 @@
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
-    <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadSaveGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
