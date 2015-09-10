@@ -158,6 +158,7 @@
     <Content Include="Images\cancel.png" />
     <Content Include="Images\DaumenHoch.png" />
     <Content Include="Images\DaumenRunter.png" />
+    <Content Include="Images\delete01.gif" />
     <Content Include="Images\delete01.jpg" />
     <Content Include="Images\Drucker04_08.jpg" />
     <Content Include="Images\email.png" />

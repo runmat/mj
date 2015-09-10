@@ -61,34 +61,6 @@ Partial Public Class BestaetigungZulassungen
         Response.Redirect("../Selection.aspx")
     End Sub
 
-    Protected Sub gebuehrChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Dim txtBox As TextBox = CType(sender, TextBox)
-        Dim item As GridDataItem = CType(txtBox.NamingContainer, GridDataItem)
-
-        Dim posRow As DataRow = mObjZulassungen.tblZulassungen.Select("ID=" & item("ID").Text.ToInt(0) & " AND POSNR=" & item("POSNR").Text.ToInt(0))(0)
-        posRow("GEBUEHR") = txtBox.Text
-    End Sub
-
-    Protected Sub zulassungsdatumChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Dim txtBox As TextBox = CType(sender, TextBox)
-        Dim item As GridDataItem = CType(txtBox.NamingContainer, GridDataItem)
-
-        Dim posRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ID=" & item("ID").Text.ToInt(0))
-        For Each posRow As DataRow In posRows
-            posRow("ZZZLDAT") = txtBox.Text.ToNullableDateTime("ddMMyy")
-        Next
-    End Sub
-
-    Protected Sub kennzeichenChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Dim txtBox As TextBox = CType(sender, TextBox)
-        Dim item As GridDataItem = CType(txtBox.NamingContainer, GridDataItem)
-
-        Dim posRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ID=" & item("ID").Text.ToInt(0))
-        For Each posRow As DataRow In posRows
-            posRow("ZZKENN") = txtBox.Text.ToUpper()
-        Next
-    End Sub
-
     Protected Sub rgGrid1_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles rgGrid1.ItemCommand
         If TypeOf e.Item Is GridDataItem Then
             Dim gridRow As GridDataItem = CType(e.Item, GridDataItem)
@@ -98,7 +70,7 @@ Partial Public Class BestaetigungZulassungen
                 Case "Del"
                     For Each posRow As DataRow In posRows
                         If posRow("STATUS").ToString() = "L" Then
-                            posRow("STATUS") = ""
+                            posRow("STATUS") = "O"
                         Else
                             posRow("STATUS") = "L"
                         End If
@@ -107,7 +79,7 @@ Partial Public Class BestaetigungZulassungen
                 Case "Ok"
                     For Each posRow As DataRow In posRows
                         If posRow("STATUS").ToString() = "E" Then
-                            posRow("STATUS") = ""
+                            posRow("STATUS") = "O"
                         Else
                             posRow("STATUS") = "E"
                         End If
@@ -121,6 +93,8 @@ Partial Public Class BestaetigungZulassungen
     End Sub
 
     Private Sub cmdSave_Click(ByVal sender As Object, ByVal e As EventArgs) Handles cmdSave.Click
+        GetGridData()
+
         mObjZulassungen.SaveZulassungen()
 
         If mObjZulassungen.ErrorOccured Then
@@ -136,5 +110,31 @@ Partial Public Class BestaetigungZulassungen
 
             lblError.Text = "Datensätze in SAP gespeichert. Keine Fehler aufgetreten."
         End If
+    End Sub
+
+    Private Sub GetGridData()
+        For Each item As GridDataItem In rgGrid1.Items
+            Dim tmpId As Integer = item("ID").Text.ToInt(0)
+            Dim tmpPosNr As Integer = item("POSNR").Text.ToInt(0)
+            Dim tmpGebPos As Integer = item("GEB_POS").Text.ToInt(0)
+
+            If tmpPosNr = 10 Then
+                Dim idRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ID=" & tmpId)
+                Dim strZulassungsdatum As DateTime? = CType(item.FindControl("txtZulassungsdatum"), TextBox).Text.ToNullableDateTime("ddMMyy")
+                Dim strKennzeichen As String = CType(item.FindControl("txtKennzeichen"), TextBox).Text.ToUpper()
+                For Each posRow As DataRow In idRows
+                    posRow("ZZZLDAT") = strZulassungsdatum
+                    posRow("ZZKENN") = strKennzeichen
+                Next
+            End If
+
+            If tmpGebPos > 0 Then
+                Dim posRow As DataRow = mObjZulassungen.tblZulassungen.Select("ID=" & tmpId & " AND POSNR=" & tmpPosNr)(0)
+                Dim decGebuehr As Decimal = CType(item.FindControl("txtGebuehr"), TextBox).Text.ToDecimal(0)
+                posRow("GEBUEHR") = decGebuehr
+            End If
+        Next
+
+        Session("objZulassungen") = mObjZulassungen
     End Sub
 End Class

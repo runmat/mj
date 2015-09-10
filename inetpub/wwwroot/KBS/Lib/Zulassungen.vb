@@ -60,7 +60,7 @@ Public Class Zulassungen
                 Dim newRow As DataRow = tblSap.NewRow()
                 newRow("ID") = row("ID").ToString().PadLeft(10, "0"c)
                 newRow("POSNR") = row("POSNR")
-                newRow("GEBPOSNR") = row("GEBPOSNR")
+                newRow("GEB_POS") = row("GEB_POS")
                 newRow("GEBUEHR") = row("GEBUEHR")
                 newRow("ZZZLDAT") = row("ZZZLDAT")
                 newRow("ZZKENN") = row("ZZKENN")
