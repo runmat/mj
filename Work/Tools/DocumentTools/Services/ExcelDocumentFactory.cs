@@ -71,7 +71,7 @@ namespace DocumentTools.Services
                 else
                     tbl = worksheet.Cells.ExportDataTable(0, 0, worksheet.Cells.MaxRow + 1, worksheet.Cells.MaxColumn + 1).DeleteEmptyRows();
 
-                if (skipDataReformatting)
+                if (skipDataReformatting || maintainLeadingZeros)
                     return tbl;
 
                 return ReFormatDataTableValues(tbl);
