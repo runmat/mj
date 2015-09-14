@@ -42,7 +42,7 @@
                                     <MasterTableView Width="100%" GroupLoadMode="Client" TableLayout="Auto" AllowPaging="False">
                                         <HeaderStyle ForeColor="#595959" />
                                         <Columns>
-                                            <telerik:GridBoundColumn DataField="ID" SortExpression="ID" HeaderText="ID" UniqueName="ID" >
+                                            <telerik:GridBoundColumn DataField="ORDERID" SortExpression="ORDERID" HeaderText="ID" UniqueName="ORDERID" >
                                                 <HeaderStyle Width="80px" />
                                                 <ItemStyle HorizontalAlign="Left" />
                                             </telerik:GridBoundColumn>

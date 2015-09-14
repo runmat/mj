@@ -1,5 +1,6 @@
 ﻿Imports System
 Imports KBSBase
+Imports GeneralTools.Models
 Imports SapORM.Models
 
 Public Class Zulassungen
@@ -58,14 +59,21 @@ Public Class Zulassungen
 
             For Each row As DataRow In m_tblZulassungen.Rows
                 Dim newRow As DataRow = tblSap.NewRow()
-                newRow("ID") = row("ID").ToString().PadLeft(10, "0"c)
-                newRow("POSNR") = row("POSNR")
-                newRow("GEB_POS") = row("GEB_POS")
-                newRow("GEBUEHR") = row("GEBUEHR")
+                newRow("ID") = row("ID")
+                newRow("VKBUR") = row("VKBUR")
+                newRow("KUNNR") = row("KUNNR")
+                newRow("NAME1") = row("NAME1")
                 newRow("ZZZLDAT") = row("ZZZLDAT")
+                newRow("REFERENZ") = row("REFERENZ")
                 newRow("ZZKENN") = row("ZZKENN")
+                newRow("ORDERID") = row("ORDERID")
+                newRow("HPPOS") = row("HPPOS").ToString().PadLeft(4, "0"c)
                 newRow("STATUS") = row("STATUS")
-
+                newRow("POSNR") = row("POSNR").ToString().PadLeft(4, "0"c)
+                newRow("MATNR") = row("MATNR")
+                newRow("MAKTX") = row("MAKTX")
+                newRow("GEBUEHR") = row("GEBUEHR").ToString()
+                newRow("GEB_POS") = row("GEB_POS").ToString().PadLeft(4, "0"c)
                 tblSap.Rows.Add(newRow)
             Next
 

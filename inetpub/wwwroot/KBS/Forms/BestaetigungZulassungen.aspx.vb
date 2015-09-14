@@ -64,7 +64,7 @@ Partial Public Class BestaetigungZulassungen
     Protected Sub rgGrid1_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles rgGrid1.ItemCommand
         If TypeOf e.Item Is GridDataItem Then
             Dim gridRow As GridDataItem = CType(e.Item, GridDataItem)
-            Dim posRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ID=" & gridRow("ID").Text.ToInt(0))
+            Dim posRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ORDERID=" & gridRow("ORDERID").Text.ToInt(0))
 
             Select Case e.CommandName
                 Case "Del"
@@ -114,24 +114,33 @@ Partial Public Class BestaetigungZulassungen
 
     Private Sub GetGridData()
         For Each item As GridDataItem In rgGrid1.Items
-            Dim tmpId As Integer = item("ID").Text.ToInt(0)
+            Dim tmpId As Integer = item("ORDERID").Text.ToInt(0)
             Dim tmpPosNr As Integer = item("POSNR").Text.ToInt(0)
             Dim tmpGebPos As Integer = item("GEB_POS").Text.ToInt(0)
 
             If tmpPosNr = 10 Then
-                Dim idRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ID=" & tmpId)
-                Dim strZulassungsdatum As DateTime? = CType(item.FindControl("txtZulassungsdatum"), TextBox).Text.ToNullableDateTime("ddMMyy")
+                Dim idRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ORDERID=" & tmpId)
+                Dim datZulassungsdatum As DateTime? = CType(item.FindControl("txtZulassungsdatum"), TextBox).Text.ToNullableDateTime("ddMMyy")
                 Dim strKennzeichen As String = CType(item.FindControl("txtKennzeichen"), TextBox).Text.ToUpper()
                 For Each posRow As DataRow In idRows
-                    posRow("ZZZLDAT") = strZulassungsdatum
-                    posRow("ZZKENN") = strKennzeichen
+                    If CType(posRow("ZZZLDAT"), DateTime?) <> datZulassungsdatum Then
+                        posRow("ZZZLDAT") = datZulassungsdatum
+                        If posRow("STATUS").ToString() = "O" Then posRow("STATUS") = "B"
+                    End If
+                    If posRow("ZZKENN").ToString() <> strKennzeichen Then
+                        posRow("ZZKENN") = strKennzeichen
+                        If posRow("STATUS").ToString() = "O" Then posRow("STATUS") = "B"
+                    End If
                 Next
             End If
 
             If tmpGebPos > 0 Then
-                Dim posRow As DataRow = mObjZulassungen.tblZulassungen.Select("ID=" & tmpId & " AND POSNR=" & tmpPosNr)(0)
+                Dim posRow As DataRow = mObjZulassungen.tblZulassungen.Select("ORDERID=" & tmpId & " AND POSNR=" & tmpPosNr)(0)
                 Dim decGebuehr As Decimal = CType(item.FindControl("txtGebuehr"), TextBox).Text.ToDecimal(0)
-                posRow("GEBUEHR") = decGebuehr
+                If CDec(posRow("GEBUEHR")) <> decGebuehr Then
+                    posRow("GEBUEHR") = decGebuehr
+                    If posRow("STATUS").ToString() = "O" Then posRow("STATUS") = "B"
+                End If
             End If
         Next
 
