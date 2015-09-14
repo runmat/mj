@@ -891,7 +891,6 @@
     <Compile Include="Areas\Fahrzeug\Models\HolBringService\Upload.cs" />
     <Compile Include="Areas\Fahrzeug\Services\HolBringServiceDataServiceSAP.cs" />
     <Compile Include="Areas\Fahrzeug\ViewModels\HolBringServiceViewModel.cs" />
-    <Compile Include="Controllers\WfmController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -1015,8 +1014,6 @@
     <Content Include="Areas\Common\Views\Dashboard\Partial\Common.cshtml" />
     <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
     <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAnmeldung.cshtml" />
-    <Content Include="Areas\Autohaus\Views\Zulassung\Partial\ZulassungsdatenFormAbmeldung.cshtml" />
-    <Content Include="Areas\Common\Views\Dashboard\Partial\ChartJsonDataCustomizingScripts.cshtml" />
     <None Include="assets\img\bg-white-lock-header.psd" />
     <Content Include="Documents\Templates\UploadFahrzeugdaten.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
