@@ -63,6 +63,8 @@ Partial Public Class BestaetigungZulassungen
 
     Protected Sub rgGrid1_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles rgGrid1.ItemCommand
         If TypeOf e.Item Is GridDataItem Then
+            GetGridData()
+
             Dim gridRow As GridDataItem = CType(e.Item, GridDataItem)
             Dim posRows As DataRow() = mObjZulassungen.tblZulassungen.Select("ORDERID=" & gridRow("ORDERID").Text.ToInt(0))
 
@@ -70,7 +72,7 @@ Partial Public Class BestaetigungZulassungen
                 Case "Del"
                     For Each posRow As DataRow In posRows
                         If posRow("STATUS").ToString() = "L" Then
-                            posRow("STATUS") = "O"
+                            posRow("STATUS") = "B"
                         Else
                             posRow("STATUS") = "L"
                         End If
@@ -79,7 +81,7 @@ Partial Public Class BestaetigungZulassungen
                 Case "Ok"
                     For Each posRow As DataRow In posRows
                         If posRow("STATUS").ToString() = "E" Then
-                            posRow("STATUS") = "O"
+                            posRow("STATUS") = "B"
                         Else
                             posRow("STATUS") = "E"
                         End If
