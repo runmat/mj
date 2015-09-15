@@ -51,6 +51,8 @@
     }
 
     function AjaxFormFahrzeugerfassungComplete() {
+        FormPreparePrivateAjax();
+        
         if (_modelIsValid) {
             SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
             NeuesFahrzeugErfassen(false);
