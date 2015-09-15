@@ -30,7 +30,8 @@ namespace ServicesMvc.Controllers
             IFahrzeugSperrenVerschiebenDataService sperrenVerschiebenDataService,
             IFahrzeugzulaeufeDataService fahrzeugzulaeufeDataService,
             IEquiHistorieVermieterDataService equiHistorieVermieterDataService,
-            IEquiHistorieDataService equiHistorieDataService
+            IEquiHistorieDataService equiHistorieDataService,
+            ICarporterfassungDataService carporterfassungDataService
             )
             : base(appSettings, logonContext)
         {
@@ -53,6 +54,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(SperrenVerschiebenViewModel, appSettings, logonContext, sperrenVerschiebenDataService);
             InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieVermieterDataService);
             InitViewModel(EquipmentHistorieVermieterViewModel, appSettings, logonContext, equiHistorieDataService);
+            InitViewModel(CarporterfassungViewModel, appSettings, logonContext, carporterfassungDataService);
         }
 
         private void InitModelStatics()

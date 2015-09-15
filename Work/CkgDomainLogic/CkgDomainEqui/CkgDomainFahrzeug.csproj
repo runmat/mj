@@ -99,6 +99,7 @@
     <Compile Include="Controllers\BriefbestandVhc\EquiController.cs" />
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
     <Compile Include="Controllers\Briefversand\EquiController.cs" />
+    <Compile Include="Controllers\Carporterfassung\FahrzeugeController.cs" />
     <Compile Include="Controllers\DatenOhneDokumente\EquiController.cs" />
     <Compile Include="Controllers\Dispositionsliste\FahrzeugeController.cs" />
     <Compile Include="Controllers\DokumenteOhneDaten\EquiController.cs" />
@@ -207,6 +208,7 @@
     <Compile Include="Equi\ViewModels\DatenOhneDokumenteViewModel.cs" />
     <Compile Include="Equi\ViewModels\ErweiterterBriefbestandViewModel.cs" />
     <Compile Include="Equi\ViewModels\HalterAbweichungenViewModel.cs" />
+    <Compile Include="Fahrzeuge\Contracts\ICarporterfassungDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\ITreuhandDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IUploadFahrzeugeinsteuerungDataService.cs" />
@@ -235,6 +237,7 @@
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
     <Compile Include="Fahrzeuge\Models\Fzg.cs" />
+    <Compile Include="Fahrzeuge\Models\CarporterfassungModel.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
     <Compile Include="Fahrzeuge\Models\Treuhandberechtigung.cs" />
     <Compile Include="Fahrzeuge\Models\TreuhandverwaltungCsvUpload.cs" />
@@ -251,6 +254,7 @@
     <Compile Include="Fahrzeuge\Services\DispositionslisteDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeuguebersichtDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugSperrenVerschiebenDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\CarporterfassungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\ZulaufEinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
@@ -260,6 +264,7 @@
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\CarporterfassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandbestandViewModel.cs" />
