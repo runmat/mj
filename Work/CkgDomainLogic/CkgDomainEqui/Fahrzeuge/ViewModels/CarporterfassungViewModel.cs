@@ -137,6 +137,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     newKopfRow["Name2"] = LogonContext.User.FirstName;
                     newKopfRow["LieferscheinNummer"] = fzg.LieferscheinNr;
                     newKopfRow["Kundenname"] = LogonContext.CustomerName;
+                    tblKopf.Rows.Add(newKopfRow);
                 }
 
                 var newRow = tblLieferschein.NewRow();
