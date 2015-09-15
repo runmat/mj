@@ -75,6 +75,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             item.Kennzeichen = item.Kennzeichen.NotNullOrEmpty().ToUpper();
             item.FahrgestellNr = item.FahrgestellNr.NotNullOrEmpty().ToUpper();
+
+            // Nur einen Datensatz zu einem Kennzeichen zulassen
+            if (Fahrzeuge.Any(f => f.Kennzeichen == item.Kennzeichen))
+                Fahrzeuge.RemoveAll(f => f.Kennzeichen == item.Kennzeichen);
+
             Fahrzeuge.Add(item);
             DataMarkForRefresh();
         }
