@@ -222,6 +222,7 @@ namespace CkgDomainLogic.Fahrer.Services
             SAP.SetImportParameter("ABHOL_DAT", item.AbholDatum);
             SAP.SetImportParameter("ABHOL_ZEIT", (String.IsNullOrEmpty(item.AbholUhrzeit) ? "" : String.Format("{0}00", item.AbholUhrzeit.Replace(":", "").PadLeft0(4))));
             SAP.SetImportParameter("UEBERGABE_DAT", item.UebergabeDatum);
+            SAP.SetImportParameter("IUG_ZEIT", (String.IsNullOrEmpty(item.UebergabeUhrzeit) ? "" : String.Format("{0}00", item.UebergabeUhrzeit.Replace(":", "").PadLeft0(4))));
             SAP.SetImportParameter("KMSTAND", item.Kilometerstand);
             SAP.SetImportParameter("UNTERSCHR_VORH", item.UnterschriftVorhanden.BoolToX());
 

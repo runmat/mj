@@ -29,6 +29,9 @@ namespace CkgDomainLogic.Fahrer.Models
         [LocalizedDisplay(LocalizeConstants.HandoverDate)]
         public DateTime? UebergabeDatum { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.HandoverTime)]
+        public string UebergabeUhrzeit { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Mileage)]
         public int Kilometerstand { get; set; }
 
@@ -53,8 +56,12 @@ namespace CkgDomainLogic.Fahrer.Models
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             DateTime tmpDat;
+
             if (!String.IsNullOrEmpty(AbholUhrzeit) && !DateTime.TryParseExact(AbholUhrzeit, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
                 yield return new ValidationResult(Localize.TimeInvalid, new[] { "AbholUhrzeit" });
+
+            if (!String.IsNullOrEmpty(UebergabeUhrzeit) && !DateTime.TryParseExact(UebergabeUhrzeit, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
+                yield return new ValidationResult(Localize.TimeInvalid, new[] { "UebergabeUhrzeit" });
         }
     }
 }
