@@ -28,11 +28,24 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             private set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<CarporterfassungModel> FahrzeugeFiltered
+        {
+            get { return PropertyCacheGet(() => Fahrzeuge); }
+            protected set { PropertyCacheSet(value); }
+        }
+
         public bool EditMode { get; set; }
 
         public void Init()
         {
+            DataMarkForRefresh();
             LoadFahrzeugModel();
+        }
+
+        public void DataMarkForRefresh()
+        {
+            PropertyCacheClear(this, m => m.FahrzeugeFiltered);
         }
 
         public void LoadFahrzeugModel(string kennzeichen = null)
@@ -63,22 +76,26 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             item.Kennzeichen = item.Kennzeichen.NotNullOrEmpty().ToUpper();
             item.FahrgestellNr = item.FahrgestellNr.NotNullOrEmpty().ToUpper();
             Fahrzeuge.Add(item);
+            DataMarkForRefresh();
         }
 
         public void RemoveFahrzeug(CarporterfassungModel item)
         {
             Fahrzeuge.Remove(item);
+            DataMarkForRefresh();
         }
 
         public void SaveFahrzeuge()
         {
             EditMode = false;
             Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge);
+            DataMarkForRefresh();
         }
 
         public void ClearList()
         {
             Fahrzeuge.Clear();
+            DataMarkForRefresh();
         }
 
         public byte[] GetLieferschein()
@@ -135,6 +152,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var docFactory = new WordDocumentFactory(tblLieferschein, null);
 
             return docFactory.CreateDocumentAndReturnBytes(Localize.Fahrzeuge_Carporterfassung, Path.Combine(AppSettings.RootPath, @"Documents\Templates\Bestellung.doc"), tblKopf);
+        }
+
+        public void FilterFahrzeuge(string filterValue, string filterProperties)
+        {
+            FahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
     }
 }

@@ -16,6 +16,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CarportName)]
         public string CarportName { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.Carport)]
         public string Carport
         {
             get
@@ -32,7 +33,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Kennzeichen { get; set; }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.ChassisNo)]
+        [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
         [Required]
@@ -40,9 +41,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string AuftragsNr { get; set; }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.MvaNumber)]
+        [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
         public string MvaNr { get; set; }
 
+        [Required]
         [LocalizedDisplay(LocalizeConstants.Barcode)]
         public string Barcode { get; set; }
 

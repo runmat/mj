@@ -137,9 +137,9 @@
     function ShowGrid(result) {      
         $("#divCarporterfassungEdit").slideUp();
         $("#divCarporterfassungGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridCarporterfassung");
         $("#divCarporterfassungGrid").slideDown();
         setTimeout('LoadingHide();', 500);
-        FormPreparePrivateAjax();
         window.scrollTo(0, 0);
     }
 

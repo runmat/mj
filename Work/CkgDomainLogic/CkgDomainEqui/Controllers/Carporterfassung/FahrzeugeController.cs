@@ -52,7 +52,7 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult CarporterfassungAjaxBinding()
         {
-            return View(new GridModel(CarporterfassungViewModel.Fahrzeuge));
+            return View(new GridModel(CarporterfassungViewModel.FahrzeugeFiltered));
         }
 
         [HttpPost]
@@ -89,11 +89,19 @@ namespace ServicesMvc.Controllers
             return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.DeliveryNote) };
         }
 
+        [HttpPost]
+        public ActionResult FilterGridCarporterfassung(string filterValue, string filterColumns)
+        {
+            CarporterfassungViewModel.FilterFahrzeuge(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
         #region Export
 
         public ActionResult ExportCarporterfassungFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = CarporterfassungViewModel.Fahrzeuge.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = CarporterfassungViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt);
 
             return new EmptyResult();
@@ -101,7 +109,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportCarporterfassungFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = CarporterfassungViewModel.Fahrzeuge.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
+            var dt = CarporterfassungViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt, landscapeOrientation: true);
 
             return new EmptyResult();
