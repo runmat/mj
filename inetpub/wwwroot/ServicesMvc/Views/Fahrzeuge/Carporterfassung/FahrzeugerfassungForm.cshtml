@@ -1,0 +1,55 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CarporterfassungModel
+
+<div id="DivFahrzeugerfassung" class="margin-top-20">
+    @using (Ajax.BeginForm("FahrzeugerfassungForm", "Fahrzeuge", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivFahrzeugerfassung", OnComplete = "AjaxFormFahrzeugerfassungComplete();" },
+                    htmlAttributes: new { @class = "form-horizontal label-width-250", id = "AjaxFormFahrzeugerfassung" }))
+    {
+        @Html.FormValidationSummary()
+        
+
+        @Html.HiddenFor(m => m.KundenNr)
+        @Html.HiddenFor(m => m.CarportId)
+        @Html.HiddenFor(m => m.CarportName)
+        @Html.HiddenFor(m => m.LieferscheinNr)
+        @Html.HiddenFor(m => m.Status)
+
+        @Html.FormTextBoxFor(m => m.Carport, new { @class = "m-wrap", @disabled = "disabled" })
+        
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", @onblur = "LoadFahrzeugdatenZuKennzeichen();", @onkeydown = "if (event.keyCode == 13) { return LoadFahrzeugdatenZuKennzeichen(); }" })
+
+        @Html.FormTextBoxFor(m => m.MvaNr, new { @class = "m-wrap", col = "left" })
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
+        
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "left" })
+        @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap", col = "left" })
+        @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap", col = "right" })
+
+        @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.Zb1Vorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.Zb2Vorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.CocVorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.ServiceheftVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.HuAuBerichtVorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+
+        @Html.FormCheckBoxFor(m => m.ZweitschluesselVorhanden, new { @class = "m-wrap", col = "left" }, labelHidden: true)
+        @Html.FormCheckBoxFor(m => m.NaviCdVorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)
+        
+        
+        @Html.FormRequiredFieldsSummary()
+        
+        <div class="form-actions">
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Acquire</button>
+            <button type="button" class="btn" onclick="ListeAnzeigen();">@Localize.ToList</button>
+        </div>
+        
+        <script type="text/javascript">       
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
