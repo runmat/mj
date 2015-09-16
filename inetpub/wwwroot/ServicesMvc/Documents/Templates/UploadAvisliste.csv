@@ -1,2 +1,2 @@
-Filialen_ID;Filialenname;Bestandsnummer;Kennzeichen;Auftragsnummer;FIN
-;;;;;
+Filialen_ID,Filialenname,Auftragsnummer,Bestandsnummer,FIN,Kennzeichen
+,,,,,
