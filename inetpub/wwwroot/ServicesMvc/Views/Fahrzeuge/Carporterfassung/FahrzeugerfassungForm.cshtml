@@ -17,7 +17,7 @@
 
         @Html.FormTextBoxFor(m => m.Carport, new { @class = "m-wrap", @disabled = "disabled" })
         
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", @onblur = "LoadFahrzeugdatenZuKennzeichen();" })
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", @onblur = "LoadFahrzeugdatenZuKennzeichen();", @onkeydown = "if (event.keyCode == 13) { return LoadFahrzeugdatenZuKennzeichen(); }" })
 
         @Html.FormTextBoxFor(m => m.MvaNr, new { @class = "m-wrap", col = "left" })
         @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
