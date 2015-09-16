@@ -100,7 +100,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void ClearList()
         {
-            Fahrzeuge.Clear();
+            Fahrzeuge.RemoveAll(f => String.IsNullOrEmpty(f.Status));
             DataMarkForRefresh();
         }
 
@@ -128,7 +128,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             tblKopf.AcceptChanges();
 
             var nr = 1;
-            foreach (var fzg in Fahrzeuge.OrderBy(f => f.Kennzeichen).ToList())
+            foreach (var fzg in Fahrzeuge.Where(f => String.IsNullOrEmpty(f.Status)).OrderBy(f => f.Kennzeichen).ToList())
             {
                 if (nr == 1)
                 {
