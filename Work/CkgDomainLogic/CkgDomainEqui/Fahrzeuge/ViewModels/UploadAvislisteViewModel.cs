@@ -50,7 +50,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, "", CreateInstanceFromDatarow, ',', true, true).ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
             FileService.TryFileDelete(UploadServerFileName);
             if (list.None())
                 return false;
@@ -76,10 +76,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 {
                     Carport = row[0].ToString(),
                     CarportName = row[1].ToString(),
-                    MvaNr = row[2].ToString(),
-                    Kennzeichen = row[3].ToString(),
-                    AuftragsNr = row[4].ToString(),
-                    FahrgestellNr = row[5].ToString()
+                    AuftragsNr = row[2].ToString(),
+                    MvaNr = row[3].ToString(),
+                    FahrgestellNr = row[4].ToString(),
+                    Kennzeichen = row[5].ToString()
                 };
             return item;
         }
