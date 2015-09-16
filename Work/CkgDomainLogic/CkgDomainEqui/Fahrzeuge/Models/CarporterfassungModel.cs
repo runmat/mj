@@ -44,7 +44,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
         public string MvaNr { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.Barcode)]
         public string Barcode { get; set; }
 

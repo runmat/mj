@@ -62,7 +62,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             AktuellesFahrzeug = new CarporterfassungModel
                 {
                     CarportId = LogonContext.User.Reference,
-                    KundenNr = LogonContext.KundenNr.ToSapKunnr()
+                    KundenNr = LogonContext.KundenNr.ToSapKunnr(),
+                    DemontageDatum = DateTime.Today
                 };
         }
 
