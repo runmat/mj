@@ -1,5 +1,5 @@
 ﻿﻿using System.Collections.Generic;
-using CkgDomainLogic.Fahrzeuge.Models;
+﻿using CkgDomainLogic.Fahrzeuge.Models;
 
 namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
@@ -8,5 +8,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
         CarporterfassungModel LoadFahrzeugdaten(string kennzeichen);
 
         List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items);
+
+        CarportInfo GetCarportInfo(string carportId);
     }
 }

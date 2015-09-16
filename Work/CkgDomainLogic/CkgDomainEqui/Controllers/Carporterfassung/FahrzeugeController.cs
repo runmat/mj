@@ -89,6 +89,13 @@ namespace ServicesMvc.Controllers
             return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.DeliveryNote) };
         }
 
+        public FileContentResult GenerateUpsShippingOrder()
+        {
+            var pdfBytes = CarporterfassungViewModel.GenerateUpsShippingOrderPdf();
+
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.ShippingOrder) };
+        }
+
         [HttpPost]
         public ActionResult FilterGridCarporterfassung(string filterValue, string filterColumns)
         {
