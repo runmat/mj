@@ -115,7 +115,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     item.DadAnforderungsDatum = DateTime.Today;
 
                     item.AbcKennzeichen = "2";
-                    item.MaterialNr = "5530";
+                    item.MaterialNr = "5530".PadLeft(18, '0');
                     item.BriefVersand = true;
                     item.SchluesselVersand = false;
                 }
