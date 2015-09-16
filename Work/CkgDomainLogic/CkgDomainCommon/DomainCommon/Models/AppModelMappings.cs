@@ -106,6 +106,8 @@ namespace CkgDomainLogic.DomainCommon.Models
                 {"ZZSTATUS_ABG", "IstAbgemeldet"},
                 {"ZZSTATUS_IABG", "IstInAbmeldung"},
                 {"FEHLERTEXT", "Info"},
+                {"ZZREFERENZ1", "Ref1"},
+                {"ZZREFERENZ2", "Ref2"},
             };
 
         static public ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_ABRUFBAR, Fahrzeug> MapFahrzeugeAbrufbarFromSAP
@@ -140,6 +142,8 @@ namespace CkgDomainLogic.DomainCommon.Models
                 {
                     {"CHASSIS_NUM", "FIN"},
                     {"LICENSE_NUM", "Kennzeichen"},
+                    {"ZZREFERENZ1", "Ref1"},
+                    {"ZZREFERENZ2", "Ref2"},
                }));
             }
         }

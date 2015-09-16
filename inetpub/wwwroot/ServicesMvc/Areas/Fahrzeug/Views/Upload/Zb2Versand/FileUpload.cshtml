@@ -1,0 +1,23 @@
+﻿<div class="control-group margin-top-20">
+    <label class="control-label">@Localize.UploadExcelFile:</label>
+    <div class="controls">
+                
+        @(Html.Telerik().Upload()
+            .Name("fileUpload")
+            .Localizable("de-DE")
+            .Async(async => async
+            .Save("UploadZb2VersandStart", "Upload")
+            .SaveField("uploadFiles")
+            .AutoUpload(true))
+            .Multiple(false)
+            .ShowFileList(false)
+            .ClientEvents(events => events
+                .OnUpload("UploadStart")
+                .OnSuccess("UploadFinished")
+                .OnError("UploadError")
+            )
+        )
+    </div>
+</div>
+
+<a href="DownloadZb2VersandCsvTemplate" class="btn white tooltips margin-right-10 margin-top-20" data-original-title="@Localize.DownloadExcelFileTemplateTitle" data-placement="top">@Localize.DownloadTemplate <i class="icon-chevron-right"></i></a>

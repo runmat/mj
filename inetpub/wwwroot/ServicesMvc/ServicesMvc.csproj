@@ -432,6 +432,16 @@
     <Content Include="Documents\Templates\UploadAvisliste.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Documents\Templates\UploadZb2Versand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\UploadZb2Versand.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\FileUpload.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\Receipt.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\UploadGrid.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -870,6 +880,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Models\ReportSolution.cs" />
