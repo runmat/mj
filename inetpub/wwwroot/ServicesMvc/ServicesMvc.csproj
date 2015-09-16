@@ -432,6 +432,9 @@
     <Content Include="Documents\Templates\UploadAvisliste.xls">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Documents\Templates\Bestellung.doc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2995,6 +2998,9 @@
     <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -501,6 +501,56 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
        }
 
+        static public ModelMapping<Z_DPM_READ_MEL_CARP_01.GT_TAB, CarporterfassungModel> Z_DPM_READ_MEL_CARP_01_GT_TAB_To_CarporterfassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_MEL_CARP_01.GT_TAB, CarporterfassungModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.AuftragsNr = s.AUFNR_AG;
+                        d.CarportId = s.CARPORT_ID_AG;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.MvaNr = s.MVA_NUMMER;
+                        d.CarportName = s.PDINAME;
+                        d.Status = s.BEM;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_IMP_CARPORT_MELD_01.GT_WEB, CarporterfassungModel> Z_DPM_IMP_CARPORT_MELD_01_GT_WEB_To_CarporterfassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_IMP_CARPORT_MELD_01.GT_WEB, CarporterfassungModel>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.AnzahlKennzeichen = s.ANZ_KENNZ_CPL;
+                        d.AuftragsNr = s.AUFNR_AG;
+                        d.Barcode = s.BARCODE;
+                        d.CarportId = s.CARPORT_ID_AG;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.CocVorhanden = s.COC_VORH.XToBool();
+                        d.DemontageDatum = s.DAT_DEMONT;
+                        d.Abgemeldet = s.FZG_ABGEMELDET.XToBool();
+                        d.HuAuBerichtVorhanden = s.HU_AU_BER_VORH.XToBool();
+                        d.KundenNr = s.KUNNR_AG;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.LieferscheinNr = s.LSNUMMER;
+                        d.MvaNr = s.MVA_NUMMER;
+                        d.NaviCdVorhanden = s.NAVI_CD_VORH.XToBool();
+                        d.ServiceheftVorhanden = s.SERVICEH_VORH.XToBool();
+                        d.Zb1Vorhanden = s.ZB1_VORH.XToBool();
+                        d.Zb2Vorhanden = s.ZB2_VORH.XToBool();
+                        d.ZweitschluesselVorhanden = s.ZWEITSCHLUE_VORH.XToBool();
+                        d.Status = s.BEM;
+                    }));
+            }
+        }
+
         #endregion
 
         
@@ -793,6 +843,38 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             destination.ZZSIPP = source.SIPPCode;
                             destination.ZZHERST_TEXT = source.Hersteller;
                             destination.KUNPDI = source.Carport;
+                        }
+                    ));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_IMP_CARPORT_MELD_01.GT_WEB, CarporterfassungModel> Z_DPM_IMP_CARPORT_MELD_01_GT_WEB_From_CarporterfassungModel
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_IMP_CARPORT_MELD_01.GT_WEB, CarporterfassungModel>(
+                        new Dictionary<string, string>()
+                        , null
+                        , (s, d) =>
+                        {
+                            d.ANZ_KENNZ_CPL = s.AnzahlKennzeichen;
+                            d.AUFNR_AG = s.AuftragsNr;
+                            d.BARCODE = s.Barcode;
+                            d.CARPORT_ID_AG = s.CarportId;
+                            d.CHASSIS_NUM = s.FahrgestellNr;
+                            d.COC_VORH = s.CocVorhanden.BoolToX();
+                            d.DAT_DEMONT = s.DemontageDatum;
+                            d.FZG_ABGEMELDET = s.Abgemeldet.BoolToX();
+                            d.HU_AU_BER_VORH = s.HuAuBerichtVorhanden.BoolToX();
+                            d.KUNNR_AG = s.KundenNr;
+                            d.LICENSE_NUM = s.Kennzeichen;
+                            d.LSNUMMER = s.LieferscheinNr;
+                            d.MVA_NUMMER = s.MvaNr;
+                            d.NAVI_CD_VORH = s.NaviCdVorhanden.BoolToX();
+                            d.SERVICEH_VORH = s.ServiceheftVorhanden.BoolToX();
+                            d.ZB1_VORH = s.Zb1Vorhanden.BoolToX();
+                            d.ZB2_VORH = s.Zb2Vorhanden.BoolToX();
+                            d.ZWEITSCHLUE_VORH = s.ZweitschluesselVorhanden.BoolToX();
                         }
                     ));
             }
