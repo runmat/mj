@@ -115,13 +115,13 @@ namespace ServicesMvc.Fahrzeug.Controllers
         public FileResult DownloadZb2VersandCsvTemplate()
         {
             var pfad = Server.MapPath(Url.Content("/ServicesMvc/Documents/Templates/UploadZb2Versand.csv"));
-            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadZb2Versand.csv");
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadDokuVersand.csv");
         }
 
         public FileResult DownloadZb2VersandXlsTemplate()
         {
             var pfad = Server.MapPath(Url.Content("/ServicesMvc/Documents/Templates/UploadZb2Versand.xls"));
-            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadZb2Versand.xls");
+            return File(pfad, System.Net.Mime.MediaTypeNames.Application.Octet, "UploadDokuVersand.xls");
         }
 
         #endregion
