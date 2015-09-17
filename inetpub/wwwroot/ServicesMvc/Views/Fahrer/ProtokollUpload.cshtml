@@ -66,14 +66,10 @@
 
         ShowHideAuftragsFotoDiv($("#SelectedFahrerAuftragsKey"));
 
-        var suppressHideSuccessMessage = false;
         $("#SelectedFahrerAuftragsKey").select2({
             allowClear: true
         }).off("change").on("change", function () {
             var cb = $(this);
-
-            if (!suppressHideSuccessMessage)
-                SpanAlertHide("InfoMessageSuccess");
 
             ShowHideAuftragsFotoDiv(cb);
 
@@ -98,9 +94,8 @@
             });
 
         });
-        var suppressHideSuccessMessage = true;
+
         $("#SelectedFahrerAuftragsKey").trigger("change");
-        setTimeout(function() { suppressHideSuccessMessage = false; }, 500);
     } 
     
     function InitCheckbox() {
@@ -282,7 +277,7 @@
                 if ($("#ProtokollHasMultipleImages").is(":checked"))
                     $("#upload-all").hide();
                 $('#progress .bar').css('width', '0%');
-                SpanAlertSuccess("InfoMessage", "Uploadvorgang abgeschlossen: Ihr Protokoll wurde erfolgreich hochgeladen!", 60000);
+                SpanAlertSuccess("InfoMessage", "Uploadvorgang abgeschlossen: Ihr Protokoll wurde erfolgreich hochgeladen!", 8000);
 
                 ProtokollCreateAndShowPdf();
                 return;
