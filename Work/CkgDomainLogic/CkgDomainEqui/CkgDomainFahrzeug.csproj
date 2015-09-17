@@ -122,6 +122,7 @@
     <Compile Include="Controllers\SperrenVerschieben\FahrzeugeController.cs" />
     <Compile Include="Controllers\StatusEinsteuerungController.cs" />
     <Compile Include="Controllers\ModellIdController.cs" />
+    <Compile Include="Controllers\UploadAvisliste\FahrzeugeController.cs" />
     <Compile Include="Controllers\ZulaufEinsteuerung\FahrzeugeController.cs" />
     <Compile Include="Controllers\Treuhandbestand\FahrzeugeController.cs" />
     <Compile Include="Controllers\Treuhandverwaltung\FahrzeugeController.cs" />
@@ -213,6 +214,7 @@
     <Compile Include="Fahrzeuge\Contracts\ICarporterfassungDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\ITreuhandDataService.cs" />
+    <Compile Include="Fahrzeuge\Contracts\IUploadAvislisteDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IUploadFahrzeugeinsteuerungDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugzulaeufeDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugvoravisierungDataService.cs" />
@@ -239,6 +241,7 @@
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
     <Compile Include="Fahrzeuge\Models\Fzg.cs" />
+    <Compile Include="Fahrzeuge\Models\UploadAvisdaten.cs" />
     <Compile Include="Fahrzeuge\Models\CarporterfassungModel.cs" />
     <Compile Include="Fahrzeuge\Models\CarportInfo.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
@@ -257,16 +260,18 @@
     <Compile Include="Fahrzeuge\Services\DispositionslisteDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeuguebersichtDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugSperrenVerschiebenDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\UploadAvislisteDataServiceSap.cs" />
+    <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\CarporterfassungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\ZulaufEinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />
-    <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FehlteilEtikettenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugzulaeufeViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugvoravisierungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\UploadAvislisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\CarporterfassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />

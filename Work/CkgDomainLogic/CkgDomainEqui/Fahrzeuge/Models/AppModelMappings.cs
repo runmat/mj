@@ -802,6 +802,25 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_IMP_MEL_CARP_01.GT_TAB, UploadAvisdaten> Z_DPM_IMP_MEL_CARP_01_GT_TAB_From_UploadAvisdaten
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_IMP_MEL_CARP_01.GT_TAB, UploadAvisdaten>(
+                    new Dictionary<string, string>()
+                    , null
+                    , (s, d) =>
+                    {
+                        d.AUFNR_AG = s.AuftragsNr;
+                        d.CARPORT_ID_AG = s.Carport;
+                        d.CHASSIS_NUM = s.FahrgestellNr;
+                        d.LICENSE_NUM = s.Kennzeichen;
+                        d.MVA_NUMMER = s.MvaNr;
+                    }
+                ));
+            }
+        }
+
         static public ModelMapping<Z_DPM_LIST_POOLS_001.GT_WEB, FahrzeuguebersichtSelektor> Z_DPM_LIST_POOLS_001_GT_WEB_From_FahrzeuguebersichtSelektor
         {
             get
