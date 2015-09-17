@@ -1,0 +1,57 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.CarporterfassungViewModel
+
+@{ var gridName = "GridCarporterfassung"; }
+
+@(Html.Telerik()
+    .Grid<CarporterfassungModel>()
+    .Name(gridName)
+    .XAjaxDataBinding("CarporterfassungAjaxBinding", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Action).Width(145).Title("").Filterable(false).Sortable(false).Visible(Model.EditMode)
+            .ClientTemplate(
+                "<a href='#' onclick='FahrzeugBearbeiten(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
+            );
+
+        columns.XBound(c => c.Status).Visible(!Model.EditMode);
+        columns.XBound(c => c.Carport);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.MvaNr);
+        columns.XBound(c => c.Barcode);
+        columns.XBound(c => c.AnzahlKennzeichen);
+        columns.XBound(c => c.DemontageDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Abgemeldet);
+        columns.XBound(c => c.Zb1Vorhanden);
+        columns.XBound(c => c.Zb2Vorhanden);
+        columns.XBound(c => c.CocVorhanden);
+        columns.XBound(c => c.ServiceheftVorhanden);
+        columns.XBound(c => c.HuAuBerichtVorhanden);
+        columns.XBound(c => c.ZweitschluesselVorhanden);
+        columns.XBound(c => c.NaviCdVorhanden);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportCarporterfassungFilteredExcel", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportCarporterfassungFilteredPDF", "Fahrzeuge");
+    })
+)
+
+<div class="form-actions">
+    @if (Model.EditMode)
+    {
+        <button type="button" class="btn blue" onclick="FahrzeugeSpeichern();">@Localize.Save</button>
+        <button type="button" class="btn blue" onclick="NeuesFahrzeugErfassen(false);">@Localize.ToAcquisition</button>
+    }
+    else
+    {
+        <a href="DeliveryNoteAsPdf" class="btn blue"> @Localize.DeliveryNoteAsPdf <i class="icon-download-alt"></i></a>
+        <button type="button" class="btn blue" onclick="NeuesFahrzeugErfassen(true);">@Localize.Continue</button>
+    }
+</div>
