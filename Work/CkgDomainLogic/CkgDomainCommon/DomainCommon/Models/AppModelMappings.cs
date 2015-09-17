@@ -49,6 +49,7 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "ZZVGRUND", "Versandgrund"},
                         { "ZZ_MAHNA", "Mahnverfahren"},
                         { "ZZNAME3_ZS", "Ansprechpartner" },
+                        { "ZZPLFOR", "PicklistenFormular" },
                     },
 
                     // Init Copy  (from SAP)

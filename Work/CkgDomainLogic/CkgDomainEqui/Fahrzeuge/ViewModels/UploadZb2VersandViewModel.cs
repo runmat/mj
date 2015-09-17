@@ -116,6 +116,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                     item.AbcKennzeichen = "2";
                     item.MaterialNr = "5530".PadLeft(18, '0');
+                    item.PicklistenFormular = "K1";
                     item.BriefVersand = true;
                     item.SchluesselVersand = false;
                 }

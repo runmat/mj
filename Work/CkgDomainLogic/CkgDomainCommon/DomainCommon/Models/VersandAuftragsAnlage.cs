@@ -91,5 +91,7 @@ namespace CkgDomainLogic.DomainCommon.Models
         [ModelMappingCompareIgnore]
         [GridHidden]
         public bool IsValid { get; set; }
+
+        public string PicklistenFormular { get; set; }
     }
 }
