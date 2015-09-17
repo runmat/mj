@@ -457,7 +457,7 @@ namespace SapORM.Services
 
                                 if (rfcT.Name == ((DataTable)tmpRow[0]).TableName)
                                 {
-                                    var tblTemp = rfcT.ToADOTable();
+                                    var tblTemp = rfcT.ToADOTableLocaleDe();
 
 
                                     foreach (RFCTableColumn col in rfcT.Columns)
@@ -630,8 +630,8 @@ namespace SapORM.Services
         /// <returns>Formatierte DataTable</returns>
         private DataTable UpdateColumnTypes(RFCTable rfcT)
         {
-            var tblTemp = rfcT.ToADOTable();
-            var tblTempResult = rfcT.ToADOTable().Clone();
+            var tblTemp = rfcT.ToADOTableLocaleDe();
+            var tblTempResult = rfcT.ToADOTableLocaleDe().Clone();
 
             //Datentyp auf DateTime ändern
             foreach (RFCTableColumn col in rfcT.Columns)
@@ -979,14 +979,14 @@ namespace SapORM.Services
                 //auswerten der exportparameter
                 if (func.Tables["EXP_TAB"].RowCount > 0)
                 {
-                    mExportTabelle = func.Tables["EXP_TAB"].ToADOTable();
+                    mExportTabelle = func.Tables["EXP_TAB"].ToADOTableLocaleDe();
                     KillAllDBNullValuesInDataTable(ref mExportTabelle);
                     mExportTabelle.AcceptChanges();
                 }
 
                 if (func.Tables["IMP_TAB"].RowCount > 0)
                 {
-                    mImportTabelle = func.Tables["IMP_TAB"].ToADOTable();
+                    mImportTabelle = func.Tables["IMP_TAB"].ToADOTableLocaleDe();
                     KillAllDBNullValuesInDataTable(ref mImportTabelle);
                     mImportTabelle.AcceptChanges();
                 }
