@@ -468,7 +468,11 @@ namespace SapORM
 
             //new FunctionReflector("Z_FIL_ZUL_EXPORT_ORDER").WriteOrmForExportTableStructures("I_VKBUR", "5036");
             //new FunctionReflector("Z_FIL_ZUL_IMPORT_STATUS").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_DPM_IMP_MEL_CARP_01").WriteOrmForExportTableStructures("I_AG, I_WEB_USER", "10077452", "CarlM");
             //new FunctionReflector("Z_DPM_AVM_DOKUMENT_MAIL").WriteOrmForExportTableStructures("I_KUNNR_AG", "219853");
+
+            //new FunctionReflector("Z_DPM_READ_MEL_CARP_01").WriteOrmForExportTableStructures("I_AG, I_LICENSE_NUM, I_CARPORT_ID_AG", "10077452", "ES-ME6070", "123");
+            //new FunctionReflector("Z_DPM_IMP_CARPORT_MELD_01").WriteOrmForExportTableStructures();
 
 
             //CoCTest();

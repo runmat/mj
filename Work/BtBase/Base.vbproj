@@ -109,10 +109,6 @@
     <Reference Include="BarcodeLib">
       <HintPath>..\GAC\BarcodeLib.dll</HintPath>
     </Reference>
-    <Reference Include="ERPConnect35, Version=4.0.0.11, Culture=neutral, PublicKeyToken=737201975e95eeee, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\SapORM\services\bin\Debug\ERPConnect35.dll</HintPath>
-    </Reference>
     <Reference Include="GeneralTools, Version=1.0.5051.24439, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\GAC\GeneralTools.dll</HintPath>
