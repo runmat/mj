@@ -14,8 +14,6 @@
 
 <script type="text/javascript">
 
-    var _kennzeichenAlt = "";
-
     function FormPreparePrivate() {
         $("#Kennzeichen").focus();
     }
@@ -60,39 +58,46 @@
         }
     }
 
+    function LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin) {
+        $.ajax(
+        {
+            type: "POST",
+            url: "LoadFahrzeugdaten",
+            data: { kennzeichen: kennzeichen, bestandsnummer: bestandsnummer, fin: fin },
+            loadingShow: true,
+            success: function (result) {
+                FormPreparePrivateAjax();
+
+                if (result.Status != "") {
+                    SpanAlertWarning("Message", '@Localize.VehicleDataCouldNotBeRetrieved.ToJavascriptString() (' + result.Status + ')', 5000);
+                    return;
+                }
+
+                $("#Kennzeichen").val(result.Kennzeichen);
+                $("#FahrgestellNr").val(result.FahrgestellNr);
+                $("#AuftragsNr").val(result.AuftragsNr);
+                $("#MvaNr").val(result.MvaNr);
+                $("#CarportName").val(result.CarportName);
+                $("#Carport").val(result.Carport);
+                $("#Status").val(result.Status);
+                SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 1800);
+            }
+        });
+    }
+    
     function LoadFahrzeugdatenZuKennzeichen() {
         var kennzeichen = $("#Kennzeichen").val();
+        LoadFahrzeugdaten(kennzeichen, "", "");
+    }
 
-        if (kennzeichen != _kennzeichenAlt) {
-            _kennzeichenAlt = kennzeichen;
-            $.ajax(
-                {
-                    type: "POST",
-                    url: "LoadFahrzeugdatenZuKennzeichen",
-                    data: { kennzeichen: kennzeichen },
-                    loadingShow: true,
-                    success: function(result) {
-                        FormPreparePrivateAjax();
+    function LoadFahrzeugdatenZuBestandsnummer() {
+        var bestandsnummer = $("#MvaNr").val();
+        LoadFahrzeugdaten("", bestandsnummer, "");
+    }
 
-                        if (result.Status != "") {
-                            SpanAlertWarning("Message", '@Localize.VehicleDataCouldNotBeRetrievedFromLicenseNo.ToJavascriptString() (' + result.Status + ')', 5000);
-                            return;
-                        }
-
-                        $("#FahrgestellNr").val(result.FahrgestellNr);
-                        $("#AuftragsNr").val(result.AuftragsNr);
-                        $("#MvaNr").val(result.MvaNr);
-                        $("#CarportName").val(result.CarportName);
-                        $("#Carport").val(result.Carport);
-                        $("#Status").val(result.Status);
-                        SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrievedFromLicenseNo.ToJavascriptString()', 1800);
-                    }
-                });
-            }
-
-            setTimeout('$("#MvaNr").focus();', 500);
-
-        return false;
+    function LoadFahrzeugdatenZuFin() {
+        var fin = $("#FahrgestellNr").val();
+        LoadFahrzeugdaten("", "", fin);
     }
 
     function ListeAnzeigen() {
@@ -105,8 +110,6 @@
                 ShowGrid(result);
             }
         });
-
-        return false;
     }
 
     function FahrzeugBearbeiten(kennzeichen) {
@@ -120,8 +123,6 @@
                 ShowEdit(result);
             }
         });
-
-        return false;
     }
 
     function NeuesFahrzeugErfassen(clearList) {
@@ -135,8 +136,6 @@
                 ShowEdit(result);
             }
         });
-
-        return false;
     }
 
     function ShowGrid(result) {      
@@ -169,8 +168,6 @@
                 ShowGrid(result);
             }
         });
-
-        return false;
     }
 
 </script>

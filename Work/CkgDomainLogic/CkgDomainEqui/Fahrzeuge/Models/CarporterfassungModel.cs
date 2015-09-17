@@ -36,7 +36,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNr { get; set; }
 

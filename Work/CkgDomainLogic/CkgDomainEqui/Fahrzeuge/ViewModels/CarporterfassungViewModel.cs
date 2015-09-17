@@ -69,9 +69,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 };
         }
 
-        public void LoadFahrzeugdaten(string kennzeichen)
+        public void LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
         {
-            AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().ToUpper());
+            AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().ToUpper(), bestandsnummer, fin.NotNullOrEmpty().ToUpper());
         }
 
         public void AddFahrzeug(CarporterfassungModel item)
@@ -170,19 +170,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string GenerateUpsShippingOrderHtml()
         {
-            //var empfaenger = DataService.GetCarportInfo("DAD");
+            var empfaenger = DataService.GetCarportInfo("DAD");
             var absender = DataService.GetCarportInfo(LogonContext.User.Reference);
-            var empfaenger = new CarportInfo
-                {
-                    CarportId = "DAD",
-                    Name1 = "DAD",
-                    Name2 = "WKDA",
-                    StrasseHausnummer = "Ladestraße 1",
-                    Plz = "22926",
-                    Ort = "Ahrensburg",
-                    Land = "DE",
-                    Telefon = "0"
-                };
 
             if (absender == null || empfaenger == null)
                 return Localize.NoAddressTypesAvailableForThisCustomer;

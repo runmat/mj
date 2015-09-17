@@ -32,14 +32,14 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadFahrzeugdatenZuKennzeichen(string kennzeichen)
+        public ActionResult LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
         {
-            CarporterfassungViewModel.LoadFahrzeugdaten(kennzeichen);
+            CarporterfassungViewModel.LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin);
 
             var fzg = CarporterfassungViewModel.AktuellesFahrzeug;
 
 // ReSharper disable RedundantAnonymousTypePropertyName
-            return Json(new { FahrgestellNr = fzg.FahrgestellNr, AuftragsNr = fzg.AuftragsNr, MvaNr = fzg.MvaNr, CarportName = fzg.CarportName, Carport = fzg.Carport, Status = fzg.Status });
+            return Json(new { Kennzeichen = fzg.Kennzeichen, FahrgestellNr = fzg.FahrgestellNr, AuftragsNr = fzg.AuftragsNr, MvaNr = fzg.MvaNr, CarportName = fzg.CarportName, Carport = fzg.Carport, Status = fzg.Status });
 // ReSharper restore RedundantAnonymousTypePropertyName
         }
 

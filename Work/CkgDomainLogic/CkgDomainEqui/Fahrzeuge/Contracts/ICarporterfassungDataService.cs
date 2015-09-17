@@ -5,7 +5,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 {
     public interface ICarporterfassungDataService
     {
-        CarporterfassungModel LoadFahrzeugdaten(string kennzeichen);
+        CarporterfassungModel LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin);
 
         List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items);
 
