@@ -47,7 +47,8 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "ERNAM", "ErfassungsUserName" },
                         { "ZZBETREFF", "Bemerkung"},
                         { "ZZVGRUND", "Versandgrund"},
-                        { "ZZ_MAHNA", "Mahnverfahren"}
+                        { "ZZ_MAHNA", "Mahnverfahren"},
+                        { "ZZNAME3_ZS", "Ansprechpartner" },
                     },
 
                     // Init Copy  (from SAP)
