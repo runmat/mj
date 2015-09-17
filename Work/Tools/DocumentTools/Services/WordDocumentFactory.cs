@@ -191,6 +191,35 @@ namespace DocumentTools.Services
             return fi.FullName;
         }
 
+        public byte[] CreateDocumentAndReturnBytes(string reportName, string wordTemplatePath, DataTable ht)
+        {
+            //Word-Dokument laden
+            _headTable = ht;
+            var docStream = new FileStream(wordTemplatePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+            var wordDoc = new Aspose.Words.Document(docStream);
+            docStream.Close();
+
+            wordDoc.MailMerge.MergeImageField += MergeImageHandler;
+            wordDoc.MailMerge.MergeField += MergeFieldHandler;
+            wordDoc.MailMerge.RemoveEmptyParagraphs = true;
+            wordDoc.MailMerge.ExecuteWithRegions(new DataTableMailMergeSource(_dataTable, false));
+            wordDoc.MailMerge.ExecuteWithRegions(new DataTableMailMergeSource(_headTable, true));
+            var pdfStream = new MemoryStream();
+            wordDoc.Save(pdfStream, Aspose.Words.SaveFormat.AsposePdf);
+
+            var pdfDoc = new Aspose.Pdf.Pdf { IsImagesInXmlDeleteNeeded = true };
+            pdfDoc.BindXML(pdfStream, null);
+
+            var outputStream = new MemoryStream();
+            pdfDoc.Save(outputStream);
+
+            var pdfBytes = new byte[outputStream.Length];
+            outputStream.Position = 0;
+            outputStream.Read(pdfBytes, 0, (int)outputStream.Length);
+
+            return pdfBytes;
+        }
+
         public void CreateDocumentTableAndSave(string reportName, string wordTemplatePath, DataTable ht)
         {
             //Word-Dokument laden
