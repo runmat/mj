@@ -426,6 +426,15 @@
     <Content Include="_Themes\AH2015\images\Logout.png" />
     <Content Include="_Themes\AH2015\images\test.jpg" />
     <Content Include="_Themes\AH2015\images\uniform\sprite.png" />
+    <Content Include="Documents\Templates\UploadAvisliste.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\UploadAvisliste.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\Bestellung.doc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -2990,6 +2999,13 @@
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
     <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
+    <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
+    <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
+    <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
+    <Content Include="Views\Fahrzeuge\UploadAvisliste.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
