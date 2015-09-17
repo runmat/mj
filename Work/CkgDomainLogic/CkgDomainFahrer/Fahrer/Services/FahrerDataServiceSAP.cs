@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define __TEST
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.Fahrer.Contracts;
@@ -111,11 +113,11 @@ namespace CkgDomainLogic.Fahrer.Services
             {
                 new FahrerAuftragsProtokoll
                 {
-                    AuftragsNr = "5711", OrtStart = "Ahrensburg", OrtZiel = "Hamburg", Kennzeichen = "HH-X 133", Fahrt = "H", ProtokollArt = "DAD_AUSLIEF"
+                    AuftragsNr = "5711", OrtStart = "Ahrensburg", OrtZiel = "Hamburg", Kennzeichen = "HH-X 133", Fahrt = "H", ProtokollArt = "DADAUSLIEF"
                 },
                 new FahrerAuftragsProtokoll
                 {
-                    AuftragsNr = "5712", OrtStart = "Hamburg", OrtZiel = "Bargteheide", Kennzeichen = "OD-Z 987", Fahrt = "R", ProtokollArt = "DAD_RUECK"
+                    AuftragsNr = "5712", OrtStart = "Hamburg", OrtZiel = "Bargteheide", Kennzeichen = "OD-Z 987", Fahrt = "R", ProtokollArt = "DADRUECK"
                 },
             };
 #else

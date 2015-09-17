@@ -44,7 +44,7 @@
 </form>
 
 <div id="auftrags-fotos" class="hide">
-    <h5><i class="icon-picture"></i> Protokoll Ihres Auftrags <span id="SelectedAuftragsKey" class="bold">@Model.SelectedFahrerAuftragsKey</span></h5>
+    <h5>Protokoll Ihres Auftrags <span id="SelectedAuftragsKey" class="bold">@Model.SelectedFahrerAuftragsKey</span></h5>
     <div id="upload-edit">
         @Html.Partial("Partial/Upload/ProtokollUpload/UploadEdit", Model)
     </div>
@@ -65,9 +65,13 @@
     function InitDropdown() {
 
         ShowHideAuftragsFotoDiv($("#SelectedFahrerAuftragsKey"));
-        
-        $("#SelectedFahrerAuftragsKey").on("change", function () {
+
+        $("#SelectedFahrerAuftragsKey").select2({
+            allowClear: true
+        }).off("change").on("change", function () {
             var cb = $(this);
+
+            SpanAlertHide("InfoMessageSuccess");
 
             ShowHideAuftragsFotoDiv(cb);
 
@@ -162,7 +166,7 @@
             loadingShow: false,
             success: function (result) {
                 if (!result.success)
-                    SpanAlertError("InfoMessage", "Beim Erstellen des PDF für Ihr Protokoll ist ein Fehler aufgetreten!", 3000);
+                    SpanAlertError("InfoMessage", "Beim Erstellen des PDF für Ihr Protokoll ist ein Fehler aufgetreten!", 15000);
                 RefreshPartial(true);
             },
             error: function (jqXhr) {
@@ -274,7 +278,7 @@
                 if ($("#ProtokollHasMultipleImages").is(":checked"))
                     $("#upload-all").hide();
                 $('#progress .bar').css('width', '0%');
-                SpanAlertSuccess("InfoMessage", "Ihr Protokoll wurde hochgeladen!", 3000);
+                SpanAlertSuccess("InfoMessage", "Uploadvorgang abgeschlossen: Ihr Protokoll wurde erfolgreich hochgeladen!", 60000);
 
                 ProtokollCreateAndShowPdf();
                 return;
