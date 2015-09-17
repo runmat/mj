@@ -34,6 +34,7 @@ namespace CkgDomainLogic.Fahrer.Models
         }
 
         public bool IstSonstigerAuftrag { get; set; }
+        public string ProtokollName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Tour)]
         public string Fahrt { get; set; }

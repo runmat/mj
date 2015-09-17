@@ -259,11 +259,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             return auftrag.Filename;
         }
 
-        private static string GetUploadedImageFileName(string auftragsNr, string imageIndex, string fahrerNr, string fahrtNr)
+        private static string GetUploadedImageFileName(string auftragsNr, string imageIndex, string fahrerNr, string fahrtNr, string protokollName)
         {
             var imageMask = imageIndex.ToInt() == -1 ? "*" : imageIndex.ToInt().ToString("0000");
 
-            return string.Format("{0}-{1}-{2}-{3}", auftragsNr.TrimStart('0'), imageMask, fahrerNr.TrimStart('0'), fahrtNr);
+            return string.Format("{0}-{1}-{2}-{3}{4}", auftragsNr.TrimStart('0'), imageMask, fahrerNr.TrimStart('0'), fahrtNr, protokollName.PrependIfNotNull("-"));
         }
 
         private string GetFotoOrProtocolPath(string path)
@@ -286,7 +286,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                 return new List<string>();
 
             var existingImageFiles = Directory.GetFiles(FotoUploadPath, string.Format("{0}.{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt),
+                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, "*", DataService.FahrerID, auftrag.Fahrt, auftrag.ProtokollName),
                                                "*"));
 
             return existingImageFiles.ToListOrEmptyList().OrderBy(GetImageIndexFromFileName).Select(Path.GetFileName).ToList();
@@ -297,7 +297,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             var auftrag = SelectedFahrerAuftrag;
             var uploadImageIndex = (GetImageIndexFromFileName(UploadedImageFiles.LastOrDefault()) + 1).ToString();
             var serverFileName = string.Format("{0}{1}",
-                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt),
+                                               GetUploadedImageFileName(auftrag.AuftragsNrFriendly, uploadImageIndex, DataService.FahrerID, auftrag.Fahrt, auftrag.ProtokollName),
                                                Path.GetExtension(clientFileName));
 
             TryDirectoryCreateAndRaiseError(FotoUploadPath);

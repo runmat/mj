@@ -22,13 +22,7 @@ namespace CkgDomainLogic.Fahrer.Models
         [GridHidden]
         public string UniqueKey
         {
-            get
-            {
-                if (IstSonstigerAuftrag)
-                    return "SONSTIGER-AUFTRAG";
-
-                return string.Format("{0}-{1}", AuftragsNr.NotNullOrEmpty(), Fahrt.NotNullOrEmpty());
-            }
+            get { return AuftragsDetails; }
         }
 
         [LocalizedDisplay(LocalizeConstants.MiscellaneousOrder)]

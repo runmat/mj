@@ -66,12 +66,14 @@
 
         ShowHideAuftragsFotoDiv($("#SelectedFahrerAuftragsKey"));
 
+        var suppressHideSuccessMessage = false;
         $("#SelectedFahrerAuftragsKey").select2({
             allowClear: true
         }).off("change").on("change", function () {
             var cb = $(this);
 
-            SpanAlertHide("InfoMessageSuccess");
+            if (!suppressHideSuccessMessage)
+                SpanAlertHide("InfoMessageSuccess");
 
             ShowHideAuftragsFotoDiv(cb);
 
@@ -96,7 +98,9 @@
             });
 
         });
+        var suppressHideSuccessMessage = true;
         $("#SelectedFahrerAuftragsKey").trigger("change");
+        setTimeout(function() { suppressHideSuccessMessage = false; }, 500);
     } 
     
     function InitCheckbox() {

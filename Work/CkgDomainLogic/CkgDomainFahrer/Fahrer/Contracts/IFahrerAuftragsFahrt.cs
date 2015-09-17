@@ -17,5 +17,7 @@ namespace CkgDomainLogic.Fahrer.Contracts
         string AuftragsDetails { get; }
 
         bool IstSonstigerAuftrag { get; set; }
+
+        string ProtokollName { get; set; }
     }
 }
