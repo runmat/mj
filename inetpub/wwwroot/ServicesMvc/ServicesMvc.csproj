@@ -414,6 +414,7 @@
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
+    <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
     <Content Include="_Themes\AH2015\images\menu_white.png" />
     <Content Include="_Themes\AH2015\images\switch-2.png" />
@@ -3002,6 +3003,7 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPageHeader.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
