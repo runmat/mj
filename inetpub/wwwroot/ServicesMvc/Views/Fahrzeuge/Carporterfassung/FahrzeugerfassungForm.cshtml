@@ -26,7 +26,7 @@
         @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
 
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap", col = "left" })
-        @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap xsmall", col = "right", maxlength = 3, @onkeypress = "return NumbersOnly(false);" })
+        @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap xsmall", col = "right", @onkeypress = "return NumbersOnly(false);" })
         
         @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left" }, labelHidden: true)
         @Html.FormCheckBoxFor(m => m.Zb1Vorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)

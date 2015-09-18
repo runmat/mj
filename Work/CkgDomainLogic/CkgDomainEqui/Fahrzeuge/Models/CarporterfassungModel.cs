@@ -43,6 +43,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Barcode)]
         public string Barcode { get; set; }
 
+        [Length(1)]
         [LocalizedDisplay(LocalizeConstants.NumberOfLicensePlates)]
         public string AnzahlKennzeichen { get; set; }
 
