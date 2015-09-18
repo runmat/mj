@@ -476,7 +476,7 @@ Namespace Common
                     callduration = stoppuhr.Elapsed.TotalSeconds
                 End If
 
-                PreserveStackTrace(ex)
+                'PreserveStackTrace(ex)
 
                 Dim logger As New LogService(String.Empty, String.Empty)
                 logger.LogSapCall(BapiName, String.Empty, Import, Export, False, callduration, 0, mObjMyUser.UserID, mObjMyUser.Customer.CustomerId, mObjMyUser.Customer.KUNNR, 2)
