@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -174,17 +176,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return docFactory.CreateDocumentAndReturnBytes(Localize.Fahrzeuge_Carporterfassung, Path.Combine(AppSettings.RootPath, @"Documents\Templates\Bestellung.doc"), tblKopf);
         }
 
-        public byte[] GenerateUpsShippingOrderPdf()
-        {
-            return PdfDocumentFactory.HtmlToPdf(GenerateUpsShippingOrderHtml());
-        }
-
         public string GenerateUpsShippingOrderHtml()
         {
-            var empfaenger = DataService.GetCarportInfo("DAD");
-            var absender = DataService.GetCarportInfo(LogonContext.User.Reference);
+            var adresseDad = DataService.GetCarportInfo("DAD");
+            var adresseCarport = DataService.GetCarportInfo(LogonContext.User.Reference);
 
-            if (absender == null || empfaenger == null)
+            if (adresseDad == null || adresseCarport == null)
                 return Localize.NoAddressTypesAvailableForThisCustomer;
 
             var username = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "Username");
@@ -204,7 +201,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipmentCharge = new ShipmentChargeType
                     {
-                        BillShipper = new BillShipperType {AccountNumber = absender.KundenNr},
+                        BillShipper = new BillShipperType {AccountNumber = adresseDad.KundenNr},
                         Type = "01"
                     };
 
@@ -212,41 +209,57 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipperAddress = new ShipAddressType
                     {
-                        AddressLine = new[] {absender.StrasseHausnummer},
-                        City = absender.Ort,
-                        PostalCode = absender.Plz,
-                        CountryCode = absender.Land
+                        AddressLine = new[] {adresseDad.StrasseHausnummer},
+                        City = adresseDad.Ort,
+                        PostalCode = adresseDad.Plz,
+                        CountryCode = adresseDad.Land
                     };
 
                 var shipper = new ShipperType
                     {
-                        ShipperNumber = absender.KundenNr,
+                        ShipperNumber = adresseDad.KundenNr,
                         Address = shipperAddress,
-                        Name = absender.Name1,
-                        AttentionName = absender.Name2,
-                        Phone = new ShipPhoneType {Number = absender.Telefon}
+                        Name = adresseDad.Name1,
+                        AttentionName = adresseDad.Name2,
+                        Phone = new ShipPhoneType { Number = adresseDad.Telefon }
                     };
 
                 var shipToAddress = new ShipToAddressType
                     {
-                        AddressLine = new[] {empfaenger.StrasseHausnummer},
-                        City = empfaenger.Ort,
-                        PostalCode = empfaenger.Plz,
-                        CountryCode = empfaenger.Land
+                        AddressLine = new[] { adresseDad.StrasseHausnummer },
+                        City = adresseDad.Ort,
+                        PostalCode = adresseDad.Plz,
+                        CountryCode = adresseDad.Land
                     };
 
                 var shipTo = new ShipToType
                     {
                         Address = shipToAddress,
-                        Name = empfaenger.Name1,
-                        AttentionName = empfaenger.Name2,
-                        Phone = new ShipPhoneType {Number = empfaenger.Telefon}
+                        Name = adresseDad.Name1,
+                        AttentionName = adresseDad.Name2,
+                        Phone = new ShipPhoneType { Number = adresseDad.Telefon }
                     };
+
+                var shipFromAddress = new ShipAddressType
+                {
+                    AddressLine = new[] { adresseCarport.StrasseHausnummer },
+                    City = adresseCarport.Ort,
+                    PostalCode = adresseCarport.Plz,
+                    CountryCode = adresseCarport.Land
+                };
+
+                var shipFrom = new ShipFromType
+                {
+                    Address = shipFromAddress,
+                    Name = adresseCarport.Name1,
+                    AttentionName = adresseCarport.Name2,
+                    Phone = new ShipPhoneType { Number = adresseCarport.Telefon }
+                };
 
                 var refNumbers = new[]
                     {
                         new ReferenceNumberType {Code = "PO", Value = Fahrzeuge.First().LieferscheinNr},
-                        new ReferenceNumberType {Code = "DP", Value = absender.CarportId}
+                        new ReferenceNumberType {Code = "DP", Value = adresseCarport.CarportId}
                     };
 
                 var package = new PackageType
@@ -265,6 +278,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         PaymentInformation = paymentInfo,
                         Shipper = shipper,
                         ShipTo = shipTo,
+                        ShipFrom = shipFrom,
                         ReferenceNumber = refNumbers,
                         Service = new ServiceType {Code = "11", Description = "UPS Standard"},
                         Package = new[] {package}
@@ -286,11 +300,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipmentResponse = shipService.ProcessShipment(shipmentRequest);
 
-                var htmlBytes =
-                    Convert.FromBase64String(
-                        shipmentResponse.ShipmentResults.PackageResults.First().ShippingLabel.HTMLImage);
+                var result = shipmentResponse.ShipmentResults.PackageResults.First();
 
-                return System.Text.Encoding.Default.GetString(htmlBytes);
+                var gifHexString = result.ShippingLabel.GraphicImage;
+                var htmlBytes = Convert.FromBase64String(result.ShippingLabel.HTMLImage);
+
+                var htmlString = Encoding.Default.GetString(htmlBytes);
+
+                var strImgPattern = "<IMG SRC=\"[^\"]*?\"";
+                var strImgReplace = String.Format("<IMG SRC=\"data:image/gif;base64,{0}\"", gifHexString);
+
+                htmlString = Regex.Replace(htmlString, strImgPattern, strImgReplace);
+
+                return htmlString;
             }
             catch (System.Web.Services.Protocols.SoapException soapEx)
             {

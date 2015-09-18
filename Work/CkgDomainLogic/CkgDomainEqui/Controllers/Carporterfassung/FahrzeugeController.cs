@@ -89,11 +89,11 @@ namespace ServicesMvc.Controllers
             return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.DeliveryNote) };
         }
 
-        public FileContentResult GenerateUpsShippingOrder()
+        public ActionResult GenerateUpsShippingOrder()
         {
-            var pdfBytes = CarporterfassungViewModel.GenerateUpsShippingOrderPdf();
+            var htmlString = CarporterfassungViewModel.GenerateUpsShippingOrderHtml();
 
-            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = String.Format("{0}.pdf", Localize.ShippingOrder) };
+            return Content(htmlString);
         }
 
         [HttpPost]
