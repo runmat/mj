@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
@@ -119,6 +120,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             tblLieferschein.Columns.Add("Web User");
             tblLieferschein.Columns.Add("Carport ID");
             tblLieferschein.Columns.Add("Erfassungsdatum");
+            tblLieferschein.Columns.Add("Bestandsnummer");
+            tblLieferschein.Columns.Add("Auftragsnummer");
             tblLieferschein.AcceptChanges();
 
             var tblKopf = new DataTable("Kopf");
@@ -130,6 +133,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             tblKopf.AcceptChanges();
 
             var nr = 1;
+            var lieferscheinNr = "";
             foreach (var fzg in Fahrzeuge.Where(f => String.IsNullOrEmpty(f.Status)).OrderBy(f => f.Kennzeichen).ToList())
             {
                 if (nr == 1)
@@ -139,6 +143,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     newKopfRow["Name1"] = LogonContext.User.LastName;
                     newKopfRow["Name2"] = LogonContext.User.FirstName;
                     newKopfRow["LieferscheinNummer"] = fzg.LieferscheinNr;
+                    lieferscheinNr = fzg.LieferscheinNr;
                     newKopfRow["Kundenname"] = LogonContext.CustomerName;
                     tblKopf.Rows.Add(newKopfRow);
                 }
@@ -154,11 +159,17 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 newRow["Web User"] = LogonContext.UserName;
                 newRow["Carport ID"] = fzg.CarportId;
                 newRow["Erfassungsdatum"] = DateTime.Now.ToShortDateString();
+                newRow["Bestandsnummer"] = fzg.MvaNr;
+                newRow["Auftragsnummer"] = fzg.AuftragsNr;
                 tblLieferschein.Rows.Add(newRow);
                 nr++;
             }
 
-            var docFactory = new WordDocumentFactory(tblLieferschein, null);
+            var imageHt = new Hashtable();
+            var ms = BarcodeService.CreateBarcode(lieferscheinNr);
+            imageHt.Add("Logo3", ms);
+
+            var docFactory = new WordDocumentFactory(tblLieferschein, imageHt);
 
             return docFactory.CreateDocumentAndReturnBytes(Localize.Fahrzeuge_Carporterfassung, Path.Combine(AppSettings.RootPath, @"Documents\Templates\Bestellung.doc"), tblKopf);
         }
