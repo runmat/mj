@@ -27,11 +27,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public CarporterfassungModel AktuellesFahrzeug { get; set; }
 
         [XmlIgnore]
-        public List<CarporterfassungModel> Fahrzeuge
-        {
-            get { return PropertyCacheGet(() => new List<CarporterfassungModel>()); }
-            private set { PropertyCacheSet(value); }
-        }
+        public List<CarporterfassungModel> Fahrzeuge { get; set; }
 
         [XmlIgnore]
         public List<CarporterfassungModel> FahrzeugeFiltered
@@ -72,9 +68,23 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 };
         }
 
+        public string DeleteFahrzeugModel(string kennzeichen)
+        {
+            var fzg = Fahrzeuge.FirstOrDefault(f => f.Kennzeichen == kennzeichen);
+            if (fzg == null)
+                return "";
+
+            Fahrzeuge.Remove(fzg);
+
+            return fzg.ObjectKey;
+        }
+
         public void LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
         {
             AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().ToUpper(), bestandsnummer, fin.NotNullOrEmpty().ToUpper());
+
+            if (AktuellesFahrzeug != null && Fahrzeuge.Any(f => f.Kennzeichen == AktuellesFahrzeug.Kennzeichen))
+                AktuellesFahrzeug = new CarporterfassungModel { TmpStatus = "VEHICLE_ALREADY_EXISTS" };
         }
 
         public void AddFahrzeug(CarporterfassungModel item)

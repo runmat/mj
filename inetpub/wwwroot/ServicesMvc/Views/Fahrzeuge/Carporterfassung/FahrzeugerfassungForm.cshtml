@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.Fahrzeuge.Models
-@model CarporterfassungModel
+﻿@model CkgDomainLogic.Fahrzeuge.Models.CarporterfassungModel
 
 <div id="DivFahrzeugerfassung" class="margin-top-20">
     @using (Ajax.BeginForm("FahrzeugerfassungForm", "Fahrzeuge", null,
@@ -7,7 +6,9 @@
                     htmlAttributes: new { @class = "form-horizontal label-width-250", id = "AjaxFormFahrzeugerfassung" }))
     {
         @Html.FormValidationSummary()
-        
+
+
+        @Html.HiddenFor(m => m.ObjectKey)
 
         @Html.HiddenFor(m => m.KundenNr)
         @Html.HiddenFor(m => m.CarportId)

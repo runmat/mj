@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Controllers;
@@ -6,6 +7,8 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
+using GeneralTools.Contracts;
+using GeneralTools.Models;
 
 namespace ServicesMvc.Controllers
 {
@@ -13,11 +16,19 @@ namespace ServicesMvc.Controllers
     {
         public CarporterfassungViewModel CarporterfassungViewModel { get { return GetViewModel<CarporterfassungViewModel>(); } }
 
+        private static string PersistableGroupKey
+        {
+            get { return "CarporterfassungsListe"; }
+        }
+
+
         [CkgApplication]
         public ActionResult Carporterfassung()
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
+
             CarporterfassungViewModel.Init();
+            CarporterfassungViewModel.Fahrzeuge = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey);
 
             return View(CarporterfassungViewModel);
         }
@@ -26,7 +37,10 @@ namespace ServicesMvc.Controllers
         public ActionResult FahrzeugerfassungForm(CarporterfassungModel model)
         {
             if (ModelState.IsValid)
+            {
                 CarporterfassungViewModel.AddFahrzeug(model);
+                PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
+            }
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", model);
         }
@@ -38,9 +52,13 @@ namespace ServicesMvc.Controllers
 
             var fzg = CarporterfassungViewModel.AktuellesFahrzeug;
 
-// ReSharper disable RedundantAnonymousTypePropertyName
-            return Json(new { Kennzeichen = fzg.Kennzeichen, FahrgestellNr = fzg.FahrgestellNr, AuftragsNr = fzg.AuftragsNr, MvaNr = fzg.MvaNr, CarportName = fzg.CarportName, Carport = fzg.Carport, Status = fzg.Status });
-// ReSharper restore RedundantAnonymousTypePropertyName
+            return Json(new
+            {
+                fzg.Kennzeichen, fzg.FahrgestellNr,
+                fzg.AuftragsNr, fzg.MvaNr, fzg.CarportName, fzg.Carport,
+                Status = fzg.Status.NotNullOrEmpty(),
+                TmpStatus = fzg.TmpStatus.NotNullOrEmpty()
+            });
         }
 
         [HttpPost]
@@ -61,6 +79,15 @@ namespace ServicesMvc.Controllers
             CarporterfassungViewModel.LoadFahrzeugModel(kennzeichen);
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", CarporterfassungViewModel.AktuellesFahrzeug);
+        }
+
+        [HttpPost]
+        public ActionResult FahrzeugDelete(string kennzeichen)
+        {
+            var objectKey = CarporterfassungViewModel.DeleteFahrzeugModel(kennzeichen);
+            PersistanceDeleteObject(objectKey);
+
+            return new EmptyResult();
         }
 
         [HttpPost]
