@@ -52,7 +52,7 @@
         FormPreparePrivateAjax();
         
         if (_modelIsValid) {
-            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+            SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 10000);
             NeuesFahrzeugErfassen(false);
             setTimeout('$("#Kennzeichen").focus();', 500);
         }
@@ -69,7 +69,7 @@
                 FormPreparePrivateAjax();
 
                 if (result.Status != "") {
-                    SpanAlertWarning("Message", '@Localize.VehicleDataCouldNotBeRetrieved.ToJavascriptString() (' + result.Status + ')', 5000);
+                    SpanAlertWarning("Message", '@Localize.VehicleDataCouldNotBeRetrieved.ToJavascriptString() (' + result.Status + ')', 10000);
                     return;
                 }
 
@@ -80,7 +80,7 @@
                 $("#CarportName").val(result.CarportName);
                 $("#Carport").val(result.Carport);
                 $("#Status").val(result.Status);
-                SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 1800);
+                SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 10000);
             }
         });
     }
@@ -164,7 +164,7 @@
             url: "FahrzeugeSpeichern",
             loadingShow: true,
             success: function (result) {
-                SpanAlertWarning("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 1800);
+                SpanAlertWarning("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 10000);
                 ShowGrid(result);
             }
         });
