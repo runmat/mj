@@ -67,7 +67,6 @@ namespace ServicesMvc.Controllers
         public ActionResult FotoUpload(string modeProtokoll)
         {
             ViewModel.SetParamProtokollMode(modeProtokoll);
-            ViewModel.LoadFahrerAuftragsFahrten(ModelState);
 
             return View(ViewModel);
         }
@@ -93,6 +92,20 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
+
+
+        [HttpPost]
+        public JsonResult LoadFahrerAuftragsFahrten()
+        {
+            var errorMessage = ViewModel.LoadFahrerAuftragsFahrten().NotNullOrEmpty();
+
+            return Json(new
+            {
+                errorMessage,
+                fahrtKeys = string.Join("~", ViewModel.FahrerAuftragsFahrten.Select(f => f.UniqueKey)),
+                fahrtNamen = string.Join("~", ViewModel.FahrerAuftragsFahrten.Select(f => f.AuftragsDetails)),
+            });
+        }
 
         #region Export
 

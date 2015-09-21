@@ -84,6 +84,8 @@ namespace CkgDomainLogic.Fahrer.Services
             EnforceValidUserReference();
 
 #if __TEST
+            Thread.Sleep(2000);
+
             return new List<FahrerAuftragsFahrt>
             {
                 new FahrerAuftragsFahrt
@@ -107,6 +109,8 @@ namespace CkgDomainLogic.Fahrer.Services
             EnforceValidUserReference();
 
 #if __TEST
+            Thread.Sleep(2000);
+
             return new List<FahrerAuftragsProtokoll>
             {
                 new FahrerAuftragsProtokoll

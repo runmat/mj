@@ -161,6 +161,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
         public bool IstSonstigerAuftrag { get { return SelectedFahrerAuftrag != null && SelectedFahrerAuftrag.IstSonstigerAuftrag; } }
 
+        public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrtenForLoading
+        {
+            get { return new List<IFahrerAuftragsFahrt> { new FahrerAuftragsFahrt { AuftragsNr = "-1" } }; }
+        }
+
         public List<IFahrerAuftragsFahrt> FahrerAuftragsFahrten
         {
             get { return PropertyCacheGet(() => new List<IFahrerAuftragsFahrt>()); }
@@ -177,7 +182,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public List<string> UploadedImageFiles { get { return PropertyCacheGet(() => GetUploadedImageFiles()); } }
                                                                                                                                     // ReSharper restore ConvertClosureToMethodGroup
 
-        public void LoadFahrerAuftragsFahrten(ModelStateDictionary state)
+        public string LoadFahrerAuftragsFahrten()
         {
             if (ModeProtokoll)
             {
@@ -186,13 +191,15 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsProtokoll());
 
                 if (FahrerAuftragsFahrten.Any(f => ((FahrerAuftragsProtokoll) f).ProtokollArt.NotNullOrEmpty().Contains("_")))
-                    state.AddModelError(string.Empty, Localize.ErrorNoUnderscoresAllowedInProtocolTypes);
+                    return Localize.ErrorNoUnderscoresAllowedInProtocolTypes;
             }
             else
             {
                 FahrerAuftragsFahrten = DataService.LoadFahrerAuftragsFahrten().ToList();
                 FahrerAuftragsFahrten.Insert(0, new FahrerAuftragsFahrt());
             }
+
+            return "";
         }
 
         public void SetSelectedFahrerAuftragsKey(string auftragsNr)

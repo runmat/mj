@@ -35,10 +35,13 @@
 
 @Html.IeWarning(8)
 
+<div id="loading-hint" class="alert warning"><i class="icon-bell margin-right-10"></i> <span>@Localize.PleaseWait</span></div>
+
+
 <form action="#" class="form-horizontal">
     @Html.FormValidationSummary()
 
-    @Html.FormDropDownListFor(m => m.SelectedFahrerAuftragsKey, Model.FahrerAuftragsFahrten.ToSelectList(), new { @class = "m-wrap xlarge" })
+    @Html.FormDropDownListFor(m => m.SelectedFahrerAuftragsKey, Model.FahrerAuftragsFahrtenForLoading.ToSelectList(), new { @class = "m-wrap xlarge" })
     
     @Html.SpanAlert("InfoMessage")
 </form>
@@ -54,15 +57,55 @@
 
     function FormPreparePrivate() {
         InitUploadControl();
-        InitDropdown();
         InitCheckbox();
+
+        //InitDropdown();
+        LoadFahrerAuftragsFahrten();
+    }
+
+    function LoadFahrerAuftragsFahrten() {
+
+        $(".control-group").hide();
+
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "LoadFahrerAuftragsFahrten",
+            data: {  },
+            loadingShow: true,
+            success: function (result) {
+                $("#loading-hint").hide();
+                $(".control-group").show();
+
+                if (result.errorMessage != "") {
+                    SpanAlertError("InfoMessage", result.errorMessage, 5000);
+                    return;
+                }
+
+                InitDropdown(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
     }
     
     function ShowHideAuftragsFotoDiv(cb) {
-        if (cb.val() == "-" || cb.val() == null) $("#auftrags-fotos").fadeOut(300); else $("#auftrags-fotos").fadeIn(300); 
+        if (cb.val() == "-" || cb.val() == "@Localize.DropdownDefaultOptionPleaseChoose.ToJavascriptString()" || cb.val() == null)
+            $("#auftrags-fotos").fadeOut(300);
+        else
+            $("#auftrags-fotos").fadeIn(300);
     }
 
-    function InitDropdown() {
+    function InitDropdown(result) {
+
+        var fahrtKeys = result.fahrtKeys.split("~");
+        var fahrtNamen = result.fahrtNamen.split("~");
+        var i;
+        $("#SelectedFahrerAuftragsKey").empty();
+        for (i = 0; i < fahrtNamen.length; i++) {
+            $("#SelectedFahrerAuftragsKey").append($("<option></option>").val(fahrtKeys[i]).html(fahrtNamen[i]));
+        };
 
         ShowHideAuftragsFotoDiv($("#SelectedFahrerAuftragsKey"));
 

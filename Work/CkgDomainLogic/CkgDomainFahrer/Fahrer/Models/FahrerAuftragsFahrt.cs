@@ -27,6 +27,9 @@ namespace CkgDomainLogic.Fahrer.Models
                 if (AuftragsNr.IsNullOrEmpty())
                     return Localize.DropdownDefaultOptionPleaseChoose;
 
+                if (AuftragsNr == "-1")
+                    return Localize.PleaseWait;
+
                 return new List<string> 
                     { AuftragsNrFriendly.FormatIfNotNull("#{this}"), Fahrt.FormatIfNotNull("Fahrt {this}"), OrtStart, OrtZiel, Kennzeichen, FahrzeugTyp }
                         .JoinIfNotNull(", ");
