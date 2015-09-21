@@ -34,6 +34,12 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult Stuecklistenversand(string vins)
+        {
+            return ExplicitVersand(vins, BriefversandModus.Stueckliste);
+        }
+
+        [CkgApplication]
         public ActionResult BriefSchluesselversand(string vins)
         {
             return ExplicitVersand(vins, BriefversandModus.BriefMitSchluessel);
@@ -46,6 +52,30 @@ namespace ServicesMvc.Controllers
 
             return View("Briefversand", BriefversandViewModel);
         }
+
+
+        #region Equis for Partlist
+
+        [HttpPost]
+        public ActionResult EquiSuche()
+        {
+            return PartialView("Briefversand/EquiSuche", BriefversandViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EquiSucheForm(EquiPartlistSelektor model)
+        {
+            if (ModelState.IsValid)
+            {
+                BriefversandViewModel.EquiPartlistSelektor = model;
+
+                LogonContext.DataContextPersist(BriefversandViewModel);
+            }
+
+            return PartialView("Briefversand/EquiSucheForm", model);
+        }
+
+        #endregion
 
         #region Fahrzeug Auswahl
 

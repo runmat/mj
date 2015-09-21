@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
@@ -9,7 +8,6 @@ using CkgDomainLogic.Equi.Contracts;
 using CkgDomainLogic.Equi.Models;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
-using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -48,6 +46,10 @@ namespace CkgDomainLogic.Equi.ViewModels
                 return PropertyCacheGet(() =>
                 {
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsBriefversand.xml"));
+
+                    if (VersandModus != BriefversandModus.Stueckliste)
+                        dict.Remove("EquiSuche");
+
                     if (ParamVins.IsNotNullOrEmpty())
                         dict.Remove("FahrzeugAuswahl");
 
@@ -87,9 +89,12 @@ namespace CkgDomainLogic.Equi.ViewModels
                     
                     case BriefversandModus.Schluessel:
                         return Localize.Equi_Schluesselversand;
-                    
+
                     case BriefversandModus.BriefMitSchluessel:
                         return Localize.Equi_BriefSchluesselversand;
+
+                    case BriefversandModus.Stueckliste:
+                        return Localize.Equi_Stuecklistenversand;
                 }
 
                 return "";
@@ -99,16 +104,20 @@ namespace CkgDomainLogic.Equi.ViewModels
         [XmlIgnore]
         public string ParamVins { get; private set; }
 
-        [XmlIgnore]
-        [DisplayName("Spaltenmodus")]
-        public string UserLogonLevelAsString { get { return UserLogonLevel.ToString("F"); } }
-
-        [XmlIgnore]
-        public LogonLevel UserLogonLevel { get { return LogonContext.UserLogonLevel; } }
-
         public int CurrentAppID { get; set; }
 
         public bool TechnIdentnummerIsVisible { get { return VersandModus != BriefversandModus.Schluessel; } }
+
+        
+        #region Equis for Partlist
+
+        public EquiPartlistSelektor EquiPartlistSelektor
+        {
+            get { return PropertyCacheGet(() => new EquiPartlistSelektor()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        #endregion
 
 
         #region Step "Fahrzeugwahl"
@@ -358,6 +367,8 @@ namespace CkgDomainLogic.Equi.ViewModels
 
             PropertyCacheClear(this, m => m.VersandartOptionen);
             PropertyCacheClear(this, m => m.VersandOptionen);
+
+            PropertyCacheClear(this, m => m.EquiPartlistSelektor);
         }
 
         public void DataMarkForRefreshVersandAndZulassungAdressenFiltered()

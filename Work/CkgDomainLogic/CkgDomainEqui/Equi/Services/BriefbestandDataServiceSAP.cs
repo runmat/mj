@@ -187,5 +187,26 @@ namespace CkgDomainLogic.Equi.Services
         }
 
         #endregion
+
+
+        #region Fahrzeugbrief
+
+
+        public IEnumerable<Fahrzeugbrief> GetFahrzeugBriefe(Fahrzeugbrief fahrzeug)
+        {
+            Z_DPM_UNANGEF_ALLG_01.Init(SAP, "I_KUNNR_AG, I_EQTYP", LogonContext.KundenNr.ToSapKunnr(), "B");
+
+            var importList = AppModelMappings.MapFahrzeugbriefeImportToSAP.CopyBack(new List<Fahrzeugbrief> { fahrzeug });
+            SAP.ApplyImport(importList);
+
+            SAP.Execute();
+
+            var listAbrufbar = AppModelMappings.MapFahrzeugbriefeAbrufbarFromSAP.Copy(Z_DPM_UNANGEF_ALLG_01.GT_ABRUFBAR.GetExportList(SAP));
+            var listFehlerhaft = AppModelMappings.MapFahrzeugbriefeFehlerhaftFromSAP.Copy(Z_DPM_UNANGEF_ALLG_01.GT_FEHLER.GetExportList(SAP));
+            var list = listAbrufbar.Concat(listFehlerhaft);
+
+            return list;
+        }
+        #endregion
     }
 }

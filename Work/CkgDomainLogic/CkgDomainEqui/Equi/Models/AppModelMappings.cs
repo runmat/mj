@@ -922,5 +922,61 @@ namespace CkgDomainLogic.Equi.Models
 
         #endregion
 
+
+        #region Fahrzeugbrief
+
+        static private readonly Dictionary<string, string> MapFahrzeugbriefeFromSapDict = new Dictionary<string, string>
+            {
+                {"EQUNR", "Equipmentnummer"},
+                {"CHASSIS_NUM", "Fahrgestellnummer"},
+                {"LICENSE_NUM", "Kennzeichen"},
+                {"LIZNR", "Vertragsnummer"},
+                {"TIDNR", "TechnIdentnummer"},
+                {"ZZREFERENZ1", "Referenz1"},
+                {"ZZREFERENZ2", "Referenz2"},
+                {"FEHLERTEXT", "Memo"},
+            };
+
+        static public ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_ABRUFBAR, Fahrzeugbrief> MapFahrzeugbriefeAbrufbarFromSAP
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_ABRUFBAR, Fahrzeugbrief>(MapFahrzeugbriefeFromSapDict,
+                    (source, destination) =>
+                    {
+                        destination.IsMissing = false;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_FEHLER, Fahrzeugbrief> MapFahrzeugbriefeFehlerhaftFromSAP
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_FEHLER, Fahrzeugbrief>(MapFahrzeugbriefeFromSapDict,
+                    (source, destination) =>
+                    {
+                        destination.IsMissing = true;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_IN, Fahrzeugbrief> MapFahrzeugbriefeImportToSAP
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_IN, Fahrzeugbrief>(new Dictionary<string, string>
+                {
+                    {"CHASSIS_NUM", "FIN"},
+                    {"LICENSE_NUM", "Kennzeichen"},
+                    {"LIZNR", "VertragsNr"},
+                    {"TIDNR", "BriefNr"},
+                    {"ZZREFERENZ1", "Ref1"},
+                    {"ZZREFERENZ2", "Ref2"},
+               }));
+            }
+        }
+        #endregion
+
     }
 }

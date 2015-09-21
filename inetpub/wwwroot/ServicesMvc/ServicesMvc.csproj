@@ -448,15 +448,15 @@
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
+    <Content Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsZulassung.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsZulassung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsZulassungFrei.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsZulassungFrei.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="App_Data\XmlData\Charts\40_ChartAutovermieterFahrzeugAnzahlDoubleHeight.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -488,19 +488,19 @@
     <None Include="App_Data\XmlData\Charts\85_ChartFspVkStandorteDoubleHeight.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="App_Data\XmlData\StepsAutohausZulassung.xml">
+    <Content Include="App_Data\XmlData\StepsAutohausZulassung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsBriefversand.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsBriefversand.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\FahrtAdressen.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\FahrtAdressen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsKroschkeZulassung.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsKroschkeZulassung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </None>
+    </Content>
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarMouseover.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarStacked.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
@@ -3005,7 +3005,6 @@
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
     <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
-
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
@@ -3013,6 +3012,8 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
+    <Content Include="Views\Equi\Briefversand\EquiSuche.cshtml" />
+    <Content Include="Views\Equi\Briefversand\EquiSucheForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

@@ -26,6 +26,10 @@
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
+            if ('EquiSuche' == FormWizard.GetStepKey(step - 1)) {
+                $("#EquiPartlistSearchForm").submit();
+                return false;
+            }
             if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step - 1)) {
                 return FahrzeugAuswahl();
             }

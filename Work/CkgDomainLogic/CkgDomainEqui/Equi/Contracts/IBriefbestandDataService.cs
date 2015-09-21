@@ -4,7 +4,7 @@ using CkgDomainLogic.Equi.Models;
 
 namespace CkgDomainLogic.Equi.Contracts
 {
-    public enum BriefversandModus { Brief, Schluessel, BriefMitSchluessel }
+    public enum BriefversandModus { Brief, Schluessel, BriefMitSchluessel, Stueckliste }
 
     public interface IBriefbestandDataService : ICkgGeneralDataService
     {
