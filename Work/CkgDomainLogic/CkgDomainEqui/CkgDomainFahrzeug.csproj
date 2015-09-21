@@ -270,6 +270,7 @@
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\UploadAvislisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\CarporterfassungViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\UploadZb2VersandViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandbestandViewModel.cs" />
