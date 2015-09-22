@@ -36,5 +36,12 @@ namespace CkgDomainLogic.Equi.Contracts
         List<Fahrzeugbrief> GetEinAusgaenge(EinAusgangSelektor model);
 
         #endregion
+
+
+        #region Fahrzeugbriefe
+
+        IEnumerable<Fahrzeugbrief> GetFahrzeugBriefe(Fahrzeugbrief fahrzeug);
+
+        #endregion
     }
 }

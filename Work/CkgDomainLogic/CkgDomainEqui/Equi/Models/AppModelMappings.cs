@@ -967,12 +967,12 @@ namespace CkgDomainLogic.Equi.Models
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_IN, Fahrzeugbrief>(new Dictionary<string, string>
                 {
-                    {"CHASSIS_NUM", "FIN"},
+                    {"CHASSIS_NUM", "Fahrgestellnummer"},
                     {"LICENSE_NUM", "Kennzeichen"},
-                    {"LIZNR", "VertragsNr"},
-                    {"TIDNR", "BriefNr"},
-                    {"ZZREFERENZ1", "Ref1"},
-                    {"ZZREFERENZ2", "Ref2"},
+                    {"LIZNR", "Vertragsnummer"},
+                    {"TIDNR", "TechnIdentnummer"},
+                    {"ZZREFERENZ1", "Referenz1"},
+                    {"ZZREFERENZ2", "Referenz2"},
                }));
             }
         }

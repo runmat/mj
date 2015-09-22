@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -35,7 +36,7 @@ namespace CkgDomainLogic.Equi.Models
             if (FahrgestellNr.IsNullOrEmpty() && Kennzeichen.IsNullOrEmpty() &&
                 VertragsNr.IsNullOrEmpty() && BriefNr.IsNullOrEmpty() &&
                 Ref1.IsNullOrEmpty() && Ref2.IsNullOrEmpty())
-                yield return new ValidationResult(LocalizeConstants.PleaseChooseAtLeastOneOption, new [] { "" });
+                yield return new ValidationResult(Localize.PleaseChooseAtLeastOneOption, new [] { "" });
         }
 
         public Fahrzeugbrief ToFahrzeugbrief()

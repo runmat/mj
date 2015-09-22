@@ -117,13 +117,48 @@ namespace CkgDomainLogic.Equi.ViewModels
             set { PropertyCacheSet(value); }
         }
 
+        public List<Fahrzeugbrief> FahrzeugeForPartList { get; set; }
+
+        public void LoadFahrzeugeForPartlist(Action<string, string> addModelError)
+        {
+            var fahrzeugBriefForSearch = EquiPartlistSelektor.ToFahrzeugbrief();
+            var fahrzeugbriefe = BriefbestandDataService.GetFahrzeugBriefe(fahrzeugBriefForSearch)
+                                                          .Where((f => !f.IsMissing))
+                                                          .ToListOrEmptyList();
+            if (fahrzeugbriefe.None())
+            {
+                addModelError("", Localize.NoDataFound);
+                return;
+            }
+
+            PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+            FahrzeugeForPartList = fahrzeugbriefe;
+
+            if (FahrzeugeForPartList.Count == 1)
+            {
+                FahrzeugeForPartList.First().IsSelected = true;
+
+                // ToDo remove test code !!!
+                //if (FahrzeugeForPartList.First().Fahrgestellnummer == "WVWZZZ3DZ78004209")
+                //{
+                //    FahrzeugeForPartList.First().IsSelected = false;
+                //    FahrzeugeForPartList.Add(new Fahrzeugbrief
+                //    {
+                //        Fahrgestellnummer = "WAUZZZ8E87A256924",
+                //        Kennzeichen = "OD-EZ133",
+                //        Vertragsnummer = "#4711"
+                //    });
+                //}
+            }
+        }
+
         #endregion
 
 
         #region Step "Fahrzeugwahl"
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> Fahrzeuge { get { return FahrzeugeMergedWithCsvUpload ?? BriefbestandDataService.FahrzeugbriefeZumVersand; } }
+        public List<Fahrzeugbrief> Fahrzeuge { get { return FahrzeugeForPartList ?? FahrzeugeMergedWithCsvUpload ?? BriefbestandDataService.FahrzeugbriefeZumVersand; } }
 
         [XmlIgnore]
         private List<Fahrzeugbrief> FahrzeugeMergedWithCsvUpload { get; set; }
@@ -280,9 +315,21 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         #region Step "Versand"
 
+        public bool VersandartOptionenEndgültigerVersandAusgeblendet
+        {
+            get { return GetApplicationConfigBoolValueForCustomer("VersandartOptionenEndgültigerVersandAusgeblendet", true); }
+        }
+
         public VersandartOptionen VersandartOptionen
         {
-            get { return PropertyCacheGet(() => new VersandartOptionen { IstEndgueltigerVersand = true }); }
+            get
+            {
+                return PropertyCacheGet(() => new VersandartOptionen
+                {
+                    IstEndgueltigerVersand = !VersandartOptionenEndgültigerVersandAusgeblendet,
+                    EndgueltigerVersandAusgeblendet = VersandartOptionenEndgültigerVersandAusgeblendet
+                });
+            }
             set { PropertyCacheSet(value); }
         }
 
@@ -357,6 +404,9 @@ namespace CkgDomainLogic.Equi.ViewModels
 
             // reset CSV Upload (merged) data
             FahrzeugeMergedWithCsvUpload = null;
+
+            // reset data for partlist delivery
+            FahrzeugeForPartList = null;
 
             ParamVins = vins;
             if (ParamVins.IsNotNullOrEmpty())

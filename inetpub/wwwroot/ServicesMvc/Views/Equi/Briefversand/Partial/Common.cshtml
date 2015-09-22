@@ -2,6 +2,7 @@
 
     var ladeHinweis = '@Localize.LoadingData';
     var _modelIsValid = false;
+    var _fahrzeugCount = -1;
 
     function FormPreparePrivate() {
 
@@ -22,7 +23,7 @@
     
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
-            FormWizard.ActionsShow(!FormWizard.HasStepKey('FahrzeugAuswahl') && typeof(_formErrorHint) == 'undefined');
+            FormWizard.ActionsShow((!FormWizard.HasStepKey('FahrzeugAuswahl') || FormWizard.HasStepKey('EquiSuche')) && typeof (_formErrorHint) == 'undefined');
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
@@ -77,9 +78,12 @@
     }
 
     function AjaxRequestNextStep() {
+
+        var nextTabKey = FormWizard.GetNextTabKey();
+
         $.ajax({
             type: "POST",
-            url: FormWizard.GetNextTabKey(),
+            url: nextTabKey,
             data: {},
             loadingShow: true,
             success: function (result) {
@@ -88,6 +92,14 @@
                     return;
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
+                if (nextTabKey == "FahrzeugAuswahl") {
+                    FormWizard.ButtonNextShow(_fahrzeugCount == 1);
+                    if (_fahrzeugCount == 1) {
+                        AjaxRequestNextStep();
+                        return;
+                    }
+                    GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+                }
             }
         });    
     }
@@ -127,7 +139,14 @@
 
         return false;
     }
-    
+
+    function AjaxFormEquiSucheComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid)
+            AjaxRequestNextStep();
+    }
+
     function AjaxFormVersandartOptionenComplete() {
         FormPrepareAjax();
 

@@ -69,7 +69,7 @@ namespace ServicesMvc.Controllers
             {
                 BriefversandViewModel.EquiPartlistSelektor = model;
 
-                LogonContext.DataContextPersist(BriefversandViewModel);
+                BriefversandViewModel.LoadFahrzeugeForPartlist(ModelState.AddModelError);
             }
 
             return PartialView("Briefversand/EquiSucheForm", model);
@@ -78,6 +78,12 @@ namespace ServicesMvc.Controllers
         #endregion
 
         #region Fahrzeug Auswahl
+
+        [HttpPost]
+        public ActionResult FahrzeugAuswahl()
+        {
+            return PartialView("Briefversand/FahrzeugAuswahl", BriefversandViewModel);
+        }
 
         [GridAction]
         public ActionResult FahrzeugAuswahlAjaxBinding()
@@ -147,9 +153,6 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult VersandAdresseForm(Adresse model)
         {
-            // Avoid ModelState clearing on saving => because automatic model validation (via data annotations) would be omitted !!!
-            // ModelState.Clear();
-
             if (model.TmpSelectionKey.IsNotNullOrEmpty())
             {
                 model = BriefversandViewModel.GetVersandAdresseFromKey(model.TmpSelectionKey);

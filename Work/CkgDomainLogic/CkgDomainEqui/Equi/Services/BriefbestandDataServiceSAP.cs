@@ -189,8 +189,7 @@ namespace CkgDomainLogic.Equi.Services
         #endregion
 
 
-        #region Fahrzeugbrief
-
+        #region Fahrzeugbriefe
 
         public IEnumerable<Fahrzeugbrief> GetFahrzeugBriefe(Fahrzeugbrief fahrzeug)
         {
