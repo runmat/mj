@@ -81,6 +81,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
         {
+            kennzeichen = PrepareKennzeichen(kennzeichen);
+
             AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().ToUpper(), bestandsnummer, fin.NotNullOrEmpty().ToUpper());
 
             if (AktuellesFahrzeug != null && Fahrzeuge.Any(f => f.Kennzeichen == AktuellesFahrzeug.Kennzeichen))
@@ -98,6 +100,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             Fahrzeuge.Add(item);
             DataMarkForRefresh();
+        }
+
+        public string PrepareKennzeichen(string kennzeichen)
+        {
+            return kennzeichen.NotNullOrEmpty().Trim().ToUpper();
         }
 
         public void RemoveFahrzeug(CarporterfassungModel item)

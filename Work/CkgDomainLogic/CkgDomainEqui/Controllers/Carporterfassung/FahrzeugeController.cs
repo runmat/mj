@@ -40,6 +40,8 @@ namespace ServicesMvc.Controllers
         {
             if (ModelState.IsValid)
             {
+                model.Kennzeichen = CarporterfassungViewModel.PrepareKennzeichen(model.Kennzeichen);
+
                 // save to shopping cart
                 model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
 
