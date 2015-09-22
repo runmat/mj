@@ -28,6 +28,8 @@ namespace ServicesMvc.Controllers
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
             CarporterfassungViewModel.Init();
+
+            // get shopping cart items
             CarporterfassungViewModel.Fahrzeuge = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey);
 
             return View(CarporterfassungViewModel);
@@ -39,6 +41,8 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 CarporterfassungViewModel.AddFahrzeug(model);
+
+                // save to shopping cart
                 PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
             }
 
@@ -85,6 +89,8 @@ namespace ServicesMvc.Controllers
         public ActionResult FahrzeugDelete(string kennzeichen)
         {
             var objectKey = CarporterfassungViewModel.DeleteFahrzeugModel(kennzeichen);
+
+            // remove from shopping cart
             PersistanceDeleteObject(objectKey);
 
             return new EmptyResult();
@@ -102,7 +108,14 @@ namespace ServicesMvc.Controllers
         public ActionResult NeuesFahrzeugErfassen(bool clearList)
         {
             if (clearList)
+            {
+                // clear shopping cart
+                var kennzeichenList = CarporterfassungViewModel.Fahrzeuge.Select(f => f.Kennzeichen).ToList();
+                foreach (var kennzeichen in kennzeichenList)
+                    FahrzeugDelete(kennzeichen);
+
                 CarporterfassungViewModel.ClearList();
+            }
 
             CarporterfassungViewModel.LoadFahrzeugModel();
 

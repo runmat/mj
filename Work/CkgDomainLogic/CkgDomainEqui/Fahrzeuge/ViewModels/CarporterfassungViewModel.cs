@@ -109,7 +109,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void SaveFahrzeuge()
         {
             EditMode = false;
+
+            var objectKeyDict = Fahrzeuge.ToDictionary(t => t.Kennzeichen, t => t.ObjectKey);
             Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge);
+            // restore shopping cart ID's
+            Fahrzeuge.ForEach(f => f.ObjectKey = objectKeyDict[f.Kennzeichen]);
+
             DataMarkForRefresh();
         }
 
