@@ -40,10 +40,10 @@ namespace ServicesMvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                CarporterfassungViewModel.AddFahrzeug(model);
-
                 // save to shopping cart
-                PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
+                model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
+
+                CarporterfassungViewModel.AddFahrzeug(model);
             }
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", model);
