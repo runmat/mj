@@ -32,7 +32,8 @@ namespace SapORM.Services
                 "NO_RESULT",
                 "ERR_NO_DATA",
                 "ERR_DAT",
-                "NO_HEADER"
+                "NO_HEADER",
+                "NO_WEB"
             };
 
         public string BapiName { get; set; }
@@ -457,7 +458,7 @@ namespace SapORM.Services
 
                                 if (rfcT.Name == ((DataTable)tmpRow[0]).TableName)
                                 {
-                                    var tblTemp = rfcT.ToADOTable();
+                                    var tblTemp = rfcT.ToADOTableLocaleDe();
 
 
                                     foreach (RFCTableColumn col in rfcT.Columns)
@@ -606,7 +607,8 @@ namespace SapORM.Services
                     callduration = stopwatch.Elapsed.TotalSeconds;
                 }
 
-                PreserveStackTrace(generalException);
+                if (!(generalException is ERPException))
+                    PreserveStackTrace(generalException);
 
                 LogSapBapiCall(logService, logonContext, true, callduration);
 
@@ -630,8 +632,8 @@ namespace SapORM.Services
         /// <returns>Formatierte DataTable</returns>
         private DataTable UpdateColumnTypes(RFCTable rfcT)
         {
-            var tblTemp = rfcT.ToADOTable();
-            var tblTempResult = rfcT.ToADOTable().Clone();
+            var tblTemp = rfcT.ToADOTableLocaleDe();
+            var tblTempResult = rfcT.ToADOTableLocaleDe().Clone();
 
             //Datentyp auf DateTime ändern
             foreach (RFCTableColumn col in rfcT.Columns)
@@ -979,14 +981,14 @@ namespace SapORM.Services
                 //auswerten der exportparameter
                 if (func.Tables["EXP_TAB"].RowCount > 0)
                 {
-                    mExportTabelle = func.Tables["EXP_TAB"].ToADOTable();
+                    mExportTabelle = func.Tables["EXP_TAB"].ToADOTableLocaleDe();
                     KillAllDBNullValuesInDataTable(ref mExportTabelle);
                     mExportTabelle.AcceptChanges();
                 }
 
                 if (func.Tables["IMP_TAB"].RowCount > 0)
                 {
-                    mImportTabelle = func.Tables["IMP_TAB"].ToADOTable();
+                    mImportTabelle = func.Tables["IMP_TAB"].ToADOTableLocaleDe();
                     KillAllDBNullValuesInDataTable(ref mImportTabelle);
                     mImportTabelle.AcceptChanges();
                 }

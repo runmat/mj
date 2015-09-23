@@ -69,9 +69,11 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -99,6 +101,7 @@
     <Compile Include="Controllers\BriefbestandVhc\EquiController.cs" />
     <Compile Include="Controllers\Briefbestand\EquiController.cs" />
     <Compile Include="Controllers\Briefversand\EquiController.cs" />
+    <Compile Include="Controllers\Carporterfassung\FahrzeugeController.cs" />
     <Compile Include="Controllers\DatenOhneDokumente\EquiController.cs" />
     <Compile Include="Controllers\Dispositionsliste\FahrzeugeController.cs" />
     <Compile Include="Controllers\DokumenteOhneDaten\EquiController.cs" />
@@ -119,6 +122,7 @@
     <Compile Include="Controllers\SperrenVerschieben\FahrzeugeController.cs" />
     <Compile Include="Controllers\StatusEinsteuerungController.cs" />
     <Compile Include="Controllers\ModellIdController.cs" />
+    <Compile Include="Controllers\UploadAvisliste\FahrzeugeController.cs" />
     <Compile Include="Controllers\ZulaufEinsteuerung\FahrzeugeController.cs" />
     <Compile Include="Controllers\Treuhandbestand\FahrzeugeController.cs" />
     <Compile Include="Controllers\Treuhandverwaltung\FahrzeugeController.cs" />
@@ -207,8 +211,10 @@
     <Compile Include="Equi\ViewModels\DatenOhneDokumenteViewModel.cs" />
     <Compile Include="Equi\ViewModels\ErweiterterBriefbestandViewModel.cs" />
     <Compile Include="Equi\ViewModels\HalterAbweichungenViewModel.cs" />
+    <Compile Include="Fahrzeuge\Contracts\ICarporterfassungDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFehlteilEtikettenDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\ITreuhandDataService.cs" />
+    <Compile Include="Fahrzeuge\Contracts\IUploadAvislisteDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IUploadFahrzeugeinsteuerungDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugzulaeufeDataService.cs" />
     <Compile Include="Fahrzeuge\Contracts\IFahrzeugvoravisierungDataService.cs" />
@@ -235,6 +241,9 @@
     <Compile Include="Fahrzeuge\Models\FahrzeugSperrenVerschieben.cs" />
     <Compile Include="Fahrzeuge\Models\KennzeichenSerie.cs" />
     <Compile Include="Fahrzeuge\Models\Fzg.cs" />
+    <Compile Include="Fahrzeuge\Models\UploadAvisdaten.cs" />
+    <Compile Include="Fahrzeuge\Models\CarporterfassungModel.cs" />
+    <Compile Include="Fahrzeuge\Models\CarportInfo.cs" />
     <Compile Include="Fahrzeuge\Models\ZulaufEinsteuerung.cs" />
     <Compile Include="Fahrzeuge\Models\Treuhandberechtigung.cs" />
     <Compile Include="Fahrzeuge\Models\TreuhandverwaltungCsvUpload.cs" />
@@ -251,15 +260,20 @@
     <Compile Include="Fahrzeuge\Services\DispositionslisteDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeuguebersichtDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugSperrenVerschiebenDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\UploadAvislisteDataServiceSap.cs" />
+    <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
+    <Compile Include="Fahrzeuge\Services\CarporterfassungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\ZulaufEinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\Services\TreuhandDataServiceSAP.cs" />
-    <Compile Include="Fahrzeuge\Services\UploadFahrzeugeinsteuerungDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FehlteilEtikettenViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugzulaeufeViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugvoravisierungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\DispositionslisteViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeuguebersichtViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\FahrzeugSperrenVerschiebenViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\UploadAvislisteViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\CarporterfassungViewModel.cs" />
+    <Compile Include="Fahrzeuge\ViewModels\UploadZb2VersandViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulassungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\ZulaufEinsteuerungViewModel.cs" />
     <Compile Include="Fahrzeuge\ViewModels\TreuhandbestandViewModel.cs" />
@@ -282,11 +296,21 @@
     <Compile Include="Fahrzeuge\Models\AbgemeldeteFahrzeugeSelektor.cs" />
     <Compile Include="Fahrzeuge\Services\FahrzeugeDataServiceSAP.cs" />
     <Compile Include="Fahrzeuge\ViewModels\AbgemeldeteFahrzeugeViewModel.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="StatusEinsteuerung\Contracts\IStatusEinsteuerungDataService.cs" />
     <Compile Include="StatusEinsteuerung\Models\AppModelmappings.cs" />
     <Compile Include="StatusEinsteuerung\Models\StatusEinsteuerung.cs" />
     <Compile Include="StatusEinsteuerung\Services\StatusEinsteuerungDataServiceSAP.cs" />
     <Compile Include="StatusEinsteuerung\ViewModels\StatusEinsteuerungViewModel.cs" />
+    <Compile Include="Web References\UPSShip\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
     <Compile Include="WFM\Contracts\IWfmDataService.cs" />
     <Compile Include="WFM\Models\AppModelmappings.cs" />
     <Compile Include="WFM\Models\WfmDokument.cs" />
@@ -372,6 +396,61 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fahrzeuge\Models\HolBringService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="C:\carl\ups_webservice\SCHEMA-WSDLs\Ship.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\UPSShip\</RelPath>
+      <UpdateFromURL>C:\carl\ups_webservice\SCHEMA-WSDLs\Ship.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>CkgDomainFahrzeug_UPSShip_ShipService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\UPSShip\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\Error1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\IFWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\UPSShip\Ship.wsdl" />
+    <None Include="Web References\UPSShip\ShipAcceptResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UPSShip\ShipConfirmResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UPSShip\ShipmentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UPSShip\ShipWebServiceSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\UPSSecurity.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
