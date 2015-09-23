@@ -1363,3 +1363,13 @@ span.kennzeichen{
     float: right;
     background: url(/ServicesMvc/Images/information.png) center no-repeat !important;
 }
+
+div.span-alert-placeholder {
+    display: block;
+    width: 100%;
+    height: 45px;
+}
+div.span-alert-placeholder .alert {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
