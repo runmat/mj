@@ -1,4 +1,6 @@
-﻿using System;
+﻿#define __TEST
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.Fahrer.Contracts;
@@ -84,7 +86,7 @@ namespace CkgDomainLogic.Fahrer.Services
             EnforceValidUserReference();
 
 #if __TEST
-            Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(2000);
 
             return new List<FahrerAuftragsFahrt>
             {
@@ -109,7 +111,7 @@ namespace CkgDomainLogic.Fahrer.Services
             EnforceValidUserReference();
 
 #if __TEST
-            Thread.Sleep(2000);
+            System.Threading.Thread.Sleep(2000);
 
             return new List<FahrerAuftragsProtokoll>
             {

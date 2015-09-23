@@ -1,7 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
+using GeneralTools.Services;
+using PdfSharp;
 using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
@@ -16,18 +20,35 @@ namespace DocumentTools.Services
         public static void CreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName)
         {
             var pdfDoc = new ITextSharpPdfDocument();
-
+            var imageCount = 0;
             foreach (var file in imageFileNames)
             {
                 var pdfPage = new ITextSharpPdfPage();
                 pdfDoc.Pages.Add(pdfPage);
                 var xgr = XGraphics.FromPdfPage(pdfPage);
                 var img = XImage.FromFile(file);
-                xgr.DrawImage(img, 0, 0);
+
+                // try to set orientation due to Exif image information:
+                var destinationFile = Path.Combine(Path.GetDirectoryName(file)??"", Path.GetFileNameWithoutExtension(file) + "-2" + Path.GetExtension(file));
+                ImagingService.ScaleAndSaveImage(file, destinationFile, (int)(img.Size.Width > img.Size.Height ? img.Size.Width : img.Size.Height));
+                var imgProcessed = XImage.FromFile(destinationFile);
+
+                // resizing image if higher/wider then pdfpage.
+                if (pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(imgProcessed.Size.Width))
+                    pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(imgProcessed.Size.Width);
+
+                if (pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(imgProcessed.Size.Height))
+                    pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(imgProcessed.Size.Height);
+
+                xgr.DrawImage(imgProcessed, 0, 0, imgProcessed.Size.Width, imgProcessed.Size.Height);
                 xgr.Dispose();
-                img.Dispose();
+
+                imgProcessed.Dispose();
+                FileService.TryFileDelete(destinationFile);
+
+                imageCount++;
             }
-            
+
             pdfDoc.Save(pdfFileName);
             pdfDoc.Close();
         }
