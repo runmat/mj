@@ -139,6 +139,12 @@ namespace SapORM.Models
 
 			public string ZZNAME4_ZS { get; set; }
 
+			public string KNZ_VORN_VORH { get; set; }
+
+			public string KNZ_HINT_VORH { get; set; }
+
+			public string ZB1_VORH { get; set; }
+
 			public string COUNTRY_ZS { get; set; }
 
 			public string MENGE { get; set; }
@@ -201,6 +207,9 @@ namespace SapORM.Models
 					UZEIT_AUTOR = (string)row["UZEIT_AUTOR"],
 					ZZNAME3_ZS = (string)row["ZZNAME3_ZS"],
 					ZZNAME4_ZS = (string)row["ZZNAME4_ZS"],
+					KNZ_VORN_VORH = (string)row["KNZ_VORN_VORH"],
+					KNZ_HINT_VORH = (string)row["KNZ_HINT_VORH"],
+					ZB1_VORH = (string)row["ZB1_VORH"],
 					COUNTRY_ZS = (string)row["COUNTRY_ZS"],
 					MENGE = (string)row["MENGE"],
 

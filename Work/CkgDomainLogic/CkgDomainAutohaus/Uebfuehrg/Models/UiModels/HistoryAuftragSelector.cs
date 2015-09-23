@@ -85,7 +85,7 @@ namespace CkgDomainLogic.Uebfuehrg.Models
 
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [RequiredAsGroup]
-        [Kennzeichen]
+        [KennzeichenPartial]
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._KundenReferenz)]
