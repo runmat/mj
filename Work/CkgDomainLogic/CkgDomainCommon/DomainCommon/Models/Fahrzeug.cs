@@ -17,5 +17,9 @@
         public bool IstInAbmeldung { get; set; }
 
         public bool IstFehlerhaft { get; set; }
+
+        public string Ref1 { get; set; }
+
+        public string Ref2 { get; set; }
     }
 }
