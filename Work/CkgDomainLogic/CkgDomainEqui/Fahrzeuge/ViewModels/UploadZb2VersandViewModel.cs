@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml.Serialization;
 using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
@@ -43,16 +44,29 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             UploadFileName = fileName;
             var randomfilename = Guid.NewGuid().ToString();
+            var randomfilenameConverted = Guid.NewGuid().ToString();
             var extension = (UploadFileName.NotNullOrEmpty().ToLower().EndsWith(".xls") ? ".xls" : ".csv");
-            UploadServerFileName = Path.Combine(AppSettings.TempPath, randomfilename + extension);
 
-            var nameSaved = fileSaveAction(AppSettings.TempPath, randomfilename, extension);
+            var tempPath = AppSettings == null ? "" : AppSettings.TempPath;
+
+            UploadServerFileName = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilename + extension);
+            var uploadServerFileNameConverted = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilenameConverted + extension);
+
+            var nameSaved = fileSaveAction == null ? fileName : fileSaveAction(tempPath, randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
                 return false;
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(UploadServerFileName, true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
-            FileService.TryFileDelete(UploadServerFileName);
+            ConvertToUnicode(UploadServerFileName, uploadServerFileNameConverted);
+
+            var list = new ExcelDocumentFactory().ReadToDataTable(uploadServerFileNameConverted, true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
+
+            if (AppSettings != null)
+            {
+                FileService.TryFileDelete(UploadServerFileName);
+                FileService.TryFileDelete(uploadServerFileNameConverted);
+            }
+
             if (list.None())
                 return false;
 
@@ -66,9 +80,21 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 item.AbcKennzeichen = item.AbcKennzeichen.NotNullOrEmpty().Replace(" ", "");
             }
 
-            ValidateUploadItems();
+            if (AppSettings != null)
+                ValidateUploadItems();
 
             return true;
+        }
+
+        static void ConvertToUnicode(string fileNameSrc, string fileNameDst)
+        {
+            using (var sr = new StreamReader(fileNameSrc, Encoding.UTF8))
+            using (var sw = new StreamWriter(fileNameDst, false, Encoding.Unicode))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                    sw.WriteLine(line);
+            }
         }
 
         static VersandAuftragsAnlage CreateInstanceFromDatarow(DataRow row)
@@ -76,12 +102,13 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var item = new VersandAuftragsAnlage
                 {
                     BestandsNr = row[0].ToString(),
-                    Name1 = row[1].ToString(),
-                    Ansprechpartner = row[2].ToString(),
-                    Strasse = row[3].ToString(),
-                    PLZ = row[4].ToString(),
-                    Ort = row[5].ToString(),
-                    Land = row[6].ToString()
+                    // skip row 1 (dummy row)
+                    Name1 = row[2].ToString(),
+                    Ansprechpartner = row[3].ToString(),
+                    Strasse = row[4].ToString(),
+                    PLZ = row[5].ToString(),
+                    Ort = row[6].ToString(),
+                    Land = row[7].ToString()
             };
             return item;
         }
