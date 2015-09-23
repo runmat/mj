@@ -43,5 +43,12 @@ namespace CkgDomainLogic.Equi.Contracts
         IEnumerable<Fahrzeugbrief> GetFahrzeugBriefe(Fahrzeugbrief fahrzeug);
 
         #endregion
+
+
+        #region Stuecklisten
+
+        IEnumerable<StuecklistenKomponente> GetStuecklistenKomponenten(IEnumerable<string> fahrgestellnummern);
+
+        #endregion
     }
 }

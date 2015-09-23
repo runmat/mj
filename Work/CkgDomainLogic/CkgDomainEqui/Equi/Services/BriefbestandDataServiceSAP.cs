@@ -189,6 +189,26 @@ namespace CkgDomainLogic.Equi.Services
         #endregion
 
 
+        #region Stuecklisten
+
+        public IEnumerable<StuecklistenKomponente> GetStuecklistenKomponenten(IEnumerable<string> fahrgestellnummern)
+        {
+            Z_DPM_READ_EQUI_STL_01.Init(SAP, "I_AG, I_EQTYP", LogonContext.KundenNr.ToSapKunnr(), "B");
+
+            var importList = fahrgestellnummern.Select(f => new Z_DPM_READ_EQUI_STL_01.GT_IN {CHASSIS_NUM = f}).ToListOrEmptyList();
+            SAP.ApplyImport(importList);
+
+            SAP.Execute();
+
+            var sapList = Z_DPM_READ_EQUI_STL_01.GT_OUT.GetExportList(SAP);
+            var list = AppModelMappings.Z_DPM_READ_EQUI_STL_01_GT_OUT_To_StuecklistenKomponente.Copy(sapList);
+
+            return list;
+        }
+
+        #endregion
+
+
         #region Fahrzeugbriefe
 
         public IEnumerable<Fahrzeugbrief> GetFahrzeugBriefe(Fahrzeugbrief fahrzeug)
@@ -206,6 +226,7 @@ namespace CkgDomainLogic.Equi.Services
 
             return list;
         }
+
         #endregion
     }
 }

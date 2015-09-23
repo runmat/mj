@@ -823,6 +823,27 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_EQUI_STL_01.GT_OUT, StuecklistenKomponente> Z_DPM_READ_EQUI_STL_01_GT_OUT_To_StuecklistenKomponente
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_EQUI_STL_01.GT_OUT, StuecklistenKomponente>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.Equipmentnummer = s.EQUNR;
+                        d.ID = s.IDNRK;
+                        d.Bezeichnung = s.MAKTX;
+                        d.ErsatzteilKennung = s.ERSKZ;
+                        d.ErsatzteilKennungText = s.ETEXT;
+
+                        d.IstLagernd = (d.ErsatzteilKennung.NotNullOrEmpty().ToUpper() == "L");
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -976,6 +997,7 @@ namespace CkgDomainLogic.Equi.Models
                }));
             }
         }
+
         #endregion
 
     }

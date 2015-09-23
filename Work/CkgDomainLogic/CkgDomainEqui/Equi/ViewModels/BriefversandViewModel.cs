@@ -109,7 +109,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         public bool TechnIdentnummerIsVisible { get { return VersandModus != BriefversandModus.Schluessel; } }
 
         
-        #region Equis for Partlist
+        #region Stuecklistenversand
 
         public EquiPartlistSelektor EquiPartlistSelektor
         {
@@ -135,22 +135,10 @@ namespace CkgDomainLogic.Equi.ViewModels
             FahrzeugeForPartList = fahrzeugbriefe;
 
             if (FahrzeugeForPartList.Count == 1)
-            {
                 FahrzeugeForPartList.First().IsSelected = true;
-
-                // ToDo remove test code !!!
-                //if (FahrzeugeForPartList.First().Fahrgestellnummer == "WVWZZZ3DZ78004209")
-                //{
-                //    FahrzeugeForPartList.First().IsSelected = false;
-                //    FahrzeugeForPartList.Add(new Fahrzeugbrief
-                //    {
-                //        Fahrgestellnummer = "WAUZZZ8E87A256924",
-                //        Kennzeichen = "OD-EZ133",
-                //        Vertragsnummer = "#4711"
-                //    });
-                //}
-            }
         }
+
+        public List<Fahrzeugbrief> Stueckliste { get; set; } 
 
         #endregion
 

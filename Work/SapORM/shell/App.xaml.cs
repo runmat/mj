@@ -37,7 +37,9 @@ namespace SapORM
 
             ConfigurationMerger.MergeTestWebConfigAppSettings();
 
-            
+
+            //new FunctionReflector("Z_DPM_READ_EQUI_STL_01").WriteOrmForExportTableStructures();
+
             /*
                Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_M_TH_GET_TREUH_AG", m_objApp, m_objUser, page)
 

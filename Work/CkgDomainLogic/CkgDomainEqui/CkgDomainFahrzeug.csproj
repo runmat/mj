@@ -165,6 +165,7 @@
     <Compile Include="Equi\Models\DataModels\EquiAussteuerung.cs" />
     <Compile Include="Equi\Models\DataModels\EquiTueteninhalt.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugAnforderung.cs" />
+    <Compile Include="Equi\Models\DataModels\StuecklistenKomponente.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragung.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragungSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\VersandAbweichungSelektor.cs" />
