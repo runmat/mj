@@ -1,0 +1,197 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.UploadZb2VersandViewModel 
+
+<h3 class="page-title">@Localize.DocumentsDelivery <small>@Localize.ExcelUpload</small></h3>
+
+<div class="portlet app-view">
+    
+    @Html.FormWizard("icon-arrow-up", "", new[] { Localize.UploadExcelFile, Localize.Send, Localize.DoneStep })
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Zb2Versand/FileUpload")
+    </div>
+
+</div>
+
+
+<script type="text/javascript">
+
+    var _formWizardForceHideSubmitButton = false;
+
+    function FormPreparePrivate() {
+        LoadingHide();
+        FormWizardInitPrivate();
+    }
+
+    function FormWizardInitPrivate() {
+        FormWizard.Init(function () {
+            FormWizard.ActionsShow(false);
+        });
+
+        FormWizard.OnNext(function (step, maxSteps) {
+            if (step == 3) {
+                CheckUpload();
+                return false;
+            }
+            return true;
+        });
+
+        FormWizard.OnPrev(function (step, maxSteps) {
+            return true;
+        });
+
+        FormWizard.OnSubmit(function () {
+            return SubmitUpload();
+        });
+
+        FormWizard.OnRestart(function () {
+            //alert('Ok, let´s restart! :)');
+            location.reload();
+        });
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        $(".t-status").hide();
+    }
+
+    function OnDataBound_GridUpload() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnRowDataBound_GridUpload(e) {
+        var grid = $(this).data("tGrid");
+        var validationErrors = JSON.parse(e.dataItem.ValidationErrors);
+
+        FormWizard.ButtonSubmitShow(true);
+        for (var i = 0; i < grid.columns.length; i++) {
+            for (var j = 0; j < validationErrors.length; j++) {
+                if (validationErrors[j].MemberNames.indexOf(grid.columns[i].member) > -1) {
+                    $(e.row.cells[i]).addClass("grid-cellError");
+                    FormWizard.ButtonSubmitShow(false);
+                    break;
+                }
+            }
+        }
+    }
+
+    function OnColumnShowHide_GridUpload() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridUpload() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function UploadStart(e) {
+
+        // because we are uploading in async mode, our "e.files" collection always has exact 1 entry:
+        var fileName = e.files[0].name;
+
+        if (fileName.toLowerCase().indexOf('.csv') < 0 && fileName.toLowerCase().indexOf('.xls') < 0) {
+            alert('@Localize.FileUploadOnlyXlsCsvLegal.ToJavascriptString()');
+            return false;
+        }
+
+        LoadingShow();
+
+        return true;
+    }
+
+    function UploadFinished(e) {
+        setTimeout("LoadingHide()", 1000);
+
+        // clear only the UI of our Upload Control:
+        $(this).children(".t-upload-files").remove();
+
+        if (!e.response.success) {
+            alert(e.response.message);
+            return;
+        }
+
+        ShowGrid(true);
+    }
+
+    function UploadError(e) {
+        e.preventDefault();
+        setTimeout("LoadingHide()", 1000);
+        alert('@Localize.ErrorFileCouldNotBeSaved.ToJavascriptString()');
+    }
+
+    function ShowGrid(invokeNext) {
+        $.ajax({
+            type: "POST",
+            url: "UploadZb2VersandShowGrid",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                if (typeof (result.message) !== "undefined") {
+                    alert(result.message);
+                    return;
+                }
+                FormWizard.SetTabHtml(2, result);
+                window.scrollTo(0, 0);
+                FormPreparePrivateAjax();
+                if (invokeNext) {
+                    FormWizard.ButtonNextInvoke();
+                }
+                SetButtonVisibility();
+            }
+        });
+    }
+
+    function CheckUpload() {
+        $.ajax({
+            type: "POST",
+            url: "UploadZb2VersandCheck",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                FormWizard.SetTabHtml(2, result);
+                window.scrollTo(0, 0);
+                FormPreparePrivateAjax();
+                SetButtonVisibility();
+            }
+        });
+    }
+
+    function SubmitUpload() {
+        LoadingShow();
+        FormWizard.ButtonSubmitShow(false);
+        $.ajax({
+            type: "POST",
+            url: "UploadZb2VersandSubmit",
+            loadingShow: true,
+            success: function () {
+                ShowReceipt();
+                return true;
+            }
+        });
+    }
+
+    function ShowReceipt() {
+        $.ajax({
+            type: "POST",
+            url: "UploadZb2VersandShowReceipt",
+            loadingShow: true,
+            success: function (result) {
+                setTimeout("LoadingHide()", 1000);
+                FormWizard.SetTabHtml(3, result);
+                window.scrollTo(0, 0);
+                FormPreparePrivateAjax();
+                FormWizard.ButtonNextInvoke();
+            }
+        });
+    }
+
+    function SetButtonVisibility() {
+        if (_formWizardForceHideSubmitButton) {
+            FormWizard.ButtonSubmitShow(false);
+            FormWizard.ButtonNextShow(true);
+        } else {
+            FormWizard.ButtonSubmitShow(true);
+            FormWizard.ButtonNextShow(false);
+        }
+    }
+
+</script>
