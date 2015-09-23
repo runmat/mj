@@ -156,16 +156,12 @@
 
     function GridEnsureValidColums(grid, settingsColumns) {
         
-        //console.log(settingsColumns);
-
         var validSettingsColumns = new Array();
         $.each(settingsColumns, function (index, columnName) {
             if (1 <= $.grep(grid.columns, function (col, j) { return (columnName == col.member); }).length)
                 validSettingsColumns.push(columnName);
         });
         settingsColumns = validSettingsColumns;
-
-        //console.log(settingsColumns);
 
         return settingsColumns;
     }
