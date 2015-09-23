@@ -1,11 +1,13 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Serialization;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
-    public class CarporterfassungModel
+    public class CarporterfassungModel : Store 
     {
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
@@ -17,15 +19,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string CarportName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
+        [XmlIgnore]
         public string Carport
         {
-            get
-            {
-                if (!String.IsNullOrEmpty(CarportName))
-                    return String.Format("{0} - {1}", CarportId, CarportName);
-
-                return CarportId;
-            }
+            get { return CarportName.PrependIfNotNullElse(CarportId + " - ", CarportId); }
         }
 
         [Required]
@@ -36,7 +33,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNr { get; set; }
 
@@ -47,6 +43,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Barcode)]
         public string Barcode { get; set; }
 
+        [Length(1)]
         [LocalizedDisplay(LocalizeConstants.NumberOfLicensePlates)]
         public string AnzahlKennzeichen { get; set; }
 
@@ -84,5 +81,8 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Status { get; set; }
 
         public string Action { get; set; }
+
+        [XmlIgnore]
+        public string TmpStatus { get; set; }
     }
 }

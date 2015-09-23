@@ -426,6 +426,16 @@
     <Content Include="_Themes\AH2015\images\Logout.png" />
     <Content Include="_Themes\AH2015\images\test.jpg" />
     <Content Include="_Themes\AH2015\images\uniform\sprite.png" />
+    <Content Include="Documents\Templates\UploadZb2Versand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\UploadZb2Versand.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\FileUpload.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\Receipt.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\UploadGrid.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand.cshtml" />
     <Content Include="Documents\Templates\UploadAvisliste.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -873,6 +883,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Models\ReportSolution.cs" />
@@ -2999,6 +3010,7 @@
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
     <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
+
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
