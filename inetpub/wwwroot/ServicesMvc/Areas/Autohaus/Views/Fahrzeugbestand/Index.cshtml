@@ -129,6 +129,7 @@
         SetFahrzeugakteFormToReadOnly(true);
         $("#divSearchAndGrid").slideUp();
         $("#divFahrzeugDetails").slideDown();
+        setTimeout("HandleResponsiveControlWidths()", 500);
         scrollToTop();
 
         FormPrepareAjax();
