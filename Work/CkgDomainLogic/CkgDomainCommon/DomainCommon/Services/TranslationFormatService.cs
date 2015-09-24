@@ -96,10 +96,11 @@ namespace CkgDomainLogic.DomainCommon.Services
                                                         where translation.Resource == resource
                                                         select translation).FirstOrDefault();
 
+            var translatedResourceCloned = ModelMapping.Copy(translatedResource);
             if (translatedResourceForCurrentCustomer != null)
-                translatedResource.MergeTranslatedResourceCustom(translatedResourceForCurrentCustomer);
+                translatedResourceCloned.MergeTranslatedResourceCustom(translatedResourceForCurrentCustomer);
 
-            return translatedResource;
+            return translatedResourceCloned;
         }
     }
 }
