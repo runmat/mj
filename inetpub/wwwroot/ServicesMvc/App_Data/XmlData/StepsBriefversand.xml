@@ -18,6 +18,14 @@
   </item>
   <item>
     <key>
+      <string>Stueckliste</string>
+    </key>
+    <value>
+      <string>Stückliste</string>
+    </value>
+  </item>
+  <item>
+    <key>
       <string>VersandartOptionen</string>
     </key>
     <value>

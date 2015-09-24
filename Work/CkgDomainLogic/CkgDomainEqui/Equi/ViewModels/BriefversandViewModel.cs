@@ -48,7 +48,10 @@ namespace CkgDomainLogic.Equi.ViewModels
                     var dict = XmlService.XmlDeserializeFromFile<XmlDictionary<string, string>>(Path.Combine(AppSettings.DataPath, @"StepsBriefversand.xml"));
 
                     if (VersandModus != BriefversandModus.Stueckliste)
+                    {
                         dict.Remove("EquiSuche");
+                        dict.Remove("Stueckliste");
+                    }
 
                     if (ParamVins.IsNotNullOrEmpty())
                         dict.Remove("FahrzeugAuswahl");
@@ -135,10 +138,67 @@ namespace CkgDomainLogic.Equi.ViewModels
             FahrzeugeForPartList = fahrzeugbriefe;
 
             if (FahrzeugeForPartList.Count == 1)
+            {
                 FahrzeugeForPartList.First().IsSelected = true;
+                
+                // ToDo remove test code !!!
+                if (FahrzeugeForPartList.First().Fahrgestellnummer == "WVWZZZ3DZ78004209")
+                {
+                    FahrzeugeForPartList.First().IsSelected = false;
+                    FahrzeugeForPartList.Add(new Fahrzeugbrief
+                    {
+                        Fahrgestellnummer = "WAUZZZ8E87A256924",
+                        Kennzeichen = "OD-EZ133",
+                        Vertragsnummer = "#4711"
+                    });
+                }
+            }
         }
 
-        public List<Fahrzeugbrief> Stueckliste { get; set; } 
+        public List<StuecklistenKomponente> Stueckliste { get; set; }
+
+        public List<StuecklistenKomponente> StuecklisteFiltered
+        {
+            get { return PropertyCacheGet(() => Stueckliste); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public void DataMarkForRefreshStueckliste()
+        {
+            PropertyCacheClear(this, m => m.StuecklisteFiltered);
+        }
+
+        public void LoadStueckliste()
+        {
+            Stueckliste = BriefbestandDataService.GetStuecklistenKomponenten(Fahrzeuge.Where(f => f.IsSelected).Select(f => f.Fahrgestellnummer)).ToListOrEmptyList();
+
+            DataMarkForRefreshStueckliste();
+        }
+
+        public void FilterStueckliste(string filterValue, string filterProperties)
+        {
+            StuecklisteFiltered = Stueckliste.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void SelectStuecklistenEintrag(string id, bool select, out int allSelectionCount)
+        {
+            allSelectionCount = 0;
+            var sl = Stueckliste.FirstOrDefault(f => f.UniqueId == id);
+            if (sl == null)
+                return;
+
+            sl.IsSelected = select;
+            allSelectionCount = Stueckliste.Count(c => c.IsSelected);
+        }
+
+        public void SelectStueckliste(bool select, out int allSelectionCount, out int allCount, out int allFoundCount)
+        {
+            Stueckliste.ToListOrEmptyList().ForEach(sl => sl.IsSelected = select);
+
+            allSelectionCount = Stueckliste.Count(c => c.IsSelected);
+            allCount = Stueckliste.Count;
+            allFoundCount = Stueckliste.Count;
+        }
 
         #endregion
 
@@ -198,6 +258,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         public string SaveErrorMessage { get; private set; }
 
         public string FahrzeugAuswahlTitleHint { get { return Localize.PleaseChooseOneOrMoreVehicles; } }
+        public string StuecklistenAuswahlTitleHint { get { return Localize.PleaseChooseOneOrMoreComponents; } }
 
         [XmlIgnore]
         public string CsvUploadFileName { get; private set; }

@@ -75,7 +75,44 @@ namespace ServicesMvc.Controllers
             return PartialView("Briefversand/EquiSucheForm", model);
         }
 
+        [HttpPost]
+        public ActionResult Stueckliste()
+        {
+            BriefversandViewModel.LoadStueckliste();
+
+            return PartialView("Briefversand/Stueckliste", BriefversandViewModel);
+        }
+
+        [GridAction]
+        public ActionResult StuecklistenAuswahlAjaxBinding()
+        {
+            var items = BriefversandViewModel.StuecklisteFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridStuecklistenAuswahl(string filterValue, string filterColumns)
+        {
+            BriefversandViewModel.FilterStueckliste(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult StuecklistenAuswahlSelectionChanged(string id, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0, allFoundCount = 0;
+            if (id.IsNullOrEmpty())
+                BriefversandViewModel.SelectStueckliste(isChecked, out allSelectionCount, out allCount, out allFoundCount);
+            else
+                BriefversandViewModel.SelectStuecklistenEintrag(id, isChecked, out allSelectionCount);
+
+            return Json(new { allSelectionCount, allCount, allFoundCount });
+        }
+
         #endregion
+
 
         #region Fahrzeug Auswahl
 
@@ -356,7 +393,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Fahrzeuge", dt);
 
             return new EmptyResult();
@@ -364,8 +401,23 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Fahrzeuge", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+        public ActionResult StuecklistenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = BriefversandViewModel.StuecklisteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Stueckliste", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult StuecklistenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = BriefversandViewModel.StuecklisteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Stueckliste", dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }

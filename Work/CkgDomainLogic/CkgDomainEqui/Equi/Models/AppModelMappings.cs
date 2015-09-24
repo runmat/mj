@@ -834,7 +834,7 @@ namespace CkgDomainLogic.Equi.Models
                         d.Fahrgestellnummer = s.CHASSIS_NUM;
                         d.Kennzeichen = s.LICENSE_NUM;
                         d.Equipmentnummer = s.EQUNR;
-                        d.ID = s.IDNRK;
+                        d.Nr = s.IDNRK;
                         d.Bezeichnung = s.MAKTX;
                         d.ErsatzteilKennung = s.ERSKZ;
                         d.ErsatzteilKennungText = s.ETEXT;

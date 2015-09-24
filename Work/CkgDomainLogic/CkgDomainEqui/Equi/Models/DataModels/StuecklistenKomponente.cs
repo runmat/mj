@@ -10,8 +10,7 @@ namespace CkgDomainLogic.Equi.Models
 
         public string Kennzeichen { get; set; }
 
-        [SelectListKey]
-        public string ID { get; set; }
+        public string Nr { get; set; }
 
         [SelectListText]
         public string Bezeichnung { get; set; }
@@ -21,5 +20,11 @@ namespace CkgDomainLogic.Equi.Models
         public string ErsatzteilKennungText { get; set; }
 
         public bool IstLagernd { get; set; }
+
+
+        [SelectListKey]
+        public string UniqueId { get { return string.Format("{0}-{1}",  Fahrgestellnummer, Nr); } }
+
+        public bool IsSelected { get; set; }
     }
 }
