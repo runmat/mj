@@ -299,6 +299,11 @@ namespace CkgDomainLogic.Equi.ViewModels
             }
         }
 
+        public void InitVersandOptionen()
+        {
+            VersandOptionen.IstPostfachAdresse = (VersandAdresse != null && VersandAdresse.Strasse.NotNullOrEmpty().ToUpper().Contains("POSTFACH"));
+        }
+
         #endregion
 
 
