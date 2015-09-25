@@ -124,6 +124,7 @@ namespace CarDocu.Models
             {
                 _isBatchScanAllowed = value; 
                 SendPropertyChanged("IsBatchScanAllowed");
+                SendPropertyChanged("BarcodeNumericRangeVisible");
             }
         }
 
@@ -183,7 +184,17 @@ namespace CarDocu.Models
         public bool BarcodeAlphanumericAllowed
         {
             get { return _barcodeAlphanumericAllowed; }
-            set { _barcodeAlphanumericAllowed = value; SendPropertyChanged("BarcodeAlphanumericAllowed"); }
+            set
+            {
+                _barcodeAlphanumericAllowed = value;
+                SendPropertyChanged("BarcodeAlphanumericAllowed");
+                SendPropertyChanged("BarcodeNumericRangeVisible");
+            }
+        }
+        
+        public bool BarcodeNumericRangeVisible
+        {
+            get { return IsBatchScanAllowed && !BarcodeAlphanumericAllowed; }
         }
 
         private long _barcodeRangeStart = 1000000000009;

@@ -165,22 +165,22 @@
                               IsChecked="{Binding BarcodeAlphanumericAllowed, UpdateSourceTrigger=PropertyChanged}" Grid.Row="14" Grid.Column="1" 
                               />
 
-                    <TextBlock Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
+                    <TextBlock Visibility="{Binding BarcodeNumericRangeVisible, Converter={StaticResource BooleanVisibilityConverter}}" 
                                Text="Beginn Nummernkreis" Grid.Row="15" Grid.Column="0"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="15" Grid.Column="1" 
-                                Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}">
-                        <TextBox Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
+                                Visibility="{Binding BarcodeNumericRangeVisible, Converter={StaticResource BooleanVisibilityConverter}}">
+                        <TextBox 
                              Text="{Binding BarcodeRangeStart, UpdateSourceTrigger=PropertyChanged}" Width="200" 
                              Background="{Binding BarcodeRangeStartBackground}" Foreground="{Binding BarcodeRangeStartForeground}"/>
                         <TextBlock Visibility="{Binding ShowErrorBarcodeRangeStart, Converter={StaticResource BooleanVisibilityConverter}}" 
                                Text="{Binding ErrorTextBarcodeRangeStart, UpdateSourceTrigger=PropertyChanged}" Foreground="Red" Margin="10 0 0 0"/>    
                     </StackPanel>
 
-                    <TextBlock Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
+                    <TextBlock Visibility="{Binding BarcodeNumericRangeVisible, Converter={StaticResource BooleanVisibilityConverter}}" 
                                Text="Ende Nummernkreis" Grid.Row="16" Grid.Column="0"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="16" Grid.Column="1"
-                                Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}">
-                        <TextBox Visibility="{Binding BarcodeAlphanumericAllowed, Converter={StaticResource BooleanVisibilityInverseConverter}}" 
+                                Visibility="{Binding BarcodeNumericRangeVisible, Converter={StaticResource BooleanVisibilityConverter}}">
+                        <TextBox 
                              Text="{Binding BarcodeRangeEnd, UpdateSourceTrigger=PropertyChanged}" Width="200" 
                              Background="{Binding BarcodeRangeEndBackground}" Foreground="{Binding BarcodeRangeEndForeground}" />
                         <TextBlock Visibility="{Binding ShowErrorBarcodeRangeEnd, Converter={StaticResource BooleanVisibilityConverter}}" 

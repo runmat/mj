@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDocu", "CarDocu.csproj", "{A4AEABF8-F62C-44FC-B32F-A8EA417CF8C6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TwainDotNet", "..\..\Tools\TwainDotNet\TwainDotNet.csproj", "{857B8891-2932-484D-A9A8-D38B47108CF0}"
