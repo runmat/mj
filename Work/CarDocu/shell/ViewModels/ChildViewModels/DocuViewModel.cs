@@ -449,6 +449,8 @@ namespace CarDocu.ViewModels
 
         void ScanPageScanned(Bitmap image)
         {
+            image.Save(@"C:\Users\JenzenM\Pictures\Susi50\test.bmp");
+
             var guid = Guid.NewGuid().ToString();
 
             var scanImage = new ScanImage
