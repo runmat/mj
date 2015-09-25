@@ -138,33 +138,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             FahrzeugeForPartList = fahrzeugbriefe;
 
             if (FahrzeugeForPartList.Count == 1)
-            {
                 FahrzeugeForPartList.First().IsSelected = true;
-                
-                // ToDo remove test code !!!
-                if (FahrzeugeForPartList.First().Fahrgestellnummer == "WAU12345678777989")
-                {
-                    FahrzeugeForPartList.First().IsSelected = false;
-                    FahrzeugeForPartList.Add(new Fahrzeugbrief
-                    {
-                        Fahrgestellnummer = "WAUZZZ8E87A256924",
-                        Kennzeichen = "OD-EZ133",
-                        Vertragsnummer = "#4711"
-                    });
-                    FahrzeugeForPartList.Add(new Fahrzeugbrief
-                    {
-                        Fahrgestellnummer = "WAU12345678777995",
-                        Kennzeichen = "OD-J134",
-                        Vertragsnummer = "#6714"
-                    });
-                    FahrzeugeForPartList.Add(new Fahrzeugbrief
-                    {
-                        Fahrgestellnummer = "WAU12345678777996",
-                        Kennzeichen = "OD-WJ876",
-                        Vertragsnummer = "#8917"
-                    });
-                }
-            }
         }
 
         public List<StuecklistenKomponente> Stueckliste { get; set; }
@@ -530,7 +504,7 @@ namespace CkgDomainLogic.Equi.ViewModels
             Fahrzeuge.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
 
             allSelectionCount = Fahrzeuge.Count(c => c.IsSelected);
-            allCount = Fahrzeuge.Count();
+            allCount = Fahrzeuge.Count;
             allFoundCount = Fahrzeuge.Count(c => filter(c));
         }
 
