@@ -2,6 +2,8 @@
 @model CkgDomainLogic.Equi.ViewModels.BriefversandViewModel
 @{ var gridName = "GridStuecklistenAuswahl"; }
 
+<h4 class="margin-bottom-25">Komponenten für Ihre Auswahl: @Model.SelectedFahrzeugeAsString</h4>
+
 <h4>
     @Model.StuecklistenAuswahlTitleHint: 
     <span id="StuecklistenAuswahlCount" class="alert alert-success margin-left-15 hide">

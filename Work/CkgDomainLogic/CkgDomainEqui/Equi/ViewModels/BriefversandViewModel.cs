@@ -142,7 +142,7 @@ namespace CkgDomainLogic.Equi.ViewModels
                 FahrzeugeForPartList.First().IsSelected = true;
                 
                 // ToDo remove test code !!!
-                if (FahrzeugeForPartList.First().Fahrgestellnummer == "WVWZZZ3DZ78004209")
+                if (FahrzeugeForPartList.First().Fahrgestellnummer == "WAU12345678777989")
                 {
                     FahrzeugeForPartList.First().IsSelected = false;
                     FahrzeugeForPartList.Add(new Fahrzeugbrief
@@ -151,11 +151,25 @@ namespace CkgDomainLogic.Equi.ViewModels
                         Kennzeichen = "OD-EZ133",
                         Vertragsnummer = "#4711"
                     });
+                    FahrzeugeForPartList.Add(new Fahrzeugbrief
+                    {
+                        Fahrgestellnummer = "WAU12345678777995",
+                        Kennzeichen = "OD-J134",
+                        Vertragsnummer = "#6714"
+                    });
+                    FahrzeugeForPartList.Add(new Fahrzeugbrief
+                    {
+                        Fahrgestellnummer = "WAU12345678777996",
+                        Kennzeichen = "OD-WJ876",
+                        Vertragsnummer = "#8917"
+                    });
                 }
             }
         }
 
         public List<StuecklistenKomponente> Stueckliste { get; set; }
+
+        public List<StuecklistenKomponente> SelectedStueckliste { get { return Stueckliste.Where(sl => sl.IsSelected).OrderBy(sl => sl.Fahrgestellnummer).ToListOrEmptyList(); } }
 
         public List<StuecklistenKomponente> StuecklisteFiltered
         {
@@ -170,7 +184,7 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public void LoadStueckliste()
         {
-            Stueckliste = BriefbestandDataService.GetStuecklistenKomponenten(Fahrzeuge.Where(f => f.IsSelected).Select(f => f.Fahrgestellnummer)).ToListOrEmptyList();
+            Stueckliste = BriefbestandDataService.GetStuecklistenKomponenten(SelectedFahrzeuge.Select(f => f.Fahrgestellnummer)).ToListOrEmptyList();
 
             DataMarkForRefreshStueckliste();
         }
@@ -237,7 +251,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         public List<VersandGrund> VersandGruendeList { get { return BriefVersandDataService.GetVersandgruende(VersandartOptionen.IstEndgueltigerVersand); } }
 
         [XmlIgnore]
-        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return Fahrzeuge.Where(c => c.IsSelected).ToList(); } }
+        public List<Fahrzeugbrief> SelectedFahrzeuge { get { return Fahrzeuge.Where(c => c.IsSelected).OrderBy(c => c.Fahrgestellnummer).ToList(); } }
 
         [XmlIgnore]
         public string SelectedFahrzeugeAsString
@@ -565,6 +579,11 @@ namespace CkgDomainLogic.Equi.ViewModels
                         versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: true, schluesselVersand: false, schluesselKombiVersand: false));
                         versandAuftraege.Add(CreateVersandAuftrag(fzg.Fahrgestellnummer, "", briefVersand: false, schluesselVersand: true, schluesselKombiVersand: true));
                     }
+
+                    if (VersandModus == BriefversandModus.Stueckliste)
+                        SelectedStueckliste.Where(sl => sl.Fahrgestellnummer == fzg.Fahrgestellnummer)
+                            .ToListOrEmptyList().ForEach(sl =>
+                                versandAuftraege.Add(CreateVersandAuftrag(sl.Fahrgestellnummer, sl.Nr, briefVersand: false, schluesselVersand: false, schluesselKombiVersand: false)));
                 });
 
             SaveErrorMessage = BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege);
@@ -586,6 +605,8 @@ namespace CkgDomainLogic.Equi.ViewModels
                 Items = new ListNotEmpty<GeneralEntity>
                         (
                             SummaryBeauftragungsHeader,
+
+                            GetStuecklisteForSummary(),
 
                             new GeneralEntity
                             {
@@ -610,6 +631,18 @@ namespace CkgDomainLogic.Equi.ViewModels
             };
 
             return summaryModel;
+        }
+
+        private GeneralEntity GetStuecklisteForSummary()
+        {
+            if (VersandModus != BriefversandModus.Stueckliste)
+                return null;
+
+            return new GeneralEntity
+            {
+                Title = Localize.Partlist,
+                Body = string.Join("<br />", SelectedStueckliste.Select(sl => string.Format("- {0}, {1}, {2}", sl.Fahrgestellnummer, sl.Kennzeichen, sl.Bezeichnung))),
+            };
         }
 
         private void GetCurrentAppID()
