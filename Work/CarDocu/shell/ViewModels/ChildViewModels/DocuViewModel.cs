@@ -78,6 +78,8 @@ namespace CarDocu.ViewModels
 
                 if (SelectedScanImage != null)
                     TrySelectDocumentType(SelectedScanImage.ImageDocumentTypeCode);
+
+                CalcSelectedScanImageSizeForUI();
             }
         }
 
@@ -327,12 +329,37 @@ namespace CarDocu.ViewModels
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
         }
 
+        private Size _windowSize = new Size();
+
+        private static double GetMaxHeight(Size size)
+        {
+             return size.Height - 210;
+        }
+
         public void MainWindowSizeChanged(Size newSize)
         {
-            SelectedScanImageHeight = newSize.Height - 170;
-            SelectedScanImageWidth = SelectedScanImageHeight * 21.1 / 29.4;
+            _windowSize = newSize;
+            SelectedScanImageHeight = GetMaxHeight(_windowSize);
 
-            _docuArtListBoxMaxSavedWidth = (int)(newSize.Width - 630);
+            CalcSelectedScanImageSizeForUI();
+        }
+
+        void CalcSelectedScanImageSizeForUI()
+        { 
+            if (SelectedScanImage == null)
+                return;
+
+            var img = SelectedScanImage.ImageSource;
+            double calcedHeight;
+            if (img.Height < img.Width)
+                calcedHeight = (GetMaxHeight(_windowSize)) * (img.Height / img.Width);
+            else
+                calcedHeight = GetMaxHeight(_windowSize);
+
+            SelectedScanImageHeight = calcedHeight;
+            //SelectedScanImageWidth = SelectedScanImageHeight * img.Width / img.Height;
+
+            _docuArtListBoxMaxSavedWidth = (int)(_windowSize.Width - 630);
             DocuArtListBoxMaxWidth = _docuArtListBoxMaxSavedWidth;
         }
 
@@ -449,8 +476,6 @@ namespace CarDocu.ViewModels
 
         void ScanPageScanned(Bitmap image)
         {
-            image.Save(@"C:\Users\JenzenM\Pictures\Susi50\test.bmp");
-
             var guid = Guid.NewGuid().ToString();
 
             var scanImage = new ScanImage
