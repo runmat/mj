@@ -201,15 +201,15 @@
     }
 
     function SetFahrzeugakteFormToReadOnly(readonly) {
-        $("#fahrzeug-akte input[type=text]").attr("readonly", readonly);
+        $("#fahrzeuge-akte input[type=text]").attr("readonly", readonly);
         $("#FabrikName,#HandelsName").attr("readonly", true);
-        $("#fahrzeug-akte input[name='FIN']").attr("readonly", true);
+        $("#fahrzeuge-akte input[name='FIN']").attr("readonly", true);
 
         if (readonly) {
-            $("#fahrzeug-bestand").show();
+            $("#fahrzeuge-bestand").show();
             $("button[type=submit] span").text('@Localize.Save');
         } else {
-            $("#fahrzeug-bestand").hide();
+            $("#fahrzeuge-bestand").hide();
             $("button[type=submit] span").text('@Localize.VehicleCreate');
         }
     }
@@ -304,7 +304,7 @@
                     hiddenFieldName = "Kaeufer";
                 else if (result.partnerKennung.toLowerCase().substr(0, 1) == "z")
                     hiddenFieldName = "ZahlerKfzSteuer";
-                $("#fahrzeug-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
+                $("#fahrzeuge-bestand input[name='" + hiddenFieldName + "']").val(result.partnerID);
 
                 ClosePartnerAddressGrid();
             },

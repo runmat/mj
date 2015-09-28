@@ -193,69 +193,69 @@ namespace CkgDomainLogic.CoC.Services
             ValidateOverallUploadItems(uploadItems);
         }
 
-            static void ValidateOverallUploadItems(List<CsvUploadEntityDpmCoc> uploadItems)
-            {
-                // duplicate VIN check overall upload items:
-                var duplicateVins = uploadItems.GroupBy(group => group.VIN).Where(g => g.Count() > 1).Select(g => g.Key.NotNullOrEmpty().ToUpper()).ToList();
-                uploadItems.Where(item => duplicateVins.Contains(item.VIN.NotNullOrEmpty().ToUpper())).ToList().ForEach(item => item.ValidationErrors += ",VIN");
-            }
+        static void ValidateOverallUploadItems(List<CsvUploadEntityDpmCoc> uploadItems)
+        {
+            // duplicate VIN check overall upload items:
+            var duplicateVins = uploadItems.GroupBy(group => group.VIN).Where(g => g.Count() > 1).Select(g => g.Key.NotNullOrEmpty().ToUpper()).ToList();
+            uploadItems.Where(item => duplicateVins.Contains(item.VIN.NotNullOrEmpty().ToUpper())).ToList().ForEach(item => item.ValidationErrors += ",VIN");
+        }
 
-            void ValidateSingleUploadItem(CsvUploadEntityDpmCoc item)
-            {
-                var errorList = ValidateUploadItem(item);
-                item.ValidationErrors = string.Join(",", errorList);
-            }
+        void ValidateSingleUploadItem(CsvUploadEntityDpmCoc item)
+        {
+            var errorList = ValidateUploadItem(item);
+            item.ValidationErrors = string.Join(",", errorList);
+        }
 
-            public IEnumerable<string> ValidateUploadItem(CsvUploadEntityDpmCoc item)
-            {
-                item.CustomerNo = LogonContext.KundenNr.ToSapKunnr();
+        public IEnumerable<string> ValidateUploadItem(CsvUploadEntityDpmCoc item)
+        {
+            item.CustomerNo = LogonContext.KundenNr.ToSapKunnr();
 
-                //
-                // Step 1. Data Annotation Validation
-                //
-                var errorList = ValidationService.ValidateDataAnnotations(item).SelectMany(r => r.MemberNames).ToList();
+            //
+            // Step 1. Data Annotation Validation
+            //
+            var errorList = ValidationService.ValidateDataAnnotations(item).SelectMany(r => r.MemberNames).ToList();
 
-                //
-                // Step 2. Fluent Validaton
-                //
+            //
+            // Step 2. Fluent Validaton
+            //
 
-                // country check:
-                if (!IsValidCountryCode(item.Country))
-                    errorList.Add("Country");
+            // country check:
+            if (!IsValidCountryCode(item.Country))
+                errorList.Add("Country");
 
-                // color check:
-                if (item.Color.IsNumeric() && !IsValidColorCode(item.Color))
-                    errorList.Add("Color");
-                if (!item.Color.IsNumeric() && !IsValidColorName(item.Color))
-                    errorList.Add("Color");
+            // color check:
+            if (item.Color.IsNumeric() && !IsValidColorCode(item.Color))
+                errorList.Add("Color");
+            if (!item.Color.IsNumeric() && !IsValidColorName(item.Color))
+                errorList.Add("Color");
 
-                // order check:
-                if (item.OrderID.IsNullOrEmpty())
-                    errorList.Add("OrderID");
+            // order check:
+            if (item.OrderID.IsNullOrEmpty())
+                errorList.Add("OrderID");
 
-                // VIN check:
-                // Nur wenn nicht bereits mit selber VIN vorhanden mit gesetzter Auftrags-Nr (bzw. bereits gedruckt)
-                if (SapCocAuftraegeGedruckt.Any(auftragGedruckt => auftragGedruckt.VIN.NotNullOrEmpty().ToUpper() == item.VIN.NotNullOrEmpty().ToUpper()))
-                    errorList.Add("VIN");
+            // VIN check:
+            // Nur wenn nicht bereits mit selber VIN vorhanden mit gesetzter Auftrags-Nr (bzw. bereits gedruckt)
+            if (SapCocAuftraegeGedruckt.Any(auftragGedruckt => auftragGedruckt.VIN.NotNullOrEmpty().ToUpper() == item.VIN.NotNullOrEmpty().ToUpper()))
+                errorList.Add("VIN");
             
-                // moved to step 1, see above (Data Annotation Validation)
-                //if (item.VIN.IsNullOrEmpty())
-                //    errorList.Add("VIN");
+            // moved to step 1, see above (Data Annotation Validation)
+            //if (item.VIN.IsNullOrEmpty())
+            //    errorList.Add("VIN");
 
 
-                // Typdaten check:
-                // Nur wenn es diesen Typ bereits gibt
-                var sapItem = ModelMapping.Copy(item, new Z_DPM_UPD_COC_01.GT_DAT(), AppModelMappings.MapCsvUploadEntityDpmCocToSAP);
+            // Typdaten check:
+            // Nur wenn es diesen Typ bereits gibt
+            var sapItem = ModelMapping.Copy(item, new Z_DPM_UPD_COC_01.GT_DAT(), AppModelMappings.MapCsvUploadEntityDpmCocToSAP);
 
-                var existingTyp = GetSapCocTypdaten(sapItem.ZBII_2_1, sapItem.ZBII_2_2_TYP, sapItem.ZBII_2_2_VVS);
-                if (existingTyp == null)
-                {
-                    errorList.Add("CodeManufacturer");
-                    errorList.Add("CodeTypeVersion");
-                }
-
-                return errorList;
+            var existingTyp = GetSapCocTypdaten(sapItem.ZBII_2_1, sapItem.ZBII_2_2_TYP, sapItem.ZBII_2_2_VVS);
+            if (existingTyp == null)
+            {
+                errorList.Add("CodeManufacturer");
+                errorList.Add("CodeTypeVersion");
             }
+
+            return errorList;
+        }
 
         bool IsValidColorCode(string colorCode)
         {
