@@ -489,16 +489,16 @@ namespace CkgDomainLogic.General.Controllers
             pService.SaveObject(objectKey, GetRealPersistanceOwnerKey(), groupKey, LogonContext.UserName, ref o, ref o2);
         }
 
-        protected void PersistanceSaveObject(string groupKey, string objectKey, IPersistableObject o)
+        protected IPersistableObject PersistanceSaveObject(string groupKey, string objectKey, IPersistableObject o)
         {
+            if (o == null)
+                return null;
+
             var pService = LogonContext.PersistanceService;
             if (pService == null)
-                return;
+                return o;
 
-            if (o == null)
-                return;
-
-            pService.SaveObject(objectKey, GetRealPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
+            return pService.SaveObject(objectKey, GetRealPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
         }
 
         protected void PersistanceDeleteObject(string objectKey)

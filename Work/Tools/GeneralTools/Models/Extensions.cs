@@ -236,6 +236,11 @@ namespace GeneralTools.Models
             return string.Format("{0}{1}", prepend, s);
         }
 
+        public static string PrependIfNotNullElse(this string s, string prepend, string elseString)
+        {
+            return s.IsNotNullOrEmpty() ? s.PrependIfNotNull(prepend) : elseString;
+        }
+
         public static string AppendIfNotNull(this string s, string append)
         {
             if (s.IsNullOrEmpty() || append.IsNullOrEmpty())

@@ -11,7 +11,9 @@
     {
         columns.XBound(c => c.Action).Width(145).Title("").Filterable(false).Sortable(false).Visible(Model.EditMode)
             .ClientTemplate(
-                "<a href='#' onclick='FahrzeugBearbeiten(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
+                "<a href='#' onclick='return FahrzeugBearbeiten(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='right'><i class='halflings-icon white pencil'></i></a>"
+                  + "&nbsp;" +
+                "<a href='#' onclick='return FahrzeugDelete(\"<#= data.Kennzeichen #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Delete + "' data-placement='right'><i class='halflings-icon white remove'></i></a>"
             );
 
         columns.XBound(c => c.Status).Visible(!Model.EditMode);
@@ -52,6 +54,7 @@
     else
     {
         <a href="DeliveryNoteAsPdf" class="btn blue"> @Localize.DeliveryNoteAsPdf <i class="icon-download-alt"></i></a>
+        <a href="GenerateUpsShippingOrder" target="_blank" class="btn blue"> @Localize.GenerateUpsShippingOrder</a>
         <button type="button" class="btn blue" onclick="NeuesFahrzeugErfassen(true);">@Localize.Continue</button>
     }
 </div>
