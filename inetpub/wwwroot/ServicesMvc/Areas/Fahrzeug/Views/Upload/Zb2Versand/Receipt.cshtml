@@ -1,0 +1,22 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.UploadZb2VersandViewModel
+
+@if (Model.SaveErrorMessage.IsNullOrEmpty())
+{
+    <div class="alert alert-success">
+        <i class="icon-check"></i><span class="padding-left-5">@Localize.DataCorrectlyProcessed</span>
+    </div>
+}
+else
+{
+    <div class="alert alert-error">
+        <span class="label label-important"><i class="icon-bell"></i><span class="margin-left-5"> @Localize.ErrorsOccuredOnSaving</span></span><br /><br />
+        @Model.SaveErrorMessage.ToHtml()
+    </div>
+}
+
+@if (Model.SaveErrorMessage.IsNotNullOrEmpty())
+{
+    <script type="text/javascript">
+        FormWizard.ButtonPrevShowDelayed();
+    </script>
+}
