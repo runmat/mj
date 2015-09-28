@@ -9,14 +9,9 @@ namespace CkgDomainLogic.DomainCommon.Contracts
     {
         List<VersandGrund> GetVersandgruende(bool endgVersand);
 
-        string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege);
+        string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege, bool filterSapErrorMessageVersandBeauftragung = true);
 
 
-        #region not used yet
-        
-        Fahrzeug GetFahrzeugBriefForVin(string vin);
-        IEnumerable<Fahrzeug> GetFahrzeugBriefe(Fahrzeug fahrzeugBriefParameter);
-        
-        #endregion
+        IEnumerable<Fahrzeug> GetFahrzeugBriefe(IEnumerable<Fahrzeug> fahrzeuge);
     }
 }
