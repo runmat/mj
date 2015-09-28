@@ -7,7 +7,6 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
 
 namespace ServicesMvc.Controllers
@@ -111,10 +110,7 @@ namespace ServicesMvc.Controllers
         {
             if (clearList)
             {
-                // clear shopping cart
-                var kennzeichenList = CarporterfassungViewModel.Fahrzeuge.Select(f => f.Kennzeichen).ToList();
-                foreach (var kennzeichen in kennzeichenList)
-                    FahrzeugDelete(kennzeichen);
+                PersistanceDeleteAllObjects(PersistableGroupKey);
 
                 CarporterfassungViewModel.ClearList();
             }
