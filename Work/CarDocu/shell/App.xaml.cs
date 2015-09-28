@@ -23,7 +23,7 @@ namespace CarDocu
 
         private void ApplicationStart(object sender, StartupEventArgs e)
         {
-            if (AssemblyService.ApplicationCloneOfMeIsAlreadyRunning(Tools.Alert))
+            if (AssemblyService.ApplicationCloneOfMeIsAlreadyRunning(Tools.Alert, DomainService.AppName))
             {
                 Current.Shutdown();
                 return;
