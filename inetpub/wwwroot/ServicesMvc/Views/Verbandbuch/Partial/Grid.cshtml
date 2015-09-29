@@ -1,0 +1,27 @@
+﻿@using CkgDomainInternal.Verbandbuch.Models
+@using CkgDomainInternal.Verbandbuch.ViewModels
+@model VerbandbuchViewModel 
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridVerbandbuch"; }
+
+@(Html.Telerik()
+    .Grid<VerbandbuchModel>()
+    .Name(gridName)
+    .XAjaxDataBinding("VerbandbuchAjaxBinding", "Verbandbuch")
+    .Columns(columns =>
+    {
+        columns.XBoundAll();
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridVerbandbuch"))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.AccidentNo).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportVerbandbuchFilteredExcel", "Verbandbuch");
+        commands.FilteredDataCommand("ExportVerbandbuchFilteredPDF", "Verbandbuch");
+    })
+)
+

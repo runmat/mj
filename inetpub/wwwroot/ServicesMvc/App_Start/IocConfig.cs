@@ -2,6 +2,8 @@
 using System.Web.Mvc;
 using Autofac;
 using Autofac.Integration.Mvc;
+using CkgDomainInternal.Verbandbuch.Contracts;
+using CkgDomainInternal.Verbandbuch.Services;
 using CkgDomainLogic.Archive.Contracts;
 using CkgDomainLogic.Archive.Services;
 using CkgDomainLogic.Charts.Contracts;
@@ -85,6 +87,7 @@ namespace ServicesMvc
             builder.RegisterControllers(Assembly.Load("CkgDomainInsurance"));
             builder.RegisterControllers(Assembly.Load("CkgDomainFahrer"));
             builder.RegisterControllers(Assembly.Load("CkgDomainAutohaus"));
+            builder.RegisterControllers(Assembly.Load("CkgDomainInternal"));
             builder.RegisterSource(new ViewRegistrationSource());
             builder.RegisterModule(new AutofacWebTypesModule());
 
@@ -223,6 +226,8 @@ namespace ServicesMvc
             builder.RegisterType<FinanceVersendungenDataServiceSAP>().As<IFinanceVersendungenDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadAvislisteDataServiceSap>().As<IUploadAvislisteDataService>().InstancePerHttpRequest();
             builder.RegisterType<CarporterfassungDataServiceSAP>().As<ICarporterfassungDataService>().InstancePerHttpRequest();
+
+            builder.RegisterType<VerbandbuchDataServiceSAP>().As<IVerbandbuchDataService>().InstancePerHttpRequest(); // ITA 8249 (Verbandbuch) RehrA
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
