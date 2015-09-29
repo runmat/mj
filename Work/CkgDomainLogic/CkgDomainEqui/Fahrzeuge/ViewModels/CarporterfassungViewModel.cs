@@ -297,7 +297,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                             new LabelSpecificationType {LabelImageFormat = new LabelImageFormatType {Code = "GIF"}}
                     };
 
-                var shipService = new ShipService {UPSSecurityValue = securityToken};
+                var shipService = new ShipService { Url = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "Url"), UPSSecurityValue = securityToken };
 
                 // ReSharper disable CSharpWarnings::CS0612
                 System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
