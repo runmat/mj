@@ -15,8 +15,19 @@
             @Html.FormTextBoxFor(m => m.BriefNr, new { @class = "m-wrap", col = "right" })
 
 
-            @Html.FormTextBoxFor(m => m.Ref1, new { @class = "m-wrap", col = "left" })
-            @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap", col = "right" })
+            @if (Html.DisplayNameFor(m => m.Ref1).ToString().IsNotNullOrEmpty() && Html.DisplayNameFor(m => m.Ref2).ToString().IsNotNullOrEmpty())
+            {
+                @Html.FormTextBoxFor(m => m.Ref1, new { @class = "m-wrap", col = "left" })
+                @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap", col = "right" })
+            }
+            else if (Html.DisplayNameFor(m => m.Ref1).ToString().IsNotNullOrEmpty())
+            {
+                @Html.FormTextBoxFor(m => m.Ref1, new { @class = "m-wrap" })
+            }
+            else if (Html.DisplayNameFor(m => m.Ref2).ToString().IsNotNullOrEmpty())
+            {
+                @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap" })
+            }
 
         </div>
 
