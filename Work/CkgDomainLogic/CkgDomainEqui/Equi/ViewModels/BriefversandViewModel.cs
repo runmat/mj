@@ -557,7 +557,7 @@ namespace CkgDomainLogic.Equi.ViewModels
                     if (VersandModus == BriefversandModus.Stueckliste)
                         SelectedStueckliste.Where(sl => sl.Fahrgestellnummer == fzg.Fahrgestellnummer)
                             .ToListOrEmptyList().ForEach(sl =>
-                                versandAuftraege.Add(CreateVersandAuftrag(sl.Fahrgestellnummer, sl.Nr, briefVersand: false, schluesselVersand: false, schluesselKombiVersand: false)));
+                                versandAuftraege.Add(CreateVersandAuftrag(sl.Fahrgestellnummer, sl.Nr, briefVersand: true, schluesselVersand: false, schluesselKombiVersand: false)));
                 });
 
             SaveErrorMessage = BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege);
