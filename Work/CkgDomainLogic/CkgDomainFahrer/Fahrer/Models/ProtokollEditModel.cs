@@ -57,10 +57,10 @@ namespace CkgDomainLogic.Fahrer.Models
         {
             DateTime tmpDat;
 
-            if (!String.IsNullOrEmpty(AbholUhrzeit) && !DateTime.TryParseExact(AbholUhrzeit, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
+            if (!String.IsNullOrEmpty(AbholUhrzeit) && !DateTime.TryParseExact(AbholUhrzeit, "HHmm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
                 yield return new ValidationResult(Localize.TimeInvalid, new[] { "AbholUhrzeit" });
 
-            if (!String.IsNullOrEmpty(UebergabeUhrzeit) && !DateTime.TryParseExact(UebergabeUhrzeit, "HH:mm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
+            if (!String.IsNullOrEmpty(UebergabeUhrzeit) && !DateTime.TryParseExact(UebergabeUhrzeit, "HHmm", CultureInfo.CurrentCulture, DateTimeStyles.None, out tmpDat))
                 yield return new ValidationResult(Localize.TimeInvalid, new[] { "UebergabeUhrzeit" });
         }
     }

@@ -22,7 +22,6 @@
             <div class="span6">
                 
                 @Html.HiddenFor(m => m.Protokoll.KundenNr)
-                @Html.HiddenFor(m => m.Protokoll.AuftragsNr)
                 @Html.HiddenFor(m => m.Protokoll.IstSonstigerAuftrag)
                 @Html.HiddenFor(m => m.Protokoll.Fahrt)
                 @Html.HiddenFor(m => m.Protokoll.WunschLieferDatum)
@@ -31,11 +30,12 @@
                 @Html.HiddenFor(m => m.Protokoll.OrtStart)
                 @Html.HiddenFor(m => m.Protokoll.OrtZiel)
 
-                @Html.HiddenFor(m => m.Protokoll.VIN)
-                @Html.FormTextBlockFor(m => m.Protokoll.VIN, new { @class = "m-wrap" }, labelText: Localize.ChassisNo)
+                @Html.HiddenFor(m => m.Protokoll.AuftragsNr)
+                @Html.FormTextBlockFor(m => m.Protokoll.AuftragsNr, new { @class = "m-wrap" })
 
-                @Html.HiddenFor(m => m.Protokoll.Kennzeichen)
-                @Html.FormTextBlockFor(m => m.Protokoll.Kennzeichen, new { @class = "m-wrap" })
+                @Html.FormTextBoxFor(m => m.Protokoll.VIN, new { @class = "m-wrap", maxlength = "30" }, labelText: Localize.ChassisNo)
+
+                @Html.FormTextBoxFor(m => m.Protokoll.Kennzeichen, new { @class = "m-wrap", maxlength = "15" })
 
                 @Html.HiddenFor(m => m.Protokoll.Referenz)
                 @Html.FormTextBlockFor(m => m.Protokoll.Referenz, new { @class = "m-wrap" })
@@ -44,9 +44,9 @@
                     
                 @Html.FormDatePickerFor(m => m.UeberfuehrungsDatum, new { @class = "m-wrap small" })
                 @Html.FormDatePickerFor(m => m.AbholDatum, new { @class = "m-wrap small" })
-                @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap xsmall", maxlength = "5" })
+                @Html.FormTextBoxFor(m => m.AbholUhrzeit, new { @class = "m-wrap xsmall", maxlength = "4" })
                 @Html.FormDatePickerFor(m => m.UebergabeDatum, new { @class = "m-wrap small" })
-                @Html.FormTextBoxFor(m => m.UebergabeUhrzeit, new { @class = "m-wrap xsmall", maxlength = "5" })
+                @Html.FormTextBoxFor(m => m.UebergabeUhrzeit, new { @class = "m-wrap xsmall", maxlength = "4" })
                 @Html.FormTextBoxFor(m => m.Kilometerstand, new { @class = "m-wrap xsmall" })
                 @Html.FormCheckBoxFor(m => m.UnterschriftVorhanden, new { @class = "m-wrap" })
                     
