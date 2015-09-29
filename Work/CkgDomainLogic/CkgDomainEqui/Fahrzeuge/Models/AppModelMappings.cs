@@ -587,7 +587,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_ABM_LIST.IT_STATUS, FahrzeugStatus>(
                                                  new Dictionary<string, string>
                                                      {
-                                                         {"STATUS", "ID"},
+                                                         {"STATUS", "Nr"},
                                                      },
                                                      null,  // Init Copy
                                                      (business, sap) =>   // Init Copy Back

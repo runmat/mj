@@ -142,7 +142,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             tblLieferschein.Columns.Add("Vorlage ZBI");
             tblLieferschein.Columns.Add("Anzahl Kennzeichen");
             tblLieferschein.Columns.Add("Web User");
-            tblLieferschein.Columns.Add("Carport ID");
+            tblLieferschein.Columns.Add("Carport Nr");
             tblLieferschein.Columns.Add("Erfassungsdatum");
             tblLieferschein.Columns.Add("Bestandsnummer");
             tblLieferschein.Columns.Add("Auftragsnummer");
@@ -181,7 +181,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 newRow["Vorlage ZBI"] = "";
                 newRow["Anzahl Kennzeichen"] = fzg.AnzahlKennzeichen;
                 newRow["Web User"] = LogonContext.UserName;
-                newRow["Carport ID"] = fzg.CarportId;
+                newRow["Carport Nr"] = fzg.CarportId;
                 newRow["Erfassungsdatum"] = DateTime.Now.ToShortDateString();
                 newRow["Bestandsnummer"] = fzg.MvaNr;
                 newRow["Auftragsnummer"] = fzg.AuftragsNr;

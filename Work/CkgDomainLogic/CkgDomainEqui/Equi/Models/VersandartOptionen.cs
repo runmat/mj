@@ -31,8 +31,22 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        public bool EndgueltigerVersandAusgeblendet { get; set; }
+
         [XmlIgnore]
-        public static string VersandartAuswahl { get { return string.Format("2,{0};1,{1}", Localize.DispatchTypeFinal, Localize.DispatchTypeTemporaryVerbose); } }
+        public string VersandartAuswahl
+        {
+            get
+            {
+                var optionen = "";
+                if (!EndgueltigerVersandAusgeblendet)
+                    optionen = string.Format("2,{0};", Localize.DispatchTypeFinal);
+
+                optionen += string.Format("1,{0}", Localize.DispatchTypeTemporaryVerbose);
+
+                return optionen;
+            }
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

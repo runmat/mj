@@ -97,8 +97,6 @@ namespace CkgDomainLogic.DomainCommon.Models
         #endregion
 
 
-        #region Brief Versand (not used yet)
-
         static private readonly Dictionary<string, string> MapFahrzeugeFromSapDict = new Dictionary<string, string>
             {
                 {"EQUNR", "EquiNr"},
@@ -108,6 +106,8 @@ namespace CkgDomainLogic.DomainCommon.Models
                 {"ZZSTATUS_ABG", "IstAbgemeldet"},
                 {"ZZSTATUS_IABG", "IstInAbmeldung"},
                 {"FEHLERTEXT", "Info"},
+                {"LIZNR", "VertragsNr"},
+                {"TIDNR", "BriefNr"},
                 {"ZZREFERENZ1", "Ref1"},
                 {"ZZREFERENZ2", "Ref2"},
             };
@@ -144,13 +144,13 @@ namespace CkgDomainLogic.DomainCommon.Models
                 {
                     {"CHASSIS_NUM", "FIN"},
                     {"LICENSE_NUM", "Kennzeichen"},
+                    {"LIZNR", "VertragsNr"},
+                    {"TIDNR", "BriefNr"},
                     {"ZZREFERENZ1", "Ref1"},
                     {"ZZREFERENZ2", "Ref2"},
                }));
             }
         }
-
-        #endregion
 
         #region Domänenfestwerte
 
