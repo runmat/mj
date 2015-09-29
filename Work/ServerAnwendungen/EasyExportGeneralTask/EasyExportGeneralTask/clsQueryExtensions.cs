@@ -285,6 +285,16 @@ namespace EasyExportGeneralTask
                             }
                             cls.SavePictureEuropcar(ref LC, logDS, ref row, taskConfig, dataObjEuropcar);
                             break;
+
+                        case AblaufTyp.WKDA:
+                            strFahrgestellnummer = row["FAHRG"].ToString();
+                            Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT dataObjWkda = null;
+                            if (additionalData != null)
+                            {
+                                dataObjWkda = (additionalData[0] as Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT);
+                            }
+                            cls.SavePictureWKDA(ref LC, logDS, ref row, taskConfig, dataObjWkda);
+                            break;
                     }
                 }
                 else
@@ -1027,6 +1037,38 @@ namespace EasyExportGeneralTask
 
             Thread.Sleep(2000);
 
+            File.Delete(row["Filepath"].ToString());
+        }
+
+        public static void SavePictureWKDA(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT item)
+        {
+            object iStatus;
+            object status = "";
+
+            Console.WriteLine("Wait... for " + row["FAHRG"]);
+
+            if (File.Exists(row["Filepath"].ToString()))
+            {
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
+            }
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
+
+            // neuen Namen für Datei vergeben
+            string newFilePath = taskConfig.easyBlobPathLocal + "\\" + item.REFERENZ1 + "_" + DateTime.Now.ToShortDateString() + "_" + item.NAME1 + ".pdf";
+            if (File.Exists(newFilePath))
+                File.Delete(newFilePath);
+
+            File.Move(row["Filepath"].ToString(), newFilePath);
+
+            Thread.Sleep(2000);
+
+            // ursprüngliche Datei löschen
             File.Delete(row["Filepath"].ToString());
         }
     }

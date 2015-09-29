@@ -468,6 +468,9 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_IMP_MEL_CARP_01").WriteOrmForExportTableStructures("I_AG, I_WEB_USER", "10077452", "CarlM");
 
+            //new FunctionReflector("Z_WFM_UEBERMITTLUNG_STAT_01").WriteOrmForExportTableStructures("I_KUNNR, I_STATUSWERT", "10077452", "4");
+            //new FunctionReflector("Z_WFM_SET_STATUS_UEBERM_01").WriteOrmForExportTableStructures("I_KUNNR", "10077452");
+
 
             //CoCTest();
             //TeslaTest();
