@@ -1857,7 +1857,7 @@ namespace EasyExportGeneralTask
                 {
                     result.clear();
 
-                    string queryexpression = ".1001=" + item.FAHRG + " & .110=ZB1";
+                    string queryexpression = ".1001=" + item.FAHRG + " & .1002=ZB1";
 
                     string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
@@ -1949,9 +1949,15 @@ namespace EasyExportGeneralTask
                     {
                         EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner gestartet", EventLogEntryType.Information);
 
-                        var zipName = "Abmeldungen_" + DateTime.Now.ToString("dd.MM.yyyy HH:mm");
+                        var zipName = "Abmeldungen " + DateTime.Now.ToString("dd.MM.yyyy HHmm");
+                        var zipOrdnerPfad = taskConfiguration.exportPathZip + "\\Abmeldungen " + DateTime.Now.ToShortDateString();
 
-                        string zipcommand = " a -tzip " + taskConfiguration.exportPathZip + "\\" + zipName + " " + taskConfiguration.easyBlobPathLocal + "\\*";
+                        if (!Directory.Exists(zipOrdnerPfad))
+                            Directory.CreateDirectory(zipOrdnerPfad);
+
+                        var zipPfad = zipOrdnerPfad + "\\" + zipName + ".zip";
+
+                        string zipcommand = " a -tzip \"" + zipPfad + "\" " + taskConfiguration.easyBlobPathLocal + "\\*";
                         Process sdp = Process.Start(Konfiguration.pathZipApplication, zipcommand);
 
                         if (sdp != null)
@@ -1987,11 +1993,10 @@ namespace EasyExportGeneralTask
                             var mailBetreff = String.Format("Abmeldebestätigung {0}", zipName);
                             var mailText = String.Join(Environment.NewLine, new[]
                             {
-                                "Sehr geehrte Damen und Herren,",
-                                "anbei erhalten Sie wie besprochen die in der Anlage enthaltenen Dokumente."
+                                "Es steht eine neue Datei mit Abmeldebestätigungen zur Abholung bereit."
                             });
 
-                            Helper.SendEMail(mailBetreff, mailText, taskConfiguration.MailEmpfaenger, taskConfiguration.exportPathZip + "\\" + zipName + ".zip");
+                            Helper.SendEMail(mailBetreff, mailText, taskConfiguration.MailEmpfaenger, zipPfad);
                         }
 
                         #endregion

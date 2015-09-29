@@ -57,7 +57,8 @@ namespace EasyExportGeneralTask
             // Hier kann nicht immer arcLocation als QueryFormat (Parameter 6) gewählt werden, weil z.B. bei Ford je nach Kunde (CSC,FFD) die Sichten NICHT Ford heißen!!!
             var tmpCounter = cls.EASYQueryArchiveInit(taskConfig.easyLocation, archiveName, queryExpression, 8000, 8000, Konfiguration.easyQueryIndexName,
                                                       null, ref dummyLayoutFieldId, ref dummyLayoutId, ref totalHits, ref dummyHitlistMultiTiff, ref status);
-            result.hitCounter += Int32.Parse(tmpCounter.ToString()) - 1; // Header abziehen
+
+            result.hitCounter = Int32.Parse(tmpCounter.ToString()) - 1; // Header abziehen
 
             if (result.hitCounter == 0)
             {
@@ -73,7 +74,7 @@ namespace EasyExportGeneralTask
                 // Hier Tabelle zusammenbauen
                 result.AddColumnsToResultTable(feldliste); // Spalten zur Treffertabelle hinzufügen
 
-                for (int i = startIndex; i < result.hitCounter; i++)
+                for (int i = startIndex; i < (startIndex + result.hitCounter); i++)
                 {
                     string tblRow = (string)cls.EASYQueryArchiveNext(ref strLocFound, ref strArcFound, ref doc_id, ref doc_ver); // Nächste Zeile              
                     result.addRowToResultTable(tblRow, feldliste, (string)strLocFound, (string)strArcFound, (string)doc_id, (string)doc_ver);
@@ -287,7 +288,7 @@ namespace EasyExportGeneralTask
                             break;
 
                         case AblaufTyp.WKDA:
-                            strFahrgestellnummer = row["FAHRG"].ToString();
+                            strFahrgestellnummer = row["FIN"].ToString();
                             Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT dataObjWkda = null;
                             if (additionalData != null)
                             {
@@ -1045,7 +1046,7 @@ namespace EasyExportGeneralTask
             object iStatus;
             object status = "";
 
-            Console.WriteLine("Wait... for " + row["FAHRG"]);
+            Console.WriteLine("Wait... for " + row["FIN"]);
 
             if (File.Exists(row["Filepath"].ToString()))
             {
