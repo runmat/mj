@@ -1,10 +1,53 @@
-﻿@model CkgDomainLogic.Autohaus.Models.AuslieferAdresse
+﻿@*@model CkgDomainLogic.Autohaus.Models.AuslieferAdresse*@
+@model CkgDomainLogic.Autohaus.Models.AuslieferAdresse
 
-<h4>@Localize.DeliveryAddresses</h4> 
+@{
+    // ViewBag.AddressNo = 2;
+    
+}
+<h4>@Localize.DeliveryAddresses</h4>
 
-<div class="form-actions">
+@*<div class="form-actions">
     <a href="#" onclick="return AjaxFormAdressenShowGrid('Ausliefer')" class="btn white">@Localize.SelectDeliveryAddress <i class="icon-chevron-right"></i></a>
     <a href="#" onclick="return AjaxFormAdresseEmpty('AjaxFormAuslieferAdressen', 'AuslieferAdresseGetAutoCompleteItems')" class="btn white">@Localize.ClearForm <i class="icon-remove"></i></a>
+</div>*@
+
+<style>
+    .control-label {
+        width: 100px !important;
+    }
+    .controls 
+    {
+        margin-left: 120px !important;
+    }
+    .chzn-choices {
+        @*width: 80% !important;*@
+        width: 215px !important;
+    }
+    
+    #Adressdaten_Bemerkung {
+        width: 205px !important;
+    }
+    
+</style>
+
+<input type="text" id="CurrentAddressFormNo" value="1" />
+
+<div class="row-fluid">
+    <div class="span4" style="">
+   @*     <div style="margin-left: 80px;" >
+            <a href="#" onclick="return AjaxFormAdressenShowGrid('Ausliefer')" class="btn white">@Localize.SelectDeliveryAddress <i class="icon-chevron-right"></i></a>
+            <a href="#" onclick="return AjaxFormAdresseEmpty('AjaxFormAuslieferAdressen', 'AuslieferAdresseGetAutoCompleteItems')" class="btn white">@Localize.ClearForm <i class="icon-remove"></i></a>           
+        </div>*@
+        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 1}, {"Partnerrolle", "Z7"}})
+    </div>
+    <div class="span4" style="">
+        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 2 }, { "Partnerrolle", "Z8" } })
+    </div>
+    <div class="span4" style="">
+        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 3 }, { "Partnerrolle", "Z9" } })
+    </div>
 </div>
 
-@Html.Partial("Partial/AuslieferAdressenForm", Model)
+Bemerkung @Localize.RequiredWhenOtherIsSelected<br/>
+@Html.FormRequiredFieldsSummary()

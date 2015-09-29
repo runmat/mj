@@ -448,6 +448,47 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(new { items = ViewModel.GetAuslieferAdressenAsAutoCompleteItems() });
         }
 
+        //[HttpPost]
+        //public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
+        //{
+        //    if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+        //    {
+        //        ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.ZugeordneteMaterialien;
+        //        ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.Adressdaten.Bemerkung;
+        //        ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.Adressdaten.Adresse.TmpSelectionKey);
+        //        if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
+        //            return new EmptyResult();
+
+        //        ModelState.Clear();
+        //        ViewModel.SelectedAuslieferAdresse.IsValid = false;
+        //        return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+        //    }
+
+        //    if (model.TmpSelectedPartnerrolle != model.Adressdaten.Partnerrolle)
+        //    {
+        //        ViewModel.SelectedAuslieferAdressePartnerrolle = model.TmpSelectedPartnerrolle;
+        //        ModelState.Clear();
+        //        ViewModel.SelectedAuslieferAdresse.IsValid = false;
+        //        return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+        //    }
+
+        //    if (ModelState.IsValid)
+        //        ViewModel.SetAuslieferAdresse(model);
+
+        //    // Auslieferadressen sind optional
+        //    if (!model.HasData)
+        //        ModelState.Clear();
+
+        //    model.IsValid = (ModelState.IsValid && !model.TmpSaveAddressOnly);
+        //    model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
+
+        //    ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.TmpSaveAddressOnly);
+        //    ModelState.SetModelValue("TmpSaveAddressOnly", false);
+
+        //    return PartialView("Partial/AuslieferAdressenForm", model);
+        //}
+
+
         [HttpPost]
         public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
         {
@@ -487,7 +528,6 @@ namespace ServicesMvc.Autohaus.Controllers
 
             return PartialView("Partial/AuslieferAdressenForm", model);
         }
-
         [GridAction]
         public ActionResult AuslieferAdressenAjaxBinding()
         {
