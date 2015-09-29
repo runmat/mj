@@ -223,7 +223,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipmentCharge = new ShipmentChargeType
                     {
-                        BillShipper = new BillShipperType {AccountNumber = adresseDad.KundenNr},
+                        BillShipper = new BillShipperType {AccountNumber = adresseCarport.KundenNr},
                         Type = "01"
                     };
 
@@ -231,19 +231,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipperAddress = new ShipAddressType
                     {
-                        AddressLine = new[] {adresseDad.StrasseHausnummer},
-                        City = adresseDad.Ort,
-                        PostalCode = adresseDad.Plz,
-                        CountryCode = adresseDad.Land
+                        AddressLine = new[] { adresseCarport.StrasseHausnummer },
+                        City = adresseCarport.Ort,
+                        PostalCode = adresseCarport.Plz,
+                        CountryCode = adresseCarport.Land
                     };
 
                 var shipper = new ShipperType
                     {
-                        ShipperNumber = adresseDad.KundenNr,
+                        ShipperNumber = adresseCarport.KundenNr,
                         Address = shipperAddress,
-                        Name = adresseDad.Name1,
-                        AttentionName = adresseDad.Name2,
-                        Phone = new ShipPhoneType { Number = adresseDad.Telefon }
+                        Name = adresseCarport.Name1,
+                        AttentionName = adresseCarport.Name2,
+                        Phone = new ShipPhoneType { Number = adresseCarport.Telefon }
                     };
 
                 var shipToAddress = new ShipToAddressType
@@ -261,22 +261,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         AttentionName = adresseDad.Name2,
                         Phone = new ShipPhoneType { Number = adresseDad.Telefon }
                     };
-
-                var shipFromAddress = new ShipAddressType
-                {
-                    AddressLine = new[] { adresseCarport.StrasseHausnummer },
-                    City = adresseCarport.Ort,
-                    PostalCode = adresseCarport.Plz,
-                    CountryCode = adresseCarport.Land
-                };
-
-                var shipFrom = new ShipFromType
-                {
-                    Address = shipFromAddress,
-                    Name = adresseCarport.Name1,
-                    AttentionName = adresseCarport.Name2,
-                    Phone = new ShipPhoneType { Number = adresseCarport.Telefon }
-                };
 
                 var refNumbers = new[]
                     {
@@ -300,7 +284,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         PaymentInformation = paymentInfo,
                         Shipper = shipper,
                         ShipTo = shipTo,
-                        ShipFrom = shipFrom,
                         ReferenceNumber = refNumbers,
                         Service = new ServiceType {Code = "11", Description = "UPS Standard"},
                         Package = new[] {package}
