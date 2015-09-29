@@ -27,7 +27,7 @@ namespace ServicesMvc.Controllers
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
             var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
-            CarporterfassungViewModel.LastCarportIdInit(vmStored?.LastCarportId);
+            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
 
             CarporterfassungViewModel.Init();
 
