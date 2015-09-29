@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -36,6 +37,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             protected set { PropertyCacheSet(value); }
         }
 
+        public string LastCarportId { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<string> CarportPdis
+        {
+            get { return PropertyCacheGet(() => DataService.GetCarportPdis().InsertAtTop(Localize.DropdownDefaultOptionPleaseChoose)); }
+        }
+
         public bool EditMode { get; set; }
 
         public void Init()
@@ -47,6 +56,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+            PropertyCacheClear(this, m => m.CarportPdis);
         }
 
         public void LoadFahrzeugModel(string kennzeichen = null)
@@ -62,10 +72,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             AktuellesFahrzeug = new CarporterfassungModel
                 {
-                    CarportId = LogonContext.User.Reference,
+                    CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
                     DemontageDatum = DateTime.Today
                 };
+        }
+
+        public void LastCarportIdInit(string lastCarportId)
+        {
+            LastCarportId = LogonContext.User.Reference.NotNullOr(lastCarportId);
         }
 
         public string DeleteFahrzeugModel(string kennzeichen)
@@ -201,7 +216,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public string GenerateUpsShippingOrderHtml()
         {
             var adresseDad = DataService.GetCarportInfo("DAD");
-            var adresseCarport = DataService.GetCarportInfo(LogonContext.User.Reference);
+            var adresseCarport = DataService.GetCarportInfo(LastCarportId);
 
             if (adresseDad == null || adresseCarport == null)
                 return Localize.NoAddressTypesAvailableForThisCustomer;
