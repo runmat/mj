@@ -560,7 +560,15 @@ namespace CkgDomainLogic.Equi.ViewModels
                                 versandAuftraege.Add(CreateVersandAuftrag(sl.Fahrgestellnummer, sl.Nr, briefVersand: true, schluesselVersand: false, schluesselKombiVersand: false)));
                 });
 
-            SaveErrorMessage = BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege);
+            BriefVersandDataService.SaveVersandBeauftragung(versandAuftraege, true, 
+                (fin, errorMessage) =>
+                {
+                    errorMessage = errorMessage.NotNullOrEmpty().Replace(":", ",");
+
+                    var error = string.Format("FIN {0}: {1}", fin, errorMessage);
+
+                    SaveErrorMessage += SaveErrorMessage.ReplaceIfNotNull("; ") + error;
+                });
         }
 
         public GeneralSummary CreateSummaryModel(bool cacheOriginItems)

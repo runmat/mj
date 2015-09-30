@@ -50,6 +50,7 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "ZZ_MAHNA", "Mahnverfahren"},
                         { "ZZNAME3_ZS", "Ansprechpartner" },
                         { "ZZPLFOR", "PicklistenFormular" },
+                        { "LIZNR", "Lizenz" },
                     },
 
                     // Init Copy  (from SAP)
