@@ -363,6 +363,11 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
+        public static bool FormIsInvisible<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            return (html.DisplayNameFor(expression).ToString().NotNullOrEmpty().ToUpper() == "$HIDDEN$");
+        }
+
         public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
