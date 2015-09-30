@@ -1,4 +1,5 @@
-﻿// ReSharper disable InconsistentNaming
+﻿using GeneralTools.Contracts;
+// ReSharper disable InconsistentNaming
 using System.Collections.Generic;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -164,6 +165,97 @@ namespace CkgDomainLogic.DomainCommon.Models
                         { "DOMVALUE_L", "Wert" },
                         { "DDTEXT", "Beschreibung" },
                     }));
+            }
+        }
+
+        #endregion
+
+
+        #region Haendler Adressen
+
+
+        static public ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, SelectItem> Z_DPM_READ_LAND_02__GT_OUT_To_SelectItem
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_LAND_02.GT_OUT, SelectItem>(
+                                                 new Dictionary<string, string>(),
+                                                 (s, d) =>
+                                                 {
+                                                     d.Key = s.LAND1_EXT;
+                                                     d.Text = string.Format("{0}, {1} ({2})", s.LAND1, s.LANDX50, s.LAND1_EXT);
+                                                 }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_READ_REM_VERS_VORG_01.GT_OUT, HaendlerAdresse> Z_DPM_READ_MODELID_TAB__GT_OUT_To_HaendlerAdresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_REM_VERS_VORG_01.GT_OUT, HaendlerAdresse>(
+                                                 new Dictionary<string, string>(),
+                                                 (s, d) =>
+                                                 {
+                                                     d.HaendlerNr = s.HAENDLER;
+                                                     d.LaenderCode = s.LAND_CODE;
+
+                                                     d.SchluesselAdresseVerfuegbar = s.BRIEF_SCHLUE_ADR.XToBoolInverse();
+
+                                                     d.Name1Brief = s.NAME1_B;
+                                                     d.Name2Brief = s.NAME2_B;
+                                                     d.StrasseBrief = s.STRASSE_B;
+                                                     d.HausNrBrief = s.HAUSNR_B;
+                                                     d.PlzBrief = s.PLZ_B;
+                                                     d.OrtBrief = s.ORT_B;
+                                                     d.LandBrief = "DE";
+
+                                                     d.Name1Schluessel = s.NAME1_T;
+                                                     d.Name2Schluessel = s.NAME2_T;
+                                                     d.StrasseSchluessel = s.STRASSE_T;
+                                                     d.HausNrSchluessel = s.HAUSNR_T;
+                                                     d.PlzSchluessel = s.PLZ_T;
+                                                     d.OrtSchluessel = s.ORT_T;
+                                                     d.LandSchluessel = "DE";
+
+                                                     d.VersandSperre = s.VERSANDSPERRE.XToBool();
+                                                     d.ClientNr = s.CLIENT_NR;
+                                                     d.ClientName = s.CLIENTNAME;
+                                                 }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_SAVE_REM_VERS_VORG_01.GT_TAB, HaendlerAdresse> Z_DPM_SAVE_MODELID_TAB__GT_TAB_To_HaendlerAdresse
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_SAVE_REM_VERS_VORG_01.GT_TAB, HaendlerAdresse>(
+                                                 new Dictionary<string, string>(),
+                                                 null,
+                                                 (s, d) =>
+                                                 {
+                                                     d.HAENDLER = s.HaendlerNr;
+                                                     d.LAND_CODE = s.LaenderCode;
+
+                                                     d.BRIEF_SCHLUE_ADR = s.SchluesselAdresseVerfuegbar.BoolToXInverse();
+
+                                                     d.NAME1_B = s.Name1Brief;
+                                                     d.NAME2_B = s.Name2Brief;
+                                                     d.STRASSE_B = s.StrasseBrief;
+                                                     d.HAUSNR_B = s.HausNrBrief;
+                                                     d.PLZ_B = s.PlzBrief;
+                                                     d.ORT_B = s.OrtBrief;
+
+                                                     d.NAME1_T = s.Name1Schluessel;
+                                                     d.NAME2_T = s.Name2Schluessel;
+                                                     d.STRASSE_T = s.StrasseSchluessel;
+                                                     d.HAUSNR_T = s.HausNrSchluessel;
+                                                     d.PLZ_T = s.PlzSchluessel;
+                                                     d.ORT_T = s.OrtSchluessel;
+
+                                                     d.VERSANDSPERRE = s.VersandSperre.BoolToX();
+                                                     d.CLIENT_NR = s.ClientNr;
+                                                     d.CLIENTNAME = s.ClientName;
+                                                 }));
             }
         }
 

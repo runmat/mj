@@ -207,6 +207,7 @@ namespace ServicesMvc
             builder.RegisterType<TreuhandDataServiceSAP>().As<ITreuhandDataService>().InstancePerHttpRequest();
             builder.RegisterType<FahrzeugvoravisierungDataServiceSAP>().As<IFahrzeugvoravisierungDataService>().InstancePerHttpRequest();
             builder.RegisterType<DispositionslisteDataServiceSAP>().As<IDispositionslisteDataService>().InstancePerHttpRequest();
+            builder.RegisterType<HaendlerAdressenDataServiceSAP>().As<IHaendlerAdressenDataService>().InstancePerHttpRequest(); 
             builder.RegisterType<ZulaufEinsteuerungDataServiceSAP>().As<IZulaufEinsteuerungDataService>().InstancePerHttpRequest();           
             builder.RegisterType<FahrzeuguebersichtDataServiceSAP>().As<IFahrzeuguebersichtDataService>().InstancePerHttpRequest();
             builder.RegisterType<BatcherfassungDataServiceSAP>().As<IBatcherfassungDataService>().InstancePerHttpRequest();             
