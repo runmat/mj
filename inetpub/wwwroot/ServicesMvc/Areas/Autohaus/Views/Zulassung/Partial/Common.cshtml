@@ -361,8 +361,11 @@
     }
 
     function GridAuslieferAdresseOnSelect(id) {
+        var currentAddressNo = $('#CurrentAddressFormNo').val();
+        alert("GridAuslieferAdresseOnSelect " + currentAddressNo);
         $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
-        $("#AjaxFormAuslieferAdressen").submit();
+        // $("#AjaxFormAuslieferAdressen").submit();
+        $("#AjaxFormAuslieferAdressen" + currentAddressNo).submit();
     }
 
     function LoadKfzKreisAusHalterAdresse() {

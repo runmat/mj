@@ -7,25 +7,18 @@
     var partnerRolle = ViewBag.Partnerrolle;
 }
 
-@*AdressNo: @addressNo*@
-
-<script>
-    function CallAjaxFormAdressenShowGrid() {
-        AjaxFormAdressenShowGrid('Ausliefer');
-    }
-</script>
-
 <div id="@divId">
+    AdressNo: @addressNo
+
     @*<div class="form-actions" style="padding: 5px; padding-left: 85px;">*@
-    <div class="" style=" margin-bottom: 10px;">
+    <div class="" style="margin-bottom: 10px;">
         @*<a href="#" onclick="return AjaxFormAdressenShowGrid('Ausliefer');" class="btn white">Adresse wählen <i class="icon-chevron-right"></i></a>*@
-        <a href="#" onclick="return CallAjaxFormAdressenShowGrid();" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
-        @*<a href="#" onclick="return AjaxFormAdresseEmpty('AjaxFormAuslieferAdressen@addressNo', 'AuslieferAdresseGetAutoCompleteItems')" class="btn white">Leeren <i class="icon-remove"></i></a>*@
+        <a href="#" onclick="return CallAjaxFormAdressenShowGrid('@addressNo');" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
     </div>
 
     @using (Ajax.BeginForm("AuslieferAdressenForm", "Zulassung", null,
-        new MvcAjaxOptions { UpdateTargetId = divId, OnComplete = "AjaxFormAuslieferAdressenComplete();" },
-        htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuslieferAdressen" + addressNo }))  // + addressNo 
+        new MvcAjaxOptions {UpdateTargetId = divId, OnComplete = "AjaxFormAuslieferAdressenComplete();"},
+        htmlAttributes: new {@class = "form-horizontal", id = "AjaxFormAuslieferAdressen" + addressNo})) // + addressNo 
     {
         @*@Html.Hidden("AddressFormId", addressNo)*@
         @Html.HiddenFor(m => m.Adressdaten.Adresse.ID)
@@ -44,25 +37,26 @@
         @Html.SpanAlert("AuslieferAdressenMessage")
 
         @*<input id="TmpSelectedPartnerrolle" type="text" value="@partnerRolle" name="TmpSelectedPartnerrolle" />*@
-        
+
    @*     @Html.FormRadioButtonListFor(m => m.TmpSelectedPartnerrolle, CkgDomainLogic.Autohaus.Models.Vorgang.AuslieferAdressenPartnerRollen.ToSelectList(), new { col = "left" })*@
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new {@class = "m-wrap medium"})
 
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new {@class = "m-wrap medium"})
 
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Strasse, new {@class = "m-wrap medium"})
 
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new { @class = "m-wrap xsmall" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.PLZ, new {@class = "m-wrap xsmall"})
 
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new { @class = "m-wrap medium" })
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Ort, new {@class = "m-wrap medium"})
 
         @*@Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" },
             postControlHtml: @<text><button type="button" class="btn green margin-left-20" style="width: 200px;" onclick="SaveAuslieferAdresse();"><i class="icon-ok"></i> @Localize.SaveAddress</button></text>)*@
 
-        @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new { @class = "m-wrap medium" })
+        @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new {@class = "m-wrap medium"})
 
-        @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @class = "m-wrap chosen" })
-        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new { @class = "m-wrap large", maxlength = 50 })
+        @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new {@class = "m-wrap chosen"})
+
+        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new {@class = "m-wrap large", maxlength = 50})
 
         @*@Html.FormPlaceHolder(@<text><div style="width: 270px;">@Localize.RequiredWhenOtherIsSelected</div></text>)*@
         @*@Html.FormRequiredFieldsSummary()*@
@@ -70,27 +64,11 @@
         <script type="text/javascript">
             _modelIsValid = @Model.IsValid.ToString().ToLower();
 
-            function AjaxFormAuslieferAdressenInit() {
-                AjaxFormAdressePrepareAutoComplete($("#Adressdaten_Adresse_Name1"), "AuslieferAdresseGetAutoCompleteItems");
-                AjaxFormAdressePrepareAutoCompleteReset("AjaxFormAuslieferAdressen");
-            }
-
-            DocumentReadyBind(AjaxFormAuslieferAdressenInit);
-            AjaxFormAuslieferAdressenInit();
+            DocumentReadyBind(AjaxFormAuslieferAdressenInit('@addressNo'));
+            AjaxFormAuslieferAdressenInit('@addressNo');
 
 //            $(":radio[name='TmpSelectedPartnerrolle']").click(function() { SelectAuslieferAdresse($(this).val()); });
 
-            function SelectAuslieferAdresse(partnerrolle) {
-                alert("SelectAuslieferAdresse-Partnerrolle: " + partnerrolle);
-                if ($("#Adressdaten_Partnerrolle").val() != partnerrolle) {
-                    $("#AjaxFormAuslieferAdressen").submit();
-                }
-            }
-
-            function SaveAuslieferAdresse() {
-                $("#TmpSaveAddressOnly").val(true);
-                $("#AjaxFormAuslieferAdressen").submit();
-            }
         </script>
     }
 </div>
