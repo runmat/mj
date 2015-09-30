@@ -2,10 +2,26 @@
 <dictionary>
   <item>
     <key>
+      <string>EquiSuche</string>
+    </key>
+    <value>
+      <string>Fahrzeugsuche</string>
+    </value>
+  </item>
+  <item>
+    <key>
       <string>FahrzeugAuswahl</string>
     </key>
     <value>
       <string>Fahrzeug</string>
+    </value>
+  </item>
+  <item>
+    <key>
+      <string>Stueckliste</string>
+    </key>
+    <value>
+      <string>Stückliste</string>
     </value>
   </item>
   <item>
