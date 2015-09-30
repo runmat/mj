@@ -539,28 +539,28 @@
         tb.autocomplete("enable");
     }
 
-    function AjaxFormAdresseEmpty(formID, url) {
-        var form = $("#" + formID);
-        form.find(":input").each(function () {
-            switch (this.type) {
-                case 'password':
-                case 'select-multiple':
-                case 'text':
-                case 'textarea':
-                    $(this).val('');
-                    break;
-                case 'select-one':
-                    $(this).val('DE');
-                    break;
-                case 'checkbox':
-                case 'radio':
-                    this.checked = false;
-            }
-        });
+//    function AjaxFormAdresseEmpty(formID, url) {
+//        var form = $("#" + formID);
+//        form.find(":input").each(function () {
+//            switch (this.type) {
+//                case 'password':
+//                case 'select-multiple':
+//                case 'text':
+//                case 'textarea':
+//                    $(this).val('');
+//                    break;
+//                case 'select-one':
+//                    $(this).val('DE');
+//                    break;
+//                case 'checkbox':
+//                case 'radio':
+//                    this.checked = false;
+//            }
+//        });
 
-        AjaxFormAdressePrepareAutoComplete($("[id$='Name1']").first(), url);
-        return false;
-    }
+//        AjaxFormAdressePrepareAutoComplete($("[id$='Name1']").first(), url);
+//        return false;
+//    }
 
     function AjaxFormAdressenShowGrid(addressType) {
 
