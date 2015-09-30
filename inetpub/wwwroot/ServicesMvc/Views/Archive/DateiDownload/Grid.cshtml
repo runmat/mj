@@ -1,0 +1,26 @@
+﻿@using CkgDomainLogic.Archive.Models
+@model CkgDomainLogic.Archive.ViewModels.DateiDownloadViewModel
+
+@{ var gridName = "GridDateiDownload"; }
+
+@(Html.Telerik()
+    .Grid<DateiInfo>()
+    .Name(gridName)
+    .XAjaxDataBinding("DateiDownloadAjaxBinding", "Archive")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.DateiName).Filterable(false).Groupable(false)
+            .ClientTemplate(
+                "<a class='link tooltips' data-original-title='" + Localize.Download + "' data-placement='right' href='GetDatei?dateiName=<#= DateiName #>'><#= DateiName #></a>"
+        );
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.DateiName).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportDateiDownloadFilteredExcel", "Archive");
+        commands.FilteredDataCommand("ExportDateiDownloadFilteredPDF", "Archive");
+    })
+)

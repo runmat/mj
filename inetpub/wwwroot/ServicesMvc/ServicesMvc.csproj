@@ -3005,7 +3005,6 @@
     <Content Include="Views\Shared\Partial\KontaktCkg.cshtml" />
     <Content Include="Views\Shared\_Themes\AH2015\Partial\Menus\AppMenu.cshtml" />
     <Content Include="Views\DomainCommon\_Themes\AH2015\AppFavorites\AppFavoriteButtonsCore.cshtml" />
-
     <Content Include="Views\Fahrzeuge\UploadAvisliste\FileUpload.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\Receipt.cshtml" />
     <Content Include="Views\Fahrzeuge\UploadAvisliste\UploadGrid.cshtml" />
@@ -3013,6 +3012,8 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
+    <Content Include="Views\Archive\DateiDownload.cshtml" />
+    <Content Include="Views\Archive\DateiDownload\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
