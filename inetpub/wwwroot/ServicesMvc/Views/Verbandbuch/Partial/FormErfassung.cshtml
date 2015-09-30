@@ -15,27 +15,29 @@
 
             @Html.HiddenFor(x => x.Vkbur)
 
-            @Html.FormTextBoxFor(x => x.InjuredPerson, new { @class = "m-wrap", col = "left", maxlength = 80})
-            @Html.FormTextBoxFor(x => x.DateOfAccident, new { @class = "m-wrap form_datetime", col = "right"})
+        <div class="form">
+            @Html.FormTextBoxFor(x => x.InjuredPerson, new {@class = "m-wrap ", col = "left", maxlength = 80})
+            @Html.FormTextBoxFor(x => x.DateOfAccident, new {@class = "m-wrap form_datetime", col = "right"})
 
-            @Html.FormTextAreaFor(x => x.CourseOfAccident, new { @class = "m-wrap ", col = "left", maxlength = 400})
-            @Html.FormTextBoxFor(x => x.PlaceOfAccident, new { @class = "m-wrap ", col = "right", maxlength = 160})
+            @Html.FormTextAreaFor(x => x.Injury, new {@class = "m-wrap ", maxlength = 400, col = "left"})
+            @Html.FormTextAreaFor(x => x.CourseOfAccident, new {@class = "m-wrap ", col = "right", maxlength = 400})
+        </div>
 
-            @Html.FormTextAreaFor(x => x.Injury, new { @class = "m-wrap ", maxlength = 400, col = "left" })
-            @Html.FormTextBoxFor(x => x.WitnessName, new { @class = "m-wrap ", maxlength = 80, col = "right" })
+            @Html.FormTextBoxFor(x => x.WitnessName, new {@class = "m-wrap ", maxlength = 80, col = "left"})
+            @Html.FormTextBoxFor(x => x.PlaceOfAccident, new {@class = "m-wrap ", col = "right", maxlength = 160})
 
-            @Html.FormTextBoxFor(x => x.FirstResponder, new { @class = "m-wrap ", col = "left", maxlength = 80})
-            @Html.FormTextBoxFor(x => x.DateOfFirstAid, new { @class = "m-wrap  form_datetime", col = "right"})
+            @Html.FormTextBoxFor(x => x.FirstResponder, new {@class = "m-wrap ", col = "left", maxlength = 80})
+            @Html.FormTextBoxFor(x => x.DateOfFirstAid, new {@class = "m-wrap  form_datetime", col = "right"})
 
-            @Html.FormTextAreaFor(x => x.FirstAidMeasures, new { @class = "m-wrap ", maxlength = 400})
+            @Html.FormTextAreaFor(x => x.FirstAidMeasures, new {@class = "m-wrap ", maxlength = 400})
 
 
             @Html.FormRequiredFieldsSummary()
 
-            <div class="form-actions">
-                <button type="submit" class='btn blue'><i class='icon-save'></i>&nbsp;Vorfall speichern</button>
+                <div class="form-actions" align="right">
+                    <button type="submit" class='btn blue'><i class='icon-save'></i>&nbsp;Vorfall speichern</button>
+                </div>
             </div>
-        </div>
 
         <script type="text/javascript">
             _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
@@ -46,9 +48,9 @@
 <script type="text/javascript">
 
     function ShowSuccessMessage() {
-
-        FormPreparePrivateAjax();
         
+        FormPreparePrivateAjax();
+
         if (_modelStateValid) {
             SpanAlertSuccess("spanMessage", "Speichern erfolgreich", 2500);
         }

@@ -12,12 +12,22 @@
     .XAjaxDataBinding("VerbandbuchAjaxBinding", "Verbandbuch")
     .Columns(columns =>
     {
-        columns.XBoundAll();
+        columns.XBound(c => c.WebNo);
+        columns.XBound(c => c.InjuredPerson);
+        columns.XBound(c => c.DateOfAccident).Format("{0:dd.MM.yyyy HH:mm}");
+        columns.XBound(c => c.PlaceOfAccident);
+        columns.XBound(c => c.CourseOfAccident);
+        columns.XBound(c => c.Injury);
+        columns.XBound(c => c.WitnessName);
+        columns.XBound(c => c.DateOfFirstAid).Format("{0:dd.MM.yyyy HH:mm}");
+        columns.XBound(c => c.FirstResponder);
+        columns.XBound(c => c.FirstAidMeasures);
+
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName).OnLoad("OnLoad_GridVerbandbuch"))
     .XPageSize(10)
-    .XSort(sortOrder => sortOrder.Add(c => c.AccidentNo).Ascending())
+    .XSort(sortOrder => sortOrder.Add(c => c.WebNo).Ascending())
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportVerbandbuchFilteredExcel", "Verbandbuch");

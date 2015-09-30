@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Web.Caching;
 using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainInternal.Verbandbuch.Contracts;
@@ -26,7 +28,46 @@ namespace CkgDomainInternal.Verbandbuch.ViewModels
         public void GetVerbandbuchEntries(string vkbur)
         {
             Verbandbuch =  DataService.GetVerbandbuchEntries(vkbur);
+            Verbandbuch = PrepareDataForDisplay(Verbandbuch);
         }
+
+        public List<VerbandbuchModel> PrepareDataForDisplay(List<VerbandbuchModel> verbandbuch)
+        {
+            foreach (var entry in verbandbuch)
+            {
+                entry.WebNo = entry.AccidentNo.ToInt();
+
+                if (!String.IsNullOrEmpty(entry.AccidentNo))
+                    // remove leading zeros.
+                    entry.AccidentNo = Convert.ToString(Convert.ToInt32(entry.AccidentNo));
+
+                //combine DateTime
+
+                var time = DateTime.ParseExact(entry.TimeOfAccident,"HHmmss", CultureInfo.InvariantCulture);
+
+                entry.DateOfAccident = new DateTime(
+                                        entry.DateOfAccident.Value.Year,
+                                        entry.DateOfAccident.Value.Month,
+                                        entry.DateOfAccident.Value.Day, 
+                                        time.Hour, 
+                                        time.Minute,
+                                        time.Second);
+           
+
+                time = DateTime.ParseExact(entry.TimeOfFirstAid, "HHmmss", CultureInfo.InvariantCulture);
+
+                entry.DateOfFirstAid = new DateTime(
+                                        entry.DateOfFirstAid.Value.Year,
+                                        entry.DateOfFirstAid.Value.Month,
+                                        entry.DateOfFirstAid.Value.Day,
+                                        time.Hour,
+                                        time.Minute,
+                                        time.Second);
+
+            }
+
+            return verbandbuch;
+        }  
 
 
         public void DataInit()

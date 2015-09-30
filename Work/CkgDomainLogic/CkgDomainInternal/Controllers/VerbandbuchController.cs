@@ -16,11 +16,13 @@ namespace ServicesMvc.Controllers
 {
     public class VerbandbuchController : CkgDomainController
     {
+       
         [CkgApplication]
         public ActionResult Erfassung(string vkbur = null)
         {
             return View(ViewModel.GetVerbandBuchModel(vkbur));
         }
+        
         [HttpPost]
         public ActionResult SaveVorfall(VerbandbuchModel vbModel)
         {
@@ -69,8 +71,6 @@ namespace ServicesMvc.Controllers
 
             return new EmptyResult();
         }
-
-
 
 
         public VerbandbuchController(IAppSettings appSettings, ILogonContextDataService logonContext, IVerbandbuchDataService verbandbuchDataService) : base(appSettings, logonContext)

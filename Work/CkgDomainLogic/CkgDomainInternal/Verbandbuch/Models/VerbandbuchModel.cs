@@ -7,6 +7,10 @@ namespace CkgDomainInternal.Verbandbuch.Models
 {
     public class VerbandbuchModel
     {
+
+        [LocalizedDisplay(LocalizeConstants.AccidentNo)]
+        public int WebNo { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.AccidentNo)]
         public string AccidentNo { get; set; }
 
@@ -46,10 +50,11 @@ namespace CkgDomainInternal.Verbandbuch.Models
         [LocalizedDisplay(LocalizeConstants.FirstResponder)]
         public string FirstResponder { get; set; }
 
+        [GridHidden]
         public string TimeOfAccident { get; set; }
-
+        [GridHidden]
         public string TimeOfFirstAid { get; set; }
-
+        [GridHidden]
         public string Vkbur { get; set; }
 
     }

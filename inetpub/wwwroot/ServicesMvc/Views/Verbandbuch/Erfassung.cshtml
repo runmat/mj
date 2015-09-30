@@ -3,8 +3,6 @@
 
 @model VerbandbuchModel
 
-
-
 <h3 class="page-title" id="headerTitle">Verbandbuch <small></small></h3>
 
 @Html.SpanAlert("spanMessage")
@@ -12,3 +10,16 @@
 <div>
     @Html.Partial("Partial/FormErfassung")
 </div>
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+
+</script>
