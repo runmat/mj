@@ -1,8 +1,13 @@
 ﻿@*@model CkgDomainLogic.Autohaus.Models.AuslieferAdresse*@
 @model CkgDomainLogic.Autohaus.Models.AuslieferAdresse
-
 @{
-    // ViewBag.AddressNo = 2;
+    var materialsAll = Model.Materialien;   // Alle verfügbaren Materialien
+    var materialsUsed = Model.Materialien;  // Alle verfügbaren Materialien
+        
+@*    foreach (var item in matListe)
+    {
+        @item.Text <br/>
+    }*@
     
 }
 <h4>@Localize.DeliveryAddresses</h4>
@@ -11,7 +16,7 @@
     .control-label {
         width: 100px !important;
     }
-    .controls 
+    .controls
     {
         margin-left: 120px !important;
     }
@@ -19,14 +24,60 @@
         @*width: 80% !important;*@
         width: 215px !important;
     }
-    
+
     #Adressdaten_Bemerkung {
         width: 205px !important;
     }
-    
+
 </style>
 
+<div onclick="RemoveUsedMaterials();">KLICK</div>
+
 <script>
+    
+    var materialsAll = @Html.Raw(Json.Encode(materialsAll.ToList().Select(x => x.Key.ToJavascriptString())));
+
+    function RemoveUsedMaterials() {
+
+        var usedMaterials = new Array(0);
+
+        var selectedOptions = $("#ZugeordneteMaterialien1").chosen().text();
+        usedMaterials.push.apply(usedMaterials, selectedOptions);
+
+        selectedOptions = $("#ZugeordneteMaterialien2").chosen().val();
+        usedMaterials.push.apply(usedMaterials, selectedOptions);
+
+        selectedOptions = $("#ZugeordneteMaterialien3").chosen().val();
+        usedMaterials.push.apply(usedMaterials, selectedOptions);
+
+        var freeMaterials = $(materialsAll).not(usedMaterials).get();
+
+        alert("usedMaterials: " + usedMaterials);
+
+        // $('.chzn-results li').show();
+
+        // $('.chzn-results li:contains("Perso")').hide();
+        // Alle Materialien sichtbar machen
+        for (var i = 0; i < materialsAll.length; i++) {
+            $('.chzn-results li:contains("' + materialsAll[i] + '")').show();
+        }
+        
+        // Alle bereits benutzten Materialien unsichtbar machen
+        for (var i = 0; i < usedMaterials.length; i++) {
+            alert(usedMaterials[i]);
+            $('.chzn-results li:contains("' + usedMaterials[i] + '")').hide();
+        }
+
+        $("#ZugeordneteMaterialien1").trigger("chosen:updated");
+        $("#ZugeordneteMaterialien2").trigger("chosen:updated");
+        $("#ZugeordneteMaterialien3").trigger("chosen:updated");
+
+        // alert("freeMaterials: " + freeMaterials);
+
+        // chzn-results 
+
+    }
+
     function CallAjaxFormAdressenShowGrid(addressNo) {
         $('#CurrentAddressFormNo').val(addressNo);
         alert("CallAjaxFormAdressenShowGrid " + addressNo);
@@ -34,31 +85,55 @@
     }
 
     function AjaxFormAuslieferAdressenInit(addressNo) {
-        alert("AjaxFormAuslieferAdressenInit " + addressNo);
-        AjaxFormAdressePrepareAutoComplete($("#Adressdaten_Adresse_Name1"), "AuslieferAdresseGetAutoCompleteItems");
-        AjaxFormAdressePrepareAutoCompleteReset("AjaxFormAuslieferAdressen");
+//        alert("AjaxFormAuslieferAdressenInit " + addressNo);
+//        AjaxFormAdressePrepareAutoComplete($("#Adressdaten_Adresse_Name1"), "AuslieferAdresseGetAutoCompleteItems");
+//        AjaxFormAdressePrepareAutoCompleteReset("AjaxFormAuslieferAdressen" + addressNo);
     }
 
     function SelectAuslieferAdresse(partnerrolle) {
-        alert("SelectAuslieferAdresse-Partnerrolle: " + partnerrolle);
+        var addressNo = $('#CurrentAddressFormNo').val();
+        alert("SelectAuslieferAdresse-Partnerrolle: " + partnerrolle + " | addressNo: " + addressNo);
         if ($("#Adressdaten_Partnerrolle").val() != partnerrolle) {
-            $("#AjaxFormAuslieferAdressen").submit();
+            $("#AjaxFormAuslieferAdressen" + addressNo).submit();
         }
     }
 
     function SaveAuslieferAdresse(addressNo) {
         alert("SaveAuslieferAdresse " + addressNo);
         $("#TmpSaveAddressOnly").val(true);
-        $("#AjaxFormAuslieferAdressen").submit();
+        $("#AjaxFormAuslieferAdressen" + addressNo).submit();
     }
+
+    $(document).ready(function() {
+
+        $("#ZugeordneteMaterialien1").blur(function() {
+            alert("blur");
+        });
+
+        $("#ZugeordneteMaterialien1").chosen().blur(function () {
+            alert("blur 2");
+        });
+
+        $("#ZugeordneteMaterialien1").chosen().change(function () {
+            RemoveUsedMaterials();
+        });
+
+        $("#ZugeordneteMaterialien2").chosen().change(function () {
+            RemoveUsedMaterials();
+        });
+
+        $("#ZugeordneteMaterialien3").chosen().change(function () {
+            RemoveUsedMaterials();
+        });       
+
+    });
 
 </script>
 
 <input type="text" id="CurrentAddressFormNo" value="0" />
-
 <div class="row-fluid">
     <div class="span4" style="">
-        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 1}, {"Partnerrolle", "Z7"}})
+        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 1 }, { "Partnerrolle", "Z7" } })
     </div>
     <div class="span4" style="">
         @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 2 }, { "Partnerrolle", "Z8" } })
@@ -67,8 +142,5 @@
         @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 3 }, { "Partnerrolle", "Z9" } })
     </div>
 </div>
-
-Bemerkung @Localize.RequiredWhenOtherIsSelected<br/>
+Bemerkung @Localize.RequiredWhenOtherIsSelected<br />
 @Html.FormRequiredFieldsSummary()
-
-

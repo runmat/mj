@@ -8,7 +8,7 @@
 }
 
 <div id="@divId">
-    AdressNo: @addressNo
+    @*AdressNo: @addressNo*
 
     @*<div class="form-actions" style="padding: 5px; padding-left: 85px;">*@
     <div class="" style="margin-bottom: 10px;">
@@ -54,7 +54,7 @@
 
         @Html.FormDropDownListFor(m => m.Adressdaten.Adresse.Land, Adresse.Laender.ToSelectList(), new {@class = "m-wrap medium"})
 
-        @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new {@class = "m-wrap chosen"})
+        @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @id = "ZugeordneteMaterialien" + addressNo, @class = "m-wrap chosen material" })
 
         @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new {@class = "m-wrap large", maxlength = 50})
 
