@@ -1,5 +1,8 @@
 ﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.CarporterfassungViewModel
 
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
 <h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Carporterfassung<small></small></h3>
 
 <div class="span-alert-placeholder">
@@ -17,10 +20,22 @@
 
     function FormPreparePrivate() {
         $("#Kennzeichen").focus();
+        InitDropDownList();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
+        InitDropDownList();
+    }
+
+    function InitDropDownList() {
+
+        setTimeout(function () {
+            $('#CarportId').select2({
+                allowClear: true
+            });
+        }, 100);
+
     }
 
     function GetGrid() {
@@ -80,7 +95,7 @@
 
                 $("#Kennzeichen").val(result.Kennzeichen);
                 $("#FahrgestellNr").val(result.FahrgestellNr);
-                $("#AuftragsNr").val(result.AuftragsNr);
+                $("#Lizenz").val(result.AuftragsNr);
                 $("#MvaNr").val(result.MvaNr);
                 $("#CarportName").val(result.CarportName);
                 $("#Carport").val(result.Carport);
