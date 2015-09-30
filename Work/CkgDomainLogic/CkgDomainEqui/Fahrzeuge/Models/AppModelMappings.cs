@@ -838,7 +838,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             destination.LIZNR = source.Auftragsnummer;
                             destination.ZBATCH_ID = source.BatchId.NotNullOrEmpty().ToUpper();
                             destination.ZZSIPP = source.SIPPCode;
-                            destination.ZZHERST_TEXT = source.Herstellerkennung;
                             destination.KUNPDI = source.Pdi;
                         }
                     ));
