@@ -306,7 +306,7 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 if (ViewModel.LoadErrorLogItems(model))
-                    if (ViewModel.ErrorLogItemsFiltered.None())
+                    if (ViewModel.ErrorLogItemsUIFiltered.None())
                         ModelState.AddModelError(string.Empty, Localize.NoDataFound);
             }
 
@@ -322,7 +322,7 @@ namespace ServicesMvc.Controllers
         [GridAction]
         public ActionResult LogsErrorsAjaxBinding()
         {
-            return View(new GridModel(ViewModel.ErrorLogItemsFiltered));
+            return View(new GridModel(ViewModel.ErrorLogItemsUIFiltered));
         }
 
         [HttpPost]
@@ -415,7 +415,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportErrorLogItemsFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.ErrorLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ViewModel.ErrorLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Errors", dt);
 
             return new EmptyResult();
@@ -423,7 +423,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult ExportErrorLogItemsFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = ViewModel.ErrorLogItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            var dt = ViewModel.ErrorLogItemsUIFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Errors", dt, landscapeOrientation: true);
 
             return new EmptyResult();

@@ -61,6 +61,8 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult UploadZb2VersandShowGrid()
         {
+            UploadZb2VersandViewModel.ValidateUploadItems();
+
             return PartialView("Zb2Versand/UploadGrid", UploadZb2VersandViewModel);
         }
 
@@ -88,14 +90,6 @@ namespace ServicesMvc.Fahrzeug.Controllers
             UploadZb2VersandViewModel.RemoveDatensatzById(lfdNr);
 
             return View(new GridModel(UploadZb2VersandViewModel.UploadItems));
-        }
-
-        [HttpPost]
-        public ActionResult UploadZb2VersandCheck()
-        {
-            UploadZb2VersandViewModel.ValidateUploadItems();
-
-            return PartialView("Zb2Versand/UploadGrid", UploadZb2VersandViewModel);
         }
 
         [HttpPost]
