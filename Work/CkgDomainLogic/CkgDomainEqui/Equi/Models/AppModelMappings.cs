@@ -823,6 +823,27 @@ namespace CkgDomainLogic.Equi.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_EQUI_STL_01.GT_OUT, StuecklistenKomponente> Z_DPM_READ_EQUI_STL_01_GT_OUT_To_StuecklistenKomponente
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_EQUI_STL_01.GT_OUT, StuecklistenKomponente>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Fahrgestellnummer = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.Equipmentnummer = s.EQUNR;
+                        d.Nr = s.IDNRK;
+                        d.Bezeichnung = s.MAKTX;
+                        d.ErsatzteilKennung = s.ERSKZ;
+                        d.ErsatzteilKennungText = s.ETEXT;
+
+                        d.IstLagernd = (d.ErsatzteilKennung.NotNullOrEmpty().ToUpper() == "L");
+                    }));
+            }
+        }
+
         #endregion
 
 
@@ -917,6 +938,63 @@ namespace CkgDomainLogic.Equi.Models
                         business.Key = sap.POS_KURZTEXT;
                         business.Text = sap.POS_TEXT;
                     }));
+            }
+        }
+
+        #endregion
+
+
+        #region Fahrzeugbrief
+
+        static private readonly Dictionary<string, string> MapFahrzeugbriefeFromSapDict = new Dictionary<string, string>
+            {
+                {"EQUNR", "Equipmentnummer"},
+                {"CHASSIS_NUM", "Fahrgestellnummer"},
+                {"LICENSE_NUM", "Kennzeichen"},
+                {"LIZNR", "Vertragsnummer"},
+                {"TIDNR", "TechnIdentnummer"},
+                {"ZZREFERENZ1", "Referenz1"},
+                {"ZZREFERENZ2", "Referenz2"},
+                {"FEHLERTEXT", "Memo"},
+            };
+
+        static public ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_ABRUFBAR, Fahrzeugbrief> MapFahrzeugbriefeAbrufbarFromSAP
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_ABRUFBAR, Fahrzeugbrief>(MapFahrzeugbriefeFromSapDict,
+                    (source, destination) =>
+                    {
+                        destination.IsMissing = false;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_FEHLER, Fahrzeugbrief> MapFahrzeugbriefeFehlerhaftFromSAP
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_FEHLER, Fahrzeugbrief>(MapFahrzeugbriefeFromSapDict,
+                    (source, destination) =>
+                    {
+                        destination.IsMissing = true;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_IN, Fahrzeugbrief> MapFahrzeugbriefeImportToSAP
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_UNANGEF_ALLG_01.GT_IN, Fahrzeugbrief>(new Dictionary<string, string>
+                {
+                    {"CHASSIS_NUM", "Fahrgestellnummer"},
+                    {"LICENSE_NUM", "Kennzeichen"},
+                    {"LIZNR", "Vertragsnummer"},
+                    {"TIDNR", "TechnIdentnummer"},
+                    {"ZZREFERENZ1", "Referenz1"},
+                    {"ZZREFERENZ2", "Referenz2"},
+               }));
             }
         }
 

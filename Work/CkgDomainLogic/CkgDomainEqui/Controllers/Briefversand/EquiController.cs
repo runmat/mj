@@ -34,6 +34,12 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
+        public ActionResult Stuecklistenversand(string vins)
+        {
+            return ExplicitVersand(vins, BriefversandModus.Stueckliste);
+        }
+
+        [CkgApplication]
         public ActionResult BriefSchluesselversand(string vins)
         {
             return ExplicitVersand(vins, BriefversandModus.BriefMitSchluessel);
@@ -47,7 +53,74 @@ namespace ServicesMvc.Controllers
             return View("Briefversand", BriefversandViewModel);
         }
 
+
+        #region Equis for Partlist
+
+        [HttpPost]
+        public ActionResult EquiSuche()
+        {
+            return PartialView("Briefversand/EquiSuche", BriefversandViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult EquiSucheForm(EquiPartlistSelektor model)
+        {
+            if (ModelState.IsValid)
+            {
+                BriefversandViewModel.EquiPartlistSelektor = model;
+
+                BriefversandViewModel.LoadFahrzeugeForPartlist(ModelState.AddModelError);
+            }
+
+            return PartialView("Briefversand/EquiSucheForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult Stueckliste()
+        {
+            BriefversandViewModel.LoadStueckliste();
+
+            return PartialView("Briefversand/Stueckliste", BriefversandViewModel);
+        }
+
+        [GridAction]
+        public ActionResult StuecklistenAuswahlAjaxBinding()
+        {
+            var items = BriefversandViewModel.StuecklisteFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridStuecklistenAuswahl(string filterValue, string filterColumns)
+        {
+            BriefversandViewModel.FilterStueckliste(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult StuecklistenAuswahlSelectionChanged(string id, bool isChecked)
+        {
+            int allSelectionCount, allCount = 0, allFoundCount = 0;
+            if (id.IsNullOrEmpty())
+                BriefversandViewModel.SelectStueckliste(isChecked, out allSelectionCount, out allCount, out allFoundCount);
+            else
+                BriefversandViewModel.SelectStuecklistenEintrag(id, isChecked, out allSelectionCount);
+
+            return Json(new { allSelectionCount, allCount, allFoundCount });
+        }
+
+        #endregion
+
+
         #region Fahrzeug Auswahl
+
+        [HttpPost]
+        public ActionResult FahrzeugAuswahl()
+        {
+            return PartialView("Briefversand/FahrzeugAuswahl", BriefversandViewModel);
+        }
 
         [GridAction]
         public ActionResult FahrzeugAuswahlAjaxBinding()
@@ -117,9 +190,6 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult VersandAdresseForm(Adresse model)
         {
-            // Avoid ModelState clearing on saving => because automatic model validation (via data annotations) would be omitted !!!
-            // ModelState.Clear();
-
             if (model.TmpSelectionKey.IsNotNullOrEmpty())
             {
                 model = BriefversandViewModel.GetVersandAdresseFromKey(model.TmpSelectionKey);
@@ -325,7 +395,7 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Fahrzeuge", dt);
 
             return new EmptyResult();
@@ -333,8 +403,23 @@ namespace ServicesMvc.Controllers
 
         public ActionResult FahrzeugAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
         {
-            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns); 
+            var dt = BriefversandViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Fahrzeuge", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+        public ActionResult StuecklistenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = BriefversandViewModel.StuecklisteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Stueckliste", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult StuecklistenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = BriefversandViewModel.StuecklisteFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Stueckliste", dt, landscapeOrientation: true);
 
             return new EmptyResult();
         }
