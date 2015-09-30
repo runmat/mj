@@ -12,11 +12,15 @@ namespace CkgDomainLogic.Archive.Services
         {
             var liste = new List<DateiInfo>();
 
-            var dateien = Directory.GetFiles(serverPfad, suchPattern, SearchOption.TopDirectoryOnly);
+            var dateien = Directory.GetFiles(serverPfad, suchPattern, SearchOption.AllDirectories);
 
             foreach (var datei in dateien)
             {
-                liste.Add(new DateiInfo() { DateiName = Path.GetFileName(datei) });
+                liste.Add(new DateiInfo
+                {
+                    DateiPfad = datei,
+                    DateiName = Path.GetFileName(datei)
+                });
             }
             
             return liste;

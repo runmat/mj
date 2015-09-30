@@ -9,9 +9,11 @@
     .XAjaxDataBinding("DateiDownloadAjaxBinding", "Archive")
     .Columns(columns =>
     {
+        columns.XBound(c => c.DateiPfad).Visible(false);
+        
         columns.XBound(c => c.DateiName).Filterable(false).Groupable(false)
             .ClientTemplate(
-                "<a class='link tooltips' data-original-title='" + Localize.Download + "' data-placement='right' href='GetDatei?dateiName=<#= DateiName #>'><#= DateiName #></a>"
+                "<a class='link tooltips' data-original-title='" + Localize.Download + "' data-placement='right' href='GetDatei?dateiPfad=<#= DateiPfad #>'><#= DateiName #></a>"
         );
     })
     .XAutoColumnConfiguration()

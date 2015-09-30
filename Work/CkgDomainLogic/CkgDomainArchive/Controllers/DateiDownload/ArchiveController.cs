@@ -35,10 +35,9 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
-        public FileResult GetDatei(string dateiName)
+        public FileResult GetDatei(string dateiPfad)
         {
-            var virtualFilePath = Path.Combine(DateiDownloadViewModel.Verzeichnis, dateiName);
-            return File(virtualFilePath, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(virtualFilePath));
+            return File(dateiPfad, System.Net.Mime.MediaTypeNames.Application.Octet, Path.GetFileName(dateiPfad));
         }
 
         #region Export
