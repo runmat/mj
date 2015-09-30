@@ -152,13 +152,13 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0" />
+                            <RowDefinition Height="30" />
                             <RowDefinition Height="0" />
                             <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Visibility="Collapsed" Text="Auflösung (DPI):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
-                        <TextBox Visibility="Collapsed" Text="{Binding DPI, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="35" />
+                        <TextBlock Text="Auflösung (DPI):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding DPI, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="35" />
 
                         <TextBlock Visibility="Collapsed" Text="Farbe / Graustufe:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
                         <CheckBox Visibility="Collapsed" Content="Farbe" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UseColor, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />

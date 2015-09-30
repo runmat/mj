@@ -65,7 +65,7 @@
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>
-                                                        <Image Margin="5" Stretch="UniformToFill" Width="100" Height="140"  Source="{Binding ImageSource}" />
+                                                        <Image Margin="5" Stretch="UniformToFill" Height="140"  Source="{Binding ImageSource}" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
@@ -78,7 +78,7 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0" Height="{Binding SelectedScanImageHeight}" Width="{Binding SelectedScanImageWidth}" Margin="10,0,0,0">
+            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0" Height="{Binding SelectedScanImageHeight}" Margin="10,0,0,0">
                 <Image Stretch="UniformToFill" Source="{Binding ScanImageSource}" />
             </Border>
         </Grid>

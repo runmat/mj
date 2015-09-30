@@ -2,6 +2,7 @@
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
@@ -13,20 +14,46 @@ namespace DocumentTools.Services
 {
     public class PdfDocumentFactory : AbstractDocumentFactory
     {
-        public static void CreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName)
+        public static void CreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName, bool autoCorrectOrientation = true)
         {
             var pdfDoc = new ITextSharpPdfDocument();
-
+            var imageCount = 0;
             foreach (var file in imageFileNames)
             {
                 var pdfPage = new ITextSharpPdfPage();
                 pdfDoc.Pages.Add(pdfPage);
                 var xgr = XGraphics.FromPdfPage(pdfPage);
                 var img = XImage.FromFile(file);
-                xgr.DrawImage(img, 0, 0);
+
+                // try to set orientation due to Exif image information:
+                var processedImage = img;
+                var processedFile = "";
+                if (autoCorrectOrientation)
+                {
+                    processedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", Path.GetFileNameWithoutExtension(file) + "-2" + Path.GetExtension(file));
+                    ImagingService.ScaleAndSaveImage(file, processedFile, (int) (img.Size.Width > img.Size.Height ? img.Size.Width : img.Size.Height));
+                    processedImage = XImage.FromFile(processedFile);
+                }
+
+                // resizing image if higher/wider then pdfpage.
+                if (pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(processedImage.Size.Width))
+                    pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(processedImage.Size.Width);
+
+                if (pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(processedImage.Size.Height))
+                    pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(processedImage.Size.Height);
+
+                xgr.DrawImage(processedImage, 0, 0, processedImage.Size.Width, processedImage.Size.Height);
                 xgr.Dispose();
+
+                if (autoCorrectOrientation)
+                {
+                    processedImage.Dispose();
+                    FileService.TryFileDelete(processedFile);
+                }
+
+                imageCount++;
             }
-            
+
             pdfDoc.Save(pdfFileName);
             pdfDoc.Close();
         }

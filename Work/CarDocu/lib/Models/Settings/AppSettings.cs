@@ -36,7 +36,7 @@ namespace CarDocu.Models
         public static string AppSettingsDirectoryName { get { return AppCompanyName + @"\CarDocu_Scan"; } }
 
         [XmlIgnore]
-        public static string AppName { get { return "CarDocu Scan Anwendung"; } }
+        public static string AppName { get { return "CKG Scan Client"; } }
 
         [XmlIgnore]
         public static string AppVersion { get { return string.Format("{0}.{1}", Assembly.GetEntryAssembly().GetName().Version.Major, Assembly.GetEntryAssembly().GetName().Version.Minor); } }

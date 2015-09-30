@@ -282,7 +282,7 @@
             
             <!--Backstage-->
             <fl:Ribbon.Menu>
-                <fl:Backstage Header=" CarDocu        " IsOpen="False" Background="DarkRed">
+                <fl:Backstage Header="  CKG Scan Client  " IsOpen="False" Background="DarkRed">
                     <fl:BackstageTabControl DataContext="{Binding BackstageViewModel}">
                         <fl:BackstageTabItem Header="Info">
                             <ContentPresenter Content="{StaticResource image/logo_transparent}" />

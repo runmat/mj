@@ -37,20 +37,10 @@ namespace CarDocu.Models
         [XmlIgnore]
         public ScanDocument ParentDocument { get; set; }
 
-        //private ImageSource _imageSource; 
         [XmlIgnore]
         public ImageSource ImageSource 
         { 
-            get
-            {
-                //if (_imageSource != null) return _imageSource;
-
-                //_imageSource = GetChachedImageSource(true);
-
-                //return _imageSource;
-
-                return GetChachedImageSource(true);
-            }
+            get { return GetChachedImageSource(true); }
         }
 
         [XmlIgnore]
@@ -85,6 +75,9 @@ namespace CarDocu.Models
 
             var imgBytes = ImagingService.BytesFromImage(bitmap, ImageFormat);
             var bitmapThumb = ImagingService.ImageFromBytes(ImagingService.ScaleImage(imgBytes, 800, 1200));
+
+            //var testFileName = Path.Combine(@"C:\Users\JenzenM\Pictures\test_images\", Path.GetFileName(tempFileName) ?? "");
+            //bitmap.Save(testFileName, ImageFormat);
 
             bitmap.Save(tempFileName, ImageFormat);
             bitmap.Dispose();
