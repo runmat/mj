@@ -516,43 +516,14 @@ namespace CkgDomainLogic.General.Database.Services
         
         public DbSet<TranslatedResourceCustom> TranslatedResourceCustoms { get; set; }
 
-        public List<TranslatedResource> ResourcesForCurrentCustomer
+        public List<TranslatedResource> Resources
         {
-            get
-            {
-                // Alle Default Werte ermitteln
-                var defaultResources = (from resource in TranslatedResources
-                                       select resource).ToList();
+            get { return TranslatedResources.ToList(); }
+        }
 
-                if (User == null)
-                    return defaultResources.ToList();
-
-                var customer = GetCustomer(User.CustomerID);
-                var businessCustomerID = User.CustomerID;
-                if (customer != null)
-                    if (!Int32.TryParse(customer.KUNNR, out businessCustomerID))
-                        businessCustomerID = User.CustomerID;
-
-                // Alle Custom Werte ermitteln
-                var customResources = (from translatedResourceCustom in TranslatedResourceCustoms
-                                       where translatedResourceCustom.CustomerID == businessCustomerID
-                                       select translatedResourceCustom).ToList();
-
-                try
-                {
-                    foreach (var translatedResourceCustom in customResources)
-                    {
-                        var defaultResource = defaultResources.Single(resouce => resouce.Resource == translatedResourceCustom.Resource);
-                        defaultResource.MergeTranslatedResourceCustom(translatedResourceCustom);
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                }
-
-                return defaultResources.ToList();
-            }
+        public List<TranslatedResourceCustom> ResourcesForCustomers
+        {
+            get { return TranslatedResourceCustoms.ToList(); }
         }
 
         public TranslatedResource TranslatedResourceLoad(string resourceKey)

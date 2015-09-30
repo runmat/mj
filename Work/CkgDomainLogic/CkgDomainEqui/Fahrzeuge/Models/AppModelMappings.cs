@@ -587,7 +587,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_ABM_LIST.IT_STATUS, FahrzeugStatus>(
                                                  new Dictionary<string, string>
                                                      {
-                                                         {"STATUS", "ID"},
+                                                         {"STATUS", "Nr"},
                                                      },
                                                      null,  // Init Copy
                                                      (business, sap) =>   // Init Copy Back
@@ -838,7 +838,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             destination.LIZNR = source.Auftragsnummer;
                             destination.ZBATCH_ID = source.BatchId.NotNullOrEmpty().ToUpper();
                             destination.ZZSIPP = source.SIPPCode;
-                            destination.ZZHERST_TEXT = source.Herstellerkennung;
                             destination.KUNPDI = source.Pdi;
                         }
                     ));
