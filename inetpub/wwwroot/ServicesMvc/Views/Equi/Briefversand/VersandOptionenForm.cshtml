@@ -1,17 +1,18 @@
-﻿@using CkgDomainLogic.Equi.Models
-@model VersandOptionen
+﻿@model CkgDomainLogic.Equi.Models.VersandOptionen
 
 <div id="DivVersandOptionen" class="margin-top-20">
     @using (Ajax.BeginForm("VersandOptionenForm", "Equi", null,
-                new MvcAjaxOptions { UpdateTargetId = "DivVersandOptionen", OnComplete = "AjaxFormVersandOptionenComplete();" },
-                    htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormVersandOptionen" }))
+                        new MvcAjaxOptions { UpdateTargetId = "DivVersandOptionen", OnComplete = "AjaxFormVersandOptionenComplete();" },
+                            htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormVersandOptionen" }))
     {
         @Html.HiddenFor(m => m.IsValid)
+        @Html.HiddenFor(m => m.IstPostfachAdresse)
 
         @Html.FormValidationSummary()
 
 
-        @Html.FormDropDownListFor(m => m.VersandOptionKey, Model.OptionenList.ToSelectList(), new { @class = "m-wrap large" })
+        @Html.FormDropDownListFor(m => m.VersandOptionKey, Model.OptionenList.ToSelectList(), new {@class = "m-wrap large"},
+            postControlHtml: @<text><div id="hint-postfach-adresse" class="alert alert-warning no-margin hide">@Localize.EnforcePostDeliveryHint</div> </text>)
 
         if (Model.AufAbmeldungWartenAvailable)
         {
@@ -40,6 +41,13 @@
         <script type="text/javascript">
 
             _modelIsValid = @Model.IsValid.ToString().ToLower();
+
+            var istPostfachAdresse = @Model.IstPostfachAdresse.ToString().ToLower();
+            if (istPostfachAdresse) {
+                $("#VersandOptionKey").attr("disabled", "disabled");
+                $("#VersandOptionKey").attr("readonly", "readonly");
+                $("#hint-postfach-adresse").removeClass("hide");
+            }
 
         </script>
     }
