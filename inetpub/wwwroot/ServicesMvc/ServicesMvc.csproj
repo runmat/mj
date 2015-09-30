@@ -424,6 +424,7 @@
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
     <Content Include="_Themes\AH2015\images\kroschke_logo.png" />
+    <Content Include="_Themes\AH2015\images\kroschke_logo_on.png" />
     <Content Include="_Themes\AH2015\images\menu.png" />
     <Content Include="_Themes\AH2015\images\menu_white.png" />
     <Content Include="_Themes\AH2015\images\switch-2.png" />
@@ -436,6 +437,7 @@
     <Content Include="_Themes\AH2015\images\Logout.png" />
     <Content Include="_Themes\AH2015\images\test.jpg" />
     <Content Include="_Themes\AH2015\images\uniform\sprite.png" />
+    <Content Include="Teamviewer-Support.zip" />
     <Content Include="Documents\Templates\UploadZb2Versand.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -3157,6 +3159,7 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
+    <Content Include="Views\Shared\_Themes\AH2015\Partial\LayoutPageHeader.cshtml" />
     <Content Include="Views\Equi\Briefversand\EquiSuche.cshtml" />
     <Content Include="Views\Equi\Briefversand\EquiSucheForm.cshtml" />
     <Content Include="Views\Equi\Briefversand\Stueckliste.cshtml" />
