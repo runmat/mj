@@ -12,7 +12,6 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
@@ -25,11 +24,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public List<VersandAuftragsAnlage> UploadItems { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.DataWithErrorsOccurred)]
-        public bool UploadItemsUploadErrorsOccurred { get { return UploadItems.Any(item => !item.IsValid); } }
+        public IEnumerable<VersandAuftragsAnlage> ValidUploadItems { get { return UploadItems.Where(i => i.IsValid); } }
 
-        [LocalizedDisplay(LocalizeConstants.ErrorsOccuredOnSaving)]
-        public bool UploadItemsSaveErrorsOccurred { get { return UploadItems.Any(item => item.SaveStatus.IsNotNullOrEmpty() && item.SaveStatus != "OK"); } }
+        public bool UploadItemsUploadErrorsOccurred { get { return ValidUploadItems.Count() < UploadItems.Count; } }
+
+        public bool UploadItemsValidItemsAvailable { get { return ValidUploadItems.Any(); } }
 
         [XmlIgnore]
         public IBriefVersandDataService DataService { get { return CacheGet<IBriefVersandDataService>(); } }
@@ -38,6 +37,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void DataMarkForRefresh()
         {
+            SaveErrorMessage = "";
         }
 
         public bool ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
@@ -102,7 +102,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var item = new VersandAuftragsAnlage
                 {
                     BestandsNr = row[0].ToString(),
-                    // skip row 1 (dummy row)
+                    Lizenz = row[1].ToString(),
                     Name1 = row[2].ToString(),
                     Ansprechpartner = row[3].ToString(),
                     Strasse = row[4].ToString(),
@@ -133,7 +133,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (storedFahrzeug != null)
             {
                 if (storedFahrzeug.IstFehlerhaft)
-                    validationResults.Add(new ValidationResult(Localize.VehicleInvalid, new[] {"BestandsNr"}));
+                    validationResults.Add(new ValidationResult(storedFahrzeug.Info, new[] {"BestandsNr"}));
                 else
                 {
                     item.KundenNr = DataService.ToDataStoreKundenNr(LogonContext.KundenNr);
@@ -151,6 +151,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             var ser = new System.Web.Script.Serialization.JavaScriptSerializer();
             item.ValidationErrors = ser.Serialize(validationResults);
+            if (item.IsValid)
+                item.IsValid = validationResults.None();
+
+            item.ValidationFirstError = (validationResults.None() ? "" : validationResults.First().ErrorMessage);
         }
 
         void ValidateSingleUploadItemByViewModel(VersandAuftragsAnlage item, ICollection<ValidationResult> validationResults)
@@ -206,7 +210,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void SaveUploadItems()
         {
-            SaveErrorMessage = DataService.SaveVersandBeauftragung(UploadItems, filterSapErrorMessageVersandBeauftragung : false);
+            SaveErrorMessage = DataService.SaveVersandBeauftragung(ValidUploadItems, filterSapErrorMessageVersandBeauftragung : false);
         }
     }
 }
