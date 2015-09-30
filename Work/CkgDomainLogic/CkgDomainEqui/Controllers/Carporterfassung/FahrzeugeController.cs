@@ -26,6 +26,9 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
+
             CarporterfassungViewModel.Init();
 
             // get shopping cart items
@@ -45,6 +48,9 @@ namespace ServicesMvc.Controllers
                 model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
 
                 CarporterfassungViewModel.AddFahrzeug(model);
+
+                CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
+                LogonContext.DataContextPersist(CarporterfassungViewModel);
             }
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", model);
