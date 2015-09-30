@@ -143,7 +143,8 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public List<StuecklistenKomponente> Stueckliste { get; set; }
 
-        public List<StuecklistenKomponente> SelectedStueckliste { get { return Stueckliste.Where(sl => sl.IsSelected).OrderBy(sl => sl.Fahrgestellnummer).ToListOrEmptyList(); } }
+        [XmlIgnore]
+        public List<StuecklistenKomponente> SelectedStueckliste { get { return Stueckliste == null ? new List<StuecklistenKomponente>() : Stueckliste.Where(sl => sl.IsSelected).OrderBy(sl => sl.Fahrgestellnummer).ToListOrEmptyList(); } }
 
         public List<StuecklistenKomponente> StuecklisteFiltered
         {
