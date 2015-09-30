@@ -193,7 +193,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 newRow["Fahrgestellnummer"] = fzg.FahrgestellNr;
                 newRow["Hersteller"] = "";
                 newRow["Demontagedatum"] = fzg.DemontageDatum.ToString("dd.MM.yyyy");
-                newRow["Vorlage ZBI"] = "";
+                newRow["Vorlage ZBI"] = fzg.Zb1Vorhanden.BoolToX();
                 newRow["Anzahl Kennzeichen"] = fzg.AnzahlKennzeichen;
                 newRow["Web User"] = LogonContext.UserName;
                 newRow["Carport ID"] = fzg.CarportId;
