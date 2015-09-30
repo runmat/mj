@@ -1843,7 +1843,7 @@ namespace EasyExportGeneralTask
         {
             try
             {
-                Z_WFM_UEBERMITTLUNG_STAT_01.Init(S.AP, "I_KUNNR, I_STATUSWERT", taskConfiguration.Kundennummer, "4");
+                Z_WFM_UEBERMITTLUNG_STAT_01.Init(S.AP, "I_KUNNR, I_STATUSWERT", taskConfiguration.Kundennummer, "2");
 
                 var sapResults = Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT.GetExportListWithExecute(S.AP);
 
