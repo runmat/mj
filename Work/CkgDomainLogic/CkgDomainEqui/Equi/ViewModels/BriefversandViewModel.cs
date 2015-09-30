@@ -143,7 +143,8 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         public List<StuecklistenKomponente> Stueckliste { get; set; }
 
-        public List<StuecklistenKomponente> SelectedStueckliste { get { return Stueckliste.Where(sl => sl.IsSelected).OrderBy(sl => sl.Fahrgestellnummer).ToListOrEmptyList(); } }
+        [XmlIgnore]
+        public List<StuecklistenKomponente> SelectedStueckliste { get { return Stueckliste == null ? new List<StuecklistenKomponente>() : Stueckliste.Where(sl => sl.IsSelected).OrderBy(sl => sl.Fahrgestellnummer).ToListOrEmptyList(); } }
 
         public List<StuecklistenKomponente> StuecklisteFiltered
         {
@@ -390,6 +391,11 @@ namespace CkgDomainLogic.Equi.ViewModels
             {
                 return VersandOptionAufAbmeldungWartenAvailable && GetApplicationConfigBoolValueForCustomer("OptionAufAbmeldungWarten_Checked", true);
             }
+        }
+
+        public void InitVersandOptionen()
+        {
+            VersandOptionen.IstPostfachAdresse = (VersandAdresse != null && VersandAdresse.Strasse.NotNullOrEmpty().ToUpper().Contains("POSTFACH"));
         }
 
         #endregion
