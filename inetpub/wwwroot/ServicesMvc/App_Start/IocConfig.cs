@@ -215,6 +215,7 @@ namespace ServicesMvc
             builder.RegisterType<FinanceVersendungenDataServiceSAP>().As<IFinanceVersendungenDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadAvislisteDataServiceSap>().As<IUploadAvislisteDataService>().InstancePerHttpRequest();
             builder.RegisterType<CarporterfassungDataServiceSAP>().As<ICarporterfassungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<DateiDownloadDataService>().As<IDateiDownloadDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }

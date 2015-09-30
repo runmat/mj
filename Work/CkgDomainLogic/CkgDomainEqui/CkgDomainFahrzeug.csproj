@@ -169,6 +169,7 @@
     <Compile Include="Equi\Models\DataModels\EquiAussteuerung.cs" />
     <Compile Include="Equi\Models\DataModels\EquiTueteninhalt.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugAnforderung.cs" />
+    <Compile Include="Equi\Models\DataModels\StuecklistenKomponente.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragung.cs" />
     <Compile Include="Equi\Models\DataModels\VersandBeauftragungSelektor.cs" />
     <Compile Include="Equi\Models\DataModels\VersandAbweichungSelektor.cs" />
@@ -178,6 +179,7 @@
     <Compile Include="Equi\Models\DataModels\KlaerfallVhc.cs" />
     <Compile Include="Equi\Models\UIModels\DatenOhneDokumenteFilter.cs" />
     <Compile Include="Equi\Models\DataModels\FahrzeugbriefErweitert.cs" />
+    <Compile Include="Equi\Models\UIModels\EquiPartlistSelektor.cs" />
     <Compile Include="Equi\Models\UIModels\FahrzeugbriefSuchparameter.cs" />
     <Compile Include="Equi\Models\DataModels\Halterabweichung.cs" />
     <Compile Include="Equi\Models\UIModels\EquiHistorieSuchparameter.cs" />

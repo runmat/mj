@@ -8,7 +8,9 @@
     {
         @Html.FormValidationSummary()
 
-        @Html.FormRadioButtonListFor(m => m.Versandart, VersandartOptionen.VersandartAuswahl)
+        @Html.HiddenFor(m => m.EndgueltigerVersandAusgeblendet)
+
+        @Html.FormRadioButtonListFor(m => m.Versandart, Model.VersandartAuswahl)
 
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
