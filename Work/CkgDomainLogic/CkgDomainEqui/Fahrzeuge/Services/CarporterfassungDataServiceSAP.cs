@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeuge.Models.AppModelMappings;
@@ -21,16 +21,23 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
             Z_DPM_READ_MEL_CARP_01.Init(SAP, "I_AG, I_CARPORT_ID_AG", LogonContext.KundenNr.ToSapKunnr(), LogonContext.User.Reference);
 
-            if (!String.IsNullOrEmpty(kennzeichen))
+            if (kennzeichen.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_LICENSE_NUM", kennzeichen);
 
-            if (!String.IsNullOrEmpty(bestandsnummer))
+            if (bestandsnummer.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_MVA_NUMMER", bestandsnummer);
 
-            if (!String.IsNullOrEmpty(fin))
+            if (fin.IsNotNullOrEmpty())
                 SAP.SetImportParameter("I_CHASSIS_NUM", fin);
 
             return AppModelMappings.Z_DPM_READ_MEL_CARP_01_GT_TAB_To_CarporterfassungModel.Copy(Z_DPM_READ_MEL_CARP_01.GT_TAB.GetExportListWithExecute(SAP).FirstOrDefault());
+        }
+
+        public IEnumerable<string> GetCarportPdis()
+        {
+            Z_DPM_READ_CARPID_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            return Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).Select(s => s.KUNPDI);
         }
 
         public List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items)

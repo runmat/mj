@@ -67,7 +67,9 @@ namespace ServicesMvc.Controllers
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.TreuhandverwaltungViewModel>;
             FahrzeuguebersichtSelektor.GetViewModel =
                 GetViewModel<CkgDomainLogic.Fahrzeuge.ViewModels.FahrzeuguebersichtViewModel>;
-        
+            CarporterfassungModel.GetViewModel =
+                GetViewModel<CarporterfassungViewModel>;
+
             Unfallmeldung.GetViewModel = GetViewModel<UnfallmeldungenViewModel>;
             Fahrzeuguebersicht.GetSperrenVerschiebenViewModel = GetViewModel<FahrzeugSperrenVerschiebenViewModel>;
         }
