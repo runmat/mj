@@ -246,7 +246,7 @@
                                 <telerik:RadAjaxLoadingPanel ID="RadAjaxLoadingPanel1" runat="server" />
                                 <telerik:RadGrid ID="rgSearchResult" AutoGenerateColumns="False" runat="server" GridLines="None"
                                     Width="905px" Height="550px" Culture="de-DE" EnableHeaderContextMenu="True" CellSpacing="0"
-                                    ClientSettings-AllowColumnsReorder="false" VirtualItemCount="2" AllowPaging="True"
+                                    ClientSettings-AllowColumnsReorder="false" VirtualItemCount="2" AllowPaging="True" 
                                     AllowSorting="True" CellPadding="0" EnableAjaxSkinRendering="False" GroupingEnabled="False">
                                     <ExportSettings HideStructureColumns="false" IgnorePaging="true" OpenInNewWindow="true"
                                         ExportOnlyData="true" FileName="BenutzerExport">
@@ -918,8 +918,22 @@
             CheckCollapseExpandStatus();
         }
 
+        function PrepareUserSearchResultsAutomaticLoad() {
+            if ($("#<%= Result.ClientID %>").css("display") == "none")
+                return;
+
+            if ($(".rgRow").length != 1)
+                return;
+
+            $("#<%= Result.ClientID %>").html("<div class='auto-redirect-link'>Sie werden automatisch weitergeleitet ...</div>");
+
+            __doPostBack('ctl00$ContentPlaceHolder1$rgSearchResult$ctl00$ctl04$lbUserName', '');
+        }
+
         $(function () {
             CheckCollapseExpandStatus();
+
+            PrepareUserSearchResultsAutomaticLoad();
         }); 
         
     </script>

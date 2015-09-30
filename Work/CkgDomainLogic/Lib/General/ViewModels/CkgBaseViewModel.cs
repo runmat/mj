@@ -185,7 +185,7 @@ namespace CkgDomainLogic.General.ViewModels
                 return "";
 
             var redirectUrl = dashboardItem.RelatedAppUrl.NotNullOrEmpty().Replace("mvc/", "~/");
-            SessionHelper.SetSessionObject("DashboardCurrentReportSelectorKey", dashboardItem.Title);
+            SessionHelper.SetSessionObject("DashboardCurrentReportSelectorKey", dashboardItem.ItemKey);
 
             return redirectUrl;
         }

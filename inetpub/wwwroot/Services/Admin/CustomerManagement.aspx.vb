@@ -61,7 +61,6 @@ Partial Public Class CustomerManagement
             lblMessage.Text = ""
 
             If Not IsPostBack Then
-                txtFilterCustomerName.Focus()
                 FillForm()
                 Tabs.ActiveTabIndex = 0
             End If
@@ -1135,6 +1134,7 @@ Partial Public Class CustomerManagement
         ddlMvcSelectionType.Items.Add(New ListItem(""))
         ddlMvcSelectionType.Items.Add(New ListItem("Anwendungs-Favoriten", "Favorites"))
         ddlMvcSelectionType.Items.Add(New ListItem("Selection URL", "Url"))
+        ddlMvcSelectionType.Items.Add(New ListItem("Dashboard", "Dashboard"))
 
     End Sub
 
