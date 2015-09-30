@@ -281,6 +281,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult VersandOptionen()
         {
+            BriefversandViewModel.InitVersandOptionen();
+
             return PartialView("Briefversand/VersandOptionen", BriefversandViewModel);
         }
 
