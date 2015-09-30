@@ -210,7 +210,20 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void SaveUploadItems()
         {
-            SaveErrorMessage = DataService.SaveVersandBeauftragung(ValidUploadItems, filterSapErrorMessageVersandBeauftragung : false);
+            SaveErrorMessage = "";
+
+            DataService.SaveVersandBeauftragung(ValidUploadItems, false, 
+                (fin, errorMessage) =>
+                {
+                    errorMessage = errorMessage.NotNullOrEmpty().Replace(":", ",");
+
+                    var matchingVersandAuftrag = ValidUploadItems.FirstOrDefault(v => v.VIN == fin);
+                    var error = matchingVersandAuftrag != null 
+                                    ? string.Format("Bestandsnummer {0}: {1}", matchingVersandAuftrag.BestandsNr, errorMessage) 
+                                    : string.Format("FIN {0}: {1}", fin, errorMessage);
+
+                    SaveErrorMessage += SaveErrorMessage.ReplaceIfNotNull("; ") + error;
+                });
         }
     }
 }
