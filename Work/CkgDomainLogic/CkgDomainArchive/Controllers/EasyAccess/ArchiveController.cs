@@ -7,9 +7,6 @@ using DocumentTools.Services;
 
 namespace ServicesMvc.Controllers
 {
-    /// <summary>
-    /// Leasing-Controller (aufgegliedert in partielle Klassen, je nach Funktionsgruppe)
-    /// </summary>
     public partial class ArchiveController : CkgDomainController 
     {
         public EasyAccessViewModel EasyViewModel { get { return GetViewModel<EasyAccessViewModel>(); } }
