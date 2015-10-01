@@ -17,22 +17,15 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
-        [Required, ContainsNot("(")]
+        [Required]
         public string CarportId { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.CarportName)]
+        [LocalizedDisplay(LocalizeConstants.Carport)]
         public string CarportName { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Carport)]
-        [XmlIgnore]
-        public string Carport
+        public IDictionary<string, string> CarportPdis
         {
-            get { return CarportName.PrependIfNotNullElse(CarportId + " - ", CarportId); }
-        }
-
-        public IEnumerable<string> CarportPdis
-        {
-            get { return GetViewModel == null ? new List<string>() : GetViewModel().CarportPdis; }
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPdis; }
         }
 
         [Required]
