@@ -1,24 +1,27 @@
 ﻿using System;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
+using GeneralTools.Models;
+using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.DomainCommon.Models
 {
-    public class VersandAuftragsAnlage : IAddressStreetHouseNo   
-    {   
+    public class VersandAuftragsAnlage : IAddressStreetHouseNo
+    {
         public string KundenNr { get; set; }
 
-        public string VIN { get; set ; } 
+        public string VIN { get; set; }
 
         public bool BriefVersand { get; set; }
-         
+
         public bool SchluesselVersand { get; set; }
 
         public string StuecklistenKomponente { get; set; }
 
         public bool AbmeldeKennzeichen { get; set; }
 
-        public string AbcKennzeichen { get; set; } 
+        public string AbcKennzeichen { get; set; }
 
         public string MaterialNr { get; set; }
 
@@ -43,7 +46,10 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string Strasse { get; set; }
 
-        public string StrasseHausNr { get { return AddressService.FormatStreetAndHouseNo(this); } }
+        public string StrasseHausNr
+        {
+            get { return AddressService.FormatStreetAndHouseNo(this); }
+        }
 
         public string HausNr { get; set; }
 
@@ -53,6 +59,43 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string Land { get; set; }
 
+        public string Ansprechpartner { get; set; }
+
         #endregion
+
+
+        public string BestandsNr { get; set; }
+
+        public string Lizenz { get; set; }
+
+        public int LfdNr { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string Status
+        {
+            get
+            {
+                if (ValidationFirstError.IsNotNullOrEmpty())
+                    return ValidationFirstError;
+
+                if (SaveStatus.IsNotNullOrEmpty() && SaveStatus != "OK")
+                    return SaveStatus;
+
+                return Localize.OK;
+            }
+        }
+
+        public string ValidationErrors { get; set; }
+
+        public string ValidationFirstError { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string SaveStatus { get; set; }
+
+        [ModelMappingCompareIgnore]
+        [GridHidden]
+        public bool IsValid { get; set; }
+
+        public string PicklistenFormular { get; set; }
     }
 }

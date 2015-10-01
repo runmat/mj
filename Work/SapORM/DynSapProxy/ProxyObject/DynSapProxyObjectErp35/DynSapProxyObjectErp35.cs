@@ -32,7 +32,8 @@ namespace SapORM.Services
                 "NO_RESULT",
                 "ERR_NO_DATA",
                 "ERR_DAT",
-                "NO_HEADER"
+                "NO_HEADER",
+                "NO_WEB"
             };
 
         public string BapiName { get; set; }
@@ -606,7 +607,8 @@ namespace SapORM.Services
                     callduration = stopwatch.Elapsed.TotalSeconds;
                 }
 
-                PreserveStackTrace(generalException);
+                if (!(generalException is ERPException))
+                    PreserveStackTrace(generalException);
 
                 LogSapBapiCall(logService, logonContext, true, callduration);
 

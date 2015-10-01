@@ -4,7 +4,7 @@ using CkgDomainLogic.Equi.Models;
 
 namespace CkgDomainLogic.Equi.Contracts
 {
-    public enum BriefversandModus { Brief, Schluessel, BriefMitSchluessel }
+    public enum BriefversandModus { Brief, Schluessel, BriefMitSchluessel, Stueckliste }
 
     public interface IBriefbestandDataService : ICkgGeneralDataService
     {
@@ -34,6 +34,20 @@ namespace CkgDomainLogic.Equi.Contracts
         #region ZBII Ein- und Ausgaenge
 
         List<Fahrzeugbrief> GetEinAusgaenge(EinAusgangSelektor model);
+
+        #endregion
+
+
+        #region Fahrzeugbriefe
+
+        IEnumerable<Fahrzeugbrief> GetFahrzeugBriefe(Fahrzeugbrief fahrzeug);
+
+        #endregion
+
+
+        #region Stuecklisten
+
+        IEnumerable<StuecklistenKomponente> GetStuecklistenKomponenten(IEnumerable<string> fahrgestellnummern);
 
         #endregion
     }

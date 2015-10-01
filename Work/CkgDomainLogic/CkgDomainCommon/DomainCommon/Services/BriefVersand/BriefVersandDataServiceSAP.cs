@@ -1,5 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -7,11 +6,10 @@ using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
 using SapORM.Contracts;
 using SapORM.Models;
+using Telerik.Web.Mvc.Extensions;
 using AppModelMappingsDomainCommon = CkgDomainLogic.DomainCommon.Models.AppModelMappings;
 using AppModelMappingsGeneral = CkgDomainLogic.General.Models.AppModelMappings;
 
@@ -52,7 +50,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             return AppModelMappingsGeneral.Z_DPM_READ_VERS_GRUND_KUN_01_GT_OUT_To_VersandGrund.Copy(sapList);
         }
 
-        public string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege)
+        public string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege, bool filterSapErrorMessageVersandBeauftragung = true, Action<string, string> onFinErrorFunction = null)
         {
             return SAP.ExecuteAndCatchErrors(
                 
@@ -62,9 +60,17 @@ namespace CkgDomainLogic.DomainCommon.Services
                 // SAP custom error handling:
                 () => {
                     var errorList = Z_DPM_FILL_VERSAUFTR.GT_ERR.GetExportList(SAP);
-                    if (errorList.Any())
-                        return string.Join("; ", errorList.Select(e => e.BEMERKUNG).Where(FilterSapErrorMessageVersandBeauftragung));
-                    return "";
+                    if (errorList.None())
+                        return "";
+                        
+                    errorList = errorList.Where(e => !filterSapErrorMessageVersandBeauftragung || FilterSapErrorMessageVersandBeauftragung(e.BEMERKUNG)).ToList();
+                    if (errorList.None())
+                        return "";
+
+                    if (onFinErrorFunction != null)
+                        errorList.ForEach(e => onFinErrorFunction(e.CHASSIS_NUM, e.BEMERKUNG));
+
+                    return string.Join("; ", errorList.Select(e => e.BEMERKUNG).Where(e => !filterSapErrorMessageVersandBeauftragung || FilterSapErrorMessageVersandBeauftragung(e)));
                 }, 
                 ignoreResultCode: true);
         }
@@ -74,9 +80,8 @@ namespace CkgDomainLogic.DomainCommon.Services
             // gesprochen mit Madeleine am 14.10.:
             // Folgende SAP Fehlermeldung ignorieren: "Equipment < ??? > nicht vorhanden!" 
             // (ist hier kein Fehler, da Equi (VIN) in Z_DPM_COC_01 Tabelle zu dieser Zeit noch gar nicht vorhanden sein kann)
-            var strRegex = @"equipment\s\<\s(.)+\s\>\snicht vorhanden!";
-            var myRegexOptions = RegexOptions.IgnoreCase;
-            var myRegex = new Regex(strRegex, myRegexOptions);
+            const string strRegex = @"equipment\s\<\s(.)+\s\>\snicht vorhanden!";
+            var myRegex = new Regex(strRegex, RegexOptions.IgnoreCase);
 
             return !myRegex.Matches(sapErrorMessage).Cast<Match>().Any(m => m.Success);
         }
@@ -95,20 +100,12 @@ namespace CkgDomainLogic.DomainCommon.Services
             SAP.Execute();
         }
 
-        #region not used yet
-
-        public Fahrzeug GetFahrzeugBriefForVin(string vin)
-        {
-            return GetFahrzeugBriefe(new Fahrzeug {FIN = vin}).FirstOrDefault();
-        }
-
-        public IEnumerable<Fahrzeug> GetFahrzeugBriefe(Fahrzeug fahrzeugBriefParameter)
+        public IEnumerable<Fahrzeug> GetFahrzeugBriefe(IEnumerable<Fahrzeug> fahrzeuge)
         {
             Z_DPM_UNANGEF_ALLG_01.Init(SAP, "I_KUNNR_AG, I_EQTYP", LogonContext.KundenNr.ToSapKunnr(), "B");
 
-            var importListAG = Z_DPM_UNANGEF_ALLG_01.GT_IN.GetImportList(SAP);
-            importListAG.Add(AppModelMappingsDomainCommon.MapFahrzeugeImportToSAP.CopyBack(fahrzeugBriefParameter));
-            SAP.ApplyImport(importListAG);
+            var importList = AppModelMappingsDomainCommon.MapFahrzeugeImportToSAP.CopyBack(fahrzeuge);
+            SAP.ApplyImport(importList);
 
             SAP.Execute();
 
@@ -118,7 +115,5 @@ namespace CkgDomainLogic.DomainCommon.Services
 
             return list;
         }
-
-        #endregion
     }
 }

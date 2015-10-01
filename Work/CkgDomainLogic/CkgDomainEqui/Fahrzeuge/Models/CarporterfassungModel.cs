@@ -1,31 +1,38 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Script.Serialization;
+using System.Xml.Serialization;
+using CkgDomainLogic.Fahrzeuge.ViewModels;
 using GeneralTools.Models;
 using GeneralTools.Resources;
+using GeneralTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
-    public class CarporterfassungModel
+    public class CarporterfassungModel : Store 
     {
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
+        [Required, ContainsNot("(")]
         public string CarportId { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CarportName)]
         public string CarportName { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
+        [XmlIgnore]
         public string Carport
         {
-            get
-            {
-                if (!String.IsNullOrEmpty(CarportName))
-                    return String.Format("{0} - {1}", CarportId, CarportName);
+            get { return CarportName.PrependIfNotNullElse(CarportId + " - ", CarportId); }
+        }
 
-                return CarportId;
-            }
+        public IEnumerable<string> CarportPdis
+        {
+            get { return GetViewModel == null ? new List<string>() : GetViewModel().CarportPdis; }
         }
 
         [Required]
@@ -36,7 +43,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNr { get; set; }
 
@@ -47,13 +53,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.Barcode)]
         public string Barcode { get; set; }
 
+        [Length(1)]
         [LocalizedDisplay(LocalizeConstants.NumberOfLicensePlates)]
         public string AnzahlKennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DisassemblyDate)]
         public DateTime? DemontageDatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Deregistered)]
+        [LocalizedDisplay(LocalizeConstants.SelfDeregistrator)]
         public bool Abgemeldet { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Zb1Available)]
@@ -84,5 +91,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Status { get; set; }
 
         public string Action { get; set; }
+
+        [XmlIgnore]
+        public string TmpStatus { get; set; }
+
+        [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
+        public static Func<CarporterfassungViewModel> GetViewModel { get; set; }
     }
 }

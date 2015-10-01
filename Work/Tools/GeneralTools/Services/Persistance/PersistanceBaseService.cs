@@ -16,6 +16,8 @@ namespace GeneralTools.Services
 
         protected abstract void DeletePersistedObject(string objectKey);
 
+        public abstract void DeleteAllObjects(string ownerKey, string groupKey);
+
 
         public IEnumerable<IPersistableObjectContainer> GetObjectContainers(string ownerKey, string groupKey)
         {

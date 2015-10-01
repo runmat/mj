@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Xml.Serialization;
 using GeneralTools.Models;
@@ -39,6 +40,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "DaimlerFleet" };
             //args = new[] { "SixtMobility" };
             //args = new[] { "Europcar" };
+            //args = new[] { "WKDA" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
@@ -285,6 +287,14 @@ namespace EasyExportGeneralTask
                     #region Europcar
 
                     QueryEuropcar();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.WKDA:
+                    #region WKDA
+
+                    QueryWKDA();
 
                     #endregion
                     break;
@@ -1775,14 +1785,7 @@ namespace EasyExportGeneralTask
 
                     string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
 
-                    if (status == "Keine Daten gefunden.")
-                    {
-                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name,
-                            "Fehler beim EasyExport (Code 01): " + "Konnte Datei nicht finden. Querystring:" + queryexpression + " Status:" + status, EventLogEntryType.Warning);
-                        Helper.SendErrorEMail("Fehler bei " + "EasyExportGeneralTask_" + taskConfiguration.Name,
-                            "Fehler beim EasyExport (Code 01): " + "Konnte Datei nicht finden. Querystring:" + queryexpression + " / " + EventLogEntryType.Warning);
-                    }
-                    else
+                    if (status != "Keine Daten gefunden.")
                     {
                         if (!String.IsNullOrEmpty(status))
                         {
@@ -1824,6 +1827,186 @@ namespace EasyExportGeneralTask
                             }
                         }
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("EasyExportGeneralTask_" + taskConfiguration.Name + ": Fehler beim EasyExport (Code 01): " + ex.ToString());
+                EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Fehler beim EasyExport (Code 01): " + ex.ToString(), EventLogEntryType.Warning);
+            }
+        }
+
+        /// <summary>
+        /// Archivabfrage für WKDA
+        /// </summary>
+        private static void QueryWKDA()
+        {
+            try
+            {
+                Z_WFM_UEBERMITTLUNG_STAT_01.Init(S.AP, "I_KUNNR, I_STATUSWERT", taskConfiguration.Kundennummer, "2");
+
+                var sapResults = Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT.GetExportListWithExecute(S.AP);
+
+                // EasyArchiv-Query initialisieren
+                clsQueryClass Weblink = new clsQueryClass();
+                Weblink.Configure(taskConfiguration);
+
+                var listOk = new List<Z_WFM_SET_STATUS_UEBERM_01.GT_IN>();
+
+                foreach (var item in sapResults)
+                {
+                    result.clear();
+
+                    string queryexpression = ".1001=" + item.FAHRG + " & .1002=ZB1";
+
+                    string status = Weblink.QueryArchive(taskConfiguration.easyArchiveNameStandard, queryexpression, ref total_hits, ref result, taskConfiguration);
+
+                    var gefunden = false;
+
+                    if (status == "Keine Daten gefunden.")
+                    {
+                        var ablageDateiName = String.Format("{0}_ZB1.pdf", item.FAHRG);
+                        var ablageDateiPfad = Path.Combine(Konfiguration.WkdaDokumentAblagePfad, ablageDateiName);
+
+                        if (File.Exists(ablageDateiPfad))
+                        {
+                            // neuen Namen für Datei vergeben
+                            string newFilePath = taskConfiguration.easyBlobPathLocal + "\\" + item.REFERENZ1 + "_" + DateTime.Now.ToShortDateString() + "_" + item.NAME1 + ".pdf";
+                            if (File.Exists(newFilePath))
+                                File.Delete(newFilePath);
+
+                            File.Copy(ablageDateiPfad, newFilePath);
+
+                            Thread.Sleep(2000);
+
+                            gefunden = true;
+                        }
+                        else if (taskConfiguration.NoDataMailsSenden)
+                        {
+                            Helper.SendEMail("EasyExportGeneralTask_" + taskConfiguration.Name + ": Dokument nicht gefunden: " + item.FAHRG, 
+                                "", taskConfiguration.NoDataMailEmpfaenger, "");
+                        }
+                    }
+                    else
+                    {
+                        if (!String.IsNullOrEmpty(status))
+                            throw new Exception(status);
+
+                        int iIndex = 0;
+
+                        if (result.hitCounter > 1)
+                        {
+                            string strDate = "";
+
+                            for (int i = 0; i < result.hitList.Rows.Count; i++)
+                            {
+                                string datum = result.hitList.Rows[i][2].ToString();
+
+                                if ((String.IsNullOrEmpty(strDate)) || (String.Compare(datum, strDate) > 0))
+                                {
+                                    strDate = datum;
+                                    iIndex = i;
+                                }
+                            }
+                        }
+
+                        status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
+
+                        if (!String.IsNullOrEmpty(status))
+                            Console.WriteLine(status);
+
+                        gefunden = true;
+                    }
+
+                    if (gefunden)
+                    {
+                        listOk.Add(new Z_WFM_SET_STATUS_UEBERM_01.GT_IN
+                        {
+                            TASK_ID = item.TASK_ID,
+                            VORG_NR_ABM_AUF = item.VORG_NR_ABM_AUF,
+                            STATUSWERT = item.STATUSWERT
+                        });
+                    }
+                }
+
+                if (listOk.Any())
+                {
+                    if (taskConfiguration.DatumInSapSetzen)
+                    {
+                        Z_WFM_SET_STATUS_UEBERM_01.Init(S.AP, "I_KUNNR", taskConfiguration.Kundennummer);
+
+                        S.AP.ApplyImport(listOk);
+
+                        S.AP.Execute();
+                    }
+
+                    #region Dokumente zippen
+
+                    DirectoryInfo di = new DirectoryInfo(taskConfiguration.easyBlobPathLocal);
+                    FileInfo[] aryFi = di.GetFiles("*", SearchOption.TopDirectoryOnly);
+
+                    if (aryFi.Length > 0)
+                    {
+                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner gestartet", EventLogEntryType.Information);
+
+                        var zipName = "Abmeldungen " + DateTime.Now.ToString("dd.MM.yyyy HHmm");
+                        var zipOrdnerPfad = taskConfiguration.exportPathZip + "\\Abmeldungen " + DateTime.Now.ToShortDateString();
+
+                        if (!Directory.Exists(zipOrdnerPfad))
+                            Directory.CreateDirectory(zipOrdnerPfad);
+
+                        var zipPfad = zipOrdnerPfad + "\\" + zipName + ".zip";
+
+                        string zipcommand = " a -tzip \"" + zipPfad + "\" " + taskConfiguration.easyBlobPathLocal + "\\*";
+                        Process sdp = Process.Start(Konfiguration.pathZipApplication, zipcommand);
+
+                        if (sdp != null)
+                        {
+                            int waitCount = 0;
+                            while (!sdp.HasExited)
+                            {
+                                if (waitCount == 20)
+                                {
+                                    if (sdp.Responding)
+                                    {
+                                        sdp.CloseMainWindow();
+                                    }
+                                    else
+                                    {
+                                        sdp.Kill();
+                                    }
+                                    Console.WriteLine("Exit with Error!");
+                                    break;
+                                }
+
+                                waitCount++;
+                                Thread.Sleep(10000);
+                            }
+                        }
+
+                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner beendet", EventLogEntryType.Information);
+
+                        #region Mail versenden
+
+                        if (taskConfiguration.MailsSenden)
+                        {
+                            var mailBetreff = String.Format("Abmeldebestätigung {0}", zipName);
+                            var mailText = String.Join(Environment.NewLine, new[]
+                            {
+                                "Es steht eine neue Datei mit Abmeldebestätigungen zur Abholung bereit."
+                            });
+
+                            Helper.SendEMail(mailBetreff, mailText, taskConfiguration.MailEmpfaenger, zipPfad);
+                        }
+
+                        #endregion
+                    }
+                    else
+                    {
+                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Keine Dateien zum komprimieren gefunden.", EventLogEntryType.Information);
+                    }
+
+                    #endregion
                 }
             }
             catch (Exception ex)

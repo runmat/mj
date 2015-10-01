@@ -1,0 +1,67 @@
+﻿@using CkgDomainLogic.DomainCommon.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.UploadZb2VersandViewModel
+
+@Html.ValidationSummary()
+
+@{ var gridName = "GridUpload"; }
+
+@if (Model.UploadItemsUploadErrorsOccurred)
+{
+    <h5>
+        <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>, @Localize.NowInAdditionPleaseCheckTheContent:</span>
+    </h5>
+}
+else
+{
+    <h5>
+        <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>:</span>
+    </h5>
+}
+
+<script type="text/javascript"> _uploadItemsValidItemsAvailable = @(Model.UploadItemsValidItemsAvailable.ToString().ToLower()); </script>
+
+@if (Model.UploadItemsUploadErrorsOccurred)
+{
+    <div class="alert @(Model.UploadItemsValidItemsAvailable ? "alert-warning" : "alert-error")">
+        <label class="checkbox">
+            <i class="icon-bell"></i>
+            <span class="padding-left-5">@(Model.UploadItemsValidItemsAvailable ? Localize.DataWithErrorsOccurred : Localize.DataWithErrorsOccurredOnly)</span>
+            <span class="padding-left-5">@(Model.UploadItemsValidItemsAvailable ? Localize.OnlyValidDataWillBeProcessed : Localize.PleaseCheckYourInputs)</span>
+        </label>
+    </div>
+}
+@if (Model.SaveErrorMessage.IsNotNullOrEmpty())
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <i class="icon-bell"></i><span class="padding-left-5">@Model.SaveErrorMessage</span>
+        </label>
+    </div>
+}
+
+
+@(Html.Telerik()
+    .Grid<VersandAuftragsAnlage>()
+    .Name(gridName)
+    .Editable(editing => editing.Enabled(true))
+    .DataKeys(d => d.Add(a => a.LfdNr).RouteKey("LfdNr"))
+    .XAjaxDataBindingWithUpdateAndDelete("UploadZb2VersandAjaxBinding", "UploadZb2VersandAjaxUpdateItem", "UploadZb2VersandAjaxDeleteItem", "Upload")
+    .Columns(columns =>
+    {
+        columns.Command(commands => commands.Edit());
+        columns.Command(commands => commands.Delete());
+        columns.XBound(c => c.LfdNr).Visible(false);
+        columns.XBound(c => c.Status).HtmlAttributes(new { @class = "fontBold fontItalic" });
+        columns.XBound(c => c.BestandsNr);
+        columns.XBound(c => c.Name1);
+        columns.XBound(c => c.Ansprechpartner);
+        columns.XBound(c => c.Strasse);
+        columns.XBound(c => c.PLZ);
+        columns.XBound(c => c.Ort);
+        columns.XBound(c => c.Land);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName).OnRowDataBound("OnRowDataBound_" + gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.LfdNr).Ascending())
+)
