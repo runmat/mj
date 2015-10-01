@@ -35,10 +35,12 @@ namespace AppZulassungsdienst.forms
 
         private void ShowVerbandbuch()
         {
-            ifrVerbandbuch.Attributes["src"] = string.Format("ServicesMvc/Verbandbuch/Erfassung?vkbur={0}&ra={1}&rb={2}", 
-                m_User.Kostenstelle,
-                ConfigurationManager.AppSettings["VerbandbuchRemoteLoginKey"],
-                ConfigurationManager.AppSettings["VerbandbuchRemoteLoginTimestamp"]);
+            string debug = (string.Format("/ServicesMvc/Verbandbuch/Erfassung?vkbur={0}&ra={1}&rb={2}",
+                    m_User.Kostenstelle,
+                    ConfigurationManager.AppSettings["VerbandbuchRemoteLoginKey"],
+                    ConfigurationManager.AppSettings["VerbandbuchRemoteLoginTimestamp"]));
+
+            ifrVerbandbuch.Attributes["src"] = debug;
         }
 
         #endregion
