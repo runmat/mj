@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CkgDomainLogic.Leasing.Models;
 using GeneralTools.Models;
 using SapORM.Models;
 
@@ -168,6 +167,32 @@ namespace CkgDomainLogic.Leasing.Models
                         d.KlaerfallTextZeile5 = s.TDLINE5;
                         d.KundenNr = s.KUNNR;
                         d.ReferenzNr = s.ZZREFNR;
+                    }
+                ));
+            }
+        }
+
+        static public ModelMapping<Z_M_FAELLIGE_EQUI_LP.GT_WEB, UeberfaelligeRuecksendung> Z_M_FAELLIGE_EQUI_LP_GT_WEB_To_UeberfaelligeRuecksendung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_M_FAELLIGE_EQUI_LP.GT_WEB, UeberfaelligeRuecksendung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.Anforderer = s.IHREZ;
+                        d.EquiNr = s.EQUNR;
+                        d.FaelligkeitsDatum = s.ZZFAEDT;
+                        d.FahrgestellNr = s.CHASSIS_NUM;
+                        d.Kennzeichen = s.LICENSE_NUM;
+                        d.LeasingvertragsNr = s.LIZNR;
+                        d.Mahnstufe = s.ZZMAHNS;
+                        d.Memo = s.TEXT200;
+                        d.SuchnameKunde = s.SORTL;
+                        d.VersandDatum = s.ZZTMPDT;
+                        d.Versandgrund = s.ZZVGRUND_TEXT;
+                        d.Vertriebseinheit = s.ZZLABEL;
+                        d.Zb2Nr = s.TIDNR;
                     }
                 ));
             }
