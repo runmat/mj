@@ -57,7 +57,8 @@ namespace EasyExportGeneralTask
             // Hier kann nicht immer arcLocation als QueryFormat (Parameter 6) gewählt werden, weil z.B. bei Ford je nach Kunde (CSC,FFD) die Sichten NICHT Ford heißen!!!
             var tmpCounter = cls.EASYQueryArchiveInit(taskConfig.easyLocation, archiveName, queryExpression, 8000, 8000, Konfiguration.easyQueryIndexName,
                                                       null, ref dummyLayoutFieldId, ref dummyLayoutId, ref totalHits, ref dummyHitlistMultiTiff, ref status);
-            result.hitCounter += Int32.Parse(tmpCounter.ToString()) - 1; // Header abziehen
+
+            result.hitCounter = Int32.Parse(tmpCounter.ToString()) - 1; // Header abziehen
 
             if (result.hitCounter == 0)
             {
@@ -73,7 +74,7 @@ namespace EasyExportGeneralTask
                 // Hier Tabelle zusammenbauen
                 result.AddColumnsToResultTable(feldliste); // Spalten zur Treffertabelle hinzufügen
 
-                for (int i = startIndex; i < result.hitCounter; i++)
+                for (int i = startIndex; i < (startIndex + result.hitCounter); i++)
                 {
                     string tblRow = (string)cls.EASYQueryArchiveNext(ref strLocFound, ref strArcFound, ref doc_id, ref doc_ver); // Nächste Zeile              
                     result.addRowToResultTable(tblRow, feldliste, (string)strLocFound, (string)strArcFound, (string)doc_id, (string)doc_ver);
@@ -284,6 +285,16 @@ namespace EasyExportGeneralTask
                                 dataObjEuropcar = (additionalData[0] as Z_DPM_AVM_DOKUMENT_MAIL.GT_WEB);
                             }
                             cls.SavePictureEuropcar(ref LC, logDS, ref row, taskConfig, dataObjEuropcar);
+                            break;
+
+                        case AblaufTyp.WKDA:
+                            strFahrgestellnummer = row["FIN"].ToString();
+                            Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT dataObjWkda = null;
+                            if (additionalData != null)
+                            {
+                                dataObjWkda = (additionalData[0] as Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT);
+                            }
+                            cls.SavePictureWKDA(ref LC, logDS, ref row, taskConfig, dataObjWkda);
                             break;
                     }
                 }
@@ -1027,6 +1038,38 @@ namespace EasyExportGeneralTask
 
             Thread.Sleep(2000);
 
+            File.Delete(row["Filepath"].ToString());
+        }
+
+        public static void SavePictureWKDA(this clsQueryClass cls, ref LoggingClass LC, LogDataset logDS, ref DataRow row, TaskKonfiguration taskConfig, Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT item)
+        {
+            object iStatus;
+            object status = "";
+
+            Console.WriteLine("Wait... for " + row["FIN"]);
+
+            if (File.Exists(row["Filepath"].ToString()))
+            {
+                Console.WriteLine(" " + row["File"] + " existiert bereits.");
+                throw new IOException(row["File"] + " existiert bereits.");
+            }
+
+            // Datei speichern
+            iStatus = cls.EASYTransferBLOB(row["File"], row["FileLength"], ref status);
+
+            if (iStatus.ToString() != "1")
+                throw new Exception("Fehlerstatus " + iStatus + " bei Dateidownload aus EasyArchiv (" + status + ")");
+
+            // neuen Namen für Datei vergeben
+            string newFilePath = taskConfig.easyBlobPathLocal + "\\" + item.REFERENZ1 + "_" + DateTime.Now.ToShortDateString() + "_" + item.NAME1 + ".pdf";
+            if (File.Exists(newFilePath))
+                File.Delete(newFilePath);
+
+            File.Move(row["Filepath"].ToString(), newFilePath);
+
+            Thread.Sleep(2000);
+
+            // ursprüngliche Datei löschen
             File.Delete(row["Filepath"].ToString());
         }
     }
