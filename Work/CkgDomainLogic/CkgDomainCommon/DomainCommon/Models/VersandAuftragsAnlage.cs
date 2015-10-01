@@ -66,6 +66,8 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public string BestandsNr { get; set; }
 
+        public string Lizenz { get; set; }
+
         public int LfdNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
@@ -73,8 +75,8 @@ namespace CkgDomainLogic.DomainCommon.Models
         {
             get
             {
-                if (ValidationErrors.IsNotNullOrEmpty() && ValidationErrors != "[]")
-                    return Localize.ErrorCheckInput;
+                if (ValidationFirstError.IsNotNullOrEmpty())
+                    return ValidationFirstError;
 
                 if (SaveStatus.IsNotNullOrEmpty() && SaveStatus != "OK")
                     return SaveStatus;
@@ -84,6 +86,8 @@ namespace CkgDomainLogic.DomainCommon.Models
         }
 
         public string ValidationErrors { get; set; }
+
+        public string ValidationFirstError { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string SaveStatus { get; set; }

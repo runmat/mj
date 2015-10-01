@@ -37,7 +37,9 @@ namespace SapORM
 
             ConfigurationMerger.MergeTestWebConfigAppSettings();
 
-            
+
+            //new FunctionReflector("Z_DPM_READ_EQUI_STL_01").WriteOrmForExportTableStructures();
+
             /*
                Dim myProxy As DynSapProxyObj = DynSapProxy.getProxy("Z_M_TH_GET_TREUH_AG", m_objApp, m_objUser, page)
 
@@ -469,6 +471,9 @@ namespace SapORM
             //new FunctionReflector("Z_M_FAELLIGE_EQUI_LP").WriteOrmForExportTableStructures("I_KUNNR", "336070");
             //new FunctionReflector("Z_M_FAELLIGE_EQUI_UPDATE_LP").WriteOrmForExportTableStructures("I_KUNNR, I_EQUNR", "336070", "0");
             //new FunctionReflector("Z_DPM_IMP_MEL_CARP_01").WriteOrmForExportTableStructures("I_AG, I_WEB_USER", "10077452", "CarlM");
+
+            //new FunctionReflector("Z_WFM_UEBERMITTLUNG_STAT_01").WriteOrmForExportTableStructures("I_KUNNR, I_STATUSWERT", "10077452", "4");
+            //new FunctionReflector("Z_WFM_SET_STATUS_UEBERM_01").WriteOrmForExportTableStructures("I_KUNNR", "10077452");
 
 
             //CoCTest();
