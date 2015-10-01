@@ -18,14 +18,22 @@
                     <div id="paginationQuery">
                     </div>
                     <div id="TableQuery" style="margin-bottom: 10px">
-                        <div id="Queryfooter" runat="server">
+                        <div id="Queryfooter" runat="server">   
                         </div>
                     </div>
                     <div id="dataQueryFooter" class="dataQueryFooter">
                     </div>                         
-                    <div id="data">
-                        <iframe runat="server" ID="ifrVerbandbuch" width="100%" height="600px" style="border:0;margin:0;padding: 0" ></iframe>
-                    </div>                       
+                    <div id="data" style="text-align: center" >
+                        
+                                <asp:LinkButton CssClass="TablebuttonXLarge" Width="155px"
+                                            Height="22px" runat="server" ID="btnErfassung" OnClick="btnErfassung_Click" Text="Erfassung eines Vorfalls" Style="margin-top: 20px;"/> <br/>
+                     
+                           
+                                <asp:LinkButton CssClass="TablebuttonXLarge" Width="155px"
+                                            Height="22px" runat="server" ID="btnReport" OnClick="btnReport_Click" Text="Filialreport" Style="margin-top: 10px; margin-bottom: 20px" />
+  
+                    </div>
+                                           
                     <div id="dataFooter" class="dataQueryFooter">   
                     </div>       
                 </div>
