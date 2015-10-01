@@ -56,6 +56,12 @@ namespace GeneralTools.Models
             copiedList.Insert(0, itemToInsert);
             return copiedList;
         }
+        public static IEnumerable<string> InsertAtTop(this IEnumerable<string> source, string itemToInsert)
+        {
+            var list = source.ToListOrEmptyList();
+            list.Insert(0, itemToInsert);
+            return list;
+        }
 
         public static DataTable ToDataTable<T>(this IList<T> source)
         {

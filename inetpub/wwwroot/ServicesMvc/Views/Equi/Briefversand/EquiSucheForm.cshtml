@@ -1,0 +1,39 @@
+﻿@model CkgDomainLogic.Equi.Models.EquiPartlistSelektor
+
+<div id="divEquiPartlistSuche">
+    @using (Ajax.BeginForm("EquiSucheForm", "Equi", null,
+                new MvcAjaxOptions("divEquiPartlistSuche") { OnComplete = "AjaxFormEquiSucheComplete();" }, new { id = "EquiPartlistSearchForm" }))
+    {
+        <div class="form-horizontal">
+
+            @Html.FormValidationSummary()
+
+            @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "left" })
+            @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap small", col = "right" })
+
+            @Html.FormTextBoxFor(m => m.VertragsNr, new { @class = "m-wrap", col = "left" })
+            @Html.FormTextBoxFor(m => m.BriefNr, new { @class = "m-wrap", col = "right" })
+
+
+            @if (!Html.FormIsInvisible(m => m.Ref1) && !Html.FormIsInvisible(m => m.Ref2))
+            {
+                @Html.FormTextBoxFor(m => m.Ref1, new { @class = "m-wrap", col = "left" })
+                @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap", col = "right" })
+            }
+            else if (!Html.FormIsInvisible(m => m.Ref1))
+            {
+                @Html.FormTextBoxFor(m => m.Ref1, new { @class = "m-wrap" })
+            }
+            else if (!Html.FormIsInvisible(m => m.Ref2))
+            {
+                @Html.FormTextBoxFor(m => m.Ref2, new { @class = "m-wrap" })
+            }
+
+        </div>
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
