@@ -10,27 +10,35 @@
     <h5>
         <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>, @Localize.NowInAdditionPleaseCheckTheContent:</span>
     </h5>
-    <script type="text/javascript">        _formWizardForceHideSubmitButton = true; </script> 
 }
 else
 {
     <h5>
         <span>@Localize.YourFile <span class="bold">@Model.UploadFileName</span>:</span>
     </h5>
-    <script type="text/javascript">        _formWizardForceHideSubmitButton = false; </script>
 }
 
-@if (Model.UploadItemsUploadErrorsOccurred || Model.UploadItemsSaveErrorsOccurred)
+<script type="text/javascript"> _uploadItemsValidItemsAvailable = @(Model.UploadItemsValidItemsAvailable.ToString().ToLower()); </script>
+
+@if (Model.UploadItemsUploadErrorsOccurred)
 {
-    <div class="alert alert-warning">
+    <div class="alert @(Model.UploadItemsValidItemsAvailable ? "alert-warning" : "alert-error")">
         <label class="checkbox">
-            <span class="bold">
-                <i class="icon-bell"></i> @(Model.UploadItemsUploadErrorsOccurred ? Html.DisplayNameFor(m => m.UploadItemsUploadErrorsOccurred) : Html.DisplayNameFor(m => m.UploadItemsSaveErrorsOccurred))
-            </span>
-            <i class=""></i>
+            <i class="icon-bell"></i>
+            <span class="padding-left-5">@(Model.UploadItemsValidItemsAvailable ? Localize.DataWithErrorsOccurred : Localize.DataWithErrorsOccurredOnly)</span>
+            <span class="padding-left-5">@(Model.UploadItemsValidItemsAvailable ? Localize.OnlyValidDataWillBeProcessed : Localize.PleaseCheckYourInputs)</span>
         </label>
     </div>
 }
+@if (Model.SaveErrorMessage.IsNotNullOrEmpty())
+{
+    <div class="alert alert-error">
+        <label class="checkbox">
+            <i class="icon-bell"></i><span class="padding-left-5">@Model.SaveErrorMessage</span>
+        </label>
+    </div>
+}
+
 
 @(Html.Telerik()
     .Grid<VersandAuftragsAnlage>()

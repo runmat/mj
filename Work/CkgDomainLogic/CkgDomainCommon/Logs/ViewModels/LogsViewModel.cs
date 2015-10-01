@@ -139,10 +139,16 @@ namespace CkgDomainLogic.Logs.ViewModels
             set { PropertyCacheSet(value); }
         }
 
-        [XmlIgnore]
-        public List<ErrorLogItem> ErrorLogItemsFiltered
+        public List<ErrorLogItemUI> ErrorLogItemsUI
         {
-            get { return PropertyCacheGet(() => ErrorLogItems); }
+            get { return PropertyCacheGet(() => new List<ErrorLogItemUI>()); }
+            set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<ErrorLogItemUI> ErrorLogItemsUIFiltered
+        {
+            get { return PropertyCacheGet(() => ErrorLogItemsUI); }
             private set { PropertyCacheSet(value); }
         }
 
@@ -175,7 +181,7 @@ namespace CkgDomainLogic.Logs.ViewModels
             PropertyCacheClear(this, m => m.PageVisitLogItemsFiltered);
             PropertyCacheClear(this, m => m.PageVisitLogItemsDetailFiltered);
             PropertyCacheClear(this, m => m.WebServiceTrafficLogItemsUIFiltered);
-            PropertyCacheClear(this, m => m.ErrorLogItemsFiltered);
+            PropertyCacheClear(this, m => m.ErrorLogItemsUIFiltered);
 
             PropertyCacheClear(this, m => m.Applications);
             PropertyCacheClear(this, m => m.Customers);
@@ -204,7 +210,7 @@ namespace CkgDomainLogic.Logs.ViewModels
 
         public void FilterErrorLogItems(string filterValue, string filterProperties)
         {
-            ErrorLogItemsFiltered = ErrorLogItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+            ErrorLogItemsUIFiltered = ErrorLogItemsUI.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
 
         public SapCallContext LastSapCallContext { get; private set; }
@@ -401,7 +407,13 @@ namespace CkgDomainLogic.Logs.ViewModels
             WebServiceTrafficLogItemsUI.Clear();
             foreach (var item in WebServiceTrafficLogItems)
             {
-                WebServiceTrafficLogItemsUI.Add(new WebServiceTrafficLogItemUI{ Id = item.Id, Time_Stamp = item.Time_Stamp, Type = item.Type, AllXmlPreview = item.AllXmlPreview });
+                WebServiceTrafficLogItemsUI.Add(new WebServiceTrafficLogItemUI
+                    {
+                        Id = item.Id,
+                        Time_Stamp = item.Time_Stamp,
+                        Type = item.Type,
+                        AllXmlPreview = item.AllXmlPreview
+                    });
             }
 
             DataMarkForRefresh();
@@ -428,6 +440,26 @@ namespace CkgDomainLogic.Logs.ViewModels
             ErrorLogItemSelector = newErrorLogItemSelector;
 
             ErrorLogItems = DataService.GetErrorLogItems(ErrorLogItemSelector);
+
+            ErrorLogItemsUI.Clear();
+            foreach (var item in ErrorLogItems)
+            {
+                ErrorLogItemsUI.Add(new ErrorLogItemUI
+                    {
+                        ErrorId = item.ErrorId,
+                        Application = item.Application,
+                        Host = item.Host,
+                        Type = item.Type,
+                        Source = item.Source,
+                        Message = item.Message,
+                        Sequence = item.Sequence,
+                        User = item.User,
+                        UserName = item.UserName,
+                        StatusCode = item.StatusCode,
+                        TimeUtc = item.TimeUtc
+                    });
+            }
+
             DataMarkForRefresh();
             return true;
         }

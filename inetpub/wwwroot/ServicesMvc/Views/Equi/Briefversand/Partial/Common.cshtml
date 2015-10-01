@@ -2,6 +2,7 @@
 
     var ladeHinweis = '@Localize.LoadingData';
     var _modelIsValid = false;
+    var _fahrzeugCount = -1;
 
     function FormPreparePrivate() {
 
@@ -22,12 +23,19 @@
     
     function FormWizardInitPrivate() {
         FormWizard.Init(function () {
-            FormWizard.ActionsShow(!FormWizard.HasStepKey('FahrzeugAuswahl') && typeof(_formErrorHint) == 'undefined');
+            FormWizard.ActionsShow((!FormWizard.HasStepKey('FahrzeugAuswahl') || FormWizard.HasStepKey('EquiSuche')) && typeof (_formErrorHint) == 'undefined');
         });
 
         FormWizard.OnNext(function (step, maxSteps) {
+            if ('EquiSuche' == FormWizard.GetStepKey(step - 1)) {
+                $("#EquiPartlistSearchForm").submit();
+                return false;
+            }
             if ('FahrzeugAuswahl' == FormWizard.GetStepKey(step - 1)) {
                 return FahrzeugAuswahl();
+            }
+            if ('Stueckliste' == FormWizard.GetStepKey(step - 1)) {
+                return StuecklistenAuswahl();
             }
             if ('VersandartOptionen' == FormWizard.GetStepKey(step - 1)) {
                 $("#AjaxFormVersandartOptionen").submit();
@@ -73,9 +81,12 @@
     }
 
     function AjaxRequestNextStep() {
+
+        var nextTabKey = FormWizard.GetNextTabKey();
+
         $.ajax({
             type: "POST",
-            url: FormWizard.GetNextTabKey(),
+            url: nextTabKey,
             data: {},
             loadingShow: true,
             success: function (result) {
@@ -84,11 +95,28 @@
                     return;
                 }
                 FormWizard.SetNextTabHtmlAndMoveNext(result);
+                if (nextTabKey == "FahrzeugAuswahl") {
+                    FormWizard.ButtonNextShow(_fahrzeugCount == 1);
+                    if (_fahrzeugCount == 1) {
+                        AjaxRequestNextStep();
+                        return;
+                    }
+                    GridAllColumnFilterApplyToGrid("GridFahrzeugAuswahl");
+                }
+                if (nextTabKey == "Stueckliste") {
+                    FormWizard.ButtonNextShow(false);
+                    GridAllColumnFilterApplyToGrid("GridStuecklistenAuswahl");
+                }
             }
         });    
     }
 
     function FahrzeugAuswahl() {
+        AjaxRequestNextStep();
+        return false;
+    }
+
+    function StuecklistenAuswahl() {
         AjaxRequestNextStep();
         return false;
     }
@@ -123,7 +151,14 @@
 
         return false;
     }
-    
+
+    function AjaxFormEquiSucheComplete() {
+        FormPrepareAjax();
+
+        if (_modelIsValid)
+            AjaxRequestNextStep();
+    }
+
     function AjaxFormVersandartOptionenComplete() {
         FormPrepareAjax();
 
@@ -411,7 +446,8 @@
             success: function (result) {
                 var count = result.allSelectionCount;
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
-                FormWizard.ActionsShow(count > 0);
+                FormWizard.ActionsShow(true);
+                FormWizard.ButtonNextShow(count > 0);
                 if (count == 0) {
                     $("#FahrzeugAuswahlCount").addClass('hide');
                     return;
@@ -432,8 +468,9 @@
             success: function (result) {
                 var count = result.allSelectionCount;
                 GridFahrzeugAuswahl_MultiSelectUpdate(result.allSelectionCount);
-                FormWizard.ActionsShow(count > 0);
-                
+                FormWizard.ActionsShow(true);
+                FormWizard.ButtonNextShow(count > 0);
+
                 $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
                 $("#csv-upload-reset > span.all-count").text(result.allCount);
                 FilterGrid("GridFahrzeugAuswahl");
@@ -453,8 +490,90 @@
         $("#FahrzeugAuswahlCount > span").html('Sie haben ' + count + ' Fahrzeug' + (count == 1 ? '' : 'e') + ' ausgewählt!');
         $("#uncheckAllRecords").attr("checked", true);
         $.uniform.update($("#uncheckAllRecords"));
-    }    
-    
+    }
+
+
+    function OnDataBound_GridStuecklistenAuswahl() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+
+        // prepare multi row selection
+        App.initUniform();
+        Grid_PrepareMultiRowSelected("GridStuecklistenAuswahl");
+    }
+
+    function OnLoad_GridStuecklistenAuswahl() {
+        $('.t-no-data td').text(ladeHinweis);
+    }
+
+    function OnRowDataBound_GridStuecklistenAuswahl(e) {
+    }
+
+    function OnColumnShowHide_GridStuecklistenAuswahl() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridStuecklistenAuswahl() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnSelectionChange_GridStuecklistenAuswahl(cb) {
+
+        Grid_FormatMultiRowSelected(cb);
+
+        $.ajax({
+            type: "POST",
+            url: "StuecklistenAuswahlSelectionChanged",
+            data: { id: cb.val(), isChecked: cb.is(':checked') },
+            loadingShow: false,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                GridStuecklistenAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                FormWizard.ButtonNextShow(count > 0);
+                if (count == 0) {
+                    $("#StuecklistenAuswahlCount").addClass('hide');
+                    return;
+                }
+
+                $("#StuecklistenAuswahlCount").removeClass('hide');
+                $("#StuecklistenAuswahlCount > span").html('Sie haben ' + count + ' Komponente' + (count == 1 ? '' : 'n') + ' ausgewählt!');
+            }
+        });
+    }
+
+    function GridStuecklistenAuswahl_OnAllSelectionChange(check) {
+        $.ajax({
+            type: "POST",
+            url: "StuecklistenAuswahlSelectionChanged",
+            data: { id: "", isChecked: check },
+            loadingShow: true,
+            success: function (result) {
+                var count = result.allSelectionCount;
+                GridStuecklistenAuswahl_MultiSelectUpdate(result.allSelectionCount);
+                FormWizard.ButtonNextShow(count > 0);
+
+                $("#csv-upload-reset > span.found-count").text(result.allFoundCount);
+                $("#csv-upload-reset > span.all-count").text(result.allCount);
+                FilterGrid("GridStuecklistenAuswahl");
+            }
+        });
+    }
+
+    function GridStuecklistenAuswahl_MultiSelectUpdate(count) {
+        if (count == 0) {
+            $("#StuecklistenAuswahlCount").addClass('hide');
+            $("#uncheckAllRecords").attr("checked", false);
+            $.uniform.update($("#uncheckAllRecords"));
+            return;
+        }
+
+        $("#StuecklistenAuswahlCount").removeClass('hide');
+        $("#StuecklistenAuswahlCount > span").html('Sie haben ' + count + ' Komponente' + (count == 1 ? '' : 'n') + ' ausgewählt!');
+        $("#uncheckAllRecords").attr("checked", true);
+        $.uniform.update($("#uncheckAllRecords"));
+    }
+
+
     function UploadStart(e) {
 
         // clear only the UI of our Upload Control:
