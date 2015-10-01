@@ -1,0 +1,70 @@
+﻿@using CkgDomainInternal.Verbandbuch.Models;
+@using CkgDomainInternal.Verbandbuch;
+
+@model VerbandbuchModel
+
+
+<div id="divVerbandbuchErfassung" >
+    @using (Ajax.BeginForm("SaveVorfall", "Verbandbuch", null,
+                new MvcAjaxOptions("divVerbandbuchErfassung") { OnComplete = "ShowSuccessMessage();" }, new { id = "VerbandbuchForm" }))
+    {
+        <div class="form-horizontal label-width-250" id="VerbandbuchForm">
+
+            @Html.FormValidationSummary()
+
+
+            @Html.HiddenFor(x => x.Vkbur)
+
+        <div class="form">
+            @Html.FormTextBoxFor(x => x.InjuredPerson, new {@class = "m-wrap ", col = "left", maxlength = 80})
+            @Html.FormTextBoxFor(x => x.DateOfAccident, new {@class = "m-wrap form_datetime", col = "right"})
+
+            @Html.FormTextAreaFor(x => x.Injury, new {@class = "m-wrap ", maxlength = 400, col = "left"})
+            @Html.FormTextAreaFor(x => x.CourseOfAccident, new {@class = "m-wrap ", col = "right", maxlength = 400})
+        </div>
+
+            @Html.FormTextBoxFor(x => x.WitnessName, new {@class = "m-wrap ", maxlength = 80, col = "left"})
+            @Html.FormTextBoxFor(x => x.PlaceOfAccident, new {@class = "m-wrap ", col = "right", maxlength = 160})
+
+            @Html.FormTextBoxFor(x => x.FirstResponder, new {@class = "m-wrap ", col = "left", maxlength = 80})
+            @Html.FormTextBoxFor(x => x.DateOfFirstAid, new {@class = "m-wrap  form_datetime", col = "right"})
+
+            @Html.FormTextAreaFor(x => x.FirstAidMeasures, new {@class = "m-wrap ", maxlength = 400})
+
+
+            @Html.FormRequiredFieldsSummary()
+
+                <div class="form-actions" align="right">
+                    <button type="submit" class='btn blue'><i class='icon-save'></i>&nbsp;Vorfall speichern</button>
+                </div>
+            </div>
+
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function ShowSuccessMessage() {
+        
+        FormPreparePrivateAjax();
+
+        if (_modelStateValid) {
+            SpanAlertSuccess("spanMessage", "Speichern erfolgreich", 2500);
+        }
+    }
+
+    $('.form_datetime').datetimepicker({
+        language: 'de',
+        weekStart: 1,
+        todayBtn: 1,
+        autoclose: 1,
+        todayHighlight: 1,
+        startView: 2,
+        forceParse: 0,
+        showMeridian: 1
+    });
+
+</script>

@@ -45,7 +45,23 @@ namespace SapORM
                 myProxy.setImportParameter("I_TREU", m_objUser.KUNNR.PadLeft(10, "0"c))
                 myProxy.setImportParameter("I_EQTYP", "B")                                        
              */
-           
+
+            // 20150708 Hol- und Bringservice   Z_ZLD_AH_2015_HOLUNDBRING_PDF
+            // new FunctionReflector("Z_ZLD_AH_2015_HOLUNDBRING_PDF").WriteOrmForExportTableStructures();
+
+            //new FunctionReflector("Z_ZLD_EXPORT_BELNR").WriteOrmForExportTableStructures();
+          
+            new FunctionReflector("Z_VB_EXPORT_FAELLE").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_VB_IMPORT_FALL").WriteOrmForExportTableStructures();
+
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_UPDATE").WriteOrmForExportTableStructures();             
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_INSERT").WriteOrmForExportTableStructures();             
+            //new FunctionReflector("Z_DPM_READ_MODELID_TAB").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); 
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_SELECT").WriteOrmForExportTableStructures(); 
+            //new FunctionReflector("Z_M_EC_AVM_BATCH_UNIT_SELECT").WriteOrmForExportTableStructures("I_KUNNR_AG, I_BATCH_ID", new object[] { "0000219853", "1234" }); 
+            //new FunctionReflector("Z_M_EC_AVM_STATUS_EINSTEUERUNG").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;
+            //new FunctionReflector("Z_M_EC_AVM_NUR_BRIEF_VORH").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;
+            //new FunctionReflector("Z_M_EC_AVM_STATUS_BESTAND").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;  
             //new FunctionReflector("Z_DPM_LIST_POOLS_001").WriteOrmForExportTableStructures("I_KUNNR_AG, I_ZZDAT_BER_VON, I_ZZDAT_BER_BIS", new object[] { "0000219853", "01.02.2015", "02.02.2015" }); 
             //new FunctionReflector("Z_DPM_READ_AUFTR_006").WriteOrmForExportTableStructures("I_KUNNR", new object[] { "0000219853" }); ;  
             //new FunctionReflector("Z_DPM_LIST_PDI_001").WriteOrmForExportTableStructures("I_KUNNR_AG", new object[] { "0000219853" }); ;  
@@ -63,7 +79,7 @@ namespace SapORM
             //new FunctionReflector("Z_M_ABMBEREIT_LAUFAEN").WriteOrmForExportTableStructures("KUNNR, ZZKENN, ZZFAHRG, KUNPDI", new object[] { "0000219853", "HH-SR7859", "WVWZZZ3CZFE045648", "1001808528" });
             //new FunctionReflector("Z_M_ECA_TAB_BESTAND").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_M_HERSTELLERGROUP").WriteOrmForExportTableStructures();
-             //   S.AP.InitExecute("Z_M_Abm_Abgemeldete_Kfz", "KUNNR,PICKDATAB,PICKDATBI", m_objUser.KUNNR.PadLeft(10, "0"c), datAbmeldedatumVon, datAbmeldedatumBis)
+            //   S.AP.InitExecute("Z_M_Abm_Abgemeldete_Kfz", "KUNNR,PICKDATAB,PICKDATBI", m_objUser.KUNNR.PadLeft(10, "0"c), datAbmeldedatumVon, datAbmeldedatumBis)
             // new FunctionReflector("Z_M_Abm_Abgemeldete_Kfz").WriteOrmForExportTableStructures(); 
 
             //new FunctionReflector("Z_M_SCHLUE_TEMP_VERS_MAHN_001").WriteOrmForExportTableStructures();
@@ -128,7 +144,7 @@ namespace SapORM
             //new FunctionReflector("Z_ZLD_MOB_USER_PUT_VG").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZLD_MOB_STAMMD").WriteOrmForExportTableStructures();
 
-             ////Autohaus MVC
+            ////Autohaus MVC
             //new FunctionReflector("Z_DPM_READ_EQUI_003").WriteOrmForExportTableStructures("I_KUNNR_AG, I_EQTYP", "10000649", "B");
             //new FunctionReflector("Z_M_IMP_AUFTRDAT_007").WriteOrmForExportTableStructures("I_KUNNR", "10000649");
             //new FunctionReflector("Z_M_Land_Plz_001").WriteOrmForExportTableStructures();
@@ -196,7 +212,7 @@ namespace SapORM
 
             //new FunctionReflector("Z_M_GET_FAHRER_AUFTRAEGE").WriteOrmForExportTableStructures("I_VKORG,I_FAHRER", "1510", "0000499930");
             ///////new FunctionReflector("Z_M_SET_FAHRER_AUFTRAGS_STATUS").WriteOrmForExportTableStructures("I_VBELN, I_FAHRER_STATUS", "25648097".ToSapKunnr(), " ");
-            
+
             //new FunctionReflector("Z_V_UEBERF_AUFTR_FAHRER").WriteOrmForExportTableStructures("I_FAHRER", "499930");
             //new FunctionReflector("Z_UEB_FAHRER_QM").WriteOrmForExportTableStructures("I_LIFNR, I_DATAB, I_DATBI", "490454".ToSapKunnr(), DateTime.Parse("01.01.2013"), DateTime.Parse("31.12.2013"));
 
@@ -296,7 +312,7 @@ namespace SapORM
             //new FunctionReflector("Z_AHP_READ_FZGBESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883");
             //new FunctionReflector("Z_AHP_READ_TYPDAT_BESTAND").WriteOrmForExportTableStructures("I_KUNNR", "10026883"); 
             //new FunctionReflector("Z_ZLD_AH_AF_ABM_SAVE").WriteOrmForExportTableStructures(); 
-            
+
 
             //new FunctionReflector("Z_ZLD_AH_AUSGABE_ZULFORMS").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KREISKZ", "10026883", "B");
             //new FunctionReflector("Z_ZLD_EXPORT_ZULSTEL").WriteOrmForExportTableStructures();
@@ -599,7 +615,7 @@ namespace SapORM
             //ZulassungsServicesTest();
 
 
-            
+
             //CardocuTest();
 
             //CardocuEquiTest();
@@ -618,7 +634,7 @@ namespace SapORM
             //ErpBulkCopySqlTest_FeinstaubPlaketten();
             //ErpBulkCopySqlTest_KennzeichenVerkauf();
 
-            
+
             //CsiTest();
 
             //TargoTest3();
