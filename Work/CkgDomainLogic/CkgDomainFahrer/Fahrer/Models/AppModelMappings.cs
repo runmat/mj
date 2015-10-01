@@ -99,7 +99,7 @@ namespace CkgDomainLogic.Fahrer.Models
                     (s, d) =>
                     {
                         d.AuftragsNr = s.AUFNR;
-                        d.FahrtNr = s.FAHRTNR;
+                        d.Fahrt = s.FAHRTNR;
 
                         d.WunschLieferDatum = s.WADAT;
 
@@ -109,6 +109,43 @@ namespace CkgDomainLogic.Fahrer.Models
                         d.Kennzeichen = s.ZZKENN;
                         d.VIN = s.ZZFAHRG;
                         d.FahrzeugTyp = s.ZZBEZEI;
+                    }
+                    ));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        static public ModelMapping<Z_V_UEBERF_AUFTR_UPL_PROT_01.GT_OUT, FahrerAuftragsProtokoll> Z_V_UEBERF_AUFTR_UPL_PROT_01_GT_OUT_to_FahrerAuftragsProtokoll
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_V_UEBERF_AUFTR_UPL_PROT_01.GT_OUT, FahrerAuftragsProtokoll>(
+                    new Dictionary<string, string>(),
+                    (s, d) =>
+                    {
+                        d.KundenNr = s.KUNNR_AG;
+
+                        d.AuftragsNr = s.VBELN;
+                        d.Referenz = s.ZZREFNR;
+
+                        d.WunschLieferDatum = s.WADAT;
+
+                        d.OrtStart = s.FAHRTVON;
+                        d.OrtZiel = s.FAHRTNACH;
+
+                        d.Kennzeichen = s.ZZKENN;
+                        d.VIN = s.ZZFAHRG;
+
+                        d.ProtokollArt = s.ZZPROTKAT1;
+                        d.ProtokollArt2 = s.ZZPROTKAT2;
+
+                        d.ProtokollName = s.ZZPOSPROTKAT1.NotNullOr(
+                                            s.ZZPOSPROTKAT2.NotNullOr(
+                                                s.ZZPOSPROTKAT3.NotNullOr(
+                                                    s.ZZPROTKAT1.NotNullOr(
+                                                        s.ZZPROTKAT2.NotNullOr(
+                                                            s.ZZPROTKAT3)))));
                     }
                     ));
             }
@@ -151,6 +188,22 @@ namespace CkgDomainLogic.Fahrer.Models
                         d.GesamtEindruck = s.FRAGE9;
                         d.Einweisung = s.FRAGE10;
                         d.FahrzeugZustand = s.FRAGE11;
+                    }));
+            }
+        }
+
+        // ReSharper disable InconsistentNaming
+        public static ModelMapping<Z_DPM_QM_READ_QPCD.GT_OUTQPCD, SelectItem> Z_DPM_QM_READ_QPCD_GT_OUTQPCD_To_SelectItem
+        // ReSharper restore InconsistentNaming
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_QM_READ_QPCD.GT_OUTQPCD, SelectItem>(
+                    new Dictionary<string, string>(),
+                    (s, d) =>
+                    {
+                        d.Key = s.CODE;
+                        d.Text = s.CODETEXT;
                     }));
             }
         }

@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
 using GeneralTools.Services;
+using PdfSharp;
 using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;

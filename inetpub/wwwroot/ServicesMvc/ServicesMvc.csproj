@@ -1155,9 +1155,8 @@
     <Content Include="Views\Fahrer\Partial\Auftraege\AuftraegeGridAuftragsDetails.cshtml" />
     <Content Include="Views\Fahrer\Partial\Auftraege\AuftraegeGridAuftragsCommandBar.cshtml" />
     <Content Include="Views\Fahrer\FotoUpload.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadNew.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadEdit.cshtml" />
-    <Content Include="Views\Fahrer\Partial\FotoUpload\UploadScripts.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\FotoUpload\UploadNew.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\FotoUpload\UploadEdit.cshtml" />
     <Content Include="Views\Fahrer\QmReport.cshtml" />
     <Content Include="Views\Fahrer\Partial\QmReport\Results.cshtml" />
     <Content Include="Views\Fahrer\Partial\QmReport\Filter.cshtml" />
@@ -3032,6 +3031,12 @@
     <Content Include="Views\Equi\Historie\Partial\FahrzeugAnforderungDetailsForm.cshtml" />
     <Content Include="Views\Fahrzeuge\SperrenVerschieben\FileUpload.cshtml" />
     <Content Include="Views\Equi\KlaerfaelleVhc\KlaerfaelleVhcSuche.cshtml" />
+    <Content Include="Views\Fahrer\ProtokollUpload.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\ProtokollUpload\UploadEdit.cshtml" />
+    <Content Include="Views\Fahrer\Partial\Upload\UploadScripts.cshtml" />
+    <Content Include="Views\Fahrer\ProtokollArchivierung.cshtml" />
+    <Content Include="Views\Fahrer\Partial\ProtokollArchivierung\Grid.cshtml" />
+    <Content Include="Views\Fahrer\Partial\ProtokollArchivierung\ProtokollEdit.cshtml" />
     <Content Include="Views\Finance\ReportVersendungen.cshtml" />
     <Content Include="Views\Finance\Versendungen\Grid.cshtml" />
     <Content Include="Views\Finance\Versendungen\Suche.cshtml" />

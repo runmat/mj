@@ -29,6 +29,12 @@ namespace ServicesMvc.Controllers
             : base(appSettings, logonContext)
         {
             InitViewModel(ViewModel, appSettings, logonContext, fahrerDataService);
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            ProtokollEditModel.GetViewModel = GetViewModel<FahrerViewModel>;
         }
 
 
@@ -58,11 +64,17 @@ namespace ServicesMvc.Controllers
         }
 
         [CkgApplication]
-        public ActionResult FotoUpload()
+        public ActionResult FotoUpload(string modeProtokoll)
         {
-            ViewModel.LoadFahrerAuftragsFahrten();
+            ViewModel.SetParamProtokollMode(modeProtokoll);
 
             return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult ProtokollUpload()
+        {
+            return FotoUpload(modeProtokoll: "1");
         }
 
         [CkgApplication]
@@ -71,6 +83,29 @@ namespace ServicesMvc.Controllers
             return View(ViewModel);
         }
 
+        [CkgApplication]
+        public ActionResult ProtokollArchivierung()
+        {
+            ViewModel.SetParamProtokollMode("1");
+            ViewModel.LoadFahrerProtokolle();
+
+            return View(ViewModel);
+        }
+
+
+
+        [HttpPost]
+        public JsonResult LoadFahrerAuftragsFahrten()
+        {
+            var errorMessage = ViewModel.LoadFahrerAuftragsFahrten().NotNullOrEmpty();
+
+            return Json(new
+            {
+                errorMessage,
+                fahrtKeys = string.Join("~", ViewModel.FahrerAuftragsFahrten.Select(f => f.UniqueKey)),
+                fahrtNamen = string.Join("~", ViewModel.FahrerAuftragsFahrten.Select(f => f.AuftragsDetails)),
+            });
+        }
 
         #region Export
 
@@ -169,7 +204,7 @@ namespace ServicesMvc.Controllers
         #endregion
 
 
-        #region Foto Upload
+        #region Foto / Protokoll Upload
 
         [HttpPost]
         public ActionResult SetSelectedFahrerAuftragsKey(string auftragsKey)
@@ -179,6 +214,14 @@ namespace ServicesMvc.Controllers
             return Json(new { selectedAuftragsKey = ViewModel.SelectedFahrerAuftrag.AuftragsDetails });
         }
 
+        [HttpPost]
+        public ActionResult SetProtokollHasMultipleImages(bool check)
+        {
+            ViewModel.SetProtokollHasMultipleImages(check);
+
+            return new EmptyResult();
+        }
+        
         [HttpPost]
         public ActionResult UploadImage(IEnumerable<HttpPostedFileBase> files)
         {
@@ -190,7 +233,7 @@ namespace ServicesMvc.Controllers
 
             return Json(new
             {
-                files = new object[] { new { url = "-" } }   // VirtualPathUtility.ToAbsolute(ViewModel.FotoUploadPathVirtual) + Path.GetFileName(destinationFileName);
+                files = new object[] { new { url = "-" } }   
             });
         }
 
@@ -202,7 +245,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult GetUploadedImageFilesPartial()
         {
-            return PartialView("Partial/FotoUpload/UploadEdit", ViewModel);
+            var subDir = (ViewModel.ModeProtokoll ? "ProtokollUpload" : "FotoUpload");
+            return PartialView("Partial/Upload/" + subDir + "/UploadEdit", ViewModel);
         }
 
         [HttpPost]
@@ -213,6 +257,37 @@ namespace ServicesMvc.Controllers
             return Json(new { success  });
         }
 
+        [HttpPost]
+        public ActionResult ProtokollCreateAndShowPdf()
+        {
+            var success = ViewModel.ProtokollCreateAndShowPdf();
+
+            return Json(new { success });
+        }
+
+        [HttpPost]
+        public ActionResult ProtokollDeleteUploadedImagesAndPdf()
+        {
+            var success = ViewModel.ProtokollDeleteUploadedImagesAndPdf();
+
+            return Json(new { success });
+        }
+
+        [HttpPost]
+        public ActionResult ProtokollTryLoadSonstigenAuftrag(string auftragsnr)
+        {
+            var success = ViewModel.ProtokollTryLoadSonstigenAuftrag(auftragsnr);
+
+            return Json(new { success });
+        }
+
+        public FileContentResult ProtokollDownloadPdf()
+        {
+            var pdfFilePath = ViewModel.ProtokollGetFullPdfFilePath();
+            var pdfBytes = System.IO.File.ReadAllBytes(pdfFilePath);
+
+            return new FileContentResult(pdfBytes, "application/pdf") { FileDownloadName = ViewModel.GetUploadedPdfFileName() };
+        }
         #endregion
 
 
@@ -238,6 +313,79 @@ namespace ServicesMvc.Controllers
         public ActionResult QmReportShow()
         {
             return PartialView("Partial/QmReport/Results", ViewModel);
+        }
+
+        #endregion
+
+
+        #region Protokollarchivierung
+
+        [GridAction]
+        public ActionResult FahrerProtokolleAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.FahrerProtokolleFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult ShowProtokollEdit(string fileName)
+        {
+            return PartialView("Partial/ProtokollArchivierung/ProtokollEdit", ViewModel.GetProtokollEditModel(fileName));
+        }
+
+        [HttpPost]
+        public ActionResult ProtokollEdit(ProtokollEditModel model)
+        {
+            if (ModelState.IsValid)
+                ViewModel.ProtokollArchivieren(model, ModelState);
+
+            return PartialView("Partial/ProtokollArchivierung/ProtokollEdit", model);
+        }
+
+        public ActionResult ShowProtokollEditPdf()
+        {
+            var contentDispostion = new System.Net.Mime.ContentDisposition
+            {
+                FileName = ViewModel.ProtokollEditFileName,
+                Inline = true,
+            };
+
+            Response.AppendHeader("Content-Disposition", contentDispostion.ToString());
+
+            var pdf = ViewModel.GetProtokollEditPdf();
+
+            return File(pdf, "application/pdf");
+        }
+
+        [HttpPost]
+        public JsonResult DeleteProtokoll()
+        {
+            var erg = ViewModel.ProtokollLoeschen();
+
+            return Json(String.IsNullOrEmpty(erg) ? new { ok = true, message = "" } : new { ok = false, message = String.Format("{0}: {1}", Localize.DeleteFailed, erg) });
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridFahrerProtokolle(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterFahrerProtokolle(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportFahrerProtokolleFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.FahrerProtokolleFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.DriverProtocols, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportFahrerProtokolleFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.FahrerProtokolleFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.DriverProtocols, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
         }
 
         #endregion

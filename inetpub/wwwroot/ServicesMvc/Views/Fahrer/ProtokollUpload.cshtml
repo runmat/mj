@@ -1,0 +1,445 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+@Html.Partial("Partial/Common")
+@Html.Partial("Partial/Upload/UploadScripts")
+
+<style type="text/css">
+    .form-horizontal .control-label { width: 170px; float: left;padding-top: 5px; text-align: left; }
+    .form-horizontal .controls { margin-left: 170px; }
+    .delete-button { vertical-align: top; }
+    .preview-image {float: left; margin-right: 15px;margin-bottom: 10px; }
+    @*.preview-image.protokoll{ float:none!important }*@    
+
+    .btn-fixed-width { width: 150px!important; display: inline-block; }
+    .btn { margin-bottom: 5px; }
+    #upload-edit {
+        margin: 15px 0 0 0;
+    }
+    #protocol-upload-action {
+        margin: 15px 0 0 170px;
+    }
+    #upload-edit-hint {
+        margin: 0 0 15px 170px;
+    }
+
+    @*#upload-edit .controls {  
+        margin-left: 0;
+    }
+    #upload-edit .control-label {
+        display: none;
+        width: 0 !important;
+    }*@
+
+</style>
+<h3 class="page-title">Protokoll <small>Upload</small></h3>
+
+@Html.IeWarning(8)
+
+<div id="loading-hint" class="alert warning"><i class="icon-bell margin-right-10"></i> <span>@Localize.PleaseWait</span></div>
+
+
+<form action="#" class="form-horizontal">
+    @Html.FormValidationSummary()
+
+    @Html.FormDropDownListFor(m => m.SelectedFahrerAuftragsKey, Model.FahrerAuftragsFahrtenForLoading.ToSelectList(), new { @class = "m-wrap xlarge" })
+    
+    @Html.SpanAlert("InfoMessage")
+</form>
+
+<div id="auftrags-fotos" class="hide">
+    <h5>Protokoll Ihres Auftrags <span id="SelectedAuftragsKey" class="bold">@Model.SelectedFahrerAuftragsKey</span></h5>
+    <div id="upload-edit">
+        @Html.Partial("Partial/Upload/ProtokollUpload/UploadEdit", Model)
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        InitUploadControl();
+        InitCheckbox();
+
+        //InitDropdown();
+        LoadFahrerAuftragsFahrten();
+    }
+
+    function LoadFahrerAuftragsFahrten() {
+
+        $(".control-group").hide();
+
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "LoadFahrerAuftragsFahrten",
+            data: {  },
+            loadingShow: true,
+            success: function (result) {
+                $("#loading-hint").hide();
+                $(".control-group").show();
+
+                if (result.errorMessage != "") {
+                    SpanAlertError("InfoMessage", result.errorMessage, 5000);
+                    return;
+                }
+
+                InitDropdown(result);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+    }
+    
+    function ShowHideAuftragsFotoDiv(cb) {
+        if (cb.val() == "-" || cb.val() == "@Localize.DropdownDefaultOptionPleaseChoose.ToJavascriptString()" || cb.val() == null)
+            $("#auftrags-fotos").fadeOut(300);
+        else
+            $("#auftrags-fotos").fadeIn(300);
+    }
+
+    function InitDropdown(result) {
+
+        var fahrtKeys = result.fahrtKeys.split("~");
+        var fahrtNamen = result.fahrtNamen.split("~");
+        var i;
+        $("#SelectedFahrerAuftragsKey").empty();
+        for (i = 0; i < fahrtNamen.length; i++) {
+            $("#SelectedFahrerAuftragsKey").append($("<option></option>").val(fahrtKeys[i]).html(fahrtNamen[i]));
+        };
+
+        ShowHideAuftragsFotoDiv($("#SelectedFahrerAuftragsKey"));
+
+        $("#SelectedFahrerAuftragsKey").select2({
+            allowClear: true
+        }).off("change").on("change", function () {
+            var cb = $(this);
+
+            ShowHideAuftragsFotoDiv(cb);
+
+            if (cb.val() == null)
+                return;
+
+            ShowWaitHint();
+
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "SetSelectedFahrerAuftragsKey",
+                data: { auftragsKey: cb.val() },
+                loadingShow: false,
+                success: function (result) {
+                    $("#SelectedAuftragsKey").html(result.selectedAuftragsKey);
+                    RefreshPartial();
+                },
+                error: function (jqXhr) {
+                    SpanAlertAjaxError("InfoMessage", jqXhr);
+                }
+            });
+
+        });
+
+        $("#SelectedFahrerAuftragsKey").trigger("change");
+    } 
+    
+    function InitCheckbox() {
+
+        InitFileUploadDueToCheckbox();
+        $("#ProtokollHasMultipleImages").on("change", function() {
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                url: "SetProtokollHasMultipleImages",
+                data: { check: $(this).is(":checked") },
+                loadingShow: false,
+                success: function (result) {
+                    InitFileUploadDueToCheckbox();
+                },
+                error: function (jqXhr) {
+                }
+            });
+        });
+    }
+
+    function InitFileUploadDueToCheckbox() {
+        if ($("#ProtokollHasMultipleImages").is(":checked"))
+            $("#fileupload").attr("multiple", "multiple");
+        else
+            $("#fileupload").removeAttr("multiple");
+    }
+    
+    function ShowWaitHint() {
+        $("#upload-edit-hint").html("Bitte einen Moment Geduld...");
+    }
+
+    function RefreshPartial(suppressShowWaitHint) {
+
+        if (typeof (suppressShowWaitHint) == 'undefined')
+            ShowWaitHint();
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "GetUploadedImageFilesPartial",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                $("#upload-edit").html(result);
+                InitUploadControl();
+                InitCheckbox();
+                FormPrepareAjax();
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+
+        return true;
+    }
+
+    function ProtokollCreateAndShowPdf() {
+
+        ShowWaitHint();
+
+        $.ajax({
+            cache: false,
+            type: "POST",
+            url: "ProtokollCreateAndShowPdf",
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                if (!result.success)
+                    SpanAlertError("InfoMessage", "Beim Erstellen des PDF für Ihr Protokoll ist ein Fehler aufgetreten!", 15000);
+                RefreshPartial(true);
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+    }
+
+    function ProtokollDeleteUploadedImagesAndPdf() {
+
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "ProtokollDeleteUploadedImagesAndPdf",
+            data: {  },
+            loadingShow: false,
+            success: function (result) {
+                RefreshPartial();
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+
+        return false;
+    }
+
+    function ProtokollTryLoadSonstigenAuftrag() {
+
+        $.ajax({
+            type: "POST",
+            dataType: 'json',
+            url: "ProtokollTryLoadSonstigenAuftrag",
+            data: { auftragsnr: $("#SonstigeAuftragsNummer").val() },
+            loadingShow: false,
+            success: function (result) {
+                if (result.success)
+                    RefreshPartial();
+                else {
+                    $("#upload-edit-div").fadeOut({ duration: 200 });
+                    SpanAlertError("SonstigerAuftragMessage", "Bitte geben Sie eine gültige Auftragsnummer ein", 3000);
+                }
+            },
+            error: function (jqXhr) {
+                SpanAlertAjaxError("InfoMessage", jqXhr);
+            }
+        });
+
+        return false;
+    }
+
+    function InitUploadControl() {
+        'use strict';
+        // Change this to the location of your server-side upload handler:
+        var url = 'UploadImage',
+
+        uploadButton = $('<button/>')
+            .addClass('btn btn-primary upload-button')
+            .prop('disabled', true)
+            .text('Processing...')
+            .on('click', function () {
+                var $this = $(this), data = $this.data();
+
+                $this.parent().find(".delete-button").remove();
+
+                $this
+                    .off('click')
+                    .text('Abort')
+                    .on('click', function () {
+                        $this.remove();
+                        data.abort();
+                    });
+                data.submit().always(function () {
+                    $this.remove();
+                });
+            }),
+
+        deleteButton = $('<button/>')
+            .addClass('btn red mini delete-button')
+            //.text('Entfernen...')
+            .html('<i class="icon-remove"></i>')
+            .on('click', function () {
+                var $this = $(this);
+
+                var nodeToRemove = $this.closest("div");
+                nodeToRemove.remove();
+
+                if ($(".upload-single").length == 0) {
+                    if ($("#ProtokollHasMultipleImages").is(":checked"))
+                        $("#upload-all").fadeOut({ duration: 300 });
+                    $('#progress').fadeOut({ duration: 300 });
+                }
+            });
+
+        var uploadAllSingleButtons = null;
+        var uploadAllSingleButtonIndex = 0;
+
+        function uploadAllSingles() {
+            if (uploadAllSingleButtons == null)
+                return;
+
+            if (uploadAllSingleButtonIndex >= uploadAllSingleButtons.length) {
+                uploadAllSingleButtons = null;
+                uploadAllSingleButtonIndex = 0;
+                
+                //
+                // upload all finished!
+                $('#progress').fadeOut({ duration: 300 });
+                if ($("#ProtokollHasMultipleImages").is(":checked"))
+                    $("#upload-all").hide();
+                $('#progress .bar').css('width', '0%');
+                SpanAlertSuccess("InfoMessage", "Uploadvorgang abgeschlossen: Ihr Protokoll wurde erfolgreich hochgeladen!", 8000);
+
+                ProtokollCreateAndShowPdf();
+                return;
+            }
+
+            $(uploadAllSingleButtons[uploadAllSingleButtonIndex]).trigger("click");
+        }
+
+        $("#upload-all").click(function () {
+            uploadAllSingleButtons = $(".upload-single");
+            uploadAllSingleButtonIndex = 0;
+            uploadAllSingles();
+        });
+        
+        $('#fileupload').fileupload({
+            url: url,
+            dataType: 'json',
+            autoUpload: false,
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
+            maxFileSize: 15000000, // 15 MB
+            // MJE obsolete: 
+            //   (disable image resizing for Android and Opera,
+            //    which actually support image resizing, but fail to
+            //    send Blob objects via XHR requests:)
+            //            disableImageResize: /Android(?!.*Chrome)|Opera/
+            //            .test(window.navigator.userAgent),
+            disableImageResize: false,
+            previewMaxWidth: 300,
+            previewMaxHeight: 200,
+            imageMaxWidth: 1600,
+            imageMaxHeight: 1200,
+            previewCrop: true
+        }).on('fileuploadadd', function (e, data) {
+            data.context = $('<div/>').appendTo('#files');
+            $.each(data.files, function (index, file) {
+                var node = $('<p/>').addClass("preview-image");
+                if (!index) {
+                    node
+                        .append('<span>&nbsp;</span>')
+                        .append(uploadButton.clone(true).data(data))
+                        .append('<span>&nbsp;</span>')
+                        .append(deleteButton.clone(true).data(data))
+                        .append($('<div/>').text(file.name));
+                }
+                node.appendTo(data.context);
+                if ($("#ProtokollHasMultipleImages").is(":checked"))
+                    $("#upload-all").fadeIn({ duration: 400 });
+                $('#progress').fadeIn({ duration: 400 });
+
+                if (!$("#ProtokollHasMultipleImages").is(":checked")) {
+                    // auto upload
+                    setTimeout(function () {
+                        $("#upload-all").trigger("click");
+                    }, 400);
+                }
+            });
+        }).on('fileuploadprocessalways', function (e, data) {
+            var index = data.index,
+            file = data.files[index],
+            node = $(data.context.children()[index]);
+            if (file.preview) {
+                node
+                //.prepend('<br>')
+                .prepend(file.preview);
+            }
+            if (file.error) {
+                node
+                .append('<br>')
+                .append($('<span class="text-danger"/>').text(file.error));
+            }
+            if (index + 1 === data.files.length) {
+                data.context.find('.upload-button')
+                    .text('Upload')
+                    .addClass('upload-single hide')
+                    .prop('disabled', !!data.files.error);
+            }
+        }).on('fileuploadprogressall', function (e, data) {
+            var fileCount = 1;
+            var filePosition = 1;
+            if (uploadAllSingleButtons != null) {
+                filePosition = uploadAllSingleButtonIndex + 1;
+                fileCount = uploadAllSingleButtons.length;
+            }
+            var progress = parseInt(data.loaded / data.total * 100 / (fileCount / filePosition), 10);
+            $('#progress .bar').css('width', progress + '%');
+        }).on('fileuploaddone', function (e, data) {
+            $.each(data.result.files, function (index, file) {
+                if (file.url) {
+                    //                    var link = $('<a>')
+                    //                    .attr('target', '_blank')
+                    //                    .prop('href', file.url);
+                    //                    $(data.context.children()[index])
+                    //                    .wrap(link);
+                    setTimeout(function () {
+                        $(data.context.children()[index]).fadeOut({ duration: 300 });
+                    }, 300);
+
+                    if (uploadAllSingleButtons != null) {
+                        //alert('ok');
+                        uploadAllSingleButtonIndex++;
+                        setTimeout(uploadAllSingles, 500);
+                    }
+                }
+                else if (file.error) {
+                    var error = $('<span class="alert alert-warning"/>').text(file.error);
+                    $(data.context.children()[index])
+                    .append('<br>')
+                    .append(error);
+                }
+            });
+        }).on('fileuploadfail', function (e, data) {
+            $.each(data.files, function (index, file) {
+                var error = $('<span class="text-danger"/>').text('File upload failed.');
+                $(data.context.children()[index])
+                .append('<br>')
+                .append(error);
+            });
+        }).prop('disabled', !$.support.fileInput)
+        .parent().addClass($.support.fileInput ? undefined : 'disabled');
+    }
+    
+</script>

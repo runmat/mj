@@ -1,0 +1,67 @@
+﻿@model CkgDomainLogic.Fahrer.ViewModels.FahrerViewModel
+
+<div class="margin-top-15">
+   
+    <form action="#" class="form-horizontal">
+        @if (Model.SelectedFahrerAuftrag != null && Model.SelectedFahrerAuftrag.IstSonstigerAuftrag)
+        {
+            @Html.FormTextBoxFor(m => m.SonstigeAuftragsNummer, new {@class = "m-wrap small"}, postControlHtml:
+                @<text>
+                    <button class="btn blue" type="submit" onclick="return ProtokollTryLoadSonstigenAuftrag();">@Localize.OK</button>
+                    @Html.SpanAlert("SonstigerAuftragMessage")
+                </text>)
+            
+        }
+    </form>
+    
+    <div id="upload-edit-div" class="@(Model.IstSonstigerAuftrag && Model.SonstigeAuftragsNummer.IsNullOrEmpty() ? "hide" : "")">
+        @if (Model.UploadedImageFiles.None())
+        {
+           <div id="upload-edit-hint" class="alert"><i class='icon icon-bell'></i> Sie haben für den aktuell gewählten Auftrag bisher kein Protokoll hochgeladen.</div>
+       
+           <form action="#" class="form-horizontal">
+               @Html.FormCheckBoxFor(m => m.ProtokollHasMultipleImages, new { @class = "m-wrap xlarge" }, labelHidden: true)
+           </form>
+           <div id="protocol-upload-action">
+    
+               <!-- The fileinput-button span is used to style the file input field as button -->
+               <span class="btn btn-success fileinput-button btn green">
+                   <span class="btn-fixed-width">Seite hinzufügen...</span>
+                   <!-- The file input field used as target for the file upload widget -->
+                   <input id="fileupload" type="file" name="files">
+               </span>
+               <button id="upload-all" class="btn blue hide"><span class="btn-fixed-width">Protokoll hochladen!</span></button>
+               <br />
+               <br />
+               <!-- The global progress bar -->
+               <div id="progress" class="progress progress-success progress-striped hide">
+                   <div class="bar"></div>
+               </div>
+               <!-- The container for the uploaded files -->
+               <div id="files" class="files"></div>
+
+           </div>
+        }
+        else
+        {
+            <form action="#" class="form-horizontal">
+                @Html.FormPlaceHolder(
+                    @<text>
+                         <a class="btn yellow" href="ProtokollDownloadPdf"><i class="icon-download-alt"></i> @Localize.PdfDownload</a>
+                         <button class="btn red" onclick="return ProtokollDeleteUploadedImagesAndPdf();"><i class="icon-remove"></i> @Localize.Delete</button>
+                    </text>)
+            </form>
+
+            var i = 0;
+            foreach (var imageFileName in Model.UploadedImageFiles)
+            {
+                <div class="preview-image protokoll">
+                    <a target="_blank" href="@Model.GetOriginImageUrl(imageFileName)">
+                        <img src="@Model.GetThumbnailImageUrl(imageFileName)?@DateTime.Now.Ticks" alt="" />
+                    </a>
+                </div>
+            }
+        }
+    </div>
+
+</div>

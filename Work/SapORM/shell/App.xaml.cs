@@ -191,6 +191,8 @@ namespace SapORM
             //new FunctionReflector("Z_FIL_STANDORTE").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_V_Ueberf_Verfuegbarkeit1").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_V_UEBERF_VERFUEGBARKEIT2").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_V_UEBERF_AUFTR_UPL_PROT_01").WriteOrmForExportTableStructures("I_FAHRER", "499930");
+
 
             //new FunctionReflector("Z_M_GET_FAHRER_AUFTRAEGE").WriteOrmForExportTableStructures("I_VKORG,I_FAHRER", "1510", "0000499930");
             ///////new FunctionReflector("Z_M_SET_FAHRER_AUFTRAGS_STATUS").WriteOrmForExportTableStructures("I_VBELN, I_FAHRER_STATUS", "25648097".ToSapKunnr(), " ");
@@ -521,6 +523,18 @@ namespace SapORM
             //new FunctionReflector("Z_DPM_SAVE_REM_VERS_VORG_01").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000330089");
             //new FunctionReflector("Z_DPM_READ_LAND_02").WriteOrmForExportTableStructures("I_KUNNR_AG", "0000330089");
 
+
+            //new FunctionReflector("Z_DPM_FFD_DATEN_OHNE_DOKUMENTE").WriteOrmForExportTableStructures("I_KUNNR_AG", "324562");
+
+            //new FunctionReflector("Z_V_UEBERF_AUFTR_REFERENZ").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_V_UEBERF_AUFTR_PROTOKOLL_AB").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_DPM_QM_READ_QPCD").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_EXPORT_WARENKORB").WriteOrmForExportTableStructures("I_VKBUR, I_WEBGOUP_ID, I_WEBUSER_ID", "4837", "0", "0");
+            //new FunctionReflector("Z_ZLD_EXPORT_AH_WARENKORB").WriteOrmForExportTableStructures("I_VKBUR", "4837");
+            //new FunctionReflector("Z_ZLD_IMPORT_AH_WARENKORB").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_DELETE_AH_WARENKORB").WriteOrmForExportTableStructures();
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_SEL").WriteOrmForExportTableStructures("I_ZLDAT", "14.08.2015");
+            //new FunctionReflector("Z_ZLD_AH_2015_ETIKETT_DRU").WriteOrmForExportTableStructures();
             //new FunctionReflector("Z_ZANF_READ_DATEN_01").WriteOrmForExportTableStructures("I_KUNNR_AG, I_KLAERF", "329608", "X");
 
             //new FunctionReflector("Z_DPM_IMP_MEL_CARP_01").WriteOrmForExportTableStructures("I_AG, I_WEB_USER", "10077452", "CarlM");
