@@ -42,7 +42,7 @@ namespace ServicesMvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.Kennzeichen = CarporterfassungViewModel.PrepareKennzeichen(model.Kennzeichen);
+                CarporterfassungViewModel.PrepareCarportModel(ref model);
 
                 // save to shopping cart
                 model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
@@ -66,7 +66,7 @@ namespace ServicesMvc.Controllers
             return Json(new
             {
                 fzg.Kennzeichen, fzg.FahrgestellNr,
-                fzg.AuftragsNr, fzg.MvaNr, fzg.CarportName, fzg.Carport,
+                fzg.AuftragsNr, fzg.MvaNr, fzg.CarportName, 
                 Status = fzg.Status.NotNullOrEmpty(),
                 TmpStatus = fzg.TmpStatus.NotNullOrEmpty()
             });
