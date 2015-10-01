@@ -14,7 +14,7 @@ namespace Leasing.forms
     {
         private User m_User;
         private App m_App;
-        private LP_02 objDienstleistung;
+        private Lp02 objDienstleistung;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -33,7 +33,7 @@ namespace Leasing.forms
             }
             else
             {
-                objDienstleistung = (LP_02)Session["objDienstleistung"];
+                objDienstleistung = (Lp02)Session["objDienstleistung"];
             }
 
             if (!IsPostBack)
@@ -350,6 +350,16 @@ namespace Leasing.forms
                             if (txtEVBVon.Text != String.Empty)
                             {
                                 objDienstleistung.EVBNr = txtEVBNummer.Text + " " + HelpProcedures.MakeDateSAP(txtEVBVon.Text) + " " + HelpProcedures.MakeDateSAP(txtEVBBis.Text);
+                                objDienstleistung.EvbNrSingle = txtEVBNummer.Text;
+
+                                DateTime tmp;
+
+                                var von = DateTime.TryParse(txtEVBVon.Text, out tmp) ? tmp : (DateTime?)null;
+                                var bis = DateTime.TryParse(txtEVBBis.Text, out tmp) ? tmp : (DateTime?)null;
+
+
+                                objDienstleistung.EvbGueltigVon = von;
+                                objDienstleistung.EvbGueltigBis = bis;
                             }
                             else
                             {
@@ -371,6 +381,7 @@ namespace Leasing.forms
                     txtEVBBis.Text = "";
                     objDienstleistung.Versicherungstraeger = "";
                     objDienstleistung.EVBNr = "";
+                    objDienstleistung.EvbNrSingle = "";
                 }
             }
 
