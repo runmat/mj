@@ -28,5 +28,7 @@ namespace CkgDomainLogic.General.Contracts
         string GetZulassungskreisFromPostcodeAndCity(string postCode, string city);
 
         void Init(IAppSettings appSettings, ILogonContext logonContext);
+
+        string CountryPlzValidate(string country, string plz);
     }
 }

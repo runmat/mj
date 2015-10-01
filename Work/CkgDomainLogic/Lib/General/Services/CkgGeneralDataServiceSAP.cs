@@ -150,6 +150,17 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
+        public string CountryPlzValidate(string country, string plz)
+        {
+            ISA_ADDR_POSTAL_CODE_CHECK.Init(SAP);
+
+            SAP.SetImportParameter("COUNTRY", country);
+            SAP.SetImportParameter("POSTAL_CODE_CITY", plz);
+
+            var validationItem = ISA_ADDR_POSTAL_CODE_CHECK.RETURN.GetExportListWithExecute(SAP).ToListOrEmptyList().FirstOrDefault();
+            return validationItem == null ? "" : validationItem.MESSAGE;
+        }
+
         #endregion
 
 
