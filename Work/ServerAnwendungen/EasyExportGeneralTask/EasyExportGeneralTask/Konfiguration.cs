@@ -31,5 +31,7 @@ namespace EasyExportGeneralTask
         public static bool isProdSap { get { return (ConfigurationManager.AppSettings["ProdSAP"].ToUpper() == "TRUE"); } }
 
         public static bool pauseAfterCompletion { get { return (ConfigurationManager.AppSettings["PauseAfterCompletion"].ToUpper() == "TRUE"); } }
+
+        public static string WkdaDokumentAblagePfad { get { return ConfigurationManager.AppSettings["WkdaDokumentAblagePfad"]; } }
     }
 }

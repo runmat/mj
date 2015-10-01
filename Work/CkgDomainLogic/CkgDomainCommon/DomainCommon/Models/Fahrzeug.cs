@@ -8,6 +8,10 @@
 
         public string Kennzeichen { get; set; }
 
+        public string VertragsNr { get; set; }
+
+        public string BriefNr { get; set; }
+
         public string Info { get; set; }
 
         public bool IstZugelassen { get; set; }
