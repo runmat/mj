@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -36,6 +37,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             protected set { PropertyCacheSet(value); }
         }
 
+        public string LastCarportId { get; set; }
+
+        [XmlIgnore]
+        public IEnumerable<string> CarportPdis
+        {
+            get { return PropertyCacheGet(() => DataService.GetCarportPdis().InsertAtTop(Localize.DropdownDefaultOptionPleaseChoose)); }
+        }
+
         public bool EditMode { get; set; }
 
         public void Init()
@@ -47,6 +56,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void DataMarkForRefresh()
         {
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+            PropertyCacheClear(this, m => m.CarportPdis);
         }
 
         public void LoadFahrzeugModel(string kennzeichen = null)
@@ -62,10 +72,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             AktuellesFahrzeug = new CarporterfassungModel
                 {
-                    CarportId = LogonContext.User.Reference,
+                    CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
                     DemontageDatum = DateTime.Today
                 };
+        }
+
+        public void LastCarportIdInit(string lastCarportId)
+        {
+            LastCarportId = LogonContext.User.Reference.NotNullOr(lastCarportId);
         }
 
         public string DeleteFahrzeugModel(string kennzeichen)
@@ -142,7 +157,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             tblLieferschein.Columns.Add("Vorlage ZBI");
             tblLieferschein.Columns.Add("Anzahl Kennzeichen");
             tblLieferschein.Columns.Add("Web User");
-            tblLieferschein.Columns.Add("Carport ID");
+            tblLieferschein.Columns.Add("Carport Nr");
             tblLieferschein.Columns.Add("Erfassungsdatum");
             tblLieferschein.Columns.Add("Bestandsnummer");
             tblLieferschein.Columns.Add("Auftragsnummer");
@@ -178,10 +193,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 newRow["Fahrgestellnummer"] = fzg.FahrgestellNr;
                 newRow["Hersteller"] = "";
                 newRow["Demontagedatum"] = fzg.DemontageDatum.ToString("dd.MM.yyyy");
-                newRow["Vorlage ZBI"] = "";
+                newRow["Vorlage ZBI"] = fzg.Zb1Vorhanden.BoolToX();
                 newRow["Anzahl Kennzeichen"] = fzg.AnzahlKennzeichen;
                 newRow["Web User"] = LogonContext.UserName;
-                newRow["Carport ID"] = fzg.CarportId;
+                newRow["Carport Nr"] = fzg.CarportId;
                 newRow["Erfassungsdatum"] = DateTime.Now.ToShortDateString();
                 newRow["Bestandsnummer"] = fzg.MvaNr;
                 newRow["Auftragsnummer"] = fzg.AuftragsNr;
@@ -201,7 +216,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public string GenerateUpsShippingOrderHtml()
         {
             var adresseDad = DataService.GetCarportInfo("DAD");
-            var adresseCarport = DataService.GetCarportInfo(LogonContext.User.Reference);
+            var adresseCarport = DataService.GetCarportInfo(LastCarportId);
 
             if (adresseDad == null || adresseCarport == null)
                 return Localize.NoAddressTypesAvailableForThisCustomer;
@@ -223,7 +238,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipmentCharge = new ShipmentChargeType
                     {
-                        BillShipper = new BillShipperType {AccountNumber = adresseDad.KundenNr},
+                        BillShipper = new BillShipperType {AccountNumber = adresseCarport.KundenNr},
                         Type = "01"
                     };
 
@@ -231,19 +246,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipperAddress = new ShipAddressType
                     {
-                        AddressLine = new[] {adresseDad.StrasseHausnummer},
-                        City = adresseDad.Ort,
-                        PostalCode = adresseDad.Plz,
-                        CountryCode = adresseDad.Land
+                        AddressLine = new[] { adresseCarport.StrasseHausnummer },
+                        City = adresseCarport.Ort,
+                        PostalCode = adresseCarport.Plz,
+                        CountryCode = adresseCarport.Land
                     };
 
                 var shipper = new ShipperType
                     {
-                        ShipperNumber = adresseDad.KundenNr,
+                        ShipperNumber = adresseCarport.KundenNr,
                         Address = shipperAddress,
-                        Name = adresseDad.Name1,
-                        AttentionName = adresseDad.Name2,
-                        Phone = new ShipPhoneType { Number = adresseDad.Telefon }
+                        Name = adresseCarport.Name1,
+                        AttentionName = adresseCarport.Name2,
+                        Phone = new ShipPhoneType { Number = adresseCarport.Telefon }
                     };
 
                 var shipToAddress = new ShipToAddressType
@@ -261,22 +276,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         AttentionName = adresseDad.Name2,
                         Phone = new ShipPhoneType { Number = adresseDad.Telefon }
                     };
-
-                var shipFromAddress = new ShipAddressType
-                {
-                    AddressLine = new[] { adresseCarport.StrasseHausnummer },
-                    City = adresseCarport.Ort,
-                    PostalCode = adresseCarport.Plz,
-                    CountryCode = adresseCarport.Land
-                };
-
-                var shipFrom = new ShipFromType
-                {
-                    Address = shipFromAddress,
-                    Name = adresseCarport.Name1,
-                    AttentionName = adresseCarport.Name2,
-                    Phone = new ShipPhoneType { Number = adresseCarport.Telefon }
-                };
 
                 var refNumbers = new[]
                     {
@@ -300,7 +299,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         PaymentInformation = paymentInfo,
                         Shipper = shipper,
                         ShipTo = shipTo,
-                        ShipFrom = shipFrom,
                         ReferenceNumber = refNumbers,
                         Service = new ServiceType {Code = "11", Description = "UPS Standard"},
                         Package = new[] {package}
@@ -314,7 +312,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                             new LabelSpecificationType {LabelImageFormat = new LabelImageFormatType {Code = "GIF"}}
                     };
 
-                var shipService = new ShipService {UPSSecurityValue = securityToken};
+                var shipService = new ShipService { Url = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "Url"), UPSSecurityValue = securityToken };
 
                 // ReSharper disable CSharpWarnings::CS0612
                 System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
