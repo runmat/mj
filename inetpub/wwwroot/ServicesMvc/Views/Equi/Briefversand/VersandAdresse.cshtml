@@ -6,7 +6,7 @@
 <div class="form-actions">
     <a href="#" onclick="return AjaxFormAdressenShowGrid('Versand')" class="btn white tooltips margin-right-10" data-original-title="Wählen Sie eine Versandadresse über Ihren Adressenpool aus" data-placement="top">Versandadressen auswählen <i class="icon-chevron-right"></i></a>
 
-    @if (Model.VersandModus != BriefversandModus.Schluessel)
+    @if (Model.VersandModus != BriefversandModus.Schluessel && Model.VersandModus != BriefversandModus.Stueckliste)
     {
         <a href="#" onclick=" return AjaxFormAdressenShowGrid('Zulassung') " class="btn white tooltips margin-right-10" data-original-title="Wählen Sie eine Zulassungsadresse über Ihren Adressenpool aus" data-placement="top">Zulassungsadressen auswählen <i class="icon-chevron-right"></i></a>
     }

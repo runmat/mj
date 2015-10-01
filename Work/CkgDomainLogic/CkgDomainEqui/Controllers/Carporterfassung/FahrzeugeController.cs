@@ -7,7 +7,6 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
 
 namespace ServicesMvc.Controllers
@@ -26,6 +25,9 @@ namespace ServicesMvc.Controllers
         public ActionResult Carporterfassung()
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
+
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
 
             CarporterfassungViewModel.Init();
 
@@ -46,6 +48,9 @@ namespace ServicesMvc.Controllers
                 model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
 
                 CarporterfassungViewModel.AddFahrzeug(model);
+
+                CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
+                LogonContext.DataContextPersist(CarporterfassungViewModel);
             }
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", model);
@@ -111,10 +116,7 @@ namespace ServicesMvc.Controllers
         {
             if (clearList)
             {
-                // clear shopping cart
-                var kennzeichenList = CarporterfassungViewModel.Fahrzeuge.Select(f => f.Kennzeichen).ToList();
-                foreach (var kennzeichen in kennzeichenList)
-                    FahrzeugDelete(kennzeichen);
+                PersistanceDeleteAllObjects(PersistableGroupKey);
 
                 CarporterfassungViewModel.ClearList();
             }
