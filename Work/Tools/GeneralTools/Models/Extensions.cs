@@ -62,6 +62,12 @@ namespace GeneralTools.Models
             list.Insert(0, itemToInsert);
             return list;
         }
+        public static IDictionary<string, string> InsertAtTop(this IDictionary<string, string> source, string key, string value)
+        {
+            var list = source;
+            list.Add(new KeyValuePair<string, string>(key, value));
+            return list.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
+        }
 
         public static DataTable ToDataTable<T>(this IList<T> source)
         {

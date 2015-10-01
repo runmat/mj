@@ -11,6 +11,6 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         CarportInfo GetCarportInfo(string carportId);
 
-        IEnumerable<string> GetCarportPdis();
+        IDictionary<string, string> GetCarportPdis();
     }
 }
