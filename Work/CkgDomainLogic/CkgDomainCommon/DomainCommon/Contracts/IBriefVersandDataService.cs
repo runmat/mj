@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
@@ -9,7 +10,7 @@ namespace CkgDomainLogic.DomainCommon.Contracts
     {
         List<VersandGrund> GetVersandgruende(bool endgVersand);
 
-        string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege, bool filterSapErrorMessageVersandBeauftragung = true);
+        string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege, bool filterSapErrorMessageVersandBeauftragung = true, Action<string, string> onFinErrorFunction = null);
 
 
         IEnumerable<Fahrzeug> GetFahrzeugBriefe(IEnumerable<Fahrzeug> fahrzeuge);

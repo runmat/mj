@@ -22,7 +22,7 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         public string Kennzeichen { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.ContractNo)]
+        [LocalizedDisplay(LocalizeConstants.ContractNo_EquiDelivery)]
         public string Vertragsnummer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants._ZBIINr)]
@@ -85,10 +85,10 @@ namespace CkgDomainLogic.Equi.Models
         [LocalizedDisplay(LocalizeConstants.PickDate)]
         public DateTime? Pickdatum { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference1)]
+        [LocalizedDisplay(LocalizeConstants.Reference1_EquiDelivery)]
         public string Referenz1 { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.Reference2)]
+        [LocalizedDisplay(LocalizeConstants.Reference2_EquiDelivery)]
         public string Referenz2 { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Memo)]

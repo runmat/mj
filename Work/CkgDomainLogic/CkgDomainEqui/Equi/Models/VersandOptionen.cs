@@ -16,6 +16,8 @@ namespace CkgDomainLogic.Equi.Models
 {
     public class VersandOptionen : IValidatableObject
     {
+        private bool _istPostfachAdresse;
+
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<BriefversandViewModel> GetViewModel { get; set; }
 
@@ -38,6 +40,21 @@ namespace CkgDomainLogic.Equi.Models
                     return new VersandOption();
 
                 return option;
+            }
+        }
+
+        public bool IstPostfachAdresse
+        {
+            get { return _istPostfachAdresse; }
+            set
+            {
+                _istPostfachAdresse = value;
+                if (!_istPostfachAdresse)
+                    return;
+
+                var postversandItem = OptionenList.FirstOrDefault(o => o.Name.NotNullOrEmpty().ToUpper() == "POSTVERSAND");
+                if (postversandItem != null)
+                    VersandOptionKey = postversandItem.ID;
             }
         }
 

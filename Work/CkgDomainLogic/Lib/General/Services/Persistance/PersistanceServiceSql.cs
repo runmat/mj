@@ -36,5 +36,12 @@ namespace CkgDomainLogic.General.Services
         {
             return new PersistanceSqlDbContext();
         }
+
+        public override void DeleteAllObjects(string ownerKey, string groupKey)
+        {
+            var ct = CreateDbContext();
+
+            ct.DeleteAllObjects(ownerKey, groupKey);
+        }
     }
 }
