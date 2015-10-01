@@ -84,7 +84,7 @@
                     allDayText: ""
 
                     , events: function (start, end, callback) {
-                        console.log(start.toString("dd.MM.yyyy") + " - " + end.toString("dd.MM.yyyy"));
+                        //console.log(start.toString("dd.MM.yyyy") + " - " + end.toString("dd.MM.yyyy"));
                         $.ajax({
                             type: "POST",
                             dataType: 'json',
@@ -95,11 +95,11 @@
                             },
                             success: function (result) {
                                 if (result == null) {
-                                    console.log(result);
+                                    //console.log(result);
                                     return;
                                 }
                                 
-                                console.log(result.length);
+                                //console.log(result.length);
                                 $.each(result, function (e, item) {
                                     item.start = new Date(item.start);
                                     item.end = new Date(item.end);
