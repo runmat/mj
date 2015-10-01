@@ -1,4 +1,5 @@
 ﻿@model CkgDomainLogic.Equi.ViewModels.BriefversandViewModel
+@using CkgDomainLogic.Equi.Contracts
 @using CkgDomainLogic.Equi.Models
 @{ var gridName = "GridFahrzeugAuswahl"; }
 
@@ -13,30 +14,39 @@
 }
 </style>
 
-<h4 class="margin-bottom-20">
-    
-    @(Html.Telerik().Upload()
-            .Name("fileUpload")
-            .Multiple(false)
-            .Localizable("de-DE")
-            .Async(async => async
-                                .Save("CsvUploadStart", "Equi")
-                                .SaveField("uploadFiles")
-                                .AutoUpload(true))
-            .Multiple(false)
-            .ShowFileList(false)
-            .ClientEvents(events => events
-                                        .OnUpload("UploadStart")
-                                        .OnSuccess("UploadFinished")
-                                        .OnError("UploadError"))
-            )
+@if (Model.VersandModus == BriefversandModus.Stueckliste)
+{
+    <script type="text/javascript">
+        _fahrzeugCount = @Model.Fahrzeuge.Count ;
+    </script>
+}
+else
+{
+    <h4 class="margin-bottom-20">
 
-    <button id="csv-upload-reset" class="btn black tooltips margin-right-10 hide" onclick="CsvUploadReset()" data-original-title="Setzt die Filterung über Ihren CSV Upload zurück und listet wieder den kompletten Fahrzeugbestand" data-placement="right">
-        <span class="found-count"></span> / <span class="all-count"></span> gefunden <i class="icon-upload-alt margin-left-15"></i><i class="icon-remove margin-left-5"></i>
-    </button>
+        @(Html.Telerik().Upload()
+              .Name("fileUpload")
+              .Multiple(false)
+              .Localizable("de-DE")
+              .Async(async => async
+                  .Save("CsvUploadStart", "Equi")
+                  .SaveField("uploadFiles")
+                  .AutoUpload(true))
+              .Multiple(false)
+              .ShowFileList(false)
+              .ClientEvents(events => events
+                  .OnUpload("UploadStart")
+                  .OnSuccess("UploadFinished")
+                  .OnError("UploadError"))
+              )
 
-    <a href="DownloadCsvTemplate" class="btn white tooltips" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate <i class="icon-chevron-right"></i></a>
-</h4>
+        <button id="csv-upload-reset" class="btn black tooltips margin-right-10 hide" onclick="CsvUploadReset()" data-original-title="Setzt die Filterung über Ihren CSV Upload zurück und listet wieder den kompletten Fahrzeugbestand" data-placement="right">
+            <span class="found-count"></span> / <span class="all-count"></span> gefunden <i class="icon-upload-alt margin-left-15"></i><i class="icon-remove margin-left-5"></i>
+        </button>
+
+        <a href="DownloadCsvTemplate" class="btn white tooltips" data-original-title="@Localize.DownloadCsvFileTemplateTitle" data-placement="top">@Localize.DownloadCsvFileTemplate <i class="icon-chevron-right"></i></a>
+    </h4>
+}
 
 <h4>
     @Model.FahrzeugAuswahlTitleHint: 
