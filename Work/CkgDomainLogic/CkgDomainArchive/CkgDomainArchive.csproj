@@ -59,13 +59,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Archive\Contracts\IEasyAccessDataService.cs" />
+    <Compile Include="Archive\Contracts\IDateiDownloadDataService.cs" />
     <Compile Include="Archive\Models\DataModels\EasyAccessArchive.cs" />
     <Compile Include="Archive\Models\DataModels\EasyAccessResultField.cs" />
     <Compile Include="Archive\Models\DataModels\EasyAccessDetail.cs" />
+    <Compile Include="Archive\Models\DataModels\DateiInfo.cs" />
     <Compile Include="Archive\Models\UIModels\EasyAccessSuchparameter.cs" />
     <Compile Include="Archive\Services\EasyAccessDataService.cs" />
+    <Compile Include="Archive\Services\DateiDownloadDataService.cs" />
     <Compile Include="Archive\ViewModels\EasyAccessViewModel.cs" />
+    <Compile Include="Archive\ViewModels\DateiDownloadViewModel.cs" />
     <Compile Include="Controllers\ArchiveController.cs" />
+    <Compile Include="Controllers\DateiDownload\ArchiveController.cs" />
     <Compile Include="Controllers\EasyAccess\ArchiveController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

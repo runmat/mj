@@ -17,6 +17,9 @@ namespace EasyExportGeneralTask
         public bool MailsSenden { get; set; }
         public string MailEmpfaenger { get; set; }
 
+        public bool NoDataMailsSenden { get; set; }
+        public string NoDataMailEmpfaenger { get; set; }
+
         public string easyLocation { get; set; }
         public string easyBlobPathLocal { get; set; }
 
@@ -124,7 +127,8 @@ namespace EasyExportGeneralTask
         DaimlerFleet,
         SixtMobility,
         Autoinvest,
-        Europcar
+        Europcar,
+        WKDA
     }
 
     public class ArchivDefinition

@@ -3,6 +3,7 @@ using System.Linq;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.Contracts;
 using CkgDomainLogic.Fahrzeuge.Models;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappings = CkgDomainLogic.Fahrzeuge.Models.AppModelMappings;
@@ -16,14 +17,27 @@ namespace CkgDomainLogic.Fahrzeuge.Services
         {
         }
 
-        public CarporterfassungModel LoadFahrzeugdaten(string kennzeichen)
+        public CarporterfassungModel LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
         {
-            Z_DPM_READ_MEL_CARP_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+            Z_DPM_READ_MEL_CARP_01.Init(SAP, "I_AG, I_CARPORT_ID_AG", LogonContext.KundenNr.ToSapKunnr(), LogonContext.User.Reference);
 
-            SAP.SetImportParameter("I_LICENSE_NUM", kennzeichen);
-            SAP.SetImportParameter("I_CARPORT_ID_AG", LogonContext.User.Reference);
+            if (kennzeichen.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_LICENSE_NUM", kennzeichen);
+
+            if (bestandsnummer.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_MVA_NUMMER", bestandsnummer);
+
+            if (fin.IsNotNullOrEmpty())
+                SAP.SetImportParameter("I_CHASSIS_NUM", fin);
 
             return AppModelMappings.Z_DPM_READ_MEL_CARP_01_GT_TAB_To_CarporterfassungModel.Copy(Z_DPM_READ_MEL_CARP_01.GT_TAB.GetExportListWithExecute(SAP).FirstOrDefault());
+        }
+
+        public IEnumerable<string> GetCarportPdis()
+        {
+            Z_DPM_READ_CARPID_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
+
+            return Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).Select(s => s.KUNPDI);
         }
 
         public List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items)
@@ -34,6 +48,13 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             SAP.ApplyImport(sapItems);
 
             return AppModelMappings.Z_DPM_IMP_CARPORT_MELD_01_GT_WEB_To_CarporterfassungModel.Copy(Z_DPM_IMP_CARPORT_MELD_01.GT_WEB.GetExportListWithExecute(SAP)).ToList();
+        }
+
+        public CarportInfo GetCarportInfo(string carportId)
+        {
+            Z_DPM_READ_AUFTR_006.Init(SAP, "I_KUNNR, I_KENNUNG", LogonContext.KundenNr.ToSapKunnr(), carportId);
+
+            return AppModelMappings.Z_DPM_READ_AUFTR_006_GT_OUT_To_CarportInfo.Copy(Z_DPM_READ_AUFTR_006.GT_OUT.GetExportListWithExecute(SAP)).FirstOrDefault();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
@@ -9,14 +10,9 @@ namespace CkgDomainLogic.DomainCommon.Contracts
     {
         List<VersandGrund> GetVersandgruende(bool endgVersand);
 
-        string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege);
+        string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege, bool filterSapErrorMessageVersandBeauftragung = true, Action<string, string> onFinErrorFunction = null);
 
 
-        #region not used yet
-        
-        Fahrzeug GetFahrzeugBriefForVin(string vin);
-        IEnumerable<Fahrzeug> GetFahrzeugBriefe(Fahrzeug fahrzeugBriefParameter);
-        
-        #endregion
+        IEnumerable<Fahrzeug> GetFahrzeugBriefe(IEnumerable<Fahrzeug> fahrzeuge);
     }
 }

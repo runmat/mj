@@ -56,6 +56,12 @@ namespace GeneralTools.Models
             copiedList.Insert(0, itemToInsert);
             return copiedList;
         }
+        public static IEnumerable<string> InsertAtTop(this IEnumerable<string> source, string itemToInsert)
+        {
+            var list = source.ToListOrEmptyList();
+            list.Insert(0, itemToInsert);
+            return list;
+        }
 
         public static DataTable ToDataTable<T>(this IList<T> source)
         {
@@ -224,6 +230,11 @@ namespace GeneralTools.Models
                 return "";
 
             return string.Format("{0}{1}", prepend, s);
+        }
+
+        public static string PrependIfNotNullElse(this string s, string prepend, string elseString)
+        {
+            return s.IsNotNullOrEmpty() ? s.PrependIfNotNull(prepend) : elseString;
         }
 
         public static string AppendIfNotNull(this string s, string append)

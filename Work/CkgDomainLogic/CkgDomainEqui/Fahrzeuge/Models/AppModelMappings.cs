@@ -551,6 +551,27 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             }
         }
 
+        static public ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, CarportInfo> Z_DPM_READ_AUFTR_006_GT_OUT_To_CarportInfo
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_DPM_READ_AUFTR_006.GT_OUT, CarportInfo>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.CarportId = s.KENNUNG;
+                        d.KundenNr = s.INTNR;
+                        d.Land = s.LAND1;
+                        d.Name1 = s.NAME1;
+                        d.Name2 = s.NAME2;
+                        d.Ort = s.ORT01;
+                        d.Plz = s.PSTLZ;
+                        d.StrasseHausnummer = s.STRAS;
+                        d.Telefon = s.TELNR;
+                    }));
+            }
+        }
+
         #endregion
 
         
@@ -566,7 +587,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_ABM_LIST.IT_STATUS, FahrzeugStatus>(
                                                  new Dictionary<string, string>
                                                      {
-                                                         {"STATUS", "ID"},
+                                                         {"STATUS", "Nr"},
                                                      },
                                                      null,  // Init Copy
                                                      (business, sap) =>   // Init Copy Back
@@ -817,7 +838,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             destination.LIZNR = source.Auftragsnummer;
                             destination.ZBATCH_ID = source.BatchId.NotNullOrEmpty().ToUpper();
                             destination.ZZSIPP = source.SIPPCode;
-                            destination.ZZHERST_TEXT = source.Herstellerkennung;
                             destination.KUNPDI = source.Pdi;
                         }
                     ));

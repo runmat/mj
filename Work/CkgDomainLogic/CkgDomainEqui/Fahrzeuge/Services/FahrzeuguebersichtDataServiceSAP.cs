@@ -29,6 +29,9 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             }
             else
             {
+                if (!String.IsNullOrEmpty(selector.Herstellerkennung))
+                    SAP.SetImportParameter("I_HERST_T", selector.Herstellerkennung);
+
                 if (selector.EingangZb2DatumRange.IsSelected)
                 {
                     SAP.SetImportParameter("I_ERDAT_EQUI_VON", selector.EingangZb2DatumRange.StartDate);

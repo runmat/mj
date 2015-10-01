@@ -426,6 +426,16 @@
     <Content Include="_Themes\AH2015\images\Logout.png" />
     <Content Include="_Themes\AH2015\images\test.jpg" />
     <Content Include="_Themes\AH2015\images\uniform\sprite.png" />
+    <Content Include="Documents\Templates\UploadZb2Versand.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Documents\Templates\UploadZb2Versand.xls">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\FileUpload.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\Receipt.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand\UploadGrid.cshtml" />
+    <Content Include="Areas\Fahrzeug\Views\Upload\Zb2Versand.cshtml" />
     <Content Include="Documents\Templates\UploadAvisliste.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -438,15 +448,15 @@
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
+    <Content Include="App_Data\XmlData\StepsVersandBeauftragung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsZulassung.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsZulassung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsZulassungFrei.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsZulassungFrei.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    </Content>
     <None Include="App_Data\XmlData\Charts\40_ChartAutovermieterFahrzeugAnzahlDoubleHeight.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -478,19 +488,19 @@
     <None Include="App_Data\XmlData\Charts\85_ChartFspVkStandorteDoubleHeight.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="App_Data\XmlData\StepsAutohausZulassung.xml">
+    <Content Include="App_Data\XmlData\StepsAutohausZulassung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsBriefversand.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsBriefversand.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\FahrtAdressen.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\FahrtAdressen.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="App_Data\XmlData\StepsKroschkeZulassung.xml">
+    </Content>
+    <Content Include="App_Data\XmlData\StepsKroschkeZulassung.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
-    </None>
+    </Content>
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarMouseover.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\BarStacked.txt" />
     <Content Include="App_Data\XmlData\Dashboard\ChartTemplates\Bar.txt" />
@@ -873,6 +883,7 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
+    <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Contracts\IGridAdminDataService.cs" />
     <Compile Include="Areas\Common\lib\GridAdmin\Models\ReportSolution.cs" />
@@ -3001,6 +3012,11 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\FahrzeugerfassungForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\Grid.cshtml" />
+    <Content Include="Views\Equi\Briefversand\EquiSuche.cshtml" />
+    <Content Include="Views\Equi\Briefversand\EquiSucheForm.cshtml" />
+    <Content Include="Views\Equi\Briefversand\Stueckliste.cshtml" />
+    <Content Include="Views\Archive\DateiDownload.cshtml" />
+    <Content Include="Views\Archive\DateiDownload\Grid.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
