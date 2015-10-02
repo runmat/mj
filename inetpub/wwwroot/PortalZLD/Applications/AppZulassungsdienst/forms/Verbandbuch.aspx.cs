@@ -21,34 +21,31 @@ namespace AppZulassungsdienst.forms
             lblHead.Text =
                 (string) m_User.Applications.Select("AppID = '" + Session["AppID"] + "'")[0]["AppFriendlyName"];
 
-            if (!IsPostBack)
-            {
-                ShowVerbandbuch();
-            }
+
         }
 
 
         protected void btnErfassung_Click(object sender, EventArgs e)
         {
-            string host = "https://sgwt.kroschke.de/";
-            string destination = string.Format("/ServicesMvc/Verbandbuch/Erfassung?vkbur={0}&ra={1}&rb={2}",
+            string destination = string.Format("{0}Erfassung?vkbur={1}&ra={2}&rb={3}",
+                ConfigurationManager.AppSettings["VerbandbuchHostAdress"],
                 m_User.Kostenstelle,
                 ConfigurationManager.AppSettings["VerbandbuchRemoteLoginKey"],
                 ConfigurationManager.AppSettings["VerbandbuchRemoteLoginTimestamp"]);
 
-            OpenLink(host + destination);
+            OpenLink(destination);
         }
 
         protected void btnReport_Click(object sender, EventArgs e)
         {
-            string host = "https://sgwt.kroschke.de/";
-            string destination = string.Format("/ServicesMvc/Verbandbuch/Report?vkbur={0}&ra={1}&rb={2}",
+            string destination = string.Format("{0}Report?vkbur={1}&ra={2}&rb={3}",
+                ConfigurationManager.AppSettings["VerbandbuchHostAdress"],
                 m_User.Kostenstelle,
                 ConfigurationManager.AppSettings["VerbandbuchRemoteLoginKey"],
                 ConfigurationManager.AppSettings["VerbandbuchRemoteLoginTimestamp"]);
 
 
-            OpenLink(host + destination);
+            OpenLink(destination);
         }
 
         protected void lb_zurueck_Click(object sender, EventArgs e)
@@ -60,16 +57,7 @@ namespace AppZulassungsdienst.forms
 
         #region Methods
 
-        private void ShowVerbandbuch()
-        {
-            string debug = string.Format("/ServicesMvc/Verbandbuch/Erfassung?vkbur={0}&ra={1}&rb={2}",
-                m_User.Kostenstelle,
-                ConfigurationManager.AppSettings["VerbandbuchRemoteLoginKey"],
-                ConfigurationManager.AppSettings["VerbandbuchRemoteLoginTimestamp"]);
-
-        }
-
-        private void OpenLink(string zielUrl)
+      private void OpenLink(string zielUrl)
         {
             var sb = new StringBuilder();
 
