@@ -1949,7 +1949,7 @@ namespace EasyExportGeneralTask
                     {
                         EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner gestartet", EventLogEntryType.Information);
 
-                        var zipName = "Abmeldungen " + DateTime.Now.ToString("dd.MM.yyyy HHmm");
+                        var zipName = DateTime.Now.ToString("dd.MM.yyyy_HHmm");
                         var zipOrdnerPfad = taskConfiguration.exportPathZip + "\\Abmeldungen " + DateTime.Now.ToShortDateString();
 
                         if (!Directory.Exists(zipOrdnerPfad))
