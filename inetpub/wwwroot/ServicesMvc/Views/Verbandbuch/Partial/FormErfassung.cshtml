@@ -11,17 +11,14 @@
         <div class="form-horizontal label-width-250" id="VerbandbuchForm">
 
             @Html.FormValidationSummary()
-
-
             @Html.HiddenFor(x => x.Vkbur)
 
-        <div class="form">
+
             @Html.FormTextBoxFor(x => x.InjuredPerson, new {@class = "m-wrap ", col = "left", maxlength = 80})
             @Html.FormTextBoxFor(x => x.DateOfAccident, new {@class = "m-wrap form_datetime", col = "right"})
 
             @Html.FormTextAreaFor(x => x.Injury, new {@class = "m-wrap ", maxlength = 400, col = "left"})
             @Html.FormTextAreaFor(x => x.CourseOfAccident, new {@class = "m-wrap ", col = "right", maxlength = 400})
-        </div>
 
             @Html.FormTextBoxFor(x => x.WitnessName, new {@class = "m-wrap ", maxlength = 80, col = "left"})
             @Html.FormTextBoxFor(x => x.PlaceOfAccident, new {@class = "m-wrap ", col = "right", maxlength = 160})
@@ -53,6 +50,15 @@
 
         if (_modelStateValid) {
             SpanAlertSuccess("spanMessage", "Speichern erfolgreich", 2500);
+            
+            $('#InjuredPerson').val('');
+            $('#DateOfAccident').val('');
+            $('#Injury').val('');
+            $('#CourseOfAccident').val('');
+            $('#WitnessName').val('');
+            $('#FirstResponder').val('');
+            $('#DateOfFirstAid').val('');
+            $('#FirstAidMeasures').val('');
         }
     }
 
