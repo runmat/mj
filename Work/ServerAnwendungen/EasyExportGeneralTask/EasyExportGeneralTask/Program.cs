@@ -1044,8 +1044,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
                             {
@@ -1151,8 +1150,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
                             {
@@ -1457,15 +1455,16 @@ namespace EasyExportGeneralTask
                             {
                                 Console.WriteLine(status);
                             }
-
-                            if (taskConfiguration.DatumInSapSetzen)
+                            else if (taskConfiguration.DatumInSapSetzen)
                             {
-                                logWriter.WriteLine(DateTime.Now.ToString() + " - Setze Datum für " + row["ZZFAHRG"].ToString() + ", " + strBautl + " in SAP");
+                                logWriter.WriteLine(DateTime.Now.ToString() + " - Setze Datum für " +
+                                                    row["ZZFAHRG"].ToString() + ", " + strBautl + " in SAP");
 
                                 if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
                                 {
                                     blnErrorOccured = true;
-                                    logWriter.WriteLine(DateTime.Now.ToString() + " - Datum setzen für " + row["ZZFAHRG"].ToString() + ", " + strBautl + " fehlgeschlagen");
+                                    logWriter.WriteLine(DateTime.Now.ToString() + " - Datum setzen für " +
+                                                        row["ZZFAHRG"].ToString() + ", " + strBautl + " fehlgeschlagen");
                                 }
                             }
                         }
@@ -1595,8 +1594,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate("", row["QMNUM"].ToString(), true))
                             {
@@ -1686,8 +1684,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate(item.MANUM, item.QMNUM))
                             {
@@ -1816,8 +1813,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             S.AP.InitExecute("Z_DPM_AVM_DOKUMENT_MAIL", "I_KUNNR_AG, I_CHASSIS_NUM", taskConfiguration.Kundennummer, item.CHASSIS_NUM);
 
@@ -1913,9 +1909,13 @@ namespace EasyExportGeneralTask
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
 
                         if (!String.IsNullOrEmpty(status))
+                        {
                             Console.WriteLine(status);
-
-                        gefunden = true;
+                        }
+                        else
+                        {
+                            gefunden = true;
+                        }
                     }
 
                     if (gefunden)
