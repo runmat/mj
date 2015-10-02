@@ -39,6 +39,14 @@ namespace CkgDomainLogic.Autohaus.Services
         {
         }
 
+        public string CountryPlzValidate(string country, string plz)
+        {
+            if (country.NotNullOrEmpty().ToUpper() == "DE" && plz.IsNotNullOrEmpty() && plz.Length != 5)
+                return "Deutsche Postleitzahlen müssen 5-stellig sein";
+
+            return "";
+        }
+
         public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
 
         #endregion

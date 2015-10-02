@@ -216,11 +216,17 @@ textarea[readonly].m-wrap {
 }
 
 
+.grid-cellOk {
+    color:green; 
+    font-weight:bold;
+    padding-left: 35px!important;
+    background:url(../images/commands/24x24/OK.png) 5px 8px no-repeat !important;
+}
 .grid-cellError {
     color:red; 
     font-weight:bold;
-    padding-left: 28px!important;
-    background:url(../images/warning.png) 0 3px no-repeat !important;
+    padding-left: 35px!important;
+    background:url(../images/commands/24x24/warning.png) 5px 6px no-repeat !important;
 }
 .grid-rowOk {
     font-weight:bold; color:#004400;background-color: #ddffdd;
