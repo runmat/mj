@@ -140,6 +140,8 @@ namespace CkgDomainLogic.Fahrer.Models
                         d.ProtokollArt = s.ZZPROTKAT1;
                         d.ProtokollArt2 = s.ZZPROTKAT2;
 
+                        d.Fahrt = s.FAHRTNR;
+
                         d.ProtokollName = s.ZZPOSPROTKAT1.NotNullOr(
                                             s.ZZPOSPROTKAT2.NotNullOr(
                                                 s.ZZPOSPROTKAT3.NotNullOr(
