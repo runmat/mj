@@ -41,6 +41,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "SixtMobility" };
             //args = new[] { "Europcar" };
             //args = new[] { "WKDA" };
+            //args = new[] { "WKDA_Selbstabmelder" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
@@ -295,6 +296,14 @@ namespace EasyExportGeneralTask
                     #region WKDA
 
                     QueryWKDA();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.WKDA_Selbstabmelder:
+                    #region WKDA_Selbstabmelder
+
+                    QueryWKDA(true);
 
                     #endregion
                     break;
@@ -1835,11 +1844,11 @@ namespace EasyExportGeneralTask
         /// <summary>
         /// Archivabfrage für WKDA
         /// </summary>
-        private static void QueryWKDA()
+        private static void QueryWKDA(bool selbstabmelder = false)
         {
             try
             {
-                Z_WFM_UEBERMITTLUNG_STAT_01.Init(S.AP, "I_KUNNR, I_STATUSWERT", taskConfiguration.Kundennummer, "2");
+                Z_WFM_UEBERMITTLUNG_STAT_01.Init(S.AP, "I_KUNNR, I_STATUSWERT", taskConfiguration.Kundennummer, (selbstabmelder ? "3" : "2"));
 
                 var sapResults = Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT.GetExportListWithExecute(S.AP);
 
@@ -1949,7 +1958,7 @@ namespace EasyExportGeneralTask
                     {
                         EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner gestartet", EventLogEntryType.Information);
 
-                        var zipName = DateTime.Now.ToString("dd.MM.yyyy_HHmm");
+                        var zipName = DateTime.Now.ToString("dd.MM.yyyy_HHmm") + (selbstabmelder ? "-Selbstabmelder" : "");
                         var zipOrdnerPfad = taskConfiguration.exportPathZip + "\\Abmeldungen " + DateTime.Now.ToShortDateString();
 
                         if (!Directory.Exists(zipOrdnerPfad))
