@@ -5,6 +5,7 @@
     var addressNo = ViewBag.AddressNo;
     var divId = "DivAuslieferAdressen" + addressNo;
     var partnerRolle = ViewBag.Partnerrolle;
+    Model.Adressdaten.Partnerrolle = partnerRolle;
 }
 
 <div id="@divId" style="width:100%">
@@ -28,7 +29,8 @@
         @Html.HiddenFor(m => m.Adressdaten.Adresse.Typ)
         @Html.HiddenFor(m => m.Adressdaten.Adresse.TmpSelectionKey)
         @Html.HiddenFor(m => m.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
-        @Html.HiddenFor(m => m.Adressdaten.Partnerrolle)
+        @*@Html.HiddenFor(m => m.Adressdaten.Partnerrolle)*@
+        @Html.TextBoxFor(m => m.Adressdaten.Partnerrolle)
         @Html.HiddenFor(m => m.TmpSaveAddressOnly)
         @Html.HiddenFor(m => m.TmpSaveAddressSuccessful)
 
@@ -56,7 +58,10 @@
 
         @Html.FormMultiSelectListFor(m => m.ZugeordneteMaterialien, Model.Materialien.ToSelectList(), new { @id = "ZugeordneteMaterialien" + addressNo, @class = "m-wrap chosen material" })
 
-        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new {@class = "m-wrap large", maxlength = 50})
+        @Html.FormTextBoxFor(m => m.Adressdaten.Bemerkung, new {@class = "m-wrap large", maxlength = 50},
+                        postControlHtml: @<text>
+                                            <div>@Localize.RequiredWhenOtherIsSelected</div>
+                                        </text>)
 
         @*@Html.FormPlaceHolder(@<text><div style="width: 270px;">@Localize.RequiredWhenOtherIsSelected</div></text>)*@
         @*@Html.FormRequiredFieldsSummary()*@
@@ -69,7 +74,15 @@
 
 //            $(":radio[name='TmpSelectedPartnerrolle']").click(function() { SelectAuslieferAdresse($(this).val()); });
 
-     
+            $(function() {
+                ShowHideFieldBemerkung('@addressNo');
+
+                $("#ZugeordneteMaterialien" + '@addressNo').chosen().change(function () {
+                    RemoveUsedMaterials();
+                    ShowHideFieldBemerkung('@addressNo');
+                });
+
+            });
 
         </script>
     }

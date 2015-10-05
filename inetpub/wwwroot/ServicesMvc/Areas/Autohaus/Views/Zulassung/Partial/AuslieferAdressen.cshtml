@@ -33,6 +33,27 @@
         width: 205px !important;
     }
 
+@*    @@media (max-width: 1670px) {
+        #DivAuslieferAdressen1, #DivAuslieferAdressen2, #DivAuslieferAdressen3 {
+            float: none;
+            width: 100%;
+            margin-left: 0;
+        }
+    }
+    @@media (min-width: 1671px) {
+        #DivAuslieferAdressen1 .control-label {
+            float: none;
+            width: auto;
+            padding-top: 0;
+            text-align: left;
+        }        
+        #DivAuslieferAdressen1 .controls {
+            margin-left: 0;
+        }
+    }*@
+
+
+
 </style>
 
 <script>
@@ -97,6 +118,7 @@
     }
 
     function ShowHideFieldBemerkung(addressNo) {
+        // alert("ShowHideFieldBemerkung " + addressNo);
         var elToHideShow = $('#DivAuslieferAdressen' + addressNo + " #Adressdaten_Bemerkung").closest(".control-group");
         var content = $('#DivAuslieferAdressen' + addressNo + " #ZugeordneteMaterialien" + addressNo).val();
         if (content != null) {
@@ -112,58 +134,57 @@
 
     $(document).ready(function() {
 
-        $("#ZugeordneteMaterialien1").chosen().change(function (e, params) {
-            RemoveUsedMaterials();
-            ShowHideFieldBemerkung("1");
-        });
+//        $("#ZugeordneteMaterialien1").chosen().change(function () {
+//            RemoveUsedMaterials();
+//            ShowHideFieldBemerkung("1");
+//        });
 
-        $("#ZugeordneteMaterialien2").chosen().change(function (e, params) {            
-            RemoveUsedMaterials();
-            ShowHideFieldBemerkung("2");
-        });
+//        $("#ZugeordneteMaterialien2").chosen().change(function () {            
+//            RemoveUsedMaterials();
+//            ShowHideFieldBemerkung("2");
+//        });
 
-        $("#ZugeordneteMaterialien3").chosen().change(function () {
-            RemoveUsedMaterials();
-            ShowHideFieldBemerkung("3");
-        });
+//        $("#ZugeordneteMaterialien3").chosen().change(function () {
+//            RemoveUsedMaterials();
+//            ShowHideFieldBemerkung("3");
+//        });
 
         RemoveUsedMaterials();
 
-        ShowHideFieldBemerkung("1");
-        ShowHideFieldBemerkung("2");
-        ShowHideFieldBemerkung("3");
+//        ShowHideFieldBemerkung("1");
+//        ShowHideFieldBemerkung("2");
+//        ShowHideFieldBemerkung("3");
 
         // ##MMA## Width wird nachgelagert offenbar für jedes Element neu berechnet und ist hier nicht sinnvoll änderbar...
         // Element control-group hat stets die richtige Breite
-        $('#Adressdaten_Adresse_Name1').width(1000);
+        // $('#Adressdaten_Adresse_Name1').width(1000);
     });
 
 </script>
 
 <input type="hidden" id="CurrentAddressFormNo" value="0" />
 <div class="row-fluid">
-    <div class="span4" style="">
-        <div class="portlet box light-grey" style="">
-            <div class="portlet-body form">
+    <div class="span4XX float-left" style="width: 400px;">
+@*        <div class="portlet box light-grey" style="">
+            <div class="portlet-body form">*@
                 @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 1}, {"Partnerrolle", "Z7"}})
-            </div>
-        </div>
+@*            </div>
+        </div>*@
     </div>
-    <div class="span4" style="">
-        <div class="portlet box light-grey" style="">
-            <div class="portlet-body form">
+    <div class="span4XX float-left" style="width:400px;">
+       @* <div class="portlet box light-grey" style="">
+            <div class="portlet-body form">*@
                 @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 2}, {"Partnerrolle", "Z8"}})
-            </div>
-        </div>
+@*            </div>
+        </div>*@
     </div>
-    <div class="span4" style="">
-        <div class="portlet box light-grey" style="">
-            <div class="portlet-body form">
+    <div class="span4XX float-left" style="width:400px;">
+@*        <div class="portlet box light-grey" style="">
+            <div class="portlet-body form">*@
                 @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 3}, {"Partnerrolle", "Z9"}})
-            </div>
-        </div>
+@*            </div>
+        </div>*@
     </div>
 </div>
 
-Bemerkung @Localize.RequiredWhenOtherIsSelected<br />
 @Html.FormRequiredFieldsSummary()
