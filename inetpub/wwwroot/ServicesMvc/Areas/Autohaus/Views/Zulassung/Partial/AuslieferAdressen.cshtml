@@ -7,9 +7,15 @@
 <h4>@Localize.DeliveryAddresses</h4>
 
 <style>
-    .control-label {
-        width: 90px !important;
+    
+    .div-auslieferadr {
+        width: 340px !important;
+        float: left;
     }
+
+     .control-label {
+         width: 90px !important;
+     }
     .controls
     {
         margin-left: 110px !important;
@@ -79,9 +85,9 @@
         }
     }
 
-    function CallAjaxFormAdressenShowGrid(addressNo) {
-        $('#CurrentAddressFormNo').val(addressNo);
-        alert("CallAjaxFormAdressenShowGrid " + addressNo);
+    function CallAjaxFormAdressenShowGrid(partnerRolle) {
+        $('#CurrentAddressFormNo').val(partnerRolle);
+        alert("CallAjaxFormAdressenShowGrid " + partnerRolle);
         AjaxFormAdressenShowGrid('Ausliefer');
     }
 
@@ -122,35 +128,12 @@
 
     $(document).ready(function() {
 
-//        $("#ZugeordneteMaterialien1").chosen().change(function () {
-//            RemoveUsedMaterials();
-//            ShowHideFieldBemerkung("1");
-//        });
-
-//        $("#ZugeordneteMaterialien2").chosen().change(function () {            
-//            RemoveUsedMaterials();
-//            ShowHideFieldBemerkung("2");
-//        });
-
-//        $("#ZugeordneteMaterialien3").chosen().change(function () {
-//            RemoveUsedMaterials();
-//            ShowHideFieldBemerkung("3");
-//        });
-
-        // RemoveUsedMaterials();
-
-//        ShowHideFieldBemerkung("1");
-//        ShowHideFieldBemerkung("2");
-//        ShowHideFieldBemerkung("3");
-
-        // ##MMA## Width wird nachgelagert offenbar für jedes Element neu berechnet und ist hier nicht sinnvoll änderbar...
-        // Element control-group hat stets die richtige Breite
-        // $('#Adressdaten_Adresse_Name1').width(1000);
     });
 
 </script>
 
-<input type="hidden" id="CurrentAddressFormNo" value="0" />
+<input type="hidden" id="CurrentAddressFormNo" value="0"/>
+
 @Html.Partial("Partial/AuslieferAdressenForm", Model)
 
 @Html.FormRequiredFieldsSummary()

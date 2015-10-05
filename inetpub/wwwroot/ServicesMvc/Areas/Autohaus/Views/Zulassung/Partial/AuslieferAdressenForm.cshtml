@@ -5,8 +5,6 @@
 @{
     var addressNo = ViewBag.AddressNo;
     var divId = "DivAuslieferAdressen" + addressNo;
-    //  var partnerRolle = ViewBag.Partnerrolle;
-    // Model.Adressdaten.Partnerrolle = partnerRolle;
 
     Model.Materialien = Model.AuslieferAdresseZ7.Materialien;
 }
@@ -18,13 +16,11 @@
         htmlAttributes: new { @class = "form-horizontal", id = "AjaxFormAuslieferAdressen" + addressNo })) // + addressNo 
     {
     <div class="row-fluid">
-        <div id="AddressZ7" class="span4 float-left" style="width: 400px;">
+        <div id="AddressZ7" class="span4 div-auslieferadr">
             @{addressNo=1;}
             <div class="" style="margin-bottom: 10px;">
-                @*<a href="#" onclick="return AjaxFormAdressenShowGrid('Ausliefer');" class="btn white">Adresse wählen <i class="icon-chevron-right"></i></a>*@
-                <a href="#" onclick="return CallAjaxFormAdressenShowGrid('@addressNo');" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
+                <a href="#" onclick="return CallAjaxFormAdressenShowGrid('Z7');" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
             </div>
-            @*@Html.Hidden("AddressFormId", addressNo)*@
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.ID)
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.IsValid)
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.KundenNr)
@@ -32,8 +28,7 @@
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.Typ)
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey)
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
-            @*@Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Partnerrolle)*@
-            @Html.TextBoxFor(m => m.AuslieferAdresseZ7.Adressdaten.Partnerrolle)
+            @Html.HiddenFor(m => m.AuslieferAdresseZ7.Adressdaten.Partnerrolle)
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.TmpSaveAddressOnly)
             @Html.HiddenFor(m => m.AuslieferAdresseZ7.TmpSaveAddressSuccessful)
             @Html.FormValidationSummary()
@@ -56,10 +51,10 @@
                                   </text>)
         </div>
 
-        <div id="AddressZ8" class="span4 float-left" style="width: 400px;">
+        <div id="AddressZ8" class="span4 div-auslieferadr">
             @{addressNo=2;}
             <div class="" style="margin-bottom: 10px;">
-                <a href="#" onclick="return CallAjaxFormAdressenShowGrid('@addressNo');" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
+                <a href="#" onclick="return CallAjaxFormAdressenShowGrid('Z8');" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
             </div>
             @*@Html.Hidden("AddressFormId", addressNo)*@
             @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.ID)
@@ -69,8 +64,7 @@
             @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.Typ)
             @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.TmpSelectionKey)
             @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
-            @*@Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Partnerrolle)*@
-            @Html.TextBoxFor(m => m.AuslieferAdresseZ8.Adressdaten.Partnerrolle)
+            @Html.HiddenFor(m => m.AuslieferAdresseZ8.Adressdaten.Partnerrolle)
             @Html.HiddenFor(m => m.AuslieferAdresseZ8.TmpSaveAddressOnly)
             @Html.HiddenFor(m => m.AuslieferAdresseZ8.TmpSaveAddressSuccessful)
             @Html.FormValidationSummary()
@@ -93,12 +87,11 @@
                                   </text>)
         </div>
 
-        <div id="AddressZ9" class="span4 float-left" style="width: 400px;">
+        <div id="AddressZ9" class="span4 div-auslieferadr">
             @{addressNo=3;}
             <div class="" style="margin-bottom: 10px;">
-                <a href="#" onclick="return CallAjaxFormAdressenShowGrid('@addressNo');" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
+                <a href="#" onclick="return CallAjaxFormAdressenShowGrid('Z9');" class="btn btn-block white bold">Adresse @addressNo wählen <i class="icon-chevron-right"></i></a>
             </div>
-            @*@Html.Hidden("AddressFormId", addressNo)*@
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.ID)
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.IsValid)
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.KundenNr)
@@ -106,8 +99,7 @@
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.Typ)
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.TmpSelectionKey)
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Adresse.NoSaveButUiRefreshOnly)
-            @*@Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Partnerrolle)*@
-            @Html.TextBoxFor(m => m.AuslieferAdresseZ9.Adressdaten.Partnerrolle)
+            @Html.HiddenFor(m => m.AuslieferAdresseZ9.Adressdaten.Partnerrolle)
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.TmpSaveAddressOnly)
             @Html.HiddenFor(m => m.AuslieferAdresseZ9.TmpSaveAddressSuccessful)
             @Html.FormValidationSummary()
@@ -142,12 +134,6 @@
 //            $(":radio[name='TmpSelectedPartnerrolle']").click(function() { SelectAuslieferAdresse($(this).val()); });
 
             $(function() {
-//                ShowHideFieldBemerkung('@addressNo');
-
-//                $("#ZugeordneteMaterialien" + '@addressNo').chosen().change(function () {
-//                    RemoveUsedMaterials();
-//                    ShowHideFieldBemerkung('@addressNo');
-//                });
 
                 $("#ZugeordneteMaterialienZ7").chosen().change(function () {
                     RemoveUsedMaterials();
