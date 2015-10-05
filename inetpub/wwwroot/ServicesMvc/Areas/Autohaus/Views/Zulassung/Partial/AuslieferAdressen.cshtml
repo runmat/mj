@@ -2,7 +2,7 @@
 @model CkgDomainLogic.Autohaus.Models.AuslieferAdresse
 @{
     var materialsAll = Model.Materialien;   // Alle verfügbaren Materialien
-    var materialsUsed = Model.Materialien;  // Alle verfügbaren Materialien
+    // var materialsUsed = Model.Materialien;  // Alle verfügbaren Materialien
         
 @*    foreach (var item in matListe)
     {
@@ -14,11 +14,15 @@
 
 <style>
     .control-label {
-        width: 100px !important;
+        width: 90px !important;
     }
     .controls
     {
-        margin-left: 120px !important;
+        margin-left: 110px !important;
+    }
+    .span4
+    {
+        margin-left: 10px !important;
     }
     .chzn-choices {
         @*width: 80% !important;*@
@@ -31,50 +35,38 @@
 
 </style>
 
-<div onclick="RemoveUsedMaterials();">KLICK</div>
-
 <script>
-    
-    var materialsAll = @Html.Raw(Json.Encode(materialsAll.ToList().Select(x => x.Key.ToJavascriptString())));
+    var materialsAll = @Html.Raw(Json.Encode(materialsAll.ToList().Select(x => x.Text.ToJavascriptString())));
 
     function RemoveUsedMaterials() {
 
         var usedMaterials = new Array(0);
 
-        var selectedOptions = $("#ZugeordneteMaterialien1").chosen().text();
+        var options = $("#ZugeordneteMaterialien1 option:selected");
+        var selectedOptions = $.map(options, function (option) {
+            return option.text;
+        });
         usedMaterials.push.apply(usedMaterials, selectedOptions);
 
-        selectedOptions = $("#ZugeordneteMaterialien2").chosen().val();
+        options = $("#ZugeordneteMaterialien2 option:selected");
+        selectedOptions = $.map(options, function (option) {
+            return option.text;
+        });
         usedMaterials.push.apply(usedMaterials, selectedOptions);
 
-        selectedOptions = $("#ZugeordneteMaterialien3").chosen().val();
+        options = $("#ZugeordneteMaterialien3 option:selected");
+        selectedOptions = $.map(options, function (option) {
+            return option.text;
+        });
         usedMaterials.push.apply(usedMaterials, selectedOptions);
 
-        var freeMaterials = $(materialsAll).not(usedMaterials).get();
-
-        alert("usedMaterials: " + usedMaterials);
-
-        // $('.chzn-results li').show();
-
-        // $('.chzn-results li:contains("Perso")').hide();
-        // Alle Materialien sichtbar machen
         for (var i = 0; i < materialsAll.length; i++) {
             $('.chzn-results li:contains("' + materialsAll[i] + '")').show();
         }
-        
-        // Alle bereits benutzten Materialien unsichtbar machen
+
         for (var i = 0; i < usedMaterials.length; i++) {
-            alert(usedMaterials[i]);
-            $('.chzn-results li:contains("' + usedMaterials[i] + '")').hide();
+            $('.chzn-results li:contains("' + usedMaterials[i] + '")').hide();  
         }
-
-        $("#ZugeordneteMaterialien1").trigger("chosen:updated");
-        $("#ZugeordneteMaterialien2").trigger("chosen:updated");
-        $("#ZugeordneteMaterialien3").trigger("chosen:updated");
-
-        // alert("freeMaterials: " + freeMaterials);
-
-        // chzn-results 
 
     }
 
@@ -104,43 +96,74 @@
         $("#AjaxFormAuslieferAdressen" + addressNo).submit();
     }
 
+    function ShowHideFieldBemerkung(addressNo) {
+        var elToHideShow = $('#DivAuslieferAdressen' + addressNo + " #Adressdaten_Bemerkung").closest(".control-group");
+        var content = $('#DivAuslieferAdressen' + addressNo + " #ZugeordneteMaterialien" + addressNo).val();
+        if (content != null) {
+            if (content.indexOf("Sonstiges") > -1) {
+                $(elToHideShow.show());
+            } else {
+                $(elToHideShow.hide());
+            };
+        } else {
+            $(elToHideShow.hide());
+        }
+    }
+
     $(document).ready(function() {
 
-        $("#ZugeordneteMaterialien1").blur(function() {
-            alert("blur");
-        });
-
-        $("#ZugeordneteMaterialien1").chosen().blur(function () {
-            alert("blur 2");
-        });
-
-        $("#ZugeordneteMaterialien1").chosen().change(function () {
+        $("#ZugeordneteMaterialien1").chosen().change(function (e, params) {
             RemoveUsedMaterials();
+            ShowHideFieldBemerkung("1");
         });
 
-        $("#ZugeordneteMaterialien2").chosen().change(function () {
+        $("#ZugeordneteMaterialien2").chosen().change(function (e, params) {            
             RemoveUsedMaterials();
+            ShowHideFieldBemerkung("2");
         });
 
         $("#ZugeordneteMaterialien3").chosen().change(function () {
             RemoveUsedMaterials();
-        });       
+            ShowHideFieldBemerkung("3");
+        });
 
+        RemoveUsedMaterials();
+
+        ShowHideFieldBemerkung("1");
+        ShowHideFieldBemerkung("2");
+        ShowHideFieldBemerkung("3");
+
+        // ##MMA## Width wird nachgelagert offenbar für jedes Element neu berechnet und ist hier nicht sinnvoll änderbar...
+        // Element control-group hat stets die richtige Breite
+        $('#Adressdaten_Adresse_Name1').width(1000);
     });
 
 </script>
 
-<input type="text" id="CurrentAddressFormNo" value="0" />
+<input type="hidden" id="CurrentAddressFormNo" value="0" />
 <div class="row-fluid">
     <div class="span4" style="">
-        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 1 }, { "Partnerrolle", "Z7" } })
+        <div class="portlet box light-grey" style="">
+            <div class="portlet-body form">
+                @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 1}, {"Partnerrolle", "Z7"}})
+            </div>
+        </div>
     </div>
     <div class="span4" style="">
-        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 2 }, { "Partnerrolle", "Z8" } })
+        <div class="portlet box light-grey" style="">
+            <div class="portlet-body form">
+                @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 2}, {"Partnerrolle", "Z8"}})
+            </div>
+        </div>
     </div>
     <div class="span4" style="">
-        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary { { "AddressNo", 3 }, { "Partnerrolle", "Z9" } })
+        <div class="portlet box light-grey" style="">
+            <div class="portlet-body form">
+                @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 3}, {"Partnerrolle", "Z9"}})
+            </div>
+        </div>
     </div>
 </div>
+
 Bemerkung @Localize.RequiredWhenOtherIsSelected<br />
 @Html.FormRequiredFieldsSummary()

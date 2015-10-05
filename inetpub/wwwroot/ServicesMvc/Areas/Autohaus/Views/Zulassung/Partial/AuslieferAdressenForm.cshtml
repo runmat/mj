@@ -7,7 +7,7 @@
     var partnerRolle = ViewBag.Partnerrolle;
 }
 
-<div id="@divId">
+<div id="@divId" style="width:100%">
     @*AdressNo: @addressNo*
 
     @*<div class="form-actions" style="padding: 5px; padding-left: 85px;">*@
@@ -39,7 +39,7 @@
         @*<input id="TmpSelectedPartnerrolle" type="text" value="@partnerRolle" name="TmpSelectedPartnerrolle" />*@
 
    @*     @Html.FormRadioButtonListFor(m => m.TmpSelectedPartnerrolle, CkgDomainLogic.Autohaus.Models.Vorgang.AuslieferAdressenPartnerRollen.ToSelectList(), new { col = "left" })*@
-        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new {@class = "m-wrap medium"})
+        @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name1, new {@class = "m-wrap medium ", @style = "width:50px !important;"})
 
         @Html.FormTextBoxFor(m => m.Adressdaten.Adresse.Name2, new {@class = "m-wrap medium"})
 
@@ -68,6 +68,8 @@
             AjaxFormAuslieferAdressenInit('@addressNo');
 
 //            $(":radio[name='TmpSelectedPartnerrolle']").click(function() { SelectAuslieferAdresse($(this).val()); });
+
+     
 
         </script>
     }
