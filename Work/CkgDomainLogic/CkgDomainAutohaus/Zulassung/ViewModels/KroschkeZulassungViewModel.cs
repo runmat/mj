@@ -14,6 +14,7 @@ using CkgDomainLogic.General.ViewModels;
 using CkgDomainLogic.Autohaus.Contracts;
 using CkgDomainLogic.Autohaus.Models;
 using CkgDomainLogic.Partner.Contracts;
+using CkgDomainLogic.Zulassung.Models;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
@@ -722,6 +723,34 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); }
         }
+
+        // ##MMA## NEU
+        public AuslieferAdressen GetAuslieferAdressenModel()
+        {
+            var newModel = new AuslieferAdressen
+            {
+                AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7"),
+                AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8"),
+                AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9"),
+                Materialien = new List<SelectItem>()
+            };
+
+            return newModel;
+
+            //GetAuslieferAdressenModel.AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7");
+            //GetAuslieferAdressenModel.AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8");
+            //GetAuslieferAdressenModel.AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9");
+
+            //get
+            //{
+            //    GetAuslieferAdressenModel.AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7");
+            //    GetAuslieferAdressenModel.AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8");
+            //    GetAuslieferAdressenModel.AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9");
+            //    return null;
+            //    // return Zulassung.AuslieferAdressen.Where(a => a.Adressdaten.Partnerrolle == "Z7" || a.Adressdaten.Partnerrolle == "Z8" || a.Adressdaten.Partnerrolle == "Z9" ).ToList();
+            //}
+        }
+
 
         public void FilterAuslieferAdressen(string filterValue, string filterProperties)
         {
