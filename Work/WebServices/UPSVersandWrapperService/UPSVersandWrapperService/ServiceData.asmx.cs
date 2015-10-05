@@ -22,9 +22,13 @@ namespace UPSVersandWrapperService
 
                 return service.ProcessShipment(ShipmentRequest);
             }
+            catch (System.Web.Services.Protocols.SoapException soapEx)
+            {
+                throw new Exception(String.Format("UPS_ProcessShipment, Fehler: {0} -> {1}", soapEx.Message, soapEx.Detail.InnerText));
+            }
             catch (Exception ex)
             {
-                throw new Exception("UPS_ProcessShipment, Fehler :  " + ex.Message);
+                throw new Exception(String.Format("UPS_ProcessShipment, Fehler: {0}", ex.Message));
             }
         }
 
@@ -47,9 +51,13 @@ namespace UPSVersandWrapperService
 
                 return service.ProcessShipment(req);
             }
+            catch (System.Web.Services.Protocols.SoapException soapEx)
+            {
+                throw new Exception(String.Format("UPS_ProcessShipmentTest, Fehler: {0} -> {1}", soapEx.Message, soapEx.Detail.InnerText));
+            }
             catch (Exception ex)
             {
-                throw new Exception("UPS_ProcessShipmentTest, Fehler :  " + ex.Message);
+                throw new Exception(String.Format("UPS_ProcessShipmentTest, Fehler: {0}", ex.Message));
             }
         }
 
