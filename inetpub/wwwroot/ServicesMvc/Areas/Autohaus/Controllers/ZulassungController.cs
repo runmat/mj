@@ -495,39 +495,58 @@ namespace ServicesMvc.Autohaus.Controllers
         // public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
         public ActionResult AuslieferAdressenForm(AuslieferAdressen model)
         {
-            if (model.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
-            {
-                ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.AuslieferAdresseZ7.ZugeordneteMaterialien;
-                ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.AuslieferAdresseZ7.Adressdaten.Bemerkung;
-                ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey);
-                if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
-                    return new EmptyResult();
 
-                ModelState.Clear();
-                ViewModel.SelectedAuslieferAdresse.IsValid = false;
-                // return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
-                model.AuslieferAdresseZ7 = ViewModel.SelectedAuslieferAdresse;
-                return PartialView("Partial/AuslieferAdressenForm", model);
-            }
+            // if (ModelState.IsValid)
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
+            ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
 
-            if (model.AuslieferAdresseZ7.TmpSelectedPartnerrolle != model.AuslieferAdresseZ7.Adressdaten.Partnerrolle)
-            {
-                ViewModel.SelectedAuslieferAdressePartnerrolle = model.AuslieferAdresseZ7.TmpSelectedPartnerrolle;
-                ModelState.Clear();
-                ViewModel.SelectedAuslieferAdresse.IsValid = false;
-                // return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
-                model.AuslieferAdresseZ7 = ViewModel.SelectedAuslieferAdresse;
-                return PartialView("Partial/AuslieferAdressenForm", model);
-            }
+            ModelState.Clear();
+            model.IsValid = true;
 
-            if (ModelState.IsValid)
-                ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+            // Validierung Z7
 
-            // Auslieferadressen sind optional
-            if (!model.AuslieferAdresseZ7.HasData)
-                ModelState.Clear();
 
-            model.AuslieferAdresseZ7.IsValid = (ModelState.IsValid && !model.AuslieferAdresseZ7.TmpSaveAddressOnly);
+            // Validierung Z8
+
+
+            // Validierung Z9
+
+
+            //if (model.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
+            //{
+            //    ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.AuslieferAdresseZ7.ZugeordneteMaterialien;
+            //    ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.AuslieferAdresseZ7.Adressdaten.Bemerkung;
+            //    ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey);
+            //    if (ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse == null)
+            //        return new EmptyResult();
+
+            //    ModelState.Clear();
+            //    ViewModel.SelectedAuslieferAdresse.IsValid = false;
+            //    // return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            //    model.AuslieferAdresseZ7 = ViewModel.SelectedAuslieferAdresse;
+            //    return PartialView("Partial/AuslieferAdressenForm", model);
+            //}
+
+            //if (model.AuslieferAdresseZ7.TmpSelectedPartnerrolle != model.AuslieferAdresseZ7.Adressdaten.Partnerrolle)
+            //{
+            //    ViewModel.SelectedAuslieferAdressePartnerrolle = model.AuslieferAdresseZ7.TmpSelectedPartnerrolle;
+            //    ModelState.Clear();
+            //    ViewModel.SelectedAuslieferAdresse.IsValid = false;
+            //    // return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+            //    model.AuslieferAdresseZ7 = ViewModel.SelectedAuslieferAdresse;
+            //    return PartialView("Partial/AuslieferAdressenForm", model);
+            //}
+
+            //if (ModelState.IsValid)
+            //    ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+
+            //// Auslieferadressen sind optional
+            //if (!model.AuslieferAdresseZ7.HasData)
+            //    ModelState.Clear();
+
+            //model.AuslieferAdresseZ7.IsValid = (ModelState.IsValid && !model.AuslieferAdresseZ7.TmpSaveAddressOnly);
+
             model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
 
             ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.AuslieferAdresseZ7.TmpSaveAddressOnly);

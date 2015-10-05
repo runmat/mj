@@ -151,16 +151,6 @@
 </script>
 
 <input type="hidden" id="CurrentAddressFormNo" value="0" />
-@*<div class="row-fluid">
-    <div class="span4XX float-left" style="width: 400px;">*@
-        @Html.Partial("Partial/AuslieferAdressenForm", Model)
-    </div>
-@*    <div class="span4XX float-left" style="width:400px;">
-        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 2}, {"Partnerrolle", "Z8"}})
-    </div>
-    <div class="span4XX float-left" style="width:400px;">
-        @Html.Partial("Partial/AuslieferAdressenForm", Model, new ViewDataDictionary {{"AddressNo", 3}, {"Partnerrolle", "Z9"}})
-    </div>*@
-@*</div>*@
+@Html.Partial("Partial/AuslieferAdressenForm", Model)
 
 @Html.FormRequiredFieldsSummary()

@@ -14,5 +14,7 @@ namespace CkgDomainLogic.Zulassung.Models
         public AuslieferAdresse AuslieferAdresseZ9  { get; set; }
 
         public List<SelectItem> Materialien { get; set; }
+
+        public bool IsValid { get; set; }
     }
 }

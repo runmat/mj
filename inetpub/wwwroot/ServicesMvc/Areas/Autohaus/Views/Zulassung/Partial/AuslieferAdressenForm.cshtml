@@ -134,7 +134,7 @@
         @*@Html.FormRequiredFieldsSummary()*@
 
         <script type="text/javascript">
-            _modelIsValid = @Model.AuslieferAdresseZ7.IsValid.ToString().ToLower();
+            _modelIsValid = @Model.IsValid.ToString().ToLower();; //  @Model.AuslieferAdresseZ7.IsValid.ToString().ToLower();
 
             DocumentReadyBind(AjaxFormAuslieferAdressenInit('@addressNo'));
             AjaxFormAuslieferAdressenInit('@addressNo');

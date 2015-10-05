@@ -340,10 +340,12 @@
             return;
         }
 
-        var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        // var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
+        var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
         if (saveSuccessful == 'true') {
             SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
-            $("#TmpSaveAddressSuccessful").val(false);
+            // $("#TmpSaveAddressSuccessful").val(false);
+            $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
         }
     }
 
