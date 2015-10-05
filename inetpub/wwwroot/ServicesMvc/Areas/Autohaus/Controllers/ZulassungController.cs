@@ -494,6 +494,9 @@ namespace ServicesMvc.Autohaus.Controllers
         {
             if (model.Adressdaten.Adresse.TmpSelectionKey.IsNotNullOrEmpty())
             {
+                //if (ViewModel.SelectedAuslieferAdresse == null) 
+                //    ViewModel.SelectedAuslieferAdresse = new AuslieferAdresse();
+
                 ViewModel.SelectedAuslieferAdresse.ZugeordneteMaterialien = model.ZugeordneteMaterialien;
                 ViewModel.SelectedAuslieferAdresse.Adressdaten.Bemerkung = model.Adressdaten.Bemerkung;
                 ViewModel.SelectedAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.Adressdaten.Adresse.TmpSelectionKey);

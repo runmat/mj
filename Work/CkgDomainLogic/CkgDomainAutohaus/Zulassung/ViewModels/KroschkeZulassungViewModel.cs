@@ -718,7 +718,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        public AuslieferAdresse SelectedAuslieferAdresse { get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); } }
+        public AuslieferAdresse SelectedAuslieferAdresse
+        {
+            get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); }
+        }
 
         public void FilterAuslieferAdressen(string filterValue, string filterProperties)
         {
