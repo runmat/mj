@@ -5,7 +5,8 @@
         xmlns:ViewModels="clr-namespace:CKGDatabaseAdminLib.ViewModels;assembly=CKGDatabaseAdminLib"
         xmlns:uc="clr-namespace:CKGDatabaseAdminTool.UserControls"
         xmlns:conv="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
-                 WindowStartupLocation="CenterScreen" 
+                 WindowStartupLocation="CenterScreen"
+                 WindowState="Maximized"
         Width="1280" Height="720" Title="CKGDatabaseAdminTool" IsIconVisible="False">
 
     <Window.Resources>
@@ -28,7 +29,7 @@
             <uc:ucCheckBapis/>
         </DataTemplate>
         <DataTemplate DataType="{x:Type ViewModels:GitBranchInfoViewModel}">
-            <uc:ucManageGitBranches/>
+            <uc:ucManageGitBranchesDevX/>
         </DataTemplate>
         <conv:NotNullToBooleanConverter x:Key="NotNullToBooleanConverter" />
     </Window.Resources>

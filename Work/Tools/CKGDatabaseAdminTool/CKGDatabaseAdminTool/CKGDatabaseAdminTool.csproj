@@ -44,6 +44,26 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DevExpress.Data.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Data.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Core.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Core.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v11.2, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Grid.v11.2.dll</HintPath>
+    </Reference>
+    <Reference Include="DevExpress.Xpf.Grid.v11.2.Core, Version=11.2.7.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevExpress.Xpf.Grid.v11.2.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="DevXPressTools, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\GAC\DevExpressWPF\DevXPressTools.dll</HintPath>
+    </Reference>
     <Reference Include="Fluent, Version=2.0.4807.24668, Culture=neutral, PublicKeyToken=3e436e32a8c5546f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Ribbon\Fluent.dll</HintPath>
@@ -68,6 +88,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="UserControls\ucManageGitBranchesDevX.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ucReportBapiApplications.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -125,6 +149,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="UIServices\DialogService.cs" />
+    <Compile Include="UserControls\ucManageGitBranchesDevX.xaml.cs">
+      <DependentUpon>ucManageGitBranchesDevX.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ucReportBapiApplications.xaml.cs">
       <DependentUpon>ucReportBapiApplications.xaml</DependentUpon>
     </Compile>

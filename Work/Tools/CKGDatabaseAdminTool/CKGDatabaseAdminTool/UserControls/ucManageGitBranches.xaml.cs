@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using CKGDatabaseAdminLib.ViewModels;
+using DevExpress.Xpf.Grid;
 using Microsoft.Win32;
 
 namespace CKGDatabaseAdminTool.UserControls
@@ -13,6 +14,7 @@ namespace CKGDatabaseAdminTool.UserControls
     {
         public ucManageGitBranches()
         {
+            DataControlBase.AllowInfiniteGridSize = true;
             InitializeComponent();
         }
 
