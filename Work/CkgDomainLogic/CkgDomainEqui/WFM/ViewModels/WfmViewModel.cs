@@ -233,18 +233,21 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         public string StornoAuftrag(string vorgangNr)
         {
-            var message = DataService.StornoAuftrag(vorgangNr.ToInt());
-            if (message.IsNullOrEmpty())
-            {
-                var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
-                if (auftrag != null)
-                {
-                    auftrag.StornoDatum = DateTime.Today;
-                    auftrag.AbmeldeStatusCode = "3";
-                }
+            var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
+            if (auftrag == null)
+                return Localize.OrderDoesNotExist;
 
-                DataMarkForRefresh();
-            }
+            if (auftrag.AbmeldeStatus.NotNullOrEmpty() == "2")
+                return Localize.CancellationNotPossible + " " + Localize.OrderAlreadyDone;
+
+            var message = DataService.StornoAuftrag(vorgangNr.ToInt());
+            if (!message.IsNullOrEmpty())
+                return message;
+
+            auftrag.StornoDatum = DateTime.Today;
+            auftrag.AbmeldeStatusCode = "3";
+
+            DataMarkForRefresh();
 
             return message;
         }
