@@ -8,23 +8,26 @@
 
 <style>
     
-    .div-auslieferadr {
+    #DivAuslieferAdressen .div-auslieferadr {
         width: 340px !important;
         float: left;
     }
 
-     .control-label {
+    #DivAuslieferAdressen .control-label {
          width: 90px !important;
      }
-    .controls
+    
+    #DivAuslieferAdressen .controls
     {
         margin-left: 110px !important;
     }
-    .span4
+    
+    #DivAuslieferAdressen .span4
     {
         margin-left: 10px !important;
     }
-    .chzn-choices {
+    
+    #DivAuslieferAdressen .chzn-choices {
         @*width: 80% !important;*@
         width: 215px !important;
     }
@@ -55,6 +58,7 @@
 
 <script>
     var materialsAll = @Html.Raw(Json.Encode(materialsAll.ToList().Select(x => x.Text.ToJavascriptString())));
+    alert("2. materialsAll: " + materialsAll.length);
 
     function RemoveUsedMaterials() {
         var usedMaterials = new Array(0);
@@ -86,20 +90,22 @@
     }
 
     function CallAjaxFormAdressenShowGrid(partnerRolle) {
-        $('#CurrentAddressFormNo').val(partnerRolle);
-        alert("CallAjaxFormAdressenShowGrid " + partnerRolle);
+        $('#SelectedPartnerRolle').val(partnerRolle);
+        // alert("CallAjaxFormAdressenShowGrid " + partnerRolle);
         AjaxFormAdressenShowGrid('Ausliefer');
+        return false;
     }
 
-    function AjaxFormAuslieferAdressenInit(addressNo) {
-//        alert("AjaxFormAuslieferAdressenInit " + addressNo);
-//        AjaxFormAdressePrepareAutoComplete($("#Adressdaten_Adresse_Name1"), "AuslieferAdresseGetAutoCompleteItems");
-//        AjaxFormAdressePrepareAutoCompleteReset("AjaxFormAuslieferAdressen" + addressNo);
+    function AjaxFormAuslieferAdressenInit(partnerRolle) {
+        // alert("AjaxFormAuslieferAdressenInit " + partnerRolle);
+        AjaxFormAdressePrepareAutoComplete($("#Adressdaten_Adresse_Name1"), "AuslieferAdresseGetAutoCompleteItems");
+        AjaxFormAdressePrepareAutoCompleteReset("AjaxFormAuslieferAdressen" + partnerRolle);
     }
 
     function SelectAuslieferAdresse(partnerrolle) {
+        alert("SelectAuslieferAdresse");
         var addressNo = $('#CurrentAddressFormNo').val();
-        alert("SelectAuslieferAdresse-Partnerrolle: " + partnerrolle + " | addressNo: " + addressNo);
+        // alert("SelectAuslieferAdresse-Partnerrolle: " + partnerrolle + " | addressNo: " + addressNo);
         if ($("#Adressdaten_Partnerrolle").val() != partnerrolle) {
             $("#AjaxFormAuslieferAdressen" + addressNo).submit();
         }
@@ -112,7 +118,6 @@
     }
 
     function ShowHideFieldBemerkung(partnerRolle) {
-        // alert("ShowHideFieldBemerkung " + addressNo);
         var elToHideShow = $('#AuslieferAdresse' + partnerRolle + '_Adressdaten_Bemerkung').closest(".control-group");
         var content = $('#ZugeordneteMaterialien' + partnerRolle).val();
         if (content != null) {
@@ -129,7 +134,7 @@
     $(document).ready(function() {
 
     });
-
+    
 </script>
 
 <input type="hidden" id="CurrentAddressFormNo" value="0"/>

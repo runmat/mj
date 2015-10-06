@@ -363,11 +363,11 @@
     }
 
     function GridAuslieferAdresseOnSelect(id) {
-        var currentAddressNo = $('#CurrentAddressFormNo').val();
-        alert("GridAuslieferAdresseOnSelect " + currentAddressNo);
-        $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
-        // $("#AjaxFormAuslieferAdressen").submit();
-        $("#AjaxFormAuslieferAdressen" + currentAddressNo).submit();
+        $('#SelectedAddressId').val(id);
+        // alert("GridAuslieferAdresseOnSelect PartnerRolle: " + partnerRolle + " | SelectedAddressId: " + id);
+        // $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
+        $("#AjaxFormAuslieferAdressen").submit();
+        // $("#AjaxFormAuslieferAdressen" + currentAddressNo).submit();
     }
 
     function LoadKfzKreisAusHalterAdresse() {

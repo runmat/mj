@@ -495,6 +495,49 @@ namespace ServicesMvc.Autohaus.Controllers
         // public ActionResult AuslieferAdressenForm(AuslieferAdresse model)
         public ActionResult AuslieferAdressenForm(AuslieferAdressen model)
         {
+            var selectedPartnerRolle = Request["SelectedPartnerRolle"];
+            var selectedAddressId = Request["SelectedAddressId"];
+
+            if (selectedPartnerRolle.IsNotNullOrEmpty() && selectedAddressId.IsNotNullOrEmpty())
+            {
+                //var tmpAuslieferAdresse = new AuslieferAdresse
+                //{
+                //    Adressdaten = {Adresse = ViewModel.GetAuslieferadresse(selectedAddressId)}
+                //    // ZugeordneteMaterialien = model.AuslieferAdresseZ7.ZugeordneteMaterialien
+                //};
+
+                var tmpAdresse = ViewModel.GetAuslieferadresse(selectedAddressId);
+
+                // tmpAuslieferAdresse.Adressdaten.Bemerkung = model.AuslieferAdresseZ7.Adressdaten.Bemerkung;
+                // tmpAuslieferAdresse.Adressdaten.Adresse = ViewModel.GetAuslieferadresse(model.AuslieferAdresseZ7.Adressdaten.Adresse.TmpSelectionKey);
+
+                if (tmpAdresse == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                // tmpAuslieferAdresse.IsValid = false;
+
+                switch (selectedPartnerRolle)
+                {
+                    case "Z7":
+                        model.AuslieferAdresseZ7.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
+                        break;
+
+                    case "Z8":
+                        model.AuslieferAdresseZ8.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
+                        break;
+
+                    case "Z9":
+                        model.AuslieferAdresseZ9.Adressdaten.Adresse = tmpAdresse;
+                        ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
+                        break;
+                }
+
+                return PartialView("Partial/AuslieferAdressenForm", ViewModel.GetAuslieferAdressenModel()); // return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
+                
+            }
 
             // if (ModelState.IsValid)
             ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);

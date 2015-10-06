@@ -732,23 +732,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7"),
                 AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8"),
                 AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9"),
-                Materialien = new List<SelectItem>()
+                Materialien = new List<SelectItem>()               
             };
 
             return newModel;
-
-            //GetAuslieferAdressenModel.AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7");
-            //GetAuslieferAdressenModel.AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8");
-            //GetAuslieferAdressenModel.AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9");
-
-            //get
-            //{
-            //    GetAuslieferAdressenModel.AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7");
-            //    GetAuslieferAdressenModel.AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8");
-            //    GetAuslieferAdressenModel.AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9");
-            //    return null;
-            //    // return Zulassung.AuslieferAdressen.Where(a => a.Adressdaten.Partnerrolle == "Z7" || a.Adressdaten.Partnerrolle == "Z8" || a.Adressdaten.Partnerrolle == "Z9" ).ToList();
-            //}
         }
 
 
