@@ -51,6 +51,10 @@
         
         <script type="text/javascript">       
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            var kennzeichen = '@Model.Kennzeichen.NotNullOrEmpty()';
+            if (kennzeichen !== '')
+                $("#Kennzeichen").attr("readonly", "readonly");
         </script>
     }
 </div>

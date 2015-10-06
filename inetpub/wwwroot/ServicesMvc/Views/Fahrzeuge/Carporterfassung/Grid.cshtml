@@ -3,6 +3,10 @@
 
 @{ var gridName = "GridCarporterfassung"; }
 
+<div id="DivCarportSelectionWrapper">
+    @Html.Partial("Carporterfassung/CarportSelectionForm", Model.CarportSelectionModel)
+</div>
+
 @(Html.Telerik()
     .Grid<CarporterfassungModel>()
     .Name(gridName)
@@ -18,6 +22,7 @@
 
         columns.XBound(c => c.Status).Visible(!Model.EditMode);
         columns.XBound(c => c.CarportName);
+        columns.XBound(c => c.UserName);
         columns.XBound(c => c.Kennzeichen);
         columns.XBound(c => c.FahrgestellNr);
         columns.XBound(c => c.AuftragsNr);

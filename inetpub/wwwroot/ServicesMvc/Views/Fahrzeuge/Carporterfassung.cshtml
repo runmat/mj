@@ -20,22 +20,26 @@
 
     function FormPreparePrivate() {
         $("#Kennzeichen").focus();
-        InitDropDownList();
+        InitDropDownLists();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
-        InitDropDownList();
+        InitDropDownLists();
     }
 
-    function InitDropDownList() {
+    function InitDropDownLists() {
 
         setTimeout(function () {
             $('#CarportId').select2({
                 allowClear: true
             });
         }, 100);
-
+        setTimeout(function () {
+            $('#CarportIdPersisted').select2({
+                allowClear: true
+            });
+        }, 100);
     }
 
     function GetGrid() {
@@ -72,6 +76,12 @@
             NeuesFahrzeugErfassen(false);
             setTimeout('$("#Kennzeichen").focus();', 500);
         }
+    }
+
+    function AjaxFormCarportSelectionComplete() {
+        FormPreparePrivateAjax();
+        GridRefresh();
+        setTimeout('FormPreparePrivateAjax();', 200);
     }
 
     function LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin) {
@@ -158,6 +168,7 @@
             data: { kennzeichen: kennzeichen },
             success: function (result) {
                 GridRefresh();
+                $("#AjaxFormCarportSelection").submit();
             }
         });
 
@@ -181,6 +192,7 @@
         $("#divCarporterfassungEdit").slideUp();
         $("#divCarporterfassungGrid").html(result);
         GridAllColumnFilterApplyToGrid("GridCarporterfassung");
+        setTimeout('FormPreparePrivateAjax();', 200);
         $("#divCarporterfassungGrid").slideDown();
         setTimeout('LoadingHide();', 500);
         window.scrollTo(0, 0);

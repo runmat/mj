@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Controllers;
@@ -8,6 +7,7 @@ using CkgDomainLogic.Fahrzeuge.ViewModels;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
 using GeneralTools.Models;
+using SapORM.Contracts;
 
 namespace ServicesMvc.Controllers
 {
@@ -15,9 +15,9 @@ namespace ServicesMvc.Controllers
     {
         public CarporterfassungViewModel CarporterfassungViewModel { get { return GetViewModel<CarporterfassungViewModel>(); } }
 
-        private static string PersistableGroupKey
+        private string PersistableGroupKey
         {
-            get { return "CarporterfassungsListe"; }
+            get { return string.Format("CarporterfassungsListe_{0}", LogonContext.KundenNr.ToSapKunnr()); }
         }
 
 
@@ -29,10 +29,9 @@ namespace ServicesMvc.Controllers
             var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
             CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
 
-            CarporterfassungViewModel.Init();
-
             // get shopping cart items
-            CarporterfassungViewModel.Fahrzeuge = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey);
+            var fahrzeugePersisted = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey, "ALL");
+            CarporterfassungViewModel.Init(fahrzeugePersisted);
 
             return View(CarporterfassungViewModel);
         }
@@ -75,6 +74,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ListeAnzeigen()
         {
+            CarporterfassungViewModel.TryAvoidNullValueForCarportIdPersisted(CarporterfassungViewModel.LastCarportId);
+
             return PartialView("Carporterfassung/Grid", CarporterfassungViewModel);
         }
 
@@ -82,6 +83,14 @@ namespace ServicesMvc.Controllers
         public ActionResult CarporterfassungAjaxBinding()
         {
             return View(new GridModel(CarporterfassungViewModel.FahrzeugeFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult CarportSelectionForm(CarporterfassungModel model)
+        {
+            CarporterfassungViewModel.SaveCarportSelectionModel(model);
+
+            return PartialView("Carporterfassung/CarportSelectionForm", model);
         }
 
         [HttpPost]
