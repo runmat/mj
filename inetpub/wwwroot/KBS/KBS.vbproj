@@ -137,6 +137,7 @@
     <Content Include="Forms\DownloadFile2.aspx" />
     <Content Include="Forms\BestaetigungZulassungen.aspx" />
     <Content Include="Forms\InventurSelection.aspx" />
+    <Content Include="Forms\Verbandbuch.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche_2.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche.aspx" />
     <Content Include="Forms\TaggleicheMeldungDAD.aspx" />
@@ -443,6 +444,13 @@
     </Compile>
     <Compile Include="Forms\InventurSelection.aspx.vb">
       <DependentUpon>InventurSelection.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\Verbandbuch.aspx.designer.vb">
+      <DependentUpon>Verbandbuch.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Verbandbuch.aspx.vb">
+      <DependentUpon>Verbandbuch.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Forms\Zulassungsdienstsuche_2.aspx.designer.vb">
