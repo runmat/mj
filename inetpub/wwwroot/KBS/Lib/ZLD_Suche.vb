@@ -34,8 +34,10 @@ Public Class ZLD_Suche
             S.AP.SetImportParameter("INAME1", Zulassungspartner)
             S.AP.SetImportParameter("IREMARK", ZulassungspartnerNr)
 
+            S.AP.Execute()
+
             If S.AP.ResultCode = 0 Then
-                m_tblResult = S.AP.GetExportTableWithExecute("ITAB")
+                m_tblResult = S.AP.GetExportTable("ITAB")
             Else
                 RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
             End If
