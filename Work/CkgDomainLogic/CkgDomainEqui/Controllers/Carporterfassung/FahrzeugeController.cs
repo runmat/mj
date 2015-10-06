@@ -29,11 +29,16 @@ namespace ServicesMvc.Controllers
             var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
             CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
 
+            LoadPersistedObjects();
+
+            return View(CarporterfassungViewModel);
+        }
+
+        void LoadPersistedObjects()
+        {
             // get shopping cart items
             var fahrzeugePersisted = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey, "ALL");
             CarporterfassungViewModel.Init(fahrzeugePersisted);
-
-            return View(CarporterfassungViewModel);
         }
 
         [HttpPost]
@@ -125,9 +130,8 @@ namespace ServicesMvc.Controllers
         {
             if (clearList)
             {
-                PersistanceDeleteAllObjects(PersistableGroupKey);
-
-                CarporterfassungViewModel.ClearList();
+                CarporterfassungViewModel.ClearList((ownerMultiKey, additionalFilter) => PersistanceDeleteAllObjects(PersistableGroupKey, ownerMultiKey, additionalFilter));
+                LoadPersistedObjects();
             }
 
             CarporterfassungViewModel.LoadFahrzeugModel();

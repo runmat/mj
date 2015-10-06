@@ -453,6 +453,11 @@ namespace CkgDomainLogic.General.Controllers
             return GetPersistanceOwnerKey();
         }
 
+        string GetRealPersistanceOwnerKeyMultiKey(string ownerKey)
+        {
+            return ownerKey.NotNullOrEmpty().ToUpper() == "ALL" ? null : ownerKey ?? GetRealPersistanceOwnerKey();
+        }
+
 
         private IEnumerable<IPersistableObjectContainer> PersistanceGetObjectContainers(string groupKey, string ownerKey = null)
         {
@@ -460,7 +465,7 @@ namespace CkgDomainLogic.General.Controllers
             if (pService == null)
                 return new List<IPersistableObjectContainer>();
 
-            return pService.GetObjectContainers(ownerKey.NotNullOrEmpty().ToUpper() == "ALL" ? null : ownerKey ?? GetRealPersistanceOwnerKey(), groupKey);
+            return pService.GetObjectContainers(GetRealPersistanceOwnerKeyMultiKey(ownerKey), groupKey);
         }
 
         protected List<T> PersistanceGetObjects<T>(string groupKey, string ownerKey = null)
@@ -501,13 +506,13 @@ namespace CkgDomainLogic.General.Controllers
             return pService.SaveObject(objectKey, GetRealPersistanceOwnerKey(), groupKey, LogonContext.UserName, o);
         }
 
-        protected void PersistanceDeleteAllObjects(string groupKey, string ownerKey = null)
+        protected void PersistanceDeleteAllObjects(string groupKey, string ownerKey = null, string additionalFilter = null)
         {
             var pService = LogonContext.PersistanceService;
             if (pService == null)
                 return;
 
-            pService.DeleteAllObjects(ownerKey ?? GetRealPersistanceOwnerKey(), groupKey);
+            pService.DeleteAllObjects(GetRealPersistanceOwnerKeyMultiKey(ownerKey), groupKey, additionalFilter);
         }
 
         protected void PersistanceDeleteObject(string objectKey)

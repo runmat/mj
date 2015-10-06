@@ -47,9 +47,16 @@ namespace CkgDomainLogic.General.Services
             Database.ExecuteSqlCommand("delete from PersistableObjectContainer where ID = {0}", objectKey);
         }
 
-        public void DeleteAllObjects(string ownerKey, string groupKey)
+        public void DeleteAllObjects(string ownerKey, string groupKey, string additionalFilter)
         {
-            Database.ExecuteSqlCommand("delete from PersistableObjectContainer where OwnerKey = {0} and GroupKey = {1}", ownerKey, groupKey);
+            var sql = "DELETE FROM PersistableObjectContainer WHERE GroupKey = {0}";
+            if (ownerKey.IsNotNullOrEmpty())
+                sql += " and OwnerKey = {1}";
+
+            if (additionalFilter.IsNotNullOrEmpty())
+                sql += additionalFilter;
+
+            Database.ExecuteSqlCommand(sql, groupKey, ownerKey);
         }
     }
 }

@@ -203,12 +203,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             TryAvoidNullValueForCarportIdPersisted(model.CarportIdPersisted);
         }
 
-        public void RemoveFahrzeug(CarporterfassungModel item)
-        {
-            Fahrzeuge.Remove(item);
-            DataMarkForRefresh();
-        }
-
         public void SaveFahrzeuge()
         {
             EditMode = false;
@@ -225,9 +219,21 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             DataMarkForRefresh();
         }
 
-        public void ClearList()
+        public void ClearList(Action<string, string> outerClearListFunction)
         {
-            Fahrzeuge.RemoveAll(f => f.Status.IsNullOrEmpty());
+            var ownerMultiKey = "ALL";
+            var additionalFilter = string.Format(" and ObjectData like '%<CarportId>{0}</CarportId>%'", CarportSelectionModel.CarportIdPersisted);
+            if (CarportSelectionModel.CarportSelectionMode.NotNullOrEmpty() != "AllUsers")
+            {
+                ownerMultiKey = null;
+                additionalFilter = null;
+            }
+
+            outerClearListFunction(ownerMultiKey, additionalFilter);
+
+            FahrzeugeAlle.RemoveAll(f => f.Status.IsNullOrEmpty());
+            SetFahrzeugeForCurrentMode();
+
             DataMarkForRefresh();
         }
 
