@@ -340,11 +340,9 @@
             return;
         }
 
-        // var saveSuccessful = $("#TmpSaveAddressSuccessful").val().toString().toLowerCase();
         var saveSuccessful = $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val().toString().toLowerCase();
         if (saveSuccessful == 'true') {
             SpanAlertSuccess("AuslieferAdressenMessage", '@Localize.SaveSuccessful', 3000);
-            // $("#TmpSaveAddressSuccessful").val(false);
             $("#AuslieferAdresseZ7_TmpSaveAddressSuccessful").val(false);
         }
     }
@@ -364,10 +362,7 @@
 
     function GridAuslieferAdresseOnSelect(id) {
         $('#SelectedAddressId').val(id);
-        // alert("GridAuslieferAdresseOnSelect PartnerRolle: " + partnerRolle + " | SelectedAddressId: " + id);
-        // $("#Adressdaten_Adresse_TmpSelectionKey").val(id);
         $("#AjaxFormAuslieferAdressen").submit();
-        // $("#AjaxFormAuslieferAdressen" + currentAddressNo).submit();
     }
 
     function LoadKfzKreisAusHalterAdresse() {

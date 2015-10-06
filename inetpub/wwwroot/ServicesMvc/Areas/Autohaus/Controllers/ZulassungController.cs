@@ -535,14 +535,18 @@ namespace ServicesMvc.Autohaus.Controllers
                         break;
                 }
 
+                ViewModel.Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+
                 return PartialView("Partial/AuslieferAdressenForm", ViewModel.GetAuslieferAdressenModel()); // return PartialView("Partial/AuslieferAdressenForm", ViewModel.SelectedAuslieferAdresse);
                 
             }
 
             // if (ModelState.IsValid)
+            
             ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
             ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
             ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
+
 
             ModelState.Clear();
             model.IsValid = true;
@@ -588,9 +592,17 @@ namespace ServicesMvc.Autohaus.Controllers
             //if (!model.AuslieferAdresseZ7.HasData)
             //    ModelState.Clear();
 
-            //model.AuslieferAdresseZ7.IsValid = (ModelState.IsValid && !model.AuslieferAdresseZ7.TmpSaveAddressOnly);
+            //model.AuslieferAdresseZ7.IsValid = (ModelState.IsValid && !model.AuslieferAdresseZ7.TmpSaveAddressOnly);            
 
-            model.Materialien = ViewModel.SelectedAuslieferAdresse.Materialien;
+            ViewModel.Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+            model.Materialien = ViewModel.Zulassung.AuslieferAdressen.FirstOrDefault().Materialien.ToList();
+
+            // ViewModel.AuslieferAdressen...ZugeordneteMaterialien = model.AuslieferAdresseZ7.ZugeordneteMaterialien;
+            // model.AuslieferAdresseZ7.ZugeordneteMaterialien = view
+
+            model.AuslieferAdresseZ7.Materialien = model.Materialien;
+            model.AuslieferAdresseZ8.Materialien = model.Materialien;
+            model.AuslieferAdresseZ9.Materialien = model.Materialien;
 
             ModelState.SetModelValue("TmpSaveAddressSuccessful", ModelState.IsValid && model.AuslieferAdresseZ7.TmpSaveAddressOnly);
             ModelState.SetModelValue("TmpSaveAddressOnly", false);

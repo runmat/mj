@@ -6,7 +6,7 @@
     var addressNo = ViewBag.AddressNo;
     var divId = "DivAuslieferAdressen" + addressNo;
 
-    // Model.Materialien = Model.AuslieferAdresseZ7.Materialien;    
+     Model.Materialien = Model.AuslieferAdresseZ7.Materialien;    
 }
 
 <div id="@divId" style="width:100%">
@@ -160,46 +160,15 @@
                 RemoveUsedMaterials();
 
                 var newAction = "AutoPostcodeCityMappingDirect_OnFocus($(this), 'AuslieferAdresseZ7_Adressdaten_Adresse_PLZ', 'AuslieferAdresseZ7_Adressdaten_Adresse_Land')";
-                $('#AuslieferAdresseZ8_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
+                $('#AuslieferAdresseZ7_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
 
                 newAction = "AutoPostcodeCityMappingDirect_OnFocus($(this), 'AuslieferAdresseZ8_Adressdaten_Adresse_PLZ', 'AuslieferAdresseZ8_Adressdaten_Adresse_Land')";
                 $('#AuslieferAdresseZ8_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
 
                 newAction = "AutoPostcodeCityMappingDirect_OnFocus($(this), 'AuslieferAdresseZ9_Adressdaten_Adresse_PLZ', 'AuslieferAdresseZ9_Adressdaten_Adresse_Land')";
-                $('#AuslieferAdresseZ8_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
+                $('#AuslieferAdresseZ9_Adressdaten_Adresse_Ort').attr('onfocus', newAction);
 
-                alert("materialsAll: " + materialsAll.length);
             });
-
-        function AutoPostcodeCityMappingDirect_OnFocus(tbCity, postCodePropertyName, countryPropertyName) {
-
-            if (_insideAutoPostcodeCityMapping)
-                return;
-
-            var form = tbCity.closest("form");
-            if (countryPropertyName != "") {
-                var countryDropdown = $("#" + form.attr("id") + " select[name$='" + countryPropertyName + "'], input[name$='" + countryPropertyName + "']");
-                alert("dropDown: " + countryDropdown.val());
-                if (countryDropdown.val().toLowerCase() != "de")
-                    return;
-            }
-        
-            var plz = $("#" + postCodePropertyName);
-            alert("Plz = " + plz.val());
-            if (plz.val().length != 5)
-                return;
-
-            _insideAutoPostcodeCityMapping = true;
-            $.ajax({
-                type: "POST",
-                url: "GetAutoPostcodeCityMappings",
-                data: { plz: plz.val() },
-                success: function (result) {
-                    AutoPostcodeCityMapping_InitAutoComplete(tbCity, result.items);
-                    _insideAutoPostcodeCityMapping = false;
-                }
-            });
-        }
 
         </script>
         }

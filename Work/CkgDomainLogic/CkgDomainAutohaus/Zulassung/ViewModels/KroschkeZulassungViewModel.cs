@@ -732,7 +732,18 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7"),
                 AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8"),
                 AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9"),
-                Materialien = new List<SelectItem>()               
+            };
+
+            return newModel;
+        }
+        public AuslieferAdressen SetAuslieferAdressenModel(AuslieferAdressen model)
+        {
+
+            var newModel = new AuslieferAdressen
+            {
+                AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7"),
+                AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8"),
+                AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9"),
             };
 
             return newModel;
