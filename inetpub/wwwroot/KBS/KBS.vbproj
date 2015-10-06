@@ -133,6 +133,8 @@
     <Content Include="Forms\Feinstaubplakette.aspx" />
     <Content Include="Forms\InfocenterNeuAdmin.aspx" />
     <Content Include="Forms\InfocenterNeu.aspx" />
+    <Content Include="Forms\AuftraegeOnline.aspx" />
+    <Content Include="Forms\DownloadFile2.aspx" />
     <Content Include="Forms\InventurSelection.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche_2.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche.aspx" />
@@ -413,6 +415,20 @@
       <DependentUpon>InfocenterNeu.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Forms\AuftraegeOnline.aspx.designer.vb">
+      <DependentUpon>AuftraegeOnline.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\AuftraegeOnline.aspx.vb">
+      <DependentUpon>AuftraegeOnline.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Forms\DownloadFile2.aspx.designer.vb">
+      <DependentUpon>DownloadFile2.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\DownloadFile2.aspx.vb">
+      <DependentUpon>DownloadFile2.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Forms\InventurSelection.aspx.designer.vb">
       <DependentUpon>InventurSelection.aspx</DependentUpon>
     </Compile>
@@ -535,6 +551,7 @@
     <Compile Include="Lib\KBS_BASE.vb" />
     <Compile Include="Lib\ComCommon.vb" />
     <Compile Include="Lib\InventurSonstigeLagerware.vb" />
+    <Compile Include="Lib\Online.vb" />
     <Compile Include="Lib\ZLD_Suche.vb" />
     <Compile Include="Lib\KVP.vb" />
     <Compile Include="Lib\LongStringToSap.vb" />
