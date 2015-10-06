@@ -16,6 +16,9 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.User)]
+        public string UserName { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.Carport)]
         [Required, ContainsNot("(")]
         public string CarportId { get; set; }
@@ -51,6 +54,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string MvaNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Barcode)]
+        [Required, Numeric, Length(8, forceExactLength: true)]
         public string Barcode { get; set; }
 
         [Length(1)]

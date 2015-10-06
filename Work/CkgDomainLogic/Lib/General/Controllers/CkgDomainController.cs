@@ -460,7 +460,7 @@ namespace CkgDomainLogic.General.Controllers
             if (pService == null)
                 return new List<IPersistableObjectContainer>();
 
-            return pService.GetObjectContainers(ownerKey ?? GetRealPersistanceOwnerKey(), groupKey);
+            return pService.GetObjectContainers(ownerKey.NotNullOrEmpty().ToUpper() == "ALL" ? null : ownerKey ?? GetRealPersistanceOwnerKey(), groupKey);
         }
 
         protected List<T> PersistanceGetObjects<T>(string groupKey, string ownerKey = null)

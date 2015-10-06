@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -74,6 +73,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 {
                     CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
+                    UserName = LogonContext.UserName,
                     DemontageDatum = DateTime.Today
                 };
         }
@@ -142,7 +142,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void ClearList()
         {
-            Fahrzeuge.RemoveAll(f => String.IsNullOrEmpty(f.Status));
+            Fahrzeuge.RemoveAll(f => f.Status.IsNullOrEmpty());
             DataMarkForRefresh();
         }
 
@@ -173,7 +173,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             var nr = 1;
             var lieferscheinNr = "";
-            foreach (var fzg in Fahrzeuge.Where(f => String.IsNullOrEmpty(f.Status)).OrderBy(f => f.Kennzeichen).ToList())
+            foreach (var fzg in Fahrzeuge.Where(f => f.Status.IsNullOrEmpty()).OrderBy(f => f.Kennzeichen).ToList())
             {
                 if (nr == 1)
                 {
@@ -225,7 +225,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var password = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "Password");
             var accessKey = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "AccessKey");
 
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(accessKey))
+            if (username.IsNullOrEmpty() || password.IsNullOrEmpty() || accessKey.IsNullOrEmpty())
                 return Localize.NoAccessDataFoundInDatabase;
 
             try
@@ -314,9 +314,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipService = new ShipService { Url = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "Url"), UPSSecurityValue = securityToken };
 
-                // ReSharper disable CSharpWarnings::CS0612
+#pragma warning disable 618
                 System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
-                // ReSharper restore CSharpWarnings::CS0612
+#pragma warning restore 618
 
                 var shipmentResponse = shipService.ProcessShipment(shipmentRequest);
 
@@ -328,7 +328,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 var htmlString = Encoding.Default.GetString(htmlBytes);
 
                 var strImgPattern = "<IMG SRC=\"[^\"]*?\"";
-                var strImgReplace = String.Format("<IMG SRC=\"data:image/gif;base64,{0}\"", gifHexString);
+                var strImgReplace = string.Format("<IMG SRC=\"data:image/gif;base64,{0}\"", gifHexString);
 
                 htmlString = Regex.Replace(htmlString, strImgPattern, strImgReplace);
 
@@ -336,11 +336,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             }
             catch (System.Web.Services.Protocols.SoapException soapEx)
             {
-                return String.Format("{0}: {1} -> {2}", Localize.Error, soapEx.Message, soapEx.Detail.InnerText);
+                return string.Format("{0}: {1} -> {2}", Localize.Error, soapEx.Message, soapEx.Detail.InnerText);
             }
             catch (Exception ex)
             {
-                return String.Format("{0}: {1}", Localize.Error, ex.Message);
+                return string.Format("{0}: {1}", Localize.Error, ex.Message);
             }
         }
 
