@@ -833,11 +833,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             destination.CHASSIS_NUM = source.Fahrgestellnummer.NotNullOrEmpty().ToUpper();
                             destination.LICENSE_NUM = source.Kennzeichen.NotNullOrEmpty().ToUpper();
                             destination.TIDNR = source.Zb2Nummer.NotNullOrEmpty().ToUpper();
-                            destination.ZZMODELL = source.ModelID;
+                            destination.ZZMODELL = source.ModelID.NotNullOrEmpty().ToUpper();
                             destination.ZZREFERENZ1 = source.Unitnummer.NotNullOrEmpty().ToUpper();
-                            destination.LIZNR = source.Auftragsnummer;
+                            destination.LIZNR = source.Auftragsnummer.NotNullOrEmpty().ToUpper();
                             destination.ZBATCH_ID = source.BatchId.NotNullOrEmpty().ToUpper();
-                            destination.ZZSIPP = source.SIPPCode;
+                            destination.ZZSIPP = source.SIPPCode.NotNullOrEmpty().ToUpper();
                             destination.KUNPDI = source.Pdi;
                         }
                     ));
