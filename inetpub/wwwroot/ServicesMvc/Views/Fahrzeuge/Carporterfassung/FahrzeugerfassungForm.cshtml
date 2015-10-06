@@ -17,7 +17,7 @@
         @Html.HiddenFor(m => m.Status)
 
 
-        @Html.FormDropDownListFor(m => m.CarportId, Model.CarportPdis, new { @class = "m-wrap small", col = "left" })
+        @Html.FormDropDownListFor(m => m.CarportId, Model.CarportPdis.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap", col = "right" })
 
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onchange = "LoadFahrzeugdatenZuKennzeichen();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuKennzeichen(); return false; }" })

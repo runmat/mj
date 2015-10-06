@@ -39,9 +39,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public string LastCarportId { get; set; }
 
         [XmlIgnore]
-        public IEnumerable<string> CarportPdis
+        public IDictionary<string, string> CarportPdis
         {
-            get { return PropertyCacheGet(() => DataService.GetCarportPdis().InsertAtTop(Localize.DropdownDefaultOptionPleaseChoose)); }
+            get { return PropertyCacheGet(() => DataService.GetCarportPdis().InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose)); }
         }
 
         public bool EditMode { get; set; }
@@ -122,6 +122,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return kennzeichen.NotNullOrEmpty().Trim().ToUpper();
         }
 
+        public void PrepareCarportModel(ref CarporterfassungModel model)
+        {
+            model.Kennzeichen = PrepareKennzeichen(model.Kennzeichen);
+
+            string carportName;
+            if (CarportPdis.TryGetValue(model.CarportId, out carportName))
+                model.CarportName = carportName;
+        }
+
         public void RemoveFahrzeug(CarporterfassungModel item)
         {
             Fahrzeuge.Remove(item);
@@ -135,7 +144,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var objectKeyDict = Fahrzeuge.ToDictionary(t => t.Kennzeichen, t => t.ObjectKey);
             Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge);
             // restore shopping cart ID's
-            Fahrzeuge.ForEach(f => f.ObjectKey = objectKeyDict[f.Kennzeichen]);
+            Fahrzeuge.ForEach(f =>
+            {
+                f.ObjectKey = objectKeyDict[f.Kennzeichen];
+                PrepareCarportModel(ref f);
+            });
 
             DataMarkForRefresh();
         }

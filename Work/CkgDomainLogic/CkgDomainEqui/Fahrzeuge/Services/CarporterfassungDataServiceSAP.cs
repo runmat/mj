@@ -33,11 +33,11 @@ namespace CkgDomainLogic.Fahrzeuge.Services
             return AppModelMappings.Z_DPM_READ_MEL_CARP_01_GT_TAB_To_CarporterfassungModel.Copy(Z_DPM_READ_MEL_CARP_01.GT_TAB.GetExportListWithExecute(SAP).FirstOrDefault());
         }
 
-        public IEnumerable<string> GetCarportPdis()
+        public IDictionary<string, string> GetCarportPdis()
         {
             Z_DPM_READ_CARPID_01.Init(SAP, "I_AG", LogonContext.KundenNr.ToSapKunnr());
 
-            return Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).Select(s => s.KUNPDI);
+            return Z_DPM_READ_CARPID_01.GT_TAB.GetExportListWithExecute(SAP).ToDictionary(s => s.KUNPDI, s => string.Format("{0} - {1}", s.KUNPDI, s.NAME1));
         }
 
         public List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items)
