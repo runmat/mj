@@ -1,0 +1,53 @@
+﻿@using CkgDomainLogic.Leasing.Models
+@model UeberfaelligeRuecksendungenSuchparameter
+
+<div id="divSuche">
+    @using (Ajax.BeginForm("LoadUeberfaelligeRuecksendungen", "Leasing", null,
+        new MvcAjaxOptions("divSuche") { OnComplete = "ShowUeberfaelligeRuecksendungen();" }))
+    {    
+        <div class="form-horizontal">
+        
+            @Html.FormValidationSummary()
+            
+            @Html.FormTextBoxFor(m => m.AnzahlTage, new { @class = "m-wrap tiny text-right margin-right-10" },
+                                 postControlHtml: @<text>
+                                                       @foreach (var anz in UeberfaelligeRuecksendungenSuchparameter.AuswahlAnzahlTage)
+                                                       {
+                                                           <a class="btn mini" href="#" onclick="SetAnzahlTage(@anz);">@anz</a>
+                                                       }
+                                                   </text>)
+            
+            <div class="form-actions">
+                <button type="submit" class='btn blue'>@Localize.Search</button>
+            </div>
+        </div> 
+        
+        <script type="text/javascript">
+            _modelStateValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+        </script>
+    }
+</div>
+
+<script type="text/javascript">
+
+    function SetAnzahlTage(tage) {
+        $("#AnzahlTage").val(tage);
+    }
+
+    function ShowUeberfaelligeRuecksendungen() {
+        FormPreparePrivateAjax();
+
+        $.ajax({
+            type: "POST",
+            url: "ShowUeberfaelligeRuecksendungen",
+            loadingShow: false,
+            success: function (result) {
+                if (_modelStateValid) {
+                    ShowUeberfaelligeRuecksendungenSearchResult(result);
+                }
+                LoadingHide();
+            }
+        });
+    }
+
+</script>

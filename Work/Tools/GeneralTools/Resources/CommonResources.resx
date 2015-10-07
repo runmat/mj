@@ -147,6 +147,9 @@
   <data name="NewAddress" xml:space="preserve">
     <value>Insert new address</value>
   </data>
+  <data name="NumericFieldInvalid" xml:space="preserve">
+    <value>This field must be numeric</value>
+  </data>
   <data name="PickAddress" xml:space="preserve">
     <value>Select address</value>
   </data>
