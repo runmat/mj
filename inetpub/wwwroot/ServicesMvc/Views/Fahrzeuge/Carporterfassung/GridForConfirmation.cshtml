@@ -1,0 +1,46 @@
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CkgDomainLogic.Fahrzeuge.ViewModels.CarporterfassungViewModel
+
+@{ var gridName = "GridCarporterfassungForConfirmation"; }
+
+@(Html.Telerik()
+    .Grid<CarporterfassungModel>()
+    .Name(gridName)
+    .XAjaxDataBinding("CarporterfassungAjaxBindingForConfirmation", "Fahrzeuge")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.Status);
+        columns.XBound(c => c.CarportName);
+        columns.XBound(c => c.UserName);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.AuftragsNr);
+        columns.XBound(c => c.MvaNr);
+        columns.XBound(c => c.Barcode);
+        columns.XBound(c => c.AnzahlKennzeichen);
+        columns.XBound(c => c.DemontageDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Abgemeldet);
+        columns.XBound(c => c.Zb1Vorhanden);
+        columns.XBound(c => c.Zb2Vorhanden);
+        columns.XBound(c => c.CocVorhanden);
+        columns.XBound(c => c.ServiceheftVorhanden);
+        columns.XBound(c => c.HuAuBerichtVorhanden);
+        columns.XBound(c => c.ZweitschluesselVorhanden);
+        columns.XBound(c => c.NaviCdVorhanden);
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.FahrgestellNr).Ascending())
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportCarporterfassungFilteredExcelForConfirmation", "Fahrzeuge");
+        commands.FilteredDataCommand("ExportCarporterfassungFilteredPDFForConfirmation", "Fahrzeuge");
+    })
+)
+
+<div class="form-actions">
+    <a href="DeliveryNoteAsPdf" class="btn blue"> @Localize.DeliveryNoteAsPdf <i class="icon-download-alt"></i></a>
+    <a href="GenerateUpsShippingOrder" target="_blank" class="btn blue"> @Localize.GenerateUpsShippingOrder</a>
+    <button type="button" class="btn blue" onclick="NeuesFahrzeugErfassen(true);">@Localize.ToAcquisition</button>
+</div>

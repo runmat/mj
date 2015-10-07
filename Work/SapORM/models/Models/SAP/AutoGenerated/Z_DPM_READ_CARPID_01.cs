@@ -9,16 +9,16 @@ using SapORM.Contracts;
 
 namespace SapORM.Models
 {
-	public partial class  Z_DPM_READ_CARPID_01
+	public partial class Z_DPM_READ_CARPID_01
 	{
 		public static void Init(ISapDataService sap)
 		{
-			sap.Init(typeof( Z_DPM_READ_CARPID_01).Name);
+			sap.Init(typeof(Z_DPM_READ_CARPID_01).Name);
 		}
 
 		public static void Init(ISapDataService sap, string inputParameterKeys, params object[] inputParameterValues)
 		{
-			sap.Init(typeof( Z_DPM_READ_CARPID_01).Name, inputParameterKeys, inputParameterValues);
+			sap.Init(typeof(Z_DPM_READ_CARPID_01).Name, inputParameterKeys, inputParameterValues);
 		}
 
 		public partial class GT_TAB : IModelMappingApplied
@@ -33,11 +33,17 @@ namespace SapORM.Models
 
 			public string KUNPDI { get; set; }
 
+			public string NAME1 { get; set; }
+
+			public string NAME2 { get; set; }
+
 			public static GT_TAB Create(DataRow row, ISapConnection sapConnection = null, IDynSapProxyFactory dynSapProxyFactory = null)
 			{
 				var o = new GT_TAB
 				{
 					KUNPDI = (string)row["KUNPDI"],
+					NAME1 = (string)row["NAME1"],
+					NAME2 = (string)row["NAME2"],
 
 					SAPConnection = sapConnection,
 					DynSapProxyFactory = dynSapProxyFactory,
@@ -89,7 +95,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAB>();
 				 
-				var dts = sapDataService.GetExportTablesWithInitExecute(" Z_DPM_READ_CARPID_01", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetExportTablesWithInitExecute("Z_DPM_READ_CARPID_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -119,7 +125,7 @@ namespace SapORM.Models
 				if (sapDataService == null) 
 					return new List<GT_TAB>();
 				 
-				var dts = sapDataService.GetImportTablesWithInit(" Z_DPM_READ_CARPID_01", inputParameterKeys, inputParameterValues);
+				var dts = sapDataService.GetImportTablesWithInit("Z_DPM_READ_CARPID_01", inputParameterKeys, inputParameterValues);
 				 
 				return Select(dts, sapDataService.SapConnection).ToListOrEmptyList();
 			}
@@ -139,12 +145,12 @@ namespace SapORM.Models
 	public static partial class DataTableExtensions
 	{
 
-		public static DataTable ToTable(this IEnumerable< Z_DPM_READ_CARPID_01.GT_TAB> list)
+		public static DataTable ToTable(this IEnumerable<Z_DPM_READ_CARPID_01.GT_TAB> list)
 		{
 			return SapDataServiceExtensions.ToTable(list);
 		}
 
-		public static void Apply(this IEnumerable< Z_DPM_READ_CARPID_01.GT_TAB> list, DataTable dtDst)
+		public static void Apply(this IEnumerable<Z_DPM_READ_CARPID_01.GT_TAB> list, DataTable dtDst)
 		{
 			SapDataServiceExtensions.Apply(list, dtDst);
 		}
