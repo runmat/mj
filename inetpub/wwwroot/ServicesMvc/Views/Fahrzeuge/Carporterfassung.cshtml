@@ -68,6 +68,19 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    function OnDataBound_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
     function AjaxFormFahrzeugerfassungComplete() {
         FormPreparePrivateAjax();
 
@@ -198,6 +211,16 @@
         window.scrollTo(0, 0);
     }
 
+    function ShowGridForConfirmation(result) {
+        $("#divCarporterfassungEdit").slideUp();
+        $("#divCarporterfassungGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridCarporterfassungForConfirmation");
+        setTimeout('FormPreparePrivateAjax();', 200);
+        $("#divCarporterfassungGrid").slideDown();
+        setTimeout('LoadingHide();', 500);
+        window.scrollTo(0, 0);
+    }
+
     function ShowEdit(result) {
         _kennzeichenAlt = "";
         $("#divCarporterfassungGrid").slideUp();
@@ -216,7 +239,7 @@
             loadingShow: true,
             success: function (result) {
                 SpanAlertWarning("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
-                ShowGrid(result);
+                ShowGridForConfirmation(result);
             }
         });
     }
