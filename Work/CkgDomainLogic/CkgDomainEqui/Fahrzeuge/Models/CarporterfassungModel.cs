@@ -16,9 +16,20 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
 
+        [LocalizedDisplay(LocalizeConstants.User)]
+        [XmlIgnore]
+        public string UserName { get { return EditUser.NotNullOr(GetViewModel == null ? "" : GetViewModel().LogonContext.UserName); } }
+
         [LocalizedDisplay(LocalizeConstants.Carport)]
         [Required]
         public string CarportId { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Carport)]
+        public string CarportIdPersisted { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Selection)]
+        public string CarportSelectionMode { get; set; }
+        public string CarportSelectionModes { get { return GetViewModel == null ? "" : GetViewModel().CarportSelectionModes; } }
 
         [LocalizedDisplay(LocalizeConstants.Carport)]
         public string CarportName { get; set; }
@@ -26,6 +37,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public IDictionary<string, string> CarportPdis
         {
             get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPdis; }
+        }
+
+        public IDictionary<string, string> CarportPersistedPdis
+        {
+            get { return GetViewModel == null ? new Dictionary<string, string>() : GetViewModel().CarportPersistedPdis; }
         }
 
         [Required]
@@ -44,6 +60,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string MvaNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Barcode)]
+        [Required, Numeric, Length(8, forceExactLength: true)]
         public string Barcode { get; set; }
 
         [Length(1)]

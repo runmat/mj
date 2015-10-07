@@ -11,6 +11,6 @@ namespace GeneralTools.Contracts
 
         void DeleteObject(string objectKey);
 
-        void DeleteAllObjects(string ownerKey, string groupKey);
+        void DeleteAllObjects(string ownerKey, string groupKey, string additionalFilter);
     }
 }
