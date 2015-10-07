@@ -20,22 +20,26 @@
 
     function FormPreparePrivate() {
         $("#Kennzeichen").focus();
-        InitDropDownList();
+        InitDropDownLists();
     }
 
     function FormPreparePrivateAjax() {
         FormPrepareAjax();
-        InitDropDownList();
+        InitDropDownLists();
     }
 
-    function InitDropDownList() {
+    function InitDropDownLists() {
 
         setTimeout(function () {
             $('#CarportId').select2({
                 allowClear: true
             });
         }, 100);
-
+        setTimeout(function () {
+            $('#CarportIdPersisted').select2({
+                allowClear: true
+            });
+        }, 100);
     }
 
     function GetGrid() {
@@ -64,6 +68,19 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
+    function OnDataBound_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridCarporterfassungForConfirmation() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
     function AjaxFormFahrzeugerfassungComplete() {
         FormPreparePrivateAjax();
 
@@ -72,6 +89,12 @@
             NeuesFahrzeugErfassen(false);
             setTimeout('$("#Kennzeichen").focus();', 500);
         }
+    }
+
+    function AjaxFormCarportSelectionComplete() {
+        FormPreparePrivateAjax();
+        GridRefresh();
+        setTimeout('FormPreparePrivateAjax();', 200);
     }
 
     function LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin) {
@@ -98,7 +121,6 @@
                 $("#Lizenz").val(result.AuftragsNr);
                 $("#MvaNr").val(result.MvaNr);
                 $("#CarportName").val(result.CarportName);
-                $("#Carport").val(result.Carport);
                 $("#Status").val(result.Status);
                 SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 3000);
             }
@@ -159,6 +181,7 @@
             data: { kennzeichen: kennzeichen },
             success: function (result) {
                 GridRefresh();
+                $("#AjaxFormCarportSelection").submit();
             }
         });
 
@@ -182,6 +205,17 @@
         $("#divCarporterfassungEdit").slideUp();
         $("#divCarporterfassungGrid").html(result);
         GridAllColumnFilterApplyToGrid("GridCarporterfassung");
+        setTimeout('FormPreparePrivateAjax();', 200);
+        $("#divCarporterfassungGrid").slideDown();
+        setTimeout('LoadingHide();', 500);
+        window.scrollTo(0, 0);
+    }
+
+    function ShowGridForConfirmation(result) {
+        $("#divCarporterfassungEdit").slideUp();
+        $("#divCarporterfassungGrid").html(result);
+        GridAllColumnFilterApplyToGrid("GridCarporterfassungForConfirmation");
+        setTimeout('FormPreparePrivateAjax();', 200);
         $("#divCarporterfassungGrid").slideDown();
         setTimeout('LoadingHide();', 500);
         window.scrollTo(0, 0);
@@ -205,7 +239,7 @@
             loadingShow: true,
             success: function (result) {
                 SpanAlertWarning("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
-                ShowGrid(result);
+                ShowGridForConfirmation(result);
             }
         });
     }

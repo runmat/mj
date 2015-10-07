@@ -10,16 +10,20 @@
     .Columns(columns =>
     {
         columns.XBound(c => c.DateiPfad).Visible(false);
+        columns.XBound(c => c.Unterverzeichnis).Visible(false);
         
         columns.XBound(c => c.DateiName).Filterable(false).Groupable(false)
             .ClientTemplate(
                 "<a class='link tooltips' data-original-title='" + Localize.Download + "' data-placement='right' href='GetDatei?dateiPfad=<#= DateiPfad #>'><#= DateiName #></a>"
         );
+
+        columns.XBound(c => c.DateiGroesse).Filterable(false).Groupable(false);
     })
     .XAutoColumnConfiguration()
     .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.DateiName).Ascending())
+    .Groupable(g => g.Groups(gr => gr.Add(gp => gp.Unterverzeichnis)))
     .ToolBar(commands =>
     {
         commands.FilteredDataCommand("ExportDateiDownloadFilteredExcel", "Archive");

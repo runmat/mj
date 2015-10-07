@@ -288,6 +288,7 @@ Public Class Platinen
             S.AP.Init("Z_FIL_EFA_PLATARTIKEL")
 
             S.AP.SetImportParameter("I_KOSTL", mstrKostStelle)
+            S.AP.SetImportParameter("I_FIL", "X")
             S.AP.SetImportParameter("I_LIFNR", mstrLieferantennr.PadLeft(10, "0"c))
             S.AP.SetImportParameter("I_RUECKS", "*")
 
