@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using CKGDatabaseAdminLib.ViewModels;
 using DevExpress.Xpf.Grid;
 using Microsoft.Win32;
+using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
 
 namespace CKGDatabaseAdminTool.UserControls
 {
@@ -52,6 +53,13 @@ namespace CKGDatabaseAdminTool.UserControls
         private void Control_OnLoaded(object sender, RoutedEventArgs e)
         {
             ((TableView)Control.View).BestFitColumn(Control.Columns["Bemerkung"]);
+            ((TableView) Control.View).NewItemRowPosition = NewItemRowPosition.Top;
+            Control.Columns[0].GroupIndex = 1;
+
+            ((TableView) Control.View).ShowGroupedColumns = true;
+
+
+
         }
     }
 }

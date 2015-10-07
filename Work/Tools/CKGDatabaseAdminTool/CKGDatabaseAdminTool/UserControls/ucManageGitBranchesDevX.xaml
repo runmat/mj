@@ -51,7 +51,8 @@
             ItemsSource="{Binding GitBranches}" 
             FontSize="12" 
             IsEnabled="True"
-                         Loaded="Control_OnLoaded">
+                         Loaded="Control_OnLoaded"
+                         >
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Entwickler"/>
                 <dxg:GridColumn FieldName="Name"/>
