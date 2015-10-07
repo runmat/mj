@@ -7,6 +7,7 @@
         MouseLeftButtonDown="FakeWindowOnMouseLeftButtonDown"
         mc:Ignorable="d"
         ShowInTaskbar="False"  
+        Topmost="True"
         WindowStyle="None"
         Title="FakeWindow">
     <Window.Background>
