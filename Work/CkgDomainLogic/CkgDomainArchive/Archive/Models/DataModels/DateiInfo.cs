@@ -7,7 +7,13 @@ namespace CkgDomainLogic.Archive.Models
     {
         public string DateiPfad { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.FileName)]
+        [LocalizedDisplay(LocalizeConstants.Directory)]
+        public string Unterverzeichnis { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.File)]
         public string DateiName { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.Size)]
+        public string DateiGroesse { get; set; }
     }
 }
