@@ -64,7 +64,7 @@ namespace MyBoss
             }
 
             var ticksNow = (DateTime.Now - DateTime.MinValue).TotalMilliseconds;
-            if (lastTicks > 0 && (ticksNow - lastTicks > 100) && (ticksNow - lastTicks < 500))
+            if (lastTicks > 0 && (ticksNow - lastTicks > 100) && (ticksNow - lastTicks < 300))
                 action();
 
             lastTicks = ticksNow;
