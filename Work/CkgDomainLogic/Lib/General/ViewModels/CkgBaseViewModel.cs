@@ -142,6 +142,19 @@ namespace CkgDomainLogic.General.ViewModels
             return SessionHelper.GetSessionValue("DashboardCurrentReportSelectorTimeStamp", DateTime.MinValue);
         }
 
+        protected bool DashboardCurrentReportSelectorAvailable
+        {
+            get
+            {
+                const int totalSecondsReportSelectorExpiration = 120;
+                var secondsElapsed = Math.Abs((DateTime.Now - DashboardSessionGetCurrentReportSelectorTimeStamp()).TotalSeconds);
+                if (secondsElapsed > totalSecondsReportSelectorExpiration)
+                    return false;
+
+                return true;
+            }
+        }
+
         private void DashboardTryInitCurrentReportSelector()
         {
             if (HttpContext.Current != null && HttpContext.Current.Request != null && HttpContext.Current.Request.HttpMethod.NotNullOrEmpty().ToUpper().Contains("POST"))
@@ -159,9 +172,7 @@ namespace CkgDomainLogic.General.ViewModels
             if (reportSelectorType == null)
                 return;
 
-            const int totalSecondsReportSelectorExpiration = 120;
-            var secondsElapsed = Math.Abs((DateTime.Now - DashboardSessionGetCurrentReportSelectorTimeStamp()).TotalSeconds);
-            if (secondsElapsed > totalSecondsReportSelectorExpiration)
+            if (!DashboardCurrentReportSelectorAvailable)
                 return;
 
             var viewModelType = this.GetType();

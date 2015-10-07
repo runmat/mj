@@ -43,7 +43,7 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             PropertyCacheClear(this, m => m.EinAusgaengeFiltered);
 
-            if (refreshSelektor)
+            if (refreshSelektor && !DashboardCurrentReportSelectorAvailable)
                 PropertyCacheClear(this, m => m.EinAusgangSelektor);
         }
 
