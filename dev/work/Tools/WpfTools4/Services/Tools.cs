@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Media;
@@ -13,13 +11,26 @@ namespace WpfTools4.Services
     public class Tools
     {
         [DllImportAttribute("User32.dll")]
-        private static extern int FindWindow(String ClassName, String WindowName);
+        public static extern int FindWindow(string className, string windowName);
 
         [DllImportAttribute("User32.dll")]
-        private static extern int SetForegroundWindow(int hWnd);
+        public static extern int SetForegroundWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetActiveWindow(IntPtr hWnd);
+
+        [DllImport("coredll.dll")]
+        public static extern bool ShowWindow(IntPtr wHnd, int cmdShow);
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int x, int Y, int cx, int cy,
+            int wFlags);
+
+        [DllImport("user32.dll")]
+        public static extern bool BringWindowToTop(IntPtr hWnd);
 
 
-        static public void StartExeAsModalDialog(string exeFileName, string arguments)
+        public static void StartExeAsModalDialog(string exeFileName, string arguments)
         {
             var view = Application.Current.MainWindow;
             if (view != null) view.IsEnabled = false;
@@ -28,54 +39,58 @@ namespace WpfTools4.Services
             {
                 p = Process.Start(exeFileName, arguments);
             }
-            catch(FileNotFoundException)
+            catch (FileNotFoundException)
             {
-                MessageBox.Show(string.Format("Fehler: Das Programmm '{0}' befindet sich nicht im StartUp-Verzeichnis dieser Applikation!", exeFileName));
+                MessageBox.Show(
+                    string.Format(
+                        "Fehler: Das Programmm '{0}' befindet sich nicht im StartUp-Verzeichnis dieser Applikation!",
+                        exeFileName));
             }
             if (p == null) return;
-            do System.Windows.Forms.Application.DoEvents();
-            while (!p.WaitForExit(1000));
+            do System.Windows.Forms.Application.DoEvents(); while (!p.WaitForExit(1000));
             if (view != null) view.IsEnabled = true;
         }
 
-        static public void Alert(string hint)
+        public static void Alert(string hint)
         {
             MessageBox.Show(hint, "Hinweis", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        static public void AlertError(string hint)
+        public static void AlertError(string hint)
         {
             MessageBox.Show(hint, "Fehler", MessageBoxButton.OK, MessageBoxImage.Exclamation);
         }
 
-        static public void AlertCritical(string hint)
+        public static void AlertCritical(string hint)
         {
             MessageBox.Show(hint, "Fehler", MessageBoxButton.OK, MessageBoxImage.Stop);
         }
 
-        static public bool Confirm(string question)
+        public static bool Confirm(string question)
         {
-            return MessageBox.Show(question, "Frage", MessageBoxButton.OKCancel, MessageBoxImage.Question, MessageBoxResult.Cancel) != MessageBoxResult.Cancel;
+            return
+                MessageBox.Show(question, "Frage", MessageBoxButton.OKCancel, MessageBoxImage.Question,
+                    MessageBoxResult.Cancel) != MessageBoxResult.Cancel;
         }
 
-        static public bool Deny(string question)
+        public static bool Deny(string question)
         {
             return !Confirm(question);
         }
 
-        static public string Input(string prompt)
+        public static string Input(string prompt)
         {
             return Interaction.InputBox(prompt, "Bitte eingeben");
         }
 
-        static public T GetVisualChild<T>(DependencyObject parent) where T : Visual
+        public static T GetVisualChild<T>(DependencyObject parent) where T : Visual
         {
             var child = default(T);
 
             var numVisuals = VisualTreeHelper.GetChildrenCount(parent);
             for (var i = 0; i < numVisuals; i++)
             {
-                var v = (Visual)VisualTreeHelper.GetChild(parent, i);
+                var v = (Visual) VisualTreeHelper.GetChild(parent, i);
                 child = v as T ?? GetVisualChild<T>(v);
                 if (child != null)
                 {
@@ -85,7 +100,8 @@ namespace WpfTools4.Services
             return child;
         }
 
-        static public bool IsWindowOpenForProcessNamePartAndTitlePart(string processNamePart,  string captionPart, Action actionIfYes = null)
+        public static bool IsWindowOpenForProcessNamePartAndTitlePart(string processNamePart, string captionPart,
+            Action actionIfYes = null)
         {
             try
             {
@@ -95,7 +111,7 @@ namespace WpfTools4.Services
                         if (actionIfYes != null)
                             actionIfYes();
 
-                        var hWnd = FindWindow(null, process.MainWindowTitle);
+                        var hWnd = process.MainWindowHandle;
                         SetForegroundWindow(hWnd);
 
                         return true;
@@ -107,6 +123,14 @@ namespace WpfTools4.Services
             }
 
             return false;
+        }
+
+        public static void ShowDesktop()
+        {
+            var typeShell = Type.GetTypeFromProgID("Shell.Application");
+            var objShell = Activator.CreateInstance(typeShell);
+            typeShell.InvokeMember("MinimizeAll", System.Reflection.BindingFlags.InvokeMethod, null, objShell, null);
+
         }
     }
 }
