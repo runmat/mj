@@ -65,50 +65,123 @@ namespace CkgDomainLogic.Equi.ViewModels
 
         #region Dashboard functionality
 
-        [DashboardItemsLoadMethod("ZBIIEingaengeLetzte6Monate")]
-        public ChartItemsPackage NameNotRelevant01()
-        {
-            return GetChartForZBIIEingaenge(new DateRange(DateRangeType.Last6Months, true));
-        }
-
-        [DashboardItemsLoadMethod("ZBIIEingaengeDiesesJahrQuartal1")]
-        public ChartItemsPackage NameNotRelevant02()
-        {
-            var currentYear = DateTime.Today.Year;
-            return GetChartForZBIIEingaenge(new DateRange(new DateTime(currentYear, 1, 1), new DateTime(currentYear, 3, 31), true));
-        }
+        //
+        // ZBII Eingänge
+        //
 
         [DashboardItemsLoadMethod("ZBIIEingaengeDiesesJahr")]
         public ChartItemsPackage NameNotRelevant03()
         {
-            return GetChartForZBIIEingaenge(new DateRange(DateRangeType.CurrentYear, true));
+            return GetMonthChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Inputs");
         }
 
         [DashboardItemsLoadMethod("ZBIIEingaengeLetztesJahr")]
         public ChartItemsPackage NameNotRelevant04()
         {
-            return GetChartForZBIIEingaenge(new DateRange(DateRangeType.LastYear, true));
+            return GetMonthChartForZBII(new DateRange(DateRangeType.LastYear, true), "Inputs");
         }
 
-        private ChartItemsPackage GetChartForZBIIEingaenge(DateRange dateRange)
+        [DashboardItemsLoadMethod("ZBIIEingaengeDiesesJahrNachHersteller")]
+        public ChartItemsPackage NameNotRelevant13()
         {
+            return GetVehicleChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Inputs");
+        }
+
+        [DashboardItemsLoadMethod("ZBIIEingaengeLetztesJahrNachHersteller")]
+        public ChartItemsPackage NameNotRelevant14()
+        {
+            return GetVehicleChartForZBII(new DateRange(DateRangeType.LastYear, true), "Inputs");
+        }
+
+        [DashboardItemsLoadMethod("ZBIIAusgaengeDiesesJahr")]
+        public ChartItemsPackage NameNotRelevant06()
+        {
+            return GetMonthChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Outputs");
+        }
+
+
+        //
+        // ZBII Ausgänge
+        //
+
+        [DashboardItemsLoadMethod("ZBIIAusgaengeLetztesJahr")]
+        public ChartItemsPackage NameNotRelevant07()
+        {
+            return GetMonthChartForZBII(new DateRange(DateRangeType.LastYear, true), "Outputs");
+        }
+
+        [DashboardItemsLoadMethod("ZBIIAusgaengeDiesesJahrNachHersteller")]
+        public ChartItemsPackage NameNotRelevant16()
+        {
+            return GetVehicleChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Outputs");
+        }
+
+        [DashboardItemsLoadMethod("ZBIIAusgaengeLetztesJahrNachHersteller")]
+        public ChartItemsPackage NameNotRelevant17()
+        {
+            return GetVehicleChartForZBII(new DateRange(DateRangeType.LastYear, true), "Outputs");
+        }
+
+        private ChartItemsPackage GetMonthChartForZBII(DateRange dateRange, string einAusgangsTyp)
+        {
+            var eingang = einAusgangsTyp == "Inputs";
+
             var selector = new EinAusgangSelektor
             {
-                FilterEinAusgangsTyp = "Inputs",
+                FilterEinAusgangsTyp = einAusgangsTyp,
                 DatumRange = dateRange
             };
             DashboardSessionSaveCurrentReportSelector(selector);
 
-            var items = DataService.GetEinAusgaenge(selector).OrderBy(s => s.Eingangsdatum).ToListOrEmptyList();
+            Func<Fahrzeugbrief, DateTime?> getDateProperty = (item => eingang ? item.Eingangsdatum : item.Versanddatum);
+            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("MMM"));
+            Func<Fahrzeugbrief, DateTime> xAxisKeyModel = (groupKey => getDateProperty(groupKey).ToFirstDayOfMonth());
 
-
-            Func<DateTime, string> xAxisKeyFormat = (itemKey => itemKey.ToString("yyyyMM"));
-            Func<Fahrzeugbrief, DateTime> xAxisKeyModel = (groupKey => groupKey.Eingangsdatum.ToFirstDayOfMonth());
+            var items = DataService.GetEinAusgaenge(selector).OrderBy(s => getDateProperty(s)).ToListOrEmptyList();
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
                     items,
-                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey)),
-                    xAxisList => xAxisList.Insert(0, xAxisKeyFormat(items.Min(xAxisKeyModel).AddMonths(-1)))
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey))
+                );
+        }
+
+        private ChartItemsPackage GetVehicleChartForZBII(DateRange dateRange, string einAusgangsTyp)
+        {
+            var selector = new EinAusgangSelektor
+            {
+                FilterEinAusgangsTyp = einAusgangsTyp,
+                DatumRange = dateRange
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            Func<string, string> xAxisKeyFormat = (itemKey => itemKey);
+            Func<Fahrzeugbrief, string> xAxisKeyModel = (groupKey =>
+            {
+                var herst = groupKey.FahrzeugHersteller.NotNullOrEmpty().ToUpper();
+
+                if (herst.Contains("BAYER.MOT."))
+                    return " BMW ";
+                if (herst.Contains("VOLKSWAGEN"))
+                    return " VW ";
+                if (herst.Contains("VOLVO"))
+                    return " VOLVO ";
+                if (herst.Contains("AUDI"))
+                    return " AUDI ";
+                if (herst.Contains("FORD"))
+                    return " FORD ";
+                if (herst.Contains("OPEL"))
+                    return " OPEL ";
+                if (herst.Contains("DAIMLER"))
+                    return " Daimler ";
+
+                return "Sonstige";
+            });
+
+            var items = DataService.GetEinAusgaenge(selector).OrderBy(xAxisKeyModel).ToListOrEmptyList();
+
+            return ChartService.GetBarChartGroupedStackedItemsWithLabels(
+                    items,
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey))
                 );
         }
 

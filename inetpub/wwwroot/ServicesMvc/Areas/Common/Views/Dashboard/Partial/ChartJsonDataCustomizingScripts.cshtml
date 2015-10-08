@@ -9,9 +9,6 @@
         _chartData = result.data;
         _chartOptions = jQuery.parseJSON(result.options);
 
-        //console.log("_ChartPrepareJsonResult");
-        //console.log(_chartOptions);
-
         if (result.customscriptfunction != "")
             eval(result.customscriptfunction + "('" + widgetKey + "');");
     }
@@ -28,6 +25,7 @@
         _chartOptions.mouse.trackFormatter = function (point) {
             if (typeof (point.y) != "undefined")
                 return point.y.replace(/\.0/g, "") + "";
+            return "";
         };
     }
 
@@ -39,8 +37,8 @@
             var groupLabel = point.series.label;
             if (typeof (point.y) != "undefined")
                 return point.y.replace(/\./g, ",") + "% im " + groupLabel;
+            return "";
         };
-
     }
 
     function WfmAuftraege(widgetKey) {
@@ -61,6 +59,40 @@
         _chartOptions.mouse.trackFormatter = function (point) {
             if (typeof (point.y) != "undefined")
                 return point.y.replace(/\.0/g, "") + "";
+            return "";
+        };
+    }
+
+    function ZBIIEinAusgaenge(widgetKey) {
+
+        var colors = [];
+
+        if (widgetKey === "ZBIIEingaengeDiesesJahr")
+            colors = ["#4444DD"];
+        if (widgetKey === "ZBIIEingaengeLetztesJahr")
+            colors = ["#2222BB"];
+
+        if (widgetKey === "ZBIIEingaengeDiesesJahrNachHersteller")
+            colors = ["#2222FF"];
+        if (widgetKey === "ZBIIEingaengeLetztesJahrNachHersteller")
+            colors = ["#0000DD"];
+
+        if (widgetKey === "ZBIIAusgaengeDiesesJahr")
+            colors = ["#888822"];
+        if (widgetKey === "ZBIIAusgaengeLetztesJahr")
+            colors = ["#666600"];
+
+        if (widgetKey === "ZBIIAusgaengeDiesesJahrNachHersteller")
+            colors = ["#CCCC44"];
+        if (widgetKey === "ZBIIAusgaengeLetztesJahrNachHersteller")
+            colors = ["#AAAA22"];
+
+        _chartOptions.colors = colors;
+
+        _chartOptions.mouse.trackFormatter = function (point) {
+            if (typeof (point.y) != "undefined")
+                return point.y.replace(/\.0/g, "") + "";
+            return "";
         };
     }
 
