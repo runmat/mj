@@ -283,6 +283,7 @@ namespace MvcTools.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public JsonResult UserLogout()
         {
             var logoutUrl = LogonContext.LogoutUrl.NotNullOrEmpty();
