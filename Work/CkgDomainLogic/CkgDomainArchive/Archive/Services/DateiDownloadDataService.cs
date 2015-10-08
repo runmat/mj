@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Archive.Contracts;
@@ -16,10 +17,15 @@ namespace CkgDomainLogic.Archive.Services
 
             foreach (var datei in dateien)
             {
+                var pfadTeile = datei.Split('\\');
+                var groesse = String.Format("{0} kB", new FileInfo(datei).Length / 1024);
+
                 liste.Add(new DateiInfo
                 {
                     DateiPfad = datei,
-                    DateiName = Path.GetFileName(datei)
+                    Unterverzeichnis = pfadTeile[pfadTeile.Length - 2],
+                    DateiName = pfadTeile[pfadTeile.Length - 1],
+                    DateiGroesse = groesse
                 });
             }
             
