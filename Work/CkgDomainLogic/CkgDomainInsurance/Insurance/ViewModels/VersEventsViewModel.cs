@@ -200,7 +200,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
                                         }).ToList();
         }
 
-        public void SchadenfallStatusWertSave(int itemID, DateTime? saveDate)
+        public void SchadenfallStatusWertSave(int itemID, DateTime? saveDate, Action<string, string> addModelError)
         {
             var item = SchadenfallCurrentStatusWerteWithNulls.FirstOrDefault(s => s.StatusArtID == itemID);
             if (item == null)
@@ -208,17 +208,20 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
             item.Datum = saveDate.GetValueOrDefault();
 
-            SchadenfallStatusWertSave(item);
+            SchadenfallStatusWertSave(item, addModelError);
         }
 
         static bool SchadenfallStatusResetPermission { get { return ConfigurationManager.AppSettings["SchadenfallStatusResetPermission"].NotNullOrEmpty().ToLower() == "true"; } }
 
-        public void SchadenfallStatusWertSave(SchadenfallStatus itemToUpdate)
+        public void SchadenfallStatusWertSave(SchadenfallStatus itemToUpdate, Action<string, string> addModelError)
         {
             if (itemToUpdate.Datum == null)
             {
                 if (!SchadenfallStatusResetPermission)
-                    throw new Exception("Keine ausreichende Berechtigung für Status-Reset!");
+                {
+                    addModelError("", "Keine ausreichende Berechtigung für Status-Reset!");
+                    return;
+                }
 
                 itemToUpdate.Kommentar = null;
                 itemToUpdate.User = null;
@@ -234,7 +237,10 @@ namespace CkgDomainLogic.Insurance.ViewModels
             var errorList = new List<string>();
             SchadenDataService.SchadenfallStatusWertSave(itemToUpdate, (key, error) => errorList.Add(error));
             if (errorList.Any())
-                throw new Exception(string.Join(", ", errorList));
+            {
+                addModelError("", string.Join(", ", errorList));
+                return;
+            }
 
             DataMarkForRefreshSchadenfallStatusWerte();
         }
@@ -749,7 +755,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
             if (TerminCurrent.GetCachedBoxArt() == "GU")
                 // Status "GA Termin vergeben" in Schadenakte speichern
-                SchadenfallStatusWertSave(GutachtenTerminStatusID, DateTime.Now);
+                SchadenfallStatusWertSave(GutachtenTerminStatusID, DateTime.Now, addModelError);
             
             DataMarkForRefreshTermine();
 
@@ -1275,7 +1281,7 @@ namespace CkgDomainLogic.Insurance.ViewModels
 
                 if (model.VersicherungID.IsNullOrEmpty())
                 {
-                    addModelError(m => m.VersicherungID, "Bitte geben Sie eine Versicherung an");
+                    addModelError(m => m.VersicherungID, Localize.PleaseSelectAnInsurance);
                     return;
                 }
 

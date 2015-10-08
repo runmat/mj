@@ -24,7 +24,8 @@ namespace ServicesMvc.Controllers
             ILeasingKlaerfaelleDataService klaerfaelleDataService,
             ILeasingCargateCsvUploadDataService cargateCsvUploadService, 
             ILeasingSicherungsscheineDataService sicherungsscheineDataService,
-            INichtDurchfuehrbZulDataService nichtDurchfuehrbZulDataService
+            INichtDurchfuehrbZulDataService nichtDurchfuehrbZulDataService, 
+            IUeberfaelligeRuecksendungenDataService ueberfaelligeRuecksendungenDataService
             )
             : base(appSettings, logonContext)
         {
@@ -35,6 +36,7 @@ namespace ServicesMvc.Controllers
             InitViewModel(LeasingCargateCsvUploadViewModel, appSettings, logonContext, cargateCsvUploadService);  // Dataservice Initialisierung folgt noch
             InitViewModel(SicherungsscheineViewModel, appSettings, logonContext, sicherungsscheineDataService);
             InitViewModel(NichtDurchfuehrbZulViewModel, appSettings, logonContext, nichtDurchfuehrbZulDataService);
+            InitViewModel(UeberfaelligeRuecksendungenViewModel, appSettings, logonContext, ueberfaelligeRuecksendungenDataService);
         }
 
         public ActionResult Index(string un, string appID)

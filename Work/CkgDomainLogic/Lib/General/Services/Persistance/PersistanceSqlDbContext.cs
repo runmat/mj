@@ -6,7 +6,6 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 using CkgDomainLogic.General.Database.Models;
 using GeneralTools.Contracts;
 using GeneralTools.Models;
-using GeneralTools.Services;
 
 namespace CkgDomainLogic.General.Services
 {
@@ -29,7 +28,11 @@ namespace CkgDomainLogic.General.Services
 
         public IEnumerable<IPersistableObjectContainer> ReadPersistedObjectsFor(string ownerKey, string groupKey)
         {
-            return Database.SqlQuery<PersistableObjectContainer>("SELECT * FROM PersistableObjectContainer WHERE OwnerKey = {0} and GroupKey = {1}", ownerKey, groupKey);
+            var sql = "SELECT * FROM PersistableObjectContainer WHERE GroupKey = {0}";
+            if (ownerKey.IsNotNullOrEmpty())
+                sql += " and OwnerKey = {1}";
+
+            return Database.SqlQuery<PersistableObjectContainer>(sql, groupKey, ownerKey);
         }
 
         public void PersistObject(string objectKey, string ownerKey, string groupKey, string userName, string objectType, string objectData, string objectType2, string objectData2)
@@ -42,6 +45,18 @@ namespace CkgDomainLogic.General.Services
         public void DeletePersistedObject(string objectKey)
         {
             Database.ExecuteSqlCommand("delete from PersistableObjectContainer where ID = {0}", objectKey);
+        }
+
+        public void DeleteAllObjects(string ownerKey, string groupKey, string additionalFilter)
+        {
+            var sql = "DELETE FROM PersistableObjectContainer WHERE GroupKey = {0}";
+            if (ownerKey.IsNotNullOrEmpty())
+                sql += " and OwnerKey = {1}";
+
+            if (additionalFilter.IsNotNullOrEmpty())
+                sql += additionalFilter;
+
+            Database.ExecuteSqlCommand(sql, groupKey, ownerKey);
         }
     }
 }

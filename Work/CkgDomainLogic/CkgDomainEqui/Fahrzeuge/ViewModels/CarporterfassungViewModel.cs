@@ -26,6 +26,22 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public CarporterfassungModel AktuellesFahrzeug { get; set; }
 
+        public CarporterfassungModel CarportSelectionModel { get; set; }
+
+        [XmlIgnore]
+        public string CarportSelectionModes
+        {
+            get
+            {
+                return string.Format("{0},{1};{2},{3}",
+                                        "OnlyMine", Localize.OnlyMyEntries,
+                                        "AllUsers", Localize.AllUsersEntries);
+            }
+        }
+
+        [XmlIgnore]
+        public List<CarporterfassungModel> FahrzeugeAlle { get; set; }
+
         [XmlIgnore]
         public List<CarporterfassungModel> Fahrzeuge { get; set; }
 
@@ -36,16 +52,57 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             protected set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<CarporterfassungModel> FahrzeugeForConfirmation { get; set; }
+
+        [XmlIgnore]
+        public List<CarporterfassungModel> FahrzeugeForConfirmationFiltered
+        {
+            get { return PropertyCacheGet(() => FahrzeugeForConfirmation); }
+            protected set { PropertyCacheSet(value); }
+        }
+
+        public string LastCarportId { get; set; }
+
+        [XmlIgnore]
+        public IDictionary<string, string> CarportPdis
+        {
+            get { return PropertyCacheGet(() => DataService.GetCarportPdis().InsertAtTop("", Localize.DropdownDefaultOptionPleaseChoose)); }
+        }
+
+        [XmlIgnore]
+        public IDictionary<string, string> CarportPersistedPdis
+        {
+            get { return CarportPdis.Where(c => FahrzeugeAlle.Any(f => f.CarportId == c.Key)).ToDictionary(c => c.Key, c => c.Value); }
+        }
+
         public bool EditMode { get; set; }
 
-        public void Init()
+        public void Init(List<CarporterfassungModel> fahrzeugePersisted)
         {
+            FahrzeugeAlle = fahrzeugePersisted;
+
             DataMarkForRefresh();
             LoadFahrzeugModel();
+
+            SetFahrzeugeForCurrentMode();
         }
 
         public void DataMarkForRefresh()
         {
+            PropertyCacheClear(this, m => m.FahrzeugeFiltered);
+            PropertyCacheClear(this, m => m.CarportPdis);
+        }
+
+        void SetFahrzeugeForCurrentMode()
+        {
+            Func<CarporterfassungModel, bool> selector = 
+                e => CarportSelectionModel.CarportSelectionMode == "AllUsers"
+                    ? e.CarportId == CarportSelectionModel.CarportIdPersisted
+                    : e.UserName == LogonContext.UserName;
+
+            Fahrzeuge = FahrzeugeAlle.Where(selector).ToListOrEmptyList();
+
             PropertyCacheClear(this, m => m.FahrzeugeFiltered);
         }
 
@@ -62,19 +119,51 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             AktuellesFahrzeug = new CarporterfassungModel
                 {
-                    CarportId = LogonContext.User.Reference,
+                    CarportId = LastCarportId,
                     KundenNr = LogonContext.KundenNr.ToSapKunnr(),
                     DemontageDatum = DateTime.Today
                 };
+
+
+            if (CarportSelectionModel != null)
+                return;
+
+            CarportSelectionModel = new CarporterfassungModel
+            {
+                KundenNr = LogonContext.KundenNr.ToSapKunnr(),
+                CarportSelectionMode = "AllUsers"
+            };
+
+            TryAvoidNullValueForCarportIdPersisted(LastCarportId);
+        }
+
+        public void TryAvoidNullValueForCarportIdPersisted(string carportId)
+        {
+            CarportSelectionModel.CarportIdPersisted = carportId;
+
+            if (FahrzeugeAlle.None(f => f.CarportId == CarportSelectionModel.CarportIdPersisted))
+            {
+                var firstFahrzeug = FahrzeugeAlle.FirstOrDefault();
+                if (firstFahrzeug != null)
+                    CarportSelectionModel.CarportIdPersisted = firstFahrzeug.CarportId;
+            }
+
+            SetFahrzeugeForCurrentMode();
+        }
+
+        public void LastCarportIdInit(string lastCarportId)
+        {
+            LastCarportId = LogonContext.User.Reference.NotNullOr(lastCarportId);
         }
 
         public string DeleteFahrzeugModel(string kennzeichen)
         {
-            var fzg = Fahrzeuge.FirstOrDefault(f => f.Kennzeichen == kennzeichen);
+            var fzg = FahrzeugeAlle.FirstOrDefault(f => f.Kennzeichen == kennzeichen);
             if (fzg == null)
                 return "";
 
-            Fahrzeuge.Remove(fzg);
+            FahrzeugeAlle.Remove(fzg);
+            SetFahrzeugeForCurrentMode();
 
             return fzg.ObjectKey;
         }
@@ -95,10 +184,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             item.FahrgestellNr = item.FahrgestellNr.NotNullOrEmpty().ToUpper();
 
             // Nur einen Datensatz zu einem Kennzeichen zulassen
-            if (Fahrzeuge.Any(f => f.Kennzeichen == item.Kennzeichen))
-                Fahrzeuge.RemoveAll(f => f.Kennzeichen == item.Kennzeichen);
+            if (FahrzeugeAlle.Any(f => f.Kennzeichen == item.Kennzeichen))
+                FahrzeugeAlle.RemoveAll(f => f.Kennzeichen == item.Kennzeichen);
 
-            Fahrzeuge.Add(item);
+            FahrzeugeAlle.Add(item);
+            SetFahrzeugeForCurrentMode();
+
             DataMarkForRefresh();
         }
 
@@ -107,27 +198,60 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             return kennzeichen.NotNullOrEmpty().Trim().ToUpper();
         }
 
-        public void RemoveFahrzeug(CarporterfassungModel item)
+        public void PrepareCarportModel(ref CarporterfassungModel model)
         {
-            Fahrzeuge.Remove(item);
-            DataMarkForRefresh();
+            model.Kennzeichen = PrepareKennzeichen(model.Kennzeichen);
+
+            string carportName;
+            if (CarportPdis.TryGetValue(model.CarportId, out carportName))
+                model.CarportName = carportName;
         }
 
-        public void SaveFahrzeuge()
+        public void SaveCarportSelectionModel(CarporterfassungModel model)
+        {
+            CarportSelectionModel = model;
+            TryAvoidNullValueForCarportIdPersisted(model.CarportIdPersisted);
+        }
+
+        public void SaveFahrzeuge(Action<string, string> outerClearListFunction)
         {
             EditMode = false;
 
             var objectKeyDict = Fahrzeuge.ToDictionary(t => t.Kennzeichen, t => t.ObjectKey);
             Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge);
-            // restore shopping cart ID's
-            Fahrzeuge.ForEach(f => f.ObjectKey = objectKeyDict[f.Kennzeichen]);
+
+            FahrzeugeForConfirmation = new List<CarporterfassungModel>();
+            PropertyCacheClear(this, m => m.FahrzeugeForConfirmationFiltered);
+
+            // restore shopping cart ID's  +  move items into buffer list "FahrzeugeForConfirmation" to enable clearing shopping cart 
+            Fahrzeuge.ForEach(f =>
+            {
+                f.ObjectKey = objectKeyDict[f.Kennzeichen];
+                PrepareCarportModel(ref f);
+
+                FahrzeugeForConfirmation.Add(f);
+            });
+
+            ClearList(outerClearListFunction);
 
             DataMarkForRefresh();
         }
 
-        public void ClearList()
+        private void ClearList(Action<string, string> outerClearListFunction)
         {
-            Fahrzeuge.RemoveAll(f => String.IsNullOrEmpty(f.Status));
+            var ownerMultiKey = "ALL";
+            var additionalFilter = string.Format(" and ObjectData like '%<CarportId>{0}</CarportId>%'", CarportSelectionModel.CarportIdPersisted);
+            if (CarportSelectionModel.CarportSelectionMode.NotNullOrEmpty() != "AllUsers")
+            {
+                ownerMultiKey = null;
+                additionalFilter = null;
+            }
+
+            outerClearListFunction(ownerMultiKey, additionalFilter);
+
+            FahrzeugeAlle.RemoveAll(f => f.Status.IsNullOrEmpty());
+            SetFahrzeugeForCurrentMode();
+
             DataMarkForRefresh();
         }
 
@@ -142,7 +266,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             tblLieferschein.Columns.Add("Vorlage ZBI");
             tblLieferschein.Columns.Add("Anzahl Kennzeichen");
             tblLieferschein.Columns.Add("Web User");
-            tblLieferschein.Columns.Add("Carport ID");
+            tblLieferschein.Columns.Add("Carport Nr");
             tblLieferschein.Columns.Add("Erfassungsdatum");
             tblLieferschein.Columns.Add("Bestandsnummer");
             tblLieferschein.Columns.Add("Auftragsnummer");
@@ -158,7 +282,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             var nr = 1;
             var lieferscheinNr = "";
-            foreach (var fzg in Fahrzeuge.Where(f => String.IsNullOrEmpty(f.Status)).OrderBy(f => f.Kennzeichen).ToList())
+            foreach (var fzg in FahrzeugeForConfirmation.Where(f => f.Status.IsNullOrEmpty()).OrderBy(f => f.Kennzeichen).ToList())
             {
                 if (nr == 1)
                 {
@@ -178,10 +302,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 newRow["Fahrgestellnummer"] = fzg.FahrgestellNr;
                 newRow["Hersteller"] = "";
                 newRow["Demontagedatum"] = fzg.DemontageDatum.ToString("dd.MM.yyyy");
-                newRow["Vorlage ZBI"] = "";
+                newRow["Vorlage ZBI"] = fzg.Zb1Vorhanden.BoolToX();
                 newRow["Anzahl Kennzeichen"] = fzg.AnzahlKennzeichen;
                 newRow["Web User"] = LogonContext.UserName;
-                newRow["Carport ID"] = fzg.CarportId;
+                newRow["Carport Nr"] = fzg.CarportId;
                 newRow["Erfassungsdatum"] = DateTime.Now.ToShortDateString();
                 newRow["Bestandsnummer"] = fzg.MvaNr;
                 newRow["Auftragsnummer"] = fzg.AuftragsNr;
@@ -201,7 +325,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public string GenerateUpsShippingOrderHtml()
         {
             var adresseDad = DataService.GetCarportInfo("DAD");
-            var adresseCarport = DataService.GetCarportInfo(LogonContext.User.Reference);
+            var adresseCarport = DataService.GetCarportInfo(LastCarportId);
 
             if (adresseDad == null || adresseCarport == null)
                 return Localize.NoAddressTypesAvailableForThisCustomer;
@@ -210,7 +334,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var password = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "Password");
             var accessKey = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "AccessKey");
 
-            if (String.IsNullOrEmpty(username) || String.IsNullOrEmpty(password) || String.IsNullOrEmpty(accessKey))
+            if (username.IsNullOrEmpty() || password.IsNullOrEmpty() || accessKey.IsNullOrEmpty())
                 return Localize.NoAccessDataFoundInDatabase;
 
             try
@@ -223,7 +347,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipmentCharge = new ShipmentChargeType
                     {
-                        BillShipper = new BillShipperType {AccountNumber = adresseDad.KundenNr},
+                        BillShipper = new BillShipperType {AccountNumber = adresseCarport.KundenNr},
                         Type = "01"
                     };
 
@@ -231,19 +355,19 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var shipperAddress = new ShipAddressType
                     {
-                        AddressLine = new[] {adresseDad.StrasseHausnummer},
-                        City = adresseDad.Ort,
-                        PostalCode = adresseDad.Plz,
-                        CountryCode = adresseDad.Land
+                        AddressLine = new[] { adresseCarport.StrasseHausnummer },
+                        City = adresseCarport.Ort,
+                        PostalCode = adresseCarport.Plz,
+                        CountryCode = adresseCarport.Land
                     };
 
                 var shipper = new ShipperType
                     {
-                        ShipperNumber = adresseDad.KundenNr,
+                        ShipperNumber = adresseCarport.KundenNr,
                         Address = shipperAddress,
-                        Name = adresseDad.Name1,
-                        AttentionName = adresseDad.Name2,
-                        Phone = new ShipPhoneType { Number = adresseDad.Telefon }
+                        Name = adresseCarport.Name1,
+                        AttentionName = adresseCarport.Name2,
+                        Phone = new ShipPhoneType { Number = adresseCarport.Telefon }
                     };
 
                 var shipToAddress = new ShipToAddressType
@@ -262,25 +386,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         Phone = new ShipPhoneType { Number = adresseDad.Telefon }
                     };
 
-                var shipFromAddress = new ShipAddressType
-                {
-                    AddressLine = new[] { adresseCarport.StrasseHausnummer },
-                    City = adresseCarport.Ort,
-                    PostalCode = adresseCarport.Plz,
-                    CountryCode = adresseCarport.Land
-                };
-
-                var shipFrom = new ShipFromType
-                {
-                    Address = shipFromAddress,
-                    Name = adresseCarport.Name1,
-                    AttentionName = adresseCarport.Name2,
-                    Phone = new ShipPhoneType { Number = adresseCarport.Telefon }
-                };
-
                 var refNumbers = new[]
                     {
-                        new ReferenceNumberType {Code = "PO", Value = Fahrzeuge.First().LieferscheinNr},
+                        new ReferenceNumberType {Code = "PO", Value = FahrzeugeForConfirmation.First().LieferscheinNr},
                         new ReferenceNumberType {Code = "DP", Value = adresseCarport.CarportId}
                     };
 
@@ -300,7 +408,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         PaymentInformation = paymentInfo,
                         Shipper = shipper,
                         ShipTo = shipTo,
-                        ShipFrom = shipFrom,
                         ReferenceNumber = refNumbers,
                         Service = new ServiceType {Code = "11", Description = "UPS Standard"},
                         Package = new[] {package}
@@ -314,11 +421,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                             new LabelSpecificationType {LabelImageFormat = new LabelImageFormatType {Code = "GIF"}}
                     };
 
-                var shipService = new ShipService {UPSSecurityValue = securityToken};
+                var shipService = new ShipService { Url = GeneralConfiguration.GetConfigValue("UpsShippingWebService", "Url"), UPSSecurityValue = securityToken };
 
-                // ReSharper disable CSharpWarnings::CS0612
+#pragma warning disable 618
                 System.Net.ServicePointManager.CertificatePolicy = new TrustAllCertificatePolicy();
-                // ReSharper restore CSharpWarnings::CS0612
+#pragma warning restore 618
 
                 var shipmentResponse = shipService.ProcessShipment(shipmentRequest);
 
@@ -330,7 +437,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 var htmlString = Encoding.Default.GetString(htmlBytes);
 
                 var strImgPattern = "<IMG SRC=\"[^\"]*?\"";
-                var strImgReplace = String.Format("<IMG SRC=\"data:image/gif;base64,{0}\"", gifHexString);
+                var strImgReplace = string.Format("<IMG SRC=\"data:image/gif;base64,{0}\"", gifHexString);
 
                 htmlString = Regex.Replace(htmlString, strImgPattern, strImgReplace);
 
@@ -338,17 +445,22 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             }
             catch (System.Web.Services.Protocols.SoapException soapEx)
             {
-                return String.Format("{0}: {1} -> {2}", Localize.Error, soapEx.Message, soapEx.Detail.InnerText);
+                return string.Format("{0}: {1} -> {2}", Localize.Error, soapEx.Message, soapEx.Detail.InnerText);
             }
             catch (Exception ex)
             {
-                return String.Format("{0}: {1}", Localize.Error, ex.Message);
+                return string.Format("{0}: {1}", Localize.Error, ex.Message);
             }
         }
 
         public void FilterFahrzeuge(string filterValue, string filterProperties)
         {
             FahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterFahrzeugeForConfirmation(string filterValue, string filterProperties)
+        {
+            FahrzeugeForConfirmationFiltered = FahrzeugeForConfirmation.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
     }
 }

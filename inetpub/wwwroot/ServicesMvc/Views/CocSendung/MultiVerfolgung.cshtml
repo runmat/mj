@@ -115,7 +115,7 @@
         // move our grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridCocSendungenId");
 
-        $("#divGridId").slideDown();
+        setTimeout(function() { $("#divGridId").slideDown(); }, 1000);
     }
 
 
@@ -169,7 +169,7 @@
         // move our Grid filter form into grid's toolbar:
         GridAllColumnFilterApplyToGrid("GridCocSendungenDocs");
 
-        $("#divGridDocs").slideDown();
+        setTimeout(function () { $("#divGridDocs").slideDown(); }, 1000);
     }
 
 
