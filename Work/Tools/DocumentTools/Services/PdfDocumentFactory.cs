@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
@@ -58,7 +59,7 @@ namespace DocumentTools.Services
 
         public static byte[] ConvertHtmlToPdf(string html, float zoom = 1)
         {
-            return new HtmlToPdfConverter { Size = NReco.PdfGenerator.PageSize.A4, Zoom = zoom }.GeneratePdf(html);
+            return new HtmlToPdfConverter { Size = NReco.PdfGenerator.PageSize.A4, Zoom = zoom, ExecutionTimeout = TimeSpan.FromMinutes(1) }.GeneratePdf(html);
         }
 
         /// <summary>
