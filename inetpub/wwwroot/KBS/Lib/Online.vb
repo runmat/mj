@@ -1,12 +1,13 @@
 ﻿Imports System.IO
+Imports DocumentTools.Services
 Imports KBSBase
-Imports SmartSoft.PdfLibrary
 
 Public Class Online
     Inherits ErrorHandlingClass
 
 #Region "Declarations"
 
+    Private mWerk As String
     Private mKostenstelle As String
     Private mAuftraege As DataTable
     Private mFormulare As DataTable
@@ -14,6 +15,12 @@ Public Class Online
 #End Region
 
 #Region "Properties"
+
+    Public ReadOnly Property Werk() As String
+        Get
+            Return mWerk
+        End Get
+    End Property
 
     Public ReadOnly Property Kostenstelle() As String
         Get
@@ -35,7 +42,8 @@ Public Class Online
 
 #End Region
 
-    Public Sub New(ByVal kst As String)
+    Public Sub New(ByVal werk As String, ByVal kst As String)
+        mWerk = werk
         mKostenstelle = kst
     End Sub
 
@@ -113,7 +121,7 @@ Public Class Online
                 Next
 
                 'Mergen der einzelnen PDF´s in ein großes PDF
-                Return PdfMerger.MergeFiles(filesByte)
+                Return PdfDocumentFactory.MergePdfDocuments(filesByte)
             End If
 
         Catch ex As Exception
@@ -123,43 +131,63 @@ Public Class Online
         Return Nothing
     End Function
 
-    Public Sub SendAuftraege()
+    Public Function SendAuftraege() As Byte()
         ClearErrorState()
 
         Try
-            Dim selRows As DataRow() = mAuftraege.Select("Auswahl = True")
+            Dim selRows As DataRow() = mAuftraege.Select("Auswahl = True AND PosNr = '10'")
 
             If selRows.Length = 0 Then
                 RaiseError("9999", "Keine Aufträge selektiert!")
-                Exit Sub
+                Return Nothing
             End If
 
-            S.AP.Init("Z_FIL_PRAEG_IMPORT_ERLKZ")
+            Dim filesByte As New List(Of Byte())
+            Dim errors As New List(Of String)
 
-            Dim impTable As DataTable = S.AP.GetImportTable("GT_IMP")
+            For Each selRow As DataRow In selRows
 
-            For Each dRow As DataRow In selRows
-                If dRow("POSNR").ToString() = "10" Then
-                    Dim impRow As DataRow = impTable.NewRow()
-                    impRow("PRAEG_ID") = dRow("PRAEG_ID").ToString()
-                    impTable.Rows.Add(impRow)
+                S.AP.Init("Z_FIL_PRAEG_IMPORT_ERLKZ", "I_PRAEG_ID, I_WERKS", selRow("PRAEG_ID").ToString(), mWerk)
+
+                S.AP.Execute()
+
+                If S.AP.ResultCode = 0 Then
+                    Dim htmlString As String = S.AP.GetExportParameter("E_HTML")
+                    htmlString = Encoding.Default.GetString(Convert.FromBase64String(htmlString))
+
+                    Dim gifString As String = S.AP.GetExportParameter("E_GIF")
+
+                    Dim imgPattern As String = "<IMG SRC=""[^""]*?"""
+                    Dim imgReplace As String = String.Format("<IMG SRC=""data:image/gif;base64,{0}""", gifString)
+
+                    htmlString = Regex.Replace(htmlString, imgPattern, imgReplace)
+
+                    Dim delRows As DataRow() = mAuftraege.Select("PRAEG_ID = '" & selRow("PRAEG_ID").ToString() & "'")
+                    For Each delRow As DataRow In delRows
+                        mAuftraege.Rows.Remove(delRow)
+                    Next
+
+                    filesByte.Add(PdfDocumentFactory.ConvertHtmlToPdf(htmlString, 1.5F))
+
+                Else
+                    errors.Add(String.Format("{0}: {1}", selRow("PRAEG_ID").ToString(), S.AP.ResultMessage))
                 End If
+
             Next
 
-            S.AP.Execute()
+            If errors.Count > 0 Then
+                RaiseError("9999", String.Join(", ", errors.ToArray()))
 
-            If S.AP.ResultCode = 0 Then
-                For Each dRow As DataRow In selRows
-                    mAuftraege.Rows.Remove(dRow)
-                Next
-            Else
-                RaiseError(S.AP.ResultCode.ToString(), S.AP.ResultMessage)
+                If filesByte.Count = 0 Then Return Nothing
             End If
+
+            'Mergen der einzelnen PDF´s in ein großes PDF
+            Return PdfDocumentFactory.MergePdfDocuments(filesByte)
 
         Catch ex As Exception
             RaiseError("9999", ex.Message)
+            Return Nothing
         End Try
-    End Sub
+    End Function
 
 End Class
-

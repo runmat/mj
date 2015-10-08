@@ -21,7 +21,7 @@ Public Class AuftraegeOnline
         If Session("ObjOnline") IsNot Nothing Then
             mObjOnline = CType(Session("ObjOnline"), Online)
         Else
-            mObjOnline = New Online(mObjKasse.Lagerort)
+            mObjOnline = New Online(mObjKasse.Werk, mObjKasse.Lagerort)
             Session("ObjOnline") = mObjOnline
         End If
 
@@ -68,30 +68,24 @@ Public Class AuftraegeOnline
         FillGrid()
     End Sub
 
-    Protected Sub chkAuswahl_OnCheckedChanged(ByVal sender As Object, ByVal e As EventArgs)
-        Dim cbx As CheckBox = CType(sender, CheckBox)
-        Dim item As GridDataItem = CType(cbx.NamingContainer, GridDataItem)
-        Dim praegId As String = item.GetDataKeyValue("PRAEG_ID").ToString()
-
-        mObjOnline.SetAuswahlAuftrag(praegId, cbx.Checked)
-        Session("ObjOnline") = mObjOnline
-    End Sub
-
     Protected Sub rgGrid1_ItemCommand(ByVal sender As Object, ByVal e As GridCommandEventArgs) Handles rgGrid1.ItemCommand
         If TypeOf e.Item Is GridDataItem Then
             Dim gridRow As GridDataItem = CType(e.Item, GridDataItem)
 
-            If e.CommandName = "showDocument" Then
-                ShowPdf(gridRow("PRAEG_ID").Text)
-            End If
+            Select Case e.CommandName
+
+                Case "showDocument"
+                    ShowDokument(gridRow("PRAEG_ID").Text)
+
+            End Select
         End If
     End Sub
 
     Protected Sub lbAlleDokumente_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAlleDokumente.Click
-        ShowPdf()
+        ShowDokument()
     End Sub
 
-    Private Sub ShowPdf(Optional ByVal praegId As String = Nothing)
+    Private Sub ShowDokument(Optional ByVal praegId As String = Nothing)
         Dim pdfBytes As Byte() = mObjOnline.GetMergedPdf(praegId)
 
         If mObjOnline.ErrorOccured OrElse pdfBytes Is Nothing Then
@@ -99,13 +93,7 @@ Public Class AuftraegeOnline
             Exit Sub
         End If
 
-        Session("OnlinePdfBytes") = pdfBytes
-
-        Literal1.Text = "						<script language=""Javascript"">" & Environment.NewLine
-        Literal1.Text &= "						  <!-- //" & Environment.NewLine
-        Literal1.Text &= "                          window.open(""DownloadFile2.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & Environment.NewLine
-        Literal1.Text &= "						  //-->" & Environment.NewLine
-        Literal1.Text &= "						</script>" & Environment.NewLine
+        ShowPdf(pdfBytes)
     End Sub
 
     Protected Sub lb_zurueck_Click(sender As Object, e As EventArgs) Handles lb_zurueck.Click
@@ -115,15 +103,37 @@ Public Class AuftraegeOnline
     End Sub
 
     Protected Sub lbAbsenden_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAbsenden.Click
-        mObjOnline.SendAuftraege()
+        For Each row As GridDataItem In rgGrid1.Items
+            If row("POSNR").Text = "10" Then
+                Dim cbx As CheckBox = CType(row.FindControl("chkAuswahl"), CheckBox)
+                mObjOnline.SetAuswahlAuftrag(row("PRAEG_ID").Text, cbx.Checked)
+            End If
+        Next
 
-        If Not mObjOnline.ErrorOccured Then
-            Session("mObjOnline") = mObjOnline
-            FillGrid()
-            lblError.Text = "Aufträge erfolgreich gespeichert"
+        Dim pdfBytes As Byte() = mObjOnline.SendAuftraege()
+
+        Session("mObjOnline") = mObjOnline
+        FillGrid()
+
+        If mObjOnline.ErrorOccured Then
+            lblError.Text = "Es konnte nicht alle Aufträge erfolgreich gespeichert werden: " & mObjOnline.ErrorMessage
         Else
-            lblError.Text = "Fehler beim Speichern der Aufträge: " & mObjOnline.ErrorMessage
+            lblError.Text = "Aufträge erfolgreich gespeichert"
         End If
+
+        If pdfBytes IsNot Nothing Then
+            ShowPdf(pdfBytes)
+        End If
+    End Sub
+
+    Private Sub ShowPdf(ByVal pdfBytes As Byte())
+        Session("OnlinePdfBytes") = pdfBytes
+
+        Literal1.Text = "						<script language=""Javascript"">" & Environment.NewLine
+        Literal1.Text &= "						  <!-- //" & Environment.NewLine
+        Literal1.Text &= "                          window.open(""DownloadFile2.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & Environment.NewLine
+        Literal1.Text &= "						  //-->" & Environment.NewLine
+        Literal1.Text &= "						</script>" & Environment.NewLine
     End Sub
 
 End Class
