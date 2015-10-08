@@ -25,22 +25,23 @@ Public Class Filialziele
         End If
 
         If Not IsPostBack Then
-            txtDatum.Text = DateTime.Now.ToString("dd.MM.yyyy")
-
             Dim kalenderwoche As String = GetKalenderwocheAndYear(DateTime.Today)
-
-            mObjFilialvergleich = New Filialvergleich()
-            mObjFilialvergleich.getDataFromSAP(mObjKasse.Lagerort, "PK", kalenderwoche)
-            If mObjFilialvergleich.ErrorOccured Then
-                lblError.Text = "Fehler beim Abruf der Daten aus SAP." & Environment.NewLine & "Fehlerdetails: " & mObjFilialvergleich.ErrorMessage
-            End If
-
-            Session("mObjFilialvergleich") = mObjFilialvergleich
 
             Title = lblHead.Text
             lblKostenstelle.Text = mObjKasse.Lagerort
             lblFilialname.Text = ""
             lblKW.Text = kalenderwoche.Substring(4, 2) & " " & kalenderwoche.Substring(0, 4)
+            txtDatum.Text = DateTime.Now.ToString("dd.MM.yyyy")
+
+            mObjFilialvergleich = New Filialvergleich()
+            mObjFilialvergleich.getDataFromSAP(mObjKasse.Lagerort, "PK", kalenderwoche)
+            If mObjFilialvergleich.ErrorOccured Then
+                lblError.Text = "Fehler beim Abruf der Daten aus SAP." & Environment.NewLine & "Fehlerdetails: " & mObjFilialvergleich.ErrorMessage
+                Exit Sub
+            End If
+
+            Session("mObjFilialvergleich") = mObjFilialvergleich
+
             lblLFB.Text = mObjFilialvergleich.LFB
 
             FillForm()

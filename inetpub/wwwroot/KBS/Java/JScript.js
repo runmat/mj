@@ -453,3 +453,26 @@ function CalculateGesamt()
      t = document.getElementById(Textbox);
      t.value = datum.localeFormat('ddMMyy');
  }
+
+ function FilterKennz(Control, e) {
+     var key;
+
+     if (window.event) {
+         key = window.event.keyCode;
+     }
+     else if (e) {
+         key = e.which;
+     }
+     else {
+         return true;
+     }
+     
+     if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 16) || (key == 13) || (key == 27) || (key == 37) || (key == 39)) {
+         return false;
+     }
+
+     Control.value = Control.value.toUpperCase();
+     Control.focus();
+
+     return true;
+ }
