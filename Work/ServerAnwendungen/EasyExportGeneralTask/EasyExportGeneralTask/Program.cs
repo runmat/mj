@@ -41,6 +41,7 @@ namespace EasyExportGeneralTask
             //args = new[] { "SixtMobility" };
             //args = new[] { "Europcar" };
             //args = new[] { "WKDA" };
+            //args = new[] { "WKDA_Selbstabmelder" };
             // ----- TEST -----
 
             if ((args.Length > 0) && (!String.IsNullOrEmpty(args[0])))
@@ -295,6 +296,14 @@ namespace EasyExportGeneralTask
                     #region WKDA
 
                     QueryWKDA();
+
+                    #endregion
+                    break;
+
+                case AblaufTyp.WKDA_Selbstabmelder:
+                    #region WKDA_Selbstabmelder
+
+                    QueryWKDA(true);
 
                     #endregion
                     break;
@@ -1044,8 +1053,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
                             {
@@ -1151,8 +1159,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
                             {
@@ -1457,15 +1464,16 @@ namespace EasyExportGeneralTask
                             {
                                 Console.WriteLine(status);
                             }
-
-                            if (taskConfiguration.DatumInSapSetzen)
+                            else if (taskConfiguration.DatumInSapSetzen)
                             {
-                                logWriter.WriteLine(DateTime.Now.ToString() + " - Setze Datum für " + row["ZZFAHRG"].ToString() + ", " + strBautl + " in SAP");
+                                logWriter.WriteLine(DateTime.Now.ToString() + " - Setze Datum für " +
+                                                    row["ZZFAHRG"].ToString() + ", " + strBautl + " in SAP");
 
                                 if (!SetActionDate(row["MANUM"].ToString(), row["QMNUM"].ToString()))
                                 {
                                     blnErrorOccured = true;
-                                    logWriter.WriteLine(DateTime.Now.ToString() + " - Datum setzen für " + row["ZZFAHRG"].ToString() + ", " + strBautl + " fehlgeschlagen");
+                                    logWriter.WriteLine(DateTime.Now.ToString() + " - Datum setzen für " +
+                                                        row["ZZFAHRG"].ToString() + ", " + strBautl + " fehlgeschlagen");
                                 }
                             }
                         }
@@ -1595,8 +1603,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate("", row["QMNUM"].ToString(), true))
                             {
@@ -1686,8 +1693,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             if (!SetActionDate(item.MANUM, item.QMNUM))
                             {
@@ -1816,8 +1822,7 @@ namespace EasyExportGeneralTask
                         {
                             Console.WriteLine(status);
                         }
-
-                        if (taskConfiguration.DatumInSapSetzen)
+                        else if (taskConfiguration.DatumInSapSetzen)
                         {
                             S.AP.InitExecute("Z_DPM_AVM_DOKUMENT_MAIL", "I_KUNNR_AG, I_CHASSIS_NUM", taskConfiguration.Kundennummer, item.CHASSIS_NUM);
 
@@ -1839,11 +1844,11 @@ namespace EasyExportGeneralTask
         /// <summary>
         /// Archivabfrage für WKDA
         /// </summary>
-        private static void QueryWKDA()
+        private static void QueryWKDA(bool selbstabmelder = false)
         {
             try
             {
-                Z_WFM_UEBERMITTLUNG_STAT_01.Init(S.AP, "I_KUNNR, I_STATUSWERT", taskConfiguration.Kundennummer, "2");
+                Z_WFM_UEBERMITTLUNG_STAT_01.Init(S.AP, "I_KUNNR, I_STATUSWERT", taskConfiguration.Kundennummer, (selbstabmelder ? "3" : "2"));
 
                 var sapResults = Z_WFM_UEBERMITTLUNG_STAT_01.GT_OUT.GetExportListWithExecute(S.AP);
 
@@ -1913,9 +1918,13 @@ namespace EasyExportGeneralTask
                         status = Weblink.QueryPicture(ref result, ref LC, logDS, logCustomer, taskConfiguration, ref logFiles, iIndex, false, new[] { item });
 
                         if (!String.IsNullOrEmpty(status))
+                        {
                             Console.WriteLine(status);
-
-                        gefunden = true;
+                        }
+                        else
+                        {
+                            gefunden = true;
+                        }
                     }
 
                     if (gefunden)
@@ -1949,7 +1958,7 @@ namespace EasyExportGeneralTask
                     {
                         EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner gestartet", EventLogEntryType.Information);
 
-                        var zipName = "Abmeldungen " + DateTime.Now.ToString("dd.MM.yyyy HHmm");
+                        var zipName = DateTime.Now.ToString("dd.MM.yyyy_HHmm") + (selbstabmelder ? "-Selbstabmelder" : "");
                         var zipOrdnerPfad = taskConfiguration.exportPathZip + "\\Abmeldungen " + DateTime.Now.ToShortDateString();
 
                         if (!Directory.Exists(zipOrdnerPfad))
