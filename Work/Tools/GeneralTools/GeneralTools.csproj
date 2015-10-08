@@ -119,6 +119,7 @@
     <Compile Include="Log\Services\SapLogger.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\Attributes\NumericAttribute.cs" />
     <Compile Include="Models\Attributes\GridColumnsAutoPersistAttribute.cs" />
     <Compile Include="Models\Attributes\ContainsNotAttribute.cs" />
     <Compile Include="Models\Attributes\RequiredConditionalAttribute.cs" />
