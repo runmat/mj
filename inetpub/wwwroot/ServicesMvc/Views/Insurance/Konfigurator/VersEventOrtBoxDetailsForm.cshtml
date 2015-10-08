@@ -46,7 +46,7 @@
     }
 
     <form action="#" class="form-horizontal" onsubmit="return false;">
-        @Html.FormTemplateControl("Blocker Termine", @<text>@Html.Partial("Konfigurator/BoxBlockerTermineGrid")</text>, new { @class = "m-wrap" })
+        @Html.FormTemplateControl(Localize.BlockingAppointment, @<text>@Html.Partial("Konfigurator/BoxBlockerTermineGrid")</text>, new { @class = "m-wrap" })
 
         @Html.FormRequiredFieldsSummary()
 

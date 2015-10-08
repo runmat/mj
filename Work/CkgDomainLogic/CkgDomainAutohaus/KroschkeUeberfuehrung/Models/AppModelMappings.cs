@@ -130,7 +130,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
             {
                 return EnsureSingleton(() => new ModelMapping<Z_UEB_CREATE_ORDER_01.GT_RET, UeberfuehrungsAuftragsPosition>(
                     new Dictionary<string, string> {
-                        { "VBELN", "Lizenz" },
+                        { "VBELN", "AuftragsNr" },
                         { "FAHRT", "FahrtIndex" },
                         { "BEMERKUNG", "Bemerkung" },
                     }));
@@ -161,7 +161,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
             {
                 return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_AUFTRAEGE, HistoryAuftrag>(
                     new Dictionary<string, string> {
-                        { "AUFNR", "Lizenz" },
+                        { "AUFNR", "AuftragsNr" },
                         { "ERDAT", "AuftragsDatum" },
                         { "FAHRTNR", "Fahrt" },
                         { "ZZKENN", "Kennzeichen" },
@@ -191,7 +191,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
             {
                 return EnsureSingleton(() => new ModelMapping<Z_V_Ueberf_Auftr_Kund_Port.T_SELECT, HistoryAuftragFilter>(
                     new Dictionary<string, string> {
-                        { "Aufnr", "Lizenz" },
+                        { "Aufnr", "AuftragsNr" },
                         { "Erdat", "ErfassungsDatumVon" },
                         { "Erdat_Bis", "ErfassungsDatumBis" },
                         { "Vdatu", "UeberfuehrungsDatumVon" },
