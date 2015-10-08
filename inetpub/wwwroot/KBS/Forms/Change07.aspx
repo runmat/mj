@@ -524,72 +524,74 @@
                                     Enabled="true" PopupControlID="Nachdruck" TargetControlID="MPEDummy4">
                                 </cc1:ModalPopupExtender>
                                 <asp:Panel ID="Nachdruck" HorizontalAlign="Center" runat="server" Style="display: block">
-                                    <table cellspacing="0" runat="server" width="50%" bgcolor="white" cellpadding="0"
-                                        style="width: 50%; border: solid 1px #646464">
-                                        <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="firstLeft active">
-                                                letzte Umlagerungsbelege:
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="firstLeft active">
-                                                <asp:Label ID="lblErrorNachdruck" runat="server"></asp:Label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="margin-left: 40px">
-                                                <asp:GridView ID="gvNachdruck" runat="server" AllowPaging="False" AllowSorting="False"
-                                                    AutoGenerateColumns="False" BackColor="White" CssClass="GridView" GridLines="None"
-                                                    HorizontalAlign="Center" ShowFooter="False" Width="100%">
-                                                    <PagerSettings Visible="false" />
-                                                    <HeaderStyle CssClass="GridTableHead" />
-                                                    <AlternatingRowStyle CssClass="GridTableAlternate" />
-                                                    <RowStyle CssClass="ItemStyle" />
-                                                    <Columns>
-                                                        <asp:BoundField DataField="EmpfangendeKst" HeaderText="Empf. Kst" HeaderStyle-Wrap="False" />
-                                                        <asp:BoundField DataField="Datum" HeaderText="Datum" ItemStyle-Wrap="False" DataFormatString="{0:dd.MM.yyyy}" />
-                                                        <asp:TemplateField>
-                                                            <ItemTemplate>
-                                                                <asp:LinkButton ID="ibNachdruckTable" runat="server" Text="Drucken" Height="16px"
-                                                                    Width="78px" CssClass="Tablebutton" CommandName="drucken" CommandArgument='<%# Eval("Dateiname") %>' />
-                                                            </ItemTemplate>
-                                                        </asp:TemplateField>
-                                                    </Columns>
-                                                </asp:GridView>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <asp:LinkButton ID="lbNachdruckClose" Text="Schließen" Height="16px" Width="78px"
-                                                    runat="server" CssClass="Tablebutton"></asp:LinkButton>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                &nbsp;
-                                            </td>
-                                        </tr>
-                                    </table>
+                                    <div style="max-height: 500px; overflow-y: scroll">
+                                        <table id="Table2" cellspacing="0" runat="server" width="50%" bgcolor="white" cellpadding="0"
+                                            style="width: 50%; border: solid 1px #646464">
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="firstLeft active">
+                                                    letzte Umlagerungsbelege:
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="firstLeft active">
+                                                    <asp:Label ID="lblErrorNachdruck" runat="server"></asp:Label>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="margin-left: 40px">
+                                                    <asp:GridView ID="gvNachdruck" runat="server" AllowPaging="False" AllowSorting="False"
+                                                        AutoGenerateColumns="False" BackColor="White" CssClass="GridView" GridLines="None"
+                                                        HorizontalAlign="Center" ShowFooter="False" Width="100%">
+                                                        <PagerSettings Visible="false" />
+                                                        <HeaderStyle CssClass="GridTableHead" />
+                                                        <AlternatingRowStyle CssClass="GridTableAlternate" />
+                                                        <RowStyle CssClass="ItemStyle" />
+                                                        <Columns>
+                                                            <asp:BoundField DataField="EmpfangendeKst" HeaderText="Empf. Kst" HeaderStyle-Wrap="False" />
+                                                            <asp:BoundField DataField="Datum" HeaderText="Datum" ItemStyle-Wrap="False" DataFormatString="{0:dd.MM.yyyy}" />
+                                                            <asp:TemplateField>
+                                                                <ItemTemplate>
+                                                                    <asp:LinkButton ID="ibNachdruckTable" runat="server" Text="Drucken" Height="16px"
+                                                                        Width="78px" CssClass="Tablebutton" CommandName="drucken" CommandArgument='<%# Eval("Dateiname") %>' />
+                                                                </ItemTemplate>
+                                                            </asp:TemplateField>
+                                                        </Columns>
+                                                    </asp:GridView>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <asp:LinkButton ID="lbNachdruckClose" Text="Schließen" Height="16px" Width="78px"
+                                                        runat="server" CssClass="Tablebutton"></asp:LinkButton>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    &nbsp;
+                                                </td>
+                                            </tr>
+                                        </table>
+                                    </div>
                                 </asp:Panel>
                     </div>
                 </div>

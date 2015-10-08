@@ -23,39 +23,79 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         public string Akionen { get { return string.Format("manuell,{0};upload,{1}", Localize.ManuelInput, Localize.FileUpload); } }
 
+        private string _Fahrgestellnummer;
         [LocalizedDisplay(LocalizeConstants.ChassisNo)]
         [FormPersistable]
-        public string Fahrgestellnummer { get; set; }
+        public string Fahrgestellnummer
+        {
+            get { return _Fahrgestellnummer; }
+            set { _Fahrgestellnummer = value.NotNullOrEmpty().ToUpper(); }
+        }
 
+        private string _Kennzeichen;
         [LocalizedDisplay(LocalizeConstants.LicenseNo)]
         [FormPersistable]
         [Kennzeichen]
-        public string Kennzeichen { get; set; }
+        public string Kennzeichen
+        {
+            get { return _Kennzeichen; }
+            set { _Kennzeichen = value.NotNullOrEmpty().ToUpper(); }
+        }
 
+        private string _Zb2Nummer;
         [LocalizedDisplay(LocalizeConstants.ZB2No)]
         [FormPersistable]
-        public string Zb2Nummer { get; set; }
-     
+        public string Zb2Nummer
+        {
+            get { return _Zb2Nummer; }
+            set { _Zb2Nummer = value.NotNullOrEmpty().ToUpper(); }
+        }
+
+        private string _ModelID;
         [LocalizedDisplay(LocalizeConstants.ModelID)]
         [FormPersistable]
-        public string ModelID { get; set; }
+        public string ModelID
+        {
+            get { return _ModelID; }
+            set { _ModelID = value.NotNullOrEmpty().ToUpper(); }
+        }
 
+        private string _Unitnummer;
         [LocalizedDisplay(LocalizeConstants.UnitNumber)]
         [FormPersistable]
-        public string Unitnummer { get; set; }
+        public string Unitnummer
+        {
+            get { return _Unitnummer; }
+            set { _Unitnummer = value.NotNullOrEmpty().ToUpper(); }
+        }
 
+        private string _Auftragsnummer;
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         [FormPersistable]
-        public string Auftragsnummer { get; set; }
+        public string Auftragsnummer
+        {
+            get { return _Auftragsnummer; }
+            set { _Auftragsnummer = value.NotNullOrEmpty().ToUpper(); }
+        }
 
+        private string _BatchId;
         [LocalizedDisplay(LocalizeConstants.BatchID)]
         [FormPersistable]
-        public string BatchId { get; set; }
+        public string BatchId
+        {
+            get { return _BatchId; }
+            set { _BatchId = value.NotNullOrEmpty().ToUpper(); }
+        }
 
+        private string _SIPPCode;
         [LocalizedDisplay(LocalizeConstants.SippCode)]
         [FormPersistable]
         // ReSharper disable once InconsistentNaming
-        public string SIPPCode { get; set; }
+        public string SIPPCode
+        {
+            get { return _SIPPCode; }
+            set { _SIPPCode = value.NotNullOrEmpty().ToUpper(); }
+        }
 
         [LocalizedDisplay(LocalizeConstants.DateOfZb2Receipt)]
         [FormPersistable]
