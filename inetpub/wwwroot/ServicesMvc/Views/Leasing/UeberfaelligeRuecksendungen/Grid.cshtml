@@ -1,0 +1,41 @@
+﻿@using CkgDomainLogic.Leasing.Models
+
+@{ var gridName = "GridUeberfaelligeRuecksendungen"; }
+
+@(Html.Telerik()
+    .Grid<UeberfaelligeRuecksendung>()
+    .Name(gridName)
+    .XAjaxDataBinding("UeberfaelligeRuecksendungenAjaxBinding", "Leasing")
+    .Columns(columns =>
+    {
+        columns.XBound(c => c.LeasingvertragsNr);
+        columns.XBound(c => c.FahrgestellNr);
+        columns.XBound(c => c.Kennzeichen);
+        columns.XBound(c => c.SuchnameKunde);
+        columns.XBound(c => c.VersandDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Versandgrund);
+        columns.XBound(c => c.Anforderer);
+        columns.XBound(c => c.Vertriebseinheit);
+        columns.XBound(c => c.FaelligkeitsDatum).Format("{0:dd.MM.yyyy}");
+        columns.XBound(c => c.Memo)
+            .ClientTemplate(
+                "<input type=\"text\" id=\"txt<#= data.EquiNr #>\" class=\"no-bottom-margin\" disabled value=\"<#= data.Memo #>\"></input>"
+            );
+
+        columns.XBound(c => c.EquiNr).Title("").Filterable(false).Groupable(false).Sortable(false)
+            .ClientTemplate(
+                "<button id=\"btnEdit<#= data.EquiNr #>\" onclick='MemoBearbeiten(\"<#= data.EquiNr #>\");' class='btn mini gray tooltips' data-original-title='" + Localize.Edit + "' data-placement='left'><i class='halflings-icon white pencil'></i></button>" +
+                "<button id=\"btnSave<#= data.EquiNr #>\" onclick='MemoSpeichern(\"<#= data.EquiNr #>\");' class='btn mini gray tooltips hide' data-original-title='" + Localize.Save + "' data-placement='left'><i class='halflings-icon white ok'></i></button>" +
+                "<button onclick='FristVerlaengern(\"<#= data.EquiNr #>\");' class='btn mini gray tooltips margin-left-5 <# if (data.FaelligkeitsDatumGesetzt) { #>" + "hide" + "<# } #>' data-original-title='" + Localize.ExtendDeadline + "' data-placement='left'><i class='halflings-icon white share-alt'></i></button>"
+            );
+    })
+    .XAutoColumnConfiguration()
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
+    .XPageSize(10)
+    .XSort(sortOrder => sortOrder.Add(c => c.LeasingvertragsNr))
+    .ToolBar(commands =>
+    {
+        commands.FilteredDataCommand("ExportUeberfaelligeRuecksendungenFilteredExcel", "Leasing");
+        commands.FilteredDataCommand("ExportUeberfaelligeRuecksendungenFilteredPDF", "Leasing");
+    })
+)

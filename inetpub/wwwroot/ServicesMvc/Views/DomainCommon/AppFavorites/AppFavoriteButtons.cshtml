@@ -2,7 +2,9 @@
 @{ var logonContext = (ILogonContextDataService)SessionHelper.GetSessionObject("LogonContext"); }
 
 <h4 class="margin-top-30 margin-bottom-25">
-    Ihre Favoriten
+        
+            @Localize.YourFavorites
+        
     @if (!logonContext.AppFavoritesEditMode)
     {
         <a href="#" class="btn white app-favorite-on-homepage-command tooltips" onclick="return AppFavoritesEditSwitch();" data-original-title="Favoriten bearbeiten ..." data-placement="right">
