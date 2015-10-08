@@ -65,6 +65,10 @@
     <Reference Include="itextsharp">
       <HintPath>..\..\GAC\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="NReco.PdfGenerator, Version=1.1.10.0, Culture=neutral, PublicKeyToken=231663d50a41b451, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GAC\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
     <Reference Include="PdfSharp, Version=1.32.2608.0, Culture=neutral, PublicKeyToken=f94615aa0424f9eb, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\PdfSharp\PdfSharp.dll</HintPath>

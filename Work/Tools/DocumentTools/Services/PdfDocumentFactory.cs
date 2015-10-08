@@ -2,6 +2,7 @@
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
+using NReco.PdfGenerator;
 using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
@@ -55,6 +56,11 @@ namespace DocumentTools.Services
             return output.ToArray();
         }
 
+        public static byte[] ConvertHtmlToPdf(string html, float zoom = 1)
+        {
+            return new HtmlToPdfConverter { Size = PageSize.A4, Zoom = zoom }.GeneratePdf(html);
+        }
+
         /// <summary>
         /// 20150528 MMA Erstellt aus mehreren PDF-Documenten eine einzige PDF-Datei und gibt diese als byte[] zurück.
         /// </summary>
@@ -78,6 +84,5 @@ namespace DocumentTools.Services
             #endregion
 
         }
-
     }
 }
