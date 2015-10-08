@@ -52,6 +52,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             protected set { PropertyCacheSet(value); }
         }
 
+        [XmlIgnore]
+        public List<CarporterfassungModel> FahrzeugeForConfirmation { get; set; }
+
+        [XmlIgnore]
+        public List<CarporterfassungModel> FahrzeugeForConfirmationFiltered
+        {
+            get { return PropertyCacheGet(() => FahrzeugeForConfirmation); }
+            protected set { PropertyCacheSet(value); }
+        }
+
         public string LastCarportId { get; set; }
 
         [XmlIgnore]
@@ -203,23 +213,31 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             TryAvoidNullValueForCarportIdPersisted(model.CarportIdPersisted);
         }
 
-        public void SaveFahrzeuge()
+        public void SaveFahrzeuge(Action<string, string> outerClearListFunction)
         {
             EditMode = false;
 
             var objectKeyDict = Fahrzeuge.ToDictionary(t => t.Kennzeichen, t => t.ObjectKey);
             Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge);
-            // restore shopping cart ID's
+
+            FahrzeugeForConfirmation = new List<CarporterfassungModel>();
+            PropertyCacheClear(this, m => m.FahrzeugeForConfirmationFiltered);
+
+            // restore shopping cart ID's  +  move items into buffer list "FahrzeugeForConfirmation" to enable clearing shopping cart 
             Fahrzeuge.ForEach(f =>
             {
                 f.ObjectKey = objectKeyDict[f.Kennzeichen];
                 PrepareCarportModel(ref f);
+
+                FahrzeugeForConfirmation.Add(f);
             });
+
+            ClearList(outerClearListFunction);
 
             DataMarkForRefresh();
         }
 
-        public void ClearList(Action<string, string> outerClearListFunction)
+        private void ClearList(Action<string, string> outerClearListFunction)
         {
             var ownerMultiKey = "ALL";
             var additionalFilter = string.Format(" and ObjectData like '%<CarportId>{0}</CarportId>%'", CarportSelectionModel.CarportIdPersisted);
@@ -264,7 +282,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             var nr = 1;
             var lieferscheinNr = "";
-            foreach (var fzg in Fahrzeuge.Where(f => f.Status.IsNullOrEmpty()).OrderBy(f => f.Kennzeichen).ToList())
+            foreach (var fzg in FahrzeugeForConfirmation.Where(f => f.Status.IsNullOrEmpty()).OrderBy(f => f.Kennzeichen).ToList())
             {
                 if (nr == 1)
                 {
@@ -370,7 +388,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
                 var refNumbers = new[]
                     {
-                        new ReferenceNumberType {Code = "PO", Value = Fahrzeuge.First().LieferscheinNr},
+                        new ReferenceNumberType {Code = "PO", Value = FahrzeugeForConfirmation.First().LieferscheinNr},
                         new ReferenceNumberType {Code = "DP", Value = adresseCarport.CarportId}
                     };
 
@@ -438,6 +456,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void FilterFahrzeuge(string filterValue, string filterProperties)
         {
             FahrzeugeFiltered = Fahrzeuge.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        public void FilterFahrzeugeForConfirmation(string filterValue, string filterProperties)
+        {
+            FahrzeugeForConfirmationFiltered = FahrzeugeForConfirmation.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
     }
 }

@@ -90,6 +90,12 @@ namespace ServicesMvc.Controllers
             return View(new GridModel(CarporterfassungViewModel.FahrzeugeFiltered));
         }
 
+        [GridAction]
+        public ActionResult CarporterfassungAjaxBindingForConfirmation()
+        {
+            return View(new GridModel(CarporterfassungViewModel.FahrzeugeForConfirmationFiltered));
+        }
+
         [HttpPost]
         public ActionResult CarportSelectionForm(CarporterfassungModel model)
         {
@@ -120,20 +126,16 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult FahrzeugeSpeichern()
         {
-            CarporterfassungViewModel.SaveFahrzeuge();
+            CarporterfassungViewModel.SaveFahrzeuge((ownerMultiKey, additionalFilter) => PersistanceDeleteAllObjects(PersistableGroupKey, ownerMultiKey, additionalFilter));
 
-            return PartialView("Carporterfassung/Grid", CarporterfassungViewModel);
+            LoadPersistedObjects();
+
+            return PartialView("Carporterfassung/GridForConfirmation", CarporterfassungViewModel);
         }
 
         [HttpPost]
         public ActionResult NeuesFahrzeugErfassen(bool clearList)
         {
-            if (clearList)
-            {
-                CarporterfassungViewModel.ClearList((ownerMultiKey, additionalFilter) => PersistanceDeleteAllObjects(PersistableGroupKey, ownerMultiKey, additionalFilter));
-                LoadPersistedObjects();
-            }
-
             CarporterfassungViewModel.LoadFahrzeugModel();
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", CarporterfassungViewModel.AktuellesFahrzeug);
@@ -161,6 +163,14 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
+        [HttpPost]
+        public ActionResult FilterGridCarporterfassungForConfirmation(string filterValue, string filterColumns)
+        {
+            CarporterfassungViewModel.FilterFahrzeugeForConfirmation(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
         #region Export
 
         public ActionResult ExportCarporterfassungFilteredExcel(int page, string orderBy, string filterBy)
@@ -174,6 +184,21 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportCarporterfassungFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = CarporterfassungViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+        public ActionResult ExportCarporterfassungFilteredExcelForConfirmation(int page, string orderBy, string filterBy)
+        {
+            var dt = CarporterfassungViewModel.FahrzeugeForConfirmationFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportCarporterfassungFilteredPDFForConfirmation(int page, string orderBy, string filterBy)
+        {
+            var dt = CarporterfassungViewModel.FahrzeugeForConfirmationFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt, landscapeOrientation: true);
 
             return new EmptyResult();
