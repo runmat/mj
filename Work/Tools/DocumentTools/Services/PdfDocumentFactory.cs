@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
-using NReco.PdfGenerator;
 using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
@@ -55,11 +53,6 @@ namespace DocumentTools.Services
             document.Close();
 
             return output.ToArray();
-        }
-
-        public static byte[] ConvertHtmlToPdf(string html, float zoom = 1)
-        {
-            return new HtmlToPdfConverter { Size = NReco.PdfGenerator.PageSize.A4, Zoom = zoom, ExecutionTimeout = TimeSpan.FromMinutes(1) }.GeneratePdf(html);
         }
 
         /// <summary>
