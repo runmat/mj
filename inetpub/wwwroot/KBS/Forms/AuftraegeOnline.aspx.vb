@@ -14,7 +14,6 @@ Public Class AuftraegeOnline
             mObjKasse = Session("mKasse")
         End If
 
-        lblError.Text = ""
         Literal1.Text = ""
         Title = lblHead.Text
 
@@ -33,6 +32,8 @@ Public Class AuftraegeOnline
     End Sub
 
     Private Sub LadeAuftraege()
+        lblError.Text = ""
+
         mObjOnline.LoadAuftraege()
         Session("ObjOnline") = mObjOnline
 
@@ -44,6 +45,8 @@ Public Class AuftraegeOnline
     End Sub
 
     Private Sub FillGrid()
+        lblError.Text = ""
+
         If mObjOnline.Auftraege IsNot Nothing AndAlso mObjOnline.Auftraege.Rows.Count > 0 Then
             rgGrid1.Visible = True
             rgGrid1.Rebind()
@@ -86,6 +89,8 @@ Public Class AuftraegeOnline
     End Sub
 
     Private Sub ShowDokument(Optional ByVal praegId As String = Nothing)
+        lblError.Text = ""
+
         Dim pdfBytes As Byte() = mObjOnline.GetMergedPdf(praegId)
 
         If mObjOnline.ErrorOccured OrElse pdfBytes Is Nothing Then
@@ -93,16 +98,19 @@ Public Class AuftraegeOnline
             Exit Sub
         End If
 
-        ShowPdf(pdfBytes)
+        ShowPdf(pdfBytes, "OnlineAuftrag.pdf")
     End Sub
 
     Protected Sub lb_zurueck_Click(sender As Object, e As EventArgs) Handles lb_zurueck.Click
         Session("ObjOnline") = Nothing
         Session("OnlinePdfBytes") = Nothing
+        Session("OnlinePdfName") = Nothing
         Response.Redirect("../Selection.aspx")
     End Sub
 
     Protected Sub lbAbsenden_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lbAbsenden.Click
+        lblError.Text = ""
+
         For Each row As GridDataItem In rgGrid1.Items
             If row("POSNR").Text = "10" Then
                 Dim cbx As CheckBox = CType(row.FindControl("chkAuswahl"), CheckBox)
@@ -113,6 +121,7 @@ Public Class AuftraegeOnline
         Dim pdfBytes As Byte() = mObjOnline.SendAuftraege()
 
         Session("mObjOnline") = mObjOnline
+
         FillGrid()
 
         If mObjOnline.ErrorOccured Then
@@ -122,18 +131,19 @@ Public Class AuftraegeOnline
         End If
 
         If pdfBytes IsNot Nothing Then
-            ShowPdf(pdfBytes)
+            ShowPdf(pdfBytes, "Label.pdf")
         End If
     End Sub
 
-    Private Sub ShowPdf(ByVal pdfBytes As Byte())
+    Private Sub ShowPdf(ByVal pdfBytes As Byte(), ByVal dateiName As String)
         Session("OnlinePdfBytes") = pdfBytes
+        Session("OnlinePdfName") = dateiName
 
-        Literal1.Text = "						<script language=""Javascript"">" & Environment.NewLine
-        Literal1.Text &= "						  <!-- //" & Environment.NewLine
+        Literal1.Text = "                        <script language=""Javascript"">" & Environment.NewLine
+        Literal1.Text &= "                          <!-- //" & Environment.NewLine
         Literal1.Text &= "                          window.open(""DownloadFile2.aspx"", ""_blank"", ""left=0,top=0,resizable=YES,scrollbars=YES"");" & Environment.NewLine
-        Literal1.Text &= "						  //-->" & Environment.NewLine
-        Literal1.Text &= "						</script>" & Environment.NewLine
+        Literal1.Text &= "                          //-->" & Environment.NewLine
+        Literal1.Text &= "                        </script>" & Environment.NewLine
     End Sub
 
 End Class

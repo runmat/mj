@@ -167,7 +167,7 @@ Public Class Online
                         mAuftraege.Rows.Remove(delRow)
                     Next
 
-                    filesByte.Add(PdfDocumentFactory.ConvertHtmlToPdf(htmlString, 1.5F))
+                    filesByte.Add(ConvertHtmlToPdf(htmlString, 1.5F))
 
                 Else
                     errors.Add(String.Format("{0}: {1}", selRow("PRAEG_ID").ToString(), S.AP.ResultMessage))
@@ -188,6 +188,17 @@ Public Class Online
             RaiseError("9999", ex.Message)
             Return Nothing
         End Try
+    End Function
+
+    Private Function ConvertHtmlToPdf(ByVal html As String, Optional ByVal zoom As Single = 1) As Byte()
+        Dim base64Html As String = Convert.ToBase64String(Encoding.Default.GetBytes(html))
+
+        Dim convertService As New de.kroschke.sgwt.ServiceData
+        convertService.Url = ConfigurationManager.AppSettings("HtmlToPdfServiceUrl")
+
+        Dim base64Pdf As String = convertService.GetPdf(base64Html, zoom, False)
+
+        Return Convert.FromBase64String(base64Pdf)
     End Function
 
 End Class
