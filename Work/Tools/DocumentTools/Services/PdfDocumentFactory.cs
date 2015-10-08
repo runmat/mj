@@ -58,7 +58,7 @@ namespace DocumentTools.Services
 
         public static byte[] ConvertHtmlToPdf(string html, float zoom = 1)
         {
-            return new HtmlToPdfConverter { Size = PageSize.A4, Zoom = zoom }.GeneratePdf(html);
+            return new HtmlToPdfConverter { Size = NReco.PdfGenerator.PageSize.A4, Zoom = zoom }.GeneratePdf(html);
         }
 
         /// <summary>
