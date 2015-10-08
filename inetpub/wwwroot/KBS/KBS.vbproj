@@ -134,6 +134,8 @@
     <Content Include="Forms\InfocenterNeuAdmin.aspx" />
     <Content Include="Forms\InfocenterNeu.aspx" />
     <Content Include="Forms\InventurSelection.aspx" />
+    <Content Include="Forms\VerbBuchReport.aspx" />
+    <Content Include="Forms\VerbBuchErfassung.aspx" />
     <Content Include="Forms\Verbandbuch.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche_2.aspx" />
     <Content Include="Forms\Zulassungsdienstsuche.aspx" />
@@ -421,6 +423,20 @@
       <DependentUpon>InventurSelection.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Forms\VerbBuchReport.aspx.designer.vb">
+      <DependentUpon>VerbBuchReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VerbBuchReport.aspx.vb">
+      <DependentUpon>VerbBuchReport.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Forms\VerbBuchErfassung.aspx.designer.vb">
+      <DependentUpon>VerbBuchErfassung.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\VerbBuchErfassung.aspx.vb">
+      <DependentUpon>VerbBuchErfassung.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Forms\Verbandbuch.aspx.designer.vb">
       <DependentUpon>Verbandbuch.aspx</DependentUpon>
     </Compile>
@@ -543,6 +559,7 @@
     <Compile Include="Lib\KBS_BASE.vb" />
     <Compile Include="Lib\ComCommon.vb" />
     <Compile Include="Lib\InventurSonstigeLagerware.vb" />
+    <Compile Include="Lib\ClsVerbandbuch.vb" />
     <Compile Include="Lib\ZLD_Suche.vb" />
     <Compile Include="Lib\KVP.vb" />
     <Compile Include="Lib\LongStringToSap.vb" />
