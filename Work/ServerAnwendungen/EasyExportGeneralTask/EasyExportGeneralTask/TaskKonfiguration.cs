@@ -128,7 +128,8 @@ namespace EasyExportGeneralTask
         SixtMobility,
         Autoinvest,
         Europcar,
-        WKDA
+        WKDA,
+        WKDA_Selbstabmelder
     }
 
     public class ArchivDefinition

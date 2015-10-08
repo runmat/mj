@@ -239,6 +239,7 @@ Public Class Retoure
             S.AP.Init("Z_FIL_EFA_PLATARTIKEL")
 
             S.AP.SetImportParameter("I_KOSTL", mKostenstelle)
+            S.AP.SetImportParameter("I_FIL", "X")
             S.AP.SetImportParameter("I_LIFNR", sLifnr)
             S.AP.SetImportParameter("I_RUECKS", "X")
 
