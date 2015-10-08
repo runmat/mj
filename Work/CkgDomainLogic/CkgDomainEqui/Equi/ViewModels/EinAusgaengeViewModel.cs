@@ -93,16 +93,28 @@ namespace CkgDomainLogic.Equi.ViewModels
             return GetVehicleChartForZBII(new DateRange(DateRangeType.LastYear, true), "Inputs");
         }
 
-        [DashboardItemsLoadMethod("ZBIIAusgaengeDiesesJahr")]
-        public ChartItemsPackage NameNotRelevant06()
+        [DashboardItemsLoadMethod("ZBIIEingaengeDiesesJahrNachHerstellerPie")]
+        public ChartItemsPackage NameNotRelevant23()
         {
-            return GetMonthChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Outputs");
+            return GetPieVehicleChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Inputs");
+        }
+
+        [DashboardItemsLoadMethod("ZBIIEingaengeLetztesJahrNachHerstellerPie")]
+        public ChartItemsPackage NameNotRelevant24()
+        {
+            return GetPieVehicleChartForZBII(new DateRange(DateRangeType.LastYear, true), "Inputs");
         }
 
 
         //
         // ZBII Ausgänge
         //
+
+        [DashboardItemsLoadMethod("ZBIIAusgaengeDiesesJahr")]
+        public ChartItemsPackage NameNotRelevant06()
+        {
+            return GetMonthChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Outputs");
+        }
 
         [DashboardItemsLoadMethod("ZBIIAusgaengeLetztesJahr")]
         public ChartItemsPackage NameNotRelevant07()
@@ -121,6 +133,20 @@ namespace CkgDomainLogic.Equi.ViewModels
         {
             return GetVehicleChartForZBII(new DateRange(DateRangeType.LastYear, true), "Outputs");
         }
+
+        [DashboardItemsLoadMethod("ZBIIAusgaengeDiesesJahrNachHerstellerPie")]
+        public ChartItemsPackage NameNotRelevant33()
+        {
+            return GetPieVehicleChartForZBII(new DateRange(DateRangeType.CurrentYear, true), "Outputs");
+        }
+
+        [DashboardItemsLoadMethod("ZBIIAusgaengeLetztesJahrNachHerstellerPie")]
+        public ChartItemsPackage NameNotRelevant34()
+        {
+            return GetPieVehicleChartForZBII(new DateRange(DateRangeType.LastYear, true), "Outputs");
+        }
+
+
 
         private ChartItemsPackage GetMonthChartForZBII(DateRange dateRange, string einAusgangsTyp)
         {
@@ -167,6 +193,8 @@ namespace CkgDomainLogic.Equi.ViewModels
                     return " VOLVO ";
                 if (herst.Contains("AUDI"))
                     return " AUDI ";
+                if (herst.Contains("FIAT"))
+                    return " FIAT ";
                 if (herst.Contains("FORD"))
                     return " FORD ";
                 if (herst.Contains("OPEL"))
@@ -180,6 +208,42 @@ namespace CkgDomainLogic.Equi.ViewModels
             var items = DataService.GetEinAusgaenge(selector).OrderBy(xAxisKeyModel).ToListOrEmptyList();
 
             return ChartService.GetBarChartGroupedStackedItemsWithLabels(
+                    items,
+                    xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey))
+                );
+        }
+
+        private ChartItemsPackage GetPieVehicleChartForZBII(DateRange dateRange, string einAusgangsTyp)
+        {
+            var selector = new EinAusgangSelektor
+            {
+                FilterEinAusgangsTyp = einAusgangsTyp,
+                DatumRange = dateRange
+            };
+            DashboardSessionSaveCurrentReportSelector(selector);
+
+            Func<string, string> xAxisKeyFormat = (itemKey => itemKey);
+            Func<Fahrzeugbrief, string> xAxisKeyModel = (groupKey =>
+            {
+                var herst = groupKey.FahrzeugHersteller.NotNullOrEmpty().ToUpper();
+
+                if (herst.Contains("VOLKSWAGEN"))
+                    return " VW ";
+                if (herst.Contains("AUDI"))
+                    return " AUDI ";
+                if (herst.Contains("FORD"))
+                    return " FORD ";
+                if (herst.Contains("OPEL"))
+                    return " OPEL ";
+                if (herst.Contains("DAIMLER"))
+                    return " Daimler ";
+
+                return "Sonstige";
+            });
+
+            var items = DataService.GetEinAusgaenge(selector).OrderBy(xAxisKeyModel).ToListOrEmptyList();
+
+            return ChartService.GetPieChartGroupedItemsWithLabels(
                     items,
                     xAxisKey => xAxisKeyFormat(xAxisKeyModel(xAxisKey))
                 );
