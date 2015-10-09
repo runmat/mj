@@ -77,13 +77,13 @@ Partial Public Class VerbBuchErfassung
     Protected WithEvents txtNameVerl As Global.System.Web.UI.WebControls.TextBox
 
     '''<summary>
-    '''lblNameVerl0-Steuerelement
+    '''lblDatumUnf-Steuerelement
     '''</summary>
     '''<remarks>
     '''Automatisch generiertes Feld
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
-    Protected WithEvents lblNameVerl0 As Global.System.Web.UI.WebControls.Label
+    Protected WithEvents lblDatumUnf As Global.System.Web.UI.WebControls.Label
 
     '''<summary>
     '''txtDatUnfall-Steuerelement
@@ -120,6 +120,15 @@ Partial Public Class VerbBuchErfassung
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents txtZeitUnfall As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''RegularExpressionValidator1-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents RegularExpressionValidator1 As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
     '''<summary>
     '''lvlVerletzung-Steuerelement
@@ -255,6 +264,15 @@ Partial Public Class VerbBuchErfassung
     '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
     '''</remarks>
     Protected WithEvents txtUhrHilfe As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
+    '''RegularExpressionValidator2-Steuerelement
+    '''</summary>
+    '''<remarks>
+    '''Automatisch generiertes Feld
+    '''Um dies zu ändern, verschieben Sie die Felddeklaration aus der Designerdatei in eine Code-Behind-Datei.
+    '''</remarks>
+    Protected WithEvents RegularExpressionValidator2 As Global.System.Web.UI.WebControls.RegularExpressionValidator
 
     '''<summary>
     '''Label1-Steuerelement

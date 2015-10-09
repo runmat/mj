@@ -1,4 +1,5 @@
-﻿Imports KBSBase
+﻿Imports System.Data
+Imports KBSBase
 
 Public Class ClsVerbandbuch
     Inherits ErrorHandlingClass
@@ -28,6 +29,7 @@ Public Class ClsVerbandbuch
         Get
             If dtEntries Is Nothing Then
                 dtEntries = New DataTable
+                dtEntries.TableName = "Eintrag"
                 dtEntries.Columns.Add("ID", String.Empty.GetType)
                 dtEntries.Columns.Add("VKBUR", String.Empty.GetType)
                 dtEntries.Columns.Add("NAME_VERL", String.Empty.GetType)
@@ -182,7 +184,7 @@ Public Class ClsVerbandbuch
 
             Dim newRow As DataRow = tmpTable.NewRow()
 
-            newRow("VKBUR") = "0000"
+            newRow("VKBUR") = VKBUR
             newRow("NAME_VERL") = NameVerl
             newRow("ZEIT_UNF") = ZeitUnf
             newRow("DATUM_UNF") = DatumUnfall
@@ -217,7 +219,7 @@ Public Class ClsVerbandbuch
         Try
             Entries.Clear()
 
-            S.AP.Init("Z_VB_EXPORT_FAELLE", "I_VKBUR", impVKBUR)
+            S.AP.Init("Z_VB_EXPORT_FAELLE", "I_VKBUR", impVkbur)
 
             S.AP.Execute()
 
@@ -255,5 +257,9 @@ Public Class ClsVerbandbuch
 
 
     End Sub
+
+
+    
+
 
 End Class

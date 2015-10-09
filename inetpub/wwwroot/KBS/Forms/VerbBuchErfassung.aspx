@@ -57,7 +57,7 @@
                                                     &nbsp;
                                                 </td>
                                                 <td style="height: 38px; width: 315px;" class="firstLeft active">
-                                                    <asp:Label ID="lblNameVerl0" runat="server" Text="Datum des Unfalls"></asp:Label>
+                                                    <asp:Label ID="lblDatumUnf" runat="server" Text="Datum des Unfalls"></asp:Label>
                                                 </td>
                                                 <td style="height: 38px">
                                                     <asp:TextBox ID="txtDatUnfall" runat="server" AutoPostBack="true" Text="" 
@@ -83,9 +83,12 @@
                                                 <td class="firstLeft active" style="height: 38px; width: 315px;">
                                                     Uhrzeit des Unfalls</td>
                                                 <td style="height: 38px">
-                                                    <asp:TextBox ID="txtZeitUnfall" runat="server" AutoPostBack="true" Text="" 
-                                                        Width="50px" MaxLength="4" TextMode="Number" />
+                                                    <asp:TextBox ID="txtZeitUnfall" runat="server" AutoPostBack="true"
+                                                        Width="50px" MaxLength="4"  />
                                                         &nbsp;&nbsp; Format: HHmm
+                                                <asp:RegularExpressionValidator ID="RegularExpressionValidator1" ControlToValidate="txtZeitUnfall" runat="server" ErrorMessage="Nur Zahlen eingeben" ValidationExpression="\d+"></asp:RegularExpressionValidator>
+                                                
+                                                
                                                 </td>
                                             </tr>
                                             <tr>
@@ -177,8 +180,10 @@
                                                     Uhrzeit der ersten Hilfe</td>
                                                 <td style="height: 38px">
                                                     <asp:TextBox ID="txtUhrHilfe" runat="server" AutoPostBack="true" Text="" 
-                                                        Width="50px" MaxLength="4" TextMode="Number" />
+                                                        Width="50px" MaxLength="4"/>
                                                     &nbsp;&nbsp; Format: HHmm
+                                                    <asp:RegularExpressionValidator ID="RegularExpressionValidator2" ControlToValidate="txtUhrHilfe" runat="server" ErrorMessage="Only Numbers allowed" ValidationExpression="\d+"></asp:RegularExpressionValidator>
+
                                                 </td>
                                             </tr>
                                             <tr>

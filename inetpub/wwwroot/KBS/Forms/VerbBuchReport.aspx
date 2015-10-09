@@ -18,7 +18,8 @@
                         </div>
                         <div id="TableQuery">
                             <div id="statistics"  style="height: 15px; margin-top: 0px;">
-                               <asp:Label ID="lblVkbur" runat="server" Style="margin-left: 10px"></asp:Label> 
+                                <asp:Label ID="lblVkbur" runat="server" Style="margin-left: 10px"></asp:Label>
+                                <asp:ImageButton align="right" ID="ImageButton1" runat="server" ImageUrl="../Images/iconPDF.gif" OnClick="OnClick"/>
                             </div>
                         </div>
                         <asp:UpdatePanel runat="server" ID="upWareneingang">
@@ -53,7 +54,6 @@
                                                      <asp:BoundField HeaderText="Zeit Erste Hilfe" DataField="DATUM_HILF" SortExpression="DATUM_HILF" />
                                                      <asp:BoundField HeaderText="Hilfeleistung" DataField="ART_HILF" SortExpression="ART_HILF" />
                                                      <asp:BoundField HeaderText="Name der Helfer" DataField="NAME_HELFER" SortExpression="NAME_HELFER" />
-
                                                     </Columns>
                                                 </asp:GridView>
                                             </td>

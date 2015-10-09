@@ -704,6 +704,7 @@
     <None Include="Docs\Lastschrift\Thueringen.pdf" />
     <None Include="Vorlagen\BestellungOhneKZGroesse.doc" />
     <None Include="Docs\Einzugsermächtigung_SEPA.pdf" />
+    <None Include="Vorlagen\Verbandbuch.doc" />
     <None Include="Vorlagen\Zeitübersicht.doc" />
     <None Include="Inventur.cd" />
     <None Include="Vorlagen\Bestellung.doc" />

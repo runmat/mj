@@ -44,7 +44,7 @@ Partial Public Class VerbBuchErfassung
                 Not txtErsteHilfe.Text = "" And Not txtNameZeug.Text = "" And Not txtNameErstHelf.Text = "" Then
 
                 mObjVerbandbuch = New ClsVerbandbuch()
-
+                mObjVerbandbuch.VKBUR = mObjKasse.Lagerort
                 mObjVerbandbuch.DatumHilfe = txtDatUnfall.Text
                 mObjVerbandbuch.DatumUnfall = txtDatHilfe.Text
                 mObjVerbandbuch.Hilfeleistung = txtErsteHilfe.Text

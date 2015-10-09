@@ -1,10 +1,14 @@
-﻿Imports KBS.KBS_BASE
+﻿Imports System.Net.Mime
+Imports Aspose.Words
+Imports KBS.KBS_BASE
+Imports GeneralTools
+Imports GeneralTools.Services
+Imports KBS.DocumentGeneration
 
 Partial Public Class VerbBuchReport
     Inherits Page
 
     Private mObjKasse As Kasse
-
     Private mObjVerbandbuch As ClsVerbandbuch
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -90,16 +94,41 @@ Partial Public Class VerbBuchReport
         End If
     End Sub
 
+
+    Public Sub Export()
+
+        Dim headTable As New DataTable("Kopf")
+        headTable.Columns.Add("Kostenstelle", GetType(System.String))
+        headTable.Columns.Add("Datum", GetType(System.String))
+        Dim tmpSAPRow As DataRow
+        tmpSAPRow = headTable.NewRow
+        tmpSAPRow("Kostenstelle") = mObjKasse.Lagerort
+        tmpSAPRow("Datum") = DateTime.Now().ToString()
+        headTable.Rows.Add(tmpSAPRow)
+        Dim imageHt As New Hashtable()
+        Dim sFilePath As String = mObjKasse.Lagerort & "_" & Replace(Now.ToShortDateString, ".", "") & "_" & Replace(Now.ToShortTimeString, ":", "")
+        Dim FilePath As String
+        FilePath = ConfigurationManager.AppSettings("LocalDocumentsPath") & "Verbandbuch\" & sFilePath & ".pdf"
+        Dim docFactory As New DocumentGeneration.WordDocumentFactory(mObjVerbandbuch.Entries, imageHt)
+
+        docFactory.CreateDocumentTableAndSend("Verbandbuch__KST__" & "5001__" & DateTime.Now().ToString(), Page, "\Vorlagen\Verbandbuch.doc", headTable)
+
+
+    End Sub
+
     Private Sub GridView1_Sorting(ByVal sender As Object, ByVal e As GridViewSortEventArgs) Handles GridView1.Sorting
         FillGrid(GridView1.PageIndex, e.SortExpression)
     End Sub
 
     Private Sub responseBack()
-        Response.Redirect("Report01.aspx")
+        Response.Redirect("../Selection.aspx")
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
         responseBack()
     End Sub
 
+    Protected Sub OnClick(sender As Object, e As ImageClickEventArgs)
+        Export()
+    End Sub
 End Class
