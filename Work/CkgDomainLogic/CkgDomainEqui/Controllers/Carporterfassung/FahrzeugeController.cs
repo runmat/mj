@@ -79,7 +79,7 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ListeAnzeigen()
         {
-            CarporterfassungViewModel.TryAvoidNullValueForCarportIdPersisted(CarporterfassungViewModel.LastCarportId);
+            CarporterfassungViewModel.SetCarportIdPersisted(CarporterfassungViewModel.LastCarportId);
 
             return PartialView("Carporterfassung/Grid", CarporterfassungViewModel);
         }
