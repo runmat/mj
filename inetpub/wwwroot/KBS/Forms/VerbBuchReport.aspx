@@ -17,9 +17,9 @@
                             </h1>
                         </div>
                         <div id="TableQuery">
-                            <div id="statistics"  style="height: 15px; margin-top: 0px;">
+                            <div id="statistics"  style="height: 20px; margin-top: 0px; padding-top: 10px">
                                 <asp:Label ID="lblVkbur" runat="server" Style="margin-left: 10px"></asp:Label>
-                                <asp:ImageButton align="right" ID="ImageButton1" runat="server" ImageUrl="../Images/iconPDF.gif" OnClick="OnClick"/>
+                                <asp:ImageButton align="right" ID="ImageButton1" runat="server" ImageUrl="../Images/iconPDF.gif" OnClick="OnClick" style="margin-right: 10px"/>
                             </div>
                         </div>
                         <asp:UpdatePanel runat="server" ID="upWareneingang">

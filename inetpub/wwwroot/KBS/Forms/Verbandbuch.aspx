@@ -27,7 +27,7 @@
                             </tr>
                             <tr class="formquery">
                                 <td class="firstLeft active">
-                                       <asp:HyperLink id="verbandbuchErf" NavigateUrl="../Forms/VerbBuchErfassung.aspx" style="font-size:medium" Target="_blank" Text="Verbandbuch-Erfassung" runat="server"/> 
+                                    <a href="VerbBuchErfassung.aspx" style="font-size:medium">Verbandbuch-Erfassung</a> 
                                 </td>
                             </tr>
                             <tr class="formquery">
@@ -37,7 +37,7 @@
                             </tr>
                             <tr class="formquery">
                                 <td class="firstLeft active">
-                                    <asp:HyperLink id="verbandbuchRep" NavigateUrl="../Forms/VerbBuchReport.aspx" style="font-size:medium" Target="_blank" Text="Verbandbuch-Report" runat="server"/> 
+                                    <a href="VerbBuchReport.aspx" style="font-size:medium">Verbandbuch-Report</a> 
                                 </td>
                             </tr>
                             <tr class="formquery">

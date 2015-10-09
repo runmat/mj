@@ -12,8 +12,6 @@ Partial Public Class VerbBuchErfassung
         FormAuth(Me)
         lblError.Text = ""
 
-        'txtOrt.Text = mObjKasse.Lagerort.ToString()
-
         If mObjKasse Is Nothing Then
             If Not Session("mKasse") Is Nothing Then
                 mObjKasse = CType(Session("mKasse"), Kasse)
@@ -21,10 +19,14 @@ Partial Public Class VerbBuchErfassung
                 Throw New Exception("benötigtes Session Objekt nicht vorhanden")
             End If
         End If
+
+        If Not IsPostBack Then
+            txtOrt.Text = mObjKasse.Lagerort.ToString()
+        End If
     End Sub
 
     Private Sub responseBack()
-        Response.Redirect("../Selection.aspx")
+        Response.Redirect("../Forms/Verbandbuch.aspx")
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click

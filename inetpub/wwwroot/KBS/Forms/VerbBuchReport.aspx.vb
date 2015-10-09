@@ -121,7 +121,7 @@ Partial Public Class VerbBuchReport
     End Sub
 
     Private Sub responseBack()
-        Response.Redirect("../Selection.aspx")
+        Response.Redirect("../Forms/Verbandbuch.aspx")
     End Sub
 
     Protected Sub lb_zurueck_Click(ByVal sender As Object, ByVal e As EventArgs) Handles lb_zurueck.Click
