@@ -58,6 +58,7 @@ Namespace Kernel.Security
         Private m_title As String
         Private m_store As String
         Private m_ValidFrom As String
+        Private m_ValidTo As String
         Private m_strUrlRemoteLoginKey As String
 
         <NonSerialized()> Private m_blnEmployee As Boolean = False
@@ -123,7 +124,8 @@ Namespace Kernel.Security
                        ByVal strTitle As String, _
                        ByVal strStore As String, _
                        ByVal blnMatrixfilled As Boolean, _
-                       ByVal strValidFrom As String)
+                       ByVal strValidFrom As String, _
+                       ByVal strValidTo As String)
 
             m_blnDoubleLoginTry = False
             m_intUserId = intUserId
@@ -155,6 +157,7 @@ Namespace Kernel.Security
             m_store = strStore
             m_blnMatrixfilled = blnMatrixfilled
             m_ValidFrom = strValidFrom
+            m_ValidTo = strValidTo
         End Sub
 
         Public Sub New( _
@@ -177,7 +180,8 @@ Namespace Kernel.Security
                        ByVal blnApproved As Boolean, _
                        ByVal strStore As String, _
                        ByVal blnMatrixfilled As Boolean, _
-                       ByVal strValidFrom As String)
+                       ByVal strValidFrom As String, _
+                       ByVal strValidTo As String)
 
             m_blnDoubleLoginTry = False
             m_intUserId = intUserId
@@ -209,6 +213,7 @@ Namespace Kernel.Security
             m_store = strStore
             m_blnMatrixfilled = blnMatrixfilled
             m_ValidFrom = strValidFrom
+            m_ValidTo = strValidTo
         End Sub
 
 #End Region
@@ -551,6 +556,12 @@ Namespace Kernel.Security
         Public ReadOnly Property ValidFrom() As String
             Get
                 Return m_ValidFrom
+            End Get
+        End Property
+
+        Public ReadOnly Property ValidTo() As String
+            Get
+                Return m_ValidTo
             End Get
         End Property
 
@@ -1558,6 +1569,7 @@ Namespace Kernel.Security
                         m_title = drUser("Title").ToString
                         m_store = drUser("Store").ToString
                         m_ValidFrom = drUser("ValidFrom").ToString
+                        m_ValidTo = drUser("ValidTo").ToString
                         m_strUrlRemoteLoginKey = drUser("UrlRemoteLoginKey").ToString
                         m_strCreatedBy = drUser("CreatedBy").ToString()
                         m_intQuestionID = -1
@@ -1999,7 +2011,7 @@ Namespace Kernel.Security
             End Try
         End Function
 
-        Public Function SendUsernameMail(ByRef errorMsg As String, ByVal PortalLinkID As Integer, ByVal Goodlink As String, ByVal BadLink As String, ByVal currentUser As User) As Boolean
+        Public Function SendUsernameMail(ByRef errorMsg As String) As Boolean
             Try
                 If Not m_customer.CustomerUsernameRules.DontSendEmail Then
 
@@ -2474,6 +2486,7 @@ Namespace Kernel.Security
                                                  "Matrix," & _
                                                  "LastChangedBy," & _
                                                  "ValidFrom, " & _
+                                                 "ValidTo, " & _
                                                  "UrlRemoteLoginKey) " & _
                              "VALUES(@Username, " & _
                                     "'', " & _
@@ -2500,6 +2513,7 @@ Namespace Kernel.Security
                                     "@Matrix, " & _
                                     "@ChangeUser, " & _
                                     "@ValidFrom, " & _
+                                    "@ValidTo, " & _
                                     "@UrlRemoteLoginKey); " & _
                          "SELECT SCOPE_IDENTITY()"
                     Dim cmdCheckUserExits As New SqlClient.SqlCommand("SELECT COUNT(UserID) FROM WebUser WHERE Username=@Username", cn)
@@ -2534,6 +2548,7 @@ Namespace Kernel.Security
                                                  "Store, " & _
                                                  "Matrix, " & _
                                                  "ValidFrom, " & _
+                                                 "ValidTo, " & _
                                                  "UrlRemoteLoginKey) " & _
                              "VALUES(@Username, " & _
                                     "'', " & _
@@ -2554,6 +2569,7 @@ Namespace Kernel.Security
                                     "@Store, " & _
                                     "@Matrix, " & _
                                     "@ValidFrom, " & _
+                                    "@ValidTo, " & _
                                     "@UrlRemoteLoginKey); " & _
                            "SELECT SCOPE_IDENTITY()"
 
@@ -2576,6 +2592,7 @@ Namespace Kernel.Security
                         .AddWithValue("@Store", m_store)
                         .AddWithValue("@Matrix", m_blnMatrixfilled)
                         .AddWithValue("@ValidFrom", m_ValidFrom)
+                        .AddWithValue("@ValidTo", m_ValidTo)
                         .AddWithValue("@UrlRemoteLoginKey", CStr(IIf(m_strUrlRemoteLoginKey Is Nothing, "", m_strUrlRemoteLoginKey)))
                     End With
 
@@ -2605,6 +2622,7 @@ Namespace Kernel.Security
                                  "LastChangedBy=@ChangeUser, " & _
                                  "Matrix=@Matrix, " & _
                                  "ValidFrom=@ValidFrom, " & _
+                                 "ValidTo=@ValidTo, " & _
                                  "UrlRemoteLoginKey=@UrlRemoteLoginKey " & _
                              "WHERE UserID=@UserID"
 
@@ -2628,6 +2646,7 @@ Namespace Kernel.Security
                                  "Store=@Store, " & _
                                  "Matrix=@Matrix, " & _
                                  "ValidFrom=@ValidFrom, " & _
+                                 "ValidTo=@ValidTo, " & _
                                  "UrlRemoteLoginKey=@UrlRemoteLoginKey " & _
                              "WHERE UserHistoryID=@UserHistoryID"
 
@@ -2651,6 +2670,7 @@ Namespace Kernel.Security
                         .AddWithValue("@Store", m_store)
                         .AddWithValue("@Matrix", m_blnMatrixfilled)
                         .AddWithValue("@ValidFrom", IIf(m_ValidFrom = String.Empty, DBNull.Value, m_ValidFrom))
+                        .AddWithValue("@ValidTo", IIf(m_ValidTo = String.Empty, DBNull.Value, m_ValidTo))
                         .AddWithValue("@UrlRemoteLoginKey", CStr(IIf(m_strUrlRemoteLoginKey Is Nothing, "", m_strUrlRemoteLoginKey)))
                     End With
 
@@ -2685,6 +2705,7 @@ Namespace Kernel.Security
                     .AddWithValue("@Matrix", m_blnMatrixfilled)
                     .AddWithValue("@ChangeUser", m_strCreatedBy)
                     .AddWithValue("@ValidFrom", IIf(m_ValidFrom = String.Empty, DBNull.Value, m_ValidFrom))
+                    .AddWithValue("@ValidTo", IIf(m_ValidTo = String.Empty, DBNull.Value, m_ValidTo))
                     .AddWithValue("@UrlRemoteLoginKey", CStr(IIf(m_strUrlRemoteLoginKey Is Nothing, "", m_strUrlRemoteLoginKey)))
                 End With
 

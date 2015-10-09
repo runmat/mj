@@ -721,6 +721,7 @@ Partial Public Class UserManagement
         txtPhone.Text = ""
         txtReadMessageCount.Text = "0"
         txtValidFrom.Text = ""
+        txtValidTo.Text = ""
         lblLockedBy.Text = ""
         lblLockedBy.Visible = False
 
@@ -2103,7 +2104,8 @@ Partial Public Class UserManagement
                                               ddlTitle.SelectedItem.Value, _
                                               txtStore.Text, _
                                               chk_Matrix1.Checked, _
-                                              txtValidFrom.Text)
+                                              txtValidFrom.Text, _
+                                              txtValidTo.Text)
 
             _User.Email = txtMail.Text
             _User.Employee = chkEmployee.Checked
@@ -2224,25 +2226,13 @@ Partial Public Class UserManagement
                             ' Wenn Passwort und Username per Mail dann Validierungsprozess
                             If Not _User.Customer.CustomerUsernameRules.DontSendEmail And Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
 
-                                Dim LinkKey As String = ""
-                                Dim RightKey As String = ""
-                                Dim WrongKey As String = ""
-
-                                'Linkschlüssel generieren
-                                LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(lblError.Text)
-
-                                'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
-                                InsertIntoWebUserUpload(_User.UserID, strPwd, _User.UserName, LinkKey, RightKey, WrongKey, _User.Customer.LoginLinkID)
-
                                 'Mail versenden
-                                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User) Then
+                                If Not _User.SendUsernameMail(errorMessage) Then
                                     lblError.Text = errorMessage
-                                Else
-                                    'Status auf erfolgreich versandt setzen
-                                    _User.UpdateWebUserUploadMailSend(True)
                                 End If
 
                             Else
+
                                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
@@ -2251,6 +2241,7 @@ Partial Public Class UserManagement
                                 ElseIf _User.Customer.CustomerPasswordRules.DontSendEmail Then
                                     _User.SendUsernameMail(errorMessage, False)
                                 End If
+
                             End If
                         End If
 
@@ -2447,34 +2438,14 @@ Partial Public Class UserManagement
             ' Wenn Passwort und Username per Mail dann Validierungsprozess
             If Not _User.Customer.CustomerUsernameRules.DontSendEmail And Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
 
-                Dim LinkKey As String = ""
-                Dim pword As String = ""
-                Dim RightKey As String = ""
-                Dim WrongKey As String = ""
-
-                'Linkschlüssel generieren
-                errorMessage = String.Empty
-                LinkKey = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
-                If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-
-                'Passwort generieren
-                errorMessage = String.Empty
-                pword = _User.Customer.CustomerPasswordRules.CreateNewPasswort(errorMessage)
-                If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
-
-                'Erstellt einen Eintrag in der Tabelle für den Freigabe-Workflow
-                InsertIntoWebUserUpload(_User.UserID, pword, _User.UserName, LinkKey, RightKey, WrongKey, _User.Customer.LoginLinkID)
-
                 'Mail versenden
                 errorMessage = String.Empty
-                If Not _User.SendUsernameMail(errorMessage, _User.Customer.LoginLinkID, RightKey, WrongKey, m_User) Then
+                If Not _User.SendUsernameMail(errorMessage) Then
                     lblError.Text &= errorMessage & "<br /><br />"
-                Else
-                    'Status auf erfolgreich versandt setzen
-                    _User.UpdateWebUserUploadMailSend(True)
                 End If
 
             Else
+
                 ' Sonst prüfen ob Passwort oder Username per Mail und diese verschicken
                 If _User.Customer.CustomerUsernameRules.DontSendEmail Then
                     If Not _User.Customer.CustomerPasswordRules.DontSendEmail Then
@@ -2487,6 +2458,7 @@ Partial Public Class UserManagement
                     _User.SendUsernameMail(errorMessage, False)
                     If Not String.IsNullOrEmpty(errorMessage) Then lblError.Text &= errorMessage & "<br /><br />"
                 End If
+
             End If
 
         End If
@@ -2646,38 +2618,6 @@ Partial Public Class UserManagement
             Search(True, True, True, True, True)
             SearchNotApprovedMode(True, False)
         End If
-    End Sub
-
-    Private Sub InsertIntoWebUserUpload(ByVal UserID As Integer, ByRef PWord As String, ByVal Username As String, ByVal LinkKey As String, ByRef RightKey As String, ByRef WrongKey As String, ByVal LoginLinkID As Integer)
-        Dim cn As New SqlClient.SqlConnection(m_User.App.Connectionstring)
-        cn.Open()
-
-        Dim cmdInsert As New SqlClient.SqlCommand("INSERT INTO WebUserUpload(UserID,Password,RightUserLink,WrongUserLink) Values(@UserID,@Password,@RightUserLink,@WrongUserLink)", cn)
-        Dim RightUser As String
-        Dim WrongUser As String
-
-        Dim Crypto As New Crypt
-
-
-        RightUser = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Username & LinkKey & "Right", "sha1")
-        WrongUser = System.Web.Security.FormsAuthentication.HashPasswordForStoringInConfigFile(Username & LinkKey & "Wrong", "sha1")
-
-        PWord = Crypto.psEncrypt(PWord)
-
-        With cmdInsert.Parameters
-            .AddWithValue("@UserID", UserID)
-            .AddWithValue("@Password", PWord)
-            .AddWithValue("@RightUserLink", RightUser)
-            .AddWithValue("@WrongUserLink", WrongUser)
-            .AddWithValue("@LoginLinkID", LoginLinkID)
-        End With
-        cmdInsert.ExecuteNonQuery()
-
-        cn.Close()
-        cn.Dispose()
-
-        RightKey = RightUser
-        WrongKey = WrongUser
     End Sub
 
     Protected Sub rgSearchResultSortCommand(sender As Object, e As GridSortCommandEventArgs) Handles rgSearchResult.SortCommand
@@ -2951,7 +2891,7 @@ Partial Public Class UserManagement
         Dim changedUser = New User(masterUser.UserID, masterUser.UserName, txtReference.Text, txtReference2.Text, txtReference3.Text, masterUser.IsTestUser, CInt(ddlCustomer.SelectedValue),
                                    masterUser.IsCustomerAdmin, masterUser.PasswordNeverExpires, masterUser.AccountIsLockedOut,
                                    masterUser.FirstLevelAdmin, masterUser.LoggedOn, masterUser.Organization.OrganizationAdmin, m_User.App.Connectionstring, masterUser.ReadMessageCount,
-                                   m_User.UserName, masterUser.Approved, masterUser.FirstName, masterUser.LastName, masterUser.Title, txtStore.Text, masterUser.Matrixfilled, masterUser.ValidFrom)
+                                   m_User.UserName, masterUser.Approved, masterUser.FirstName, masterUser.LastName, masterUser.Title, txtStore.Text, masterUser.Matrixfilled, masterUser.ValidFrom, masterUser.ValidTo)
 
         Dim intGroupID = If(ddlGroups.Items.Count = 0, 0, CInt(ddlGroups.SelectedValue))
         If intGroupID > 0 Then
@@ -3006,7 +2946,7 @@ Partial Public Class UserManagement
         Try
             Dim newUser = New User(-1, m_User.UserName & "Master1", m_User.Reference, m_User.Reference2, m_User.Reference3, m_User.IsTestUser, m_User.Customer.CustomerId, m_User.IsCustomerAdmin, _
                                    m_User.PasswordNeverExpires, m_User.AccountIsLockedOut, m_User.FirstLevelAdmin, m_User.LoggedOn, m_User.Organization.OrganizationAdmin, _
-                                   connectionString, m_User.ReadMessageCount, m_User.UserName, m_User.Approved, m_User.Store, m_User.Matrixfilled, m_User.ValidFrom)
+                                   connectionString, m_User.ReadMessageCount, m_User.UserName, m_User.Approved, m_User.Store, m_User.Matrixfilled, m_User.ValidFrom, m_User.ValidTo)
             newUser.Groups.Add(New Group(m_User.Groups(0).GroupId, m_User.Groups(0).CustomerId))
             If newUser.Save() AndAlso newUser.UserID > 0 Then
                 Dim newUserId = newUser.UserID

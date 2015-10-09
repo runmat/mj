@@ -142,7 +142,13 @@
                                                                             Benutzername
                                                                         </td>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
-                                                                            Kundenreferenz
+                                                                            <asp:Label runat="server" ID="lblRef1" />
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblRef2" />
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            <asp:Label runat="server" ID="lblRef3" />
                                                                         </td>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
                                                                             Filiale
@@ -180,7 +186,13 @@
                                                                             MSchmidt1
                                                                         </td>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
-                                                                            112233
+                                                                            &nbsp;
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            &nbsp;
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            &nbsp;
                                                                         </td>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
                                                                             &nbsp;
@@ -216,6 +228,12 @@
                                                                         </td>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
                                                                             KMeier
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            &nbsp;
+                                                                        </td>
+                                                                        <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
+                                                                            &nbsp;
                                                                         </td>
                                                                         <td style="padding-right: 5px;padding-left: 5px; border: solid 1px #dfdfdf">
                                                                             &nbsp;
