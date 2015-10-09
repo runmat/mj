@@ -17,7 +17,13 @@ namespace CKGDatabaseAdminTool
 
             DataContext = vm;
 
-            ShowDbSelectionDialog();
+            if (vm.UseDefaultDbServer)
+            {
+                IsDbSelected = true;
+                vm.SelectDbConnection();
+            }
+            else
+                ShowDbSelectionDialog();
         }
 
         private void ShowDbSelectionDialog()

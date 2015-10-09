@@ -15,6 +15,10 @@ namespace CKGDatabaseAdminLib.ViewModels
 
     public class MainViewModel : ViewModelBase
     {
+        public bool UseDefaultDbServer { get; set; }
+        public string Developer { get; set; }
+        public bool UseDefaultStartupView { get; set; }
+
         #region Properties
 
         private ViewModelBase _activeViewModel;
@@ -107,8 +111,12 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         #endregion
 
-        public MainViewModel()
+        public MainViewModel(bool useDefaultDbServer, string developer, bool useDefaultStartupView)
         {
+            UseDefaultDbServer = useDefaultDbServer;
+            Developer = developer;
+            UseDefaultStartupView = useDefaultStartupView;
+
             _messageDisplayTimer = new Timer(10000);
             TestSap = (String.IsNullOrEmpty(ConfigurationManager.AppSettings["ProdSAP"]) || ConfigurationManager.AppSettings["ProdSAP"].ToUpper() != "TRUE");
             _messageDisplayTimer.Elapsed += MessageDisplayTimerOnElapsed;
@@ -153,6 +161,8 @@ namespace CKGDatabaseAdminLib.ViewModels
             if (!String.IsNullOrEmpty(ActualDatabase) && (ActualDatabase.ToUpper().StartsWith("DAD ")))
             {
                 GitBranchViewModel = new GitBranchInfoViewModel(this);
+                if (UseDefaultStartupView)
+                    GitBranchViewModel.ManageGitBranches(null);
             }
             else
             {

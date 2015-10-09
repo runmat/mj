@@ -221,6 +221,10 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GeneralTools\GeneralTools.csproj">
+      <Project>{a4f36243-8d89-460f-acb3-ef7df37d6fca}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\WpfTools4\WpfTools4.csproj">
       <Project>{4C4733F1-AED0-46FA-B7A5-8FC54E7C8709}</Project>
       <Name>WpfTools4</Name>
@@ -248,6 +252,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\excel_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="splashscreen.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
