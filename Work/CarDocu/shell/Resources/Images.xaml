@@ -38,6 +38,7 @@
 
     <Image x:Shared="False" x:Key="image/32x32/pdf_folder" Source="/Images/32x32/pdf_folder.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/zip_archive" Source="/Images/32x32/zip_archive.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/zip_recycle" Source="/Images/32x32/zip_recycle.png" SnapsToDevicePixels="True" Width="32" Height="32" />
 
     <Image x:Shared="False" x:Key="image/32x32/settings_import" Source="/Images/32x32/settings_import.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/settings_export" Source="/Images/32x32/settings_export.png" SnapsToDevicePixels="True" Width="32" Height="32" />

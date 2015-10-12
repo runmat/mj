@@ -190,6 +190,9 @@ namespace CarDocu.Services
             if (GlobalSettings.MergeAvailableAndFixedArchives())
                 GlobalSettingsSave();
 
+            GlobalSettings.PatchArchives();
+            GlobalSettingsSave();
+
             // Domain Locations (Standorte)
             if (!GlobalSettings.DomainLocations.Any())
             {
@@ -261,7 +264,7 @@ namespace CarDocu.Services
             ScanDocumentRepositorySave();
         }
 
-        public void QueueUnprocessedItems()
+        private void QueueUnprocessedItems()
         {
             var sapUnprocessedEntities = GetUnprocessedSapItems().Select(s => new SapLogItem { DocumentID = s.DocumentID }).ToList();
             sapUnprocessedEntities.ForEach(item => DomainService.Threads.SapBackgroundTask.Enqueue(item));
@@ -273,6 +276,9 @@ namespace CarDocu.Services
         public void TryQueueNewItem(ScanDocument scanDocument)
         {
             if (scanDocument.IsTemplate)
+                return;
+
+            if (scanDocument.BackgroundDeliveryDisabled)
                 return;
 
             DomainService.Threads.SapBackgroundTask.Enqueue(new SapLogItem { DocumentID = scanDocument.DocumentID });
@@ -399,14 +405,14 @@ namespace CarDocu.Services
             return path;
         }
 
-        public IEnumerable<ScanDocument> GetUnprocessedSapItems()
+        private IEnumerable<ScanDocument> GetUnprocessedSapItems()
         {
-            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.SapDeliveryDate == null);
+            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.SapDeliveryDate == null && !sd.BackgroundDeliveryDisabled);
         }
 
-        public IEnumerable<ScanDocument> GetUnprocessedSmtpItems()
+        private IEnumerable<ScanDocument> GetUnprocessedSmtpItems()
         {
-            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.ArchiveDeliveryDate == null); // && sd.ArchiveMailDeliveryNeeded);
+            return ScanDocumentRepository.ScanDocuments.Where(sd => sd.ArchiveDeliveryDate == null && !sd.BackgroundDeliveryDisabled); // && sd.ArchiveMailDeliveryNeeded);
         }
 
         public bool ZipArchiveUserLogsAndScanDocuments(ProgressBarOperation progressBarOperation)

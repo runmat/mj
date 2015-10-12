@@ -81,6 +81,20 @@ namespace CarDocu.Models
             return difference;
         }
 
+        public void PatchArchives()
+        {
+            var zipArchiv = Archives.FirstOrDefault(a => a.ID == "ZIP");
+            if (zipArchiv != null)
+            {
+                zipArchiv.IsInternal = false;
+                zipArchiv.BackgroundDeliveryDisabled = true;
+            }
+
+            var backupArchiv = Archives.FirstOrDefault(a => a.ID == "BACKUP");
+            if (backupArchiv != null)
+                backupArchiv.BackgroundDeliveryDisabled = true;
+        }
+
         [XmlIgnore]
         public string TempPath {
             get

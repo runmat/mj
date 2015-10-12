@@ -105,7 +105,7 @@ namespace CarDocu.Services
             if (Repository.GlobalSettings == null)
                 return false;
 
-            if (Repository.GlobalSettings.Archives.Any(archive => string.IsNullOrEmpty(archive.Path)))
+            if (Repository.GlobalSettings.Archives.Any(archive => string.IsNullOrEmpty(archive.Path) && !archive.IsOptional))
                 return false;
 
             return true;

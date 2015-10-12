@@ -4,8 +4,9 @@
                 xmlns:fl="clr-namespace:Fluent;assembly=Fluent"
                 xmlns:docuGroup="clr-namespace:CarDocu.UserControls.DocuGroup"
                 xmlns:adminGroup="clr-namespace:CarDocu.UserControls.AdminGroup"
-                 xmlns:backstage="clr-namespace:CarDocu.UserControls.Backstage"
-                 xmlns:allGroups="clr-namespace:CarDocu.UserControls.AllGroups" WindowStartupLocation="CenterScreen"   
+                xmlns:backstage="clr-namespace:CarDocu.UserControls.Backstage"
+                xmlns:allGroups="clr-namespace:CarDocu.UserControls.AllGroups" WindowStartupLocation="CenterScreen"   
+                 Icon="/cardocu.ico"
                 Height="900" Width="1280">
     <StackPanel>
 
@@ -95,12 +96,20 @@
                 </fl:RibbonGroupBox>
                 <fl:RibbonGroupBox Header="Dokumente" Margin="0,0,0,0">
                     <docuGroup:ucPdfFolderRibbonButton />
-                    
+
                     <fl:Button Command="{Binding ZipToArchiveCommand}" LargeIcon="{StaticResource image/32x32/zip_archive}" 
-                               Header="Archivieren">
+                               Header="Zippen + Verschieben">
                         <fl:Button.ToolTip>
                             <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
                                           Text="Verschiebt alle Scan-Dokumente in das ZIP-Archiv"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding ZipArchiveRecycleCommand}" LargeIcon="{StaticResource image/32x32/zip_recycle}" 
+                               Header="ZIP Archiv bereinigen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Bereinigt das ZIP-Archiv, um Festplattenspeicherplatz freizugeben"
                                 />
                         </fl:Button.ToolTip>
                     </fl:Button>

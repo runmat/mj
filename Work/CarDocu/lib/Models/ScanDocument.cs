@@ -140,6 +140,29 @@ namespace CarDocu.Models
             }
         }
 
+        [XmlIgnore]
+        public bool BackgroundDeliveryDisabled
+        {
+            get
+            {
+                if (ScanImages == null)
+                    return false;
+
+                if (ScanImages.None())
+                    XmlLoadScanImages();
+
+                var firstScanImage = ScanImages.FirstOrDefault();
+                if (firstScanImage == null || firstScanImage.ImageDocumentType == null)
+                    return false;
+
+                var archive = firstScanImage.ImageDocumentType.Archive;
+                if (archive == null)
+                    return true;
+
+                return archive.BackgroundDeliveryDisabled;
+            }
+        }
+
         #endregion
 
         #endregion

@@ -75,11 +75,7 @@ namespace CarDocu.Services
                     return false;
                 }
 
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, Archiv: " + archive.Name + ", Pfad: " + archive.Path);
-
                 var archiveFolder = archive.Path;
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, ScanDokument.ID: " + scanDocument.DocumentID.NotNullOrEmpty());
 
                 var pdfFileNames = scanDocument.GetPdfFileNames();
                 if (!pdfFileNames.Any())
@@ -87,8 +83,6 @@ namespace CarDocu.Services
                     DomainService.Logger.LogMessage("Fehler: Keine PDF-Dateien vorhanden (Funktion NetworkDeliveryToArchive)");
                     return false;
                 }
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, ScanDocument.ArchiveMailDeliveryNeeded:" + scanDocument.ArchiveMailDeliveryNeeded);
 
                 if (archiveMailDeliveryNeeded)
                 {
@@ -100,23 +94,14 @@ namespace CarDocu.Services
                     }
                 }
 
-                //throw new Exception("TEST-ERROR");
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, Before Copy  ...");
-
                 pdfFileNames.ForEach(srcFileName =>
                 {
                     var srcFileInfo = new FileInfo(srcFileName);
                     var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
 
-                    DomainService.Logger.LogMessage("Info: Copy PDF-Datei, Quell-Datei: " + srcFileName + " (Funktion NetworkDeliveryToArchive)");
-                    DomainService.Logger.LogMessage("Info: Copy PDF-Datei, Ziel-Datei: " + dstFileName + " (Funktion NetworkDeliveryToArchive)");
-
                     FileService.TryFileDelete(dstFileName);
                     File.Copy(srcFileName, dstFileName, true);
                 });
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, After Copy  ...");
             }
             catch (Exception e)
             {

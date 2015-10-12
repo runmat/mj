@@ -77,6 +77,7 @@
     <Image x:Shared="False" x:Key="image/24x24/internet" Source="pack://application:,,,/WpfTools4;component/Images/24x24/internet.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/email" Source="pack://application:,,,/WpfTools4;component/Images/24x24/email.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/zip" Source="pack://application:,,,/WpfTools4;component/Images/24x24/zip.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/file_copy" Source="pack://application:,,,/WpfTools4;component/Images/24x24/file_copy.png" SnapsToDevicePixels="True" Width="24" Height="24" />
 
     <Image x:Shared="False" x:Key="image/32x32/new" Source="pack://application:,,,/WpfTools4;component/Images/32x32/new.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/explorer" Source="pack://application:,,,/WpfTools4;component/Images/32x32/Explorer.png" SnapsToDevicePixels="True" Width="32" Height="32" />
