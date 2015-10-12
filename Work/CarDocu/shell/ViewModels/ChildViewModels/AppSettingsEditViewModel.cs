@@ -132,7 +132,7 @@ namespace CarDocu.ViewModels
 
             if (_globalItemsPropertyChanged)
             {
-                foreach (var archive in GlobalSettings.Archives.ToList())
+                foreach (var archive in GlobalSettings.Archives.Where(a => !a.IsOptional).ToList())
                     if (!FileService.PathExistsAndWriteEnabled(archive.Path, Tools.AlertCritical, " für '" + archive.Name + "' "))
                         return false;
 
