@@ -14,7 +14,7 @@ Partial Public Class AutUserUpload
     Private m_User As User
     Private m_App As App
     Protected WithEvents GridNavigation1 As CKG.Services.GridNavigation
-    Private Const ANZAHLEXCELSPALTEN As Integer = 12
+    Private Const ANZAHLEXCELSPALTEN As Integer = 14
     Private Const PFLICHTFELDLEER As String = "Dieses Pflichtfeld hat keinen Eintrag."
 
     Private Enum UploadExcelColumns
@@ -22,7 +22,7 @@ Partial Public Class AutUserUpload
         Firstname = 1
         LastName = 2
         Username = 3
-        Reference1 = 4
+        Reference = 4
         Reference2 = 5
         Reference3 = 6
         Store = 7
@@ -32,6 +32,7 @@ Partial Public Class AutUserUpload
         EMailAdress = 11
         Telephone = 12
         ValidFrom = 13
+        ID = 14 'NICHT LÖSCHEN!!!
     End Enum
 
 #End Region
@@ -225,8 +226,8 @@ Partial Public Class AutUserUpload
             End If
 
             _User = New User(-1, _
-                              TempRow(UploadExcelColumns.Username).ToString().Replace(" ", ""), _
-                              TempRow(UploadExcelColumns.Reference1), _
+                              TempRow(UploadExcelColumns.Username), _
+                              TempRow(UploadExcelColumns.Reference), _
                               TempRow(UploadExcelColumns.Reference2), _
                               TempRow(UploadExcelColumns.Reference3), _
                               blnTestUser, _
@@ -240,16 +241,16 @@ Partial Public Class AutUserUpload
                               0, _
                               m_User.UserName, _
                               chkBenutzerFreigeben.Checked, _
-                              TempRow(UploadExcelColumns.Firstname).ToString().Replace(" ", ""), _
-                              TempRow(UploadExcelColumns.LastName).ToString().Replace(" ", ""), _
-                              TempRow(UploadExcelColumns.Title).ToString().Replace(" ", ""), _
+                              TempRow(UploadExcelColumns.Firstname), _
+                              TempRow(UploadExcelColumns.LastName), _
+                              TempRow(UploadExcelColumns.Title), _
                               TempRow(UploadExcelColumns.Store), _
                               False, _
                               IIf(TempRow(UploadExcelColumns.ValidFrom) Is DBNull.Value, String.Empty, TempRow(UploadExcelColumns.ValidFrom)), _
                               "")
 
-            _User.Email = TempRow(UploadExcelColumns.EMailAdress)
-            _User.Telephone = TempRow(UploadExcelColumns.Telephone)
+            _User.Email = TempRow(UploadExcelColumns.EMailAdress).ToString()
+            _User.Telephone = TempRow(UploadExcelColumns.Telephone).ToString()
             If chkRemoteLoginKey.Checked Then
                 _User.UrlRemoteLoginKey = HttpUtility.UrlEncode(Guid.NewGuid().ToString)
             End If
@@ -640,6 +641,23 @@ Partial Public Class AutUserUpload
                 blnShowPrefixField = True
             End If
 
+            ' Leerzeichen entfernen
+            If TempRow(UploadExcelColumns.Username) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.Username) = TempRow(UploadExcelColumns.Username).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.Title) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.Title) = TempRow(UploadExcelColumns.Title).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.Firstname) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.Firstname) = TempRow(UploadExcelColumns.Firstname).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.LastName) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.LastName) = TempRow(UploadExcelColumns.LastName).ToString().Replace(" ", "")
+            End If
+            If TempRow(UploadExcelColumns.EMailAdress) IsNot DBNull.Value Then
+                TempRow(UploadExcelColumns.EMailAdress) = TempRow(UploadExcelColumns.EMailAdress).ToString().Replace(" ", "")
+            End If
+
             e += 1
         Next
 
@@ -953,7 +971,7 @@ Partial Public Class AutUserUpload
             End If
 
             'Update in der Tabelle
-            RowSet = TempTable.Select("ID = " & GridRow.Cells(13).Text)
+            RowSet = TempTable.Select("ID = " & GridRow.Cells(UploadExcelColumns.ID + 1).Text)
 
             RowSet(0).BeginEdit()
 

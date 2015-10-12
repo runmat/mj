@@ -559,10 +559,13 @@ Namespace Kernel.Security
             End Get
         End Property
 
-        Public ReadOnly Property ValidTo() As String
+        Public Property ValidTo() As String
             Get
                 Return m_ValidTo
             End Get
+            Set(value As String)
+                m_ValidTo = value
+            End Set
         End Property
 
         Public Property Telephone() As String
@@ -958,6 +961,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE Username = @Username ", cn)
@@ -1117,6 +1121,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE Username = @Username " & _
@@ -1368,6 +1373,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE Username = @Username", cn)
@@ -1428,6 +1434,7 @@ Namespace Kernel.Security
                                                     "QuestionID, " & _
                                                     "AnswerText, " & _
                                                     "ValidFrom, " & _
+                                                    "ValidTo, " & _
                                                     "UrlRemoteLoginKey " & _
                                                     "FROM vwWebUser " & _
                                                     "WHERE UserId = @UserId", cn)
@@ -1569,7 +1576,9 @@ Namespace Kernel.Security
                         m_title = drUser("Title").ToString
                         m_store = drUser("Store").ToString
                         m_ValidFrom = drUser("ValidFrom").ToString
+                        If Not String.IsNullOrEmpty(m_ValidFrom) Then m_ValidFrom = m_ValidFrom.Replace(" 00:00:00", "")
                         m_ValidTo = drUser("ValidTo").ToString
+                        If Not String.IsNullOrEmpty(m_ValidTo) Then m_ValidTo = m_ValidTo.Replace(" 00:00:00", "")
                         m_strUrlRemoteLoginKey = drUser("UrlRemoteLoginKey").ToString
                         m_strCreatedBy = drUser("CreatedBy").ToString()
                         m_intQuestionID = -1

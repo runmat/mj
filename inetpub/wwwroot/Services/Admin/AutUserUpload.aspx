@@ -393,6 +393,20 @@
                                                                     Width="70px"></asp:TextBox>
                                                             </ItemTemplate>
                                                         </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Referenz 2" SortExpression="Reference2">
+                                                            <HeaderStyle Width="70px" />
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtReference2" runat="server" MaxLength="12" Text='<%# Bind("Reference2") %>'
+                                                                    Width="70px"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
+                                                        <asp:TemplateField HeaderText="Referenz 3" SortExpression="Reference3">
+                                                            <HeaderStyle Width="70px" />
+                                                            <ItemTemplate>
+                                                                <asp:TextBox ID="txtReference3" runat="server" MaxLength="12" Text='<%# Bind("Reference3") %>'
+                                                                    Width="70px"></asp:TextBox>
+                                                            </ItemTemplate>
+                                                        </asp:TemplateField>
                                                         <asp:TemplateField HeaderText="Filiale" SortExpression="Store">
                                                             <HeaderStyle Width="80px" />
                                                             <ItemTemplate>

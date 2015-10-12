@@ -516,6 +516,8 @@ Partial Public Class UserManagement
             txtReference3.Text = _User.Reference3
             txtMail.Text = _User.Email
             txtPhone.Text = _User.Telephone
+            txtValidFrom.Text = _User.ValidFrom
+            txtValidTo.Text = _User.ValidTo
             txtReadMessageCount.Text = _User.ReadMessageCount.ToString
             cbxTestUser.Checked = _User.IsTestUser
             chkLoggedOn.Checked = _User.LoggedOn
@@ -2177,6 +2179,13 @@ Partial Public Class UserManagement
                         blnEingabenOK = False
                     End If
                     strPwd = txtPassword.Text
+                End If
+            End If
+
+            ' Falls Benutzer entsperrt wurde, Feld "gültig bis" zurücksetzen
+            If Not Session("LockedOutStart") Is Nothing Then
+                If _User.Approved And _User.AccountIsLockedOut = False And CBool(Session("LockedOutStart")) = True Then
+                    _User.ValidTo = ""
                 End If
             End If
 
