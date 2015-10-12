@@ -35,7 +35,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string SaveErrorMessage { get; set; }
 
-        public void DataMarkForRefresh()
+        public int CurrentAppID { get; set; }
+
+        public void Init()
+        {
+            GetCurrentAppID();
+            DataMarkForRefresh();
+        }
+
+        private void DataMarkForRefresh()
         {
             SaveErrorMessage = "";
         }
@@ -52,6 +60,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             UploadServerFileName = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilename + extension);
             var uploadServerFileNameConverted = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilenameConverted + extension);
 
+            var archiveDirectory = ApplicationConfiguration.GetApplicationConfigValue("ArchivVerzeichnis", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+            var uploadServerFileNameArchive = (AppSettings == null ? fileName : Path.Combine(archiveDirectory, Path.GetFileNameWithoutExtension(UploadFileName) + "_" + DateTime.Now.ToString("ddMMyyyyHHmm") + extension));
+
             var nameSaved = fileSaveAction == null ? fileName : fileSaveAction(tempPath, randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
@@ -63,6 +74,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             if (AppSettings != null)
             {
+                FileService.TryFileCopy(UploadServerFileName, uploadServerFileNameArchive);
                 FileService.TryFileDelete(UploadServerFileName);
                 FileService.TryFileDelete(uploadServerFileNameConverted);
             }
@@ -227,6 +239,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             if (fatalErrorMessage.IsNotNullOrEmpty())
                 SaveErrorMessage = fatalErrorMessage + SaveErrorMessage.PrependIfNotNull(" - ");
+        }
+
+        private void GetCurrentAppID()
+        {
+            CurrentAppID = LogonContext.GetAppIdCurrent();
         }
     }
 }
