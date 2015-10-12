@@ -384,9 +384,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         Phone = new ShipPhoneType { Number = adresseDad.Telefon }
                     };
 
+                var firstFahrzeug = FahrzeugeForConfirmation.ToListOrEmptyList().FirstOrDefault();
                 var refNumbers = new[]
                     {
-                        new ReferenceNumberType {Code = "PO", Value = FahrzeugeForConfirmation.First().LieferscheinNr},
+                        new ReferenceNumberType {Code = "PO", Value = firstFahrzeug == null ? "4711" : firstFahrzeug.LieferscheinNr},
                         new ReferenceNumberType {Code = "DP", Value = adresseCarport.CarportId}
                     };
 

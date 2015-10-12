@@ -3019,6 +3019,8 @@
     <Content Include="Views\Archive\DateiDownload\Grid.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\GridForConfirmation.cshtml" />
+    <Content Include="Views\Fahrzeuge\CarportUpsLabel.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionUpsLabelForm.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

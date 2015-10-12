@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Controllers;
@@ -26,12 +27,27 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
-            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
-
+            LastCarportIdInit();
             LoadPersistedObjects();
 
             return View(CarporterfassungViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult CarportUpsLabel()
+        {
+            _dataContextKey = typeof(CarporterfassungViewModel).Name;
+
+            LastCarportIdInit();
+            CarporterfassungViewModel.Init(new List<CarporterfassungModel>());
+
+            return View(CarporterfassungViewModel);
+        }
+
+        void LastCarportIdInit()
+        {
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
         }
 
         void LoadPersistedObjects()
@@ -102,6 +118,15 @@ namespace ServicesMvc.Controllers
             CarporterfassungViewModel.SaveCarportSelectionModel(model);
 
             return PartialView("Carporterfassung/CarportSelectionForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult CarportUpsLabelSelectionForm(CarporterfassungModel model)
+        {
+            CarporterfassungViewModel.AktuellesFahrzeug = model;
+            CarporterfassungViewModel.LastCarportId = model.CarportId;
+
+            return PartialView("Carporterfassung/CarportSelectionUpsLabelForm", model);
         }
 
         [HttpPost]
