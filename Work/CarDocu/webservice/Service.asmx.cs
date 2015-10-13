@@ -136,6 +136,20 @@ namespace CarDocuWebService
 
         #endregion
 
+        #region WKDA Wiesbaden
+
+        [WebMethod]
+        public bool ProcessWkdaWiesbaden(string kundennr, string documentID, string id, string standortCode,
+                                            string commaSeparatedDocumentCodes,
+                                            out string commaSeparatedReturnCodes, out string commaSeparatedReturnMessages)
+        {
+            commaSeparatedReturnCodes = "";
+            commaSeparatedReturnMessages = "";
+
+            return true;
+        }
+
+        #endregion
 
         #region Misc
 
