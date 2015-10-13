@@ -220,9 +220,11 @@ namespace ServicesMvc
             builder.RegisterType<BatcherfassungDataServiceSAP>().As<IBatcherfassungDataService>().InstancePerHttpRequest();             
             builder.RegisterType<FahrzeugSperrenVerschiebenDataServiceSAP>().As<IFahrzeugSperrenVerschiebenDataService>().InstancePerHttpRequest();
             builder.RegisterType<StatusEinsteuerungDataServiceSAP>().As<IStatusEinsteuerungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<UeberfaelligeRuecksendungenDataServiceSAP>().As<IUeberfaelligeRuecksendungenDataService>().InstancePerHttpRequest();
             builder.RegisterType<FinanceVersendungenDataServiceSAP>().As<IFinanceVersendungenDataService>().InstancePerHttpRequest();
             builder.RegisterType<UploadAvislisteDataServiceSap>().As<IUploadAvislisteDataService>().InstancePerHttpRequest();
             builder.RegisterType<CarporterfassungDataServiceSAP>().As<ICarporterfassungDataService>().InstancePerHttpRequest();
+            builder.RegisterType<DateiDownloadDataService>().As<IDateiDownloadDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
