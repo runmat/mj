@@ -585,10 +585,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_CD_ABM_LIST.IT_STATUS, FahrzeugStatus>(
-                                                 new Dictionary<string, string>
-                                                     {
-                                                         {"STATUS", "ID"},
-                                                     },
+                                                 new Dictionary<string, string>(),
                                                      null,  // Init Copy
                                                      (business, sap) =>   // Init Copy Back
                                                          {
@@ -830,15 +827,14 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         , null
                         , (source, destination) =>
                         {
-                            destination.CHASSIS_NUM = source.Fahrgestellnummer.NotNullOrEmpty().ToUpper();
-                            destination.LICENSE_NUM = source.Kennzeichen.NotNullOrEmpty().ToUpper();
-                            destination.TIDNR = source.Zb2Nummer.NotNullOrEmpty().ToUpper();
+                            destination.CHASSIS_NUM = source.Fahrgestellnummer;
+                            destination.LICENSE_NUM = source.Kennzeichen;
+                            destination.TIDNR = source.Zb2Nummer;
                             destination.ZZMODELL = source.ModelID;
-                            destination.ZZREFERENZ1 = source.Unitnummer.NotNullOrEmpty().ToUpper();
+                            destination.ZZREFERENZ1 = source.Unitnummer;
                             destination.LIZNR = source.Auftragsnummer;
-                            destination.ZBATCH_ID = source.BatchId.NotNullOrEmpty().ToUpper();
+                            destination.ZBATCH_ID = source.BatchId;
                             destination.ZZSIPP = source.SIPPCode;
-                            destination.ZZHERST_TEXT = source.Herstellerkennung;
                             destination.KUNPDI = source.Pdi;
                         }
                     ));

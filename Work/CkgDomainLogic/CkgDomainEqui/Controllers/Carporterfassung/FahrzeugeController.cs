@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Controllers;
@@ -7,8 +6,8 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
 using Telerik.Web.Mvc;
 using DocumentTools.Services;
-using GeneralTools.Contracts;
 using GeneralTools.Models;
+using SapORM.Contracts;
 
 namespace ServicesMvc.Controllers
 {
@@ -16,9 +15,9 @@ namespace ServicesMvc.Controllers
     {
         public CarporterfassungViewModel CarporterfassungViewModel { get { return GetViewModel<CarporterfassungViewModel>(); } }
 
-        private static string PersistableGroupKey
+        private string PersistableGroupKey
         {
-            get { return "CarporterfassungsListe"; }
+            get { return string.Format("CarporterfassungsListe_{0}", LogonContext.KundenNr.ToSapKunnr()); }
         }
 
 
@@ -27,12 +26,19 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            CarporterfassungViewModel.Init();
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
 
-            // get shopping cart items
-            CarporterfassungViewModel.Fahrzeuge = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey);
+            LoadPersistedObjects();
 
             return View(CarporterfassungViewModel);
+        }
+
+        void LoadPersistedObjects()
+        {
+            // get shopping cart items
+            var fahrzeugePersisted = PersistanceGetObjects<CarporterfassungModel>(PersistableGroupKey, "ALL");
+            CarporterfassungViewModel.Init(fahrzeugePersisted);
         }
 
         [HttpPost]
@@ -40,12 +46,15 @@ namespace ServicesMvc.Controllers
         {
             if (ModelState.IsValid)
             {
-                model.Kennzeichen = CarporterfassungViewModel.PrepareKennzeichen(model.Kennzeichen);
+                CarporterfassungViewModel.PrepareCarportModel(ref model);
 
                 // save to shopping cart
                 model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
 
                 CarporterfassungViewModel.AddFahrzeug(model);
+
+                CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
+                LogonContext.DataContextPersist(CarporterfassungViewModel);
             }
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", model);
@@ -61,7 +70,7 @@ namespace ServicesMvc.Controllers
             return Json(new
             {
                 fzg.Kennzeichen, fzg.FahrgestellNr,
-                fzg.AuftragsNr, fzg.MvaNr, fzg.CarportName, fzg.Carport,
+                fzg.AuftragsNr, fzg.MvaNr, fzg.CarportName, 
                 Status = fzg.Status.NotNullOrEmpty(),
                 TmpStatus = fzg.TmpStatus.NotNullOrEmpty()
             });
@@ -70,6 +79,8 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult ListeAnzeigen()
         {
+            CarporterfassungViewModel.TryAvoidNullValueForCarportIdPersisted(CarporterfassungViewModel.LastCarportId);
+
             return PartialView("Carporterfassung/Grid", CarporterfassungViewModel);
         }
 
@@ -77,6 +88,20 @@ namespace ServicesMvc.Controllers
         public ActionResult CarporterfassungAjaxBinding()
         {
             return View(new GridModel(CarporterfassungViewModel.FahrzeugeFiltered));
+        }
+
+        [GridAction]
+        public ActionResult CarporterfassungAjaxBindingForConfirmation()
+        {
+            return View(new GridModel(CarporterfassungViewModel.FahrzeugeForConfirmationFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult CarportSelectionForm(CarporterfassungModel model)
+        {
+            CarporterfassungViewModel.SaveCarportSelectionModel(model);
+
+            return PartialView("Carporterfassung/CarportSelectionForm", model);
         }
 
         [HttpPost]
@@ -101,24 +126,16 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult FahrzeugeSpeichern()
         {
-            CarporterfassungViewModel.SaveFahrzeuge();
+            CarporterfassungViewModel.SaveFahrzeuge((ownerMultiKey, additionalFilter) => PersistanceDeleteAllObjects(PersistableGroupKey, ownerMultiKey, additionalFilter));
 
-            return PartialView("Carporterfassung/Grid", CarporterfassungViewModel);
+            LoadPersistedObjects();
+
+            return PartialView("Carporterfassung/GridForConfirmation", CarporterfassungViewModel);
         }
 
         [HttpPost]
         public ActionResult NeuesFahrzeugErfassen(bool clearList)
         {
-            if (clearList)
-            {
-                // clear shopping cart
-                var kennzeichenList = CarporterfassungViewModel.Fahrzeuge.Select(f => f.Kennzeichen).ToList();
-                foreach (var kennzeichen in kennzeichenList)
-                    FahrzeugDelete(kennzeichen);
-
-                CarporterfassungViewModel.ClearList();
-            }
-
             CarporterfassungViewModel.LoadFahrzeugModel();
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", CarporterfassungViewModel.AktuellesFahrzeug);
@@ -146,6 +163,14 @@ namespace ServicesMvc.Controllers
             return new EmptyResult();
         }
 
+        [HttpPost]
+        public ActionResult FilterGridCarporterfassungForConfirmation(string filterValue, string filterColumns)
+        {
+            CarporterfassungViewModel.FilterFahrzeugeForConfirmation(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
         #region Export
 
         public ActionResult ExportCarporterfassungFilteredExcel(int page, string orderBy, string filterBy)
@@ -159,6 +184,21 @@ namespace ServicesMvc.Controllers
         public ActionResult ExportCarporterfassungFilteredPDF(int page, string orderBy, string filterBy)
         {
             var dt = CarporterfassungViewModel.FahrzeugeFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+        public ActionResult ExportCarporterfassungFilteredExcelForConfirmation(int page, string orderBy, string filterBy)
+        {
+            var dt = CarporterfassungViewModel.FahrzeugeForConfirmationFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportCarporterfassungFilteredPDFForConfirmation(int page, string orderBy, string filterBy)
+        {
+            var dt = CarporterfassungViewModel.FahrzeugeForConfirmationFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse(Localize.Fahrzeuge_Carporterfassung, dt, landscapeOrientation: true);
 
             return new EmptyResult();

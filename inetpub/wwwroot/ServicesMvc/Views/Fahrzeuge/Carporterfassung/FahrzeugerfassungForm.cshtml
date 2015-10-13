@@ -11,14 +11,14 @@
         @Html.HiddenFor(m => m.ObjectKey)
 
         @Html.HiddenFor(m => m.KundenNr)
-        @Html.HiddenFor(m => m.CarportId)
+        @Html.HiddenFor(m => m.UserName)
         @Html.HiddenFor(m => m.CarportName)
         @Html.HiddenFor(m => m.LieferscheinNr)
         @Html.HiddenFor(m => m.Status)
-        @Html.HiddenFor(m => m.Barcode)
 
 
-        @Html.FormTextBoxFor(m => m.Carport, new { @class = "m-wrap", @disabled = "disabled" })
+        @Html.FormDropDownListFor(m => m.CarportId, Model.CarportPdis.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
+        @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap", col = "right" })
 
         @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onchange = "LoadFahrzeugdatenZuKennzeichen();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuKennzeichen(); return false; }" })
         @Html.FormTextBoxFor(m => m.MvaNr, new { @class = "m-wrap", col = "right", @onchange = "LoadFahrzeugdatenZuBestandsnummer();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuBestandsnummer(); return false; }" })
@@ -45,12 +45,16 @@
         @Html.FormRequiredFieldsSummary()
         
         <div class="form-actions">
-            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Acquire</button>
+            <button type="submit" class="btn green"><i class="icon-ok"></i> @Localize.Save</button>
             <button type="button" class="btn" onclick="ListeAnzeigen();">@Localize.ToList</button>
         </div>
         
         <script type="text/javascript">       
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+
+            var kennzeichen = '@Model.Kennzeichen.NotNullOrEmpty()';
+            if (kennzeichen !== '')
+                $("#Kennzeichen").attr("readonly", "readonly");
         </script>
     }
 </div>
