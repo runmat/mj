@@ -123,21 +123,24 @@ namespace CarDocu.Models
         public bool ArchiveMailDeliveryNeeded { get; set; }
 
         #endregion
-        
+
         #region Archive
 
-        [XmlIgnore]
-        public Archive Archive
+        public Archive GetDefaultArchive()
         {
-            get
-            {
-                // ToDo: !!! Das Archiv aus den ScanImages nehmen statt fix "ELO" oder "EASY" hier (aber leider Exception in Ingolstadt sonst)
-                
-                //var firstScanImage = ScanImages.FirstOrDefault(); 
-                //return firstScanImage == null ? null : firstScanImage.ImageDocumentType.Archive;
+            return DomainService.Repository.GlobalSettings.Archives.FirstOrDefault(a => a.ID == (ArchiveMailDeliveryNeeded ? "ELO" : "EASY"));
+        }
 
-                return DomainService.Repository.GlobalSettings.Archives.FirstOrDefault(a => a.ID == (ArchiveMailDeliveryNeeded ? "ELO" : "EASY"));
-            }
+        public Archive GetArchive()
+        {
+            if (ScanImages == null)
+                return GetDefaultArchive();
+
+            if (ScanImages.None())
+                XmlLoadScanImages();
+
+            var firstScanImage = ScanImages.FirstOrDefault(); 
+            return firstScanImage != null && firstScanImage.ImageDocumentType != null ? firstScanImage.ImageDocumentType.Archive : GetDefaultArchive();
         }
 
         [XmlIgnore]
@@ -145,17 +148,7 @@ namespace CarDocu.Models
         {
             get
             {
-                if (ScanImages == null)
-                    return false;
-
-                if (ScanImages.None())
-                    XmlLoadScanImages();
-
-                var firstScanImage = ScanImages.FirstOrDefault();
-                if (firstScanImage == null || firstScanImage.ImageDocumentType == null)
-                    return false;
-
-                var archive = firstScanImage.ImageDocumentType.Archive;
+                var archive = GetArchive();
                 if (archive == null)
                     return true;
 

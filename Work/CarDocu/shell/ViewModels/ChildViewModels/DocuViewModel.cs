@@ -401,7 +401,7 @@ namespace CarDocu.ViewModels
 
         bool ScanAppendAllowed()
         {
-            var existingArchive = ScanDocument.Archive;
+            var existingArchive = ScanDocument.GetArchive();
 
             if (ScanDocument.ScanImagesCount == 0)
                 return true;

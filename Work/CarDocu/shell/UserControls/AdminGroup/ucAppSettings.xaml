@@ -38,7 +38,6 @@
                 <TextBlock Text="{Binding UserHintForArchives}" Foreground="Red" FontWeight="Bold" FontSize="14"  />
             </StackPanel>
             <TextBlock Text="Archiv-Ablage" Style="{StaticResource lbHeaderBig}" />
-            <TextBlock Margin="30,5,0,5" Visibility="{Binding CurrentUserIsMaster, Converter={StaticResource BooleanVisibilityConverter}}" Background="LightYellow" Foreground="Red" FontSize="9pt" Text="Interne Entwickler Info: Bevor hier weitere Domain-Pfade bereitgestellt werden, bitte erst das 'ToDo' aus dem Quellcode 'ScanDocument.cs' fixen!" />
             <StackPanel Margin="30,0,0,0">
                 <ItemsControl ItemsSource="{Binding Archives}">
                     <ItemsControl.ItemTemplate>

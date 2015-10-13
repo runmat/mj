@@ -67,7 +67,7 @@ namespace CarDocu.Services
             {
                 DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, Start ...");
 
-                var archive = scanDocument.Archive;
+                var archive = scanDocument.GetArchive();
 
                 if (archive == null)
                 {
