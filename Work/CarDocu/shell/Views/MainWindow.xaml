@@ -98,18 +98,18 @@
                     <docuGroup:ucPdfFolderRibbonButton />
 
                     <fl:Button Command="{Binding ZipToArchiveCommand}" LargeIcon="{StaticResource image/32x32/zip_archive}" 
-                               Header="Zippen + Verschieben">
+                               Header="Zippen + Backup">
                         <fl:Button.ToolTip>
                             <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
-                                          Text="Verschiebt alle Scan-Dokumente in das ZIP-Archiv"
+                                          Text="Verschiebt alle Scan-Dokumente in das ZIP-Archiv  und  erstellt ggfls. ein lokales Zusatz Backup (sofern ein Backup Pfad hinterlegt ist)"
                                 />
                         </fl:Button.ToolTip>
                     </fl:Button>
                     <fl:Button Command="{Binding ZipArchiveRecycleCommand}" LargeIcon="{StaticResource image/32x32/zip_recycle}" 
-                               Header="ZIP Archiv bereinigen">
+                               Header="Backup Ordner bereinigen">
                         <fl:Button.ToolTip>
                             <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
-                                          Text="Bereinigt das ZIP-Archiv, um Festplattenspeicherplatz freizugeben"
+                                          Text="Bereinigt den lokalen Backup Ordner, um lokalen Festplattenspeicherplatz freizugeben"
                                 />
                         </fl:Button.ToolTip>
                     </fl:Button>

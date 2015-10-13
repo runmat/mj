@@ -163,10 +163,6 @@ namespace CarDocu.ViewModels
             if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.ZipArchive.Path, "zur ZIP-Archivierung"))
                 return;
 
-            // Validate Backup Path
-            //if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.BackupArchive.Path, "zum Backup Ordner"))
-            //    return;
-
 
             if (!Tools.Confirm("Alle Scan-Dokumente aus dem Ablage-Archiv werden nun in das ZIP-Archiv verschoben.\r\n\r\nWeiter?"))
                 return;
@@ -178,6 +174,9 @@ namespace CarDocu.ViewModels
         {
             // Validate Backup Path
             if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.BackupArchive.Path, "zum Backup Ordner"))
+                return;
+
+            if (!Tools.Confirm("Der Backup Ordner wird nun bereinigt, alle in diesem Ordner vorhandenen Dateien werden gelöscht.\r\n\r\nWeiter?"))
                 return;
 
             ProgressBarOperation.Start(DomainService.Repository.ZipArchiveRecycle, ZipArchiveRecycleComplete);

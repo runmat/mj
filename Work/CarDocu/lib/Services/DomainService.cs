@@ -56,6 +56,7 @@ namespace CarDocu.Services
             string loginData;
             var defaultUser = Repository.GlobalSettings.DomainUsers.FirstOrDefault(u => u.IsDefaultUser);
             var forceLoginPanelKeyPressed = Keyboard.IsKeyDown(Key.F8);
+
             if (defaultUser != null && !forceLoginPanelKeyPressed)
                 loginData = string.Format("{0}~{1}", defaultUser.LoginName, Repository.GlobalSettings.DomainLocations.First().SapCode);
             else
@@ -128,11 +129,6 @@ namespace CarDocu.Services
         public static bool SendTestMail()
         {
             return true;
-
-            //if (Repository.GlobalSettings == null || Repository.GlobalSettings.SmtpSettings == null)
-            //    return false; 
-
-            //return SendMail(Repository.GlobalSettings.SmtpSettings.From, "CarDocu - Test", "");
         }
     }
 }
