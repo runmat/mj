@@ -212,10 +212,21 @@ namespace CarDocu.Models
         public long BarcodeRangeEnd
         {
             get { return _barcodeRangeEnd; }
-            set 
+            set
             {
                 _barcodeRangeEnd = value;
                 SendPropertyChangedBarcodeEnd();
+            }
+        }
+
+        private long _enforceExactPageCount;
+        public long EnforceExactPageCount
+        {
+            get { return _enforceExactPageCount; }
+            set
+            {
+                _enforceExactPageCount = value;
+                SendPropertyChanged("EnforceExactPageCount");
             }
         }
 

@@ -17,8 +17,8 @@ namespace CarDocu.Services
         {
             get
             {
-                return Environment.UserName.ToLower().Contains("xjenzenm") &&
-                       Environment.MachineName.ToUpper().Contains("xAHW460");
+                return Environment.UserName.ToLower().Contains("jenzenm") &&
+                       Environment.MachineName.ToUpper().Contains("AHW460");
             }
         }
 
