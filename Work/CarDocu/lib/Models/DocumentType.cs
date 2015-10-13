@@ -347,6 +347,10 @@ namespace CarDocu.Models
                                    {
                                        ID = "VWL", FunctionName = "ProcessVwlKlaerfaelle", FriendlyName = "VW Leasing Klärfälle"
                                    },
+                               new DocumentTypeWebServiceFunction
+                                   {
+                                       ID = "WKDA", FunctionName = "ProcessWkda", FriendlyName = "WKDA Wiesbaden"
+                                   },
                            };
             }
         }

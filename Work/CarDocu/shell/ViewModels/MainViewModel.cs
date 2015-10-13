@@ -109,7 +109,7 @@ namespace CarDocu.ViewModels
 
         public MainViewModel()
         {
-            XpsDocumentInit();
+            //XpsDocumentInit();
 
             LocationSelectionToggleCommand = new DelegateCommand(e => LocationSelectionVisible = !LocationSelectionVisible);
             LocationSelectionHideCommand = new DelegateCommand(e => LocationSelectionVisible = false);
@@ -240,7 +240,7 @@ namespace CarDocu.ViewModels
             set { _xpsDocument = value; SendPropertyChanged("XpsDocument"); }
         }
 
-        void XpsDocumentInit()
+        public void XpsDocumentInit()
         {
             UIHintService.TryShowNextUIHintForUser(xpsDocument =>
                                                        {

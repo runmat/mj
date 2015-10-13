@@ -66,6 +66,9 @@ namespace CarDocu.Models
         [XmlIgnore]
         public Archive ZipArchive { get { return Archives.FirstOrDefault(archive => archive.ID == "ZIP"); } }
 
+        [XmlIgnore]
+        public Archive BackupArchive { get { return Archives.FirstOrDefault(archive => archive.ID == "BACKUP"); } }
+
 
         public bool MergeAvailableAndFixedArchives()
         {

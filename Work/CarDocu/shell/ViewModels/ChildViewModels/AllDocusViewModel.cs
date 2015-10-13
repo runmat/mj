@@ -6,6 +6,7 @@ using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Services;
 using GeneralTools.Models;
+using GeneralTools.Services;
 using WpfTools4.Commands;
 using WpfTools4.Services;
 using WpfTools4.ViewModels;
@@ -109,6 +110,7 @@ namespace CarDocu.ViewModels
         public ICommand ScanPdfFolderOpenCommand { get; private set; }
 
         public ICommand ZipToArchiveCommand { get; private set; }
+        public ICommand ZipArchiveRecycleCommand { get; private set; }
 
         #endregion
 
@@ -120,12 +122,26 @@ namespace CarDocu.ViewModels
             ScanDocuDeleteCommand = new DelegateCommand(e => ScanDocuDelete(), e => CanScanDocuDelete());
             ScanPdfFolderOpenCommand = new DelegateCommand(e => DomainService.Repository.ScanPdfFolderOpen());
             ZipToArchiveCommand = new DelegateCommand(e => ZipArchiveUserLogsAndScanDocuments());
+            ZipArchiveRecycleCommand = new DelegateCommand(e => ZipArchiveRecycle());
 
             DomainService.Repository.ScanDocumentRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
             DomainService.Repository.ScanDocumentRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
             
             DomainService.Repository.ScanTemplateRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
             DomainService.Repository.ScanTemplateRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
+        }
+
+        static bool EnsureDomainPathExistsAndIsAvailable(string path, string pathDescription)
+        {
+            if (path.IsNullOrEmpty())
+            {
+                Tools.Alert("Hinweis:\r\n\r\nBitte hinterlegen Sie zuerst den Pfad " + pathDescription + " in den Domain Einstellungen.\r\n\r\n(Admin Rechte erforderlich)");
+                return false;
+            }
+            if (!FileService.PathExistsAndWriteEnabled(path, Tools.AlertCritical, " " + pathDescription + " "))
+                return false;
+
+            return true;
         }
 
         static void ZipArchiveUserLogsAndScanDocuments()
@@ -142,10 +158,34 @@ namespace CarDocu.ViewModels
                 return;
             }
 
+
+            // Validate ZIP Path
+            if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.ZipArchive.Path, "zur ZIP-Archivierung"))
+                return;
+
+            // Validate Backup Path
+            //if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.BackupArchive.Path, "zum Backup Ordner"))
+            //    return;
+
+
             if (!Tools.Confirm("Alle Scan-Dokumente aus dem Ablage-Archiv werden nun in das ZIP-Archiv verschoben.\r\n\r\nWeiter?"))
                 return;
 
             ProgressBarOperation.Start(DomainService.Repository.ZipArchiveUserLogsAndScanDocuments, ZipArchiveUserLogsAndScanDocumentsComplete);
+        }
+
+        static void ZipArchiveRecycle()
+        {
+            // Validate Backup Path
+            if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.BackupArchive.Path, "zum Backup Ordner"))
+                return;
+
+            ProgressBarOperation.Start(DomainService.Repository.ZipArchiveRecycle, ZipArchiveRecycleComplete);
+        }
+
+        private static void ZipArchiveRecycleComplete(ProgressBarOperation progressBarOperation)
+        {
+            Tools.Alert("Der Backup Ordner wurde erfolgreich bereinigt!");
         }
 
         static void ZipArchiveUserLogsAndScanDocumentsComplete(ProgressBarOperation progressBarOperation)

@@ -417,9 +417,14 @@ namespace CarDocu.Services
 
         public bool ZipArchiveUserLogsAndScanDocuments(ProgressBarOperation progressBarOperation)
         {
-            var directoryToZip = UserSettingsDirectoryName;
+            var directoryToZip = PdfDirectoryName;
+
+            var backupArchivePath = GlobalSettings.BackupArchive.Path;
             var zipArchivePath = GlobalSettings.ZipArchive.Path;
-            var zipFileName = Path.Combine(zipArchivePath, string.Format("{0}__{1}.zip", LogonUser.LoginID, DateTime.Now.ToString("yyyy_MM_dd___HH_mm_ss")));
+            var tempPath = GlobalSettings.TempPath;
+
+            var tempRawFileName = string.Format("{0}__{1}.zip", "CkgScanClient_PDF___", DateTime.Now.ToString("yyyy_MM_dd___HH_mm_ss"));
+            var tempFileName = Path.Combine(tempPath, tempRawFileName);
 
             var fileList = Directory.EnumerateFiles(directoryToZip, "*.*", SearchOption.AllDirectories).ToList();
 
@@ -437,7 +442,7 @@ namespace CarDocu.Services
                     if (progressBarOperation.IsCancellationPending)
                         return false;
 
-                    var e = zip.AddFile(filename);
+                    var e = zip.AddFile(filename, "PDF");
                     e.Comment = string.Format("Datei hinzugefügt von '{0}'", DomainService.AppName);
 
                     progressBarOperation.Current++;
@@ -449,19 +454,39 @@ namespace CarDocu.Services
                 zip.Comment = string.Format("ZIP-Datei erstellt von '{0}' auf Rechner '{1}'", DomainService.AppName, System.Net.Dns.GetHostName());
 
                 // lengthly atomar operation here...
-                progressBarOperation.Details = "Speichern ... bitte warten Sie einen Moment ...";
-                zip.Save(zipFileName);
+                progressBarOperation.Details = "Erstelle ZIP Datei ... bitte warten Sie einen Moment ...";
+                zip.Save(tempFileName);
 
                 if (progressBarOperation.IsCancellationPending)
                 {
-                    FileService.TryFileDelete(zipFileName);
+                    FileService.TryFileDelete(tempFileName);
                     return false;
                 }
 
+
+                // Copy ZIP file to ZIP folder:
+                var zipFileName = Path.Combine(zipArchivePath, tempRawFileName);
+                progressBarOperation.Details = "Kopiere ZIP Datei  ...";
+                FileService.TryFileCopy(tempFileName, zipFileName);
+                Thread.Sleep(1000);
+
+
+                if (backupArchivePath.IsNotNullOrEmpty() && FileService.PathExistsAndWriteEnabled(backupArchivePath))
+                {
+                    // Additionally create a backup of the ZIP file:
+                    var backupFileName = Path.Combine(backupArchivePath, tempRawFileName);
+                    progressBarOperation.Details = "Erstelle zusätzliches Backup von ZIP Datei  ...";
+                    FileService.TryFileCopy(tempFileName, backupFileName);
+                    Thread.Sleep(1000);
+                }
+
+
                 // another lengthly atomar operation here...
                 progressBarOperation.Details = "Datenbereinigung ... bitte warten Sie einen Moment ...";
+                FileService.TryFileDelete(tempFileName);
                 FileService.TryDirectoryDelete(directoryToZip);
-                Thread.Sleep(2000);
+                FileService.TryDirectoryDelete(UserSettingsDirectoryName);
+                Thread.Sleep(1000);
 
                 if (progressBarOperation.IsCancellationPending)
                     return false;
@@ -473,6 +498,20 @@ namespace CarDocu.Services
             }
 
             return true;
+        }
+
+        public bool ZipArchiveRecycle(ProgressBarOperation progressBarOperation)
+        {
+            progressBarOperation.Header = "Backup Ordner Bereinigung";
+            progressBarOperation.Details = "Backup Ordner wird bereinigt ... einen Moment bitte ...";
+            progressBarOperation.ProgressInfoVisible = false;
+            progressBarOperation.BusyCircleVisible = true;
+
+            var success = FileService.TryDirectoryDelete(GlobalSettings.BackupArchive.Path);
+            FileService.TryDirectoryCreate(GlobalSettings.BackupArchive.Path);
+            Thread.Sleep(1000);
+
+            return success;
         }
 
         public DocumentType GetImageDocumentType(string documentTypeCode)

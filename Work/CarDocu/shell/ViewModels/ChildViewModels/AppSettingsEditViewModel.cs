@@ -5,6 +5,7 @@ using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Models.Settings;
 using CarDocu.Services;
+using GeneralTools.Models;
 using GeneralTools.Services;
 using WpfTools4.Commands;
 using WpfTools4.ViewModels;
@@ -132,9 +133,10 @@ namespace CarDocu.ViewModels
 
             if (_globalItemsPropertyChanged)
             {
-                foreach (var archive in GlobalSettings.Archives.Where(a => !a.IsOptional).ToList())
-                    if (!FileService.PathExistsAndWriteEnabled(archive.Path, Tools.AlertCritical, " für '" + archive.Name + "' "))
-                        return false;
+                foreach (var archive in GlobalSettings.Archives.ToList())
+                    if (archive.Path.IsNotNullOrEmpty() && !FileService.PathExistsAndWriteEnabled(archive.Path, Tools.AlertCritical, " für '" + archive.Name + "' "))
+                        if (!archive.IsOptional)
+                            return false;
 
                 DomainService.Repository.GlobalSettingsSave();
                 _globalItemsPropertyChanged = false;
