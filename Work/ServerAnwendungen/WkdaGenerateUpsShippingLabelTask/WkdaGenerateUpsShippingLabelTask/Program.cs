@@ -28,8 +28,7 @@ namespace WkdaGenerateUpsShippingLabelTask
                         FileService.TryFileDelete(filePath);
                     }
                 }
-                Console.WriteLine("Zum Beenden beliebige Taste drücken...");
-                Console.ReadKey();
+
                 Z_DPM_READ_ZDAD_AUFTR_006.Init(S.AP, "I_KUNNR, I_KENNUNG", Konfiguration.WkdaKunnr, "WKDA");
 
                 var sapResults = Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB.GetExportListWithExecute(S.AP);
