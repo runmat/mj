@@ -1,0 +1,25 @@
+﻿@using CkgDomainLogic.Archive.ViewModels
+@model PdfAnzeigeViewModel
+
+<style>
+    .pdfContentStyle {
+        height: 80vh;
+    }
+</style>
+
+<h3 class="page-title" id="headerTitle">@Localize.Archive_PdfAnzeige<small></small></h3>
+
+<div class="ui-widget-content pdfContentStyle"> 
+    <iframe src="ShowPdf" class="ui-widget-content" frameborder="no" width="100%" height="100%" />
+</div>
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+</script>
