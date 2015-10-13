@@ -20,14 +20,22 @@
         @Html.FormDropDownListFor(m => m.CarportId, Model.CarportPdis.ToSelectList(), new { @class = "m-wrap medium", col = "left" })
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap", col = "right" })
 
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "left", @onchange = "LoadFahrzeugdatenZuKennzeichen();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuKennzeichen(); return false; }" })
-        @Html.FormTextBoxFor(m => m.MvaNr, new { @class = "m-wrap", col = "right", @onchange = "LoadFahrzeugdatenZuBestandsnummer();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuBestandsnummer(); return false; }" })
+        @Html.FormCheckBoxFor(m => m.Ausland, new { @class = "m-wrap", col = "left" }, labelHidden: true)
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right", @onchange = "LoadFahrzeugdatenZuKennzeichen();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuKennzeichen(); return false; }" })
 
-        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", col = "left", @onchange = "LoadFahrzeugdatenZuFin();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuFin(); return false; }" })
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
+        @Html.FormTextBoxFor(m => m.BestandsNrTeil1, new { @class = "m-wrap xsmall uppercase", maxlength = 2, col = "left", @onchange = "LoadFahrzeugdatenZuBestandsnummer();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuBestandsnummer(); return false; } else { return LettersOnly(false); }" },
+            postControlHtml: @<text>
+                                 @Html.TextBoxFor(m => m.BestandsNrTeil2, new { @class = "m-wrap small margin-left-5", maxlength = 5, @onchange = "LoadFahrzeugdatenZuBestandsnummer();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuBestandsnummer(); return false; } else { return NumbersOnly(false); }" })
+                              </text>)
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", maxlength = 17, col = "right", @onchange = "LoadFahrzeugdatenZuFin();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuFin(); return false; }" },
+            postControlHtml: @<text>
+                                 @Html.TextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5", maxlength = 1, @onchange = "LoadFahrzeugdatenZuFin();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuFin(); return false; }" })
+                              </text>)
+        
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap" })
 
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap", col = "left" })
-        @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap xsmall", col = "right", @onkeypress = "return NumbersOnly(false);" })
+        @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap tiny", col = "right", @onkeypress = "return NumbersOnly(false);" })
         
         @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left" }, labelHidden: true)
         @Html.FormCheckBoxFor(m => m.Zb1Vorhanden, new { @class = "m-wrap", col = "right" }, labelHidden: true)

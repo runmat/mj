@@ -170,7 +170,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             kennzeichen = PrepareKennzeichen(kennzeichen);
 
-            AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().ToUpper(), bestandsnummer, fin.NotNullOrEmpty().ToUpper());
+            AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().ToUpper(), bestandsnummer.NotNullOrEmpty().ToUpper(), fin.NotNullOrEmpty().ToUpper());
 
             if (AktuellesFahrzeug != null && Fahrzeuge.Any(f => f.Kennzeichen == AktuellesFahrzeug.Kennzeichen))
                 AktuellesFahrzeug = new CarporterfassungModel { TmpStatus = "VEHICLE_ALREADY_EXISTS" };
@@ -180,10 +180,6 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             item.Kennzeichen = item.Kennzeichen.NotNullOrEmpty().ToUpper();
             item.FahrgestellNr = item.FahrgestellNr.NotNullOrEmpty().ToUpper();
-
-            // Nur einen Datensatz zu einem Kennzeichen zulassen
-            if (FahrzeugeAlle.Any(f => f.Kennzeichen == item.Kennzeichen))
-                FahrzeugeAlle.RemoveAll(f => f.Kennzeichen == item.Kennzeichen);
 
             FahrzeugeAlle.Add(item);
             SetFahrzeugeForCurrentMode();
@@ -203,6 +199,16 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             string carportName;
             if (CarportPdis.TryGetValue(model.CarportId, out carportName))
                 model.CarportName = carportName;
+        }
+
+        public string CheckFahrgestellnummer(string fin, string finPruefziffer)
+        {
+            var erg = DataService.CheckFahrgestellnummer(fin, finPruefziffer);
+
+            if (!String.IsNullOrEmpty(erg))
+                erg = String.Format("{0}: {1}", Localize.VinInvalid, erg);
+
+            return erg;
         }
 
         public void SaveCarportSelectionModel(CarporterfassungModel model)
@@ -305,7 +311,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 newRow["Web User"] = LogonContext.UserName;
                 newRow["Carport Nr"] = fzg.CarportId;
                 newRow["Erfassungsdatum"] = DateTime.Now.ToShortDateString();
-                newRow["Bestandsnummer"] = fzg.MvaNr;
+                newRow["Bestandsnummer"] = fzg.BestandsNr;
                 newRow["Auftragsnummer"] = fzg.AuftragsNr;
                 tblLieferschein.Rows.Add(newRow);
                 nr++;

@@ -85,6 +85,11 @@ namespace CkgDomainLogic.DomainCommon.Services
             throw new NotImplementedException();
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             _domainDbContext = new DomainDbContext(ConfigurationManager.AppSettings["Connectionstring"], logonContext.UserName);    

@@ -46,6 +46,11 @@ namespace CkgDomainLogic.General.Services
             return kundenNr;
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             AppSettings = appSettings;

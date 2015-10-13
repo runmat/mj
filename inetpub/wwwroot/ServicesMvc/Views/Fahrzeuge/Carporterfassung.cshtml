@@ -3,6 +3,12 @@
 <script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
 <link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
 
+<style>
+    .m-wrap.tiny {
+        width: 30px;
+    }
+</style>
+
 <h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Carporterfassung<small></small></h3>
 
 <div class="span-alert-placeholder">
@@ -97,12 +103,12 @@
         setTimeout('FormPreparePrivateAjax();', 200);
     }
 
-    function LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin) {
+    function LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin, finPruefziffer) {
         $.ajax(
         {
             type: "POST",
             url: "LoadFahrzeugdaten",
-            data: { kennzeichen: kennzeichen, bestandsnummer: bestandsnummer, fin: fin },
+            data: { kennzeichen: kennzeichen, bestandsnummer: bestandsnummer, fin: fin, finPruefziffer: finPruefziffer },
             loadingShow: true,
             success: function (result) {
                 FormPreparePrivateAjax();
@@ -119,7 +125,8 @@
                 $("#Kennzeichen").val(result.Kennzeichen);
                 $("#FahrgestellNr").val(result.FahrgestellNr);
                 $("#Lizenz").val(result.AuftragsNr);
-                $("#MvaNr").val(result.MvaNr);
+                $("#BestandsNrTeil1").val(result.BestandsNrTeil1);
+                $("#BestandsNrTeil2").val(result.BestandsNrTeil2);
                 $("#CarportName").val(result.CarportName);
                 $("#Status").val(result.Status);
                 SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 3000);
@@ -129,17 +136,18 @@
 
     function LoadFahrzeugdatenZuKennzeichen() {
         var kennzeichen = $("#Kennzeichen").val();
-        LoadFahrzeugdaten(kennzeichen, "", "");
+        LoadFahrzeugdaten(kennzeichen, "", "", "");
     }
 
     function LoadFahrzeugdatenZuBestandsnummer() {
-        var bestandsnummer = $("#MvaNr").val();
-        LoadFahrzeugdaten("", bestandsnummer, "");
+        var bestandsnummer = $("#BestandsNrTeil1").val() + $("#BestandsNrTeil2").val();
+        LoadFahrzeugdaten("", bestandsnummer, "", "");
     }
 
     function LoadFahrzeugdatenZuFin() {
         var fin = $("#FahrgestellNr").val();
-        LoadFahrzeugdaten("", "", fin);
+        var pruefZiffer = $("#FahrgestellNrPruefziffer").val();
+        LoadFahrzeugdaten("", "", fin, pruefZiffer);
     }
 
     function ListeAnzeigen() {

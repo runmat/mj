@@ -35,6 +35,11 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
         }

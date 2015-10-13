@@ -2,16 +2,18 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.RegularExpressions;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
 using CkgDomainLogic.Fahrzeuge.ViewModels;
+using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.Models
 {
-    public class CarporterfassungModel : Store 
+    public class CarporterfassungModel : Store, IValidatableObject
     {
         [LocalizedDisplay(LocalizeConstants.CustomerNo)]
         public string KundenNr { get; set; }
@@ -49,15 +51,32 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Kennzeichen { get; set; }
 
         [Required]
+        [LocalizedDisplay(LocalizeConstants.ForeignCountries)]
+        public bool Ausland { get; set; }
+
+        [Required]
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
+
+        [Required]
+        [LocalizedDisplay(LocalizeConstants.CheckDigit)]
+        public string FahrgestellNrPruefziffer { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.OrderNumber)]
         public string AuftragsNr { get; set; }
 
         [Required]
+        [Length(2, true)]
         [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
-        public string MvaNr { get; set; }
+        public string BestandsNrTeil1 { get; set; }
+
+        [Required]
+        [Length(5, true)]
+        [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
+        public string BestandsNrTeil2 { get; set; }
+
+        [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
+        public string BestandsNr {get { return BestandsNrTeil1 + BestandsNrTeil2; }}
 
         [LocalizedDisplay(LocalizeConstants.Barcode)]
         [Required, Numeric, Length(8, forceExactLength: true)]
@@ -107,5 +126,13 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<CarporterfassungViewModel> GetViewModel { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            var regexItem = new Regex("^[A-ZÄÖÜ]{1,3}-[A-ZÄÖÜ]{1,2}[0-9]{1,4}$");
+
+            if (!Ausland && !regexItem.IsMatch(Kennzeichen.NotNullOrEmpty().ToUpper()))
+                yield return new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" });
+        }
     }
 }

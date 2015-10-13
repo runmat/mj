@@ -266,6 +266,21 @@ namespace CkgDomainLogic.General.Services
 
             return "";
         }
+
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            Z_DPM_PRUEF_FIN_001.Init(SAP, "I_FGNU, I_FGPZ", fin, pruefziffer);
+
+            SAP.Execute();
+
+            var status = SAP.GetExportParameter("E_STATUS").ToInt(0);
+            var message = SAP.GetExportParameter("E_MESSAGE");
+
+            if (status != 0)
+                return message;
+
+            return "";
+        }
     }
 }
 

@@ -513,7 +513,12 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.CarportId = s.CARPORT_ID_AG;
                         d.FahrgestellNr = s.CHASSIS_NUM;
                         d.Kennzeichen = s.LICENSE_NUM;
-                        d.MvaNr = s.MVA_NUMMER;
+                        var bestandsNr = s.MVA_NUMMER;
+                        if (bestandsNr.Length > 6)
+                        {
+                            d.BestandsNrTeil1 = bestandsNr.Substring(0, 2);
+                            d.BestandsNrTeil2 = bestandsNr.Substring(2, 5);
+                        }
                         d.CarportName = s.PDINAME;
                         d.Status = s.BEM;
                     }));
@@ -540,7 +545,12 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.KundenNr = s.KUNNR_AG;
                         d.Kennzeichen = s.LICENSE_NUM;
                         d.LieferscheinNr = s.LSNUMMER;
-                        d.MvaNr = s.MVA_NUMMER;
+                        var bestandsNr = s.MVA_NUMMER;
+                        if (bestandsNr.Length > 6)
+                        {
+                            d.BestandsNrTeil1 = bestandsNr.Substring(0, 2);
+                            d.BestandsNrTeil2 = bestandsNr.Substring(2, 5);
+                        }
                         d.NaviCdVorhanden = s.NAVI_CD_VORH.XToBool();
                         d.ServiceheftVorhanden = s.SERVICEH_VORH.XToBool();
                         d.Zb1Vorhanden = s.ZB1_VORH.XToBool();
@@ -886,7 +896,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             d.KUNNR_AG = s.KundenNr;
                             d.LICENSE_NUM = s.Kennzeichen;
                             d.LSNUMMER = s.LieferscheinNr;
-                            d.MVA_NUMMER = s.MvaNr;
+                            d.MVA_NUMMER = s.BestandsNrTeil1 + s.BestandsNrTeil2;
                             d.NAVI_CD_VORH = s.NaviCdVorhanden.BoolToX();
                             d.SERVICEH_VORH = s.ServiceheftVorhanden.BoolToX();
                             d.ZB1_VORH = s.Zb1Vorhanden.BoolToX();

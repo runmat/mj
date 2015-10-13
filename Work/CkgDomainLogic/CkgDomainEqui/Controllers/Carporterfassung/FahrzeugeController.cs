@@ -64,10 +64,13 @@ namespace ServicesMvc.Controllers
             {
                 CarporterfassungViewModel.PrepareCarportModel(ref model);
 
+                var objKey = model.ObjectKey;
+
                 // save to shopping cart
                 model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
 
-                CarporterfassungViewModel.AddFahrzeug(model);
+                if (String.IsNullOrEmpty(objKey))
+                    CarporterfassungViewModel.AddFahrzeug(model);
 
                 CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
                 LogonContext.DataContextPersist(CarporterfassungViewModel);
@@ -77,8 +80,15 @@ namespace ServicesMvc.Controllers
         }
 
         [HttpPost]
-        public ActionResult LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
+        public ActionResult LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin, string finPruefziffer)
         {
+            if (!String.IsNullOrEmpty(fin) || !String.IsNullOrEmpty(finPruefziffer))
+            {
+                var pruefErg = CarporterfassungViewModel.CheckFahrgestellnummer(fin.NotNullOrEmpty().ToUpper(), finPruefziffer);
+                if (!String.IsNullOrEmpty(pruefErg))
+                    return Json(new { Status = pruefErg });
+            }
+            
             CarporterfassungViewModel.LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin);
 
             var fzg = CarporterfassungViewModel.AktuellesFahrzeug;
@@ -86,7 +96,7 @@ namespace ServicesMvc.Controllers
             return Json(new
             {
                 fzg.Kennzeichen, fzg.FahrgestellNr,
-                fzg.AuftragsNr, fzg.MvaNr, fzg.CarportName, 
+                fzg.AuftragsNr, fzg.BestandsNrTeil1, fzg.BestandsNrTeil2, fzg.CarportName, 
                 Status = fzg.Status.NotNullOrEmpty(),
                 TmpStatus = fzg.TmpStatus.NotNullOrEmpty()
             });

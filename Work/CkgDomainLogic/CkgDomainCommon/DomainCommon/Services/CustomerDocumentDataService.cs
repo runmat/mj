@@ -64,6 +64,11 @@ namespace CkgDomainLogic.DomainCommon.Services
             throw new NotImplementedException();
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
