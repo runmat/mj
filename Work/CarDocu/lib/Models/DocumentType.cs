@@ -318,10 +318,6 @@ namespace CarDocu.Models
         [XmlIgnore]
         public DocumentTypeWebServiceFunction WebServiceFunctionObject { get { return WebServiceFunctions.First(i => i.ID == WebServiceFunction); } }
 
-        public string WebServiceFunctionName { get { return WebServiceFunctionObject.FunctionName; } }
-
-        public string WebServiceFunctionFriendlyName { get { return WebServiceFunctionObject.FriendlyName; } }
-
         [XmlIgnore]
         public bool WebServiceFunctionAvailable
         {
@@ -337,19 +333,19 @@ namespace CarDocu.Models
                            {
                                new DocumentTypeWebServiceFunction
                                    {
-                                       ID = "", FunctionName = "", FriendlyName = "(Keine Schnittstelle)"
+                                       ID = "", FriendlyName = "(Keine Schnittstelle)"
                                    },
                                new DocumentTypeWebServiceFunction
                                    {
-                                       ID = "CARDOCU", FunctionName = "ProcessArchivMeldung", FriendlyName = "CarDocu Strafzettel"
+                                       ID = "CARDOCU", FriendlyName = "CarDocu Strafzettel"
                                    },
                                new DocumentTypeWebServiceFunction
                                    {
-                                       ID = "VWL", FunctionName = "ProcessVwlKlaerfaelle", FriendlyName = "VW Leasing Klärfälle"
+                                       ID = "VWL", FriendlyName = "VW Leasing Klärfälle"
                                    },
                                new DocumentTypeWebServiceFunction
                                    {
-                                       ID = "WKDA", FunctionName = "ProcessWkda", FriendlyName = "WKDA Wiesbaden"
+                                       ID = "WKDA", FriendlyName = "WKDA Wiesbaden"
                                    },
                            };
             }

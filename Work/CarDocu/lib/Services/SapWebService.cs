@@ -74,13 +74,13 @@ namespace CarDocu.Services
                                                       out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
                         return false;
 
-                //if (webServiceFuntionID == "WKDA")
-                //    if (!Service.ProcessWkdaWiesbaden(scanDocument.KundenNr,
-                //                                      scanDocument.DocumentID, scanDocument.FinNumber,
-                //                                      scanDocument.StandortCode,
-                //                                      string.Join(",", scanDocument.ScanDocumentTypeCodesSAP),
-                //                                      out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
-                //        return false;
+                if (webServiceFuntionID == "WKDA")
+                    if (!Service.ProcessWkdaWiesbaden(scanDocument.KundenNr,
+                                                      scanDocument.DocumentID, scanDocument.FinNumber,
+                                                      scanDocument.StandortCode,
+                                                      string.Join(",", scanDocument.ScanDocumentTypeCodesSAP),
+                                                      out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
+                        return false;
 
             }
             catch { return false; }
