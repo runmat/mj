@@ -22,17 +22,11 @@ namespace CarDocu.Services
         {
             bool isOnline;
 
-            var logFileName = Path.Combine(DomainService.Repository.PdfDirectoryName, "CarDocu_WebService_Log.txt");
-
             try { isOnline = Service.IsOnline(); }
             catch(Exception)
             {
                 isOnline = false;
-                //FileService.LogException(e, logFileName);
             }
-
-            if (isOnline)
-                FileService.TryFileDelete(logFileName);
 
             return isOnline;
         }

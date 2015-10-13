@@ -27,6 +27,7 @@
                 <DataGridTextColumn Header="Vorname" Binding="{Binding VorName}" Width="170" />
                 <DataGridTextColumn Header="E-Mail" Binding="{Binding Email}" Width="300" />
                 <DataGridCheckBoxColumn Header="Admin" Binding="{Binding IsAdmin}" Width="60" />
+                <DataGridCheckBoxColumn Header="Standard User" Binding="{Binding IsDefaultUser}" Width="100" />
             </DataGrid.Columns>
         </DataGrid>
 
@@ -39,6 +40,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
                         <RowDefinition Height="30" />
@@ -60,6 +62,9 @@
 
                     <TextBlock Text="" Grid.Row="4" Grid.Column="0" />
                     <CheckBox IsChecked="{Binding IsAdmin, UpdateSourceTrigger=PropertyChanged}" Content="Admin-Rechte" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" />
+
+                    <TextBlock Text="" Grid.Row="5" Grid.Column="0" />
+                    <CheckBox IsChecked="{Binding IsDefaultUser, UpdateSourceTrigger=PropertyChanged}" Content="Standard User" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" />
                 </Grid>
             </StackPanel>
 

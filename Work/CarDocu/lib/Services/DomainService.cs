@@ -6,6 +6,7 @@ using System.Reflection;
 using CarDocu.Models;
 using GeneralTools.Services;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using WebTools.Services;
 
 namespace CarDocu.Services
@@ -16,10 +17,8 @@ namespace CarDocu.Services
         {
             get
             {
-                return Environment.UserName.ToLower().Contains("jenzenm") &&
-                       Environment.MachineName.ToUpper().Contains("AHW460") ||
-                       Environment.UserName.ToLower().Contains("dittbernerc") &&
-                       Environment.MachineName.ToUpper().Contains("AHW329");
+                return Environment.UserName.ToLower().Contains("xjenzenm") &&
+                       Environment.MachineName.ToUpper().Contains("xAHW460");
             }
         }
 
@@ -54,7 +53,14 @@ namespace CarDocu.Services
                 return true;
             }
 
-            var loginData = getUserLoginDataFromDialog(); // Tools.Input("Login:", string.Format("{0}, Login", AppName));
+            string loginData;
+            var defaultUser = Repository.GlobalSettings.DomainUsers.FirstOrDefault(u => u.IsDefaultUser);
+            var forceLoginPanelKeyPressed = Keyboard.IsKeyDown(Key.F8);
+            if (defaultUser != null && !forceLoginPanelKeyPressed)
+                loginData = string.Format("{0}~{1}", defaultUser.LoginName, Repository.GlobalSettings.DomainLocations.First().SapCode);
+            else
+                loginData = getUserLoginDataFromDialog();
+
             if (string.IsNullOrEmpty(loginData) || !loginData.Contains("~"))
                 return false;
 
