@@ -126,7 +126,7 @@ namespace CkgDomainLogic.Ueberfuehrung.ViewModels
             {
                 Items = FahrtAdressen,
                 ControllerName = "Ueberfuehrung",
-                AjaxSelectAction = "AdressenAjaxBinding"
+                AjaxSelectAction = "UeberfuehrungsAdressenAjaxBinding"
             };
 
             DataService.GetTransportTypenAndDienstleistungen(out _transportTypen, out _dienstleistungen);
