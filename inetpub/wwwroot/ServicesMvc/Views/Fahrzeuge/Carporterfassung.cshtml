@@ -112,51 +112,51 @@
         setTimeout('FormPreparePrivateAjax();', 200);
     }
 
-    function LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin, finPruefziffer) {
-        $.ajax(
-        {
-            type: "POST",
-            url: "LoadFahrzeugdaten",
-            data: { kennzeichen: kennzeichen, bestandsnummer: bestandsnummer, fin: fin, finPruefziffer: finPruefziffer },
-            loadingShow: true,
-            success: function (result) {
-                FormPreparePrivateAjax();
+//    function LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin, finPruefziffer) {
+//        $.ajax(
+//        {
+//            type: "POST",
+//            url: "LoadFahrzeugdaten",
+//            data: { kennzeichen: kennzeichen, bestandsnummer: bestandsnummer, fin: fin, finPruefziffer: finPruefziffer },
+//            loadingShow: true,
+//            success: function (result) {
+//                FormPreparePrivateAjax();
 
-                if (result.TmpStatus === "VEHICLE_ALREADY_EXISTS") {
-                    SpanAlertWarning("Message", '@Localize.VehicleDataAlreadyInYourList.ToJavascriptString()', 3000);
-                    return;
-                }
-                if (result.Status !== "") {
-                    SpanAlertWarning("Message", '@Localize.VehicleDataCouldNotBeRetrieved.ToJavascriptString() (' + result.Status + ')', 3000);
-                    return;
-                }
+//                if (result.TmpStatus === "VEHICLE_ALREADY_EXISTS") {
+//                    SpanAlertWarning("Message", '@Localize.VehicleDataAlreadyInYourList.ToJavascriptString()', 3000);
+//                    return;
+//                }
+//                if (result.Status !== "") {
+//                    SpanAlertWarning("Message", '@Localize.VehicleDataCouldNotBeRetrieved.ToJavascriptString() (' + result.Status + ')', 3000);
+//                    return;
+//                }
 
-                $("#Kennzeichen").val(result.Kennzeichen);
-                $("#FahrgestellNr").val(result.FahrgestellNr);
-                $("#Lizenz").val(result.AuftragsNr);
-                $("#BestandsNr").val(result.BestandsNr);
-                $("#CarportName").val(result.CarportName);
-                $("#Status").val(result.Status);
-                SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 3000);
-            }
-        });
-    }
+//                $("#Kennzeichen").val(result.Kennzeichen);
+//                $("#FahrgestellNr").val(result.FahrgestellNr);
+//                $("#Lizenz").val(result.AuftragsNr);
+//                $("#BestandsNr").val(result.BestandsNr);
+//                $("#CarportName").val(result.CarportName);
+//                $("#Status").val(result.Status);
+//                SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 3000);
+//            }
+//        });
+//    }
 
-    function LoadFahrzeugdatenZuKennzeichen() {
-        var kennzeichen = $("#Kennzeichen").val();
-        LoadFahrzeugdaten(kennzeichen, "", "", "");
-    }
+//    function LoadFahrzeugdatenZuKennzeichen() {
+//        var kennzeichen = $("#Kennzeichen").val();
+//        LoadFahrzeugdaten(kennzeichen, "", "", "");
+//    }
 
-    function LoadFahrzeugdatenZuBestandsnummer() {
-        var bestandsnummer = $("#BestandsNr").val();
-        LoadFahrzeugdaten("", bestandsnummer, "", "");
-    }
+//    function LoadFahrzeugdatenZuBestandsnummer() {
+//        var bestandsnummer = $("#BestandsNr").val();
+//        LoadFahrzeugdaten("", bestandsnummer, "", "");
+//    }
 
-    function LoadFahrzeugdatenZuFin() {
-        var fin = $("#FahrgestellNr").val();
-        var pruefZiffer = $("#FahrgestellNrPruefziffer").val();
-        LoadFahrzeugdaten("", "", fin, pruefZiffer);
-    }
+//    function LoadFahrzeugdatenZuFin() {
+//        var fin = $("#FahrgestellNr").val();
+//        var pruefZiffer = $("#FahrgestellNrPruefziffer").val();
+//        LoadFahrzeugdaten("", "", fin, pruefZiffer);
+//    }
 
     function ListeAnzeigen() {
         $.ajax(

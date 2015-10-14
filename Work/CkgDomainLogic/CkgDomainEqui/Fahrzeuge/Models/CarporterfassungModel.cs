@@ -58,7 +58,6 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         [LocalizedDisplay(LocalizeConstants.VIN)]
         public string FahrgestellNr { get; set; }
 
-        [Required]
         [LocalizedDisplay(LocalizeConstants.CheckDigit)]
         public string FahrgestellNrPruefziffer { get; set; }
 
@@ -67,7 +66,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [Required]
         [Length(7, true)]
-        [RegularExpression(@"^[a-zA-Z]{2}\d{5}$")]
+        [RegularExpression(@"^[a-zA-Z]{2}\d{5}$", ErrorMessage = "Ungültiges Bestandsnummer-Format")]
         [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
         public string BestandsNr { get; set; }
 

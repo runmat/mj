@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Web.Mvc;
 using System.Xml.Serialization;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
@@ -219,14 +220,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 model.CarportName = carportName;
         }
 
-        public string CheckFahrgestellnummer(string fin, string finPruefziffer)
+        public void CheckFahrgestellnummer(CarporterfassungModel model, ModelStateDictionary state)
         {
-            var erg = DataService.CheckFahrgestellnummer(fin, finPruefziffer);
+            var erg = DataService.CheckFahrgestellnummer(model.FahrgestellNr, model.FahrgestellNrPruefziffer);
 
             if (!String.IsNullOrEmpty(erg))
-                erg = String.Format("{0}: {1}", Localize.VinInvalid, erg);
-
-            return erg;
+                state.AddModelError("", String.Format("{0}: {1}", Localize.VinInvalid, erg));
         }
 
         public void SaveCarportSelectionModel(CarporterfassungModel model)
