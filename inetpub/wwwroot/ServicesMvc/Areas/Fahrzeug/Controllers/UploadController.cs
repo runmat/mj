@@ -29,7 +29,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [CkgApplication]
         public ActionResult Zb2Versand()
         {
-            UploadZb2VersandViewModel.DataMarkForRefresh();
+            UploadZb2VersandViewModel.Init();
 
             return View(UploadZb2VersandViewModel);
         }
