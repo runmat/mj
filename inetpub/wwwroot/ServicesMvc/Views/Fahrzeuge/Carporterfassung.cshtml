@@ -11,6 +11,8 @@
 
 <h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_Carporterfassung<small></small></h3>
 
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
 <div class="span-alert-placeholder">
     @Html.SpanAlert("Message")
 </div>
@@ -24,6 +26,9 @@
 
 <script type="text/javascript">
 
+    var _userCarportId = '@Model.UserCarportId';
+    var _selectionModeAllUsers = false;
+
     function FormPreparePrivate() {
         $("#Kennzeichen").focus();
         InitDropDownLists();
@@ -35,17 +40,21 @@
     }
 
     function InitDropDownLists() {
+        if (!_userCarportId) {
+            setTimeout(function () {
+                $('#CarportId').select2({
+                    allowClear: true
+                });
+            }, 100);
 
-        setTimeout(function () {
-            $('#CarportId').select2({
-                allowClear: true
-            });
-        }, 100);
-        setTimeout(function () {
-            $('#CarportIdPersisted').select2({
-                allowClear: true
-            });
-        }, 100);
+            if (_selectionModeAllUsers) {
+                setTimeout(function () {
+                    $('#CarportIdPersisted').select2({
+                        allowClear: true
+                    });
+                }, 100);
+            }
+        }
     }
 
     function GetGrid() {
@@ -125,8 +134,7 @@
                 $("#Kennzeichen").val(result.Kennzeichen);
                 $("#FahrgestellNr").val(result.FahrgestellNr);
                 $("#Lizenz").val(result.AuftragsNr);
-                $("#BestandsNrTeil1").val(result.BestandsNrTeil1);
-                $("#BestandsNrTeil2").val(result.BestandsNrTeil2);
+                $("#BestandsNr").val(result.BestandsNr);
                 $("#CarportName").val(result.CarportName);
                 $("#Status").val(result.Status);
                 SpanAlertSuccess("Message", '@Localize.VehicleDataSuccessfullyRetrieved.ToJavascriptString()', 3000);
@@ -140,7 +148,7 @@
     }
 
     function LoadFahrzeugdatenZuBestandsnummer() {
-        var bestandsnummer = $("#BestandsNrTeil1").val() + $("#BestandsNrTeil2").val();
+        var bestandsnummer = $("#BestandsNr").val();
         LoadFahrzeugdaten("", bestandsnummer, "", "");
     }
 

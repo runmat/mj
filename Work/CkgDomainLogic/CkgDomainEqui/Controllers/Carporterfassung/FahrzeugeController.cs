@@ -71,6 +71,8 @@ namespace ServicesMvc.Controllers
 
                 if (String.IsNullOrEmpty(objKey))
                     CarporterfassungViewModel.AddFahrzeug(model);
+                else
+                    CarporterfassungViewModel.UpdateFahrzeug(model);
 
                 CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
                 LogonContext.DataContextPersist(CarporterfassungViewModel);
@@ -96,7 +98,7 @@ namespace ServicesMvc.Controllers
             return Json(new
             {
                 fzg.Kennzeichen, fzg.FahrgestellNr,
-                fzg.AuftragsNr, fzg.BestandsNrTeil1, fzg.BestandsNrTeil2, fzg.CarportName, 
+                fzg.AuftragsNr, fzg.BestandsNr, fzg.CarportName, 
                 Status = fzg.Status.NotNullOrEmpty(),
                 TmpStatus = fzg.TmpStatus.NotNullOrEmpty()
             });

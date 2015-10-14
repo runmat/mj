@@ -66,17 +66,10 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string AuftragsNr { get; set; }
 
         [Required]
-        [Length(2, true)]
+        [Length(7, true)]
+        [RegularExpression(@"^[a-zA-Z]{2}\d{5}$")]
         [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
-        public string BestandsNrTeil1 { get; set; }
-
-        [Required]
-        [Length(5, true)]
-        [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
-        public string BestandsNrTeil2 { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.InventoryNumber)]
-        public string BestandsNr {get { return BestandsNrTeil1 + BestandsNrTeil2; }}
+        public string BestandsNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Barcode)]
         [Required, Numeric, Length(8, forceExactLength: true)]
@@ -126,6 +119,11 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         [GridHidden, NotMapped, XmlIgnore, ScriptIgnore]
         public static Func<CarporterfassungViewModel> GetViewModel { get; set; }
+
+        public bool UserHasCarportId
+        {
+            get { return GetViewModel != null && !String.IsNullOrEmpty(GetViewModel().UserCarportId); }
+        }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

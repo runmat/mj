@@ -64,6 +64,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string LastCarportId { get; set; }
 
+        public string UserCarportId { get { return LogonContext.User.Reference; } }
+
         [XmlIgnore]
         public IDictionary<string, string> CarportPdis
         {
@@ -144,14 +146,14 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void SetCarportIdPersisted(string carportId)
         {
-            CarportSelectionModel.CarportIdPersisted = carportId;
+            CarportSelectionModel.CarportIdPersisted = carportId.NotNullOr(CarportPersistedPdis.Keys.FirstOrDefault());
 
             SetFahrzeugeForCurrentMode();
         }
 
         public void LastCarportIdInit(string lastCarportId)
         {
-            LastCarportId = LogonContext.User.Reference.NotNullOr(lastCarportId);
+            LastCarportId = UserCarportId.NotNullOr(lastCarportId);
         }
 
         public string DeleteFahrzeugModel(string kennzeichen)
@@ -168,9 +170,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
         {
-            kennzeichen = PrepareKennzeichen(kennzeichen);
-
-            AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().ToUpper(), bestandsnummer.NotNullOrEmpty().ToUpper(), fin.NotNullOrEmpty().ToUpper());
+            AktuellesFahrzeug = DataService.LoadFahrzeugdaten(kennzeichen.NotNullOrEmpty().Trim().ToUpper(), bestandsnummer.NotNullOrEmpty().Trim().ToUpper(), fin.NotNullOrEmpty().Trim().ToUpper());
 
             if (AktuellesFahrzeug != null && Fahrzeuge.Any(f => f.Kennzeichen == AktuellesFahrzeug.Kennzeichen))
                 AktuellesFahrzeug = new CarporterfassungModel { TmpStatus = "VEHICLE_ALREADY_EXISTS" };
@@ -178,23 +178,31 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public void AddFahrzeug(CarporterfassungModel item)
         {
-            item.Kennzeichen = item.Kennzeichen.NotNullOrEmpty().ToUpper();
-            item.FahrgestellNr = item.FahrgestellNr.NotNullOrEmpty().ToUpper();
-
             FahrzeugeAlle.Add(item);
             SetFahrzeugeForCurrentMode();
 
             DataMarkForRefresh();
         }
 
-        public string PrepareKennzeichen(string kennzeichen)
+        public void UpdateFahrzeug(CarporterfassungModel item)
         {
-            return kennzeichen.NotNullOrEmpty().Trim().ToUpper();
+            var itemToUpdate = FahrzeugeAlle.FirstOrDefault(f => f.ObjectKey == item.ObjectKey);
+            if (itemToUpdate != null)
+            {
+                var itemIndex = FahrzeugeAlle.IndexOf(itemToUpdate);
+                FahrzeugeAlle[itemIndex] = item;
+
+                SetFahrzeugeForCurrentMode();
+
+                DataMarkForRefresh();
+            }
         }
 
         public void PrepareCarportModel(ref CarporterfassungModel model)
         {
-            model.Kennzeichen = PrepareKennzeichen(model.Kennzeichen);
+            model.Kennzeichen = model.Kennzeichen.NotNullOrEmpty().Trim().ToUpper();
+            model.BestandsNr = model.BestandsNr.NotNullOrEmpty().Trim().ToUpper();
+            model.FahrgestellNr = model.FahrgestellNr.NotNullOrEmpty().Trim().ToUpper();
 
             string carportName;
             if (CarportPdis.TryGetValue(model.CarportId, out carportName))
