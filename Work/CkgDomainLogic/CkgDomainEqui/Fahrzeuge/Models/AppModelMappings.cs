@@ -559,7 +559,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
-                        d.CarportId = s.KENNUNG;
+                        d.CarportId = s.POS_KURZTEXT;
                         d.KundenNr = s.INTNR;
                         d.Land = s.LAND1;
                         d.Name1 = s.NAME1;

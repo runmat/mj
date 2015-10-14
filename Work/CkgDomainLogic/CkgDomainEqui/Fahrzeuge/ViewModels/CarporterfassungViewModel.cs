@@ -83,13 +83,23 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             }
         }
 
+        [XmlIgnore]
+        public List<CarportInfo> CarportAdressen {
+            get { return PropertyCacheGet(() => new List<CarportInfo>()); }
+            protected set { PropertyCacheSet(value); }
+        }
+
         public bool EditMode { get; set; }
+
+        public int CurrentAppID { get; set; }
 
         public void Init(List<CarporterfassungModel> fahrzeugePersisted)
         {
             FahrzeugeAlle = fahrzeugePersisted;
 
+            GetCurrentAppID();
             DataMarkForRefresh();
+            LoadCarportAdressen();
             LoadFahrzeugModel();
 
             SetFahrzeugeForCurrentMode();
@@ -336,8 +346,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string GenerateUpsShippingOrderHtml()
         {
-            var adresseDad = DataService.GetCarportInfo("DAD");
-            var adresseCarport = DataService.GetCarportInfo(LastCarportId);
+            var adresseDad = CarportAdressen.FirstOrDefault(a => a.CarportId == "DAD");
+            var adresseCarport = CarportAdressen.FirstOrDefault(a => a.CarportId == LastCarportId);
 
             if (adresseDad == null || adresseCarport == null)
                 return Localize.NoAddressTypesAvailableForThisCustomer;
@@ -475,5 +485,17 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             FahrzeugeForConfirmationFiltered = FahrzeugeForConfirmation.SearchPropertiesWithOrCondition(filterValue, filterProperties);
         }
+
+        private void GetCurrentAppID()
+        {
+            CurrentAppID = LogonContext.GetAppIdCurrent();
+        }
+
+        private void LoadCarportAdressen()
+        {
+            var adressKennung = ApplicationConfiguration.GetApplicationConfigValue("AdressKennung", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+
+            CarportAdressen = DataService.GetCarportAdressen(adressKennung);
+        } 
     }
 }

@@ -10,7 +10,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
 
         List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items);
 
-        CarportInfo GetCarportInfo(string carportId);
+        List<CarportInfo> GetCarportAdressen(string adressKennung);
 
         IDictionary<string, string> GetCarportPdis();
     }
