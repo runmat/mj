@@ -51,7 +51,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
         public string Kennzeichen { get; set; }
 
         [Required]
-        [LocalizedDisplay(LocalizeConstants.ForeignCountries)]
+        [LocalizedDisplay(LocalizeConstants.LicenseNoForeignCountries)]
         public bool Ausland { get; set; }
 
         [Required]

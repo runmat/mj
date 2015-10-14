@@ -29,22 +29,25 @@
         }
         @Html.FormTextBoxFor(m => m.Barcode, new { @class = "m-wrap small", col = "right", @onkeypress = "return NumbersOnly(false);" })
 
-        @Html.FormCheckBoxFor(m => m.Ausland, new { @class = "m-wrap", col = "left" }, labelHidden: true)
-        //@Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right", @onchange = "LoadFahrzeugdatenZuKennzeichen();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuKennzeichen(); return false; }" })
-        @Html.FormTextBoxFor(m => m.Kennzeichen, new { @class = "m-wrap uppercase", col = "right" })
 
-        //@Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left", @onchange = "LoadFahrzeugdatenZuBestandsnummer();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuBestandsnummer(); return false; }" })
-        @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
-        @*@Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", maxlength = 17, col = "right", @onchange = "LoadFahrzeugdatenZuFin();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuFin(); return false; }" },*@
-        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", maxlength = 17, col = "right" },
+        @Html.FormTextBoxFor(m => m.Kennzeichen, new {@class = "m-wrap uppercase"},
             postControlHtml: @<text>
-                                 @*@Html.TextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5", maxlength = 1, @onchange = "LoadFahrzeugdatenZuFin();", @onkeypress = "if (event.keyCode == 13) { LoadFahrzeugdatenZuFin(); return false; }" })*@
-                                 @Html.TextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5", maxlength = 1 })
+                                    @Html.CheckBoxFor(m => m.Ausland)<label for="Ausland">@Localize.LicenseNoForeignCountries</label>
                               </text>)
+
+        @Html.FormTextBoxFor(m => m.FahrgestellNr, new { @class = "m-wrap uppercase", maxlength = 17 },
+            postControlHtml: @<text>
+                                @Html.TextBoxFor(m => m.FahrgestellNrPruefziffer, new { @class = "m-wrap tiny margin-left-5", maxlength = 1 })
+                                <span>@Localize.CheckDigit</span>
+                              </text>)
+
+        @Html.FormTextBoxFor(m => m.BestandsNr, new { @class = "m-wrap small uppercase", maxlength = 7, col = "left" })
+
         
-        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap" })
+        @Html.FormTextBoxFor(m => m.AuftragsNr, new { @class = "m-wrap", col = "right" })
 
         @Html.FormDatePickerFor(m => m.DemontageDatum, new { @class = "m-wrap small", col = "left" })
+
         @Html.FormTextBoxFor(m => m.AnzahlKennzeichen, new { @class = "m-wrap tiny", col = "right", @onkeypress = "return NumbersOnly(false);" })
         
         @Html.FormCheckBoxFor(m => m.Abgemeldet, new { @class = "m-wrap", col = "left" }, labelHidden: true)
