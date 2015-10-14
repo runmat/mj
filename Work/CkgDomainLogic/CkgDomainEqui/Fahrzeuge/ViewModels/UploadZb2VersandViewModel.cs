@@ -70,7 +70,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             ConvertToUnicode(UploadServerFileName, uploadServerFileNameConverted);
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(uploadServerFileNameConverted, true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable((extension == ".csv" ? uploadServerFileNameConverted : UploadServerFileName), true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
 
             if (AppSettings != null)
             {
