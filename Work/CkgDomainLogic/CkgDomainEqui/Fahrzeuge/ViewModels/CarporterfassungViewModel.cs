@@ -73,7 +73,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         [XmlIgnore]
         public IDictionary<string, string> CarportPersistedPdis
         {
-            get { return CarportPdis.Where(c => FahrzeugeAlle.Any(f => f.CarportId == c.Key)).ToDictionary(c => c.Key, c => c.Value); }
+            get
+            {
+                return CarportPdis
+                            .Where(c => FahrzeugeAlle.Any(f => f.CarportId == c.Key) || c.Key == LastCarportId)
+                                .ToDictionary(c => c.Key, c => c.Value);
+            }
         }
 
         public bool EditMode { get; set; }
@@ -134,19 +139,12 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 CarportSelectionMode = "AllUsers"
             };
 
-            TryAvoidNullValueForCarportIdPersisted(LastCarportId);
+            SetCarportIdPersisted(LastCarportId);
         }
 
-        public void TryAvoidNullValueForCarportIdPersisted(string carportId)
+        public void SetCarportIdPersisted(string carportId)
         {
             CarportSelectionModel.CarportIdPersisted = carportId;
-
-            if (FahrzeugeAlle.None(f => f.CarportId == CarportSelectionModel.CarportIdPersisted))
-            {
-                var firstFahrzeug = FahrzeugeAlle.FirstOrDefault();
-                if (firstFahrzeug != null)
-                    CarportSelectionModel.CarportIdPersisted = firstFahrzeug.CarportId;
-            }
 
             SetFahrzeugeForCurrentMode();
         }
@@ -210,7 +208,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         public void SaveCarportSelectionModel(CarporterfassungModel model)
         {
             CarportSelectionModel = model;
-            TryAvoidNullValueForCarportIdPersisted(model.CarportIdPersisted);
+            SetCarportIdPersisted(model.CarportIdPersisted);
         }
 
         public void SaveFahrzeuge(Action<string, string> outerClearListFunction)
@@ -386,9 +384,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                         Phone = new ShipPhoneType { Number = adresseDad.Telefon }
                     };
 
+                var firstFahrzeug = FahrzeugeForConfirmation.ToListOrEmptyList().FirstOrDefault();
                 var refNumbers = new[]
                     {
-                        new ReferenceNumberType {Code = "PO", Value = FahrzeugeForConfirmation.First().LieferscheinNr},
+                        new ReferenceNumberType {Code = "PO", Value = firstFahrzeug == null ? "4711" : firstFahrzeug.LieferscheinNr},
                         new ReferenceNumberType {Code = "DP", Value = adresseCarport.CarportId}
                     };
 
