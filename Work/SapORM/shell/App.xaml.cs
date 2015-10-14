@@ -477,6 +477,8 @@ namespace SapORM
             //new FunctionReflector("Z_WFM_UEBERMITTLUNG_STAT_01").WriteOrmForExportTableStructures("I_KUNNR, I_STATUSWERT", "10077452", "4");
             //new FunctionReflector("Z_WFM_SET_STATUS_UEBERM_01").WriteOrmForExportTableStructures("I_KUNNR", "10077452");
 
+            //new FunctionReflector("Z_DPM_PRUEF_FIN_001").WriteOrmForExportTableStructures("I_FGNU, I_FGPZ", "TEST", "0");
+
 
             //CoCTest();
             //TeslaTest();
