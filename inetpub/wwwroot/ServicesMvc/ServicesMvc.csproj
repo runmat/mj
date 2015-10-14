@@ -410,6 +410,10 @@
     <Content Include="assets\plugins\magnific-popup\magnific-popup.css" />
     <Content Include="assets\plugins\magnific-popup\magnific-popup.js" />
     <Content Include="Content\fonts\europlate-webfont.svg" />
+    <Content Include="Images\Commands\24x24\OK.png" />
+    <Content Include="Images\Commands\24x24\warning.png" />
+    <Content Include="Images\Commands\alert.png" />
+    <Content Include="Images\Commands\OK.png" />
     <Content Include="Images\teamviewer-icon.png" />
     <Content Include="_Themes\AH2015\images\background.png" />
     <Content Include="_Themes\AH2015\images\kennzeichen.png" />
@@ -3027,6 +3031,10 @@
     <Content Include="Views\Archive\DateiDownload\Grid.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionForm.cshtml" />
     <Content Include="Views\Fahrzeuge\Carporterfassung\GridForConfirmation.cshtml" />
+    <Content Include="Views\Fahrzeuge\CarportUpsLabel.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\CarportSelectionUpsLabelForm.cshtml" />
+    <Content Include="Views\Fahrzeuge\Carporterfassung\GridForConfirmation.cshtml" />
+    <Content Include="Views\Archive\PdfAnzeige.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

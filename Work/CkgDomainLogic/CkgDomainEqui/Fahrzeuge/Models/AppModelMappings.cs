@@ -513,7 +513,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.CarportId = s.CARPORT_ID_AG;
                         d.FahrgestellNr = s.CHASSIS_NUM;
                         d.Kennzeichen = s.LICENSE_NUM;
-                        d.MvaNr = s.MVA_NUMMER;
+                        d.BestandsNr = s.MVA_NUMMER;
                         d.CarportName = s.PDINAME;
                         d.Status = s.BEM;
                     }));
@@ -540,7 +540,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                         d.KundenNr = s.KUNNR_AG;
                         d.Kennzeichen = s.LICENSE_NUM;
                         d.LieferscheinNr = s.LSNUMMER;
-                        d.MvaNr = s.MVA_NUMMER;
+                        d.BestandsNr = s.MVA_NUMMER;
                         d.NaviCdVorhanden = s.NAVI_CD_VORH.XToBool();
                         d.ServiceheftVorhanden = s.SERVICEH_VORH.XToBool();
                         d.Zb1Vorhanden = s.ZB1_VORH.XToBool();
@@ -559,7 +559,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                     new Dictionary<string, string>()
                     , (s, d) =>
                     {
-                        d.CarportId = s.KENNUNG;
+                        d.CarportId = s.POS_KURZTEXT;
                         d.KundenNr = s.INTNR;
                         d.Land = s.LAND1;
                         d.Name1 = s.NAME1;
@@ -886,7 +886,7 @@ namespace CkgDomainLogic.Fahrzeuge.Models
                             d.KUNNR_AG = s.KundenNr;
                             d.LICENSE_NUM = s.Kennzeichen;
                             d.LSNUMMER = s.LieferscheinNr;
-                            d.MVA_NUMMER = s.MvaNr;
+                            d.MVA_NUMMER = s.BestandsNr;
                             d.NAVI_CD_VORH = s.NaviCdVorhanden.BoolToX();
                             d.SERVICEH_VORH = s.ServiceheftVorhanden.BoolToX();
                             d.ZB1_VORH = s.Zb1Vorhanden.BoolToX();

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using GeneralTools.Contracts;
@@ -46,10 +47,23 @@ namespace CkgDomainLogic.General.Services
             return kundenNr;
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             AppSettings = appSettings;
             LogonContext = logonContext;
+        }
+
+        public string CountryPlzValidate(string country, string plz)
+        {
+            if (country.NotNullOrEmpty().ToUpper() == "DE" && plz.IsNotNullOrEmpty() && plz.Length != 5)
+                return "Deutsche Postleitzahlen müssen 5-stellig sein";
+
+            return "";
         }
 
         public string GetZulassungskreisFromPostcodeAndCity(string postCode, string city)

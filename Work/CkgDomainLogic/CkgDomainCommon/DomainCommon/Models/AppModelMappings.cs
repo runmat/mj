@@ -62,8 +62,16 @@ namespace CkgDomainLogic.DomainCommon.Models
                     {
                         // Address street + houseNo extraction:
                         AddressService.ApplyStreetAndHouseNo(source);
-                        destination.ZZSTRAS_ZS = source.Strasse;
-                        destination.ZZHAUSNR_ZS = source.HausNr;
+                        if (source.HausNr.NotNullOrEmpty().Length < 10)
+                        {
+                            destination.ZZSTRAS_ZS = source.Strasse.CropExactly(60);
+                            destination.ZZHAUSNR_ZS = source.HausNr.CropExactly(10);
+                        }
+                        else
+                        {
+                            destination.ZZSTRAS_ZS = string.Format("{0} {1}", source.Strasse, source.HausNr).CropExactly(60);
+                            destination.ZZHAUSNR_ZS = "";
+                        }
 
                         // stupid SAP "NumC" conversions ....
                         destination.ZZBRFVERS = source.BriefVersand.ToNumC();
