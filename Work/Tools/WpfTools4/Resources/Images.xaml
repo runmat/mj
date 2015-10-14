@@ -69,6 +69,7 @@
     <Image x:Shared="False" x:Key="image/22x22/address" Source="pack://application:,,,/WpfTools4;component/Images/22x22/address.png" SnapsToDevicePixels="True" Width="22" Height="22" />
 
     <Image x:Shared="False" x:Key="image/24x24/OK" Source="pack://application:,,,/WpfTools4;component/Images/24x24/OK.png" SnapsToDevicePixels="True" Width="24" Height="24" />
+    <Image x:Shared="False" x:Key="image/24x24/warning" Source="pack://application:,,,/WpfTools4;component/Images/24x24/warning.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/cancel" Source="pack://application:,,,/WpfTools4;component/Images/24x24/cancel.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/apply" Source="pack://application:,,,/WpfTools4;component/Images/24x24/apply.png" SnapsToDevicePixels="True" Width="24" Height="24" />
     <Image x:Shared="False" x:Key="image/24x24/exit" Source="pack://application:,,,/WpfTools4;component/Images/24x24/exit.png" SnapsToDevicePixels="True" Width="24" Height="24" />

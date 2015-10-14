@@ -102,8 +102,6 @@ namespace CarDocu.ViewModels
         public bool NewDocuTabSelected { get { return MainWindow.Ribbon.SelectedTabItem == MainWindow.NewDocuTab; } }
         // ReSharper restore PossibleUnintendedReferenceComparison
 
-        public ObservableCollection<StatusMessage> StatusMessages { get { return DomainService.StatusMessages; } }
-
         #endregion
 
 
@@ -163,7 +161,7 @@ namespace CarDocu.ViewModels
             GC.Collect();
         }
 
-        public void EnsureNewScanDocu()
+        public void EnsureNewScanDocu(BatchSummary batchSummary = null)
         {
             NewDocuViewModel = (NewDocuViewModel ?? new DocuViewModel
             {
@@ -184,6 +182,8 @@ namespace CarDocu.ViewModels
                                        FinNumber = "" //Guid.NewGuid().ToString().Substring(0,11)
                                    }
             });
+            if (batchSummary != null)
+                NewDocuViewModel.BatchSummary = batchSummary;
 
             MainWindowSizeChangedRefresh();
         }

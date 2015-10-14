@@ -7,13 +7,12 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
 
-        <StackPanel Orientation="Horizontal" Margin="50,3,0,0">                   
-            <Image Source="{Binding StatusmessageIconSource}" Width="16" Height="16" ToolTip="{Binding StatusmessageTip}" Margin="5,0,0,0"  />
+        <StackPanel Orientation="Horizontal" Margin="0,3,0,0">
+            <Image Source="{Binding StatusmessageIconSource}" Width="16" Height="16" ToolTip="{Binding StatusmessageTip}" Margin="0,0,0,0"  />
             <TextBlock Text="{Binding Statusmessage}" Margin="5,0,0,0" FontWeight="Normal" />
             <StackPanel Width="16" Margin="0,0,0,0" HorizontalAlignment="Left" VerticalAlignment="Top">
-                <Button Command="{Binding RemoveFromListCommand}" Style="{StaticResource HyperLinkSmallImage}"
-                    Content="{StaticResource image/10x10/delete}" ToolTip="Nachricht entfernen" 
-                          HorizontalAlignment="Left" VerticalAlignment="Top" />
+                <Button Command="{Binding RemoveFromListCommand}" Style="{StaticResource HyperLinkSmallImage}" Visibility="Collapsed"
+                    Content="{StaticResource image/10x10/delete}" ToolTip="Nachricht entfernen" HorizontalAlignment="Left" VerticalAlignment="Top" />
             </StackPanel>
         </StackPanel>
 

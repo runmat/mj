@@ -269,8 +269,11 @@ namespace CarDocu.Models
 
         public string PdfDirectoryName { get { return GetDocumentPdfDirectoryName(); } }
 
-        public bool PdfPageCountIsValid(string documentTypeCode)
+        public bool PdfPageCountIsValid(string documentTypeCode = null)
         {
+            if (documentTypeCode.IsNullOrEmpty())
+                documentTypeCode = SelectedDocumentType.Code;
+
             var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
 
             if (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount)

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CarDocu.Services;
 using WpfTools4.Commands;
 using WpfTools4.ViewModels;
@@ -246,9 +247,22 @@ namespace CarDocu.ViewModels
                 if (!DomainService.DebugIsAdminEnvironment)
                     return false;
 
-                return true;
+                return false;
             }
         }
+
+        private BatchSummary _batchSummary = new BatchSummary();
+
+        public BatchSummary BatchSummary
+        {
+            get { return _batchSummary; }
+            set
+            {
+                _batchSummary = value;
+                SendPropertyChanged("BatchSummary");
+            }
+        }
+        public ObservableCollection<StatusMessage> StatusMessages { get { return DomainService.StatusMessages; } }
 
 
         private void SendPropertyChangedFin()
@@ -458,6 +472,14 @@ namespace CarDocu.ViewModels
             if (!ScanAppendAllowed())
                 return;
 
+            StatusMessages.Clear();
+
+            BatchSummary.Available = true;
+            BatchSummary.Title = "Stapel Scan läuft ...";
+            BatchSummary.ResultsAvailable = false;
+            BatchSummary.ResultsGoodItems = BatchSummary.ResultsBadItems = BatchSummary.ResultsTotalItems = 0;
+            UpdateUI();
+
             if (!IsTestMode)
             {
                 var scanSettings = DomainService.Repository.GlobalSettings.ScanSettings;
@@ -623,7 +645,7 @@ namespace CarDocu.ViewModels
             // neues Dokument aus dem "Neu" Tab entladen, es geht nun über in die "Übersicht" Liste:
             Parent.NewDocuViewModel = null;
 
-            Parent.EnsureNewScanDocu();
+            Parent.EnsureNewScanDocu(BatchSummary);
 
             Parent.AllDocusViewModel.ReloadItems();
         }
@@ -732,7 +754,7 @@ namespace CarDocu.ViewModels
                 var allFilesCount = 0;
                 foreach (var dir in testDirectory.GetDirectories())
                 {
-                    allFilesCount += dir.GetFiles().Count() * repeatings;
+                    allFilesCount += dir.GetFiles().Length * repeatings;
                 }
 
                 progressBarOperation.Current = 0;
@@ -800,9 +822,44 @@ namespace CarDocu.ViewModels
             return true;
         }
 
-// ReSharper disable UnusedMethodReturnValue.Local
-        bool BatchScanComplete()      
-// ReSharper restore UnusedMethodReturnValue.Local
+        void BatchFinishScanDocument(bool clearFin)
+        {
+            if (ScanDocument.ScanImagesCount == 0)
+                return;
+
+            bool scanDocumentIsValid;
+            if (ScanDocument.ValidFinNumber)
+            {
+                ScanDocument.ArchiveMailDeliveryNeeded = SelectedDocumentType.Archive.MailDeliveryNeeded;
+
+                ScanDocumentSaveCommand.Execute(null);
+                SendPropertyChanged("ScanDocument");
+
+                scanDocumentIsValid = ScanDocument.PdfPageCountIsValid();
+            }
+            else
+            {
+                ScanDocument.ScanImages.Clear();
+                if (clearFin)
+                    ScanDocument.FinNumber = "";
+
+                EnsureNewScanDocu();
+                scanDocumentIsValid = false;
+            }
+
+            if (scanDocumentIsValid)
+                BatchSummary.ResultsGoodItems++;
+            else
+                BatchSummary.ResultsBadItems++;
+
+            BatchSummary.Title += ".";
+            BatchSummary.ResultsTotalItems = BatchSummary.ResultsBadItems + BatchSummary.ResultsGoodItems;
+            UpdateUI();
+        }
+
+        // ReSharper disable UnusedMethodReturnValue.Local
+        bool BatchScanComplete()
+        // ReSharper restore UnusedMethodReturnValue.Local
         {
             ReloadScanDocumentTypes();
 
@@ -813,29 +870,11 @@ namespace CarDocu.ViewModels
 
             DomainService.Repository.UserSettingsSave();
 
+            BatchSummary.ResultsAvailable = true;
+            BatchSummary.Title = "Stapel Scan beendet, Ergebnis:";
+            UpdateUI();
+
             return true;
-        }
-
-        void BatchFinishScanDocument(bool clearFin)
-        {
-            if (ScanDocument.ScanImagesCount == 0)
-                return;
-            
-            if (ScanDocument.ValidFinNumber)
-            {
-                ScanDocument.ArchiveMailDeliveryNeeded = SelectedDocumentType.Archive.MailDeliveryNeeded;
-
-                ScanDocumentSaveCommand.Execute(null);
-                SendPropertyChanged("ScanDocument");
-            }
-            else
-            {
-                ScanDocument.ScanImages.Clear();
-                if (clearFin)
-                    ScanDocument.FinNumber = "";
-
-                EnsureNewScanDocu();
-            }
         }
 
         public void ShowBigDocuArtSelection()
@@ -846,6 +885,11 @@ namespace CarDocu.ViewModels
         public void NotifyDocuArtSelectionBigVisible(bool val)
         {
             DocuArtSelectionBigVisible = val;
+        }
+
+        void UpdateUI()
+        {
+            Dispatcher.CurrentDispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
         }
     }
 }
