@@ -173,6 +173,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "PLZ" }));
             if (item.Ort.IsNullOrEmpty())
                 validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "Ort" }));
+
+            var countryPlzValidationError = DataService.CountryPlzValidate(item.Land, item.PLZ);
+            if (countryPlzValidationError.IsNotNullOrEmpty())
+                validationResults.Add(new ValidationResult(countryPlzValidationError, new[] { "PLZ", "Land" }));
         }
 
         bool IsValidCountryCode(string countryCode)

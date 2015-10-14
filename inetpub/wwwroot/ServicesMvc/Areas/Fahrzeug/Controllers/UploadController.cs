@@ -93,6 +93,16 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         [HttpPost]
+        public ActionResult CheckRowValidations()
+        {
+            return Json(new
+            {
+                uploadItemsUploadErrorsOccurred = UploadZb2VersandViewModel.UploadItemsUploadErrorsOccurred,
+                uploadItemsValidItemsAvailable = UploadZb2VersandViewModel.UploadItemsValidItemsAvailable
+            });
+        }
+
+        [HttpPost]
         public ActionResult UploadZb2VersandSubmit()
         {
             UploadZb2VersandViewModel.SaveUploadItems();
