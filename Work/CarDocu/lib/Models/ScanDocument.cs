@@ -253,8 +253,11 @@ namespace CarDocu.Models
 
         void CreateDebugHintTextFile()
         {
-            try { File.CreateText(Path.Combine(GetDocumentPrivateDirectoryName(), string.Format("{0}.txt", this.FinNumber))); }
-            catch { }
+            try { File.CreateText(Path.Combine(GetDocumentPrivateDirectoryName(), string.Format("{0}.txt", FinNumber))); }
+            catch
+            {
+                // ignored
+            }
         }
 
         public void XmlLoadScanImages()
@@ -265,6 +268,16 @@ namespace CarDocu.Models
         }
 
         public string PdfDirectoryName { get { return GetDocumentPdfDirectoryName(); } }
+
+        public bool PdfPageCountIsValid(string documentTypeCode)
+        {
+            var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
+
+            if (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount)
+                return true;
+
+            return false;
+        }
 
         public string PdfGetFileName(string documentTypeCode, string directoryName, string extension)
         {
@@ -278,6 +291,9 @@ namespace CarDocu.Models
                 pdfFinNumber = pdfFinNumber.Substring(6);
                 pdfFinNumber = string.Format("{0}{1}", pdfFinNumber.Substring(0, 8), pdfFinNumber.Substring(9));
             }
+
+            if (!PdfPageCountIsValid(documentTypeCode))
+                pdfFinNumber = string.Format("FEHLER_{0}", FileService.CreateFriendlyGuid());
 
             return Path.Combine(directoryName, string.Format("{0}{1}.{2}", pdfFinNumber, documentTypeCode, extension));
         }
@@ -354,8 +370,8 @@ namespace CarDocu.Models
         {
             var newScanDoc = new ScanDocument
                 {
-                    KundenNr = this.KundenNr,
-                    StandortCode = this.StandortCode,
+                    KundenNr = KundenNr,
+                    StandortCode = StandortCode,
                     DocumentID = Guid.NewGuid().ToString(),
                     CreateDate = DateTime.Now,
                     CreateUser = DomainService.Repository.UserName,
