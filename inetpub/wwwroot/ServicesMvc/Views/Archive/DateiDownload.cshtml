@@ -3,6 +3,8 @@
 
 <h3 class="page-title" id="headerTitle">@Localize.Archive_DateiDownload<small></small></h3>
 
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
 <div id="divDateiDownloadGrid">
     @Html.Partial("DateiDownload/Grid", Model)
 </div>
