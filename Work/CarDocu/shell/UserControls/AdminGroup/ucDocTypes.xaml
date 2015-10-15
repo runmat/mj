@@ -46,7 +46,7 @@
                 <StackPanel DataContext="{Binding SelectedItem}">
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="230" />
+                            <ColumnDefinition Width="280" />
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
@@ -56,6 +56,7 @@
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
+                            <RowDefinition Height="60" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
                             <RowDefinition Height="30" />
@@ -100,14 +101,18 @@
                                 Grid.Row="4" Grid.Column="1" Width="400" Height="24" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                         <TextBlock Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
-                                   Foreground="DarkRed"
+                                   Foreground="DarkRed" VerticalAlignment="Top"
                                 Text="Externes Tool zum Netzwerk-Versand verwenden" Grid.Row="5" Grid.Column="0" />
                         <StackPanel Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
-                                    Orientation="Horizontal" Grid.Row="5" Grid.Column="1">
-                            <TextBlock Text="Pfad zum Command Tool (ohne Parameter):" Foreground="DarkRed" />
-                            <TextBox Width="250" Text="{Binding ExternalCommandlineProgramPath, UpdateSourceTrigger=PropertyChanged}" Margin="7,0,20,0" Foreground="DarkRed" />
-                            <TextBlock Text="Parameter:" Foreground="DarkRed" />
-                            <TextBox Width="400" Text="{Binding ExternalCommandlineArguments, UpdateSourceTrigger=PropertyChanged}" Margin="7,0,0,0" Foreground="DarkRed" />
+                                    VerticalAlignment="Top" Grid.Row="5" Grid.Column="1">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="240" Text="Pfad zum Command Tool (ohne Parameter):" Foreground="DarkRed" TextAlignment="Right" />
+                                <TextBox Width="400" Text="{Binding ExternalCommandlineProgramPath, UpdateSourceTrigger=PropertyChanged}" Margin="7,0,20,0" Foreground="DarkRed" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Width="240" Text="Parameter:" Foreground="DarkRed" TextAlignment="Right" />
+                                <TextBox Width="400" Text="{Binding ExternalCommandlineArguments, UpdateSourceTrigger=PropertyChanged}" Margin="7,0,0,0" Foreground="DarkRed" />
+                            </StackPanel>
                         </StackPanel>
 
                         <TextBlock Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
