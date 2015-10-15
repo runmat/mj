@@ -27,6 +27,10 @@ namespace CkgDomainLogic.General.Contracts
 
         string GetZulassungskreisFromPostcodeAndCity(string postCode, string city);
 
+        string CheckFahrgestellnummer(string fin, string pruefziffer);
+
         void Init(IAppSettings appSettings, ILogonContext logonContext);
+
+        string CountryPlzValidate(string country, string plz);
     }
 }

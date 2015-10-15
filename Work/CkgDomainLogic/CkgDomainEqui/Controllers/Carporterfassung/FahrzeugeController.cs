@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using CkgDomainLogic.Fahrzeuge.Models;
 using CkgDomainLogic.General.Controllers;
@@ -26,12 +27,27 @@ namespace ServicesMvc.Controllers
         {
             _dataContextKey = typeof(CarporterfassungViewModel).Name;
 
-            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
-            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
-
+            LastCarportIdInit();
             LoadPersistedObjects();
 
             return View(CarporterfassungViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult CarportUpsLabel()
+        {
+            _dataContextKey = typeof(CarporterfassungViewModel).Name;
+
+            LastCarportIdInit();
+            CarporterfassungViewModel.Init(new List<CarporterfassungModel>());
+
+            return View(CarporterfassungViewModel);
+        }
+
+        void LastCarportIdInit()
+        {
+            var vmStored = (CarporterfassungViewModel)LogonContext.DataContextRestore(typeof(CarporterfassungViewModel).GetFullTypeName());
+            CarporterfassungViewModel.LastCarportIdInit(vmStored == null ? null : vmStored.LastCarportId);
         }
 
         void LoadPersistedObjects()
@@ -47,39 +63,55 @@ namespace ServicesMvc.Controllers
             if (ModelState.IsValid)
             {
                 CarporterfassungViewModel.PrepareCarportModel(ref model);
+                CarporterfassungViewModel.CheckFahrgestellnummer(model, ModelState);
 
-                // save to shopping cart
-                model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
+                if (ModelState.IsValid)
+                {
+                    var objKey = model.ObjectKey;
 
-                CarporterfassungViewModel.AddFahrzeug(model);
+                    // save to shopping cart
+                    model = (CarporterfassungModel)PersistanceSaveObject(PersistableGroupKey, model.ObjectKey, model);
 
-                CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
-                LogonContext.DataContextPersist(CarporterfassungViewModel);
+                    if (String.IsNullOrEmpty(objKey))
+                        CarporterfassungViewModel.AddFahrzeug(model);
+                    else
+                        CarporterfassungViewModel.UpdateFahrzeug(model);
+
+                    CarporterfassungViewModel.LastCarportIdInit(model.CarportId);
+                    LogonContext.DataContextPersist(CarporterfassungViewModel);
+                }
             }
 
             return PartialView("Carporterfassung/FahrzeugerfassungForm", model);
         }
 
-        [HttpPost]
-        public ActionResult LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin)
-        {
-            CarporterfassungViewModel.LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin);
+        //[HttpPost]
+        //public ActionResult LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin, string finPruefziffer)
+        //{
+        //    if (!String.IsNullOrEmpty(fin) || !String.IsNullOrEmpty(finPruefziffer))
+        //    {
+        //        var pruefErg = CarporterfassungViewModel.CheckFahrgestellnummer(fin.NotNullOrEmpty().ToUpper(), finPruefziffer);
+        //        if (!String.IsNullOrEmpty(pruefErg))
+        //            return Json(new { Status = pruefErg });
+        //    }
+            
+        //    CarporterfassungViewModel.LoadFahrzeugdaten(kennzeichen, bestandsnummer, fin);
 
-            var fzg = CarporterfassungViewModel.AktuellesFahrzeug;
+        //    var fzg = CarporterfassungViewModel.AktuellesFahrzeug;
 
-            return Json(new
-            {
-                fzg.Kennzeichen, fzg.FahrgestellNr,
-                fzg.AuftragsNr, fzg.MvaNr, fzg.CarportName, 
-                Status = fzg.Status.NotNullOrEmpty(),
-                TmpStatus = fzg.TmpStatus.NotNullOrEmpty()
-            });
-        }
+        //    return Json(new
+        //    {
+        //        fzg.Kennzeichen, fzg.FahrgestellNr,
+        //        fzg.AuftragsNr, fzg.BestandsNr, fzg.CarportName, 
+        //        Status = fzg.Status.NotNullOrEmpty(),
+        //        TmpStatus = fzg.TmpStatus.NotNullOrEmpty()
+        //    });
+        //}
 
         [HttpPost]
         public ActionResult ListeAnzeigen()
         {
-            CarporterfassungViewModel.TryAvoidNullValueForCarportIdPersisted(CarporterfassungViewModel.LastCarportId);
+            CarporterfassungViewModel.SetCarportIdPersisted(CarporterfassungViewModel.LastCarportId);
 
             return PartialView("Carporterfassung/Grid", CarporterfassungViewModel);
         }
@@ -102,6 +134,15 @@ namespace ServicesMvc.Controllers
             CarporterfassungViewModel.SaveCarportSelectionModel(model);
 
             return PartialView("Carporterfassung/CarportSelectionForm", model);
+        }
+
+        [HttpPost]
+        public ActionResult CarportUpsLabelSelectionForm(CarporterfassungModel model)
+        {
+            CarporterfassungViewModel.AktuellesFahrzeug = model;
+            CarporterfassungViewModel.LastCarportId = model.CarportId;
+
+            return PartialView("Carporterfassung/CarportSelectionUpsLabelForm", model);
         }
 
         [HttpPost]

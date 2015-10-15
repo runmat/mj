@@ -373,7 +373,7 @@ namespace AppZulassungsdienst.forms
 
             if (!CheckGrid(GridCheckMode.CheckAll))
             {
-                objKompletterf.SendVorgaengeToSap(objCommon.KundenStamm, objCommon.MaterialStamm, m_User.UserName);
+                objKompletterf.SendVorgaengeToSap(m_User.UserName);
 
                 if (objKompletterf.ErrorOccured)
                 {

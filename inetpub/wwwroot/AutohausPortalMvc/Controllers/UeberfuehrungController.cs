@@ -190,7 +190,7 @@ namespace AutohausPortalMvc.Controllers
 
 
         [GridAction]
-        public ActionResult AdressenAjaxBinding()
+        public ActionResult UeberfuehrungsAdressenAjaxBinding()
         {
             var stepModel = (ViewModel.GetStepForm(ViewModel.AdressenGridAuswahl.FormID.GetValueOrDefault()) as Adresse);
             if (stepModel == null)
