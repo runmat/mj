@@ -22,9 +22,9 @@ namespace GeneralTools.Services
 
                 return ms;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Fehler beim generieren des Barcodes");
+                throw new Exception("Fehler beim generieren des Barcodes: " + ex.Message);
             }
         }
     }
