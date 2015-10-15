@@ -20,16 +20,16 @@ else
 
 <script type="text/javascript"> _uploadItemsValidItemsAvailable = @(Model.UploadItemsValidItemsAvailable.ToString().ToLower()); </script>
 
-@if (Model.UploadItemsUploadErrorsOccurred)
-{
-    <div class="alert @(Model.UploadItemsValidItemsAvailable ? "alert-warning" : "alert-error")">
-        <label class="checkbox">
-            <i class="icon-bell"></i>
-            <span class="padding-left-5">@(Model.UploadItemsValidItemsAvailable ? Localize.DataWithErrorsOccurred : Localize.DataWithErrorsOccurredOnly)</span>
-            <span class="padding-left-5">@(Model.UploadItemsValidItemsAvailable ? Localize.OnlyValidDataWillBeProcessed : Localize.PleaseCheckYourInputs)</span>
-        </label>
-    </div>
-}
+<div id="upload-items-hint" class="hide alert">
+    <label class="checkbox">
+        <i class="icon-bell"></i>
+        <span class="hide valid-items-available padding-left-5">@Localize.DataWithErrorsOccurred</span>
+        <span class="hide no-valid-items-available padding-left-5">@Localize.DataWithErrorsOccurredOnly</span>
+
+        <span class="hide valid-items-available padding-left-5">@Localize.OnlyValidDataWillBeProcessed</span>
+        <span class="hide no-valid-items-available padding-left-5">@Localize.PleaseCheckYourInputs</span>
+    </label>
+</div>
 @if (Model.SaveErrorMessage.IsNotNullOrEmpty())
 {
     <div class="alert alert-error">
@@ -39,6 +39,9 @@ else
     </div>
 }
 
+<script type="text/javascript">
+    ShowUploadItemsHint(@Model.UploadItemsUploadErrorsOccurred.ToString().ToLower(), @Model.UploadItemsValidItemsAvailable.ToString().ToLower());
+</script>
 
 @(Html.Telerik()
     .Grid<VersandAuftragsAnlage>()
@@ -51,7 +54,7 @@ else
         columns.Command(commands => commands.Edit());
         columns.Command(commands => commands.Delete());
         columns.XBound(c => c.LfdNr).Visible(false);
-        columns.XBound(c => c.Status).HtmlAttributes(new { @class = "fontBold fontItalic" });
+        columns.XBound(c => c.Status).HtmlAttributes(new { @class = "" });
         columns.XBound(c => c.BestandsNr);
         columns.XBound(c => c.Name1);
         columns.XBound(c => c.Ansprechpartner);

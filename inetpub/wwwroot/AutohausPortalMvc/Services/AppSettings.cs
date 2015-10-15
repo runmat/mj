@@ -13,6 +13,9 @@ namespace AutohausPortalMvc.Services
         public string AppName { get { return ""; } }
         public string AppOwnerName { get; private set; }
         public string AppOwnerFullName { get; private set; }
+        public string AppOwnerNameAndFullName { get; private set; }
+        public string AppOwnerImpressumPartialViewName { get; private set; }
+        public string AppOwnerKontaktPartialViewName { get; private set; }
 
         public string AppCopyRight { get { return string.Format("© {0} {1}", DateTime.Now.Year, ConfigurationManager.AppSettings["AppOwnerShortName"] ?? "Christoph Kroschke GmbH"); } }
 
