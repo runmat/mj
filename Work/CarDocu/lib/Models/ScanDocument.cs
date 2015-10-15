@@ -299,7 +299,7 @@ namespace CarDocu.Models
                 pdfFinNumber = string.Format("{0}{1}", pdfFinNumber.Substring(0, 8), pdfFinNumber.Substring(9));
             }
 
-            if (!PdfPageCountIsValid)
+            if (!PdfPageCountIsValid || !ValidFinNumber)
                 pdfFinNumber = string.Format("FEHLER_{0}", PdfErrorGuid);
 
             return Path.Combine(directoryName, string.Format("{0}{1}.{2}", pdfFinNumber, documentTypeCode, extension));
@@ -320,33 +320,31 @@ namespace CarDocu.Models
 
         public void PdfSaveScanImages()
         {
-            if (!ValidFinNumber)
-                return;
-
-            var extension = "pdf";
+            const string extension = "pdf";
             var directoryName = PdfDirectoryName;
             var oldFiles = Directory.GetFiles(directoryName, string.Format("{0}*.{1}", FinNumber, extension)).ToList();
-            foreach (var oldFile in oldFiles)
-            {
-                var saveAgain = true;
-                while (saveAgain)
+            if (FinNumber.IsNotNullOrEmpty())
+                foreach (var oldFile in oldFiles)
                 {
-                    try
+                    var saveAgain = true;
+                    while (saveAgain)
                     {
-                        saveAgain = false;
-                        if (File.Exists(oldFile))
-                            File.Delete(oldFile);
-                    }
-                    catch
-                    {
-                        saveAgain = Tools.Confirm(string.Format(
-                            "Achtung:\r\n\r\nDas PDF speichern dieses Dokuments ist aktuell nicht möglich, weil die PDF-Datei '{0}' schreibgeschützt ist!\r\n\r\nBitte schließen Sie alle Anwendungen, die auf dieses Dokument zugreifen!\r\n\r\nJetzt erneut versuchen?",
-                                Path.GetFileName(oldFile)));
-                        if (!saveAgain)
-                            return;
+                        try
+                        {
+                            saveAgain = false;
+                            if (File.Exists(oldFile))
+                                File.Delete(oldFile);
+                        }
+                        catch
+                        {
+                            saveAgain = Tools.Confirm(string.Format(
+                                "Achtung:\r\n\r\nDas PDF speichern dieses Dokuments ist aktuell nicht möglich, weil die PDF-Datei '{0}' schreibgeschützt ist!\r\n\r\nBitte schließen Sie alle Anwendungen, die auf dieses Dokument zugreifen!\r\n\r\nJetzt erneut versuchen?",
+                                    Path.GetFileName(oldFile)));
+                            if (!saveAgain)
+                                return;
+                        }
                     }
                 }
-            }
 
             ScanDocumentTypeCodes.ForEach(
                 docTypeCode =>

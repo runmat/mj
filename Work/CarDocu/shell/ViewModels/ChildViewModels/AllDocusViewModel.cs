@@ -110,7 +110,7 @@ namespace CarDocu.ViewModels
         public ICommand ScanPdfFolderOpenCommand { get; private set; }
 
         public ICommand ZipToArchiveCommand { get; private set; }
-        public ICommand ZipArchiveRecycleCommand { get; private set; }
+        
 
         #endregion
 
@@ -122,7 +122,6 @@ namespace CarDocu.ViewModels
             ScanDocuDeleteCommand = new DelegateCommand(e => ScanDocuDelete(), e => CanScanDocuDelete());
             ScanPdfFolderOpenCommand = new DelegateCommand(e => DomainService.Repository.ScanPdfFolderOpen());
             ZipToArchiveCommand = new DelegateCommand(e => ZipArchiveUserLogsAndScanDocuments());
-            ZipArchiveRecycleCommand = new DelegateCommand(e => ZipArchiveRecycle());
 
             DomainService.Repository.ScanDocumentRepository.OnAddScanDocument += sd => { Items.Add(sd); SendPropertyChanged("ItemsAvailable"); };
             DomainService.Repository.ScanDocumentRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
@@ -131,7 +130,7 @@ namespace CarDocu.ViewModels
             DomainService.Repository.ScanTemplateRepository.OnDeleteScanDocument += sd => { Items.Remove(sd); SendPropertyChanged("ItemsAvailable"); };
         }
 
-        static bool EnsureDomainPathExistsAndIsAvailable(string path, string pathDescription)
+        public static bool EnsureDomainPathExistsAndIsAvailable(string path, string pathDescription)
         {
             if (path.IsNullOrEmpty())
             {
@@ -168,23 +167,6 @@ namespace CarDocu.ViewModels
                 return;
 
             ProgressBarOperation.Start(DomainService.Repository.ZipArchiveUserLogsAndScanDocuments, ZipArchiveUserLogsAndScanDocumentsComplete);
-        }
-
-        static void ZipArchiveRecycle()
-        {
-            // Validate Backup Path
-            if (!EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.BackupArchive.Path, "zum Backup Ordner"))
-                return;
-
-            if (!Tools.Confirm("Der Backup Ordner wird nun bereinigt, alle in diesem Ordner vorhandenen Dateien werden gelöscht.\r\n\r\nWeiter?"))
-                return;
-
-            ProgressBarOperation.Start(DomainService.Repository.ZipArchiveRecycle, ZipArchiveRecycleComplete);
-        }
-
-        private static void ZipArchiveRecycleComplete(ProgressBarOperation progressBarOperation)
-        {
-            Tools.Alert("Der Backup Ordner wurde erfolgreich bereinigt!");
         }
 
         static void ZipArchiveUserLogsAndScanDocumentsComplete(ProgressBarOperation progressBarOperation)

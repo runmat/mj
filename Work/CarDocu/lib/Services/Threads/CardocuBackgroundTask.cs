@@ -209,9 +209,21 @@ namespace CarDocu.Services
             if (!Tools.Confirm("Wollen Sie wirklich alle(!) offenen Jobs löschen?\r\n\r\n(Hinweis: Sie können einzelne Jobs löschen indem Sie auf das rote Kreuz rechts neben dem aktiven Job klicken)"))
                 return;
 
+            AllJobsKillAndRemoveCore();
+        }
+
+        void AllJobsKillAndRemoveCore()
+        {
+            if (!IsBusy)
+            {
+                TaskService.StartDelayedUiTask(200, AllJobsKillAndRemoveCore);
+                return;
+            }
+
             Mouse.OverrideCursor = Cursors.Wait;
 
-            ActiveJobKillAndRemove();
+            ActiveJobKillAndRemove(true);
+            LogItemsOuterRemoveCurrentQueuedItem();
 
             while (QueueCount > 0)
             {
@@ -228,9 +240,9 @@ namespace CarDocu.Services
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 
-        public void ActiveJobKillAndRemove()
+        public void ActiveJobKillAndRemove(bool forceRemove = false)
         {
-            if (IsBusy)
+            if (IsBusy || forceRemove)
                 RemoveQueuedItem(GetCurrentQueuedItem());
         }
 

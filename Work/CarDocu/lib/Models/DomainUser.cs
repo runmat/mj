@@ -57,6 +57,14 @@ namespace CarDocu.Models
             set { _isDefaultUser = value; SendPropertyChanged("IsDefaultUser"); }
         }
 
+        private bool _batchScanOnly;
+
+        public bool BatchScanOnly
+        {
+            get { return _batchScanOnly; }
+            set { _batchScanOnly = value; SendPropertyChanged("BatchScanOnly"); }
+        }
+
         private string _domainLocationCode; 
         public string DomainLocationCode 
         { 

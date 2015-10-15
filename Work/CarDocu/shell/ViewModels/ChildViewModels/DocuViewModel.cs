@@ -41,9 +41,10 @@ namespace CarDocu.ViewModels
         public ICommand ScanDocumentSaveCommand { get; private set; }
         public ICommand ScanDocumentPdfShowCommand { get; private set; }
         public ICommand ScanPdfFolderOpenCommand { get; private set; }
-
         public ICommand ScanDocumentTemplateInsertCommand { get; private set; }
 
+        public bool UiModeBatchScanOnly { get { return Parent.UiModeBatchScanOnly; } }
+        
         const string TempRootPath = @"D:\Backup\Test";
 
         private string _title; 
@@ -264,7 +265,7 @@ namespace CarDocu.ViewModels
                 if (!DomainService.DebugIsAdminEnvironment)
                     return false;
 
-                return true;
+                return false;
             }
         }
 
@@ -844,24 +845,25 @@ namespace CarDocu.ViewModels
             if (ScanDocument.ScanImagesCount == 0)
                 return;
 
+            ScanDocument.ArchiveMailDeliveryNeeded = SelectedDocumentType.Archive.MailDeliveryNeeded;
+
+            ScanDocumentSave(true);
+            SendPropertyChanged("ScanDocument");
+
             bool scanDocumentIsValid;
             if (ScanDocument.ValidFinNumber)
             {
-                ScanDocument.ArchiveMailDeliveryNeeded = SelectedDocumentType.Archive.MailDeliveryNeeded;
-
-                ScanDocumentSaveCommand.Execute(null);
-                SendPropertyChanged("ScanDocument");
-
                 scanDocumentIsValid = ScanDocument.PdfPageCountIsValid;
             }
             else
             {
+                scanDocumentIsValid = false;
+
                 ScanDocument.ScanImages.Clear();
                 if (clearFin)
                     ScanDocument.FinNumber = "";
 
                 EnsureNewScanDocu();
-                scanDocumentIsValid = false;
             }
 
             if (scanDocumentIsValid)

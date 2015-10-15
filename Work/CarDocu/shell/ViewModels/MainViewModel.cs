@@ -53,6 +53,8 @@ namespace CarDocu.ViewModels
             get { return DomainService.Repository.LogonUser; }
         }
 
+        public bool UiModeBatchScanOnly { get { return LogonUser.BatchScanOnly; } }
+
         public ICommand LocationSelectionToggleCommand { get; private set; }
         public ICommand LocationSelectionHideCommand { get; private set; }
         private bool _locationSelectionVisible; 

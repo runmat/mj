@@ -102,14 +102,14 @@
 
                         <TextBlock Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
                                    Foreground="DarkRed" VerticalAlignment="Top"
-                                Text="Externes Tool zum Netzwerk-Versand verwenden" Grid.Row="5" Grid.Column="0" />
+                                Text="Externes Tool zum Netzwerk-Versand verwenden?" Grid.Row="5" Grid.Column="0" Margin="0,3,0,0" />
                         <StackPanel Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
                                     VerticalAlignment="Top" Grid.Row="5" Grid.Column="1">
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                                 <TextBlock Width="240" Text="Pfad zum Command Tool (ohne Parameter):" Foreground="DarkRed" TextAlignment="Right" />
                                 <TextBox Width="400" Text="{Binding ExternalCommandlineProgramPath, UpdateSourceTrigger=PropertyChanged}" Margin="7,0,20,0" Foreground="DarkRed" />
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal">
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Top">
                                 <TextBlock Width="240" Text="Parameter:" Foreground="DarkRed" TextAlignment="Right" />
                                 <TextBox Width="400" Text="{Binding ExternalCommandlineArguments, UpdateSourceTrigger=PropertyChanged}" Margin="7,0,0,0" Foreground="DarkRed" />
                             </StackPanel>
@@ -118,7 +118,7 @@
                         <TextBlock Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
                                    Text="PDF verschieben nach Netzwerk-Versand?" Grid.Row="6" Grid.Column="0" Foreground="DarkRed" />
                         <CheckBox Visibility="{Binding WebServiceFunctionAvailable, Converter={StaticResource BooleanVisibilityConverter}}" 
-                                  Content="PDF nach Netzwerk-Versand löschen und in den Backup verschieben" VerticalAlignment="Center" VerticalContentAlignment="Center"
+                                  Content="PDF nach Netzwerk-Versand löschen und in den Backup Ordner verschieben" VerticalAlignment="Center" VerticalContentAlignment="Center"
                                   IsChecked="{Binding DeleteAndBackupFileAfterDelivery, UpdateSourceTrigger=PropertyChanged}" Grid.Row="6" Grid.Column="1" 
                                   Foreground="DarkRed"
                                   />

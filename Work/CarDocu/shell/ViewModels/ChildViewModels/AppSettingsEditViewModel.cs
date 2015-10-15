@@ -8,7 +8,9 @@ using CarDocu.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
 using WpfTools4.Commands;
+using WpfTools4.Services;
 using WpfTools4.ViewModels;
+using Tools = CarDocu.Services.Tools;
 
 namespace CarDocu.ViewModels
 {
@@ -41,6 +43,7 @@ namespace CarDocu.ViewModels
         public ICommand SaveCommand { get; private set; }
         public ICommand SetPathCommand { get; private set; }
         public ICommand OpenScanSettingsCommand { get; private set; }
+        public ICommand ZipArchiveRecycleCommand { get; private set; }
 
         private bool _appSettingsPropertyChanged;
         private bool _globalItemsPropertyChanged;
@@ -65,6 +68,7 @@ namespace CarDocu.ViewModels
             SaveCommand = new DelegateCommand(e => Save(true), e => CanSave());
             SetPathCommand = new DelegateCommand(SetPath);
             OpenScanSettingsCommand = new DelegateCommand(OpenScanSettings);
+            ZipArchiveRecycleCommand = new DelegateCommand(e => ZipArchiveRecycle());
         }
 
         private void AppSettingsItemsPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -143,6 +147,23 @@ namespace CarDocu.ViewModels
             }
 
             return true;
+        }
+
+        static void ZipArchiveRecycle()
+        {
+            // Validate Backup Path
+            if (!AllDocusViewModel.EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.BackupArchive.Path, "zum Backup Ordner"))
+                return;
+
+            if (!Tools.Confirm("Der Backup Ordner wird nun bereinigt, alle in diesem Ordner vorhandenen Dateien werden gelöscht.\r\n\r\nWeiter?"))
+                return;
+
+            ProgressBarOperation.Start(DomainService.Repository.ZipArchiveRecycle, ZipArchiveRecycleComplete);
+        }
+
+        private static void ZipArchiveRecycleComplete(ProgressBarOperation progressBarOperation)
+        {
+            Tools.Alert("Der Backup Ordner wurde erfolgreich bereinigt!");
         }
     }
 }

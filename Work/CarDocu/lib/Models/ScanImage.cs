@@ -76,16 +76,11 @@ namespace CarDocu.Models
             var imgBytes = ImagingService.BytesFromImage(bitmap, ImageFormat);
             var bitmapThumb = ImagingService.ImageFromBytes(ImagingService.ScaleImage(imgBytes, 800, 1200));
 
-            //var testFileName = Path.Combine(@"C:\Users\JenzenM\Pictures\test_images\", Path.GetFileName(tempFileName) ?? "");
-            //bitmap.Save(testFileName, ImageFormat);
-
             bitmap.Save(tempFileName, ImageFormat);
             bitmap.Dispose();
 
             bitmapThumb.Save(tempThumbFileName, ImageFormat);
             bitmapThumb.Dispose();
-
-            //_imageSource = null;
         }
 
         public void Rotate()
