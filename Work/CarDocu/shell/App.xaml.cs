@@ -59,14 +59,6 @@ namespace CarDocu
             ClearTempFolders();
         }
 
-        protected override void OnStartup(StartupEventArgs e)
-        {
-            var splashScreen = new SplashScreen("logo_cardocu-border.jpg");
-            splashScreen.Show(true, true);
-
-            base.OnStartup(e);
-        }
-
         public static void ClearTempFolders()
         {
             try
