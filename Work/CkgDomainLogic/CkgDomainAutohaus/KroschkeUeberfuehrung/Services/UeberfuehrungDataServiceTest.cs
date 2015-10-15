@@ -198,9 +198,22 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
             throw new System.NotImplementedException();
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             throw new System.NotImplementedException();
+        }
+
+        public string CountryPlzValidate(string country, string plz)
+        {
+            if (country.NotNullOrEmpty().ToUpper() == "DE" && plz.IsNotNullOrEmpty() && plz.Length != 5)
+                return "Deutsche Postleitzahlen müssen 5-stellig sein";
+
+            return "";
         }
     }
 }

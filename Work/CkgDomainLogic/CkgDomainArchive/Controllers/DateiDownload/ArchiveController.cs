@@ -21,6 +21,14 @@ namespace ServicesMvc.Controllers
             return View(DateiDownloadViewModel);
         }
 
+        [CkgApplication]
+        public ActionResult UpsVersandlabelAlleCarports()
+        {
+            DateiDownloadViewModel.Init();
+
+            return View("DateiDownload", DateiDownloadViewModel);
+        }
+
         [GridAction]
         public ActionResult DateiDownloadAjaxBinding()
         {
