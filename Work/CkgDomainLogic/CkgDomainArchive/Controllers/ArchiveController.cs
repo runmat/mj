@@ -13,12 +13,14 @@ namespace ServicesMvc.Controllers
 
         public ArchiveController(IAppSettings appSettings, ILogonContextDataService logonContext, 
             IEasyAccessDataService easyAccessDataService, 
-            IDateiDownloadDataService dateiDownloadDataService
+            IDateiDownloadDataService dateiDownloadDataService,
+            IPdfAnzeigeDataService pdfAnzeigeDataService
             )
             : base(appSettings, logonContext)
         {
             InitViewModel(EasyViewModel, appSettings, logonContext, easyAccessDataService);
             InitViewModel(DateiDownloadViewModel, appSettings, logonContext, dateiDownloadDataService);
+            InitViewModel(PdfAnzeigeViewModel, appSettings, logonContext, pdfAnzeigeDataService);
         }
 
         public ActionResult Index(string un, string appID)

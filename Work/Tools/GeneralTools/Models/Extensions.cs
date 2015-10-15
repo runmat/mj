@@ -209,7 +209,7 @@ namespace GeneralTools.Models
             return s;
         }
 
-        public static string Crop(this string s, int len)
+        public static string Crop(this string s, int len, string appendText = "..")
         {
             if (len == 0)
                 return s;
@@ -219,7 +219,12 @@ namespace GeneralTools.Models
             if (s.Length < len)
                 return s;
 
-            return s.Substring(0, len) + "..";
+            return s.Substring(0, len) + appendText;
+        }
+
+        public static string CropExactly(this string s, int len)
+        {
+            return s.Crop(len, "");
         }
 
         public static string SubstringTry(this string s, int start, int len)

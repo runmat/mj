@@ -55,11 +55,19 @@
         $('.tooltips').tooltip();
     }
 
+    var _onRowDataBoundLastTime = 0;
+
     function OnRowDataBound_GridUpload(e) {
         var grid = $(this).data("tGrid");
         var validationErrors = JSON.parse(e.dataItem.ValidationErrors);
 
         for (var i = 0; i < grid.columns.length; i++) {
+            if (grid.columns[i].member === "Status") {
+                if ($(e.row.cells[i]).text() !== "OK")
+                    $(e.row.cells[i]).addClass("grid-cellError");
+                else
+                    $(e.row.cells[i]).addClass("grid-cellOk");
+            }
             for (var j = 0; j < validationErrors.length; j++) {
                 if (validationErrors[j].MemberNames.indexOf(grid.columns[i].member) > -1) {
                     $(e.row.cells[i]).addClass("grid-cellError");
@@ -67,6 +75,20 @@
                 }
             }
         }
+
+        var secondsNow = (new Date()).getTime() / 1000;
+        if (secondsNow - _onRowDataBoundLastTime < 1)
+            return;
+        _onRowDataBoundLastTime = (new Date()).getTime() / 1000;
+
+        $.ajax({
+            type: "POST",
+            url: "CheckRowValidations",
+            loadingShow: false,
+            success: function (result) {
+                ShowUploadItemsHint(result.uploadItemsUploadErrorsOccurred, result.uploadItemsValidItemsAvailable);
+            }
+        });
     }
 
     function OnColumnShowHide_GridUpload() {
@@ -132,6 +154,30 @@
                 setTimeout(function() { FormWizard.ButtonSubmitShow(_uploadItemsValidItemsAvailable); }, 200);
             }
         });
+    }
+
+    function ShowUploadItemsHint(uploadItemsUploadErrorsOccurred, uploadItemsValidItemsAvailable) {
+
+        if (uploadItemsUploadErrorsOccurred)
+            $("#upload-items-hint").removeClass("hide");
+        else
+            $("#upload-items-hint").addClass("hide");
+
+        FormWizard.ButtonSubmitShow(uploadItemsValidItemsAvailable);
+
+        if (uploadItemsValidItemsAvailable) {
+            $("#upload-items-hint").removeClass("alert-error");
+            $("#upload-items-hint").addClass("alert-warning");
+
+            $(".valid-items-available").removeClass("hide");
+            $(".no-valid-items-available").addClass("hide");
+        } else {
+            $("#upload-items-hint").addClass("alert-error");
+            $("#upload-items-hint").removeClass("alert-warning");
+
+            $(".valid-items-available").addClass("hide");
+            $(".no-valid-items-available").removeClass("hide");
+        }
     }
 
     function SubmitUpload() {
