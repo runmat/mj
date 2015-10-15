@@ -1,4 +1,5 @@
-﻿@model CkgDomainLogic.Fahrzeuge.Models.CarporterfassungModel
+﻿@using CkgDomainLogic.Fahrzeuge.Models
+@model CarporterfassungModel
 
 <div id="DivCarportSelection">
     
@@ -9,7 +10,7 @@
 
         @Html.FormRadioButtonListFor(m => m.CarportSelectionMode, Model.CarportSelectionModes.ToSelectList(), new { @class = "m-wrap medium" })
 
-        if (Model.CarportSelectionMode == "AllUsers")
+        if (Model.CarportSelectionMode == "AllUsers" && String.IsNullOrEmpty(CarporterfassungModel.GetViewModel().UserCarportId))
         {
             @Html.FormDropDownListFor(m => m.CarportIdPersisted, Model.CarportPersistedPdis.ToSelectList(), new { @class = "m-wrap large" })
         }
@@ -20,6 +21,7 @@
 
         <script type="text/javascript">
             _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            _selectionModeAllUsers = @Model.UserHasCarportId.ToString().ToLower();
 
             $("#CarportSelectionMode, #CarportIdPersisted").on("change", function() {
                 $("#AjaxFormCarportSelection").submit();

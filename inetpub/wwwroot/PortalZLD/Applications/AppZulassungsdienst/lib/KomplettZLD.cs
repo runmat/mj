@@ -377,7 +377,7 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        public void GetPreise(List<Kundenstammdaten> kundenStamm, List<Materialstammdaten> materialStamm, string userName)
+        public void GetPreise(List<Kundenstammdaten> kundenStamm, List<Materialstammdaten> materialStamm)
         {
             ExecuteSapZugriff(() =>
             {
@@ -494,7 +494,7 @@ namespace AppZulassungsdienst.lib
             });
         }
 
-        public void GetPreiseNewPositionen(List<ZLDPosition> neuePositionen, List<Kundenstammdaten> kundenStamm, List<Materialstammdaten> materialStamm, string userName)
+        public void GetPreiseNewPositionen(List<ZLDPosition> neuePositionen, List<Kundenstammdaten> kundenStamm, List<Materialstammdaten> materialStamm)
         {
             ClearError();
 
@@ -688,7 +688,7 @@ namespace AppZulassungsdienst.lib
             }
         }
 
-        public void SendVorgaengeToSap(List<Kundenstammdaten> kundenStamm, List<Materialstammdaten> materialStamm, string userName)
+        public void SendVorgaengeToSap(string userName)
         {
             ClearError();
 
