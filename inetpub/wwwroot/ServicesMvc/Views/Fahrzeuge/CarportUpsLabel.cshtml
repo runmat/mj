@@ -1,0 +1,44 @@
+﻿@model CkgDomainLogic.Fahrzeuge.ViewModels.CarporterfassungViewModel
+
+<script type="text/javascript" src="~/assets/plugins/select2/select2.min.js"></script>
+<link rel="stylesheet" type="text/css" href="~/assets/plugins/select2/select2_metro.css" />
+
+<h3 class="page-title" id="headerTitle">@Localize.Fahrzeuge_CarportUpsLabel<small></small></h3>
+
+<div class="span-alert-placeholder">
+    @Html.SpanAlert("Message")
+</div>
+
+<div id="divCarporterfassungEdit">
+    @Html.Partial("Carporterfassung/CarportSelectionUpsLabelForm", Model.AktuellesFahrzeug)
+</div>
+
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        $("#Kennzeichen").focus();
+        InitDropDownLists();
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+        InitDropDownLists();
+    }
+
+    function InitDropDownLists() {
+
+        setTimeout(function () {
+            $('#CarportId').select2({
+                allowClear: true
+            });
+        }, 100);
+    }
+
+    function AjaxFormCarportUpsLabelSelectionComplete() {
+        FormPreparePrivateAjax();
+        GridRefresh();
+        setTimeout('FormPreparePrivateAjax();', 200);
+    }
+
+</script>

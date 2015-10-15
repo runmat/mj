@@ -117,6 +117,7 @@ namespace CkgDomainLogic.Ueberfuehrung.Models
                         { "Ansprechpartner", "Ansprechpartner" },
                         { "Telefon", "Telefon" },
                         { "Fax", "Fax" },
+                        { "Email", "Email" },
                     }));
             }
         }

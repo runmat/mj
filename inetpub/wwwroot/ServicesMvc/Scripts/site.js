@@ -55,6 +55,34 @@ function NumbersOnly(e, decimal) {
         return false;
 }
 
+function LettersOnly(e, upperCaseOnly) {
+    var key;
+
+    if (window.event) {
+        key = window.event.keyCode;
+    }
+    else if (e) {
+        key = e.which;
+    }
+    else {
+        return true;
+    }
+
+    var keychar = String.fromCharCode(key);
+
+    if ((key == null) || (key == 0) || (key == 8) || (key == 9) || (key == 13) || (key == 27)) {
+        return true;
+    }
+    else if ((key > 64 && key < 91) || (!upperCaseOnly && key > 96 && key < 123)) {
+        return true;
+    }
+    else if ((("ÄÖÜ").indexOf(keychar) > -1) || (!upperCaseOnly && ("äöü").indexOf(keychar) > -1)) {
+        return true;
+    }
+    else
+        return false;
+}
+
 function jsAppend(jsFile) {
     var jsScript = document.createElement('script');
     jsScript.type = "text/javascript";
