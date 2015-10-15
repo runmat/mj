@@ -1,0 +1,31 @@
+﻿@model CkgDomainLogic.Fahrzeuge.Models.CarporterfassungModel
+
+<div id="DivCarportUpsLabelSelection">
+    
+    @using (Ajax.BeginForm("CarportUpsLabelSelectionForm", "Fahrzeuge", null,
+                new MvcAjaxOptions { UpdateTargetId = "DivCarportUpsLabelSelection", OnComplete = "AjaxFormCarportUpsLabelSelectionComplete();" },
+                htmlAttributes: new { @class = "form-horizontal label-width-250", id = "AjaxFormCarportUpsLabelSelection" }))
+    {
+
+        @Html.FormDropDownListFor(m => m.CarportId, Model.CarportPdis.ToSelectList(), new { @class = "m-wrap large" })
+
+        @Html.FormPlaceHolder(@<text>
+                                    <a id="GenerateUpsShippingOrder" href="GenerateUpsShippingOrder" target="_blank" class="btn blue"> @Localize.GenerateUpsShippingOrder</a>
+                               </text>)
+
+
+        <script type="text/javascript">
+            _modelIsValid = @ViewContext.ViewData.ModelState.IsValid.ToString().ToLower();
+            var carportId = '@Model.CarportId';
+
+            if (carportId === '')
+                $("#GenerateUpsShippingOrder").hide();
+
+            $("#CarportId").on("change", function() {
+                $("#GenerateUpsShippingOrder").hide();
+                $("#AjaxFormCarportUpsLabelSelection").submit();
+            });
+        </script>
+    }
+
+</div>
