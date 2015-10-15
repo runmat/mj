@@ -150,6 +150,17 @@ namespace CkgDomainLogic.General.Services
             }
         }
 
+        public string CountryPlzValidate(string country, string plz)
+        {
+            ISA_ADDR_POSTAL_CODE_CHECK.Init(SAP);
+
+            SAP.SetImportParameter("COUNTRY", country);
+            SAP.SetImportParameter("POSTAL_CODE_CITY", plz);
+
+            var validationItem = ISA_ADDR_POSTAL_CODE_CHECK.RETURN.GetExportListWithExecute(SAP).ToListOrEmptyList().FirstOrDefault();
+            return validationItem == null ? "" : validationItem.MESSAGE;
+        }
+
         #endregion
 
 
@@ -263,6 +274,21 @@ namespace CkgDomainLogic.General.Services
 
             if (LogonContext.Customer.Userreferenzfeld3 == referenceType.ToString())
                 return LogonContext.User.Reference3;
+
+            return "";
+        }
+
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            Z_DPM_PRUEF_FIN_001.Init(SAP, "I_FGNU, I_FGPZ", fin, pruefziffer);
+
+            SAP.Execute();
+
+            var status = SAP.GetExportParameter("E_STATUS").ToInt(0);
+            var message = SAP.GetExportParameter("E_MESSAGE");
+
+            if (status != 0)
+                return message;
 
             return "";
         }

@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{05C2BFF6-7FA0-46DD-B5D7-BC4D6D390E41}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>WkdaGenerateUpsShippingLabelTask</RootNamespace>
+    <AssemblyName>WkdaGenerateUpsShippingLabelTask</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="NReco.PdfGenerator">
+      <HintPath>..\..\..\GAC\NReco.PdfGenerator.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Contracts">
+      <HintPath>..\..\..\GAC\SapORM.Contracts.dll</HintPath>
+    </Reference>
+    <Reference Include="SapORM.Services">
+      <HintPath>..\..\..\GAC\SapORM.Services.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Konfiguration.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+    <Compile Include="Sap.cs" />
+    <Compile Include="Web References\UPSShip\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.map</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\UPSShip\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\Error1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\IFWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\Reference.map">
+      <Generator>MSDiscoCodeGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <None Include="Web References\UPSShip\Ship.wsdl" />
+    <None Include="Web References\UPSShip\ShipAcceptResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UPSShip\ShipConfirmResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UPSShip\ShipmentResponse.datasource">
+      <DependentUpon>Reference.map</DependentUpon>
+    </None>
+    <None Include="Web References\UPSShip\ShipWebServiceSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Web References\UPSShip\UPSSecurity.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WSDL\common.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WSDL\Error1.1.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WSDL\IFWS.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WSDL\LabelRecoveryWS.wsdl" />
+    <None Include="WSDL\LBRecovery.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WSDL\Ship.wsdl" />
+    <None Include="WSDL\ShipWebServiceSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WSDL\UPSSecurity.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WSDL\Void.wsdl" />
+    <None Include="WSDL\VoidWebServiceSchema.xsd">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\SapORM\models\SapORM.Models.csproj">
+      <Project>{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}</Project>
+      <Name>SapORM.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\Tools\GeneralTools\GeneralTools.csproj">
+      <Project>{A4F36243-8D89-460F-ACB3-EF7DF37D6FCA}</Project>
+      <Name>GeneralTools</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferences Include="Web References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WebReferenceUrl Include="C:\dev\Work\ServerAnwendungen\WkdaGenerateUpsShippingLabelTask\WkdaGenerateUpsShippingLabelTask\WSDL\Ship.wsdl">
+      <UrlBehavior>Dynamic</UrlBehavior>
+      <RelPath>Web References\UPSShip\</RelPath>
+      <UpdateFromURL>C:\dev\Work\ServerAnwendungen\WkdaGenerateUpsShippingLabelTask\WkdaGenerateUpsShippingLabelTask\WSDL\Ship.wsdl</UpdateFromURL>
+      <ServiceLocationURL>
+      </ServiceLocationURL>
+      <CachedDynamicPropName>
+      </CachedDynamicPropName>
+      <CachedAppSettingsObjectName>Settings</CachedAppSettingsObjectName>
+      <CachedSettingsPropName>WkdaGenerateUpsShippingLabelTask_UPSShip_ShipService</CachedSettingsPropName>
+    </WebReferenceUrl>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
