@@ -230,6 +230,50 @@ namespace CarDocu.Models
             }
         }
 
+        private bool _deleteAndBackupFileAfterDelivery;
+
+        public bool DeleteAndBackupFileAfterDelivery
+        {
+            get { return _deleteAndBackupFileAfterDelivery; }
+            set
+            {
+                _deleteAndBackupFileAfterDelivery = value;
+                if (value && DomainService.Repository.GlobalSettings.BackupArchive.Path.IsNullOrEmpty())
+                {
+                    _deleteAndBackupFileAfterDelivery = false;
+                    Tools.Alert("Diese Option kann erst aktiviert werden, wenn unter den Domain Einstellungen ein Backup Pfad hinterlegt wurde!");
+                    return;
+                }
+                SendPropertyChanged("DeleteAndBackupFileAfterDelivery");
+            }
+        }
+
+        private string _externalCommandlineProgramPath;
+
+        public string ExternalCommandlineProgramPath
+        {
+            get { return _externalCommandlineProgramPath; }
+            set
+            {
+                _externalCommandlineProgramPath = value;
+                SendPropertyChanged("ExternalCommandlineProgramPath");
+            }
+        }
+
+        public bool UseExternalCommandline { get { return ExternalCommandlineProgramPath.IsNotNullOrEmpty(); } }
+
+        private string _externalCommandlineArguments;
+
+        public string ExternalCommandlineArguments
+        {
+            get { return _externalCommandlineArguments; }
+            set
+            {
+                _externalCommandlineArguments = value;
+                SendPropertyChanged("ExternalCommandlineArguments");
+            }
+        }
+
         private readonly Media.Brush _brushBackgroundValid = Media.Brushes.LightGoldenrodYellow;
         private readonly Media.Brush _brushBackgroundInvalid = Media.Brushes.LightPink;
         private readonly Media.Brush _brushForegroundValid = Media.Brushes.Blue;

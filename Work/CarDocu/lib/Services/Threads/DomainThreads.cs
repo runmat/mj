@@ -22,8 +22,8 @@ namespace CarDocu.Services
             ArchiveBackgroundTask = new ArchiveBackgroundTask();
 
             BackgroundThreads = new List<CardocuBackgroundTask> {
-                                        SapBackgroundTask, 
                                         ArchiveBackgroundTask,
+                                        SapBackgroundTask, 
                                     };
         }
 

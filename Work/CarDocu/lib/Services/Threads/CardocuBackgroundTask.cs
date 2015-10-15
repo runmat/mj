@@ -175,7 +175,7 @@ namespace CarDocu.Services
             TaskService.StartUiTask(() => QueueItemCount = count);
         }
 
-        public override CardocuQueueEntity Dequeue(int sleepMilliseconds = 3000)
+        public override CardocuQueueEntity Dequeue(int sleepMilliseconds = 1000)
         {
             var returnItem = base.Dequeue(sleepMilliseconds);
             if (returnItem != null)
@@ -290,6 +290,18 @@ namespace CarDocu.Services
         public abstract void LogItemsRemoveCurrentQueuedItem();
 
         protected abstract void SetDeliveryDate(ScanDocument scanDocument, DateTime deliveryDate);
+
+        protected void DelayAsShortAsPossibleButLongerIfAdminKeyPressed()
+        {
+            var delay = 200;
+            TaskService.StartUiTask(() => delay = Keyboard.IsKeyDown(Key.F8) ? 2000 : 200);
+
+            Thread.Sleep(200);
+            Thread.Sleep(delay);
+
+            while (ActiveJobFreeze) 
+                Thread.Sleep(500);
+        }
 
 
         #region INotifyPropertyChanged

@@ -1,6 +1,4 @@
-﻿#define FTP
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -65,6 +63,7 @@ namespace CarDocu.Services
         {
             mailItemCount = 0;
             var archiveMailDeliveryNeeded = scanDocument.ArchiveMailDeliveryNeeded;
+            var docType = scanDocument.SelectedDocumentType;
 
             try
             {
@@ -97,37 +96,56 @@ namespace CarDocu.Services
                     }
                 }
 
+
                 pdfFileNames.ForEach(srcFileName =>
                 {
+                    if (!File.Exists(srcFileName))
+                        // no source file available anymore, 
+                        // => so it's ok for us, because the file has already been copied actually
+                        return;
+
                     var srcFileInfo = new FileInfo(srcFileName);
                     var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
 
-#if FTP
-                    const string externalCommandProgram = @"C:\inst\FTP\pscp.exe";
-                    const string externalCommandArgs = @"-batch -sftp -pw test01 %1 wkda_scanner@vms006t.kroschke.de:";
-
-                    var args = externalCommandArgs.Replace("%1", string.Format("\"{0}\"", srcFileName));
-
-                    var pi = new ProcessStartInfo
+                    if (docType.UseExternalCommandline)
                     {
-                        FileName = externalCommandProgram,
-                        Arguments = args,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    };
-                    var p = Process.Start(pi);
-                    if (p == null)
-                        throw new Exception(string.Format("Fehler beim Aufruf des externen Processes \"{0}\" mit Parameter {1}", externalCommandProgram, args));
+                        var externalCommandProgram = docType.ExternalCommandlineProgramPath;
+                        var externalCommandArgs = docType.ExternalCommandlineArguments;
 
-                    const int timeoutMinutes = 10;
-                    p.WaitForExit(timeoutMinutes * 60 * 1000);
+                        var args = externalCommandArgs.Replace("%1", string.Format("\"{0}\"", srcFileName));
 
-                    if (p.ExitCode != 0)
-                        throw new Exception(string.Format("Externer Process meldet Fehler-Code {2}, Process = \"{0}\", Parameter = {1}", externalCommandProgram, args, p.ExitCode));
+                        var pi = new ProcessStartInfo
+                        {
+                            FileName = externalCommandProgram,
+                            Arguments = args,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        };
+                        var p = Process.Start(pi);
+                        if (p == null)
+                            throw new Exception(string.Format("Fehler beim Aufruf des externen Processes \"{0}\" mit Parameter {1}", externalCommandProgram, args));
 
-#else
-                    FileService.TryFileDelete(dstFileName);
-                    File.Copy(srcFileName, dstFileName, true);
-#endif
+                        const int timeoutMinutes = 10;
+                        p.WaitForExit(timeoutMinutes*60*1000);
+
+                        if (p.ExitCode != 0)
+                            throw new Exception(string.Format("Externer Process meldet Fehler-Code {2}, Process = \"{0}\", Parameter = {1}", externalCommandProgram, args, p.ExitCode)); 
+                    }
+                    else
+                    {
+                        FileService.TryFileDelete(dstFileName);
+                        File.Copy(srcFileName, dstFileName, true);
+                    }
+
+                    if (docType.DeleteAndBackupFileAfterDelivery)
+                    {
+                        var backupFolder = DomainService.Repository.GlobalSettings.BackupArchive.Path;
+                        if (backupFolder.IsNotNullOrEmpty())
+                        {
+                            var backupFileName = Path.Combine(backupFolder, srcFileInfo.Name);
+                            FileService.TryFileCopy(srcFileName, backupFileName);
+                            FileService.TryFileDelete(srcFileName);
+                        }
+                    }
 
                 });
             }

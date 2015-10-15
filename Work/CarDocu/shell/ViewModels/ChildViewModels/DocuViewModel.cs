@@ -852,7 +852,7 @@ namespace CarDocu.ViewModels
                 ScanDocumentSaveCommand.Execute(null);
                 SendPropertyChanged("ScanDocument");
 
-                scanDocumentIsValid = ScanDocument.PdfPageCountIsValid();
+                scanDocumentIsValid = ScanDocument.PdfPageCountIsValid;
             }
             else
             {

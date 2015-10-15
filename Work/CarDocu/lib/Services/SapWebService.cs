@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using CarDocu.Models;
 using GeneralTools.Models;
-using GeneralTools.Services;
 
 namespace CarDocu.Services
 {
@@ -50,7 +48,7 @@ namespace CarDocu.Services
                 commaSeparatedReturnCodes = "";
                 commaSeparatedReturnMessages = "";
 
-                var webServiceFuntionID = scanDocument.SelectedDocumentType.WebServiceFunction;
+                var webServiceFuntionID = scanDocument.SelectedDocumentType == null ? "" : scanDocument.SelectedDocumentType.WebServiceFunction;
 
                 if (webServiceFuntionID == "CARDOCU")
                     if (!Service.ProcessArchivMeldung(scanDocument.KundenNr,
@@ -77,7 +75,7 @@ namespace CarDocu.Services
                         return false;
 
             }
-            catch { return false; }
+            catch(Exception) { return false; }
 
             //
             // delivery successfull => let's mark all corresponding entries with an apropiate delivery date right here:

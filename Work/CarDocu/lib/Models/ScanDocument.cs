@@ -23,6 +23,8 @@ namespace CarDocu.Models
 
         public string FinNumber { get; set; }
 
+        public string PdfErrorGuid { get; set; }
+
         public string StandortCode { get; set; }
 
         public string KundenNr { get; set; }
@@ -269,17 +271,19 @@ namespace CarDocu.Models
 
         public string PdfDirectoryName { get { return GetDocumentPdfDirectoryName(); } }
 
-        public bool PdfPageCountIsValid(string documentTypeCode = null)
+        public bool PdfPageCountIsValid { get; set; }
+
+        public bool CheckPdfPageCountIsValid(string documentTypeCode = null)
         {
             if (documentTypeCode.IsNullOrEmpty())
                 documentTypeCode = SelectedDocumentType.Code;
 
             var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
 
-            if (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount)
-                return true;
+            PdfPageCountIsValid  = (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount);
+            PdfErrorGuid = (PdfPageCountIsValid ? "" : FileService.CreateFriendlyGuid());
 
-            return false;
+            return PdfPageCountIsValid;
         }
 
         public string PdfGetFileName(string documentTypeCode, string directoryName, string extension)
@@ -295,8 +299,8 @@ namespace CarDocu.Models
                 pdfFinNumber = string.Format("{0}{1}", pdfFinNumber.Substring(0, 8), pdfFinNumber.Substring(9));
             }
 
-            if (!PdfPageCountIsValid(documentTypeCode))
-                pdfFinNumber = string.Format("FEHLER_{0}", FileService.CreateFriendlyGuid());
+            if (!PdfPageCountIsValid)
+                pdfFinNumber = string.Format("FEHLER_{0}", PdfErrorGuid);
 
             return Path.Combine(directoryName, string.Format("{0}{1}.{2}", pdfFinNumber, documentTypeCode, extension));
         }
@@ -346,21 +350,23 @@ namespace CarDocu.Models
 
             ScanDocumentTypeCodes.ForEach(
                 docTypeCode =>
+                {
+                    CheckPdfPageCountIsValid(docTypeCode);
+
+                    var pdfFileName = PdfGetFileName(docTypeCode, directoryName, extension);
+
+                    var scanImagesOfThisCode = ScanImages.Where(image => image.ImageDocumentTypeCode == docTypeCode).OrderBy(i => i.Sort).Select(image => image.GetCachedImageFileName(false));
+
+                    var errorMessage = "";
+                    try { PdfDocumentFactory.CreatePdfFromImages(scanImagesOfThisCode, pdfFileName, false, true); }
+                    catch(Exception e) { errorMessage = e.Message; }
+
+                    if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))
                     {
-                        var pdfFileName = PdfGetFileName(docTypeCode, directoryName, extension);
-
-                        var scanImagesOfThisCode = ScanImages.Where(image => image.ImageDocumentTypeCode == docTypeCode).OrderBy(i => i.Sort).Select(image => image.GetCachedImageFileName(false));
-
-                        var errorMessage = "";
-                        try { PdfDocumentFactory.CreatePdfFromImages(scanImagesOfThisCode, pdfFileName, false, true); }
-                        catch(Exception e) { errorMessage = e.Message; }
-
-                        if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))
-                        {
-                            Tools.AlertError(string.Format("Beim Erstellen der PDF-Datei '{0}' ist ein Fehler aufgetreten:\r\n\r\nFehlermeldung:\r\n{1}", 
-                                                Path.GetFileName(pdfFileName), errorMessage));
-                        }
-                    });
+                        Tools.AlertError(string.Format("Beim Erstellen der PDF-Datei '{0}' ist ein Fehler aufgetreten:\r\n\r\nFehlermeldung:\r\n{1}", 
+                                            Path.GetFileName(pdfFileName), errorMessage));
+                    }
+                });
 
             PdfIsSynchronized = true;
         }
@@ -378,7 +384,7 @@ namespace CarDocu.Models
                     DocumentID = Guid.NewGuid().ToString(),
                     CreateDate = DateTime.Now,
                     CreateUser = DomainService.Repository.UserName,
-                    SelectedDocumentType =DomainService.Repository.GetImageDocumentType(DomainService.Repository.UserSettings.SelectedDocumentTypeCode),
+                    SelectedDocumentType = DomainService.Repository.GetImageDocumentType(DomainService.Repository.UserSettings.SelectedDocumentTypeCode),
                     FinNumber = ""
                 };
 
