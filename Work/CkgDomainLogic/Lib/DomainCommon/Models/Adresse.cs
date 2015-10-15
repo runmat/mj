@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 using System.Web.Script.Serialization;
 using System.Xml.Serialization;
+using CkgDomainLogic.DomainCommon.Contracts;
+using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Contracts;
@@ -150,8 +153,16 @@ namespace CkgDomainLogic.DomainCommon.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Land.NotNullOrEmpty().ToLower() == "de" && PLZ.NotNullOrEmpty().Length != 5)
-                yield return new ValidationResult(Localize.GermanPlzMustHave5Digits, new[] { "PLZ" });
+            if (Land.IsNotNullOrEmpty())
+            {
+                var generalDataService = DependencyResolver.Current.GetService(typeof (IAdressenDataService)) as IAdressenDataService;
+                if (generalDataService != null)
+                {
+                    var countryPlzValidationMessage = generalDataService.CountryPlzValidate(Land, PLZ);
+                    if (countryPlzValidationMessage.IsNotNullOrEmpty())
+                        yield return new ValidationResult(countryPlzValidationMessage, new[] { "PLZ", "Land" });
+                }
+            }
 
             if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)      // 20150617 MMA
                 yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });

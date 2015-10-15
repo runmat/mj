@@ -360,7 +360,7 @@ Namespace Common
                                 rfcT = it.ToTable
                                 If rfcT.Name = CType(tmpRow(0), DataTable).TableName Then
 
-                                    Dim tblTemp As DataTable = rfcT.ToADOTable
+                                    Dim tblTemp As DataTable = rfcT.ToADOTableLocaleDe
 
                                     For Each col As RFCTableColumn In rfcT.Columns
 
@@ -476,7 +476,7 @@ Namespace Common
                     callduration = stoppuhr.Elapsed.TotalSeconds
                 End If
 
-                PreserveStackTrace(ex)
+                'PreserveStackTrace(ex)
 
                 Dim logger As New LogService(String.Empty, String.Empty)
                 logger.LogSapCall(BapiName, String.Empty, Import, Export, False, callduration, 0, mObjMyUser.UserID, mObjMyUser.Customer.CustomerId, mObjMyUser.Customer.KUNNR, 2)
@@ -510,8 +510,8 @@ Namespace Common
         ''' <returns>Formatierte DataTable</returns>
         Private Function UpdateColumnTypes(rfcT As RFCTable) As DataTable
 
-            Dim tblTemp As DataTable = rfcT.ToADOTable
-            Dim tblTempResult As DataTable = rfcT.ToADOTable.Clone
+            Dim tblTemp As DataTable = rfcT.ToADOTableLocaleDe
+            Dim tblTempResult As DataTable = rfcT.ToADOTableLocaleDe.Clone
             Dim NewRow As DataRow
 
             'Datentyp auf DateTime ändern
