@@ -1,0 +1,182 @@
+﻿<script type="text/javascript">
+
+    var _filteredData_DisableDataBound = false;
+    var _filteredData_force_Grid_OnColumnReorder = false;
+
+    var _gridColumnNameList = [];
+    var _gridColumnNameListIsValid = false;
+    var _gridReportGeneratorMode = false;
+    var _gridGroupBy = '';
+
+    function FilteredData_Grid_OnDataBound(grid) {
+
+        if (_filteredData_DisableDataBound)
+            return;
+
+        grid = (grid || $(this));
+
+        var gridDataBoundFirstTime = grid.data("gridDataBoundFirstTime");
+        if (typeof (gridDataBoundFirstTime) == 'undefined') {
+            gridDataBoundFirstTime = true;
+            grid.data("gridDataBoundFirstTime", false);
+        }
+
+        if (gridDataBoundFirstTime) {
+            GridCaptionHintShowAsWait(grid);
+        }
+
+
+        setTimeout(function () {
+            
+            if (gridDataBoundFirstTime) {
+                GridCaptionHintHide(grid);
+            }
+
+            try 
+            {
+                FilteredData_Grid_PrepareAllCommandHrefs(grid);
+                _filteredData_force_Grid_OnColumnReorder = false;
+            } 
+            catch (e) 
+            {
+                _filteredData_force_Grid_OnColumnReorder = false;
+            }
+
+        }, 1000);
+    }
+
+    function FilteredData_Grid_OnColumnReorder(grid) {
+
+        if (_filteredData_DisableDataBound)
+            return;
+
+        grid = (grid || $(this));
+
+        _filteredData_force_Grid_OnColumnReorder = true;
+
+        grid.data('tGrid').ajaxRequest();
+    }
+
+    function FilteredData_Grid_OnColumnShowHide(grid) {
+
+        if (_filteredData_DisableDataBound)
+            return;
+
+        FilteredData_Grid_OnDataBound(grid);
+    }
+
+    function FilteredData_Grid_PrepareAllCommandHrefs(grid) {
+
+        if (_filteredData_DisableDataBound)
+            return;
+
+        var dataGrid = grid.data('tGrid');
+
+        var jsonColumnsString = GetJsonColumns(dataGrid);
+
+        $.each($('#' + grid.attr('id') + ' a[id$="_FilterCommand"]'), function () {
+            FilteredData_Grid_PrepareCommandHref(dataGrid, $(this).attr('id'));
+        });
+    }
+
+    function getFilteredData_DisableDataBound() {
+        return _filteredData_DisableDataBound;
+    }
+
+    function GridColumnResetOrderAndVisibility() {
+        _gridColumnNameList = [];
+        _gridColumnNameListIsValid = false;
+        _gridGroupBy = '';
+    }
+
+    function GridEnsureValidColums(grid, settingsColumns) {
+        
+        var validSettingsColumns = new Array();
+        $.each(settingsColumns, function (index, columnName) {
+            if (1 <= $.grep(grid.columns, function (col, j) { return (columnName == col.member); }).length)
+                validSettingsColumns.push(columnName);
+        });
+        settingsColumns = validSettingsColumns;
+
+        return settingsColumns;
+    }
+    
+    function GetJsonColumns(grid) {
+        // Update the 'columns' parameter 
+        var columnsFiltered = $.grep(grid.columns, function (column, j) {
+            return (column.title != "" && column.hidden !== true);
+        });
+        // Template-Definitionen hier nicht relevant bzw. sogar problematisch wg. Sonderzeichen
+        $.each(columnsFiltered, function () {
+            $(this).attr('template', "");
+        });
+
+        var jsonColumnsString = (JSON.stringify(columnsFiltered) || '~');
+
+        return jsonColumnsString;
+    }
+
+    function FilteredData_Grid_PrepareCommandHref(grid, hrefId) {
+
+        // Get the export link as jQuery object
+        var $exportLink = $('#' + hrefId);
+
+        // Get its 'href' attribute - the URL where it would navigate to
+        var href = $exportLink.attr('href');
+
+        // Update the 'page' parameter with the grid's current page
+        href = href.replace(/page=([^&]*)/, 'page=' + grid.currentPage);
+
+        // Update the 'orderBy' parameter with the grids' current sort state
+        href = href.replace(/orderBy=([^&]*)/, 'orderBy=' + (grid.orderBy || '~'));
+
+        // Update the 'filter' parameter with the grids' current filtering state
+        href = href.replace(/filterBy=([^&]*)/, 'filterBy=' + (grid.filterBy || '~'));
+
+        // Update the 'filter' parameter with the grids' current grouping state
+        href = href.replace(/groupBy=([^&]*)/, 'groupBy=' + (grid.groupBy || '~'));
+
+        // Update the 'href' attribute
+        $exportLink.attr('href', href);
+    }
+
+    function GridCaptionGetWaitHintElement(grid) {
+        var closestCaption;
+        if (typeof (grid) == "undefined")
+            closestCaption = $(".FormSearchResultsGrid").find(".portlet-title");
+        else
+            closestCaption = grid.closest(".FormSearchResultsGrid").find(".portlet-title");
+
+        var waitHint = closestCaption.find(".grid-caption-alert");
+        return waitHint;
+    }
+
+    function GridCaptionHintHide(grid) {
+        var waitHint = GridCaptionGetWaitHintElement(grid);
+
+        waitHint.css("visibility", "collapse");
+    }
+
+    function GridCaptionHintShowAsWait(grid) {
+
+        var waitHint = GridCaptionGetWaitHintElement(grid);
+
+        waitHint.removeClass("alert-success");
+        waitHint.addClass("warning");
+
+        waitHint.html("Bitte warten...");
+
+        waitHint.css("visibility", "visible");
+    }
+
+    function GridCaptionHintShowAsSuccess(successMessage, grid) {
+        var waitHint = GridCaptionGetWaitHintElement(grid);
+
+        waitHint.removeClass("warning");
+        waitHint.addClass("alert-success");
+
+        waitHint.html(successMessage);
+
+        waitHint.css("visibility", "visible");
+    }   
+</script>
