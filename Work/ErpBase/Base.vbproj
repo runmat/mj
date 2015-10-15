@@ -94,8 +94,9 @@
     <Reference Include="BarcodeLib">
       <HintPath>..\GAC\BarcodeLib.dll</HintPath>
     </Reference>
-    <Reference Include="ERPConnect35">
-      <HintPath>..\GAC\ERPConnect35.dll</HintPath>
+    <Reference Include="ERPConnect35, Version=4.2.4.0, Culture=neutral, PublicKeyToken=737201975e95eeee, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\GAC\ErpConnect\4.27.8.2\ERPConnect35.dll</HintPath>
     </Reference>
     <Reference Include="GeneralTools, Version=1.0.5044.11167, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -215,6 +216,7 @@
     </Compile>
     <Compile Include="Kernel\Common\DynSapProxy.vb" />
     <Compile Include="Kernel\Common\DynSapProxyObj.vb" />
+    <Compile Include="Kernel\Common\ErpExtensions.vb" />
     <Compile Include="Kernel\Common\GetMailTexte.vb" />
     <Compile Include="Kernel\Common\GridSettingsPersister.vb" />
     <Compile Include="Kernel\Common\PageHelper.vb" />
