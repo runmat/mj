@@ -9,7 +9,7 @@
 
         <TextBlock Text="Verwaltung Dokumentenarten" Style="{StaticResource lbHeaderBig}" Margin="0,0,0,20" />
 
-        <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Style="{StaticResource GradientDataGrid}" MaxHeight="300">
+        <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" Style="{StaticResource GradientDataGrid}" MaxHeight="200">
             <DataGrid.Columns>
                 <DataGridTextColumn Visibility="Collapsed" Header="Sort" Binding="{Binding Sort}" Width="40" Foreground="Gray" />
                 <DataGridTextColumn Header="Code" Binding="{Binding Code}" Width="250" />
@@ -42,7 +42,7 @@
 
         <Border Visibility="{Binding SelectedItem, Converter={StaticResource NotNullVisibilityConverter}}" Padding="0,20,0,0">
 
-            <ScrollViewer Margin="0,0,20,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="{Binding Parent.NewDocuViewModel.SelectedScanImageHeight}">
+            <ScrollViewer Margin="0,0,20,0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="{Binding Parent.NewDocuViewModel.DocumentTypesEditDetailsHeight}">
                 <StackPanel DataContext="{Binding SelectedItem}">
                     <Grid>
                         <Grid.ColumnDefinitions>

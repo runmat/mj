@@ -110,11 +110,28 @@ namespace CarDocu.ViewModels
             set { _selectedScanImageWidth = value; SendPropertyChanged("SelectedScanImageWidth"); }
         }
 
-        static private double _selectedScanImageHeight; 
-        public double SelectedScanImageHeight 
-        { 
+        static private double _selectedScanImageHeight;
+        public double SelectedScanImageHeight
+        {
             get { return _selectedScanImageHeight; }
-            set { _selectedScanImageHeight = value; SendPropertyChanged("SelectedScanImageHeight"); }
+            set
+            {
+                _selectedScanImageHeight = value;
+                DocumentTypesEditDetailsHeight = value - 235;
+                SendPropertyChanged("SelectedScanImageHeight");
+            }
+        }
+
+        private double _documentTypesEditDetailsHeight;
+
+        public double DocumentTypesEditDetailsHeight
+        {
+            get { return _documentTypesEditDetailsHeight; }
+            set
+            {
+                _documentTypesEditDetailsHeight = value;
+                SendPropertyChanged("DocumentTypesEditDetailsHeight");
+            }
         }
 
         static private ObservableCollection<DocumentType> _globalDocumentTypes;
@@ -247,7 +264,7 @@ namespace CarDocu.ViewModels
                 if (!DomainService.DebugIsAdminEnvironment)
                     return false;
 
-                return false;
+                return true;
             }
         }
 
@@ -597,14 +614,14 @@ namespace CarDocu.ViewModels
 
             if (SelectedDocumentType.BarcodeType != LastScannedBarcodeType)
             {
-                DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Ungültiger Barcodetyp wurde übersprungen."));
+                DomainService.StatusMessages.Add(new StatusMessage(StatusMessage.MessageType.Warning, "Ungültiger Barcodetyp wurde übersprungen."));
                 return false;
             }
 
             if (SelectedDocumentType.BarcodeAlphanumericAllowed)
             {
                 //erfolgreich gescannt!
-                DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Info, "Barcode " + LastScannedBarcodeValue + " erkannt.")); 
+                DomainService.StatusMessages.Add(new StatusMessage(StatusMessage.MessageType.BarcodeOk, "Barcode " + LastScannedBarcodeValue + " erkannt.")); 
                 return true;
             }
 
@@ -612,7 +629,7 @@ namespace CarDocu.ViewModels
             if (SelectedDocumentType.BarcodeRangeStart <= barcodeValue && barcodeValue <= SelectedDocumentType.BarcodeRangeEnd)
                 return true;
 
-            DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Barcode ist außerhalb des aktuellen Nummernkreises!"));
+            DomainService.StatusMessages.Add(new StatusMessage(StatusMessage.MessageType.Warning, "Barcode ist außerhalb des aktuellen Nummernkreises!"));
             return false;
         }
 
