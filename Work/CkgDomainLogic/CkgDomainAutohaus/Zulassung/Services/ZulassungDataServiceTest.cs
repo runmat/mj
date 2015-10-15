@@ -35,8 +35,21 @@ namespace CkgDomainLogic.Autohaus.Services
             return "";
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
+        }
+
+        public string CountryPlzValidate(string country, string plz)
+        {
+            if (country.NotNullOrEmpty().ToUpper() == "DE" && plz.IsNotNullOrEmpty() && plz.Length != 5)
+                return "Deutsche Postleitzahlen müssen 5-stellig sein";
+
+            return "";
         }
 
         public List<Hersteller> Hersteller { get { return new List<Hersteller>(); } }
