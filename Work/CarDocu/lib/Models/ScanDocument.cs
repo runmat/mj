@@ -145,6 +145,17 @@ namespace CarDocu.Models
             return firstScanImage != null && firstScanImage.ImageDocumentType != null ? firstScanImage.ImageDocumentType.Archive : GetDefaultArchive();
         }
 
+        public void EnsureDocumentType()
+        {
+            if (ValidDocumentType || ScanImages == null)
+                return;
+
+            if (ScanImages.None())
+                XmlLoadScanImages();
+
+            SelectedDocumentType = ScanImages.First().ImageDocumentType;
+        }
+
         [XmlIgnore]
         public bool BackgroundDeliveryDisabled
         {

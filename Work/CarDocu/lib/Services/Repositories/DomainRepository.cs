@@ -266,6 +266,8 @@ namespace CarDocu.Services
 
         private void QueueUnprocessedItems()
         {
+            ScanDocumentsEnsureDocumentType();
+
             var sapUnprocessedEntities = GetUnprocessedSapItems().Select(s => new SapLogItem { DocumentID = s.DocumentID }).ToList();
             sapUnprocessedEntities.ForEach(item => DomainService.Threads.SapBackgroundTask.Enqueue(item));
 
@@ -403,6 +405,11 @@ namespace CarDocu.Services
                 Directory.CreateDirectory(path);
 
             return path;
+        }
+
+        private void ScanDocumentsEnsureDocumentType()
+        {
+            ScanDocumentRepository.ScanDocuments.ForEach(sd => sd.EnsureDocumentType());
         }
 
         private IEnumerable<ScanDocument> GetUnprocessedSapItems()

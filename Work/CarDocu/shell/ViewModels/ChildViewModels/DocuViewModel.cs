@@ -265,7 +265,7 @@ namespace CarDocu.ViewModels
                 if (!DomainService.DebugIsAdminEnvironment)
                     return false;
 
-                return false;
+                return true;
             }
         }
 
