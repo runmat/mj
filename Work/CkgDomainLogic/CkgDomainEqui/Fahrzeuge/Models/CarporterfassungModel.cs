@@ -126,12 +126,12 @@ namespace CkgDomainLogic.Fahrzeuge.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (!BarcodeService.CheckBarcodeEan(Barcode.NotNullOrEmpty()))
+            if (!BarcodeService.CheckBarcodeEan(Barcode.NotNullOrEmpty().Trim()))
                 yield return new ValidationResult(Localize.BarcodeInvalid, new[] { "Barcode" });
 
             var regexItem = new Regex("^[A-ZÄÖÜ]{1,3}-[A-ZÄÖÜ]{1,2}[0-9]{1,4}$");
 
-            if (!Ausland && !regexItem.IsMatch(Kennzeichen.NotNullOrEmpty().ToUpper()))
+            if (!Ausland && !regexItem.IsMatch(Kennzeichen.NotNullOrEmpty().Trim().ToUpper()))
                 yield return new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" });
         }
     }
