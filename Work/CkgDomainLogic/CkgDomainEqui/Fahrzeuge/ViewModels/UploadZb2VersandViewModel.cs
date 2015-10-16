@@ -26,6 +26,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public IEnumerable<VersandAuftragsAnlage> ValidUploadItems { get { return UploadItems.Where(i => i.IsValid); } }
 
+        private IEnumerable<Fahrzeug> StoredFahrzeuge { get; set; }
+
         public bool UploadItemsUploadErrorsOccurred { get { return ValidUploadItems.Count() < UploadItems.Count; } }
 
         public bool UploadItemsValidItemsAvailable { get { return ValidUploadItems.Any(); } }
@@ -129,8 +131,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             DataMarkForRefresh();
 
-            var storedFahrzeuge = DataService.GetFahrzeugBriefe(UploadItems.Select(u => new Fahrzeug {Ref2 = u.BestandsNr}));
-            UploadItems.ForEach(u => ValidateSingleUploadItem(u, storedFahrzeuge));
+            StoredFahrzeuge = DataService.GetFahrzeugBriefe(UploadItems.Select(u => new Fahrzeug {Ref2 = u.BestandsNr}));
+            UploadItems.ForEach(u => ValidateSingleUploadItem(u, StoredFahrzeuge));
         }
 
         private void ValidateSingleUploadItem(VersandAuftragsAnlage item, IEnumerable<Fahrzeug> storedFahrzeuge)
@@ -218,10 +220,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     continue;
 
                 UploadItems[i] = item;
+                ValidateSingleUploadItem(UploadItems[i], StoredFahrzeuge);
                 break;
             }
-
-            ValidateUploadItems();
         }
 
         public void SaveUploadItems()
