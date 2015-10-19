@@ -1096,7 +1096,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                     singleZulassung.ZahlerKfzSteuer = ModelMapping.Copy(Zulassung.ZahlerKfzSteuer);
                     singleZulassung.VersandAdresse = ModelMapping.Copy(Zulassung.VersandAdresse);
 
-                    singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+                    // singleZulassung.AuslieferAdressen    = new List<AuslieferAdresse>();            // ModelMapping.Copy(Zulassung.AuslieferAdressen) gibt Fehlermeldung "Parameteranzahlkonflikt", daher nicht verwendet
+
+                    singleZulassung.AuslieferAdressen = Zulassung.AuslieferAdressen;
+
                     singleZulassung.Halter = ModelMapping.Copy(Zulassung.Halter);
                     singleZulassung.BankAdressdaten = ModelMapping.Copy(Zulassung.BankAdressdaten);
 
@@ -1225,6 +1228,39 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 }
             }
         }
+
+        //public void ValidateAuslieferAdressenForm(Action<string, string> addModelError, AuslieferAdressen model)
+        //{
+
+        //    if (model.AuslieferAdresseZ7.HasData && !model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
+        //    {
+        //        addModelError("AuslieferAdresseZ7_Adressdaten_Adresse_Name1", string.Format("{0}", Localize.CompleteAddressRequired));
+        //    }
+
+        //    if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
+        //    {
+        //        addModelError("AuslieferAdresseZ8_Adressdaten_Adresse_Name1", string.Format("{0}", Localize.CompleteAddressRequired));
+        //    }
+
+        //    if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
+        //    {
+        //        addModelError("AuslieferAdresseZ7_Adressdaten_Adresse_Name1", string.Format("{0}", Localize.CompleteAddressRequired));
+        //    }
+
+            
+        ////    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        ////{
+        ////    if (Adressdaten.AdresseVollstaendig && ZugeordneteMaterialien.None())
+        ////        yield return new ValidationResult(Localize.MaterialRequired);
+
+        ////    if (ZugeordneteMaterialien.Contains("Sonstiges") && String.IsNullOrEmpty(Adressdaten.Bemerkung))
+        ////        yield return new ValidationResult(Localize.CommentRequired);
+
+        ////    if (ZugeordneteMaterialien.AnyAndNotNull() && !Adressdaten.AdresseVollstaendig)
+        ////        yield return new ValidationResult(Localize.CompleteAddressRequired);
+        ////}
+
+        //}
 
         ///// <summary>
         ///// 

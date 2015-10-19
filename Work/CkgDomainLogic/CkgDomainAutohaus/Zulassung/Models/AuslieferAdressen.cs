@@ -15,6 +15,10 @@ namespace CkgDomainLogic.Zulassung.Models
 
         public List<SelectItem> Materialien { get; set; }
 
+        public string ErrorMsgAdresseZ7 { get; set; }
+        public string ErrorMsgAdresseZ8 { get; set; }
+        public string ErrorMsgAdresseZ9 { get; set; }    
+
         public bool IsValid { get; set; }
     }
 }
