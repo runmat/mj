@@ -25,7 +25,7 @@
                         <docuGroup:ucScanDocuRibbonSectionDocuArt Opacity="{Binding DocuArtSelectionSmallOpacity}" />
                     </StackPanel>
                 </fl:RibbonGroupBox>
-                <fl:RibbonGroupBox Header="ID eingeben" Margin="0,0,0,0">
+                <fl:RibbonGroupBox Header="ID eingeben" Margin="0,0,0,0" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                     <StackPanel>
                         <docuGroup:ucScanDocuRibbonSectionFIN Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
                     </StackPanel>
@@ -102,6 +102,14 @@
                         <fl:Button.ToolTip>
                             <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
                                           Text="Verschiebt alle Scan-Dokumente in das ZIP-Archiv  und  erstellt ggfls. ein lokales Zusatz Backup (sofern ein Backup Pfad hinterlegt ist)"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding AutoRecycleArchiveCommand}" LargeIcon="{StaticResource image/32x32/delete}" 
+                               Header="Automatische Datenbereinigung" Visibility="Collapsed">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Führt eine automatische Datenbereinigung durch ..."
                                 />
                         </fl:Button.ToolTip>
                     </fl:Button>

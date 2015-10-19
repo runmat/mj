@@ -18,7 +18,38 @@ namespace CarDocu.Models
         public string DomainPath 
         { 
             get { return _domainPath; }
-            set { _domainPath = value; SendPropertyChanged("DomainPath"); }
+            set
+            {
+                DomainPathIsDirty = (DomainPath != null && value.NotNullOrEmpty() != DomainPath.NotNullOrEmpty());
+
+                _domainPath = value;
+                SendPropertyChanged("DomainPath");
+            }
+        }
+
+        private bool _onlineStatusAutoCheckDisabled;
+
+        public bool OnlineStatusAutoCheckDisabled
+        {
+            get { return _onlineStatusAutoCheckDisabled; }
+            set
+            {
+                _onlineStatusAutoCheckDisabled = value;
+                SendPropertyChanged("OnlineStatusAutoCheckDisabled");
+            }
+        }
+
+        private bool _domainPathIsDirty;
+
+        [XmlIgnore]
+        public bool DomainPathIsDirty
+        {
+            get { return _domainPathIsDirty; }
+            set
+            {
+                _domainPathIsDirty = value;
+                SendPropertyChanged("DomainPathIsDirty");
+            }
         }
 
         [XmlIgnore]

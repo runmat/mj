@@ -15,7 +15,13 @@ namespace CarDocu.Services
         {
             bool isOnline;
 
-            try { isOnline = DomainService.SendTestMail(); }
+            try
+            {
+                if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
+                    isOnline = true;
+                else
+                    isOnline = DomainService.SendTestMail();
+            }
             catch { isOnline = false; }
 
             return isOnline;

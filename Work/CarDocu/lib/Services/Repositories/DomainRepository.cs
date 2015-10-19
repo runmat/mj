@@ -435,7 +435,7 @@ namespace CarDocu.Services
 
             var fileList = Directory.EnumerateFiles(directoryToZip, "*.*", SearchOption.AllDirectories).ToList();
 
-            progressBarOperation.Current = 0;
+            progressBarOperation.Current = 1;
             progressBarOperation.Total = fileList.Count;
             progressBarOperation.Header = "ZIP-Archivierung";
             progressBarOperation.Details = "Archiviere Datei";
@@ -501,6 +501,100 @@ namespace CarDocu.Services
             catch (Exception e)
             {
                 Tools.AlertError("Fehler bei der ZIP-Archivierung, Details:\r\n\r\n" + e.Message);
+                return false;
+            }
+
+            return true;
+        }
+
+        static bool AutoRecycleIsDateObsolete(DateTime date)
+        {
+            const int deleteFilesOlderThanDays = 4;
+
+            return (date.AddDays(deleteFilesOlderThanDays) < DateTime.Now);
+        }
+
+        public bool AutoRecycleUserLogsAndScanDocuments(ProgressBarOperation progressBarOperation)
+        {
+            var pdfFileList = Directory.EnumerateFiles(PdfDirectoryName, "*.*", SearchOption.AllDirectories)
+                .Where(pdf =>
+                {
+                    var fileInfo = new FileInfo(pdf);
+                    return AutoRecycleIsDateObsolete(fileInfo.LastWriteTime);
+
+                }).ToList();
+
+            var validScanDocuments = ScanDocumentRepository.ScanDocuments
+                .Where(scanDoc =>
+                {
+                    if (scanDoc.ArchiveDeliveryDate == null)
+                        return false;
+
+                    return AutoRecycleIsDateObsolete(scanDoc.ArchiveDeliveryDate.GetValueOrDefault());
+
+                }).ToList().Copy();
+
+            var totalCount = pdfFileList.Count + validScanDocuments.Count;
+
+            if (totalCount == 0)
+                return true;
+
+            progressBarOperation.Current = 1;
+            progressBarOperation.Total = totalCount;
+            progressBarOperation.Header = "Automatische Datenbereinigung ... bitte warten Sie einen Moment ...";
+            progressBarOperation.Details = "Lösche Dateien";
+            progressBarOperation.ProgressInfoVisible = true;
+            Thread.Sleep(500);
+
+            try
+            {
+                foreach (var filename in pdfFileList)
+                {
+                    if (progressBarOperation.IsCancellationPending)
+                        return false;
+
+                    progressBarOperation.Details = string.Format("Lösche Datei '{0}'", filename);
+                    var pdfFileName = Path.Combine(PdfDirectoryName, filename);
+
+                    // PDF Datei löschen
+                    FileService.TryFileDelete(pdfFileName);
+
+                    progressBarOperation.Current++;
+                    Thread.Sleep(200);
+                }
+
+                if (progressBarOperation.IsCancellationPending)
+                    return false;
+
+                foreach (var scanDocument in validScanDocuments)
+                {
+                    if (progressBarOperation.IsCancellationPending)
+                        return false;
+
+                    var directoryInfo = new DirectoryInfo(scanDocument.GetDocumentPrivateDirectoryName());
+                    var directoryName = directoryInfo.Name;
+                    progressBarOperation.Details = string.Format("Lösche temporäres Verzeichnis '{0}'", directoryName);
+
+                    // ScanDocument aus Repository löschen  +  ScanDocument temp. Verzeichnis löschen
+                    var task = TaskService.StartLongRunningTask(() => ScanDocumentRepository.TryDeleteScanDocument(scanDocument));
+                    if (!task.Wait(10000))
+                        throw new Exception(string.Format("Timeout beim Löschen des temporären Verzeichnisses '{0}'", directoryName));
+                    //ScanDocumentRepository.TryDeleteScanDocument(scanDocument);
+
+                    progressBarOperation.Current++;
+                    Thread.Sleep(200);
+                }
+
+                if (progressBarOperation.IsCancellationPending)
+                    return false;
+
+                progressBarOperation.Header = "Erfolg";
+                progressBarOperation.Details = "Die automatische Datenbereinigung wurde erfolgreich durchgeführt!";
+                Thread.Sleep(500);
+            }
+            catch (Exception e)
+            {
+                Tools.AlertError("Fehler bei der automatischen Datenbereinigung, Details:\r\n\r\n" + e.Message);
                 return false;
             }
 

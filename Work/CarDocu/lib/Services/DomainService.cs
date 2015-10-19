@@ -24,7 +24,7 @@ namespace CarDocu.Services
 
         public static string AppName { get { return AppSettings.AppName; } }
 
-        public static string AppVersion { get { return string.Format("{0}.{1}", Assembly.GetEntryAssembly().GetName().Version.Major, Assembly.GetEntryAssembly().GetName().Version.Minor); } }
+        public static string AppVersion { get { return string.Format("{0}.{1}", Assembly.GetEntryAssembly().GetName().Version.Major, Assembly.GetEntryAssembly().GetName().Version.Minor.ToString("00")); } }
 
         public static DateTime JobCancelDate { get { return DateTime.Parse("01.01.2000"); } }
 

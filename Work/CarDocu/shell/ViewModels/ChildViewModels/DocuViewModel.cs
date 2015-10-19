@@ -396,8 +396,9 @@ namespace CarDocu.ViewModels
         void ReloadGlobalDocumentTypes()
         {
             GlobalDocumentTypes = new ObservableCollection<DocumentType>(DomainService.Repository.EnterpriseSettings.DocumentTypes
-                .OrderByDescending(gd => gd.IsSystemInternal)
-                    .ThenBy(gd => gd.Name));
+                .Where(gd => !gd.IsTemplate || (gd.IsTemplate && !DomainService.Repository.LogonUser.BatchScanOnly))
+                    .OrderByDescending(gd => gd.IsSystemInternal)
+                        .ThenBy(gd => gd.Name));
         }
 
         void ReloadScanDocumentTypes()

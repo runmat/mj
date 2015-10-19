@@ -153,6 +153,9 @@ namespace CarDocu.Models
             if (ScanImages.None())
                 XmlLoadScanImages();
 
+            if (ScanImages.None())
+                return;
+
             SelectedDocumentType = ScanImages.First().ImageDocumentType;
         }
 
@@ -292,7 +295,7 @@ namespace CarDocu.Models
             var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
 
             PdfPageCountIsValid  = (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount);
-            PdfErrorGuid = (PdfPageCountIsValid ? "" : FileService.CreateFriendlyGuid());
+            PdfErrorGuid = (PdfPageCountIsValid && ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
 
             return PdfPageCountIsValid;
         }

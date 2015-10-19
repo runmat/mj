@@ -130,7 +130,7 @@ namespace CarDocu.ViewModels
                 DomainService.Repository.AppSettingsSave();
                 _appSettingsPropertyChanged = false;
 
-                if (confirmWithAppRestart)
+                if (confirmWithAppRestart && AppSettings.DomainPathIsDirty)
                     if (Tools.Confirm("Sie haben den Pfad zur Konfigurationsablage für diese Domain erfolgreich geändert!\r\n\r\nUm die Änderungen wirksam zu machen, starten Sie bitte diese Anwendung neu.\r\n\r\nAnwendung jetzt neu starten?"))
                         App.Restart();
             }
