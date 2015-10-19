@@ -560,7 +560,7 @@ namespace CarDocu.Services
                     FileService.TryFileDelete(pdfFileName);
 
                     progressBarOperation.Current++;
-                    Thread.Sleep(200);
+                    Thread.Sleep(50);
                 }
 
                 if (progressBarOperation.IsCancellationPending)
@@ -579,10 +579,9 @@ namespace CarDocu.Services
                     var task = TaskService.StartLongRunningTask(() => ScanDocumentRepository.TryDeleteScanDocument(scanDocument));
                     if (!task.Wait(10000))
                         throw new Exception(string.Format("Timeout beim Löschen des temporären Verzeichnisses '{0}'", directoryName));
-                    //ScanDocumentRepository.TryDeleteScanDocument(scanDocument);
 
                     progressBarOperation.Current++;
-                    Thread.Sleep(200);
+                    Thread.Sleep(50);
                 }
 
                 if (progressBarOperation.IsCancellationPending)
@@ -590,7 +589,7 @@ namespace CarDocu.Services
 
                 progressBarOperation.Header = "Erfolg";
                 progressBarOperation.Details = "Die automatische Datenbereinigung wurde erfolgreich durchgeführt!";
-                Thread.Sleep(500);
+                Thread.Sleep(1500);
             }
             catch (Exception e)
             {
