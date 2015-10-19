@@ -441,6 +441,11 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult AuslieferAdressen()
         {
             // return PartialView("Partial/AuslieferAdressen", ViewModel.SelectedAuslieferAdresse);
+
+            // ViewModel.Zulassung.RefreshAuslieferAdressenMaterialAuswahl();
+            // model.Materialien = ViewModel.Zulassung.AuslieferAdressen.FirstOrDefault().Materialien.ToList();
+
+
             return PartialView("Partial/AuslieferAdressen", ViewModel.GetAuslieferAdressenModel());
         }
 

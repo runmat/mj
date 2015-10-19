@@ -7,7 +7,6 @@
 <h4>@Localize.DeliveryAddresses</h4>
 
 <style>
-    
     #DivAuslieferAdressen .div-auslieferadr {
         width: 340px !important;
         float: left;
@@ -35,31 +34,13 @@
     #Adressdaten_Bemerkung {
         width: 205px !important;
     }
-
-@*    @@media (max-width: 1670px) {
-        #DivAuslieferAdressen1, #DivAuslieferAdressen2, #DivAuslieferAdressen3 {
-            float: none;
-            width: 100%;
-            margin-left: 0;
-        }
-    }
-    @@media (min-width: 1671px) {
-        #DivAuslieferAdressen1 .control-label {
-            float: none;
-            width: auto;
-            padding-top: 0;
-            text-align: left;
-        }        
-        #DivAuslieferAdressen1 .controls {
-            margin-left: 0;
-        }
-    }*@
 </style>
 
 <script>
     var materialsAll = @Html.Raw(Json.Encode(materialsAll.ToList().Select(x => x.Text.ToJavascriptString())));
 
     function RemoveUsedMaterials() {
+        // alert("RemoveUsedMaterials");
         return;
         var usedMaterials = new Array(0);
         var options = $("#ZugeordneteMaterialienZ7 option:selected");

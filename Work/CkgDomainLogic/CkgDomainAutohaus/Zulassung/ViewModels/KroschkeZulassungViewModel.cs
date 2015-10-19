@@ -724,7 +724,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             get { return Zulassung.AuslieferAdressen.FirstOrDefault(a => a.Adressdaten.Partnerrolle == SelectedAuslieferAdressePartnerrolle); }
         }
 
-        // ##MMA## NEU
         public AuslieferAdressen GetAuslieferAdressenModel()
         {
             var newModel = new AuslieferAdressen
@@ -732,6 +731,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 AuslieferAdresseZ7 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z7"),
                 AuslieferAdresseZ8 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z8"),
                 AuslieferAdresseZ9 = Zulassung.AuslieferAdressen.FirstOrDefault(x => x.Adressdaten.Partnerrolle == "Z9"),
+                Materialien = AuslieferAdresse.AlleMaterialien
             };
 
             return newModel;
