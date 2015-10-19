@@ -43,6 +43,8 @@ namespace CarDocu.Services
             var scanDocument = DomainService.Repository.ScanDocumentRepository.ScanDocuments.FirstOrDefault(sd => sd.DocumentID == logItemID);
             if (scanDocument == null)
                 return false;
+
+            scanDocument.EnsureDocumentType();
             if (scanDocument.ScanImages.Count == 0)
                 scanDocument.XmlLoadScanImages();
 

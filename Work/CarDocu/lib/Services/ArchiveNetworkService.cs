@@ -69,6 +69,7 @@ namespace CarDocu.Services
         {
             mailItemCount = 0;
             var archiveMailDeliveryNeeded = scanDocument.ArchiveMailDeliveryNeeded;
+            scanDocument.EnsureDocumentType();
             var docType = scanDocument.SelectedDocumentType;
 
             try
