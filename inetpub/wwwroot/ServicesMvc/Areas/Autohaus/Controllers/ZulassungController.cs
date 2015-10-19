@@ -502,26 +502,26 @@ namespace ServicesMvc.Autohaus.Controllers
             var selectedPartnerRolle = Request["SelectedPartnerRolle"];
             var selectedAddressId = Request["SelectedAddressId"];
 
-            if (model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
-            {
+            //if (model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
+            //{
                 ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ7);
                 if (!model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
                     model.ErrorMsgAdresseZ7 = Localize.CompleteAddressRequired;
-            }
+            //}
 
-            if (model.AuslieferAdresseZ8.HasData)
-            {
+            //if (model.AuslieferAdresseZ8.HasData)
+            //{
                 ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ8);
                 if (!model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
                     model.ErrorMsgAdresseZ8 = Localize.CompleteAddressRequired;
-            }
+            //}
 
-            if (model.AuslieferAdresseZ9.HasData)
-            {
+            //if (model.AuslieferAdresseZ9.HasData)
+            //{
                 ViewModel.SetAuslieferAdresse(model.AuslieferAdresseZ9);
                 if (!model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
                     model.ErrorMsgAdresseZ9 = Localize.CompleteAddressRequired;
-            }
+            //}
 
             if (selectedPartnerRolle.IsNotNullOrEmpty() && selectedAddressId.IsNotNullOrEmpty())
             {
