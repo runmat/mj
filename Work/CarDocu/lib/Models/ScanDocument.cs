@@ -105,6 +105,8 @@ namespace CarDocu.Models
         [XmlIgnore]
         public ICommand EmailSendoutAgainCommand { get; private set; }
 
+        public bool BatchScanned { get; set; }
+
 
         #region Delivery
 
@@ -294,8 +296,16 @@ namespace CarDocu.Models
 
             var documentType = DomainService.Repository.GetImageDocumentType(documentTypeCode);
 
-            PdfPageCountIsValid  = (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount);
-            PdfErrorGuid = (PdfPageCountIsValid && ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
+            if (!BatchScanned)
+            {
+                PdfPageCountIsValid = true;
+                PdfErrorGuid = (ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
+            }
+            else
+            {
+                PdfPageCountIsValid = (documentType.EnforceExactPageCount == 0 || ScanImagesCount == 0 || documentType.EnforceExactPageCount == ScanImagesCount);
+                PdfErrorGuid = (PdfPageCountIsValid && ValidFinNumber ? "" : FileService.CreateFriendlyGuid());
+            }
 
             return PdfPageCountIsValid;
         }
@@ -346,8 +356,12 @@ namespace CarDocu.Models
                         try
                         {
                             saveAgain = false;
-                            if (File.Exists(oldFile))
-                                File.Delete(oldFile);
+                            if (!File.Exists(oldFile))
+                                continue;
+
+                            var tempFileName = oldFile.ToUpper().Replace("." + extension.ToUpper(), "~1." + extension.ToUpper());
+                            File.Move(oldFile, tempFileName);
+                            File.Move(tempFileName, oldFile);
                         }
                         catch
                         {

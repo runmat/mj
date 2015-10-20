@@ -354,7 +354,6 @@ namespace CarDocu.ViewModels
 
             Parent.MainWindowSizeChangedRefresh();
             
-            // ToDo: Needed for UI refresh of archive list, need better solution later
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
         }
@@ -459,6 +458,8 @@ namespace CarDocu.ViewModels
         {
             if (!ScanAppendAllowed())
                 return;
+
+            BatchSummary.Available = false;
 
             if (!IsTestMode)
             {
@@ -829,6 +830,8 @@ namespace CarDocu.ViewModels
         {
             ReloadScanDocumentTypes();
 
+            ScanDocument.BatchScanned = false;
+
             ScanDocumentSave(false, false);
 
             SendPropertyChanged("ScanDocument");
@@ -882,6 +885,8 @@ namespace CarDocu.ViewModels
         // ReSharper restore UnusedMethodReturnValue.Local
         {
             ReloadScanDocumentTypes();
+
+            ScanDocument.BatchScanned = true;
 
             // altes Dokument abschließen
             BatchFinishScanDocument(true);
