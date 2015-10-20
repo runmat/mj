@@ -26,39 +26,38 @@ namespace CkgDomainLogic.DomainCommon.Models
             get
             {
                 return EnsureSingleton(() => new ModelMapping<Z_DPM_FILL_VERSAUFTR.GT_IN, VersandAuftragsAnlage>(
-                    new Dictionary<string, string> {
-                        { "ZZKUNNR_AG", "KundenNr" },
-                        { "CHASSIS_NUM", "VIN" },
-                        //{ "ZZBRFVERS", "BriefVersand" },  not needed here - see CopyBack section of this mapping
-                        //{ "ZZSCHLVERS", "SchluesselVersand" },  not needed here - see CopyBack section of this mapping
-                        { "IDNRK", "StuecklistenKomponente" },
-                        { "ZZABMELD", "AbmeldeKennzeichen" },
-                        { "ABCKZ", "AbcKennzeichen" },
-                        { "MATNR", "MaterialNr" },
-                        { "ZZANFDT", "DadAnforderungsDatum" },
-                        { "ZZNAME1_ZS", "Name1" },
-                        { "ZZNAME2_ZS", "Name2" },
-                        //{ "ZZSTRAS_ZS", "Strasse" },  not needed here - see CopyBack section of this mapping
-                        //{ "ZZHAUSNR_ZS", "HausNr" },  not needed here - see CopyBack section of this mapping
-                        { "ZZPSTLZ_ZS", "PLZ" },
-                        { "ZZORT01_ZS", "Ort" },
-                        { "ZZLAND_ZS", "Land" },
-                        { "COUNTRY_ZS", "Land" },
-                        { "ERNAM", "ErfassungsUserName" },
-                        { "ZZBETREFF", "Bemerkung"},
-                        { "ZZVGRUND", "Versandgrund"},
-                        { "ZZ_MAHNA", "Mahnverfahren"},
-                        { "ZZNAME3_ZS", "Ansprechpartner" },
-                        { "ZZPLFOR", "PicklistenFormular" },
-                        { "LIZNR", "Lizenz" },
-                    },
 
                     // Init Copy  (from SAP)
                     null,
 
                     // CopyBack (to SAP)
-                    (source, destination) =>  
+                    (source, destination) =>
                     {
+                        destination.ZZKUNNR_AG = source.KundenNr;
+                        destination.CHASSIS_NUM = source.VIN;
+                        destination.IDNRK = source.StuecklistenKomponente;
+                        destination.ZZABMELD = source.AbmeldeKennzeichen.BoolToX();
+                        destination.ABCKZ = source.AbcKennzeichen;
+                        destination.MATNR = source.MaterialNr;
+                        destination.ZZANFDT = source.DadAnforderungsDatum;
+                        destination.ZZVGRUND = source.Versandgrund.CropExactly(3);
+                        destination.ZZ_MAHNA = source.Mahnverfahren;
+                        destination.ZZPLFOR = source.PicklistenFormular;
+
+                        destination.ZZNAME1_ZS = source.Name1.CropExactly(40);
+                        destination.ZZNAME2_ZS = source.Name2.CropExactly(40);
+                        destination.ZZNAME3_ZS = source.Ansprechpartner.CropExactly(40);
+
+                        destination.ZZPSTLZ_ZS = source.PLZ.CropExactly(10);
+                        destination.ZZLAND_ZS = source.Land.CropExactly(3);
+                        destination.COUNTRY_ZS = source.Land.CropExactly(3);
+                        destination.ZZORT01_ZS = source.Ort.CropExactly(40);
+
+                        destination.ERNAM = source.ErfassungsUserName.CropExactly(12);
+                        destination.ZZBETREFF = source.Bemerkung.CropExactly(60);
+
+                        destination.LIZNR = source.Lizenz.CropExactly(20);
+
                         // Address street + houseNo extraction:
                         AddressService.ApplyStreetAndHouseNo(source);
                         if (source.HausNr.NotNullOrEmpty().Length < 10)
