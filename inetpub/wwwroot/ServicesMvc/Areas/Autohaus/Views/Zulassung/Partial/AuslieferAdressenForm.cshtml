@@ -106,18 +106,15 @@
 
         @*@Html.FormRequiredFieldsSummary()*@
 
-@*        <div id="divInfo">
-            ##
-        </div>*@
-
         <script type="text/javascript">
 
             _modelIsValid = @Model.IsValid.ToString().ToLower();;        
 
-//            DocumentReadyBind(AjaxFormAuslieferAdressenInit(1'));
-//            AjaxFormAuslieferAdressenInit('1');
+            $(function() {
 
-            $(function() {                
+                SpanAlertError("AuslieferAdressenMessageZ7", "@Model.ErrorMsgAdresseZ7", 99999);
+                SpanAlertError("AuslieferAdressenMessageZ8", "@Model.ErrorMsgAdresseZ8", 99999);
+                SpanAlertError("AuslieferAdressenMessageZ9", "@Model.ErrorMsgAdresseZ9", 99999);
 
                 $("#ZugeordneteMaterialienZ7").chosen().change(function () {
                     RemoveUsedMaterials();

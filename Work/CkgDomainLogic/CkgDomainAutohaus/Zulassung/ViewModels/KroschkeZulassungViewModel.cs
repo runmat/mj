@@ -1229,59 +1229,30 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             }
         }
 
-        //public void ValidateAuslieferAdressenForm(Action<string, string> addModelError, AuslieferAdressen model)
-        //{
+        public bool ValidateAuslieferAdressenForm(Action<string, string> addModelError, AuslieferAdressen model)
+        {
+            var isValid = true;
 
-        //    if (model.AuslieferAdresseZ7.HasData && !model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
-        //    {
-        //        addModelError("AuslieferAdresseZ7_Adressdaten_Adresse_Name1", string.Format("{0}", Localize.CompleteAddressRequired));
-        //    }
+            if (model.AuslieferAdresseZ7.HasData && !model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
+            {
+                model.ErrorMsgAdresseZ7 = Localize.CompleteAddressRequired;
+                isValid = false;
+            }
 
-        //    if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
-        //    {
-        //        addModelError("AuslieferAdresseZ8_Adressdaten_Adresse_Name1", string.Format("{0}", Localize.CompleteAddressRequired));
-        //    }
+            if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
+            {
+                model.ErrorMsgAdresseZ8 = Localize.CompleteAddressRequired;
+                isValid = false;
+            }
 
-        //    if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
-        //    {
-        //        addModelError("AuslieferAdresseZ7_Adressdaten_Adresse_Name1", string.Format("{0}", Localize.CompleteAddressRequired));
-        //    }
+            if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
+            {
+                model.ErrorMsgAdresseZ9 = Localize.CompleteAddressRequired;
+                isValid = false;
+            }
 
-            
-        ////    public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
-        ////{
-        ////    if (Adressdaten.AdresseVollstaendig && ZugeordneteMaterialien.None())
-        ////        yield return new ValidationResult(Localize.MaterialRequired);
+            return isValid;
+        }
 
-        ////    if (ZugeordneteMaterialien.Contains("Sonstiges") && String.IsNullOrEmpty(Adressdaten.Bemerkung))
-        ////        yield return new ValidationResult(Localize.CommentRequired);
-
-        ////    if (ZugeordneteMaterialien.AnyAndNotNull() && !Adressdaten.AdresseVollstaendig)
-        ////        yield return new ValidationResult(Localize.CompleteAddressRequired);
-        ////}
-
-        //}
-
-        ///// <summary>
-        ///// 
-        ///// </summary>
-        //public void ValidateEtikettenlabelFields()
-        //{
-        //    Zulassung.Fahrzeugdaten.Farbe = "valid";
-        //    Zulassung.Fahrzeugdaten.FzgModell = "valid";
-
-        //    if (FinList.Any(x => x.Farbe.IsNullOrEmpty()))
-        //        Zulassung.Fahrzeugdaten.Farbe = null;
-
-        //    if (FinList.Any(x => x.FzgModell.IsNullOrEmpty()))
-        //        Zulassung.Fahrzeugdaten.FzgModell = null;
-
-        //    //if (FinList.Any(x => x.Farbe.IsNullOrEmpty()) || FinList.Any(x => x.FzgModell.IsNullOrEmpty());)
-        //    //{
-            
-        //    // ModelState.AddModelError("SelectedGridAction", "Please select an option");
-        //    //    Zulassung.Fahrzeugdaten.Farbe
-        //    //}
-        //}
     }
 }

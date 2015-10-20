@@ -57,16 +57,12 @@
         });
         usedMaterials.push.apply(usedMaterials, selectedOptions);
 
-//        $('#divInfo').html("");
-
         for (var i = 0; i < materialsAll.length; i++) {
             $('.chzn-results li:contains("' + materialsAll[i] + '")').show();
-//            $('#divInfo').append("Show: " + materialsAll[i] + "<br\>");
         }
 
         for (var i = 0; i < usedMaterials.length; i++) {
             $('.chzn-results li:contains("' + usedMaterials[i] + '")').hide();  
-//            $('#divInfo').append("Hide: " + usedMaterials[i] + "<br\>");
         }
     }
 

@@ -327,7 +327,8 @@
     }
 
     function SpanAlertError(id, message, delay) {
-        SpanAlert(id + "Error", message, delay);
+        if (message.length > 0)
+            SpanAlert(id + "Error", message, delay);
     }
 
     function SpanAlertAjaxError(id, jqXhr) {
