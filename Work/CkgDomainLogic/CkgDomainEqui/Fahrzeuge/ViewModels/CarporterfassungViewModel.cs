@@ -234,12 +234,17 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             SetCarportIdPersisted(model.CarportIdPersisted);
         }
 
-        public void SaveFahrzeuge(Action<string, string> outerClearListFunction)
+        public string SaveFahrzeuge(Action<string, string> outerClearListFunction)
         {
             EditMode = false;
 
             var objectKeyDict = Fahrzeuge.ToDictionary(t => t.Kennzeichen, t => t.ObjectKey);
-            Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge);
+
+            var saveErg = "";
+            Fahrzeuge = DataService.SaveFahrzeuge(Fahrzeuge, ref saveErg);
+
+            if (!String.IsNullOrEmpty(saveErg))
+                return String.Format("{0}: {1}", Localize.ErrorsOccuredOnSaving, saveErg);
 
             FahrzeugeForConfirmation = new List<CarporterfassungModel>();
             PropertyCacheClear(this, m => m.FahrzeugeForConfirmationFiltered);
@@ -247,8 +252,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             // restore shopping cart ID's  +  move items into buffer list "FahrzeugeForConfirmation" to enable clearing shopping cart 
             Fahrzeuge.ForEach(f =>
             {
-                f.ObjectKey = objectKeyDict[f.Kennzeichen];
                 PrepareCarportModel(ref f);
+
+                if (objectKeyDict.ContainsKey(f.Kennzeichen))
+                    f.ObjectKey = objectKeyDict[f.Kennzeichen];
 
                 FahrzeugeForConfirmation.Add(f);
             });
@@ -256,6 +263,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             ClearList(outerClearListFunction);
 
             DataMarkForRefresh();
+
+            return "";
         }
 
         private void ClearList(Action<string, string> outerClearListFunction)
@@ -278,6 +287,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public byte[] GetLieferschein()
         {
+            var fahrzeugeOk = FahrzeugeForConfirmation.Where(f => f.Status.IsNullOrEmpty()).OrderBy(f => f.Kennzeichen).ToList();
+
+            if (fahrzeugeOk.None())
+                return new byte[]{};
+
             var tblLieferschein = new DataTable("Lieferschein");
             tblLieferschein.Columns.Add("Nr");
             tblLieferschein.Columns.Add("Kennzeichen");
@@ -303,7 +317,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             var nr = 1;
             var lieferscheinNr = "";
-            foreach (var fzg in FahrzeugeForConfirmation.Where(f => f.Status.IsNullOrEmpty()).OrderBy(f => f.Kennzeichen).ToList())
+            foreach (var fzg in fahrzeugeOk)
             {
                 if (nr == 1)
                 {

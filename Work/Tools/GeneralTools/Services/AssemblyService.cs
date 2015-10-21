@@ -7,7 +7,7 @@ namespace GeneralTools.Services
 {
     public class AssemblyService
     {
-        static public bool ApplicationCloneOfMeIsAlreadyRunning(Action<string> alertAction = null)
+        static public bool ApplicationCloneOfMeIsAlreadyRunning(Action<string> alertAction = null, string processNameForAlert = null)
         {
             var processFullName = Assembly.GetEntryAssembly().GetName().FullName.ToLower();
             var count = Process.GetProcesses().Count(p => processFullName.Contains(p.ProcessName.ToLower()));
@@ -16,7 +16,7 @@ namespace GeneralTools.Services
 
             var processName = Assembly.GetEntryAssembly().GetName().Name;
             if (cloneIsRunning && alertAction != null)
-                 alertAction(string.Format("Die Anwendung {0} läuft bereits in einem anderen Fenster! Bitte verwenden Sie die andere Instanz!", processName));
+                 alertAction(string.Format("Die Anwendung {0} läuft bereits in einem anderen Fenster! Bitte verwenden Sie die andere Instanz!", processNameForAlert ?? processName));
 
             return cloneIsRunning;  
         }

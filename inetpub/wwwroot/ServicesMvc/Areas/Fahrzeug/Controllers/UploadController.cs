@@ -61,7 +61,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult UploadZb2VersandShowGrid()
         {
-            UploadZb2VersandViewModel.ValidateUploadItems();
+            //UploadZb2VersandViewModel.ValidateUploadItems();
 
             return PartialView("Zb2Versand/UploadGrid", UploadZb2VersandViewModel);
         }

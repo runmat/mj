@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using CarDocu.Models;
@@ -14,7 +15,13 @@ namespace CarDocu.Services
         {
             bool isOnline;
 
-            try { isOnline = DomainService.SendTestMail(); }
+            try
+            {
+                if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
+                    isOnline = true;
+                else
+                    isOnline = DomainService.SendTestMail();
+            }
             catch { isOnline = false; }
 
             return isOnline;
@@ -62,12 +69,14 @@ namespace CarDocu.Services
         {
             mailItemCount = 0;
             var archiveMailDeliveryNeeded = scanDocument.ArchiveMailDeliveryNeeded;
+            scanDocument.EnsureDocumentType();
+            var docType = scanDocument.SelectedDocumentType;
 
             try
             {
                 DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, Start ...");
 
-                var archive = scanDocument.Archive;
+                var archive = scanDocument.GetArchive();
 
                 if (archive == null)
                 {
@@ -75,11 +84,7 @@ namespace CarDocu.Services
                     return false;
                 }
 
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, Archiv: " + archive.Name + ", Pfad: " + archive.Path);
-
                 var archiveFolder = archive.Path;
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, ScanDokument.ID: " + scanDocument.DocumentID.NotNullOrEmpty());
 
                 var pdfFileNames = scanDocument.GetPdfFileNames();
                 if (!pdfFileNames.Any())
@@ -87,8 +92,6 @@ namespace CarDocu.Services
                     DomainService.Logger.LogMessage("Fehler: Keine PDF-Dateien vorhanden (Funktion NetworkDeliveryToArchive)");
                     return false;
                 }
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, ScanDocument.ArchiveMailDeliveryNeeded:" + scanDocument.ArchiveMailDeliveryNeeded);
 
                 if (archiveMailDeliveryNeeded)
                 {
@@ -100,23 +103,58 @@ namespace CarDocu.Services
                     }
                 }
 
-                //throw new Exception("TEST-ERROR");
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, Before Copy  ...");
 
                 pdfFileNames.ForEach(srcFileName =>
                 {
+                    if (!File.Exists(srcFileName))
+                        // no source file available anymore, 
+                        // => so it's ok for us, because the file has already been copied actually
+                        return;
+
                     var srcFileInfo = new FileInfo(srcFileName);
                     var dstFileName = Path.Combine(archiveFolder, srcFileInfo.Name);
 
-                    DomainService.Logger.LogMessage("Info: Copy PDF-Datei, Quell-Datei: " + srcFileName + " (Funktion NetworkDeliveryToArchive)");
-                    DomainService.Logger.LogMessage("Info: Copy PDF-Datei, Ziel-Datei: " + dstFileName + " (Funktion NetworkDeliveryToArchive)");
+                    if (docType.UseExternalCommandline)
+                    {
+                        var externalCommandProgram = docType.ExternalCommandlineProgramPath;
+                        var externalCommandArgs = docType.ExternalCommandlineArguments;
 
-                    FileService.TryFileDelete(dstFileName);
-                    File.Copy(srcFileName, dstFileName, true);
+                        var args = externalCommandArgs.Replace("%1", string.Format("\"{0}\"", srcFileName));
+
+                        var pi = new ProcessStartInfo
+                        {
+                            FileName = externalCommandProgram,
+                            Arguments = args,
+                            WindowStyle = ProcessWindowStyle.Hidden
+                        };
+                        var p = Process.Start(pi);
+                        if (p == null)
+                            throw new Exception(string.Format("Fehler beim Aufruf des externen Processes \"{0}\" mit Parameter {1}", externalCommandProgram, args));
+
+                        const int timeoutMinutes = 10;
+                        p.WaitForExit(timeoutMinutes*60*1000);
+
+                        if (p.ExitCode != 0)
+                            throw new Exception(string.Format("Externer Process meldet Fehler-Code {2}, Process = \"{0}\", Parameter = {1}", externalCommandProgram, args, p.ExitCode)); 
+                    }
+                    else
+                    {
+                        FileService.TryFileDelete(dstFileName);
+                        File.Copy(srcFileName, dstFileName, true);
+                    }
+
+                    if (docType.DeleteAndBackupFileAfterDelivery)
+                    {
+                        var backupFolder = DomainService.Repository.GlobalSettings.BackupArchive.Path;
+                        if (backupFolder.IsNotNullOrEmpty())
+                        {
+                            var backupFileName = Path.Combine(backupFolder, srcFileInfo.Name);
+                            FileService.TryFileCopy(srcFileName, backupFileName);
+                            FileService.TryFileDelete(srcFileName);
+                        }
+                    }
+
                 });
-
-                DomainService.Logger.LogMessage("Info: Funktion NetworkDeliveryToArchive, After Copy  ...");
             }
             catch (Exception e)
             {
