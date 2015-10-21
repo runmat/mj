@@ -14,7 +14,7 @@ namespace MyBoss
         private LowLevelKeyboardListener _listener;
         private System.Windows.Forms.NotifyIcon _notifyIcon;
         private System.Windows.Forms.Timer _t;
-        private double _lastTicks1, _lastTicks2, _lastTicks3;
+        private double _lastTicks1, _lastTicks2, _lastTicks3, _lastTicks4;
 
         public MainWindow()
         {
@@ -44,15 +44,22 @@ namespace MyBoss
             {
                 Tools.ShowDesktop();
                 Thread.Sleep(50);
-                new FakeWindow().Show();
+                new FakeWindow("fake_wallpaper.png").Show();
             });
 
-            TryCheckAction(e, ref _lastTicks2, Key.RightCtrl, () =>
+            TryCheckAction(e, ref _lastTicks2, Key.LeftShift, () =>
+            {
+                Tools.ShowDesktop();
+                Thread.Sleep(50);
+                new FakeWindow("fake_lockscreen.png").Show();
+            });
+
+            TryCheckAction(e, ref _lastTicks3, Key.RightCtrl, () =>
             {
                 notifyIcon_Click(null, null);
             });
 
-            TryCheckAction(e, ref _lastTicks3, Key.RightShift, Close);
+            TryCheckAction(e, ref _lastTicks4, Key.RightShift, Close);
         }
 
         static void TryCheckAction(KeyPressedArgs e, ref double lastTicks, Key key, Action action)
@@ -64,7 +71,7 @@ namespace MyBoss
             }
 
             var ticksNow = (DateTime.Now - DateTime.MinValue).TotalMilliseconds;
-            if (lastTicks > 0 && (ticksNow - lastTicks > 100) && (ticksNow - lastTicks < 300))
+            if (lastTicks > 0 && (ticksNow - lastTicks > 100) && (ticksNow - lastTicks < 200))
                 action();
 
             lastTicks = ticksNow;

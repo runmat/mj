@@ -10,7 +10,4 @@
         Topmost="True"
         WindowStyle="None"
         Title="FakeWindow">
-    <Window.Background>
-        <ImageBrush ImageSource="fake_wallpaper.png"></ImageBrush>
-    </Window.Background>
 </Window>
