@@ -128,6 +128,16 @@ Partial Public Class Report07_2
 
             For i = 0 To .Rows.Count - 1
                 lblFahrgestellnummer.Text = .Rows(i)("CHASSIS_NUM").ToString
+
+                if (.Rows(i)("EQTYP").ToString = "B") Then 
+                    If .Rows(i)("TREUHANDSPERRE_ENDG").ToString.Length > 0 Then
+                        cbTreuhandsperre.Checked = (.Rows(i)("TREUHANDSPERRE_ENDG").ToString = "X")
+                    End If
+                    If .Rows(i)("TREUGEBER").ToString.Length > 0 Then
+                        lbTreugeber.Text = .Rows(i)("TREUGEBER").ToString
+                    End If
+                End If 
+
                 If .Rows(i)("EQTYP").ToString = "T" Then
                     If IsDBNull(.Rows(i)("ERDAT")) OrElse Not IsDate(.Rows(i)("ERDAT")) OrElse CType(.Rows(i)("ERDAT"), DateTime).Year < 1901 Then
                         lblEingangSchluessel.Text = ""
@@ -161,6 +171,7 @@ Partial Public Class Report07_2
                     If .Rows(i)("CITY1").ToString.Length > 0 Then
                         lblVersandanschrift0.Text &= " " & .Rows(i)("CITY1").ToString
                     End If
+
                 End If
             Next
         End With
