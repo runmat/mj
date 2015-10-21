@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Windows.Input;
 using CarDocu.Models;
 using GeneralTools.Services;
 
@@ -42,9 +43,8 @@ namespace CarDocu.Services.Threads
 
             // here is our long operation:
             var success = new SapWebService().ProcessWebServiceSapMeldung(ref CurrentQueuedItem);
-            Thread.Sleep(1000);
-            while (ActiveJobFreeze)
-                Thread.Sleep(1000);
+
+            DelayAsShortAsPossibleButLongerIfAdminKeyPressed();
 
             if (CurrentQueuedItem != null)
                 if (!success)
