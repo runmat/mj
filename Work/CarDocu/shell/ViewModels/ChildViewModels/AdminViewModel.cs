@@ -7,7 +7,7 @@
         private DocTypesEditViewModel _docTypesEditViewModel;
         public DocTypesEditViewModel DocTypesEditViewModel
         {
-            get { return (_docTypesEditViewModel ?? (_docTypesEditViewModel = new DocTypesEditViewModel())); }
+            get { return (_docTypesEditViewModel ?? (_docTypesEditViewModel = new DocTypesEditViewModel { Parent = Parent })); }
         }
 
         private DomainUsersEditViewModel _domainUsersEditViewModel;

@@ -54,7 +54,7 @@
 
     function GridColumnTranslationsFormPrepare() {
         $(".tooltips").tooltip();
-        console.log($("#GridColumnTranslationsForm label.control-label").length);
+        //console.log($("#GridColumnTranslationsForm label.control-label").length);
         $.each($("#GridColumnTranslationsForm label.control-label"), function(index, elem) {
             var labelText = $(elem).text().trim();
             if (labelText.length < 2)
