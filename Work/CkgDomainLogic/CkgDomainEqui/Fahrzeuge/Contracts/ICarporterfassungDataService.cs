@@ -8,7 +8,7 @@ namespace CkgDomainLogic.Fahrzeuge.Contracts
     {
         CarporterfassungModel LoadFahrzeugdaten(string kennzeichen, string bestandsnummer, string fin);
 
-        List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items);
+        List<CarporterfassungModel> SaveFahrzeuge(List<CarporterfassungModel> items, ref string errorMessage);
 
         List<CarportInfo> GetCarportAdressen(string adressKennung);
 
