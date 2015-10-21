@@ -198,6 +198,11 @@ namespace CkgDomainLogic.Ueberfuehrung.Services
             throw new System.NotImplementedException();
         }
 
+        public string CheckFahrgestellnummer(string fin, string pruefziffer)
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void Init(IAppSettings appSettings, ILogonContext logonContext)
         {
             throw new System.NotImplementedException();

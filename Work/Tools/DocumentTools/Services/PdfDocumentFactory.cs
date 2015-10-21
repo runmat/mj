@@ -17,7 +17,7 @@ namespace DocumentTools.Services
 {
     public class PdfDocumentFactory : AbstractDocumentFactory
     {
-        public static void CreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName, bool autoCorrectOrientation = true)
+        public static void CreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName, bool autoCorrectOrientation = true, bool cropToImageSize = false)
         {
             var pdfDoc = new ITextSharpPdfDocument();
             var imageCount = 0;
@@ -39,10 +39,10 @@ namespace DocumentTools.Services
                 }
 
                 // resizing image if higher/wider then pdfpage.
-                if (pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(processedImage.Size.Width))
+                if (cropToImageSize || pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(processedImage.Size.Width))
                     pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(processedImage.Size.Width);
 
-                if (pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(processedImage.Size.Height))
+                if (cropToImageSize || pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(processedImage.Size.Height))
                     pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(processedImage.Size.Height);
 
                 xgr.DrawImage(processedImage, 0, 0, processedImage.Size.Width, processedImage.Size.Height);

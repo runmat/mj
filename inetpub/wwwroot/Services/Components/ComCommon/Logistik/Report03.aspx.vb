@@ -747,8 +747,6 @@ Partial Public Class Report03
         If tmpDataView.Count = 0 Then
             grvProtokollUpload1.Visible = False
         Else
-            Dim strTempSort As String = ""
-            Dim strDirection As String = ""
             grvProtokollUpload1.Visible = True
 
             grvProtokollUpload1.DataSource = tmpDataView
@@ -758,8 +756,6 @@ Partial Public Class Report03
             table = CType(Session("ResultTable"), DataTable)
 
             Dim Status As String
-            Dim ibt As ImageButton
-            Dim afu As AjaxControlToolkit.AsyncFileUpload
 
             For Each dr As GridViewRow In grvProtokollUpload1.Rows
 
@@ -768,18 +764,13 @@ Partial Public Class Report03
                 If String.IsNullOrEmpty(Status) = False Then
 
                     If Status = "OK" Then
-                        ibt = CType(dr.FindControl("ibtnDelUploadFile1"), ImageButton)
-                        afu = CType(dr.FindControl("AsyncFileUpload1"), AjaxControlToolkit.AsyncFileUpload)
-                        ibt.Visible = False
-                        afu.Visible = False
+                        dr.FindControl("ibtnDelUploadFile1").Visible = False
+                        dr.FindControl("radUpload1").Visible = False
                     End If
-
 
                 End If
 
             Next
-
-
 
         End If
     End Sub

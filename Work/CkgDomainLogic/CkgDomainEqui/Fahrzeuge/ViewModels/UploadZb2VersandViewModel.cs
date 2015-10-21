@@ -26,6 +26,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public IEnumerable<VersandAuftragsAnlage> ValidUploadItems { get { return UploadItems.Where(i => i.IsValid); } }
 
+        private IEnumerable<Fahrzeug> StoredFahrzeuge { get; set; }
+
         public bool UploadItemsUploadErrorsOccurred { get { return ValidUploadItems.Count() < UploadItems.Count; } }
 
         public bool UploadItemsValidItemsAvailable { get { return ValidUploadItems.Any(); } }
@@ -35,7 +37,15 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public string SaveErrorMessage { get; set; }
 
-        public void DataMarkForRefresh()
+        public int CurrentAppID { get; set; }
+
+        public void Init()
+        {
+            GetCurrentAppID();
+            DataMarkForRefresh();
+        }
+
+        private void DataMarkForRefresh()
         {
             SaveErrorMessage = "";
         }
@@ -52,6 +62,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             UploadServerFileName = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilename + extension);
             var uploadServerFileNameConverted = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilenameConverted + extension);
 
+            var archiveDirectory = ApplicationConfiguration.GetApplicationConfigValue("ArchivVerzeichnis", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+            var uploadServerFileNameArchive = (AppSettings == null ? fileName : Path.Combine(archiveDirectory, Path.GetFileNameWithoutExtension(UploadFileName) + "_" + DateTime.Now.ToString("ddMMyyyyHHmm") + extension));
+
             var nameSaved = fileSaveAction == null ? fileName : fileSaveAction(tempPath, randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
@@ -59,10 +72,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             ConvertToUnicode(UploadServerFileName, uploadServerFileNameConverted);
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(uploadServerFileNameConverted, true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable((extension == ".csv" ? uploadServerFileNameConverted : UploadServerFileName), true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
 
             if (AppSettings != null)
             {
+                FileService.TryFileCopy(UploadServerFileName, uploadServerFileNameArchive);
                 FileService.TryFileDelete(UploadServerFileName);
                 FileService.TryFileDelete(uploadServerFileNameConverted);
             }
@@ -117,8 +131,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             DataMarkForRefresh();
 
-            var storedFahrzeuge = DataService.GetFahrzeugBriefe(UploadItems.Select(u => new Fahrzeug {Ref2 = u.BestandsNr}));
-            UploadItems.ForEach(u => ValidateSingleUploadItem(u, storedFahrzeuge));
+            StoredFahrzeuge = DataService.GetFahrzeugBriefe(UploadItems.Select(u => new Fahrzeug {Ref2 = u.BestandsNr}));
+            UploadItems.ForEach(u => ValidateSingleUploadItem(u, StoredFahrzeuge));
         }
 
         private void ValidateSingleUploadItem(VersandAuftragsAnlage item, IEnumerable<Fahrzeug> storedFahrzeuge)
@@ -206,28 +220,35 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     continue;
 
                 UploadItems[i] = item;
+                ValidateSingleUploadItem(UploadItems[i], StoredFahrzeuge);
                 break;
             }
-
-            ValidateUploadItems();
         }
 
         public void SaveUploadItems()
         {
             SaveErrorMessage = "";
 
-            DataService.SaveVersandBeauftragung(ValidUploadItems, false, 
+            var fatalErrorMessage = DataService.SaveVersandBeauftragung(ValidUploadItems, false,
                 (fin, errorMessage) =>
                 {
                     errorMessage = errorMessage.NotNullOrEmpty().Replace(":", ",");
 
                     var matchingVersandAuftrag = ValidUploadItems.FirstOrDefault(v => v.VIN == fin);
-                    var error = matchingVersandAuftrag != null 
-                                    ? string.Format("Bestandsnummer {0}: {1}", matchingVersandAuftrag.BestandsNr, errorMessage) 
+                    var error = matchingVersandAuftrag != null
+                                    ? string.Format("Bestandsnummer {0}: {1}", matchingVersandAuftrag.BestandsNr, errorMessage)
                                     : string.Format("FIN {0}: {1}", fin, errorMessage);
 
                     SaveErrorMessage += SaveErrorMessage.ReplaceIfNotNull("; ") + error;
                 });
+
+            if (fatalErrorMessage.IsNotNullOrEmpty())
+                SaveErrorMessage = fatalErrorMessage + SaveErrorMessage.PrependIfNotNull(" - ");
+        }
+
+        private void GetCurrentAppID()
+        {
+            CurrentAppID = LogonContext.GetAppIdCurrent();
         }
     }
 }

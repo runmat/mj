@@ -1,10 +1,12 @@
 ﻿@using CkgDomainLogic.Ueberfuehrung.Models
 
-    <h2 class="lonelyHeader">Ihre Überführungsaufträge</h2>
+@{ var gridName = "GridHistoryAuftraege"; }
+
+<h2 class="lonelyHeader">Ihre Überführungsaufträge</h2>
 
     @(Html.Telerik()
           .Grid<HistoryAuftrag>()
-          .Name("GridHistoryAuftraege")
+          .Name(gridName)
           .DataBinding(dataBinding => dataBinding.Ajax().Select("HistoryAuftraegeAjaxBinding", "UeberfuehrungHistory"))
           .Columns(columns =>
               {
@@ -26,12 +28,12 @@
           .Pageable(paging => paging.PageSize(10))
           .Sortable(sortOrder => sortOrder.OrderBy(s => s.Add(c => c.AuftragsDatum).Descending()))
           .Filterable(filtering => filtering.Enabled(true))
-          .ClientEvents(events => events.OnDataBound("GridCocItems_OnDataBound").FilteredDataOnColumnReorder())
+          .ClientEvents(events => events.XAutoClientEvents(gridName))
           .ToolBar(commands =>
               {
                   commands.Custom().Text("Zurück zur Suche").Url("javascript:HistoryAuftraegeHide()").HtmlAttributes(new { @class = "" });
-                  commands.FilteredDataCommand("ExportFilteredExcel", "ueberfuehrunghistory", "Excel Export").HtmlAttributes(new { @class = ""  });
-                  commands.FilteredDataCommand("ExportFilteredPDF", "ueberfuehrunghistory", "PDF Export").HtmlAttributes(new { @class = "" });
+                  commands.FilteredDataCommand("ExportHistoryAuftraegeExcel", "ueberfuehrunghistory", "Excel Export").HtmlAttributes(new { @class = "" });
+                  commands.FilteredDataCommand("ExportHistoryAuftraegePDF", "ueberfuehrunghistory", "PDF Export").HtmlAttributes(new { @class = "" });
               }
           )
     )
