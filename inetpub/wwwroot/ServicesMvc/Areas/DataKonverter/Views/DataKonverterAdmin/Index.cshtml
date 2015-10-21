@@ -1,0 +1,15 @@
+﻿@model CkgDomainLogic.DataKonverter.ViewModels.KroschkeDataKonverterViewModel
+
+<h3 class="page-title">@Localize.Registration <small>@Localize.Vehicles</small></h3>
+
+<div class="portlet app-view">
+    
+    @Html.FormWizard("icon-file", "", Model.StepFriendlyNames, Model.StepKeys)
+
+    <div id="formWizardTab1" class="hide">
+        @Html.Partial("Partial/ProzessAuswahl")
+    </div>
+</div>
+
+@Html.Partial("Partial/Common")
+

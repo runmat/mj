@@ -449,6 +449,12 @@
     <Content Include="Documents\Templates\Bestellung.doc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Areas\DataKonverter\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\DataKonverter\Views\DataKonverterAdmin\Index.cshtml" />
+    <Content Include="Areas\DataKonverter\Views\DataKonverterAdmin\Partial\Common.cshtml" />
+    <Content Include="Areas\DataKonverter\Views\DataKonverterAdmin\Partial\ProzessAuswahl.cshtml" />
+    <Content Include="Areas\DataKonverter\Views\Test.cshtml" />
+    <Content Include="Areas\DataKonverter\Views\DataKonverterAdmin\Test.cshtml" />
     <None Include="Teamviewer-Support.zip">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
@@ -886,6 +892,10 @@
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardDataServiceSql.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\Services\DashboardSqlDbContext.cs" />
     <Compile Include="Areas\Common\lib\Dashboard\ViewModels\DashboardViewModel.cs" />
+    <Compile Include="Areas\DataKonverter\Contracts\IDataKonverterDataService.cs" />
+    <Compile Include="Areas\DataKonverter\Controllers\DataKonverterAdminController.cs" />
+    <Compile Include="Areas\DataKonverter\Services\DataKonverterDataService.cs" />
+    <Compile Include="Areas\DataKonverter\ViewModels\KroschkeDataKonverterViewModel.cs" />
     <Compile Include="Areas\Fahrzeug\Contracts\IHolBringServiceDataService.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\UploadController.cs" />
     <Compile Include="Areas\Fahrzeug\Controllers\HolBringServiceController.cs" />
@@ -3052,6 +3062,8 @@
     <Folder Include="App_Data\FileUpload\Productive\" />
     <Folder Include="App_Data\FileUpload\Temp\" />
     <Folder Include="Areas\Autohaus\ViewModels\" />
+    <Folder Include="Areas\DataKonverter\Models\" />
+    <Folder Include="Areas\DataKonverter\Views\DataKonverterUser\Partial\" />
     <Folder Include="Areas\SampleArea\Controllers\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\css\" />
     <Folder Include="assets\plugins\bootstrap-tree\bootstrap\img\" />

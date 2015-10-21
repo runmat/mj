@@ -39,6 +39,9 @@ using CkgDomainLogic.Strafzettel.Services;
 using CkgDomainLogic.AppUserOverview.Contracts; // MaihoferM
 using CkgDomainLogic.AppUserOverview.Services;  // MaihoferM
 
+using CkgDomainLogic.DataKonverter.Contracts;
+using CkgDomainLogic.DataKonverter.Services;
+
 using CkgDomainLogic.Uebfuehrg.Contracts;
 using CkgDomainLogic.Uebfuehrg.Services;
 using CkgDomainLogic.UserReporting.Contracts;
@@ -130,6 +133,8 @@ namespace ServicesMvc
             builder.RegisterType<StrafzettelDataServiceSAP>().As<IStrafzettelDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<AppUserOverviewDataService>().As<IAppUserOverviewDataService>().InstancePerLifetimeScope(); // MaihoferM
+
+            builder.RegisterType<DataKonverterDataService>().As<IDataKonverterDataService>().InstancePerLifetimeScope();
 
             builder.RegisterType<FehlteilEtikettenDataServiceSAP>().As<IFehlteilEtikettenDataService>().InstancePerLifetimeScope();
             
