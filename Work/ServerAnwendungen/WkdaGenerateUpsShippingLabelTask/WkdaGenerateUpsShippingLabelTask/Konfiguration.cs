@@ -1,4 +1,5 @@
 ﻿using System.Configuration;
+using GeneralTools.Models;
 
 namespace WkdaGenerateUpsShippingLabelTask
 {
@@ -17,5 +18,10 @@ namespace WkdaGenerateUpsShippingLabelTask
         public static string UpsShippingWebServiceUsername { get { return ConfigurationManager.AppSettings["UpsShippingWebServiceUsername"]; } }
         public static string UpsShippingWebServicePassword { get { return ConfigurationManager.AppSettings["UpsShippingWebServicePassword"]; } }
         public static string UpsShippingWebServiceAccessKey { get { return ConfigurationManager.AppSettings["UpsShippingWebServiceAccessKey"]; } }
+
+        public static string mailSmtpServer { get { return ConfigurationManager.AppSettings["SmtpServer"]; } }
+        public static string mailAbsender { get { return ConfigurationManager.AppSettings["EMailAbsender"]; } }
+        public static string mailEmpfaenger { get { return ConfigurationManager.AppSettings["EMailEmpfaenger"]; } }
+        public static bool mailsSenden { get { return ConfigurationManager.AppSettings["MailsSenden"].NotNullOrEmpty().ToUpper() == "TRUE"; } }
     }
 }

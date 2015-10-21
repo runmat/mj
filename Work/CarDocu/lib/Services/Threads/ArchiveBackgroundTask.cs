@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Windows.Input;
 using CarDocu.Models;
 using GeneralTools.Services;
 
@@ -19,7 +20,7 @@ namespace CarDocu.Services.Threads
             set { _logItems = value; }
         }
 
-        public override string Name { get { return "Archivierung / Mail-Versand"; } }
+        public override string Name { get { return "Netzwerk-Versand"; } }
 
         // keep this interval nearly endlees, to avoid sending to many test-mails from our smtp server.
         // (currently only at application startup one test-mail will be sent to check availability of our smtp server)
@@ -45,9 +46,8 @@ namespace CarDocu.Services.Threads
 
             // here is our long operation:
             var success = new ArchiveNetworkService().ProcessArchivMeldung(ref CurrentQueuedItem);
-            Thread.Sleep(1000);
-            while (ActiveJobFreeze) 
-                Thread.Sleep(1000);
+
+            DelayAsShortAsPossibleButLongerIfAdminKeyPressed();
 
             if (CurrentQueuedItem != null)
                 if (!success)

@@ -1949,66 +1949,58 @@ namespace EasyExportGeneralTask
                         S.AP.Execute();
                     }
 
-                    #region Dokumente zippen
+                    #region Dokumente zippen und als Mailanhang versenden
 
-                    DirectoryInfo di = new DirectoryInfo(taskConfiguration.easyBlobPathLocal);
-                    FileInfo[] aryFi = di.GetFiles("*", SearchOption.TopDirectoryOnly);
+                    var aryFi = Directory.GetFiles(taskConfiguration.easyBlobPathLocal, "*", SearchOption.TopDirectoryOnly);
 
                     if (aryFi.Length > 0)
                     {
-                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner gestartet", EventLogEntryType.Information);
+                        var jetzt = DateTime.Now;
+                        var archivNummer = 1;
+                        var dateienImArchiv = 0;
 
-                        var zipName = DateTime.Now.ToString("dd.MM.yyyy_HHmm") + (selbstabmelder ? "-Selbstabmelder" : "");
-                        var zipOrdnerPfad = taskConfiguration.exportPathZip + "\\Abmeldungen " + DateTime.Now.ToShortDateString();
+                        var zipName = jetzt.ToString("dd.MM.yyyy_HHmm") + (selbstabmelder ? "-Selbstabmelder" : "");
+
+                        var zipOrdnerPfad = taskConfiguration.exportPathZip + "\\Abmeldungen " + jetzt.ToShortDateString();
 
                         if (!Directory.Exists(zipOrdnerPfad))
                             Directory.CreateDirectory(zipOrdnerPfad);
 
-                        var zipPfad = zipOrdnerPfad + "\\" + zipName + ".zip";
+                        var dateien = Directory.GetFiles(taskConfiguration.easyBlobPathLocal);
 
-                        string zipcommand = " a -tzip \"" + zipPfad + "\" " + taskConfiguration.easyBlobPathLocal + "\\*";
-                        Process sdp = Process.Start(Konfiguration.pathZipApplication, zipcommand);
-
-                        if (sdp != null)
+                        foreach (var datei in dateien)
                         {
-                            int waitCount = 0;
-                            while (!sdp.HasExited)
-                            {
-                                if (waitCount == 20)
-                                {
-                                    if (sdp.Responding)
-                                    {
-                                        sdp.CloseMainWindow();
-                                    }
-                                    else
-                                    {
-                                        sdp.Kill();
-                                    }
-                                    Console.WriteLine("Exit with Error!");
-                                    break;
-                                }
+                            var zipPfad = zipOrdnerPfad + "\\" + zipName + "_" + archivNummer.ToString() + ".zip";
 
-                                waitCount++;
-                                Thread.Sleep(10000);
+                            AddFileToZipArchive(datei, zipPfad);
+
+                            dateienImArchiv++;
+
+                            if (dateienImArchiv == 10)
+                            {
+                                archivNummer++;
+                                dateienImArchiv = 0;
                             }
                         }
 
-                        EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Komprimieren der Ordner beendet", EventLogEntryType.Information);
-
-                        #region Mail versenden
-
                         if (taskConfiguration.MailsSenden)
                         {
-                            var mailBetreff = String.Format("Abmeldebestätigung {0}", zipName);
-                            var mailText = String.Join(Environment.NewLine, new[]
+                            var mailText = "Es steht eine neue Datei mit Abmeldebestätigungen zur Abholung bereit.";
+
+                            var zipDateien = Directory.GetFiles(zipOrdnerPfad, zipName + "_*.zip", SearchOption.TopDirectoryOnly);
+
+                            foreach (var zipDatei in zipDateien)
                             {
-                                "Es steht eine neue Datei mit Abmeldebestätigungen zur Abholung bereit."
-                            });
+                                var fInfo = new FileInfo(zipDatei);
 
-                            Helper.SendEMail(mailBetreff, mailText, taskConfiguration.MailEmpfaenger, zipPfad);
+                                var mailBetreff = String.Format("Abmeldebestätigung {0}", fInfo.Name);
+
+                                Helper.SendEMail(mailBetreff, mailText, taskConfiguration.MailEmpfaenger, zipDatei);
+
+                                if (fInfo.Length > 20000000)
+                                    Helper.SendErrorEMail("EasyExportGeneralTask_" + taskConfiguration.Name + ": ACHTUNG! ZIP-Anhang > 20MB: " + fInfo.Name, "");
+                            }
                         }
-
-                        #endregion
                     }
                     else
                     {
@@ -2177,6 +2169,36 @@ namespace EasyExportGeneralTask
             if (blDelError)
             {
                 EventLog.WriteEntry("EasyExportGeneralTask_" + taskConfiguration.Name, "Es konnte nicht alle unbrauchbaren Dateien aus dem Verzeichnis " + taskConfiguration.easyBlobPathLocal + " gelöscht werden.", EventLogEntryType.Warning);
+            }
+        }
+
+        private static void AddFileToZipArchive(string filePath, string zipPath)
+        {
+            string zipcommand = " a -tzip \"" + zipPath + "\" \"" + filePath + "\"";
+            var sdp = Process.Start(Konfiguration.pathZipApplication, zipcommand);
+
+            if (sdp != null)
+            {
+                int waitCount = 0;
+                while (!sdp.HasExited)
+                {
+                    if (waitCount == 120)
+                    {
+                        if (sdp.Responding)
+                        {
+                            sdp.CloseMainWindow();
+                        }
+                        else
+                        {
+                            sdp.Kill();
+                        }
+                        Console.WriteLine("Exit with Error!");
+                        break;
+                    }
+
+                    waitCount++;
+                    Thread.Sleep(1000);
+                }
             }
         }
     }

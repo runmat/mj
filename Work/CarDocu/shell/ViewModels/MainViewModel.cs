@@ -53,6 +53,8 @@ namespace CarDocu.ViewModels
             get { return DomainService.Repository.LogonUser; }
         }
 
+        public bool UiModeBatchScanOnly { get { return LogonUser.BatchScanOnly; } }
+
         public ICommand LocationSelectionToggleCommand { get; private set; }
         public ICommand LocationSelectionHideCommand { get; private set; }
         private bool _locationSelectionVisible; 
@@ -102,14 +104,12 @@ namespace CarDocu.ViewModels
         public bool NewDocuTabSelected { get { return MainWindow.Ribbon.SelectedTabItem == MainWindow.NewDocuTab; } }
         // ReSharper restore PossibleUnintendedReferenceComparison
 
-        public ObservableCollection<StatusMessage> StatusMessages { get { return DomainService.StatusMessages; } }
-
         #endregion
 
 
         public MainViewModel()
         {
-            XpsDocumentInit();
+            //XpsDocumentInit();
 
             LocationSelectionToggleCommand = new DelegateCommand(e => LocationSelectionVisible = !LocationSelectionVisible);
             LocationSelectionHideCommand = new DelegateCommand(e => LocationSelectionVisible = false);
@@ -163,7 +163,7 @@ namespace CarDocu.ViewModels
             GC.Collect();
         }
 
-        public void EnsureNewScanDocu()
+        public void EnsureNewScanDocu(BatchSummary batchSummary = null)
         {
             NewDocuViewModel = (NewDocuViewModel ?? new DocuViewModel
             {
@@ -184,6 +184,8 @@ namespace CarDocu.ViewModels
                                        FinNumber = "" //Guid.NewGuid().ToString().Substring(0,11)
                                    }
             });
+            if (batchSummary != null)
+                NewDocuViewModel.BatchSummary = batchSummary;
 
             MainWindowSizeChangedRefresh();
         }
@@ -240,7 +242,7 @@ namespace CarDocu.ViewModels
             set { _xpsDocument = value; SendPropertyChanged("XpsDocument"); }
         }
 
-        void XpsDocumentInit()
+        public void XpsDocumentInit()
         {
             UIHintService.TryShowNextUIHintForUser(xpsDocument =>
                                                        {

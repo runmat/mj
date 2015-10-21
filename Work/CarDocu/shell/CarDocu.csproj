@@ -122,6 +122,7 @@
     <Compile Include="UserControls\AllGroups\ucDomainLocationSelection.xaml.cs">
       <DependentUpon>ucDomainLocationSelection.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\ChildViewModels\BatchSummary.cs" />
     <Compile Include="ViewModels\ListEditing\DomainLocationsEditViewModel.cs" />
     <Compile Include="ViewModels\ChildViewModels\UserLogonViewModel.cs" />
     <Compile Include="Views\AppSettingsInitial.xaml.cs">
@@ -434,6 +435,15 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\32x32\scan_new_batch.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="logo_cardocu-border.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\32x32\zip_recycle.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\16x16\barcode.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

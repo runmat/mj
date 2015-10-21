@@ -66,6 +66,9 @@ namespace CarDocu.Models
         [XmlIgnore]
         public Archive ZipArchive { get { return Archives.FirstOrDefault(archive => archive.ID == "ZIP"); } }
 
+        [XmlIgnore]
+        public Archive BackupArchive { get { return Archives.FirstOrDefault(archive => archive.ID == "BACKUP"); } }
+
 
         public bool MergeAvailableAndFixedArchives()
         {
@@ -79,6 +82,20 @@ namespace CarDocu.Models
                     });
 
             return difference;
+        }
+
+        public void PatchArchives()
+        {
+            var zipArchiv = Archives.FirstOrDefault(a => a.ID == "ZIP");
+            if (zipArchiv != null)
+            {
+                zipArchiv.IsInternal = false;
+                zipArchiv.BackgroundDeliveryDisabled = true;
+            }
+
+            var backupArchiv = Archives.FirstOrDefault(a => a.ID == "BACKUP");
+            if (backupArchiv != null)
+                backupArchiv.BackgroundDeliveryDisabled = true;
         }
 
         [XmlIgnore]
