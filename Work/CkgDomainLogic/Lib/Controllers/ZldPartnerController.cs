@@ -1,0 +1,161 @@
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+using CkgDomainLogic.General.Contracts;
+using CkgDomainLogic.General.Controllers;
+using CkgDomainLogic.General.Services;
+using CkgDomainLogic.ZldPartner.Contracts;
+using CkgDomainLogic.ZldPartner.Models;
+using CkgDomainLogic.ZldPartner.ViewModels;
+using DocumentTools.Services;
+using GeneralTools.Contracts;
+using GeneralTools.Models;
+using Telerik.Web.Mvc;
+
+namespace ServicesMvc.ZldPartner.Controllers
+{
+    public class ZldPartnerController : CkgDomainController
+    {
+        public override string DataContextKey { get { return GetDataContextKey<ZldPartnerZulassungenViewModel>(); } }
+
+        public ZldPartnerZulassungenViewModel ViewModel { get { return GetViewModel<ZldPartnerZulassungenViewModel>(); } }
+
+        public ZldPartnerController(IAppSettings appSettings, ILogonContextDataService logonContext, IZldPartnerZulassungenDataService partnerZulassungenDataService)
+            : base(appSettings, logonContext)
+        {
+            InitViewModel(ViewModel, appSettings, logonContext, partnerZulassungenDataService);
+            InitModelStatics();
+        }
+
+        void InitModelStatics()
+        {
+            OffeneZulassung.GetViewModel = GetViewModel<ZldPartnerZulassungenViewModel>;
+        }
+
+
+        [CkgApplication]
+        public ActionResult DurchzufuehrendeZulassungen()
+        {
+            ViewModel.DataInit();
+            ViewModel.LoadOffeneZulassungen();
+
+            return View(ViewModel);
+        }
+
+        [CkgApplication]
+        public ActionResult ReportDurchgefuehrteZulassungen()
+        {
+            ViewModel.DataInit();
+
+            return View(ViewModel);
+        }
+
+
+        #region Durchzuführende Zulassungen
+
+        [GridAction]
+        public ActionResult OffeneZulassungenAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.OffeneZulassungenGridItemsFiltered));
+        }
+
+        [GridAction]
+        public ActionResult OffeneZulassungenAjaxSaveChanges([Bind(Prefix = "inserted")]IEnumerable<OffeneZulassung> insertedZul,
+            [Bind(Prefix = "updated")]IEnumerable<OffeneZulassung> updatedZul,
+            [Bind(Prefix = "deleted")]IEnumerable<OffeneZulassung> deletedZul)
+        {
+            ViewModel.ApplyChangedData(updatedZul);
+
+            return View(new GridModel(ViewModel.OffeneZulassungenGridItemsFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult OffeneZulassungenSpeichern(bool absenden)
+        {
+            ViewModel.SaveOffeneZulassungen(!absenden, ModelState);
+
+            return PartialView("DurchzufuehrendeZulassungen/Grid", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridOffeneZulassungen(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterOffeneZulassungenGridItems(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportOffeneZulassungenFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.OffeneZulassungenGridItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("DurchzufuehrendeZulassungen", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportOffeneZulassungenFilteredPdf(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.OffeneZulassungenGridItemsFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("DurchzufuehrendeZulassungen", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+
+
+        #region Report durchgeführte Zulassungen
+
+        [HttpPost]
+        public ActionResult LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSuchparameter model)
+        {
+            ViewModel.DurchgefuehrteZulassungenSelektor = model;
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.LoadDurchgefuehrteZulassungen();
+                if (ViewModel.DurchgefuehrteZulassungen.None())
+                    ModelState.AddModelError(string.Empty, Localize.NoDataFound);
+            }
+
+            return PartialView("ReportDurchgefuehrteZulassungen/Suche", ViewModel.DurchgefuehrteZulassungenSelektor);
+        }
+
+        [HttpPost]
+        public ActionResult ShowDurchgefuehrteZulassungen()
+        {
+            return PartialView("ReportDurchgefuehrteZulassungen/Grid", ViewModel);
+        }
+
+        [GridAction]
+        public ActionResult DurchgefuehrteZulassungenAjaxBinding()
+        {
+            return View(new GridModel(ViewModel.DurchgefuehrteZulassungenFiltered));
+        }
+
+        [HttpPost]
+        public ActionResult FilterGridDurchgefuehrteZulassungen(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterDurchgefuehrteZulassungen(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportDurchgefuehrteZulassungenFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.DurchgefuehrteZulassungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("DurchgefuehrteZulassungen", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult ExportDurchgefuehrteZulassungenFilteredPdf(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.DurchgefuehrteZulassungenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("DurchgefuehrteZulassungen", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
+        }
+
+        #endregion
+    }
+}

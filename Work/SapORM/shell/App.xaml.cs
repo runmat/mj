@@ -479,6 +479,10 @@ namespace SapORM
 
             //new FunctionReflector("Z_DPM_PRUEF_FIN_001").WriteOrmForExportTableStructures("I_FGNU, I_FGPZ", "TEST", "0");
 
+            // CKG Partner-Portal
+            //new FunctionReflector("Z_ZLD_PP_GET_PO_01").WriteOrmForExportTableStructures("I_LIFNR", "915032");
+            //new FunctionReflector("Z_ZLD_PP_SAVE_PO_01").WriteOrmForExportTableStructures("I_MODUS", "S");
+
 
             //CoCTest();
             //TeslaTest();

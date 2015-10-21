@@ -1,0 +1,5 @@
+﻿@using CkgDomainLogic.ZldPartner.Models
+
+@model OffeneZulassung
+
+@Html.DropDownListFor(m => m.Status, OffeneZulassung.StatusWerte.ToSelectList(), new { @class = "m-wrap medium", @name = "Status" })

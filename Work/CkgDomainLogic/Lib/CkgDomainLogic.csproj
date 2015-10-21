@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Contracts\IAdressenDataService.cs" />
+    <Compile Include="Controllers\ZldPartnerController.cs" />
     <Compile Include="DomainCommon\Models\Adresse.cs" />
     <Compile Include="DomainCommon\Models\AddressModelMappings.cs" />
     <Compile Include="DomainCommon\Models\CommonSummary.cs" />
@@ -208,6 +209,13 @@
     <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceSAP.cs" />
     <Compile Include="Zulassung\MobileErfassung\Services\ZulMobileErfassungDataServiceTest.cs" />
     <Compile Include="Zulassung\MobileErfassung\ViewModels\ZulMobileErfassungViewModel.cs" />
+    <Compile Include="Zulassung\ZldPartner\Contracts\IZldPartnerZulassungenDataService.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\AppModelMappings.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\DurchgefuehrteZulassung.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\DurchgefuehrteZulassungenSuchparameter.cs" />
+    <Compile Include="Zulassung\ZldPartner\Models\OffeneZulassung.cs" />
+    <Compile Include="Zulassung\ZldPartner\Services\ZldPartnerZulassungenDataServiceSap.cs" />
+    <Compile Include="Zulassung\ZldPartner\ViewModels\ZldPartnerZulassungenViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\SapORM\models\SapORM.Models.csproj">

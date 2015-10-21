@@ -1,0 +1,109 @@
+﻿@using CkgDomainLogic.ZldPartner.ViewModels
+@model ZldPartnerZulassungenViewModel
+
+<h3 class="page-title" id="headerTitle">@Localize.ZldPartner_DurchzufuehrendeZulassungen<small></small></h3>
+
+@section LayoutScript { _controlGroupValidationType = "individual"; }
+
+@Html.SpanAlert("Message")
+
+<div id="divOffeneZulassungenGrid">
+    @Html.Partial("DurchzufuehrendeZulassungen/Grid", Model)
+</div>
+
+<script type="text/javascript">
+
+    function FormPreparePrivate() {
+        GridAllColumnFilterApplyToGrid("GridOffeneZulassungen");
+    }
+
+    function FormPreparePrivateAjax() {
+        FormPrepareAjax();
+    }
+
+    function GetGrid() {
+        return $("#GridOffeneZulassungen").data("tGrid");
+    }
+
+    function GridLoadingHide() {
+        // needed for chrome browser: Explicitely hide grids loading icon on multiple subsequent grid ajax requests (because of filter control initializing)
+        setTimeout('$("#GridOffeneZulassungenItems .t-grid-pager .t-status .t-icon").removeClass("t-loading")', 500);
+    }
+
+    function GridRefresh() {
+        GetGrid().ajaxRequest();
+    }
+
+    function OnDataBound_GridOffeneZulassungen() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnRowDataBound_GridOffeneZulassungen(e) {
+        var grid = $(this).data("tGrid");
+        var validationErrors = JSON.parse(e.dataItem.ValidationErrorsJson);
+
+        for (var i = 0; i < grid.columns.length; i++) {
+            for (var j = 0; j < validationErrors.length; j++) {
+                if (validationErrors[j].MemberNames.indexOf(grid.columns[i].member) > -1) {
+                    $(e.row.cells[i]).addClass("grid-cellError");
+                    break;
+                }
+            }
+        }
+    }
+
+    function OnColumnShowHide_GridOffeneZulassungen() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridOffeneZulassungen() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnEdit_GridOffeneZulassungen(e) {
+        if (e.mode == "edit") {
+            // Aufgrund eines Bugs(?) stimmen ID/Name hier nicht und müssen korrigiert werden
+            $(e.form).find("#Status_Status").attr('id', 'Status');
+            $(e.form).find("#Status").attr('name', 'Status');
+            $(e.form).find("#Status").val(e.dataItem.Status);
+        }
+    }
+
+    function OnDataBinding_GridOffeneZulassungen(e) {
+        ApplyGridChanges();
+    }
+
+    function ApplyGridChanges() {
+        var grid = $("#GridOffeneZulassungen").data('tGrid');
+        if (grid.hasChanges()) {
+            grid.submitChanges();
+        }
+    }
+
+    function SaveOffeneZulassungen(absenden) {
+        $.ajax({
+            type: "POST",
+            url: "OffeneZulassungenSpeichern",
+            loadingShow: true,
+            data: { absenden: absenden },
+            success: function (result) {
+                $("#divOffeneZulassungenGrid").html(result);
+                FormPreparePrivateAjax();
+
+                if (_modelStateValid) {
+                    SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
+                }
+            }
+        });
+
+        return false;
+    }
+
+    function ApplyGridChangesAndSaveOffeneZulassungen(absenden) {
+        ApplyGridChanges();
+
+        setTimeout(SaveOffeneZulassungen(absenden), 2000);
+    }
+
+</script>

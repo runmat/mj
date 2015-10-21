@@ -1,0 +1,230 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Web.Mvc;
+using System.Xml.Serialization;
+using CkgDomainLogic.General.Services;
+using CkgDomainLogic.General.ViewModels;
+using CkgDomainLogic.ZldPartner.Contracts;
+using CkgDomainLogic.ZldPartner.Models;
+using GeneralTools.Models;
+
+namespace CkgDomainLogic.ZldPartner.ViewModels
+{
+    public class ZldPartnerZulassungenViewModel : CkgBaseViewModel
+    {
+        [XmlIgnore]
+        public IZldPartnerZulassungenDataService DataService { get { return CacheGet<IZldPartnerZulassungenDataService>(); } }
+
+        [XmlIgnore]
+        public List<OffeneZulassung> OffeneZulassungen
+        {
+            get { return PropertyCacheGet(() => new List<OffeneZulassung>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<OffeneZulassung> OffeneZulassungenToSave
+        {
+            get { return PropertyCacheGet(() => new List<OffeneZulassung>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        [XmlIgnore]
+        public List<OffeneZulassung> OffeneZulassungenGridItems
+        {
+            get { return (EditMode ? OffeneZulassungen : OffeneZulassungenToSave); }
+        }
+
+        [XmlIgnore]
+        public List<DurchgefuehrteZulassung> DurchgefuehrteZulassungen
+        {
+            get { return PropertyCacheGet(() => new List<DurchgefuehrteZulassung>()); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public DurchgefuehrteZulassungenSuchparameter DurchgefuehrteZulassungenSelektor
+        {
+            get { return PropertyCacheGet(() => new DurchgefuehrteZulassungenSuchparameter { Auswahl = "A" }); }
+            set { PropertyCacheSet(value); }
+        }
+
+        public bool EditMode { get; set; }
+
+        public bool SaveFailed { get; set; }
+
+        public string SaveResultMessage { get; set; }
+
+        private const string KennzeichenRegexString = @"^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}H?$";
+
+        // StatusWerte IA = in Arbeit, DGF = durchgeführt, STO = storniert, FGS = fehlgeschlagen 
+        public string StatusWerte { get { return ";in Arbeit;durchgeführt;storniert;fehlgeschlagen"; } }
+
+        public bool SendingEnabled { get { return (EditMode && OffeneZulassungen.Any(z => z.StatusCode == "DGF" || z.StatusCode == "STO")); } }
+
+        public void DataInit()
+        {
+            EditMode = true;
+        }
+
+        public void LoadOffeneZulassungen()
+        {
+            PropertyCacheClear(this, m => m.OffeneZulassungen);
+            PropertyCacheClear(this, m => m.OffeneZulassungenToSave);
+            PropertyCacheClear(this, m => m.OffeneZulassungenGridItemsFiltered);
+
+            OffeneZulassungen = DataService.LoadOffeneZulassungen();
+        }
+
+        private bool ValidateOffeneZulassungen(bool nurSpeichern)
+        {
+            foreach (var item in OffeneZulassungen)
+            {
+                item.ValidationErrorList.Clear();
+
+                if (!String.IsNullOrEmpty(item.ZulassungsDatum))
+                {
+                    if (!item.ZulassungsDatum.IsDate())
+                        item.ValidationErrorList.Add(new ValidationResult(Localize.RegistrationDateInvalid, new[] { "ZulassungsDatum" }));
+                }
+
+                if (item.StatusCode == "DGF" && !nurSpeichern && !Regex.IsMatch(item.Kennzeichen, KennzeichenRegexString))
+                    item.ValidationErrorList.Add(new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" }));
+
+                if (item.StatusCode == "DGF" && !nurSpeichern)
+                {
+                    if (item.Gebuehr.ToDouble(0) < 0.02)
+                        item.ValidationErrorList.Add(new ValidationResult("Gebühr darf nicht 0,00 EUR oder 0,01 EUR sein", new[] { "Gebuehr" }));
+                }
+                else if (!String.IsNullOrEmpty(item.Gebuehr))
+                {
+                    if (!item.Gebuehr.IsDecimal())
+                        item.ValidationErrorList.Add(new ValidationResult(Localize.FeeInvalid, new[] { "Gebuehr" }));
+                }
+            }
+
+            return (OffeneZulassungen.All(z => z.ValidationOk));
+        }
+
+        public OffeneZulassung GetOffeneZulassungById(string id)
+        {
+            return OffeneZulassungen.Find(z => z.DatensatzId == id);
+        }
+
+        public void ApplyChangedData(IEnumerable<OffeneZulassung> liste)
+        {
+            if (liste != null)
+            {
+                foreach (var item in liste)
+                {
+                    var zul = OffeneZulassungen.FirstOrDefault(z => z.DatensatzId == item.DatensatzId);
+                    if (zul != null)
+                    {
+                        if (zul.ZulassungsDatum != item.ZulassungsDatum)
+                        {
+                            zul.ZulassungsDatum = item.ZulassungsDatum;
+                            zul.LieferDatum = item.ZulassungsDatum;
+                            zul.IsChanged = true;
+                        }
+
+                        var kennz = item.Kennzeichen.NotNullOrEmpty().ToUpper();
+                        if (zul.Kennzeichen != kennz)
+                        {
+                            zul.Kennzeichen = kennz;
+                            zul.IsChanged = true;
+                        }
+
+                        if (zul.Gebuehr != item.Gebuehr)
+                        {
+                            zul.Gebuehr = item.Gebuehr;
+                            zul.IsChanged = true;
+                        }
+
+                        if (zul.Status != item.Status)
+                        {
+                            zul.Status = item.Status;
+                            zul.IsChanged = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void SaveOffeneZulassungen(bool nurSpeichern, ModelStateDictionary state)
+        {
+            if (!ValidateOffeneZulassungen(nurSpeichern))
+            {
+                state.AddModelError("", Localize.DataWithErrorsOccurred);
+                return;
+            }
+
+            PropertyCacheClear(this, m => m.OffeneZulassungenToSave);
+            PropertyCacheClear(this, m => m.OffeneZulassungenGridItemsFiltered);
+
+            if (nurSpeichern)
+                OffeneZulassungenToSave = OffeneZulassungen.Where(z => z.IsChanged).ToList();
+            else
+                OffeneZulassungenToSave = OffeneZulassungen.Where(z => z.StatusCode == "DGF" || z.StatusCode == "STO").ToList();
+
+            if (OffeneZulassungenToSave.None())
+            {
+                state.AddModelError("", Localize.NoDataChanged);
+                return;
+            }
+
+            var savedItems = DataService.SaveOffeneZulassungen(nurSpeichern, OffeneZulassungenToSave);
+
+            foreach (var zulItem in OffeneZulassungenToSave)
+            {
+                var saveItem = savedItems.FirstOrDefault(z => z.DatensatzId == zulItem.DatensatzId);
+                if (saveItem != null)
+                {
+                    zulItem.SaveMessage = saveItem.SaveMessage;
+                    if (zulItem.SaveOk)
+                        zulItem.IsChanged = false;
+                }
+            }
+
+            if (!nurSpeichern)
+                EditMode = false;
+        }
+
+        public void LoadDurchgefuehrteZulassungen()
+        {
+            PropertyCacheClear(this, m => m.DurchgefuehrteZulassungen);
+            PropertyCacheClear(this, m => m.DurchgefuehrteZulassungenFiltered);
+
+            DurchgefuehrteZulassungen = DataService.LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSelektor);
+        }
+
+        #region Filter
+
+        [XmlIgnore]
+        public List<OffeneZulassung> OffeneZulassungenGridItemsFiltered
+        {
+            get { return PropertyCacheGet(() => OffeneZulassungenGridItems); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void FilterOffeneZulassungenGridItems(string filterValue, string filterProperties)
+        {
+            OffeneZulassungenGridItemsFiltered = OffeneZulassungenGridItems.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        [XmlIgnore]
+        public List<DurchgefuehrteZulassung> DurchgefuehrteZulassungenFiltered
+        {
+            get { return PropertyCacheGet(() => DurchgefuehrteZulassungen); }
+            private set { PropertyCacheSet(value); }
+        }
+
+        public void FilterDurchgefuehrteZulassungen(string filterValue, string filterProperties)
+        {
+            DurchgefuehrteZulassungenFiltered = DurchgefuehrteZulassungen.SearchPropertiesWithOrCondition(filterValue, filterProperties);
+        }
+
+        #endregion
+    }
+}

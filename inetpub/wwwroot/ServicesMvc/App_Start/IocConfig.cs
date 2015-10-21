@@ -57,6 +57,8 @@ using SapORM.Contracts;
 using WebTools.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Services;
 using CkgDomainLogic.AutohausFahrzeugdaten.Contracts;
+using CkgDomainLogic.ZldPartner.Contracts;
+using CkgDomainLogic.ZldPartner.Services;
 
 namespace ServicesMvc
 {
@@ -226,6 +228,7 @@ namespace ServicesMvc
             builder.RegisterType<CarporterfassungDataServiceSAP>().As<ICarporterfassungDataService>().InstancePerHttpRequest();
             builder.RegisterType<DateiDownloadDataService>().As<IDateiDownloadDataService>().InstancePerHttpRequest();
             builder.RegisterType<PdfAnzeigeDataService>().As<IPdfAnzeigeDataService>().InstancePerHttpRequest();
+            builder.RegisterType<ZldPartnerZulassungenDataServiceSap>().As<IZldPartnerZulassungenDataService>().InstancePerHttpRequest();
 
             ModelMetadataProviders.Current = new AnnotationsAndConventionsBasedModelMetaDataProvider();
         }
