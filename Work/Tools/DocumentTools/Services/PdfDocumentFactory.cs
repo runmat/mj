@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.IO;
 using PdfSharp.Drawing;
 using GeneralTools.Models;
 using GeneralTools.Services;
-using PdfSharp;
 using SmartSoft.PdfLibrary;
 using ITextsharpHtml = iTextSharp.text.html.simpleparser;
 using ITextsharpPdf = iTextSharp.text.pdf;
@@ -17,7 +14,7 @@ namespace DocumentTools.Services
 {
     public class PdfDocumentFactory : AbstractDocumentFactory
     {
-        public static void CreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName)
+        public static void CreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName, bool autoCorrectOrientation = true, bool cropToImageSize = false)
         {
             var pdfDoc = new ITextSharpPdfDocument();
             var imageCount = 0;
@@ -29,22 +26,30 @@ namespace DocumentTools.Services
                 var img = XImage.FromFile(file);
 
                 // try to set orientation due to Exif image information:
-                var destinationFile = Path.Combine(Path.GetDirectoryName(file)??"", Path.GetFileNameWithoutExtension(file) + "-2" + Path.GetExtension(file));
-                ImagingService.ScaleAndSaveImage(file, destinationFile, (int)(img.Size.Width > img.Size.Height ? img.Size.Width : img.Size.Height));
-                var imgProcessed = XImage.FromFile(destinationFile);
+                var processedImage = img;
+                var processedFile = "";
+                if (autoCorrectOrientation)
+                {
+                    processedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", Path.GetFileNameWithoutExtension(file) + "-2" + Path.GetExtension(file));
+                    ImagingService.ScaleAndSaveImage(file, processedFile, (int) (img.Size.Width > img.Size.Height ? img.Size.Width : img.Size.Height));
+                    processedImage = XImage.FromFile(processedFile);
+                }
 
                 // resizing image if higher/wider then pdfpage.
-                if (pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(imgProcessed.Size.Width))
-                    pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(imgProcessed.Size.Width);
+                if (cropToImageSize || pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(processedImage.Size.Width))
+                    pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(processedImage.Size.Width);
 
-                if (pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(imgProcessed.Size.Height))
-                    pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(imgProcessed.Size.Height);
+                if (cropToImageSize || pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(processedImage.Size.Height))
+                    pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(processedImage.Size.Height);
 
-                xgr.DrawImage(imgProcessed, 0, 0, imgProcessed.Size.Width, imgProcessed.Size.Height);
+                xgr.DrawImage(processedImage, 0, 0, processedImage.Size.Width, processedImage.Size.Height);
                 xgr.Dispose();
 
-                imgProcessed.Dispose();
-                FileService.TryFileDelete(destinationFile);
+                if (autoCorrectOrientation)
+                {
+                    processedImage.Dispose();
+                    FileService.TryFileDelete(processedFile);
+                }
 
                 imageCount++;
             }

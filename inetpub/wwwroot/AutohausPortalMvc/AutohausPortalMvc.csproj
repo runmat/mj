@@ -971,6 +971,8 @@
     <Content Include="Views\Feinstaub\Partial\Suche.cshtml" />
     <Content Include="Views\Feinstaub\Partial\Grid.cshtml" />
     <Content Include="Views\Shared\Partial\SpanAlert.cshtml" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsScripts.cshtml" />
+    <Content Include="Views\Shared\Partial\TelerikExtensionsStyles.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\FileUpload\Productive\" />
