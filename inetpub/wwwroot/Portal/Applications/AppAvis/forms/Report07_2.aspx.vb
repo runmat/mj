@@ -130,12 +130,8 @@ Partial Public Class Report07_2
                 lblFahrgestellnummer.Text = .Rows(i)("CHASSIS_NUM").ToString
 
                 if (.Rows(i)("EQTYP").ToString = "B") Then 
-                    If .Rows(i)("TREUHANDSPERRE_ENDG").ToString.Length > 0 Then
-                        cbTreuhandsperre.Checked = (.Rows(i)("TREUHANDSPERRE_ENDG").ToString = "X")
-                    End If
-                    If .Rows(i)("TREUGEBER").ToString.Length > 0 Then
-                        lbTreugeber.Text = .Rows(i)("TREUGEBER").ToString
-                    End If
+                    cbTreuhandsperre.Checked = (.Rows(i)("TREUHANDSPERRE_ENDG").ToString = "X")
+                    lbTreugeber.Text = .Rows(i)("TREUGEBER").ToString
                 End If 
 
                 If .Rows(i)("EQTYP").ToString = "T" Then
