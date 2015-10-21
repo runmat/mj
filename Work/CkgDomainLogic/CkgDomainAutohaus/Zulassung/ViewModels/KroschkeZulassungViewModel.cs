@@ -1231,27 +1231,61 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ValidateAuslieferAdressenForm(Action<string, string> addModelError, AuslieferAdressen model)
         {
-            var isValid = true;
-
+            // AuslieferAdresseZ7
             if (model.AuslieferAdresseZ7.HasData && !model.AuslieferAdresseZ7.Adressdaten.AdresseVollstaendig)
             {
-                model.ErrorMsgAdresseZ7 = Localize.CompleteAddressRequired;
-                isValid = false;
+                model.ErrorMsgAdresseZ7 = string.Format("{0} & ", Localize.CompleteAddressRequired);
             }
+            if (model.AuslieferAdresseZ7.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ7.Adressdaten.Bemerkung.IsNullOrEmpty())
+            {
+                model.ErrorMsgAdresseZ7 += string.Format("{0} & ", Localize.CommentRequired);
+            }
+            if (model.ErrorMsgAdresseZ7.IsNotNullOrEmpty())
+                model.ErrorMsgAdresseZ7 = model.ErrorMsgAdresseZ7.Substring(0, model.ErrorMsgAdresseZ7.Length -2);
 
+            // AuslieferAdresseZ8
             if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
             {
-                model.ErrorMsgAdresseZ8 = Localize.CompleteAddressRequired;
-                isValid = false;
+                model.ErrorMsgAdresseZ8 = string.Format("{0} & ", Localize.CompleteAddressRequired);
             }
+            if (model.AuslieferAdresseZ8.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ8.Adressdaten.Bemerkung.IsNullOrEmpty())
+            {
+                model.ErrorMsgAdresseZ8 += string.Format("{0} & ", Localize.CommentRequired);
+            }
+            if (model.ErrorMsgAdresseZ8.IsNotNullOrEmpty())
+                model.ErrorMsgAdresseZ8 = model.ErrorMsgAdresseZ8.Substring(0, model.ErrorMsgAdresseZ8.Length - 2);
 
+            // AuslieferAdresseZ9
             if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
             {
-                model.ErrorMsgAdresseZ9 = Localize.CompleteAddressRequired;
-                isValid = false;
+                model.ErrorMsgAdresseZ9 = string.Format("{0} & ", Localize.CompleteAddressRequired);
             }
+            if (model.AuslieferAdresseZ9.ZugeordneteMaterialien.Contains("Sonstiges") && model.AuslieferAdresseZ9.Adressdaten.Bemerkung.IsNullOrEmpty())
+            {
+                model.ErrorMsgAdresseZ9 += string.Format("{0} & ", Localize.CommentRequired);
+            }
+            if (model.ErrorMsgAdresseZ9.IsNotNullOrEmpty())
+                model.ErrorMsgAdresseZ9 = model.ErrorMsgAdresseZ9.Substring(0, model.ErrorMsgAdresseZ9.Length - 2);
 
-            return isValid;
+
+            if (model.ErrorMsgAdresseZ7.IsNotNullOrEmpty() || model.ErrorMsgAdresseZ8.IsNotNullOrEmpty() ||
+                model.ErrorMsgAdresseZ9.IsNotNullOrEmpty())
+                return false;
+
+            return true;
+
+            //if (model.AuslieferAdresseZ8.HasData && !model.AuslieferAdresseZ8.Adressdaten.AdresseVollstaendig)
+            //{
+            //    model.ErrorMsgAdresseZ8 = Localize.CompleteAddressRequired;
+            //    isValid = false;
+            //}
+
+            //if (model.AuslieferAdresseZ9.HasData && !model.AuslieferAdresseZ9.Adressdaten.AdresseVollstaendig)
+            //{
+            //    model.ErrorMsgAdresseZ9 = Localize.CompleteAddressRequired;
+            //    isValid = false;
+            //}
+
         }
 
     }
