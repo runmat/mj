@@ -41,7 +41,7 @@ namespace CarDocu.UserControls.DocuGroup
         private int _oldSelectedIndex = -1;
         private void LbOnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var viewModel = (DocuViewModel) this.DataContext;
+             var viewModel = (DataContext as DocuViewModel);
             if (viewModel == null)
                 return;
 

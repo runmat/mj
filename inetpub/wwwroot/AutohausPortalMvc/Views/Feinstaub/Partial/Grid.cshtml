@@ -20,7 +20,7 @@
     .Reorderable(r => r.Columns(true)).Resizable(r => r.Columns(true))
     .Pageable(paging => paging.PageSize(10))
     .Filterable(filtering => filtering.Enabled(true))
-    .ClientEvents(events => events.OnDataBound("GridVergabeInfos_OnDataBound").FilteredDataOnColumnReorder())
+    .ClientEvents(events => events.XAutoClientEvents(gridName))
     .XPageSize(10)
     .XSort(sortOrder => sortOrder.Add(c => c.Erfassungsdatum).Descending())
     .ToolBar(commands =>
