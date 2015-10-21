@@ -12,6 +12,7 @@
 
     <Image x:Shared="False" x:Key="image/16x16/page_copy" Source="/Images/16x16/page_copy.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/warning" Source="/Images/16x16/error.png" SnapsToDevicePixels="True" Width="16" Height="16" />
+    <Image x:Shared="False" x:Key="image/16x16/barcode" Source="/Images/16x16/barcode.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/information" Source="/Images/16x16/information.png" SnapsToDevicePixels="True" Width="16" Height="16" />
     <Image x:Shared="False" x:Key="image/16x16/error" Source="/Images/16x16/exclamation.png" SnapsToDevicePixels="True" Width="16" Height="16" />
 
@@ -38,6 +39,7 @@
 
     <Image x:Shared="False" x:Key="image/32x32/pdf_folder" Source="/Images/32x32/pdf_folder.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/zip_archive" Source="/Images/32x32/zip_archive.png" SnapsToDevicePixels="True" Width="32" Height="32" />
+    <Image x:Shared="False" x:Key="image/32x32/zip_recycle" Source="/Images/32x32/zip_recycle.png" SnapsToDevicePixels="True" Width="32" Height="32" />
 
     <Image x:Shared="False" x:Key="image/32x32/settings_import" Source="/Images/32x32/settings_import.png" SnapsToDevicePixels="True" Width="32" Height="32" />
     <Image x:Shared="False" x:Key="image/32x32/settings_export" Source="/Images/32x32/settings_export.png" SnapsToDevicePixels="True" Width="32" Height="32" />

@@ -16,7 +16,6 @@
 </div>
 
 @Html.Partial("Partial/_ScriptsGeneral")
-@Html.FilteredDataTelerikScriptsAndStyles()
 
 <script type="text/javascript">
 
@@ -41,8 +40,16 @@
         GetGrid().ajaxRequest();
     }
 
-    function GridVergabeInfos_OnDataBound() {
+    function OnDataBound_GridVergabeInfos() {
         FilteredData_Grid_OnDataBound($(this));
+    }
+
+    function OnColumnShowHide_GridVergabeInfos() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridVergabeInfos() {
+        FilteredData_Grid_OnColumnReorder($(this));
     }
 
     function ShowFeinstaubSearchResult(result) {

@@ -10,8 +10,10 @@ using WpfTools4.ViewModels;
 
 namespace CarDocu.ViewModels
 {
-    public class DocTypesEditViewModel : ViewModelBase
+    public class DocTypesEditViewModel : ViewModelBase, IMainViewModelChild
     {
+        public MainViewModel Parent { get; set; }
+
         public ICommand SaveCommand { get; private set; }
         public ICommand AddCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }

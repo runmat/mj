@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using GeneralTools.Services;
@@ -41,11 +43,18 @@ namespace WkdaGenerateUpsShippingLabelTask
                     return;
                 }
 
+                var trackingNumberList = new List<string>();
+
                 foreach (var item in sapResults.Where(x => x.POS_KURZTEXT != "DAD"))
                 {
                     Console.WriteLine("Generiere Versandlabel für Carport " + item.POS_KURZTEXT + "...");
 
-                    var strLabelHtml = GenerateUpsShippingOrderHtml(dadAdresse, item);
+                    var trackingNumber = "";
+                    var strLabelHtml = GenerateUpsShippingOrderHtml(dadAdresse, item, ref trackingNumber);
+
+                    trackingNumberList.Add(String.Format("<tr><td>{0}</td><td>{1}</td><td>{2}</td><td>{3}</td></tr>", 
+                        item.POS_KURZTEXT, item.NAME1, item.INTNR, trackingNumber));
+
                     var pdfBytes = ConvertHtmlToPdf(strLabelHtml);
 
                     var ablageVerzeichnis = Path.Combine(Konfiguration.WkdaLabelAblagePfad, item.POS_KURZTEXT);
@@ -53,6 +62,21 @@ namespace WkdaGenerateUpsShippingLabelTask
                         FileService.TryDirectoryCreate(ablageVerzeichnis);
 
                     File.WriteAllBytes(Path.Combine(ablageVerzeichnis, Konfiguration.WkdaLabelDateiname), pdfBytes);
+                }
+
+                if (Konfiguration.mailsSenden)
+                {
+                    Console.WriteLine("Versende Mail mit Tracking-Nummern an " + Konfiguration.mailEmpfaenger + "...");
+
+                    var mailText = "Für folgende Carports wurden soeben Versandlabels mit den angegebenen Tracking-Nummern generiert:"
+                                   + "<br/><br/>"
+                                   + "<table border=\"1\">"
+                                   + "<tr><td><b>Carport-ID</b></td><td><b>Carport-Name</b></td><td><b>UPS-Kundennummer</b></td><td><b>Tracking-Nummer</b></td></tr>"
+                                   + String.Join(Environment.NewLine, trackingNumberList)
+                                   + "</table>"
+                                   + "<br/><br/>";
+
+                    EMailSenden("UPS Versand Tracking-Nummern " + DateTime.Now.ToShortDateString(), mailText, true);
                 }
 
                 Console.WriteLine("Fertig.");
@@ -71,7 +95,7 @@ namespace WkdaGenerateUpsShippingLabelTask
             }
         }
 
-        private static string GenerateUpsShippingOrderHtml(Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB dadAdresse, Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB carportAdresse)
+        private static string GenerateUpsShippingOrderHtml(Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB dadAdresse, Z_DPM_READ_ZDAD_AUFTR_006.GT_WEB carportAdresse, ref string trackingNumber)
         {
             try
             {
@@ -166,6 +190,8 @@ namespace WkdaGenerateUpsShippingLabelTask
 
                 var result = shipmentResponse.ShipmentResults.PackageResults.First();
 
+                trackingNumber = result.TrackingNumber;
+
                 var gifHexString = result.ShippingLabel.GraphicImage;
                 var htmlBytes = Convert.FromBase64String(result.ShippingLabel.HTMLImage);
 
@@ -198,6 +224,22 @@ namespace WkdaGenerateUpsShippingLabelTask
             };
 
             return pdfConv.GeneratePdf(strHtml);
+        }
+
+        private static void EMailSenden(string betreff, string text, bool html = false)
+        {
+            var mail = new MailMessage
+            {
+                From = new MailAddress(Konfiguration.mailAbsender),
+                Subject = betreff,
+                IsBodyHtml = html,
+                Body = text
+            };
+
+            mail.To.Add(Konfiguration.mailEmpfaenger.Replace(';', ','));
+
+            var mailserver = new SmtpClient(Konfiguration.mailSmtpServer);
+            mailserver.Send(mail);
         }
     }
 }
