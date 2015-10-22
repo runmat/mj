@@ -12,7 +12,6 @@ using CkgDomainLogic.General.Services;
 using CkgDomainLogic.General.ViewModels;
 using DocumentTools.Services;
 using GeneralTools.Models;
-using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.Fahrzeuge.ViewModels
@@ -25,19 +24,30 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
         public List<VersandAuftragsAnlage> UploadItems { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.DataWithErrorsOccurred)]
-        public bool UploadItemsUploadErrorsOccurred { get { return UploadItems.Any(item => !item.IsValid); } }
+        public IEnumerable<VersandAuftragsAnlage> ValidUploadItems { get { return UploadItems.Where(i => i.IsValid); } }
 
-        [LocalizedDisplay(LocalizeConstants.ErrorsOccuredOnSaving)]
-        public bool UploadItemsSaveErrorsOccurred { get { return UploadItems.Any(item => item.SaveStatus.IsNotNullOrEmpty() && item.SaveStatus != "OK"); } }
+        private IEnumerable<Fahrzeug> StoredFahrzeuge { get; set; }
+
+        public bool UploadItemsUploadErrorsOccurred { get { return ValidUploadItems.Count() < UploadItems.Count; } }
+
+        public bool UploadItemsValidItemsAvailable { get { return ValidUploadItems.Any(); } }
 
         [XmlIgnore]
         public IBriefVersandDataService DataService { get { return CacheGet<IBriefVersandDataService>(); } }
 
         public string SaveErrorMessage { get; set; }
 
-        public void DataMarkForRefresh()
+        public int CurrentAppID { get; set; }
+
+        public void Init()
         {
+            GetCurrentAppID();
+            DataMarkForRefresh();
+        }
+
+        private void DataMarkForRefresh()
+        {
+            SaveErrorMessage = "";
         }
 
         public bool ExcelUploadFileSave(string fileName, Func<string, string, string, string> fileSaveAction)
@@ -52,6 +62,9 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             UploadServerFileName = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilename + extension);
             var uploadServerFileNameConverted = AppSettings == null ? fileName : Path.Combine(tempPath, randomfilenameConverted + extension);
 
+            var archiveDirectory = ApplicationConfiguration.GetApplicationConfigValue("ArchivVerzeichnis", CurrentAppID.ToString(), LogonContext.Customer.CustomerID, LogonContext.Group.GroupID);
+            var uploadServerFileNameArchive = (AppSettings == null ? fileName : Path.Combine(archiveDirectory, Path.GetFileNameWithoutExtension(UploadFileName) + "_" + DateTime.Now.ToString("ddMMyyyyHHmm") + extension));
+
             var nameSaved = fileSaveAction == null ? fileName : fileSaveAction(tempPath, randomfilename, extension);
 
             if (string.IsNullOrEmpty(nameSaved))
@@ -59,10 +72,11 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             ConvertToUnicode(UploadServerFileName, uploadServerFileNameConverted);
 
-            var list = new ExcelDocumentFactory().ReadToDataTable(uploadServerFileNameConverted, true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
+            var list = new ExcelDocumentFactory().ReadToDataTable((extension == ".csv" ? uploadServerFileNameConverted : UploadServerFileName), true, "", CreateInstanceFromDatarow, '*', true, true).ToList();
 
             if (AppSettings != null)
             {
+                FileService.TryFileCopy(UploadServerFileName, uploadServerFileNameArchive);
                 FileService.TryFileDelete(UploadServerFileName);
                 FileService.TryFileDelete(uploadServerFileNameConverted);
             }
@@ -102,7 +116,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             var item = new VersandAuftragsAnlage
                 {
                     BestandsNr = row[0].ToString(),
-                    // skip row 1 (dummy row)
+                    Lizenz = row[1].ToString(),
                     Name1 = row[2].ToString(),
                     Ansprechpartner = row[3].ToString(),
                     Strasse = row[4].ToString(),
@@ -117,8 +131,8 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
         {
             DataMarkForRefresh();
 
-            var storedFahrzeuge = DataService.GetFahrzeugBriefe(UploadItems.Select(u => new Fahrzeug {Ref2 = u.BestandsNr}));
-            UploadItems.ForEach(u => ValidateSingleUploadItem(u, storedFahrzeuge));
+            StoredFahrzeuge = DataService.GetFahrzeugBriefe(UploadItems.Select(u => new Fahrzeug {Ref2 = u.BestandsNr}));
+            UploadItems.ForEach(u => ValidateSingleUploadItem(u, StoredFahrzeuge));
         }
 
         private void ValidateSingleUploadItem(VersandAuftragsAnlage item, IEnumerable<Fahrzeug> storedFahrzeuge)
@@ -133,7 +147,7 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
             if (storedFahrzeug != null)
             {
                 if (storedFahrzeug.IstFehlerhaft)
-                    validationResults.Add(new ValidationResult(Localize.VehicleInvalid, new[] {"BestandsNr"}));
+                    validationResults.Add(new ValidationResult(storedFahrzeug.Info, new[] {"BestandsNr"}));
                 else
                 {
                     item.KundenNr = DataService.ToDataStoreKundenNr(LogonContext.KundenNr);
@@ -151,6 +165,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
 
             var ser = new System.Web.Script.Serialization.JavaScriptSerializer();
             item.ValidationErrors = ser.Serialize(validationResults);
+            if (item.IsValid)
+                item.IsValid = validationResults.None();
+
+            item.ValidationFirstError = (validationResults.None() ? "" : validationResults.First().ErrorMessage);
         }
 
         void ValidateSingleUploadItemByViewModel(VersandAuftragsAnlage item, ICollection<ValidationResult> validationResults)
@@ -169,6 +187,10 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                 validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "PLZ" }));
             if (item.Ort.IsNullOrEmpty())
                 validationResults.Add(new ValidationResult(Localize.FieldIsRequired, new[] { "Ort" }));
+
+            var countryPlzValidationError = DataService.CountryPlzValidate(item.Land, item.PLZ);
+            if (countryPlzValidationError.IsNotNullOrEmpty())
+                validationResults.Add(new ValidationResult(countryPlzValidationError, new[] { "PLZ", "Land" }));
         }
 
         bool IsValidCountryCode(string countryCode)
@@ -198,15 +220,35 @@ namespace CkgDomainLogic.Fahrzeuge.ViewModels
                     continue;
 
                 UploadItems[i] = item;
+                ValidateSingleUploadItem(UploadItems[i], StoredFahrzeuge);
                 break;
             }
-
-            ValidateUploadItems();
         }
 
         public void SaveUploadItems()
         {
-            SaveErrorMessage = DataService.SaveVersandBeauftragung(UploadItems, filterSapErrorMessageVersandBeauftragung : false);
+            SaveErrorMessage = "";
+
+            var fatalErrorMessage = DataService.SaveVersandBeauftragung(ValidUploadItems, false,
+                (fin, errorMessage) =>
+                {
+                    errorMessage = errorMessage.NotNullOrEmpty().Replace(":", ",");
+
+                    var matchingVersandAuftrag = ValidUploadItems.FirstOrDefault(v => v.VIN == fin);
+                    var error = matchingVersandAuftrag != null
+                                    ? string.Format("Bestandsnummer {0}: {1}", matchingVersandAuftrag.BestandsNr, errorMessage)
+                                    : string.Format("FIN {0}: {1}", fin, errorMessage);
+
+                    SaveErrorMessage += SaveErrorMessage.ReplaceIfNotNull("; ") + error;
+                });
+
+            if (fatalErrorMessage.IsNotNullOrEmpty())
+                SaveErrorMessage = fatalErrorMessage + SaveErrorMessage.PrependIfNotNull(" - ");
+        }
+
+        private void GetCurrentAppID()
+        {
+            CurrentAppID = LogonContext.GetAppIdCurrent();
         }
     }
 }

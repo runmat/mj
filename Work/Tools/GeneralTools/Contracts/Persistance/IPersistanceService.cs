@@ -10,5 +10,7 @@ namespace GeneralTools.Contracts
         void SaveObject(string objectKey, string ownerKey, string groupKey, string userName, ref IPersistableObject o, ref IPersistableObject o2);
 
         void DeleteObject(string objectKey);
+
+        void DeleteAllObjects(string ownerKey, string groupKey, string additionalFilter);
     }
 }

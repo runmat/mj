@@ -56,6 +56,18 @@ namespace GeneralTools.Models
             copiedList.Insert(0, itemToInsert);
             return copiedList;
         }
+        public static IEnumerable<string> InsertAtTop(this IEnumerable<string> source, string itemToInsert)
+        {
+            var list = source.ToListOrEmptyList();
+            list.Insert(0, itemToInsert);
+            return list;
+        }
+        public static IDictionary<string, string> InsertAtTop(this IDictionary<string, string> source, string key, string value)
+        {
+            var list = source;
+            list.Add(new KeyValuePair<string, string>(key, value));
+            return list.OrderBy(s => s.Key).ToDictionary(s => s.Key, s => s.Value);
+        }
 
         public static DataTable ToDataTable<T>(this IList<T> source)
         {
@@ -153,6 +165,16 @@ namespace GeneralTools.Models
 
             return sql;
         }
+
+        public static string GetListAsString<T>(this List<T> items)
+        {
+            var erg = "";
+
+            if (items != null && items.Any())
+                items.ForEach(i => erg += (i as object).GetObjectAsString() + Environment.NewLine);
+
+            return erg;
+        }
     }
 
     public static class DateRangeExtensions
@@ -187,7 +209,7 @@ namespace GeneralTools.Models
             return s;
         }
 
-        public static string Crop(this string s, int len)
+        public static string Crop(this string s, int len, string appendText = "..")
         {
             if (len == 0)
                 return s;
@@ -197,7 +219,12 @@ namespace GeneralTools.Models
             if (s.Length < len)
                 return s;
 
-            return s.Substring(0, len) + "..";
+            return s.Substring(0, len) + appendText;
+        }
+
+        public static string CropExactly(this string s, int len)
+        {
+            return s.Crop(len, "");
         }
 
         public static string SubstringTry(this string s, int start, int len)
@@ -714,6 +741,24 @@ namespace GeneralTools.Models
         {
             return TypeMerger.ToHtmlDictionary(model);
         }
+
+        public static string GetObjectAsString(this object model)
+        {
+            var erg = "";
+
+            if (model != null)
+            {
+                erg += "[";
+                foreach (var prop in model.GetType().GetProperties())
+                {
+                    erg += String.Format("{0}: {1}|", prop.Name, prop.GetValue(model, null));
+                }
+                if (erg.EndsWith("|")) erg = erg.Substring(0, erg.Length - 1);
+                erg += "]";
+            }
+
+            return erg;
+        }
     }
 
     public static class TypeExtensions
@@ -888,6 +933,38 @@ namespace GeneralTools.Models
             }
 
             return dataTable;
+        }
+
+        public static string GetTableAsString(this DataTable dataTable)
+        {
+            var erg = "";
+
+            if (dataTable != null)
+            {
+                // Header
+                erg += dataTable.TableName + Environment.NewLine;
+                erg += "[";
+                for (var i = 0; i < dataTable.Columns.Count; i++)
+                {
+                    erg += dataTable.Columns[i].ColumnName + "|";
+                }
+                if (erg.EndsWith("|")) erg = erg.Substring(0, erg.Length - 1);
+                erg += "]" + Environment.NewLine;
+
+                // Daten
+                for (var j = 0; j < dataTable.Rows.Count; j++)
+                {
+                    erg += "[";
+                    for (var k = 0; k < dataTable.Columns.Count; k++)
+                    {
+                        erg += dataTable.Rows[j][dataTable.Columns[k]].ToString() + "|";
+                    }
+                    if (erg.EndsWith("|")) erg = erg.Substring(0, erg.Length - 1);
+                    erg += "]" + Environment.NewLine;
+                }
+            }
+
+            return erg;
         }
     }
 

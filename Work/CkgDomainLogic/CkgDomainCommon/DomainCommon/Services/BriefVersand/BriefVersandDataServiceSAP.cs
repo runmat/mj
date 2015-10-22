@@ -1,4 +1,4 @@
-﻿// ReSharper disable RedundantUsingDirective
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -6,6 +6,7 @@ using CkgDomainLogic.DomainCommon.Contracts;
 using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
+using GeneralTools.Models;
 using SapORM.Contracts;
 using SapORM.Models;
 using AppModelMappingsDomainCommon = CkgDomainLogic.DomainCommon.Models.AppModelMappings;
@@ -48,7 +49,7 @@ namespace CkgDomainLogic.DomainCommon.Services
             return AppModelMappingsGeneral.Z_DPM_READ_VERS_GRUND_KUN_01_GT_OUT_To_VersandGrund.Copy(sapList);
         }
 
-        public string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege, bool filterSapErrorMessageVersandBeauftragung = true)
+        public string SaveVersandBeauftragung(IEnumerable<VersandAuftragsAnlage> versandAuftraege, bool filterSapErrorMessageVersandBeauftragung = true, Action<string, string> onFinErrorFunction = null)
         {
             return SAP.ExecuteAndCatchErrors(
                 
@@ -58,9 +59,17 @@ namespace CkgDomainLogic.DomainCommon.Services
                 // SAP custom error handling:
                 () => {
                     var errorList = Z_DPM_FILL_VERSAUFTR.GT_ERR.GetExportList(SAP);
-                    if (errorList.Any())
-                        return string.Join("; ", errorList.Select(e => e.BEMERKUNG).Where(e => !filterSapErrorMessageVersandBeauftragung || FilterSapErrorMessageVersandBeauftragung(e)));
-                    return "";
+                    if (errorList.None())
+                        return "";
+                        
+                    errorList = errorList.Where(e => !filterSapErrorMessageVersandBeauftragung || FilterSapErrorMessageVersandBeauftragung(e.BEMERKUNG)).ToList();
+                    if (errorList.None())
+                        return "";
+
+                    if (onFinErrorFunction != null)
+                        errorList.ForEach(e => onFinErrorFunction(e.CHASSIS_NUM, e.BEMERKUNG));
+
+                    return string.Join("; ", errorList.Select(e => e.BEMERKUNG).Where(e => !filterSapErrorMessageVersandBeauftragung || FilterSapErrorMessageVersandBeauftragung(e)));
                 }, 
                 ignoreResultCode: true);
         }

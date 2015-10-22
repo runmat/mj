@@ -22,10 +22,24 @@ namespace GeneralTools.Services
 
                 return ms;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                throw new Exception("Fehler beim generieren des Barcodes");
+                throw new Exception("Fehler beim generieren des Barcodes: " + ex.Message);
             }
+        }
+
+        public static bool CheckBarcodeEan(string barcode)
+        {
+            var summe = 0;
+            var multiplikator = 1;
+
+            for (var i = barcode.Length - 1; i >= 0; i--)
+            {
+                summe += multiplikator * (barcode[i] - '0');
+                multiplikator = (multiplikator == 3 ? 1 : 3);
+            }
+
+            return ((summe % 10) == 0);
         }
     }
 }

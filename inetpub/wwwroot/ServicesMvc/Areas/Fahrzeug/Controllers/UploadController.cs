@@ -29,7 +29,7 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [CkgApplication]
         public ActionResult Zb2Versand()
         {
-            UploadZb2VersandViewModel.DataMarkForRefresh();
+            UploadZb2VersandViewModel.Init();
 
             return View(UploadZb2VersandViewModel);
         }
@@ -61,6 +61,8 @@ namespace ServicesMvc.Fahrzeug.Controllers
         [HttpPost]
         public ActionResult UploadZb2VersandShowGrid()
         {
+            //UploadZb2VersandViewModel.ValidateUploadItems();
+
             return PartialView("Zb2Versand/UploadGrid", UploadZb2VersandViewModel);
         }
 
@@ -91,11 +93,13 @@ namespace ServicesMvc.Fahrzeug.Controllers
         }
 
         [HttpPost]
-        public ActionResult UploadZb2VersandCheck()
+        public ActionResult CheckRowValidations()
         {
-            UploadZb2VersandViewModel.ValidateUploadItems();
-
-            return PartialView("Zb2Versand/UploadGrid", UploadZb2VersandViewModel);
+            return Json(new
+            {
+                uploadItemsUploadErrorsOccurred = UploadZb2VersandViewModel.UploadItemsUploadErrorsOccurred,
+                uploadItemsValidItemsAvailable = UploadZb2VersandViewModel.UploadItemsValidItemsAvailable
+            });
         }
 
         [HttpPost]

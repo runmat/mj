@@ -43,11 +43,18 @@
 <script src="~/scripts/spin.js?v=20150126" type="text/javascript"></script>        
 <script src="~/scripts/jquery.typing.js?v=20150126" type="text/javascript"></script>        
 <script src="~/scripts/jquery.readableXML.js?v=20150126" type="text/javascript"></script>  
-<script src="~/scripts/site.js?v=20150126" type="text/javascript"></script>       
+<script src="~/scripts/site.js?v=20151013" type="text/javascript"></script>       
    
 
-<!-- END PAGE LEVEL SCRIPTS -->  
+<!-- END PAGE LEVEL SCRIPTS -->
 <script type="text/javascript">
+
+    var _logonTimeoutSeconds = @((Session.Timeout - 1) * 60);
+    //_logonTimeoutSeconds = 10;
+
+    var _logonTimeoutCheckDisabled = false;
+    var _logonTimeoutCheckIntervalSeconds = 1;
+    var _logonTimeoutIdleSeconds = 0;
 
     jQuery(document).ready(function () {
 
@@ -59,13 +66,13 @@
 
         LoadingHide();
 
-        try 
+        try
         {
             FormPrepareLayoutPrivate();
             FormPreparePrivate();
         }
         catch(e){}
-        
+
         PrepareCheckSessionTimeout();
 
         FormInitJQueryExtensions();
@@ -74,19 +81,20 @@
     function FormPrepareAjax(id) {
 
         App.init(true);
+        ResetSessionTimeout();
 
         FormInitStyles(id);
         InitResponsiveControlWidthsAjax();
 
         FormPrepareAjaxLayoutPrivate();
     }
-    
+
     function FormPrepareAjaxDelayed() {
         setTimeout('FormPrepareAjax()', 200);
     }
 
     function FormInitStyles(id) {
-        
+
         FormInitValidationErrorStyles();
 
         FormInitDatePicker(id);
@@ -97,7 +105,7 @@
 
     function FormInitKennzeichenTextboxes() {
 
-        // special fix only for IE for issue 
+        // special fix only for IE for issue
         // "lowercase text input with special fonts":
 
         if (!IsIE())
@@ -112,7 +120,7 @@
                     e.keyCode = newKey;
                     e.charCode = newKey;
                 }
-                if (e.which < 40 || e.which == 46) 
+                if (e.which < 40 || e.which == 46)
                     return;
 
                 // save current caret position
@@ -142,7 +150,7 @@
             var span = $(this).find("span");
             if (span.text().indexOf(formPersistenceModeErrorPrefix) < 0)
                 $(this).addClass("alert alert-error");
-            else 
+            else
             {
                 // Form Persistence mode, validation "error" acts as success notification hint:
                 $(this).addClass("alert alert-success");
@@ -151,7 +159,7 @@
                 lis.each(function() {
                     var li = $(this);
                     li.text(li.text().replace(/@MvcTag.FormPersistenceModeErrorPrefix/g, ""));
-                });
+                    });
 
                 setTimeout(function() {
                     $('.validation-summary-errors').slideUp(200);
@@ -201,13 +209,13 @@
 
         $(formIdSelector + ".datepicker").each(function () {
             var datePicker = $(this);
-            
+
             if (datePicker.children("input").hasClass("hasDatepicker"))
                 return;
 
             datePicker.children("input").datepicker("destroy");
             datePicker.children("input").datepicker();
-            
+
             datePicker.children(".add-on").click(function () {
                 datePicker.children("input").each(function () {
                     if ($(this).attr("readonly") != "readonly" && !$(this).is(':disabled'))
@@ -233,7 +241,7 @@
     //
     // <Loading Hint>
     //
-    
+
     // default ajax requests:
     $.ajaxSetup({
         beforeSend: function () {
@@ -258,48 +266,32 @@
     function LoadingHide() {
         App.unblockUI($(".page-content"));
     }
-    
+
     //
     // </Loading Hint>
     //
 
 
+    function ResetSessionTimeout() {
+        _logonTimeoutIdleSeconds = 0;
+    }
 
     function PrepareCheckSessionTimeout() {
-        setTimeout('CheckSessionTimeout()', 30000);
+        setTimeout('CheckSessionTimeout()', _logonTimeoutCheckIntervalSeconds * 1000);
     }
 
     function CheckSessionTimeout() {
 
-        // 29.07.15: Due to SGW memory issues temporarily deacivated
-        return;
-
-        $.ajax({
-            type: "POST",
-            url: "/ServicesMvc/DomainCommon/CheckLogonTimeout",
-            success: function (result) {
-
-                if (typeof (result.timeoutOccurred) !== "undefined" && result.timeoutOccurred) {
-                    alert("Sicherheitshinweis:  Ihre Sitzung ist abgelaufen, aus Sicherheitsgründen bitten wir Sie sich neu anzumelden.");
-
-                    if (typeof(parent) !== "undefined" && parent.location.href.toLowerCase().indexOf(".aspx") != -1) {
-                        // we are in a iframe here (Services integrated) 
-                        // => navigate parent window to our login page
-                        
-                        //parent.location.replace('/ServicesMvc/Login/Index');
-                        parent.location.replace('/Services/Start/Login.aspx');
-                        
-                    } else {
-                        // we are in a full mvc layout page 
-                        // => let's refresh our own window only (LogonContext has already been reset inside our session)
-                        location.reload();
-                    }
-                    return;
-                }
-
-                PrepareCheckSessionTimeout();
+        if (!_logonTimeoutCheckDisabled) {
+            _logonTimeoutIdleSeconds += _logonTimeoutCheckIntervalSeconds;
+            if (_logonTimeoutIdleSeconds > _logonTimeoutSeconds) {
+                alert("Sicherheitshinweis:  Ihre Sitzung ist abgelaufen, aus Sicherheitsgründen bitten wir Sie sich neu anzumelden.");
+                UserLogout();
+                return;
             }
-        });
+        }
+
+        PrepareCheckSessionTimeout();
     }
 
     function SpanAlert(id, message, delay) {
@@ -309,7 +301,7 @@
         span.find("span").html(message);
         span.fadeIn(300).delay(delay).fadeOut(300);
     }
-    
+
     function SpanAlertHide(id) {
         var span = $("#" + id);
         span.hide();
@@ -350,14 +342,14 @@
                 $(this).change(function () { Grid_FormatMultiRowSelected(tr, this.checked); });
             });
         });
-        
+
         if (typeof (rowBackgroundSelectionDisabled) == 'undefined' || !rowBackgroundSelectionDisabled)
             $("#" + gridName + " table tbody tr").click(function (e) {
                 var clickedElement = e.target;
-                
+
                 if (clickedElement.type == "text")  // 20150813 MMA Prevent row selection if selected cell contains a text field
                     return;
-                
+
                 var tr = $(this);
                 tr.find('td input[type=checkbox]').each(function () {
                     if (this == clickedElement)
@@ -388,9 +380,9 @@
     function FilterGrid(gridID, page) {
         if (typeof(page) == 'undefined')
             page = 1;
-        
+
         $("#" + gridID + " .grid-column-overall-filter").each(function() {
-             FilterGridAllColumns($(this), page);
+            FilterGridAllColumns($(this), page);
         });
     }
 
@@ -402,7 +394,7 @@
     function FilterGridInit(gridID) {
         $("#" + gridID + " .grid-column-overall-filter").each(function() {
 
-            // provide appropriate keyboard typing delay before running server intensive operations            
+            // provide appropriate keyboard typing delay before running server intensive operations
             $(this).typing({
                 start: function (event, $elem) {
                 },
@@ -417,7 +409,7 @@
                     $("#" + gridID + " .grid-column-overall-quick-filter-reset").hide();
                 else
                     $("#" + gridID + " .grid-column-overall-quick-filter-reset").show();
-                
+
                 if (_gridAllColumnFilterQuickMouseClickFilter_isActive)
                     GridAllColumnFilterQuickMouseClickFilterSwapPickingMode();
             });
@@ -433,7 +425,7 @@
         LoadingHide();
 
         var grid = $("#" + gridName).data("tGrid");
-       
+
         $.ajax({
             type: "POST",
             url: "Filter" + gridName,
@@ -441,7 +433,7 @@
                 filterValue: tb.val(),
                 filterColumns: GridGetFilterColumns(grid)
             },
-            success: function (result) {               
+            success: function (result) {
                 LoadingHide();
                 setTimeout(function() {
                     grid.pageTo(page);
@@ -450,7 +442,7 @@
             }
         });
     }
-    
+
     function GridGetFilterColumns(grid) {
         var columnsFiltered = $.grep(grid.columns, function (column, j) {
             return (column.title != "" && column.hidden !== true);
@@ -465,18 +457,18 @@
 
 
     // <Grid column translation>
-    
+
     function GridColumnTranslationInit(gridName) {
         var grid = $("#" + gridName).data("tGrid");
 
         if (typeof(grid) == 'undefined')
             return;
-        
+
         $.each(grid.hiddenColumnsOnStartup, function() {
             grid.hideColumn(this);
         });
     }
-    
+
     // </Grid column translation>
 
 
@@ -493,7 +485,7 @@
             if (countryDropdown.val().toLowerCase() != "de")
                 return;
         }
-        
+
         //var plz = $("#" + postCodePropertyName);
         var plz = $("#" + form.attr("id") + " input[name$='" + postCodePropertyName + "']");
         if (plz.val().length != 5)
@@ -547,7 +539,7 @@
         if (tb.val() == "")
             tb.autocomplete("search");
     }
-    
+
     function UserLogout() {
         $.ajax({
             type: "POST",
@@ -563,7 +555,7 @@
             }
         });
     }
-    
+
     function UserSwitchCulture(language) {
         $.ajax({
             type: "POST",
@@ -576,7 +568,7 @@
 
         return false;
     }
-    
+
     function ChangePassword() {
         location.replace('/ServicesMvc/Login/ChangePasswordLoggedOn');
     }
@@ -584,7 +576,7 @@
     function InitResponsiveControlWidthsAjax() {
         HandleResponsiveControlWidths();
     }
-    
+
     function InitResponsiveControlWidths() {
         InitResponsiveControlWidthsAjax();
 
@@ -604,18 +596,18 @@
             if (!SearchFormIsCollapsed())
                 SearchResultsHide();
         });
-        
+
         $( window ).resize(function() {
             HandleResponsiveControlWidths();
         });
-        
+
         $('a.btn-navbar').on('click', function(e) {
             MetronicSidebarEnforceOpen();
         });
-    }    
-    
+    }
+
     function HandleResponsiveControlWidths() {
-        
+
         try { HandleResponsiveControlWidthsForTheme(); } catch(e) {}
 
         $(".portlet").each(function() {
@@ -664,7 +656,7 @@
             });
         });
     }
-    
+
     function FormInitJQueryExtensions() {
         $.extend($.fn, {
 
@@ -673,28 +665,28 @@
                 $(this).trigger("click");
                 $(this).trigger("click");
             },
-            
+
             uniformRadioDisable: function () {
                 $(this).attr("disabled", "");
                 $(this).closest("div.radio").addClass("disabled");
             },
-            
+
             uniformRadioEnable: function () {
                 $(this).removeAttr("disabled");
                 $(this).closest("div.radio").removeClass("disabled");
             },
-            
+
             setTooltip: function(tooltipText, placement) {
-                if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) 
+                if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) )
                     return this;
-                
+
                 $(this).attr("data-original-title", tooltipText).attr("data-placement", (placement || "right"));
                 $(this).addClass("tooltips");
                 return this;
             }
         });
     }
-    
+
     function CheckBoxesEnforceSingleSelection(checkboxes, cbToCheckInitial) {
 
         if ($.grep(checkboxes, function(elem) { return $(elem).is(":checked"); }).length > 1) {
@@ -710,7 +702,7 @@
         $.each(checkboxes, function(i, elem) {
             $(elem).parent().parent().addClass("radio");
         });
-        
+
         checkboxes.on("change", function () {
             var cbClicked = this;
             if (!$(cbClicked).is(':checked')) {
@@ -723,10 +715,10 @@
             });
         });
 
-//        if (typeof(singleSelectionHint) !== 'undefined') {
-//            try { $(checkboxes[0]).closest("label").closest("div").append("<span class='chart-filter-hint'> " + singleSelectionHint + "</span>"); } 
-//            catch(e) {}
-//        }
+        //        if (typeof(singleSelectionHint) !== 'undefined') {
+        //            try { $(checkboxes[0]).closest("label").closest("div").append("<span class='chart-filter-hint'> " + singleSelectionHint + "</span>"); }
+        //            catch(e) {}
+        //        }
     }
 
 
@@ -759,7 +751,7 @@
             j = (j = i.length) > 3 ? j % 3 : 0;
         return sign + (j ? i.substr(0, j) + thouSeparator : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + thouSeparator) + (decPlaces ? decSeparator + Math.abs(n - i).toFixed(decPlaces).slice(2) : "");
     };
-    
+
     function showBusy(elem) {
         var opts = {
             lines: 11, // The number of lines to draw
@@ -776,7 +768,7 @@
             hwaccel: false, // Whether to use hardware acceleration
             className: 'spinner', // The CSS class to assign to the spinner
             zIndex: 2000000000 // The z-index (defaults to 2000000000)
-            ,top: '50%' 
+            ,top: '50%'
             ,left: '50%'
         };
         elem.spin(opts);
@@ -785,12 +777,12 @@
     function hideBusy(elem) {
         elem.spin(false);
     }
-    
+
     function MetronicSidebarEnforceClosed() {
         var sidebarClosed = '@System.Configuration.ConfigurationManager.AppSettings["TestSidebarEnforceClosed"].NotNullOrEmpty().ToLower()' == 'true';
         if (!sidebarClosed)
             return;
-        
+
         var pageContainer = $(".page-container");
         if (pageContainer.hasClass("sidebar-closed"))
             return;
@@ -798,9 +790,9 @@
         var sideBarToggler = $(".sidebar-toggler");
         sideBarToggler.trigger("click");
     }
-        
+
     function MetronicSidebarEnforceOpen() {
-        
+
         var pageContainer = $(".page-container");
         if (!pageContainer.hasClass("sidebar-closed"))
             return;
@@ -808,12 +800,12 @@
         var sideBarToggler = $(".sidebar-toggler");
         sideBarToggler.trigger("click");
     }
-    
+
 
     //
     // <Breadcrumbs> //
     //
-    
+
     function GetBreadcrumbs() {
         return $(".breadcrumbs");
     }
@@ -853,7 +845,7 @@
         if (level == 1) return;
         level--;
         bc.data("level", level);
-        
+
         //alert("prev " + level);
         BreadcrumbsDisplay(bc, level, null);
     }
@@ -862,11 +854,11 @@
         var bc = GetBreadcrumbs();
         var level = levelToMove;
         bc.data("level", level);
-        
+
         //alert("prev " + level);
         BreadcrumbsDisplay(bc, level, null);
     }
-    
+
     function BreadcrumbsDisplay(bc, level, levelText) {
         bc.find("li").each(function (index, elem) {
             var li = $(elem);
@@ -878,7 +870,7 @@
                     a.attr("onclick", "return false;");
                     a.css("cursor", "default");
                 }
-            } 
+            }
             else
                 a.removeClass("current");
 
@@ -888,11 +880,11 @@
                 li.addClass("hide");
         });
     }
-    
+
     //
     // </Breadcrumbs> //
     //
-    
+
     function scrollToTop() {
         if (IsIE())
             setTimeout(function () {
@@ -903,7 +895,7 @@
                 $("body").animate({ scrollTop: 0 }, '300');
             }, 600);
     }
-    
+
     function LocationReloadWithoutQueryString() {
         window.location = window.location.pathname;
     }
@@ -927,7 +919,7 @@
             ShowEvbVersInfo(evbFieldId, infoDivId);
         });
     }
-    function ShowEvbVersInfo(evbFieldId, infoDivId) {        
+    function ShowEvbVersInfo(evbFieldId, infoDivId) {
         var evb = $('#' + evbFieldId).val();
         $.ajax({
             type: "POST",

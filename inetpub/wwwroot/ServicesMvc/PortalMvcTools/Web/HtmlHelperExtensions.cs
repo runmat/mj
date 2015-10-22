@@ -363,7 +363,12 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
-        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
+        public static bool FormIsInvisible<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression)
+        {
+            return (html.DisplayNameFor(expression).ToString().NotNullOrEmpty().ToUpper() == "$HIDDEN$");
+        }
+
+        public static MvcHtmlString FormTextBoxFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null, bool labelHidden = false)
         {
             controlHtmlAttributes = GetAutoPostcodeCityMapping(expression, controlHtmlAttributes);
             controlHtmlAttributes = GetMaxLengthAttribute(expression, controlHtmlAttributes);
@@ -381,6 +386,7 @@ namespace PortalMvcTools.Web
                 ControlHtmlAttributes = controlHtmlAttributesDict,
                 PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
                 PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+                LabelHidden = labelHidden,
             };
 
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
