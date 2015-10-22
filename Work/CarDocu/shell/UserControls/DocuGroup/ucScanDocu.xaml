@@ -3,7 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:uc="clr-namespace:CarDocu.UserControls.DocuGroup" mc:Ignorable="d" 
+             xmlns:uc="clr-namespace:CarDocu.UserControls.DocuGroup"
+             xmlns:allGroups="clr-namespace:CarDocu.UserControls.AllGroups"
+             mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <StackPanel>
 
@@ -31,10 +33,43 @@
             <ScrollViewer Grid.Column="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto" Height="{Binding SelectedScanImageHeight}">
                 <StackPanel Margin="0">
 
-                    <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <StackPanel Orientation="Horizontal"  Visibility="{Binding BatchSummary.Available, Converter={StaticResource BooleanVisibilityInverseConverter}}" Margin="0,0,0,5">
                         <TextBlock Text="{Binding Title}" Style="{StaticResource lbHeaderBig}"  Margin="0,0,0,0" />
                         <TextBlock Text="TEST-MODUS" Foreground="Red" FontSize="20" FontWeight="Bold" Visibility="{Binding IsTestMode, Converter={StaticResource BooleanVisibilityConverter}}" Margin="20,0,0,0" />
                     </StackPanel>
+
+                    
+                    <StackPanel DataContext="{Binding BatchSummary}">
+                        <StackPanel Visibility="{Binding Available, Converter={StaticResource BooleanVisibilityConverter}}" Margin="0,0,0,0">
+                            <TextBlock Text="{Binding Title}" Style="{StaticResource lbHeaderBig}"  Margin="0,0,0,0" />
+
+                            <ItemsControl Name="Lb" ItemsSource="{Binding DataContext.StatusMessages, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ScrollViewer}}}"  Style="{StaticResource ItemsControlHorizontal}" HorizontalAlignment="Left" Margin="25,15,0,15">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="4" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                                <ItemsControl.ItemTemplate>
+                                    <DataTemplate>
+                                        <allGroups:ucCardocuStatusmessage HorizontalAlignment="Left" Margin="5,0,8,0"  />
+                                    </DataTemplate>
+                                </ItemsControl.ItemTemplate>
+                            </ItemsControl>
+
+                            <Border Background="Ivory" Visibility="{Binding ResultsAvailable, Converter={StaticResource BooleanVisibilityConverter}}" BorderBrush="Gray" BorderThickness="1" Margin="25,15,25,0">
+                                <StackPanel Orientation="Horizontal" Margin="15">
+                                    <TextBlock Text="{Binding ResultsTotalItems, StringFormat={}{0} gesamt}" Style="{StaticResource lbHeaderBig}" Foreground="Black" Margin="0,0,20,0" />
+                                    <TextBlock Text="{Binding ResultsGoodItems, StringFormat={}{0} Ok}" Style="{StaticResource lbHeaderBig}"  Foreground="Green" Margin="0,0,5,0" />
+                                    <TextBlock Text=" / " Style="{StaticResource lbHeaderBig}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Margin="0,0,5,0" />
+                                    <TextBlock Text="{Binding ResultsBadItems, StringFormat={}{0}x Klärfall}" Style="{StaticResource lbHeaderBig}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Foreground="DarkRed" Margin="0,0,5,0" />
+
+                                    <ContentPresenter Content="{StaticResource image/24x24/OK}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityInverseConverter}}" Margin="15,0,0,0" />
+                                    <ContentPresenter Content="{StaticResource image/24x24/warning}" Visibility="{Binding ResultsBadItems, Converter={StaticResource IntegerVisibilityConverter}}" Opacity="0.5" Margin="15,0,0,0" />
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+
 
                     <ItemsControl ItemsSource="{Binding ScanDocumentTypes}">
                         <ItemsControl.ItemTemplate>
@@ -65,7 +100,7 @@
                                             <ListBox.ItemTemplate>
                                                 <DataTemplate>
                                                     <StackPanel>
-                                                        <Image Margin="5" Stretch="UniformToFill" Width="100" Height="140"  Source="{Binding ImageSource}" />
+                                                        <Image Margin="5" Stretch="UniformToFill" Height="140"  Source="{Binding ImageSource}" />
                                                     </StackPanel>
                                                 </DataTemplate>
                                             </ListBox.ItemTemplate>
@@ -78,7 +113,7 @@
                 </StackPanel>
             </ScrollViewer>
 
-            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0" Height="{Binding SelectedScanImageHeight}" Width="{Binding SelectedScanImageWidth}" Margin="10,0,0,0">
+            <Border Grid.Column="1" BorderBrush="Gray" BorderThickness="0" Height="{Binding SelectedScanImageHeight}" Margin="10,0,0,0">
                 <Image Stretch="UniformToFill" Source="{Binding ScanImageSource}" />
             </Border>
         </Grid>

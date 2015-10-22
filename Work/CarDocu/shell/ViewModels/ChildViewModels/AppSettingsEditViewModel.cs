@@ -5,9 +5,12 @@ using System.Windows.Input;
 using CarDocu.Models;
 using CarDocu.Models.Settings;
 using CarDocu.Services;
+using GeneralTools.Models;
 using GeneralTools.Services;
 using WpfTools4.Commands;
+using WpfTools4.Services;
 using WpfTools4.ViewModels;
+using Tools = CarDocu.Services.Tools;
 
 namespace CarDocu.ViewModels
 {
@@ -40,6 +43,7 @@ namespace CarDocu.ViewModels
         public ICommand SaveCommand { get; private set; }
         public ICommand SetPathCommand { get; private set; }
         public ICommand OpenScanSettingsCommand { get; private set; }
+        public ICommand ZipArchiveRecycleCommand { get; private set; }
 
         private bool _appSettingsPropertyChanged;
         private bool _globalItemsPropertyChanged;
@@ -64,6 +68,7 @@ namespace CarDocu.ViewModels
             SaveCommand = new DelegateCommand(e => Save(true), e => CanSave());
             SetPathCommand = new DelegateCommand(SetPath);
             OpenScanSettingsCommand = new DelegateCommand(OpenScanSettings);
+            ZipArchiveRecycleCommand = new DelegateCommand(e => ZipArchiveRecycle());
         }
 
         private void AppSettingsItemsPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
@@ -125,7 +130,7 @@ namespace CarDocu.ViewModels
                 DomainService.Repository.AppSettingsSave();
                 _appSettingsPropertyChanged = false;
 
-                if (confirmWithAppRestart)
+                if (confirmWithAppRestart && AppSettings.DomainPathIsDirty)
                     if (Tools.Confirm("Sie haben den Pfad zur Konfigurationsablage für diese Domain erfolgreich geändert!\r\n\r\nUm die Änderungen wirksam zu machen, starten Sie bitte diese Anwendung neu.\r\n\r\nAnwendung jetzt neu starten?"))
                         App.Restart();
             }
@@ -133,14 +138,32 @@ namespace CarDocu.ViewModels
             if (_globalItemsPropertyChanged)
             {
                 foreach (var archive in GlobalSettings.Archives.ToList())
-                    if (!FileService.PathExistsAndWriteEnabled(archive.Path, Tools.AlertCritical, " für '" + archive.Name + "' "))
-                        return false;
+                    if (archive.Path.IsNotNullOrEmpty() && !FileService.PathExistsAndWriteEnabled(archive.Path, Tools.AlertCritical, " für '" + archive.Name + "' "))
+                        if (!archive.IsOptional)
+                            return false;
 
                 DomainService.Repository.GlobalSettingsSave();
                 _globalItemsPropertyChanged = false;
             }
 
             return true;
+        }
+
+        static void ZipArchiveRecycle()
+        {
+            // Validate Backup Path
+            if (!AllDocusViewModel.EnsureDomainPathExistsAndIsAvailable(DomainService.Repository.GlobalSettings.BackupArchive.Path, "zum Backup Ordner"))
+                return;
+
+            if (!Tools.Confirm("Der Backup Ordner wird nun bereinigt, alle in diesem Ordner vorhandenen Dateien werden gelöscht.\r\n\r\nWeiter?"))
+                return;
+
+            ProgressBarOperation.Start(DomainService.Repository.ZipArchiveRecycle, ZipArchiveRecycleComplete);
+        }
+
+        private static void ZipArchiveRecycleComplete(ProgressBarOperation progressBarOperation)
+        {
+            Tools.Alert("Der Backup Ordner wurde erfolgreich bereinigt!");
         }
     }
 }

@@ -18,11 +18,5 @@ namespace CarDocu.UserControls.DocuGroup
             if (((TextBox)sender).IsEnabled)
                 ((TextBox)sender).Focus();        
         }
-
-        //private void FirstFocusIsVisibleChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
-        //{
-        //    if (((TextBox)sender).Visibility == Visibility.Visible)
-        //        ((TextBox)sender).Focus();
-        //}
     }
 }
