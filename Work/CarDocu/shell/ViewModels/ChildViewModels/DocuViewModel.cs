@@ -1,6 +1,4 @@
-﻿//#define TEST
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -10,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using CarDocu.Services;
 using WpfTools4.Commands;
 using WpfTools4.ViewModels;
@@ -42,10 +41,11 @@ namespace CarDocu.ViewModels
         public ICommand ScanDocumentSaveCommand { get; private set; }
         public ICommand ScanDocumentPdfShowCommand { get; private set; }
         public ICommand ScanPdfFolderOpenCommand { get; private set; }
-
         public ICommand ScanDocumentTemplateInsertCommand { get; private set; }
 
-        const string TempRootPath = @"C:\Backup\CarDocu\test2";
+        public bool UiModeBatchScanOnly { get { return Parent.UiModeBatchScanOnly; } }
+        
+        const string TempRootPath = @"D:\Backup\Test";
 
         private string _title; 
         public string Title 
@@ -78,6 +78,8 @@ namespace CarDocu.ViewModels
 
                 if (SelectedScanImage != null)
                     TrySelectDocumentType(SelectedScanImage.ImageDocumentTypeCode);
+
+                CalcSelectedScanImageSizeForUI();
             }
         }
 
@@ -109,11 +111,28 @@ namespace CarDocu.ViewModels
             set { _selectedScanImageWidth = value; SendPropertyChanged("SelectedScanImageWidth"); }
         }
 
-        static private double _selectedScanImageHeight; 
-        public double SelectedScanImageHeight 
-        { 
+        static private double _selectedScanImageHeight;
+        public double SelectedScanImageHeight
+        {
             get { return _selectedScanImageHeight; }
-            set { _selectedScanImageHeight = value; SendPropertyChanged("SelectedScanImageHeight"); }
+            set
+            {
+                _selectedScanImageHeight = value;
+                DocumentTypesEditDetailsHeight = value - 235;
+                SendPropertyChanged("SelectedScanImageHeight");
+            }
+        }
+
+        private double _documentTypesEditDetailsHeight;
+
+        public double DocumentTypesEditDetailsHeight
+        {
+            get { return _documentTypesEditDetailsHeight; }
+            set
+            {
+                _documentTypesEditDetailsHeight = value;
+                SendPropertyChanged("DocumentTypesEditDetailsHeight");
+            }
         }
 
         static private ObservableCollection<DocumentType> _globalDocumentTypes;
@@ -239,6 +258,31 @@ namespace CarDocu.ViewModels
             get { return !_dummyNoValidDocumentType_NeededForFinTextBoxFocus && ScanDocument.ValidDocumentType; }
         }
 
+        public bool IsTestMode
+        {
+            get
+            {
+                if (!DomainService.DebugIsAdminEnvironment)
+                    return false;
+
+                return true;
+            }
+        }
+
+        private BatchSummary _batchSummary = new BatchSummary();
+
+        public BatchSummary BatchSummary
+        {
+            get { return _batchSummary; }
+            set
+            {
+                _batchSummary = value;
+                SendPropertyChanged("BatchSummary");
+            }
+        }
+        public ObservableCollection<StatusMessage> StatusMessages { get { return DomainService.StatusMessages; } }
+
+
         private void SendPropertyChangedFin()
         {
             SendPropertyChanged("FinNumber");
@@ -266,18 +310,6 @@ namespace CarDocu.ViewModels
         public Media.Brush FinNumberForeground
         {
             get { return FinNumberBackgroundOk ? Media.Brushes.Blue : Media.Brushes.Red; }
-        }
-
-        public bool IsTestMode
-        {
-            get
-            {
-#if TEST
-                return true;
-#else
-                return false;
-#endif
-            }
         }
 
         public string LastScannedBarcodeType { get; private set; }
@@ -322,25 +354,50 @@ namespace CarDocu.ViewModels
 
             Parent.MainWindowSizeChangedRefresh();
             
-            // ToDo: Needed for UI refresh of archive list, need better solution later
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
             Parent.AllDocusViewModel.ModeScanItems = !Parent.AllDocusViewModel.ModeScanItems;
         }
 
+        private Size _windowSize;
+
+        private static double GetMaxHeight(Size size)
+        {
+             return size.Height - 210;
+        }
+
         public void MainWindowSizeChanged(Size newSize)
         {
-            SelectedScanImageHeight = newSize.Height - 170;
-            SelectedScanImageWidth = SelectedScanImageHeight * 21.1 / 29.4;
+            _windowSize = newSize;
+            SelectedScanImageHeight = GetMaxHeight(_windowSize);
 
-            _docuArtListBoxMaxSavedWidth = (int)(newSize.Width - 630);
+            CalcSelectedScanImageSizeForUI();
+        }
+
+        void CalcSelectedScanImageSizeForUI()
+        { 
+            if (SelectedScanImage == null)
+                return;
+
+            var img = SelectedScanImage.ImageSource;
+            double calcedHeight;
+            if (img.Height < img.Width)
+                calcedHeight = (GetMaxHeight(_windowSize)) * (img.Height / img.Width);
+            else
+                calcedHeight = GetMaxHeight(_windowSize);
+
+            SelectedScanImageHeight = calcedHeight;
+            //SelectedScanImageWidth = SelectedScanImageHeight * img.Width / img.Height;
+
+            _docuArtListBoxMaxSavedWidth = (int)(_windowSize.Width - 630);
             DocuArtListBoxMaxWidth = _docuArtListBoxMaxSavedWidth;
         }
 
         void ReloadGlobalDocumentTypes()
         {
             GlobalDocumentTypes = new ObservableCollection<DocumentType>(DomainService.Repository.EnterpriseSettings.DocumentTypes
-                .OrderByDescending(gd => gd.IsSystemInternal)
-                    .ThenBy(gd => gd.Name));
+                .Where(gd => !gd.IsTemplate || (gd.IsTemplate && !DomainService.Repository.LogonUser.BatchScanOnly))
+                    .OrderByDescending(gd => gd.IsSystemInternal)
+                        .ThenBy(gd => gd.Name));
         }
 
         void ReloadScanDocumentTypes()
@@ -374,7 +431,7 @@ namespace CarDocu.ViewModels
 
         bool ScanAppendAllowed()
         {
-            var existingArchive = ScanDocument.Archive;
+            var existingArchive = ScanDocument.GetArchive();
 
             if (ScanDocument.ScanImagesCount == 0)
                 return true;
@@ -402,22 +459,30 @@ namespace CarDocu.ViewModels
             if (!ScanAppendAllowed())
                 return;
 
-#if !TEST
-            var scanSettings = DomainService.Repository.GlobalSettings.ScanSettings;
-            try
+            BatchSummary.Available = false;
+
+            if (!IsTestMode)
             {
-                TwainService.Instance
-                            .StartScan(new ResolutionSettings {Dpi = scanSettings.DPI, ColourSetting = scanSettings.UseColor ? ColourSetting.Colour : ColourSetting.GreyScale})
-                            .PageScanned(ScanPageScanned)
-                            .Complete(e => ScanComplete());
+                var scanSettings = DomainService.Repository.GlobalSettings.ScanSettings;
+                try
+                {
+                    TwainService.Instance
+                        .StartScan(new ResolutionSettings
+                        {
+                            Dpi = scanSettings.DPI,
+                            ColourSetting = scanSettings.UseColor ? ColourSetting.Colour : ColourSetting.GreyScale
+                        })
+                        .PageScanned(ScanPageScanned)
+                        .Complete(e => ScanComplete());
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Fehler beim Zugriff auf den Scanner ... ist er angeschlossen und eingeschaltet?",
+                        "Fehler beim Scanner Zugriff", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
             }
-            catch (Exception)
-            {
-                MessageBox.Show("Fehler beim Zugriff auf den Scanner ... ist er angeschlossen und eingeschaltet?", "Fehler beim Scanner Zugriff", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
-#else
-            TestLoadMockImages();
-#endif
+            else
+                TestLoadMockImages();
         }
 
         void ScanDocumentStartBatchScan()
@@ -427,24 +492,37 @@ namespace CarDocu.ViewModels
             if (!ScanAppendAllowed())
                 return;
 
-#if !TEST
-            
-            var scanSettings = DomainService.Repository.GlobalSettings.ScanSettings;
-            try
-            {
-                TwainService.Instance
-                            .StartScan(new ResolutionSettings {Dpi = scanSettings.DPI, ColourSetting = scanSettings.UseColor ? ColourSetting.Colour : ColourSetting.GreyScale})
-                            .PageScanned(BatchScanPageScanned)
-                            .Complete(e => BatchScanComplete());
-            }
-            catch (Exception)
-            {
-                MessageBox.Show("Fehler beim Zugriff auf den Scanner ... ist er angeschlossen und eingeschaltet?", "Fehler beim Scanner Zugriff", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-            }
+            StatusMessages.Clear();
 
-#else
-            TestLoadMockImages(true);            
-#endif
+            BatchSummary.Available = true;
+            BatchSummary.Title = "Stapel Scan läuft ...";
+            BatchSummary.ResultsAvailable = false;
+            BatchSummary.ResultsGoodItems = BatchSummary.ResultsBadItems = BatchSummary.ResultsTotalItems = 0;
+            UpdateUI();
+
+            if (!IsTestMode)
+            {
+                var scanSettings = DomainService.Repository.GlobalSettings.ScanSettings;
+                try
+                {
+                    TwainService.Instance
+                        .StartScan(new ResolutionSettings
+                        {
+                            Dpi = scanSettings.DPI,
+                            ColourSetting = scanSettings.UseColor ? ColourSetting.Colour : ColourSetting.GreyScale
+                        })
+                        .PageScanned(BatchScanPageScanned)
+                        .Complete(e => BatchScanComplete());
+                }
+                catch (Exception)
+                {
+                    MessageBox.Show("Fehler beim Zugriff auf den Scanner ... ist er angeschlossen und eingeschaltet?",
+                        "Fehler beim Scanner Zugriff", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                }
+
+            }
+            else
+                TestLoadMockImages(true);            
         }
 
         void ScanPageScanned(Bitmap image)
@@ -482,7 +560,7 @@ namespace CarDocu.ViewModels
                 // altes Dokument abschließen
                 BatchFinishScanDocument(false);
 
-                ScanDocument = this.ScanDocument.Clone();
+                ScanDocument = ScanDocument.Clone();
                 ScanDocument.FinNumber = LastScannedBarcodeValue;                    
             }
             
@@ -539,14 +617,14 @@ namespace CarDocu.ViewModels
 
             if (SelectedDocumentType.BarcodeType != LastScannedBarcodeType)
             {
-                DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Ungültiger Barcodetyp wurde übersprungen."));
+                DomainService.StatusMessages.Add(new StatusMessage(StatusMessage.MessageType.Warning, "Ungültiger Barcodetyp wurde übersprungen."));
                 return false;
             }
 
             if (SelectedDocumentType.BarcodeAlphanumericAllowed)
             {
                 //erfolgreich gescannt!
-                DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Info, "Barcode " + LastScannedBarcodeValue + " erkannt.")); 
+                DomainService.StatusMessages.Add(new StatusMessage(StatusMessage.MessageType.BarcodeOk, "Barcode " + LastScannedBarcodeValue + " erkannt.")); 
                 return true;
             }
 
@@ -554,7 +632,7 @@ namespace CarDocu.ViewModels
             if (SelectedDocumentType.BarcodeRangeStart <= barcodeValue && barcodeValue <= SelectedDocumentType.BarcodeRangeEnd)
                 return true;
 
-            DomainService.StatusMessages.Insert(0, new StatusMessage(StatusMessage.MessageType.Warning, "Barcode ist außerhalb des aktuellen Nummernkreises!"));
+            DomainService.StatusMessages.Add(new StatusMessage(StatusMessage.MessageType.Warning, "Barcode ist außerhalb des aktuellen Nummernkreises!"));
             return false;
         }
 
@@ -578,13 +656,18 @@ namespace CarDocu.ViewModels
             {
                 DomainService.Repository.TryQueueNewItem(ScanDocument);
 
-                // neues Dokument aus dem "Neu" Tab entladen, es geht nun über in die "Übersicht" Liste:
-                Parent.NewDocuViewModel = null;
-
-                Parent.EnsureNewScanDocu();
-
-                Parent.AllDocusViewModel.ReloadItems();
+                EnsureNewScanDocu();
             }
+        }
+
+        void EnsureNewScanDocu()
+        {
+            // neues Dokument aus dem "Neu" Tab entladen, es geht nun über in die "Übersicht" Liste:
+            Parent.NewDocuViewModel = null;
+
+            Parent.EnsureNewScanDocu(BatchSummary);
+
+            Parent.AllDocusViewModel.ReloadItems();
         }
 
         bool CanScanDocumentPdfShow()
@@ -652,22 +735,17 @@ namespace CarDocu.ViewModels
 // ReSharper restore UnusedMember.Local
         {
             var testDirectory = new DirectoryInfo(TempRootPath);
+            var imageFiles = testDirectory.GetFiles("*.jpg", SearchOption.TopDirectoryOnly);
 
             if (batchTest)
             {
                 // Standardaufruf im aktuellen Thread
                 //for (var i = 0; i < 50; i++)
                 {
-                    foreach (var dir in testDirectory.GetDirectories())
+                    foreach (var file in imageFiles)
                     {
-                        foreach (var file in dir.GetFiles())
-                        {
-                            if (file.Extension.ToLower() == ".jpg" | file.Extension.ToLower() == ".jpeg")
-                            {
-                                BatchScanPageScanned(new Bitmap(file.FullName));
-                                Thread.Sleep(10);
-                            }
-                        }
+                        BatchScanPageScanned(new Bitmap(file.FullName));
+                        Thread.Sleep(10);
                     }
                 }
                 BatchScanComplete();
@@ -676,14 +754,11 @@ namespace CarDocu.ViewModels
             }
             else
             {
-                foreach (var dir in testDirectory.GetDirectories())
+                foreach (var file in imageFiles)
                 {
-                    foreach (var file in dir.GetFiles())
-                    {
-                        ScanPageScanned(new Bitmap(file.FullName));
-                    }
-                    ScanComplete();
+                    ScanPageScanned(new Bitmap(file.FullName));
                 }
+                ScanComplete();
             }
 
             DomainService.Repository.UserSettingsSave();
@@ -699,7 +774,7 @@ namespace CarDocu.ViewModels
                 var allFilesCount = 0;
                 foreach (var dir in testDirectory.GetDirectories())
                 {
-                    allFilesCount += dir.GetFiles().Count() * repeatings;
+                    allFilesCount += dir.GetFiles().Length * repeatings;
                 }
 
                 progressBarOperation.Current = 0;
@@ -714,7 +789,7 @@ namespace CarDocu.ViewModels
                     {
                         foreach (var file in dir.GetFiles())
                         {
-                            if (file.Extension.ToLower() == ".jpg" | file.Extension.ToLower() == ".jpeg")
+                            if (file.Extension.ToLower() == ".jpg" || file.Extension.ToLower() == ".jpeg")
                             {
                                 BatchScanPageScanned(new Bitmap(file.FullName));
                                 Thread.Sleep(10);
@@ -755,6 +830,8 @@ namespace CarDocu.ViewModels
         {
             ReloadScanDocumentTypes();
 
+            ScanDocument.BatchScanned = false;
+
             ScanDocumentSave(false, false);
 
             SendPropertyChanged("ScanDocument");
@@ -767,11 +844,49 @@ namespace CarDocu.ViewModels
             return true;
         }
 
-// ReSharper disable UnusedMethodReturnValue.Local
-        bool BatchScanComplete()      
-// ReSharper restore UnusedMethodReturnValue.Local
+        void BatchFinishScanDocument(bool clearFin)
+        {
+            if (ScanDocument.ScanImagesCount == 0)
+                return;
+
+            ScanDocument.ArchiveMailDeliveryNeeded = SelectedDocumentType.Archive.MailDeliveryNeeded;
+
+            ScanDocumentSave(true);
+            SendPropertyChanged("ScanDocument");
+
+            bool scanDocumentIsValid;
+            if (ScanDocument.ValidFinNumber)
+            {
+                scanDocumentIsValid = ScanDocument.PdfPageCountIsValid;
+            }
+            else
+            {
+                scanDocumentIsValid = false;
+
+                ScanDocument.ScanImages.Clear();
+                if (clearFin)
+                    ScanDocument.FinNumber = "";
+
+                EnsureNewScanDocu();
+            }
+
+            if (scanDocumentIsValid)
+                BatchSummary.ResultsGoodItems++;
+            else
+                BatchSummary.ResultsBadItems++;
+
+            BatchSummary.Title += ".";
+            BatchSummary.ResultsTotalItems = BatchSummary.ResultsBadItems + BatchSummary.ResultsGoodItems;
+            UpdateUI();
+        }
+
+        // ReSharper disable UnusedMethodReturnValue.Local
+        bool BatchScanComplete()
+        // ReSharper restore UnusedMethodReturnValue.Local
         {
             ReloadScanDocumentTypes();
+
+            ScanDocument.BatchScanned = true;
 
             // altes Dokument abschließen
             BatchFinishScanDocument(true);
@@ -780,27 +895,11 @@ namespace CarDocu.ViewModels
 
             DomainService.Repository.UserSettingsSave();
 
+            BatchSummary.ResultsAvailable = true;
+            BatchSummary.Title = "Stapel Scan beendet, Ergebnis:";
+            UpdateUI();
+
             return true;
-        }
-
-        void BatchFinishScanDocument(bool clearFIN)
-        {
-            if (ScanDocument.ScanImagesCount == 0)
-                return;
-            
-            if (ScanDocument.ValidFinNumber)
-            {
-                ScanDocument.ArchiveMailDeliveryNeeded = SelectedDocumentType.Archive.MailDeliveryNeeded;
-
-                ScanDocumentSaveCommand.Execute(null);
-                SendPropertyChanged("ScanDocument");
-            }
-            else
-            {
-                ScanDocument.ScanImages.Clear();
-                if (clearFIN)
-                    ScanDocument.FinNumber = "";
-            }
         }
 
         public void ShowBigDocuArtSelection()
@@ -811,6 +910,11 @@ namespace CarDocu.ViewModels
         public void NotifyDocuArtSelectionBigVisible(bool val)
         {
             DocuArtSelectionBigVisible = val;
+        }
+
+        void UpdateUI()
+        {
+            Dispatcher.CurrentDispatcher.Invoke(new Action(() => { }), DispatcherPriority.ContextIdle, null);
         }
     }
 }

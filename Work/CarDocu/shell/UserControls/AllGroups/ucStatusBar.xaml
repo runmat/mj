@@ -23,15 +23,5 @@
                 </ItemsControl.ItemTemplate>    
             </ItemsControl>
         </StackPanel>
-
-        <StackPanel Orientation="Vertical" Margin="1100,0,0,0">
-            <ItemsControl ItemsSource="{Binding StatusMessages}" Style="{StaticResource ItemsControlHorizontal}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <AllGroups:ucCardocuStatusmessage></AllGroups:ucCardocuStatusmessage>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-        </StackPanel>
     </Grid>
 </UserControl>
