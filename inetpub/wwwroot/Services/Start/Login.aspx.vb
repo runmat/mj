@@ -9,6 +9,7 @@ Imports System.IO
 Imports System.Reflection
 Imports WebTools.Services
 Imports CKG.Base.Business.HelpProcedures
+Imports GeneralTools.Models
 
 Partial Public Class Login
     Inherits System.Web.UI.Page
@@ -207,7 +208,7 @@ Partial Public Class Login
                 conn.Close()
             End Using
 
-            Repeater1.DataSource = Table
+            Repeater1.DataSource = table
             Repeater1.DataBind()
         Catch
         End Try
@@ -514,7 +515,7 @@ Partial Public Class Login
             Me.DoubleLogin2.Visible = False
             Session("CaptchaGen1") = GenerateRandomCode()
             Session("CaptchaGen2") = GenerateRandomCode()
-            
+
             'Prüfe zugreifende IP
             If (Not Request.QueryString("IFrameLogon") Is Nothing) Then
                 FormsAuthentication.RedirectFromLoginPage("IFrameLogon", False)
@@ -570,7 +571,7 @@ Partial Public Class Login
         Dim userIsEmpty As Boolean = (Session("objUser") Is Nothing)
         Dim urlReferrerIsValid As Boolean = (urlReferrer <> "")
         Dim urlReferrerIsServicesLogin As Boolean = (urlReferrer.ToLower().Contains("start/login.aspx") And Not requestReturnUrl.ToLower().Contains("servicesmvc"))
-        Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("on.kroschke.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost"))
+        Dim urlIsNewDadPortalLink As Boolean = (url.ToLower().Contains("portal.dad.de") Or url.ToLower().Contains("on.kroschke.de") Or url.ToLower().Contains("vms012.kroschke.de") Or url.ToLower().Contains("vms026.kroschke.de") Or url.ToLower().Contains("localhost") Or ConfigurationManager.AppSettings("ForceMvcLogin").NotNullOrEmpty().ToUpper() = "TRUE")
 
         If (userIsEmpty And Not urlReferrerIsServicesLogin And (urlIsNewDadPortalLink Or urlReferrerIsValid)) Then
             Try
