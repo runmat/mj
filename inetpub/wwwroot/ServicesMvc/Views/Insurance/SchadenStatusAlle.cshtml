@@ -42,7 +42,7 @@
             var columnType = column.type.toLowerCase();
             if (column.title == statusText || isCurrentStatusCell) {
                 SetCellStatusHtml($(e.row.cells[i]), statusFarbe, isCurrentStatusCell, columnType);
-                console.log(column);
+                //console.log(column);
             }
             else if (columnType == "date") {
                 SetCellStatusHtml($(e.row.cells[i]), "", false, columnType);
