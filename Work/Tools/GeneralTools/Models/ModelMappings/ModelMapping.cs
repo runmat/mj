@@ -337,14 +337,24 @@ namespace GeneralTools.Models
         where T1 : class, new()
         where T2 : class, new()
     {
-        private readonly IDictionary<string, string> _propertyMappings;
+        private IDictionary<string, string> _propertyMappings;
 
-        private readonly Action<T1, T2> _onInit;
-        private readonly Action<T2, T1> _onInitBack;
+        private Action<T1, T2> _onInit;
+        private Action<T2, T1> _onInitBack;
 
         public ModelMapping(IDictionary<string, string> propertyMappings, Action<T1, T2> onInit = null, Action<T2, T1> onInitBack = null)
         {
-            _propertyMappings = propertyMappings;
+            Init(propertyMappings, onInit, onInitBack);
+        }
+
+        public ModelMapping(Action<T1, T2> onInit = null, Action<T2, T1> onInitBack = null)
+        {
+            Init(null, onInit, onInitBack);
+        }
+
+        void Init(IDictionary<string, string> propertyMappings, Action<T1, T2> onInit = null, Action<T2, T1> onInitBack = null)
+        {
+            _propertyMappings = propertyMappings ?? new Dictionary<string, string>();
 
             _onInit = onInit;
             _onInitBack = onInitBack;
