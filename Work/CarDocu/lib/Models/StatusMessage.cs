@@ -10,7 +10,7 @@ namespace CarDocu.Models
 {
     public class StatusMessage : ModelBase
     {
-        public enum MessageType { Warning, Alert, Info, None }
+        public enum MessageType { Warning, Alert, Info, BarcodeOk, None }
 
         private string _statusmessageIconSource;
         [XmlIgnore]
@@ -65,8 +65,12 @@ namespace CarDocu.Models
                     StatusmessageTip = "Fehler";
                     break;
                 case MessageType.Info:
-                    _statusmessageIconSource = "image/16x16/information";           
+                    _statusmessageIconSource = "image/16x16/information";
                     StatusmessageTip = "Information";
+                    break;
+                case MessageType.BarcodeOk:
+                    _statusmessageIconSource = "image/16x16/barcode";
+                    StatusmessageTip = "Barcode erkannt";
                     break;
                 case MessageType.Warning:
                     _statusmessageIconSource = "image/16x16/warning";           
