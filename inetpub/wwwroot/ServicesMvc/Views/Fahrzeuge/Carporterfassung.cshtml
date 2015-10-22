@@ -258,7 +258,12 @@
             url: "FahrzeugeSpeichern",
             loadingShow: true,
             success: function (result) {
-                SpanAlertWarning("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
+                if (typeof (result.message) !== "undefined") {
+                    SpanAlertWarning("Message", result.message, 5000);
+                    return;
+                }
+
+                SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
                 ShowGridForConfirmation(result);
             }
         });

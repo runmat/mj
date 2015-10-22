@@ -202,5 +202,10 @@ namespace GeneralTools.Services
                 fs.Close();
             }
         }
+
+        public static string CreateFriendlyGuid()
+        {
+            return ShortGuid.NewGuid();
+        }
     }
 }

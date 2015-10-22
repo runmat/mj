@@ -4,8 +4,9 @@
                 xmlns:fl="clr-namespace:Fluent;assembly=Fluent"
                 xmlns:docuGroup="clr-namespace:CarDocu.UserControls.DocuGroup"
                 xmlns:adminGroup="clr-namespace:CarDocu.UserControls.AdminGroup"
-                 xmlns:backstage="clr-namespace:CarDocu.UserControls.Backstage"
-                 xmlns:allGroups="clr-namespace:CarDocu.UserControls.AllGroups" WindowStartupLocation="CenterScreen"   
+                xmlns:backstage="clr-namespace:CarDocu.UserControls.Backstage"
+                xmlns:allGroups="clr-namespace:CarDocu.UserControls.AllGroups" WindowStartupLocation="CenterScreen"   
+                 Icon="/cardocu.ico"
                 Height="900" Width="1280">
     <StackPanel>
 
@@ -19,19 +20,19 @@
             <!--Contextual Tabs-->
 
             <fl:RibbonTabItem DataContext="{Binding NewDocuViewModel}" Header="Neuer Scan" Group="{Binding ElementName=DocuGroup}"  x:Name="NewDocuTab">
-                <fl:RibbonGroupBox Header="1. Dokumenten Art wählen" Margin="0,0,0,0" IsLauncherVisible="True" LauncherClick="RibbonGroupBoxLauncherClick" LauncherToolTip="Auswahlbereich maximieren bzw. minimieren">
+                <fl:RibbonGroupBox Header="Dokumenten Art wählen" Margin="0,0,0,0" IsLauncherVisible="True" LauncherClick="RibbonGroupBoxLauncherClick" LauncherToolTip="Auswahlbereich maximieren bzw. minimieren">
                     <StackPanel>
                         <docuGroup:ucScanDocuRibbonSectionDocuArt Opacity="{Binding DocuArtSelectionSmallOpacity}" />
                     </StackPanel>
                 </fl:RibbonGroupBox>
-                <fl:RibbonGroupBox Header="2. ID eingeben" Margin="0,0,0,0">
+                <fl:RibbonGroupBox Header="ID eingeben" Margin="0,0,0,0" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                     <StackPanel>
-                        <docuGroup:ucScanDocuRibbonSectionFIN />
+                        <docuGroup:ucScanDocuRibbonSectionFIN Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
                     </StackPanel>
                 </fl:RibbonGroupBox>
-                <fl:RibbonGroupBox Header="3. Scannen                            " Margin="0,0,0,0">
+                <fl:RibbonGroupBox Header="Scannen                            " Margin="0,0,0,0">
                     <fl:Button Command="{Binding ScanDocumentStartScanCommand}" LargeIcon="{StaticResource image/32x32/scan_new}" 
-                               Header="Scan starten">
+                               Header="Scan starten" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                         <fl:Button.ToolTip>
                             <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
                                           Text="Startet einen neuen Scan-Vorgang."
@@ -48,10 +49,10 @@
                         </fl:Button.ToolTip>
                     </fl:Button>
 
-                    <docuGroup:ucTemplateInsertRibbonSplitButton />
+                    <docuGroup:ucTemplateInsertRibbonSplitButton Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
 
                     <fl:Button Command="{Binding ScanDocumentSaveCommand}" LargeIcon="{StaticResource image/32x32/scan_archive}" 
-                               Header="Im Archiv ablegen">
+                               Header="Im Archiv ablegen" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}">
                         <fl:Button.ToolTip>
                             <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
                                           Text="Legt das neue Scan-Dokument im Archiv ab."
@@ -60,10 +61,10 @@
                     </fl:Button>
 
                     <docuGroup:ucPdfFolderRibbonButton />
-                    
-                    <docuGroup:ucPdfRibbonSplitButton />
+
+                    <docuGroup:ucPdfRibbonSplitButton Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
                 </fl:RibbonGroupBox>
-                <fl:RibbonGroupBox MinWidth="1000" />
+                <fl:RibbonGroupBox MinWidth="1000" Visibility="{Binding UiModeBatchScanOnly, Converter={StaticResource BooleanVisibilityInverseConverter}}" />
             </fl:RibbonTabItem>
 
             <fl:RibbonTabItem DataContext="{Binding AllDocusViewModel}" Header="Archiv" Group="{Binding ElementName=DocuGroup}" x:Name="AllDocusTab">
@@ -95,12 +96,20 @@
                 </fl:RibbonGroupBox>
                 <fl:RibbonGroupBox Header="Dokumente" Margin="0,0,0,0">
                     <docuGroup:ucPdfFolderRibbonButton />
-                    
+
                     <fl:Button Command="{Binding ZipToArchiveCommand}" LargeIcon="{StaticResource image/32x32/zip_archive}" 
-                               Header="Archivieren">
+                               Header="Zippen + Backup">
                         <fl:Button.ToolTip>
                             <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
-                                          Text="Verschiebt alle Scan-Dokumente in das ZIP-Archiv"
+                                          Text="Verschiebt alle Scan-Dokumente in das ZIP-Archiv  und  erstellt ggfls. ein lokales Zusatz Backup (sofern ein Backup Pfad hinterlegt ist)"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
+                    <fl:Button Command="{Binding AutoRecycleArchiveCommand}" LargeIcon="{StaticResource image/32x32/delete}" 
+                               Header="Automatische Datenbereinigung" Visibility="Collapsed">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Führt eine automatische Datenbereinigung durch ..."
                                 />
                         </fl:Button.ToolTip>
                     </fl:Button>
@@ -189,6 +198,14 @@
                     </fl:Button>
                 </fl:RibbonGroupBox>
                 <fl:RibbonGroupBox Header="Sonstige Einstellungen">
+                    <fl:Button Command="{Binding ZipArchiveRecycleCommand}" LargeIcon="{StaticResource image/32x32/zip_recycle}" 
+                               Header="Backup Ordner bereinigen">
+                        <fl:Button.ToolTip>
+                            <fl:ScreenTip DataContext="{Binding PlacementTarget, RelativeSource={RelativeSource Self}}" Title="{Binding Header}"   
+                                          Text="Bereinigt den lokalen Backup Ordner, um lokalen Festplattenspeicherplatz freizugeben"
+                                />
+                        </fl:Button.ToolTip>
+                    </fl:Button>
                     <fl:Button Command="{Binding OpenScanSettingsCommand}" LargeIcon="{StaticResource image/32x32/scan_settings}" 
                                Header="Scanner Einstellungen" Margin="20,0,20,0">
                         <fl:Button.ToolTip>
@@ -282,7 +299,7 @@
             
             <!--Backstage-->
             <fl:Ribbon.Menu>
-                <fl:Backstage Header=" CarDocu        " IsOpen="False" Background="DarkRed">
+                <fl:Backstage Header="  CKG Scan Client  " IsOpen="False" Background="DarkRed">
                     <fl:BackstageTabControl DataContext="{Binding BackstageViewModel}">
                         <fl:BackstageTabItem Header="Info">
                             <ContentPresenter Content="{StaticResource image/logo_transparent}" />
