@@ -40,7 +40,7 @@
         $("#HistoryAuftraegeFilter").slideDown();
     }
 
-    function GridCocItems_OnDataBound() {
+    function OnDataBound_GridHistoryAuftraege() {
         FilteredData_Grid_OnDataBound($(this));
 
         LoadingHide();
@@ -52,6 +52,13 @@
         });
     }
 
+    function OnColumnShowHide_GridHistoryAuftraege() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_GridHistoryAuftraege() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
 
     // --
     // -- Step 3, Auftrags-Details

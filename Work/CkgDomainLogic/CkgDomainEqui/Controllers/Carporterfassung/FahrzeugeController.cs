@@ -167,7 +167,10 @@ namespace ServicesMvc.Controllers
         [HttpPost]
         public ActionResult FahrzeugeSpeichern()
         {
-            CarporterfassungViewModel.SaveFahrzeuge((ownerMultiKey, additionalFilter) => PersistanceDeleteAllObjects(PersistableGroupKey, ownerMultiKey, additionalFilter));
+            var saveErg = CarporterfassungViewModel.SaveFahrzeuge((ownerMultiKey, additionalFilter) => PersistanceDeleteAllObjects(PersistableGroupKey, ownerMultiKey, additionalFilter));
+
+            if (!String.IsNullOrEmpty(saveErg))
+                return Json(new { message = saveErg });
 
             LoadPersistedObjects();
 
