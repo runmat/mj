@@ -193,6 +193,7 @@
     <Compile Include="Services\Misc\Feiertage\DeutscheFeiertageEinesJahres.cs" />
     <Compile Include="Services\Misc\TypeMerger.cs" />
     <Compile Include="Services\Persistance\PersistanceBaseService.cs" />
+    <Compile Include="Services\ShortGuid.cs" />
     <Compile Include="Services\Stores\Store.cs" />
     <Compile Include="Services\Threads\BackgroundTaskBase.cs" />
     <Compile Include="Services\Threads\ThreadSaveQueue.cs" />

@@ -42,12 +42,27 @@ namespace CarDocu.Models
         }
 
         //public string Password { get; set; }
-        
-        private bool _isAdmin; 
-        public bool IsAdmin 
-        { 
+
+        private bool _isAdmin;
+        public bool IsAdmin
+        {
             get { return _isAdmin; }
             set { _isAdmin = value; SendPropertyChanged("IsAdmin"); }
+        }
+
+        private bool _isDefaultUser;
+        public bool IsDefaultUser
+        {
+            get { return _isDefaultUser; }
+            set { _isDefaultUser = value; SendPropertyChanged("IsDefaultUser"); }
+        }
+
+        private bool _batchScanOnly;
+
+        public bool BatchScanOnly
+        {
+            get { return _batchScanOnly; }
+            set { _batchScanOnly = value; SendPropertyChanged("BatchScanOnly"); }
         }
 
         private string _domainLocationCode; 

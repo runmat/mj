@@ -51,7 +51,13 @@ namespace CarDocu.Services
                 //return false;
             }
 
-            ScanDocuments.Remove(itemToDelete);
+            if (!ScanDocuments.Remove(itemToDelete))
+            {
+                var sdStored = ScanDocuments.FirstOrDefault(sd => sd.DocumentID == scanDocument.DocumentID);
+                if (sdStored != null)
+                    ScanDocuments.Remove(sdStored);
+            }
+
             if (OnDeleteScanDocument != null)
                 OnDeleteScanDocument(itemToDelete);
 

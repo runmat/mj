@@ -122,7 +122,7 @@ namespace AutohausPortalMvc.Controllers
         }
 
 
-        public ActionResult ExportFilteredExcel(int page, string orderBy, string filterBy)
+        public ActionResult ExportHistoryAuftraegeExcel(int page, string orderBy, string filterBy)
         {
             var dt = ViewModel.HistoryAuftraege.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("Überführungsaufträge", dt);
@@ -130,7 +130,7 @@ namespace AutohausPortalMvc.Controllers
             return new EmptyResult();
         }
 
-        public ActionResult ExportFilteredPDF(int page, string orderBy, string filterBy)
+        public ActionResult ExportHistoryAuftraegePDF(int page, string orderBy, string filterBy)
         {
             var dt = ViewModel.HistoryAuftraege.GetGridFilteredDataTable(orderBy, filterBy, LogonContext.CurrentGridColumns);
             new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("Überführungsaufträge", dt, landscapeOrientation: true);
