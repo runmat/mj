@@ -11,6 +11,14 @@
     @Html.Partial("DurchzufuehrendeZulassungen/Grid", Model)
 </div>
 
+<div class="form-horizontal">
+    <div class="form-actions">
+        <button id="btnSave" class="btn green" onclick="SaveOffeneZulassungen(false);"> @Localize.Save <i class="m-icon-swapright m-icon-white"></i></button>
+        <button id="btnSend" class="btn green margin-left-5 @(@Model.SendingEnabled ? "" : "hide")" onclick="SaveOffeneZulassungen(true);"> @Localize.Send <i class="m-icon-swapright m-icon-white"></i></button>
+        <button id="btnContinue" class="btn green margin-left-5 hide" onclick="location.reload(); "> @Localize.Continue <i class="m-icon-swapright m-icon-white"></i></button>
+    </div>
+</div>
+
 <script type="text/javascript">
 
     function FormPreparePrivate() {
@@ -51,6 +59,8 @@
                 }
             }
         }
+
+        $(e.row).find("#Status").val(e.dataItem.Status);
     }
 
     function OnColumnShowHide_GridOffeneZulassungen() {
@@ -61,24 +71,24 @@
         FilteredData_Grid_OnColumnReorder($(this));
     }
 
-    function OnEdit_GridOffeneZulassungen(e) {
-        if (e.mode == "edit") {
-            // Aufgrund eines Bugs(?) stimmen ID/Name hier nicht und müssen korrigiert werden
-            $(e.form).find("#Status_Status").attr('id', 'Status');
-            $(e.form).find("#Status").attr('name', 'Status');
-            $(e.form).find("#Status").val(e.dataItem.Status);
-        }
-    }
+    function UpdateOffeneZulassung(datensatzId, property, value) {
+        DisableButtons();
 
-    function OnDataBinding_GridOffeneZulassungen(e) {
-        ApplyGridChanges();
-    }
+        $.ajax({
+            type: "POST",
+            url: "UpdateOffeneZulassung",
+            loadingShow: false,
+            data: { datensatzId: datensatzId, property: property, value: value },
+            success: function (result) {
+                EnableButtons();
 
-    function ApplyGridChanges() {
-        var grid = $("#GridOffeneZulassungen").data('tGrid');
-        if (grid.hasChanges()) {
-            grid.submitChanges();
-        }
+                if (result.showSendButton == true) {
+                    $("#btnSend").removeClass("hide");
+                } else {
+                    $("#btnSend").addClass("hide");
+                }
+            }
+        });
     }
 
     function SaveOffeneZulassungen(absenden) {
@@ -89,21 +99,32 @@
             data: { absenden: absenden },
             success: function (result) {
                 $("#divOffeneZulassungenGrid").html(result);
+                GridAllColumnFilterApplyToGrid("GridOffeneZulassungen");
                 FormPreparePrivateAjax();
 
                 if (_modelStateValid) {
                     SpanAlertSuccess("Message", '@Localize.SaveSuccessful.ToJavascriptString()', 3000);
+
+                    if (absenden == true) {
+                        $("#btnSave").addClass("hide");
+                        $("#btnSend").addClass("hide");
+                        $("#btnContinue").removeClass("hide");
+                    }
                 }
             }
         });
-
-        return false;
     }
 
-    function ApplyGridChangesAndSaveOffeneZulassungen(absenden) {
-        ApplyGridChanges();
+    function DisableButtons() {
+        $("#btnSave").attr("disabled", "disabled");
+        $("#btnSend").attr("disabled", "disabled");
+        $("#btnContinue").attr("disabled", "disabled");
+    }
 
-        setTimeout(SaveOffeneZulassungen(absenden), 2000);
+    function EnableButtons() {
+        $("#btnSave").removeAttr("disabled");
+        $("#btnSend").removeAttr("disabled");
+        $("#btnContinue").removeAttr("disabled");
     }
 
 </script>

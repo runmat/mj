@@ -1,18 +1,26 @@
-﻿using GeneralTools.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using CkgDomainLogic.General.Services;
+using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 
 namespace CkgDomainLogic.ZldPartner.Models
 {
-    public class DurchgefuehrteZulassungenSuchparameter : Store
+    public class DurchgefuehrteZulassungenSuchparameter : Store, IValidatableObject
     {
         [LocalizedDisplay(LocalizeConstants.Customer)]
         public string Kunde { get; set; }
 
-        public string Kunden { get { return ",;1010,Kroschke;1510,DAD"; } }
+        public string Kunden { get { return ",Alle;1510,DAD;1010,Kroschke"; } }
 
+        [Required]
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateRange ZulassungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.Last30Days)); } set { PropertyCacheSet(value); } }
+        public DateRange ZulassungsDatumRange { get { return PropertyCacheGet(() => new DateRange(DateRangeType.CurrentMonth, true)); } set { PropertyCacheSet(value); } }
+
+        [LocalizedDisplay("")]
+        public string ZulassungsDatumRangeHinweis { get { return String.Format(Localize.DateRangeMaxnDays, "92"); } }
 
         [LocalizedDisplay(LocalizeConstants.Selection)]
         public string Auswahl { get; set; }
@@ -24,5 +32,14 @@ namespace CkgDomainLogic.ZldPartner.Models
 
         [LocalizedDisplay(LocalizeConstants.CarOwner)]
         public string Halter { get; set; }
+
+        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (!ZulassungsDatumRange.IsSelected)
+                yield return new ValidationResult(Localize.ThisFieldIsRequired, new[] { "ZulassungsDatumRange" });
+
+            if (ZulassungsDatumRange.MoreDaysThan(92))
+                yield return new ValidationResult(String.Format(Localize.DateRangeMaxnDays, "92"), new[] { "ZulassungsDatumRange" });
+        }
     }
 }

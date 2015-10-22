@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
@@ -58,14 +57,12 @@ namespace ServicesMvc.ZldPartner.Controllers
             return View(new GridModel(ViewModel.OffeneZulassungenGridItemsFiltered));
         }
 
-        [GridAction]
-        public ActionResult OffeneZulassungenAjaxSaveChanges([Bind(Prefix = "inserted")]IEnumerable<OffeneZulassung> insertedZul,
-            [Bind(Prefix = "updated")]IEnumerable<OffeneZulassung> updatedZul,
-            [Bind(Prefix = "deleted")]IEnumerable<OffeneZulassung> deletedZul)
+        [HttpPost]
+        public ActionResult UpdateOffeneZulassung(string datensatzId, string property, string value)
         {
-            ViewModel.ApplyChangedData(updatedZul);
+            ViewModel.ApplyChangedData(datensatzId, property, value);
 
-            return View(new GridModel(ViewModel.OffeneZulassungenGridItemsFiltered));
+            return Json(new { showSendButton = ViewModel.SendingEnabled });
         }
 
         [HttpPost]

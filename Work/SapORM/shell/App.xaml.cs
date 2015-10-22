@@ -482,6 +482,7 @@ namespace SapORM
             // CKG Partner-Portal
             //new FunctionReflector("Z_ZLD_PP_GET_PO_01").WriteOrmForExportTableStructures("I_LIFNR", "915032");
             //new FunctionReflector("Z_ZLD_PP_SAVE_PO_01").WriteOrmForExportTableStructures("I_MODUS", "S");
+            //new FunctionReflector("Z_ZLD_PP_GET_ZULASSUNGEN_01").WriteOrmForExportTableStructures("I_LIFNR", "915032");
 
 
             //CoCTest();

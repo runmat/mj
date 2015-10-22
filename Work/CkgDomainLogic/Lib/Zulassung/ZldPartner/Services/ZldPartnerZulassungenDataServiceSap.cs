@@ -52,7 +52,32 @@ namespace CkgDomainLogic.ZldPartner.Services
 
         public List<DurchgefuehrteZulassung> LoadDurchgefuehrteZulassungen(DurchgefuehrteZulassungenSuchparameter suchparameter)
         {
-            throw new NotImplementedException();
+            Z_ZLD_PP_GET_ZULASSUNGEN_01.Init(SAP, "I_LIFNR", LogonContext.User.Reference);
+
+            if (!String.IsNullOrEmpty(suchparameter.Kunde))
+                SAP.SetImportParameter("I_KUNDE", suchparameter.Kunde);
+
+            if (suchparameter.ZulassungsDatumRange.IsSelected)
+            {
+                if (suchparameter.ZulassungsDatumRange.StartDate.HasValue)
+                    SAP.SetImportParameter("I_ZZZLDAT_VON", suchparameter.ZulassungsDatumRange.StartDate.Value);
+
+                if (suchparameter.ZulassungsDatumRange.EndDate.HasValue)
+                    SAP.SetImportParameter("I_ZZZLDAT_BIS", suchparameter.ZulassungsDatumRange.EndDate.Value);
+            }
+
+            if (!String.IsNullOrEmpty(suchparameter.Auswahl))
+                SAP.SetImportParameter("I_AUSWAHL", suchparameter.Kunde);
+
+            if (!String.IsNullOrEmpty(suchparameter.Kennzeichen))
+                SAP.SetImportParameter("I_ZZKENN", suchparameter.Kennzeichen);
+
+            if (!String.IsNullOrEmpty(suchparameter.Halter))
+                SAP.SetImportParameter("I_HALTER", suchparameter.Halter);
+
+            SAP.Execute();
+
+            return AppModelMappings.Z_ZLD_PP_GET_ZULASSUNGEN_01_GT_BESTELL_LISTE_To_DurchgefuehrteZulassung.Copy(Z_ZLD_PP_GET_ZULASSUNGEN_01.GT_BESTELL_LISTE.GetExportList(SAP)).ToList();
         }
     }
 }

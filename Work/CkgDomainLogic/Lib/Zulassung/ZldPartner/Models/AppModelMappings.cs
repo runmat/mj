@@ -33,7 +33,37 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.MaterialNr = s.MATNR;
                         d.MaterialText = s.MAKTX;
                         d.Preis = s.DL_PREIS.ToString();
-                        d.SetStatus(s.PP_STATUS);
+                        d.Status = s.PP_STATUS.NotNullOrEmpty();
+                        d.Zb2Nr = s.ZZBRIEF;
+                        d.ZulassungsDatum = s.ZZZLDAT.ToString("dd.MM.yyyy");
+                        d.ZulassungsKreis = s.KREISKZ;
+                    }));
+            }
+        }
+
+        static public ModelMapping<Z_ZLD_PP_GET_ZULASSUNGEN_01.GT_BESTELL_LISTE, DurchgefuehrteZulassung> Z_ZLD_PP_GET_ZULASSUNGEN_01_GT_BESTELL_LISTE_To_DurchgefuehrteZulassung
+        {
+            get
+            {
+                return EnsureSingleton(() => new ModelMapping<Z_ZLD_PP_GET_ZULASSUNGEN_01.GT_BESTELL_LISTE, DurchgefuehrteZulassung>(
+                    new Dictionary<string, string>()
+                    , (s, d) =>
+                    {
+                        d.AbrechnungErstellt = s.ABRECHNUNG_ERSTELLT.XToBool();
+                        d.BelegNr = s.EBELN;
+                        d.BelegPosition = s.EBELP;
+                        d.FahrgestellNr = s.ZZFAHRG;
+                        d.Gebuehr = s.GEBUEHR.ToString();
+                        d.Gebuehrenrelevant = s.GEB_RELEVANT.XToBool();
+                        d.Halter = s.ZH_NAME1;
+                        d.Herkunft = s.HERK;
+                        d.Kennzeichen = s.ZZKENN;
+                        d.Kunde = s.KUNDE;
+                        d.LieferDatum = s.EINDT.ToString("dd.MM.yyyy");
+                        d.MaterialNr = s.MATNR;
+                        d.MaterialText = s.MAKTX;
+                        d.Preis = s.DL_PREIS.ToString();
+                        d.Status = s.PP_STATUS.NotNullOrEmpty();
                         d.Zb2Nr = s.ZZBRIEF;
                         d.ZulassungsDatum = s.ZZZLDAT.ToString("dd.MM.yyyy");
                         d.ZulassungsKreis = s.KREISKZ;
@@ -67,7 +97,7 @@ namespace CkgDomainLogic.ZldPartner.Models
                         d.KREISKZ = s.ZulassungsKreis;
                         d.MAKTX = s.MaterialText;
                         d.MATNR = s.MaterialNr;
-                        d.PP_STATUS = s.StatusCode;
+                        d.PP_STATUS = s.Status;
                         d.VBELN = s.AuftragsNr;
                         d.VBELP = s.AuftragsPosition;
                         d.ZH_NAME1 = s.Halter;

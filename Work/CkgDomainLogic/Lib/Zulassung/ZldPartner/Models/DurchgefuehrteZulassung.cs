@@ -1,25 +1,29 @@
-﻿using System;
-using GeneralTools.Models;
+﻿using GeneralTools.Models;
 using GeneralTools.Resources;
 
 namespace CkgDomainLogic.ZldPartner.Models
 {
     public class DurchgefuehrteZulassung 
     {
+        [LocalizedDisplay(LocalizeConstants.Customer)]
+        public string Kunde { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.VoucherNo)]
         public string BelegNr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.VoucherPosition)]
         public string BelegPosition { get; set; }
 
+        public string DatensatzId { get { return BelegNr.NotNullOrEmpty().PadLeft(10, '0') + BelegPosition.NotNullOrEmpty().PadLeft(5, '0'); } }
+
         [LocalizedDisplay(LocalizeConstants.MaterialNo)]
         public string MaterialNr { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.MaterialText)]
+        [LocalizedDisplay(LocalizeConstants.Service)]
         public string MaterialText { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.DeliveryDate)]
-        public DateTime? LieferDatum { get; set; }
+        public string LieferDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.CarOwner)]
         public string Halter { get; set; }
@@ -37,24 +41,37 @@ namespace CkgDomainLogic.ZldPartner.Models
         public string Kennzeichen { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.RegistrationDate)]
-        public DateTime? ZulassungsDatum { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.OrderNumber)]
-        public string AuftragsNr { get; set; }
-
-        [LocalizedDisplay(LocalizeConstants.OrderPosition)]
-        public string AuftragsPosition { get; set; }
+        public string ZulassungsDatum { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Fee)]
-        public decimal? Gebuehr { get; set; }
+        public string Gebuehr { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Price)]
-        public decimal? Preis { get; set; }
+        public string Preis { get; set; }
 
         [LocalizedDisplay(LocalizeConstants.Status)]
         public string Status { get; set; }
 
-        public string StatusWerte { get { return ",;IA,in Arbeit;DGF,durchgeführt;STO,storniert;FGS,fehlgeschlagen"; } }
+        [LocalizedDisplay(LocalizeConstants.Status)]
+        public string StatusText
+        {
+            get
+            {
+                switch (Status)
+                {
+                    case "IA":
+                        return "in Arbeit";
+                    case "DGF":
+                        return "durchgeführt";
+                    case "STO":
+                        return "storniert";
+                    case "FGS":
+                        return "fehlgeschlagen";
+                    default:
+                        return Status;
+                }
+            }
+        }
 
         [LocalizedDisplay(LocalizeConstants.FeeRelevant)]
         public bool Gebuehrenrelevant { get; set; }
@@ -62,7 +79,7 @@ namespace CkgDomainLogic.ZldPartner.Models
         [LocalizedDisplay(LocalizeConstants.Origin)]
         public string Herkunft { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.VoucherFeePosition)]
-        public string BelegGebuehrenPosition { get; set; }
+        [LocalizedDisplay(LocalizeConstants.BillingCreated)]
+        public bool AbrechnungErstellt { get; set; }
     }
 }

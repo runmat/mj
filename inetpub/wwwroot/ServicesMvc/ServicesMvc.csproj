@@ -3033,6 +3033,9 @@
     <Content Include="Views\Fahrzeuge\Carporterfassung\GridForConfirmation.cshtml" />
     <Content Include="Views\Archive\PdfAnzeige.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\OffeneZulassungStatus.cshtml" />
+    <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen.cshtml" />
+    <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen\Grid.cshtml" />
+    <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen\Suche.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>
@@ -3092,7 +3095,6 @@
     <Folder Include="assets\plugins\jquery-validation\test\qunit\" />
     <Folder Include="assets\plugins\jquery-validation\test\selects\" />
     <Folder Include="TmpUpload\Images\" />
-    <Folder Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -47,22 +47,17 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
 
         public DurchgefuehrteZulassungenSuchparameter DurchgefuehrteZulassungenSelektor
         {
-            get { return PropertyCacheGet(() => new DurchgefuehrteZulassungenSuchparameter { Auswahl = "A" }); }
+            get { return PropertyCacheGet(() => new DurchgefuehrteZulassungenSuchparameter { Kunde = "", Auswahl = "A" }); }
             set { PropertyCacheSet(value); }
         }
 
         public bool EditMode { get; set; }
 
-        public bool SaveFailed { get; set; }
-
-        public string SaveResultMessage { get; set; }
-
         private const string KennzeichenRegexString = @"^[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\d{1,4}H?$";
 
-        // StatusWerte IA = in Arbeit, DGF = durchgeführt, STO = storniert, FGS = fehlgeschlagen 
-        public string StatusWerte { get { return ";in Arbeit;durchgeführt;storniert;fehlgeschlagen"; } }
+        public string StatusWerte { get { return ",;IA,in Arbeit;DGF,durchgeführt;STO,storniert;FGS,fehlgeschlagen"; } }
 
-        public bool SendingEnabled { get { return (EditMode && OffeneZulassungen.Any(z => z.StatusCode == "DGF" || z.StatusCode == "STO")); } }
+        public bool SendingEnabled { get { return (OffeneZulassungen.Any(z => z.Status == "DGF" || z.Status == "STO")); } }
 
         public void DataInit()
         {
@@ -90,10 +85,10 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
                         item.ValidationErrorList.Add(new ValidationResult(Localize.RegistrationDateInvalid, new[] { "ZulassungsDatum" }));
                 }
 
-                if (item.StatusCode == "DGF" && !nurSpeichern && !Regex.IsMatch(item.Kennzeichen, KennzeichenRegexString))
+                if (item.Status == "DGF" && !nurSpeichern && !Regex.IsMatch(item.Kennzeichen, KennzeichenRegexString))
                     item.ValidationErrorList.Add(new ValidationResult(Localize.LicenseNoInvalid, new[] { "Kennzeichen" }));
 
-                if (item.StatusCode == "DGF" && !nurSpeichern)
+                if (item.Status == "DGF" && !nurSpeichern)
                 {
                     if (item.Gebuehr.ToDouble(0) < 0.02)
                         item.ValidationErrorList.Add(new ValidationResult("Gebühr darf nicht 0,00 EUR oder 0,01 EUR sein", new[] { "Gebuehr" }));
@@ -113,41 +108,43 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
             return OffeneZulassungen.Find(z => z.DatensatzId == id);
         }
 
-        public void ApplyChangedData(IEnumerable<OffeneZulassung> liste)
+        public void ApplyChangedData(string datensatzId, string property, string value)
         {
-            if (liste != null)
+            var zul = OffeneZulassungen.FirstOrDefault(z => z.DatensatzId == datensatzId);
+            if (zul != null)
             {
-                foreach (var item in liste)
+                switch (property)
                 {
-                    var zul = OffeneZulassungen.FirstOrDefault(z => z.DatensatzId == item.DatensatzId);
-                    if (zul != null)
-                    {
-                        if (zul.ZulassungsDatum != item.ZulassungsDatum)
+                    case "ZulassungsDatum":
+                        if (zul.ZulassungsDatum != value)
                         {
-                            zul.ZulassungsDatum = item.ZulassungsDatum;
-                            zul.LieferDatum = item.ZulassungsDatum;
+                            zul.ZulassungsDatum = value;
+                            zul.LieferDatum = value;
                             zul.IsChanged = true;
                         }
-
-                        var kennz = item.Kennzeichen.NotNullOrEmpty().ToUpper();
+                        break;
+                    case "Kennzeichen":
+                        var kennz = value.NotNullOrEmpty().ToUpper();
                         if (zul.Kennzeichen != kennz)
                         {
                             zul.Kennzeichen = kennz;
                             zul.IsChanged = true;
                         }
-
-                        if (zul.Gebuehr != item.Gebuehr)
+                        break;
+                    case "Gebuehr":
+                        if (zul.Gebuehr != value)
                         {
-                            zul.Gebuehr = item.Gebuehr;
+                            zul.Gebuehr = value;
                             zul.IsChanged = true;
                         }
-
-                        if (zul.Status != item.Status)
+                        break;
+                    case "Status":
+                        if (zul.Status != value)
                         {
-                            zul.Status = item.Status;
+                            zul.Status = value;
                             zul.IsChanged = true;
                         }
-                    }
+                        break;
                 }
             }
         }
@@ -166,7 +163,7 @@ namespace CkgDomainLogic.ZldPartner.ViewModels
             if (nurSpeichern)
                 OffeneZulassungenToSave = OffeneZulassungen.Where(z => z.IsChanged).ToList();
             else
-                OffeneZulassungenToSave = OffeneZulassungen.Where(z => z.StatusCode == "DGF" || z.StatusCode == "STO").ToList();
+                OffeneZulassungenToSave = OffeneZulassungen.Where(z => z.Status == "DGF" || z.Status == "STO").ToList();
 
             if (OffeneZulassungenToSave.None())
             {
