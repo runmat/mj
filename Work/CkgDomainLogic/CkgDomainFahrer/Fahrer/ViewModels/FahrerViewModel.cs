@@ -368,7 +368,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         {
             var pdfFileName = ProtokollGetFullPdfFilePath();
             var imageServerFileNames = UploadedImageFiles.Select(serverFileName => Path.Combine(FotoUploadPath, serverFileName));
-            PdfDocumentFactory.CreatePdfFromImages(imageServerFileNames, pdfFileName);
+            PdfDocumentFactory.CreatePdfFromImages(imageServerFileNames, pdfFileName, true, true);
 
             return true;
         }
