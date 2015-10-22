@@ -20,6 +20,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="40" />
                         <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Domain, Konfigurationsablage-Pfad:" />
@@ -29,6 +30,9 @@
 
                     <TextBlock Text="Domain, Name / Bezeichnung:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
                     <TextBox Text="{Binding DomainName, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" Foreground="Blue" FontWeight="Bold" />
+
+                    <TextBlock Text="Übertragungskosten sparen:" Grid.Row="2" Grid.Column="0" HorizontalAlignment="Left" Foreground="DarkRed" Margin="0,0,15,0" />
+                    <CheckBox IsChecked="{Binding OnlineStatusAutoCheckDisabled, UpdateSourceTrigger=PropertyChanged}" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Center" Foreground="DarkRed" FontWeight="Bold">Online Status Check Polling deaktivieren  (sinnvoll bei kostenintensiven Datenleitungen)</CheckBox>
                 </Grid>
             </StackPanel>
         </StackPanel>
@@ -38,7 +42,6 @@
                 <TextBlock Text="{Binding UserHintForArchives}" Foreground="Red" FontWeight="Bold" FontSize="14"  />
             </StackPanel>
             <TextBlock Text="Archiv-Ablage" Style="{StaticResource lbHeaderBig}" />
-            <TextBlock Margin="30,5,0,5" Visibility="{Binding CurrentUserIsMaster, Converter={StaticResource BooleanVisibilityConverter}}" Background="LightYellow" Foreground="Red" FontSize="9pt" Text="Interne Entwickler Info: Bevor hier weitere Domain-Pfade bereitgestellt werden, bitte erst das 'ToDo' aus dem Quellcode 'ScanDocument.cs' fixen!" />
             <StackPanel Margin="30,0,0,0">
                 <ItemsControl ItemsSource="{Binding Archives}">
                     <ItemsControl.ItemTemplate>
@@ -152,13 +155,13 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="0" />
+                            <RowDefinition Height="30" />
                             <RowDefinition Height="0" />
                             <RowDefinition Height="30" />
                         </Grid.RowDefinitions>
 
-                        <TextBlock Visibility="Collapsed" Text="Auflösung (DPI):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
-                        <TextBox Visibility="Collapsed" Text="{Binding DPI, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="35" />
+                        <TextBlock Text="Auflösung (DPI):" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
+                        <TextBox Text="{Binding DPI, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Left" Width="35" />
 
                         <TextBlock Visibility="Collapsed" Text="Farbe / Graustufe:" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" Margin="0,0,15,0" />
                         <CheckBox Visibility="Collapsed" Content="Farbe" Grid.Row="1" Grid.Column="1" IsChecked="{Binding UseColor, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center" />

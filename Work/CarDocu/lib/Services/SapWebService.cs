@@ -1,9 +1,7 @@
 ﻿using System;
-using System.IO;
 using System.Linq;
 using CarDocu.Models;
 using GeneralTools.Models;
-using GeneralTools.Services;
 
 namespace CarDocu.Services
 {
@@ -22,17 +20,17 @@ namespace CarDocu.Services
         {
             bool isOnline;
 
-            var logFileName = Path.Combine(DomainService.Repository.PdfDirectoryName, "CarDocu_WebService_Log.txt");
-
-            try { isOnline = Service.IsOnline(); }
+            try
+            {
+                if (DomainService.Repository.AppSettings.OnlineStatusAutoCheckDisabled)
+                    isOnline = true;
+                else
+                    isOnline = Service.IsOnline();
+            }
             catch(Exception)
             {
                 isOnline = false;
-                //FileService.LogException(e, logFileName);
             }
-
-            if (isOnline)
-                FileService.TryFileDelete(logFileName);
 
             return isOnline;
         }
@@ -45,6 +43,8 @@ namespace CarDocu.Services
             var scanDocument = DomainService.Repository.ScanDocumentRepository.ScanDocuments.FirstOrDefault(sd => sd.DocumentID == logItemID);
             if (scanDocument == null)
                 return false;
+
+            scanDocument.EnsureDocumentType();
             if (scanDocument.ScanImages.Count == 0)
                 scanDocument.XmlLoadScanImages();
 
@@ -56,7 +56,7 @@ namespace CarDocu.Services
                 commaSeparatedReturnCodes = "";
                 commaSeparatedReturnMessages = "";
 
-                var webServiceFuntionID = scanDocument.SelectedDocumentType.WebServiceFunction;
+                var webServiceFuntionID = scanDocument.SelectedDocumentType == null ? "" : scanDocument.SelectedDocumentType.WebServiceFunction;
 
                 if (webServiceFuntionID == "CARDOCU")
                     if (!Service.ProcessArchivMeldung(scanDocument.KundenNr,
@@ -74,8 +74,16 @@ namespace CarDocu.Services
                                                       out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
                         return false;
 
+                if (webServiceFuntionID == "WKDA")
+                    if (!Service.ProcessWkdaWiesbaden(scanDocument.KundenNr,
+                                                      scanDocument.DocumentID, scanDocument.FinNumber,
+                                                      scanDocument.StandortCode,
+                                                      string.Join(",", scanDocument.ScanDocumentTypeCodesSAP),
+                                                      out commaSeparatedReturnCodes, out commaSeparatedReturnMessages))
+                        return false;
+
             }
-            catch { return false; }
+            catch(Exception) { return false; }
 
             //
             // delivery successfull => let's mark all corresponding entries with an apropiate delivery date right here:
