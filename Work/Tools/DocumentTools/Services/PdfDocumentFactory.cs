@@ -31,18 +31,18 @@ namespace DocumentTools.Services
                 if (autoCorrectOrientation)
                 {
                     processedFile = Path.Combine(Path.GetDirectoryName(file) ?? "", Path.GetFileNameWithoutExtension(file) + "-2" + Path.GetExtension(file));
-                    ImagingService.ScaleAndSaveImage(file, processedFile, (int) (img.Size.Width > img.Size.Height ? img.Size.Width : img.Size.Height));
+                    ImagingService.ScaleAndSaveImage(file, processedFile, img.PixelWidth > img.PixelHeight ? img.PixelWidth : img.PixelHeight);
                     processedImage = XImage.FromFile(processedFile);
                 }
 
                 // resizing image if higher/wider then pdfpage.
-                if (cropToImageSize || pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(processedImage.Size.Width))
-                    pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(processedImage.Size.Width);
+                if (cropToImageSize || pdfDoc.Pages[imageCount].Width < XUnit.FromPoint(processedImage.PixelWidth))
+                    pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(processedImage.PixelWidth);
 
-                if (cropToImageSize || pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(processedImage.Size.Height))
-                    pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(processedImage.Size.Height);
+                if (cropToImageSize || pdfDoc.Pages[imageCount].Height < XUnit.FromPoint(processedImage.PixelHeight))
+                    pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(processedImage.PixelHeight);
 
-                xgr.DrawImage(processedImage, 0, 0, processedImage.Size.Width, processedImage.Size.Height);
+                xgr.DrawImage(processedImage, 0, 0, processedImage.PixelWidth, processedImage.PixelHeight);
                 xgr.Dispose();
 
                 if (autoCorrectOrientation)
