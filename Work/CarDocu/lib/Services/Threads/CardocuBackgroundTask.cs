@@ -175,7 +175,7 @@ namespace CarDocu.Services
             TaskService.StartUiTask(() => QueueItemCount = count);
         }
 
-        public override CardocuQueueEntity Dequeue(int sleepMilliseconds = 3000)
+        public override CardocuQueueEntity Dequeue(int sleepMilliseconds = 1000)
         {
             var returnItem = base.Dequeue(sleepMilliseconds);
             if (returnItem != null)
@@ -209,9 +209,21 @@ namespace CarDocu.Services
             if (!Tools.Confirm("Wollen Sie wirklich alle(!) offenen Jobs löschen?\r\n\r\n(Hinweis: Sie können einzelne Jobs löschen indem Sie auf das rote Kreuz rechts neben dem aktiven Job klicken)"))
                 return;
 
+            AllJobsKillAndRemoveCore();
+        }
+
+        void AllJobsKillAndRemoveCore()
+        {
+            if (!IsBusy)
+            {
+                TaskService.StartDelayedUiTask(200, AllJobsKillAndRemoveCore);
+                return;
+            }
+
             Mouse.OverrideCursor = Cursors.Wait;
 
-            ActiveJobKillAndRemove();
+            ActiveJobKillAndRemove(true);
+            LogItemsOuterRemoveCurrentQueuedItem();
 
             while (QueueCount > 0)
             {
@@ -228,9 +240,9 @@ namespace CarDocu.Services
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 
-        public void ActiveJobKillAndRemove()
+        public void ActiveJobKillAndRemove(bool forceRemove = false)
         {
-            if (IsBusy)
+            if (IsBusy || forceRemove)
                 RemoveQueuedItem(GetCurrentQueuedItem());
         }
 
@@ -290,6 +302,18 @@ namespace CarDocu.Services
         public abstract void LogItemsRemoveCurrentQueuedItem();
 
         protected abstract void SetDeliveryDate(ScanDocument scanDocument, DateTime deliveryDate);
+
+        protected void DelayAsShortAsPossibleButLongerIfAdminKeyPressed()
+        {
+            var delay = 200;
+            TaskService.StartUiTask(() => delay = Keyboard.IsKeyDown(Key.F8) ? 2000 : 200);
+
+            Thread.Sleep(200);
+            Thread.Sleep(delay);
+
+            while (ActiveJobFreeze) 
+                Thread.Sleep(500);
+        }
 
 
         #region INotifyPropertyChanged
