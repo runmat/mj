@@ -3036,6 +3036,7 @@
     <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen.cshtml" />
     <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen\Grid.cshtml" />
     <Content Include="Views\ZldPartner\ReportDurchgefuehrteZulassungen\Suche.cshtml" />
+    <Content Include="Views\Shared\Partial\LayoutPage\StylesDeviationPortalDependent.cshtml" />
     <None Include="Web.config">
       <SubType>Designer</SubType>
     </None>

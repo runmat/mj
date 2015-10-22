@@ -1,0 +1,8 @@
+@using System.Configuration
+
+<!-- Durch Angabe einer separaten css-Datei kann der Style Portal-abhängig übersteuert werden -->
+<!-- Diese Datei muss direkt im wwwroot-, also außerhalb des ServicesMvc-Anwendungsverzeichnisses liegen, damit sie Deployment-unabhängig ist -->
+@if (!String.IsNullOrEmpty(ConfigurationManager.AppSettings["CustomCssFile"]))
+{
+    <link href="/@ConfigurationManager.AppSettings["CustomCssFile"]" rel="stylesheet" type="text/css" />
+}
