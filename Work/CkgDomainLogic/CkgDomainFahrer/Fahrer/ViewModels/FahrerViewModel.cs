@@ -145,7 +145,7 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         [LocalizedDisplay(LocalizeConstants.ProtocolHasMultiplePages)]
         public bool ProtokollHasMultipleImages { get; set; }
 
-        [LocalizedDisplay(LocalizeConstants.MiscellaneousOrderNo)]
+        [LocalizedDisplay(LocalizeConstants.OrderID)]
         [Required]
         public string SonstigeAuftragsNummer
         {
