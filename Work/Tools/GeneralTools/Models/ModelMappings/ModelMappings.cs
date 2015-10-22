@@ -17,6 +17,7 @@ namespace GeneralTools.Models
         {
             if (mappingCreateFunction.Method.ReturnParameter == null) return null;
             var member = mappingCreateFunction.Method.ReturnParameter.Member;
+            // ReSharper disable once PossibleNullReferenceException
             var dictKey = member.ReflectedType.FullName + "_" + member.Name;
             if (ModelMappingSingletons.ContainsKey(dictKey))
             {
@@ -43,14 +44,14 @@ namespace GeneralTools.Models
 
         public void ValidateAndRaiseError()
         {
-            ValidateAndRaiseError(this.GetType());
+            ValidateAndRaiseError(GetType());
         }
 
         public string GetMappingErrors()
         {
             try
             {
-                ValidateAndRaiseError(this.GetType());
+                ValidateAndRaiseError(GetType());
             }
             catch (Exception e)
             {
@@ -71,7 +72,7 @@ namespace GeneralTools.Models
                 {
                     var isValid = (bool)validationFunc.Invoke(mapping.GetValue(null, new object[0]), new object[0]);
                     if (!isValid)
-                        throw new Exception(String.Format("Error {0}.{1}: {2}", this.GetType().Name, mapping.Name, LastFailedPropertyMapping));
+                        throw new Exception(String.Format("Error {0}.{1}: {2}", GetType().Name, mapping.Name, LastFailedPropertyMapping));
                 }
             });
         }

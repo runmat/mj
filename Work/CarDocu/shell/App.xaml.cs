@@ -23,7 +23,7 @@ namespace CarDocu
 
         private void ApplicationStart(object sender, StartupEventArgs e)
         {
-            if (AssemblyService.ApplicationCloneOfMeIsAlreadyRunning(Tools.Alert))
+            if (AssemblyService.ApplicationCloneOfMeIsAlreadyRunning(Tools.Alert, DomainService.AppName))
             {
                 Current.Shutdown();
                 return;
@@ -57,6 +57,13 @@ namespace CarDocu
             }
 
             ClearTempFolders();
+        }
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            var splashScreen = new SplashScreen("logo_cardocu-border.jpg");
+            splashScreen.Show(true, true);
+
+            base.OnStartup(e);
         }
 
         public static void ClearTempFolders()

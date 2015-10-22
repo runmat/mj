@@ -1,6 +1,8 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CarDocuWebService", "CarDocuWebService.csproj", "{8853FE19-F1A7-43C2-A574-F72A5AA75C5E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SapORM.Models", "..\..\SapORM\models\SapORM.Models.csproj", "{A69CE30D-D988-4DEF-99D0-A0B0F18FC99C}"
