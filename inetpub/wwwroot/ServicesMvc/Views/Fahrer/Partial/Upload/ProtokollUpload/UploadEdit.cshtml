@@ -5,6 +5,7 @@
     <form action="#" class="form-horizontal">
         @if (Model.SelectedFahrerAuftrag != null && Model.SelectedFahrerAuftrag.IstSonstigerAuftrag)
         {
+            @Html.FormRadioButtonListFor(m => m.SonstigerAuftragsFahrtTyp, Model.AuftragsFahrtTypen.ToSelectList())
             @Html.FormTextBoxFor(m => m.SonstigeAuftragsNummer, new {@class = "m-wrap small"}, postControlHtml:
                 @<text>
                     <button class="btn blue" type="submit" onclick="return ProtokollTryLoadSonstigenAuftrag();">@Localize.OK</button>

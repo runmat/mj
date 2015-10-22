@@ -19,6 +19,7 @@ namespace CkgDomainLogic.Fahrer.Contracts
 
         IEnumerable<IFahrerAuftragsFahrt> LoadFahrerAuftragsFahrten();
         IEnumerable<IFahrerAuftragsFahrt> LoadFahrerAuftragsProtokolle();
+        IFahrerAuftragsFahrt LoadFahrerAuftragsEinzelProtokoll(string auftragsnr, string fahrtTyp);
         
         string SetFahrerAuftragsStatus(string auftragsNr, string status);
 

@@ -158,6 +158,11 @@
                 }
             });
         });
+
+        $(":radio").on("click", function () {
+            //alert($(this).val());
+            ProtokollTryLoadSonstigenAuftrag();
+        });
     }
 
     function InitFileUploadDueToCheckbox() {
@@ -242,7 +247,7 @@
             type: "POST",
             dataType: 'json',
             url: "ProtokollTryLoadSonstigenAuftrag",
-            data: { auftragsnr: $("#SonstigeAuftragsNummer").val() },
+            data: { auftragsnr: $("#SonstigeAuftragsNummer").val(), fahrtTyp: $(":radio[value=H]").is(":checked") ? "H" : "R" },
             loadingShow: false,
             success: function (result) {
                 if (result.success)

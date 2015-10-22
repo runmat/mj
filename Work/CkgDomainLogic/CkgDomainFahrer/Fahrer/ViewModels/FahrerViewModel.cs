@@ -101,6 +101,9 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         [LocalizedDisplay(LocalizeConstants.Order)]
         public string SelectedFahrerAuftragsKey { get; set; }
 
+
+        public string AuftragsFahrtTypen { get { return string.Format("H,{0};R,{1}", Localize._FahrtHin, Localize._FahrtRueck); } }
+
         public IFahrerAuftragsFahrt SelectedFahrerAuftrag { get { return FahrerAuftragsFahrten.FirstOrDefault(a => a.UniqueKey == SelectedFahrerAuftragsKey); } }
 
 
@@ -158,6 +161,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
                 SelectedFahrerAuftrag.AuftragsNr = value;
             }
         }
+
+        [LocalizedDisplay(LocalizeConstants._Fahrt)]
+        public string SonstigerAuftragsFahrtTyp  { get { return PropertyCacheGet(() => "H"); } set { PropertyCacheSet(value); } }
+
+        public IFahrerAuftragsFahrt SonstigerAuftrag { get; set; }
 
         public bool IstSonstigerAuftrag { get { return SelectedFahrerAuftrag != null && SelectedFahrerAuftrag.IstSonstigerAuftrag; } }
 
@@ -256,7 +264,11 @@ namespace CkgDomainLogic.Fahrer.ViewModels
         public string GetUploadedPdfFileName(FahrerAuftragsProtokoll auftrag = null)
         {
             if (auftrag == null)
-                auftrag = SelectedFahrerAuftrag as FahrerAuftragsProtokoll;
+                if (!IstSonstigerAuftrag)
+                    auftrag = SelectedFahrerAuftrag as FahrerAuftragsProtokoll;
+                else
+                    auftrag = SonstigerAuftrag as FahrerAuftragsProtokoll;
+
             if (auftrag == null)
                 return "";
 
@@ -376,12 +388,27 @@ namespace CkgDomainLogic.Fahrer.ViewModels
             ModeProtokoll = modeProtokoll.IsNotNullOrEmpty();
         }
 
-        public bool ProtokollTryLoadSonstigenAuftrag(string auftragsnr)
+        public bool ProtokollTryLoadSonstigenAuftrag(string auftragsnr, string fahrtTyp)
         {
             if (auftragsnr.ToInt() <= 0)
                 return false;
 
-            SonstigeAuftragsNummer = auftragsnr.ToSapKunnr();
+            auftragsnr = auftragsnr.ToSapKunnr();
+            var storedAuftrag = DataService.LoadFahrerAuftragsEinzelProtokoll(auftragsnr, fahrtTyp);
+            if (storedAuftrag == null)
+                return false;
+
+            SonstigerAuftrag = storedAuftrag;
+            SonstigeAuftragsNummer = auftragsnr;
+            SonstigerAuftragsFahrtTyp = fahrtTyp;
+
+            if (SelectedFahrerAuftrag != null)
+            {
+                SelectedFahrerAuftrag.AuftragsNr = auftragsnr;
+                SelectedFahrerAuftrag.Fahrt = fahrtTyp;
+                SelectedFahrerAuftrag.ProtokollName = storedAuftrag.ProtokollName;
+            }
+
             DataMarkForRefreshUploadedImageFiles();
 
             return true;
