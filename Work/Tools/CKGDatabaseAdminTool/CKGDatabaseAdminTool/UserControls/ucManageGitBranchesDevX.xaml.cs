@@ -15,6 +15,8 @@ using CKGDatabaseAdminLib.ViewModels;
 using DevExpress.Xpf.Grid;
 using Microsoft.Win32;
 using Xceed.Wpf.Toolkit.PropertyGrid.Editors;
+using CKGDatabaseAdminLib.Models;
+using GeneralTools.Models;
 
 namespace CKGDatabaseAdminTool.UserControls
 {
@@ -58,8 +60,27 @@ namespace CKGDatabaseAdminTool.UserControls
 
             ((TableView) Control.View).ShowGroupedColumns = true;
 
+            TryExpandGroupRowFoarActiveDeveloper();
+        }
 
+        void TryExpandGroupRowFoarActiveDeveloper() 
+        {
+            if (MainViewModel.Instance.Developer.IsNullOrEmpty())
+                return;
 
+            for (int i = 0; i < Control.VisibleRowCount; i++)
+            {
+                int rowHandle = Control.GetRowHandleByVisibleIndex(i);
+                if (!Control.IsGroupRowHandle(rowHandle))
+                    continue;
+
+                var gitBranch = Control.GetRow(rowHandle) as GitBranchInfo;
+                if (gitBranch == null)
+                    continue;
+
+                if (gitBranch.Entwickler.ToLower() == MainViewModel.Instance.Developer.ToLower())
+                    Control.ExpandGroupRow(rowHandle);
+            }
         }
     }
 }

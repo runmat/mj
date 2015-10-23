@@ -15,6 +15,8 @@ namespace CKGDatabaseAdminLib.ViewModels
 
     public class MainViewModel : ViewModelBase
     {
+        public static MainViewModel Instance { get; set; } 
+
         public bool UseDefaultDbServer { get; set; }
         public string Developer { get; set; }
         public bool UseDefaultStartupView { get; set; }
@@ -113,6 +115,8 @@ namespace CKGDatabaseAdminLib.ViewModels
 
         public MainViewModel(bool useDefaultDbServer, string developer, bool useDefaultStartupView)
         {
+            Instance = this;
+
             UseDefaultDbServer = useDefaultDbServer;
             Developer = developer;
             UseDefaultStartupView = useDefaultStartupView;
