@@ -58,6 +58,31 @@ namespace DocumentTools.Services
             pdfDoc.Close();
         }
 
+        public static void ScanClientCreatePdfFromImages(IEnumerable<string> imageFileNames, string pdfFileName)
+        {
+            var pdfDoc = new ITextSharpPdfDocument();
+            var imageCount = 0;
+            foreach (var file in imageFileNames)
+            {
+                var pdfPage = new ITextSharpPdfPage();
+                pdfDoc.Pages.Add(pdfPage);
+                var xgr = XGraphics.FromPdfPage(pdfPage);
+                var img = XImage.FromFile(file);
+
+                // resizing image if higher/wider then pdfpage.
+                pdfDoc.Pages[imageCount].Width = XUnit.FromPoint(img.Size.Width);
+                pdfDoc.Pages[imageCount].Height = XUnit.FromPoint(img.Size.Height);
+
+                xgr.DrawImage(img, 0, 0, img.Size.Width, img.Size.Height);
+                xgr.Dispose();
+
+                imageCount++;
+            }
+
+            pdfDoc.Save(pdfFileName);
+            pdfDoc.Close();
+        }
+
         public static byte[] HtmlToPdf(string html, string logoFileName = null, int logoX = 395, int logoY = 745)
         {
             html = html.Replace("\r\n", "");

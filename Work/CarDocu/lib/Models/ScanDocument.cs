@@ -384,7 +384,7 @@ namespace CarDocu.Models
                     var scanImagesOfThisCode = ScanImages.Where(image => image.ImageDocumentTypeCode == docTypeCode).OrderBy(i => i.Sort).Select(image => image.GetCachedImageFileName(false));
 
                     var errorMessage = "";
-                    try { PdfDocumentFactory.CreatePdfFromImages(scanImagesOfThisCode, pdfFileName, false, true); }
+                    try { PdfDocumentFactory.ScanClientCreatePdfFromImages(scanImagesOfThisCode, pdfFileName); }
                     catch(Exception e) { errorMessage = e.Message; }
 
                     if (!File.Exists(pdfFileName) || !string.IsNullOrEmpty(errorMessage))
