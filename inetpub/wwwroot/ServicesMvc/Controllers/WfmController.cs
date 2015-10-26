@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CkgDomainLogic.DomainCommon.Contracts;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Controllers;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Models;
@@ -23,10 +25,10 @@ namespace ServicesMvc.Controllers
 
         public WfmViewModel ViewModel { get { return GetViewModel<WfmViewModel>(); } }
 
-        public WfmController(IAppSettings appSettings, ILogonContextDataService logonContext, IWfmDataService wflDataService)
+        public WfmController(IAppSettings appSettings, ILogonContextDataService logonContext, IAdressenDataService adressenDataService, IWfmDataService wflDataService)
             : base(appSettings, logonContext)
         {
-            InitViewModel(ViewModel, appSettings, logonContext, wflDataService);
+            InitViewModel(ViewModel, appSettings, logonContext, wflDataService, adressenDataService);
             InitModelStatics();
         }
 
@@ -127,8 +129,109 @@ namespace ServicesMvc.Controllers
             return Json(new
             {
                 success = message.IsNullOrEmpty(),
-                message = (message.IsNotNullOrEmpty() ? message : (Localize.CancelOrder + " " + Localize.Successful.ToLower()))
+                message = FormatCancelOrderMessage(message)
             });
+        }
+
+        [HttpPost]
+        public ActionResult CancelOrderWithAddress()
+        {
+            var message = ViewModel.StornoAuftrag(null, true);
+
+            return Json(new
+            {
+                success = message.IsNullOrEmpty(),
+                message = FormatCancelOrderMessage(message)
+            });
+        }
+
+        private static string FormatCancelOrderMessage(string message)
+        {
+            return (message.IsNotNullOrEmpty() ? message : (Localize.CancelOrder + " " + Localize.Successful.ToLower()));
+        }
+
+        #endregion
+
+
+        #region VersandAdresse
+
+        [HttpPost]
+        public ActionResult VersandAdresse()
+        {
+            ViewModel.PrepareVersandAdresse();
+            return PartialView("Abmeldevorgaenge/Partial/VersandAdresse", ViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult VersandAdresseForm(Adresse model)
+        {
+            if (model.TmpSelectionKey.IsNotNullOrEmpty())
+            {
+                model = ViewModel.GetVersandAdresseFromKey(model.TmpSelectionKey);
+                if (model == null)
+                    return new EmptyResult();
+
+                ModelState.Clear();
+                model.IsValid = false;
+                return PartialView("Abmeldevorgaenge/Partial/VersandAdresseForm", model);
+            }
+
+            if (ModelState.IsValid)
+            {
+                ViewModel.VersandAdresse = model;
+
+                LogonContext.DataContextPersist(ViewModel);
+            }
+
+            model.IsValid = ModelState.IsValid;
+
+            return PartialView("Abmeldevorgaenge/Partial/VersandAdresseForm", model);
+        }
+
+        [GridAction]
+        public ActionResult VersandAdressenAjaxBinding()
+        {
+            var items = ViewModel.VersandAdressenFiltered;
+
+            return View(new GridModel(items));
+        }
+
+        [HttpPost]
+        public ActionResult FilterVersandAdressenAuswahlGrid(string filterValue, string filterColumns)
+        {
+            ViewModel.FilterVersandAdressen(filterValue, filterColumns);
+
+            return new EmptyResult();
+        }
+
+        [HttpPost]
+        public JsonResult VersandAdresseGetAutoCompleteItems()
+        {
+            return Json(new { items = ViewModel.VersandAdressenAsAutoCompleteItems });
+        }
+
+        [HttpPost]
+        public ActionResult VersandAdressenShowGrid()
+        {
+            ViewModel.DataMarkForRefreshVersandAdressenFiltered();
+
+            return PartialView("Abmeldevorgaenge/Partial/VersandAdressenAuswahlGrid");
+        }
+
+        public ActionResult VersandadressenAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAndSendAsResponse("VersandAdressen", dt);
+
+            return new EmptyResult();
+        }
+
+        public ActionResult VersandadressenAuswahlExportFilteredPDF(int page, string orderBy, string filterBy)
+        {
+            var dt = ViewModel.VersandAdressenFiltered.GetGridFilteredDataTable(orderBy, filterBy, GridCurrentColumns);
+            new ExcelDocumentFactory().CreateExcelDocumentAsPDFAndSendAsResponse("VersandAdressen", dt, landscapeOrientation: true);
+
+            return new EmptyResult();
         }
 
         #endregion

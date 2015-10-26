@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using CkgDomainLogic.DomainCommon.Models;
 using CkgDomainLogic.General.Services;
 using CkgDomainLogic.WFM.Contracts;
 using CkgDomainLogic.WFM.Models;
@@ -102,14 +103,40 @@ namespace CkgDomainLogic.WFM.Services
 
         #region Übersicht/Storno
 
-        public string StornoAuftrag(int vorgangNr)
+        public string StornoAuftrag(int vorgangNr, WfmAuftrag auftrag, Adresse versandAdresse, string versandOption)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
                 // exception safe SAP action:
                 () =>
                 {
+                    if (versandAdresse.Name1.IsNotNullOrEmpty())
+                    {
+                        SAP.Init("Z_DPM_INS_VERSDAT_ZCARPP_01");
+
+                        SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
+                        SAP.SetImportParameter("I_ANF_DAT", DateTime.Today);
+                        SAP.SetImportParameter("I_WEB_USER", LogonContext.UserName);
+
+                        SAP.SetImportParameter("I_FAHRG", auftrag.FahrgestellNr);
+                        SAP.SetImportParameter("I_VERS_OPT", versandOption);
+
+                        SAP.SetImportParameter("I_NAME1_ZS", versandAdresse.Name1);
+                        SAP.SetImportParameter("I_NAME2_ZS", versandAdresse.Name2);
+                        SAP.SetImportParameter("I_STREET_ZS", versandAdresse.Strasse);
+                        SAP.SetImportParameter("I_HOUSE_NUM1_ZS", versandAdresse.HausNr);
+                        SAP.SetImportParameter("I_POST_CODE1_ZS", versandAdresse.PLZ);
+                        SAP.SetImportParameter("I_CITY1_ZS", versandAdresse.Ort);
+                        SAP.SetImportParameter("I_COUNTRY_ZS", versandAdresse.Land);
+
+                        SAP.Execute();
+
+                        if (SAP.ResultCode != 0)
+                            return;
+                    }
+
                     Z_WFM_STORNO_AUFTRAG_01.Init(SAP);
+
                     SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
                     SAP.SetImportParameter("I_VORG_NR_ABM_AUF", vorgangNr.ToString());
                     SAP.SetImportParameter("I_STORNODATUM", DateTime.Today);

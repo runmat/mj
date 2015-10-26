@@ -1,5 +1,4 @@
-﻿@using CkgDomainLogic.WFM.ViewModels
-@model WfmViewModel
+﻿@model CkgDomainLogic.WFM.ViewModels.WfmViewModel
 
 <h3 class="page-title" id="headerTitle">@Model.Title <small></small></h3>
 
@@ -14,6 +13,9 @@
 {
     <div id="divAuftraegeGrid"></div>
     <div id="divAuftragDetail"></div>
+
+    <div id="divAuftragVersandadresse"></div>
+    <div id="InnerAdressen" class="white-popup mfp-hide"></div>
 }
 
 <style type="text/css">
@@ -62,8 +64,10 @@
 
     function TryAuftraegeGridRefresh() {
         // Refresh grid only
-        try { FilterGridPreservePage("GridAuftraege"); }
-        catch(e){}
+        try {
+            FilterGridPreservePage("GridAuftraege");
+        } catch (e) {
+        }
     }
 
     function OnDataBound_GridAuftraege() {
@@ -101,7 +105,7 @@
             url: "GetAuftragsDetailPartial",
             loadingShow: true,
             data: { vorgangsnr: id },
-            success: function (result) {
+            success: function(result) {
                 ShowAuftragsDetail(result);
             }
         });
@@ -122,7 +126,7 @@
 
     function CloseAuftragsDetail() {
         $("#btnBackToResult").hide();
-        $("#divAuftragDetail").slideUp(function () {
+        $("#divAuftragDetail").slideUp(function() {
             $("#divAuftraegeGrid").delay(200).slideDown();
             TryAuftraegeGridRefresh();
             window.scrollTo(0, 0);
@@ -232,12 +236,56 @@
                     $(".wmf-uebersicht-section-nicht-storniert").hide();
                     $(".wmf-uebersicht-section-storniert").show();
                 } else {
-                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                    if (result.message !== "ENFORCE_DELIVERY_ADDRESS")
+                        SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                    else {
+                        
+                        $.ajax(
+                        {
+                            type: "POST",
+                            url: "VersandAdresse",
+                            loadingShow: true,
+                            success: function (result) {
+                                $("#divAuftragVersandadresse").html(result);
+                                $("#divAuftragDetail").slideUp();
+                                $("#divAuftragVersandadresse").slideDown();
+                                $("#btnBackToResult").show();
+                                FormPreparePrivateAjax();
+                                setTimeout('LoadingHide()', 1000);
+                                $("#btnBackToDetails").show();
+                            }
+                        });
+
+                    }
                 }
             }
         });
 
         return false;
+    }
+
+    function CancelOrderWithAddress() {
+        $.ajax(
+        {
+            type: "POST",
+            url: "CancelOrderWithAddress",
+            loadingShow: true,
+            data: {  },
+            success: function (result) {
+                if (result.success) {
+                    SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
+                    $(".wmf-uebersicht-section-nicht-storniert").hide();
+                    $(".wmf-uebersicht-section-storniert").show();
+                } else {
+                        SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                }
+            }
+        });
+    }
+
+    function CloseAuftragsVersandadresse() {
+        $("#divAuftragVersandadresse").slideUp();
+        $("#divAuftragDetail").slideDown();
     }
 
     function SetOrderToKlaerfall(a, vorgangsNr) {
@@ -296,5 +344,168 @@
         
         return false;
     }
+
+
+
+    //    
+    // <Versandadresse>
+    //
+
+    function AjaxFormAdressePrepareAutoCompleteReset(formID) {
+        var form = $("#" + formID);
+        form.find("input:text").each(function () {
+            if ($(this).attr('id') != 'Name1')
+                $(this).bind('keyup', function () { $("#Name1").autocomplete("disable"); });
+        });
+    }
+
+    function AjaxFormAdressePrepareAutoComplete(tb, url) {
+
+        var form = tb.closest("form");
+        var textboxValues = '';
+        form.find("input:text").each(function () {
+            if ($(this).attr('id') != 'Name1')
+                textboxValues = $(this).val();
+        });
+        if (textboxValues != '')
+            return;
+
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {},
+            loadingShow: false,
+            success: function (result) {
+                AjaxFormAdresseInitAutoComplete(tb, result.items);
+            }
+        });
+    }
+
+    function AjaxFormAdresseInitAutoComplete(tb, items) {
+        tb.autocomplete({
+            minLength: 0,
+            source: items,
+            select: function (event, ui) {
+                $("#TmpSelectionKey").val(ui.item.value);
+                var form = tb.closest("form");
+                form.submit();
+            }
+        });
+        tb.autocomplete("enable");
+    }
+
+    function AjaxFormAdresseEmpty(formID, url) {
+        var form = $("#" + formID);
+        form.find(":input").each(function () {
+            switch (this.type) {
+                case 'password':
+                case 'select-multiple':
+                case 'text':
+                case 'textarea':
+                    $(this).val('');
+                    break;
+                case 'select-one':
+                    $(this).val('DE');
+                    break;
+                case 'checkbox':
+                case 'radio':
+                    this.checked = false;
+            }
+        });
+
+        AjaxFormAdressePrepareAutoComplete($("#Name1"), url);
+        return false;
+    }
+
+    function AjaxFormAdressenShowGrid(addressType) {
+
+        $.ajax(
+            {
+                type: "POST",
+                url: addressType + "AdressenShowGrid",
+                data: {},
+                loadingShow: true,
+                success: function (result) {
+
+                    $("#InnerAdressen").html(result);
+                    GridAllColumnFilterApplyToGrid(addressType + "AdressenAuswahlGrid");
+
+                    $.magnificPopup.open({
+                        items: { src: $("#InnerAdressen") },
+                        type: 'inline',
+                        alignTop: true,
+                        removalDelay: 300,
+                        mainClass: 'my-mfp-zoom-in'
+                    });
+                }
+            });
+
+        return false;
+    }
+
+    function AjaxFormAdresseClose() {
+        $(".mfp-close").trigger("click");
+    }
+
+    function GridAdresseOnSelect(id, formID) {
+        var form = $("#" + formID);
+
+        if (typeof (form.attr('id')) != 'undefined') {
+            $("#TmpSelectionKey").val(id);
+            form.submit();
+            AjaxFormAdresseClose();
+        }
+    }
+
+    function VersandAdresseAjaxFormComplete() {
+        FormPrepareAjax();
+
+        if (!_modelStateValid) {
+            return;
+        }
+
+        CloseAuftragsVersandadresse();
+
+        CancelOrderWithAddress();
+    }
+
+    function OnDataBound_VersandAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_VersandAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_VersandAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnDataBound_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnDataBound($(this));
+        $('.tooltips').tooltip();
+    }
+
+    function OnColumnShowHide_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnShowHide($(this));
+    }
+
+    function OnColumnReorder_ZulassungAdressenAuswahlGrid() {
+        FilteredData_Grid_OnColumnReorder($(this));
+    }
+
+    function OnComplete_AdressenAuswahlGrid() {
+        var grid = $(this);
+        setTimeout(function () {
+            var gridHeight = parseInt(grid.css('height').replace(/px/, ""));
+            var newHeight = (gridHeight + 80) + 'px';
+            grid.closest('.t-window-content').animate({ height: newHeight }, 200); 
+        }, 300);
+    }
+
+    //    
+    // </Versandadresse>
+    //
 
 </script>
