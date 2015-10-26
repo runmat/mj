@@ -20,10 +20,6 @@ namespace CkgDomainLogic.Autohaus.Services
 
         public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
 
-        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => !m.IstAbmeldung).ToList()); } }
-
-        public List<Material> Abmeldearten { get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => m.IstAbmeldung).ToList()); } }
-
         public List<Zusatzdienstleistung> Zusatzdienstleistungen { get { return PropertyCacheGet(() => LoadZusatzdienstleistungenFromSap().ToList()); } }
 
         public List<Kennzeichengroesse> Kennzeichengroessen { get { return PropertyCacheGet(() => LoadKennzeichengroessenFromSql().ToList()); } }
@@ -48,8 +44,6 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             PropertyCacheClear(this, m => m.Kunden);
             PropertyCacheClear(this, m => m.Fahrzeugarten);
-            PropertyCacheClear(this, m => m.Zulassungsarten);
-            PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
             PropertyCacheClear(this, m => m.Kennzeichengroessen);
             PropertyCacheClear(this, m => m.Zulassungskreise);
@@ -105,13 +99,18 @@ namespace CkgDomainLogic.Autohaus.Services
             return DomainCommon.Models.AppModelMappings.Z_DPM_DOMAENENFESTWERTE_GT_WEB_To_Domaenenfestwert.Copy(sapList).ToList();
         }
 
-        private IEnumerable<Material> LoadZulassungsAbmeldeArtenFromSap()
+        public List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung)
         {
-            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR", LogonContext.Organization.OrganizationReference2);
+            Z_ZLD_AH_MATERIAL.Init(SAP, "I_VKBUR, I_KREISKZ", LogonContext.Organization.OrganizationReference2, kreis);
+
+            if (zulassungsartenAutomatischErmitteln)
+                SAP.SetImportParameter("I_MODUS", "A");
+            else if (sonderzulassung)
+                SAP.SetImportParameter("I_MODUS", "S");
 
             var sapList = Z_ZLD_AH_MATERIAL.GT_MAT.GetExportListWithExecute(SAP);
 
-            return AppModelMappings.Z_ZLD_AH_MATERIAL_GT_MAT_To_Material.Copy(sapList);
+            return AppModelMappings.Z_ZLD_AH_MATERIAL_GT_MAT_To_Material.Copy(sapList).ToList();
         }
 
         static string GetKreis(Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST sapItem)
@@ -639,7 +638,7 @@ namespace CkgDomainLogic.Autohaus.Services
                                     auslieferAdrsVg.ZugeordneteMaterialien.Add("Sonstiges");
                                     auslieferAdrsVg.Adressdaten.Bemerkung =
                                         matText.Replace(Localize.DeliveryAdr_Sonstiges, "")
-                                               .TrimStart(new char[] {' ', ':'});
+                                               .TrimStart(' ', ':');
                                 }
                                 else if (matItem != null)
                                 {

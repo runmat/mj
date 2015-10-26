@@ -63,6 +63,9 @@
             if (prevStepName == "BankAdressdaten" && _skipBankAddressData) {
                 FormWizard.ButtonPrevInvoke();
             }
+            else if (prevStepName == "Zulassungsdaten") {
+                InitZulassungsdatenControls();
+            }
 
             window.scrollTo(0, 0);
             return true;
@@ -426,10 +429,70 @@
                     // MMA ITA8083
                     $('#WunschkennzeichenReservierenUrl').val(result.zulassungsstelleUrl);
                     ShowHideWunschkennzeichenUrl();
+
+                    if (typeof (result.Versandzulassung) !== "undefined") {
+                        $("#Versandzulassung").val(result.Versandzulassung);
+                        $("#ExpressversandMoeglich").val(result.ExpressversandMoeglich);
+
+                        if (result.Versandzulassung == true) {
+                            $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
+                        } else {
+                            $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
+                        }
+
+                        if (result.ExpressversandMoeglich == true) {
+                            $("#Expressversand").closest(".control-group").show();
+                        } else {
+                            $("#Expressversand").prop("checked", false);
+                            $("#Expressversand").closest(".control-group").hide();
+                        }
+                        $.uniform.update($("#Expressversand"));
+
+                        $("#ZulassungsartMatNr").val(result.ZulassungsartMatNr);
+                        $("#ZulassungsartText").text(result.ZulassungsartText);
+                    }
                 }
             });
 
         return false;
+    }
+
+    function UpdateZulassungsart() {
+        $.ajax(
+            {
+                type: "POST",
+                url: "UpdateZulassungsart",
+                data: { haltereintragVorhanden: $("input[name=HaltereintragVorhanden]:checked").val(), expressversand: $("#Expressversand").is(":checked") },
+                loadingShow: false,
+                success: function (result) {
+                    $("#ZulassungsartMatNr").val(result.ZulassungsartMatNr);
+                    $("#ZulassungsartText").text(result.ZulassungsartText);
+                }
+            });
+
+        return false;
+    }
+
+    function InitZulassungsdatenControls() {
+        if ($("#Versandzulassung").length) {
+            if ($("#Versandzulassung").val().toString().toLowerCase() == 'true') {
+                $(":radio[name=HaltereintragVorhanden]").uniformRadioDisable();
+            } else {
+                $(":radio[name=HaltereintragVorhanden]").uniformRadioEnable();
+            }
+
+            if ($("#ExpressversandMoeglich").val().toString().toLowerCase() == 'true') {
+                $("#Expressversand").closest(".control-group").show();
+            }
+            else {
+                $("#Expressversand").closest(".control-group").hide();
+            }
+            $.uniform.update($("#Expressversand"));
+
+            $("input[name=HaltereintragVorhanden]").change(function () {
+                UpdateZulassungsart();
+            });
+        }
     }
 
     // MMA ITA8083

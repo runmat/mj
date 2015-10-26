@@ -61,6 +61,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public bool ModusVersandzulassung { get; set; }
 
+        public bool ModusSonderzulassung { get; set; }
+
         [XmlIgnore]
         public string ApplicationTitle
         {
@@ -74,6 +76,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
                 if (ModusVersandzulassung)
                     return Localize.MailOrderRegistration;
+
+                if (ModusSonderzulassung)
+                    return Localize.SpecialRegistration;
 
                 if (Zulassung.Zulassungsdaten.IsMassenzulassung)
                     return Localize.MassRegistration;
@@ -134,10 +139,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         public FahrzeugAkteBestand ParamFahrzeugAkte { get; set; }
 
-        public bool FahrzeugdatenKostenstelleIsVisible
-        {
-            get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
-        }
+        //public bool FahrzeugdatenKostenstelleIsVisible
+        //{
+        //    get { return GetApplicationConfigValueForCustomer("AhZulassungKostenstelleAnzeigen").ToBool(); }
+        //}
 
         public void SetParamFahrzeugAkte(string fin)
         {
@@ -171,6 +176,11 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public void SetParamVersandzulassung(string versandzulassung)
         {
             ModusVersandzulassung = versandzulassung.IsNotNullOrEmpty();
+        }
+
+        public void SetParamSonderzulassung(string sonderzulassung)
+        {
+            ModusSonderzulassung = sonderzulassung.IsNotNullOrEmpty();
         }
  
  
@@ -213,7 +223,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             FinListFiltered.Where(f => filter(f)).ToListOrEmptyList().ForEach(f => f.IsSelected = select);
             allSelectionCount = FinList.Count(c => c.IsSelected);
-            allCount = FinListFiltered.Count();
+            allCount = FinListFiltered.Count;
         }
 
         public void SelectFahrzeug(string vin, bool select, out int allSelectionCount)
@@ -501,6 +511,9 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 zulassungsKreis = Zulassung.Zulassungsdaten.Zulassungskreis;
             }
 
+            LoadZulassungsAbmeldeArten(zulassungsKreis);
+            UpdateZulassungsart();
+
             // MMA Falls Massenzulassung, dann den Zulassungskreis auch für alle Wunschkennzeichen setzen
             if (Zulassung.Zulassungsdaten.IsMassenzulassung)
             {
@@ -557,6 +570,63 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         public string LoadZulassungsstelleWkzUrl(string zulassungsKreis)
         {
             return ZulassungDataService.GetZulassungsstelleWkzUrl(zulassungsKreis);
+        }
+
+        public void LoadZulassungsAbmeldeArten(string kreis)
+        {
+            PropertyCacheClear(this, m => m.ZulassungsAbmeldearten);
+
+            if (Zulassung.Halter == null)
+                return;
+
+            Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln = (!ModusSonderzulassung && !ModusVersandzulassung && !ModusAbmeldung && !Zulassung.Zulassungsdaten.IsMassenzulassung);
+
+            ZulassungsAbmeldearten = ZulassungDataService.GetZulassungsAbmeldeArten(kreis.NotNullOrEmpty().ToUpper(), Zulassung.Zulassungsdaten.ZulassungsartAutomatischErmitteln, ModusSonderzulassung);
+
+            Zulassung.Zulassungsdaten.Versandzulassung = Zulassungsarten.Any(z => z.Belegtyp == "AV");
+            Zulassung.Zulassungsdaten.ExpressversandMoeglich = Zulassungsarten.Any(z => z.Belegtyp == "AV" && !z.ZulassungAmFolgetagNichtMoeglich);
+
+            if (!Zulassung.Zulassungsdaten.ExpressversandMoeglich && Zulassung.Zulassungsdaten.Expressversand)
+                Zulassung.Zulassungsdaten.Expressversand = false;
+
+            if (Zulassung.Zulassungsdaten.Versandzulassung && String.IsNullOrEmpty(Zulassung.Zulassungsdaten.ZulassungsartMatNr))
+            {
+                var zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich);
+                if (zulArt != null)
+                    Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
+            }
+        }
+
+        public void UpdateZulassungsart(string haltereintragVorhanden, bool expressversand)
+        {
+            Zulassung.Zulassungsdaten.HaltereintragVorhanden = haltereintragVorhanden;
+            Zulassung.Zulassungsdaten.Expressversand = expressversand;
+
+            UpdateZulassungsart();
+        }
+
+        public void UpdateZulassungsart()
+        {
+            Material zulArt = null;
+
+            if (Zulassung.Zulassungsdaten.Versandzulassung)
+            {
+                zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AV" && z.ZulassungAmFolgetagNichtMoeglich != Zulassung.Zulassungsdaten.Expressversand);
+            }
+            else
+            {
+                if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "J")
+                {
+                    zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AG");
+                }
+                else if (Zulassung.Zulassungsdaten.HaltereintragVorhanden == "N")
+                {
+                    zulArt = Zulassungsarten.FirstOrDefault(z => z.Belegtyp == "AN");
+                }
+            }
+
+            if (zulArt != null)
+                Zulassung.Zulassungsdaten.ZulassungsartMatNr = zulArt.MaterialNr;
         }
 
         #endregion
@@ -812,10 +882,17 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         #region Zulassungsdaten
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Zulassungsarten { get { return PropertyCacheGet(() => ZulassungDataService.Zulassungsarten.Where(z => !ModusVersandzulassung || z.IstVersand).ToList()); } }
+        public List<Material> ZulassungsAbmeldearten
+        {
+            get { return PropertyCacheGet(() => new List<Material>()); }
+            private set { PropertyCacheSet(value); }
+        }
 
         [XmlIgnore, ScriptIgnore]
-        public List<Material> Abmeldearten { get { return PropertyCacheGet(() => ZulassungDataService.Abmeldearten); } }
+        public List<Material> Zulassungsarten { get { return ZulassungsAbmeldearten.Where(z => !z.IstAbmeldung).ToList(); } }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Material> Abmeldearten { get { return ZulassungsAbmeldearten.Where(z => z.IstAbmeldung).ToList(); } }
 
         [XmlIgnore, ScriptIgnore]
         public List<Domaenenfestwert> Fahrzeugfarben { get { return PropertyCacheGet(() => ZulassungDataService.GetFahrzeugfarben); } }
@@ -830,7 +907,10 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             zulDat.Zulassungskreis = model.Zulassungskreis.NotNullOrEmpty().ToUpper();
             zulDat.ZulassungskreisBezeichnung = model.ZulassungskreisBezeichnung;
             zulDat.EvbNr = model.EvbNr.NotNullOrEmpty().ToUpper();
-
+            zulDat.Versandzulassung = model.Versandzulassung;
+            zulDat.ExpressversandMoeglich = model.ExpressversandMoeglich;
+            zulDat.HaltereintragVorhanden = model.HaltereintragVorhanden;
+            zulDat.Expressversand = model.Expressversand;
             zulDat.VorhandenesKennzeichenReservieren = model.VorhandenesKennzeichenReservieren;
             zulDat.KennzeichenReserviert = model.KennzeichenReserviert;
 
@@ -872,7 +952,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             else
                 Zulassung.OptionenDienstleistungen.HaltedauerBis = null;
 
-
             if (ModusVersandzulassung || zulDat.Zulassungsart.Auf48hVersandPruefen)
             {
                 Zulassung.VersandAdresse.Adresse = ZulassungDataService.GetLieferantZuKreis(zulDat.Zulassungskreis);
@@ -887,7 +966,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 var checkErg = ZulassungDataService.Check48hExpress(Zulassung);
 
                 if (Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich && (Zulassung.Ist48hZulassung || !String.IsNullOrEmpty(checkErg)))
-                    state.AddModelError("", Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture);
+                    state.AddModelError("", (String.IsNullOrEmpty(checkErg) ? Localize.RegistrationDateMustBeAtLeast2DaysInTheFuture : checkErg));
                 else if (!String.IsNullOrEmpty(checkErg))
                     state.AddModelError("", checkErg);
             }
@@ -984,6 +1063,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                             {
                                 ModusAbmeldung = ModusAbmeldung,
                                 ModusVersandzulassung = ModusVersandzulassung,
+                                ModusSonderzulassung = ModusSonderzulassung,
                                 ZulassungsartMatNr =
                                     (!ModusAbmeldung || Abmeldearten.None() ? null : Abmeldearten.First().MaterialNr),
                                 Zulassungskreis = null,
@@ -998,6 +1078,12 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             {
                 ModusAbmeldung = Zulassung.Zulassungsdaten.ModusAbmeldung;
                 ModusVersandzulassung = Zulassung.Zulassungsdaten.ModusVersandzulassung;
+                ModusSonderzulassung = Zulassung.Zulassungsdaten.ModusSonderzulassung;
+
+                var blTyp = Zulassung.Zulassungsdaten.Belegtyp;
+                Zulassung.Zulassungsdaten.HaltereintragVorhanden = (blTyp == "AN" ? "N" : (blTyp == "AG" ? "J" : ""));
+
+                Zulassung.Zulassungsdaten.Expressversand = (blTyp == "AV" && !Zulassung.Zulassungsdaten.Zulassungsart.ZulassungAmFolgetagNichtMoeglich);
             }
 
             SelectedAuslieferAdressePartnerrolle = Vorgang.AuslieferAdressenPartnerRollen.First().Key;
@@ -1015,8 +1101,6 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
             PartnerDataService.MarkForRefreshAdressen();
 
-            PropertyCacheClear(this, m => m.Zulassungsarten);
-            PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
@@ -1048,6 +1132,7 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                                               : z.Zulassungsdaten.IsMassenzulassung ? "MASSENZULASSUNG"
                                               : z.Zulassungsdaten.IsMassenabmeldung ? "MASSENABMELDUNG"
                                               : ModusAbmeldung ? "ABMELDUNG"
+                                              : ModusSonderzulassung ? "SONDERZULASSUNG"
                                               : "ZULASSUNG");
                     }
                 });

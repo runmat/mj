@@ -30,6 +30,8 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public bool ModusVersandzulassung { get; set; }
 
+        public bool ModusSonderzulassung { get; set; }
+
         [LocalizedDisplay(LocalizeConstants.RegistrationType)]
         public string ZulassungsartMatNr { get; set; }
 
@@ -44,6 +46,26 @@ namespace CkgDomainLogic.Autohaus.Models
                 return list.FirstOrDefault(m => m.MaterialNr == ZulassungsartMatNr) ?? new Material();
             }
         }
+
+        public string ZulassungsartText
+        {
+            get
+            {
+                switch (Belegtyp)
+                {
+                    case "AN":
+                        return Localize.NewRegistration;
+                    case "AG":
+                        return Localize.UsedRegistration;
+                    case "AV":
+                        return (Zulassungsart.ZulassungAmFolgetagNichtMoeglich ? Localize.MailOrderRegistration72h : Localize.MailOrderRegistration48h);
+                    default:
+                        return "";
+                }
+            }
+        }
+
+        public bool ZulassungsartAutomatischErmitteln { get; set; }
 
         // 20150528 MMA 
         [LocalizedDisplay(LocalizeConstants.MindestHaltedauer)]  
@@ -132,6 +154,20 @@ namespace CkgDomainLogic.Autohaus.Models
         [LocalizedDisplay(LocalizeConstants.ReservationName)]
         public string ReservierungsName { get; set; }
 
+        public bool Versandzulassung { get; set; }
+
+        public bool ExpressversandMoeglich { get; set; }
+
+        [RequiredConditional]
+        [LocalizedDisplay(LocalizeConstants.DoesCarOwnerEntryExist)]
+        public string HaltereintragVorhanden { get; set; }
+
+        [XmlIgnore]
+        public static string HaltereintragVorhandenOptions { get { return String.Format("J,{0};N,{1}", Localize.Yes, Localize.No); } }
+
+        [LocalizedDisplay(LocalizeConstants.ExtraChargeExpressShipping48h)]
+        public bool Expressversand { get; set; }
+
         public static bool IstNeuzulassung(string matNr) { return (TrimMatNr(matNr) == "593"); }
 
         public static bool IstGebrauchtzulassung(string matNr) { return (TrimMatNr(matNr) == "588"); }
@@ -155,6 +191,9 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
+            if (ZulassungsartAutomatischErmitteln && !Versandzulassung && String.IsNullOrEmpty(HaltereintragVorhanden))
+                yield return new ValidationResult(string.Format("{0}", Localize.CarOwnerEntryExistsRequiredHint), new[] { "HaltereintragVorhanden" });
+
             if (ModusAbmeldung)
             {
                 if (Abmeldedatum == null)
@@ -169,7 +208,7 @@ namespace CkgDomainLogic.Autohaus.Models
                     yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationDate, Localize.Required.ToLower()), new[] { "Zulassungsdatum" });
 
                 if (ZulassungsartMatNr.IsNullOrEmpty())
-                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationType, Localize.Required.ToLower()), new[] { "ZulassungsartMatNr" });
+                    yield return new ValidationResult(string.Format("{0} {1}", Localize.RegistrationType, Localize.Required.ToLower()), new[] { "ZulassungsartMatNr", "ZulassungsartText" });
 
                 if (!string.IsNullOrEmpty(EvbNr) && EvbNr.Length != 7)
                     yield return new ValidationResult(Localize.EvbNumberLengthMustBe7, new[] { "EvbNr" });
@@ -182,13 +221,12 @@ namespace CkgDomainLogic.Autohaus.Models
                 yield return dateResult;
 
             // 20150603 MMA 8083 Pflichtfeldprüfung auf "ReservierungsName", falls "KennzeichenReserviert" aktiv...
-            if (KennzeichenReserviert == true && ReservierungsName.IsNullOrEmpty())
+            if (KennzeichenReserviert && ReservierungsName.IsNullOrEmpty())
                 yield return new ValidationResult(string.Format("{0} {1}", Localize.ReservationName, Localize.Required.ToLower()), new[] { "ReservierungsName" });
 
             // 20150608 MMA 8083 Mindesthaltedauer
             if (IstFirmeneigeneZulassung(ZulassungsartMatNr) && (MindesthaltedauerDays == null || MindesthaltedauerDays < 1 || MindesthaltedauerDays > 360))
-                yield return new ValidationResult(string.Format("{0}", Localize.MindestHaltedauerRangeError), new[] { "MindesthaltedauerDays" }); 
-
+                yield return new ValidationResult(string.Format("{0}", Localize.MindestHaltedauerRangeError), new[] { "MindesthaltedauerDays" });
         }
 
         static IEnumerable<ValidationResult> ValidateWochenendeUndFeiertage(DateTime? dateValue, string datePropertyName)

@@ -304,6 +304,7 @@ namespace CkgDomainLogic.Autohaus.Models
                         // Zulassung
                         d.Zulassungsdaten.ModusAbmeldung = (s.BEAUFTRAGUNGSART == "ABMELDUNG" || s.BEAUFTRAGUNGSART == "MASSENABMELDUNG");
                         d.Zulassungsdaten.ModusVersandzulassung = (s.BEAUFTRAGUNGSART == "VERSANDZULASSUNG");
+                        d.Zulassungsdaten.ModusSonderzulassung = (s.BEAUFTRAGUNGSART == "SONDERZULASSUNG");
 
                         d.Zulassungsdaten.Zulassungsdatum = s.ZZZLDAT;
                         d.Zulassungsdaten.Abmeldedatum = s.ZZZLDAT;

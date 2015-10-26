@@ -345,13 +345,14 @@ namespace PortalMvcTools.Web
             return controlHtmlAttributesDict;
         }
 
-        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null)
+        public static MvcHtmlString FormTextBlockFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, object controlHtmlAttributes = null, string iconCssClass = null, string labelText = null, bool labelHidden = false)
         {
             var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, expression.GetPropertyName(), "textblock");
             controlHtmlAttributesDict = MergeKennzeichenAttributes(expression, controlHtmlAttributesDict);
 
             var model = new FormControlModel
             {
+                LabelHidden = labelHidden,
                 DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayNameFor(expression) : new MvcHtmlString(labelText)),
                 RequiredIndicatorHtml = html.RequiredIndicatorFor(expression, hideAsteriskTag: true),
                 PerstistenceIndicatorHtml = MvcHtmlString.Empty,

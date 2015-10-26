@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Web.Mvc;
@@ -50,10 +51,11 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [CkgApplication]
-        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "")
+        public ActionResult Index(string fin, string halterNr, string abmeldung = "", string versandzulassung = "", string zulassungFromShoppingCart = "", string sonderzulassung = "")
         {
             ViewModel.SetParamAbmeldung(abmeldung);
             ViewModel.SetParamVersandzulassung(versandzulassung);
+            ViewModel.SetParamSonderzulassung(sonderzulassung);
 
             ViewModel.DataInit(zulassungFromShoppingCart);
 
@@ -219,6 +221,12 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult Versandzulassung(string fin, string halterNr)
         {
             return Index(fin, halterNr, versandzulassung: "1");
+        }
+
+        [CkgApplication]
+        public ActionResult Sonderzulassung(string fin, string halterNr)
+        {
+            return Index(fin, halterNr, sonderzulassung: "1");
         }
 
         void InitModelStatics()
@@ -602,10 +610,14 @@ namespace ServicesMvc.Autohaus.Controllers
         }
 
         [HttpPost]
+        [SuppressMessage("ReSharper", "RedundantAnonymousTypePropertyName")]
         public ActionResult GetKennzeichenLinkeSeite(string zulassungsKreis)
         {
             string zulassungsKennzeichen;
             ViewModel.LoadKfzKennzeichenFromKreis(zulassungsKreis, out zulassungsKennzeichen);
+
+            ViewModel.LoadZulassungsAbmeldeArten(zulassungsKreis);
+            ViewModel.UpdateZulassungsart();
 
             var url = ViewModel.LoadZulassungsstelleWkzUrl(zulassungsKreis);
 
@@ -613,8 +625,25 @@ namespace ServicesMvc.Autohaus.Controllers
             return Json(new
                 {
                     kennzeichenLinkeSeite = ViewModel.ZulassungsKennzeichenLinkeSeite(zulassungsKennzeichen),
-                    zulassungsstelleUrl = url 
+                    zulassungsstelleUrl = url,
+                    Versandzulassung = ViewModel.Zulassung.Zulassungsdaten.Versandzulassung,
+                    ExpressversandMoeglich = ViewModel.Zulassung.Zulassungsdaten.ExpressversandMoeglich,
+                    ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr,
+                    ZulassungsartText = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartText
                 });
+        }
+
+        [HttpPost]
+        [SuppressMessage("ReSharper", "RedundantAnonymousTypePropertyName")]
+        public ActionResult UpdateZulassungsart(string haltereintragVorhanden, bool expressversand)
+        {
+            ViewModel.UpdateZulassungsart(haltereintragVorhanden, expressversand);
+
+            return Json(new
+            {
+                ZulassungsartMatNr = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartMatNr,
+                ZulassungsartText = ViewModel.Zulassung.Zulassungsdaten.ZulassungsartText
+            });
         }
 
         #endregion

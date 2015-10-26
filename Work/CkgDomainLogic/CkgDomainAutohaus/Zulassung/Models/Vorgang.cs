@@ -30,6 +30,9 @@ namespace CkgDomainLogic.Autohaus.Models
                 if (BeauftragungsArt == "VERSANDZULASSUNG")
                     return "?versandzulassung=1";
 
+                if (BeauftragungsArt == "SONDERZULASSUNG")
+                    return "?sonderzulassung=1";
+
                 if (BeauftragungsArt == "ABMELDUNG" || BeauftragungsArt == "MASSENABMELDUNG")
                     return "?abmeldung=1";
 
@@ -165,6 +168,9 @@ namespace CkgDomainLogic.Autohaus.Models
 
                 if (Zulassungsdaten.ModusVersandzulassung)
                     return Localize.OrderSummaryVehicleMailOrderRegistration;
+
+                if (Zulassungsdaten.ModusSonderzulassung)
+                    return Localize.OrderSummaryVehicleSpecialRegistration;
 
                 return Localize.OrderSummaryVehicleRegistration;
             }

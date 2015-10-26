@@ -82,16 +82,6 @@ namespace CkgDomainLogic.Autohaus.Services
             get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); }
         }
 
-        public List<Material> Zulassungsarten
-        {
-            get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => !m.IstAbmeldung).ToList()); }
-        }
-
-        public List<Material> Abmeldearten
-        {
-            get { return PropertyCacheGet(() => LoadZulassungsAbmeldeArtenFromSap().Where(m => m.IstAbmeldung).ToList()); }
-        }
-
         public List<Zusatzdienstleistung> Zusatzdienstleistungen
         {
             get { return PropertyCacheGet(() => LoadZusatzdienstleistungenFromSap().ToList()); }
@@ -116,8 +106,6 @@ namespace CkgDomainLogic.Autohaus.Services
         {
             PropertyCacheClear(this, m => m.Kunden);
             PropertyCacheClear(this, m => m.Fahrzeugarten);
-            PropertyCacheClear(this, m => m.Zulassungsarten);
-            PropertyCacheClear(this, m => m.Abmeldearten);
             PropertyCacheClear(this, m => m.Zusatzdienstleistungen);
             PropertyCacheClear(this, m => m.Kennzeichengroessen);
             PropertyCacheClear(this, m => m.Zulassungskreise);
@@ -223,6 +211,11 @@ namespace CkgDomainLogic.Autohaus.Services
         #region Zulassungs Report
 
         private List<ZulassungsReportModel> _zulassungsReportItems;
+
+        public List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung)
+        {
+            throw new NotImplementedException();
+        }
 
         public List<ZulassungsReportModel> GetZulassungsReportItems(ZulassungsReportSelektor selector, List<Kunde> kunden, Action<string, string> addModelError)
         {

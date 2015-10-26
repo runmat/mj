@@ -194,15 +194,19 @@
 <div id="DivZulassungsdaten" class="margin-top-20">
     @using (Ajax.BeginForm("ZulassungsdatenForm", "Zulassung", null,
             new MvcAjaxOptions { UpdateTargetId = "DivZulassungsdaten", OnComplete = "AjaxFormZulassungsdatenComplete();" },
-                htmlAttributes: new { @class = "form-horizontal label-width-175", id = "AjaxFormZulassungsdaten" }))
+                htmlAttributes: new { @class = "form-horizontal label-width-200", id = "AjaxFormZulassungsdaten" }))
     {
         @Html.FormValidationSummary()
         @Html.HiddenFor(m => m.IsMassenzulassung)
         @Html.HiddenFor(m => m.IsMassenabmeldung)
         @Html.HiddenFor(m => m.ModusAbmeldung)
         @Html.HiddenFor(m => m.ModusVersandzulassung)
+        @Html.HiddenFor(m => m.ModusSonderzulassung)
         @Html.HiddenFor(m => m.ZulassungskreisBezeichnung)
         @Html.HiddenFor(m => m.WunschkennzeichenReservierenUrl) 
+        @Html.HiddenFor(m => m.ZulassungsartAutomatischErmitteln) 
+        @Html.HiddenFor(m => m.Versandzulassung) 
+        @Html.HiddenFor(m => m.ExpressversandMoeglich) 
 
         if (Model.ModusAbmeldung)
         {

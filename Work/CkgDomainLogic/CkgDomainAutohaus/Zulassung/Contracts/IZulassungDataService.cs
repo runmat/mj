@@ -12,10 +12,6 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         List<Domaenenfestwert> Fahrzeugarten { get; }
 
-        List<Material> Zulassungsarten { get; }
-
-        List<Material> Abmeldearten { get; }
-
         List<Zusatzdienstleistung> Zusatzdienstleistungen { get; }
 
         List<Kennzeichengroesse> Kennzeichengroessen { get; }
@@ -41,6 +37,8 @@ namespace CkgDomainLogic.Autohaus.Contracts
         string DeleteVorgangFromShoppingCart(string belegNr);
 
         List<Domaenenfestwert> GetFahrzeugfarben { get; }
+
+        List<Material> GetZulassungsAbmeldeArten(string kreis, bool zulassungsartenAutomatischErmitteln, bool sonderzulassung);
 
         #region Zulassungs Report
 
