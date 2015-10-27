@@ -725,6 +725,7 @@ Partial Public Class UserUnlock
                                                   txtReference.Text, _
                                                   "", _
                                                   "", _
+                                                  False, _
                                                   cbxTestUser.Checked, _
                                                   CInt(ddlCustomer.SelectedItem.Value), _
                                                   cbxCustomerAdmin.Checked, _
@@ -745,6 +746,7 @@ Partial Public Class UserUnlock
                                                   txtReference.Text, _
                                                   "", _
                                                   "", _
+                                                  False, _
                                                   cbxTestUser.Checked, _
                                                   CInt(ddlCustomer.SelectedItem.Value), _
                                                   cbxCustomerAdmin.Checked, _

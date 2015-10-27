@@ -527,6 +527,14 @@
                                                                     <asp:TextBox ID="txtReference3" runat="server" CssClass="InputTextbox"></asp:TextBox>
                                                                 </td>
                                                             </tr>
+                                                            <tr id="trReference4" runat="server" class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    <asp:Label ID="lblReferenceType4" runat="server" Font-Bold="True" />
+                                                                </td>
+                                                                <td class="active">
+                                                                    <span><asp:CheckBox ID="cbxReference4" runat="server"></asp:CheckBox></span>
+                                                                </td>
+                                                            </tr>
                                                             <tr class="formquery" id="trMail" runat="server">
                                                                 <td class="firstLeft active">
                                                                     E-Mail (x@y.z):

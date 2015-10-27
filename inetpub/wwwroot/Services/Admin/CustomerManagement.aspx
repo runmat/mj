@@ -334,6 +334,14 @@
                                                                 </td>
                                                             </tr>
                                                             <tr class="formquery">
+                                                                <td class="firstLeft active">
+                                                                    Referenz 4 (bool -> Checkbox):
+                                                                </td>
+                                                                <td class="active">
+                                                                    <asp:DropDownList ID="ddlReferenzTyp4" runat="server" />
+                                                                </td>
+                                                            </tr>
+                                                            <tr class="formquery">
                                                                 <td colspan="2">
                                                                 </td>
                                                             </tr>

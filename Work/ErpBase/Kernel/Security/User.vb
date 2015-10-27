@@ -29,6 +29,7 @@ Namespace Kernel.Security
         Private m_strReference As String
         Private m_strReference2 As String
         Private m_strReference3 As String
+        Private m_blnReference4 As Boolean
         Private m_blnLoggedOn As Boolean
         Private m_blnMatrixfilled As Boolean
         Private m_blnPasswordExpired As Boolean = False
@@ -106,6 +107,7 @@ Namespace Kernel.Security
                        ByVal strReference As String, _
                        ByVal strReference2 As String, _
                        ByVal strReference3 As String, _
+                       ByVal blnReference4 As Boolean, _
                        ByVal blnTestUser As Boolean, _
                        ByVal intCustomerId As Integer, _
                        ByVal blnCustomerAdmin As Boolean, _
@@ -131,6 +133,7 @@ Namespace Kernel.Security
             m_strReference = strReference
             m_strReference2 = strReference2
             m_strReference3 = strReference3
+            m_blnReference4 = blnReference4
             m_blnTestUser = blnTestUser
             m_blnIsCustomerAdmin = blnCustomerAdmin
             m_blnPwdNeverExpires = blnPwdNeverExpires
@@ -163,6 +166,7 @@ Namespace Kernel.Security
                        ByVal strReference As String, _
                        ByVal strReference2 As String, _
                        ByVal strReference3 As String, _
+                       ByVal blnReference4 As Boolean, _
                        ByVal blnTestUser As Boolean, _
                        ByVal intCustomerId As Integer, _
                        ByVal blnCustomerAdmin As Boolean, _
@@ -185,6 +189,7 @@ Namespace Kernel.Security
             m_strReference = strReference
             m_strReference2 = strReference2
             m_strReference3 = strReference3
+            m_blnReference4 = blnReference4
             m_blnTestUser = blnTestUser
             m_blnIsCustomerAdmin = blnCustomerAdmin
             m_blnPwdNeverExpires = blnPwdNeverExpires
@@ -442,6 +447,12 @@ Namespace Kernel.Security
         Public ReadOnly Property Reference3() As String
             Get
                 Return m_strReference3
+            End Get
+        End Property
+
+        Public ReadOnly Property Reference4() As Boolean
+            Get
+                Return m_blnReference4
             End Get
         End Property
 
@@ -930,6 +941,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1089,6 +1101,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1340,6 +1353,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1400,6 +1414,7 @@ Namespace Kernel.Security
                                                     "Reference, " & _
                                                     "Reference2, " & _
                                                     "Reference3, " & _
+                                                    "Reference4, " & _
                                                     "LoggedOn, " & _
                                                     "LastLogin, " & _
                                                     "ReadMessageCount, " & _
@@ -1546,6 +1561,10 @@ Namespace Kernel.Security
                         m_strReference3 = ""
                         If Not TypeOf drUser("Reference3") Is System.DBNull Then
                             m_strReference3 = CStr(drUser("Reference3"))
+                        End If
+                        m_blnReference4 = False
+                        If Not TypeOf drUser("Reference4") Is System.DBNull Then
+                            m_blnReference4 = CBool(drUser("Reference4"))
                         End If
                         m_blnLoggedOn = CBool(drUser("LoggedOn"))
                         If Not drUser("LastLogin") Is System.DBNull.Value Then
@@ -2461,6 +2480,7 @@ Namespace Kernel.Security
                                                  "Reference, " & _
                                                  "Reference2, " & _
                                                  "Reference3, " & _
+                                                 "Reference4, " & _
                                                  "LoggedOn, " & _
                                                  "LastLogin, " & _
                                                  "ReadMessageCount, " & _
@@ -2487,6 +2507,7 @@ Namespace Kernel.Security
                                     "@Reference, " & _
                                     "@Reference2, " & _
                                     "@Reference3, " & _
+                                    "@Reference4, " & _
                                     "@LoggedOn, " & _
                                     "GetDate(), " & _
                                     "@ReadMessageCount, " & _
@@ -2595,6 +2616,7 @@ Namespace Kernel.Security
                                  "Reference=@Reference, " & _
                                  "Reference2=@Reference2, " & _
                                  "Reference3=@Reference3, " & _
+                                 "Reference4=@Reference4, " & _
                                  "LoggedOn=@LoggedOn, " & _
                                  "ReadMessageCount=@ReadMessageCount, " & _
                                  "Approved=@Approved, " & _
@@ -2675,6 +2697,7 @@ Namespace Kernel.Security
                     .AddWithValue("@Reference", m_strReference)
                     .AddWithValue("@Reference2", m_strReference2)
                     .AddWithValue("@Reference3", m_strReference3)
+                    .AddWithValue("@Reference4", m_blnReference4)
                     .AddWithValue("@LoggedOn", m_blnLoggedOn)
                     .AddWithValue("@ReadMessageCount", m_intReadMessageCount)
                     .AddWithValue("@Approved", m_approved)

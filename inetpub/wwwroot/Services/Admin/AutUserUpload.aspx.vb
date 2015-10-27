@@ -241,6 +241,7 @@ Partial Public Class AutUserUpload
                               TempRow(UploadExcelColumns.Reference), _
                               "", _
                               "", _
+                              False, _
                               blnTestUser, _
                               CInt(ddlFilterCustomer.SelectedItem.Value), _
                               False, _
