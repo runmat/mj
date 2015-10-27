@@ -66,6 +66,8 @@ namespace ServicesMvc.Autohaus.Controllers
 
             //DashboardService.InvokeViewModelForAppUrl("mvc/Autohaus/ZulassungsReport/Index");            
 
+            ViewBag.KundenauswahlWarenkorb = ViewModel.KundenauswahlWarenkorb;
+
             return View("Index", ViewModel);
         }
 
@@ -92,16 +94,10 @@ namespace ServicesMvc.Autohaus.Controllers
             }
 
             ShoppingCartLoadAndCacheItems();
-            
+
+            ViewBag.KundenauswahlWarenkorb = ViewModel.KundenauswahlWarenkorb;
+
             return View("Index", ViewModel);
-        }
-
-        [HttpPost]
-        public ActionResult FahrzeugShowGrid()
-        {
-            ViewModel.DataMarkForRefreshHalterAdressen();
-
-            return PartialView("Partial/FahrzeugAuswahlGrid", ViewModel.FinList);
         }
 
         public ActionResult FahrzeugAuswahlExportFilteredExcel(int page, string orderBy, string filterBy)
@@ -205,6 +201,8 @@ namespace ServicesMvc.Autohaus.Controllers
             }
 
             ShoppingCartLoadAndCacheItems();
+
+            ViewBag.KundenauswahlWarenkorb = ViewModel.KundenauswahlWarenkorb;
 
             return View("Index", ViewModel);
         }
@@ -908,6 +906,16 @@ namespace ServicesMvc.Autohaus.Controllers
         public ActionResult ZulassungFromShoppingCart(string id, string abmeldung = "", string versandzulassung = "")
         {
             return Index("", "", zulassungFromShoppingCart: "1");
+        }
+
+        [HttpPost]
+        public ActionResult WarenkorbSelectedKunnrChanged(string kunnr)
+        {
+            ViewModel.WarenkorbSelectedKunnr = kunnr;
+
+            ShoppingCartLoadAndCacheItems();
+
+            return new EmptyResult();
         }
 
         #endregion

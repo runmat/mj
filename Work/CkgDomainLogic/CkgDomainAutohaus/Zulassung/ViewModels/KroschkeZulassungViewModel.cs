@@ -1095,6 +1095,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
         {
             InitZulassung(Zulassung);
 
+            InitKundenauswahlWarenkorb();
+            
             Fahrzeugdaten.FahrzeugartList = Fahrzeugarten;
             Adresse.Laender = LaenderList;
             OptionenDienstleistungen.KennzeichengroesseList = Kennzeichengroessen;
@@ -1104,6 +1106,19 @@ namespace CkgDomainLogic.Autohaus.ViewModels
             PropertyCacheClear(this, m => m.Steps);
             PropertyCacheClear(this, m => m.StepKeys);
             PropertyCacheClear(this, m => m.StepFriendlyNames);
+        }
+
+        private void InitKundenauswahlWarenkorb()
+        {
+            WarenkorbSelectedKunnr = "";
+
+            KundenauswahlWarenkorb = new List<Kunde>().Concat(new List<Kunde> { new Kunde("", Localize.Mine) }).ToList();
+
+            if (!WarenkorbNurEigeneAuftraege)
+            {
+                KundenauswahlWarenkorb.Add(new Kunde("*", Localize.All));
+                KundenauswahlWarenkorb.AddRange(ZulassungDataService.KundenauswahlWarenkorb);
+            }
         }
 
         private void InitZulassung(Vorgang zul)
@@ -1123,7 +1138,8 @@ namespace CkgDomainLogic.Autohaus.ViewModels
                 return;
 
             zulassungen.ForEach(z =>
-                {
+            {
+                    z.Aenderer = LogonContext.UserName;
                     z.WebGroupId = LogonContext.Group.GroupID.ToString();
                     z.WebUserId = LogonContext.UserID;
                     if (z.BeauftragungsArt.IsNullOrEmpty())
@@ -1208,9 +1224,27 @@ namespace CkgDomainLogic.Autohaus.ViewModels
 
         #region Shopping Cart
 
+        public bool WarenkorbNurEigeneAuftraege { get { return ZulassungDataService.WarenkorbNurEigeneAuftraege; } }
+
+        [LocalizedDisplay(LocalizeConstants.ShowOrders)]
+        public string WarenkorbSelectedKunnr { get; set; }
+
+        [XmlIgnore, ScriptIgnore]
+        public List<Kunde> KundenauswahlWarenkorb { get; private set; }
+
         public IEnumerable<Vorgang> LoadZulassungenFromShoppingCart()
         {
-            var liste = ZulassungDataService.LoadVorgaengeForShoppingCart();
+            var kundenNummern = new List<string>();
+
+            if (!String.IsNullOrEmpty(WarenkorbSelectedKunnr))
+            {
+                if (WarenkorbSelectedKunnr == "*")
+                    KundenauswahlWarenkorb.ForEach(k => kundenNummern.Add(k.KundenNr));
+                else
+                    kundenNummern.Add(WarenkorbSelectedKunnr);
+            }
+
+            var liste = ZulassungDataService.LoadVorgaengeForShoppingCart(kundenNummern);
 
             liste.ForEach(InitZulassung);
 

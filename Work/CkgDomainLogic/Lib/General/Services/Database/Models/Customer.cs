@@ -36,6 +36,7 @@ namespace CkgDomainLogic.General.Database.Models
         public string Userreferenzfeld1 { get; set; }
         public string Userreferenzfeld2 { get; set; }
         public string Userreferenzfeld3 { get; set; }
+        public string Userreferenzfeld4 { get; set; }
 
         #region Password Settings
 

@@ -6,7 +6,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Mvc.Html;
 using System.Web.WebPages;
-using CkgDomainLogic.General.Models;
 using CkgDomainLogic.General.Services;
 using GeneralTools.Models;
 using GeneralTools.Services;
@@ -554,6 +553,25 @@ namespace PortalMvcTools.Web
             return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
         }
 
+        public static MvcHtmlString FormDropDownList<TModel>(this HtmlHelper<TModel> html, string propertyName, IEnumerable<SelectListItem> selectList, object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null, string labelText = null)
+        {
+            var controlHtmlAttributesDict = MergeKnockoutDataBindAttributes(controlHtmlAttributes, propertyName, "dropdown");
+
+            var model = new FormControlModel
+            {
+                DisplayNameHtml = (String.IsNullOrEmpty(labelText) ? html.DisplayName(propertyName) : new MvcHtmlString(labelText)),
+                RequiredIndicatorHtml = html.RequiredIndicator(propertyName),
+                PerstistenceIndicatorHtml = html.PersistenceIndicator(propertyName),
+                ControlHtml = html.DropDownList(propertyName, selectList, controlHtmlAttributesDict),
+                ValidationMessageHtml = html.ValidationMessage(propertyName),
+                IconCssClass = "",
+                ControlHtmlAttributes = controlHtmlAttributesDict,
+                PreControlHtml = preControlHtml == null ? null : preControlHtml.Invoke(null),
+                PostControlHtml = postControlHtml == null ? null : postControlHtml.Invoke(null),
+            };
+
+            return html.Partial("Partial/FormControls/Form/LeftLabelControl", model);
+        }
 
         public static MvcHtmlString FormMultiSelectListFor<TModel, TValue>(this HtmlHelper<TModel> html, Expression<Func<TModel, TValue>> expression, IEnumerable<SelectListItem> selectList, 
                                                                 object controlHtmlAttributes = null, Func<object, HelperResult> preControlHtml = null, Func<object, HelperResult> postControlHtml = null)

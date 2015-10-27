@@ -10,6 +10,10 @@ namespace CkgDomainLogic.Autohaus.Contracts
     {
         List<Kunde> Kunden { get; }
 
+        bool WarenkorbNurEigeneAuftraege { get; }
+
+        List<Kunde> KundenauswahlWarenkorb { get; }
+
         List<Domaenenfestwert> Fahrzeugarten { get; }
 
         List<Zusatzdienstleistung> Zusatzdienstleistungen { get; }
@@ -32,7 +36,7 @@ namespace CkgDomainLogic.Autohaus.Contracts
 
         string SaveZulassungen(List<Vorgang> zulassungen, bool saveDataToSap, bool saveFromShoppingCart, bool modusAbmeldung, bool modusVersandzulassung);
 
-        List<Vorgang> LoadVorgaengeForShoppingCart();
+        List<Vorgang> LoadVorgaengeForShoppingCart(List<string> kundenNummern);
 
         string DeleteVorgangFromShoppingCart(string belegNr);
 

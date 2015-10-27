@@ -193,6 +193,18 @@
         LoadingHide();
     }
 
+    function WarenkorbSelectedKunnrChanged() {
+        $.ajax({
+            type: "POST",
+            url: "WarenkorbSelectedKunnrChanged",
+            data: { kunnr: $("#WarenkorbSelectedKunnr").val() },
+            loadingShow: true,
+            success: function (result) {
+                GetGrid("GridShoppingCart").ajaxRequest();
+            }
+        });
+    }
+
     // Rechnungsdaten
     function AjaxFormRechnungsdatenComplete() {
         FormPrepareAjax();

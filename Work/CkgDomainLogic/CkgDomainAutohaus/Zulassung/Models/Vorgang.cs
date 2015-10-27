@@ -46,6 +46,12 @@ namespace CkgDomainLogic.Autohaus.Models
 
         public string Vorerfasser { get; set; }
 
+        public string Aenderer { get; set; }
+
+        public DateTime? ErfassungsDatum { get; set; }
+
+        public string ErfassungsZeit { get; set; }
+
         public string VorgangsStatus { get; set; }
 
         public Rechnungsdaten Rechnungsdaten { get; set; }

@@ -18,6 +18,8 @@ namespace CkgDomainLogic.Autohaus.Services
     {
         public List<Kunde> Kunden { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
 
+        public List<Kunde> KundenauswahlWarenkorb { get { return PropertyCacheGet(() => LoadKundenFromSap().ToList()); } }
+
         public List<Domaenenfestwert> Fahrzeugarten { get { return PropertyCacheGet(() => LoadFahrzeugartenFromSap().ToList()); } }
 
         public List<Zusatzdienstleistung> Zusatzdienstleistungen { get { return PropertyCacheGet(() => LoadZusatzdienstleistungenFromSap().ToList()); } }
@@ -29,6 +31,8 @@ namespace CkgDomainLogic.Autohaus.Services
         public List<Z_ZLD_AH_ZULST_BY_PLZ.T_ZULST> ZulassungskreisKennzeichen { get { return PropertyCacheGet(() => LoadZulassungskreisKennzeichenFromSap().ToList()); } }
 
         public List<Domaenenfestwert> GetFahrzeugfarben { get { return PropertyCacheGet(() => LoadFahrzeugfarbenFromSap().ToList()); } }
+
+        public bool WarenkorbNurEigeneAuftraege { get { return GetBoolUserReferenceValueByReferenceType(ReferenzfeldtypBool.AH_WK_NUR_EIGENE); } }
 
         private static ZulassungSqlDbContext CreateDbContext()
         {
@@ -52,16 +56,7 @@ namespace CkgDomainLogic.Autohaus.Services
 
         private IEnumerable<Kunde> LoadKundenFromSap()
         {
-            Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.Init(SAP);
-
-            var orgRef = LogonContext.Organization.OrganizationReference;
-
-            SAP.SetImportParameter("I_KUNNR", (orgRef.IsNullOrEmpty() ? LogonContext.KundenNr.ToSapKunnr() : orgRef.ToSapKunnr()));
-            SAP.SetImportParameter("I_VKORG", LogonContext.Customer.AccountingArea.ToString());
-            SAP.SetImportParameter("I_VKBUR", LogonContext.Organization.OrganizationReference2);
-            SAP.SetImportParameter("I_SPART", "01");
-
-            var sapList = Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE.GT_DEB.GetExportListWithExecute(SAP);
+            var sapList = GetSapKundenAusHierarchie();
 
             return AppModelMappings.Z_ZLD_AH_KUNDEN_ZUR_HIERARCHIE_GT_DEB_To_Kunde.Copy(sapList).OrderBy(k => k.Adresse.Name1);
         }
@@ -569,11 +564,23 @@ namespace CkgDomainLogic.Autohaus.Services
 
         #region Shopping Cart
 
-        public List<Vorgang> LoadVorgaengeForShoppingCart()
+        public List<Vorgang> LoadVorgaengeForShoppingCart(List<string> kundenNummern)
         {
             var liste = new List<Vorgang>();
 
-            Z_ZLD_AH_EXPORT_WARENKORB.Init(SAP, "I_WEBUSER_ID, I_AUFRUF", LogonContext.UserID, "2");
+            Z_ZLD_AH_EXPORT_WARENKORB.Init(SAP, "I_AUFRUF", "2");
+
+            if (kundenNummern == null || kundenNummern.None())
+            {
+                SAP.SetImportParameter("I_WEBUSER_ID", LogonContext.UserID);
+            }
+            else
+            {
+                var kundenListe = new List<Z_ZLD_AH_EXPORT_WARENKORB.IT_AG>();
+                kundenNummern.ForEach(k => kundenListe.Add(new Z_ZLD_AH_EXPORT_WARENKORB.IT_AG { KUNNR = k }));
+
+                SAP.ApplyImport(kundenListe);
+            }
 
             SAP.Execute();
 

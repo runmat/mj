@@ -278,6 +278,9 @@ namespace CkgDomainLogic.Autohaus.Models
                         d.VkOrg = s.VKORG;
                         d.VkBur = s.VKBUR;
                         d.Vorerfasser = s.VE_ERNAM;
+                        d.Aenderer = s.VE_AENAM;
+                        d.ErfassungsDatum = s.VE_ERDAT;
+                        d.ErfassungsZeit = s.VE_ERZEIT;
                         d.VorgangsStatus = s.BEB_STATUS;
 
                         // Rechnungsdaten
@@ -424,6 +427,9 @@ namespace CkgDomainLogic.Autohaus.Models
                             d.VKORG = s.VkOrg;
                             d.VKBUR = s.VkBur;
                             d.VE_ERNAM = s.Vorerfasser;
+                            d.VE_AENAM = s.Aenderer;
+                            d.VE_ERDAT = s.ErfassungsDatum;
+                            d.VE_ERZEIT = s.ErfassungsZeit;
                             d.BEB_STATUS = s.VorgangsStatus;
 
                             // Rechnungsdaten
