@@ -56,7 +56,8 @@
                          IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.alle}}"/>
         </StackPanel>
 
-        <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" Loaded="Control_OnLoaded">
+        <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" 
+                         Loaded="Control_OnLoaded" ItemsSourceChanged="Control_OnItemsSourceChanged" >
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Entwickler" Width="35" CellTemplateSelector="{StaticResource GitBranchEntwicklerCellTemplateSelector}" />
                 <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />
@@ -70,7 +71,8 @@
                 <dxg:GridColumn FieldName="Deaktiviert" Header="Deakt." UnboundType="Boolean" Width="50" />
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
-                <dxg:TableView AllowEditing="True" NewItemRowPosition="Top" MultiSelectMode="Row" KeyUp="GridTableViewKeyUp" CellValueChanging="GridTableViewCellValueChanging" />
+                <dxg:TableView AllowEditing="True" NewItemRowPosition="Top" MultiSelectMode="Row" 
+                               KeyUp="GridTableViewKeyUp" CellValueChanging="GridTableViewCellValueChanging" />
             </dxg:GridControl.View>
         </dxg:GridControl>
 

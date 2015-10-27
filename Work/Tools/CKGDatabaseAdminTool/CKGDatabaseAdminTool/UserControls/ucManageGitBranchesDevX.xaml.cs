@@ -30,7 +30,6 @@ namespace CKGDatabaseAdminTool.UserControls
             InitializeComponent();
             DataControlBase.AllowInfiniteGridSize = true;
             ((TableView)Control.View).AutoWidth = true;
-
         }
 
         private void btnExportToExcel_OnClick(object sender, RoutedEventArgs e)
@@ -54,11 +53,16 @@ namespace CKGDatabaseAdminTool.UserControls
 
         private void Control_OnLoaded(object sender, RoutedEventArgs e)
         {
+            Control_OnItemsSourceChanged(sender, null);
+        }
+
+        private void Control_OnItemsSourceChanged(object sender, ItemsSourceChangedEventArgs e)
+        {
             ((TableView)Control.View).BestFitColumn(Control.Columns["Bemerkung"]);
-            ((TableView) Control.View).NewItemRowPosition = NewItemRowPosition.Top;
+            ((TableView)Control.View).NewItemRowPosition = NewItemRowPosition.Top;
             Control.Columns[0].GroupIndex = 1;
 
-            ((TableView) Control.View).ShowGroupedColumns = true;
+            ((TableView)Control.View).ShowGroupedColumns = true;
 
             TryExpandGroupRowFoarActiveDeveloper();
         }
