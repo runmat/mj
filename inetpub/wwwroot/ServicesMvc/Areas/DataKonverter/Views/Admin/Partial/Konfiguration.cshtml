@@ -459,10 +459,14 @@
         });
     }
 
-    function SetToPosition(rootDivId, sourceId, position) {        
-        $("#" + rootDivId + " .w").each(function (index) { 
-            if (index === position && $(this).attr("id") !== sourceId) {  // Move, but not if sourceId has already target position
-                $('#' + sourceId).detach().insertBefore($(this));
+    function SetToPosition(rootDivId, divIdToMove, position) {        
+        $("#" + rootDivId + " .w").each(function (index) {
+            if (index + 1 === position && $(this).attr("id") !== divIdToMove) {  // Move, but not if sourceId has already target position
+                $('#' + divIdToMove).detach().insertBefore($(this));
+
+                $('#' + divIdToMove).animate({ backgroundColor: "blue" }, 200, function () {
+                    $('#' + divIdToMove).animate({ backgroundColor: "white" }, 200);
+                });
             }
         });
     }
