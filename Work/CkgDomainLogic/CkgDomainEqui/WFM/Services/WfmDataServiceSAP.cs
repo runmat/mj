@@ -131,8 +131,7 @@ namespace CkgDomainLogic.WFM.Services
 
                         SAP.Execute();
 
-                        if (SAP.ResultCode != 0)
-                            return;
+                        return;
                     }
 
                     Z_WFM_STORNO_AUFTRAG_01.Init(SAP);
