@@ -264,20 +264,18 @@
         return false;
     }
 
-    function CancelOrderWithAddress() {
+    function CreateVersandAdresse() {
         $.ajax(
         {
             type: "POST",
-            url: "CancelOrderWithAddress",
+            url: "CreateVersandAdresse",
             loadingShow: true,
             data: {  },
             success: function (result) {
                 if (result.success) {
                     SpanAlertSuccess("spanAlertAbmeldevorgaenge", result.message, 1500);
-                    $(".wmf-uebersicht-section-nicht-storniert").hide();
-                    $(".wmf-uebersicht-section-storniert").show();
                 } else {
-                        SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
+                    SpanAlertError("spanAlertAbmeldevorgaenge", result.message, 6000);
                 }
             }
         });
@@ -466,7 +464,7 @@
 
         CloseAuftragsVersandadresse();
 
-        CancelOrderWithAddress();
+        CreateVersandAdresse();
     }
 
     function OnDataBound_VersandAdressenAuswahlGrid() {

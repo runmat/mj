@@ -103,7 +103,7 @@ namespace CkgDomainLogic.WFM.Services
 
         #region Übersicht/Storno
 
-        public string StornoAuftrag(int vorgangNr, WfmAuftrag auftrag, Adresse versandAdresse, string versandOption)
+        public string CreateVersandAdresse(int vorgangNr, string fin, Adresse versandAdresse, string versandOption)
         {
             var errorMessage = SAP.ExecuteAndCatchErrors(
 
@@ -118,7 +118,7 @@ namespace CkgDomainLogic.WFM.Services
                         SAP.SetImportParameter("I_ANF_DAT", DateTime.Today);
                         SAP.SetImportParameter("I_WEB_USER", LogonContext.UserName);
 
-                        SAP.SetImportParameter("I_FAHRG", auftrag.FahrgestellNr);
+                        SAP.SetImportParameter("I_FAHRG", fin);
                         SAP.SetImportParameter("I_VERS_OPT", versandOption);
 
                         SAP.SetImportParameter("I_NAME1_ZS", versandAdresse.Name1);
@@ -130,10 +130,22 @@ namespace CkgDomainLogic.WFM.Services
                         SAP.SetImportParameter("I_COUNTRY_ZS", versandAdresse.Land);
 
                         SAP.Execute();
-
-                        return;
                     }
+                },
 
+                // SAP custom error handling:
+                () => ((SAP.ResultCode == 0) ? "" : SAP.ResultMessage.NotNullOr(Localize.CancellationFailed + ",  SAP Error Code: " + SAP.ResultCode)));
+
+            return errorMessage;
+        }
+
+        public string StornoAuftrag(int vorgangNr)
+        {
+            var errorMessage = SAP.ExecuteAndCatchErrors(
+
+                // exception safe SAP action:
+                () =>
+                {
                     Z_WFM_STORNO_AUFTRAG_01.Init(SAP);
 
                     SAP.SetImportParameter("I_AG", LogonContext.KundenNr.ToSapKunnr());
@@ -148,7 +160,6 @@ namespace CkgDomainLogic.WFM.Services
 
             return errorMessage;
         }
-
 
         #endregion
 

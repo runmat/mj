@@ -117,7 +117,7 @@ namespace CkgDomainLogic.WFM.ViewModels
 
             Auftraege = DataService.GetAbmeldeauftraege(Selektor);
 
-            if (Auftraege.None())
+            if (Auftraege.None() && state != null)
                 state.AddModelError("", Localize.NoDataFound);
         }
 
@@ -238,12 +238,30 @@ namespace CkgDomainLogic.WFM.ViewModels
 
         private string StornoAuftragCurrent { get; set; }
 
-        public string StornoAuftrag(string vorgangNr, bool bypassEnforceDeliveryAddress = false)
+        public string CreateVersandAdresse()
+        {
+            var vorgangNr = StornoAuftragCurrent;
+
+            var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
+            if (auftrag == null)
+                return Localize.OrderDoesNotExist;
+
+            if (VersandOption.IsNotNullOrEmpty())
+                VersandOption = "5530";
+
+            var message = DataService.CreateVersandAdresse(vorgangNr.ToInt(), auftrag.FahrgestellNr, VersandAdresse, VersandOption);
+            if (!message.IsNullOrEmpty())
+                return message;
+
+            LoadAuftraege(null);
+
+            return message;
+        }
+
+        public string StornoAuftrag(string vorgangNr)
         {
             if (vorgangNr.IsNotNullOrEmpty())
                 StornoAuftragCurrent = vorgangNr;
-            else
-                vorgangNr = StornoAuftragCurrent;
 
             var auftrag = AuftraegeFiltered.FirstOrDefault(a => a.VorgangsNrAbmeldeauftrag == vorgangNr);
             if (auftrag == null)
@@ -252,22 +270,18 @@ namespace CkgDomainLogic.WFM.ViewModels
             if (auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "2")
                 return Localize.CancellationNotPossible + ". " + Localize.OrderAlreadyDone;
 
-            if (!bypassEnforceDeliveryAddress)
-                if (auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "0" || auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "1")
-                    if (auftrag.Zb1VorhandenDatum != null || auftrag.KennzeichenVornVorhandenDatum != null || auftrag.KennzeichenHintenVorhandenDatum != null)
-                        return "ENFORCE_DELIVERY_ADDRESS";
+            if (auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "0" || auftrag.AbmeldeStatusCode.NotNullOrEmpty() == "1")
+                if (auftrag.Zb1VorhandenDatum != null || auftrag.KennzeichenVornVorhandenDatum != null || auftrag.KennzeichenHintenVorhandenDatum != null)
+                    return "ENFORCE_DELIVERY_ADDRESS";
 
-            if (VersandOption.IsNotNullOrEmpty())
-                VersandOption = "3000000";
-
-            var message = DataService.StornoAuftrag(vorgangNr.ToInt(), auftrag, VersandAdresse, VersandOption);
+            var message = DataService.StornoAuftrag(vorgangNr.ToInt());
             if (!message.IsNullOrEmpty())
                 return message;
 
             auftrag.StornoDatum = DateTime.Today;
             auftrag.AbmeldeStatusCode = "3";
 
-            DataMarkForRefresh();
+            LoadAuftraege(null);
 
             return message;
         }

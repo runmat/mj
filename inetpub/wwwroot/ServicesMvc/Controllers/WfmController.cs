@@ -129,25 +129,20 @@ namespace ServicesMvc.Controllers
             return Json(new
             {
                 success = message.IsNullOrEmpty(),
-                message = FormatCancelOrderMessage(message)
+                message = (message.IsNotNullOrEmpty() ? message : (Localize.CancelOrder + " " + Localize.Successful.ToLower()))
             });
         }
 
         [HttpPost]
-        public ActionResult CancelOrderWithAddress()
+        public ActionResult CreateVersandAdresse()
         {
-            var message = ViewModel.StornoAuftrag(null, true);
+            var message = ViewModel.CreateVersandAdresse();
 
             return Json(new
             {
                 success = message.IsNullOrEmpty(),
-                message = FormatCancelOrderMessage(message)
+                message = (message.IsNotNullOrEmpty() ? message : Localize.CreateShippingAddressSuccessfullyCreated)
             });
-        }
-
-        private static string FormatCancelOrderMessage(string message)
-        {
-            return (message.IsNotNullOrEmpty() ? message : (Localize.CancelOrder + " " + Localize.Successful.ToLower()));
         }
 
         #endregion

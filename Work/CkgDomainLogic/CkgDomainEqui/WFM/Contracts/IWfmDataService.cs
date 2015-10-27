@@ -15,7 +15,9 @@ namespace CkgDomainLogic.WFM.Contracts
 
         #region Übersicht/Storno
 
-        string StornoAuftrag(int vorgangNr, WfmAuftrag auftrag, Adresse versandAdresse, string versandOption);
+        string CreateVersandAdresse(int vorgangNr, string fin, Adresse versandAdresse, string versandOption);
+            
+        string StornoAuftrag(int vorgangNr);
 
         string SetOrderToKlaerfall(int vorgangNr, string remark);
 
