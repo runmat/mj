@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Web;
 using System.Web.Mvc;
 using CkgDomainLogic.Autohaus.ViewModels;
@@ -10,7 +11,7 @@ using CkgDomainLogic.General.Contracts;
 using CkgDomainLogic.General.Controllers;
 using GeneralTools.Contracts;
 
-namespace CkgDomainLogic.DataKonverter.Controllers
+namespace ServicesMvc.DataKonverter.Controllers
 {
     public class DataKonverterAdminController : CkgDomainController 
     {
@@ -47,17 +48,48 @@ namespace CkgDomainLogic.DataKonverter.Controllers
         [CkgApplication]
         public ActionResult Index()
         {
-            var fullUrl = Request.Url.AbsoluteUri;
-
-            // return View(ViewModel);
-            return View("Test");
+            // return View("Partial/Konfiguration");
+            // return View("Test");
+            return View(ViewModel);
         }
 
         [CkgApplication]
         public ActionResult Prozessauswahl()
         {
-            return View("Test");
+            return View();
         }
+
+        [CkgApplication]
+        public ActionResult Konfiguration()
+        {
+            return View();
+        }
+
+        [CkgApplication]
+        public ActionResult Testimport()
+        {
+            return View();
+        }
+
+        [CkgApplication]
+        public ActionResult Abschluss()
+        {
+            return View();
+        }
+
+
+        #region Ajax
+
+        [HttpPost]
+        public JsonResult LiveTransform(string input, string func)
+        {
+            var output = "";
+            output = string.Format("#{0}", input);
+
+            return Json(new { Output = output });
+        }
+
+        #endregion
 
     }
 }

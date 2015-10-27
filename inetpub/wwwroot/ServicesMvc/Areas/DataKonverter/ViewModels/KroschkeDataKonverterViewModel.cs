@@ -36,9 +36,9 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
             {
                 return PropertyCacheGet(() => new Dictionary<string, string>
                 {
-                    { "ProzessAuswahl", "Prozessauswahl" },         // Localize.Vehicle
+                    { "Prozessauswahl", "Prozessauswahl" },         // Localize.Vehicle
                     { "Konfiguration", "Konfiguration" },
-                    { "TestImport", "Testimport" },
+                    { "Testimport", "Testimport" },
                     { "Abschluss", Localize.Ready + "!" },
                 });
             }
@@ -50,7 +50,7 @@ namespace CkgDomainLogic.DataKonverter.ViewModels
 
         public string FirstStepPartialViewName
         {
-            get { return string.Format("{0}", StepKeys[0]); }
+            get { return string.Format("{0}", StepKeys[1]); }
         }
 
     }
