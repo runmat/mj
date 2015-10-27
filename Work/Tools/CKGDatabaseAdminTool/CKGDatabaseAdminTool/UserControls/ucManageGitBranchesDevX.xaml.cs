@@ -93,6 +93,13 @@ namespace CKGDatabaseAdminTool.UserControls
             if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
                 (view.DataContext as GitBranchInfoViewModel).SaveGitBranchInfos(null);
         }
+
+        private void GridTableViewCellValueChanging(object sender, CellValueChangedEventArgs e)
+        {
+            var view = (TableView)sender;
+
+            view.PostEditor();
+        }
     }
 
     public class GitBranchEntwicklerCellTemplateSelector : DataTemplateSelector

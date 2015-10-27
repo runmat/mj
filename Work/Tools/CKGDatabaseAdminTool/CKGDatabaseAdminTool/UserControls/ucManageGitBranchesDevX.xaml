@@ -62,7 +62,7 @@
                 <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />
                 <dxg:GridColumn FieldName="PM" Width="30" />
                 <dxg:GridColumn FieldName="Anwendung" />
-                <dxg:GridColumn FieldName="Bemerkung" AllowBestFit="True" BestFitMode="VisibleRows"/>
+                <dxg:GridColumn FieldName="Bemerkung" AllowBestFit="True" BestFitMode="VisibleRows" />
                 <dxg:GridColumn FieldName="ImTestSeit" Header="Test seit" Width="80" />
                 <dxg:GridColumn FieldName="FreigegebenDurch" Header="Freigabe von" Width="80" />
                 <dxg:GridColumn FieldName="ProduktivSeit" Header="Prod. seit" Width="80" />
@@ -70,7 +70,7 @@
                 <dxg:GridColumn FieldName="Deaktiviert" Header="Deakt." UnboundType="Boolean" Width="50" />
             </dxg:GridControl.Columns>
             <dxg:GridControl.View>
-                <dxg:TableView AllowEditing="True" NewItemRowPosition="Top" MultiSelectMode="Row" KeyUp="GridTableViewKeyUp" />
+                <dxg:TableView AllowEditing="True" NewItemRowPosition="Top" MultiSelectMode="Row" KeyUp="GridTableViewKeyUp" CellValueChanging="GridTableViewCellValueChanging" />
             </dxg:GridControl.View>
         </dxg:GridControl>
 
