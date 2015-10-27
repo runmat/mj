@@ -7,6 +7,8 @@
           xmlns:local="clr-namespace:CKGDatabaseAdminTool.UserControls"
           xmlns:lib="clr-namespace:CKGDatabaseAdminLib;assembly=CKGDatabaseAdminLib"
           xmlns:converters="clr-namespace:WpfTools4.Converters;assembly=WpfTools4"
+          xmlns:models="clr-namespace:CKGDatabaseAdminLib.Models;assembly=CKGDatabaseAdminLib"
+          xmlns:ckgDatabaseAdminTool="clr-namespace:CKGDatabaseAdminTool"
           mc:Ignorable="d" 
           d:DesignHeight="513.889" d:DesignWidth="645.926">
 
@@ -17,6 +19,13 @@
                 <Setter Property="AlternatingRowBackground" Value="#EEEEEE"></Setter>
             </Style>
             <converters:EnumMatchToBooleanConverter x:Key="EnumMatchToBooleanConverter" />
+
+            <DataTemplate x:Key="GitBranchDefaultEntwicklerCellTemplate" DataType="{x:Type models:GitBranchInfo}">
+                <StackPanel DataContext="{Binding DataContext, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ckgDatabaseAdminTool:MainWindow}}}">
+                    <TextBlock Foreground="Blue" Background="Ivory" Padding="5" Text="{Binding Developer}" />
+                </StackPanel>
+            </DataTemplate>
+            <local:GitBranchEntwicklerCellTemplateSelector x:Key="GitBranchEntwicklerCellTemplateSelector" DefaultTemplate="{StaticResource GitBranchDefaultEntwicklerCellTemplate}" />
         </Grid.Resources>
 
         <Grid.RowDefinitions>
@@ -47,24 +56,22 @@
                          IsChecked="{Binding AnzeigeFilter, Converter={StaticResource EnumMatchToBooleanConverter}, ConverterParameter={x:Static lib:GitBranchViewFilter.alle}}"/>
         </StackPanel>
 
-        <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
-            ItemsSource="{Binding GitBranches}" 
-            FontSize="12" 
-            IsEnabled="True"
-                         Loaded="Control_OnLoaded"
-                         >
+        <dxg:GridControl Name="Control" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" ItemsSource="{Binding GitBranches}" FontSize="12" IsEnabled="True" Loaded="Control_OnLoaded">
             <dxg:GridControl.Columns>
-                <dxg:GridColumn FieldName="Entwickler"/>
-                <dxg:GridColumn FieldName="Name"/>
-                <dxg:GridColumn FieldName="PM"/>
-                <dxg:GridColumn FieldName="Anwendung"/>
+                <dxg:GridColumn FieldName="Entwickler" Width="35" CellTemplateSelector="{StaticResource GitBranchEntwicklerCellTemplateSelector}" />
+                <dxg:GridColumn FieldName="Name" Header="ITA / Ticket" />
+                <dxg:GridColumn FieldName="PM" Width="30" />
+                <dxg:GridColumn FieldName="Anwendung" />
                 <dxg:GridColumn FieldName="Bemerkung" AllowBestFit="True" BestFitMode="VisibleRows"/>
-                <dxg:GridColumn FieldName="ImTestSeit"/>
-                <dxg:GridColumn FieldName="FreigegebenDurch"/>
-                <dxg:GridColumn FieldName="ImMaster" UnboundType="Boolean"/>
-                <dxg:GridColumn FieldName="ProduktivSeit"/>
-                <dxg:GridColumn FieldName="Deaktiviert" UnboundType="Boolean"/>
+                <dxg:GridColumn FieldName="ImTestSeit" Header="Test seit" Width="80" />
+                <dxg:GridColumn FieldName="FreigegebenDurch" Header="Freigabe von" Width="80" />
+                <dxg:GridColumn FieldName="ProduktivSeit" Header="Prod. seit" Width="80" />
+                <dxg:GridColumn FieldName="ImMaster" Header="Master" UnboundType="Boolean" Width="60" />
+                <dxg:GridColumn FieldName="Deaktiviert" Header="Deakt." UnboundType="Boolean" Width="50" />
             </dxg:GridControl.Columns>
+            <dxg:GridControl.View>
+                <dxg:TableView AllowEditing="True" NewItemRowPosition="Top" MultiSelectMode="Row" KeyUp="GridTableViewKeyUp" />
+            </dxg:GridControl.View>
         </dxg:GridControl>
 
         <Button Grid.Row="2" Grid.Column="0" Width="200px" HorizontalAlignment="Right" Margin="10,2" Command="{Binding CommandCancelGitBranchInfos}" Content="Änderungen verwerfen"/>

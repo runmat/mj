@@ -1,6 +1,8 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using CKGDatabaseAdminLib.ViewModels;
+using GeneralTools.Models;
 
 namespace CKGDatabaseAdminLib.Models
 {
@@ -175,5 +177,17 @@ namespace CKGDatabaseAdminLib.Models
 
         [NotMapped]
         public bool Erledigt { get { return (Deaktiviert || (ImMaster && ProduktivSeit.HasValue)); } }
+
+
+        public GitBranchInfo()
+        {
+            if (MainViewModel.Instance.Developer.IsNotNullOrEmpty())
+            {
+                Entwickler = MainViewModel.Instance.Developer;
+
+                if (Entwickler.ToLower() == "mje")
+                    Anwendung = "ServicesMvc";
+            }
+        }
     }
 }

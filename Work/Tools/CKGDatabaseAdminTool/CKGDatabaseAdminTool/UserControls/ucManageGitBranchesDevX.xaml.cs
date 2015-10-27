@@ -82,5 +82,33 @@ namespace CKGDatabaseAdminTool.UserControls
                     Control.ExpandGroupRow(rowHandle);
             }
         }
+
+        private void GridTableViewKeyUp(object sender, KeyEventArgs e)
+        {
+            var view = (TableView)sender;
+
+            if (view.IsEditing == false && e.Key == Key.Delete)
+                view.DeleteRow(view.FocusedRowHandle);
+
+            if (e.Key == Key.S && Keyboard.Modifiers == ModifierKeys.Control)
+                (view.DataContext as GitBranchInfoViewModel).SaveGitBranchInfos(null);
+        }
+    }
+
+    public class GitBranchEntwicklerCellTemplateSelector : DataTemplateSelector
+    {
+        public DataTemplate DefaultTemplate { get; set; }
+
+        public override DataTemplate SelectTemplate(object item, DependencyObject container)
+        {
+            var cellData = (item as EditGridCellData);
+            if (MainViewModel.Instance.Developer.IsNullOrEmpty())
+                return base.SelectTemplate(item, container);
+
+            if (cellData == null || cellData.Value == null || MainViewModel.Instance.Developer.ToLower() == cellData.Value.ToString().NotNullOrEmpty().ToLower())
+                return DefaultTemplate;
+
+            return base.SelectTemplate(item, container);
+        }
     }
 }
