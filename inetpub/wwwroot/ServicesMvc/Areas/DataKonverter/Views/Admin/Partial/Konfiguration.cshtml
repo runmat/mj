@@ -22,31 +22,42 @@
 <button class="btn white margin-left-10" onclick="Save();">
     Save
 </button>
-
 <button class="btn white" onclick="Load();">
     Load
 </button>
+
+<button class="btn white margin-left-10" onclick="ShowProcessors(false);">
+    Hide
+</button>
+<button class="btn white" onclick="ShowProcessors(true);">
+    Show
+</button>
+
+<button class="btn white margin-left-10" onclick="SetToPosition('source', 'Source7', 2);">
+    Move
+</button>
+
 
 <div id="DataKonverterContainer" style="position: relative; width: 100%; height: 470px;">
 
     <div id="processorTemplate" class="processor hidden">
         <div class="title">
-            <span id="name">Prozessor</span>
-            <button class="processorclose" style="float: right; margin-right: -10px; margin-top: 0px; border: 0px; padding: 0px;">x</button>
-            <button style="float: right; margin-right: 3px; margin-top: 0px; border: 0px; padding: 0px;" onclick="SwitchProcessor();">_</button>
+            <div id="name" class="float-left" style="margin-top: -5px;margin-left:15px;">Prozessor</div>
+            <button class="processorclose" style="float: right; margin-right: 18px; margin-top: -3px; border: 0px; padding: 0px;"><i class="icon-remove"></i></button>
         </div>
-        <div class="content">
-            <select class="type">
-                <option value="add">Zusammenfassen</option>
-                <option value="replace">Austauschen</option>
-                <option value="if">Wenn, dann</option>
-                <option value="formula">Formel</option>
+        <div class="content" style="">
+            <select class="type" style="width: 151px; margin-top: 5px; margin-bottom: 1px;">
+                <option value="add">Splitten</option>
+                <option value="replace">Zusammenfassen</option>
             </select>
-            <span class="datain float-left">in</span>
-            <span class="dataout float-right">out</span>
+            <input type="text" name="Para1" value="Separator" style="width: 60px; float: left; margin-bottom: 2px;"/>
+            <input type="text" name="Para2" value="Nummer" style="width: 60px; float: left; margin-left: 2px; margin-bottom: 2px;"/>
+
+            <span class="data datain float-left">in</span>
+            <span class="data dataout float-right">out</span>
         </div>
-        <div id="tmpprozin" class="prozin" action="in"></div>
-        <div id="tmpprozout" class="prozout" action="out"></div>
+        <div id="tmpprozin" class="prozin"></div>
+        <div id="tmpprozout" class="prozout"></div>
     </div>
 
     <div id="source" style="padding: 0px;">
@@ -188,7 +199,17 @@
         maxConnections: 1,
         anchor: "Left",
         ConnectionsDetachable: true,
-        ReattachConnections: true
+        ReattachConnections: true,
+        allowLoopback: false
+    };
+
+    var endpointOptionsProzessor = {
+        isSource: false,
+        isTarget: true,
+        anchor: "Left",
+        ConnectionsDetachable: true,
+        ReattachConnections: true,
+        allowLoopback: false
     };
 
     jsPlumb.ready(function () {
@@ -214,13 +235,12 @@
 
         jsPlumb.makeSource($(".w"), startpointOptions);
         jsPlumb.makeTarget($(".ept"), endpointOptions);
-
+        
         // Prozessor-Template
         jsPlumb.draggable("processorTemplate", {
             clone: true
         });
-        jsPlumb.makeSource($(".prozout"), startpointOptions);
-        jsPlumb.makeTarget($(".prozin"), endpointOptions);
+
 
         // Events
         window.addEventListener("resize", refreshPlumb);
@@ -308,7 +328,7 @@
         document.body.appendChild(clone);
 
         var newProcessor = $("#" + processorId);
-        newProcessor.addClass("processoractive");
+        newProcessor.addClass("processorobj");
         newProcessor.removeClass("hidden");
 
         var top = newProcessor.position().top;
@@ -331,8 +351,8 @@
         prozin.attr("id", "prozin-" + numItems);
         prozout.attr("id", "prozout-" + numItems);
 
-        jsPlumb.makeTarget($("#prozin-" + numItems), startpointOptions);
-        jsPlumb.makeSource($("#prozout-" + numItems), endpointOptions);
+        jsPlumb.makeTarget($("#prozin-" + numItems), endpointOptionsProzessor);
+        jsPlumb.makeSource($("#prozout-" + numItems), startpointOptions);
 
         jsPlumb.draggable(clone);
 
@@ -345,11 +365,6 @@
         jsPlumb.connect({
             source: source,
             target: dest
-            //anchors: ["Right", "Left"],
-            //paintStyle: { lineWidth: 5, strokeStyle: 'rgba(0,255,0,0.5)' },
-            //endpointStyle: { radius: 5 },
-            //endpoint: "Rectangle",
-            //connector: "Straight"           
         });
         jsPlumb.repaint(connectionId);
     }
@@ -359,7 +374,7 @@
         jsonConnections = [];
 
         // processors...
-        $(".processoractive").each(function () {
+        $(".processorobj").each(function () {
             var obj = $(this);
             var processorId = $(obj).attr("id");
             var title = $(obj).find("#name").html();
@@ -401,7 +416,7 @@
     function ClearAll() {
         jsPlumb.detachEveryConnection();
 
-        $(".processoractive").each(function (index) {
+        $(".processorobj").each(function (index) {
             jsPlumb.remove($(this).attr("id"));
         });
 
@@ -413,7 +428,7 @@
     function LiveTransform(input, func, outputDivId) {
         $.ajax({
             type: "POST",
-            url: "DataKonverterAdmin/LiveTransform",
+            url: "Admin/LiveTransform",
             data: { input: input, func: func },
             loadingShow: true,
             success: function (result) {
@@ -429,6 +444,25 @@
                     $('#' + outputDivId).parent().find(".dataout").html(result.Output);
                 }
                 
+            }
+        });
+    }
+    
+    function ShowProcessors(value) {
+        $(".processorobj").each(function (index) {
+            $(this).find(".content").toggle(value);
+            if (value) {
+                $(this).css("height", "85px");
+            } else {
+                $(this).css("height", "14px");
+            }
+        });
+    }
+
+    function SetToPosition(rootDivId, sourceId, position) {        
+        $("#" + rootDivId + " .w").each(function (index) { 
+            if (index === position && $(this).attr("id") !== sourceId) {  // Move, but not if sourceId has already target position
+                $('#' + sourceId).detach().insertBefore($(this));
             }
         });
     }

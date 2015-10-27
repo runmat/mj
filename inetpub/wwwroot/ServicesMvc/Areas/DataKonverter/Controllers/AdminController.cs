@@ -13,7 +13,7 @@ using GeneralTools.Contracts;
 
 namespace ServicesMvc.DataKonverter.Controllers
 {
-    public class DataKonverterAdminController : CkgDomainController 
+    public class AdminController : CkgDomainController 
     {
 
         public override string DataContextKey { get { return GetDataContextKey<KroschkeDataKonverterViewModel>(); } }
@@ -24,7 +24,7 @@ namespace ServicesMvc.DataKonverter.Controllers
             set { SetViewModel(value); }
         }
 
-        public DataKonverterAdminController(IAppSettings appSettings, ILogonContextDataService logonContext, IDataKonverterDataService dataKonverterDataService)
+        public AdminController(IAppSettings appSettings, ILogonContextDataService logonContext, IDataKonverterDataService dataKonverterDataService)
             : base(appSettings, logonContext)
         {
             if (IsInitialRequestOf("Index"))
