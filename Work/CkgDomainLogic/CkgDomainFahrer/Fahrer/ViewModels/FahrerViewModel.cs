@@ -133,17 +133,21 @@ namespace CkgDomainLogic.Fahrer.ViewModels
 
             pdfBytesList.Add(pdfBytesAuftrag);
 
-            var verzeichnis = Path.Combine(AppSettings.UploadFilePath, LogonContext.KundenNr.ToSapKunnr(), auftragsNr.PadLeft(10, '0'), "vertraege");
-
-            if (Directory.Exists(verzeichnis))
+            var auftrag = FahrerAuftraege.FirstOrDefault(a => a.AuftragsNr == auftragsNr);
+            if (auftrag != null)
             {
-                var dateien = Directory.GetFiles(verzeichnis);
+                var verzeichnis = Path.Combine(AppSettings.UploadFilePath, auftrag.KundenNr.ToSapKunnr(), auftragsNr.PadLeft(10, '0'), "vertraege");
 
-                foreach (var datei in dateien)
+                if (Directory.Exists(verzeichnis))
                 {
-                    var pdfBytes = File.ReadAllBytes(datei);
+                    var dateien = Directory.GetFiles(verzeichnis);
 
-                    pdfBytesList.Add(pdfBytes);
+                    foreach (var datei in dateien)
+                    {
+                        var pdfBytes = File.ReadAllBytes(datei);
+
+                        pdfBytesList.Add(pdfBytes);
+                    }
                 }
             }
 
