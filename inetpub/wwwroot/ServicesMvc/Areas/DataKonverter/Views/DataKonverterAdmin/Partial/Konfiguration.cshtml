@@ -256,13 +256,35 @@
 
             var source = info.source;
 
+            // Connection von ProzessorOut
             if (sourceId.substr(0, 7) === "prozout") {
+                // Connection wurde vom ProzessorOut zum Zielfeld gezogen, also Ergebniswert 1:1 weiterleiten...
                 sourceData = sourceDiv.parent().find(".dataout").html();
-            } else {
-                sourceData = sourceDiv.find(".data").html();
-            }
 
-            LiveTransform(sourceData, "testfunction", destId);
+                // Connection from processor -> DestField
+                if (destId.substr(0, 4) === "Dest") {
+                    $('#' + destId).find(".data").html(sourceData);
+                }
+                // Connection from processor -> ProzessorIn
+                if (destId.substr(0, 6) === "prozin") {
+                    $('#' + destId).parent().find(".datain").html(sourceData);
+
+                    // Init transformation...
+                    // $('#' + destId).parent().find(".dataout").html("");
+                    LiveTransform(sourceData, "testfunction", destId);
+                }
+
+            }
+            else // Connection von SourceField
+            {
+                sourceData = sourceDiv.find(".data").html();
+                // $('#' + destId).find(".data").html(sourceData);
+                if (destId.substr(0, 4) === "Dest") {
+                    $('#' + destId).find(".data").html(sourceData);
+                } else {
+                    LiveTransform(sourceData, "testfunction", destId);
+                }
+            }
 
         });
 
@@ -381,6 +403,10 @@
 
         $(".processoractive").each(function (index) {
             jsPlumb.remove($(this).attr("id"));
+        });
+
+        $("#destination").each(function (index) {
+            $(this).find(".data").html("");
         });
     }
 
