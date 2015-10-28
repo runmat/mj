@@ -2090,7 +2090,7 @@ Partial Public Class UserManagement
                                               IIf(trReference.Visible, txtReference.Text, ""), _
                                               IIf(trReference2.Visible, txtReference2.Text, ""), _
                                               IIf(trReference3.Visible, txtReference3.Text, ""), _
-                                              IIf(trReference4.Visible, cbxReference4.Checked, ""), _
+                                              (trReference4.Visible AndAlso cbxReference4.Checked), _
                                               cbxTestUser.Checked, _
                                               CInt(ddlCustomer.SelectedItem.Value), _
                                               cbxCustomerAdmin.Checked, _
