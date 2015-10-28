@@ -17,6 +17,7 @@ using GeneralTools.Models;
 using GeneralTools.Resources;
 using GeneralTools.Services;
 using SapORM.Contracts;
+using WebTools.Services;
 
 namespace CkgDomainLogic.Fahrer.ViewModels
 {
